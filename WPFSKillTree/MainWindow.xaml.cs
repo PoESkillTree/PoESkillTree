@@ -44,6 +44,7 @@ namespace POESKillTree
                 btnScreenShot.Visibility = Visibility.Visible;
                 btnLoadItems.Visibility = Visibility.Visible;
                 btnSkillHighlighted.Visibility = Visibility.Visible;
+                Expander1.ExpandDirection = ExpandDirection.Right;
             }
             else
             {
@@ -62,6 +63,7 @@ namespace POESKillTree
                 btnScreenShot.Visibility = Visibility.Hidden;
                 btnLoadItems.Visibility = Visibility.Hidden;
                 btnSkillHighlighted.Visibility = Visibility.Hidden;
+                Expander1.ExpandDirection = ExpandDirection.Down;
             }
         }
         List<PoEBuild> savedBuilds = new List<PoEBuild>();

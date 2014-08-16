@@ -64,6 +64,38 @@
         <Button Content="Load build" Height="23" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" Width="75" Click="button2_Click" Margin="0,0,4,2" Grid.Column="3" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="195,8,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" Width="34" IsReadOnly="True" />
         <Button Content="Download / Import Items" Height="23" HorizontalAlignment="Left" Margin="114,0,0,29" x:Name="btnLoadItems" VerticalAlignment="Bottom" Width="158" Click="button1_Click_1" />
+        <Label Content="Search:" Height="28" HorizontalAlignment="Left" Margin="6,0,0,-1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="60,0,0,1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" Grid.ColumnSpan="4" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="265,8,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="41" TextChanged="textBox3_TextChanged" />
+        <Button Content="Skill highlighted nodes" Height="23" HorizontalAlignment="Left" Margin="277,0,0,29" x:Name="btnSkillHighlighted" VerticalAlignment="Bottom" Width="135" Click="button3_Click" RenderTransformOrigin="0.44,2.652" />
+        <CheckBox Content="RegEx" Height="16" HorizontalAlignment="Left" Margin="352,0,0,4" x:Name="checkBox1" VerticalAlignment="Bottom" />
+        <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="120,8,0,0" x:Name="button4" VerticalAlignment="Top" Width="40" Click="button4_Click" RenderTransformOrigin="-3.75,-0.174" />
+        <Button Content="Screenshot" Height="23" HorizontalAlignment="Left" Margin="5,0,0,29" x:Name="btnScreenShot" VerticalAlignment="Bottom" Width="104" Click="btnScreenShot_Click" />
+
+        <Button Content="Copy Passive Attributes to Clipboard" Height="23" HorizontalAlignment="Left" Margin="6,0,0,56" x:Name="btnCopyStats" VerticalAlignment="Bottom" Width="208" Click="btnCopyStats_Click" Grid.ColumnSpan="3" />
+        <Button x:Name="hideShit" Content="-" Click="hideShit_Click" Margin="315,8,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="38"/>
+        <Label Content="Used" Height="28" HorizontalAlignment="Left" Margin="161,6,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
+        <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="225,6,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
+        <Expander x:Name="Expander1" Header="Builds" HorizontalAlignment="Left" Margin="381,8,0,8" IsHitTestVisible="True" ExpandDirection="Right">
+            <Grid x:Name="gridBuildManager" Background="#FFE5E5E5" HorizontalAlignment="Left">
+                <ListView x:Name="lvSavedBuilds" Margin="4,26,4,29" HorizontalAlignment="Left" Width="232" ForceCursor="True">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style>
+                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Label x:Name="lblSaved" Content="Saved builds:" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
+                <Button x:Name="btnSaveNewBuild" Content="Save new" HorizontalAlignment="Left" Margin="4,0,163,3" VerticalAlignment="Bottom" Width="80" Click="btnSaveNewBuild_Click"/>
+                <Button x:Name="btnOverwriteBuild" Content="Overwrite" Margin="152,0,0,3.04" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="84"/>
+                <Button x:Name="btnDelete" Content="Delete" Margin="88,0,91.273,3" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Left" Width="60"/>
+            </Grid>
+        </Expander>
         <TabControl Margin="6,49,0,85" x:Name="tabControl1" HorizontalAlignment="Left" Width="407" Grid.ColumnSpan="4">
             <TabItem Header="Passive Attributes" x:Name="tabItem1">
                 <Grid>
@@ -100,37 +132,5 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Label Content="Search:" Height="28" HorizontalAlignment="Left" Margin="6,0,0,-1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="60,0,0,1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" Grid.ColumnSpan="4" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="265,8,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="41" TextChanged="textBox3_TextChanged" />
-        <Button Content="Skill highlighted nodes" Height="23" HorizontalAlignment="Left" Margin="277,0,0,29" x:Name="btnSkillHighlighted" VerticalAlignment="Bottom" Width="135" Click="button3_Click" RenderTransformOrigin="0.44,2.652" />
-        <CheckBox Content="RegEx" Height="16" HorizontalAlignment="Left" Margin="352,0,0,4" x:Name="checkBox1" VerticalAlignment="Bottom" />
-        <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="120,8,0,0" x:Name="button4" VerticalAlignment="Top" Width="40" Click="button4_Click" RenderTransformOrigin="-3.75,-0.174" />
-        <Button Content="Screenshot" Height="23" HorizontalAlignment="Left" Margin="5,0,0,29" x:Name="btnScreenShot" VerticalAlignment="Bottom" Width="104" Click="btnScreenShot_Click" />
-
-        <Button Content="Copy Passive Attributes to Clipboard" Height="23" HorizontalAlignment="Left" Margin="6,0,0,56" x:Name="btnCopyStats" VerticalAlignment="Bottom" Width="208" Click="btnCopyStats_Click" Grid.ColumnSpan="3" />
-        <Button x:Name="hideShit" Content="-" Click="hideShit_Click" Margin="315,8,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="38"/>
-        <Label Content="Used" Height="28" HorizontalAlignment="Left" Margin="161,6,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
-        <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="225,6,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
-        <Expander Header="Builds" HorizontalAlignment="Left" Margin="381,8,0,8" IsHitTestVisible="True" ExpandDirection="Right">
-            <Grid x:Name="gridBuildManager" Background="#FFE5E5E5" HorizontalAlignment="Left">
-                <ListView x:Name="lvSavedBuilds" Margin="4,26,4,29" HorizontalAlignment="Left" Width="232" ForceCursor="True">
-                    <ListView.View>
-                        <GridView>
-                            <GridView.ColumnHeaderContainerStyle>
-                                <Style>
-                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
-                                </Style>
-                            </GridView.ColumnHeaderContainerStyle>
-                            <GridViewColumn/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <Label x:Name="lblSaved" Content="Saved builds:" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
-                <Button x:Name="btnSaveNewBuild" Content="Save new" HorizontalAlignment="Left" Margin="4,0,163,3" VerticalAlignment="Bottom" Width="80" Click="btnSaveNewBuild_Click"/>
-                <Button x:Name="btnOverwriteBuild" Content="Overwrite" Margin="152,0,0,3.04" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="84"/>
-                <Button x:Name="btnDelete" Content="Delete" Margin="88,0,91.273,3" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Left" Width="60"/>
-            </Grid>
-        </Expander>
     </Grid>
 </Window>
