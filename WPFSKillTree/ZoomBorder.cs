@@ -185,10 +185,20 @@ namespace POESKillTree
 
         private void child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            // Not sure if this takes the zoom factor into account, but this feels reasonable.
+            const double dragThreshold = 5;
+
             if (child != null)
             {
                 child.ReleaseMouseCapture();
                 this.Cursor = Cursors.Arrow;
+
+                if ((start - e.GetPosition(this)).LengthSquared >= dragThreshold * dragThreshold)
+                {
+                    // If we dragged a distance larger than our threshold, handle the up event so that
+                    // it's not treated as a click on a skill node.
+                    e.Handled = true;
+                }
             }
         }
 

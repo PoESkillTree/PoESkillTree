@@ -743,6 +743,14 @@ namespace POESKillTree
             sToolTip.IsOpen = false;
 
         }
+
+        private void border1_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // We might have popped up a tooltip while the window didn't have focus,
+            // so we should close tooltips whenever the mouse leaves the canvas in addition to
+            // whenever we lose focus.
+            sToolTip.IsOpen = false;
+        }
     }
 
     class PoEBuild
