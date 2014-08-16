@@ -103,7 +103,7 @@ namespace POESKillTree
         private void DrawLinkBackgroundLayer(List<ushort[]> links)
         {
             picLinks = new DrawingVisual();
-            Pen pen2 = new Pen(Brushes.DarkSlateGray, 32);
+            Pen pen2 = new Pen(Brushes.DarkSlateGray, 30f);
             using (DrawingContext dc = picLinks.RenderOpen())
             {
                 foreach (var nid in links)

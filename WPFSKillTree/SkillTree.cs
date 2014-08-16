@@ -186,6 +186,7 @@ namespace POESKillTree
                    da = nd.da,
                    ia = nd.ia,
                    ks = nd.ks,
+                   m = nd.m,
                    not = nd.not,
                    sa = nd.sa,
                    Mastery = nd.m,
@@ -661,6 +662,7 @@ namespace POESKillTree
             public UInt16 id; // "id": -28194677,
             public string icon;// icon "icon": "Art/2DArt/SkillIcons/passives/tempint.png",
             public bool ks; //"ks": false,
+            public bool m; //"m": false
             public bool not;   // not": false,
             public string name;//"dn": "Block Recovery",
             public int a;// "a": 3,

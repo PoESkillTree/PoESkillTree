@@ -17,7 +17,7 @@
         </Style>
 
     </Window.Resources>
-    <Grid Margin="0,0,0,1" Background="#FFD8D8D8" HorizontalAlignment="Stretch">
+    <Grid Margin="0,3,0,1" Background="#FFD8D8D8" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="895*"/>
         </Grid.ColumnDefinitions>
@@ -49,26 +49,6 @@
         <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
 
         <TextBox Height="23" Margin="415,0,85,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" />
-        <Expander x:Name="buildPullout" Header="Builds" ExpandDirection="Right" IsHitTestVisible="true" Margin="381,8,0,8" HorizontalAlignment="Left" Width="283">
-            <Grid x:Name="gridBuildManager" Background="#FFE5E5E5" HorizontalAlignment="Left">
-                <ListView x:Name="lvSavedBuilds" Margin="4,26,4,29" HorizontalAlignment="Left" Width="232" ForceCursor="True">
-                    <ListView.View>
-                        <GridView>
-                            <GridView.ColumnHeaderContainerStyle>
-                                <Style>
-                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
-                                </Style>
-                            </GridView.ColumnHeaderContainerStyle>
-                            <GridViewColumn/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <Label x:Name="lblSaved" Content="Saved builds:" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
-                <Button x:Name="btnSaveNewBuild" Content="Save new" HorizontalAlignment="Left" Margin="4,0,163,3" VerticalAlignment="Bottom" Width="80" Click="btnSaveNewBuild_Click"/>
-                <Button x:Name="btnOverwriteBuild" Content="Overwrite" Margin="152,0,0,3.04" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="84"/>
-                <Button x:Name="btnDelete" Content="Delete" Margin="88,0,91.273,3" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Left" Width="60"/>
-            </Grid>
-        </Expander>
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="40,8,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="76" SelectionChanged="comboBox1_SelectionChanged">
             <ComboBoxItem Content="Scion" />
             <ComboBoxItem Content="Marauder" />
@@ -127,10 +107,30 @@
         <CheckBox Content="RegEx" Height="16" HorizontalAlignment="Left" Margin="352,0,0,4" x:Name="checkBox1" VerticalAlignment="Bottom" />
         <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="120,8,0,0" x:Name="button4" VerticalAlignment="Top" Width="40" Click="button4_Click" RenderTransformOrigin="-3.75,-0.174" />
         <Button Content="Screenshot" Height="23" HorizontalAlignment="Left" Margin="5,0,0,29" x:Name="btnScreenShot" VerticalAlignment="Bottom" Width="104" Click="btnScreenShot_Click" />
-        
+
         <Button Content="Copy Passive Attributes to Clipboard" Height="23" HorizontalAlignment="Left" Margin="6,0,0,56" x:Name="btnCopyStats" VerticalAlignment="Bottom" Width="208" Click="btnCopyStats_Click" Grid.ColumnSpan="3" />
         <Button x:Name="hideShit" Content="-" Click="hideShit_Click" Margin="315,8,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="38"/>
         <Label Content="Used" Height="28" HorizontalAlignment="Left" Margin="161,6,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
         <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="225,6,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
+        <Expander Header="Builds" HorizontalAlignment="Left" Margin="381,8,0,8" IsHitTestVisible="True" ExpandDirection="Right">
+            <Grid x:Name="gridBuildManager" Background="#FFE5E5E5" HorizontalAlignment="Left">
+                <ListView x:Name="lvSavedBuilds" Margin="4,26,4,29" HorizontalAlignment="Left" Width="232" ForceCursor="True">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style>
+                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Label x:Name="lblSaved" Content="Saved builds:" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
+                <Button x:Name="btnSaveNewBuild" Content="Save new" HorizontalAlignment="Left" Margin="4,0,163,3" VerticalAlignment="Bottom" Width="80" Click="btnSaveNewBuild_Click"/>
+                <Button x:Name="btnOverwriteBuild" Content="Overwrite" Margin="152,0,0,3.04" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="84"/>
+                <Button x:Name="btnDelete" Content="Delete" Margin="88,0,91.273,3" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Left" Width="60"/>
+            </Grid>
+        </Expander>
     </Grid>
 </Window>
