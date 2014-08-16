@@ -44,7 +44,7 @@
             </Border>
         </Popup>
         <POESKillTree:ZoomBorder BorderBrush="Silver" BorderThickness="1" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Margin="415,12,4,29" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" Grid.Column="3">
-            <Rectangle Height="559" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="13,17,7,17" />
+            <Rectangle Height="559" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="13,17,7,17"/>
         </POESKillTree:ZoomBorder>
         <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
 

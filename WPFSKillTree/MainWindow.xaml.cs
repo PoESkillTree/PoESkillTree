@@ -27,6 +27,7 @@ namespace POESKillTree
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         private void hideShit_Click(object sender, RoutedEventArgs e)
         {
             if (tabControl1.Visibility == Visibility.Hidden)
@@ -650,6 +651,24 @@ namespace POESKillTree
                 };
                 lvi.MouseDoubleClick += lvi_MouseDoubleClick;
                 lvSavedBuilds.Items.Add(lvi);
+            };
+
+            if (lvSavedBuilds.Items.Count > 0)
+            {
+                StringBuilder rawBuilds = new StringBuilder();
+                foreach (ListViewItem lvi in lvSavedBuilds.Items)
+                {
+                    PoEBuild build = (PoEBuild)lvi.Content;
+                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
+                }
+                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
+            }
+            else
+            {
+                if (File.Exists("savedBuilds"))
+                {
+                    File.Delete("savedBuilds");
+                }
             }
         }
 
@@ -658,6 +677,13 @@ namespace POESKillTree
             if (lvSavedBuilds.SelectedItems.Count > 0)
             {
                 lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
+                StringBuilder rawBuilds = new StringBuilder();
+                foreach (ListViewItem lvi in lvSavedBuilds.Items)
+                {
+                    PoEBuild build = (PoEBuild)lvi.Content;
+                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
+                }
+                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
             }
         }
 
@@ -666,6 +692,13 @@ namespace POESKillTree
             if (lvSavedBuilds.SelectedItems.Count > 0)
             {
                 ((ListViewItem)lvSavedBuilds.SelectedItem).Content = new PoEBuild(((ListViewItem)lvSavedBuilds.SelectedItem).Content.ToString().Split('\n')[0], cbCharType.Text + ", " + tbUsedPoints.Text + " points used", tbSkillURL.Text);
+                StringBuilder rawBuilds = new StringBuilder();
+                foreach (ListViewItem lvi in lvSavedBuilds.Items)
+                {
+                    PoEBuild build = (PoEBuild)lvi.Content;
+                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
+                }
+                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
             }
             else
             {
@@ -702,6 +735,12 @@ namespace POESKillTree
 
         private void tabControl1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+        }
+
+        private void image1_LostFocus(object sender, MouseEventArgs e)
+        {
+            sToolTip.IsOpen = false;
 
         }
     }

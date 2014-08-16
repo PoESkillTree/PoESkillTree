@@ -71,6 +71,7 @@ namespace POESKillTree
                 child.MouseLeftButtonDown += child_MouseLeftButtonDown;
                 child.MouseLeftButtonUp += child_MouseLeftButtonUp;
                 child.MouseMove += child_MouseMove;
+                child.KeyUp += child_KeyDown;
                 child.PreviewMouseRightButtonDown += new MouseButtonEventHandler(child_PreviewMouseRightButtonDown);
             }
         }
@@ -124,6 +125,57 @@ namespace POESKillTree
             if (child != null)
             {
                 var tt = GetTranslateTransform(child);
+
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    if (child != null)
+                    {
+                        var st = GetScaleTransform(child);
+
+                        double zoom = -.3;
+
+                        if ((st.ScaleX < 0.4 || st.ScaleY < 0.4))
+                            return;
+
+                        Point relative = e.GetPosition(child);
+                        double abosuluteX;
+                        double abosuluteY;
+
+                        abosuluteX = relative.X * st.ScaleX + tt.X;
+                        abosuluteY = relative.Y * st.ScaleY + tt.Y;
+
+                        st.ScaleX += zoom * st.ScaleX;
+                        st.ScaleY += zoom * st.ScaleY;
+
+                        tt.X = abosuluteX - relative.X * st.ScaleX;
+                        tt.Y = abosuluteY - relative.Y * st.ScaleY;
+                    }
+                }
+
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    if (child != null)
+                    {
+                        var st = GetScaleTransform(child);
+
+                        double zoom = .3;
+
+                        Point relative = e.GetPosition(child);
+                        double abosuluteX;
+                        double abosuluteY;
+
+                        abosuluteX = relative.X * st.ScaleX + tt.X;
+                        abosuluteY = relative.Y * st.ScaleY + tt.Y;
+
+                        st.ScaleX += zoom * st.ScaleX;
+                        st.ScaleY += zoom * st.ScaleY;
+
+                        tt.X = abosuluteX - relative.X * st.ScaleX;
+                        tt.Y = abosuluteY - relative.Y * st.ScaleY;
+                    }
+                }
+
+
                 start = e.GetPosition(this);
                 origin = new Point(tt.X, tt.Y);
                 this.Cursor = Cursors.Hand;
@@ -159,16 +211,49 @@ namespace POESKillTree
             }
         }
 
+        private void child_KeyDown(object sender, KeyEventArgs k)
+        {
+            var i = 1;
+            if (child != null)
+            {
+                var st = GetScaleTransform(child);
+                var tt = GetTranslateTransform(child);
+
+                double zoom = 0;
+
+                if (k.Key == Key.Add)
+                    zoom = .3;
+                else if (k.Key == Key.Subtract)
+                    zoom = -.3;
+                else
+                    zoom = 0;
+
+                if ((st.ScaleX < 0.4 || st.ScaleY < 0.4))
+                    return;
+
+                Point relative = origin;
+                
+                double abosuluteX;
+                double abosuluteY;
+
+                abosuluteX = relative.X * st.ScaleX + tt.X;
+                abosuluteY = relative.Y * st.ScaleY + tt.Y;
+
+                st.ScaleX += zoom * st.ScaleX;
+                st.ScaleY += zoom * st.ScaleY;
+
+                tt.X = abosuluteX - relative.X * st.ScaleX;
+                tt.Y = abosuluteY - relative.Y * st.ScaleY;
+            }
+        }
 
         public static readonly RoutedEvent ClickEvent;
-
 
 
         static ZoomBorder()
         {
 
             ClickEvent = ButtonBase.ClickEvent.AddOwner(typeof(ZoomBorder));
-
         }
 
 
