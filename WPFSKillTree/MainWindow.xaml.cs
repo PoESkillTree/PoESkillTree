@@ -327,20 +327,16 @@ namespace POESKillTree
                 else if (tbSkillURL.Text.Contains("poebuilder.com/"))
                 {
                     string poebuilderTree = "https://poebuilder.com/character/";
+                    string poebuilderTreeWWW = "https://www.poebuilder.com/character/";
+                    string poebuilderTreeOWWW = "http://www.poebuilder.com/character/";
                     string poebuilderTreeO = "http://poebuilder.com/character/";
                     string urlString = tbSkillURL.Text;
-                    if (urlString.StartsWith("https"))
-                    {
                         urlString = urlString.Replace(poebuilderTree, TreeAddress);
-                        tbSkillURL.Text = urlString;
-                        Tree.LoadFromURL(urlString);
-                    }
-                    else
-                    {
                         urlString = urlString.Replace(poebuilderTreeO, TreeAddress);
+                        urlString = urlString.Replace(poebuilderTreeWWW, TreeAddress);
+                        urlString = urlString.Replace(poebuilderTreeOWWW, TreeAddress);
                         tbSkillURL.Text = urlString;
                         Tree.LoadFromURL(urlString);
-                    }
                 }
                 else
                     Tree.LoadFromURL(tbSkillURL.Text);
@@ -751,6 +747,7 @@ namespace POESKillTree
             // whenever we lose focus.
             sToolTip.IsOpen = false;
         }
+
     }
 
     class PoEBuild

@@ -241,6 +241,9 @@ namespace POESKillTree
                                                   NodeSurroundBrush[2].Key.Width * 2,
                                                   NodeSurroundBrush[2].Key.Height * 2));
                     }
+                    else if (Skillnodes[skillNode].m)
+                    {
+                    }
                     else
                         dc.DrawRectangle(NodeSurroundBrush[0].Value, null,
                                         new Rect((int)pos.X - NodeSurroundBrush[0].Key.Width,
