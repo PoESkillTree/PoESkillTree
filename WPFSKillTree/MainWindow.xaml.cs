@@ -767,7 +767,57 @@ namespace POESKillTree
             sToolTip.IsOpen = false;
         }
 
+        private void btnTinyUrl_Click(object sender, RoutedEventArgs e)
+        {
+            string tinyurl = ToTinyURLS(tbSkillURL.Text);
+            System.Windows.Forms.Clipboard.SetDataObject(tinyurl, true);
+            MessageBox.Show("The URL below has been copied to you clipboard: \n" + tinyurl, "Tinyurl Link", MessageBoxButton.OK);
+        }
+
+        protected string ToTinyURLS(string txt)
+        {
+            Regex regx = new Regex("http://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*)?", RegexOptions.IgnoreCase);
+
+            MatchCollection mactches = regx.Matches(txt);
+
+            foreach (Match match in mactches)
+            {
+                string tURL = MakeTinyUrl(match.Value);
+                txt = txt.Replace(match.Value, tURL);
+            }
+
+            return txt;
+        }
+
+        public static string MakeTinyUrl(string Url)
+        {
+            try
+            {
+                if (Url.Length <= 12)
+                {
+                    return Url;
+                }
+                if (!Url.ToLower().StartsWith("http") && !Url.ToLower().StartsWith("ftp"))
+                {
+                    Url = "http://" + Url;
+                }
+                var request = WebRequest.Create("http://tinyurl.com/api-create.php?url=" + Url);
+                var res = request.GetResponse();
+                string text;
+                using (var reader = new StreamReader(res.GetResponseStream()))
+                {
+                    text = reader.ReadToEnd();
+                }
+                return text;
+            }
+            catch (Exception)
+            {
+                return Url;
+            }
+        }
+
     }
+
 
     class PoEBuild
     {

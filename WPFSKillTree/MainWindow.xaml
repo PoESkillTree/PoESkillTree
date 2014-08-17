@@ -48,7 +48,7 @@
         </POESKillTree:ZoomBorder>
         <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
 
-        <TextBox Height="23" Margin="415,0,85,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" />
+        <TextBox Height="23" Margin="415,0,166,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" />
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="40,8,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="76" SelectionChanged="comboBox1_SelectionChanged">
             <ComboBoxItem Content="Scion" />
             <ComboBoxItem Content="Marauder" />
@@ -61,7 +61,7 @@
         <Label Content="Class:" Height="28" HorizontalAlignment="Left" Margin="2,6,0,0" x:Name="lblClass" VerticalAlignment="Top" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="39,440,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" Grid.Column="1" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="39,468,0,0" x:Name="textBox2" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" Grid.Column="1" />
-        <Button Content="Load build" Height="23" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" Width="75" Click="button2_Click" Margin="0,0,4,2" Grid.Column="3" />
+        <Button Content="Load build" Height="23" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" Width="75" Click="button2_Click" Margin="0,0,85,2" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="195,8,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" Width="34" IsReadOnly="True" />
         <Button Content="Download / Import Items" Height="23" HorizontalAlignment="Left" Margin="114,0,0,29" x:Name="btnLoadItems" VerticalAlignment="Bottom" Width="158" Click="button1_Click_1" />
         <Label Content="Search:" Height="28" HorizontalAlignment="Left" Margin="6,0,0,-1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" />
@@ -132,5 +132,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <Button Content="Tinyurl it!" Height="23" HorizontalAlignment="Right" x:Name="btnTinyUrl" VerticalAlignment="Bottom" Width="75" Click="btnTinyUrl_Click" Margin="0,0,5,2" />
     </Grid>
 </Window>
