@@ -338,6 +338,25 @@ namespace POESKillTree
                         tbSkillURL.Text = urlString;
                         Tree.LoadFromURL(urlString);
                 }
+                else if (tbSkillURL.Text.Contains("tinyurl.com/"))
+                {
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(tbSkillURL.Text);
+                    request.AllowAutoRedirect = false;
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    string redirUrl = response.Headers["Location"];
+                    tbSkillURL.Text = redirUrl;
+                    button2_Click(sender, e);
+                }
+                else if (tbSkillURL.Text.Contains("poeurl.com/"))
+                {
+                    tbSkillURL.Text = tbSkillURL.Text.Replace("http://poeurl.com/", "http://poeurl.com/redirect.php?url=");
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(tbSkillURL.Text);
+                    request.AllowAutoRedirect = false;
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    string redirUrl = response.Headers["Location"];
+                    tbSkillURL.Text = redirUrl;
+                    button2_Click(sender, e);
+                }
                 else
                     Tree.LoadFromURL(tbSkillURL.Text);
 
