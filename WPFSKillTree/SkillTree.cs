@@ -233,7 +233,6 @@ namespace POESKillTree
                     Skillnodes[ node ].NodeGroup = group;
                 }
             }
-
             TRect = new Rect2D( new Vector2D( inTree.min_x * 1.1 , inTree.min_y * 1.1 ) ,
                                new Vector2D(inTree.max_x * 1.1, inTree.max_y * 1.1));
 
