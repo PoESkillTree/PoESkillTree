@@ -343,7 +343,7 @@ namespace POESKillTree
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(tbSkillURL.Text);
                     request.AllowAutoRedirect = false;
                     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                    string redirUrl = response.Headers["Location"];
+                    string redirUrl = response.Headers["Location"]; 
                     tbSkillURL.Text = redirUrl;
                     button2_Click(sender, e);
                 }
