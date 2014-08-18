@@ -43,9 +43,11 @@
                 </StackPanel>
             </Border>
         </Popup>
-        <POESKillTree:ZoomBorder IsManipulationEnabled="True" BorderBrush="Silver" BorderThickness="1" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Margin="415,12,4,29" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" Grid.Column="3" MouseLeave="border1_MouseLeave">
-            <Rectangle Height="559" IsManipulationEnabled="True" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="13,17,7,17"/>
-        </POESKillTree:ZoomBorder>
+        <Border BorderBrush="Silver" BorderThickness="1" Margin="415,12,4,29">
+            <POESKillTree:ZoomBorder IsManipulationEnabled="True" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" Grid.Column="3" MouseLeave="border1_MouseLeave">
+                <Rectangle Height="559" IsManipulationEnabled="True" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="13,17,7,17"/>
+            </POESKillTree:ZoomBorder>
+        </Border>
         <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
 
         <TextBox Height="23" Margin="415,0,166,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" />
@@ -76,7 +78,7 @@
         <Button x:Name="hideShit" Content="-" Click="hideShit_Click" Margin="315,8,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="38"/>
         <Label Content="Used" Height="28" HorizontalAlignment="Left" Margin="161,6,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
         <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="225,6,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
-        <Expander x:Name="Expander1" Header="Builds" HorizontalAlignment="Left" Margin="381,8,0,8" IsHitTestVisible="True" ExpandDirection="Right">
+        <Expander x:Name="Expander1" Header="Builds" HorizontalAlignment="Left" Margin="380,10,0,25" IsHitTestVisible="True" ExpandDirection="Right">
             <Grid x:Name="gridBuildManager" Background="#FFE5E5E5" HorizontalAlignment="Left">
                 <ListView x:Name="lvSavedBuilds" Margin="4,26,4,29" HorizontalAlignment="Left" Width="232" ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True">
                     <ListView.View>
