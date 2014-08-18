@@ -866,6 +866,14 @@ namespace POESKillTree
                 lvSavedBuilds.SelectedItem = lvSavedBuilds.Items[selectedIndex - 1];
                 lvSavedBuilds.SelectedIndex = selectedIndex - 1;
                 lvSavedBuilds.Items.Refresh();
+
+                StringBuilder rawBuilds = new StringBuilder();
+                foreach (ListViewItem lvi in lvSavedBuilds.Items)
+                {
+                    PoEBuild build = (PoEBuild)lvi.Content;
+                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
+                }
+                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
             }
 
             else if (e.Key == Key.Down && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && lvSavedBuilds.SelectedIndex < lvSavedBuilds.Items.Count - 1)
@@ -877,6 +885,14 @@ namespace POESKillTree
                 lvSavedBuilds.SelectedItem = lvSavedBuilds.Items[selectedIndex + 1];
                 lvSavedBuilds.SelectedIndex = selectedIndex + 1;
                 lvSavedBuilds.Items.Refresh();
+
+                StringBuilder rawBuilds = new StringBuilder();
+                foreach (ListViewItem lvi in lvSavedBuilds.Items)
+                {
+                    PoEBuild build = (PoEBuild)lvi.Content;
+                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
+                }
+                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
             }
         }
     }
