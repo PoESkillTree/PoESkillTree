@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:WPFSKillTree="clr-namespace:WPFSKillTree"
         xmlns:POESKillTree="clr-namespace:POESKillTree" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="POESKillTree.MainWindow"
-        Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" Closing="Window_Closing" Icon="/POESKillTree;component/naja.ico" Loaded="Window_Loaded">
+        Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" Closing="Window_Closing" Icon="/POESKillTree;component/naja.ico" Loaded="Window_Loaded"
+        PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <Style x:Key="ContainerStyle" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
@@ -15,7 +16,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
     </Window.Resources>
     <Grid Margin="0,3,0,1" Background="#FFD8D8D8" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
@@ -132,6 +132,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button Content="Tinyurl it!" Height="23" HorizontalAlignment="Right" x:Name="btnTinyUrl" VerticalAlignment="Bottom" Width="75" Click="btnTinyUrl_Click" Margin="0,0,5,2" />
+        <Button Content="Poeurl it!" Height="23" HorizontalAlignment="Right" x:Name="btnPoeUrl" VerticalAlignment="Bottom" Width="75" Click="btnPoeUrl_Click" Margin="0,0,5,2" />
     </Grid>
 </Window>

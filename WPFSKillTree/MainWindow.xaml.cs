@@ -27,7 +27,45 @@ namespace POESKillTree
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                switch (e.Key)
+                {
+                    case Key.Q:
+                        hideShit_Click(sender, e);
+                        break;
+                    case Key.R:
+                        button4_Click(sender, e);
+                        break;
+                    case Key.E:
+                        btnPoeUrl_Click(sender, e);
+                        break;
+                    case Key.D1:
+                        cbCharType.SelectedIndex = 0;
+                        break;
+                    case Key.D2:
+                        cbCharType.SelectedIndex = 1;
+                        break;
+                    case Key.D3:
+                        cbCharType.SelectedIndex = 2;
+                        break;
+                    case Key.D4:
+                        cbCharType.SelectedIndex = 3;
+                        break;
+                    case Key.D5:
+                        cbCharType.SelectedIndex = 4;
+                        break;
+                    case Key.D6:
+                        cbCharType.SelectedIndex = 5;
+                        break;
+                    case Key.D7:
+                        cbCharType.SelectedIndex = 6;
+                        break;
+                }
+            }
+        }
         private void hideShit_Click(object sender, RoutedEventArgs e)
         {
             if (tabControl1.Visibility == Visibility.Hidden)
@@ -767,14 +805,14 @@ namespace POESKillTree
             sToolTip.IsOpen = false;
         }
 
-        private void btnTinyUrl_Click(object sender, RoutedEventArgs e)
+        private void btnPoeUrl_Click(object sender, RoutedEventArgs e)
         {
-            string tinyurl = ToTinyURLS(tbSkillURL.Text);
-            System.Windows.Forms.Clipboard.SetDataObject(tinyurl, true);
-            MessageBox.Show("The URL below has been copied to you clipboard: \n" + tinyurl, "Tinyurl Link", MessageBoxButton.OK);
+            string poeurl = "http://poeurl.com/" + ToPoeURLS(tbSkillURL.Text);
+            System.Windows.Forms.Clipboard.SetDataObject(poeurl, true);
+            MessageBox.Show("The URL below has been copied to you clipboard: \n" + poeurl, "poeurl Link", MessageBoxButton.OK);
         }
 
-        protected string ToTinyURLS(string txt)
+        protected string ToPoeURLS(string txt)
         {
             Regex regx = new Regex("http://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*)?", RegexOptions.IgnoreCase);
 
@@ -782,14 +820,14 @@ namespace POESKillTree
 
             foreach (Match match in mactches)
             {
-                string tURL = MakeTinyUrl(match.Value);
-                txt = txt.Replace(match.Value, tURL);
+                string pURL = MakePoeUrl(match.Value);
+                txt = txt.Replace(match.Value, pURL);
             }
 
             return txt;
         }
 
-        public static string MakeTinyUrl(string Url)
+        public static string MakePoeUrl(string Url)
         {
             try
             {
@@ -801,7 +839,7 @@ namespace POESKillTree
                 {
                     Url = "http://" + Url;
                 }
-                var request = WebRequest.Create("http://tinyurl.com/api-create.php?url=" + Url);
+                var request = WebRequest.Create("http://poeurl.com/shrink.php?url=" + Url);
                 var res = request.GetResponse();
                 string text;
                 using (var reader = new StreamReader(res.GetResponseStream()))
@@ -815,7 +853,6 @@ namespace POESKillTree
                 return Url;
             }
         }
-
     }
 
 
