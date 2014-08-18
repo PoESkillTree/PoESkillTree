@@ -73,7 +73,33 @@ namespace POESKillTree
                 child.MouseMove += child_MouseMove;
                 child.KeyUp += child_KeyDown;
                 child.PreviewMouseRightButtonDown += new MouseButtonEventHandler(child_PreviewMouseRightButtonDown);
+                child.ManipulationStarting += child_ManipulationStarting;
+                child.ManipulationDelta += child_ManipulationDelta;
             }
+        }
+        void child_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        {
+            if (child != null)
+            {
+                var tt = GetTranslateTransform(child);
+                Matrix imageMatrix = ((MatrixTransform)child.RenderTransform).Matrix;
+                var maxScale = System.Math.Max(e.DeltaManipulation.Scale.X, e.DeltaManipulation.Scale.Y);
+                if ((maxScale < 1 && imageMatrix.M11 * maxScale > -.4) || (maxScale > 1))
+                {
+                    imageMatrix.ScaleAt(e.DeltaManipulation.Scale.X,
+                                        e.DeltaManipulation.Scale.Y,
+                                        tt.X / 2,
+                                        tt.Y / 2);
+                    child.RenderTransform = new MatrixTransform(imageMatrix);
+                }
+
+            }
+        }
+
+        void child_ManipulationStarting(object sender, ManipulationStartingEventArgs e)
+        {
+            e.ManipulationContainer = this;
+            e.Handled = true;
         }
 
         public void Reset()

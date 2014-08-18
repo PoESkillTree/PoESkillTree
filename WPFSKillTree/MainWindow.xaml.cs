@@ -853,8 +853,33 @@ namespace POESKillTree
                 return Url;
             }
         }
-    }
 
+
+        private void lvSavedBuilds_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Up && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && lvSavedBuilds.SelectedIndex > 0)
+            {
+                object obj = lvSavedBuilds.Items[lvSavedBuilds.SelectedIndex];
+                int selectedIndex = lvSavedBuilds.SelectedIndex;
+                lvSavedBuilds.Items.RemoveAt(selectedIndex);
+                lvSavedBuilds.Items.Insert(selectedIndex - 1, obj);
+                lvSavedBuilds.SelectedItem = lvSavedBuilds.Items[selectedIndex - 1];
+                lvSavedBuilds.SelectedIndex = selectedIndex - 1;
+                lvSavedBuilds.Items.Refresh();
+            }
+
+            else if (e.Key == Key.Down && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && lvSavedBuilds.SelectedIndex < lvSavedBuilds.Items.Count - 1)
+            {
+                object obj = lvSavedBuilds.Items[lvSavedBuilds.SelectedIndex];
+                int selectedIndex = lvSavedBuilds.SelectedIndex;
+                lvSavedBuilds.Items.RemoveAt(selectedIndex);
+                lvSavedBuilds.Items.Insert(selectedIndex + 1, obj);
+                lvSavedBuilds.SelectedItem = lvSavedBuilds.Items[selectedIndex + 1];
+                lvSavedBuilds.SelectedIndex = selectedIndex + 1;
+                lvSavedBuilds.Items.Refresh();
+            }
+        }
+    }
 
     class PoEBuild
     {
