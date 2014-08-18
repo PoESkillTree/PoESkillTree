@@ -12,11 +12,13 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Microsoft.Win32;
+using VerticalAlignment = System.Windows.VerticalAlignment;
 
 namespace POESKillTree
 {
@@ -699,7 +701,7 @@ namespace POESKillTree
                 margin.Right = 4;
                 margin.Top = 12;
                 margin.Bottom = 29;
-                border1.Margin = margin;
+                OuterBorder1.Margin = margin;
 
                 hideShit.Content = "-";
                 tabControl1.Visibility = Visibility.Visible;
@@ -708,6 +710,20 @@ namespace POESKillTree
                 btnLoadItems.Visibility = Visibility.Visible;
                 btnSkillHighlighted.Visibility = Visibility.Visible;
                 Expander1.ExpandDirection = ExpandDirection.Right;
+
+                var expanderMargin = Expander1.Margin;
+                expanderMargin.Left = 380;
+                expanderMargin.Top = expanderMargin.Top + 2;
+                Expander1.Margin = expanderMargin;
+
+                var gridBuilderManagerMargin = gridBuildManager.Margin;
+                gridBuilderManagerMargin.Top = gridBuilderManagerMargin.Top - 10;
+                gridBuildManager.Margin = gridBuilderManagerMargin;
+
+                var btnGridMargin = BtnGrid.Margin;
+                btnGridMargin.Left = btnGridMargin.Left - 70;
+                btnGridMargin.Right = btnGridMargin.Right + 70;
+                BtnGrid.Margin = btnGridMargin;
             }
             else
             {
@@ -716,7 +732,7 @@ namespace POESKillTree
                 margin.Right = 4;
                 margin.Top = 40;
                 margin.Bottom = 29;
-                border1.Margin = margin;
+                OuterBorder1.Margin = margin;
 
                 hideShit.Content = "+";
                 textBox1.Visibility = Visibility.Hidden;
@@ -727,6 +743,20 @@ namespace POESKillTree
                 btnLoadItems.Visibility = Visibility.Hidden;
                 btnSkillHighlighted.Visibility = Visibility.Hidden;
                 Expander1.ExpandDirection = ExpandDirection.Down;
+
+                var expanderMargin = Expander1.Margin;
+                expanderMargin.Left = 4;
+                expanderMargin.Top = expanderMargin.Top - 2;
+                Expander1.Margin = expanderMargin;
+
+                var gridBuilderManagerMargin = gridBuildManager.Margin;
+                gridBuilderManagerMargin.Top = gridBuilderManagerMargin.Top + 10;
+                gridBuildManager.Margin = gridBuilderManagerMargin;
+
+                var btnGridMargin = BtnGrid.Margin;
+                btnGridMargin.Left = btnGridMargin.Left + 70;
+                btnGridMargin.Right = btnGridMargin.Right - 70;
+                BtnGrid.Margin = btnGridMargin;
             }
         }
 
