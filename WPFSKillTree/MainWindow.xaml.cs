@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -259,7 +260,7 @@ namespace POESKillTree
                         savedBuilds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
                             b.Split(';')[1]));
                     }
-
+                    //flyout_builds.IsOpen = true; //For some reason no text will show if the flyout is hiden here
                     lvSavedBuilds.Items.Clear();
                     foreach (PoEBuild build in savedBuilds)
                     {
@@ -270,6 +271,7 @@ namespace POESKillTree
                         lvi.MouseDoubleClick += lvi_MouseDoubleClick;
                         lvSavedBuilds.Items.Add(lvi);
                     }
+                    //flyout_builds.IsOpen = false;
                 }
             }
             catch (Exception ex)
@@ -732,12 +734,12 @@ namespace POESKillTree
                 btnScreenShot.Visibility = Visibility.Visible;
                 btnLoadItems.Visibility = Visibility.Visible;
                 btnSkillHighlighted.Visibility = Visibility.Visible;
-                Expander1.ExpandDirection = ExpandDirection.Right;
+                leftBackground.Visibility = Visibility.Visible;
 
-                var expanderMargin = Expander1.Margin;
-                expanderMargin.Left = 415;
-                expanderMargin.Top = expanderMargin.Top - 28;
-                Expander1.Margin = expanderMargin;
+                var expanderMargin = flyout_builds.Margin;
+                expanderMargin.Top = expanderMargin.Top - 14;
+                expanderMargin.Left = 210;
+                flyout_builds.Margin = expanderMargin;
             }
             else
             {
@@ -756,13 +758,18 @@ namespace POESKillTree
                 btnScreenShot.Visibility = Visibility.Hidden;
                 btnLoadItems.Visibility = Visibility.Hidden;
                 btnSkillHighlighted.Visibility = Visibility.Hidden;
-                //Expander1.ExpandDirection = ExpandDirection.Down;
+                leftBackground.Visibility = Visibility.Hidden;
 
-                var expanderMargin = Expander1.Margin;
-                expanderMargin.Left = 4;
-                expanderMargin.Top = expanderMargin.Top + 28;
-                Expander1.Margin = expanderMargin;
+                var expanderMargin = flyout_builds.Margin;
+                expanderMargin.Top = expanderMargin.Top + 14;
+                expanderMargin.Left = 0;
+                flyout_builds.Margin = expanderMargin;
             }
+        }
+
+        private void toggle_builds(object sender, RoutedEventArgs e)
+        {
+            flyout_builds.IsOpen = !flyout_builds.IsOpen;
         }
 
         private void image1_LostFocus(object sender, MouseEventArgs e)
