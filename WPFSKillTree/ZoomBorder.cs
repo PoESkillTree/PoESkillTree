@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -98,18 +99,52 @@ namespace POESKillTree
             if (child != null)
             {
                 var st = GetScaleTransform(child);
-                var tt = GetTranslateTransform(child);
 
-                double zoom = e.Delta > 0 ? .3 : -.3;
+                var zoom = e.Delta > 0 ? .3 : -.3;
                 if (!(e.Delta > 0) && (st.ScaleX < 0.4 || st.ScaleY < 0.4))
                     return;
 
-                Point relative = e.GetPosition(child);
-                double abosuluteX;
-                double abosuluteY;
+                if (zoom > 0)
+                    ZoomIn(e);
+                else
+                    ZoomOut(e);
+            }
+        }
 
-                abosuluteX = relative.X * st.ScaleX + tt.X;
-                abosuluteY = relative.Y * st.ScaleY + tt.Y;
+        private void child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (child != null)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    ZoomOut(e);
+                }
+
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    ZoomIn(e);
+                }
+
+                var tt = GetTranslateTransform(child);
+                start = e.GetPosition(this);
+                origin = new Point(tt.X, tt.Y);
+                Cursor = Cursors.Hand;
+                child.CaptureMouse();
+            }
+        }
+
+        private void ZoomIn(dynamic e)
+        {
+            if (child != null)
+            {
+                var tt = GetTranslateTransform(child);
+                var st = GetScaleTransform(child);
+
+                const double zoom = .3;
+                Point relative = e.GetPosition(child);
+
+                var abosuluteX = relative.X * st.ScaleX + tt.X;
+                var abosuluteY = relative.Y * st.ScaleY + tt.Y;
 
                 st.ScaleX += zoom * st.ScaleX;
                 st.ScaleY += zoom * st.ScaleY;
@@ -119,66 +154,27 @@ namespace POESKillTree
             }
         }
 
-        private void child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ZoomOut(dynamic e)
         {
             if (child != null)
             {
                 var tt = GetTranslateTransform(child);
+                var st = GetScaleTransform(child);
 
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                {
-                    if (child != null)
-                    {
-                        var st = GetScaleTransform(child);
+                if ((st.ScaleX < 0.4 || st.ScaleY < 0.4))
+                    return;
 
-                        double zoom = -.3;
+                const double zoom = -.3;
+                Point relative = e.GetPosition(child);
 
-                        if ((st.ScaleX < 0.4 || st.ScaleY < 0.4))
-                            return;
+                var abosuluteX = relative.X * st.ScaleX + tt.X;
+                var abosuluteY = relative.Y * st.ScaleY + tt.Y;
 
-                        Point relative = e.GetPosition(child);
-                        double abosuluteX;
-                        double abosuluteY;
+                st.ScaleX += zoom * st.ScaleX;
+                st.ScaleY += zoom * st.ScaleY;
 
-                        abosuluteX = relative.X * st.ScaleX + tt.X;
-                        abosuluteY = relative.Y * st.ScaleY + tt.Y;
-
-                        st.ScaleX += zoom * st.ScaleX;
-                        st.ScaleY += zoom * st.ScaleY;
-
-                        tt.X = abosuluteX - relative.X * st.ScaleX;
-                        tt.Y = abosuluteY - relative.Y * st.ScaleY;
-                    }
-                }
-
-                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-                {
-                    if (child != null)
-                    {
-                        var st = GetScaleTransform(child);
-
-                        double zoom = .3;
-
-                        Point relative = e.GetPosition(child);
-                        double abosuluteX;
-                        double abosuluteY;
-
-                        abosuluteX = relative.X * st.ScaleX + tt.X;
-                        abosuluteY = relative.Y * st.ScaleY + tt.Y;
-
-                        st.ScaleX += zoom * st.ScaleX;
-                        st.ScaleY += zoom * st.ScaleY;
-
-                        tt.X = abosuluteX - relative.X * st.ScaleX;
-                        tt.Y = abosuluteY - relative.Y * st.ScaleY;
-                    }
-                }
-
-
-                start = e.GetPosition(this);
-                origin = new Point(tt.X, tt.Y);
-                this.Cursor = Cursors.Hand;
-                child.CaptureMouse();
+                tt.X = abosuluteX - relative.X * st.ScaleX;
+                tt.Y = abosuluteY - relative.Y * st.ScaleY;
             }
         }
 

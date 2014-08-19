@@ -12,20 +12,19 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using MahApps.Metro.Controls;
 using Microsoft.Win32;
-using VerticalAlignment = System.Windows.VerticalAlignment;
 
 namespace POESKillTree
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private static readonly Action emptyDelegate = delegate { };
         private readonly List<string> allAttributesList = new List<string>();
@@ -327,6 +326,11 @@ namespace POESKillTree
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+        }
+
+        private void menu_exit(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private void border1_Click(object sender, RoutedEventArgs e)
@@ -731,18 +735,9 @@ namespace POESKillTree
                 Expander1.ExpandDirection = ExpandDirection.Right;
 
                 var expanderMargin = Expander1.Margin;
-                expanderMargin.Left = 380;
-                expanderMargin.Top = expanderMargin.Top + 2;
+                expanderMargin.Left = 415;
+                expanderMargin.Top = expanderMargin.Top - 28;
                 Expander1.Margin = expanderMargin;
-
-                var gridBuilderManagerMargin = gridBuildManager.Margin;
-                gridBuilderManagerMargin.Top = gridBuilderManagerMargin.Top - 10;
-                gridBuildManager.Margin = gridBuilderManagerMargin;
-
-                var btnGridMargin = BtnGrid.Margin;
-                btnGridMargin.Left = btnGridMargin.Left - 70;
-                btnGridMargin.Right = btnGridMargin.Right + 70;
-                BtnGrid.Margin = btnGridMargin;
             }
             else
             {
@@ -761,21 +756,12 @@ namespace POESKillTree
                 btnScreenShot.Visibility = Visibility.Hidden;
                 btnLoadItems.Visibility = Visibility.Hidden;
                 btnSkillHighlighted.Visibility = Visibility.Hidden;
-                Expander1.ExpandDirection = ExpandDirection.Down;
+                //Expander1.ExpandDirection = ExpandDirection.Down;
 
                 var expanderMargin = Expander1.Margin;
                 expanderMargin.Left = 4;
-                expanderMargin.Top = expanderMargin.Top - 2;
+                expanderMargin.Top = expanderMargin.Top + 28;
                 Expander1.Margin = expanderMargin;
-
-                var gridBuilderManagerMargin = gridBuildManager.Margin;
-                gridBuilderManagerMargin.Top = gridBuilderManagerMargin.Top + 10;
-                gridBuildManager.Margin = gridBuilderManagerMargin;
-
-                var btnGridMargin = BtnGrid.Margin;
-                btnGridMargin.Left = btnGridMargin.Left + 70;
-                btnGridMargin.Right = btnGridMargin.Right - 70;
-                BtnGrid.Margin = btnGridMargin;
             }
         }
 

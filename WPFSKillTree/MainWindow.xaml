@@ -1,9 +1,12 @@
-﻿<Window
+﻿<controls:MetroWindow
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:WPFSKillTree="clr-namespace:WPFSKillTree"
-        xmlns:POESKillTree="clr-namespace:POESKillTree" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="POESKillTree.MainWindow"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:POESKillTree="clr-namespace:POESKillTree" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="POESKillTree.MainWindow"
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" Closing="Window_Closing" Icon="/POESKillTree;component/naja.ico" Loaded="Window_Loaded"
-        PreviewKeyDown="Window_PreviewKeyDown" Background="#FFD8D8D8">
+        PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <Style x:Key="ContainerStyle" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
@@ -16,19 +19,22 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
+            <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="15"></Setter>
+        </Style>
     </Window.Resources>
-    <Grid Margin="0,0,0,4" Background="#FFD8D8D8" HorizontalAlignment="Stretch">
+    <Grid Margin="0,0,0,4" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*"/>
             <ColumnDefinition Width="0.75*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="24"/>
+            <RowDefinition Height="34"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Popup x:Name="popup1" Height="Auto" Placement="Center" PlacementTarget="{Binding ElementName=txtSynToListBox}" Margin="77,150,324,150" Grid.Column="2" Grid.ColumnSpan="2">
             <Border >
-                <StackPanel Background="Beige">
+                <StackPanel>
                     <TextBlock Text="No Item Data Found" FontWeight="Bold" HorizontalAlignment="Center"/>
                     <TextBlock Text="Please enter Your Character Name Below and click on Download. " HorizontalAlignment="Center"/>
                     <TextBlock Text="This Will open your default Web-browser and download the Item data.  " HorizontalAlignment="Center"/>
@@ -47,16 +53,19 @@
                 </StackPanel>
             </Border>
         </Popup>
-        <Menu IsMainMenu="True" x:Name="menu1" BorderBrush="Black" BorderThickness="0,0,0,1" Grid.ColumnSpan="2" Margin="0,0,0,2">
-            <MenuItem Header="_File " />
+        <Menu IsMainMenu="True" x:Name="menu1" Grid.ColumnSpan="2" Margin="0,0,0,2">
+            <MenuItem Header="_File ">
+                <MenuItem Header="_Exit" Click="menu_exit"/>
+            </MenuItem>
             <MenuItem Header="_Edit " />
-            <MenuItem Header="_View " />
+            <MenuItem Header="_View ">
+            </MenuItem>
             <MenuItem Header="_Help " />
         </Menu>
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
-            <Border BorderBrush="Silver" BorderThickness="1" x:Name="OuterBorder1" Margin="415,12,4,29">
-                <POESKillTree:ZoomBorder IsManipulationEnabled="True" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" Grid.Column="3" MouseLeave="border1_MouseLeave">
-                    <Rectangle Height="559" IsManipulationEnabled="True" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="13,17,7,17"/>
+            <Border BorderThickness="1" x:Name="OuterBorder1" Margin="415,12,4,29">
+                <POESKillTree:ZoomBorder IsManipulationEnabled="True" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" Grid.Column="3" MouseLeave="border1_MouseLeave" Margin="44,0,0,0">
+                    <Rectangle Height="500" IsManipulationEnabled="True" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="13,17,7,17"/>
                 </POESKillTree:ZoomBorder>
             </Border>
             <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
@@ -66,15 +75,15 @@
             <TextBox Height="23" HorizontalAlignment="Left" Margin="39,440,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" Grid.Column="1" />
             <TextBox Height="23" HorizontalAlignment="Left" Margin="39,468,0,0" x:Name="textBox2" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" Grid.Column="1" />
             <Button Content="Load build" Height="23" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" Width="75" Click="button2_Click" Margin="0,0,85,2" />
-            <Button Content="Download / Import Items" Height="23" HorizontalAlignment="Left" Margin="114,0,0,29" x:Name="btnLoadItems" VerticalAlignment="Bottom" Width="158" Click="button1_Click_1" />
+            <Button Content="Download / Import Items" Height="23" HorizontalAlignment="Left" Margin="114,0,0,29" x:Name="btnLoadItems" VerticalAlignment="Bottom" Width="158" Click="button1_Click_1" FontSize="9.5" />
             <Label Content="Search:" Height="28" HorizontalAlignment="Left" Margin="6,0,0,-1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" />
             <TextBox Height="23" HorizontalAlignment="Left" Margin="60,0,0,1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" Grid.ColumnSpan="4" />
-            <Button Content="Skill highlighted nodes" Height="23" HorizontalAlignment="Left" Margin="277,0,0,29" x:Name="btnSkillHighlighted" VerticalAlignment="Bottom" Width="135" Click="button3_Click" RenderTransformOrigin="0.44,2.652" />
-            <CheckBox Content="RegEx" Height="16" HorizontalAlignment="Left" Margin="352,0,0,4" x:Name="checkBox1" VerticalAlignment="Bottom" />
-            <Button Content="Screenshot" Height="23" HorizontalAlignment="Left" Margin="5,0,0,29" x:Name="btnScreenShot" VerticalAlignment="Bottom" Width="104" Click="btnScreenShot_Click" />
+            <Button Content="Skill highlighted nodes" Height="23" HorizontalAlignment="Left" Margin="277,0,0,29" x:Name="btnSkillHighlighted" VerticalAlignment="Bottom" Width="135" Click="button3_Click" RenderTransformOrigin="0.44,2.652" FontSize="9.5" />
+            <CheckBox Content="RegEx" Height="25" HorizontalAlignment="Left" Margin="352,0,0,2" x:Name="checkBox1" VerticalAlignment="Bottom" />
+            <Button Content="Screenshot" Height="23" HorizontalAlignment="Left" Margin="5,0,0,29" x:Name="btnScreenShot" VerticalAlignment="Bottom" Width="104" Click="btnScreenShot_Click" FontSize="9.5" />
 
-            <Button Content="Copy Passive Attributes to Clipboard" Height="23" HorizontalAlignment="Left" Margin="6,0,0,56" x:Name="btnCopyStats" VerticalAlignment="Bottom" Width="208" Click="btnCopyStats_Click" Grid.ColumnSpan="3" />
-            <Grid x:Name="BtnGrid" Margin="2,6,817,566">
+            <Button Content="Copy Passive Attributes to Clipboard" Height="23" HorizontalAlignment="Left" Margin="6,0,0,56" x:Name="btnCopyStats" VerticalAlignment="Bottom" Width="208" Click="btnCopyStats_Click" Grid.ColumnSpan="3" FontSize="9.5"/>
+            <Grid x:Name="BtnGrid" Margin="2,6,817,557">
                 <ComboBox Height="23" HorizontalAlignment="Left" Margin="38,2,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="76" SelectionChanged="comboBox1_SelectionChanged">
                     <ComboBoxItem Content="Scion" />
                     <ComboBoxItem Content="Marauder" />
@@ -92,8 +101,15 @@
                 <Label Content="Used" Height="28" HorizontalAlignment="Left" Margin="159,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
                 <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="223,0,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
             </Grid>
-            <Expander x:Name="Expander1" Header="Builds" HorizontalAlignment="Left" Margin="380,10,0,25" IsHitTestVisible="True" ExpandDirection="Right">
-                <Grid x:Name="gridBuildManager" Background="#FFE5E5E5" HorizontalAlignment="Left">
+            <Expander x:Name="Expander1" HorizontalAlignment="Left" Margin="415,12,0,29" IsHitTestVisible="True" ExpandDirection="Right">
+                <Expander.Header>
+                    <TextBlock Text="Builds" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <RotateTransform Angle="90" />
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Expander.Header>
+                <Grid x:Name="gridBuildManager" HorizontalAlignment="Left" Background="#FF252525" Margin="-5">
                     <ListView x:Name="lvSavedBuilds" Margin="4,26,4,29" HorizontalAlignment="Left" Width="232" ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True">
                         <ListView.View>
                             <GridView>
@@ -112,10 +128,10 @@
                     <Button x:Name="btnDelete" Content="Delete" Margin="88,0,91.273,3" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Left" Width="60"/>
                 </Grid>
             </Expander>
-            <TabControl Margin="6,49,0,85" x:Name="tabControl1" HorizontalAlignment="Left" Width="407" Grid.ColumnSpan="4">
+            <TabControl Margin="6,49,0,86" x:Name="tabControl1" HorizontalAlignment="Left" Width="407" Grid.ColumnSpan="4">
                 <TabItem Header="Passive Attributes" x:Name="tabItem1">
                     <Grid>
-                        <ListBox Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}" Background="#FFD8D8D8">
+                        <ListBox Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}">
                             <ListBox.GroupStyle>
                                 <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
                             </ListBox.GroupStyle>
@@ -124,7 +140,7 @@
                 </TabItem>
                 <TabItem Header="Item Attributes" Margin="0">
                     <Grid>
-                        <ListBox Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" Background="#FFD8D8D8">
+                        <ListBox Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
@@ -140,7 +156,7 @@
                 </TabItem>
                 <TabItem Header="Total Attributes">
                     <Grid>
-                        <ListBox Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbAllAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" Background="#FFD8D8D8">
+                        <ListBox Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbAllAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                             <ListBox.GroupStyle>
                                 <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
                             </ListBox.GroupStyle>
@@ -151,4 +167,4 @@
             <Button Content="Poeurl it!" Height="23" HorizontalAlignment="Right" x:Name="btnPoeUrl" VerticalAlignment="Bottom" Width="75" Click="btnPoeUrl_Click" Margin="0,0,5,2" />
         </Grid>
     </Grid>
-</Window>
+</controls:MetroWindow>
