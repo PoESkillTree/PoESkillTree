@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -12,20 +13,19 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using MahApps.Metro.Controls;
 using Microsoft.Win32;
-using VerticalAlignment = System.Windows.VerticalAlignment;
 
 namespace POESKillTree
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private static readonly Action emptyDelegate = delegate { };
         private readonly List<string> allAttributesList = new List<string>();
@@ -260,7 +260,7 @@ namespace POESKillTree
                         savedBuilds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
                             b.Split(';')[1]));
                     }
-
+                    //flyout_builds.IsOpen = true; //For some reason no text will show if the flyout is hiden here
                     lvSavedBuilds.Items.Clear();
                     foreach (PoEBuild build in savedBuilds)
                     {
@@ -271,6 +271,7 @@ namespace POESKillTree
                         lvi.MouseDoubleClick += lvi_MouseDoubleClick;
                         lvSavedBuilds.Items.Add(lvi);
                     }
+                    //flyout_builds.IsOpen = false;
                 }
             }
             catch (Exception ex)
@@ -327,6 +328,11 @@ namespace POESKillTree
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+        }
+
+        private void menu_exit(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private void border1_Click(object sender, RoutedEventArgs e)
@@ -728,21 +734,12 @@ namespace POESKillTree
                 btnScreenShot.Visibility = Visibility.Visible;
                 btnLoadItems.Visibility = Visibility.Visible;
                 btnSkillHighlighted.Visibility = Visibility.Visible;
-                Expander1.ExpandDirection = ExpandDirection.Right;
+                leftBackground.Visibility = Visibility.Visible;
 
-                var expanderMargin = Expander1.Margin;
-                expanderMargin.Left = 380;
-                expanderMargin.Top = expanderMargin.Top + 2;
-                Expander1.Margin = expanderMargin;
-
-                var gridBuilderManagerMargin = gridBuildManager.Margin;
-                gridBuilderManagerMargin.Top = gridBuilderManagerMargin.Top - 10;
-                gridBuildManager.Margin = gridBuilderManagerMargin;
-
-                var btnGridMargin = BtnGrid.Margin;
-                btnGridMargin.Left = btnGridMargin.Left - 70;
-                btnGridMargin.Right = btnGridMargin.Right + 70;
-                BtnGrid.Margin = btnGridMargin;
+                var expanderMargin = flyout_builds.Margin;
+                expanderMargin.Top = expanderMargin.Top - 14;
+                expanderMargin.Left = 210;
+                flyout_builds.Margin = expanderMargin;
             }
             else
             {
@@ -761,22 +758,18 @@ namespace POESKillTree
                 btnScreenShot.Visibility = Visibility.Hidden;
                 btnLoadItems.Visibility = Visibility.Hidden;
                 btnSkillHighlighted.Visibility = Visibility.Hidden;
-                Expander1.ExpandDirection = ExpandDirection.Down;
+                leftBackground.Visibility = Visibility.Hidden;
 
-                var expanderMargin = Expander1.Margin;
-                expanderMargin.Left = 4;
-                expanderMargin.Top = expanderMargin.Top - 2;
-                Expander1.Margin = expanderMargin;
-
-                var gridBuilderManagerMargin = gridBuildManager.Margin;
-                gridBuilderManagerMargin.Top = gridBuilderManagerMargin.Top + 10;
-                gridBuildManager.Margin = gridBuilderManagerMargin;
-
-                var btnGridMargin = BtnGrid.Margin;
-                btnGridMargin.Left = btnGridMargin.Left + 70;
-                btnGridMargin.Right = btnGridMargin.Right - 70;
-                BtnGrid.Margin = btnGridMargin;
+                var expanderMargin = flyout_builds.Margin;
+                expanderMargin.Top = expanderMargin.Top + 14;
+                expanderMargin.Left = 0;
+                flyout_builds.Margin = expanderMargin;
             }
+        }
+
+        private void toggle_builds(object sender, RoutedEventArgs e)
+        {
+            flyout_builds.IsOpen = !flyout_builds.IsOpen;
         }
 
         private void image1_LostFocus(object sender, MouseEventArgs e)
