@@ -70,7 +70,7 @@
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Border BorderThickness="1" x:Name="OuterBorder1" Margin="415,12,4,29">
                 <POESKillTree:ZoomBorder IsManipulationEnabled="True" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" Grid.Column="3" MouseLeave="border1_MouseLeave" Margin="4,0,0,0">
-                    <Rectangle Height="500" IsManipulationEnabled="True" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="103,17,7,17"/>
+                    <Rectangle Height="500" IsManipulationEnabled="True" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="133,17,7,17"/>
                 </POESKillTree:ZoomBorder>
             </Border>
             <controls:Flyout x:Name="flyout_builds" Header="Saved Builds" Position="Left" Theme="Dark" Margin="210,6,0,15">
@@ -92,7 +92,7 @@
                     <Button x:Name="btnDelete" Content="Delete" Margin="88,0,91.273,3" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Left" Width="60"/>
                 </Grid>
             </controls:Flyout>
-            <Grid x:Name="leftBackground" Background="#FF252525" Margin="0,0,777,0"></Grid>
+            <Grid x:Name="leftBackground" Background="#FF252525" HorizontalAlignment="Left" Width="415"></Grid>
             <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
 
             <TextBox Height="23" Margin="415,0,166,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" />
