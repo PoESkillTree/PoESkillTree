@@ -50,6 +50,9 @@ namespace POESKillTree
         private List<ushort> prePath;
         private HashSet<ushort> toRemove;
 
+        Stack<string> undoList = new Stack<string>();
+        Stack<string> redoList = new Stack<string>();
+
         public MainWindow()
         {
             Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
@@ -311,6 +314,12 @@ namespace POESKillTree
                         break;
                     case Key.D7:
                         cbCharType.SelectedIndex = 6;
+                        break;
+                    case Key.Z:
+                        tbSkillURL_Undo();
+                        break;
+                    case Key.Y:
+                        tbSkillURL_Redo();
                         break;
                 }
             }
@@ -643,6 +652,16 @@ namespace POESKillTree
                     Tree.LoadFromURL(tbSkillURL.Text);
 
                 justLoaded = true;
+                //cleans the default tree on load if 2
+                if (justLoaded == true)
+                {
+                    if (undoList.Count > 1)
+                    {
+                        string holder = undoList.Pop();
+                        undoList.Pop();
+                        undoList.Push(holder);
+                    }
+                }
                 cbCharType.SelectedIndex = Tree.Chartype;
                 UpdateAllAttributeList();
             }
@@ -839,6 +858,44 @@ namespace POESKillTree
         private void tbSkillURL_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             tbSkillURL.SelectAll();
+        }
+    
+        private void tbSkillURL_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            undoList.Push(tbSkillURL.Text);
+        }
+        private void tbSkillURL_Undo()
+        {
+            if (undoList.Count > 0)
+            {
+                if (undoList.Peek() == tbSkillURL.Text && undoList.Count > 1)
+                {
+                    undoList.Pop();
+                    tbSkillURL_Undo();
+                }
+                else if (undoList.Peek() != tbSkillURL.Text)
+                {
+                    redoList.Push(tbSkillURL.Text);
+                    tbSkillURL.Text = undoList.Pop();
+                    Tree.LoadFromURL(tbSkillURL.Text);
+                }
+            }
+        }
+        private void tbSkillURL_Redo()
+        {
+            if (redoList.Count > 0)
+            {
+                if (redoList.Peek() == tbSkillURL.Text && redoList.Count > 1)
+                {
+                    redoList.Pop();
+                    tbSkillURL_Redo();
+                }
+                else if (redoList.Peek() != tbSkillURL.Text)
+                {
+                    tbSkillURL.Text = redoList.Pop();
+                    Tree.LoadFromURL(tbSkillURL.Text);
+                }
+            }
         }
 
         private void textBox3_TextChanged(object sender, TextChangedEventArgs e)
