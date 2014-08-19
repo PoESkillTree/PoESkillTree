@@ -65,7 +65,7 @@
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Border BorderThickness="1" x:Name="OuterBorder1" Margin="415,12,4,29">
                 <POESKillTree:ZoomBorder IsManipulationEnabled="True" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" Grid.Column="3" MouseLeave="border1_MouseLeave" Margin="44,0,0,0">
-                    <Rectangle Height="500" IsManipulationEnabled="True" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="13,17,7,17"/>
+                    <Rectangle Height="500" IsManipulationEnabled="True" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="103,17,7,17"/>
                 </POESKillTree:ZoomBorder>
             </Border>
             <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
