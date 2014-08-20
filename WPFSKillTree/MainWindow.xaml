@@ -75,7 +75,7 @@
             </Border>
             <controls:Flyout x:Name="flyout_builds" Header="Saved Builds" Position="Left" Theme="Dark" Margin="210,6,0,15">
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left" Background="#FF252525" Margin="0">
-                    <ListView x:Name="lvSavedBuilds" Margin="1,0,0,29" HorizontalAlignment="Left" Width="245" ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0">
+                    <ListView x:Name="lvSavedBuilds" Margin="1,0,0,29" HorizontalAlignment="Left" Width="255" ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="245"></GridViewColumn>
@@ -108,7 +108,7 @@
             <Button Content="Screenshot" Height="23" HorizontalAlignment="Left" Margin="5,0,0,29" x:Name="btnScreenShot" VerticalAlignment="Bottom" Width="104" Click="btnScreenShot_Click" FontSize="9.5" />
 
             <Button Content="Copy Passive Attributes to Clipboard" Height="23" HorizontalAlignment="Left" Margin="6,0,0,56" x:Name="btnCopyStats" VerticalAlignment="Bottom" Width="208" Click="btnCopyStats_Click" Grid.ColumnSpan="3" FontSize="9.5"/>
-            <Grid x:Name="BtnGrid" Margin="2,6,784,557">
+            <Grid x:Name="BtnGrid" Margin="2,6,0,0" HorizontalAlignment="Left" Width="406" Height="36" VerticalAlignment="Top">
                 <ComboBox Height="23" HorizontalAlignment="Left" Margin="38,2,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="76" SelectionChanged="comboBox1_SelectionChanged">
                     <ComboBoxItem Content="Scion" />
                     <ComboBoxItem Content="Marauder" />
