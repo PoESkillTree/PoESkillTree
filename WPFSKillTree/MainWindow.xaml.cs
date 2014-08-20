@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using System.Windows.Documents;
 
 namespace POESKillTree
 {
@@ -51,6 +52,11 @@ namespace POESKillTree
 
         Stack<string> undoList = new Stack<string>();
         Stack<string> redoList = new Stack<string>();
+
+        private Point _dragAndDropStartPoint;
+        private DragAdorner _adorner;
+        private AdornerLayer _layer;
+        private bool _dragIsOutOfScope = false;
 
         public MainWindow()
         {
@@ -197,13 +203,7 @@ namespace POESKillTree
 
             if (lvSavedBuilds.Items.Count > 0)
             {
-                var rawBuilds = new StringBuilder();
-                foreach (ListViewItem lvi in lvSavedBuilds.Items)
-                {
-                    var build = (PoEBuild) lvi.Content;
-                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
-                }
-                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
+                SaveBuildsToFile();
             }
             else
             {
@@ -450,13 +450,7 @@ namespace POESKillTree
             if (lvSavedBuilds.SelectedItems.Count > 0)
             {
                 lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
-                var rawBuilds = new StringBuilder();
-                foreach (ListViewItem lvi in lvSavedBuilds.Items)
-                {
-                    var build = (PoEBuild) lvi.Content;
-                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
-                }
-                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
+                SaveBuildsToFile();
             }
         }
 
@@ -487,13 +481,7 @@ namespace POESKillTree
                 ((ListViewItem) lvSavedBuilds.SelectedItem).Content =
                     new PoEBuild(((ListViewItem) lvSavedBuilds.SelectedItem).Content.ToString().Split('\n')[0],
                         cbCharType.Text + ", " + tbUsedPoints.Text + " points used", tbSkillURL.Text);
-                var rawBuilds = new StringBuilder();
-                foreach (ListViewItem lvi in lvSavedBuilds.Items)
-                {
-                    var build = (PoEBuild) lvi.Content;
-                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
-                }
-                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
+                SaveBuildsToFile();
             }
             else
             {
@@ -538,13 +526,7 @@ namespace POESKillTree
 
             if (lvSavedBuilds.Items.Count > 0)
             {
-                var rawBuilds = new StringBuilder();
-                foreach (ListViewItem lvi in lvSavedBuilds.Items)
-                {
-                    var build = (PoEBuild) lvi.Content;
-                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
-                }
-                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
+                SaveBuildsToFile();
             }
             else
             {
@@ -818,13 +800,7 @@ namespace POESKillTree
                 lvSavedBuilds.SelectedIndex = selectedIndex - 1;
                 lvSavedBuilds.Items.Refresh();
 
-                var rawBuilds = new StringBuilder();
-                foreach (ListViewItem lvi in lvSavedBuilds.Items)
-                {
-                    var build = (PoEBuild) lvi.Content;
-                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
-                }
-                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
+                SaveBuildsToFile();
             }
 
             else if (e.Key == Key.Down && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) &&
@@ -838,14 +814,19 @@ namespace POESKillTree
                 lvSavedBuilds.SelectedIndex = selectedIndex + 1;
                 lvSavedBuilds.Items.Refresh();
 
-                var rawBuilds = new StringBuilder();
-                foreach (ListViewItem lvi in lvSavedBuilds.Items)
-                {
-                    var build = (PoEBuild) lvi.Content;
-                    rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
-                }
-                File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
+                SaveBuildsToFile();
             }
+        }
+
+        private void SaveBuildsToFile()
+        {
+            var rawBuilds = new StringBuilder();
+            foreach (ListViewItem lvi in lvSavedBuilds.Items)
+            {
+                var build = (PoEBuild)lvi.Content;
+                rawBuilds.Append(build.name + '|' + build.description + ';' + build.url + '\n');
+            }
+            File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
         }
 
         private void lvi_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -948,20 +929,19 @@ namespace POESKillTree
         }
 
         #region Builds DragAndDrop
-        private Point _startPoint;
         private void ListViewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _startPoint = e.GetPosition(null);
+            _dragAndDropStartPoint = e.GetPosition(lvSavedBuilds);
         }
 
         private void ListViewPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Point position = e.GetPosition(null);
+                Point position = e.GetPosition(lvSavedBuilds);
 
-                if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                if (Math.Abs(position.X - _dragAndDropStartPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _dragAndDropStartPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
                 {
                     BeginDrag(e);
                 }
@@ -970,7 +950,7 @@ namespace POESKillTree
 
         private void BeginDrag(MouseEventArgs e)
         {
-            ListView listView = this.lvSavedBuilds;
+            ListView listView = lvSavedBuilds;
             ListViewItem listViewItem =
                 FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
 
@@ -981,26 +961,27 @@ namespace POESKillTree
             var name = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
 
             //setup the drag adorner.
-            //InitialiseAdorner(listViewItem);
+            InitialiseAdorner(listViewItem);
 
             //add handles to update the adorner.
-            //listView.PreviewDragOver += ListViewDragOver;
-            //listView.DragLeave += ListViewDragLeave;
+            listView.PreviewDragOver += ListViewDragOver;
+            listView.DragLeave += ListViewDragLeave;
             listView.DragEnter += ListViewDragEnter;
 
             DataObject data = new DataObject("myFormat", name);
-            DragDropEffects de = DragDrop.DoDragDrop(this.lvSavedBuilds, data, DragDropEffects.Move);
+            DragDropEffects de = DragDrop.DoDragDrop(lvSavedBuilds, data, DragDropEffects.Move);
 
             //cleanup 
-            //listView.PreviewDragOver -= ListViewDragOver;
-            //listView.DragLeave -= ListViewDragLeave;
+            listView.PreviewDragOver -= ListViewDragOver;
+            listView.DragLeave -= ListViewDragLeave;
             listView.DragEnter -= ListViewDragEnter;
 
-            //if (_adorner != null)
-            //{
-            //    AdornerLayer.GetAdornerLayer(listView).Remove(_adorner);
-            //    _adorner = null;
-            //}
+            if (_adorner != null)
+            {
+                AdornerLayer.GetAdornerLayer(listView).Remove(_adorner);
+                _adorner = null;
+                SaveBuildsToFile();
+            }
         }
 
         private void ListViewDragEnter(object sender, DragEventArgs e)
@@ -1018,7 +999,7 @@ namespace POESKillTree
             if (e.Data.GetDataPresent("myFormat"))
             {
                 var name = e.Data.GetData("myFormat");
-                ListView listView = this.lvSavedBuilds;
+                ListView listView = lvSavedBuilds;
                 ListViewItem listViewItem = FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
 
                 if (listViewItem != null)
@@ -1037,6 +1018,49 @@ namespace POESKillTree
                     listView.Items.Remove(name);
                     listView.Items.Add(name);
                 }
+            }
+        }
+
+        private void InitialiseAdorner(ListViewItem listViewItem)
+        {
+            VisualBrush brush = new VisualBrush(listViewItem);
+            _adorner = new DragAdorner((UIElement)listViewItem, listViewItem.RenderSize, brush);
+            _adorner.Opacity = 0.5;
+            _layer = AdornerLayer.GetAdornerLayer(lvSavedBuilds as Visual);
+            _layer.Add(_adorner);
+        }
+
+
+        void ListViewQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+        {
+            if (this._dragIsOutOfScope)
+            {
+                e.Action = DragAction.Cancel;
+                e.Handled = true;
+            }
+        }
+
+
+        void ListViewDragLeave(object sender, DragEventArgs e)
+        {
+            if (e.OriginalSource == lvSavedBuilds)
+            {
+                Point p = e.GetPosition(lvSavedBuilds);
+                Rect r = VisualTreeHelper.GetContentBounds(lvSavedBuilds);
+                if (!r.Contains(p))
+                {
+                    this._dragIsOutOfScope = true;
+                    e.Handled = true;
+                }
+            }
+        }
+
+        void ListViewDragOver(object sender, DragEventArgs args)
+        {
+            if (_adorner != null)
+            {
+                _adorner.OffsetLeft = args.GetPosition(lvSavedBuilds).X - _dragAndDropStartPoint.X;
+                _adorner.OffsetTop = args.GetPosition(lvSavedBuilds).Y - _dragAndDropStartPoint.Y;
             }
         }
 

@@ -123,6 +123,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Arrow.cs" />
+    <Compile Include="DragAdorner.cs" />
     <Compile Include="EXTHelper.cs" />
     <Compile Include="ItemAttributes.cs" />
     <Compile Include="LoadingWindow.xaml.cs">
