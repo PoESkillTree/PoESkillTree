@@ -537,7 +537,7 @@ namespace POESKillTree
             }
         }
 
-        private void btnScreenShot_Click(object sender, RoutedEventArgs e)
+        private void ScreenShot_Click(object sender, RoutedEventArgs e)
         {
             int maxsize = 3000;
             Geometry geometry = Tree.picActiveLinks.Clip;
@@ -577,7 +577,7 @@ namespace POESKillTree
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
         }
 
-        private void button1_Click_1(object sender, RoutedEventArgs e)
+        private void ImportItems_Click(object sender, RoutedEventArgs e)
         {
             string filetoload = "";
             if (File.Exists("Data\\get-items"))
@@ -666,7 +666,7 @@ namespace POESKillTree
             }
         }
 
-        private void button3_Click(object sender, RoutedEventArgs e)
+        private void SkillHighlightedNodes_Click(object sender, RoutedEventArgs e)
         {
             Tree.SkillAllHighligtedNodes();
             UpdateAllAttributeList();
@@ -718,16 +718,12 @@ namespace POESKillTree
                 Thickness margin = Margin;
                 margin.Left = 415;
                 margin.Right = 4;
-                margin.Top = 12;
+                margin.Top = 0;
                 margin.Bottom = 29;
                 OuterBorder1.Margin = margin;
 
                 hideShit.Content = "-";
                 tabControl1.Visibility = Visibility.Visible;
-                btnCopyStats.Visibility = Visibility.Visible;
-                btnScreenShot.Visibility = Visibility.Visible;
-                btnLoadItems.Visibility = Visibility.Visible;
-                btnSkillHighlighted.Visibility = Visibility.Visible;
                 leftBackground.Visibility = Visibility.Visible;
 
                 var expanderMargin = flyout_builds.Margin;
@@ -740,7 +736,7 @@ namespace POESKillTree
                 Thickness margin = Margin;
                 margin.Left = 4;
                 margin.Right = 4;
-                margin.Top = 40;
+                margin.Top = 34;
                 margin.Bottom = 29;
                 OuterBorder1.Margin = margin;
 
@@ -748,10 +744,6 @@ namespace POESKillTree
                 textBox1.Visibility = Visibility.Hidden;
                 textBox2.Visibility = Visibility.Hidden;
                 tabControl1.Visibility = Visibility.Hidden;
-                btnCopyStats.Visibility = Visibility.Hidden;
-                btnScreenShot.Visibility = Visibility.Hidden;
-                btnLoadItems.Visibility = Visibility.Hidden;
-                btnSkillHighlighted.Visibility = Visibility.Hidden;
                 leftBackground.Visibility = Visibility.Hidden;
 
                 var expanderMargin = flyout_builds.Margin;
