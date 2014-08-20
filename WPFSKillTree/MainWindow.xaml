@@ -82,7 +82,7 @@
                     <Rectangle Height="500" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="133,17,7,17"/>
                 </POESKillTree:ZoomBorder>
             </Border>
-            <controls:Flyout x:Name="flyout_builds" Header="Saved Builds" Position="Left" Theme="Dark" Margin="210,6,0,15" IsVisibleChanged="flyout_builds_IsVisibleChanged">
+            <controls:Flyout x:Name="flyout_builds" Header="Saved Builds" Position="Left" Theme="Dark" Margin="208,0,0,15" IsVisibleChanged="flyout_builds_IsVisibleChanged">
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left" Background="#FF252525" Margin="0">
                     <ListView x:Name="lvSavedBuilds" Margin="1,0,0,29" HorizontalAlignment="Left" Width="255" 
                               ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"

@@ -727,8 +727,8 @@ namespace POESKillTree
                 leftBackground.Visibility = Visibility.Visible;
 
                 var expanderMargin = flyout_builds.Margin;
-                expanderMargin.Top = expanderMargin.Top - 14;
-                expanderMargin.Left = 210;
+                expanderMargin.Top = expanderMargin.Top - 17;
+                expanderMargin.Left = 207;
                 flyout_builds.Margin = expanderMargin;
             }
             else
@@ -747,7 +747,7 @@ namespace POESKillTree
                 leftBackground.Visibility = Visibility.Hidden;
 
                 var expanderMargin = flyout_builds.Margin;
-                expanderMargin.Top = expanderMargin.Top + 14;
+                expanderMargin.Top = expanderMargin.Top + 17;
                 expanderMargin.Left = 0;
                 flyout_builds.Margin = expanderMargin;
             }
