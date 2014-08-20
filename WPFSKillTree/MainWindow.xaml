@@ -7,6 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="POESKillTree.MainWindow"
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" Closing="Window_Closing" Icon="/POESKillTree;component/naja.ico" Loaded="Window_Loaded"
         PreviewKeyDown="Window_PreviewKeyDown">
+        <!--TextOptions.TextFormattingMode="Display"> Need to fix fontsize before enabling this-->
     <Window.Resources>
         <Style x:Key="ContainerStyle" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
@@ -52,20 +53,30 @@
         </Popup>
         <Menu IsMainMenu="True" x:Name="menu1" Grid.ColumnSpan="2" Margin="0,0,0,2">
             <MenuItem Header="_File ">
+                <MenuItem Header="_Save As" InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click"/>
                 <MenuItem Header="_Exit" Click="menu_exit"/>
             </MenuItem>
-            <MenuItem Header="_Edit " />
-            <MenuItem Header="_View ">
+            <MenuItem Header="_Edit ">
+                <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click"/>
+                <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" Click="tbSkillURL_Redo_Click"/>
+                <MenuItem Header="_Reset" InputGestureText="Ctrl+R" Click="RecSkillTree_Reset_Click"/>
             </MenuItem>
-            <MenuItem Header="_Help " />
+            <MenuItem Header="_View ">
+                <MenuItem x:Name="mnuViewBuilds" Header="_Builds" IsCheckable="true" IsChecked="False" Click="ToggleBuilds_Click"/>
+                <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="True" InputGestureText="Ctrl+Q" Click="HideAttributes_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help ">
+                <MenuItem Header="_View Help"/>
+                <MenuItem Header="_About"/>
+            </MenuItem>
         </Menu>
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Border BorderThickness="1" x:Name="OuterBorder1" Margin="415,12,4,29">
-                <POESKillTree:ZoomBorder IsManipulationEnabled="True" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" Grid.Column="3" MouseLeave="border1_MouseLeave" Margin="4,0,0,0">
-                    <Rectangle Height="500" IsManipulationEnabled="True" x:Name="image1" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="133,17,7,17"/>
+                <POESKillTree:ZoomBorder IsManipulationEnabled="True" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" MouseLeave="border1_MouseLeave" Margin="4,0,0,0">
+                    <Rectangle Height="500" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="133,17,7,17"/>
                 </POESKillTree:ZoomBorder>
             </Border>
-            <controls:Flyout x:Name="flyout_builds" Header="Saved Builds" Position="Left" Theme="Dark" Margin="210,6,0,15">
+            <controls:Flyout x:Name="flyout_builds" Header="Saved Builds" Position="Left" Theme="Dark" Margin="210,6,0,15" IsVisibleChanged="flyout_builds_IsVisibleChanged">
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left" Background="#FF252525" Margin="0">
                     <ListView x:Name="lvSavedBuilds" Margin="1,0,0,29" HorizontalAlignment="Left" Width="255" 
                               ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"
@@ -115,13 +126,13 @@
                 <Label Content="Class:" Height="28" HorizontalAlignment="Left" x:Name="lblClass" VerticalAlignment="Top" />
                 <TextBox Height="23" HorizontalAlignment="Left" Margin="193,2,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" Width="34" IsReadOnly="True" />
                 <TextBox Height="23" HorizontalAlignment="Left" Margin="263,2,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="41" TextChanged="textBox3_TextChanged" />
-                <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="118,2,0,0" x:Name="button4" VerticalAlignment="Top" Width="40" Click="button4_Click" RenderTransformOrigin="-3.75,-0.174" />
-                <Button x:Name="hideShit" Content="-" Click="hideShit_Click" Margin="313,2,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="38"/>
-                <Button x:Name="btnBuilds" Content="Builds" Click="toggle_builds" Margin="360,2,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="45"/>
+                <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="118,2,0,0" x:Name="button4" VerticalAlignment="Top" Width="40" Click="RecSkillTree_Reset_Click" RenderTransformOrigin="-3.75,-0.174" />
+                <Button x:Name="hideShit" Content="-" Click="HideAttributes_Click" Margin="313,2,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="38"/>
+                <Button x:Name="btnBuilds" Content="Builds" Click="ToggleBuilds_Click" Margin="360,2,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="45"/>
                 <Label Content="Used" Height="28" HorizontalAlignment="Left" Margin="159,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
                 <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="223,0,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
             </Grid>
-            <TabControl Margin="6,49,0,86" x:Name="tabControl1" HorizontalAlignment="Left" Width="407" controls:ControlsHelper.IsUnderlined="True">
+            <TabControl Margin="6,49,0,86" x:Name="tabControl1" HorizontalAlignment="Left" Width="407" controls:ControlsHelper.IsUnderlined="True" IsVisibleChanged="tabControl1_IsVisibleChanged">
                 <TabItem Header="Passive Attributes" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                     <Grid>
                         <ListBox Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}">

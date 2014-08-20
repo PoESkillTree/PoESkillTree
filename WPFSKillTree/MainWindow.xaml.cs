@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -228,15 +227,15 @@ namespace POESKillTree
             AllAttributeCollection.GroupDescriptions.Add(pgd);
             lbAllAttr.ItemsSource = AllAttributeCollection;
 
-            Tree = SkillTree.CreateSkillTree(startLoadingWindow, updatetLoadingWindow, closeLoadingWindow);
-            image1.Fill = new VisualBrush(Tree.SkillTreeVisual);
+            Tree = SkillTree.CreateSkillTree(startLoadingWindow, updatetLoadingWindow, CloseLoadingWindow);
+            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
 
             Tree.Chartype = Tree.CharName.IndexOf(((string) ((ComboBoxItem) cbCharType.SelectedItem).Content).ToUpper());
             Tree.UpdateAvailNodes();
             UpdateAllAttributeList();
 
-            multransform = Tree.TRect.Size / image1.RenderSize.Height;
+            multransform = Tree.TRect.Size / recSkillTree.RenderSize.Height;
             addtransform = Tree.TRect.TopLeft;
 
             // loading last build
@@ -287,10 +286,10 @@ namespace POESKillTree
                 switch (e.Key)
                 {
                     case Key.Q:
-                        hideShit_Click(sender, e);
+                        HideAttributes();
                         break;
                     case Key.R:
-                        button4_Click(sender, e);
+                        RecSkillTree_Reset_Click(sender, e);
                         break;
                     case Key.E:
                         btnPoeUrl_Click(sender, e);
@@ -321,6 +320,9 @@ namespace POESKillTree
                         break;
                     case Key.Y:
                         tbSkillURL_Redo();
+                        break;
+                    case Key.S:
+                        SaveNewBuild();
                         break;
                 }
             }
@@ -515,6 +517,11 @@ namespace POESKillTree
 
         private void btnSaveNewBuild_Click(object sender, RoutedEventArgs e)
         {
+            SaveNewBuild();
+        }
+
+        private void SaveNewBuild()
+        {
             var formBuildName = new FormBuildName();
             if ((bool) formBuildName.ShowDialog())
             {
@@ -585,7 +592,7 @@ namespace POESKillTree
 
             Clipboard.SetImage(ClipboardBmp);
 
-            image1.Fill = new VisualBrush(Tree.SkillTreeVisual);
+            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
         }
 
         private void button1_Click_1(object sender, RoutedEventArgs e)
@@ -622,11 +629,11 @@ namespace POESKillTree
                 }
                 else if (tbSkillURL.Text.Contains("poebuilder.com/"))
                 {
-                    string poebuilderTree = "https://poebuilder.com/character/";
-                    string poebuilderTreeWWW = "https://www.poebuilder.com/character/";
-                    string poebuilderTreeOWWW = "http://www.poebuilder.com/character/";
-                    string poebuilderTreeO = "http://poebuilder.com/character/";
-                    string urlString = tbSkillURL.Text;
+                    const string poebuilderTree = "https://poebuilder.com/character/";
+                    const string poebuilderTreeWWW = "https://www.poebuilder.com/character/";
+                    const string poebuilderTreeOWWW = "http://www.poebuilder.com/character/";
+                    const string poebuilderTreeO = "http://poebuilder.com/character/";
+                    var urlString = tbSkillURL.Text;
                     urlString = urlString.Replace(poebuilderTree, TreeAddress);
                     urlString = urlString.Replace(poebuilderTreeO, TreeAddress);
                     urlString = urlString.Replace(poebuilderTreeWWW, TreeAddress);
@@ -639,7 +646,7 @@ namespace POESKillTree
                     var request = (HttpWebRequest) WebRequest.Create(tbSkillURL.Text);
                     request.AllowAutoRedirect = false;
                     var response = (HttpWebResponse) request.GetResponse();
-                    string redirUrl = response.Headers["Location"];
+                    var redirUrl = response.Headers["Location"];
                     tbSkillURL.Text = redirUrl;
                     button2_Click(sender, e);
                 }
@@ -650,7 +657,7 @@ namespace POESKillTree
                     var request = (HttpWebRequest) WebRequest.Create(tbSkillURL.Text);
                     request.AllowAutoRedirect = false;
                     var response = (HttpWebResponse) request.GetResponse();
-                    string redirUrl = response.Headers["Location"];
+                    var redirUrl = response.Headers["Location"];
                     tbSkillURL.Text = redirUrl;
                     button2_Click(sender, e);
                 }
@@ -659,7 +666,7 @@ namespace POESKillTree
 
                 justLoaded = true;
                 //cleans the default tree on load if 2
-                if (justLoaded == true)
+                if (justLoaded)
                 {
                     if (undoList.Count > 1)
                     {
@@ -683,7 +690,7 @@ namespace POESKillTree
             UpdateAllAttributeList();
         }
 
-        private void button4_Click(object sender, RoutedEventArgs e)
+        private void RecSkillTree_Reset_Click(object sender, RoutedEventArgs e)
         {
             if (Tree == null)
                 return;
@@ -692,7 +699,7 @@ namespace POESKillTree
             UpdateAllAttributeList();
         }
 
-        private void closeLoadingWindow()
+        private void CloseLoadingWindow()
         {
             loadingWindow.Close();
         }
@@ -717,7 +724,12 @@ namespace POESKillTree
             UpdateAllAttributeList();
         }
 
-        private void hideShit_Click(object sender, RoutedEventArgs e)
+        private void HideAttributes_Click(object sender, RoutedEventArgs e)
+        {
+            HideAttributes();
+        }
+
+        private void HideAttributes()
         {
             if (tabControl1.Visibility == Visibility.Hidden)
             {
@@ -767,9 +779,24 @@ namespace POESKillTree
             }
         }
 
-        private void toggle_builds(object sender, RoutedEventArgs e)
+        private void tabControl1_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            mnuViewAttributes.IsChecked = tabControl1.Visibility == Visibility.Visible;
+        }
+
+        private void ToggleBuilds_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleBuilds();
+        }
+
+        private void ToggleBuilds()
         {
             flyout_builds.IsOpen = !flyout_builds.IsOpen;
+        }
+
+        private void flyout_builds_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            mnuViewBuilds.IsChecked = flyout_builds.Visibility == Visibility.Visible;
         }
 
         private void image1_LostFocus(object sender, MouseEventArgs e)
@@ -857,6 +884,12 @@ namespace POESKillTree
         {
             undoList.Push(tbSkillURL.Text);
         }
+
+        private void tbSkillURL_Undo_Click(object sender, RoutedEventArgs e)
+        {
+            tbSkillURL_Undo();
+        }
+
         private void tbSkillURL_Undo()
         {
             if (undoList.Count > 0)
@@ -874,6 +907,12 @@ namespace POESKillTree
                 }
             }
         }
+
+        private void tbSkillURL_Redo_Click(object sender, RoutedEventArgs e)
+        {
+            tbSkillURL_Redo();
+        }
+
         private void tbSkillURL_Redo()
         {
             if (redoList.Count > 0)
