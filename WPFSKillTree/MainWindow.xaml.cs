@@ -908,6 +908,116 @@ namespace POESKillTree
             loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, emptyDelegate);
         }
 
+        #region Builds DragAndDrop
+        private Point _startPoint;
+        private void ListViewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _startPoint = e.GetPosition(null);
+        }
+
+        private void ListViewPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Point position = e.GetPosition(null);
+
+                if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                {
+                    BeginDrag(e);
+                }
+            }
+        }
+
+        private void BeginDrag(MouseEventArgs e)
+        {
+            ListView listView = this.lvSavedBuilds;
+            ListViewItem listViewItem =
+                FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
+
+            if (listViewItem == null)
+                return;
+
+            // get the data for the ListViewItem
+            var name = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+
+            //setup the drag adorner.
+            //InitialiseAdorner(listViewItem);
+
+            //add handles to update the adorner.
+            //listView.PreviewDragOver += ListViewDragOver;
+            //listView.DragLeave += ListViewDragLeave;
+            listView.DragEnter += ListViewDragEnter;
+
+            DataObject data = new DataObject("myFormat", name);
+            DragDropEffects de = DragDrop.DoDragDrop(this.lvSavedBuilds, data, DragDropEffects.Move);
+
+            //cleanup 
+            //listView.PreviewDragOver -= ListViewDragOver;
+            //listView.DragLeave -= ListViewDragLeave;
+            listView.DragEnter -= ListViewDragEnter;
+
+            //if (_adorner != null)
+            //{
+            //    AdornerLayer.GetAdornerLayer(listView).Remove(_adorner);
+            //    _adorner = null;
+            //}
+        }
+
+        private void ListViewDragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent("myFormat") ||
+                sender == e.Source)
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+
+
+        private void ListViewDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("myFormat"))
+            {
+                var name = e.Data.GetData("myFormat");
+                ListView listView = this.lvSavedBuilds;
+                ListViewItem listViewItem = FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
+
+                if (listViewItem != null)
+                {
+                    var nameToReplace = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                    int index = listView.Items.IndexOf(nameToReplace);
+
+                    if (index >= 0)
+                    {
+                        listView.Items.Remove(name);
+                        listView.Items.Insert(index, name);
+                    }
+                }
+                else
+                {
+                    listView.Items.Remove(name);
+                    listView.Items.Add(name);
+                }
+            }
+        }
+
+        // Helper to search up the VisualTree
+        private static T FindAnchestor<T>(DependencyObject current)
+            where T : DependencyObject
+        {
+            do
+            {
+                if (current is T)
+                {
+                    return (T)current;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+            while (current != null);
+            return null;
+        }
+        #endregion
+
         [ValueConversion(typeof (string), typeof (string))]
         public class GroupStringConverter : IValueConverter
         {

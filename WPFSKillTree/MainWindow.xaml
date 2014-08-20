@@ -75,7 +75,9 @@
             </Border>
             <controls:Flyout x:Name="flyout_builds" Header="Saved Builds" Position="Left" Theme="Dark" Margin="210,6,0,15">
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left" Background="#FF252525" Margin="0">
-                    <ListView x:Name="lvSavedBuilds" Margin="1,0,0,29" HorizontalAlignment="Left" Width="255" ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0">
+                    <ListView x:Name="lvSavedBuilds" Margin="1,0,0,29" HorizontalAlignment="Left" Width="255" 
+                              ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"
+                              AllowDrop="True" DragEnter="ListViewDragEnter" Drop="ListViewDrop" PreviewMouseMove="ListViewPreviewMouseMove" PreviewMouseLeftButtonDown="ListViewMouseLeftButtonDown">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="245"></GridViewColumn>
