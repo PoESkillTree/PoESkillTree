@@ -71,10 +71,10 @@
                 <MenuItem Header="_Skill highlighted nodes" Click="SkillHighlightedNodes_Click"/>
                 <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="SkillHighlightedNodes_Click"/>
             </MenuItem>
-            <MenuItem Header="_Help ">
+            <!--<MenuItem Header="_Help ">
                 <MenuItem Header="_View Help"/>
                 <MenuItem Header="_About"/>
-            </MenuItem>
+            </MenuItem>-->
         </Menu>
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Border BorderThickness="1" BorderBrush="#FF353535" x:Name="OuterBorder1" Margin="415,0,4,29">
