@@ -16,11 +16,9 @@ namespace POESKillTree.SkillTreeFiles
 
             // add the arc to the geometry
             figure.Segments.Add(new ArcSegment(end, radius,0, false, SweepDirection.Counterclockwise, true));
-        
          
             // draw the arc
             drawingContext.DrawGeometry(brush, pen, geometry);
         }
-    
     }
 }
