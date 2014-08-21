@@ -82,7 +82,7 @@
                     <Rectangle Height="500" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="133,17,7,17"/>
                 </POESKillTree:ZoomBorder>
             </Border>
-            <controls:Flyout x:Name="flyout_builds" Header="Saved Builds" Position="Left" Theme="Dark" Margin="210,0,0,15" IsVisibleChanged="flyout_builds_IsVisibleChanged">
+            <controls:Flyout x:Name="flyout_builds" Header="Saved Builds" Position="Left" Theme="Dark" Margin="208,0,0,15" IsVisibleChanged="flyout_builds_IsVisibleChanged">
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left" Background="#FF252525" Margin="0">
                     <ListView x:Name="lvSavedBuilds" Margin="1,0,0,29" HorizontalAlignment="Left" Width="255" 
                               ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"
@@ -103,7 +103,7 @@
                     <Button x:Name="btnDelete" Content="Delete" Margin="88,0,91.273,3" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Left" Width="60"/>
                 </Grid>
             </controls:Flyout>
-            <Grid x:Name="leftBackground" Background="#FF252525" HorizontalAlignment="Left" Width="420"></Grid>
+            <Grid x:Name="leftBackground" Background="#FF252525" HorizontalAlignment="Left" Width="415"></Grid>
             <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
 
             <TextBox Height="23" Margin="415,0,166,1" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" />
@@ -134,7 +134,7 @@
                 <Label Content="Used" Height="28" HorizontalAlignment="Left" Margin="159,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
                 <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="223,0,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
             </Grid>
-            <TabControl Margin="6,49,0,26" x:Name="tabControl1" HorizontalAlignment="Left" Width="420" controls:ControlsHelper.IsUnderlined="True" IsVisibleChanged="tabControl1_IsVisibleChanged">
+            <TabControl Margin="6,49,0,26" x:Name="tabControl1" HorizontalAlignment="Left" Width="414" controls:ControlsHelper.IsUnderlined="True" IsVisibleChanged="tabControl1_IsVisibleChanged">
                 <TabItem Header="Passive Attributes" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                     <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                         <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
