@@ -106,11 +106,12 @@
             <Grid x:Name="leftBackground" Background="#FF252525" HorizontalAlignment="Left" Width="415"></Grid>
             <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
 
-            <TextBox Height="23" Margin="415,0,166,1" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" />
+            <TextBox Height="23" Margin="415,0,166,1" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  
+                     VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" />
             <StackPanel></StackPanel>
             <TextBox Height="23" HorizontalAlignment="Left" Margin="39,440,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" Grid.Column="1" />
             <TextBox Height="23" HorizontalAlignment="Left" Margin="39,468,0,0" x:Name="textBox2" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" Grid.Column="1" />
-            <Button Content="Load build" Height="23" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" Width="75" Click="button2_Click" Margin="0,0,85,1" />
+            <Button Content="Load build" Height="23" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" Width="75" Click="btnLoadBuild_Click" Margin="0,0,85,1" />
             <Label Content="Search:" Height="28" HorizontalAlignment="Left" Margin="6,0,0,-1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" />
             <TextBox Height="23" HorizontalAlignment="Left" Margin="60,0,0,1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" Grid.ColumnSpan="4" />
             <CheckBox Content="RegEx" Height="25" HorizontalAlignment="Left" Margin="352,0,0,2" x:Name="checkBox1" VerticalAlignment="Bottom" />

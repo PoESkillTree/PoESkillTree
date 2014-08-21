@@ -38,7 +38,7 @@ namespace POESKillTree
         private RenderTargetBitmap _clipboardBmp;
 
         private ItemAttributes _itemAttributes;
-        private SkillTree _tree;
+        protected SkillTree _tree;
         private const string TreeAddress = "http://www.pathofexile.com/passive-skill-tree/";
         private Vector2D _addtransform;
         private bool _justLoaded;
@@ -243,7 +243,7 @@ namespace POESKillTree
                 string s = File.ReadAllText("skilltreeAddress.txt");
                 tbSkillURL.Text = s.Split('\n')[0];
                 tbLevel.Text = s.Split('\n')[1];
-                button2_Click(this, new RoutedEventArgs());
+                btnLoadBuild_Click(this, new RoutedEventArgs());
                 _justLoaded = false;
             }
 
@@ -591,7 +591,18 @@ namespace POESKillTree
             UpdateAllAttributeList();
         }
 
-        private void button2_Click(object sender, RoutedEventArgs e)
+        private void btnLoadBuild_Click(object sender, RoutedEventArgs e)
+        {
+            LoadBuild();
+        }
+
+        private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                LoadBuild();
+        }
+
+        public void LoadBuild()
         {
             try
             {
@@ -607,32 +618,32 @@ namespace POESKillTree
                     const string poebuilderTreeOWWW = "http://www.poebuilder.com/character/";
                     const string poebuilderTreeO = "http://poebuilder.com/character/";
                     var urlString = tbSkillURL.Text;
-                    urlString = urlString.Replace(poebuilderTree, TreeAddress);
-                    urlString = urlString.Replace(poebuilderTreeO, TreeAddress);
-                    urlString = urlString.Replace(poebuilderTreeWWW, TreeAddress);
-                    urlString = urlString.Replace(poebuilderTreeOWWW, TreeAddress);
+                    urlString = urlString.Replace(poebuilderTree, MainWindow.TreeAddress);
+                    urlString = urlString.Replace(poebuilderTreeO, MainWindow.TreeAddress);
+                    urlString = urlString.Replace(poebuilderTreeWWW, MainWindow.TreeAddress);
+                    urlString = urlString.Replace(poebuilderTreeOWWW, MainWindow.TreeAddress);
                     tbSkillURL.Text = urlString;
                     _tree.LoadFromURL(urlString);
                 }
                 else if (tbSkillURL.Text.Contains("tinyurl.com/"))
                 {
-                    var request = (HttpWebRequest) WebRequest.Create(tbSkillURL.Text);
+                    var request = (HttpWebRequest)WebRequest.Create(tbSkillURL.Text);
                     request.AllowAutoRedirect = false;
-                    var response = (HttpWebResponse) request.GetResponse();
+                    var response = (HttpWebResponse)request.GetResponse();
                     var redirUrl = response.Headers["Location"];
                     tbSkillURL.Text = redirUrl;
-                    button2_Click(sender, e);
+                    LoadBuild();
                 }
                 else if (tbSkillURL.Text.Contains("poeurl.com/"))
                 {
                     tbSkillURL.Text = tbSkillURL.Text.Replace("http://poeurl.com/",
                         "http://poeurl.com/redirect.php?url=");
-                    var request = (HttpWebRequest) WebRequest.Create(tbSkillURL.Text);
+                    var request = (HttpWebRequest)WebRequest.Create(tbSkillURL.Text);
                     request.AllowAutoRedirect = false;
-                    var response = (HttpWebResponse) request.GetResponse();
+                    var response = (HttpWebResponse)request.GetResponse();
                     var redirUrl = response.Headers["Location"];
                     tbSkillURL.Text = redirUrl;
-                    button2_Click(sender, e);
+                    LoadBuild();
                 }
                 else
                     _tree.LoadFromURL(tbSkillURL.Text);
@@ -815,7 +826,7 @@ namespace POESKillTree
         {
             var lvi = (ListViewItem) sender;
             tbSkillURL.Text = ((PoEBuild) lvi.Content).Url;
-            button2_Click(this, null); // loading the build
+            btnLoadBuild_Click(this, null); // loading the build
         }
 
         private void startLoadingWindow()
