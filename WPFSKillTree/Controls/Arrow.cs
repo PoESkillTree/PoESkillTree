@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace POESKillTree
+namespace POESKillTree.Controls
 {
     public sealed class Arrow : Shape
     {

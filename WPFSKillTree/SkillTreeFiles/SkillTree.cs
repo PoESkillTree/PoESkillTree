@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using System.Diagnostics;
 using Newtonsoft.Json;
 
-namespace POESKillTree
+namespace POESKillTree.SkillTreeFiles
 {
     public partial class SkillTree
     {
@@ -128,7 +125,7 @@ namespace POESKillTree
             }
             };
 
-          var inTree = JsonConvert.DeserializeObject<PoEClasses.PoESkillTree>(treestring.Replace("Additional ", ""), jss);
+          var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring.Replace("Additional ", ""), jss);
             int qindex = 0;
 
 

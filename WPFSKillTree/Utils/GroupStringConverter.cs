@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 
-namespace POESKillTree
+namespace POESKillTree.Utils
 {
     [ValueConversion(typeof (string), typeof (string))]
     public class GroupStringConverter : IValueConverter

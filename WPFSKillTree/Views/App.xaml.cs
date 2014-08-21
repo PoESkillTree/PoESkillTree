@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using System.Windows;
 
-namespace WPFSKillTree
+namespace POESKillTree.Views
 {
     /// <summary>
     /// Interaction logic for App.xaml

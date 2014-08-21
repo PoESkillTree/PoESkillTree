@@ -118,53 +118,53 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="Views\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Arrow.cs" />
-    <Compile Include="Attribute.cs" />
-    <Compile Include="DragAdorner.cs" />
-    <Compile Include="EXTHelper.cs" />
-    <Compile Include="GroupStringConverter.cs" />
-    <Compile Include="ItemAttributes.cs" />
-    <Compile Include="LoadingWindow.xaml.cs">
+    <Compile Include="Controls\Arrow.cs" />
+    <Compile Include="ViewModels\Attribute.cs" />
+    <Compile Include="Controls\DragAdorner.cs" />
+    <Compile Include="SkillTreeFiles\EXTHelper.cs" />
+    <Compile Include="Utils\GroupStringConverter.cs" />
+    <Compile Include="ViewModels\ItemAttributes.cs" />
+    <Compile Include="Views\LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NumberLessStringComparer.cs" />
-    <Compile Include="PoEBuild.cs" />
-    <Compile Include="PoESkillTree.cs" />
-    <Compile Include="Point2D.cs" />
-    <Compile Include="Rect2D.cs" />
-    <Compile Include="SkillTree-Drawing.cs" />
-    <Compile Include="SkillTree.cs" />
-    <Compile Include="SkillTreeImporter.cs" />
-    <Compile Include="Vector2D.cs" />
-    <Compile Include="FormChooseBuildName.xaml.cs">
+    <Compile Include="Utils\NumberLessStringComparer.cs" />
+    <Compile Include="ViewModels\PoEBuild.cs" />
+    <Compile Include="SkillTreeFiles\PoESkillTree.cs" />
+    <Compile Include="SkillTreeFiles\Point2D.cs" />
+    <Compile Include="SkillTreeFiles\Rect2D.cs" />
+    <Compile Include="SkillTreeFiles\SkillTree-Drawing.cs" />
+    <Compile Include="SkillTreeFiles\SkillTree.cs" />
+    <Compile Include="SkillTreeFiles\SkillTreeImporter.cs" />
+    <Compile Include="SkillTreeFiles\Vector2D.cs" />
+    <Compile Include="Views\FormChooseBuildName.xaml.cs">
       <DependentUpon>FormChooseBuildName.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ZoomBorder.cs" />
-    <Page Include="LoadingWindow.xaml">
+    <Compile Include="Controls\ZoomBorder.cs" />
+    <Page Include="Views\LoadingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="Views\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="FormChooseBuildName.xaml">
+    <Page Include="Views\FormChooseBuildName.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsRes.xaml">
+    <Page Include="Views\WindowsRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -221,6 +221,7 @@
   <ItemGroup>
     <Resource Include="naja.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

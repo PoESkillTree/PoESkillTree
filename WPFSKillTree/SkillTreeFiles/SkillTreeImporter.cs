@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using System.Windows;
 
-namespace POESKillTree
+namespace POESKillTree.SkillTreeFiles
 {
     public static class SkillTreeImporter
     {
         /// <summary>
         /// Loads from the unofficial online tool
         /// </summary>
-        public static void LoadBuildFromPoezone( SkillTree tree, string buildUrl )
+        public static void LoadBuildFromPoezone(SkillTree tree, string buildUrl )
         {
             if ( !buildUrl.Contains( '#' ) ) throw new FormatException( );
 

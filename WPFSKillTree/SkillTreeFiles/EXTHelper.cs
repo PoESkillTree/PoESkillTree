@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace POESKillTree
+namespace POESKillTree.SkillTreeFiles
 {
     static class EXTHelper
     {

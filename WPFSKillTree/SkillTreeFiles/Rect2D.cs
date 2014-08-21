@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace POESKillTree
+namespace POESKillTree.SkillTreeFiles
 {
     /// <summary>
     /// Rectangle

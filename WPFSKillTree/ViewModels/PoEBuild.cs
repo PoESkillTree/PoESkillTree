@@ -1,4 +1,4 @@
-namespace POESKillTree
+namespace POESKillTree.ViewModels
 {
     internal class PoEBuild
     {

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Data;
 using System.Xml;
-using System.Text.RegularExpressions;
 using Raven.Json.Linq;
 
-namespace POESKillTree
+namespace POESKillTree.ViewModels
 {
     class ItemAttributes
     {

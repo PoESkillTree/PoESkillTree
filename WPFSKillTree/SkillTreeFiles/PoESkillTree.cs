@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace PoEClasses
+namespace POESKillTree.SkillTreeFiles
 {
    
     internal class Character

@@ -1,4 +1,4 @@
-﻿<Window x:Name="FormChooseBuildName" x:Class="POESKillTree.FormBuildName"
+﻿<Window x:Name="FormChooseBuildName" x:Class="POESKillTree.Views.FormBuildName"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Build name" Height="127" Width="361" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Loaded="FormChooseBuildName_Loaded">
