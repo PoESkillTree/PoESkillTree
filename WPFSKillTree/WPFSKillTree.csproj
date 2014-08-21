@@ -123,12 +123,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Arrow.cs" />
+    <Compile Include="Attribute.cs" />
     <Compile Include="DragAdorner.cs" />
     <Compile Include="EXTHelper.cs" />
+    <Compile Include="GroupStringConverter.cs" />
     <Compile Include="ItemAttributes.cs" />
     <Compile Include="LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NumberLessStringComparer.cs" />
+    <Compile Include="PoEBuild.cs" />
     <Compile Include="PoESkillTree.cs" />
     <Compile Include="Point2D.cs" />
     <Compile Include="Rect2D.cs" />
