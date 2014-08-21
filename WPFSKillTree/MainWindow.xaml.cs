@@ -727,7 +727,7 @@ namespace POESKillTree
 
                 var expanderMargin = flyout_builds.Margin;
                 expanderMargin.Top = expanderMargin.Top - 17;
-                expanderMargin.Left = 207;
+                expanderMargin.Left = 210;
                 flyout_builds.Margin = expanderMargin;
             }
             else
