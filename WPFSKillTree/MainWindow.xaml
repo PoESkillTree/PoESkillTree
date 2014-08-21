@@ -69,7 +69,7 @@
                 <MenuItem Header="_ScreenShot" Click="ScreenShot_Click"/>
                 <MenuItem Header="_Download/Import Items" Click="ImportItems_Click"/>
                 <MenuItem Header="_Skill highlighted nodes" Click="SkillHighlightedNodes_Click"/>
-                <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="SkillHighlightedNodes_Click"/>
+                <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="btnCopyStats_Click"/>
             </MenuItem>
             <!--<MenuItem Header="_Help ">
                 <MenuItem Header="_View Help"/>
@@ -103,7 +103,7 @@
                     <Button x:Name="btnDelete" Content="Delete" Margin="88,0,91.273,3" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Left" Width="60"/>
                 </Grid>
             </controls:Flyout>
-            <Grid x:Name="leftBackground" Background="#FF252525" HorizontalAlignment="Left" Width="415"></Grid>
+            <Grid x:Name="leftBackground" Background="#FF252525" HorizontalAlignment="Left" Width="420"></Grid>
             <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
 
             <TextBox Height="23" Margin="415,0,166,1" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" />
@@ -134,10 +134,10 @@
                 <Label Content="Used" Height="28" HorizontalAlignment="Left" Margin="159,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
                 <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="223,0,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
             </Grid>
-            <TabControl Margin="6,49,0,26" x:Name="tabControl1" HorizontalAlignment="Left" Width="407" controls:ControlsHelper.IsUnderlined="True" IsVisibleChanged="tabControl1_IsVisibleChanged">
+            <TabControl Margin="6,49,0,26" x:Name="tabControl1" HorizontalAlignment="Left" Width="420" controls:ControlsHelper.IsUnderlined="True" IsVisibleChanged="tabControl1_IsVisibleChanged">
                 <TabItem Header="Passive Attributes" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
-                    <Grid>
-                        <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}">
+                    <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                        <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                             <ListBox.GroupStyle>
                                 <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
                             </ListBox.GroupStyle>

@@ -182,7 +182,7 @@ namespace POESKillTree
                 }
                 AllAttributeCollection.Refresh();
             }
-
+            tbSkillURL.Text = Tree.SaveToURL();
             UpdateAttributeList();
         }
 
@@ -442,7 +442,7 @@ namespace POESKillTree
             {
                 sb.AppendLine(at);
             }
-            Clipboard.SetText(sb.ToString(), TextDataFormat.Text);
+            System.Windows.Forms.Clipboard.SetText(sb.ToString());
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -677,7 +677,6 @@ namespace POESKillTree
             if (Tree == null)
                 return;
             Tree.Reset();
-
             UpdateAllAttributeList();
         }
 
@@ -877,6 +876,7 @@ namespace POESKillTree
                     redoList.Push(tbSkillURL.Text);
                     tbSkillURL.Text = undoList.Pop();
                     Tree.LoadFromURL(tbSkillURL.Text);
+                    tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
                 }
             }
         }
@@ -899,6 +899,7 @@ namespace POESKillTree
                 {
                     tbSkillURL.Text = redoList.Pop();
                     Tree.LoadFromURL(tbSkillURL.Text);
+                    tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
                 }
             }
         }
