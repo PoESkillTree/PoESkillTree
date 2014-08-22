@@ -7,8 +7,8 @@
         xmlns:local="clr-namespace:POESKillTree.Controls"
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" Closing="Window_Closing" Icon="/POESKillTree;component/naja.ico" Loaded="Window_Loaded"
-        PreviewKeyDown="Window_PreviewKeyDown">
-    <!--TextOptions.TextFormattingMode="Display"> Need to fix fontsize before enabling this-->
+        PreviewKeyDown="Window_PreviewKeyDown"
+        TextOptions.TextFormattingMode="Display">
     <Window.Resources>
         <Style x:Key="ContainerStyle" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
@@ -118,7 +118,7 @@
             <CheckBox Content="RegEx" Height="25" HorizontalAlignment="Left" Margin="352,0,0,2" x:Name="checkBox1" VerticalAlignment="Bottom" />
 
             <Grid x:Name="BtnGrid" Margin="2,0,0,0" HorizontalAlignment="Left" Width="406" Height="36" VerticalAlignment="Top">
-                <ComboBox Height="23" HorizontalAlignment="Left" Margin="38,2,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="76" SelectionChanged="comboBox1_SelectionChanged">
+                <ComboBox Height="23" HorizontalAlignment="Left" Margin="8,2,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox1_SelectionChanged">
                     <ComboBoxItem Content="Scion" />
                     <ComboBoxItem Content="Marauder" />
                     <ComboBoxItem Content="Ranger" />
@@ -127,14 +127,13 @@
                     <ComboBoxItem Content="Templar" />
                     <ComboBoxItem Content="Shadow" />
                 </ComboBox>
-                <Label Content="Class:" Height="28" HorizontalAlignment="Left" x:Name="lblClass" VerticalAlignment="Top" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="193,2,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" Width="34" IsReadOnly="True" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="263,2,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="41" TextChanged="textBox3_TextChanged" />
-                <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="118,2,0,0" x:Name="button4" VerticalAlignment="Top" Width="40" Click="RecSkillTree_Reset_Click" RenderTransformOrigin="-3.75,-0.174" />
-                <Button x:Name="hideShit" Content="-" Click="HideAttributes_Click" Margin="313,2,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="38"/>
-                <Button x:Name="btnBuilds" Content="Builds" Click="ToggleBuilds_Click" Margin="360,2,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="45"/>
-                <Label Content="Used" Height="28" HorizontalAlignment="Left" Margin="159,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
-                <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="223,0,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
+                <TextBox Height="22" HorizontalAlignment="Left" Margin="146,2,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" Width="32" IsReadOnly="True" />
+                <TextBox Height="22" HorizontalAlignment="Left" Margin="267,2,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="textBox3_TextChanged" />
+                <Button Content="Reset" Height="26" HorizontalAlignment="Left" Margin="187,2,0,0" x:Name="button4" VerticalAlignment="Top" Width="40" Click="RecSkillTree_Reset_Click" RenderTransformOrigin="-3.75,-0.174" />
+                <Button x:Name="hideShit" Content="-" Click="HideAttributes_Click" Margin="313,2,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="38"/>
+                <Button x:Name="btnBuilds" Content="Builds" Click="ToggleBuilds_Click" Margin="360,2,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="45"/>
+                <Label Content="Used:" Height="28" HorizontalAlignment="Left" Margin="110,2,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" />
+                <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="230,0,0,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
             </Grid>
             <TabControl Margin="6,49,0,26" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" IsVisibleChanged="tabControl1_IsVisibleChanged">
                 <TabItem Header="Passive Attributes" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
