@@ -132,7 +132,7 @@ namespace POESKillTree.SkillTreeFiles
 
             tree.Chartype = character;
             tree.SkilledNodes.Clear( );
-            SkillTree.SkillNode startnode = tree.Skillnodes.First( nd => nd.Value.name == tree.CharName[ tree.Chartype ].ToUpper( ) ).Value;
+            SkillNode startnode = tree.Skillnodes.First( nd => nd.Value.name == tree.CharName[ tree.Chartype ].ToUpper( ) ).Value;
             tree.SkilledNodes.Add( startnode.id );
 
             for ( int i = 1 ; i < buildResp.Length ; ++i )
@@ -141,7 +141,7 @@ namespace POESKillTree.SkillTreeFiles
 
                 var poezonePos = ( positions[ int.Parse( buildResp[ i ] ) ].Value - new Vector2D( minx, miny ) ) * new Vector2D( 1 / ( maxx - minx ), 1 / ( maxy - miny ) );
                 double minDis = 2;
-                KeyValuePair<ushort, SkillTree.SkillNode> minNode = new KeyValuePair<ushort, SkillTree.SkillNode>();
+                KeyValuePair<ushort, SkillNode> minNode = new KeyValuePair<ushort, SkillNode>();
                 foreach ( var node in tree.Skillnodes )
                 {
                     var nodePos = ( node.Value.Position - new Vector2D( nminx, nminy ) ) * new Vector2D( 1 / ( nmaxx - nminx ), 1 / ( nmaxy - nminy ) );

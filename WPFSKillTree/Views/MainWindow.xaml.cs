@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,17 +14,29 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using MahApps.Metro.Controls;
-using Microsoft.Win32;
 using POESKillTree.Controls;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
+using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
+using Clipboard = System.Windows.Clipboard;
+using DataObject = System.Windows.DataObject;
+using DragDropEffects = System.Windows.DragDropEffects;
+using DragEventArgs = System.Windows.DragEventArgs;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using ListView = System.Windows.Controls.ListView;
+using ListViewItem = System.Windows.Controls.ListViewItem;
+using MessageBox = System.Windows.MessageBox;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using ToolTip = System.Windows.Controls.ToolTip;
 
 namespace POESKillTree.Views
 {
@@ -231,7 +244,7 @@ namespace POESKillTree.Views
             _allAttributeCollection.GroupDescriptions.Add(pgd);
             lbAllAttr.ItemsSource = _allAttributeCollection;
 
-            _tree = SkillTree.CreateSkillTree(startLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+            _tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
             recSkillTree.Fill = new VisualBrush(_tree.SkillTreeVisual);
 
 
@@ -342,7 +355,7 @@ namespace POESKillTree.Views
 
             v = v * _multransform + _addtransform;
 
-            IEnumerable<KeyValuePair<ushort, SkillTree.SkillNode>> nodes =
+            IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 _tree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
             if (nodes.Count() != 0)
             {
@@ -391,9 +404,9 @@ namespace POESKillTree.Views
             v = v * _multransform + _addtransform;
             textBox1.Text = "" + v.X;
             textBox2.Text = "" + v.Y;
-            SkillTree.SkillNode node = null;
+            SkillNode node = null;
 
-            IEnumerable<KeyValuePair<ushort, SkillTree.SkillNode>> nodes =
+            IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 _tree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
             if (nodes.Count() != 0)
                 node = nodes.First().Value;
@@ -687,11 +700,6 @@ namespace POESKillTree.Views
             UpdateAllAttributeList();
         }
 
-        private void CloseLoadingWindow()
-        {
-            _loadingWindow.Close();
-        }
-
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_justLoaded)
@@ -702,7 +710,7 @@ namespace POESKillTree.Views
 
             if (_tree == null)
                 return;
-            SkillTree.SkillNode startnode =
+            SkillNode startnode =
                 _tree.Skillnodes.First(
                     nd => nd.Value.name.ToUpper() == (_tree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
             _tree.SkilledNodes.Clear();
@@ -834,11 +842,33 @@ namespace POESKillTree.Views
             btnLoadBuild_Click(this, null); // loading the build
         }
 
-        private void startLoadingWindow()
+
+        #region LoadingWindow
+
+        private void StartLoadingWindow()
         {
             _loadingWindow = new LoadingWindow();
             _loadingWindow.Show();
+            Thread.Sleep(400);
+            _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
         }
+
+        private void UpdateLoadingWindow(double c, double max)
+        {
+            _loadingWindow.progressBar1.Maximum = max;
+            _loadingWindow.progressBar1.Value = c;
+            _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
+            if(Equals(c, max))
+                Thread.Sleep(100);
+        }
+
+        private void CloseLoadingWindow()
+        {
+            _loadingWindow.Close();
+        }
+
+        #endregion
+
 
         private void tbCharName_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -913,13 +943,6 @@ namespace POESKillTree.Views
             if (!int.TryParse(tbLevel.Text, out lvl)) return;
             _tree.Level = lvl;
             UpdateAllAttributeList();
-        }
-
-        private void UpdateLoadingWindow(double c, double max)
-        {
-            _loadingWindow.progressBar1.Maximum = max;
-            _loadingWindow.progressBar1.Value = c;
-            _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
         }
 
         #region Builds DragAndDrop

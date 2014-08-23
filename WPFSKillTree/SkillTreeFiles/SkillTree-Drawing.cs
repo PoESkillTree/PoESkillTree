@@ -69,7 +69,7 @@ namespace POESKillTree.SkillTreeFiles
                 var BackgroundBrush = new ImageBrush(_assets["Background1"].PImage);
                 BackgroundBrush.TileMode = TileMode.FlipXY;
                 dc.DrawRectangle(BackgroundBrush, null, TRect);
-                foreach (NodeGroup ngp in NodeGroups)
+                foreach (SkillNodeGroup ngp in NodeGroups)
                 {
                     if (ngp.OcpOrb == null)
                         ngp.OcpOrb = new Dictionary<int, bool>();
@@ -90,7 +90,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawConnection(DrawingContext dc, Pen pen2, SkillNode n1, SkillNode n2)
         {
-            if (n1.NodeGroup == n2.NodeGroup && n1.orbit == n2.orbit)
+            if (n1.SkillNodeGroup == n2.SkillNodeGroup && n1.orbit == n2.orbit)
             {
                 if (n1.Arc - n2.Arc > 0 && n1.Arc - n2.Arc <= Math.PI ||
                     n1.Arc - n2.Arc < -Math.PI)
@@ -157,7 +157,7 @@ namespace POESKillTree.SkillTreeFiles
                     SkillNode n1 = Skillnodes[nid[0]];
                     SkillNode n2 = Skillnodes[nid[1]];
                     DrawConnection(dc, pen2, n1, n2);
-                    //if (n1.NodeGroup == n2.NodeGroup && n1.orbit == n2.orbit)
+                    //if (n1.SkillNodeGroup == n2.SkillNodeGroup && n1.orbit == n2.orbit)
                     //{
                     //    if (n1.Arc - n2.Arc > 0 && n1.Arc - n2.Arc < Math.PI || n1.Arc - n2.Arc < -Math.PI)
                     //    {

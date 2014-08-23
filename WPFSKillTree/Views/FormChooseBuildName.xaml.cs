@@ -1,11 +1,12 @@
 ﻿using System.Windows;
+using MahApps.Metro.Controls;
 
 namespace POESKillTree.Views
 {
     /// <summary>
     /// Interaction logic for FormBuildName.xaml
     /// </summary>
-    public partial class FormBuildName : Window
+    public partial class FormBuildName : MetroWindow
     {
         public FormBuildName()
         {

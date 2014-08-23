@@ -8,7 +8,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Newtonsoft.Json;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
@@ -77,7 +76,7 @@ namespace POESKillTree.SkillTreeFiles
         };
 
         public HashSet<int[]> Links = new HashSet<int[]>();
-        public List<NodeGroup> NodeGroups = new List<NodeGroup>();
+        public List<SkillNodeGroup> NodeGroups = new List<SkillNodeGroup>();
         public HashSet<ushort> SkilledNodes = new HashSet<ushort>();
         public Dictionary<UInt16, SkillNode> Skillnodes = new Dictionary<UInt16, SkillNode>();
 
@@ -105,11 +104,8 @@ namespace POESKillTree.SkillTreeFiles
 
         public float ScaleFactor = 1;
 
-        public SkillTree(String treestring, StartLoadingWindow start = null, UpdateLoadingWindow update = null,
-            CloseLoadingWindow finish = null)
+        public SkillTree(String treestring, bool displayProgress, UpdateLoadingWindow update)
         {
-            bool displayProgress = (start != null && update != null && finish != null);
-            // RavenJObject jObject = RavenJObject.Parse( treestring.Replace( "Additional " , "" ) );
             var jss = new JsonSerializerSettings
             {
                 Error = delegate(object sender, ErrorEventArgs args)
@@ -155,11 +151,11 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             if (displayProgress)
-                start();
+                update(50, 100);
             IconActiveSkills.OpenOrDownloadImages(update);
-            IconInActiveSkills.OpenOrDownloadImages(update);
             if (displayProgress)
-                finish();
+                update(75, 100);
+            IconInActiveSkills.OpenOrDownloadImages(update);
             foreach (var c in inTree.characterData)
             {
                 CharBaseAttributes[c.Key] = new Dictionary<string, float>
@@ -216,7 +212,7 @@ namespace POESKillTree.SkillTreeFiles
 
             foreach (var gp in inTree.groups)
             {
-                var ng = new NodeGroup();
+                var ng = new SkillNodeGroup();
 
                 ng.OcpOrb = gp.Value.oo;
                 ng.Position = new Vector2D(gp.Value.x, gp.Value.y);
@@ -224,11 +220,11 @@ namespace POESKillTree.SkillTreeFiles
                 NodeGroups.Add(ng);
             }
 
-            foreach (NodeGroup group in NodeGroups)
+            foreach (SkillNodeGroup group in NodeGroups)
             {
                 foreach (ushort node in group.Nodes)
                 {
-                    Skillnodes[node].NodeGroup = group;
+                    Skillnodes[node].SkillNodeGroup = group;
                 }
             }
             TRect = new Rect2D(new Vector2D(inTree.min_x * 1.1, inTree.min_y * 1.1),
@@ -268,6 +264,8 @@ namespace POESKillTree.SkillTreeFiles
                     skillNode.Value.Attributes[cs] = values;
                 }
             }
+            if (displayProgress)
+                update(100, 100);
         }
 
         public int Level
@@ -386,14 +384,12 @@ namespace POESKillTree.SkillTreeFiles
                 Directory.CreateDirectory("Data\\Assets");
             }
 
+            bool displayProgress = false;
             if (skilltreeobj == "")
             {
-                bool displayProgress = (start != null && update != null && finish != null);
+                displayProgress = (start != null && update != null && finish != null);
                 if (displayProgress)
                     start();
-                //loadingWindow.Dispatcher.Invoke(DispatcherPriority.Background,new Action(delegate { }));
-
-
                 string uriString = "http://www.pathofexile.com/passive-skill-tree/";
                 var req = (HttpWebRequest) WebRequest.Create(uriString);
                 var resp = (HttpWebResponse) req.GetResponse();
@@ -402,11 +398,14 @@ namespace POESKillTree.SkillTreeFiles
                 skilltreeobj = regex.Match(code).Value.Replace("root", "main").Replace("\\/", "/");
                 skilltreeobj = skilltreeobj.Substring(27, skilltreeobj.Length - 27 - 2) + "";
                 File.WriteAllText("Data\\Skilltree.txt", skilltreeobj);
-                if (displayProgress)
-                    finish();
             }
 
-            return new SkillTree(skilltreeobj, start, update, finish);
+            if (displayProgress)
+                update(25, 100);
+            var skillTree = new SkillTree(skilltreeobj, displayProgress, update);
+            if (displayProgress)
+                finish();
+            return skillTree;
         }
 
         public void ForceRefundNode(ushort nodeId)
@@ -724,110 +723,6 @@ namespace POESKillTree.SkillTreeFiles
             }
             // picActiveLinks.Clear();
             DrawNodeSurround();
-        }
-
-        public class Asset
-        {
-            public string Name;
-            public BitmapImage PImage;
-            public string URL;
-
-            public Asset(string name, string url)
-            {
-                Name = name;
-                URL = url;
-                if (!File.Exists("Data\\Assets\\" + Name + ".png"))
-                {
-                    var _WebClient = new WebClient();
-                    _WebClient.DownloadFile(URL, "Data\\Assets\\" + Name + ".png");
-                }
-                PImage = new BitmapImage(new Uri("Data\\Assets\\" + Name + ".png", UriKind.Relative));
-            }
-        }
-
-        public class NodeGroup
-        {
-            public List<int> Nodes = new List<int>(); // "n": [-28194677,769796679,-1093139159]
-            public Dictionary<int, bool> OcpOrb = new Dictionary<int, bool>(); //  "oo": {"1": true},
-            public Vector2D Position; // "x": 1105.14,"y": -5295.31,
-        }
-
-        public class SkillIcons
-        {
-            public enum IconType
-            {
-                normal,
-                notable,
-                keystone
-            }
-
-            public static string urlpath = "http://www.pathofexile.com/image/build-gen/passive-skill-sprite/";
-            public Dictionary<String, BitmapImage> Images = new Dictionary<string, BitmapImage>();
-
-            public Dictionary<string, KeyValuePair<Rect, string>> SkillPositions =
-                new Dictionary<string, KeyValuePair<Rect, string>>();
-
-            public void OpenOrDownloadImages(UpdateLoadingWindow update = null)
-            {
-                //Application
-                int count = 0;
-                foreach (string image in Images.Keys.ToArray())
-                {
-                    if (!File.Exists("Data\\Assets\\" + image))
-                    {
-                        var _WebClient = new WebClient();
-                        _WebClient.DownloadFile(urlpath + image, "Data\\Assets\\" + image);
-                    }
-                    Images[image] = new BitmapImage(new Uri("Data\\Assets\\" + image, UriKind.Relative));
-                    if (update != null)
-                        update(count * 100 / Images.Count, 100);
-                    ++count;
-                }
-            }
-        }
-
-        public class SkillNode
-        {
-            public static float[] skillsPerOrbit = {1, 6, 12, 12, 12};
-            public static float[] orbitRadii = {0, 81.5f, 163, 326, 489};
-            public Dictionary<string, List<float>> Attributes;
-            public HashSet<int> Connections = new HashSet<int>();
-            public bool Mastery;
-            public List<SkillNode> Neighbor = new List<SkillNode>();
-            public NodeGroup NodeGroup;
-            public int a; // "a": 3,
-            public string[] attributes; // "sd": ["8% increased Block Recovery"],
-            public int da; // "da": 0,
-            public int g; // "g": 1,
-            public int ia; //"ia": 0,
-            public string icon; // icon "icon": "Art/2DArt/SkillIcons/passives/tempint.png",
-            public UInt16 id; // "id": -28194677,
-            public bool ks; //"ks": false,
-            public List<int> linkID = new List<int>(); // "out": []
-            public bool m; //"m": false
-            public string name; //"dn": "Block Recovery",
-            public bool not; // not": false,
-            public int orbit; //  "o": 1,
-            public int orbitIndex; // "oidx": 3,
-            public int sa; //s "sa": 0,
-            public bool skilled = false;
-            public int? spc;
-
-            public Vector2D Position
-            {
-                get
-                {
-                    if (NodeGroup == null) return new Vector2D();
-                    double d = orbitRadii[orbit];
-                    double b = (2 * Math.PI * orbitIndex / skillsPerOrbit[orbit]);
-                    return (NodeGroup.Position - new Vector2D(d * Math.Sin(-b), d * Math.Cos(-b)));
-                }
-            }
-
-            public double Arc
-            {
-                get { return (2 * Math.PI * orbitIndex / skillsPerOrbit[orbit]); }
-            }
         }
     }
 }
