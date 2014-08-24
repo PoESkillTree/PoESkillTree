@@ -5,12 +5,14 @@ namespace POESKillTree.ViewModels
         public string Description;
         public string Name;
         public string Url;
+        public string Note;
 
-        public PoEBuild(string name, string description, string url)
+        public PoEBuild(string name, string description, string url, string note)
         {
             Name = name;
             Description = description;
             Url = url;
+            Note = note;
         }
 
         public override string ToString()

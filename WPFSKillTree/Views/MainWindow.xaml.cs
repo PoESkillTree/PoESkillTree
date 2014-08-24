@@ -50,6 +50,7 @@ namespace POESKillTree.Views
         private readonly List<Attribute> _attiblist = new List<Attribute>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
+        private readonly ToolTip noteTip = new ToolTip();
         private readonly List<PoEBuild> _savedBuilds = new List<PoEBuild>();
         private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attibuteCollection;
@@ -273,15 +274,27 @@ namespace POESKillTree.Views
                     var builds = File.ReadAllText("savedBuilds").Split('\n');
                     foreach (var b in builds)
                     {
-                        _savedBuilds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
-                            b.Split(';')[1]));
+                        if (hasBuildNote(b))
+                        {
+                            _savedBuilds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
+                    b.Split(';')[1].Split('|')[0], b.Split(';')[1].Split('|')[1]));
+                        }
+                        else
+                        {
+                            _savedBuilds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
+                    b.Split(';')[1], "Right Click to add build note"));
+                        }
                     }
                     lvSavedBuilds.Items.Clear();
                     foreach (var lvi in _savedBuilds.Select(build => new ListViewItem {Content = build}))
                     {
                         lvi.MouseDoubleClick += lvi_MouseDoubleClick;
+                        lvi.MouseRightButtonUp += lvi_MouseRightButtonUp;
+                        lvi.MouseEnter += lvi_MouseEnter;
+                        lvi.MouseLeave += lvi_MouseLeave;
                         lvSavedBuilds.Items.Add(lvi);
                     }
+                    SaveBuildsToFile();
                 }
             }
             catch (Exception ex)
@@ -290,6 +303,85 @@ namespace POESKillTree.Views
             }
         }
 
+        void lvi_MouseLeave(object sender, MouseEventArgs e)
+        {
+                noteTip.IsOpen = false;
+        }
+
+        void lvi_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+            ListViewItem highlightedItem = FindListViewItem(e);
+            if (highlightedItem != null)
+            {
+                string highlightedBuildName = highlightedItem.ToString().Split(':')[1].Split('\n')[0];
+                if (highlightedBuildName.IndexOf(' ', 0) == 0)
+                {
+                    highlightedBuildName = highlightedBuildName.Substring(1);
+                }
+                if (File.Exists("savedBuilds"))
+                {
+                    var builds = File.ReadAllText("savedBuilds").Split('\n');
+                    foreach (var b in builds)
+                    {
+                        if (highlightedBuildName == b.Split(';')[0].Split('|')[0] && hasBuildNote(b))
+                        {
+                            noteTip.Content = b.Split(';')[1].Split('|')[1];
+                            noteTip.IsOpen = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var addNote = new AddNote();
+            var show_dialog = addNote.ShowDialog();
+            if (show_dialog != null && (bool)show_dialog)
+            {
+                ((ListViewItem)lvSavedBuilds.SelectedItem).Content =
+                    new PoEBuild(((ListViewItem)lvSavedBuilds.SelectedItem).Content.ToString().Split('\n')[0],
+                        cbCharType.Text + ", " + tbUsedPoints.Text + " points used", tbSkillURL.Text, addNote.getNote());
+            }
+            SaveBuildsToFile();
+        }
+        private ListViewItem FindListViewItem(MouseEventArgs e)
+        {
+            var visualHitTest = VisualTreeHelper.HitTest(lvSavedBuilds, e.GetPosition(lvSavedBuilds)).VisualHit;
+
+            ListViewItem listViewItem = null;
+
+            while (visualHitTest != null)
+            {
+                if (visualHitTest is ListViewItem)
+                {
+                    listViewItem = visualHitTest as ListViewItem;
+
+                    break;
+                }
+                else if (visualHitTest == lvSavedBuilds)
+                {
+                    return null;
+                }
+
+                visualHitTest = VisualTreeHelper.GetParent(visualHitTest);
+            }
+
+            return listViewItem;
+        }
+        private bool hasBuildNote(string b)
+        {
+            try
+            {
+                string buildNoteTest = b.Split(';')[1].Split('|')[1];
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
@@ -488,9 +580,20 @@ namespace POESKillTree.Views
         {
             if (lvSavedBuilds.SelectedItems.Count > 0)
             {
-                ((ListViewItem) lvSavedBuilds.SelectedItem).Content =
-                    new PoEBuild(((ListViewItem) lvSavedBuilds.SelectedItem).Content.ToString().Split('\n')[0],
-                        cbCharType.Text + ", " + tbUsedPoints.Text + " points used", tbSkillURL.Text);
+                if (File.Exists("savedBuilds"))
+                {
+                    var builds = File.ReadAllText("savedBuilds").Split('\n');
+                    foreach (var b in builds)
+                    {
+                        if (((ListViewItem)lvSavedBuilds.SelectedItem).Content.ToString().Split('\n')[0] == b.Split(';')[0].Split('|')[0] && hasBuildNote(b))
+                        {
+                            ((ListViewItem)lvSavedBuilds.SelectedItem).Content =
+                    new PoEBuild(((ListViewItem)lvSavedBuilds.SelectedItem).Content.ToString().Split('\n')[0],
+                        cbCharType.Text + ", " + tbUsedPoints.Text + " points used", tbSkillURL.Text, b.Split(';')[1].Split('|')[1]);
+                        }
+                    }
+                }
+                
                 SaveBuildsToFile();
             }
             else
@@ -528,9 +631,12 @@ namespace POESKillTree.Views
                 {
                     Content =
                         new PoEBuild(formBuildName.getBuildName(),
-                            cbCharType.Text + ", " + tbUsedPoints.Text + " points used", tbSkillURL.Text)
+                            cbCharType.Text + ", " + tbUsedPoints.Text + " points used", tbSkillURL.Text, formBuildName.getNote())
                 };
                 lvi.MouseDoubleClick += lvi_MouseDoubleClick;
+                lvi.MouseRightButtonUp += lvi_MouseRightButtonUp;
+                lvi.MouseEnter += lvi_MouseEnter;
+                lvi.MouseLeave += lvi_MouseLeave;
                 lvSavedBuilds.Items.Add(lvi);
             }
 
@@ -830,7 +936,7 @@ namespace POESKillTree.Views
             foreach (ListViewItem lvi in lvSavedBuilds.Items)
             {
                 var build = (PoEBuild)lvi.Content;
-                rawBuilds.Append(build.Name + '|' + build.Description + ';' + build.Url + '\n');
+                rawBuilds.Append(build.Name + '|' + build.Description + ';' + build.Url + '|' + build.Note + '\n');
             }
             File.WriteAllText("savedBuilds", rawBuilds.ToString().Trim());
         }

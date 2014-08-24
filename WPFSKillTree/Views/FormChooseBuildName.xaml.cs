@@ -22,6 +22,10 @@ namespace POESKillTree.Views
         {
             return txtName.Text;
         }
+        public string getNote()
+        {
+            return txtName2.Text;
+        }
 
         private void FormChooseBuildName_Loaded(object sender, RoutedEventArgs e)
         {
