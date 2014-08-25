@@ -122,7 +122,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddNote.xaml.cs">
+    <Compile Include="Views\AddNote.xaml.cs">
       <DependentUpon>AddNote.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Arrow.cs" />
@@ -151,7 +151,7 @@
       <DependentUpon>FormChooseBuildName.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ZoomBorder.cs" />
-    <Page Include="AddNote.xaml">
+    <Page Include="Views\AddNote.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,6 +199,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
