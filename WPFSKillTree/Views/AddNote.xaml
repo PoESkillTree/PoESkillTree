@@ -1,0 +1,15 @@
+﻿<controls:MetroWindow xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      x:Name="AddNoteForm" x:Class="POESKillTree.Views.AddNote"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      Title="Build name" Height="127" Width="361" WindowStartupLocation="CenterOwner"
+                      ShowInTaskbar="False" ResizeMode="NoResize">
+    <Grid>
+        <Label x:Name="lblName" Content="Choose a name for this build:" HorizontalAlignment="Left" Margin="10,10,0,0"
+               VerticalAlignment="Top" />
+        <TextBox x:Name="txtName" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="Wrap"
+                 VerticalAlignment="Top" Width="326" />
+        <Button x:Name="btnOk" Content="OK" HorizontalAlignment="Left" Margin="261,62,0,0" VerticalAlignment="Top"
+                Width="75" IsDefault="True" />
+    </Grid>
+</controls:MetroWindow>
