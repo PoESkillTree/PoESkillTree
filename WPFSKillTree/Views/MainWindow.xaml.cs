@@ -982,8 +982,19 @@ namespace POESKillTree.Views
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
+            searchUpdate();
+        }
+        
+        private void checkBox1_Click(object sender, RoutedEventArgs e)
+        {
+            searchUpdate();
+        }
+
+        private void searchUpdate()
+        {
             _tree.HighlightNodes(tbSearch.Text, checkBox1.IsChecked != null && checkBox1.IsChecked.Value);
         }
+
 
         private void tbSkillURL_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -1189,5 +1200,6 @@ namespace POESKillTree.Views
             return null;
         }
         #endregion
+
     }
 }

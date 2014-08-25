@@ -116,7 +116,7 @@
             <Button Content="Load build" Height="23" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" Width="75" Click="btnLoadBuild_Click" Margin="0,0,85,1" />
             <Label Content="Search:" Height="28" HorizontalAlignment="Left" Margin="6,0,0,-1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" />
             <TextBox Height="23" HorizontalAlignment="Left" Margin="60,0,0,1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" Grid.ColumnSpan="4" />
-            <CheckBox Content="RegEx" Height="25" HorizontalAlignment="Left" Margin="352,0,0,2" x:Name="checkBox1" VerticalAlignment="Bottom" />
+            <CheckBox Content="RegEx" Height="25" HorizontalAlignment="Left" Margin="352,0,0,2" x:Name="checkBox1" VerticalAlignment="Bottom" Click="checkBox1_Click" />
 
             <Grid x:Name="BtnGrid" Margin="2,0,0,0" HorizontalAlignment="Left" Width="406" Height="36" VerticalAlignment="Top">
                 <ComboBox Height="23" HorizontalAlignment="Left" Margin="8,2,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox1_SelectionChanged">
