@@ -1177,5 +1177,12 @@ namespace POESKillTree.Views
             return null;
         }
         #endregion
+
+
+        private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            string selectedAttr = Regex.Replace(Regex.Match(listBox1.SelectedItem.ToString(), @"(?!\d)\w.*\w").Value.Replace(@"+", @"\+").Replace(@"-", @"\-").Replace(@"%", @"\%"), @"\d+", @"\d+");
+            _tree.HighlightNodes(selectedAttr, true, Brushes.Azure);
+        }
     }
 }
