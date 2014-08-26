@@ -660,38 +660,39 @@ namespace POESKillTree.Views
             const int maxsize = 3000;
             Rect2D contentBounds = _tree.picActiveLinks.ContentBounds;
             contentBounds *= 1.2;
-
-
-            double aspect = contentBounds.Width / contentBounds.Height;
-            double xmax = contentBounds.Width;
-            double ymax = contentBounds.Height;
-            if (aspect > 1 && xmax > maxsize)
+            if (!double.IsNaN(contentBounds.Width) && !double.IsNaN(contentBounds.Height))
             {
-                xmax = maxsize;
-                ymax = xmax / aspect;
+                double aspect = contentBounds.Width / contentBounds.Height;
+                double xmax = contentBounds.Width;
+                double ymax = contentBounds.Height;
+                if (aspect > 1 && xmax > maxsize)
+                {
+                    xmax = maxsize;
+                    ymax = xmax / aspect;
+                }
+                if (aspect < 1 & ymax > maxsize)
+                {
+                    ymax = maxsize;
+                    xmax = ymax * aspect;
+                }
+
+                _clipboardBmp = new RenderTargetBitmap((int)xmax, (int)ymax, 96, 96, PixelFormats.Pbgra32);
+                var db = new VisualBrush(_tree.SkillTreeVisual);
+                db.ViewboxUnits = BrushMappingMode.Absolute;
+                db.Viewbox = contentBounds;
+                var dw = new DrawingVisual();
+
+                using (DrawingContext dc = dw.RenderOpen())
+                {
+                    dc.DrawRectangle(db, null, new Rect(0, 0, xmax, ymax));
+                }
+                _clipboardBmp.Render(dw);
+                _clipboardBmp.Freeze();
+
+                Clipboard.SetImage(_clipboardBmp);
+
+                recSkillTree.Fill = new VisualBrush(_tree.SkillTreeVisual);
             }
-            if (aspect < 1 & ymax > maxsize)
-            {
-                ymax = maxsize;
-                xmax = ymax * aspect;
-            }
-
-            _clipboardBmp = new RenderTargetBitmap((int) xmax, (int) ymax, 96, 96, PixelFormats.Pbgra32);
-            var db = new VisualBrush(_tree.SkillTreeVisual);
-            db.ViewboxUnits = BrushMappingMode.Absolute;
-            db.Viewbox = contentBounds;
-            var dw = new DrawingVisual();
-
-            using (DrawingContext dc = dw.RenderOpen())
-            {
-                dc.DrawRectangle(db, null, new Rect(0, 0, xmax, ymax));
-            }
-            _clipboardBmp.Render(dw);
-            _clipboardBmp.Freeze();
-
-            Clipboard.SetImage(_clipboardBmp);
-
-            recSkillTree.Fill = new VisualBrush(_tree.SkillTreeVisual);
         }
 
         private void ImportItems_Click(object sender, RoutedEventArgs e)
