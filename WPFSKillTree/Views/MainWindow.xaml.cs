@@ -389,7 +389,10 @@ namespace POESKillTree.Views
                 switch (e.Key)
                 {
                     case Key.Q:
-                        HideAttributes();
+                        ToggleAttributes();
+                        break;
+                    case Key.B:
+                        ToggleBuilds();
                         break;
                     case Key.R:
                         RecSkillTree_Reset_Click(sender, e);
@@ -826,56 +829,30 @@ namespace POESKillTree.Views
             UpdateAllAttributeList();
         }
 
-        private void HideAttributes_Click(object sender, RoutedEventArgs e)
+        private void ToggleAttributes()
         {
-            HideAttributes();
+            mnuViewAttributes.IsChecked = !mnuViewAttributes.IsChecked;
+            expAttributes.IsExpanded = !expAttributes.IsExpanded;
         }
 
-        private void HideAttributes()
+        private void ToggleAttributes_Click(object sender, RoutedEventArgs e)
         {
-            if (tabControl1.Visibility == Visibility.Hidden)
-            {
-                Thickness margin = Margin;
-                margin.Left = 415;
-                margin.Right = 4;
-                margin.Top = 0;
-                margin.Bottom = 29;
-                OuterBorder1.Margin = margin;
-
-                hideShit.Content = "-";
-                tabControl1.Visibility = Visibility.Visible;
-                leftBackground.Visibility = Visibility.Visible;
-
-                var expanderMargin = flyout_builds.Margin;
-                expanderMargin.Top = expanderMargin.Top - 17;
-                expanderMargin.Left = 208;
-                flyout_builds.Margin = expanderMargin;
-            }
-            else
-            {
-                Thickness margin = Margin;
-                margin.Left = 4;
-                margin.Right = 4;
-                margin.Top = 34;
-                margin.Bottom = 29;
-                OuterBorder1.Margin = margin;
-
-                hideShit.Content = "+";
-                textBox1.Visibility = Visibility.Hidden;
-                textBox2.Visibility = Visibility.Hidden;
-                tabControl1.Visibility = Visibility.Hidden;
-                leftBackground.Visibility = Visibility.Hidden;
-
-                var expanderMargin = flyout_builds.Margin;
-                expanderMargin.Top = expanderMargin.Top + 17;
-                expanderMargin.Left = 0;
-                flyout_builds.Margin = expanderMargin;
-            }
+            ToggleAttributes();
         }
 
-        private void tabControl1_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void expAttributes_Collapsed(object sender, RoutedEventArgs e)
         {
-            mnuViewAttributes.IsChecked = tabControl1.Visibility == Visibility.Visible;
+            mnuViewAttributes.IsChecked = false;
+        }
+        private void expAttributes_Expanded(object sender, RoutedEventArgs e)
+        {
+            mnuViewAttributes.IsChecked = true;
+        }
+
+        private void ToggleBuilds()
+        {
+            mnuViewBuilds.IsChecked = !mnuViewBuilds.IsChecked;
+            expSavedBuilds.IsExpanded = !expSavedBuilds.IsExpanded;
         }
 
         private void ToggleBuilds_Click(object sender, RoutedEventArgs e)
@@ -883,14 +860,14 @@ namespace POESKillTree.Views
             ToggleBuilds();
         }
 
-        private void ToggleBuilds()
+        private void expSavedBuilds_Collapsed(object sender, RoutedEventArgs e)
         {
-            flyout_builds.IsOpen = !flyout_builds.IsOpen;
+            mnuViewBuilds.IsChecked = false;
         }
 
-        private void flyout_builds_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void expSavedBuilds_Expanded(object sender, RoutedEventArgs e)
         {
-            mnuViewBuilds.IsChecked = flyout_builds.Visibility == Visibility.Visible;
+            mnuViewBuilds.IsChecked = true;
         }
 
         private void image1_LostFocus(object sender, MouseEventArgs e)
