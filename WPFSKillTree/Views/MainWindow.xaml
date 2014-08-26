@@ -29,7 +29,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Popup x:Name="popup1" Height="Auto" Placement="Center" Margin="0" >
+        <Popup x:Name="popup1" Height="Auto" Placement="Center" Margin="0"  >
             <Border >
                 <StackPanel>
                     <TextBlock Text="No Item Data Found" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -127,6 +127,8 @@
                     <Label Content="Level:" Height="28" HorizontalAlignment="Right" Margin="0,-33,34,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
                     <TextBox HorizontalAlignment="Right" Margin="0,-32,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="textBox3_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
 
+
+
                     <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True">
                         <TabItem Header="Passive Attributes" Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                             <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
@@ -176,10 +178,10 @@
                 </Grid>
             </Expander>
         </Grid>
+        <!-- grid row 2 - bottom part, search and tree -->
         <TextBox Height="24" HorizontalAlignment="Right" x:Name="textBox1" VerticalAlignment="Bottom" Width="120" Grid.Row="1" Margin="0,0,0,66" Visibility="Hidden"/>
         <TextBox Height="24" HorizontalAlignment="Right" x:Name="textBox2" VerticalAlignment="Bottom" Width="120" Grid.Row="1" Margin="0,0,0,36" Visibility="Hidden"/>
 
-        <!-- grid row 2 - bottom part, search and tree -->
         <Label Content="Search:" Height="28" HorizontalAlignment="Left" Margin="1,1,1,1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" Grid.Row="2" />
         <TextBox Height="24" HorizontalAlignment="Left" Margin="60,2,2,2" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" Grid.Row="2" />
         <CheckBox Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="352,1,1,1" x:Name="checkBox1" VerticalAlignment="Bottom" Grid.Row="2" VerticalContentAlignment="Center"/>

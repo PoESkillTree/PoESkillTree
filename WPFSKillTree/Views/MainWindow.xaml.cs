@@ -46,7 +46,7 @@ namespace POESKillTree.Views
     public partial class MainWindow : MetroWindow
     {
         private static readonly Action EmptyDelegate = delegate { };
-        private readonly List<string> _allAttributesList = new List<string>();
+        private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
@@ -196,7 +196,7 @@ namespace POESKillTree.Views
                 _allAttributesList.Clear();
                 foreach (string item in (attritemp.Select(InsertNumbersInAttributes)))
                 {
-                    _allAttributesList.Add(item);
+                    _allAttributesList.Add(new Attribute(item));
                 }
                 _allAttributeCollection.Refresh();
             }
@@ -237,8 +237,7 @@ namespace POESKillTree.Views
             _attibuteCollection = new ListCollectionView(_attiblist);
             listBox1.ItemsSource = _attibuteCollection;
             // AttibuteCollection.CustomSort = 
-            var pgd = new PropertyGroupDescription("");
-            pgd.Converter = new GroupStringConverter();
+            var pgd = new PropertyGroupDescription("") {Converter = new GroupStringConverter()};
             _attibuteCollection.GroupDescriptions.Add(pgd);
 
             _allAttributeCollection = new ListCollectionView(_allAttributesList);
@@ -960,8 +959,19 @@ namespace POESKillTree.Views
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
+            searchUpdate();
+        }
+        
+        private void checkBox1_Click(object sender, RoutedEventArgs e)
+        {
+            searchUpdate();
+        }
+
+        private void searchUpdate()
+        {
             _tree.HighlightNodes(tbSearch.Text, checkBox1.IsChecked != null && checkBox1.IsChecked.Value);
         }
+
 
         private void tbSkillURL_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
