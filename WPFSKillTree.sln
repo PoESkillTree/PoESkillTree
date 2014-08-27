@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSKillTree", "WPFSKillTree\WPFSKillTree.csproj", "{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "newDeserializertest", "newDeserializertest\newDeserializertest.csproj", "{F42A2B94-D6EE-4B6D-8FC4-7A0297C946DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +21,6 @@ Global
 		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|x86.ActiveCfg = Release|x86
 		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|x86.Build.0 = Release|x86
-		{F42A2B94-D6EE-4B6D-8FC4-7A0297C946DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F42A2B94-D6EE-4B6D-8FC4-7A0297C946DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F42A2B94-D6EE-4B6D-8FC4-7A0297C946DD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F42A2B94-D6EE-4B6D-8FC4-7A0297C946DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F42A2B94-D6EE-4B6D-8FC4-7A0297C946DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F42A2B94-D6EE-4B6D-8FC4-7A0297C946DD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

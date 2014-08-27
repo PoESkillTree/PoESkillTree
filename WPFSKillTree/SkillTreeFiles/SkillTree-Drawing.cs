@@ -134,9 +134,9 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        public void DrawHighlights(List<SkillNode> nodes)
+        public void DrawHighlights(List<SkillNode> nodes, SolidColorBrush brush = null)
         {
-            var hpen = new Pen(Brushes.Aqua, 20);
+            var hpen = new Pen(brush == null ? Brushes.Aqua : brush, 20);
             using (DrawingContext dc = picHighlights.RenderOpen())
             {
                 foreach (SkillNode node in nodes)
