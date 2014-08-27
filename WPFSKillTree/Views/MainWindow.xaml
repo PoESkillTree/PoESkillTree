@@ -30,9 +30,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Popup x:Name="popup1" Height="Auto" Placement="Center" Margin="0"  >
-            <Border >
-                <StackPanel>
+        <Popup x:Name="popup1" Height="Auto" Placement="Center" Margin="0" >
+            <Border BorderThickness="1">
+                <StackPanel Background="{DynamicResource WhiteColorBrush}">
                     <TextBlock Text="No Item Data Found" FontWeight="Bold" HorizontalAlignment="Center"/>
                     <TextBlock Text="Please enter Your Character Name Below and click on Download. " HorizontalAlignment="Center"/>
                     <TextBlock Text="This Will open your default Web-browser and download the Item data.  " HorizontalAlignment="Center"/>
@@ -64,10 +64,15 @@
                 <MenuItem Header="_Reset" InputGestureText="Ctrl+R" Click="RecSkillTree_Reset_Click"/>
             </MenuItem>
             <MenuItem Header="_View ">
+                <MenuItem Header="_Theme ">
+                    <MenuItem x:Name="mnuViewThemeLight" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Light" Click="mnuSetTheme_Click" />
+                    <MenuItem x:Name="mnuViewThemeDark" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Dark" Click="mnuSetTheme_Click"/>
+                </MenuItem>
+                <Separator />
                 <MenuItem x:Name="mnuViewBuilds" Header="_Builds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="False" Click="ToggleBuilds_Click"/>
                 <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="False" InputGestureText="Ctrl+Q" Click="ToggleAttributes_Click"/>
             </MenuItem>
-            <MenuItem Header="_Tools">
+            <MenuItem Header="_Tools ">
                 <MenuItem Header="_ScreenShot" Click="ScreenShot_Click"/>
                 <MenuItem Header="_Download/Import Items" Click="ImportItems_Click"/>
                 <MenuItem Header="_Skill highlighted nodes" Click="SkillHighlightedNodes_Click"/>
@@ -78,6 +83,7 @@
                 <MenuItem Header="_About"/>
             </MenuItem>-->
         </Menu>
+
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
         <Grid x:Name="BtnGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Width="234" Panel.ZIndex="99" >
             <ComboBox Height="26" HorizontalAlignment="Left" Margin="0,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox1_SelectionChanged" VerticalContentAlignment="Center">
@@ -134,7 +140,6 @@
                 <Grid Background="{DynamicResource WhiteColorBrush}">
                     <Label Content="Level:" Height="28" HorizontalAlignment="Right" Margin="0,-28,40,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
                     <TextBox HorizontalAlignment="Right" Margin="0,-28,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="textBox3_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
-
                     <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Header="Passive Attributes" Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                             <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">

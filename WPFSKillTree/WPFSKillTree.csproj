@@ -122,6 +122,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\MenuItemExtensions.cs" />
+    <Compile Include="Model\Options.cs" />
+    <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Views\AddNote.xaml.cs">
       <DependentUpon>AddNote.xaml</DependentUpon>
     </Compile>

@@ -19,8 +19,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 using POESKillTree.Controls;
+using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
@@ -45,6 +47,7 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        private PersistentData _persistentData = new PersistentData {Options = new Options()};
         private static readonly Action EmptyDelegate = delegate { };
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
@@ -217,7 +220,9 @@ namespace POESKillTree.Views
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            File.WriteAllText("skilltreeAddress.txt", tbSkillURL.Text + Environment.NewLine + tbLevel.Text);
+            _persistentData.Options.SkillTreeAddress = tbSkillURL.Text;
+            _persistentData.Options.CharacterLevel = tbLevel.Text;
+            _persistentData.SavePersistentDataToFile();
 
             if (lvSavedBuilds.Items.Count > 0)
             {
@@ -256,14 +261,12 @@ namespace POESKillTree.Views
             _addtransform = _tree.TRect.TopLeft;
 
             // loading last build
-            if (File.Exists("skilltreeAddress.txt"))
-            {
-                string s = File.ReadAllText("skilltreeAddress.txt");
-                tbSkillURL.Text = s.Split('\n')[0];
-                tbLevel.Text = s.Split('\n')[1];
-                btnLoadBuild_Click(this, new RoutedEventArgs());
-                _justLoaded = false;
-            }
+            _persistentData.LoadPersistentDataFromFile();
+            SetTheme(_persistentData.Options.OptionsTheme);
+            tbLevel.Text = _persistentData.Options.CharacterLevel;
+            tbSkillURL.Text = _persistentData.Options.SkillTreeAddress;
+            btnLoadBuild_Click(this, new RoutedEventArgs());
+            _justLoaded = false;
 
             // loading saved build
             try
@@ -276,12 +279,12 @@ namespace POESKillTree.Views
                         if (hasBuildNote(b))
                         {
                             _savedBuilds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
-                    b.Split(';')[1].Split('|')[0], b.Split(';')[1].Split('|')[1]));
+                                b.Split(';')[1].Split('|')[0], b.Split(';')[1].Split('|')[1]));
                         }
                         else
                         {
                             _savedBuilds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
-                    b.Split(';')[1], "Right Click to add build note"));
+                                b.Split(';')[1], "Right Click to add build note"));
                         }
                     }
                     lvSavedBuilds.Items.Clear();
@@ -1184,6 +1187,49 @@ namespace POESKillTree.Views
         {
             string selectedAttr = Regex.Replace(Regex.Match(listBox1.SelectedItem.ToString(), @"(?!\d)\w.*\w").Value.Replace(@"+", @"\+").Replace(@"-", @"\-").Replace(@"%", @"\%"), @"\d+", @"\d+");
             _tree.HighlightNodes(selectedAttr, true, Brushes.Azure);
+        }
+       private void mnuSetTheme_Click(object sender, RoutedEventArgs e)
+
+        {
+            if (sender.Equals(mnuViewThemeLight))
+            {
+                SetLightTheme();
+                _persistentData.Options.OptionsTheme = OptionsTheme.Light;
+            }
+            else
+            {
+                SetDarkTheme();
+                _persistentData.Options.OptionsTheme = OptionsTheme.Dark;
+            }
+        }
+
+        private void SetTheme(OptionsTheme theme)
+        {
+            switch (theme)
+            {
+                case OptionsTheme.Light:
+                    SetLightTheme();
+                    break;
+                case OptionsTheme.Dark:
+                    SetDarkTheme();
+                    break;
+            }
+        }
+
+        private void SetLightTheme()
+        {
+            var accent = ThemeManager.Accents.First(x => x.Name == "Steel");
+            var theme = ThemeManager.GetAppTheme("BaseLight");
+            ThemeManager.ChangeAppStyle(this, accent, theme);
+            mnuViewThemeLight.IsChecked = true;
+        }
+
+        private void SetDarkTheme()
+        {
+            var accent = ThemeManager.Accents.First(x => x.Name == "Steel");
+            var theme = ThemeManager.GetAppTheme("BaseDark");
+            ThemeManager.ChangeAppStyle(this, accent, theme);
+            mnuViewThemeDark.IsChecked = true;
         }
     }
 }
