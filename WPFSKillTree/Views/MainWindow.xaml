@@ -64,10 +64,15 @@
                 <MenuItem Header="_Reset" InputGestureText="Ctrl+R" Click="RecSkillTree_Reset_Click"/>
             </MenuItem>
             <MenuItem Header="_View ">
+                <MenuItem Header="_Theme ">
+                    <MenuItem x:Name="mnuViewThemeLight" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Light" Click="mnuSetTheme_Click" />
+                    <MenuItem x:Name="mnuViewThemeDark" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Dark" Click="mnuSetTheme_Click"/>
+                </MenuItem>
+                <Separator />
                 <MenuItem x:Name="mnuViewBuilds" Header="_Builds" IsCheckable="true" IsChecked="False" Click="ToggleBuilds_Click"/>
                 <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="True" InputGestureText="Ctrl+Q" Click="HideAttributes_Click"/>
             </MenuItem>
-            <MenuItem Header="_Tools">
+            <MenuItem Header="_Tools ">
                 <MenuItem Header="_ScreenShot" Click="ScreenShot_Click"/>
                 <MenuItem Header="_Download/Import Items" Click="ImportItems_Click"/>
                 <MenuItem Header="_Skill highlighted nodes" Click="SkillHighlightedNodes_Click"/>
@@ -79,8 +84,8 @@
             </MenuItem>-->
         </Menu>
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
-            <Border BorderThickness="1" BorderBrush="#FF353535" x:Name="OuterBorder1" Margin="415,0,4,29">
-                <local:ZoomBorder IsManipulationEnabled="True" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" MouseLeave="border1_MouseLeave" Margin="1,0,0,1">
+            <Border BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="OuterBorder1" Margin="415,0,4,29">
+                <local:ZoomBorder IsManipulationEnabled="True" Height="auto" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" FlowDirection="LeftToRight" MouseLeave="border1_MouseLeave">
                     <Rectangle Height="500" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Uniform" Width="749" ClipToBounds="false" Margin="133,17,7,17"/>
                 </local:ZoomBorder>
             </Border>
@@ -108,7 +113,7 @@
             <Grid x:Name="leftBackground" Background="{DynamicResource WhiteColorBrush}" HorizontalAlignment="Left" Width="415"></Grid>
             <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="122,0,0,1" VerticalAlignment="Bottom" Grid.Column="3"/>
 
-            <TextBox Height="23" Margin="415,0,166,1" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  
+            <TextBox Height="23" Margin="415,0,166,1" x:Name="tbSkillURL" VerticalAlignment="Bottom"  
                      VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" />
             <StackPanel></StackPanel>
             <TextBox Height="23" HorizontalAlignment="Left" Margin="39,440,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" Grid.Column="1" />
