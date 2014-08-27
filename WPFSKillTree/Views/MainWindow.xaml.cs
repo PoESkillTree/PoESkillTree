@@ -1225,7 +1225,7 @@ namespace POESKillTree.Views
         {
             var accent = ThemeManager.Accents.First(x => x.Name == "Steel");
             var theme = ThemeManager.GetAppTheme("BaseLight");
-            ThemeManager.ChangeAppStyle(this, accent, theme);
+            ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
             mnuViewThemeLight.IsChecked = true;
         }
 
@@ -1233,7 +1233,7 @@ namespace POESKillTree.Views
         {
             var accent = ThemeManager.Accents.First(x => x.Name == "Steel");
             var theme = ThemeManager.GetAppTheme("BaseDark");
-            ThemeManager.ChangeAppStyle(this, accent, theme);
+            ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
             mnuViewThemeDark.IsChecked = true;
         }
 
