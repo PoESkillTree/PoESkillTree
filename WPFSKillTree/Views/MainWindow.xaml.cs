@@ -222,6 +222,8 @@ namespace POESKillTree.Views
         {
             _persistentData.Options.SkillTreeAddress = tbSkillURL.Text;
             _persistentData.Options.CharacterLevel = tbLevel.Text;
+            _persistentData.Options.AttributesBarOpened = expAttributes.IsExpanded;
+            _persistentData.Options.BuildsBarOpened = expSavedBuilds.IsExpanded;
             _persistentData.SavePersistentDataToFile();
 
             if (lvSavedBuilds.Items.Count > 0)
@@ -265,6 +267,9 @@ namespace POESKillTree.Views
             SetTheme(_persistentData.Options.OptionsTheme);
             tbLevel.Text = _persistentData.Options.CharacterLevel;
             tbSkillURL.Text = _persistentData.Options.SkillTreeAddress;
+            expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
+            expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
+
             btnLoadBuild_Click(this, new RoutedEventArgs());
             _justLoaded = false;
 
