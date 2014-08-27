@@ -1231,5 +1231,10 @@ namespace POESKillTree.Views
             ThemeManager.ChangeAppStyle(this, accent, theme);
             mnuViewThemeDark.IsChecked = true;
         }
+
+        private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
+        {
+            searchUpdate();
+        }
     }
 }

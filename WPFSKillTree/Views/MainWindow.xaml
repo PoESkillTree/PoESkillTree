@@ -133,7 +133,7 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" x:Name="expAttributes" Collapsed="expAttributes_Collapsed" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
+            <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" x:Name="expAttributes" Collapsed="expAttributes_Collapsed" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}" MouseLeave="expAttributes_MouseLeave">
                 <Expander.Header>
                     <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Attribites</TextBlock>
                 </Expander.Header>
