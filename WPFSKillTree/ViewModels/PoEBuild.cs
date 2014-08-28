@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Serialization;
 
 namespace POESKillTree.ViewModels
@@ -30,6 +31,18 @@ namespace POESKillTree.ViewModels
         public override string ToString()
         {
             return Name + '\n' + Description;
+        }
+
+        public PoEBuild Clone()
+        {
+            return new PoEBuild
+            {
+                Name = Name,
+                Class = Class,
+                PointsUsed = PointsUsed,
+                Url = Url,
+                Note = Note,
+            };
         }
     }
 }

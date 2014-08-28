@@ -13,16 +13,23 @@ namespace POESKillTree.Views
             InitializeComponent();
         }
 
-        private void btnOk_Click(object sender, RoutedEventArgs e)
+        public FormBuildName(string name, string note)
         {
-            this.DialogResult = true;
+            InitializeComponent();
+            txtName.Text = name;
+            txtName2.Text = note;
         }
 
-        public string getBuildName()
+        private void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
+
+        public string GetBuildName()
         {
             return txtName.Text;
         }
-        public string getNote()
+        public string GetNote()
         {
             return txtName2.Text;
         }

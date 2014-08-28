@@ -125,9 +125,6 @@
     <Compile Include="Controls\MenuItemExtensions.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
-    <Compile Include="Views\AddNote.xaml.cs">
-      <DependentUpon>AddNote.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Arrow.cs" />
     <Compile Include="SkillTreeFiles\Asset.cs" />
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
@@ -154,10 +151,6 @@
       <DependentUpon>FormChooseBuildName.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ZoomBorder.cs" />
-    <Page Include="Views\AddNote.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\LoadingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
