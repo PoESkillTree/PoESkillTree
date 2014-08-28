@@ -1220,7 +1220,7 @@ namespace POESKillTree.Views
                     {
                         AddItemToSavedBuilds(lvi);
                     }
-                    File.Delete("savedBuilds");
+                    File.Move("savedBuilds", "savedBuilds.old");
                     SaveBuildsToFile();
                 }
             }
