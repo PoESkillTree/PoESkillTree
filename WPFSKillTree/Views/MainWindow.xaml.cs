@@ -1223,7 +1223,7 @@ namespace POESKillTree.Views
 
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
         {
-            searchUpdate();
+            SearchUpdate();
         }
     }
 }
