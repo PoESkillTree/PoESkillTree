@@ -1,7 +1,4 @@
-using System;
-using System.ComponentModel;
 using System.Xml.Serialization;
-using POESKillTree.Annotations;
 
 namespace POESKillTree.ViewModels
 {
