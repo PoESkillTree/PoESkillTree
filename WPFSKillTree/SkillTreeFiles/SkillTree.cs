@@ -541,7 +541,7 @@ namespace POESKillTree.SkillTreeFiles
             return result;
         }
 
-        public void HighlightNodes(string search, bool useregex)
+        public void HighlightNodes(string search, bool useregex, SolidColorBrush brushColor = null)
         {
             if (search == "")
             {
@@ -561,7 +561,7 @@ namespace POESKillTree.SkillTreeFiles
                                     nd.attributes.Where(att => new Regex(search, RegexOptions.IgnoreCase).IsMatch(att))
                                         .Count() > 0 ||
                                     new Regex(search, RegexOptions.IgnoreCase).IsMatch(nd.name) && !nd.Mastery).ToList();
-                    DrawHighlights(_highlightnodes);
+                    DrawHighlights(_highlightnodes, brushColor);
                 }
                 catch (Exception)
                 {
@@ -575,7 +575,7 @@ namespace POESKillTree.SkillTreeFiles
                             nd.attributes.Where(att => att.ToLower().Contains(search.ToLower())).Count() != 0 ||
                             nd.name.ToLower().Contains(search.ToLower()) && !nd.Mastery).ToList();
 
-                DrawHighlights(_highlightnodes);
+                DrawHighlights(_highlightnodes, brushColor);
             }
         }
 

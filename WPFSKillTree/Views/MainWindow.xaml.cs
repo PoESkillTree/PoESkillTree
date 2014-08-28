@@ -222,13 +222,15 @@ namespace POESKillTree.Views
         {
             _persistentData.Options.SkillTreeAddress = tbSkillURL.Text;
             _persistentData.Options.CharacterLevel = tbLevel.Text;
+            _persistentData.Options.AttributesBarOpened = expAttributes.IsExpanded;
+            _persistentData.Options.BuildsBarOpened = expSavedBuilds.IsExpanded;
             _persistentData.SavePersistentDataToFile();
 
             if (lvSavedBuilds.Items.Count > 0)
             {
                 SaveBuildsToFile();
             }
-        }
+                }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -258,18 +260,21 @@ namespace POESKillTree.Views
             SetTheme(_persistentData.Options.OptionsTheme);
             tbLevel.Text = _persistentData.Options.CharacterLevel;
             tbSkillURL.Text = _persistentData.Options.SkillTreeAddress;
+            expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
+            expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
+
             btnLoadBuild_Click(this, new RoutedEventArgs());
             _justLoaded = false;
 
             // loading saved build
-            lvSavedBuilds.Items.Clear();
+                    lvSavedBuilds.Items.Clear();
             foreach (var lvi in _persistentData.BuildsAsListViewItems)
-            {
+                    {
                 AddItemToSavedBuilds(lvi);
-            }
+                    }
 
             ImportLegacySavedBuilds();
-        }
+                }
 
         void lvi_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -284,9 +289,9 @@ namespace POESKillTree.Views
             {
                 var build = (PoEBuild)highlightedItem.Content;
                 noteTip.Content = build.Note;
-                noteTip.IsOpen = true;
-            }
-        }
+                            noteTip.IsOpen = true;
+                        }
+                    }
 
         void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -342,7 +347,10 @@ namespace POESKillTree.Views
                 switch (e.Key)
                 {
                     case Key.Q:
-                        HideAttributes();
+                        ToggleAttributes();
+                        break;
+                    case Key.B:
+                        ToggleBuilds();
                         break;
                     case Key.R:
                         RecSkillTree_Reset_Click(sender, e);
@@ -593,8 +601,8 @@ namespace POESKillTree.Views
             const int maxsize = 3000;
             Rect2D contentBounds = _tree.picActiveLinks.ContentBounds;
             contentBounds *= 1.2;
-
-
+            if (!double.IsNaN(contentBounds.Width) && !double.IsNaN(contentBounds.Height))
+            {
             double aspect = contentBounds.Width / contentBounds.Height;
             double xmax = contentBounds.Width;
             double ymax = contentBounds.Height;
@@ -609,7 +617,7 @@ namespace POESKillTree.Views
                 xmax = ymax * aspect;
             }
 
-            _clipboardBmp = new RenderTargetBitmap((int) xmax, (int) ymax, 96, 96, PixelFormats.Pbgra32);
+                _clipboardBmp = new RenderTargetBitmap((int)xmax, (int)ymax, 96, 96, PixelFormats.Pbgra32);
             var db = new VisualBrush(_tree.SkillTreeVisual);
             db.ViewboxUnits = BrushMappingMode.Absolute;
             db.Viewbox = contentBounds;
@@ -625,6 +633,7 @@ namespace POESKillTree.Views
             Clipboard.SetImage(_clipboardBmp);
 
             recSkillTree.Fill = new VisualBrush(_tree.SkillTreeVisual);
+        }
         }
 
         private void ImportItems_Click(object sender, RoutedEventArgs e)
@@ -760,56 +769,30 @@ namespace POESKillTree.Views
             UpdateAllAttributeList();
         }
 
-        private void HideAttributes_Click(object sender, RoutedEventArgs e)
+        private void ToggleAttributes()
         {
-            HideAttributes();
+            mnuViewAttributes.IsChecked = !mnuViewAttributes.IsChecked;
+            expAttributes.IsExpanded = !expAttributes.IsExpanded;
         }
 
-        private void HideAttributes()
+        private void ToggleAttributes_Click(object sender, RoutedEventArgs e)
         {
-            if (tabControl1.Visibility == Visibility.Hidden)
-            {
-                Thickness margin = Margin;
-                margin.Left = 415;
-                margin.Right = 4;
-                margin.Top = 0;
-                margin.Bottom = 29;
-                OuterBorder1.Margin = margin;
-
-                hideShit.Content = "-";
-                tabControl1.Visibility = Visibility.Visible;
-                leftBackground.Visibility = Visibility.Visible;
-
-                var expanderMargin = flyout_builds.Margin;
-                expanderMargin.Top = expanderMargin.Top - 17;
-                expanderMargin.Left = 208;
-                flyout_builds.Margin = expanderMargin;
-            }
-            else
-            {
-                Thickness margin = Margin;
-                margin.Left = 4;
-                margin.Right = 4;
-                margin.Top = 34;
-                margin.Bottom = 29;
-                OuterBorder1.Margin = margin;
-
-                hideShit.Content = "+";
-                textBox1.Visibility = Visibility.Hidden;
-                textBox2.Visibility = Visibility.Hidden;
-                tabControl1.Visibility = Visibility.Hidden;
-                leftBackground.Visibility = Visibility.Hidden;
-
-                var expanderMargin = flyout_builds.Margin;
-                expanderMargin.Top = expanderMargin.Top + 17;
-                expanderMargin.Left = 0;
-                flyout_builds.Margin = expanderMargin;
-            }
+            ToggleAttributes();
         }
 
-        private void tabControl1_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void expAttributes_Collapsed(object sender, RoutedEventArgs e)
         {
-            mnuViewAttributes.IsChecked = tabControl1.Visibility == Visibility.Visible;
+            mnuViewAttributes.IsChecked = false;
+            }
+        private void expAttributes_Expanded(object sender, RoutedEventArgs e)
+            {
+            mnuViewAttributes.IsChecked = true;
+        }
+
+        private void ToggleBuilds()
+        {
+            mnuViewBuilds.IsChecked = !mnuViewBuilds.IsChecked;
+            expSavedBuilds.IsExpanded = !expSavedBuilds.IsExpanded;
         }
 
         private void ToggleBuilds_Click(object sender, RoutedEventArgs e)
@@ -817,14 +800,14 @@ namespace POESKillTree.Views
             ToggleBuilds();
         }
 
-        private void ToggleBuilds()
+        private void expSavedBuilds_Collapsed(object sender, RoutedEventArgs e)
         {
-            flyout_builds.IsOpen = !flyout_builds.IsOpen;
+            mnuViewBuilds.IsChecked = false;
         }
 
-        private void flyout_builds_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void expSavedBuilds_Expanded(object sender, RoutedEventArgs e)
         {
-            mnuViewBuilds.IsChecked = flyout_builds.Visibility == Visibility.Visible;
+            mnuViewBuilds.IsChecked = true;
         }
 
         private void image1_LostFocus(object sender, MouseEventArgs e)
@@ -1139,9 +1122,16 @@ namespace POESKillTree.Views
         }
         #endregion
 
+
+        private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            string selectedAttr = Regex.Replace(Regex.Match(listBox1.SelectedItem.ToString(), @"(?!\d)\w.*\w").Value.Replace(@"+", @"\+").Replace(@"-", @"\-").Replace(@"%", @"\%"), @"\d+", @"\d+");
+            _tree.HighlightNodes(selectedAttr, true, Brushes.Azure);
+        }
         #region Theme
 
         private void mnuSetTheme_Click(object sender, RoutedEventArgs e)
+
         {
             if (sender.Equals(mnuViewThemeLight))
             {
@@ -1172,7 +1162,7 @@ namespace POESKillTree.Views
         {
             var accent = ThemeManager.Accents.First(x => x.Name == "Steel");
             var theme = ThemeManager.GetAppTheme("BaseLight");
-            ThemeManager.ChangeAppStyle(this, accent, theme);
+            ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
             mnuViewThemeLight.IsChecked = true;
         }
 
@@ -1180,7 +1170,7 @@ namespace POESKillTree.Views
         {
             var accent = ThemeManager.Accents.First(x => x.Name == "Steel");
             var theme = ThemeManager.GetAppTheme("BaseDark");
-            ThemeManager.ChangeAppStyle(this, accent, theme);
+            ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
             mnuViewThemeDark.IsChecked = true;
         }
 
@@ -1230,5 +1220,10 @@ namespace POESKillTree.Views
 
         #endregion
 
+
+        private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
+        {
+            searchUpdate();
+        }
     }
 }
