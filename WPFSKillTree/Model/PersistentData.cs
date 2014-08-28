@@ -15,7 +15,12 @@ namespace POESKillTree.Model
         [XmlIgnoreAttribute]
         public List<ListViewItem> BuildsAsListViewItems
         {
-            get { return Builds.Select(b => new ListViewItem {Content = b}).ToList(); }
+            get
+            {
+                return Builds != null
+                    ? Builds.Select(b => new ListViewItem {Content = b}).ToList()
+                    : new List<ListViewItem>();
+            }
         }
 
         public void SavePersistentDataToFile()

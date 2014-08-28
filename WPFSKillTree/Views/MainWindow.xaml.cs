@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -228,7 +229,7 @@ namespace POESKillTree.Views
             {
                 SaveBuildsToFile();
             }
-                }
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -246,7 +247,8 @@ namespace POESKillTree.Views
             recSkillTree.Fill = new VisualBrush(_tree.SkillTreeVisual);
 
 
-            _tree.Chartype = _tree.CharName.IndexOf(((string) ((ComboBoxItem) cbCharType.SelectedItem).Content).ToUpper());
+            _tree.Chartype =
+                _tree.CharName.IndexOf(((string) ((ComboBoxItem) cbCharType.SelectedItem).Content).ToUpper());
             _tree.UpdateAvailNodes();
             UpdateAllAttributeList();
 
@@ -265,31 +267,30 @@ namespace POESKillTree.Views
             _justLoaded = false;
 
             // loading saved build
-                    lvSavedBuilds.Items.Clear();
+            lvSavedBuilds.Items.Clear();
             foreach (var lvi in _persistentData.BuildsAsListViewItems)
-                    {
+            {
                 AddItemToSavedBuilds(lvi);
-                    }
+            }
 
             ImportLegacySavedBuilds();
-                }
+        }
 
         void lvi_MouseLeave(object sender, MouseEventArgs e)
         {
                 noteTip.IsOpen = false;
         }
 
-        void lvi_MouseEnter(object sender, MouseEventArgs e)
+        private void lvi_MouseEnter(object sender, MouseEventArgs e)
         {
-
             var highlightedItem = FindListViewItem(e);
             if (highlightedItem != null)
             {
-                var build = (PoEBuild)highlightedItem.Content;
+                var build = (PoEBuild) highlightedItem.Content;
                 noteTip.Content = build.Note;
-                            noteTip.IsOpen = true;
-                        }
-                    }
+                noteTip.IsOpen = true;
+            }
+        }
 
         void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -302,6 +303,7 @@ namespace POESKillTree.Views
             }
             SaveBuildsToFile();
         }
+
         private ListViewItem FindListViewItem(MouseEventArgs e)
         {
             var visualHitTest = VisualTreeHelper.HitTest(lvSavedBuilds, e.GetPosition(lvSavedBuilds)).VisualHit;
@@ -326,18 +328,7 @@ namespace POESKillTree.Views
 
             return listViewItem;
         }
-        private bool hasBuildNote(string b)
-        {
-            try
-            {
-                string buildNoteTest = b.Split(';')[1].Split('|')[1];
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
+
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
@@ -540,8 +531,17 @@ namespace POESKillTree.Views
             if (lvSavedBuilds.SelectedItems.Count > 0)
             {
                 var selectedBuild = (PoEBuild)((ListViewItem)lvSavedBuilds.SelectedItem).Content;
-                selectedBuild.Description = cbCharType.Text + ", " + tbUsedPoints.Text + " points used";
-                selectedBuild.Url = tbSkillURL.Text;
+                //SpaceOgre: I don't like this but it works. 
+                //Should probably use INotifyPropertyChanged and ObservableCollection instead.
+                var newBuild = new PoEBuild
+                {
+                    Name = selectedBuild.Name,
+                    Class = cbCharType.Text,
+                    PointsUsed = tbUsedPoints.Text,
+                    Url = tbSkillURL.Text,
+                    Note = selectedBuild.Note
+                };
+                ((ListViewItem) lvSavedBuilds.SelectedItem).Content = newBuild;
                 SaveBuildsToFile();
             }
             else
@@ -580,7 +580,8 @@ namespace POESKillTree.Views
                     Content =
                         new PoEBuild{
                             Name = formBuildName.getBuildName(),
-                            Description = cbCharType.Text + ", " + tbUsedPoints.Text + " points used", 
+                            Class = cbCharType.Text,
+                            PointsUsed = tbUsedPoints.Text, 
                             Url = tbSkillURL.Text, 
                             Note = formBuildName.getNote()
                         }
@@ -1198,14 +1199,19 @@ namespace POESKillTree.Views
                     var builds = File.ReadAllText("savedBuilds").Split('\n');
                     foreach (var b in builds)
                     {
-                        if (hasBuildNote(b))
+                        var description = b.Split(';')[0].Split('|')[1];
+                        var poeClass = description.Split(',')[0].Trim();
+                        var pointsUsed = description.Split(',')[1].Trim().Split(' ')[0].Trim();
+
+                        if (HasBuildNote(b))
                         {
-                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
+
+                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], poeClass, pointsUsed,
                                 b.Split(';')[1].Split('|')[0], b.Split(';')[1].Split('|')[1]));
                         }
                         else
                         {
-                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
+                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], poeClass, pointsUsed,
                                 b.Split(';')[1], "Right Click to add build note"));
                         }
                     }
@@ -1221,6 +1227,19 @@ namespace POESKillTree.Views
             catch (Exception ex)
             {
                 MessageBox.Show("Unable to load the saved builds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private static bool HasBuildNote(string b)
+        {
+            try
+            {
+                string buildNoteTest = b.Split(';')[1].Split('|')[1];
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 

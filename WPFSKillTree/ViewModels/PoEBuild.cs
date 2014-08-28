@@ -1,21 +1,31 @@
+using System;
+using System.ComponentModel;
+using System.Xml.Serialization;
+using POESKillTree.Annotations;
+
 namespace POESKillTree.ViewModels
 {
     public class PoEBuild
     {
-        public string Description;
-        public string Name;
-        public string Url;
-        public string Note;
+        public string Class { get; set; }
+        public string PointsUsed { get; set; }
+        public string Name { get; set; }
+        public string Url { get; set; }
+        public string Note { get; set; }
+
+        [XmlIgnoreAttribute]
+        public string Description {get { return Class + ", " + PointsUsed + " points used"; }}
 
         public PoEBuild()
         {
             
         }
 
-        public PoEBuild(string name, string description, string url, string note)
+        public PoEBuild(string name, string poeClass, string pointsUsed, string url, string note)
         {
             Name = name;
-            Description = description;
+            Class = poeClass;
+            PointsUsed = pointsUsed;
             Url = url;
             Note = note;
         }
