@@ -2,8 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Xml;
 using System.Xml.Serialization;
 using POESKillTree.ViewModels;
 
@@ -14,6 +12,7 @@ namespace POESKillTree.Model
         public Options Options { get; set; }
         public List<PoEBuild> Builds { get; set; }
 
+        [XmlIgnoreAttribute]
         public List<ListViewItem> BuildsAsListViewItems
         {
             get { return Builds.Select(b => new ListViewItem {Content = b}).ToList(); }
@@ -35,6 +34,7 @@ namespace POESKillTree.Model
                 var ser = new XmlSerializer(typeof (PersistentData));
                 var obj = (PersistentData)ser.Deserialize(reader);
                 Options = obj.Options;
+                Builds = obj.Builds;
                 reader.Close();
             }
         }

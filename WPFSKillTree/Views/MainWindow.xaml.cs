@@ -29,6 +29,7 @@ using POESKillTree.ViewModels;
 using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
 using Clipboard = System.Windows.Clipboard;
+using Control = System.Windows.Controls.Control;
 using DataObject = System.Windows.DataObject;
 using DragDropEffects = System.Windows.DragDropEffects;
 using DragEventArgs = System.Windows.DragEventArgs;
@@ -227,13 +228,6 @@ namespace POESKillTree.Views
             {
                 SaveBuildsToFile();
             }
-            else
-            {
-                if (File.Exists("savedBuilds"))
-                {
-                    File.Delete("savedBuilds");
-                }
-            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -267,62 +261,14 @@ namespace POESKillTree.Views
             btnLoadBuild_Click(this, new RoutedEventArgs());
             _justLoaded = false;
 
+            // loading saved build
             lvSavedBuilds.Items.Clear();
             foreach (var lvi in _persistentData.BuildsAsListViewItems)
             {
-                lvi.MouseDoubleClick += lvi_MouseDoubleClick;
-                lvi.MouseRightButtonUp += lvi_MouseRightButtonUp;
-                lvi.MouseEnter += lvi_MouseEnter;
-                lvi.MouseLeave += lvi_MouseLeave;
-                lvSavedBuilds.Items.Add(lvi);
+                AddItemToSavedBuilds(lvi);
             }
 
-            // loading saved build
-            //ImportLegacySavedBuilds();
-        }
-
-        /// <summary>
-        /// Import builds from legacy build save file "savedBuilds" to PersistentData.xml.
-        /// Warning: This will remove the "savedBuilds"
-        /// </summary>
-        private void ImportLegacySavedBuilds()
-        {
-            try
-            {
-                if (File.Exists("savedBuilds"))
-                {
-                    var saved_builds = new List<PoEBuild>();
-                    var builds = File.ReadAllText("savedBuilds").Split('\n');
-                    foreach (var b in builds)
-                    {
-                        if (hasBuildNote(b))
-                        {
-                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
-                                b.Split(';')[1].Split('|')[0], b.Split(';')[1].Split('|')[1]));
-                        }
-                        else
-                        {
-                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
-                                b.Split(';')[1], "Right Click to add build note"));
-                        }
-                    }
-                    lvSavedBuilds.Items.Clear();
-                    foreach (var lvi in saved_builds.Select(build => new ListViewItem {Content = build}))
-                    {
-                        lvi.MouseDoubleClick += lvi_MouseDoubleClick;
-                        lvi.MouseRightButtonUp += lvi_MouseRightButtonUp;
-                        lvi.MouseEnter += lvi_MouseEnter;
-                        lvi.MouseLeave += lvi_MouseLeave;
-                        lvSavedBuilds.Items.Add(lvi);
-                    }
-                    File.Delete("savedBuilds");
-                    SaveBuildsToFile();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Unable to load the saved builds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            ImportLegacySavedBuilds();
         }
 
         void lvi_MouseLeave(object sender, MouseEventArgs e)
@@ -587,20 +533,9 @@ namespace POESKillTree.Views
         {
             if (lvSavedBuilds.SelectedItems.Count > 0)
             {
-                if (File.Exists("savedBuilds"))
-                {
-                    var builds = File.ReadAllText("savedBuilds").Split('\n');
-                    foreach (var b in builds)
-                    {
-                        if (((ListViewItem)lvSavedBuilds.SelectedItem).Content.ToString().Split('\n')[0] == b.Split(';')[0].Split('|')[0] && hasBuildNote(b))
-                        {
-                            ((ListViewItem)lvSavedBuilds.SelectedItem).Content =
-                    new PoEBuild(((ListViewItem)lvSavedBuilds.SelectedItem).Content.ToString().Split('\n')[0],
-                        cbCharType.Text + ", " + tbUsedPoints.Text + " points used", tbSkillURL.Text, b.Split(';')[1].Split('|')[1]);
-                        }
-                    }
-                }
-                
+                var selectedBuild = (PoEBuild)((ListViewItem)lvSavedBuilds.SelectedItem).Content;
+                selectedBuild.Description = cbCharType.Text + ", " + tbUsedPoints.Text + " points used";
+                selectedBuild.Url = tbSkillURL.Text;
                 SaveBuildsToFile();
             }
             else
@@ -644,11 +579,7 @@ namespace POESKillTree.Views
                             Note = formBuildName.getNote()
                         }
                 };
-                lvi.MouseDoubleClick += lvi_MouseDoubleClick;
-                lvi.MouseRightButtonUp += lvi_MouseRightButtonUp;
-                lvi.MouseEnter += lvi_MouseEnter;
-                lvi.MouseLeave += lvi_MouseLeave;
-                lvSavedBuilds.Items.Add(lvi);
+                AddItemToSavedBuilds(lvi);
             }
 
             if (lvSavedBuilds.Items.Count > 0)
@@ -712,7 +643,6 @@ namespace POESKillTree.Views
                 popup1.IsOpen = true;
                 return;
             }
-
 
             _itemAttributes = new ItemAttributes(filetoload);
             lbItemAttr.ItemsSource = _itemAttributes.Attributes;
@@ -934,6 +864,15 @@ namespace POESKillTree.Views
             }
         }
 
+        private void AddItemToSavedBuilds(Control lvi)
+        {
+            lvi.MouseDoubleClick += lvi_MouseDoubleClick;
+            lvi.MouseRightButtonUp += lvi_MouseRightButtonUp;
+            lvi.MouseEnter += lvi_MouseEnter;
+            lvi.MouseLeave += lvi_MouseLeave;
+            lvSavedBuilds.Items.Add(lvi);
+        }
+
         private void SaveBuildsToFile()
         {
             _persistentData.SaveBuilds(lvSavedBuilds.Items);
@@ -981,15 +920,15 @@ namespace POESKillTree.Views
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            searchUpdate();
+            SearchUpdate();
         }
         
         private void checkBox1_Click(object sender, RoutedEventArgs e)
         {
-            searchUpdate();
+            SearchUpdate();
         }
 
-        private void searchUpdate()
+        private void SearchUpdate()
         {
             _tree.HighlightNodes(tbSearch.Text, checkBox1.IsChecked != null && checkBox1.IsChecked.Value);
         }
@@ -1200,6 +1139,8 @@ namespace POESKillTree.Views
         }
         #endregion
 
+        #region Theme
+
         private void mnuSetTheme_Click(object sender, RoutedEventArgs e)
         {
             if (sender.Equals(mnuViewThemeLight))
@@ -1242,5 +1183,52 @@ namespace POESKillTree.Views
             ThemeManager.ChangeAppStyle(this, accent, theme);
             mnuViewThemeDark.IsChecked = true;
         }
+
+        #endregion
+
+        #region Legacy
+
+        /// <summary>
+        /// Import builds from legacy build save file "savedBuilds" to PersistentData.xml.
+        /// Warning: This will remove the "savedBuilds"
+        /// </summary>
+        private void ImportLegacySavedBuilds()
+        {
+            try
+            {
+                if (File.Exists("savedBuilds"))
+                {
+                    var saved_builds = new List<PoEBuild>();
+                    var builds = File.ReadAllText("savedBuilds").Split('\n');
+                    foreach (var b in builds)
+                    {
+                        if (hasBuildNote(b))
+                        {
+                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
+                                b.Split(';')[1].Split('|')[0], b.Split(';')[1].Split('|')[1]));
+                        }
+                        else
+                        {
+                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], b.Split(';')[0].Split('|')[1],
+                                b.Split(';')[1], "Right Click to add build note"));
+                        }
+                    }
+                    lvSavedBuilds.Items.Clear();
+                    foreach (var lvi in saved_builds.Select(build => new ListViewItem {Content = build}))
+                    {
+                        AddItemToSavedBuilds(lvi);
+                    }
+                    File.Delete("savedBuilds");
+                    SaveBuildsToFile();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to load the saved builds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        #endregion
+
     }
 }
