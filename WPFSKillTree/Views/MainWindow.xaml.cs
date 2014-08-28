@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing.Printing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -14,7 +13,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -783,10 +781,22 @@ namespace POESKillTree.Views
         private void expAttributes_Collapsed(object sender, RoutedEventArgs e)
         {
             mnuViewAttributes.IsChecked = false;
-            }
+        }
+
         private void expAttributes_Expanded(object sender, RoutedEventArgs e)
-            {
+        {
             mnuViewAttributes.IsChecked = true;
+        }
+
+        private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var selectedAttr = Regex.Replace(Regex.Match(listBox1.SelectedItem.ToString(), @"(?!\d)\w.*\w").Value.Replace(@"+", @"\+").Replace(@"-", @"\-").Replace(@"%", @"\%"), @"\d+", @"\d+");
+            _tree.HighlightNodes(selectedAttr, true, Brushes.Azure);
+        }
+
+        private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SearchUpdate();
         }
 
         private void ToggleBuilds()
@@ -983,6 +993,7 @@ namespace POESKillTree.Views
         }
 
         #region Builds DragAndDrop
+
         private void ListViewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _dragAndDropStartPoint = e.GetPosition(lvSavedBuilds);
@@ -1120,14 +1131,9 @@ namespace POESKillTree.Views
             while (current != null);
             return null;
         }
+
         #endregion
 
-
-        private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            string selectedAttr = Regex.Replace(Regex.Match(listBox1.SelectedItem.ToString(), @"(?!\d)\w.*\w").Value.Replace(@"+", @"\+").Replace(@"-", @"\-").Replace(@"%", @"\%"), @"\d+", @"\d+");
-            _tree.HighlightNodes(selectedAttr, true, Brushes.Azure);
-        }
         #region Theme
 
         private void mnuSetTheme_Click(object sender, RoutedEventArgs e)
@@ -1219,11 +1225,5 @@ namespace POESKillTree.Views
         }
 
         #endregion
-
-
-        private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
-        {
-            SearchUpdate();
-        }
     }
 }
