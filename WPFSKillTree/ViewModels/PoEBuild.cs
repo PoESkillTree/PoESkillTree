@@ -4,9 +4,9 @@ namespace POESKillTree.ViewModels
 {
     public class PoEBuild
     {
+        public string Name { get; set; }
         public string Class { get; set; }
         public string PointsUsed { get; set; }
-        public string Name { get; set; }
         public string Url { get; set; }
         public string Note { get; set; }
 
