@@ -1,11 +1,16 @@
 namespace POESKillTree.ViewModels
 {
-    internal class PoEBuild
+    public class PoEBuild
     {
         public string Description;
         public string Name;
         public string Url;
         public string Note;
+
+        public PoEBuild()
+        {
+            
+        }
 
         public PoEBuild(string name, string description, string url, string note)
         {
