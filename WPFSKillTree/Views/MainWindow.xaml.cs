@@ -50,11 +50,13 @@ namespace POESKillTree.Views
         private static readonly Action EmptyDelegate = delegate { };
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
+        private readonly List<Attribute> _statisticsList = new List<Attribute>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly ToolTip _noteTip = new ToolTip();
         private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attibuteCollection;
+        private ListCollectionView _statisticsCollection;
         private RenderTargetBitmap _clipboardBmp;
 
         private ItemAttributes _itemAttributes;
@@ -200,6 +202,8 @@ namespace POESKillTree.Views
                     _allAttributesList.Add(new Attribute(item));
                 }
                 _allAttributeCollection.Refresh();
+
+                UpdateStatistics(attritemp);
             }
             tbSkillURL.Text = Tree.SaveToURL();
             UpdateAttributeList();
@@ -214,6 +218,17 @@ namespace POESKillTree.Views
             }
             _attibuteCollection.Refresh();
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
+        }
+
+        public void UpdateStatistics(Dictionary<string, List<float>> attrs)
+        {
+            _statisticsList.Clear();
+            foreach (var item in Tree.ComputedStatistics(attrs).Select(InsertNumbersInAttributes))
+            {
+                _statisticsList.Add(new Attribute(item));
+            }
+
+            _statisticsCollection.Refresh();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -241,6 +256,10 @@ namespace POESKillTree.Views
             _allAttributeCollection = new ListCollectionView(_allAttributesList);
             _allAttributeCollection.GroupDescriptions.Add(pgd);
             lbAllAttr.ItemsSource = _allAttributeCollection;
+
+            _statisticsCollection = new ListCollectionView(_statisticsList);
+            _statisticsCollection.GroupDescriptions.Add(new PropertyGroupDescription("") { Converter = new StatisticsGroupStringConverter() });
+            listBoxStatistics.ItemsSource = _statisticsCollection;
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
@@ -783,12 +802,20 @@ namespace POESKillTree.Views
 
         private void expAttributes_Collapsed(object sender, RoutedEventArgs e)
         {
-            mnuViewAttributes.IsChecked = false;
+            if (sender == e.Source) // Ignore contained ListBox group collapsion events.
+            {
+                mnuViewAttributes.IsChecked = false;
+            }
         }
 
         private void expAttributes_Expanded(object sender, RoutedEventArgs e)
         {
-            mnuViewAttributes.IsChecked = true;
+            if (sender == e.Source) // Ignore contained ListBox group expansion events.
+            {
+                mnuViewAttributes.IsChecked = true;
+
+                if (expSheet.IsExpanded) expSheet.IsExpanded = false;
+            }
         }
 
         private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -800,6 +827,14 @@ namespace POESKillTree.Views
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
         {
             SearchUpdate();
+        }
+
+        private void expSheet_Expanded(object sender, RoutedEventArgs e)
+        {
+            if (sender == e.Source) // Ignore contained ListBox group expansion events.
+            {
+                if (expAttributes.IsExpanded) ToggleAttributes();
+            }
         }
 
         private void ToggleBuilds()

@@ -39,7 +39,7 @@ namespace POESKillTree.SkillTreeFiles
         public Dictionary<string, float> BaseAttributes = new Dictionary<string, float>
         {
             {"+# to maximum Mana", 36},
-            {"+# to maximum Life", 44},
+            {"+# to maximum Life", 38},
             {"Evasion Rating: #", 50},
             {"+# Maximum Endurance Charge", 3},
             {"+# Maximum Frenzy Charge", 3},
@@ -365,6 +365,57 @@ namespace POESKillTree.SkillTreeFiles
 
                 return temp;
             }
+        }
+
+        // Returns rounded value with zero fractional digits.
+        public float RoundValue(float value)
+        {
+            return (float)Math.Round((Decimal)value, 0, MidpointRounding.AwayFromZero);
+        }
+
+        // Returns value increased by specified percentage.
+        public float IncreaseValueByPercentage(float value, float percentage)
+        {
+            return RoundValue(value * (100 + percentage) / 100);
+        }
+
+        // Returns computed statistics from total attribute values.
+        public Dictionary<string, List<float>> ComputedStatistics(Dictionary<string, List<float>> attrs)
+        {
+            Dictionary<string, List<float>> comp = new Dictionary<string, List<float>>();
+
+            // Chaos Inoculation.
+            if (attrs.ContainsKey("Maximum Life becomes #, Immune to Chaos Damage"))
+                comp["Life: #"] = new List<float>() { attrs["Maximum Life becomes #, Immune to Chaos Damage"][0] };
+            else
+            {
+                comp["Life: #"] = new List<float>() { attrs["+# to maximum Life"][0] };
+                if (attrs.ContainsKey("#% increased maximum Life"))
+                    comp["Life: #"][0] = IncreaseValueByPercentage(comp["Life: #"][0], attrs["#% increased maximum Life"][0]);
+            }
+
+            comp["Mana: #"] = new List<float>() { attrs["+# to maximum Mana"][0] };
+            if (attrs.ContainsKey("#% increased maximum Mana"))
+                comp["Mana: #"][0] = IncreaseValueByPercentage(comp["Mana: #"][0], attrs["#% increased maximum Mana"][0]);
+
+            comp["Maximum Energy Shield: #"] = new List<float>() { 0 };
+            // Add maximum shield from tree.
+            if (attrs.ContainsKey("+# to maximum Energy Shield"))
+                comp["Maximum Energy Shield: #"][0] += attrs["+# to maximum Energy Shield"][0];
+            // Add maximum shield from items.
+            if (attrs.ContainsKey("Energy Shield:  #"))
+                comp["Maximum Energy Shield: #"][0] += attrs["Energy Shield:  #"][0];
+            // Increase % maximum shield from intelligence.
+            float increase = RoundValue(attrs["+#% Energy Shield"][0]);
+            // Increase % maximum shield from tree and items.
+            if (attrs.ContainsKey("#% increased maximum Energy Shield"))
+                increase += attrs["#% increased maximum Energy Shield"][0];
+            comp["Maximum Energy Shield: #"][0] = IncreaseValueByPercentage(comp["Maximum Energy Shield: #"][0], increase);
+            // More % maximum shield from tree and items.
+            if (attrs.ContainsKey("#% more maximum Energy Shield"))
+                comp["Maximum Energy Shield: #"][0] = IncreaseValueByPercentage(comp["Maximum Energy Shield: #"][0], attrs["#% more maximum Energy Shield"][0]);
+
+            return comp;
         }
 
         public static SkillTree CreateSkillTree(StartLoadingWindow start = null, UpdateLoadingWindow update = null,

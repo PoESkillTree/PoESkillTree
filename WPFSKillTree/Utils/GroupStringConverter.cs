@@ -82,4 +82,32 @@ namespace POESKillTree.Utils
             throw new NotImplementedException();
         }
     }
+
+    [ValueConversion(typeof(string), typeof(string))]
+    public class StatisticsGroupStringConverter : IValueConverter
+    {
+        public static List<string[]> Groups = new List<string[]>
+        {
+            new []{ "life", "Character" },
+            new []{ "mana", "Character" },
+            new []{ "maximum energy shield", "Character" }
+        };
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var s = value.ToString();
+
+            foreach (var gp in Groups)
+            {
+                if (s.ToLower().Contains(gp[0].ToLower())) return gp[1];
+            }
+
+            return "Miscellaneous";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
