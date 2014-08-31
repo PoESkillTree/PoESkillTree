@@ -40,7 +40,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             {"+# to maximum Mana", 36},
             {"+# to maximum Life", 38},
-            {"Evasion Rating: #", 50},
+            {"Evasion Rating: #", 53},
             {"+# Maximum Endurance Charge", 3},
             {"+# Maximum Frenzy Charge", 3},
             {"+# Maximum Power Charge", 3},
@@ -368,15 +368,81 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         // Returns rounded value with zero fractional digits.
-        public float RoundValue(float value)
+        public float RoundValue(float value, int precision)
         {
-            return (float)Math.Round((Decimal)value, 0, MidpointRounding.AwayFromZero);
+            return (float)Math.Round((Decimal)value, precision, MidpointRounding.AwayFromZero);
         }
 
         // Returns value increased by specified percentage.
         public float IncreaseValueByPercentage(float value, float percentage)
         {
-            return RoundValue(value * (100 + percentage) / 100);
+            return value * (100 + percentage) / 100;
+        }
+
+        // Returns value increased by specified percentage and rounded.
+        public float IncreaseValueByPercentage(float value, float percentage, int precision)
+        {
+            return RoundValue(value * (100 + percentage) / 100, precision);
+        }
+
+        // Monster average accuracy for each level (1 .. 100).
+        public static int[] monsterAverageAccuracy = new int[] { 0, // Level 0 placeholder.
+              18,     19,     20,     21,     23,
+              24,     25,     27,     28,     30,
+              31,     33,     35,     36,     38,
+              40,     42,     44,     46,     49,
+              51,     54,     56,     59,     62,
+              65,     68,     71,     74,     78,
+              81,     85,     89,     93,     97,
+             101,    106,    111,    116,    121,
+             126,    132,    137,    143,    149,
+             156,    162,    169,    177,    184,
+             192,    200,    208,    217,    226,
+             236,    245,    255,    266,    277,
+             288,    300,    312,    325,    338,
+             352,    366,    381,    396,    412,
+             428,    445,    463,    481,    500,
+             520,    540,    562,    584,    607,
+             630,    655,    680,    707,    734,
+             762,    792,    822,    854,    887,
+             921,    956,    992,   1030,   1069,
+            1110,   1152,   1196,   1241,   1288
+        };
+
+        // @see http://pathofexile.gamepedia.com/Monster_Damage
+        public float MonsterAverageDamage (int level)
+        {
+        	float a = 1.1512f;
+            float b = 0.0039092f;
+            float c = 17.789f;
+            float d = -7.0896f;
+
+            return (float) Math.Pow(a + b * level, c) + d;
+        }
+
+        // Chance to Evade = 1 - Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
+        // Chance to hit can never be lower than 5%, nor higher than 95%.
+        // @see http://pathofexile.gamepedia.com/Evasion
+        public float ChanceToEvade (int level, float evasionRating)
+        {
+            int maa = monsterAverageAccuracy[level];
+
+            float chance = RoundValue((float)(1 - maa / (maa + Math.Pow(evasionRating / 4, 0.8))) * 100, 0);
+            if (chance < 5f) chance = 5f;
+            else if (chance > 95f) chance = 95f;
+
+            return chance;
+        }
+
+        // Damage Reduction Factor = Armour / ( Armour + (12 * Damage) )
+        // Damage reduction is capped at 90%.
+        // @see http://pathofexile.gamepedia.com/Armour
+        public float PhysicalDamageReduction (int level, float armour)
+        {
+            float reduction = RoundValue(armour / (armour + 12 * MonsterAverageDamage(level)) * 100, 0);
+            if (reduction > 90f) reduction = 90f;
+
+            return reduction;
         }
 
         // Returns computed statistics from total attribute values.
@@ -391,29 +457,124 @@ namespace POESKillTree.SkillTreeFiles
             {
                 comp["Life: #"] = new List<float>() { attrs["+# to maximum Life"][0] };
                 if (attrs.ContainsKey("#% increased maximum Life"))
-                    comp["Life: #"][0] = IncreaseValueByPercentage(comp["Life: #"][0], attrs["#% increased maximum Life"][0]);
+                    comp["Life: #"][0] = IncreaseValueByPercentage(comp["Life: #"][0], attrs["#% increased maximum Life"][0], 0);
             }
 
-            comp["Mana: #"] = new List<float>() { attrs["+# to maximum Mana"][0] };
+            float mana = attrs["+# to maximum Mana"][0];
+            float incMana = 0;
             if (attrs.ContainsKey("#% increased maximum Mana"))
-                comp["Mana: #"][0] = IncreaseValueByPercentage(comp["Mana: #"][0], attrs["#% increased maximum Mana"][0]);
+                incMana = attrs["#% increased maximum Mana"][0];
 
-            comp["Maximum Energy Shield: #"] = new List<float>() { 0 };
+            float es = 0;
             // Add maximum shield from tree.
             if (attrs.ContainsKey("+# to maximum Energy Shield"))
-                comp["Maximum Energy Shield: #"][0] += attrs["+# to maximum Energy Shield"][0];
+                es += attrs["+# to maximum Energy Shield"][0];
             // Add maximum shield from items.
             if (attrs.ContainsKey("Energy Shield:  #"))
-                comp["Maximum Energy Shield: #"][0] += attrs["Energy Shield:  #"][0];
+                es += attrs["Energy Shield:  #"][0];
             // Increase % maximum shield from intelligence.
-            float increase = RoundValue(attrs["+#% Energy Shield"][0]);
+            float incES = RoundValue(attrs["+#% Energy Shield"][0], 0);
             // Increase % maximum shield from tree and items.
             if (attrs.ContainsKey("#% increased maximum Energy Shield"))
-                increase += attrs["#% increased maximum Energy Shield"][0];
-            comp["Maximum Energy Shield: #"][0] = IncreaseValueByPercentage(comp["Maximum Energy Shield: #"][0], increase);
+                incES += attrs["#% increased maximum Energy Shield"][0];
+
+            float moreES = 0;
             // More % maximum shield from tree and items.
             if (attrs.ContainsKey("#% more maximum Energy Shield"))
-                comp["Maximum Energy Shield: #"][0] = IncreaseValueByPercentage(comp["Maximum Energy Shield: #"][0], attrs["#% more maximum Energy Shield"][0]);
+                moreES += attrs["#% more maximum Energy Shield"][0];
+
+            // Acrobatics.
+            float lessArmourAndES = 0;
+            if (attrs.ContainsKey("#% Chance to Dodge Attacks. #% less Armour and Energy Shield"))
+            {
+                lessArmourAndES += attrs["#% Chance to Dodge Attacks. #% less Armour and Energy Shield"][1];
+            }
+
+            // Eldritch Battery.
+            // ( Mana * %mana increases ) + ( ES * ( %ES increases + %mana increases ) * ( %ES more ) )
+            // @see http://pathofexile.gamepedia.com/Eldritch_Battery
+            if (attrs.ContainsKey("Converts all Energy Shield to Mana"))
+            {
+                es = IncreaseValueByPercentage(es, incES + incMana);
+                if (moreES > 0)
+                    es = IncreaseValueByPercentage(es, moreES);
+                if (lessArmourAndES > 0)
+                    es = IncreaseValueByPercentage(es, -lessArmourAndES);
+
+                mana = IncreaseValueByPercentage(mana, incMana) + es;
+                es = 0;
+            }
+            else
+            {
+                mana = IncreaseValueByPercentage(mana, incMana);
+                es = IncreaseValueByPercentage(es, incES);
+                if (moreES > 0)
+                    es = IncreaseValueByPercentage(es, moreES);
+                if (lessArmourAndES > 0)
+                    es = IncreaseValueByPercentage(es, -lessArmourAndES);
+            }
+
+            comp["Mana: #"] = new List<float>() { RoundValue(mana, 0) };
+            comp["Maximum Energy Shield: #"] = new List<float>() { RoundValue(es, 0) };
+
+            // Evasion Rating from level.
+            float evasion = attrs["Evasion Rating: #"][0];
+            // Evasion Rating from tree, items.
+            if (attrs.ContainsKey("Evasion Rating:  #"))
+                evasion += attrs["Evasion Rating:  #"][0];
+            if (attrs.ContainsKey("+# to Evasion Rating"))
+                evasion += attrs["+# to Evasion Rating"][0];
+            // Increase % from dexterity, tree and items.
+            float incEvasion = attrs["#% increased Evasion Rating"][0];
+            float incEvasionAndArmour = 0;
+            if (attrs.ContainsKey("#% increased Evasion Rating and Armour"))
+                incEvasionAndArmour += attrs["#% increased Evasion Rating and Armour"][0];
+
+            float armour = 0;
+            // Armour from items. (Armour 531)
+            if (attrs.ContainsKey("Armour:  #"))
+                armour += attrs["Armour:  #"][0];
+            float incArmour = 0;
+            if (attrs.ContainsKey("#% increased Armour"))
+                incArmour += attrs["#% increased Armour"][0];
+
+            // Iron Reflexes.
+            // Final Armour = Base Evasion * ( 1 + % increased Evasion Rating + % increased Armour + % increased Evasion Rating and Armour )
+            //              + Base Armour  * ( 1 + % increased Armour                              + % increased Evasion Rating and Armour )
+            // @see http://pathofexile.gamepedia.com/Iron_Reflexes
+            if (attrs.ContainsKey("Converts all Evasion Rating to Armour. Dexterity provides no bonus to Evasion Rating"))
+            {
+                // Substract "#% increased Evasion Rating" from Dexterity (it's not being applied).
+                Dictionary<string, List<float>> impl = ImplicitAttributes(attrs);
+                incEvasion -= impl["#% increased Evasion Rating"][0];
+                armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
+                evasion = 0;
+            }
+            else
+            {
+                evasion = IncreaseValueByPercentage(evasion, incEvasion + incEvasionAndArmour);
+                armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour);
+            }
+            if (lessArmourAndES > 0)
+                armour = IncreaseValueByPercentage(armour, -lessArmourAndES);
+
+            if (armour > 0)
+            {
+                comp["Armour: #"] = new List<float>() { RoundValue(armour, 0) };
+                comp["Estimated Physical Damage reduction: #%"] = new List<float>() { PhysicalDamageReduction(_level, RoundValue(armour, 0)) };
+            }
+            if (evasion > 0)
+                comp["Evasion Rating: #"] = new List<float>() { RoundValue(evasion, 0) };
+            comp["Estimated chance to Evade Attacks: #%"] = new List<float>() { ChanceToEvade(_level, RoundValue(evasion, 0)) };
+
+            // Mana Regeneration per Second.
+            // Energy Shield Recharge per Second.
+            // Energy Shield Regeneration per Second.
+
+            // Character attributes.
+            comp["Strength: #"] = attrs["+# to Strength"];
+            comp["Dexterity: #"] = attrs["+# to Dexterity"];
+            comp["Intelligence: #"] = attrs["+# to Intelligence"];
 
             return comp;
         }
@@ -648,7 +809,12 @@ namespace POESKillTree.SkillTreeFiles
 
             retval["+# Accuracy Rating"] = new List<float> {attribs["+# to Dexterity"][0] / DexPerAcc};
             retval["Evasion Rating: #"] = new List<float> {_level * EvasPerLevel};
-            retval["#% increased Evasion Rating"] = new List<float> {attribs["+# to Dexterity"][0] / DexPerEvas};
+
+            // Every 5 points of dexterity provides 1% increased evasion rating. Non-multiples of 5 will be rounded up to the nearest multiple of 5. (142 dexterity will be rounded to 145)
+            int dex = (int)attribs["+# to Dexterity"][0];
+            if (dex % (int)DexPerEvas > 0) dex += (int)DexPerEvas - (dex % (int)DexPerEvas);
+            retval["#% increased Evasion Rating"] = new List<float> { dex / DexPerEvas };
+
             return retval;
         }
 

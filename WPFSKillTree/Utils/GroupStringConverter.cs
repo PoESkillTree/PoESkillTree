@@ -90,7 +90,18 @@ namespace POESKillTree.Utils
         {
             new []{ "life", "Character" },
             new []{ "mana", "Character" },
-            new []{ "maximum energy shield", "Character" }
+            new []{ "maximum energy shield", "Character" },
+            new []{ "strength", "Character" },
+            new []{ "dexterity", "Character" },
+            new []{ "intelligence", "Character" },
+
+            new []{ "armour", "Defence" },
+            new []{ "physical damage reduction", "Defence" },
+            new []{ "evasion rating", "Defence" },
+            new []{ "chance to evade attacks", "Defence" },
+            new []{ "recharge per second", "Defence" },
+            new []{ "regeneration per second", "Defence" },
+            new []{ "resistance", "Defence" }
         };
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
