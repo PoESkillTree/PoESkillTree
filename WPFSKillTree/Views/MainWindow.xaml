@@ -115,17 +115,25 @@
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left"  FlowDirection="LeftToRight" Background="{DynamicResource WhiteColorBrush}">
                     <ListView x:Name="lvSavedBuilds" Margin="0,0,0,31" HorizontalAlignment="Left" Width="255"
                               ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"
-                              AllowDrop="True" DragEnter="ListViewDragEnter" Drop="ListViewDrop" PreviewMouseMove="ListViewPreviewMouseMove" PreviewMouseLeftButtonDown="ListViewMouseLeftButtonDown">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="245"></GridViewColumn>
-                                <GridView.ColumnHeaderContainerStyle>
-                                    <Style>
-                                        <Setter Property="UIElement.Visibility" Value="Collapsed"/>
-                                    </Style>
-                                </GridView.ColumnHeaderContainerStyle>
-                            </GridView>
-                        </ListView.View>
+                              AllowDrop="True" DragEnter="ListViewDragEnter" Drop="ListViewDrop" PreviewMouseMove="ListViewPreviewMouseMove" PreviewMouseLeftButtonDown="ListViewMouseLeftButtonDown"
+                              MouseDoubleClick="lvi_MouseDoubleClick">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="38">
+                                        <Image Source="{Binding Image}" Stretch="Uniform"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" TextWrapping="NoWrap"/>
+                                        <TextBlock Text="{Binding Description}" MaxHeight="60"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                     <Button x:Name="btnSaveNewBuild" Content="Save new" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="80" Click="btnSaveNewBuild_Click"/>
                     <Button x:Name="btnOverwriteBuild" Content="Overwrite" Margin="88,0,0,0" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="84"/>

@@ -12,11 +12,12 @@ namespace POESKillTree.ViewModels
         public string Note { get; set; }
 
         [XmlIgnoreAttribute]
+        public string Image { get { return "/POESKillTree;component/Images/" + Class + ".jpg"; } }
+        [XmlIgnoreAttribute]
         public string Description {get { return Class + ", " + PointsUsed + " points used"; }}
 
         public PoEBuild()
         {
-            
         }
 
         public PoEBuild(string name, string poeClass, string pointsUsed, string url, string note)
@@ -31,18 +32,6 @@ namespace POESKillTree.ViewModels
         public override string ToString()
         {
             return Name + '\n' + Description;
-        }
-
-        public PoEBuild Clone()
-        {
-            return new PoEBuild
-            {
-                Name = Name,
-                Class = Class,
-                PointsUsed = PointsUsed,
-                Url = Url,
-                Note = Note,
-            };
         }
     }
 }
