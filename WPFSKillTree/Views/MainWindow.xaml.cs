@@ -286,7 +286,7 @@ namespace POESKillTree.Views
             if (highlightedItem != null)
             {
                 var build = (PoEBuild) highlightedItem.Content;
-                _noteTip.Content = build.Note;
+                _noteTip.Content = build.Note == @"" ? @"Right Click To Edit" : build.Note;
                 _noteTip.IsOpen = true;
             }
         }
@@ -1206,7 +1206,7 @@ namespace POESKillTree.Views
                         else
                         {
                             saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], poeClass, pointsUsed,
-                                b.Split(';')[1], "Right Click to add build note"));
+                                b.Split(';')[1], ""));
                         }
                     }
                     lvSavedBuilds.Items.Clear();

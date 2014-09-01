@@ -8,11 +8,11 @@
         <Label x:Name="lblName" Content="Choose a name for this build:" HorizontalAlignment="Left" Margin="10,10,0,0"
                VerticalAlignment="Top" />
         <TextBox x:Name="txtName" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="Wrap"
-                 VerticalAlignment="Top" Width="326" />
+                 VerticalAlignment="Top" Width="326"/>
         <Label x:Name="lblNote" Content="Add a note to this build:" HorizontalAlignment="Left" Margin="10,65,0,0"
                VerticalAlignment="Top" />
         <TextBox x:Name="txtName2" HorizontalAlignment="Left" Height="23" Margin="10,90,0,0" TextWrapping="Wrap"
-                 VerticalAlignment="Top" Width="326" />
+                 VerticalAlignment="Top" Width="326"/>
         <Button x:Name="btnOk" Content="OK" HorizontalAlignment="Left" Margin="261,120,0,0" VerticalAlignment="Top"
                 Width="75" Click="btnOk_Click" IsDefault="True" />
     </Grid>
