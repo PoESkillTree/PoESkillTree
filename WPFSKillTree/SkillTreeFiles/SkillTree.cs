@@ -455,9 +455,10 @@ namespace POESKillTree.SkillTreeFiles
                 comp["Life: #"] = new List<float>() { attrs["Maximum Life becomes #, Immune to Chaos Damage"][0] };
             else
             {
-                comp["Life: #"] = new List<float>() { attrs["+# to maximum Life"][0] };
+                float life = attrs["+# to maximum Life"][0];
                 if (attrs.ContainsKey("#% increased maximum Life"))
-                    comp["Life: #"][0] = IncreaseValueByPercentage(comp["Life: #"][0], attrs["#% increased maximum Life"][0], 0);
+                    life = IncreaseValueByPercentage(life, attrs["#% increased maximum Life"][0]);
+                comp["Life: #"] = new List<float>() { RoundValue(life, 0) };
             }
 
             float mana = attrs["+# to maximum Mana"][0];
