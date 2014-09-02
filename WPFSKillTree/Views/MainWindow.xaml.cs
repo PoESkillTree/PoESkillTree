@@ -1216,5 +1216,20 @@ namespace POESKillTree.Views
         }
 
         #endregion
+
+        #region Menu - Help
+
+        private void mnuOpenPoEWebsite(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://www.pathofexile.com/");
+        }
+
+        private void mnuOpenWiki(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://pathofexile.gamepedia.com/");
+        }
+
+        #endregion
+
     }
 }

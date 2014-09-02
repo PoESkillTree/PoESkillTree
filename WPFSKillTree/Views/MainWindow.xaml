@@ -22,6 +22,72 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <ControlTemplate x:Key="SaveIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 20.5833,20.5833L 55.4167,20.5833L 55.4167,55.4167L 45.9167,55.4167L 45.9167,44.3333L 30.0833,44.3333L 30.0833,55.4167L 20.5833,55.4167L 20.5833,20.5833 Z M 33.25,55.4167L 33.25,50.6667L 39.5833,50.6667L 39.5833,55.4167L 33.25,55.4167 Z M 26.9167,23.75L 26.9167,33.25L 49.0833,33.25L 49.0833,23.75L 26.9167,23.75 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ExitIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="UndoIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 25.3362,20.5864L 25.3348,29.2137C 28.5107,25.8499 33.0116,23.7507 38.0029,23.7507C 47.6232,23.7507 55.422,31.5494 55.422,41.1698C 55.422,45.9799 53.4723,50.3347 50.32,53.4869L 46.401,49.5679C 48.5503,47.4187 49.8796,44.4495 49.8796,41.1699C 49.8796,34.6106 44.5623,29.2932 38.003,29.2932C 34.4855,29.2932 31.3251,30.8224 29.1504,33.2522L 38.0029,33.2531L 33.2529,38.0031L 20.5862,38.0031L 20.5862,25.3364L 25.3362,20.5864 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="RedoIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 50.672,20.5864L 55.4219,25.3364L 55.422,38.0031L 42.7553,38.0031L 38.0053,33.2531L 46.8578,33.2522C 44.6831,30.8224 41.5227,29.2932 38.0052,29.2932C 31.4459,29.2932 26.1285,34.6106 26.1285,41.1699C 26.1285,44.4495 27.4579,47.4187 29.6071,49.5679L 25.6881,53.4869C 22.5359,50.3347 20.5862,45.9799 20.5862,41.1698C 20.5862,31.5494 28.385,23.7507 38.0053,23.7507C 42.9966,23.7507 47.4975,25.8499 50.6734,29.2137L 50.672,20.5864 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ResetIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 19,45.9167L 25.6082,45.9167C 28.6524,49.3179 33.0762,51.4583 38,51.4583C 42.9238,51.4583 47.3476,49.3179 50.3918,45.9167L 58.5833,45.9167L 58.5833,57L 19,57L 19,45.9167 Z M 56.2083,48.2917L 53.4374,48.2917L 53.4374,53.0417L 56.2083,53.0417L 56.2083,48.2917 Z M 39.5833,33.25L 30.0833,23.75L 39.5833,14.25L 39.5833,20.6703C 46.7082,21.4579 52.25,27.4985 52.25,34.8333C 52.25,42.7034 45.8701,49.0833 38,49.0833C 30.1299,49.0833 23.75,42.7034 23.75,34.8333C 23.75,32.0174 24.5668,29.3923 25.9763,27.1819L 30.6522,30.1575C 29.7908,31.5083 29.2917,33.1125 29.2917,34.8333C 29.2917,39.6428 33.1905,43.5417 38,43.5417C 42.8095,43.5417 46.7083,39.6428 46.7083,34.8333C 46.7083,30.5646 43.6368,27.0132 39.5833,26.2686L 39.5833,33.25 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ThemeIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 62.2371,19.8246C 63.049,19.0127 64.2725,17.9583 65.6613,16.8261C 63.847,14.4594 61.7358,12.3324 59.3834,10.5005C 58.3342,11.8224 57.3514,12.9827 56.5712,13.763C 49.8537,20.4805 43.532,14.5546 41.2928,16.7938L 32.3362,25.7505L 33.4557,26.8701L 15.5424,40.3051C 18.5279,44.037 17.7816,44.7834 24.4991,51.5009C 31.2166,58.2185 31.963,57.4721 35.6949,60.4576L 49.1299,42.5443L 50.2495,43.6638L 59.2062,34.7072C 61.4454,32.468 55.5196,26.5421 62.2371,19.8246 Z M 35.1351,28.5495L 35.6949,29.1092L 32.3362,32.468L 36.8145,30.2288L 37.9341,31.3484L 34.8552,37.2262L 39.0537,32.468L 40.1732,33.5876L 34.0155,41.9845L 41.2928,34.7072L 43.532,36.9463L 38.2139,42.2644L 44.6516,38.0659L 45.7712,39.1855L 42.4124,44.7834L 46.8908,40.3051L 47.4505,40.8649L 37.0944,54.5798C 35.9748,53.4602 37.0944,50.1015 37.0944,47.8623C 36.8145,45.903 32.616,52.3406 30.3769,50.1015C 28.1377,47.8623 30.6568,47.5824 30.6568,45.3432C 30.6568,43.1041 27.8578,44.7834 25.6186,44.7834C 23.3795,44.7834 24.499,43.6638 24.499,41.4247C 24.499,39.1855 18.9011,40.8649 18.9011,40.8649L 35.1351,28.5495 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ScreenShotIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 30,27C 30,24.3766 32.3767,22 35,22L 41,22C 43.6234,22 46,24.3766 46,27L 50.9999,27.0001C 53.7613,27.0001 55.9999,29.2387 55.9999,32.0001L 55.9999,46.0001C 55.9999,48.7615 53.7613,51.0001 50.9999,51.0001L 25,51.0001C 22.2385,51.0001 20,48.7615 20,46.0001L 20,32.0001C 20,29.2387 22.2385,27.0001 25,27.0001L 30,27 Z M 25.5,30C 24.6716,30 24,30.8954 24,32C 24,33.1046 24.6716,34 25.5,34C 26.3284,34 27,33.1046 27,32C 27,30.8954 26.3284,30 25.5,30 Z M 38,32C 34.134,32 31,35.134 31,39C 31,42.866 34.134,46 38,46C 41.866,46 45,42.866 45,39C 45,35.134 41.866,32 38,32 Z M 38,34.5C 40.4853,34.5 42.5,36.5147 42.5,39C 42.5,41.4853 40.4853,43.5 38,43.5C 35.5147,43.5 33.5,41.4853 33.5,39C 33.5,36.5147 35.5147,34.5 38,34.5 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="DownloadIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="9.3333" Canvas.Left="0.8333" Canvas.Top="3.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 49.0833,33.25C 53.4555,33.25 57,36.7945 57,41.1667C 57,45.5389 53.4045,48.9999 49,49L 39,49L 45,43L 41,43L 41,37L 37,37L 37,43L 33,43L 39,49L 23,49C 20.814,48.9999 19,47.3111 19,45.125C 19,43.1867 20.3931,41.5738 22.2328,41.233L 22.1667,40.3749C 22.1667,37.3993 24.5123,34.9713 27.4553,34.8389C 28.7579,31.1462 32.2783,28.4999 36.4167,28.4999C 40.3459,28.4999 43.7179,30.8853 45.1637,34.2869C 46.3193,33.627 47.6573,33.25 49.0833,33.25 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SkillIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 38,27.1542C 43.99,27.1542 48.8458,32.01 48.8458,38C 48.8458,43.99 43.99,48.8458 38,48.8458C 32.01,48.8458 27.1542,43.99 27.1542,38C 27.1542,32.01 32.01,27.1542 38,27.1542 Z M 38,16.625C 49.8051,16.625 59.375,26.1949 59.375,38C 59.375,49.8051 49.8051,59.375 38,59.375C 26.1949,59.375 16.625,49.8051 16.625,38C 16.625,26.1949 26.1949,16.625 38,16.625 Z M 38,20.5833C 28.381,20.5833 20.5833,28.381 20.5833,38C 20.5833,47.619 28.381,55.4167 38,55.4167C 47.6189,55.4167 55.4167,47.619 55.4167,38C 55.4167,28.381 47.619,20.5833 38,20.5833 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="CopyToClipboardIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 34.0001,60C 32.3433,60 31.0001,58.6569 31.0001,57L 31.0001,54.0001L 23,54.0001C 21.3431,54.0001 20,52.6569 20,51.0001L 20,24.0001C 20,22.3432 21.3431,21.0001 23,21.0001L 26.5001,20.9999C 26.5001,20.9999 27.4999,20.8807 27.4999,19.5C 27.4999,18.1193 29.1191,17 30.4999,17L 38.4998,17.0001C 39.8798,17.0001 41.4988,18.6176 41.5,19.9979L 41.4998,19.5024C 41.5009,20.881 42.5,21 42.5,21L 46,21.0001C 47.6569,21.0001 49,22.3432 49,24.0001L 49,31L 56,38L 56.0001,57C 56.0001,58.6569 54.657,60 53.0001,60L 34.0001,60 Z M 33.9999,31.0001L 33.9999,57.0001L 53.0001,57L 53.0001,43L 42.0002,43L 42.0001,31L 33.9999,31.0001 Z M 53,40.0001L 45,32.0001L 45.0001,40L 53,40.0001 Z M 28.5,25L 40.5,25C 40.5,25 39.4998,23.8809 39.4998,22.5002C 39.4998,21.1194 38.3805,20.0002 36.9998,20.0002L 31.9998,20.0002C 30.6191,20.0002 29.4998,21.1194 29.4998,22.5002C 29.4998,23.8809 28.5,25 28.5,25 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="GlobeIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 38,15.8333C 50.2423,15.8333 60.1667,25.7577 60.1667,38C 60.1667,50.2423 50.2423,60.1667 38,60.1667C 25.7577,60.1667 15.8333,50.2423 15.8333,38C 15.8333,25.7577 25.7577,15.8333 38,15.8333 Z M 38,19C 37.0389,19 36.0944,19.0714 35.1716,19.2091C 34.9741,19.6392 34.8333,20.1113 34.8333,20.5833C 34.8333,22.1667 33.25,19 31.6667,22.1667C 30.0833,25.3333 31.6667,22.1667 31.6667,25.3333C 31.6667,26.9167 29.3752,25.771 30.0833,26.125C 31.6667,26.9167 31.6667,26.9167 30.0833,28.5C 30.0833,28.5 26.9167,26.9167 26.9167,28.5C 26.9167,30.0833 25.3333,30.0833 23.75,30.0833C 22.1667,30.0833 23.75,33.25 22.1667,33.25C 20.9493,33.25 21.6039,31.3779 20.5322,30.5126C 20.1248,31.4618 19.7925,32.4508 19.5428,33.4722C 20.6099,34.4283 20.7886,38.2053 22.1667,39.5834C 23.75,38 23.75,39.5834 25.3333,39.5834C 26.9167,39.5834 26.9167,39.5834 27.7083,41.1667C 29.2917,41.1667 30.0833,42.75 31.6667,44.3333C 33.25,45.9167 36.4166,45.9167 36.4166,47.5C 36.4166,49.0833 34.8333,47.5 34.8333,50.6667C 34.8333,52.25 34.8333,52.25 33.25,52.25C 32.2531,52.25 31.2561,54.1331 30.6544,55.528C 32.9142,56.4761 35.3959,57 38,57C 43.3179,57 48.1255,54.8153 51.5742,51.2944L 50.6666,49.4792C 50.6666,49.4792 52.6458,46.3125 51.0625,44.7292C 49.4791,43.1459 49.4791,41.5625 49.4791,41.5625C 49.4791,41.5625 46.3125,44.7292 44.7291,43.1458C 43.1458,41.5625 43.1458,43.1458 41.5625,39.9792C 39.9791,36.8125 43.1458,35.2292 43.1458,35.2292C 43.1458,35.2292 43.1458,32.0625 44.7291,32.0625C 46.3125,32.0625 47.8958,28.8959 51.0625,32.0625C 51.0625,32.0625 52.8924,30.8426 55.4814,30.5444C 54.6693,28.6428 53.5561,26.9006 52.2016,25.3777C 51.9172,25.5822 51.545,25.7292 51.0625,25.7292C 49.4791,25.7292 52.6458,28.8959 51.0625,28.8959C 49.4791,28.8959 49.4791,27.3125 47.8958,27.3125C 46.3125,27.3125 46.3125,28.8959 44.7291,30.4792C 43.1458,32.0625 44.7291,30.4792 43.1458,28.8959C 41.5625,27.3125 46.3125,28.8959 44.7291,27.3125C 43.1458,25.7292 46.3125,25.7292 46.3125,24.1459C 46.3125,22.904 48.2605,22.6362 49.1008,22.5784C 48.187,21.9195 47.2124,21.3398 46.3125,20.9792C 47.8958,22.5625 44.7291,24.1459 43.1458,24.1459C 41.6585,24.1459 42.9653,21.3518 43.1294,19.7005C 41.4977,19.2441 39.7773,19 38,19 Z M 19,38C 19,43.5885 21.4127,48.6134 25.2533,52.09L 23.75,49.0833C 22.1667,49.0833 21.375,45.5209 21.375,43.9375C 21.375,42.6669 20.8651,41.6512 21.4821,40.4812C 19.2482,38.2376 20.5833,39.454 20.5833,38C 20.5833,37.2463 19.8657,36.4925 19.1137,35.9096C 19.0385,36.5961 19,37.2935 19,38 Z "/>
+            </Canvas>
+        </ControlTemplate>
     </Window.Resources>
     <Grid Margin="0">
         <Grid.RowDefinitions>
@@ -55,16 +121,39 @@
         <!-- grid row 0 - upper part-->
         <Menu IsMainMenu="True" x:Name="menu1" Grid.Row="0" Margin="0,0,0,2">
             <MenuItem Header="_File ">
-                <MenuItem Header="_Save As" InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click"/>
-                <MenuItem Header="_Exit" Click="menu_exit"/>
+                <MenuItem Header="_Save As" InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource SaveIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Exit" Click="menu_exit">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource ExitIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Edit ">
-                <MenuItem x:Name="mnuUndo" Header="_Undo" InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click"/>
-                <MenuItem x:Name="mnuRedo" Header="_Redo" InputGestureText="Ctrl+Y" Click="tbSkillURL_Redo_Click"/>
-                <MenuItem Header="_Reset" InputGestureText="Ctrl+R" Click="RecSkillTree_Reset_Click"/>
+                <MenuItem x:Name="mnuUndo" Header="_Undo" InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource UndoIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="mnuRedo" Header="_Redo" InputGestureText="Ctrl+Y" Click="tbSkillURL_Redo_Click">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource RedoIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Reset" InputGestureText="Ctrl+R" Click="RecSkillTree_Reset_Click">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource ResetIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_View ">
                 <MenuItem Header="_Theme ">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource ThemeIcon}" />
+                    </MenuItem.Icon>
                     <MenuItem x:Name="mnuViewThemeLight" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Light" Click="mnuSetTheme_Click" />
                     <MenuItem x:Name="mnuViewThemeDark" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Dark" Click="mnuSetTheme_Click"/>
                 </MenuItem>
@@ -73,15 +162,36 @@
                 <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="False" InputGestureText="Ctrl+Q" Click="ToggleAttributes_Click"/>
             </MenuItem>
             <MenuItem Header="_Tools ">
-                <MenuItem Header="_ScreenShot" Click="ScreenShot_Click"/>
-                <MenuItem Header="_Download/Import Items" Click="ImportItems_Click"/>
-                <MenuItem Header="_Skill highlighted nodes" Click="SkillHighlightedNodes_Click"/>
-                <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="btnCopyStats_Click"/>
+                <MenuItem Header="_ScreenShot" Click="ScreenShot_Click">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource ScreenShotIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Download/Import Items" Click="ImportItems_Click">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource DownloadIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Skill highlighted nodes" Click="SkillHighlightedNodes_Click">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource SkillIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="btnCopyStats_Click">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
-            <!--<MenuItem Header="_Help ">
-                <MenuItem Header="_View Help"/>
-                <MenuItem Header="_About"/>
-            </MenuItem>-->
+            <MenuItem Header="_Help ">
+                <MenuItem Header="_Links ">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource GlobeIcon}" />
+                    </MenuItem.Icon>
+                    <MenuItem Header="_Path of Exile Website" Click="mnuOpenPoEWebsite"/>
+                    <MenuItem Header="_Path of Exile Wiki" Click="mnuOpenWiki"/>
+                </MenuItem>
+            </MenuItem>
         </Menu>
 
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
