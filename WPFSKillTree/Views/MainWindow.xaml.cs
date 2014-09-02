@@ -770,12 +770,18 @@ namespace POESKillTree.Views
 
         private void expAttributes_Collapsed(object sender, RoutedEventArgs e)
         {
-            mnuViewAttributes.IsChecked = false;
+            if (sender == e.Source) // Ignore contained ListBox group collapsion events.
+            {
+                mnuViewAttributes.IsChecked = false;
+            }
         }
 
         private void expAttributes_Expanded(object sender, RoutedEventArgs e)
         {
-            mnuViewAttributes.IsChecked = true;
+            if (sender == e.Source) // Ignore contained ListBox group collapsion events.
+            {
+                mnuViewAttributes.IsChecked = true;
+            }
         }
 
         private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)

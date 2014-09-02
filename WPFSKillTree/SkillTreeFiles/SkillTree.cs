@@ -39,8 +39,8 @@ namespace POESKillTree.SkillTreeFiles
         public Dictionary<string, float> BaseAttributes = new Dictionary<string, float>
         {
             {"+# to maximum Mana", 36},
-            {"+# to maximum Life", 44},
-            {"Evasion Rating: #", 50},
+            {"+# to maximum Life", 38},
+            {"Evasion Rating: #", 53},
             {"+# Maximum Endurance Charge", 3},
             {"+# Maximum Frenzy Charge", 3},
             {"+# Maximum Power Charge", 3},
