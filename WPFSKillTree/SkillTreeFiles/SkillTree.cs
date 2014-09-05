@@ -10,6 +10,8 @@ using System.Windows;
 using System.Windows.Media;
 using Newtonsoft.Json;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
+using POESKillTree.ViewModels;
+using ItemClass = POESKillTree.ViewModels.ItemAttributes.Item.ItemClass;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -446,7 +448,7 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         // Returns computed statistics from total attribute values.
-        public Dictionary<string, List<float>> ComputedStatistics(Dictionary<string, List<float>> attrs)
+        public Dictionary<string, List<float>> ComputedStatistics(Dictionary<string, List<float>> attrs, ItemAttributes itemAttrs)
         {
             Dictionary<string, List<float>> comp = new Dictionary<string, List<float>>();
 
@@ -491,12 +493,41 @@ namespace POESKillTree.SkillTreeFiles
                 lessArmourAndES += attrs["#% Chance to Dodge Attacks. #% less Armour and Energy Shield"][1];
             }
 
+            // Equipped Shield bonuses.
+            float incArmourShield = 0;
+            float incESShield = 0;
+            float incDefencesShield = 0;
+            if (attrs.ContainsKey("#% increased Armour from equipped Shield"))
+                incArmourShield += attrs["#% increased Armour from equipped Shield"][0];
+            if (attrs.ContainsKey("#% increased Energy Shield from equipped Shield"))
+                incESShield += attrs["#% increased Energy Shield from equipped Shield"][0];
+            if (attrs.ContainsKey("#% increased Defences from equipped Shield"))
+                incDefencesShield += attrs["#% increased Defences from equipped Shield"][0];
+            float shieldArmour = 0;
+            float shieldEvasion = 0;
+            float shieldES = 0;
+            if (incDefencesShield > 0 || incArmourShield > 0 || incESShield > 0)
+            {
+                List<float> value = itemAttrs.GetItemAttributeValue(ItemClass.OffHand, "Armour:  #");
+                if (value.Count > 0)
+                    shieldArmour += value[0] * (incArmourShield + incDefencesShield) / 100;
+
+                value = itemAttrs.GetItemAttributeValue(ItemClass.OffHand, "Evasion Rating:  #");
+                if (value.Count > 0)
+                    shieldEvasion += value[0] * (incDefencesShield) / 100;
+
+                value = itemAttrs.GetItemAttributeValue(ItemClass.OffHand, "Energy Shield:  #");
+                if (value.Count > 0)
+                    shieldES += value[0] * (incESShield + incDefencesShield) / 100;
+            }
+
             // Eldritch Battery.
             // ( Mana * %mana increases ) + ( ES * ( %ES increases + %mana increases ) * ( %ES more ) )
             // @see http://pathofexile.gamepedia.com/Eldritch_Battery
             if (attrs.ContainsKey("Converts all Energy Shield to Mana"))
             {
                 es = IncreaseValueByPercentage(es, incES + incMana);
+                es += shieldES;
                 if (moreES > 0)
                     es = IncreaseValueByPercentage(es, moreES);
                 if (lessArmourAndES > 0)
@@ -509,6 +540,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 mana = IncreaseValueByPercentage(mana, incMana);
                 es = IncreaseValueByPercentage(es, incES);
+                es += shieldES;
                 if (moreES > 0)
                     es = IncreaseValueByPercentage(es, moreES);
                 if (lessArmourAndES > 0)
@@ -532,7 +564,7 @@ namespace POESKillTree.SkillTreeFiles
                 incEvasionAndArmour += attrs["#% increased Evasion Rating and Armour"][0];
 
             float armour = 0;
-            // Armour from items. (Armour 531)
+            // Armour from items.
             if (attrs.ContainsKey("Armour:  #"))
                 armour += attrs["Armour:  #"][0];
             float incArmour = 0;
@@ -549,12 +581,13 @@ namespace POESKillTree.SkillTreeFiles
                 Dictionary<string, List<float>> impl = ImplicitAttributes(attrs);
                 incEvasion -= impl["#% increased Evasion Rating"][0];
                 armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
+                armour += shieldArmour + shieldEvasion;
                 evasion = 0;
             }
             else
             {
-                evasion = IncreaseValueByPercentage(evasion, incEvasion + incEvasionAndArmour);
-                armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour);
+                evasion = IncreaseValueByPercentage(evasion, incEvasion + incEvasionAndArmour) + shieldEvasion;
+                armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + shieldArmour;
             }
             if (lessArmourAndES > 0)
                 armour = IncreaseValueByPercentage(armour, -lessArmourAndES);

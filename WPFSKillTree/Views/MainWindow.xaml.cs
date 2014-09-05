@@ -223,7 +223,7 @@ namespace POESKillTree.Views
         public void UpdateStatistics(Dictionary<string, List<float>> attrs)
         {
             _statisticsList.Clear();
-            foreach (var item in Tree.ComputedStatistics(attrs).Select(InsertNumbersInAttributes))
+            foreach (var item in Tree.ComputedStatistics(attrs, _itemAttributes).Select(InsertNumbersInAttributes))
             {
                 _statisticsList.Add(new Attribute(item));
             }

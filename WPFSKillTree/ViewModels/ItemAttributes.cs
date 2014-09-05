@@ -8,7 +8,7 @@ using Raven.Json.Linq;
 
 namespace POESKillTree.ViewModels
 {
-    class ItemAttributes
+    public class ItemAttributes
     {
         public class Item
         {
@@ -148,6 +148,12 @@ namespace POESKillTree.ViewModels
                         var mods = Mod.CreateMods(s.Replace("Additional ", ""), this.Class);
                         Mods.AddRange(mods);
                     }
+                if (val.ContainsKey("craftedMods"))
+                    foreach (string s in val["craftedMods"].Values<string>())
+                    {
+                        var mods = Mod.CreateMods(s.Replace("Additional ", ""), this.Class);
+                        Mods.AddRange(mods);
+                    }
             }
             static Regex colorcleaner = new Regex("\\<.+?\\>");
             static Regex numberfilter = new Regex("[0-9]*\\.?[0-9]+");
@@ -225,7 +231,7 @@ namespace POESKillTree.ViewModels
             }
         }
 
-        List<Item> Equip = new List<Item>();
+        public List<Item> Equip = new List<Item>();
 
         private Dictionary<string, List<float>> AgregatedAttributes;
         public ListCollectionView Attributes;
@@ -451,6 +457,19 @@ namespace POESKillTree.ViewModels
                 }
                 return 0;
             }
+        }
+    
+        public List<float> GetItemAttributeValue (Item.ItemClass itemClass, string name)
+        {
+            List<float> value = new List<float>();
+
+            foreach (Item item in Equip)
+            {
+                if (item.Class == itemClass && item.Attributes.ContainsKey(name))
+                    return item.Attributes[name];
+            }
+
+            return value;
         }
     }
 }
