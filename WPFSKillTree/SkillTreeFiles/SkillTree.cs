@@ -387,6 +387,12 @@ namespace POESKillTree.SkillTreeFiles
             return RoundValue(value * (100 + percentage) / 100, precision);
         }
 
+        // Returns percent of value.
+        public float PercentOfValue (float value, float percentage)
+        {
+            return value * percentage / 100;
+        }
+
         // Monster average accuracy for each level (1 .. 100).
         public static int[] monsterAverageAccuracy = new int[] { 0, // Level 0 placeholder.
               18,     19,     20,     21,     23,
@@ -452,16 +458,17 @@ namespace POESKillTree.SkillTreeFiles
         {
             Dictionary<string, List<float>> comp = new Dictionary<string, List<float>>();
 
+            float life;
             // Chaos Inoculation.
             if (attrs.ContainsKey("Maximum Life becomes #, Immune to Chaos Damage"))
-                comp["Life: #"] = new List<float>() { attrs["Maximum Life becomes #, Immune to Chaos Damage"][0] };
+                life = attrs["Maximum Life becomes #, Immune to Chaos Damage"][0];
             else
             {
-                float life = attrs["+# to maximum Life"][0];
+                life = attrs["+# to maximum Life"][0];
                 if (attrs.ContainsKey("#% increased maximum Life"))
                     life = IncreaseValueByPercentage(life, attrs["#% increased maximum Life"][0]);
-                comp["Life: #"] = new List<float>() { RoundValue(life, 0) };
             }
+            comp["Life: #"] = new List<float>() { RoundValue(life, 0) };
 
             float mana = attrs["+# to maximum Mana"][0];
             float incMana = 0;
@@ -510,15 +517,15 @@ namespace POESKillTree.SkillTreeFiles
             {
                 List<float> value = itemAttrs.GetItemAttributeValue(ItemClass.OffHand, "Armour:  #");
                 if (value.Count > 0)
-                    shieldArmour += value[0] * (incArmourShield + incDefencesShield) / 100;
+                    shieldArmour += PercentOfValue(value[0], incArmourShield + incDefencesShield);
 
                 value = itemAttrs.GetItemAttributeValue(ItemClass.OffHand, "Evasion Rating:  #");
                 if (value.Count > 0)
-                    shieldEvasion += value[0] * (incDefencesShield) / 100;
+                    shieldEvasion += PercentOfValue(value[0], incDefencesShield);
 
                 value = itemAttrs.GetItemAttributeValue(ItemClass.OffHand, "Energy Shield:  #");
                 if (value.Count > 0)
-                    shieldES += value[0] * (incESShield + incDefencesShield) / 100;
+                    shieldES += PercentOfValue(value[0],  incESShield + incDefencesShield);
             }
 
             // Eldritch Battery.
@@ -546,6 +553,10 @@ namespace POESKillTree.SkillTreeFiles
                 if (lessArmourAndES > 0)
                     es = IncreaseValueByPercentage(es, -lessArmourAndES);
             }
+
+            // Blood Magic.
+            if (attrs.ContainsKey("Removes all mana. Spend Life instead of Mana for Skills"))
+                mana = 0;
 
             comp["Mana: #"] = new List<float>() { RoundValue(mana, 0) };
             comp["Maximum Energy Shield: #"] = new List<float>() { RoundValue(es, 0) };
@@ -601,9 +612,50 @@ namespace POESKillTree.SkillTreeFiles
                 comp["Evasion Rating: #"] = new List<float>() { RoundValue(evasion, 0) };
             comp["Estimated chance to Evade Attacks: #%"] = new List<float>() { ChanceToEvade(_level, RoundValue(evasion, 0)) };
 
-            // Mana Regeneration per Second.
             // Energy Shield Recharge per Second.
-            // Energy Shield Regeneration per Second.
+            // @see http://pathofexile.gamepedia.com/Energy_shield
+            if (es > 0)
+            {
+                float esRecharge = es / 3; // By default, energy shield recharges at a rate equal to a third of the character's maximum energy shield per second.
+                comp["Energy Shield Recharge per Second: #"] = new List<float>() { RoundValue(esRecharge, 1) };
+                float esDelay = 6; // By default, the delay period for energy shield to begin to recharge is 6 seconds.
+                if (attrs.ContainsKey("#% faster start of Energy Shield Recharge"))
+                    esDelay = esDelay * 100 / (100 + attrs["#% faster start of Energy Shield Recharge"][0]);
+                comp["Energy Shield Recharge Delay: #s"] = new List<float>() { RoundValue(esDelay, 1) };
+            }
+
+            // Life Regeneration.
+            float lifeRegen = 0;
+            if (attrs.ContainsKey("#% of Life Regenerated per Second"))
+                lifeRegen += attrs["#% of Life Regenerated per Second"][0];
+
+            // Vaal Pact.
+            if (attrs.ContainsKey("Life Leech applies instantly at #% effectiveness. Life Regeneration has no effect."))
+                lifeRegen = 0;
+
+            // Zealot's Oath.
+            if (attrs.ContainsKey("Life Regeneration applies to Energy Shield instead of Life"))
+            {
+                if (es > 0 && lifeRegen > 0)
+                    comp["Energy Shield Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(es, lifeRegen), 1) };
+            }
+            else
+            {
+                if (life > 1 && lifeRegen > 0)
+                    comp["Life Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(life, lifeRegen), 1) };
+            }
+
+            // Mana Regeneration.
+            if (mana > 0)
+            {
+                float manaRegen = PercentOfValue(mana, 1.75f);
+                // manaRegen += ClarityManaRegenerationPerSecond; // Clarity provides flat mana regeneration bonus.
+                float incManaRegen = 0;
+                if (attrs.ContainsKey("#% increased Mana Regeneration Rate"))
+                    incManaRegen += attrs["#% increased Mana Regeneration Rate"][0];
+                manaRegen = IncreaseValueByPercentage(manaRegen, incManaRegen);
+                comp["Mana Regeneration per Second: #"] = new List<float>() { RoundValue(manaRegen, 1) };
+            }
 
             // Character attributes.
             comp["Strength: #"] = attrs["+# to Strength"];

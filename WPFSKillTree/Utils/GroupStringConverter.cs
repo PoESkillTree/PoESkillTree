@@ -88,9 +88,9 @@ namespace POESKillTree.Utils
     {
         public static List<string[]> Groups = new List<string[]>
         {
-            new []{ "life", "Character" },
-            new []{ "mana", "Character" },
-            new []{ "maximum energy shield", "Character" },
+            new []{ "life:", "Character" },
+            new []{ "mana:", "Character" },
+            new []{ "maximum energy shield:", "Character" },
             new []{ "strength", "Character" },
             new []{ "dexterity", "Character" },
             new []{ "intelligence", "Character" },
@@ -101,6 +101,7 @@ namespace POESKillTree.Utils
             new []{ "chance to evade attacks", "Defence" },
             new []{ "recharge per second", "Defence" },
             new []{ "regeneration per second", "Defence" },
+            new []{ "energy shield recharge", "Defence" },
             new []{ "resistance", "Defence" }
         };
 
