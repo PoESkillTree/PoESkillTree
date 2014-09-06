@@ -616,7 +616,7 @@ namespace POESKillTree.SkillTreeFiles
             // @see http://pathofexile.gamepedia.com/Energy_shield
             if (es > 0)
             {
-                float esRecharge = es / 3; // By default, energy shield recharges at a rate equal to a third of the character's maximum energy shield per second.
+                float esRecharge = RoundValue(es, 0) / 3; // By default, energy shield recharges at a rate equal to a third of the character's maximum energy shield per second.
                 comp["Energy Shield Recharge per Second: #"] = new List<float>() { RoundValue(esRecharge, 1) };
                 float esDelay = 6; // By default, the delay period for energy shield to begin to recharge is 6 seconds.
                 if (attrs.ContainsKey("#% faster start of Energy Shield Recharge"))
@@ -637,18 +637,18 @@ namespace POESKillTree.SkillTreeFiles
             if (attrs.ContainsKey("Life Regeneration applies to Energy Shield instead of Life"))
             {
                 if (es > 0 && lifeRegen > 0)
-                    comp["Energy Shield Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(es, lifeRegen), 1) };
+                    comp["Energy Shield Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(RoundValue(es, 0), lifeRegen), 1) };
             }
             else
             {
                 if (life > 1 && lifeRegen > 0)
-                    comp["Life Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(life, lifeRegen), 1) };
+                    comp["Life Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(RoundValue(life, 0), lifeRegen), 1) };
             }
 
             // Mana Regeneration.
             if (mana > 0)
             {
-                float manaRegen = PercentOfValue(mana, 1.75f);
+                float manaRegen = PercentOfValue(RoundValue(mana, 0), 1.75f);
                 // manaRegen += ClarityManaRegenerationPerSecond; // Clarity provides flat mana regeneration bonus.
                 float incManaRegen = 0;
                 if (attrs.ContainsKey("#% increased Mana Regeneration Rate"))
