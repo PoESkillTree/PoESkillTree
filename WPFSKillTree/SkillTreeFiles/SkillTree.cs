@@ -387,6 +387,12 @@ namespace POESKillTree.SkillTreeFiles
             return RoundValue(value * (100 + percentage) / 100, precision);
         }
 
+        // Returns value capped at specified maximum.
+        public float MaximumValue (float value, float maximum)
+        {
+            return value <= maximum ? value : maximum;
+        }
+
         // Returns percent of value.
         public float PercentOfValue (float value, float percentage)
         {
@@ -457,6 +463,20 @@ namespace POESKillTree.SkillTreeFiles
         public Dictionary<string, List<float>> ComputedStatistics(Dictionary<string, List<float>> attrs, ItemAttributes itemAttrs)
         {
             Dictionary<string, List<float>> comp = new Dictionary<string, List<float>>();
+            // Difficulty.
+            bool difficultyNormal = true;
+            bool difficultyCruel = false;
+            bool difficultyMerciless = false;
+            // Bandits.
+            bool banditNormalKraityn = false; // +8% to all elemental resistances
+            bool banditNormalAlira = false; // +40 Mana
+            bool banditNormalOak = false; // +40 Life
+            bool banditCruelKraityn = false; // +8% Attack Speed
+            bool banditCruelAlira = false; // +4% Cast Speed
+            bool banditCruelOak = false; // +18% Physical Damage
+            bool banditMercilessKraityn = false; // +1 Max Frenzy Charge
+            bool banditMercilessAlira = false; // +1 Max Power Charge
+            bool banditMercilessOak = false; // +1 Max Endurance Charge
 
             float life;
             // Chaos Inoculation.
@@ -465,6 +485,8 @@ namespace POESKillTree.SkillTreeFiles
             else
             {
                 life = attrs["+# to maximum Life"][0];
+                if (banditNormalOak) // Bandit.
+                    life += 40;
                 if (attrs.ContainsKey("#% increased maximum Life"))
                     life = IncreaseValueByPercentage(life, attrs["#% increased maximum Life"][0]);
             }
@@ -472,6 +494,8 @@ namespace POESKillTree.SkillTreeFiles
 
             float mana = attrs["+# to maximum Mana"][0];
             float incMana = 0;
+            if (banditNormalAlira) // Bandit.
+                mana += 40;
             if (attrs.ContainsKey("#% increased maximum Mana"))
                 incMana = attrs["#% increased maximum Mana"][0];
 
@@ -661,6 +685,134 @@ namespace POESKillTree.SkillTreeFiles
             comp["Strength: #"] = attrs["+# to Strength"];
             comp["Dexterity: #"] = attrs["+# to Dexterity"];
             comp["Intelligence: #"] = attrs["+# to Intelligence"];
+
+            // Shield, Staff and Dual Wielding detection.
+            bool hasShield = false;
+            bool hasStaff = false;
+            bool isDualWielding = false;
+            List<float> valueList = itemAttrs.GetItemAttributeValue(ItemClass.OffHand, "Chance to Block:  #%");
+            if (valueList.Count > 0) hasShield = true;
+            else
+            {
+                valueList = itemAttrs.GetItemAttributeValue(ItemClass.MainHand, "#% Chance to Block");
+                if (valueList.Count > 0) hasStaff = true;
+                else
+                {
+                    List<float> mainHand = itemAttrs.GetItemAttributeValue(ItemClass.MainHand, "Attacks per Second:  #");
+                    List<float> offHand = itemAttrs.GetItemAttributeValue(ItemClass.OffHand, "Attacks per Second:  #");
+                    if (mainHand.Count > 0 && offHand.Count > 0) isDualWielding = true;
+                }
+            }
+
+            // Resistances.
+            float maxResistFire = 75;
+            float maxResistCold = 75;
+            float maxResistLightning = 75;
+            float maxResistChaos = 75;
+            float resistFire = 0;
+            float resistCold = 0;
+            float resistLightning = 0;
+            float resistChaos = 0;
+            // Penalties to resistances at difficulty levels.
+            if (difficultyCruel)
+                resistFire = resistCold = resistLightning = resistChaos = -20;
+            else if (difficultyMerciless)
+                resistFire = resistCold = resistLightning = resistChaos = -60;
+            if (banditNormalKraityn) // Bandit.
+            {
+                resistFire += 8;
+                resistCold += 8;
+                resistLightning += 8;
+            }
+            if (attrs.ContainsKey("+#% to Fire Resistance"))
+                resistFire += attrs["+#% to Fire Resistance"][0];
+            if (attrs.ContainsKey("+#% to Cold Resistance"))
+                resistCold += attrs["+#% to Cold Resistance"][0];
+            if (attrs.ContainsKey("+#% to Lightning Resistance"))
+                resistLightning += attrs["+#% to Lightning Resistance"][0];
+            if (attrs.ContainsKey("+#% to Chaos Resistance"))
+                resistChaos += attrs["+#% to Chaos Resistance"][0];
+            if (attrs.ContainsKey("+#% to Fire and Cold Resistances")) // Two-Stone Ring.
+            {
+                float value = attrs["+#% to Fire and Cold Resistances"][0];
+                resistFire += value;
+                resistCold += value;
+            }
+            if (attrs.ContainsKey("+#% to Fire and Lightning Resistances")) // Two-Stone Ring.
+            {
+                float value = attrs["+#% to Fire and Lightning Resistances"][0];
+                resistFire += value;
+                resistLightning += value;
+            }
+            if (attrs.ContainsKey("+#% to Cold and Lightning Resistances")) // Two-Stone Ring.
+            {
+                float value = attrs["+#% to Cold and Lightning Resistances"][0];
+                resistCold += value;
+                resistLightning += value;
+            }
+            if (attrs.ContainsKey("+#% to all Elemental Resistances"))
+            {
+                float value = attrs["+#% to all Elemental Resistances"][0];
+                resistFire += value;
+                resistCold += value;
+                resistLightning += value;
+            }
+            if (hasShield && attrs.ContainsKey("+#% Elemental Resistances while holding a Shield"))
+            {
+                float value = attrs["+#% Elemental Resistances while holding a Shield"][0];
+                resistFire += value;
+                resistCold += value;
+                resistLightning += value;
+            }
+            if (attrs.ContainsKey("+#% to maximum Fire Resistance"))
+                maxResistFire += attrs["+#% to maximum Fire Resistance"][0];
+            if (attrs.ContainsKey("+#% to maximum Cold Resistance"))
+                maxResistCold += attrs["+#% to maximum Cold Resistance"][0];
+            if (attrs.ContainsKey("+#% to maximum Lightning Resistance"))
+                maxResistLightning += attrs["+#% to maximum Lightning Resistance"][0];
+            // Chaos Inoculation.
+            if (attrs.ContainsKey("Maximum Life becomes #, Immune to Chaos Damage"))
+                maxResistChaos = resistChaos = 100;
+            comp["Fire Resistance: #% (#%)"] = new List<float>() { MaximumValue(resistFire, maxResistFire), resistFire };
+            comp["Cold Resistance: #% (#%)"] = new List<float>() { MaximumValue(resistCold, maxResistCold), resistCold };
+            comp["Lightning Resistance: #% (#%)"] = new List<float>() { MaximumValue(resistLightning, maxResistLightning), resistLightning };
+            comp["Chaos Resistance: #% (#%)"] = new List<float>() { MaximumValue(resistChaos, maxResistChaos), resistChaos };
+
+            // Chance to Block Attacks and Spells.
+            // Block chance is capped at 75%. The chance to block spells is also capped at 75%.
+            // @see http://pathofexile.gamepedia.com/Blocking
+            float chanceBlockAttacks = 0;
+            float chanceBlockSpells = 0;
+            if (hasShield)
+            {
+                valueList = itemAttrs.GetItemAttributeValue(ItemClass.OffHand, "Chance to Block:  #%");
+                chanceBlockAttacks += valueList[0];
+            }
+            else if (hasStaff)
+            {
+                valueList = itemAttrs.GetItemAttributeValue(ItemClass.MainHand, "#% Chance to Block");
+                chanceBlockAttacks += valueList[0];
+            } 
+            else if (isDualWielding)
+            {
+                chanceBlockAttacks += 15; // When dual wielding, the base chance to block is 15% no matter which weapons are used.
+            }
+            if (hasShield && attrs.ContainsKey("#% additional Chance to Block with Shields"))
+                chanceBlockAttacks += attrs["#% additional Chance to Block with Shields"][0];
+            if (hasStaff && attrs.ContainsKey("#% additional Block Chance With Staves"))
+                chanceBlockAttacks += attrs["#% additional Block Chance With Staves"][0];
+            if (isDualWielding && attrs.ContainsKey("#% additional Chance to Block while Dual Wielding"))
+                chanceBlockAttacks += attrs["#% additional Chance to Block while Dual Wielding"][0];
+            if ((isDualWielding || hasShield) && attrs.ContainsKey("#% additional Chance to Block while Dual Wielding or holding a Shield"))
+                chanceBlockAttacks += attrs["#% additional Chance to Block while Dual Wielding or holding a Shield"][0];
+            if (attrs.ContainsKey("#% of Block Chance applied to Spells"))
+                chanceBlockSpells = PercentOfValue(chanceBlockAttacks, attrs["#% of Block Chance applied to Spells"][0]);
+            if (hasShield && attrs.ContainsKey("#% additional Chance to Block Spells with Shields"))
+                chanceBlockSpells += attrs["#% additional Chance to Block Spells with Shields"][0];
+            if (chanceBlockAttacks > 0)
+                comp["Chance to Block Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockAttacks, 0), 75) };
+            if (chanceBlockSpells > 0)
+                comp["Chance to Block Spells: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockSpells, 0), 75) };
 
             return comp;
         }

@@ -465,8 +465,13 @@ namespace POESKillTree.ViewModels
 
             foreach (Item item in Equip)
             {
-                if (item.Class == itemClass && item.Attributes.ContainsKey(name))
-                    return item.Attributes[name];
+                if (item.Class == itemClass)
+                {
+                    if (item.Attributes.ContainsKey(name)) return item.Attributes[name];
+
+                    Item.Mod mod = item.Mods.Find(m => m.Attribute == name);
+                    if (mod != null) return mod.Value;
+                }
             }
 
             return value;

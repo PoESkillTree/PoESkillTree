@@ -102,7 +102,8 @@ namespace POESKillTree.Utils
             new []{ "recharge per second", "Defence" },
             new []{ "regeneration per second", "Defence" },
             new []{ "energy shield recharge", "Defence" },
-            new []{ "resistance", "Defence" }
+            new []{ "resistance", "Defence" },
+            new []{ "chance to block", "Defence"}
         };
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
