@@ -51,12 +51,14 @@ namespace POESKillTree.Views
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
         private readonly List<Attribute> _statisticsList = new List<Attribute>();
+        private readonly List<ListGroupItem> _offenceList = new List<ListGroupItem>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly ToolTip _noteTip = new ToolTip();
         private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attibuteCollection;
         private ListCollectionView _statisticsCollection;
+        private ListCollectionView _offenceCollection;
         private RenderTargetBitmap _clipboardBmp;
 
         private ItemAttributes _itemAttributes;
@@ -229,6 +231,16 @@ namespace POESKillTree.Views
             }
 
             _statisticsCollection.Refresh();
+
+            _offenceList.Clear();
+            foreach (ListGroup group in Compute.Offense(attrs, _itemAttributes))
+            {
+                foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
+                {
+                    _offenceList.Add(new ListGroupItem(item, group.Name));
+                }
+            }
+            _offenceCollection.Refresh();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -260,6 +272,10 @@ namespace POESKillTree.Views
             _statisticsCollection = new ListCollectionView(_statisticsList);
             _statisticsCollection.GroupDescriptions.Add(new PropertyGroupDescription("") { Converter = new StatisticsGroupStringConverter() });
             listBoxStatistics.ItemsSource = _statisticsCollection;
+
+            _offenceCollection = new ListCollectionView(_offenceList);
+            _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
+            listBoxOffence.ItemsSource = _offenceCollection;
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);

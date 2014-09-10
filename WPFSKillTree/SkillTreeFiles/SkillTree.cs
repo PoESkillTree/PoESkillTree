@@ -1043,7 +1043,10 @@ namespace POESKillTree.SkillTreeFiles
             {
                 attribs["+# to Strength"][0] / IntPerMana + _level * LifePerLevel
             };
-            retval["+#% increased Melee Physical Damage"] = new List<float> {attribs["+# to Strength"][0] / StrPerED};
+            // Every 10 strength grants 2% increased melee physical damage. 
+            int str = (int)attribs["+# to Strength"][0];
+            if (str % (int)StrPerED > 0) str += (int)StrPerED - (str % (int)StrPerED);
+            retval["+#% increased Melee Physical Damage"] = new List<float> { str / StrPerED };
 
             retval["+# Accuracy Rating"] = new List<float> {attribs["+# to Dexterity"][0] / DexPerAcc};
             retval["Evasion Rating: #"] = new List<float> {_level * EvasPerLevel};

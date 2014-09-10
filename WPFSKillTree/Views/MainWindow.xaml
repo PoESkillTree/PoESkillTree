@@ -209,6 +209,20 @@
                                 </ListBox>
                             </Grid>
                         </TabItem>
+                        <TabItem Header="Offence" Margin="0" x:Name="tabItemOffence" controls:ControlsHelper.HeaderFontSize="15">
+                            <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                                <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="listBoxOffence" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.GroupStyle>
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
+                                    </ListBox.GroupStyle>
+                                </ListBox>
+                            </Grid>
+                        </TabItem>
                     </TabControl>
                 </Grid>
             </Expander>

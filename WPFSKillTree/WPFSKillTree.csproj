@@ -127,14 +127,17 @@
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
     <Compile Include="SkillTreeFiles\Asset.cs" />
+    <Compile Include="SkillTreeFiles\Compute.cs" />
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
+    <Compile Include="ViewModels\ListGroup.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
     <Compile Include="Controls\DragAdorner.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
     <Compile Include="Utils\GroupStringConverter.cs" />
     <Compile Include="ViewModels\ItemAttributes.cs" />
+    <Compile Include="ViewModels\ListGroupItem.cs" />
     <Compile Include="Views\LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>

@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Data;
 using System.Xml;
 using Raven.Json.Linq;
+using Damage = POESKillTree.SkillTreeFiles.Compute.Damage;
 
 namespace POESKillTree.ViewModels
 {
@@ -94,13 +95,15 @@ namespace POESKillTree.ViewModels
                 }
             }
 
-
             public ItemClass Class;
             public string Type;
             public string Name;
             public Dictionary<string, List<float>> Attributes;
             public List<Mod> Mods;
             public List<Item> Gems;
+            public List<string> Keywords;
+            // The socket group of gem (all gems with same socket group value are linked).
+            public int SocketGroup;
 
             public Item(ItemClass iClass, RavenJObject val)
             {
@@ -119,12 +122,29 @@ namespace POESKillTree.ViewModels
                         List<float> values = new List<float>();
                         string s = "";
                       
-                            foreach (RavenJArray jva in (RavenJArray)obj["values"])
-                            {
-                                s += " "+jva[0].Value<string>() ;
-                            }
+                        foreach (RavenJArray jva in (RavenJArray)obj["values"])
+                        {
+                            s += " "+jva[0].Value<string>() ;
+                        }
 
-                            if (s == "") continue;
+                        if (s == "")
+                        {
+                            if (iClass == ItemClass.Gem)
+                            {
+                                Keywords = new List<string>();
+
+                                string[] sl = obj["name"].Value<string>().Split(',');
+                                foreach (string i in sl)
+                                {
+                                    Keywords.Add(i.Trim());
+                                }
+                            }
+                            else if (iClass == ItemClass.MainHand || iClass == ItemClass.OffHand)
+                            {
+                                Type = obj["name"].Value<string>();
+                            }
+                            continue;
+                        }
                         
                         foreach (Match m in numberfilter.Matches(s))
                         {
@@ -154,6 +174,23 @@ namespace POESKillTree.ViewModels
                         var mods = Mod.CreateMods(s.Replace("Additional ", ""), this.Class);
                         Mods.AddRange(mods);
                     }
+
+                List<int> Sockets = new List<int>();
+                if (val.ContainsKey("sockets"))
+                    foreach (RavenJObject obj in (RavenJArray)val["sockets"])
+                    {
+                        Sockets.Add(obj["group"].Value<int>());
+                    }
+                if (val.ContainsKey("socketedItems"))
+                {
+                    int socket = 0;
+                    foreach (RavenJObject obj in (RavenJArray)val["socketedItems"])
+                    {
+                        var item = new Item(ItemClass.Gem, obj);
+                        item.SocketGroup = Sockets[socket++];
+                        Gems.Add(item);
+                    }
+                }
             }
             static Regex colorcleaner = new Regex("\\<.+?\\>");
             static Regex numberfilter = new Regex("[0-9]*\\.?[0-9]+");
@@ -228,6 +265,18 @@ namespace POESKillTree.ViewModels
                 }
                 return this;
 
+            }
+
+            // Returns gems linked to specified gem.
+            public List<Item> GetLinkedGems(Item gem)
+            {
+                List<Item> link = new List<Item>();
+
+                foreach (Item linked in Gems)
+                    if (linked != gem && linked.SocketGroup == gem.SocketGroup)
+                        link.Add(linked);
+
+                return link;
             }
         }
 
@@ -475,6 +524,27 @@ namespace POESKillTree.ViewModels
             }
 
             return value;
+        }
+
+        public List<Damage> GetWeaponDamage(Item.ItemClass itemClass)
+        {
+            List<Damage> deals = new List<Damage>();
+
+            foreach (Item item in Equip)
+            {
+                if (item.Class == itemClass)
+                {
+                    foreach (var attr in item.Attributes)
+                    {
+                        Damage damage = Damage.Create(attr.Key, attr.Value);
+                        if (damage != null) deals.Add(damage);
+                    }
+
+                    break;
+                }
+            }
+
+            return deals;
         }
     }
 }
