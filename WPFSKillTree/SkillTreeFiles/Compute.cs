@@ -17,12 +17,23 @@ namespace POESKillTree.SkillTreeFiles
         // TODO: Multi-part attacks Lightning Strike, Molten Strike (Melee + Projectile)
         public class Attack
         {
+            // Name.
+            private string Name;
+            // Type (either Attack or Spell).
+            private AttackType Type;
+            // Local attributes.
+            private Dictionary<string, List<float>> Local;
+            // Damage effectiveness.
+            private float Effectiveness;
+
             // List of all damage added.
             private List<Damage.Added> Adds = new List<Damage.Added>();
-            // List of all damage converted.
+            // List of damage converted.
             private List<Damage.Converted> Converts = new List<Damage.Converted>();
             // List of all damage it deals.
             private List<Damage> Deals = new List<Damage>();
+            // List of all damage gained.
+            private List<Damage.Gained> Gains = new List<Damage.Gained>();
             // List of all damage multipliers.
             private List<Damage.More> Mores = new List<Damage.More>();
             private bool HasAoE;
@@ -30,45 +41,79 @@ namespace POESKillTree.SkillTreeFiles
             private bool HasMelee;
             // Flag whether attack has projectile component.
             private bool HasProjectile;
-            // Name.
-            private string Name;
-            // Type (either Attack or Spell).
-            private AttackType Type;
-            // Damage Effectiveness.
-            private float DamageEffectivness;
-            // Local mods.
-            private List<Mod> Mods;
+            // The list of damage sources.
+            private static List<DamageSource> DamageSources = new List<DamageSource>()
+            {
+                DamageSource.MainHand, DamageSource.OffHand, DamageSource.Spell
+            };
+            // The damage source names.
+            private static Dictionary<DamageSource, string> DamageSourceNames = new Dictionary<DamageSource, string>()
+            {
+                { DamageSource.MainHand, "Main Hand" },
+                { DamageSource.OffHand, "Off Hand"},
+                { DamageSource.Spell, "Spell"}
+            };
+            // The list of damage types.
+            private static List<DamageType> DamageTypes = new List<DamageType>()
+            {
+                DamageType.Physical, DamageType.Fire, DamageType.Cold, DamageType.Lightning, DamageType.Chaos
+            };
 
             private Attack(Item gem)
             {
                 Name = gem.Name;
                 Type = gem.Keywords.Contains("Attack") ? AttackType.Attack : AttackType.Spell;
-                Mods = gem.Mods;
 
-                DamageEffectivness = gem.Attributes.ContainsKey("Damage Effectiveness:  #%") ? gem.Attributes["Damage Effectiveness:  #%"][0] : 100;
+                Local = new Dictionary<string, List<float>>();
+                foreach (Mod mod in gem.Mods)
+                    Local.Add(mod.Attribute, new List<float>(mod.Value));
+
+                Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness:  #%") ? gem.Attributes["Damage Effectiveness:  #%"][0] : 100;
 
                 HasAoE = gem.Keywords.Contains("AoE");
                 HasMelee = gem.Keywords.Contains("Melee");
                 HasProjectile = gem.Keywords.Contains("Projectile");
-
-                foreach (Mod mod in gem.Mods)
-                {
-                    Damage.Converted conv = Damage.Converted.Create(mod);
-                    if (conv != null) Converts.Add(conv);
-
-                    Damage.More more = Damage.More.Create(mod);
-                    if (more != null) Mores.Add(more);
-
-                    Damage damage = Damage.Create(mod);
-                    if (damage != null) Deals.Add(damage);
-                }
             }
 
-            // Applies modifiers to attack.
-            public void Apply(Dictionary<string, List<float>> globalAttrs, ItemAttributes itemAttrs)
+            // Applies attributes.
+            public void Apply()
             {
-                // Merge global attributes and local mods.
-                Dictionary<string, List<float>> attrs = Compute.Merge(globalAttrs, Mods);
+                // Damage conversion from gems, equipment and tree.
+                foreach (var attr in Local)
+                {
+                    Damage.Converted conv = Damage.Converted.Create(DamageConversionSource.Gem, attr);
+                    if (conv != null) Converts.Add(conv);
+                }
+                foreach (var attr in Equipment)
+                {
+                    Damage.Converted conv = Damage.Converted.Create(DamageConversionSource.Equipment, attr);
+                    if (conv != null) Converts.Add(conv);
+                }
+                foreach (var attr in Tree)
+                {
+                    Damage.Converted conv = Damage.Converted.Create(DamageConversionSource.Tree, attr);
+                    if (conv != null) Converts.Add(conv);
+                }
+
+                // Merge local and global attributes.
+                Dictionary<string, List<float>> attrs = Compute.Merge(Global, Local);
+
+                // Gather damage modifiers.
+                foreach (var attr in attrs)
+                {
+                    Damage.Added added = Damage.Added.Create(attr);
+                    if (added != null) Adds.Add(added);
+
+                    Damage.Gained gained = Damage.Gained.Create(attr);
+                    if (gained != null) Gains.Add(gained);
+
+                    Damage.More more = Damage.More.Create(attr);
+                    if (more != null) Mores.Add(more);
+
+                    // Spell damage.
+                    //Damage damage = Damage.Create(attr);
+                    //if (damage != null) Deals.Add(damage);
+                }
 
                 float incPhysicalDamage = 0;
                 float incFireDamage = 0;
@@ -105,7 +150,7 @@ namespace POESKillTree.SkillTreeFiles
                         incElementalSpellDamage += attrs["#% increased Elemental Damage with Spells"][0];
 
                     foreach (Damage.Added added in Adds)
-                        added.Apply(Deals, DamageEffectivness);
+                        added.Apply(Deals, Effectiveness);
 
                     foreach (Damage damage in Deals)
                     {
@@ -124,10 +169,10 @@ namespace POESKillTree.SkillTreeFiles
                         if (inc > 0) damage.Increase(inc);
 
                         foreach (Damage.More more in Mores)
-                            if (more.CanApply(damage) && HasMelee == more.IsMelee)
+                            if (more.CanApply(damage)/* && HasMelee == more.IsMelee*/)
                                 more.Apply(damage);
 
-                        damage.Source = "Spell";
+                        damage.Source = DamageSource.Spell;
                     }
                 }
                 else // Type == AttackType.Attack
@@ -146,46 +191,12 @@ namespace POESKillTree.SkillTreeFiles
                     if (attrs.ContainsKey("#% increased Elemental Damage with Weapons"))
                         incElementalWeaponDamage += attrs["#% increased Elemental Damage with Weapons"][0];
 
-                    List<Damage> weapon = itemAttrs.GetWeaponDamage(Item.ItemClass.MainHand);
+                    List<Damage> weapon = Compute.GetWeaponDamage(Item.ItemClass.MainHand);
 
-                    foreach (Damage.Converted conv in Converts)
-                        conv.Apply(weapon);
+                    foreach (Damage.Added added in Adds)
+                        added.Apply(weapon, Effectiveness);
 
-                    foreach (Damage damage in weapon)
-                    {
-                        float inc = incAoE;
-                        if (HasMelee) inc += incMeleeDamage;
-                        if (damage.Type == DamageType.Physical || damage.Origin == DamageType.Physical) // Physical damage bonuses applies to converted non-physical damage.
-                        {
-                            inc += incPhysicalDamage;
-                            if (HasMelee) inc += incMeleePhysicalDamage;
-                        }
-                        if (damage.Type == DamageType.Fire)
-                            inc += incFireDamage;
-                        if (damage.Type == DamageType.Cold)
-                            inc += incColdDamage;
-                        if (damage.Type == DamageType.Lightning)
-                            inc += incLightningDamage;
-                        if (damage.IsElemental())
-                            inc += incElementalDamage + incElementalWeaponDamage;
-
-                        if (inc > 0) damage.Increase(inc);
-
-                        foreach (Damage.More more in Mores)
-                            if (more.CanApply(damage) && HasMelee == more.IsMelee)
-                                more.Apply(damage);
-
-                        damage.Source = "Main Hand";
-
-                        Damage exists = Deals.Find(d => d.Type == damage.Type);
-                        if (exists != null) exists.Add(damage);
-                        else Deals.Add(damage);
-                    }
-
-                    weapon = itemAttrs.GetWeaponDamage(Item.ItemClass.OffHand);
-
-                    foreach (Damage.Converted conv in Converts)
-                        conv.Apply(weapon);
+                    Convert(weapon);
 
                     foreach (Damage damage in weapon)
                     {
@@ -208,13 +219,99 @@ namespace POESKillTree.SkillTreeFiles
                         if (inc > 0) damage.Increase(inc);
 
                         foreach (Damage.More more in Mores)
-                            if (more.CanApply(damage) && HasMelee == more.IsMelee)
+                            if (more.CanApply(damage)/* && HasMelee == more.IsMelee*/)
                                 more.Apply(damage);
 
-                        damage.Source = "Off Hand";
+                        damage.Source = DamageSource.MainHand;
 
                         Deals.Add(damage);
                     }
+                }
+
+                // Avatar of Fire (remove non-Fire damage).
+                if (AvatarOfFire)
+                    foreach (Damage damage in new List<Damage>(Deals))
+                        if (damage.Type != DamageType.Fire)
+                            Deals.Remove(damage);
+            }
+
+            // Converts damage types (applies damage conversions and gains).
+            public void Convert(List<Damage> deals)
+            {
+                foreach (DamageType type in DamageTypes)
+                {
+                    List<Damage> convert = deals.FindAll(d => d.Type == type);
+                    List<Damage> output = new List<Damage>();
+                    List<Damage.Converted> conversions;
+
+                    float pool = convert.Count > 0 ? 100 : 0;
+
+                    // Apply gem conversions.
+                    if (pool > 0)
+                        foreach (Damage.Converted conv in Converts.FindAll(c => c.Source == DamageConversionSource.Gem && c.From == type))
+                        {
+                            pool -= conv.Percent;
+                            conv.Apply(convert, output, 1);
+                        }
+
+                    float sum;
+
+                    // Apply equipment conversions.
+                    if (pool > 0)
+                    {
+                        conversions = Converts.FindAll(c => c.Source == DamageConversionSource.Equipment && c.From == type);
+                        sum = 0;
+
+                        foreach (Damage.Converted conv in conversions)
+                            sum += conv.Percent;
+                        if (sum > pool) // Downscale conversions.
+                        {
+                            foreach (Damage.Converted conv in conversions)
+                                conv.Apply(convert, output, pool / sum);
+                            pool = 0;
+                        }
+                        else if (sum > 0)
+                        {
+                            foreach (Damage.Converted conv in conversions)
+                                conv.Apply(convert, output, 1);
+                            pool -= sum;
+                        }
+                    }
+
+                    // Apply skill tree conversions.
+                    if (pool > 0)
+                    {
+                        conversions = Converts.FindAll(c => c.Source == DamageConversionSource.Tree && c.From == type);
+                        sum = 0;
+
+                        foreach (Damage.Converted conv in conversions)
+                            sum += conv.Percent;
+                        if (sum > pool) // Downscale conversions.
+                        {
+                            foreach (Damage.Converted conv in conversions)
+                                conv.Apply(convert, output, pool / sum);
+                            pool = 0;
+                        }
+                        else if (sum > 0)
+                        {
+                            foreach (Damage.Converted conv in conversions)
+                                conv.Apply(convert, output, 1);
+                            pool -= sum;
+                        }
+                    }
+
+                    // Add unconverted damage.
+                    if (pool > 0)
+                        foreach (Damage damage in convert)
+                            output.Add(damage.PercentOf(pool, type));
+
+                    // Apply gains.
+                    foreach (Damage.Gained gain in Gains.FindAll(g => g.From == type))
+                        gain.Apply(convert, output);
+
+                    // Remove processed input and merge output.
+                    deals.RemoveAll(d => d.Type == type);
+                    deals.AddRange(output);
                 }
             }
 
@@ -234,23 +331,15 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // Links support gems.
+            // TODO: In case of same gems slotted only highest level one is used.
             public void Link(List<Item> gems)
             {
                 foreach (Item gem in gems)
                 {
                     if (!gem.Keywords.Contains("Support")) continue; // Skip non-support gems.
 
-                    foreach (Item.Mod mod in gem.Mods)
-                    {
-                        Damage.Converted conv = Damage.Converted.Create(mod);
-                        if (conv != null) Converts.Add(conv);
-
-                        Damage.Added added = Damage.Added.Create(mod);
-                        if (added != null) Adds.Add(added);
-
-                        Damage.More more = Damage.More.Create(mod);
-                        if (more != null) Mores.Add(more);
-                    }
+                    foreach (Mod mod in gem.Mods)
+                        Local.Add(mod.Attribute, new List<float>(mod.Value));
                 }
             }
 
@@ -259,28 +348,37 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Dictionary<string, List<float>> props = new Dictionary<string,List<float>>();
 
-                foreach (var damage in Deals)
-                {
-                    string name = damage.Source + " " + damage.ToAttribute();
-                    if (props.ContainsKey(name)) name += "(2)";
-                    props.Add(name, damage.ToValue());
-                    //props.Add(damage.Source + " " + damage.ToAttribute(), damage.ToValue());
-                }
-                    
+                foreach (DamageSource source in DamageSources)
+                    foreach (DamageType type in DamageTypes)
+                    {
+                        List<Damage> deals = Deals.FindAll(d => d.Source == source && d.Type == type);
+                        if (deals.Count > 0)
+                        {
+                            if (deals.Count > 1)
+                                for (int i = 1; i < deals.Count; ++i)
+                                    deals[0].Add(deals[i]);
+                            props.Add(DamageSourceNames[source] + " " + deals[0].ToAttribute(), deals[0].ToValue());
+                        }
+                    }
 
                 return new ListGroup(Name, props);
             }
         }
 
+        public enum DamageConversionSource
+        {
+            Gem, Equipment, Tree
+        }
+
         public enum DamageArea
         {
-            Area, Any
+            Any, Area
         }
 
         // Multiple form spells: Lightning Strike, Molten Strike (Melee + Projectile)
         public enum DamageForm
         {
-            Melee, Projectile, Any
+            Any, Melee, Projectile, 
         }
 
         public enum DamageSource
@@ -290,12 +388,12 @@ namespace POESKillTree.SkillTreeFiles
 
         public enum DamageType
         {
-            Physical, Cold, Fire, Lightning, Chaos, Any
+            Any, Physical = 1, Cold = 2, Fire = 4, Lightning = 8, Chaos = 16
         }
 
         public enum DamageWeaponType // Tempest Blast keystone?
         {
-            Wand, Any
+            Any, Wand
         }
 
         public class DamageNature
@@ -350,13 +448,13 @@ namespace POESKillTree.SkillTreeFiles
                     Max = max;
                 }
 
-                // Creates added damage modifier from mod.
-                public static Added Create(Mod mod)
+                // Creates added damage.
+                public static Added Create(KeyValuePair<string, List<float>> attr)
                 {
-                    Match m = ReAddMod.Match(mod.Attribute);
+                    Match m = ReAddMod.Match(attr.Key);
                     if (m.Success)
                     {
-                        return new Added(Damage.DamageTypes[m.Groups[1].Value], mod.Value[0], mod.Value[1]);
+                        return new Added(Damage.DamageTypes[m.Groups[1].Value], attr.Value[0], attr.Value[1]);
                     }
 
                     return null;
@@ -378,95 +476,84 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // TODO: Conversion chaining: Physical => Fire (affected by physical & fire mods) => Cold (affected by physical, fire & cold mods).
-            // TODO: Conversion downscaling: If the combined value of all Converted to modifiers for a given damage type is greater than 100%, the values are scaled so that the total is 100%.
             // TODO: Tempest Blast: 30% of Wand Physical Damage Added as Lightning Damage
             // @see: http://pathofexile.gamepedia.com/Damage_conversion
             public class Converted
             {
+                // The source of conversion.
+                public DamageConversionSource Source;
                 // The percentage of damage to convert.
-                float Percent;
+                public float Percent;
                 // The damage type to convert from.
-                DamageType From;
+                public DamageType From;
                 // The damage type to convert to.
                 DamageType To;
-                // The flag whether conversion is gain.
-                bool IsGain = false;
 
                 static Regex ReConvertMod = new Regex("#% of ([^ ]+) Damage Converted to ([^ ]+) Damage");
-                static Regex ReGainMod = new Regex("Gain #% of ([^ ]+) Damage as Extra ([^ ]+) Damage");
 
-                Converted(float percent, DamageType from, DamageType to)
+                public Converted(DamageConversionSource source, float percent, DamageType from, DamageType to)
                 {
+                    Source = source;
                     Percent = percent;
                     From = from;
                     To = to;
                 }
 
-                // Creates damage conversion from mod.
-                public static Converted Create(Mod mod)
+                // Creates damage conversion from attribute.
+                public static Converted Create(DamageConversionSource source, KeyValuePair<string, List<float>> attr)
                 {
-                    Match m = ReConvertMod.Match(mod.Attribute);
+                    Match m = ReConvertMod.Match(attr.Key);
                     if (m.Success)
                     {
-                        return new Converted(mod.Value[0], Damage.DamageTypes[m.Groups[1].Value], Damage.DamageTypes[m.Groups[2].Value]);
-                    }
-                    else
-                    {
-                        m = ReGainMod.Match(mod.Attribute);
-                        if (m.Success)
-                        {
-                            Converted conv = new Converted(mod.Value[0], Damage.DamageTypes[m.Groups[1].Value], Damage.DamageTypes[m.Groups[2].Value]);
-                            conv.IsGain = true;
-
-                            return conv;
-                        }
+                        return new Converted(source, attr.Value[0], Damage.DamageTypes[m.Groups[1].Value], Damage.DamageTypes[m.Groups[2].Value]);
                     }
 
                     return null;
                 }
 
                 // Applies conversion.
-                public void Apply(List<Damage> deals)
+                public void Apply(List<Damage> input, List<Damage> output, float scale)
                 {
-                    Damage from = deals.Find(d => d.Type == From);
-                    if (from == null) return;
-
-                    deals.Add(from.PercentOf(Percent, To));
-
-                    if (! IsGain) from.Sub(from.PercentOf(Percent, To));
+                    foreach (Damage damage in input)
+                        output.Add(damage.PercentOf(Percent * scale, To));
                 }
             }
 
-            public class Increased
+            public class Gained
             {
-                // The increase.
-                private float Percent;
-                // The damage type.
-                DamageType Type;
+                // The percentage of damage to convert.
+                float Percent;
+                // The damage type to convert from.
+                public DamageType From;
+                // The damage type to convert to.
+                DamageType To;
 
-                static Regex ReIncreasedMod = new Regex("#% increased ([^ ]+) Damage");
+                static Regex ReGainMod = new Regex("Gain #% of ([^ ]+) Damage as Extra ([^ ]+) Damage");
 
-                public Increased(DamageType type, float percent)
+                public Gained(float percent, DamageType from, DamageType to)
                 {
-                    Type = type;
                     Percent = percent;
+                    From = from;
+                    To = to;
                 }
 
-                // Creates added damage modifier from mod.
-                public static Increased Create(Mod mod)
+                // Creates damage gain from attribute.
+                public static Gained Create(KeyValuePair<string, List<float>> attr)
                 {
-                    Match m = ReIncreasedMod.Match(mod.Attribute);
+                    Match m = ReGainMod.Match(attr.Key);
                     if (m.Success)
                     {
-                        return new Increased(Damage.DamageTypes[m.Groups[1].Value], mod.Value[0]);
+                        return new Gained(attr.Value[0], Damage.DamageTypes[m.Groups[1].Value], Damage.DamageTypes[m.Groups[2].Value]);
                     }
 
                     return null;
                 }
 
-                // Applies modifier.
-                public void Apply(List<Damage> deals)
+                // Applies gain.
+                public void Apply(List<Damage> input, List<Damage> output)
                 {
+                    foreach (Damage damage in input)
+                        output.Add(damage.PercentOf(Percent, To));
                 }
             }
 
@@ -479,7 +566,7 @@ namespace POESKillTree.SkillTreeFiles
                 // The flag whether it is melee multiplier.
                 public bool IsMelee = false;
 
-                More(DamageType type, float percent)
+                public More(DamageType type, float percent)
                 {
                     Percent = percent;
                     Type = type;
@@ -491,28 +578,28 @@ namespace POESKillTree.SkillTreeFiles
                     return Type == DamageType.Any || damage.Type == Type || damage.Origin == Type;
                 }
 
-                // Creates "more" damage multiplier from mod.
-                public static More Create(Mod mod)
+                // Creates damage multiplier.
+                public static More Create(KeyValuePair<string, List<float>> attr)
                 {
                     More more = null;
 
-                    if (mod.Attribute == "#% less Damage")
+                    if (attr.Key == "#% less Damage")
                     {
-                        more = new More(DamageType.Any, -mod.Value[0]);
+                        more = new More(DamageType.Any, -attr.Value[0]);
                     }
-                    else if (mod.Attribute == "#% more Damage")
+                    else if (attr.Key == "#% more Damage")
                     {
-                        more = new More(DamageType.Any, mod.Value[0]);
+                        more = new More(DamageType.Any, attr.Value[0]);
                     }
-                    else if (mod.Attribute == "Deals #% of Base Damage")
+                    else if (attr.Key == "Deals #% of Base Damage")
                     {
-                        more = new More(DamageType.Any, mod.Value[0] - 100);
-                        more.IsMelee = true; // Doesn't need to be melee.
+                        more = new More(DamageType.Any, attr.Value[0] - 100);
+                        //more.IsMelee = true; // Doesn't need to be melee.
                     }
-                    else if (mod.Attribute == "#% more Melee Physical Damage when on Full Life")
+                    else if (attr.Key == "#% more Melee Physical Damage when on Full Life")
                     {
-                        more = new More(DamageType.Physical, mod.Value[0]);
-                        more.IsMelee = true;
+                        more = new More(DamageType.Physical, attr.Value[0]);
+                        //more.IsMelee = true;
                     }
 
                     return more;
@@ -533,8 +620,8 @@ namespace POESKillTree.SkillTreeFiles
             public DamageType Type;
             // The damage type from which this damage originated (due to conversion).
             public DamageType Origin;
-            // The name of source (Spell, Main Hand, Off Hand).
-            public string Source;
+            // The source of damage.
+            public DamageSource Source;
 
             Damage(DamageType type, float min, float max)
             {
@@ -550,28 +637,13 @@ namespace POESKillTree.SkillTreeFiles
                 Max += damage.Max;
             }
 
-            // Creates damage from mod.
-            public static Damage Create(Mod mod)
-            {
-                if (mod.Attribute.StartsWith("Deals"))
-                {
-                    Match m = ReDamageMod.Match(mod.Attribute);
-                    if (m.Success)
-                    {
-                        return new Damage(DamageTypes[m.Groups[1].Value], mod.Value[0], mod.Value[1]);
-                    }
-                }
-
-                return null;
-            }
-
             // Creates damage from attribute.
-            public static Damage Create(string name, List<float> value)
+            public static Damage Create(KeyValuePair<string, List<float>> attr)
             {
-                Match m = ReDamageAttribute.Match(name);
+                Match m = ReDamageAttribute.Match(attr.Key);
                 if (m.Success)
                 {
-                    return new Damage(DamageTypes[m.Groups[1].Value], value[0], value[1]);
+                    return new Damage(DamageTypes[m.Groups[1].Value], attr.Value[0], attr.Value[1]);
                 }
 
                 return null;
@@ -642,33 +714,104 @@ namespace POESKillTree.SkillTreeFiles
             };
         }
 
-        // Returns attribute values merged with mods.
-        public static Dictionary<string, List<float>> Merge(Dictionary<string, List<float>> attrs, List<Mod> mods)
+        // Equipped items.
+        public static List<Item> Items;
+        // Equipment attributes.
+        public static Dictionary<string, List<float>> Equipment;
+        // All global attributes (includes tree, equipment, implicit).
+        public static Dictionary<string, List<float>> Global;
+        // Implicit attributes derived from base attributes and level (e.g. Life, Mana).
+        public static Dictionary<string, List<float>> Implicit;
+        // Skill tree attributes (includes base attributes).
+        public static Dictionary<string, List<float>> Tree;
+        // Skill tree keystones.
+        public static bool AvatarOfFire;
+
+        // Returns damage dealt by weapon.
+        public static List<Damage> GetWeaponDamage(Item.ItemClass itemClass)
+        {
+            List<Damage> deals = new List<Damage>();
+
+            foreach (Item item in Items)
+            {
+                if (item.Class == itemClass)
+                {
+                    foreach (var attr in item.Attributes)
+                    {
+                        Damage damage = Damage.Create(attr);
+                        if (damage != null) deals.Add(damage);
+                    }
+
+                    break;
+                }
+            }
+
+            return deals;
+        }
+
+        // Includes attributes into target.
+        public static void Include(Dictionary<string, List<float>> target, Dictionary<string, List<float>> include)
+        {
+            foreach (var attr in include)
+                if (target.ContainsKey(attr.Key))
+                {
+                    if (attr.Value.Count > 0)
+                        for (int i = 0; i < attr.Value.Count; ++i)
+                            target[attr.Key][i] += attr.Value[i];
+                }
+                else target.Add(attr.Key, new List<float>(attr.Value));
+        }
+
+        // Initializes structures.
+        public static void Initialize(SkillTree skillTree, ItemAttributes itemAttrs)
+        {
+            Items = itemAttrs.Equip;
+
+            Global = new Dictionary<string, List<float>>();
+
+            Tree = skillTree.SelectedAttributesWithoutImplicit;
+            Include(Global, Tree);
+
+            Equipment = new Dictionary<string, List<float>>();
+            foreach (ItemAttributes.Attribute attr in itemAttrs.NonLocalMods)
+                Equipment.Add(attr.TextAttribute, new List<float>(attr.Value));
+            Include(Global, Equipment);
+
+            Implicit = skillTree.ImplicitAttributes(Global);
+            Include(Global, Implicit);
+
+            // Keystones.
+            AvatarOfFire = Tree.ContainsKey("Deal no Non-Fire Damage");
+        }
+
+        // Returns new attribute set merged from two attribute sets.
+        public static Dictionary<string, List<float>> Merge(Dictionary<string, List<float>> attrs1, Dictionary<string, List<float>> attrs2)
         {
             Dictionary<string, List<float>> merged = new Dictionary<string, List<float>>();
 
-            // Copy attribute values.
-            foreach (var attr in attrs) merged.Add(attr.Key, new List<float>(attr.Value));
+            // Copy first set.
+            foreach (var attr in attrs1)
+                merged.Add(attr.Key, new List<float>(attr.Value));
 
-            // Increase values of existing attributes or insert new ones.
-            foreach (Mod mod in mods)
-                if (merged.ContainsKey(mod.Attribute))
+            // Merge second set.
+            foreach (var attr in attrs2)
+                if (merged.ContainsKey(attr.Key))
                 {
-                    if (mod.Value.Count > 0)
-                        for (int i = 0; i < mod.Value.Count; ++i)
-                            merged[mod.Attribute][i] += mod.Value[i];
+                    if (attr.Value.Count > 0)
+                        for (int i = 0; i < attr.Value.Count; ++i)
+                            merged[attr.Key][i] += attr.Value[i];
                 }
-                else merged.Add(mod.Attribute, mod.Value);
+                else merged.Add(attr.Key, new List<float>(attr.Value));
 
             return merged;
         }
-  
+
         // Computes offensive attacks.
-        public static List<ListGroup> Offense(Dictionary<string, List<float>> attrs, ItemAttributes itemAttrs)
+        public static List<ListGroup> Offense()
         {
             List<ListGroup> groups = new List<ListGroup>();
 
-            foreach (Item item in itemAttrs.Equip)
+            foreach (Item item in Items)
             {
                 foreach (Item gem in item.Gems)
                 {
@@ -681,7 +824,7 @@ namespace POESKillTree.SkillTreeFiles
                         Attack attack = Attack.Create(gem);
 
                         attack.Link(item.GetLinkedGems(gem));
-                        attack.Apply(attrs, itemAttrs);
+                        attack.Apply();
 
                         groups.Add(attack.ToListGroup());
                     }

@@ -525,26 +525,5 @@ namespace POESKillTree.ViewModels
 
             return value;
         }
-
-        public List<Damage> GetWeaponDamage(Item.ItemClass itemClass)
-        {
-            List<Damage> deals = new List<Damage>();
-
-            foreach (Item item in Equip)
-            {
-                if (item.Class == itemClass)
-                {
-                    foreach (var attr in item.Attributes)
-                    {
-                        Damage damage = Damage.Create(attr.Key, attr.Value);
-                        if (damage != null) deals.Add(damage);
-                    }
-
-                    break;
-                }
-            }
-
-            return deals;
-        }
     }
 }

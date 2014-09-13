@@ -224,6 +224,8 @@ namespace POESKillTree.Views
 
         public void UpdateStatistics(Dictionary<string, List<float>> attrs)
         {
+            Compute.Initialize(Tree, _itemAttributes);
+
             _statisticsList.Clear();
             foreach (var item in Tree.ComputedStatistics(attrs, _itemAttributes).Select(InsertNumbersInAttributes))
             {
@@ -233,7 +235,7 @@ namespace POESKillTree.Views
             _statisticsCollection.Refresh();
 
             _offenceList.Clear();
-            foreach (ListGroup group in Compute.Offense(attrs, _itemAttributes))
+            foreach (ListGroup group in Compute.Offense())
             {
                 foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
                 {
