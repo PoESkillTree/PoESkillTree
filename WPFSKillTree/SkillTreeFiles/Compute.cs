@@ -665,7 +665,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Match m = ReMoreBase.Match(attr.Key);
                     if (m.Success)
-                        return new More(attr.Value[0]);
+                        return new More(attr.Value[0] - 100);
                     else
                     {
                         m = ReMoreAll.Match(attr.Key);
