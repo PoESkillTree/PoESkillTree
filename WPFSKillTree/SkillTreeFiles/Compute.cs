@@ -15,7 +15,6 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         // TODO: Multi-part attacks Lightning Strike, Molten Strike (Melee + Projectile)
-        // TODO: Weapon local attributes.
         public class Attack
         {
             // The name.
@@ -262,7 +261,6 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        // TODO: Local attributes of weapons (Added damage, increase Physical Damage, etc.).
         public class AttackSource
         {
             // List of damage dealt.
@@ -508,7 +506,6 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
-            // TODO: Tempest Blast: 30% of Wand Physical Damage Added as Lightning Damage
             // @see: http://pathofexile.gamepedia.com/Damage_conversion
             public class Converted
             {
@@ -551,6 +548,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
+            // TODO: Tempest Blast: 30% of Wand Physical Damage Added as Lightning Damage
             public class Gained
             {
                 // The percentage of damage to convert.
@@ -641,11 +639,12 @@ namespace POESKillTree.SkillTreeFiles
  
             public class More : DamageNature
             {
-               // The percentage of damage multiplier.
+                // The percentage of damage multiplier.
                 float Percent;
 
                 static Regex ReMoreAll = new Regex("#% (more|less) Damage$");
                 static Regex ReMoreBase = new Regex("Deals #% of Base Damage$");
+                static Regex ReMoreSimple = new Regex("#% (more|less) (.+) Damage$");
                 static Regex ReMoreWhen = new Regex("#% more (.+) Damage when on Full Life$");
 
                 public More(float percent)
@@ -668,28 +667,34 @@ namespace POESKillTree.SkillTreeFiles
                         return new More(attr.Value[0] - 100);
                     else
                     {
-                        m = ReMoreAll.Match(attr.Key);
+                        m = ReMoreSimple.Match(attr.Key);
                         if (m.Success)
-                            return new More(m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0]);
+                            return new More(m.Groups[2].Value, m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0]);
                         else
                         {
-                            m = ReMoreWhen.Match(attr.Key);
+                            m = ReMoreAll.Match(attr.Key);
                             if (m.Success)
-                                return new More(m.Groups[1].Value, attr.Value[0]);
+                                return new More(m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0]);
+                            else
+                            {
+                                m = ReMoreWhen.Match(attr.Key);
+                                if (m.Success)
+                                    return new More(m.Groups[1].Value, attr.Value[0]);
+                            }
                         }
                     }
 
                     return null;
                 }
 
-                // Applies modifier.
+                // Applies multiplier.
                 public void Apply(Damage damage)
                 {
                     damage.Mul(100 + Percent);
                 }
             }
 
-            // The damage nature from which this damage originated (due to conversion).
+            // The nature from which this damage originated (due to conversion).
             DamageNature Origin;
             // The damage range minimum.
             float Min;
@@ -699,7 +704,7 @@ namespace POESKillTree.SkillTreeFiles
             static Regex ReDamageAttribute = new Regex("([^ ]+) Damage:  #-#");
             static Regex ReDamageMod = new Regex("Deals #-# ([^ ]+) Damage");
 
-            // Creates damage with same origin as specified damage but with different damage type.
+            // Damage with same origin as specified damage but with different type.
             Damage(Damage damage, DamageType type, float min, float max)
                 : base(damage)
             {
@@ -709,7 +714,7 @@ namespace POESKillTree.SkillTreeFiles
                 Max = max;
             }
 
-            // Creates damage with specified nature.
+            // Damage with specified nature.
             Damage(DamageNature nature, float min, float max)
                 : base(nature)
             {
@@ -718,6 +723,7 @@ namespace POESKillTree.SkillTreeFiles
                 Max = max;
             }
 
+            // Damage with specified nature but with different type.
             Damage(DamageNature nature, string type, float min, float max)
                 : base(nature, type)
             {
@@ -726,6 +732,7 @@ namespace POESKillTree.SkillTreeFiles
                 Max = max;
             }
 
+            // Damage from specified source with specified type.
             Damage(DamageSource source, DamageType type, float min, float max)
                 : base(source, type)
             {
@@ -900,3 +907,194 @@ namespace POESKillTree.SkillTreeFiles
 
     }
 }
+
+/*
+ * Skill gems:
+ * ===========
+ * Anger
+ * Animate Guardian
+ * Cleave
+ * Decoy Totem
+ * Determination
+ * Devouring Totem
+ * Dominating Blow
+ * Enduring Cry
+ * Flame Totem
+ * Glacial Hammer                               Partial
+ * Ground Slam
+ * Heavy Strike
+ * Herald of Ash
+ * Immortal Call
+ * Infernal Blow
+ * Leap Slam
+ * Lightning Strike
+ * Molten Shell                                 Partial
+ * Molten Strike
+ * Punishment
+ * Purity of Fire
+ * Rejuvenation Totem
+ * Searing Bond
+ * Shield Charge
+ * Shockwave Totem
+ * Sweep
+ * Vitality
+ * Warlord's Mark
+ * 
+ * Animate Weapon
+ * Arctic Armour
+ * Barrage
+ * Bear Trap
+ * Blood Rage
+ * Burning Arrow
+ * Cyclone
+ * Desecrate
+ * Detonate Dead
+ * Double Strike
+ * Dual Strike
+ * Elemental Hit
+ * Ethereal Knives                              Partial
+ * Explosive Arrow
+ * Fire Trap
+ * Flicker Strike
+ * Freeze Mine
+ * Frenzy
+ * Grace
+ * Haste
+ * Hatred
+ * Herald of Ice                                Partial (increase Spell Damage/Elemental Damage with Spells should be excluded)
+ * Ice Shot
+ * Lightning Arrow                              Partial
+ * Poacher's Mark
+ * Poison Arrow
+ * Projectile Weakness
+ * Puncture
+ * Purity of Ice
+ * Rain of Arrows
+ * Reave
+ * Smoke Mine
+ * Spectral Throw
+ * Split Arrow
+ * Temporal Chains
+ * Tornado Shot
+ * Viper Strike
+ * Whirling Blades
+ *
+ * Arc                                          Partial
+ * Arctic Breath
+ * Assassin's Mark
+ * Ball Lightning
+ * Bone Offering
+ * Clarity
+ * Cold Snap
+ * Conductivity
+ * Conversion Trap
+ * Convocation
+ * Critical Weakness
+ * Discharge
+ * Discipline
+ * Elemental Weakness
+ * Enfeeble
+ * Fireball
+ * Firestorm
+ * Flameblast
+ * Flame Surge
+ * Flammability
+ * Flesh Offering
+ * Freezing Pulse
+ * Frost Wall
+ * Frostbite
+ * Glacial Cascade
+ * Ice Nova
+ * Ice Spear
+ * Incinerate
+ * Lightning Trap
+ * Lightning Warp
+ * Power Siphon
+ * Purity of Elements
+ * Purity of Lightning
+ * Raise Spectre
+ * Raise Zombie
+ * Righteous Fire
+ * Shock Nova
+ * Spark
+ * Storm Call
+ * Summon Raging Spirit
+ * Summon Skeletons
+ * Tempest Shield
+ * Vulnerability
+ * Wrath
+ * 
+ * Support gems:
+ * =============
+ * Added Chaos Damage
+ * Added Cold Damage
+ * Added Fire Damage
+ * Added Lightning Damage                       Partial
+ * Additional Accuracy
+ * Blind
+ * Block Chance Reduction
+ * Blood Magic
+ * Cast on Critical Strike
+ * Cast on Death
+ * Cast on Melee Kill
+ * Cast when Damage Taken
+ * Cast when Stunned
+ * Chain
+ * Chance to Flee
+ * Chance to Ignite
+ * Cold Penetration
+ * Cold to Fire                                 Partial
+ * Concentrated Effect                          Partial
+ * Culling Strike
+ * Curse on Hit
+ * Elemental Proliferation
+ * Empower
+ * Endurance Charge on Melee Stun
+ * Enhance
+ * Enlighten
+ * Faster Attacks
+ * Faster Casting
+ * Faster Projectiles                           Partial
+ * Fire Penetration
+ * Fork
+ * Generosity
+ * Greater Multiple Projectiles
+ * Increased Area of Effect
+ * Increased Burning Damage
+ * Increased Critical Damage
+ * Increased Critical Strikes
+ * Increased Duration
+ * Iron Grip
+ * Iron Will
+ * Item Quantity
+ * Item Rarity
+ * Knockback
+ * Lesser Multiple Projectiles
+ * Life Gain on Hit
+ * Life Leech
+ * Lightning Penetration
+ * Mana Leech
+ * Melee Damage on Full Life                    Partial
+ * Melee Physical Damage
+ * Melee Splash
+ * Minion and Totem Elemental Resistance
+ * Minion Damage
+ * Minion Life
+ * Minion Speed
+ * Multiple Traps
+ * Multistrike
+ * Physical Projectile Attack Damage
+ * Pierce
+ * Point Blank
+ * Power Charge On Critical
+ * Ranged Attack Totem
+ * Reduced Duration
+ * Reduced Mana
+ * Remote Mine
+ * Slower Projectiles
+ * Spell Echo
+ * Spell Totem
+ * Stun
+ * Trap
+ * Weapon Elemental Damage                      Partial
+ */

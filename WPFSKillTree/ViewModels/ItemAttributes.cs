@@ -90,7 +90,8 @@ namespace POESKillTree.ViewModels
                                 Attribute.Contains("Weapon Class") ||
                                 Attribute.Contains("Critical Strike Chance with this Weapon") ||
                                 Attribute.Contains("Critical Strike Damage Multiplier with this Weapon")) ||
-                               ((itemclass == Item.ItemClass.MainHand ||itemclass == Item.ItemClass.OffHand)&&  Attribute.Contains("increased Attack Speed"));
+                               ((itemclass == Item.ItemClass.MainHand || itemclass == Item.ItemClass.OffHand)
+                                && (Attribute.Contains("increased Attack Speed") || Attribute.StartsWith("Adds ") && Attribute.EndsWith(" Damage")));
                     }
                 }
             }
@@ -104,6 +105,8 @@ namespace POESKillTree.ViewModels
             public List<string> Keywords;
             // The socket group of gem (all gems with same socket group value are linked).
             public int SocketGroup;
+
+            static string[] ElementalValueColor = new string[] { "", "", "", "", "Fire", "Cold", "Lightning" };
 
             public Item(ItemClass iClass, RavenJObject val)
             {
@@ -153,8 +156,16 @@ namespace POESKillTree.ViewModels
                         }
                         string cs = obj["name"].Value<string>() + ": " + (numberfilter.Replace(s, "#"));
 
+                        if (cs.StartsWith("Elemental Damage:")) // Split Elemental Damage property to respective Fire/Cold/Lightning Damage attributes.
+                        {
+                            int i = 0;
+                            foreach (RavenJArray jva in (RavenJArray)obj["values"])
+                            {
+                                Attributes.Add(ElementalValueColor[jva[1].Value<int>()] + " Damage:  #-#", new List<float>() { values[i], values[i + 1] });
+                                i += 2;
+                            }
 
-                        Attributes.Add(cs, values);
+                        } else Attributes.Add(cs, values);
                     }
                 if (val.ContainsKey("explicitMods"))
                     foreach (string s in val["explicitMods"].Values<string>())
