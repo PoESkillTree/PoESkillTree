@@ -110,7 +110,6 @@ namespace POESKillTree.ViewModels
 
             public Item(ItemClass iClass, RavenJObject val)
             {
-                Type = "";
                 Attributes = new Dictionary<string, List<float>>();
                 Mods = new List<Mod>();
                 Class = iClass;
@@ -118,7 +117,12 @@ namespace POESKillTree.ViewModels
                 {
                     Gems = new List<Item>();
                 }
-                Name = val["typeLine"].Value<string>();
+
+                Name = val["name"].Value<string>();
+                if (Name == "")
+                    Name = val["typeLine"].Value<string>();
+                Type = val["typeLine"].Value<string>();
+
                 if (val.ContainsKey("properties"))
                     foreach (RavenJObject obj in (RavenJArray)val["properties"])
                     {
@@ -132,20 +136,10 @@ namespace POESKillTree.ViewModels
 
                         if (s == "")
                         {
-                            if (iClass == ItemClass.Gem)
-                            {
-                                Keywords = new List<string>();
-
-                                string[] sl = obj["name"].Value<string>().Split(',');
-                                foreach (string i in sl)
-                                {
-                                    Keywords.Add(i.Trim());
-                                }
-                            }
-                            else if (iClass == ItemClass.MainHand || iClass == ItemClass.OffHand)
-                            {
-                                Type = obj["name"].Value<string>();
-                            }
+                            Keywords = new List<string>();
+                            string[] sl = obj["name"].Value<string>().Split(',');
+                            foreach (string i in sl)
+                                Keywords.Add(i.Trim());
                             continue;
                         }
                         
@@ -517,24 +511,6 @@ namespace POESKillTree.ViewModels
                 }
                 return 0;
             }
-        }
-    
-        public List<float> GetItemAttributeValue (Item.ItemClass itemClass, string name)
-        {
-            List<float> value = new List<float>();
-
-            foreach (Item item in Equip)
-            {
-                if (item.Class == itemClass)
-                {
-                    if (item.Attributes.ContainsKey(name)) return item.Attributes[name];
-
-                    Item.Mod mod = item.Mods.Find(m => m.Attribute == name);
-                    if (mod != null) return mod.Value;
-                }
-            }
-
-            return value;
         }
     }
 }

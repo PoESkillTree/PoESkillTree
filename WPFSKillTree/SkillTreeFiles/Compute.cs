@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using POESKillTree.Model;
 using POESKillTree.ViewModels;
 using Item = POESKillTree.ViewModels.ItemAttributes.Item;
 using Mod = POESKillTree.ViewModels.ItemAttributes.Item.Mod;
@@ -9,24 +10,17 @@ namespace POESKillTree.SkillTreeFiles
 {
     public class Compute
     {
-        public enum AttackType
-        {
-            Attack, Spell
-        }
-
         // TODO: Multi-part attacks Lightning Strike, Molten Strike (Melee + Projectile)
-        public class Attack
+        public class AttackSkill
         {
             // The name.
             string Name;
-            // The type.
-            AttackType Type;
             // The nature of attack (based on gem keywords).
             public DamageNature Nature;
             // List of attack sources (either spell or main hand and/or off hand).
             List<AttackSource> Sources;
             // Skill gem local attributes.
-            public Dictionary<string, List<float>> Local;
+            public AttributeSet Local;
             // Damage effectiveness.
             float Effectiveness;
             // List of damage conversions.
@@ -41,19 +35,18 @@ namespace POESKillTree.SkillTreeFiles
             };
 
             // Creates attack from gem.
-            Attack(Item gem)
+            AttackSkill(Item gem)
             {
                 Name = gem.Name;
-                Type = gem.Keywords.Contains("Attack") ? AttackType.Attack : AttackType.Spell;
                 Nature = new DamageNature(gem.Keywords);
 
-                Local = new Dictionary<string, List<float>>();
+                Local = new AttributeSet();
                 foreach (Mod mod in gem.Mods)
                     Local.Add(mod.Attribute, new List<float>(mod.Value));
 
                 Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness:  #%") ? gem.Attributes["Damage Effectiveness:  #%"][0] : 100;
 
-                Sources = AttackSource.GetSources(this);
+                Sources = GetSources();
             }
 
             // Applies attributes.
@@ -77,7 +70,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 // Merge local gem and global attributes.
-                Dictionary<string, List<float>> attrs = Compute.Merge(Global, Local);
+                AttributeSet attrs = Global.Merge(Local);
 
                 foreach (AttackSource source in Sources)
                 {
@@ -86,8 +79,10 @@ namespace POESKillTree.SkillTreeFiles
 
                     foreach (var attr in attrs)
                     {
+                        // Add immediately matching damage added.
                         Damage.Added added = Damage.Added.Create(Nature, attr);
-                        if (added != null) added.Apply(source.Deals, Effectiveness);
+                        if (added != null && Nature.Matches(added))
+                            added.Apply(source.Deals, Effectiveness);
 
                         Damage.Gained gained = Damage.Gained.Create(attr);
                         if (gained != null) Gains.Add(gained);
@@ -204,18 +199,66 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // Creates attack from gem.
-            public static Attack Create(Item gem)
+            public static AttackSkill Create(Item gem)
             {
-                return new Attack(gem);
+                return new AttackSkill(gem);
             }
 
-            // The flag whether attack is an attack.
-            public bool IsAttack
+            // Returns sources of attack skill (spell, main hand and/or off hand).
+            // TODO: Weapon & gem compatibility by comparing nature of attack skill with weapon (Bow gems cannot be used with melee weapons, etc.).
+            // TODO: Frenzy gem must have weapon type reduced according to weapon being used (either bow or melee).
+            // TODO: Lightning Strike must have DamageForm.Projectile removed as only melee part is displayed on sheet.
+            // TODO: Power Siphon must have WeaponType.Wand added as it doesn't work with any other weapon.
+            // TODO: Herald of Ice must have DamageSource.Spell removed/changed (no spell related bonuses applies to damage dealing part).
+            public List<AttackSource> GetSources()
             {
-                get
+                List<AttackSource> sources = new List<AttackSource>();
+
+                if (Nature.Is(DamageSource.Attack))
                 {
-                    return Type == AttackType.Attack;
+                    Weapon mainHand = Compute.GetWeapon(Item.ItemClass.MainHand);
+                    if (mainHand != null)
+                    {
+                        if (mainHand.Deals.Count > 0)
+                            sources.Add(new AttackSource("Main Hand", mainHand.Deals));
+
+                        // TODO: increased Physical Damage on shield.
+                        Weapon offHand = Compute.GetWeapon(Item.ItemClass.OffHand);
+                        if (offHand != null)
+                        {
+                            // With bow in main hand only quiver can be in off hand.
+                            if (mainHand.Is(WeaponType.Bow))
+                            {
+                                // Add all local damage added from quiver to bow.
+                                foreach (var attr in offHand.Local)
+                                {
+                                    Damage.Added added = Damage.Added.Create(mainHand.Nature, attr);
+                                    if (added != null) added.Apply(sources[0].Deals, 100);
+                                }
+                            }
+                            else
+                            {
+                                if (offHand.Deals.Count > 0)
+                                    sources.Add(new AttackSource("Off Hand", offHand.Deals));
+                            }
+                        }
+                    }
                 }
+                else // Spell
+                {
+                    List<Damage> deals = new List<Damage>();
+
+                    foreach (var attr in Local)
+                    {
+                        Damage damage = Damage.Create(Nature, attr);
+                        if (damage != null) deals.Add(damage);
+                    }
+
+                    if (deals.Count > 0)
+                        sources.Add(new AttackSource("Spell", deals));
+                }
+
+                return sources;
             }
 
             // Returns true if gem is an attack skill, false otherwise.
@@ -223,6 +266,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 // A gem is an attack if it has Attack or Spell keyword and it has damage dealing mod.
                 return (gem.Keywords.Contains("Attack") || gem.Keywords.Contains("Spell"))
+                        && !gem.Keywords.Contains("Trap") && !gem.Keywords.Contains("Mine") // No traps & mines.
                         && gem.Mods.Find(mod => mod.Attribute.StartsWith("Deals")) != null;
             }
 
@@ -234,6 +278,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     if (!gem.Keywords.Contains("Support")) continue; // Skip non-support gems.
 
+                    // Add all mods of support gems to attack skill gem.
                     foreach (Mod mod in gem.Mods)
                         Local.Add(mod.Attribute, new List<float>(mod.Value));
                 }
@@ -242,7 +287,7 @@ namespace POESKillTree.SkillTreeFiles
             // Return list group of this attack.
             public ListGroup ToListGroup()
             {
-                Dictionary<string, List<float>> props = new Dictionary<string,List<float>>();
+                AttributeSet props = new AttributeSet();
 
                 foreach (AttackSource source in Sources)
                     foreach (DamageType type in DamageTypes)
@@ -253,7 +298,7 @@ namespace POESKillTree.SkillTreeFiles
                             if (deals.Count > 1)
                                 for (int i = 1; i < deals.Count; ++i)
                                     deals[0].Add(deals[i]);
-                            props.Add(source.Source + " " + deals[0].ToAttribute(), deals[0].ToValue());
+                            props.Add(source.Name + " " + deals[0].ToAttribute(), deals[0].ToValue());
                         }
                     }
 
@@ -263,55 +308,17 @@ namespace POESKillTree.SkillTreeFiles
 
         public class AttackSource
         {
-            // List of damage dealt.
+            // List of damage dealt by source.
             public List<Damage> Deals;
             // The source name.
-            public string Source;
+            public string Name;
 
-            AttackSource(string source, List<Damage> deals)
+            public AttackSource(string name, List<Damage> deals)
             {
-                Source = source;
+                Name = name;
                 Deals = deals;
             }
-
-            // Returns sources of attack (spell, main hand and/or off hand).
-            public static List<AttackSource> GetSources(Attack attack)
-            {
-                List<AttackSource> sources = new List<AttackSource>();
-
-                if (attack.IsAttack)
-                {
-                    foreach (Item weapon in Compute.GetWeapons())
-                    {
-                        List<Damage> deals = new List<Damage>();
-
-                        foreach (var attr in weapon.Attributes)
-                        {
-                            Damage damage = Damage.Create(attack.Nature, attr);
-                            if (damage != null) deals.Add(damage);
-                        }
-
-                        if (deals.Count > 0)
-                            sources.Add(new AttackSource(weapon.Class == Item.ItemClass.MainHand ? "Main Hand" : "Off Hand", deals));
-                    }
-                }
-                else
-                {
-                    List<Damage> deals = new List<Damage>();
-
-                    foreach (var attr in attack.Local)
-                    {
-                        Damage damage = Damage.Create(attack.Nature, attr);
-                        if (damage != null) deals.Add(damage);
-                    }
-
-                    if (deals.Count > 0)
-                        sources.Add(new AttackSource("Spell", deals));
-                }
-
-                return sources;
-            }
-        }
+       }
 
         public enum DamageConversionSource
         {
@@ -325,47 +332,53 @@ namespace POESKillTree.SkillTreeFiles
 
         public enum DamageForm
         {
-            Any, Melee, Projectile, 
+            Any, Projectile
+        }
+
+        public enum DamageOverTime
+        {
+            Any, Burning
         }
 
         public enum DamageSource
         {
-            Any, Weapon, Spell
+            Any, Attack, Spell
         }
 
+        // Bitset.
         public enum DamageType
         {
-            Any, Physical = 1, Fire = 2, Cold = 4, Lightning = 8, Elemental = Cold | Fire | Lightning, Chaos = 16
-        }
-
-        public enum DamageWeaponType // Tempest Blast keystone?
-        {
-            Any, Wand
+            Any, Physical = 1, Fire = 2, Cold = 4, Lightning = 8, Chaos = 16,
+            Elemental = Cold | Fire | Lightning
         }
 
         public class DamageNature
         {
-            protected DamageArea Area = DamageArea.Any;
-            protected DamageForm Form = DamageForm.Any;
-            protected DamageSource Source = DamageSource.Any;
-            protected DamageType Type = DamageType.Any;
-            //DamageWeaponType WeaponType = DamageWeaponType.Any; // Templest Blast keystone?
+            public DamageArea Area = DamageArea.Any;
+            public DamageOverTime DoT = DamageOverTime.Any;
+            public DamageForm Form = DamageForm.Any;
+            public DamageSource Source = DamageSource.Any;
+            public DamageType Type = DamageType.Any;
+            public WeaponType WeaponType = WeaponType.Any;
 
             static Dictionary<string, DamageArea> Areas = new Dictionary<string, DamageArea>()
             {
                 { "AoE",        DamageArea.Area },
                 { "Area",       DamageArea.Area }
             };
+            static Dictionary<string, DamageOverTime> DoTs = new Dictionary<string, DamageOverTime>()
+            {
+                { "Burning",    DamageOverTime.Burning }
+            };
             static Dictionary<string, DamageForm> Forms = new Dictionary<string, DamageForm>()
             {
-                { "Melee",      DamageForm.Melee },
                 { "Projectile", DamageForm.Projectile }
             };
             static Dictionary<string, DamageSource> Sources = new Dictionary<string, DamageSource>()
             {
-                { "Attack",     DamageSource.Weapon },
+                { "Attack",     DamageSource.Attack },
                 { "Spell",      DamageSource.Spell },
-                { "Weapon",     DamageSource.Weapon }
+                { "Weapon",     DamageSource.Attack }
             };
             public static Dictionary<string, DamageType> Types = new Dictionary<string, DamageType>()
             {
@@ -377,31 +390,35 @@ namespace POESKillTree.SkillTreeFiles
                 { "Chaos",      DamageType.Chaos }
             };
 
-            public DamageNature()
-            {
-            }
+            public DamageNature() { }
 
             public DamageNature(DamageNature nature)
             {
                 Area = nature.Area;
+                DoT = nature.DoT;
                 Form = nature.Form;
                 Source = nature.Source;
                 Type = nature.Type;
+                WeaponType = nature.WeaponType;
             }
 
             public DamageNature(DamageNature nature, string str)
             {
                 Area = nature.Area;
+                DoT = nature.DoT;
                 Form = nature.Form;
                 Source = nature.Source;
                 Type = nature.Type;
+                WeaponType = nature.WeaponType;
 
                 string[] words = str.Split(' ');
                 foreach (string word in words)
                 {
                     if (Types.ContainsKey(word)) Type = Types[word];
                     else if (Sources.ContainsKey(word)) Source = Sources[word];
+                    else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
                     else if (Forms.ContainsKey(word)) Form = Forms[word];
+                    else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
                     else if (Areas.ContainsKey(word)) Area = Areas[word];
                     else throw new Exception("Unknown keyword: " + word);
                 }
@@ -414,7 +431,9 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     if (Types.ContainsKey(word)) Type = Types[word];
                     else if (Sources.ContainsKey(word)) Source = Sources[word];
+                    else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
                     else if (Forms.ContainsKey(word)) Form = Forms[word];
+                    else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
                     else if (Areas.ContainsKey(word)) Area = Areas[word];
                     else throw new Exception("Unknown keyword: " + word);
                 }
@@ -435,7 +454,9 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     if (Types.ContainsKey(word)) Type = Types[word];
                     else if (Sources.ContainsKey(word)) Source = Sources[word];
+                    else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
                     else if (Forms.ContainsKey(word)) Form = Forms[word];
+                    else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
                     else if (Areas.ContainsKey(word)) Area = Areas[word];
                     else throw new Exception("Unknown keyword: " + word);
                 }
@@ -447,11 +468,18 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     if (Forms.ContainsKey(word)) Form = Forms[word];
                     else if (Sources.ContainsKey(word)) Source = Sources[word];
+                    else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
+                    else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
                     else if (Areas.ContainsKey(word)) Area = Areas[word];
                 }
             }
 
-            public bool Is (DamageType type)
+            public bool Is(DamageSource source)
+            {
+                return Source == source;
+            }
+
+            public bool Is(DamageType type)
             {
                 return (Type & type) != 0;
             }
@@ -459,8 +487,10 @@ namespace POESKillTree.SkillTreeFiles
             public bool Matches(DamageNature nature)
             {
                 return (Area == DamageArea.Any || nature.Area == Area)
+                       && (DoT == DamageOverTime.Any || nature.DoT == DoT)
                        && (Form == DamageForm.Any || nature.Form == Form)
                        && (Source == DamageSource.Any || nature.Source == Source)
+                       && (WeaponType == WeaponType.Any || (nature.WeaponType & WeaponType) != 0)
                        && (Type == DamageType.Any || (nature.Type & Type) != 0);
             }
         }
@@ -474,7 +504,8 @@ namespace POESKillTree.SkillTreeFiles
                 // The added damage maximum.
                 private float Max;
 
-                static Regex ReAddMod = new Regex("Adds #-# ([^ ]+) Damage");
+                static Regex ReAddMod = new Regex("Adds #-# ([^ ]+) Damage$");
+                static Regex ReAddWithBows = new Regex("Adds #-# ([^ ]+) Damage to attacks with Bows");
 
                 public Added(DamageNature nature, string type, float min, float max)
                     : base(nature, type)
@@ -488,8 +519,14 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Match m = ReAddMod.Match(attr.Key);
                     if (m.Success)
-                    {
                         return new Added(nature, m.Groups[1].Value, attr.Value[0], attr.Value[1]);
+                    else
+                    {
+                        m = ReAddWithBows.Match(attr.Key);
+                        if (m.Success)
+                        {
+                            return new Added(nature, m.Groups[1].Value, attr.Value[0], attr.Value[1]) { Source = DamageSource.Attack, WeaponType = WeaponType.Bow };
+                        }
                     }
 
                     return null;
@@ -624,7 +661,7 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         m = ReIncreasedWith.Match(attr.Key);
                         if (m.Success)
-                            return new Increased(m.Groups[3].Value == "Spells" ? DamageSource.Spell : DamageSource.Weapon, m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
+                            return new Increased(m.Groups[3].Value == "Spells" ? DamageSource.Spell : DamageSource.Attack, m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
                         else
                         {
                             m = ReIncreasedAll.Match(attr.Key);
@@ -702,7 +739,7 @@ namespace POESKillTree.SkillTreeFiles
             float Max;
 
             static Regex ReDamageAttribute = new Regex("([^ ]+) Damage:  #-#");
-            static Regex ReDamageMod = new Regex("Deals #-# ([^ ]+) Damage");
+            static Regex ReDamageMod = new Regex("Deals #-# ([^ ]+) Damage$");
 
             // Damage with same origin as specified damage but with different type.
             Damage(Damage damage, DamageType type, float min, float max)
@@ -797,40 +834,544 @@ namespace POESKillTree.SkillTreeFiles
 
             public List<float> ToValue()
             {
-                return new List<float>() { (float)Math.Round((Double)Min, MidpointRounding.AwayFromZero), (float)Math.Round((Double)Max, MidpointRounding.AwayFromZero) };
+                return new List<float>() { Compute.RoundValue(Min, 0), Compute.RoundValue(Max, 0) };
             }
+        }
+
+        public class Weapon
+        {
+            // List of all damage dealt by weapon.
+            public List<Damage> Deals = new List<Damage>();
+            // The item.
+            public Item Item;
+            // Local attributes.
+            public AttributeSet Local = new AttributeSet();
+            // Type of weapon.
+            public DamageNature Nature;
+
+            public static Dictionary<string, WeaponType> Types = new Dictionary<string, WeaponType>()
+            {
+                { "Bow",                WeaponType.Bow },
+                { "Claw",               WeaponType.Claw }, // NEED TEST
+                { "Dagger",             WeaponType.Dagger },
+                { "One Handed Axe",     WeaponType.OneHandedAxe }, // NEED TEST
+                { "One Handed Mace",    WeaponType.OneHandedMace },
+                { "One Handed Sword",   WeaponType.OneHandedSword }, // NEED TEST
+                { "Sceptre",            WeaponType.Sceptre }, // NEED TEST
+                { "Staff",              WeaponType.Staff }, // NEED TEST
+                { "Thrusting Sword",    WeaponType.ThrustingSword }, // NEED TEST
+                { "Two Handed Axe",     WeaponType.TwoHandedAxe }, // NEED TEST
+                { "Two Handed Mace",    WeaponType.TwoHandedMace }, // NEED TEST
+                { "Two Handed Sword",   WeaponType.TwoHandedSword }, // NEED TEST
+                { "Wand",               WeaponType.Wand },
+                { "Melee",              WeaponType.Melee }
+            };
+
+            public Weapon(Item item)
+            {
+                Item = item;
+
+                // Get weapon type (damage nature).
+                if (item.Keywords == null) // Quiver or shield.
+                {
+                    if (item.Type.EndsWith("Quiver"))
+                        Nature = new DamageNature() { WeaponType = WeaponType.Quiver };
+                    else
+                        if (item.Type.EndsWith("Shield"))
+                            Nature = new DamageNature() { WeaponType = WeaponType.Shield };
+                        else
+                            throw new Exception("Unknown weapon type");
+                }
+                else // Regular weapon.
+                    foreach (string keyword in item.Keywords)
+                        if (Types.ContainsKey(keyword))
+                        {
+                            Nature = new DamageNature() { WeaponType = Types[keyword] };
+                            break;
+                        }
+
+                // Create damage dealt.
+                foreach (var attr in item.Attributes)
+                {
+                    Damage damage = Damage.Create(Nature, attr);
+                    if (damage != null) Deals.Add(damage);
+                }
+
+                // Get local mods.
+                foreach (var mod in item.Mods.FindAll(m => m.isLocal))
+                    Local.Add(mod.Attribute, mod.Value);
+            }
+
+            public bool Is(WeaponType type)
+            {
+                return (Nature.WeaponType & type) != 0;
+            }
+        }
+
+        // Bitset.
+        public enum WeaponType
+        {
+            Any,
+            Bow = 1, Claw = 2, Dagger = 4, OneHandedAxe = 8, OneHandedMace = 16, OneHandedSword = 32, Sceptre = 64,
+            Staff = 128, ThrustingSword = 256, TwoHandedAxe = 512, TwoHandedMace = 1024, TwoHandedSword = 2048, Wand = 4096,
+            Quiver = 8192,
+            Shield = 16384,
+            Melee = Claw | Dagger | OneHandedAxe | OneHandedMace | OneHandedSword | Sceptre | Staff | ThrustingSword | TwoHandedAxe | TwoHandedMace | TwoHandedSword,
+            Ranged = Bow | Wand
         }
 
         // Equipped items.
         public static List<Item> Items;
+        // Character level.
+        public static int Level;
         // Equipment attributes.
-        public static Dictionary<string, List<float>> Equipment;
+        public static AttributeSet Equipment;
         // All global attributes (includes tree, equipment, implicit).
-        public static Dictionary<string, List<float>> Global;
+        public static AttributeSet Global;
         // Implicit attributes derived from base attributes and level (e.g. Life, Mana).
-        public static Dictionary<string, List<float>> Implicit;
+        public static AttributeSet Implicit;
         // Skill tree attributes (includes base attributes).
-        public static Dictionary<string, List<float>> Tree;
-        // Skill tree keystones.
-        public static bool AvatarOfFire;
+        public static AttributeSet Tree;
 
-        // Returns equipped weapons.
-        public static List<Item> GetWeapons()
+        // Skill tree keystones.
+        public static bool Acrobatics;
+        public static bool AvatarOfFire;
+        public static bool BloodMagic;
+        public static bool ChaosInoculation;
+        public static bool EldritchBattery;
+        public static bool IronReflexes;
+        public static bool VaalPact;
+        public static bool ZealotsOath;
+
+        // Monster average accuracy for each level (1 .. 100).
+        public static int[] MonsterAverageAccuracy = new int[] { 0, // Level 0 placeholder.
+              18,     19,     20,     21,     23,
+              24,     25,     27,     28,     30,
+              31,     33,     35,     36,     38,
+              40,     42,     44,     46,     49,
+              51,     54,     56,     59,     62,
+              65,     68,     71,     74,     78,
+              81,     85,     89,     93,     97,
+             101,    106,    111,    116,    121,
+             126,    132,    137,    143,    149,
+             156,    162,    169,    177,    184,
+             192,    200,    208,    217,    226,
+             236,    245,    255,    266,    277,
+             288,    300,    312,    325,    338,
+             352,    366,    381,    396,    412,
+             428,    445,    463,    481,    500,
+             520,    540,    562,    584,    607,
+             630,    655,    680,    707,    734,
+             762,    792,    822,    854,    887,
+             921,    956,    992,   1030,   1069,
+            1110,   1152,   1196,   1241,   1288
+        };
+
+        // Chance to Evade = 1 - Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
+        // Chance to hit can never be lower than 5%, nor higher than 95%.
+        // @see http://pathofexile.gamepedia.com/Evasion
+        public static float ChanceToEvade(int level, float evasionRating)
         {
-            return Items.FindAll(i => i.Class == Item.ItemClass.MainHand || i.Class == Item.ItemClass.OffHand);
+            int maa = MonsterAverageAccuracy[level];
+
+            float chance = RoundValue((float)(1 - maa / (maa + Math.Pow(evasionRating / 4, 0.8))) * 100, 0);
+            if (chance < 5f) chance = 5f;
+            else if (chance > 95f) chance = 95f;
+
+            return chance;
         }
 
-        // Includes attributes into target dictionary.
-        public static void Include(Dictionary<string, List<float>> target, Dictionary<string, List<float>> include)
+        // Computes defensive statistics.
+        public static List<ListGroup> Defense()
         {
-            foreach (var attr in include)
-                if (target.ContainsKey(attr.Key))
+            AttributeSet ch = new AttributeSet();
+            AttributeSet def = new AttributeSet();
+
+            // Difficulty.
+            bool difficultyNormal = true;
+            bool difficultyCruel = false;
+            bool difficultyMerciless = false;
+            // Bandits.
+            bool banditNormalKraityn = false; // +8% to all elemental resistances
+            bool banditNormalAlira = false; // +40 Mana
+            bool banditNormalOak = false; // +40 Life
+            bool banditCruelKraityn = false; // +8% Attack Speed
+            bool banditCruelAlira = false; // +4% Cast Speed
+            bool banditCruelOak = false; // +18% Physical Damage
+            bool banditMercilessKraityn = false; // +1 Max Frenzy Charge
+            bool banditMercilessAlira = false; // +1 Max Power Charge
+            bool banditMercilessOak = false; // +1 Max Endurance Charge
+
+            float life;
+            if (ChaosInoculation)
+                life = Global["Maximum Life becomes #, Immune to Chaos Damage"][0];
+            else
+            {
+                life = Global["+# to maximum Life"][0];
+                if (banditNormalOak) // Bandit.
+                    life += 40;
+                if (Global.ContainsKey("#% increased maximum Life"))
+                    life = IncreaseValueByPercentage(life, Global["#% increased maximum Life"][0]);
+            }
+            ch["Life: #"] = new List<float>() { RoundValue(life, 0) };
+
+            float mana = Global["+# to maximum Mana"][0];
+            float incMana = 0;
+            if (banditNormalAlira) // Bandit.
+                mana += 40;
+            if (Global.ContainsKey("#% increased maximum Mana"))
+                incMana = Global["#% increased maximum Mana"][0];
+
+            float es = 0;
+            // Add maximum shield from tree.
+            if (Global.ContainsKey("+# to maximum Energy Shield"))
+                es += Global["+# to maximum Energy Shield"][0];
+            // Add maximum shield from items.
+            if (Global.ContainsKey("Energy Shield:  #"))
+                es += Global["Energy Shield:  #"][0];
+            // Increase % maximum shield from intelligence.
+            float incES = RoundValue(Global["+#% Energy Shield"][0], 0);
+            // Increase % maximum shield from tree and items.
+            if (Global.ContainsKey("#% increased maximum Energy Shield"))
+                incES += Global["#% increased maximum Energy Shield"][0];
+
+            float moreES = 0;
+            // More % maximum shield from tree and items.
+            if (Global.ContainsKey("#% more maximum Energy Shield"))
+                moreES += Global["#% more maximum Energy Shield"][0];
+
+            float lessArmourAndES = 0;
+            if (Acrobatics)
+                lessArmourAndES += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield"][1];
+
+            // Equipped Shield bonuses.
+            float incArmourShield = 0;
+            float incESShield = 0;
+            float incDefencesShield = 0;
+            if (Global.ContainsKey("#% increased Armour from equipped Shield"))
+                incArmourShield += Global["#% increased Armour from equipped Shield"][0];
+            if (Global.ContainsKey("#% increased Energy Shield from equipped Shield"))
+                incESShield += Global["#% increased Energy Shield from equipped Shield"][0];
+            if (Global.ContainsKey("#% increased Defences from equipped Shield"))
+                incDefencesShield += Global["#% increased Defences from equipped Shield"][0];
+            float shieldArmour = 0;
+            float shieldEvasion = 0;
+            float shieldES = 0;
+            if (incDefencesShield > 0 || incArmourShield > 0 || incESShield > 0)
+            {
+                List<float> value = GetItemAttributeValue(Item.ItemClass.OffHand, "Armour:  #");
+                if (value.Count > 0)
+                    shieldArmour += PercentOfValue(value[0], incArmourShield + incDefencesShield);
+
+                value = GetItemAttributeValue(Item.ItemClass.OffHand, "Evasion Rating:  #");
+                if (value.Count > 0)
+                    shieldEvasion += PercentOfValue(value[0], incDefencesShield);
+
+                value = GetItemAttributeValue(Item.ItemClass.OffHand, "Energy Shield:  #");
+                if (value.Count > 0)
+                    shieldES += PercentOfValue(value[0], incESShield + incDefencesShield);
+            }
+
+            // ( Mana * %mana increases ) + ( ES * ( %ES increases + %mana increases ) * ( %ES more ) )
+            // @see http://pathofexile.gamepedia.com/Eldritch_Battery
+            if (EldritchBattery)
+            {
+                es = IncreaseValueByPercentage(es, incES + incMana);
+                es += shieldES;
+                if (moreES > 0)
+                    es = IncreaseValueByPercentage(es, moreES);
+                if (lessArmourAndES > 0)
+                    es = IncreaseValueByPercentage(es, -lessArmourAndES);
+
+                mana = IncreaseValueByPercentage(mana, incMana) + es;
+                es = 0;
+            }
+            else
+            {
+                mana = IncreaseValueByPercentage(mana, incMana);
+                es = IncreaseValueByPercentage(es, incES);
+                es += shieldES;
+                if (moreES > 0)
+                    es = IncreaseValueByPercentage(es, moreES);
+                if (lessArmourAndES > 0)
+                    es = IncreaseValueByPercentage(es, -lessArmourAndES);
+            }
+
+            if (BloodMagic)
+                mana = 0;
+
+            ch["Mana: #"] = new List<float>() { RoundValue(mana, 0) };
+            ch["Maximum Energy Shield: #"] = new List<float>() { RoundValue(es, 0) };
+
+            // Evasion Rating from level.
+            float evasion = Global["Evasion Rating: #"][0];
+            // Evasion Rating from tree, items.
+            if (Global.ContainsKey("Evasion Rating:  #"))
+                evasion += Global["Evasion Rating:  #"][0];
+            if (Global.ContainsKey("+# to Evasion Rating"))
+                evasion += Global["+# to Evasion Rating"][0];
+            // Increase % from dexterity, tree and items.
+            float incEvasion = Global["#% increased Evasion Rating"][0];
+            float incEvasionAndArmour = 0;
+            if (Global.ContainsKey("#% increased Evasion Rating and Armour"))
+                incEvasionAndArmour += Global["#% increased Evasion Rating and Armour"][0];
+
+            float armour = 0;
+            // Armour from items.
+            if (Global.ContainsKey("Armour:  #"))
+                armour += Global["Armour:  #"][0];
+            float incArmour = 0;
+            if (Global.ContainsKey("#% increased Armour"))
+                incArmour += Global["#% increased Armour"][0];
+
+            // Final Armour = Base Evasion * ( 1 + % increased Evasion Rating + % increased Armour + % increased Evasion Rating and Armour )
+            //              + Base Armour  * ( 1 + % increased Armour                              + % increased Evasion Rating and Armour )
+            // @see http://pathofexile.gamepedia.com/Iron_Reflexes
+            if (IronReflexes)
+            {
+                // Substract "#% increased Evasion Rating" from Dexterity (it's not being applied).
+                incEvasion -= Implicit["#% increased Evasion Rating"][0];
+                armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
+                armour += shieldArmour + shieldEvasion;
+                evasion = 0;
+            }
+            else
+            {
+                evasion = IncreaseValueByPercentage(evasion, incEvasion + incEvasionAndArmour) + shieldEvasion;
+                armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + shieldArmour;
+            }
+            if (lessArmourAndES > 0)
+                armour = IncreaseValueByPercentage(armour, -lessArmourAndES);
+
+            if (armour > 0)
+            {
+                def["Armour: #"] = new List<float>() { RoundValue(armour, 0) };
+                def["Estimated Physical Damage reduction: #%"] = new List<float>() { PhysicalDamageReduction(Level, RoundValue(armour, 0)) };
+            }
+            if (evasion > 0)
+                def["Evasion Rating: #"] = new List<float>() { RoundValue(evasion, 0) };
+            def["Estimated chance to Evade Attacks: #%"] = new List<float>() { ChanceToEvade(Level, RoundValue(evasion, 0)) };
+
+            // Energy Shield Recharge per Second.
+            // @see http://pathofexile.gamepedia.com/Energy_shield
+            if (es > 0)
+            {
+                def["Maximum Energy Shield: #"] = new List<float>() { RoundValue(es, 0) };
+
+                float esRecharge = RoundValue(es, 0) / 3; // By default, energy shield recharges at a rate equal to a third of the character's maximum energy shield per second.
+                def["Energy Shield Recharge per Second: #"] = new List<float>() { RoundValue(esRecharge, 1) };
+                float esDelay = 6; // By default, the delay period for energy shield to begin to recharge is 6 seconds.
+                if (Global.ContainsKey("#% faster start of Energy Shield Recharge"))
+                    esDelay = esDelay * 100 / (100 + Global["#% faster start of Energy Shield Recharge"][0]);
+                def["Energy Shield Recharge Delay: #s"] = new List<float>() { RoundValue(esDelay, 1) };
+            }
+
+            // Life Regeneration.
+            float lifeRegen = 0;
+            if (Global.ContainsKey("#% of Life Regenerated per Second"))
+                lifeRegen += Global["#% of Life Regenerated per Second"][0];
+
+            if (VaalPact)
+                lifeRegen = 0;
+
+            if (ZealotsOath)
+            {
+                if (es > 0 && lifeRegen > 0)
+                    def["Energy Shield Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(RoundValue(es, 0), lifeRegen), 1) };
+            }
+            else
+            {
+                if (life > 1 && lifeRegen > 0)
+                    def["Life Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(RoundValue(life, 0), lifeRegen), 1) };
+            }
+
+            // Mana Regeneration.
+            if (mana > 0)
+            {
+                float manaRegen = PercentOfValue(RoundValue(mana, 0), 1.75f);
+                // manaRegen += ClarityManaRegenerationPerSecond; // Clarity provides flat mana regeneration bonus.
+                float incManaRegen = 0;
+                if (Global.ContainsKey("#% increased Mana Regeneration Rate"))
+                    incManaRegen += Global["#% increased Mana Regeneration Rate"][0];
+                manaRegen = IncreaseValueByPercentage(manaRegen, incManaRegen);
+                def["Mana Regeneration per Second: #"] = new List<float>() { RoundValue(manaRegen, 1) };
+            }
+
+            // Character attributes.
+            ch["Strength: #"] = Global["+# to Strength"];
+            ch["Dexterity: #"] = Global["+# to Dexterity"];
+            ch["Intelligence: #"] = Global["+# to Intelligence"];
+
+            // Shield, Staff and Dual Wielding detection.
+            bool hasShield = false;
+            bool hasStaff = false;
+            bool isDualWielding = false;
+            List<float> valueList = GetItemAttributeValue(Item.ItemClass.OffHand, "Chance to Block:  #%");
+            if (valueList.Count > 0) hasShield = true;
+            else
+            {
+                valueList = GetItemAttributeValue(Item.ItemClass.MainHand, "#% Chance to Block");
+                if (valueList.Count > 0) hasStaff = true;
+                else
                 {
-                    if (attr.Value.Count > 0)
-                        for (int i = 0; i < attr.Value.Count; ++i)
-                            target[attr.Key][i] += attr.Value[i];
+                    List<float> mainHand = GetItemAttributeValue(Item.ItemClass.MainHand, "Attacks per Second:  #");
+                    List<float> offHand = GetItemAttributeValue(Item.ItemClass.OffHand, "Attacks per Second:  #");
+                    if (mainHand.Count > 0 && offHand.Count > 0) isDualWielding = true;
                 }
-                else target.Add(attr.Key, new List<float>(attr.Value));
+            }
+
+            // Resistances.
+            float maxResistFire = 75;
+            float maxResistCold = 75;
+            float maxResistLightning = 75;
+            float maxResistChaos = 75;
+            float resistFire = 0;
+            float resistCold = 0;
+            float resistLightning = 0;
+            float resistChaos = 0;
+            // Penalties to resistances at difficulty levels.
+            if (difficultyCruel)
+                resistFire = resistCold = resistLightning = resistChaos = -20;
+            else if (difficultyMerciless)
+                resistFire = resistCold = resistLightning = resistChaos = -60;
+            if (banditNormalKraityn) // Bandit.
+            {
+                resistFire += 8;
+                resistCold += 8;
+                resistLightning += 8;
+            }
+            if (Global.ContainsKey("+#% to Fire Resistance"))
+                resistFire += Global["+#% to Fire Resistance"][0];
+            if (Global.ContainsKey("+#% to Cold Resistance"))
+                resistCold += Global["+#% to Cold Resistance"][0];
+            if (Global.ContainsKey("+#% to Lightning Resistance"))
+                resistLightning += Global["+#% to Lightning Resistance"][0];
+            if (Global.ContainsKey("+#% to Chaos Resistance"))
+                resistChaos += Global["+#% to Chaos Resistance"][0];
+            if (Global.ContainsKey("+#% to Fire and Cold Resistances")) // Two-Stone Ring.
+            {
+                float value = Global["+#% to Fire and Cold Resistances"][0];
+                resistFire += value;
+                resistCold += value;
+            }
+            if (Global.ContainsKey("+#% to Fire and Lightning Resistances")) // Two-Stone Ring.
+            {
+                float value = Global["+#% to Fire and Lightning Resistances"][0];
+                resistFire += value;
+                resistLightning += value;
+            }
+            if (Global.ContainsKey("+#% to Cold and Lightning Resistances")) // Two-Stone Ring.
+            {
+                float value = Global["+#% to Cold and Lightning Resistances"][0];
+                resistCold += value;
+                resistLightning += value;
+            }
+            if (Global.ContainsKey("+#% to all Elemental Resistances"))
+            {
+                float value = Global["+#% to all Elemental Resistances"][0];
+                resistFire += value;
+                resistCold += value;
+                resistLightning += value;
+            }
+            if (hasShield && Global.ContainsKey("+#% Elemental Resistances while holding a Shield"))
+            {
+                float value = Global["+#% Elemental Resistances while holding a Shield"][0];
+                resistFire += value;
+                resistCold += value;
+                resistLightning += value;
+            }
+            if (Global.ContainsKey("+#% to maximum Fire Resistance"))
+                maxResistFire += Global["+#% to maximum Fire Resistance"][0];
+            if (Global.ContainsKey("+#% to maximum Cold Resistance"))
+                maxResistCold += Global["+#% to maximum Cold Resistance"][0];
+            if (Global.ContainsKey("+#% to maximum Lightning Resistance"))
+                maxResistLightning += Global["+#% to maximum Lightning Resistance"][0];
+            if (ChaosInoculation)
+                maxResistChaos = resistChaos = 100;
+            def["Fire Resistance: #% (#%)"] = new List<float>() { MaximumValue(resistFire, maxResistFire), resistFire };
+            def["Cold Resistance: #% (#%)"] = new List<float>() { MaximumValue(resistCold, maxResistCold), resistCold };
+            def["Lightning Resistance: #% (#%)"] = new List<float>() { MaximumValue(resistLightning, maxResistLightning), resistLightning };
+            def["Chaos Resistance: #% (#%)"] = new List<float>() { MaximumValue(resistChaos, maxResistChaos), resistChaos };
+
+            // Chance to Block Attacks and Spells.
+            // Block chance is capped at 75%. The chance to block spells is also capped at 75%.
+            // @see http://pathofexile.gamepedia.com/Blocking
+            float maxChanceBlockAttacks = 75;
+            float maxChanceBlockSpells = 75;
+            float chanceBlockAttacks = 0;
+            float chanceBlockSpells = 0;
+            if (Global.ContainsKey("+#% to maximum Block Chance"))
+            {
+                maxChanceBlockAttacks += Global["+#% to maximum Block Chance"][0];
+                maxChanceBlockSpells += Global["+#% to maximum Block Chance"][0];
+            }
+            if (hasShield)
+            {
+                valueList = GetItemAttributeValue(Item.ItemClass.OffHand, "Chance to Block:  #%");
+                chanceBlockAttacks += valueList[0];
+            }
+            else if (hasStaff)
+            {
+                valueList = GetItemAttributeValue(Item.ItemClass.MainHand, "#% Chance to Block");
+                chanceBlockAttacks += valueList[0];
+            }
+            else if (isDualWielding)
+            {
+                chanceBlockAttacks += 15; // When dual wielding, the base chance to block is 15% no matter which weapons are used.
+            }
+            if (hasShield && Global.ContainsKey("#% additional Chance to Block with Shields"))
+                chanceBlockAttacks += Global["#% additional Chance to Block with Shields"][0];
+            if (hasStaff && Global.ContainsKey("#% additional Block Chance With Staves"))
+                chanceBlockAttacks += Global["#% additional Block Chance With Staves"][0];
+            if (isDualWielding && Global.ContainsKey("#% additional Chance to Block while Dual Wielding"))
+                chanceBlockAttacks += Global["#% additional Chance to Block while Dual Wielding"][0];
+            if ((isDualWielding || hasShield) && Global.ContainsKey("#% additional Chance to Block while Dual Wielding or holding a Shield"))
+                chanceBlockAttacks += Global["#% additional Chance to Block while Dual Wielding or holding a Shield"][0];
+            if (Global.ContainsKey("#% of Block Chance applied to Spells"))
+                chanceBlockSpells = PercentOfValue(chanceBlockAttacks, Global["#% of Block Chance applied to Spells"][0]);
+            if (hasShield && Global.ContainsKey("#% additional Chance to Block Spells with Shields"))
+                chanceBlockSpells += Global["#% additional Chance to Block Spells with Shields"][0];
+            if (chanceBlockAttacks > 0)
+                def["Chance to Block Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockAttacks, 0), maxChanceBlockAttacks) };
+            if (chanceBlockSpells > 0)
+                def["Chance to Block Spells: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockSpells, 0), maxChanceBlockSpells) };
+
+            List<ListGroup> groups = new List<ListGroup>();
+            groups.Add(new ListGroup("Character", ch));
+            groups.Add(new ListGroup("Defence", def));
+
+            return groups;
+        }
+
+        // Returns attribute or mod value of an equipped item.
+        public static List<float> GetItemAttributeValue(Item.ItemClass itemClass, string name)
+        {
+            Item item = Items.Find(i => i.Class == itemClass);
+            if (item != null)
+            {
+                if (item.Attributes.ContainsKey(name))
+                    return item.Attributes[name];
+
+                Item.Mod mod = item.Mods.Find(m => m.Attribute == name);
+                if (mod != null)
+                    return mod.Value;
+            }
+
+            return new List<float>();
+        }
+
+        // Returns equipped weappon or null if there is none.
+        public static Weapon GetWeapon(Item.ItemClass itemClass)
+        {
+            Item item = Items.Find(i => i.Class == itemClass);
+
+            return item == null ? null : new Weapon(item);
+        }
+
+        // Returns value increased by specified percentage.
+        public static float IncreaseValueByPercentage(float value, float percentage)
+        {
+            return value * (100 + percentage) / 100;
         }
 
         // Initializes structures.
@@ -838,43 +1379,48 @@ namespace POESKillTree.SkillTreeFiles
         {
             Items = itemAttrs.Equip;
 
-            Global = new Dictionary<string, List<float>>();
+            Level = skillTree._level;
 
-            Tree = skillTree.SelectedAttributesWithoutImplicit;
-            Include(Global, Tree);
+            Global = new AttributeSet();
 
-            Equipment = new Dictionary<string, List<float>>();
+            Tree = new AttributeSet(skillTree.SelectedAttributesWithoutImplicit);
+            Global.Add(Tree);
+
+            Equipment = new AttributeSet();
             foreach (ItemAttributes.Attribute attr in itemAttrs.NonLocalMods)
                 Equipment.Add(attr.TextAttribute, new List<float>(attr.Value));
-            Include(Global, Equipment);
+            Global.Add(Equipment);
 
-            Implicit = skillTree.ImplicitAttributes(Global);
-            Include(Global, Implicit);
+            Implicit = new AttributeSet(skillTree.ImplicitAttributes(Global));
+            Global.Add(Implicit);
 
             // Keystones.
+            Acrobatics = Tree.ContainsKey("#% Chance to Dodge Attacks. #% less Armour and Energy Shield");
             AvatarOfFire = Tree.ContainsKey("Deal no Non-Fire Damage");
+            BloodMagic = Tree.ContainsKey("Removes all mana. Spend Life instead of Mana for Skills");
+            ChaosInoculation = Tree.ContainsKey("Maximum Life becomes #, Immune to Chaos Damage");
+            EldritchBattery = Tree.ContainsKey("Converts all Energy Shield to Mana");
+            IronReflexes = Tree.ContainsKey("Converts all Evasion Rating to Armour. Dexterity provides no bonus to Evasion Rating");
+            VaalPact = Tree.ContainsKey("Life Leech applies instantly at #% effectiveness. Life Regeneration has no effect.");
+            ZealotsOath = Tree.ContainsKey("Life Regeneration applies to Energy Shield instead of Life");
         }
 
-        // Returns new attribute set merged from two attribute sets.
-        public static Dictionary<string, List<float>> Merge(Dictionary<string, List<float>> attrs1, Dictionary<string, List<float>> attrs2)
+        // Returns value capped at specified maximum.
+        public static float MaximumValue(float value, float maximum)
         {
-            Dictionary<string, List<float>> merged = new Dictionary<string, List<float>>();
+            return value <= maximum ? value : maximum;
+        }
 
-            // Copy first set.
-            foreach (var attr in attrs1)
-                merged.Add(attr.Key, new List<float>(attr.Value));
+        // Returns average damage done by monsters at specified character level.
+        // @see http://pathofexile.gamepedia.com/Monster_Damage
+        public static float MonsterAverageDamage(int level)
+        {
+            float a = 1.1512f;
+            float b = 0.0039092f;
+            float c = 17.789f;
+            float d = -7.0896f;
 
-            // Merge second set.
-            foreach (var attr in attrs2)
-                if (merged.ContainsKey(attr.Key))
-                {
-                    if (attr.Value.Count > 0)
-                        for (int i = 0; i < attr.Value.Count; ++i)
-                            merged[attr.Key][i] += attr.Value[i];
-                }
-                else merged.Add(attr.Key, new List<float>(attr.Value));
-
-            return merged;
+            return (float)Math.Pow(a + b * level, c) + d;
         }
 
         // Computes offensive attacks.
@@ -886,13 +1432,13 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (Item gem in item.Gems)
                 {
-                    if (Attack.IsAttackSkill(gem))
+                    if (AttackSkill.IsAttackSkill(gem))
                     {
-                        // Skip totems, Cast on X for now.
-                        if (item.GetLinkedGems(gem).Find(g => g.Name.Contains("Totem")) != null
-                            || item.GetLinkedGems(gem).Find(g => g.Name.StartsWith("Cast on")) != null) continue;
+                        // Skip gems linked to totems and Cast on gems for now.
+                        if (item.GetLinkedGems(gem).Find(g => g.Name.Contains("Totem")
+                                                              || g.Name.StartsWith("Cast on")) != null) continue;
 
-                        Attack attack = Attack.Create(gem);
+                        AttackSkill attack = AttackSkill.Create(gem);
 
                         attack.Link(item.GetLinkedGems(gem));
                         attack.Apply();
@@ -903,6 +1449,29 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             return groups;
+        }
+
+        // Returns percent of value.
+        public static float PercentOfValue(float value, float percentage)
+        {
+            return value * percentage / 100;
+        }
+
+        // Damage Reduction Factor = Armour / ( Armour + (12 * Damage) )
+        // Damage reduction is capped at 90%.
+        // @see http://pathofexile.gamepedia.com/Armour
+        public static float PhysicalDamageReduction(int level, float armour)
+        {
+            float reduction = RoundValue(armour / (armour + 12 * MonsterAverageDamage(level)) * 100, 0);
+            if (reduction > 90f) reduction = 90f;
+
+            return reduction;
+        }
+
+        // Returns rounded value with zero fractional digits.
+        public static float RoundValue(float value, int precision)
+        {
+            return (float)Math.Round((Decimal)value, precision, MidpointRounding.AwayFromZero);
         }
 
     }

@@ -50,14 +50,14 @@ namespace POESKillTree.Views
         private static readonly Action EmptyDelegate = delegate { };
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
-        private readonly List<Attribute> _statisticsList = new List<Attribute>();
+        private readonly List<ListGroupItem> _defenceList = new List<ListGroupItem>();
         private readonly List<ListGroupItem> _offenceList = new List<ListGroupItem>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly ToolTip _noteTip = new ToolTip();
         private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attibuteCollection;
-        private ListCollectionView _statisticsCollection;
+        private ListCollectionView _defenceCollection;
         private ListCollectionView _offenceCollection;
         private RenderTargetBitmap _clipboardBmp;
 
@@ -226,13 +226,15 @@ namespace POESKillTree.Views
         {
             Compute.Initialize(Tree, _itemAttributes);
 
-            _statisticsList.Clear();
-            foreach (var item in Tree.ComputedStatistics(attrs, _itemAttributes).Select(InsertNumbersInAttributes))
+            _defenceList.Clear();
+            foreach (ListGroup group in Compute.Defense())
             {
-                _statisticsList.Add(new Attribute(item));
+                foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
+                {
+                    _defenceList.Add(new ListGroupItem(item, group.Name));
+                }
             }
-
-            _statisticsCollection.Refresh();
+            _defenceCollection.Refresh();
 
             _offenceList.Clear();
             foreach (ListGroup group in Compute.Offense())
@@ -271,9 +273,9 @@ namespace POESKillTree.Views
             _allAttributeCollection.GroupDescriptions.Add(pgd);
             lbAllAttr.ItemsSource = _allAttributeCollection;
 
-            _statisticsCollection = new ListCollectionView(_statisticsList);
-            _statisticsCollection.GroupDescriptions.Add(new PropertyGroupDescription("") { Converter = new StatisticsGroupStringConverter() });
-            listBoxStatistics.ItemsSource = _statisticsCollection;
+            _defenceCollection = new ListCollectionView(_defenceList);
+            _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
+            listBoxDefence.ItemsSource = _defenceCollection;
 
             _offenceCollection = new ListCollectionView(_offenceList);
             _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
