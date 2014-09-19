@@ -10,7 +10,6 @@ namespace POESKillTree.SkillTreeFiles
 {
     public class Compute
     {
-        // TODO: Multi-part attacks Lightning Strike, Molten Strike (Melee + Projectile)
         public class AttackSkill
         {
             // The name.
@@ -27,6 +26,8 @@ namespace POESKillTree.SkillTreeFiles
             List<Damage.Converted> Converts = new List<Damage.Converted>();
             // List of damage gains.
             List<Damage.Gained> Gains = new List<Damage.Gained>();
+            // The flag whether skill is usable.
+            public bool Useable = true;
 
             // The sorted list of damage types for character sheet.
             static List<DamageType> DamageTypes = new List<DamageType>()
@@ -46,56 +47,77 @@ namespace POESKillTree.SkillTreeFiles
 
                 Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness:  #%") ? gem.Attributes["Damage Effectiveness:  #%"][0] : 100;
 
+                Fixup();
+
                 Sources = GetSources();
             }
 
             // Applies attributes.
             public void Apply()
             {
-                // Damage conversion from gems, equipment and tree.
+                // Lists of damage added, increased and multipliers to apply.
+                List<Damage.Added> adds = new List<Damage.Added>();
+                List<Damage.Increased> increases = new List<Damage.Increased>();
+                List<Damage.More> mores = new List<Damage.More>();
+
+                // Collect damage conversions from gems, equipment and tree.
+                // Collect damage added from gems and equipment.
                 foreach (var attr in Local)
                 {
                     Damage.Converted conv = Damage.Converted.Create(DamageConversionSource.Gem, attr);
                     if (conv != null) Converts.Add(conv);
+
+                    // Damage added from gems is always applied.
+                    Damage.Added added = Damage.Added.Create(Nature.Source, attr);
+                    if (added != null) adds.Add(added);
                 }
+
                 foreach (var attr in Equipment)
                 {
                     Damage.Converted conv = Damage.Converted.Create(DamageConversionSource.Equipment, attr);
                     if (conv != null) Converts.Add(conv);
+
+                    // Damage added from equipment is applied only to attacks.
+                    if (Nature.Is(DamageSource.Attack))
+                    {
+                        Damage.Added added = Damage.Added.Create(DamageSource.Attack, attr);
+                        if (added != null) adds.Add(added);
+                    }
                 }
+
                 foreach (var attr in Tree)
                 {
                     Damage.Converted conv = Damage.Converted.Create(DamageConversionSource.Tree, attr);
                     if (conv != null) Converts.Add(conv);
                 }
 
-                // Merge local gem and global attributes.
+                // Merge local gems and global attributes.
                 AttributeSet attrs = Global.Merge(Local);
+
+                // Collect damage gains, increases and multipliers.
+                foreach (var attr in attrs)
+                {
+                    Damage.Gained gained = Damage.Gained.Create(attr);
+                    if (gained != null) Gains.Add(gained);
+
+                    Damage.Increased increased = Damage.Increased.Create(attr);
+                    if (increased != null) increases.Add(increased);
+
+                    Damage.More more = Damage.More.Create(attr);
+                    if (more != null) mores.Add(more);
+                }
 
                 foreach (AttackSource source in Sources)
                 {
-                    List<Damage.Increased> increases = new List<Damage.Increased>();
-                    List<Damage.More> mores = new List<Damage.More>();
+                    // Apply damage added.
+                    foreach (Damage.Added added in adds)
+                        if (added.Matches(source.Nature))
+                            added.Apply(source, Effectiveness);
 
-                    foreach (var attr in attrs)
-                    {
-                        // Add immediately matching damage added.
-                        Damage.Added added = Damage.Added.Create(Nature, attr);
-                        if (added != null && Nature.Matches(added))
-                            added.Apply(source.Deals, Effectiveness);
-
-                        Damage.Gained gained = Damage.Gained.Create(attr);
-                        if (gained != null) Gains.Add(gained);
-
-                        Damage.Increased increased = Damage.Increased.Create(attr);
-                        if (increased != null) increases.Add(increased);
-
-                        Damage.More more = Damage.More.Create(attr);
-                        if (more != null) mores.Add(more);
-                    }
-
+                    // Apply damage conversions and gains.
                     Convert(source.Deals);
 
+                    // For each damage dealt apply its increases and multipliers.
                     foreach (Damage damage in source.Deals)
                     {
                         float inc = 0;
@@ -204,58 +226,36 @@ namespace POESKillTree.SkillTreeFiles
                 return new AttackSkill(gem);
             }
 
+            // Fixes properties of attack skill.
+            void Fixup()
+            {
+                switch (Name)
+                {
+                    // Power Siphon requires Wands.
+                    case "Power Siphon":
+                        Nature.WeaponType = WeaponType.Wand;
+                        break;
+                }
+            }
             // Returns sources of attack skill (spell, main hand and/or off hand).
-            // TODO: Weapon & gem compatibility by comparing nature of attack skill with weapon (Bow gems cannot be used with melee weapons, etc.).
-            // TODO: Frenzy gem must have weapon type reduced according to weapon being used (either bow or melee).
             // TODO: Lightning Strike must have DamageForm.Projectile removed as only melee part is displayed on sheet.
-            // TODO: Power Siphon must have WeaponType.Wand added as it doesn't work with any other weapon.
             // TODO: Herald of Ice must have DamageSource.Spell removed/changed (no spell related bonuses applies to damage dealing part).
+            // TODO: Iron Grip, Iron Will (http://pathofexile.gamepedia.com/Physical_damage)
             public List<AttackSource> GetSources()
             {
                 List<AttackSource> sources = new List<AttackSource>();
 
                 if (Nature.Is(DamageSource.Attack))
                 {
-                    Weapon mainHand = Compute.GetWeapon(Item.ItemClass.MainHand);
-                    if (mainHand != null)
-                    {
-                        if (mainHand.Deals.Count > 0)
-                            sources.Add(new AttackSource("Main Hand", mainHand.Deals));
+                    if (MainHand.IsWeapon())
+                        sources.Add(new AttackSource("Main Hand", this, MainHand));
 
-                        // TODO: increased Physical Damage on shield.
-                        Weapon offHand = Compute.GetWeapon(Item.ItemClass.OffHand);
-                        if (offHand != null)
-                        {
-                            // With bow in main hand only quiver can be in off hand.
-                            if (mainHand.Is(WeaponType.Bow))
-                            {
-                                // Add all local damage added from quiver to bow.
-                                foreach (var attr in offHand.Local)
-                                {
-                                    Damage.Added added = Damage.Added.Create(mainHand.Nature, attr);
-                                    if (added != null) added.Apply(sources[0].Deals, 100);
-                                }
-                            }
-                            else
-                            {
-                                if (offHand.Deals.Count > 0)
-                                    sources.Add(new AttackSource("Off Hand", offHand.Deals));
-                            }
-                        }
-                    }
+                    if (OffHand.IsWeapon())
+                        sources.Add(new AttackSource("Off Hand", this, OffHand));
                 }
                 else // Spell
                 {
-                    List<Damage> deals = new List<Damage>();
-
-                    foreach (var attr in Local)
-                    {
-                        Damage damage = Damage.Create(Nature, attr);
-                        if (damage != null) deals.Add(damage);
-                    }
-
-                    if (deals.Count > 0)
-                        sources.Add(new AttackSource("Spell", deals));
+                    sources.Add(new AttackSource("Spell", this, null));
                 }
 
                 return sources;
@@ -302,21 +302,48 @@ namespace POESKillTree.SkillTreeFiles
                         }
                     }
 
-                return new ListGroup(Name, props);
+                return new ListGroup(Name + (Useable ? "" : " (Unuseable)"), props);
             }
         }
 
         public class AttackSource
         {
             // List of damage dealt by source.
-            public List<Damage> Deals;
+            public List<Damage> Deals = new List<Damage>();
             // The source name.
             public string Name;
+            // The result nature of skill used with weapon.
+            public DamageNature Nature;
 
-            public AttackSource(string name, List<Damage> deals)
+            public AttackSource(string name, AttackSkill skill, Weapon weapon)
             {
                 Name = name;
-                Deals = deals;
+
+                if (weapon == null) // Spells get damage from gem local attributes.
+                {
+                    Nature = new DamageNature(skill.Nature);
+
+                    foreach (var attr in skill.Local)
+                    {
+                        Damage damage = Damage.Create(skill.Nature, attr);
+                        if (damage != null) Deals.Add(damage);
+                    }
+                }
+                else
+                {
+                    if ((skill.Nature.WeaponType & weapon.Nature.WeaponType) == 0) // Skill can't be used.
+                    {
+                        // Override weapon type of skill with actual weapon (client shows damage of unuseable skills as well).
+                        Nature = new DamageNature(skill.Nature) { WeaponType = weapon.Nature.WeaponType };
+
+                        skill.Useable = false; // Flag skill as unuseable.
+                    }
+                    else // Narrow down weapon type of skill gem to actual weapon (e.g. Frenzy).
+                        Nature = new DamageNature(skill.Nature) { WeaponType = skill.Nature.WeaponType & weapon.Nature.WeaponType };
+
+                    foreach (Damage damage in weapon.Deals)
+                        Deals.Add(new Damage(damage) { WeaponType = Nature.WeaponType });
+                }
             }
        }
 
@@ -493,6 +520,11 @@ namespace POESKillTree.SkillTreeFiles
                        && (WeaponType == WeaponType.Any || (nature.WeaponType & WeaponType) != 0)
                        && (Type == DamageType.Any || (nature.Type & Type) != 0);
             }
+
+            public static DamageType TypeOf(string type)
+            {
+                return Types[type];
+            }
         }
 
         public class Damage : DamageNature
@@ -500,46 +532,50 @@ namespace POESKillTree.SkillTreeFiles
             public class Added : DamageNature
             {
                 // The added damage minimum.
-                private float Min;
+                float Min;
                 // The added damage maximum.
-                private float Max;
+                float Max;
+                // The damage type to add.
+                DamageType Type;
 
                 static Regex ReAddMod = new Regex("Adds #-# ([^ ]+) Damage$");
                 static Regex ReAddWithBows = new Regex("Adds #-# ([^ ]+) Damage to attacks with Bows");
 
-                public Added(DamageNature nature, string type, float min, float max)
-                    : base(nature, type)
+                public Added(DamageSource source, string type, float min, float max)
+                    : base()
                 {
+                    Source = source;
+                    Type = DamageNature.TypeOf(type);
                     Min = min;
                     Max = max;
                 }
 
                 // Creates added damage.
-                public static Added Create(DamageNature nature, KeyValuePair<string, List<float>> attr)
+                public static Added Create(DamageSource source, KeyValuePair<string, List<float>> attr)
                 {
                     Match m = ReAddMod.Match(attr.Key);
                     if (m.Success)
-                        return new Added(nature, m.Groups[1].Value, attr.Value[0], attr.Value[1]);
+                        return new Added(source, m.Groups[1].Value, attr.Value[0], attr.Value[1]);
                     else
                     {
                         m = ReAddWithBows.Match(attr.Key);
                         if (m.Success)
                         {
-                            return new Added(nature, m.Groups[1].Value, attr.Value[0], attr.Value[1]) { Source = DamageSource.Attack, WeaponType = WeaponType.Bow };
+                            return new Added(DamageSource.Attack, m.Groups[1].Value, attr.Value[0], attr.Value[1]) { WeaponType = WeaponType.Bow };
                         }
                     }
 
                     return null;
                 }
 
-                // Applies modifier.
-                public void Apply(List<Damage> deals, float effectiveness)
+                // Applies damage added with nature of source.
+                public void Apply(AttackSource source, float effectiveness)
                 {
-                    Damage damage = new Damage(this, Min, Max);
+                    Damage damage = new Damage(source.Nature, Min, Max) { Type = Type };
 
                     damage.Mul(effectiveness);
 
-                    deals.Add(damage);
+                    source.Deals.Add(damage);
                 }
             }
 
@@ -741,6 +777,15 @@ namespace POESKillTree.SkillTreeFiles
             static Regex ReDamageAttribute = new Regex("([^ ]+) Damage:  #-#");
             static Regex ReDamageMod = new Regex("Deals #-# ([^ ]+) Damage$");
 
+            // Copy constructor.
+            public Damage(Damage damage)
+                : base(damage)
+            {
+                Origin = new DamageNature(damage.Origin);
+                Min = damage.Min;
+                Max = damage.Max;
+            }
+
             // Damage with same origin as specified damage but with different type.
             Damage(Damage damage, DamageType type, float min, float max)
                 : base(damage)
@@ -852,59 +897,70 @@ namespace POESKillTree.SkillTreeFiles
             public static Dictionary<string, WeaponType> Types = new Dictionary<string, WeaponType>()
             {
                 { "Bow",                WeaponType.Bow },
-                { "Claw",               WeaponType.Claw }, // NEED TEST
+                { "Claw",               WeaponType.Claw },
                 { "Dagger",             WeaponType.Dagger },
-                { "One Handed Axe",     WeaponType.OneHandedAxe }, // NEED TEST
+                { "One Handed Axe",     WeaponType.OneHandedAxe },
                 { "One Handed Mace",    WeaponType.OneHandedMace },
-                { "One Handed Sword",   WeaponType.OneHandedSword }, // NEED TEST
-                { "Sceptre",            WeaponType.Sceptre }, // NEED TEST
-                { "Staff",              WeaponType.Staff }, // NEED TEST
-                { "Thrusting Sword",    WeaponType.ThrustingSword }, // NEED TEST
-                { "Two Handed Axe",     WeaponType.TwoHandedAxe }, // NEED TEST
-                { "Two Handed Mace",    WeaponType.TwoHandedMace }, // NEED TEST
-                { "Two Handed Sword",   WeaponType.TwoHandedSword }, // NEED TEST
+                { "One Handed Sword",   WeaponType.OneHandedSword },
+                { "Staff",              WeaponType.Staff },
+                { "Two Handed Axe",     WeaponType.TwoHandedAxe },
+                { "Two Handed Mace",    WeaponType.TwoHandedMace },
+                { "Two Handed Sword",   WeaponType.TwoHandedSword },
                 { "Wand",               WeaponType.Wand },
                 { "Melee",              WeaponType.Melee }
             };
 
             public Weapon(Item item)
             {
-                Item = item;
-
-                // Get weapon type (damage nature).
-                if (item.Keywords == null) // Quiver or shield.
+                if (item != null)
                 {
-                    if (item.Type.EndsWith("Quiver"))
-                        Nature = new DamageNature() { WeaponType = WeaponType.Quiver };
-                    else
-                        if (item.Type.EndsWith("Shield"))
-                            Nature = new DamageNature() { WeaponType = WeaponType.Shield };
+                    Item = item;
+
+                    // Get weapon type (damage nature).
+                    if (item.Keywords == null) // Quiver or shield.
+                    {
+                        if (item.Type.Contains("Quiver"))
+                            Nature = new DamageNature() { WeaponType = WeaponType.Quiver };
                         else
-                            throw new Exception("Unknown weapon type");
-                }
-                else // Regular weapon.
-                    foreach (string keyword in item.Keywords)
-                        if (Types.ContainsKey(keyword))
-                        {
-                            Nature = new DamageNature() { WeaponType = Types[keyword] };
-                            break;
-                        }
+                            if (item.Type.Contains("Shield"))
+                                Nature = new DamageNature() { WeaponType = WeaponType.Shield };
+                            else
+                                throw new Exception("Unknown weapon type");
+                    }
+                    else // Regular weapon.
+                        foreach (string keyword in item.Keywords)
+                            if (Types.ContainsKey(keyword))
+                            {
+                                Nature = new DamageNature() { WeaponType = Types[keyword] };
+                                break;
+                            }
 
-                // Create damage dealt.
-                foreach (var attr in item.Attributes)
-                {
-                    Damage damage = Damage.Create(Nature, attr);
-                    if (damage != null) Deals.Add(damage);
-                }
+                    // Create damage dealt.
+                    foreach (var attr in item.Attributes)
+                    {
+                        Damage damage = Damage.Create(Nature, attr);
+                        if (damage != null) Deals.Add(damage);
+                    }
 
-                // Get local mods.
-                foreach (var mod in item.Mods.FindAll(m => m.isLocal))
-                    Local.Add(mod.Attribute, mod.Value);
+                    // Get local mods.
+                    foreach (var mod in item.Mods.FindAll(m => m.isLocal))
+                        Local.Add(mod.Attribute, mod.Value);
+                }
             }
 
             public bool Is(WeaponType type)
             {
-                return (Nature.WeaponType & type) != 0;
+                return Nature != null && (Nature.WeaponType & type) != 0;
+            }
+
+            public bool IsShield()
+            {
+                return Nature != null && Nature.WeaponType == WeaponType.Shield;
+            }
+
+            public bool IsWeapon()
+            {
+                return Nature != null && (Nature.WeaponType & WeaponType.Weapon) != 0;
             }
         }
 
@@ -912,16 +968,21 @@ namespace POESKillTree.SkillTreeFiles
         public enum WeaponType
         {
             Any,
-            Bow = 1, Claw = 2, Dagger = 4, OneHandedAxe = 8, OneHandedMace = 16, OneHandedSword = 32, Sceptre = 64,
-            Staff = 128, ThrustingSword = 256, TwoHandedAxe = 512, TwoHandedMace = 1024, TwoHandedSword = 2048, Wand = 4096,
+            Bow = 1, Claw = 2, Dagger = 4, OneHandedAxe = 8, OneHandedMace = 16, OneHandedSword = 32,
+            Staff = 64, TwoHandedAxe = 128, TwoHandedMace = 256, TwoHandedSword = 512, Wand = 1024,
             Quiver = 8192,
             Shield = 16384,
-            Melee = Claw | Dagger | OneHandedAxe | OneHandedMace | OneHandedSword | Sceptre | Staff | ThrustingSword | TwoHandedAxe | TwoHandedMace | TwoHandedSword,
-            Ranged = Bow | Wand
+            Melee = Claw | Dagger | OneHandedAxe | OneHandedMace | OneHandedSword | Staff | TwoHandedAxe | TwoHandedMace | TwoHandedSword,
+            Ranged = Bow | Wand,
+            Weapon = Melee | Ranged
         }
 
         // Equipped items.
         public static List<Item> Items;
+        // Main hand weapon.
+        public static Weapon MainHand;
+        // Off hand weapon or quiver/shield.
+        public static Weapon OffHand;
         // Character level.
         public static int Level;
         // Equipment attributes.
@@ -1203,22 +1264,9 @@ namespace POESKillTree.SkillTreeFiles
             ch["Intelligence: #"] = Global["+# to Intelligence"];
 
             // Shield, Staff and Dual Wielding detection.
-            bool hasShield = false;
-            bool hasStaff = false;
-            bool isDualWielding = false;
-            List<float> valueList = GetItemAttributeValue(Item.ItemClass.OffHand, "Chance to Block:  #%");
-            if (valueList.Count > 0) hasShield = true;
-            else
-            {
-                valueList = GetItemAttributeValue(Item.ItemClass.MainHand, "#% Chance to Block");
-                if (valueList.Count > 0) hasStaff = true;
-                else
-                {
-                    List<float> mainHand = GetItemAttributeValue(Item.ItemClass.MainHand, "Attacks per Second:  #");
-                    List<float> offHand = GetItemAttributeValue(Item.ItemClass.OffHand, "Attacks per Second:  #");
-                    if (mainHand.Count > 0 && offHand.Count > 0) isDualWielding = true;
-                }
-            }
+            bool hasShield = OffHand.IsShield();
+            bool hasStaff = MainHand.Is(WeaponType.Staff);
+            bool isDualWielding = MainHand.IsWeapon() && OffHand.IsWeapon();
 
             // Resistances.
             float maxResistFire = 75;
@@ -1307,12 +1355,12 @@ namespace POESKillTree.SkillTreeFiles
             }
             if (hasShield)
             {
-                valueList = GetItemAttributeValue(Item.ItemClass.OffHand, "Chance to Block:  #%");
+                List<float> valueList = GetItemAttributeValue(Item.ItemClass.OffHand, "Chance to Block:  #%");
                 chanceBlockAttacks += valueList[0];
             }
             else if (hasStaff)
             {
-                valueList = GetItemAttributeValue(Item.ItemClass.MainHand, "#% Chance to Block");
+                List<float> valueList = GetItemAttributeValue(Item.ItemClass.MainHand, "#% Chance to Block");
                 chanceBlockAttacks += valueList[0];
             }
             else if (isDualWielding)
@@ -1360,14 +1408,6 @@ namespace POESKillTree.SkillTreeFiles
             return new List<float>();
         }
 
-        // Returns equipped weappon or null if there is none.
-        public static Weapon GetWeapon(Item.ItemClass itemClass)
-        {
-            Item item = Items.Find(i => i.Class == itemClass);
-
-            return item == null ? null : new Weapon(item);
-        }
-
         // Returns value increased by specified percentage.
         public static float IncreaseValueByPercentage(float value, float percentage)
         {
@@ -1378,6 +1418,9 @@ namespace POESKillTree.SkillTreeFiles
         public static void Initialize(SkillTree skillTree, ItemAttributes itemAttrs)
         {
             Items = itemAttrs.Equip;
+
+            MainHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.MainHand));
+            OffHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.OffHand));
 
             Level = skillTree._level;
 
@@ -1473,7 +1516,6 @@ namespace POESKillTree.SkillTreeFiles
         {
             return (float)Math.Round((Decimal)value, precision, MidpointRounding.AwayFromZero);
         }
-
     }
 }
 

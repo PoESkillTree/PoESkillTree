@@ -33,8 +33,9 @@ namespace POESKillTree.ViewModels
                 {
                     Flat, Percentage, FlatMinMax
                 }
-                public static List<Mod> CreateMods(string attribute, ItemClass ic)
+                public static List<Mod> CreateMods(Item item, string attribute)
                 {
+                    ItemClass ic = item.Class;
                     List<Mod> mods = new List<Mod>();
                     List<float> values = new List<float>();
                     foreach (Match match in numberfilter.Matches(attribute))
@@ -69,7 +70,8 @@ namespace POESKillTree.ViewModels
                         {
                             itemclass = ic,
                             Value = values,
-                            Attribute = at
+                            Attribute = at,
+                            isLocal = DetermineLocal(item, at)
                         });
                     }
                     return mods;
@@ -78,21 +80,23 @@ namespace POESKillTree.ViewModels
                 private ItemClass itemclass;
                 public string Attribute;
                 public List<float> Value;
-                public bool isLocal
+                public bool isLocal = false;
+
+                // Returns true if property/mod is local, false otherwise.
+                static bool DetermineLocal(Item item, string attr)
                 {
-                    get
-                    {
-                        return ( itemclass != Item.ItemClass.Amulet && itemclass != Item.ItemClass.Ring && itemclass != Item.ItemClass.Belt ) &&
-                              (Attribute.Contains("increased Physical Damage") ||
-                                Attribute.Contains("Armour") ||
-                                Attribute.Contains("Evasion") ||
-                                Attribute.Contains("Energy Shield") ||
-                                Attribute.Contains("Weapon Class") ||
-                                Attribute.Contains("Critical Strike Chance with this Weapon") ||
-                                Attribute.Contains("Critical Strike Damage Multiplier with this Weapon")) ||
-                               ((itemclass == Item.ItemClass.MainHand || itemclass == Item.ItemClass.OffHand)
-                                && (Attribute.Contains("increased Attack Speed") || Attribute.StartsWith("Adds ") && Attribute.EndsWith(" Damage")));
-                    }
+                    return (item.Class != Item.ItemClass.Amulet && item.Class != Item.ItemClass.Ring && item.Class != Item.ItemClass.Belt)
+                           && (attr.Contains("Armour")
+                               || attr.Contains("Evasion")
+                               || attr.Contains("Energy Shield")
+                               || attr.Contains("Weapon Class")
+                               || attr.Contains("Critical Strike Chance with this Weapon")
+                               || attr.Contains("Critical Strike Damage Multiplier with this Weapon"))
+                           || (item.Class == Item.ItemClass.MainHand || item.Class == Item.ItemClass.OffHand)
+                              && item.Keywords != null // Only weapons have keyword.
+                              && (attr.Contains("increased Attack Speed")
+                                  || attr.StartsWith("Adds ") && attr.EndsWith(" Damage")
+                                  || attr.Contains("increased Physical Damage"));
                 }
             }
 
@@ -164,19 +168,19 @@ namespace POESKillTree.ViewModels
                 if (val.ContainsKey("explicitMods"))
                     foreach (string s in val["explicitMods"].Values<string>())
                     {
-                        var mods = Mod.CreateMods(s.Replace("Additional ", ""), this.Class);
+                        var mods = Mod.CreateMods(this, s.Replace("Additional ", ""));
                         Mods.AddRange(mods);
                     }
                 if (val.ContainsKey("implicitMods"))
                     foreach (string s in val["implicitMods"].Values<string>())
                     {
-                        var mods = Mod.CreateMods(s.Replace("Additional ", ""), this.Class);
+                        var mods = Mod.CreateMods(this, s.Replace("Additional ", ""));
                         Mods.AddRange(mods);
                     }
                 if (val.ContainsKey("craftedMods"))
                     foreach (string s in val["craftedMods"].Values<string>())
                     {
-                        var mods = Mod.CreateMods(s.Replace("Additional ", ""), this.Class);
+                        var mods = Mod.CreateMods(this, s.Replace("Additional ", ""));
                         Mods.AddRange(mods);
                     }
 
@@ -199,78 +203,6 @@ namespace POESKillTree.ViewModels
             }
             static Regex colorcleaner = new Regex("\\<.+?\\>");
             static Regex numberfilter = new Regex("[0-9]*\\.?[0-9]+");
-            public Item XmlRead(XmlReader xml)
-            {
-
-                while (xml.Read())
-                {
-                    if (xml.HasAttributes)
-                    {
-                        for (int i = 0; i < xml.AttributeCount; i++)
-                        {
-                            string s = xml.GetAttribute(i);
-                            if (s == "socketPopups")
-                                return this;
-                            if (s.Contains("itemName"))
-                            {
-                                var xs = xml.ReadSubtree();
-                                xs.ReadToDescendant("span");
-                                for (int j = 0; xs.Read(); )
-                                {
-                                    if (xs.NodeType == XmlNodeType.Text)
-                                    {
-                                        if (j == 0) Name = xs.Value.Replace("Additional ", "");
-                                        if (j == 1) Type = xs.Value;
-                                        j++;
-                                    }
-                                }
-                            }
-                            if (s.Contains("displayProperty"))
-                            {
-                                List<float> attrval = new List<float>();
-                                string[] span = new string[2] { "", "" };
-                                var xs = xml.ReadSubtree();
-                                xs.ReadToDescendant("span");
-                                for (int j = 0; xs.Read(); )
-                                {
-                                    if (xs.NodeType == XmlNodeType.Text)
-                                    {
-                                        span[j] = xs.Value.Replace("Additional ", ""); ;
-                                        j++;
-                                    }
-                                }
-                                var matches = numberfilter.Matches(span[1]);
-                                if (matches != null && matches.Count != 0)
-                                {
-                                    foreach (Match match in matches)
-                                    {
-                                        attrval.Add(float.Parse(match.Value, System.Globalization.CultureInfo.InvariantCulture));
-                                    }
-                                    Attributes.Add(span[0] + "#", attrval);
-                                }
-                            }
-                            if (s == "implicitMod" || s == "explicitMod")
-                            {
-                                string span = "";
-                                var xs = xml.ReadSubtree();
-                                xs.ReadToDescendant("span");
-                                while (xs.Read())
-                                {
-                                    if (xs.NodeType == XmlNodeType.Text)
-                                    {
-                                        var mods = Mod.CreateMods(xs.Value.Replace("Additional ", ""), this.Class);
-                                        Mods.AddRange(mods);
-                                    }
-                                }
-
-                            }
-
-                        }
-                    }
-                }
-                return this;
-
-            }
 
             // Returns gems linked to specified gem.
             public List<Item> GetLinkedGems(Item gem)
