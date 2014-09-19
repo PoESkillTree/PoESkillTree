@@ -12,17 +12,6 @@ namespace POESKillTree.Model
         public Options Options { get; set; }
         public List<PoEBuild> Builds { get; set; }
 
-        [XmlIgnoreAttribute]
-        public List<ListViewItem> BuildsAsListViewItems
-        {
-            get
-            {
-                return Builds != null
-                    ? Builds.Select(b => new ListViewItem {Content = b}).ToList()
-                    : new List<ListViewItem>();
-            }
-        }
-
         public void SavePersistentDataToFile()
         {
             var writer = new XmlSerializer(typeof (PersistentData));
@@ -46,7 +35,7 @@ namespace POESKillTree.Model
 
         public void SaveBuilds(ItemCollection items)
         {
-            Builds = (from ListViewItem item in items select (PoEBuild) item.Content).ToList();
+            Builds = (from PoEBuild item in items select item).ToList();
             SavePersistentDataToFile();
         }
     }

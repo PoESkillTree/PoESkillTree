@@ -199,7 +199,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="ClassDiagram2.cd" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -233,7 +232,27 @@
   <ItemGroup>
     <Resource Include="naja.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Marauder.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Duelist.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ranger.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Scion.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Shadow.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Templar.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Witch.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

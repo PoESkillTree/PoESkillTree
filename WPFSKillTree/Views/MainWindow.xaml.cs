@@ -306,9 +306,9 @@ namespace POESKillTree.Views
 
             // loading saved build
             lvSavedBuilds.Items.Clear();
-            foreach (var lvi in _persistentData.BuildsAsListViewItems)
+            foreach (var build in _persistentData.Builds)
             {
-                AddItemToSavedBuilds(lvi);
+                lvSavedBuilds.Items.Add(build);
             }
 
             ImportLegacySavedBuilds();
@@ -325,22 +325,21 @@ namespace POESKillTree.Views
             if (highlightedItem != null)
             {
                 var build = (PoEBuild) highlightedItem.Content;
-                _noteTip.Content = build.Note;
+                _noteTip.Content = build.Note == @"" ? @"Right Click To Edit" : build.Note;
                 _noteTip.IsOpen = true;
             }
         }
 
         void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var selectedItem = (ListViewItem)lvSavedBuilds.SelectedItem;
-            var newBuild = ((PoEBuild)selectedItem.Content).Clone();
-            var formBuildName = new FormBuildName(newBuild.Name, newBuild.Note);
+            var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
+            var formBuildName = new FormBuildName(selectedBuild.Name, selectedBuild.Note);
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
             {
-                newBuild.Name = formBuildName.GetBuildName();
-                newBuild.Note = formBuildName.GetNote();
-                selectedItem.Content = newBuild;
+                selectedBuild.Name = formBuildName.GetBuildName();
+                selectedBuild.Note = formBuildName.GetNote();
+                lvSavedBuilds.Items.Refresh();
             }
             SaveBuildsToFile();
         }
@@ -570,19 +569,11 @@ namespace POESKillTree.Views
         {
             if (lvSavedBuilds.SelectedItems.Count > 0)
             {
-                var selectedItem = (ListViewItem) lvSavedBuilds.SelectedItem;
-                var selectedBuild = (PoEBuild) selectedItem.Content;
-                //SpaceOgre: I don't like this but it works. 
-                //Should probably use INotifyPropertyChanged and ObservableCollection instead.
-                var newBuild = new PoEBuild
-                {
-                    Name = selectedBuild.Name,
-                    Class = cbCharType.Text,
-                    PointsUsed = tbUsedPoints.Text,
-                    Url = tbSkillURL.Text,
-                    Note = selectedBuild.Note
-                };
-                selectedItem.Content = newBuild;
+                var selectedBuild = (PoEBuild) lvSavedBuilds.SelectedItem;
+                selectedBuild.Class = cbCharType.Text;
+                selectedBuild.PointsUsed = tbUsedPoints.Text;
+                selectedBuild.Url = tbSkillURL.Text;
+                lvSavedBuilds.Items.Refresh();
                 SaveBuildsToFile();
             }
             else
@@ -616,18 +607,14 @@ namespace POESKillTree.Views
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool) show_dialog)
             {
-                var lvi = new ListViewItem
+                lvSavedBuilds.Items.Add(new PoEBuild
                 {
-                    Content =
-                        new PoEBuild{
                             Name = formBuildName.GetBuildName(),
                             Class = cbCharType.Text,
                             PointsUsed = tbUsedPoints.Text, 
                             Url = tbSkillURL.Text, 
                             Note = formBuildName.GetNote()
-                        }
-                };
-                AddItemToSavedBuilds(lvi);
+                });
             }
 
             if (lvSavedBuilds.Items.Count > 0)
@@ -824,18 +811,18 @@ namespace POESKillTree.Views
         {
             if (sender == e.Source) // Ignore contained ListBox group collapsion events.
             {
-                mnuViewAttributes.IsChecked = false;
-            }
+            mnuViewAttributes.IsChecked = false;
+        }
         }
 
         private void expAttributes_Expanded(object sender, RoutedEventArgs e)
         {
-            if (sender == e.Source) // Ignore contained ListBox group expansion events.
+            if (sender == e.Source) // Ignore contained ListBox group collapsion events.
             {
-                mnuViewAttributes.IsChecked = true;
+            mnuViewAttributes.IsChecked = true;
 
                 if (expSheet.IsExpanded) expSheet.IsExpanded = false;
-            }
+        }
         }
 
         private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -912,15 +899,6 @@ namespace POESKillTree.Views
             SaveBuildsToFile();
         }
 
-        private void AddItemToSavedBuilds(Control lvi)
-        {
-            lvi.MouseDoubleClick += lvi_MouseDoubleClick;
-            lvi.MouseRightButtonUp += lvi_MouseRightButtonUp;
-            lvi.MouseEnter += lvi_MouseEnter;
-            lvi.MouseLeave += lvi_MouseLeave;
-            lvSavedBuilds.Items.Add(lvi);
-        }
-
         private void SaveBuildsToFile()
         {
             _persistentData.SaveBuilds(lvSavedBuilds.Items);
@@ -928,8 +906,9 @@ namespace POESKillTree.Views
 
         private void lvi_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var lvi = (ListViewItem) sender;
-            tbSkillURL.Text = ((PoEBuild) lvi.Content).Url;
+            var lvi = ((ListView) sender).SelectedItem;
+            if (lvi == null) return;
+            tbSkillURL.Text = ((PoEBuild) lvi).Url;
             btnLoadBuild_Click(this, null); // loading the build
         }
 
@@ -1073,7 +1052,7 @@ namespace POESKillTree.Views
                 return;
 
             // get the data for the ListViewItem
-            var name = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+            var item = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
 
             //setup the drag adorner.
             InitialiseAdorner(listViewItem);
@@ -1083,7 +1062,7 @@ namespace POESKillTree.Views
             listView.DragLeave += ListViewDragLeave;
             listView.DragEnter += ListViewDragEnter;
 
-            var data = new DataObject("myFormat", name);
+            var data = new DataObject("myFormat", item);
             DragDrop.DoDragDrop(lvSavedBuilds, data, DragDropEffects.Move);
 
             //cleanup 
@@ -1119,8 +1098,8 @@ namespace POESKillTree.Views
 
                 if (listViewItem != null)
                 {
-                    var nameToReplace = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-                    int index = listView.Items.IndexOf(nameToReplace);
+                    var itemToReplace = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                    int index = listView.Items.IndexOf(itemToReplace);
 
                     if (index >= 0)
                     {
@@ -1261,13 +1240,13 @@ namespace POESKillTree.Views
                         else
                         {
                             saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], poeClass, pointsUsed,
-                                b.Split(';')[1], "Right Click to add build note"));
+                                b.Split(';')[1], ""));
                         }
                     }
                     lvSavedBuilds.Items.Clear();
-                    foreach (var lvi in saved_builds.Select(build => new ListViewItem {Content = build}))
+                    foreach (var lvi in saved_builds)
                     {
-                        AddItemToSavedBuilds(lvi);
+                        lvSavedBuilds.Items.Add(lvi);
                     }
                     File.Move("savedBuilds", "savedBuilds.old");
                     SaveBuildsToFile();
@@ -1286,5 +1265,20 @@ namespace POESKillTree.Views
         }
 
         #endregion
+
+        #region Menu - Help
+
+        private void mnuOpenPoEWebsite(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://www.pathofexile.com/");
+        }
+
+        private void mnuOpenWiki(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://pathofexile.gamepedia.com/");
+        }
+
+        #endregion
+
     }
 }

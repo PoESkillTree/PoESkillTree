@@ -17,7 +17,9 @@ namespace POESKillTree.Views
         {
             InitializeComponent();
             txtName.Text = name;
+            txtName.Select(txtName.Text.Length, 0);
             txtName2.Text = note;
+            txtName2.Select(txtName2.Text.Length, 0);
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
