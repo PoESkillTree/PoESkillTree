@@ -342,7 +342,7 @@ namespace POESKillTree.SkillTreeFiles
                         Nature = new DamageNature(skill.Nature) { WeaponType = skill.Nature.WeaponType & weapon.Nature.WeaponType };
 
                     foreach (Damage damage in weapon.Deals)
-                        Deals.Add(new Damage(damage) { WeaponType = Nature.WeaponType });
+                        Deals.Add(new Damage(damage) { Source = Nature.Source, WeaponType = Nature.WeaponType });
                 }
             }
        }
@@ -786,11 +786,12 @@ namespace POESKillTree.SkillTreeFiles
                 Max = damage.Max;
             }
 
-            // Damage with same origin as specified damage but with different type.
+            // Damage originated from specified damage but with different type.
+            // Used in Damage.PercentOf.
             Damage(Damage damage, DamageType type, float min, float max)
                 : base(damage)
             {
-                Origin = new DamageNature(damage.Origin);
+                Origin = new DamageNature(damage);
                 Type = type;
                 Min = min;
                 Max = max;
@@ -856,7 +857,12 @@ namespace POESKillTree.SkillTreeFiles
             // Returns percent of damage with specific damage type.
             public Damage PercentOf(float percent, DamageType type)
             {
-                return new Damage(this, type, Min * percent / 100, Max * percent / 100);
+                Damage damage = new Damage(this, type, Min * percent / 100, Max * percent / 100);
+
+                // Origin damage type of new damage is union of our damage type (set in constructor above) and our origin's damage type.
+                damage.Origin.Type |= Origin.Type;
+
+                return damage;
             }
 
             // Returns true if damage matches nature, false otherwise.
@@ -1213,6 +1219,20 @@ namespace POESKillTree.SkillTreeFiles
                 def["Evasion Rating: #"] = new List<float>() { RoundValue(evasion, 0) };
             def["Estimated chance to Evade Attacks: #%"] = new List<float>() { ChanceToEvade(Level, RoundValue(evasion, 0)) };
 
+            // Dodge Attacks and Spells.
+            float chanceToDodgeAttacks = 0;
+            float chanceToDodgeSpells = 0;
+            if (Acrobatics)
+                chanceToDodgeAttacks += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield"][0];
+            if (Global.ContainsKey("#% additional chance to Dodge Attacks"))
+                chanceToDodgeAttacks += Global["#% additional chance to Dodge Attacks"][0];
+            if (Global.ContainsKey("#% Chance to Dodge Spell Damage"))
+                chanceToDodgeSpells += Global["#% Chance to Dodge Spell Damage"][0];
+            if (chanceToDodgeAttacks > 0)
+                def["Chance to Dodge Attacks: #%"] = new List<float>() { chanceToDodgeAttacks };
+            if (chanceToDodgeSpells > 0)
+                def["Chance to Dodge Spells: #%"] = new List<float>() { chanceToDodgeSpells };
+
             // Energy Shield Recharge per Second.
             // @see http://pathofexile.gamepedia.com/Energy_shield
             if (es > 0)
@@ -1229,21 +1249,24 @@ namespace POESKillTree.SkillTreeFiles
 
             // Life Regeneration.
             float lifeRegen = 0;
+            float lifeRegenFlat = 0;
             if (Global.ContainsKey("#% of Life Regenerated per Second"))
                 lifeRegen += Global["#% of Life Regenerated per Second"][0];
+            if (Global.ContainsKey("# Life Regenerated per second"))
+                lifeRegenFlat += Global["# Life Regenerated per second"][0];
 
             if (VaalPact)
                 lifeRegen = 0;
 
             if (ZealotsOath)
             {
-                if (es > 0 && lifeRegen > 0)
-                    def["Energy Shield Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(RoundValue(es, 0), lifeRegen), 1) };
+                if (es > 0 && lifeRegen + lifeRegenFlat > 0)
+                    def["Energy Shield Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(RoundValue(es, 0), lifeRegen), 1) + lifeRegenFlat };
             }
             else
             {
-                if (life > 1 && lifeRegen > 0)
-                    def["Life Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(RoundValue(life, 0), lifeRegen), 1) };
+                if (! ChaosInoculation && lifeRegen + lifeRegenFlat > 0)
+                    def["Life Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(RoundValue(life, 0), lifeRegen), 1) + lifeRegenFlat };
             }
 
             // Mana Regeneration.
@@ -1383,6 +1406,44 @@ namespace POESKillTree.SkillTreeFiles
                 def["Chance to Block Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockAttacks, 0), maxChanceBlockAttacks) };
             if (chanceBlockSpells > 0)
                 def["Chance to Block Spells: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockSpells, 0), maxChanceBlockSpells) };
+
+            // Elemental stataus ailments.
+            float igniteAvoidance = 0;
+            float chillAvoidance = 0;
+            float freezeAvoidance = 0;
+            float shockAvoidance = 0;
+            if (Global.ContainsKey("#% chance to Avoid being Ignited"))
+                igniteAvoidance += Global["#% chance to Avoid being Ignited"][0];
+            if (Global.ContainsKey("#% chance to Avoid being Chilled"))
+                chillAvoidance += Global["#% chance to Avoid being Chilled"][0];
+            if (Global.ContainsKey("#% chance to Avoid being Frozen"))
+                freezeAvoidance += Global["#% chance to Avoid being Frozen"][0];
+            if (Global.ContainsKey("#% chance to Avoid being Shocked"))
+                shockAvoidance += Global["#% chance to Avoid being Shocked"][0];
+            if (Global.ContainsKey("#% chance to Avoid Elemental Status Ailments"))
+            {
+                float value = Global["#% chance to Avoid Elemental Status Ailments"][0];
+                igniteAvoidance += value;
+                chillAvoidance += value;
+                freezeAvoidance += value;
+                shockAvoidance += value;
+            }
+            if (Global.ContainsKey("Cannot be Ignited"))
+                igniteAvoidance = 100;
+            if (Global.ContainsKey("Cannot be Chilled"))
+                chillAvoidance = 100;
+            if (Global.ContainsKey("Cannot be Frozen"))
+                freezeAvoidance = 100;
+            if (Global.ContainsKey("Cannot be Shocked"))
+                shockAvoidance = 100;
+            if (igniteAvoidance > 0)
+                def["Ignite Avoidance: #%"] = new List<float>() { igniteAvoidance };
+            if (chillAvoidance > 0)
+                def["Chill Avoidance: #%"] = new List<float>() { chillAvoidance };
+            if (freezeAvoidance > 0)
+                def["Freeze Avoidance: #%"] = new List<float>() { freezeAvoidance };
+            if (shockAvoidance > 0)
+                def["Shock Avoidance: #%"] = new List<float>() { shockAvoidance };
 
             List<ListGroup> groups = new List<ListGroup>();
             groups.Add(new ListGroup("Character", ch));

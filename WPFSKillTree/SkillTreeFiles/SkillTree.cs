@@ -603,9 +603,10 @@ namespace POESKillTree.SkillTreeFiles
             retval["+# Accuracy Rating"] = new List<float> {attribs["+# to Dexterity"][0] / DexPerAcc};
             retval["Evasion Rating: #"] = new List<float> {_level * EvasPerLevel};
 
-            // Every 5 points of dexterity provides 1% increased evasion rating. Non-multiples of 5 will be rounded up to the nearest multiple of 5. (142 dexterity will be rounded to 145)
-            int dex = (int)attribs["+# to Dexterity"][0];
-            if (dex % (int)DexPerEvas > 0) dex += (int)DexPerEvas - (dex % (int)DexPerEvas);
+            // Dexterity value is not getting rounded up any more but rounded normally to the nearest multiple of 5.
+            // @see http://pathofexile.gamepedia.com/Talk:Evasion
+            float dex = attribs["+# to Dexterity"][0];
+            dex = (float)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
             retval["#% increased Evasion Rating"] = new List<float> { dex / DexPerEvas };
 
             return retval;
