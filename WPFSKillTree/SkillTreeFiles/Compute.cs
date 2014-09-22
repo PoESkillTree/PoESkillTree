@@ -34,6 +34,8 @@ namespace POESKillTree.SkillTreeFiles
             {
                 DamageType.Physical, DamageType.Fire, DamageType.Cold, DamageType.Lightning, DamageType.Chaos
             };
+            // The nature to match physical weapon damage while dual wielding.
+            static DamageNature PhysicalWeaponDamage = new DamageNature() { Source = DamageSource.Attack, Type = DamageType.Physical };
 
             // Creates attack from gem.
             AttackSkill(Item gem)
@@ -111,7 +113,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     // Apply damage added.
                     foreach (Damage.Added added in adds)
-                        if (added.Matches(source.Nature))
+                        if (added.MatchesIgnoreType(source.Nature))
                             added.Apply(source, Effectiveness);
 
                     // Apply damage conversions and gains.
@@ -124,6 +126,8 @@ namespace POESKillTree.SkillTreeFiles
                         foreach (Damage.Increased increase in increases)
                             if (damage.Matches(increase))
                                 inc += increase.Percent;
+                        if (IsDualWielding && damage.Matches(PhysicalWeaponDamage) && attrs.ContainsKey("#% increased Physical Weapon Damage while Dual Wielding"))
+                            inc += attrs["#% increased Physical Weapon Damage while Dual Wielding"][0];
                         if (inc > 0)
                             damage.Increase(inc);
 
@@ -211,7 +215,7 @@ namespace POESKillTree.SkillTreeFiles
                             output.Add(damage.PercentOf(pool, type));
 
                     // Apply gains.
-                    foreach (Damage.Gained gain in Gains.FindAll(g => g.From == type))
+                    foreach (Damage.Gained gain in Gains.FindAll(g => g.Type == type))
                         gain.Apply(convert, output);
 
                     // Remove processed damage and append generated output.
@@ -521,6 +525,15 @@ namespace POESKillTree.SkillTreeFiles
                        && (Type == DamageType.Any || (nature.Type & Type) != 0);
             }
 
+            public bool MatchesIgnoreType(DamageNature nature)
+            {
+                return (Area == DamageArea.Any || nature.Area == Area)
+                       && (DoT == DamageOverTime.Any || nature.DoT == DoT)
+                       && (Form == DamageForm.Any || nature.Form == Form)
+                       && (Source == DamageSource.Any || nature.Source == Source)
+                       && (WeaponType == WeaponType.Any || (nature.WeaponType & WeaponType) != 0);
+            }
+
             public static DamageType TypeOf(string type)
             {
                 return Types[type];
@@ -535,8 +548,6 @@ namespace POESKillTree.SkillTreeFiles
                 float Min;
                 // The added damage maximum.
                 float Max;
-                // The damage type to add.
-                DamageType Type;
 
                 static Regex ReAddMod = new Regex("Adds #-# ([^ ]+) Damage$");
                 static Regex ReAddWithBows = new Regex("Adds #-# ([^ ]+) Damage to attacks with Bows");
@@ -621,22 +632,20 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
-            // TODO: Tempest Blast: 30% of Wand Physical Damage Added as Lightning Damage
-            public class Gained
+            public class Gained : DamageNature
             {
                 // The percentage of damage to convert.
                 float Percent;
-                // The damage type to convert from.
-                public DamageType From;
                 // The damage type to convert to.
                 DamageType To;
 
                 static Regex ReGainMod = new Regex("Gain #% of ([^ ]+) Damage as Extra ([^ ]+) Damage");
+                static Regex ReGainAddedMod = new Regex("#% of (.+) Damage Added as ([^ ]+) Damage");
 
-                public Gained(float percent, DamageType from, DamageType to)
+                public Gained(float percent, string from, DamageType to)
+                    : base(from)
                 {
                     Percent = percent;
-                    From = from;
                     To = to;
                 }
 
@@ -645,8 +654,12 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Match m = ReGainMod.Match(attr.Key);
                     if (m.Success)
+                        return new Gained(attr.Value[0], m.Groups[1].Value, DamageNature.Types[m.Groups[2].Value]);
+                    else
                     {
-                        return new Gained(attr.Value[0], DamageNature.Types[m.Groups[1].Value], DamageNature.Types[m.Groups[2].Value]);
+                        m = ReGainAddedMod.Match(attr.Key);
+                        if (m.Success)
+                            return new Gained(attr.Value[0], m.Groups[1].Value, DamageNature.Types[m.Groups[2].Value]);
                     }
 
                     return null;
@@ -666,8 +679,24 @@ namespace POESKillTree.SkillTreeFiles
                 public float Percent;
 
                 static Regex ReIncreasedAll = new Regex("#% (increased|reduced) Damage$");
-                static Regex ReIncreasedSimple = new Regex("#% (increased|reduced) (.+) Damage$");
-                static Regex ReIncreasedWith = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Weapons)$");
+                static Regex ReIncreasedAllWithWeaponType = new Regex("#% (increased|reduced) Damage with (.+)$");
+                static Regex ReIncreasedType = new Regex("#% (increased|reduced) (.+) Damage$");
+                static Regex ReIncreasedTypeWithWeaponType = new Regex("#% (increased|reduced) (.+) Damage with (.+)$");
+                static Regex ReIncreasedWithSource = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Weapons)$");
+
+                static Dictionary<string, WeaponType> With = new Dictionary<string, WeaponType>()
+                {
+                    { "Bows",                       WeaponType.Bow },
+                    { "Claws",                      WeaponType.Claw },
+                    { "Daggers",                    WeaponType.Dagger },
+                    { "Wands",                      WeaponType.Wand },
+                    { "One Handed Melee Weapons",   WeaponType.OneHandedMelee },
+                    { "Two Handed Melee Weapons",   WeaponType.TwoHandedMelee },
+                    { "Axes",                       WeaponType.Axe },
+                    { "Maces",                      WeaponType.Mace },
+                    { "Staves",                     WeaponType.Staff },
+                    { "Swords",                     WeaponType.Sword }
+                };
 
                 public Increased(float percent)
                     : base()
@@ -690,19 +719,31 @@ namespace POESKillTree.SkillTreeFiles
                 // Creates modifier.
                 public static Increased Create(KeyValuePair<string, List<float>> attr)
                 {
-                    Match m = ReIncreasedSimple.Match(attr.Key);
+                    Match m = ReIncreasedType.Match(attr.Key);
                     if (m.Success)
                         return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
                     else
                     {
-                        m = ReIncreasedWith.Match(attr.Key);
-                        if (m.Success)
-                            return new Increased(m.Groups[3].Value == "Spells" ? DamageSource.Spell : DamageSource.Attack, m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
+                        m = ReIncreasedTypeWithWeaponType.Match(attr.Key);
+                        if (m.Success && With.ContainsKey(m.Groups[3].Value))
+                            return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = With[m.Groups[3].Value] };
                         else
                         {
-                            m = ReIncreasedAll.Match(attr.Key);
+                            m = ReIncreasedWithSource.Match(attr.Key);
                             if (m.Success)
-                                return new Increased(m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
+                                return new Increased(m.Groups[3].Value == "Spells" ? DamageSource.Spell : DamageSource.Attack, m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
+                            else
+                            {
+                                m = ReIncreasedAll.Match(attr.Key);
+                                if (m.Success)
+                                    return new Increased(m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
+                                else
+                                {
+                                    m = ReIncreasedAllWithWeaponType.Match(attr.Key);
+                                    if (m.Success && With.ContainsKey(m.Groups[2].Value))
+                                        return new Increased(m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = With[m.Groups[2].Value] };
+                                }
+                            }
                         }
                     }
 
@@ -719,6 +760,7 @@ namespace POESKillTree.SkillTreeFiles
                 static Regex ReMoreBase = new Regex("Deals #% of Base Damage$");
                 static Regex ReMoreSimple = new Regex("#% (more|less) (.+) Damage$");
                 static Regex ReMoreWhen = new Regex("#% more (.+) Damage when on Full Life$");
+                static Regex ReMoreWith = new Regex("#% more (.+) Damage with Weapons$");
 
                 public More(float percent)
                     : base()
@@ -753,6 +795,12 @@ namespace POESKillTree.SkillTreeFiles
                                 m = ReMoreWhen.Match(attr.Key);
                                 if (m.Success)
                                     return new More(m.Groups[1].Value, attr.Value[0]);
+                                else
+                                {
+                                    m = ReMoreWith.Match(attr.Key);
+                                    if (m.Success)
+                                        return new More(m.Groups[1].Value, attr.Value[0]) { Source = DamageSource.Attack };
+                                }
                             }
                         }
                     }
@@ -865,7 +913,7 @@ namespace POESKillTree.SkillTreeFiles
                 return damage;
             }
 
-            // Returns true if damage matches nature, false otherwise.
+            // Returns true if damage or its origin matches nature, false otherwise.
             new public bool Matches (DamageNature nature)
             {
                 return nature.Matches(this) || nature.Matches(Origin);
@@ -895,6 +943,8 @@ namespace POESKillTree.SkillTreeFiles
             public List<Damage> Deals = new List<Damage>();
             // The item.
             public Item Item;
+            // All attributes and non-local mods.
+            public AttributeSet Attributes = new AttributeSet();
             // Local attributes.
             public AttributeSet Local = new AttributeSet();
             // Type of weapon.
@@ -928,10 +978,10 @@ namespace POESKillTree.SkillTreeFiles
                         if (item.Type.Contains("Quiver"))
                             Nature = new DamageNature() { WeaponType = WeaponType.Quiver };
                         else
-                            if (item.Type.Contains("Shield"))
+                            if (item.Type.Contains("Shield") || item.Type.Contains("Buckler"))
                                 Nature = new DamageNature() { WeaponType = WeaponType.Shield };
                             else
-                                throw new Exception("Unknown weapon type");
+                                throw new Exception("Unknown weapon type: " + item.Type);
                     }
                     else // Regular weapon.
                         foreach (string keyword in item.Keywords)
@@ -941,17 +991,28 @@ namespace POESKillTree.SkillTreeFiles
                                 break;
                             }
 
-                    // Create damage dealt.
+                    // Copy attributes and create damage dealt.
                     foreach (var attr in item.Attributes)
                     {
+                        Attributes.Add(attr);
+
                         Damage damage = Damage.Create(Nature, attr);
                         if (damage != null) Deals.Add(damage);
                     }
 
-                    // Get local mods.
-                    foreach (var mod in item.Mods.FindAll(m => m.isLocal))
-                        Local.Add(mod.Attribute, mod.Value);
+                    // Copy local and non-local mods.
+                    foreach (var mod in item.Mods)
+                    {
+                        if (mod.isLocal) Local.Add(mod.Attribute, mod.Value);
+                        else Attributes.Add(mod);
+                    }
                 }
+            }
+
+            // Returns attribute's list of values, or empty list if not found.
+            public List<float> GetValues(string attr)
+            {
+                return Attributes.ContainsKey(attr) ? Attributes[attr] : new List<float>();
             }
 
             public bool Is(WeaponType type)
@@ -976,11 +1037,16 @@ namespace POESKillTree.SkillTreeFiles
             Any,
             Bow = 1, Claw = 2, Dagger = 4, OneHandedAxe = 8, OneHandedMace = 16, OneHandedSword = 32,
             Staff = 64, TwoHandedAxe = 128, TwoHandedMace = 256, TwoHandedSword = 512, Wand = 1024,
-            Quiver = 8192,
-            Shield = 16384,
+            Quiver = 2048,
+            Shield = 4096,
             Melee = Claw | Dagger | OneHandedAxe | OneHandedMace | OneHandedSword | Staff | TwoHandedAxe | TwoHandedMace | TwoHandedSword,
+            OneHandedMelee = Claw | Dagger | OneHandedAxe | OneHandedMace | OneHandedSword,
+            TwoHandedMelee = Staff | TwoHandedAxe | TwoHandedMace | TwoHandedSword,
+            Axe = OneHandedAxe | TwoHandedAxe,
+            Mace = OneHandedMace | TwoHandedMace,
+            Sword = OneHandedSword | TwoHandedSword,
             Ranged = Bow | Wand,
-            Weapon = Melee | Ranged
+            Weapon = Melee | Ranged,
         }
 
         // Equipped items.
@@ -989,6 +1055,8 @@ namespace POESKillTree.SkillTreeFiles
         public static Weapon MainHand;
         // Off hand weapon or quiver/shield.
         public static Weapon OffHand;
+        // The flag whether character is dual wielding.
+        public static bool IsDualWielding;
         // Character level.
         public static int Level;
         // Equipment attributes.
@@ -1007,6 +1075,7 @@ namespace POESKillTree.SkillTreeFiles
         public static bool ChaosInoculation;
         public static bool EldritchBattery;
         public static bool IronReflexes;
+        public static bool NecromanticAegis;
         public static bool VaalPact;
         public static bool ZealotsOath;
 
@@ -1126,15 +1195,15 @@ namespace POESKillTree.SkillTreeFiles
             float shieldES = 0;
             if (incDefencesShield > 0 || incArmourShield > 0 || incESShield > 0)
             {
-                List<float> value = GetItemAttributeValue(Item.ItemClass.OffHand, "Armour:  #");
+                List<float> value = OffHand.GetValues("Armour:  #");
                 if (value.Count > 0)
                     shieldArmour += PercentOfValue(value[0], incArmourShield + incDefencesShield);
 
-                value = GetItemAttributeValue(Item.ItemClass.OffHand, "Evasion Rating:  #");
+                value = OffHand.GetValues("Evasion Rating:  #");
                 if (value.Count > 0)
                     shieldEvasion += PercentOfValue(value[0], incDefencesShield);
 
-                value = GetItemAttributeValue(Item.ItemClass.OffHand, "Energy Shield:  #");
+                value = OffHand.GetValues("Energy Shield:  #");
                 if (value.Count > 0)
                     shieldES += PercentOfValue(value[0], incESShield + incDefencesShield);
             }
@@ -1289,7 +1358,6 @@ namespace POESKillTree.SkillTreeFiles
             // Shield, Staff and Dual Wielding detection.
             bool hasShield = OffHand.IsShield();
             bool hasStaff = MainHand.Is(WeaponType.Staff);
-            bool isDualWielding = MainHand.IsWeapon() && OffHand.IsWeapon();
 
             // Resistances.
             float maxResistFire = 75;
@@ -1378,25 +1446,23 @@ namespace POESKillTree.SkillTreeFiles
             }
             if (hasShield)
             {
-                List<float> valueList = GetItemAttributeValue(Item.ItemClass.OffHand, "Chance to Block:  #%");
-                chanceBlockAttacks += valueList[0];
+                List<float> values = OffHand.GetValues("Chance to Block:  #%");
+                if (values.Count > 0) chanceBlockAttacks += values[0];
             }
             else if (hasStaff)
             {
-                List<float> valueList = GetItemAttributeValue(Item.ItemClass.MainHand, "#% Chance to Block");
-                chanceBlockAttacks += valueList[0];
+                List<float> values = MainHand.GetValues("#% Chance to Block");
+                if (values.Count > 0) chanceBlockAttacks += values[0];
             }
-            else if (isDualWielding)
-            {
+            else if (IsDualWielding)
                 chanceBlockAttacks += 15; // When dual wielding, the base chance to block is 15% no matter which weapons are used.
-            }
             if (hasShield && Global.ContainsKey("#% additional Chance to Block with Shields"))
                 chanceBlockAttacks += Global["#% additional Chance to Block with Shields"][0];
             if (hasStaff && Global.ContainsKey("#% additional Block Chance With Staves"))
                 chanceBlockAttacks += Global["#% additional Block Chance With Staves"][0];
-            if (isDualWielding && Global.ContainsKey("#% additional Chance to Block while Dual Wielding"))
+            if (IsDualWielding && Global.ContainsKey("#% additional Chance to Block while Dual Wielding"))
                 chanceBlockAttacks += Global["#% additional Chance to Block while Dual Wielding"][0];
-            if ((isDualWielding || hasShield) && Global.ContainsKey("#% additional Chance to Block while Dual Wielding or holding a Shield"))
+            if ((IsDualWielding || hasShield) && Global.ContainsKey("#% additional Chance to Block while Dual Wielding or holding a Shield"))
                 chanceBlockAttacks += Global["#% additional Chance to Block while Dual Wielding or holding a Shield"][0];
             if (Global.ContainsKey("#% of Block Chance applied to Spells"))
                 chanceBlockSpells = PercentOfValue(chanceBlockAttacks, Global["#% of Block Chance applied to Spells"][0]);
@@ -1452,23 +1518,6 @@ namespace POESKillTree.SkillTreeFiles
             return groups;
         }
 
-        // Returns attribute or mod value of an equipped item.
-        public static List<float> GetItemAttributeValue(Item.ItemClass itemClass, string name)
-        {
-            Item item = Items.Find(i => i.Class == itemClass);
-            if (item != null)
-            {
-                if (item.Attributes.ContainsKey(name))
-                    return item.Attributes[name];
-
-                Item.Mod mod = item.Mods.Find(m => m.Attribute == name);
-                if (mod != null)
-                    return mod.Value;
-            }
-
-            return new List<float>();
-        }
-
         // Returns value increased by specified percentage.
         public static float IncreaseValueByPercentage(float value, float percentage)
         {
@@ -1482,6 +1531,7 @@ namespace POESKillTree.SkillTreeFiles
 
             MainHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.MainHand));
             OffHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.OffHand));
+            IsDualWielding = MainHand.IsWeapon() && OffHand.IsWeapon();
 
             Level = skillTree._level;
 
@@ -1490,14 +1540,6 @@ namespace POESKillTree.SkillTreeFiles
             Tree = new AttributeSet(skillTree.SelectedAttributesWithoutImplicit);
             Global.Add(Tree);
 
-            Equipment = new AttributeSet();
-            foreach (ItemAttributes.Attribute attr in itemAttrs.NonLocalMods)
-                Equipment.Add(attr.TextAttribute, new List<float>(attr.Value));
-            Global.Add(Equipment);
-
-            Implicit = new AttributeSet(skillTree.ImplicitAttributes(Global));
-            Global.Add(Implicit);
-
             // Keystones.
             Acrobatics = Tree.ContainsKey("#% Chance to Dodge Attacks. #% less Armour and Energy Shield");
             AvatarOfFire = Tree.ContainsKey("Deal no Non-Fire Damage");
@@ -1505,8 +1547,37 @@ namespace POESKillTree.SkillTreeFiles
             ChaosInoculation = Tree.ContainsKey("Maximum Life becomes #, Immune to Chaos Damage");
             EldritchBattery = Tree.ContainsKey("Converts all Energy Shield to Mana");
             IronReflexes = Tree.ContainsKey("Converts all Evasion Rating to Armour. Dexterity provides no bonus to Evasion Rating");
+            NecromanticAegis = Tree.ContainsKey("All bonuses from an equipped Shield apply to your Minions instead of you");
             VaalPact = Tree.ContainsKey("Life Leech applies instantly at #% effectiveness. Life Regeneration has no effect.");
             ZealotsOath = Tree.ContainsKey("Life Regeneration applies to Energy Shield instead of Life");
+
+            Equipment = new AttributeSet();
+            foreach (ItemAttributes.Attribute attr in itemAttrs.NonLocalMods)
+                Equipment.Add(attr.TextAttribute, new List<float>(attr.Value));
+
+            if (NecromanticAegis && OffHand.IsShield())
+            {
+                // Remove all bonuses of shield from equipment set.
+                // @see http://pathofexile.gamepedia.com/Necromantic_Aegis
+                foreach (var attr in OffHand.Attributes)
+                    Equipment.Remove(attr);
+                // Remove all bonuses from shield itself.
+                OffHand.Attributes.Clear();
+                OffHand.Local.Clear();
+            }
+
+            Global.Add(Equipment);
+
+            Implicit = new AttributeSet(skillTree.ImplicitAttributes(Global));
+            Global.Add(Implicit);
+
+            // Innate dual wielding bonuses.
+            // @see http://pathofexile.gamepedia.com/Dual_wielding
+            if (IsDualWielding)
+            {
+                Global["#% more Attack Speed"] = new List<float>() { 10 };
+                Global["#% more Physical Damage with Weapons"] = new List<float>() { 20 };
+            }
         }
 
         // Returns value capped at specified maximum.
