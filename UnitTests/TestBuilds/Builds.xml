@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TestData>
+  <!-- Added lightning damage Gem/Ring -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>80</Level>
+    <BuildFile>T1-PS-ALD-Wand.json</BuildFile>
+    <ExpectOffence>
+      Power Siphon
+      Main Hand Physical Damage: 51-93
+      Main Hand Lightning Damage: 3-27
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>80</Level>
+    <BuildFile>T1-PS-Wand-ALDRing.json</BuildFile>
+    <ExpectOffence>
+      Power Siphon
+      Main Hand Physical Damage: 51-93
+      Main Hand Lightning Damage: 3-92
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>80</Level>
+    <BuildFile>T1-PS-ALD-Wand-ALDRing.json</BuildFile>
+    <ExpectOffence>
+      Power Siphon
+      Main Hand Physical Damage: 51-93
+      Main Hand Lightning Damage: 7-120
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Added damage from ring/quiver with attack, spell, physical spell -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>80</Level>
+    <BuildFile>T1-TS-EK-FP-Bow-AddPhyQuiver.json</BuildFile>
+    <ExpectOffence>
+      Tornado Shot
+      Main Hand Physical Damage: 41-107
+      Main Hand Lightning Damage: 2-67
+      Ethereal Knives
+      Spell Physical Damage: 10-16
+      Freezing Pulse
+      Spell Cold Damage: 61-91
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Increase elemental damage with weapons from quiver with attack, spell, physical spell -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>80</Level>
+    <BuildFile>T1-TS-EK-FP-Bow-IncEDWQuiver.json</BuildFile>
+    <ExpectOffence>
+      Tornado Shot
+      Main Hand Physical Damage: 37-99
+      Main Hand Lightning Damage: 3-68
+      Ethereal Knives
+      Spell Physical Damage: 10-16
+      Freezing Pulse
+      Spell Cold Damage: 61-91
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Double Strike/Power Siphon with Mace and increased physical damage on shield -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>80</Level>
+    <BuildFile>T1-DS-PS-Mace-IncPhyDmgShield-ALDRing.json</BuildFile>
+    <ExpectOffence>
+      Double Strike
+      Main Hand Physical Damage: 33-51
+      Main Hand Fire Damage: 2-6
+      Main Hand Lightning Damage: 2-58
+      Power Siphon (Unuseable)
+      Main Hand Physical Damage: 60-91
+      Main Hand Fire Damage: 3-11
+      Main Hand Lightning Damage: 4-103
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Double Strike/Power Siphon with Wand and increased physical damage on shield -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>80</Level>
+    <BuildFile>T1-DS-PS-Wand-IncPhyDmgShield-ALDRing.json</BuildFile>
+    <ExpectOffence>
+      Double Strike (Unuseable)
+      Main Hand Physical Damage: 29-52
+      Main Hand Lightning Damage: 2-52
+      Power Siphon
+      Main Hand Physical Damage: 51-93
+      Main Hand Lightning Damage: 3-92
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Damage conversions without Avatar of Fire -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUABVuLjOFz7SBG113GtQTkIkVHKU-OZDLRhX33priTFkC2-uvuzfpmnij6fIP60oLHV8kRLTbpFy_56A18LJzjamTnQYfqugVCVda3PrQMQZb-CkZxrrPQ9di9gwlMszWSb54tH1AwtfKcpJUg216pbocTwfN4DXcHgh7oZohCP_zBxQix7Bhwu4_68NXQ0Ov1SVFHBmSd8uHyHWNDDkhd8nDVidNwUioL8-q1SG1sNj3ndJ2q7LDo1mKsbIyMCwW1uXyNv1FHMHznVI19JP0j9k2S</TreeURL>
+    <Level>91</Level>
+    <BuildFile>T2-LA-ALD.json</BuildFile>
+    <ExpectOffence>
+      Lightning Arrow
+      Main Hand Physical Damage: 5-12
+      Main Hand Lightning Damage: 15-174
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUABVuLjOFz7SBG113GtQTkIkVHKU-OZDLRhX33priTFkC2-uvuzfpmnij6fIP60oLHV8kRLTbpFy_56A18LJzjamTnQYfqugVCVda3PrQMQZb-CkZxrrPQ9di9gwlMszWSb54tH1AwtfKcpJUg216pbocTwfN4DXcHgh7oZohCP_zBxQix7Bhwu4_68NXQ0Ov1SVFHBmSd8uHyHWNDDkhd8nDVidNwUioL8-q1SG1sNj3ndJ2q7LDo1mKsbIyMCwW1uXyNv1FHMHznVI19JP0j9k2S</TreeURL>
+    <Level>91</Level>
+    <BuildFile>T2-LA-ALD-Blackgleam-Hrimsorrow.json</BuildFile>
+    <ExpectOffence>
+      Lightning Arrow
+      Main Hand Fire Damage: 6-14
+      #FIXME Main Hand Cold Damage: 2-5
+      Main Hand Cold Damage: 2-6
+      Main Hand Lightning Damage: 15-174
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUABVuLjOFz7SBG113GtQTkIkVHKU-OZDLRhX33priTFkC2-uvuzfpmnij6fIP60oLHV8kRLTbpFy_56A18LJzjamTnQYfqugVCVda3PrQMQZb-CkZxrrPQ9di9gwlMszWSb54tH1AwtfKcpJUg216pbocTwfN4DXcHgh7oZohCP_zBxQix7Bhwu4_68NXQ0Ov1SVFHBmSd8uHyHWNDDkhd8nDVidNwUioL8-q1SG1sNj3ndJ2q7LDo1mKsbIyMCwW1uXyNv1FHMHznVI19JP0j9k2S</TreeURL>
+    <Level>91</Level>
+    <BuildFile>T2-LA-ALD-CtF-Blackgleam-Hrimsorrow.json</BuildFile>
+    <ExpectOffence>
+      Lightning Arrow
+      Main Hand Fire Damage: 8-18
+      Main Hand Cold Damage: 1-3
+      Main Hand Lightning Damage: 15-174
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Damage conversions with Avatar of Fire -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUABVuLjOFz7SBG113GtQTkIkVHKU-OZDLRhX33priTFkC2-uvuzfpmnij6fIP60oLHV8kRLTbpFy_56A18LJzjamTnQYfqugVCVda3PrQMQZb-CkZxrrPQ9di9gwlMszWSb54tH1AwtfKcpJUg216pbocTwfN4DXcHgh7oZohCP_zBxQix7Bhwu4_68NXQ0Ov1SVFHBmSd8uHyHWNDDkhd8nDVidNwUioL8-q1SG1sNj3ndJ2q7LDo1mKsbIyMCwW1uXyNv1FHMHznVI19JP0j9k2Sr40=</TreeURL>
+    <Level>91</Level>
+    <BuildFile>T2-LA-ALD-CtF-Blackgleam-Hrimsorrow.json</BuildFile>
+    <ExpectOffence>
+      Lightning Arrow
+      Main Hand Fire Damage: 16-107
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUABVuLjOFz7SBG113GtQTkIkVHKU-OZDLRhX33priTFkC2-uvuzfpmnij6fIP60oLHV8kRLTbpFy_56A18LJzjamTnQYfqugVCVda3PrQMQZb-CkZxrrPQ9di9gwlMszWSb54tH1AwtfKcpJUg216pbocTwfN4DXcHgh7oZohCP_zBxQix7Bhwu4_68NXQ0Ov1SVFHBmSd8uHyHWNDDkhd8nDVidNwUioL8-q1SG1sNj3ndJ2q7LDo1mKsbIyMCwW1uXyNv1FHMHznVI19JP0j9k2Sr40=</TreeURL>
+    <Level>91</Level>
+    <BuildFile>T2-LA-ALD-CtF-Blackgleam.json</BuildFile>
+    <ExpectOffence>
+      Lightning Arrow
+      Main Hand Fire Damage: 16-107
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUABVuLjOFz7SBG113GtQTkIkVHKU-OZDLRhX33priTFkC2-uvuzfpmnij6fIP60oLHV8kRLTbpFy_56A18LJzjamTnQYfqugVCVda3PrQMQZb-CkZxrrPQ9di9gwlMszWSb54tH1AwtfKcpJUg216pbocTwfN4DXcHgh7oZohCP_zBxQix7Bhwu4_68NXQ0Ov1SVFHBmSd8uHyHWNDDkhd8nDVidNwUioL8-q1SG1sNj3ndJ2q7LDo1mKsbIyMCwW1uXyNv1FHMHznVI19JP0j9k2Sr40=</TreeURL>
+    <Level>91</Level>
+    <BuildFile>T2-LA-ALD-Blackgleam-Hrimsorrow.json</BuildFile>
+    <ExpectOffence>
+      Lightning Arrow
+      #FIXME Main Hand Fire Damage: 15-105
+      Main Hand Fire Damage: 15-104
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUABVuLjOFz7SBG113GtQTkIkVHKU-OZDLRhX33priTFkC2-uvuzfpmnij6fIP60oLHV8kRLTbpFy_56A18LJzjamTnQYfqugVCVda3PrQMQZb-CkZxrrPQ9di9gwlMszWSb54tH1AwtfKcpJUg216pbocTwfN4DXcHgh7oZohCP_zBxQix7Bhwu4_68NXQ0Ov1SVFHBmSd8uHyHWNDDkhd8nDVidNwUioL8-q1SG1sNj3ndJ2q7LDo1mKsbIyMCwW1uXyNv1FHMHznVI19JP0j9k2Sr40=</TreeURL>
+    <Level>91</Level>
+    <BuildFile>T2-LA-ALD.json</BuildFile>
+    <ExpectOffence>
+      Lightning Arrow
+      Main Hand Fire Damage: 14-103
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Lowbie Ranger with Hrimsorrow -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgIAr-vn6vkzlwYF-Zsm6NbrFAW11CMwcd2oS3g6Qg==</TreeURL>
+    <Level>14</Level>
+    <BuildFile>T3-SA-RoA-Hrimsorrow.json</BuildFile>
+    <ExpectDefence>
+      Character
+      Life: 235
+      Mana: 123
+      Maximum Energy Shield: 22
+      Strength: 58
+      Dexterity: 136
+      Intelligence: 61
+      Defence
+      Armour: 36
+      Estimated Physical Damage reduction: 13%
+      Evasion Rating: 188
+      Estimated chance to Evade Attacks: 38%
+      Chance to Dodge Attacks: 40%
+      Chance to Dodge Spells: 30%
+      Maximum Energy Shield: 22
+      Energy Shield Recharge per Second: 7.3
+      #BADDATA Life Regeneration per Second: 1.7
+      Life Regeneration per Second: 2
+      Mana Regeneration per Second: 2.5
+      Fire Resistance: 17% (17%)
+      Cold Resistance: 65% (65%)
+      Lightning Resistance: 38% (38%)
+      #TODO Movement Speed modifier: +15%
+    </ExpectDefence>
+    <!--
+    === Split Arrow conversion breakdown ===
+    Weapon: Physical 8 - 29
+    Ring: Added 1 - 4 Physical Damage
+    ===
+    45% of Physical Damage converted to Cold Damage.
+    ===
+    Physical 4.4 - 15.95
+    Physical 0.55 - 2.2
+    ===
+    12% increase Physical Damage.
+    Deals 80% of Base Damage.
+    ===
+    Physical 4 - 16 (5 - 17 in game)
+    -->
+    <ExpectOffence>
+      Split Arrow
+      #FIXME Main Hand Physical Damage: 5-17
+      Main Hand Physical Damage: 4-16
+      #FIXME Main Hand Cold Damage: 5-15
+      Main Hand Cold Damage: 4-15
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Double Strike/Power Siphon with Dual Wand, Ring(Adds Lightning Damage) -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T4-DS-PS-Dual-Wand.json</BuildFile>
+    <ExpectOffence>
+      Double Strike (Unuseable)
+      Main Hand Physical Damage: 29-52
+      Main Hand Lightning Damage: 2-50
+      Off Hand Physical Damage: 21-39
+      Off Hand Lightning Damage: 2-50
+      Power Siphon
+      Main Hand Physical Damage: 51-93
+      Main Hand Lightning Damage: 3-90
+      Off Hand Physical Damage: 38-71
+      Off Hand Lightning Damage: 3-90
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Necromantic Aegis -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8ewdw==</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T5-NecromanticAegis.json</BuildFile>
+    <ExpectDefence>
+      Character
+      Life: 1273
+      Mana: 1179
+      Maximum Energy Shield: 1358
+      Defence
+      Evasion Rating: 3548
+      Life Regeneration per Second: 12.7
+      #FIXME Mana Regeneration per Second: 66.9
+      Mana Regeneration per Second: 66.8
+      Fire Resistance: 75% (131%)
+      Cold Resistance: 75% (162%)
+      Lightning Resistance: 75% (104%)
+      Chaos Resistance: 59% (59%)
+      Chance to Block Attacks: 8%
+      Chance to Block Spells: 2%
+      #TODO Movement Speed Modifier: +22%
+    </ExpectDefence>
+    <ExpectedOffence>
+      Arc
+      Spell Lightning Damage: 84-1577
+    </ExpectedOffence>
+  </TestBuild>
+</TestData>

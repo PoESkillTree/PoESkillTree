@@ -1,0 +1,143 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using POESKillTree.SkillTreeFiles;
+using POESKillTree.ViewModels;
+
+namespace UnitTests
+{
+    [TestClass]
+    public class TestCharacterSheet
+    {
+        private TestContext TestContextInstance;
+        public TestContext TestContext
+        {
+            get { return TestContextInstance; }
+            set { TestContextInstance = value; }
+        }
+
+        SkillTree Tree;
+
+        [TestInitialize]
+        public void Initalize()
+        {
+            Tree = SkillTree.CreateSkillTree(() => { }, (double dummy1, double dummy2) => { }, () => { });
+        }
+
+        readonly Regex _backreplace = new Regex("#");
+        string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
+        {
+            string s = attrib.Key;
+            foreach (float f in attrib.Value)
+            {
+                s = _backreplace.Replace(s, f.ToString(CultureInfo.InvariantCulture.NumberFormat), 1);
+            }
+            return s;
+        }
+
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", "..\\..\\TestBuilds\\Builds.xml", "TestBuild", DataAccessMethod.Sequential)]
+        [TestMethod]
+        public void TestBuild()
+        {
+            // Read build entry.
+            string treeURL = TestContext.DataRow["TreeURL"].ToString();
+            int level = Convert.ToInt32(TestContext.DataRow["Level"]);
+            string buildFile = "..\\..\\TestBuilds\\" + TestContext.DataRow["BuildFile"].ToString();
+            List<string> expectDefense = new List<string>();
+            List<string> expectOffense = new List<string>();
+            if (TestContext.DataRow.Table.Columns.Contains("ExpectDefence"))
+            {
+                using (StringReader reader = new StringReader(TestContext.DataRow["ExpectDefence"].ToString()))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        line = line.Trim();
+                        if (line.Length > 0 && !line.StartsWith("#"))
+                            expectDefense.Add(line.Trim());
+                    }
+                }
+            }
+            if (TestContext.DataRow.Table.Columns.Contains("ExpectOffence"))
+            {
+                using (StringReader reader = new StringReader(TestContext.DataRow["ExpectOffence"].ToString()))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        line = line.Trim();
+                        if (line.Length > 0 && !line.StartsWith("#"))
+                            expectOffense.Add(line.Trim());
+                    }
+                        
+                }
+            }
+
+            // Initialize structures.
+            Tree.LoadFromURL(treeURL);
+            Tree.Level = level;
+            ItemAttributes itemAttributes = new ItemAttributes(buildFile);
+            Compute.Initialize(Tree, itemAttributes);
+
+            // Compare defense properties.
+            Dictionary<string, List<string>> defense = new Dictionary<string, List<string>>();
+            if (expectDefense.Count > 0)
+            {
+                foreach (ListGroup grp in Compute.Defense())
+                {
+                    List<string> props = new List<string>();
+                    foreach (string item in grp.Properties.Select(InsertNumbersInAttributes))
+                        props.Add(item);
+                    defense.Add(grp.Name, props);
+                }
+
+                List<string> group = null;
+                foreach (string entry in expectDefense)
+                {
+                    if (entry.Contains(':')) // Property: Value
+                    {
+                        Assert.IsNotNull(group, "Missing defence group");
+                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry);
+                    }
+                    else // Group
+                    {
+                        Assert.IsTrue(defense.ContainsKey(entry), "No such defence group: " + entry);
+                        group = defense[entry];
+                    }
+                }
+            }
+
+            // Compare offense properties.
+            Dictionary<string, List<string>> offense = new Dictionary<string, List<string>>();
+            if (expectOffense.Count > 0)
+            {
+                foreach (ListGroup grp in Compute.Offense())
+                {
+                    List<string> props = new List<string>();
+                    foreach (string item in grp.Properties.Select(InsertNumbersInAttributes))
+                        props.Add(item);
+                    offense.Add(grp.Name, props);
+                }
+
+                List<string> group = null;
+                foreach (string entry in expectOffense)
+                {
+                    if (entry.Contains(':')) // Property: Value
+                    {
+                        Assert.IsNotNull(group, "Missing offence group");
+                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry);
+                    }
+                    else // Group
+                    {
+                        Assert.IsTrue(offense.ContainsKey(entry), "No such offence group: " + entry);
+                        group = offense[entry];
+                    }
+                }
+            }
+        }
+    }
+}
