@@ -61,7 +61,30 @@
       <Name>WPFSKillTree</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="TestBuilds\T1-DS-PS-Mace-IncPhyDmgShield-ALDRing.json" />
+    <None Include="TestBuilds\T1-DS-PS-Wand-IncPhyDmgShield-ALDRing.json" />
+    <None Include="TestBuilds\T1-PS-ALD-Wand-ALDRing.json" />
+    <None Include="TestBuilds\T1-PS-ALD-Wand.json" />
+    <None Include="TestBuilds\T1-PS-Wand-ALDRing.json" />
+    <None Include="TestBuilds\T1-TS-EK-FP-Bow-AddPhyQuiver.json" />
+    <None Include="TestBuilds\T1-TS-EK-FP-Bow-IncEDWQuiver.json" />
+    <None Include="TestBuilds\T2-LA-ALD-Blackgleam-Hrimsorrow.json" />
+    <None Include="TestBuilds\T2-LA-ALD-CtF-Blackgleam-Hrimsorrow.json" />
+    <None Include="TestBuilds\T2-LA-ALD-CtF-Blackgleam.json" />
+    <None Include="TestBuilds\T2-LA-ALD.json" />
+    <None Include="TestBuilds\T3-SA-RoA-Hrimsorrow.json" />
+    <None Include="TestBuilds\T4-DS-PS-Dual-Wand.json" />
+    <None Include="TestBuilds\T5-NecromanticAegis.json" />
+    <None Include="TestBuilds\T6-Arc-LW-CwDT.json" />
+    <None Include="TestBuilds\T6-Arc-SpellEcho.json" />
+    <None Include="TestBuilds\T6-FBall-SpellEcho.json" />
+    <None Include="TestBuilds\T6-Leap-2HSword.json" />
+    <None Include="TestBuilds\T6-MS-2HAxe-Limbsplit.json" />
+    <None Include="TestBuilds\T6-MS-2HAxe-Wideswing.json" />
+    <None Include="TestBuilds\T6-SA-EK-Bow-AddPhy2BowAtkQuiver.json" />
+    <None Include="TestBuilds\T6-VS-Dual-Dagger.json" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="TestBuilds\Builds.xml" />
   </ItemGroup>

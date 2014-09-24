@@ -4,22 +4,25 @@ using System.Text.RegularExpressions;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
 using Item = POESKillTree.ViewModels.ItemAttributes.Item;
-using Mod = POESKillTree.ViewModels.ItemAttributes.Item.Mod;
 
 namespace POESKillTree.SkillTreeFiles
 {
+    // TODO: Add support for "Counts as Dual Wielding" mod. // @see http://pathofexile.gamepedia.com/Wings_of_Entropy
+    // XXX: "Uses both hand slots" mod on one-handed weapon locks off-hand slot, @see http://pathofexile.gamepedia.com/The_Goddess_Scorned
     public class Compute
     {
         public class AttackSkill
         {
+            // The skill gem.
+            Item Gem;
             // The name.
             string Name;
             // The nature of attack (based on gem keywords).
             public DamageNature Nature;
             // List of attack sources (either spell or main hand and/or off hand).
-            List<AttackSource> Sources;
+            List<AttackSource> Sources = new List<AttackSource>();
             // Skill gem local attributes.
-            public AttributeSet Local;
+            public AttributeSet Local = new AttributeSet();
             // Damage effectiveness.
             float Effectiveness;
             // List of damage conversions.
@@ -40,23 +43,23 @@ namespace POESKillTree.SkillTreeFiles
             // Creates attack from gem.
             AttackSkill(Item gem)
             {
+                Gem = gem;
                 Name = gem.Name;
                 Nature = new DamageNature(gem.Keywords);
-
-                Local = new AttributeSet();
-                foreach (Mod mod in gem.Mods)
-                    Local.Add(mod.Attribute, new List<float>(mod.Value));
 
                 Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness:  #%") ? gem.Attributes["Damage Effectiveness:  #%"][0] : 100;
 
                 Fixup();
-
-                Sources = GetSources();
             }
 
-            // Applies attributes.
-            public void Apply()
+            // Applies item modifiers.
+            public void Apply(Item item)
             {
+                // Add skill gem attributes.
+                Local.Add(Gems.AttributesOf(Gem, item));
+
+                CreateSources();
+
                 // Lists of damage added, increased and multipliers to apply.
                 List<Damage.Added> adds = new List<Damage.Added>();
                 List<Damage.Increased> increases = new List<Damage.Increased>();
@@ -230,61 +233,84 @@ namespace POESKillTree.SkillTreeFiles
                 return new AttackSkill(gem);
             }
 
+            // Creates sources of attack skill (spell, main hand and/or off hand).
+            // TODO: Iron Grip, Iron Will (http://pathofexile.gamepedia.com/Physical_damage)
+            public void CreateSources()
+            {
+                Sources = new List<AttackSource>();
+
+                if (Nature.Is(DamageSource.Attack))
+                {
+                    if (MainHand.IsWeapon())
+                        Sources.Add(new AttackSource("Main Hand", this, MainHand));
+
+                    if (OffHand.IsWeapon())
+                        Sources.Add(new AttackSource("Off Hand", this, OffHand));
+                }
+                else // Spell
+                {
+                    Sources.Add(new AttackSource("Spell", this, null));
+                }
+            }
+
             // Fixes properties of attack skill.
             void Fixup()
             {
                 switch (Name)
                 {
+                    // Fireball doesn't show AoE part, remove it.
+                    case "Fireball":
+                        Nature.Area ^= DamageArea.Area;
+                        break;
+
+                    // Herald of Ice ignores Spell related bonuses, remove Spell source.
+                    case "Herald of Ice":
+                        Nature.Source ^= DamageSource.Spell;
+                        break;
+
+                    // Requires an Axe, Mace, Sword or Staff
+                    case "Leap Slam":
+                        Nature.WeaponType = WeaponType.Axe | WeaponType.Mace | WeaponType.Sword | WeaponType.Staff;
+                        break;
+
+                    // Lightning Strike doesn't show projectile part, remove it.
+                    case "Lightning Strike":
+                        Nature.Form ^= DamageForm.Projectile;
+                        break;
+
+                    // Molten Strike doesn't show projectile part, remove it.
+                    case "Molten Strike":
+                        Nature.Area ^= DamageArea.Area;
+                        Nature.Form ^= DamageForm.Projectile;
+                        break;
+
                     // Power Siphon requires Wands.
                     case "Power Siphon":
                         Nature.WeaponType = WeaponType.Wand;
                         break;
                 }
             }
-            // Returns sources of attack skill (spell, main hand and/or off hand).
-            // TODO: Lightning Strike must have DamageForm.Projectile removed as only melee part is displayed on sheet.
-            // TODO: Herald of Ice must have DamageSource.Spell removed/changed (no spell related bonuses applies to damage dealing part).
-            // TODO: Iron Grip, Iron Will (http://pathofexile.gamepedia.com/Physical_damage)
-            public List<AttackSource> GetSources()
-            {
-                List<AttackSource> sources = new List<AttackSource>();
-
-                if (Nature.Is(DamageSource.Attack))
-                {
-                    if (MainHand.IsWeapon())
-                        sources.Add(new AttackSource("Main Hand", this, MainHand));
-
-                    if (OffHand.IsWeapon())
-                        sources.Add(new AttackSource("Off Hand", this, OffHand));
-                }
-                else // Spell
-                {
-                    sources.Add(new AttackSource("Spell", this, null));
-                }
-
-                return sources;
-            }
 
             // Returns true if gem is an attack skill, false otherwise.
             public static bool IsAttackSkill(Item gem)
             {
-                // A gem is an attack if it has Attack or Spell keyword and it has damage dealing mod.
-                return (gem.Keywords.Contains("Attack") || gem.Keywords.Contains("Spell"))
-                        && !gem.Keywords.Contains("Trap") && !gem.Keywords.Contains("Mine") // No traps & mines.
-                        && gem.Mods.Find(mod => mod.Attribute.StartsWith("Deals")) != null;
+                // A gem is an attack if it has Attack keyword or Spell keyword with damage dealing mod.
+                return (gem.Keywords.Contains("Attack") // It's Attack.
+                        || gem.Keywords.Contains("Spell") && gem.Mods.Find(mod => mod.Attribute.StartsWith("Deals")) != null) // It's Spell and deals damage.
+                       && !gem.Keywords.Contains("Trap") && !gem.Keywords.Contains("Mine") // No traps & mines.
+                       && !gem.Keywords.Contains("Support"); // Not a support gem.
             }
 
              // Links support gems.
             // TODO: In case of same gems slotted only highest level one is used.
-            public void Link(List<Item> gems)
+            public void Link(List<Item> gems, Item item)
             {
                 foreach (Item gem in gems)
                 {
                     if (!gem.Keywords.Contains("Support")) continue; // Skip non-support gems.
 
-                    // Add all mods of support gems to attack skill gem.
-                    foreach (Mod mod in gem.Mods)
-                        Local.Add(mod.Attribute, new List<float>(mod.Value));
+                    // Add support gem attributes.
+                    Local.Add(Gems.AttributesOf(gem, item));
                 }
             }
 
@@ -346,7 +372,7 @@ namespace POESKillTree.SkillTreeFiles
                         Nature = new DamageNature(skill.Nature) { WeaponType = skill.Nature.WeaponType & weapon.Nature.WeaponType };
 
                     foreach (Damage damage in weapon.Deals)
-                        Deals.Add(new Damage(damage) { Source = Nature.Source, WeaponType = Nature.WeaponType });
+                        Deals.Add(new Damage(damage) { Area = Nature.Area, Form = Nature.Form, Source = Nature.Source, WeaponType = Nature.WeaponType });
                 }
             }
        }
@@ -678,9 +704,9 @@ namespace POESKillTree.SkillTreeFiles
                 // The percentage of damage increase.
                 public float Percent;
 
-                static Regex ReIncreasedAll = new Regex("#% (increased|reduced) Damage$");
+                static Regex ReIncreasedAll = new Regex("^#% (increased|reduced) Damage$");
                 static Regex ReIncreasedAllWithWeaponType = new Regex("#% (increased|reduced) Damage with (.+)$");
-                static Regex ReIncreasedType = new Regex("#% (increased|reduced) (.+) Damage$");
+                static Regex ReIncreasedType = new Regex("^#% (increased|reduced) (.+) Damage$");
                 static Regex ReIncreasedTypeWithWeaponType = new Regex("#% (increased|reduced) (.+) Damage with (.+)$");
                 static Regex ReIncreasedWithSource = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Weapons)$");
 
@@ -1615,8 +1641,8 @@ namespace POESKillTree.SkillTreeFiles
 
                         AttackSkill attack = AttackSkill.Create(gem);
 
-                        attack.Link(item.GetLinkedGems(gem));
-                        attack.Apply();
+                        attack.Link(item.GetLinkedGems(gem), item);
+                        attack.Apply(item);
 
                         groups.Add(attack.ToListGroup());
                     }
@@ -1650,194 +1676,3 @@ namespace POESKillTree.SkillTreeFiles
         }
     }
 }
-
-/*
- * Skill gems:
- * ===========
- * Anger
- * Animate Guardian
- * Cleave
- * Decoy Totem
- * Determination
- * Devouring Totem
- * Dominating Blow
- * Enduring Cry
- * Flame Totem
- * Glacial Hammer                               Partial
- * Ground Slam
- * Heavy Strike
- * Herald of Ash
- * Immortal Call
- * Infernal Blow
- * Leap Slam
- * Lightning Strike
- * Molten Shell                                 Partial
- * Molten Strike
- * Punishment
- * Purity of Fire
- * Rejuvenation Totem
- * Searing Bond
- * Shield Charge
- * Shockwave Totem
- * Sweep
- * Vitality
- * Warlord's Mark
- * 
- * Animate Weapon
- * Arctic Armour
- * Barrage
- * Bear Trap
- * Blood Rage
- * Burning Arrow
- * Cyclone
- * Desecrate
- * Detonate Dead
- * Double Strike
- * Dual Strike
- * Elemental Hit
- * Ethereal Knives                              Partial
- * Explosive Arrow
- * Fire Trap
- * Flicker Strike
- * Freeze Mine
- * Frenzy
- * Grace
- * Haste
- * Hatred
- * Herald of Ice                                Partial (increase Spell Damage/Elemental Damage with Spells should be excluded)
- * Ice Shot
- * Lightning Arrow                              Partial
- * Poacher's Mark
- * Poison Arrow
- * Projectile Weakness
- * Puncture
- * Purity of Ice
- * Rain of Arrows
- * Reave
- * Smoke Mine
- * Spectral Throw
- * Split Arrow
- * Temporal Chains
- * Tornado Shot
- * Viper Strike
- * Whirling Blades
- *
- * Arc                                          Partial
- * Arctic Breath
- * Assassin's Mark
- * Ball Lightning
- * Bone Offering
- * Clarity
- * Cold Snap
- * Conductivity
- * Conversion Trap
- * Convocation
- * Critical Weakness
- * Discharge
- * Discipline
- * Elemental Weakness
- * Enfeeble
- * Fireball
- * Firestorm
- * Flameblast
- * Flame Surge
- * Flammability
- * Flesh Offering
- * Freezing Pulse
- * Frost Wall
- * Frostbite
- * Glacial Cascade
- * Ice Nova
- * Ice Spear
- * Incinerate
- * Lightning Trap
- * Lightning Warp
- * Power Siphon
- * Purity of Elements
- * Purity of Lightning
- * Raise Spectre
- * Raise Zombie
- * Righteous Fire
- * Shock Nova
- * Spark
- * Storm Call
- * Summon Raging Spirit
- * Summon Skeletons
- * Tempest Shield
- * Vulnerability
- * Wrath
- * 
- * Support gems:
- * =============
- * Added Chaos Damage
- * Added Cold Damage
- * Added Fire Damage
- * Added Lightning Damage                       Partial
- * Additional Accuracy
- * Blind
- * Block Chance Reduction
- * Blood Magic
- * Cast on Critical Strike
- * Cast on Death
- * Cast on Melee Kill
- * Cast when Damage Taken
- * Cast when Stunned
- * Chain
- * Chance to Flee
- * Chance to Ignite
- * Cold Penetration
- * Cold to Fire                                 Partial
- * Concentrated Effect                          Partial
- * Culling Strike
- * Curse on Hit
- * Elemental Proliferation
- * Empower
- * Endurance Charge on Melee Stun
- * Enhance
- * Enlighten
- * Faster Attacks
- * Faster Casting
- * Faster Projectiles                           Partial
- * Fire Penetration
- * Fork
- * Generosity
- * Greater Multiple Projectiles
- * Increased Area of Effect
- * Increased Burning Damage
- * Increased Critical Damage
- * Increased Critical Strikes
- * Increased Duration
- * Iron Grip
- * Iron Will
- * Item Quantity
- * Item Rarity
- * Knockback
- * Lesser Multiple Projectiles
- * Life Gain on Hit
- * Life Leech
- * Lightning Penetration
- * Mana Leech
- * Melee Damage on Full Life                    Partial
- * Melee Physical Damage
- * Melee Splash
- * Minion and Totem Elemental Resistance
- * Minion Damage
- * Minion Life
- * Minion Speed
- * Multiple Traps
- * Multistrike
- * Physical Projectile Attack Damage
- * Pierce
- * Point Blank
- * Power Charge On Critical
- * Ranged Attack Totem
- * Reduced Duration
- * Reduced Mana
- * Remote Mine
- * Slower Projectiles
- * Spell Echo
- * Spell Totem
- * Stun
- * Trap
- * Weapon Elemental Damage                      Partial
- */

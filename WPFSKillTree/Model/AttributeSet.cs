@@ -72,6 +72,16 @@ namespace POESKillTree.Model
             return merged;
         }
 
+        // Overrides attribute values with values from specified set.
+        public void Override(AttributeSet attrs)
+        {
+            foreach (var attr in attrs)
+                if (ContainsKey(attr.Key))
+                    this[attr.Key] = attr.Value;
+                else
+                    Add(attr);
+        }
+
         // Removes attribute.
         // Attribute has value decreased by value of attribute being removed.
         // If attribute in set has all values zeroes or it has no value at all it will be removed from set.
