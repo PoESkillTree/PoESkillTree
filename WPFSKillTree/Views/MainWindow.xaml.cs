@@ -27,7 +27,6 @@ using POESKillTree.ViewModels;
 using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
 using Clipboard = System.Windows.Clipboard;
-using Control = System.Windows.Controls.Control;
 using DataObject = System.Windows.DataObject;
 using DragDropEffects = System.Windows.DragDropEffects;
 using DragEventArgs = System.Windows.DragEventArgs;
@@ -36,7 +35,6 @@ using ListView = System.Windows.Controls.ListView;
 using ListViewItem = System.Windows.Controls.ListViewItem;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using ToolTip = System.Windows.Controls.ToolTip;
 
 namespace POESKillTree.Views
@@ -81,25 +79,6 @@ namespace POESKillTree.Views
         {
             Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            //AppDomain.CurrentDomain.AssemblyResolve += ( sender, args ) =>
-            //{
-
-            //    String resourceName = "POESKillTree." +
-
-            //       new AssemblyName( args.Name ).Name + ".dll";
-
-            //    using ( var stream = Assembly.GetExecutingAssembly( ).GetManifestResourceStream( resourceName ) )
-            //    {
-
-            //        Byte[] assemblyData = new Byte[ stream.Length ];
-
-            //        stream.Read( assemblyData, 0, assemblyData.Length );
-
-            //        return Assembly.Load( assemblyData );
-
-            //    }
-
-            //};
 
             InitializeComponent();
         }
@@ -201,7 +180,6 @@ namespace POESKillTree.Views
                 }
                 _allAttributeCollection.Refresh();
             }
-            //tbSkillURL.Text = Tree.SaveToURL();
             UpdateAttributeList();
         }
 
@@ -234,7 +212,6 @@ namespace POESKillTree.Views
         {
             _attibuteCollection = new ListCollectionView(_attiblist);
             listBox1.ItemsSource = _attibuteCollection;
-            // AttibuteCollection.CustomSort = 
             var pgd = new PropertyGroupDescription("") {Converter = new GroupStringConverter()};
             _attibuteCollection.GroupDescriptions.Add(pgd);
 
@@ -257,8 +234,6 @@ namespace POESKillTree.Views
             // loading last build
             _persistentData.LoadPersistentDataFromFile();
             SetTheme(_persistentData.Options.OptionsTheme);
-            //tbLevel.Text = _persistentData.CurrentBuild.Level;
-            //tbSkillURL.Text = _persistentData.CurrentBuild.Url;
             expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
             expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
 
