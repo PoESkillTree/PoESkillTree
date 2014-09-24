@@ -4,16 +4,16 @@ using MahApps.Metro.Controls;
 namespace POESKillTree.Views
 {
     /// <summary>
-    /// Interaction logic for FormBuildName.xaml
+    /// Interaction logic for FormChooseBuildName.xaml
     /// </summary>
-    public partial class FormBuildName : MetroWindow
+    public partial class FormChooseBuildName : MetroWindow
     {
-        public FormBuildName()
+        public FormChooseBuildName()
         {
             InitializeComponent();
         }
 
-        public FormBuildName(string name, string note)
+        public FormChooseBuildName(string name, string note)
         {
             InitializeComponent();
             txtName.Text = name;

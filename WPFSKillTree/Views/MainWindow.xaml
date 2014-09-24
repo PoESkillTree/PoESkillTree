@@ -96,27 +96,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Popup x:Name="popup1" Height="Auto" Placement="Center" Margin="0" >
-            <Border BorderThickness="1">
-                <StackPanel Background="{DynamicResource WhiteColorBrush}">
-                    <TextBlock Text="No Item Data Found" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Please enter Your Character Name Below and click on Download. " HorizontalAlignment="Center"/>
-                    <TextBlock Text="This Will open your default Web-browser and download the Item data.  " HorizontalAlignment="Center"/>
-                    <TextBlock Text="Save it to the data folder beside this executable  " HorizontalAlignment="Center"/>
-                    <TextBlock HorizontalAlignment="Center"><Run Text="it's name should be 'get-items"/><Run Language="de-de" Text="' or 'get-items.txt."/><LineBreak/><Run Language="de-de" Text="You can also load a specific file using the 'Load specific file' Button."/></TextBlock>
-                    <TextBlock Text="click on the Load Items Button Again to Load the items after the download' " HorizontalAlignment="Center"/>
-                    <TextBlock Text="" HorizontalAlignment="Center"/>
-                    <TextBlock Text="if you don't like the button or the tool just crashes the next time you click on Load Items " HorizontalAlignment="Center"/>
-                    <TextBlock Text="copy this link to your browser after typing your name " HorizontalAlignment="Center"/>
-                    <TextBox x:Name="tbCharLink" />
-                    <TextBox Text="YourCharacterName" x:Name="tbCharName" TextChanged="tbCharName_TextChanged"  HorizontalAlignment="Center"/>
-                    <TextBlock Text=""/>
-                    <Button Content="Download" x:Name="btnDownloadItemData" Width="auto" Height="auto" Click="btnDownloadItemData_Click"/>
-                    <Button Content="Ok" x:Name="btnPopup" Click="btnPopup_OnClick" Width="auto" Height="auto" />
-                    <Button Content="Load specific file" x:Name="btnDownloadItemData_Copy" Width="auto" Height="auto" Click="btnDownloadItemData_Copy_Click" />
-                </StackPanel>
-            </Border>
-        </Popup>
 
         <!-- grid row 0 - upper part-->
         <Menu IsMainMenu="True" x:Name="menu1" Grid.Row="0" Margin="0,0,0,2">
@@ -195,8 +174,10 @@
         </Menu>
 
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
-        <Grid x:Name="BtnGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Width="234" Panel.ZIndex="99" >
-            <ComboBox Height="26" HorizontalAlignment="Left" Margin="0,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox1_SelectionChanged" VerticalContentAlignment="Center">
+        <Grid x:Name="BtnGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Width="314" Panel.ZIndex="99" >
+            <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
+            <TextBox HorizontalAlignment="Left" Margin="40,0,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="textBox3_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
+            <ComboBox Height="26" HorizontalAlignment="Left" Margin="80,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox1_SelectionChanged" VerticalContentAlignment="Center">
                 <ComboBoxItem Content="Scion" />
                 <ComboBoxItem Content="Marauder" />
                 <ComboBoxItem Content="Ranger" />
@@ -205,8 +186,8 @@
                 <ComboBoxItem Content="Templar" />
                 <ComboBoxItem Content="Shadow" />
             </ComboBox>
-            <Label Content="Used:" Height="26" HorizontalAlignment="Left" Margin="107,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
-            <TextBox Height="26" Margin="143,0,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="32"/>
+            <Label Content="Used:" Height="26" HorizontalAlignment="Left" Margin="182,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
+            <TextBox Height="26" Margin="218,0,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="32"/>
 
             <Button Content="Reset" Height="26" HorizontalAlignment="Right" x:Name="button4" VerticalAlignment="Top" Width="40" Click="RecSkillTree_Reset_Click" VerticalContentAlignment="Center" Margin="0,0,0,0"/>
         </Grid>
@@ -256,8 +237,6 @@
                     <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Attributes</TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
-                    <Label Content="Level:" Height="28" HorizontalAlignment="Right" Margin="0,-28,40,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
-                    <TextBox HorizontalAlignment="Right" Margin="0,-28,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="textBox3_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
                     <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Header="Passive Attributes" Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                             <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">

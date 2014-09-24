@@ -1,5 +1,5 @@
 ﻿<controls:MetroWindow xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      x:Name="FormChooseBuildName" x:Class="POESKillTree.Views.FormBuildName"
+                      x:Class="POESKillTree.Views.FormChooseBuildName"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       Title="Build name" Height="180" Width="361" WindowStartupLocation="CenterOwner"

@@ -1,0 +1,24 @@
+﻿<controls:MetroWindow
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    x:Class="POESKillTree.Views.DownloadItemsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Get Item Data" Width="500" WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+    <Grid>
+        <StackPanel Background="{DynamicResource WhiteColorBrush}">
+            <TextBlock Text="Get Item Data" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center"/>
+            <TextBlock Text="Please enter Your Character Name Below and click on 'Open Browser'." HorizontalAlignment="Center"/>
+            <TextBlock Text="This Will open your default Web-browser and download the Item data." HorizontalAlignment="Center"/>
+            <TextBlock Text="Save it anywhere you like, then click on 'Load File' and select it." HorizontalAlignment="Center"/>
+            <TextBlock Text=""/>
+            <TextBox x:Name="tbCharLink" Margin="2,0,2,0"/>
+            <TextBox Text="YourCharacterName" x:Name="tbCharName" Margin="0,2,0,0" TextChanged="tbCharName_TextChanged"  HorizontalAlignment="Center"/>
+            <TextBlock Text=""/>
+            <Button Content="Open Browser" x:Name="btnPopupOpenBrowser" Width="auto" Height="auto" Click="btnPopupOpenBrowser_Click"/>
+            <Button Content="Load File" x:Name="btnPopupLoadFile" Width="auto" Height="auto" Click="btnPopupLoadFile_Click" />
+            <Button Content="Close" x:Name="btnPopupClose" Click="btnPopupClose_Click" Width="auto" Height="auto" />
+            <Button Content="Clear Item Data" x:Name="btnPopupClear" Click="btnPopupClear_Click" Width="auto" Height="auto" Visibility="Collapsed"/>
+        </StackPanel>
+    </Grid>
+</controls:MetroWindow>

@@ -10,6 +10,137 @@ namespace POESKillTree.ViewModels
 {
     class ItemAttributes
     {
+        public ItemAttributes(string itemData)
+        {
+            #region Readin
+            RavenJObject jObject = RavenJObject.Parse(itemData);
+            foreach (RavenJObject jobj in (RavenJArray)jObject["items"])
+            {
+                string html = jobj["x"].Value<string>();
+                //html =
+                //   html.Replace("\\\"", "\"").Replace("\\/", "/").Replace("\\n", " ").Replace("\\t", " ").Replace(
+                //     "\\r", "").Replace("e\"", "e\" ").Replace("\"style", "\" style");
+                string id = jobj["inventoryId"].Value<string>();
+                if (id == "BodyArmour")
+                {
+                    AddItem(jobj, Item.ItemClass.Armor);
+                }
+                if (id == "Ring" || id == "Ring2")
+                {
+                    AddItem(jobj, Item.ItemClass.Ring);
+                }
+                if (id == "Gloves")
+                {
+                    AddItem(jobj, Item.ItemClass.Gloves);
+                }
+                if (id == "Weapon")
+                {
+                    AddItem(jobj, Item.ItemClass.MainHand);
+                }
+                if (id == "Offhand")
+                {
+                    AddItem(jobj, Item.ItemClass.OffHand);
+                }
+                if (id == "Helm")
+                {
+                    AddItem(jobj, Item.ItemClass.Helm);
+                }
+                if (id == "Boots")
+                {
+                    AddItem(jobj, Item.ItemClass.Boots);
+                }
+                if (id == "Amulet")
+                {
+                    AddItem(jobj, Item.ItemClass.Amulet);
+                }
+                if (id == "Belt")
+                {
+                    AddItem(jobj, Item.ItemClass.Belt);
+                }
+
+
+
+            }
+            #endregion
+            aList.Clear();
+            NonLocalMods.Clear();
+            Attributes = new ListCollectionView(aList);
+            foreach (Item item in Equip)
+            {
+                foreach (KeyValuePair<string, List<float>> attr in item.Attributes)
+                {
+                    if (attr.Key == "Quality: #") continue;
+                    aList.Add(new Attribute(attr.Key, attr.Value, item.Class.ToString()));
+                }
+
+                foreach (Item.Mod mod in item.Mods)
+                {
+                    Attribute attTo = null;
+                    attTo = aList.Find(ad => ad.TextAttribute == mod.Attribute && ad.Group == (mod.isLocal ? item.Class.ToString() : "Independent"));
+                    if (attTo == null)
+                    {
+                        aList.Add(new Attribute(mod.Attribute, mod.Value, (mod.isLocal ? item.Class.ToString() : "Independent")));
+                    }
+                    else
+                    {
+                        attTo.Add(mod.Attribute, mod.Value);
+                    }
+
+                }
+
+
+                foreach (KeyValuePair<string, List<float>> attr in item.Attributes)
+                {
+                    if (attr.Key == "Quality: +#%") continue;
+                    if (attr.Key == "Attacks per Second: #") continue;
+                    if (attr.Key == "Critical Strike Chance: #%") continue;
+                    if (attr.Key.ToLower().Contains("damage")) continue;
+                    if (attr.Key.Contains("Weapon Class")) continue;
+                    if (attr.Key.Contains("Elemental Damage")) continue;
+                    Attribute attTo = null;
+                    attTo = NonLocalMods.Find(ad => ad.TextAttribute == attr.Key);
+                    if (attTo == null)
+                    {
+                        NonLocalMods.Add(new Attribute(attr.Key, attr.Value, ""));
+                    }
+                    else
+                    {
+                        attTo.Add(attr.Key, attr.Value);
+                    }
+                }
+
+                foreach (Item.Mod mod in item.Mods)
+                {
+                    if (mod.isLocal) continue;
+                    Attribute attTo = null;
+                    attTo = NonLocalMods.Find(ad => ad.TextAttribute == mod.Attribute);
+                    if (attTo == null)
+                    {
+                        NonLocalMods.Add(new Attribute(mod.Attribute, mod.Value, ""));
+                    }
+                    else
+                    {
+                        attTo.Add(mod.Attribute, mod.Value);
+                    }
+
+                }
+
+            }
+
+
+
+            PropertyGroupDescription pgd = new PropertyGroupDescription("");
+            pgd.PropertyName = "Group";
+            Attributes.GroupDescriptions.Add(pgd);
+            Attributes.CustomSort = new NumberLessStringComparer();
+
+
+            Binding itemsBinding = new Binding();
+
+            Attributes.Refresh();
+
+        }
+
         public class Item
         {
             public enum ItemClass
@@ -302,136 +433,7 @@ namespace POESKillTree.ViewModels
 
             Equip.Add(item);
         }
-        public ItemAttributes(string path)
-        {
-            #region Readin
-            RavenJObject jObject = RavenJObject.Parse(File.ReadAllText(path));
-            foreach (RavenJObject jobj in (RavenJArray)jObject["items"])
-            {
-                string html = jobj["x"].Value<string>();
-                //html =
-                //   html.Replace("\\\"", "\"").Replace("\\/", "/").Replace("\\n", " ").Replace("\\t", " ").Replace(
-                //     "\\r", "").Replace("e\"", "e\" ").Replace("\"style", "\" style");
-                string id = jobj["inventoryId"].Value<string>();
-                if (id == "BodyArmour")
-                {
-                    AddItem(jobj, Item.ItemClass.Armor);
-                }
-                if (id == "Ring" || id == "Ring2")
-                {
-                    AddItem(jobj, Item.ItemClass.Ring);
-                }
-                if (id == "Gloves")
-                {
-                    AddItem(jobj, Item.ItemClass.Gloves);
-                }
-                if (id == "Weapon")
-                {
-                    AddItem(jobj, Item.ItemClass.MainHand);
-                }
-                if (id == "Offhand")
-                {
-                    AddItem(jobj, Item.ItemClass.OffHand);
-                }
-                if (id == "Helm")
-                {
-                    AddItem(jobj, Item.ItemClass.Helm);
-                }
-                if (id == "Boots")
-                {
-                    AddItem(jobj, Item.ItemClass.Boots);
-                }
-                if (id == "Amulet")
-                {
-                    AddItem(jobj, Item.ItemClass.Amulet);
-                }
-                if ( id == "Belt" )
-                {
-                    AddItem( jobj , Item.ItemClass.Belt );
-                }
-                
 
-
-            }
-            #endregion
-            aList.Clear();
-            NonLocalMods.Clear();
-            Attributes = new ListCollectionView(aList);
-            foreach (Item item in Equip)
-            {
-                foreach (KeyValuePair<string, List<float>> attr in item.Attributes)
-                {
-                    if (attr.Key == "Quality: #") continue;
-                    aList.Add(new Attribute(attr.Key, attr.Value, item.Class.ToString()));
-                }
-
-                foreach (Item.Mod mod in item.Mods)
-                {
-                    Attribute attTo = null;
-                    attTo = aList.Find(ad => ad.TextAttribute == mod.Attribute && ad.Group == (mod.isLocal ? item.Class.ToString() : "Independent"));
-                    if (attTo == null)
-                    {
-                        aList.Add(new Attribute(mod.Attribute, mod.Value, (mod.isLocal ? item.Class.ToString() : "Independent")));
-                    }
-                    else
-                    {
-                        attTo.Add(mod.Attribute, mod.Value);
-                    }
-
-                }
-
-
-                foreach (KeyValuePair<string, List<float>> attr in item.Attributes)
-                {
-                    if (attr.Key == "Quality: +#%") continue;
-                    if (attr.Key == "Attacks per Second: #") continue;
-                    if (attr.Key == "Critical Strike Chance: #%") continue;
-                    if (attr.Key.ToLower().Contains("damage")) continue;
-                    if (attr.Key.Contains("Weapon Class")) continue;
-                    if (attr.Key.Contains("Elemental Damage")) continue;
-                    Attribute attTo = null;
-                    attTo = NonLocalMods.Find(ad => ad.TextAttribute == attr.Key);
-                    if (attTo == null)
-                    {
-                        NonLocalMods.Add(new Attribute(attr.Key, attr.Value, ""));
-                    }
-                    else
-                    {
-                        attTo.Add(attr.Key, attr.Value);
-                    }
-                }
-
-                foreach (Item.Mod mod in item.Mods)
-                {
-                    if (mod.isLocal) continue;
-                    Attribute attTo = null;
-                    attTo = NonLocalMods.Find(ad => ad.TextAttribute == mod.Attribute);
-                    if (attTo == null)
-                    {
-                        NonLocalMods.Add(new Attribute(mod.Attribute, mod.Value, ""));
-                    }
-                    else
-                    {
-                        attTo.Add(mod.Attribute, mod.Value);
-                    }
-
-                }
-
-            }
-
-
-
-            PropertyGroupDescription pgd = new PropertyGroupDescription("");
-            pgd.PropertyName = "Group";
-            Attributes.GroupDescriptions.Add(pgd);
-            Attributes.CustomSort = new NumberLessStringComparer();
-
-
-            Binding itemsBinding = new Binding();
-
-            Attributes.Refresh();
-
-        }
         public class NumberLessStringComparer : System.Collections.IComparer
         {
             static Regex numberfilter = new Regex("[0-9]*\\.?[0-9]+");
