@@ -272,12 +272,14 @@ namespace POESKillTree.Views
         void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
-            var formBuildName = new FormChooseBuildName(selectedBuild.Name, selectedBuild.Note);
+            var formBuildName = new FormChooseBuildName(selectedBuild.Name, selectedBuild.Note, selectedBuild.CharacterName, selectedBuild.ItemData);
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
             {
                 selectedBuild.Name = formBuildName.GetBuildName();
                 selectedBuild.Note = formBuildName.GetNote();
+                selectedBuild.CharacterName = formBuildName.GetCharacterName();
+                selectedBuild.ItemData = formBuildName.GetItemData();
                 lvSavedBuilds.Items.Refresh();
             }
             SaveBuildsToFile();
@@ -496,8 +498,27 @@ namespace POESKillTree.Views
 
         public void LoadItemData(string itemData)
         {
-            _itemAttributes = new ItemAttributes(itemData);
-            lbItemAttr.ItemsSource = _itemAttributes.Attributes;
+            if (!string.IsNullOrEmpty(itemData))
+            {
+                try
+                {
+                    _itemAttributes = new ItemAttributes(itemData);
+                    lbItemAttr.ItemsSource = _itemAttributes.Attributes;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Item data currupted!");
+                    _persistentData.CurrentBuild.ItemData = "";
+                    _itemAttributes = null;
+                    lbItemAttr.ItemsSource = null;
+                    ClearCurrentItemData();
+                }
+            }
+            else 
+            { 
+                ClearCurrentItemData(); 
+            }
+
             UpdateAllAttributeList();
         }
 
@@ -842,22 +863,12 @@ namespace POESKillTree.Views
             tbSkillURL.Text = build.Url;
             tbLevel.Text = build.Level;
             _persistentData.CurrentBuild.ItemData = build.ItemData;
-
-            if (!string.IsNullOrEmpty(_persistentData.CurrentBuild.ItemData))
-            {
-                _itemAttributes = new ItemAttributes(_persistentData.CurrentBuild.ItemData);
-                lbItemAttr.ItemsSource = _itemAttributes.Attributes;
-            }
-            else
-            {
-                ClearCurrentItemData();
-            }
-            UpdateAllAttributeList();
+            LoadItemData(build.ItemData);
         }
 
         private void SaveNewBuild()
         {
-            var formBuildName = new FormChooseBuildName();
+            var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.ItemData);
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
             {
@@ -869,7 +880,8 @@ namespace POESKillTree.Views
                     PointsUsed = tbUsedPoints.Text,
                     Url = tbSkillURL.Text,
                     Note = formBuildName.GetNote(),
-                    ItemData = _persistentData.CurrentBuild.ItemData
+                    CharacterName = formBuildName.GetCharacterName(),
+                    ItemData = formBuildName.GetItemData()
                 };
                 SetCurrentBuild(newBuild);
                 lvSavedBuilds.Items.Add(newBuild);
