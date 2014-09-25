@@ -20,7 +20,8 @@ namespace POESKillTree.SkillTreeFiles
                 var webClient = new WebClient();
                 webClient.DownloadFile(URL, "Data\\Assets\\" + Name + ".png");
             }
-            PImage = new BitmapImage(new Uri("Data\\Assets\\" + Name + ".png", UriKind.Relative));
+
+            PImage = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\" + Name + ".png", UriKind.Relative));
         }
     }
 }

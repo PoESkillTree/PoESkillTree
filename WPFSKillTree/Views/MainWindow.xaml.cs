@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using POESKillTree.Controls;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
@@ -219,9 +220,13 @@ namespace POESKillTree.Views
             _allAttributeCollection.GroupDescriptions.Add(pgd);
             lbAllAttr.ItemsSource = _allAttributeCollection;
 
+            //Load Persistent Data and set theme
+            _persistentData.LoadPersistentDataFromFile();
+            SetTheme(_persistentData.Options.Theme);
+            SetAccent(_persistentData.Options.Accent);
+
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
-
 
             Tree.Chartype =
                 Tree.CharName.IndexOf(((string) ((ComboBoxItem) cbCharType.SelectedItem).Content).ToUpper());
@@ -231,13 +236,10 @@ namespace POESKillTree.Views
             _multransform = Tree.TRect.Size / recSkillTree.RenderSize.Height;
             _addtransform = Tree.TRect.TopLeft;
 
-            // loading last build
-            _persistentData.LoadPersistentDataFromFile();
-            SetTheme(_persistentData.Options.Theme);
-            SetAccent(_persistentData.Options.Accent);
             expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
             expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
 
+            // loading last build
             if(_persistentData.CurrentBuild != null)
                 SetCurrentBuild(_persistentData.CurrentBuild);
 
@@ -495,6 +497,40 @@ namespace POESKillTree.Views
             diw.Owner = this;
             diw.ShowDialog();
             _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
+        }
+
+        private void RedownloadTreeAssets_Click(object sender, RoutedEventArgs e)
+        {
+            const string sMessageBoxText = "This will delete your data folder and Redownload all the SkillTree assets.\nThis requires an internet connection!\n\nDo you want to proced?";
+            const string sCaption = "Redownload SkillTree Assets - Warning";
+
+            var rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    if (Directory.Exists("Data"))
+                    {
+                        try
+                        {
+                            Directory.Delete("Data", true);
+
+                            Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+                            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+
+                            btnLoadBuild_Click(this, new RoutedEventArgs());
+                            _justLoaded = false;
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Something went wrong!\n1.Close the program\n2.Delete the data folder\n3.Start the program again");
+                        }
+                    }
+                    break;
+
+                case MessageBoxResult.No:
+                    //Do nothing
+                    break;
+            }
         }
 
         public void LoadItemData(string itemData)
