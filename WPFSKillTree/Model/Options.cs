@@ -1,21 +1,16 @@
-﻿using POESKillTree.ViewModels;
-
-namespace POESKillTree.Model
+﻿namespace POESKillTree.Model
 {
-    public enum OptionsTheme
-    {
-        Light,
-        Dark
-    }
     public class Options
     {
-        public OptionsTheme OptionsTheme { get; set; }
+        public string Theme { get; set; }
+        public string Accent { get; set; } //Controlled by Menu Accent Headers
         public bool AttributesBarOpened  { get; set; }
         public bool BuildsBarOpened { get; set; }
 
         public Options()
         {
-            OptionsTheme = OptionsTheme.Dark;
+            Theme = "Dark";
+            Accent = "Steel";
             AttributesBarOpened = false;
             BuildsBarOpened = false;
         }

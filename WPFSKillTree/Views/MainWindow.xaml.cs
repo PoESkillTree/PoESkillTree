@@ -233,7 +233,8 @@ namespace POESKillTree.Views
 
             // loading last build
             _persistentData.LoadPersistentDataFromFile();
-            SetTheme(_persistentData.Options.OptionsTheme);
+            SetTheme(_persistentData.Options.Theme);
+            SetAccent(_persistentData.Options.Accent);
             expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
             expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
 
@@ -1109,47 +1110,37 @@ namespace POESKillTree.Views
         #region Theme
 
         private void mnuSetTheme_Click(object sender, RoutedEventArgs e)
-
         {
-            if (sender.Equals(mnuViewThemeLight))
-            {
-                SetLightTheme();
-                _persistentData.Options.OptionsTheme = OptionsTheme.Light;
-            }
-            else
-            {
-                SetDarkTheme();
-                _persistentData.Options.OptionsTheme = OptionsTheme.Dark;
-            }
+            var menuItem = sender as MenuItem;
+            if (menuItem == null) return;
+
+            SetTheme(menuItem.Header as string);
         }
 
-        private void SetTheme(OptionsTheme theme)
+        private void SetTheme(string sTheme)
         {
-            switch (theme)
-            {
-                case OptionsTheme.Light:
-                    SetLightTheme();
-                    break;
-                case OptionsTheme.Dark:
-                    SetDarkTheme();
-                    break;
-            }
-        }
-
-        private void SetLightTheme()
-        {
-            var accent = ThemeManager.Accents.First(x => x.Name == "Steel");
-            var theme = ThemeManager.GetAppTheme("BaseLight");
+            var accent = ThemeManager.Accents.First(x => Equals(x.Name, _persistentData.Options.Accent));
+            var theme = ThemeManager.GetAppTheme("Base" + sTheme);
             ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
-            mnuViewThemeLight.IsChecked = true;
+            ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewTheme" + sTheme)).IsChecked = true;
+            _persistentData.Options.Theme = sTheme;
         }
 
-        private void SetDarkTheme()
+        private void mnuSetAccent_Click(object sender, RoutedEventArgs e)
         {
-            var accent = ThemeManager.Accents.First(x => x.Name == "Steel");
-            var theme = ThemeManager.GetAppTheme("BaseDark");
+            var menuItem = sender as MenuItem;
+            if (menuItem == null) return;
+
+            SetAccent(menuItem.Header as string);
+        }
+
+        private void SetAccent(string sAccent)
+        {
+            var accent = ThemeManager.Accents.First(x => Equals(x.Name, sAccent));
+            var theme = ThemeManager.GetAppTheme("Base" + _persistentData.Options.Theme);
             ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
-            mnuViewThemeDark.IsChecked = true;
+            ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewAccent" + sAccent)).IsChecked = true;
+            _persistentData.Options.Accent = sAccent;
         }
 
         #endregion
