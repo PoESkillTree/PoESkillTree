@@ -21,7 +21,7 @@ namespace POESKillTree.Views
         public DownloadItemsWindow(string characterName, bool showClear)
         {
             InitializeComponent();
-            tbCharName.Text = characterName;
+            tbCharName.Text = string.IsNullOrEmpty(characterName) ? "YourCharacterName" : characterName;
             if (showClear)
                 btnPopupClear.Visibility = Visibility.Visible;
         }
@@ -33,12 +33,13 @@ namespace POESKillTree.Views
 
         private void tbCharName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            tbCharLink.Text = "https://www.pathofexile.com/character-window/get-items?character=" + tbCharName.Text;
+                tbCharLink.Text = "https://www.pathofexile.com/character-window/get-items?character=" + tbCharName.Text;
+                tbTreeLink.Text = "http://www.pathofexile.com/character-window/get-passive-skills?reqData=0&character=" + tbCharName.Text;
         }
 
         private void btnPopupOpenBrowser_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://www.pathofexile.com/character-window/get-items?character=" + tbCharName.Text);
+            Process.Start(tbCharLink.Text);
         }
 
         private void btnPopupLoadFile_Click(object sender, RoutedEventArgs e)
@@ -62,6 +63,12 @@ namespace POESKillTree.Views
         {
             (Owner as MainWindow).ClearCurrentItemData();
             btnPopupClear.Visibility = Visibility.Collapsed;
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            tbCharName.Focus();
+            tbCharName.SelectAll();
         }
     }
 }
