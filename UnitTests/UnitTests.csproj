@@ -82,6 +82,7 @@
     <None Include="TestBuilds\T6-Leap-2HSword.json" />
     <None Include="TestBuilds\T6-MS-2HAxe-Limbsplit.json" />
     <None Include="TestBuilds\T6-MS-2HAxe-Wideswing.json" />
+    <None Include="TestBuilds\T6-SA-BowGemLevel.json" />
     <None Include="TestBuilds\T6-SA-EK-Bow-AddPhy2BowAtkQuiver.json" />
     <None Include="TestBuilds\T6-VS-Dual-Dagger.json" />
   </ItemGroup>

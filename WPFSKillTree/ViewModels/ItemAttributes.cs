@@ -15,7 +15,7 @@ namespace POESKillTree.ViewModels
         {
             public enum GemColorClass
             {
-                Str, Int, Dex
+                Str, Int, Dex, White
             }
 
             public enum ItemClass
@@ -99,9 +99,11 @@ namespace POESKillTree.ViewModels
                                || attr.Contains("Critical Strike Damage Multiplier with this Weapon"))
                            || (item.Class == Item.ItemClass.MainHand || item.Class == Item.ItemClass.OffHand)
                               && item.Keywords != null // Only weapons have keyword.
-                              && (attr.Contains("increased Attack Speed")
+                              && (attr == "#% increased Attack Speed"
+                                  || attr == "#% increased Accuracy Rating"
+                                  || attr == "+# to Accuracy Rating"
                                   || attr.StartsWith("Adds ") && attr.EndsWith(" Damage")
-                                  || attr.Contains("increased Physical Damage"));
+                                  || attr == "#% increased Physical Damage");
                 }
             }
 
@@ -137,6 +139,10 @@ namespace POESKillTree.ViewModels
 
                         case "I":
                             GemClass = GemColorClass.Int;
+                            break;
+
+                        default:
+                            GemClass = GemColorClass.White;
                             break;
                     }
                 }

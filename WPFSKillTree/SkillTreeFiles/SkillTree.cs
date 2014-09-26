@@ -25,6 +25,7 @@ namespace POESKillTree.SkillTreeFiles
 
 
         public static float LifePerLevel = 12;
+        public static float AccPerLevel = 2;
         public static float EvasPerLevel = 3;
         public static float ManaPerLevel = 4;
         public static float IntPerMana = 2;
@@ -599,8 +600,9 @@ namespace POESKillTree.SkillTreeFiles
             int str = (int)attribs["+# to Strength"][0];
             if (str % (int)StrPerED > 0) str += (int)StrPerED - (str % (int)StrPerED);
             retval["#% increased Melee Physical Damage"] = new List<float> { str / StrPerED };
-
-            retval["+# Accuracy Rating"] = new List<float> {attribs["+# to Dexterity"][0] / DexPerAcc};
+            // Every point of Dexterity gives 2 additional base accuracy, and characters gain 2 base accuracy when leveling up.
+            // @see http://pathofexile.gamepedia.com/Accuracy
+            retval["+# Accuracy Rating"] = new List<float> { attribs["+# to Dexterity"][0] / DexPerAcc + (_level - 1) * AccPerLevel };
             retval["Evasion Rating: #"] = new List<float> {_level * EvasPerLevel};
 
             // Dexterity value is not getting rounded up any more but rounded normally to the nearest multiple of 5.

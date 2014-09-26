@@ -193,27 +193,10 @@
       Lightning Resistance: 38% (38%)
       #TODO Movement Speed modifier: +15%
     </ExpectDefence>
-    <!--
-    === Split Arrow conversion breakdown ===
-    Weapon: Physical 8 - 29
-    Ring: Added 1 - 4 Physical Damage
-    ===
-    45% of Physical Damage converted to Cold Damage.
-    ===
-    Physical 4.4 - 15.95
-    Physical 0.55 - 2.2
-    ===
-    12% increase Physical Damage.
-    Deals 80% of Base Damage.
-    ===
-    Physical 4 - 16 (5 - 17 in game)
-    -->
     <ExpectOffence>
       Split Arrow
-      #FIXME Main Hand Physical Damage: 5-17
-      Main Hand Physical Damage: 4-16
-      #FIXME Main Hand Cold Damage: 5-15
-      Main Hand Cold Damage: 4-15
+      Main Hand Physical Damage: 5-17
+      Main Hand Cold Damage: 5-15
     </ExpectOffence>
   </TestBuild>
   <!-- Double Strike/Power Siphon with Dual Wand, Ring(Adds Lightning Damage) -->
@@ -263,6 +246,49 @@
     </ExpectOffence>
   </TestBuild>
   <!-- DPS tests -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgIAr-vn6vkzlwYF-Zsm6NbrFAW11CMwcd2oS3g6Qs3q</TreeURL>
+    <Level>14</Level>
+    <BuildFile>T6-SA-BowGemLevel.json</BuildFile>
+    <ExpectDefence>
+      Character
+      Life: 228
+      Mana: 123
+      Maximum Energy Shield: 22
+      Strength: 44
+      Dexterity: 112
+      Intelligence: 61
+      Defence
+      Armour: 36
+      Estimated Physical Damage reduction: 13%
+      Evasion Rating: 129
+      Estimated chance to Evade Attacks: 31%
+      Chance to Dodge Attacks: 40%
+      Chance to Dodge Spells: 30%
+      Maximum Energy Shield: 22
+      Energy Shield Recharge per Second: 7.3
+      #BADDATA Life Regeneration per Second: 1.7
+      Life Regeneration per Second: 2
+      Mana Regeneration per Second: 2.5
+      Fire Resistance: 17% (17%)
+      Cold Resistance: 12% (12%)
+      Lightning Resistance: 38% (38%)
+      #TODO Movement Speed modifier: +5%
+    </ExpectDefence>
+    <ExpectOffence>
+      Split Arrow
+      #Damage per Second: 31
+      Chance to Hit: 94%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 10-36
+      Main Hand Physical Damage: 9-34
+      Main Hand Cold Damage: 1-2
+      Main Hand Accuracy Rating: 269
+      #TODO Main Hand Attack Speed modifier: +8%
+      Main Hand Critical Strike Chance: 5%
+      Main Hand Critical Strike Multiplier: 150%
+    </ExpectOffence>
+  </TestBuild>
   <TestBuild><!-- Leap Slam (AoE) -->
     <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
     <Level>81</Level>
@@ -270,13 +296,14 @@
     <ExpectOffence>
       Leap Slam
       #TODO Damage per Second: 32.2
-      #TODO Chance to Hit: 65%
-      #TODO Attacks per Second: 0.8
+      Chance to Hit: 65%
+      Attacks per Second: 0.8
+      Main Hand Total Combined Damage: 40-66
       Main Hand Physical Damage: 40-66
-      #TODO Main Hand Accuracy Rating: 529
+      Main Hand Accuracy Rating: 529
       #TODO Main Hand Attack Speed modifier: +10%
-      #TODO Main Hand Critical Strike Chance: 15.5%
-      #TODO Main Hand Critical Strike Multiplier: 218%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
       #TODO Main Hand Chance to Knockback: 10%
     </ExpectOffence>
   </TestBuild>
@@ -288,15 +315,15 @@
       Molten Strike
       #TOOLTIP Damage per Second: 150
       #TODO Damage per Second: 150.1
-      #TODO Chance to Hit: 62%
-      #TODO Attacks per Second: 1.3
-      #TODO Main Hand Total Combined Damage: 103-207
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 103-207
       Main Hand Physical Damage: 30-60
       Main Hand Fire Damage: 73-147
-      #TODO Main Hand Accuracy Rating: 448
+      Main Hand Accuracy Rating: 448
       #TODO Main Hand Attack Speed modifier: +10%
-      #TODO Main Hand Critical Strike Chance: 15.5%
-      #TODO Main Hand Critical Strike Multiplier: 218%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
     </ExpectOffence>
   </TestBuild>
   <TestBuild>
@@ -306,15 +333,15 @@
     <ExpectOffence>
       Molten Strike
       #TODO Damage per Second: 188.3
-      #TODO Chance to Hit: 65%
-      #TODO Attacks per Second: 1.4
-      #TODO Main Hand Total Combined Damage: 141-214
+      Chance to Hit: 65%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 141-214
       Main Hand Physical Damage: 40-61
       Main Hand Fire Damage: 101-153
-      #TODO Main Hand Accuracy Rating: 518
+      Main Hand Accuracy Rating: 518
       #TODO Main Hand Attack Speed modifier: +10%
-      #TODO Main Hand Critical Strike Chance: 15.5%
-      #TODO Main Hand Critical Strike Multiplier: 218%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
     </ExpectOffence>
   </TestBuild>
   <TestBuild>
@@ -325,22 +352,22 @@
       Viper Strike
       #TOOLTIP Damage per Second: 96.1
       #TODO Damage per Second: 96.2
-      #TODO Chance to Hit: 63%
-      #TODO Attacks per Second: 1.9
-      #TODO Main Hand Total Combined Damage: 40-157
+      Chance to Hit: 63%
+      Attacks per Second: 1.9
+      Main Hand Total Combined Damage: 40-157
       Main Hand Physical Damage: 36-143
       Main Hand Chaos Damage: 4-14
-      #TODO Main Hand Accuracy Rating: 487
+      Main Hand Accuracy Rating: 487
       #TODO Main Hand Attack Speed modifier: +21%
-      #TODO Main Hand Critical Strike Chance: 30.5%
-      #TODO Main Hand Critical Strike Multiplier: 218%
-      #TODO Off Hand Total Combined Damage: 9-35
+      Main Hand Critical Strike Chance: 30.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 9-35
       Off Hand Physical Damage: 8-32
       Off Hand Chaos Damage: 1-3
-      #TODO Off Hand Accuracy Rating: 448
+      Off Hand Accuracy Rating: 448
       #TODO Off Hand Attack Speed modifier: +43%
-      #TODO Off Hand Critical Strike Chance: 27.9%
-      #TODO Off Hand Critical Strike Multiplier: 218%
+      Off Hand Critical Strike Chance: 27.9%
+      Off Hand Critical Strike Multiplier: 218%
     </ExpectOffence>
   </TestBuild>
   <!-- Quiver with Adds Physical Damage to Attacks with Bows -->
@@ -351,22 +378,22 @@
     <ExpectOffence>
       Split Arrow
       #TODO Damage per Second: 43
-      #TODO Chance to Hit: 62%
-      #TODO Attacks per Second: 1.3
-      #TODO Main Hand Total Combined Damage: 23-70
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 23-70
       Main Hand Physical Damage: 23-70
-      #TODO Main Hand Accuracy Rating: 448
+      Main Hand Accuracy Rating: 448
       #TODO Main Hand Attack Speed modifier: +10%
-      #TODO Main Hand Critical Strike Chance: 15.5%
-      #TODO Main Hand Critical Strike Multiplier: 218%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
       Ethereal Knives
       #TODO Damage per Second: 25.3
-      #TODO Casts per Second: 1.4
-      #TODO Spell Total Combined Damage: 10-16
+      Casts per Second: 1.4
+      Spell Total Combined Damage: 10-16
       Spell Physical Damage: 10-16
       #TODO Spell Cast Speed modifier: +12%
-      #TODO Spell Critical Strike Chance: 26.3%
-      #TODO Spell Critical Strike Multiplier: 248%
+      Spell Critical Strike Chance: 26.3%
+      Spell Critical Strike Multiplier: 248%
     </ExpectOffence>
   </TestBuild>
   <TestBuild>
@@ -375,38 +402,43 @@
     <BuildFile>T6-Arc-LW-CwDT.json</BuildFile>
     <ExpectOffence>
       Lightning Warp
+      #TOOLTIP Damage per Use: 1013
       #TODO Damage per Use: 1013
-      #TODO Casts per Second: 1.6
+      Casts per Second: 1.6
       Spell Lightning Damage: 66-1259
       #TODO Cast Speed modifier: +64%
-      #TODO Spell Critical Strike Chance: 35.8%
-      #TODO Spell Critical Strike Multiplier: 248%
+      Spell Critical Strike Chance: 35.8%
+      Spell Critical Strike Multiplier: 248%
       Herald of Ice
       #TODO Damage per Use: 265.5
-      #TODO Casts per Second: 1.3
+      Casts per Second: 1.3
       Spell Cold Damage: 212-319
       #TODO Cast Speed modifier: +27%
       Molten Shell
+      #TOOLTIP Damage per Use: 183.4
       #TODO Damage per Use: 183.5
-      #TODO Casts per Second: 1.3
+      Casts per Second: 1.3
       Spell Fire Damage: 96-144
       #TODO Cast Speed modifier: +27%
-      #TODO Spell Critical Strike Chance: 35.8%
-      #TODO Spell Critical Strike Multiplier: 248%
+      Spell Critical Strike Chance: 35.8%
+      Spell Critical Strike Multiplier: 248%
       Tempest Shield
+      #TOOLTIP Damage per Use: 826.4
       #TODO Damage per Use: 826.4
-      #TODO Casts per Second: 1.3
+      Casts per Second: 1.3
       Spell Lightning Damage: 405-606
       #TODO Cast Speed modifier: +27%
-      #TODO Spell Critical Strike Chance: 42.9%
-      #TODO Spell Critical Strike Multiplier: 248%
+      Spell Critical Strike Chance: 42.9%
+      Spell Critical Strike Multiplier: 248%
       Arc
+      #TOOLTIP Damage per Second: 3771.7
       #TODO Damage per Second: 3771.8
-      #TODO Casts per Second: 1.6
+      #NOTE Cast Time: 0.63
+      Casts per Second: 1.6
       Spell Lightning Damage: 107-2004
       #TODO Cast Speed modifier: +27%
-      #TODO Spell Critical Strike Chance: 40.9%
-      #TODO Spell Critical Strike Multiplier: 405%
+      Spell Critical Strike Chance: 40.9%
+      Spell Critical Strike Multiplier: 405%
     </ExpectOffence>
   </TestBuild>
   <TestBuild>
@@ -416,11 +448,11 @@
     <ExpectOffence>
       Arc
       #TODO Damage per Second: 5202.9
-      #TODO Casts per Second: 2.6
+      Casts per Second: 2.6
       Spell Lightning Damage: 96-1804
       #TODO Cast Speed modifier: +110%
-      #TODO Spell Critical Strike Chance: 35.8%
-      #TODO Spell Critical Strike Multiplier: 405%
+      Spell Critical Strike Chance: 35.8%
+      Spell Critical Strike Multiplier: 405%
     </ExpectOffence>
   </TestBuild>
   <TestBuild>
@@ -430,11 +462,11 @@
     <ExpectOffence>
       Fireball
       #TODO Damage per Second: 1445.4
-      #TODO Casts per Second: 2.5
+      Casts per Second: 2.5
       Spell Fire Damage: 203-304
       #TODO Cast Speed modifier: +110%
-      #TODO Spell Critical Strike Chance: 42.9%
-      #TODO Spell Critical Strike Multiplier: 405%
+      Spell Critical Strike Chance: 42.9%
+      Spell Critical Strike Multiplier: 405%
     </ExpectOffence>
   </TestBuild>
 </TestData>

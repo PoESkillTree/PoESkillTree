@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Mod = POESKillTree.ViewModels.ItemAttributes.Item.Mod;
 
 namespace POESKillTree.Model
@@ -59,6 +60,18 @@ namespace POESKillTree.Model
                 copy.Add(attr.Key, new List<float>(attr.Value));
 
             return copy;
+        }
+
+        // Returns attribute set of attributes whose key matches regular expression.
+        public AttributeSet Matches(Regex re)
+        {
+            AttributeSet matches = new AttributeSet();
+
+            foreach (var attr in this)
+                if (re.IsMatch(attr.Key))
+                    matches.Add(attr);
+
+            return matches;
         }
 
         // Merges specified attribute set with this one returning new attribute set.

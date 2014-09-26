@@ -13,8 +13,10 @@ namespace POESKillTree.SkillTreeFiles
     {
         public class AttackSkill
         {
+            // Attacks/casts per second.
+            public float APS;
             // The skill gem.
-            Item Gem;
+            public Item Gem;
             // The name.
             string Name;
             // The nature of attack (based on gem keywords).
@@ -29,14 +31,9 @@ namespace POESKillTree.SkillTreeFiles
             List<Damage.Converted> Converts = new List<Damage.Converted>();
             // List of damage gains.
             List<Damage.Gained> Gains = new List<Damage.Gained>();
-            // The flag whether skill is usable.
+            // The flag whether skill is useable.
             public bool Useable = true;
 
-            // The sorted list of damage types for character sheet.
-            static List<DamageType> DamageTypes = new List<DamageType>()
-            {
-                DamageType.Physical, DamageType.Fire, DamageType.Cold, DamageType.Lightning, DamageType.Chaos
-            };
             // The nature to match physical weapon damage while dual wielding.
             static DamageNature PhysicalWeaponDamage = new DamageNature() { Source = DamageSource.Attack, Type = DamageType.Physical };
 
@@ -112,6 +109,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (more != null) mores.Add(more);
                 }
 
+                APS = 0;
+
                 foreach (AttackSource source in Sources)
                 {
                     // Apply damage added.
@@ -144,8 +143,21 @@ namespace POESKillTree.SkillTreeFiles
                         foreach (Damage damage in new List<Damage>(source.Deals))
                             if (!damage.Is(DamageType.Fire))
                                 source.Deals.Remove(damage);
+
+                    // Summarize, round and combine damage dealt.
+                    source.Combine();
+
+                    source.AccuracyRating(attrs);
+
+                    source.AttackSpeed(this, attrs);
+                    APS += source.APS;
+
+                    source.CriticalStrike(attrs);
                 }
-             }
+
+                // Attacks per second of skill is average attack speed of all sources.
+                APS /= Sources.Count;
+            }
 
             // Converts damage types (applies damage conversions and gains).
             public void Convert(List<Damage> deals)
@@ -268,9 +280,14 @@ namespace POESKillTree.SkillTreeFiles
                         Nature.Source ^= DamageSource.Spell;
                         break;
 
-                    // Requires an Axe, Mace, Sword or Staff
+                    // Requires an Axe, Mace, Sword or Staff.
+                    // TODO: Parse weapon type requirements from description.
+                    // TODO: Leap Slam uses only main hand. Parse description for "with main hand"?
+                    // Leap Slam uses own Attacks per Second (1 / 1.4s).
+                    // @see http://pathofexile.gamepedia.com/Leap_Slam
                     case "Leap Slam":
                         Nature.WeaponType = WeaponType.Axe | WeaponType.Mace | WeaponType.Sword | WeaponType.Staff;
+                        Local.Add("Attacks per Second:  #", new List<float> { 1 / 1.4f });
                         break;
 
                     // Lightning Strike doesn't show projectile part, remove it.
@@ -319,18 +336,44 @@ namespace POESKillTree.SkillTreeFiles
             {
                 AttributeSet props = new AttributeSet();
 
+                /*
+                props.Add("DPS: #", new List<float> { RoundValue(Sources[0].DamagePerSecond(), 1) });
+                if (Sources.Count > 1)
+                    props.Add("DPS2: #", new List<float> { RoundValue(Sources[1].DamagePerSecond(), 1) });
+                 */
+
+                if (Nature.Is(DamageSource.Attack))
+                {
+                    props.Add("Attacks per Second: #", new List<float> { RoundValue(APS, 1) });
+                    float chanceToHit;
+                    if (IsDualWielding) // XXX: When dual wielding compute chance to hit from average accuracy of both hands.
+                        chanceToHit = ChanceToHit(Level, (Sources[0].Accuracy + Sources[1].Accuracy) / 2);
+                    else
+                        chanceToHit = ChanceToHit(Level, Sources[0].Accuracy);
+                    props.Add("Chance to Hit: #%", new List<float> { RoundValue(chanceToHit, 0) });
+                }
+                else
+                    props.Add("Casts per Second: #", new List<float> { RoundValue(APS, 1) });
+
                 foreach (AttackSource source in Sources)
+                {
                     foreach (DamageType type in DamageTypes)
                     {
-                        List<Damage> deals = source.Deals.FindAll(d => d.Is(type));
-                        if (deals.Count > 0)
-                        {
-                            if (deals.Count > 1)
-                                for (int i = 1; i < deals.Count; ++i)
-                                    deals[0].Add(deals[i]);
-                            props.Add(source.Name + " " + deals[0].ToAttribute(), deals[0].ToValue());
-                        }
+                        Damage damage = source.Deals.Find(d => d.Is(type));
+                        if (damage != null)
+                            props.Add(source.Name + " " + damage.ToAttribute(), damage.ToValue());
                     }
+
+                    if (source.Nature.Is(DamageSource.Attack))
+                        props.Add(source.Name + " Accuracy Rating: #", new List<float> { RoundValue(source.Accuracy, 0) });
+
+                    if (source.CriticalChance > 0)
+                    {
+                        // XXX: Different rounding style for spells and attacks. Really?
+                        props.Add(source.Name + " Critical Strike Chance: #%", new List<float> { Nature.Is(DamageSource.Spell) ? RoundValue(source.CriticalChance, 1) : FloorValue(source.CriticalChance, 1) });
+                        props.Add(source.Name + " Critical Strike Multiplier: #%", new List<float> { RoundValue(source.CriticalMultiplier, 0) });
+                    }
+                }
 
                 return new ListGroup(Name + (Useable ? "" : " (Unuseable)"), props);
             }
@@ -338,12 +381,30 @@ namespace POESKillTree.SkillTreeFiles
 
         public class AttackSource
         {
+            // The accuracy rating.
+            public float Accuracy;
+            // Attacks/casts per second.
+            public float APS;
+            // Critical strike chance (in percent).
+            public float CriticalChance;
+            // Critical strike multiplier (in percent).
+            public float CriticalMultiplier = 150;
             // List of damage dealt by source.
             public List<Damage> Deals = new List<Damage>();
+            // Local attributes of weapon.
+            public AttributeSet Local;
             // The source name.
             public string Name;
             // The result nature of skill used with weapon.
             public DamageNature Nature;
+
+            // The increased/reduced accuracy rating with weapon type pattern.
+            static Regex ReIncreasedAccuracyRatingWithWeaponType = new Regex("#% (increased|reduced) Accuracy Rating with (.+)$");
+            // The increased/reduced attack speed with weapon type pattern.
+            static Regex ReIncreasedAttackSpeedWithWeaponType = new Regex("#% (increased|reduced) Attack Speed with (.+)$");
+            // The increased/reduced critical chance/multiplier with weapon type patterns.
+            static Regex ReIncreasedCriticalChanceWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Chance with (.+)$");
+            static Regex ReIncreasedCriticalMultiplierWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Multiplier with (.+)$");
 
             public AttackSource(string name, AttackSkill skill, Weapon weapon)
             {
@@ -358,6 +419,18 @@ namespace POESKillTree.SkillTreeFiles
                         Damage damage = Damage.Create(skill.Nature, attr);
                         if (damage != null) Deals.Add(damage);
                     }
+
+                    if (skill.Gem.Attributes.ContainsKey("Cast Time:  # sec"))
+                        APS = 1 / skill.Gem.Attributes["Cast Time:  # sec"][0];
+                    else
+                        APS = 1; // Spell without Cast Time has cast time of 1 second.
+
+                    if (skill.Gem.Attributes.ContainsKey("Critical Strike Chance:  #%"))
+                        CriticalChance = skill.Gem.Attributes["Critical Strike Chance:  #%"][0];
+                    else
+                        CriticalChance = 0; // Spell without Critical Strike Chance has none.
+
+                    Local = new AttributeSet(); // No local weapon attributes.
                 }
                 else
                 {
@@ -373,7 +446,221 @@ namespace POESKillTree.SkillTreeFiles
 
                     foreach (Damage damage in weapon.Deals)
                         Deals.Add(new Damage(damage) { Area = Nature.Area, Form = Nature.Form, Source = Nature.Source, WeaponType = Nature.WeaponType });
+
+                    APS = weapon.Attributes["Attacks per Second:  #"][0];
+
+                    if (weapon.Attributes.ContainsKey("Critical Strike Chance:  #%"))
+                        CriticalChance = weapon.Attributes["Critical Strike Chance:  #%"][0];
+                    else
+                        CriticalChance = 0; // Weapon without Critical Strike Chance has none.
+
+                    Local = weapon.Attributes;
                 }
+            }
+
+            // Computes accuracy.
+            public void AccuracyRating(AttributeSet attrs)
+            {
+                Accuracy = attrs["+# Accuracy Rating"][0];
+                // Local weapon accuracy bonus.
+                if (Local.ContainsKey("+# to Accuracy Rating"))
+                    Accuracy += Local["+# to Accuracy Rating"][0];
+                float incAcc = 0;
+                // Local weapon accuracy bonus.
+                if (Local.ContainsKey("#% increased Accuracy Rating"))
+                    incAcc += Local["#% increased Accuracy Rating"][0];
+                // Global.
+                if (attrs.ContainsKey("#% increased Accuracy Rating"))
+                    incAcc += attrs["#% increased Accuracy Rating"][0];
+                if (attrs.ContainsKey("#% reduced Accuracy Rating"))
+                    incAcc += attrs["#% reduced Accuracy Rating"][0];
+                foreach (var attr in attrs.Matches(ReIncreasedAccuracyRatingWithWeaponType))
+                {
+                    Match m = ReIncreasedAccuracyRatingWithWeaponType.Match(attr.Key);
+                    if (Nature.Is(WithWeaponType[m.Groups[2].Value]))
+                        incAcc += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                }
+                if (IsDualWielding && attrs.ContainsKey("#% increased Accuracy Rating while Dual Wielding"))
+                    incAcc += attrs["#% increased Accuracy Rating while Dual Wielding"][0];
+                if (incAcc > 0)
+                    Accuracy = IncreaseValueByPercentage(Accuracy, incAcc);
+            }
+
+            // Computes attacks or casts per second.
+            public void AttackSpeed(AttackSkill skill, AttributeSet attrs)
+            {
+                if (Nature.Is(DamageSource.Attack))
+                {
+                    // If gem has own Attacks per Second, use it instead of weapon one.
+                    if (skill.Local.ContainsKey("Attacks per Second:  #"))
+                    {
+                        APS = skill.Local["Attacks per Second:  #"][0];
+                        // Apply local increased attack speed of weapon.
+                        if (Local.ContainsKey("#% increased Attack Speed"))
+                            APS = IncreaseValueByPercentage(APS, Local["#% increased Attack Speed"][0]);
+                    }
+
+                    float incAS = 0;
+                    if (attrs.ContainsKey("#% increased Attack Speed"))
+                        incAS += attrs["#% increased Attack Speed"][0];
+                    if (attrs.ContainsKey("#% reduced Attack Speed"))
+                        incAS -= attrs["#% reduced Attack Speed"][0];
+                    foreach (var attr in attrs.Matches(ReIncreasedAttackSpeedWithWeaponType))
+                    {
+                        Match m = ReIncreasedAttackSpeedWithWeaponType.Match(attr.Key);
+                        if (Nature.Is(WithWeaponType[m.Groups[2].Value]))
+                            incAS += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                    }
+                    if (IsDualWielding && attrs.ContainsKey("#% increased Attack Speed while Dual Wielding"))
+                        incAS += attrs["#% increased Attack Speed while Dual Wielding"][0];
+                    if (incAS > 0)
+                        APS = IncreaseValueByPercentage(APS, incAS);
+
+                    float moreAS = 0;
+                    if (attrs.ContainsKey("#% more Attack Speed"))
+                        moreAS += attrs["#% more Attack Speed"][0];
+                    if (attrs.ContainsKey("#% less Attack Speed"))
+                        moreAS -= attrs["#% less Attack Speed"][0];
+                    if (moreAS > 0)
+                        APS = IncreaseValueByPercentage(APS, moreAS);
+                }
+                else
+                {
+                    float incCS = 0;
+                    if (attrs.ContainsKey("#% increased Cast Speed"))
+                        incCS += attrs["#% increased Cast Speed"][0];
+                    if (attrs.ContainsKey("#% reduced Cast Speed"))
+                        incCS -= attrs["#% reduced Cast Speed"][0];
+                    if (IsDualWielding && attrs.ContainsKey("#% increased Cast Speed while Dual Wielding"))
+                        incCS += attrs["#% increased Cast Speed while Dual Wielding"][0];
+                    if (incCS > 0)
+                        APS = IncreaseValueByPercentage(APS, incCS);
+
+                    float moreCS = 0;
+                    if (attrs.ContainsKey("#% more Cast Speed"))
+                        moreCS += attrs["#% more Cast Speed"][0];
+                    if (attrs.ContainsKey("#% less Cast Speed"))
+                        moreCS -= attrs["#% less Cast Speed"][0];
+                    if (moreCS > 0)
+                        APS = IncreaseValueByPercentage(APS, moreCS);
+                }
+            }
+
+            // Combines damage type into total combined damage.
+            public void Combine()
+            {
+                Damage total = new Damage(Nature.Source, DamageType.Total, 0, 0);
+
+                foreach (DamageType type in DamageTypes)
+                {
+                    List<Damage> deals = Deals.FindAll(d => d.Is(type));
+                    if (deals.Count > 0)
+                    {
+                        if (deals.Count > 1)
+                            for (int i = 1; i < deals.Count; ++i)
+                            {
+                                deals[0].Add(deals[i]);
+                                Deals.Remove(deals[i]);
+                            }
+
+                        deals[0].Round();
+                        total.Add(deals[0]);
+                    }
+                }
+
+                Deals.Add(total);
+            }
+
+            // TODO: Resolute Technique & Unwavering Stance
+            // Computes critical strike chance and multiplier.
+            public void CriticalStrike(AttributeSet attrs)
+            {
+                // Critical chance.
+                if (ResoluteTechnique) CriticalChance = 0;
+                else
+                {
+                    if (CriticalChance > 0)
+                    {
+                        float incCC = 0;
+                        if (attrs.ContainsKey("#% increased Critical Strike Chance"))
+                            incCC += attrs["#% increased Critical Strike Chance"][0];
+                        if (attrs.ContainsKey("#% increased Global Critical Strike Chance"))
+                            incCC += attrs["#% increased Global Critical Strike Chance"][0];
+                        if (IsWieldingStaff && attrs.ContainsKey("#% increased Global Critical Strike Chance while wielding a Staff"))
+                            incCC += attrs["#% increased Global Critical Strike Chance while wielding a Staff"][0];
+                        if (Nature.Is(DamageSource.Spell))
+                        {
+                            if (attrs.ContainsKey("#% increased Critical Strike Chance for Spells"))
+                                incCC += attrs["#% increased Critical Strike Chance for Spells"][0];
+                            if (attrs.ContainsKey("#% increased Global Critical Strike Chance for Spells"))
+                                incCC += attrs["#% increased Global Critical Strike Chance for Spells"][0];
+                        }
+                        else // Attack
+                        {
+                            foreach (var attr in attrs.Matches(ReIncreasedCriticalChanceWithWeaponType))
+                            {
+                                Match m = ReIncreasedCriticalChanceWithWeaponType.Match(attr.Key);
+                                if (Nature.Is(WithWeaponType[m.Groups[2].Value]))
+                                    incCC += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                            }
+                            if (IsDualWielding && attrs.ContainsKey("#% increased Weapon Critical Strike Chance while Dual Wielding"))
+                                incCC += attrs["#% increased Weapon Critical Strike Chance while Dual Wielding"][0];
+                        }
+                        if (incCC > 0)
+                            CriticalChance = IncreaseValueByPercentage(CriticalChance, incCC);
+
+                        // Critical chance can not be less than 5% nor more than 95%.
+                        // @see http://pathofexile.gamepedia.com/Critical_Strike
+                        if (CriticalChance < 5) CriticalChance = 5;
+                        else if (CriticalChance > 95) CriticalChance = 95;
+
+                        float incCM = 0;
+                        if (attrs.ContainsKey("#% increased Critical Strike Multiplier"))
+                            incCM += attrs["#% increased Critical Strike Multiplier"][0];
+                        if (attrs.ContainsKey("#% increased Global Critical Strike Multiplier"))
+                            incCM += attrs["#% increased Global Critical Strike Chance"][0];
+                        if (IsWieldingStaff && attrs.ContainsKey("#% increased Global Critical Strike Multiplier while wielding a Staff"))
+                            incCM += attrs["#% increased Global Critical Strike Multiplier while wielding a Staff"][0];
+                        if (Nature.Is(DamageSource.Spell))
+                        {
+                            if (attrs.ContainsKey("#% increased Critical Strike Multiplier for Spells"))
+                                incCM += attrs["#% increased Critical Strike Multiplier for Spells"][0];
+                            if (attrs.ContainsKey("#% increased Global Critical Strike Multiplier for Spells"))
+                                incCM += attrs["#% increased Global Critical Strike Multiplier for Spells"][0];
+                        }
+                        else // Attack
+                        {
+                            foreach (var attr in attrs.Matches(ReIncreasedCriticalMultiplierWithWeaponType))
+                            {
+                                Match m = ReIncreasedCriticalMultiplierWithWeaponType.Match(attr.Key);
+                                if (Nature.Is(WithWeaponType[m.Groups[2].Value]))
+                                    incCM += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                            }
+                            if (IsDualWielding && attrs.ContainsKey("#% increased Weapon Critical Strike Multiplier while Dual Wielding"))
+                                incCM += attrs["#% increased Weapon Critical Strike Multiplier while Dual Wielding"][0];
+                        }
+                        if (incCM > 0)
+                            CriticalMultiplier = IncreaseValueByPercentage(CriticalMultiplier, incCM);
+                    }
+                }
+            }
+
+            // Returns damage per second.
+            public float DamagePerSecond()
+            {
+                Damage total = Deals.Find(d => d.Type == DamageType.Total);
+                if (total != null)
+                {
+                    // TODO: Molten Shell, Lightning Warp, etc. doesn't get cast speed bonus (APS = 1).
+                    float baseDPS = total.DamagePerSecond(APS);
+                    float chanceToHit = Nature.Is(DamageSource.Attack) ? ChanceToHit(Level, Accuracy) : 100;
+
+                    // Arc: RoundValue(CriticalChance, 0)
+                    // Molten Shell, Lightning Warp, Temptes Shield, ... (non-cast damaging skills): CriticalChance
+                    return baseDPS * (1 + (CriticalChance / 100) * (RoundValue(CriticalMultiplier, 0) - 100) / 100) * chanceToHit / 100;
+                }
+
+                return 0;
             }
        }
 
@@ -406,7 +693,8 @@ namespace POESKillTree.SkillTreeFiles
         public enum DamageType
         {
             Any, Physical = 1, Fire = 2, Cold = 4, Lightning = 8, Chaos = 16,
-            Elemental = Cold | Fire | Lightning
+            Elemental = Cold | Fire | Lightning,
+            Total = 256
         }
 
         public class DamageNature
@@ -539,6 +827,11 @@ namespace POESKillTree.SkillTreeFiles
             public bool Is(DamageType type)
             {
                 return (Type & type) != 0;
+            }
+
+            public bool Is(WeaponType weaponType)
+            {
+                return (WeaponType & weaponType) != 0;
             }
 
             public bool Matches(DamageNature nature)
@@ -710,20 +1003,6 @@ namespace POESKillTree.SkillTreeFiles
                 static Regex ReIncreasedTypeWithWeaponType = new Regex("#% (increased|reduced) (.+) Damage with (.+)$");
                 static Regex ReIncreasedWithSource = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Weapons)$");
 
-                static Dictionary<string, WeaponType> With = new Dictionary<string, WeaponType>()
-                {
-                    { "Bows",                       WeaponType.Bow },
-                    { "Claws",                      WeaponType.Claw },
-                    { "Daggers",                    WeaponType.Dagger },
-                    { "Wands",                      WeaponType.Wand },
-                    { "One Handed Melee Weapons",   WeaponType.OneHandedMelee },
-                    { "Two Handed Melee Weapons",   WeaponType.TwoHandedMelee },
-                    { "Axes",                       WeaponType.Axe },
-                    { "Maces",                      WeaponType.Mace },
-                    { "Staves",                     WeaponType.Staff },
-                    { "Swords",                     WeaponType.Sword }
-                };
-
                 public Increased(float percent)
                     : base()
                 {
@@ -751,8 +1030,8 @@ namespace POESKillTree.SkillTreeFiles
                     else
                     {
                         m = ReIncreasedTypeWithWeaponType.Match(attr.Key);
-                        if (m.Success && With.ContainsKey(m.Groups[3].Value))
-                            return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = With[m.Groups[3].Value] };
+                        if (m.Success && WithWeaponType.ContainsKey(m.Groups[3].Value))
+                            return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = WithWeaponType[m.Groups[3].Value] };
                         else
                         {
                             m = ReIncreasedWithSource.Match(attr.Key);
@@ -766,8 +1045,8 @@ namespace POESKillTree.SkillTreeFiles
                                 else
                                 {
                                     m = ReIncreasedAllWithWeaponType.Match(attr.Key);
-                                    if (m.Success && With.ContainsKey(m.Groups[2].Value))
-                                        return new Increased(m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = With[m.Groups[2].Value] };
+                                    if (m.Success && WithWeaponType.ContainsKey(m.Groups[2].Value))
+                                        return new Increased(m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = WithWeaponType[m.Groups[2].Value] };
                                 }
                             }
                         }
@@ -890,7 +1169,7 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // Damage from specified source with specified type.
-            Damage(DamageSource source, DamageType type, float min, float max)
+            public Damage(DamageSource source, DamageType type, float min, float max)
                 : base(source, type)
             {
                 Origin = new DamageNature(Source, Type);
@@ -919,6 +1198,12 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 return null;
+            }
+
+            // Returns damage per second according to specified attacks per second.
+            public float DamagePerSecond(float aps)
+            {
+                return aps * (Min + Max) / 2;
             }
 
             // Increases damage.
@@ -952,14 +1237,20 @@ namespace POESKillTree.SkillTreeFiles
                 Max = Max * percent / 100;
             }
 
+            public void Round()
+            {
+                Min = Compute.RoundValue(Min, 0);
+                Max = Compute.RoundValue(Max, 0);
+            }
+
             public string ToAttribute()
             {
-                return Type.ToString() + " Damage: #-#";
+                return (Type == DamageType.Total ? "Total Combined" : Type.ToString()) + " Damage: #-#";
             }
 
             public List<float> ToValue()
             {
-                return new List<float>() { Compute.RoundValue(Min, 0), Compute.RoundValue(Max, 0) };
+                return new List<float>() { Min, Max };
             }
         }
 
@@ -969,10 +1260,8 @@ namespace POESKillTree.SkillTreeFiles
             public List<Damage> Deals = new List<Damage>();
             // The item.
             public Item Item;
-            // All attributes and non-local mods.
+            // All attributes and mods.
             public AttributeSet Attributes = new AttributeSet();
-            // Local attributes.
-            public AttributeSet Local = new AttributeSet();
             // Type of weapon.
             public DamageNature Nature;
 
@@ -1028,10 +1317,7 @@ namespace POESKillTree.SkillTreeFiles
 
                     // Copy local and non-local mods.
                     foreach (var mod in item.Mods)
-                    {
-                        if (mod.isLocal) Local.Add(mod.Attribute, mod.Value);
-                        else Attributes.Add(mod);
-                    }
+                        Attributes.Add(mod);
                 }
             }
 
@@ -1083,6 +1369,8 @@ namespace POESKillTree.SkillTreeFiles
         public static Weapon OffHand;
         // The flag whether character is dual wielding.
         public static bool IsDualWielding;
+        // The flag whether character is wielding a staff.
+        public static bool IsWieldingStaff;
         // Character level.
         public static int Level;
         // Equipment attributes.
@@ -1102,6 +1390,7 @@ namespace POESKillTree.SkillTreeFiles
         public static bool EldritchBattery;
         public static bool IronReflexes;
         public static bool NecromanticAegis;
+        public static bool ResoluteTechnique;
         public static bool VaalPact;
         public static bool ZealotsOath;
 
@@ -1128,6 +1417,55 @@ namespace POESKillTree.SkillTreeFiles
              921,    956,    992,   1030,   1069,
             1110,   1152,   1196,   1241,   1288
         };
+        // Monster average evasion rating for each level (1 .. 100).
+        public static int[] MonsterAverageEvasion = new int[] { 0, // Level 0 placeholder.
+              36,     42,     49,     56,     64,
+              72,     80,     89,     98,    108,
+             118,    128,    140,    151,    164,
+             177,    190,    204,    219,    235,
+             251,    268,    286,    305,    325,
+             345,    367,    389,    412,    437,
+             463,    489,    517,    546,    577,
+             609,    642,    676,    713,    750,
+             790,    831,    873,    918,    964,
+            1013,   1063,   1116,   1170,   1227,
+            1287,   1349,   1413,   1480,   1550,
+            1623,   1698,   1777,   1859,   1944,
+            2033,   2125,   2221,   2321,   2425,
+            2533,   2645,   2761,   2883,   3009,
+            3140,   3276,   3418,   3565,   3717,
+            3876,   4041,   4213,   4391,   4576,
+            4768,   4967,   5174,   5389,   5613,
+            5845,   6085,   6335,   6595,   6864,
+            7144,   7434,   7735,   8048,   8372,
+            8709,   9058,   9420,   9796,  10186
+        };
+
+        // The sorted list of damage types for character sheet.
+        static List<DamageType> DamageTypes = new List<DamageType>()
+        {
+            DamageType.Total, DamageType.Physical, DamageType.Fire, DamageType.Cold, DamageType.Lightning, DamageType.Chaos
+        };
+        // The dictionary of weapon types.
+        static Dictionary<string, WeaponType> WithWeaponType = new Dictionary<string, WeaponType>()
+        {
+            { "Bows",                       WeaponType.Bow },
+            { "Claws",                      WeaponType.Claw },
+            { "Daggers",                    WeaponType.Dagger },
+            { "Wands",                      WeaponType.Wand },
+            { "One Handed Melee Weapons",   WeaponType.OneHandedMelee },
+            { "Two Handed Melee Weapons",   WeaponType.TwoHandedMelee },
+            { "Axes",                       WeaponType.Axe },
+            { "Maces",                      WeaponType.Mace },
+            { "Staves",                     WeaponType.Staff },
+            { "Swords",                     WeaponType.Sword }
+        };
+
+        // Returns rounded value with all fractional digits after specified precision cut off.
+        public static float CeilValue(float value, int precision)
+        {
+            return (float)(Math.Ceiling(value * Math.Pow(10, precision)) / Math.Pow(10, precision));
+        }
 
         // Chance to Evade = 1 - Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
         // Chance to hit can never be lower than 5%, nor higher than 95%.
@@ -1137,6 +1475,20 @@ namespace POESKillTree.SkillTreeFiles
             int maa = MonsterAverageAccuracy[level];
 
             float chance = RoundValue((float)(1 - maa / (maa + Math.Pow(evasionRating / 4, 0.8))) * 100, 0);
+            if (chance < 5f) chance = 5f;
+            else if (chance > 95f) chance = 95f;
+
+            return chance;
+        }
+
+        // Chance to Hit = Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
+        // Chance to hit can never be lower than 5%, nor higher than 95%.
+        // @see http://pathofexile.gamepedia.com/Accuracy
+        public static float ChanceToHit(int level, float accuracyRating)
+        {
+            int mae = MonsterAverageEvasion[level - 1]; // XXX: For some reason this works.
+
+            float chance = (float)(accuracyRating / (accuracyRating + Math.Pow(mae / 4, 0.8))) * 100;
             if (chance < 5f) chance = 5f;
             else if (chance > 95f) chance = 95f;
 
@@ -1383,7 +1735,6 @@ namespace POESKillTree.SkillTreeFiles
 
             // Shield, Staff and Dual Wielding detection.
             bool hasShield = OffHand.IsShield();
-            bool hasStaff = MainHand.Is(WeaponType.Staff);
 
             // Resistances.
             float maxResistFire = 75;
@@ -1475,7 +1826,7 @@ namespace POESKillTree.SkillTreeFiles
                 List<float> values = OffHand.GetValues("Chance to Block:  #%");
                 if (values.Count > 0) chanceBlockAttacks += values[0];
             }
-            else if (hasStaff)
+            else if (IsWieldingStaff)
             {
                 List<float> values = MainHand.GetValues("#% Chance to Block");
                 if (values.Count > 0) chanceBlockAttacks += values[0];
@@ -1484,7 +1835,7 @@ namespace POESKillTree.SkillTreeFiles
                 chanceBlockAttacks += 15; // When dual wielding, the base chance to block is 15% no matter which weapons are used.
             if (hasShield && Global.ContainsKey("#% additional Chance to Block with Shields"))
                 chanceBlockAttacks += Global["#% additional Chance to Block with Shields"][0];
-            if (hasStaff && Global.ContainsKey("#% additional Block Chance With Staves"))
+            if (IsWieldingStaff && Global.ContainsKey("#% additional Block Chance With Staves"))
                 chanceBlockAttacks += Global["#% additional Block Chance With Staves"][0];
             if (IsDualWielding && Global.ContainsKey("#% additional Chance to Block while Dual Wielding"))
                 chanceBlockAttacks += Global["#% additional Chance to Block while Dual Wielding"][0];
@@ -1544,6 +1895,12 @@ namespace POESKillTree.SkillTreeFiles
             return groups;
         }
 
+        // Returns rounded value with all fractional digits after specified precision cut off.
+        public static float FloorValue(float value, int precision)
+        {
+            return (float)(Math.Floor(value * Math.Pow(10, precision)) / Math.Pow(10, precision));
+        }
+
         // Returns value increased by specified percentage.
         public static float IncreaseValueByPercentage(float value, float percentage)
         {
@@ -1558,6 +1915,7 @@ namespace POESKillTree.SkillTreeFiles
             MainHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.MainHand));
             OffHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.OffHand));
             IsDualWielding = MainHand.IsWeapon() && OffHand.IsWeapon();
+            IsWieldingStaff = MainHand.Is(WeaponType.Staff);
 
             Level = skillTree._level;
 
@@ -1574,6 +1932,7 @@ namespace POESKillTree.SkillTreeFiles
             EldritchBattery = Tree.ContainsKey("Converts all Energy Shield to Mana");
             IronReflexes = Tree.ContainsKey("Converts all Evasion Rating to Armour. Dexterity provides no bonus to Evasion Rating");
             NecromanticAegis = Tree.ContainsKey("All bonuses from an equipped Shield apply to your Minions instead of you");
+            ResoluteTechnique = Tree.ContainsKey("Never deal Critical Strikes");
             VaalPact = Tree.ContainsKey("Life Leech applies instantly at #% effectiveness. Life Regeneration has no effect.");
             ZealotsOath = Tree.ContainsKey("Life Regeneration applies to Energy Shield instead of Life");
 
@@ -1589,7 +1948,6 @@ namespace POESKillTree.SkillTreeFiles
                     Equipment.Remove(attr);
                 // Remove all bonuses from shield itself.
                 OffHand.Attributes.Clear();
-                OffHand.Local.Clear();
             }
 
             Global.Add(Equipment);
@@ -1669,7 +2027,7 @@ namespace POESKillTree.SkillTreeFiles
             return reduction;
         }
 
-        // Returns rounded value with zero fractional digits.
+        // Returns rounded value with specified number of fractional digits.
         public static float RoundValue(float value, int precision)
         {
             return (float)Math.Round((Decimal)value, precision, MidpointRounding.AwayFromZero);

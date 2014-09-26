@@ -1,1 +1,726 @@
-{"items":[{"verified":false,"w":1,"h":1,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Amulets\/Amulet4Unique.png?scale=1&w=1&h=1&v=64218cb6f18db9440f2691a6a52f8fee3","support":true,"league":"Standard","sockets":[],"name":"Karui Ward","typeLine":"Jade Amulet","identified":true,"corrupted":false,"requirements":[{"name":"Level","values":[["5",0]],"displayMode":0}],"implicitMods":["+24 to Dexterity"],"explicitMods":["+24 to Strength","+100 to Accuracy Rating","30% increased Projectile Speed","10% increased Movement Speed"],"flavourText":["\"Shoot first, ask no questions.\"\r","- Karui wisdom"],"frameType":3,"x":0,"y":0,"inventoryId":"Amulet","socketedItems":[]},{"verified":false,"w":2,"h":2,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Armours\/Gloves\/Hrimsorrow.png?scale=1&w=2&h=2&v=1cb021cd618ba8d59f81172f511d52ab3","support":true,"league":"Standard","sockets":[{"group":0,"attr":"D"}],"name":"Hrimsorrow","typeLine":"Goathide Gloves","identified":true,"corrupted":false,"properties":[{"name":"Evasion Rating","values":[["42",1]],"displayMode":0}],"requirements":[{"name":"Level","values":[["13",0]],"displayMode":0},{"name":"Dex","values":[["22",0]],"displayMode":1},{"name":"Int","values":[["15",0]],"displayMode":1}],"explicitMods":["+20 to Strength","50% increased Evasion Rating","+13% to Cold Resistance","25% of Physical Damage Converted to Cold Damage","Reflects 10 Cold Damage to Melee Attackers"],"flavourText":["Of ancient giants, none remain,\r","Their only trace is timeless pain."],"frameType":3,"x":0,"y":0,"inventoryId":"Gloves","socketedItems":[{"verified":false,"w":1,"h":1,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Gems\/Hatred.png?scale=1&w=1&h=1&v=37205cdc1ceb1f70b66d9ca6b6e7ad4c3","support":false,"sockets":[],"name":"","typeLine":"Hatred","identified":true,"corrupted":false,"properties":[{"name":"Aura, Cold, Spell, AoE","values":[],"displayMode":0},{"name":"Level","values":[["2",0]],"displayMode":0},{"name":"Mana Reserved","values":[["60%",0]],"displayMode":0},{"name":"Cooldown Time","values":[["0.5 sec",0]],"displayMode":0},{"name":"Cast Time","values":[["1.2 sec",0]],"displayMode":0}],"additionalProperties":[{"name":"Experience","values":[["3122\/18908",0]],"displayMode":2,"progress":0.165115296841}],"requirements":[{"name":"Level","values":[["13",0]],"displayMode":0},{"name":"Dex","values":[["22",0]],"displayMode":1},{"name":"Int","values":[["15",0]],"displayMode":1}],"secDescrText":"Casts an aura that increases the cold damage of you and your allies.","explicitMods":["3% increased Area of Effect radius","You and nearby allies gain 26% of your Physical Damage as Extra Cold Damage"],"descrText":"Place into an item socket of the right colour to gain this skill. Right click to remove from a socket.","frameType":4,"socket":0,"colour":"D","socketedItems":[]}]},{"verified":false,"w":2,"h":3,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Quivers\/AsphyxiasWrath.png?scale=1&w=2&h=3&v=5043163e3773bb64a186365ce6723f593","support":true,"league":"Standard","sockets":[],"name":"Asphyxia's Wrath","typeLine":"Two-Point Arrow Quiver","identified":true,"corrupted":false,"requirements":[{"name":"Level","values":[["10",0]],"displayMode":0}],"implicitMods":["21% increased Accuracy Rating"],"explicitMods":["9% increased Attack Speed","+40% to Cold Resistance","34% increased Chill Duration on enemies","20% of Physical Damage Converted to Cold Damage","8% chance to Freeze","40% reduced Radius of Curses","Curses on Slain enemies are transferred to a nearby enemy"],"flavourText":["Mist of breath\r","Icing to lips and throat\r","As the warm ones choke and fall\r","Upon the frozen wasteland."],"frameType":3,"x":0,"y":0,"inventoryId":"Offhand","socketedItems":[]},{"verified":false,"w":1,"h":2,"icon":"http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9tYW5hZmxhc2sxIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/087344085f\/Item.png","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Small Mana Flask","identified":true,"corrupted":false,"properties":[{"name":"Recovers %0 Mana over %1 Seconds","values":[["60",0],["6",0]],"displayMode":3},{"name":"Consumes %0 of %1 Charges on use","values":[["14",0],["40",0]],"displayMode":3},{"name":"Currently has %0 Charges","values":[["40",0]],"displayMode":3}],"descrText":"Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.","frameType":0,"x":4,"y":0,"inventoryId":"Flask","socketedItems":[]},{"verified":false,"w":1,"h":1,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Currency\/CurrencyPortal.png?scale=1&stackSize=15&w=1&h=1&v=728696ea10d4fb1e789039debc5d8c3c3","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Portal Scroll","identified":true,"corrupted":false,"properties":[{"name":"Stack Size","values":[["15\/40",0]],"displayMode":0}],"explicitMods":["Creates a portal to town"],"descrText":"Right click on this item to use it.\nShift click to unstack.","frameType":5,"x":1,"y":4,"inventoryId":"MainInventory","socketedItems":[]},{"verified":false,"w":2,"h":2,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Armours\/Helmets\/HelmetDexInt1.png?scale=1&w=2&h=2&v=1f13693aeafe9ef41ed01ed763a79acb3","support":true,"league":"Standard","sockets":[{"group":0,"attr":"S"}],"name":"","typeLine":"Scare Mask","identified":true,"corrupted":false,"properties":[{"name":"Evasion Rating","values":[["11",0]],"displayMode":0},{"name":"Energy Shield","values":[["4",0]],"displayMode":0}],"frameType":0,"x":0,"y":0,"inventoryId":"Helm","socketedItems":[]},{"verified":false,"w":2,"h":3,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Armours\/BodyArmours\/BodyStrInt2A.png?scale=1&w=2&h=3&v=76640dd58584a7786df8d02eadd36bbb3","support":true,"league":"Standard","sockets":[{"group":0,"attr":"S"}],"name":"Armageddon Suit","typeLine":"Chainmail Tunic","identified":true,"corrupted":false,"properties":[{"name":"Armour","values":[["35",0]],"displayMode":0},{"name":"Energy Shield","values":[["18",1]],"displayMode":0}],"requirements":[{"name":"Level","values":[["8",0]],"displayMode":0},{"name":"Str","values":[["16",0]],"displayMode":1},{"name":"Int","values":[["16",0]],"displayMode":1}],"explicitMods":["+17 to Intelligence","2 Life Regenerated per second","+7 to maximum Energy Shield","+9% to Lightning Resistance"],"frameType":2,"x":0,"y":0,"inventoryId":"BodyArmour","socketedItems":[]},{"verified":false,"w":1,"h":2,"icon":"http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9tYW5hZmxhc2sxIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/087344085f\/Item.png","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Small Mana Flask","identified":true,"corrupted":false,"properties":[{"name":"Recovers %0 Mana over %1 Seconds","values":[["60",0],["6",0]],"displayMode":3},{"name":"Consumes %0 of %1 Charges on use","values":[["14",0],["40",0]],"displayMode":3},{"name":"Currently has %0 Charges","values":[["40",0]],"displayMode":3}],"descrText":"Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.","frameType":0,"x":3,"y":0,"inventoryId":"Flask","socketedItems":[]},{"verified":false,"w":2,"h":4,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Weapons\/TwoHandWeapons\/Bows\/Bow3.png?scale=1&w=2&h=4&v=da52da78a5c580592f9071316832b6473","support":true,"league":"Standard","sockets":[{"group":0,"attr":"D"},{"group":1,"attr":"D"}],"name":"Behemoth Breeze","typeLine":"Long Bow","identified":true,"corrupted":false,"properties":[{"name":"Bow","values":[],"displayMode":0},{"name":"Physical Damage","values":[["8-29",1]],"displayMode":0},{"name":"Critical Strike Chance","values":[["5%",0]],"displayMode":0},{"name":"Attacks per Second","values":[["1.30",0]],"displayMode":0}],"requirements":[{"name":"Level","values":[["12",0]],"displayMode":0},{"name":"Dex","values":[["41",0]],"displayMode":1}],"explicitMods":["+1 to Level of Bow Gems in this item","28% increased Physical Damage","+6% to Cold Resistance","11% increased Stun Duration on enemies","+19 to Accuracy Rating"],"frameType":2,"x":0,"y":0,"inventoryId":"Weapon","socketedItems":[{"verified":false,"w":1,"h":1,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Gems\/SplitArrow.png?scale=1&w=1&h=1&v=f2f07e5e67987d072a6a8a3f43de5f7e3","support":false,"sockets":[],"name":"","typeLine":"Split Arrow","identified":true,"corrupted":false,"properties":[{"name":"Attack, Bow","values":[],"displayMode":0},{"name":"Level","values":[["5",0]],"displayMode":0},{"name":"Mana Cost","values":[["7",0]],"displayMode":0}],"additionalProperties":[{"name":"Experience","values":[["3590\/22895",0]],"displayMode":2,"progress":0.156802788377}],"requirements":[{"name":"Level","values":[["12",0]],"displayMode":0},{"name":"Dex","values":[["33",0]],"displayMode":1}],"secDescrText":"Fires multiple arrows at different targets.","explicitMods":["12% increased Physical Damage","3 additional Arrows","Deals 80% of Base Damage"],"descrText":"Place into an item socket of the right colour to gain this skill. Right click to remove from a socket.","frameType":4,"socket":0,"colour":"D","socketedItems":[]},{"verified":false,"w":1,"h":1,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Gems\/RainofArrows.png?scale=1&w=1&h=1&v=4a8307af9b81b48b357121b614a2f4083","support":false,"sockets":[],"name":"","typeLine":"Rain of Arrows","identified":true,"corrupted":false,"properties":[{"name":"Attack, AoE, Bow","values":[],"displayMode":0},{"name":"Level","values":[["4",0]],"displayMode":0},{"name":"Mana Cost","values":[["11",0]],"displayMode":0}],"additionalProperties":[{"name":"Experience","values":[["11172\/15249",0]],"displayMode":2,"progress":0.732638180256}],"requirements":[{"name":"Level","values":[["12",0]],"displayMode":0},{"name":"Dex","values":[["33",0]],"displayMode":1}],"secDescrText":"Fires a large number of arrows into the air, to land at the target after a short delay.","explicitMods":["9% increased Physical Damage","Deals 75% of Base Damage","9% increased Area of Effect radius"],"descrText":"Place into an item socket of the right colour to gain this skill. Right click to remove from a socket.","frameType":4,"socket":1,"colour":"D","socketedItems":[]}]},{"verified":false,"w":1,"h":2,"icon":"http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9tYW5hZmxhc2syIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/dabce61048\/Item.png","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Medium Mana Flask","identified":true,"corrupted":false,"properties":[{"name":"Recovers %0 Mana over %1 Seconds","values":[["80",0],["6.5",0]],"displayMode":3},{"name":"Consumes %0 of %1 Charges on use","values":[["16",0],["45",0]],"displayMode":3},{"name":"Currently has %0 Charges","values":[["45",0]],"displayMode":3}],"requirements":[{"name":"Level","values":[["4",0]],"displayMode":0}],"descrText":"Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.","frameType":0,"x":2,"y":0,"inventoryId":"Flask","socketedItems":[]},{"verified":false,"w":2,"h":2,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Armours\/Boots\/BootsStr2.png?scale=1&w=2&h=2&v=399734b915715a11364011fd9451b3703","support":true,"league":"Standard","sockets":[{"group":0,"attr":"S"},{"group":0,"attr":"S"}],"name":"Carrion Tread","typeLine":"Steel Greaves","identified":true,"corrupted":false,"properties":[{"name":"Armour","values":[["37",1]],"displayMode":0}],"requirements":[{"name":"Level","values":[["9",0]],"displayMode":0},{"name":"Str","values":[["21",0]],"displayMode":1}],"explicitMods":["+9 to Armour","+17% to Fire Resistance","+6% to Cold Resistance","10% increased Movement Speed"],"frameType":2,"x":0,"y":0,"inventoryId":"Boots","socketedItems":[]},{"verified":false,"w":1,"h":1,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Currency\/CurrencyIdentification.png?scale=1&stackSize=4&w=1&h=1&v=1b9b38c45be95c59d8900f91b2afd58b3","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Scroll of Wisdom","identified":true,"corrupted":false,"properties":[{"name":"Stack Size","values":[["4\/40",0]],"displayMode":0}],"explicitMods":["Identifies an item"],"descrText":"Right click this item then left click an unidentified item to apply it.\nShift click to unstack.","frameType":5,"x":0,"y":4,"inventoryId":"MainInventory","socketedItems":[]},{"verified":false,"w":2,"h":1,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Belts\/Belt2.png?scale=1&w=2&h=1&v=05d53adc2875453b6b6bb2652ee3d74d3","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Chain Belt","identified":true,"corrupted":false,"implicitMods":["+18 to maximum Energy Shield"],"frameType":0,"x":0,"y":0,"inventoryId":"Belt","socketedItems":[]},{"verified":false,"w":1,"h":2,"icon":"http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9saWZlZmxhc2syIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/0f138726cd\/Item.png","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Medium Life Flask","identified":true,"corrupted":false,"properties":[{"name":"Recovers %0 Life over %1 Seconds","values":[["110",0],["6.5",0]],"displayMode":3},{"name":"Consumes %0 of %1 Charges on use","values":[["8",0],["28",0]],"displayMode":3},{"name":"Currently has %0 Charges","values":[["28",0]],"displayMode":3}],"requirements":[{"name":"Level","values":[["4",0]],"displayMode":0}],"descrText":"Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.","frameType":0,"x":1,"y":0,"inventoryId":"Flask","socketedItems":[]},{"verified":false,"w":1,"h":2,"icon":"http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9saWZlZmxhc2syIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/0f138726cd\/Item.png","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Ample Medium Life Flask of Resistance","identified":true,"corrupted":false,"properties":[{"name":"Recovers %0 Life over %1 Seconds","values":[["110",0],["6.5",0]],"displayMode":3},{"name":"Consumes %0 of %1 Charges on use","values":[["8",0],["43",1]],"displayMode":3},{"name":"Currently has %0 Charges","values":[["43",0]],"displayMode":3}],"requirements":[{"name":"Level","values":[["4",0]],"displayMode":0}],"explicitMods":["+15 Extra Charges","30% additional Elemental Resistances during flask effect"],"descrText":"Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.","frameType":1,"x":0,"y":0,"inventoryId":"Flask","socketedItems":[]},{"verified":false,"w":1,"h":1,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Rings\/Ring1.png?scale=1&w=1&h=1&v=7c04d5a65caa0371eccfe06a129a74073","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Frosted Iron Ring of Excitement","identified":true,"corrupted":false,"implicitMods":["Adds 1-4 Physical Damage"],"explicitMods":["Adds 1-2 Cold Damage","18% increased Mana Regeneration Rate"],"frameType":1,"x":0,"y":0,"inventoryId":"Ring","socketedItems":[]},{"verified":false,"w":1,"h":1,"icon":"http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Rings\/Ring5.png?scale=1&w=1&h=1&v=d645f9adfc012c52674c94d16b4292b23","support":true,"league":"Standard","sockets":[],"name":"","typeLine":"Remora's Topaz Ring of the Mongoose","identified":true,"corrupted":false,"requirements":[{"name":"Level","values":[["11",0]],"displayMode":0}],"implicitMods":["+29% to Lightning Resistance"],"explicitMods":["+10 to Dexterity","1% of Physical Attack Damage Leeched as Life"],"frameType":1,"x":0,"y":0,"inventoryId":"Ring2","socketedItems":[]}],"character":{"class":2,"league":"Standard"}}
+{
+	"items" : [{
+			"verified" : false,
+			"w" : 1,
+			"h" : 1,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Amulets\/Amulet4Unique.png?scale=1&w=1&h=1&v=64218cb6f18db9440f2691a6a52f8fee3",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "Karui Ward",
+			"typeLine" : "Jade Amulet",
+			"identified" : true,
+			"corrupted" : false,
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["5", 0]],
+					"displayMode" : 0
+				}
+			],
+			"implicitMods" : ["+24 to Dexterity"],
+			"explicitMods" : ["+24 to Strength", "+100 to Accuracy Rating", "30% increased Projectile Speed", "10% increased Movement Speed"],
+			"flavourText" : ["\"Shoot first, ask no questions.\"\r", "- Karui wisdom"],
+			"frameType" : 3,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Amulet",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 2,
+			"h" : 2,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Armours\/Gloves\/Hrimsorrow.png?scale=1&w=2&h=2&v=1cb021cd618ba8d59f81172f511d52ab3",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [{
+					"group" : 0,
+					"attr" : "D"
+				}
+			],
+			"name" : "Hrimsorrow",
+			"typeLine" : "Goathide Gloves",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Evasion Rating",
+					"values" : [["42", 1]],
+					"displayMode" : 0
+				}
+			],
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["13", 0]],
+					"displayMode" : 0
+				}, {
+					"name" : "Dex",
+					"values" : [["22", 0]],
+					"displayMode" : 1
+				}, {
+					"name" : "Int",
+					"values" : [["15", 0]],
+					"displayMode" : 1
+				}
+			],
+			"explicitMods" : ["+20 to Strength", "50% increased Evasion Rating", "+13% to Cold Resistance", "25% of Physical Damage Converted to Cold Damage", "Reflects 10 Cold Damage to Melee Attackers"],
+			"flavourText" : ["Of ancient giants, none remain,\r", "Their only trace is timeless pain."],
+			"frameType" : 3,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Gloves",
+			"socketedItems" : [{
+					"verified" : false,
+					"w" : 1,
+					"h" : 1,
+					"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Gems\/Hatred.png?scale=1&w=1&h=1&v=37205cdc1ceb1f70b66d9ca6b6e7ad4c3",
+					"support" : false,
+					"sockets" : [],
+					"name" : "",
+					"typeLine" : "Hatred",
+					"identified" : true,
+					"corrupted" : false,
+					"properties" : [{
+							"name" : "Aura, Cold, Spell, AoE",
+							"values" : [],
+							"displayMode" : 0
+						}, {
+							"name" : "Level",
+							"values" : [["2", 0]],
+							"displayMode" : 0
+						}, {
+							"name" : "Mana Reserved",
+							"values" : [["60%", 0]],
+							"displayMode" : 0
+						}, {
+							"name" : "Cooldown Time",
+							"values" : [["0.5 sec", 0]],
+							"displayMode" : 0
+						}, {
+							"name" : "Cast Time",
+							"values" : [["1.2 sec", 0]],
+							"displayMode" : 0
+						}
+					],
+					"additionalProperties" : [{
+							"name" : "Experience",
+							"values" : [["3122\/18908", 0]],
+							"displayMode" : 2,
+							"progress" : 0.165115296841
+						}
+					],
+					"requirements" : [{
+							"name" : "Level",
+							"values" : [["13", 0]],
+							"displayMode" : 0
+						}, {
+							"name" : "Dex",
+							"values" : [["22", 0]],
+							"displayMode" : 1
+						}, {
+							"name" : "Int",
+							"values" : [["15", 0]],
+							"displayMode" : 1
+						}
+					],
+					"secDescrText" : "Casts an aura that increases the cold damage of you and your allies.",
+					"explicitMods" : ["3% increased Area of Effect radius", "You and nearby allies gain 26% of your Physical Damage as Extra Cold Damage"],
+					"descrText" : "Place into an item socket of the right colour to gain this skill. Right click to remove from a socket.",
+					"frameType" : 4,
+					"socket" : 0,
+					"colour" : "D",
+					"socketedItems" : []
+				}
+			]
+		}, {
+			"verified" : false,
+			"w" : 2,
+			"h" : 3,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Quivers\/AsphyxiasWrath.png?scale=1&w=2&h=3&v=5043163e3773bb64a186365ce6723f593",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "Asphyxia's Wrath",
+			"typeLine" : "Two-Point Arrow Quiver",
+			"identified" : true,
+			"corrupted" : false,
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["10", 0]],
+					"displayMode" : 0
+				}
+			],
+			"implicitMods" : ["21% increased Accuracy Rating"],
+			"explicitMods" : ["9% increased Attack Speed", "+40% to Cold Resistance", "34% increased Chill Duration on enemies", "20% of Physical Damage Converted to Cold Damage", "8% chance to Freeze", "40% reduced Radius of Curses", "Curses on Slain enemies are transferred to a nearby enemy"],
+			"flavourText" : ["Mist of breath\r", "Icing to lips and throat\r", "As the warm ones choke and fall\r", "Upon the frozen wasteland."],
+			"frameType" : 3,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Offhand",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 1,
+			"h" : 2,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9tYW5hZmxhc2sxIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/087344085f\/Item.png",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Small Mana Flask",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Recovers %0 Mana over %1 Seconds",
+					"values" : [["60", 0], ["6", 0]],
+					"displayMode" : 3
+				}, {
+					"name" : "Consumes %0 of %1 Charges on use",
+					"values" : [["14", 0], ["40", 0]],
+					"displayMode" : 3
+				}, {
+					"name" : "Currently has %0 Charges",
+					"values" : [["40", 0]],
+					"displayMode" : 3
+				}
+			],
+			"descrText" : "Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.",
+			"frameType" : 0,
+			"x" : 4,
+			"y" : 0,
+			"inventoryId" : "Flask",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 1,
+			"h" : 1,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Currency\/CurrencyPortal.png?scale=1&stackSize=15&w=1&h=1&v=728696ea10d4fb1e789039debc5d8c3c3",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Portal Scroll",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Stack Size",
+					"values" : [["15\/40", 0]],
+					"displayMode" : 0
+				}
+			],
+			"explicitMods" : ["Creates a portal to town"],
+			"descrText" : "Right click on this item to use it.\nShift click to unstack.",
+			"frameType" : 5,
+			"x" : 1,
+			"y" : 4,
+			"inventoryId" : "MainInventory",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 2,
+			"h" : 2,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Armours\/Helmets\/HelmetDexInt1.png?scale=1&w=2&h=2&v=1f13693aeafe9ef41ed01ed763a79acb3",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [{
+					"group" : 0,
+					"attr" : "S"
+				}
+			],
+			"name" : "",
+			"typeLine" : "Scare Mask",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Evasion Rating",
+					"values" : [["11", 0]],
+					"displayMode" : 0
+				}, {
+					"name" : "Energy Shield",
+					"values" : [["4", 0]],
+					"displayMode" : 0
+				}
+			],
+			"frameType" : 0,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Helm",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 2,
+			"h" : 3,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Armours\/BodyArmours\/BodyStrInt2A.png?scale=1&w=2&h=3&v=76640dd58584a7786df8d02eadd36bbb3",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [{
+					"group" : 0,
+					"attr" : "S"
+				}
+			],
+			"name" : "Armageddon Suit",
+			"typeLine" : "Chainmail Tunic",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Armour",
+					"values" : [["35", 0]],
+					"displayMode" : 0
+				}, {
+					"name" : "Energy Shield",
+					"values" : [["18", 1]],
+					"displayMode" : 0
+				}
+			],
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["8", 0]],
+					"displayMode" : 0
+				}, {
+					"name" : "Str",
+					"values" : [["16", 0]],
+					"displayMode" : 1
+				}, {
+					"name" : "Int",
+					"values" : [["16", 0]],
+					"displayMode" : 1
+				}
+			],
+			"explicitMods" : ["+17 to Intelligence", "2 Life Regenerated per second", "+7 to maximum Energy Shield", "+9% to Lightning Resistance"],
+			"frameType" : 2,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "BodyArmour",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 1,
+			"h" : 2,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9tYW5hZmxhc2sxIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/087344085f\/Item.png",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Small Mana Flask",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Recovers %0 Mana over %1 Seconds",
+					"values" : [["60", 0], ["6", 0]],
+					"displayMode" : 3
+				}, {
+					"name" : "Consumes %0 of %1 Charges on use",
+					"values" : [["14", 0], ["40", 0]],
+					"displayMode" : 3
+				}, {
+					"name" : "Currently has %0 Charges",
+					"values" : [["40", 0]],
+					"displayMode" : 3
+				}
+			],
+			"descrText" : "Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.",
+			"frameType" : 0,
+			"x" : 3,
+			"y" : 0,
+			"inventoryId" : "Flask",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 2,
+			"h" : 4,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Weapons\/TwoHandWeapons\/Bows\/Bow3.png?scale=1&w=2&h=4&v=da52da78a5c580592f9071316832b6473",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [{
+					"group" : 0,
+					"attr" : "D"
+				}, {
+					"group" : 1,
+					"attr" : "D"
+				}
+			],
+			"name" : "Behemoth Breeze",
+			"typeLine" : "Long Bow",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Bow",
+					"values" : [],
+					"displayMode" : 0
+				}, {
+					"name" : "Physical Damage",
+					"values" : [["8-29", 1]],
+					"displayMode" : 0
+				}, {
+					"name" : "Critical Strike Chance",
+					"values" : [["5%", 0]],
+					"displayMode" : 0
+				}, {
+					"name" : "Attacks per Second",
+					"values" : [["1.30", 0]],
+					"displayMode" : 0
+				}
+			],
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["12", 0]],
+					"displayMode" : 0
+				}, {
+					"name" : "Dex",
+					"values" : [["41", 0]],
+					"displayMode" : 1
+				}
+			],
+			"explicitMods" : ["+1 to Level of Bow Gems in this item", "28% increased Physical Damage", "+6% to Cold Resistance", "11% increased Stun Duration on enemies", "+19 to Accuracy Rating"],
+			"frameType" : 2,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Weapon",
+			"socketedItems" : [{
+					"verified" : false,
+					"w" : 1,
+					"h" : 1,
+					"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Gems\/SplitArrow.png?scale=1&w=1&h=1&v=f2f07e5e67987d072a6a8a3f43de5f7e3",
+					"support" : false,
+					"sockets" : [],
+					"name" : "",
+					"typeLine" : "Split Arrow",
+					"identified" : true,
+					"corrupted" : false,
+					"properties" : [{
+							"name" : "Attack, Bow",
+							"values" : [],
+							"displayMode" : 0
+						}, {
+							"name" : "Level",
+							"values" : [["5", 0]],
+							"displayMode" : 0
+						}, {
+							"name" : "Mana Cost",
+							"values" : [["7", 0]],
+							"displayMode" : 0
+						}
+					],
+					"additionalProperties" : [{
+							"name" : "Experience",
+							"values" : [["3590\/22895", 0]],
+							"displayMode" : 2,
+							"progress" : 0.156802788377
+						}
+					],
+					"requirements" : [{
+							"name" : "Level",
+							"values" : [["12", 0]],
+							"displayMode" : 0
+						}, {
+							"name" : "Dex",
+							"values" : [["33", 0]],
+							"displayMode" : 1
+						}
+					],
+					"secDescrText" : "Fires multiple arrows at different targets.",
+					"explicitMods" : ["12% increased Physical Damage", "3 additional Arrows", "Deals 80% of Base Damage"],
+					"descrText" : "Place into an item socket of the right colour to gain this skill. Right click to remove from a socket.",
+					"frameType" : 4,
+					"socket" : 0,
+					"colour" : "D",
+					"socketedItems" : []
+				}, {
+					"verified" : false,
+					"w" : 1,
+					"h" : 1,
+					"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Gems\/RainofArrows.png?scale=1&w=1&h=1&v=4a8307af9b81b48b357121b614a2f4083",
+					"support" : false,
+					"sockets" : [],
+					"name" : "",
+					"typeLine" : "Rain of Arrows",
+					"identified" : true,
+					"corrupted" : false,
+					"properties" : [{
+							"name" : "Attack, AoE, Bow",
+							"values" : [],
+							"displayMode" : 0
+						}, {
+							"name" : "Level",
+							"values" : [["4", 0]],
+							"displayMode" : 0
+						}, {
+							"name" : "Mana Cost",
+							"values" : [["11", 0]],
+							"displayMode" : 0
+						}
+					],
+					"additionalProperties" : [{
+							"name" : "Experience",
+							"values" : [["11172\/15249", 0]],
+							"displayMode" : 2,
+							"progress" : 0.732638180256
+						}
+					],
+					"requirements" : [{
+							"name" : "Level",
+							"values" : [["12", 0]],
+							"displayMode" : 0
+						}, {
+							"name" : "Dex",
+							"values" : [["33", 0]],
+							"displayMode" : 1
+						}
+					],
+					"secDescrText" : "Fires a large number of arrows into the air, to land at the target after a short delay.",
+					"explicitMods" : ["9% increased Physical Damage", "Deals 75% of Base Damage", "9% increased Area of Effect radius"],
+					"descrText" : "Place into an item socket of the right colour to gain this skill. Right click to remove from a socket.",
+					"frameType" : 4,
+					"socket" : 1,
+					"colour" : "D",
+					"socketedItems" : []
+				}
+			]
+		}, {
+			"verified" : false,
+			"w" : 1,
+			"h" : 2,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9tYW5hZmxhc2syIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/dabce61048\/Item.png",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Medium Mana Flask",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Recovers %0 Mana over %1 Seconds",
+					"values" : [["80", 0], ["6.5", 0]],
+					"displayMode" : 3
+				}, {
+					"name" : "Consumes %0 of %1 Charges on use",
+					"values" : [["16", 0], ["45", 0]],
+					"displayMode" : 3
+				}, {
+					"name" : "Currently has %0 Charges",
+					"values" : [["45", 0]],
+					"displayMode" : 3
+				}
+			],
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["4", 0]],
+					"displayMode" : 0
+				}
+			],
+			"descrText" : "Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.",
+			"frameType" : 0,
+			"x" : 2,
+			"y" : 0,
+			"inventoryId" : "Flask",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 2,
+			"h" : 2,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Armours\/Boots\/BootsStr2.png?scale=1&w=2&h=2&v=399734b915715a11364011fd9451b3703",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [{
+					"group" : 0,
+					"attr" : "S"
+				}, {
+					"group" : 0,
+					"attr" : "S"
+				}
+			],
+			"name" : "Carrion Tread",
+			"typeLine" : "Steel Greaves",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Armour",
+					"values" : [["37", 1]],
+					"displayMode" : 0
+				}
+			],
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["9", 0]],
+					"displayMode" : 0
+				}, {
+					"name" : "Str",
+					"values" : [["21", 0]],
+					"displayMode" : 1
+				}
+			],
+			"explicitMods" : ["+9 to Armour", "+17% to Fire Resistance", "+6% to Cold Resistance", "10% increased Movement Speed"],
+			"frameType" : 2,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Boots",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 1,
+			"h" : 1,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Currency\/CurrencyIdentification.png?scale=1&stackSize=4&w=1&h=1&v=1b9b38c45be95c59d8900f91b2afd58b3",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Scroll of Wisdom",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Stack Size",
+					"values" : [["4\/40", 0]],
+					"displayMode" : 0
+				}
+			],
+			"explicitMods" : ["Identifies an item"],
+			"descrText" : "Right click this item then left click an unidentified item to apply it.\nShift click to unstack.",
+			"frameType" : 5,
+			"x" : 0,
+			"y" : 4,
+			"inventoryId" : "MainInventory",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 2,
+			"h" : 1,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Belts\/Belt2.png?scale=1&w=2&h=1&v=05d53adc2875453b6b6bb2652ee3d74d3",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Chain Belt",
+			"identified" : true,
+			"corrupted" : false,
+			"implicitMods" : ["+18 to maximum Energy Shield"],
+			"frameType" : 0,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Belt",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 1,
+			"h" : 2,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9saWZlZmxhc2syIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/0f138726cd\/Item.png",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Medium Life Flask",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Recovers %0 Life over %1 Seconds",
+					"values" : [["110", 0], ["6.5", 0]],
+					"displayMode" : 3
+				}, {
+					"name" : "Consumes %0 of %1 Charges on use",
+					"values" : [["8", 0], ["28", 0]],
+					"displayMode" : 3
+				}, {
+					"name" : "Currently has %0 Charges",
+					"values" : [["28", 0]],
+					"displayMode" : 3
+				}
+			],
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["4", 0]],
+					"displayMode" : 0
+				}
+			],
+			"descrText" : "Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.",
+			"frameType" : 0,
+			"x" : 1,
+			"y" : 0,
+			"inventoryId" : "Flask",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 1,
+			"h" : 2,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/gen\/image\/YTozOntpOjI7YTozOntz\/OjE6ImYiO3M6Mjk6IkFy\/dC8yREl0ZW1zL0ZsYXNr\/cy9saWZlZmxhc2syIjtz\/OjI6InNwIjtkOjAuNjA4\/NTE5MjY5Nzc2ODc2MzE0\/ODE0NzI4NjMwMTUzNjk1\/MTIxNDA3NTA4ODUwMDk3\/NjU2MjU7czo1OiJsZXZl\/bCI7aToxO31pOjE7aTo0\/O2k6MDtpOjk7fQ,,\/0f138726cd\/Item.png",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Ample Medium Life Flask of Resistance",
+			"identified" : true,
+			"corrupted" : false,
+			"properties" : [{
+					"name" : "Recovers %0 Life over %1 Seconds",
+					"values" : [["110", 0], ["6.5", 0]],
+					"displayMode" : 3
+				}, {
+					"name" : "Consumes %0 of %1 Charges on use",
+					"values" : [["8", 0], ["43", 1]],
+					"displayMode" : 3
+				}, {
+					"name" : "Currently has %0 Charges",
+					"values" : [["43", 0]],
+					"displayMode" : 3
+				}
+			],
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["4", 0]],
+					"displayMode" : 0
+				}
+			],
+			"explicitMods" : ["+15 Extra Charges", "30% additional Elemental Resistances during flask effect"],
+			"descrText" : "Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.",
+			"frameType" : 1,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Flask",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 1,
+			"h" : 1,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Rings\/Ring1.png?scale=1&w=1&h=1&v=7c04d5a65caa0371eccfe06a129a74073",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Frosted Iron Ring of Excitement",
+			"identified" : true,
+			"corrupted" : false,
+			"implicitMods" : ["Adds 1-4 Physical Damage"],
+			"explicitMods" : ["Adds 1-2 Cold Damage", "18% increased Mana Regeneration Rate"],
+			"frameType" : 1,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Ring",
+			"socketedItems" : []
+		}, {
+			"verified" : false,
+			"w" : 1,
+			"h" : 1,
+			"icon" : "http:\/\/webcdn.pathofexile.com\/image\/Art\/2DItems\/Rings\/Ring5.png?scale=1&w=1&h=1&v=d645f9adfc012c52674c94d16b4292b23",
+			"support" : true,
+			"league" : "Standard",
+			"sockets" : [],
+			"name" : "",
+			"typeLine" : "Remora's Topaz Ring of the Mongoose",
+			"identified" : true,
+			"corrupted" : false,
+			"requirements" : [{
+					"name" : "Level",
+					"values" : [["11", 0]],
+					"displayMode" : 0
+				}
+			],
+			"implicitMods" : ["+29% to Lightning Resistance"],
+			"explicitMods" : ["+10 to Dexterity", "1% of Physical Attack Damage Leeched as Life"],
+			"frameType" : 1,
+			"x" : 0,
+			"y" : 0,
+			"inventoryId" : "Ring2",
+			"socketedItems" : []
+		}
+	],
+	"character" : {
+		"class" : 2,
+		"league" : "Standard"
+	}
+}

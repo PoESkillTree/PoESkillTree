@@ -14,6 +14,7 @@ namespace POESKillTree.SkillTreeFiles
      *     None = Gem is being completely ignored.
      *     Unknown = Gem wasn't tested and it doesn't have DB entry, so its statistics are probably incorrect (in +Level to Gems items they are for sure)
      *     Partial = Gem was partialy tested, but it doesn't have DB entry, so its statistics should be correct (except when used in items with +Level to Gems).
+     *     Incomplete = Gem was tested, but DB entries are incomplete, so statistics at certain level could be incorrect.
      *     Full = Gem was tested and it has DB entry. It should show correct statistics or all of its modifiers should be applied in full range.
      * 
      * Strength skill gems:
@@ -82,7 +83,7 @@ namespace POESKillTree.SkillTreeFiles
      * Reave                                        Unknown
      * Smoke Mine                                   None
      * Spectral Throw                               Unknown
-     * Split Arrow                                  Partial
+     * Split Arrow                                  Incomplete
      * Temporal Chains                              None
      * Tornado Shot                                 Partial
      * Viper Strike                                 Partial
@@ -343,6 +344,15 @@ namespace POESKillTree.SkillTreeFiles
                     Attrs = new Values {
                         { "Mana Cost:  #", new RangeMap(1, 1, 6, 2, 5, 7, 6, 18, 8, 19, MaxLevel, 10) },
                         { "#% increased Physical Damage", new Linear(4, -4) }
+                    }
+                }
+            }, {
+                "Split Arrow",
+                new Gem {
+                    Attrs = new Values {
+                        { "Mana Cost:  #", new RangeMap(1, 1, 5, 2, 4, 6, 5, 8, 7, 9, 16, 8, 17, MaxLevel, 10) },
+                        { "#% increased Physical Damage", new Linear(3, -3) },
+                        { "# additional Arrows", new RangeMap(1, 4, 2, 5, 9, 3, 10, 16, 4, 17, 20, 5, 21, MaxLevel, 6) }
                     }
                 }
             }

@@ -100,12 +100,12 @@ namespace UnitTests
                 {
                     if (entry.Contains(':')) // Property: Value
                     {
-                        Assert.IsNotNull(group, "Missing defence group");
-                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry);
+                        Assert.IsNotNull(group, "Missing defence group [" + TestContext.DataRow["BuildFile"].ToString() + "]");
+                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry + " [" + TestContext.DataRow["BuildFile"].ToString() + "]");
                     }
                     else // Group
                     {
-                        Assert.IsTrue(defense.ContainsKey(entry), "No such defence group: " + entry);
+                        Assert.IsTrue(defense.ContainsKey(entry), "No such defence group: " + entry + " [" + TestContext.DataRow["BuildFile"].ToString() + "]");
                         group = defense[entry];
                     }
                 }
@@ -128,12 +128,12 @@ namespace UnitTests
                 {
                     if (entry.Contains(':')) // Property: Value
                     {
-                        Assert.IsNotNull(group, "Missing offence group");
-                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry);
+                        Assert.IsNotNull(group, "Missing offence group [" + TestContext.DataRow["BuildFile"].ToString() + "]");
+                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry + " [" + TestContext.DataRow["BuildFile"].ToString() + "]");
                     }
                     else // Group
                     {
-                        Assert.IsTrue(offense.ContainsKey(entry), "No such offence group: " + entry);
+                        Assert.IsTrue(offense.ContainsKey(entry), "No such offence group: " + entry + " [" + TestContext.DataRow["BuildFile"].ToString() + "]");
                         group = offense[entry];
                     }
                 }
