@@ -90,6 +90,7 @@ namespace UnitTests
             }
 
             // Forum-based DPS (float precision)
+            // Tooltip DPS. Sheet DPS uses Round(1) instead of Floor(1) to display DPS.
             skills = new Dictionary<string, Spell>() {
                 { "Molten Shell", new Spell { DisplayDPS = 183.4f, MinDamage = 95.76f, MaxDamage = 143.64f, CC = 35.75f, CM = 247.5f } },
                 { "Tempest Shield", new Spell { DisplayDPS = 826.4f, MinDamage = 404.82f, MaxDamage = 605.5f, CC = 42.9f, CM = 247.5f } },
@@ -159,6 +160,22 @@ namespace UnitTests
                         Assert.IsFalse(matches == 1);
                     }
             */
+        }
+
+        [TestMethod]
+        public void TestRoundingHalfDown()
+        {
+            // Round Half Toward Zero (Round Half Down).
+
+            Assert.AreEqual(1.36f, Compute.RoundHalfDownEvenValue(1.365f, 2));
+            Assert.AreEqual(1.38f, Compute.RoundHalfDownEvenValue(1.375f, 2));
+
+            Assert.AreEqual(27.9f, Compute.RoundHalfDownValue(27.94f, 1));
+            Assert.AreEqual(-27.9f, Compute.RoundHalfDownValue(-27.95f, 1));
+            Assert.AreEqual(27.9f, Compute.RoundHalfDownValue(27.95f, 1));
+            Assert.AreEqual(28f, Compute.RoundHalfDownValue(27.951f, 1));
+            Assert.AreEqual(28f, Compute.RoundHalfDownValue(27.96f, 1));
+            Assert.AreEqual(5f, Compute.RoundHalfDownValue(4.96f, 1));
         }
     }
 }

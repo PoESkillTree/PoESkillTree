@@ -277,8 +277,7 @@
     </ExpectDefence>
     <ExpectOffence>
       Split Arrow
-      #TOOLTIP Damage per Second: 31
-      #Damage per Second: 31
+      Damage per Second: 31
       Chance to Hit: 94%
       Attacks per Second: 1.4
       Main Hand Total Combined Damage: 10-36
@@ -296,8 +295,7 @@
     <BuildFile>T6-Leap-2HSword.json</BuildFile>
     <ExpectOffence>
       Leap Slam
-      #TOOLTIP Damage per Second: 32.1
-      #TODO Damage per Second: 32.2
+      Damage per Second: 32.2
       Chance to Hit: 65%
       Attacks per Second: 0.8
       Main Hand Total Combined Damage: 40-66
@@ -315,8 +313,7 @@
     <BuildFile>T6-MS-2HAxe-Limbsplit.json</BuildFile>
     <ExpectOffence>
       Molten Strike
-      #TOOLTIP Damage per Second: 150
-      #TODO Damage per Second: 150.1
+      Damage per Second: 150.1
       Chance to Hit: 62%
       Attacks per Second: 1.3
       Main Hand Total Combined Damage: 103-207
@@ -334,8 +331,7 @@
     <BuildFile>T6-MS-2HAxe-Wideswing.json</BuildFile>
     <ExpectOffence>
       Molten Strike
-      #TOOLTIP Damage per Second: 188.3
-      #TODO Damage per Second: 188.3
+      Damage per Second: 188.3
       Chance to Hit: 65%
       Attacks per Second: 1.4
       Main Hand Total Combined Damage: 141-214
@@ -353,8 +349,7 @@
     <BuildFile>T6-VS-Dual-Dagger.json</BuildFile>
     <ExpectOffence>
       Viper Strike
-      #TOOLTIP Damage per Second: 96.1
-      #TODO Damage per Second: 96.2
+      Damage per Second: 96.2
       Chance to Hit: 63%
       Attacks per Second: 1.9
       Main Hand Total Combined Damage: 40-157
@@ -380,8 +375,7 @@
     <BuildFile>T6-SA-EK-Bow-AddPhy2BowAtkQuiver.json</BuildFile>
     <ExpectOffence>
       Split Arrow
-      #TOOLTIP Damage per Second: 42.9
-      #TODO Damage per Second: 43
+      Damage per Second: 43
       Chance to Hit: 62%
       #NOTE Attack Time: 0.79
       Attacks per Second: 1.3
@@ -392,8 +386,7 @@
       Main Hand Critical Strike Chance: 15.5%
       Main Hand Critical Strike Multiplier: 218%
       Ethereal Knives
-      #TOOLTIP Damage per Second: 25.2
-      #TODO Damage per Second: 25.3
+      Damage per Second: 25.3
       #NOTE Cast Time: 0.71
       Casts per Second: 1.4
       Spell Total Combined Damage: 10-16
@@ -409,8 +402,7 @@
     <BuildFile>T6-Arc-LW-CwDT.json</BuildFile>
     <ExpectOffence>
       Lightning Warp
-      #TOOLTIP Damage per Use: 1013
-      #TODO Damage per Use: 1013
+      Damage per Use: 1013
       Casts per Second: 1.6
       Spell Lightning Damage: 66-1259
       #TODO Cast Speed modifier: +64%
@@ -418,29 +410,27 @@
       Spell Critical Strike Multiplier: 248%
       #TODO Mana Cost: 100
       Herald of Ice
-      #TODO Damage per Use: 265.5
+      Damage per Use: 265.5
       Casts per Second: 1.3
       Spell Cold Damage: 212-319
       #TODO Cast Speed modifier: +27%
       Molten Shell
-      #TOOLTIP Damage per Use: 183.4
-      #TODO Damage per Use: 183.5
+      Damage per Use: 183.5
       Casts per Second: 1.3
       Spell Fire Damage: 96-144
       #TODO Cast Speed modifier: +27%
       Spell Critical Strike Chance: 35.8%
       Spell Critical Strike Multiplier: 248%
       Tempest Shield
-      #TOOLTIP Damage per Use: 826.4
-      #TODO Damage per Use: 826.4
+      #FIXME Damage per Use: 826.4
+      Damage per Use: 826.5
       Casts per Second: 1.3
       Spell Lightning Damage: 405-606
       #TODO Cast Speed modifier: +27%
       Spell Critical Strike Chance: 42.9%
       Spell Critical Strike Multiplier: 248%
       Arc
-      #TOOLTIP Damage per Second: 3771.7
-      #TODO Damage per Second: 3771.8
+      Damage per Second: 3771.8
       #NOTE Cast Time: 0.63
       Casts per Second: 1.6
       Spell Lightning Damage: 107-2004
@@ -456,8 +446,7 @@
     <BuildFile>T6-Arc-SpellEcho.json</BuildFile>
     <ExpectOffence>
       Arc
-      #TOOLTIP Damage per Second: 5202.9
-      #TODO Damage per Second: 5202.9
+      Damage per Second: 5202.9
       Casts per Second: 2.6
       Spell Lightning Damage: 96-1804
       #TODO Cast Speed modifier: +110%
@@ -471,8 +460,7 @@
     <BuildFile>T6-FBall-SpellEcho.json</BuildFile>
     <ExpectOffence>
       Fireball
-      #TOOLTIP Damage per Second: 1445.4
-      #TODO Damage per Second: 1445.4
+      Damage per Second: 1445.4
       Casts per Second: 2.5
       Spell Fire Damage: 203-304
       #TODO Cast Speed modifier: +110%
@@ -487,17 +475,16 @@
     <BuildFile>T7-GH-OffHandMace.json</BuildFile>
     <ExpectOffence>
       Glacial Hammer
-      #TOOLIP Damage per Second: 173.1
-      #TODO Damage per Second: 173.1
+      Damage per Second: 173.1
       Chance to Hit: 63%
-      #TOOLTIP Attack Time: 0.69
-      #FIXME Attacks per Second: 1.4
+      #NOTE Attack Time: 0.69
+      Attacks per Second: 1.4
       Main Hand Total Combined Damage: 66-264
       Main Hand Physical Damage: 23-93
       Main Hand Cold Damage: 43-171
       Main Hand Accuracy Rating: 487
       #TODO Main Hand Attack Speed modifier: +21%
-      #FIXME Main Hand Critical Strike Chance: 27.7%
+      Main Hand Critical Strike Chance: 27.7%
       Main Hand Critical Strike Multiplier: 218%
       Off Hand Total Combined Damage: 94-150
       Off Hand Physical Damage: 32-49
@@ -515,15 +502,14 @@
     <BuildFile>T7-LeapSlam-OffHandMace.json</BuildFile>
     <ExpectOffence>
       Leap Slam (Unuseable)
-      #TOOLTIP Damage per Second: 58.8
-      #TODO Damage per Second: 58.9
+      Damage per Second: 58.9
       Chance to Hit: 63%
       Attacks per Second: 0.9
       Main Hand Total Combined Damage: 38-149
       Main Hand Physical Damage: 38-149
       Main Hand Accuracy Rating: 487
       #TODO Main Hand Attack Speed modifier: +21%
-      #FIXME Main Hand Critical Strike Chance: 27.7%
+      Main Hand Critical Strike Chance: 27.7%
       Main Hand Critical Strike Multiplier: 218%
       Off Hand Total Combined Damage: 54-88
       Off Hand Physical Damage: 52-79
@@ -554,7 +540,7 @@
       #TOOLTIP Damage per Second: 799.4
       #TODO Damage per Second: 799.4
       Chance to Hit: 62%
-      #TOOLTIP Attack Time: 0.69
+      #NOTE Attack Time: 0.69
       #FIXME Attacks per Second: 1.4
       #FIXME Main Hand Total Combined Damage: 481-1099
       #FIXME Main Hand Physical Damage: 99-204
@@ -584,7 +570,7 @@
       #TOOLIP Damage per Second: 333.8
       #TODO Damage per Second: 333.8
       Chance to Hit: 62%
-      #TOOLTIP Attack Time: 0.95
+      #NOTE Attack Time: 0.95
       #FIXME Attacks per Second: 1
       #FIXME Main Hand Total Combined Damage: 276-646
       #FIXME Main Hand Physical Damage: 176-362

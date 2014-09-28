@@ -148,7 +148,7 @@ namespace POESKillTree.SkillTreeFiles
                     source.AccuracyRating(attrs);
 
                     source.AttackSpeed(this, attrs);
-                    APS += source.APS;
+                    APS += RoundHalfDownEvenValue(source.APS, 2); // XXX: Might as well round it inside of AttackSpeed method, if rounding in DPS method is correct.
 
                     source.CriticalStrike(attrs);
                 }
@@ -276,14 +276,16 @@ namespace POESKillTree.SkillTreeFiles
             // Returns damage per second.
             public float DamagePerSecond()
             {
-                float dps = 0;
+                // XXX: Dual wielding DPS is average hit dealt with average accuracy at average attack speed.
+                if (IsDualWielding)
+                {
+                    float avgHit = (Sources[0].DamagePerSecond() + Sources[1].DamagePerSecond()) / 2;
+                    float avgChanceToHit = RoundValue(ChanceToHit(Level, (Sources[0].Accuracy + Sources[1].Accuracy) / 2), 0) / 100;
 
-                foreach (AttackSource source in Sources)
-                    dps += source.DamagePerSecond();
+                    return avgHit * APS * avgChanceToHit;
+                }
 
-                dps /= Sources.Count;
-
-                return dps;
+                return Sources[0].DamagePerSecond();
             }
 
             // Returns true if gem is an attack skill, false otherwise.
@@ -294,6 +296,12 @@ namespace POESKillTree.SkillTreeFiles
                         || gem.Keywords.Contains("Spell") && gem.Mods.Find(mod => mod.Attribute.StartsWith("Deals")) != null) // It's Spell and deals damage.
                        && !gem.Keywords.Contains("Trap") && !gem.Keywords.Contains("Mine") // No traps & mines.
                        && !gem.Keywords.Contains("Support"); // Not a support gem.
+            }
+
+            // Returns true if damage is begin cast by character.
+            public bool IsDamageCast()
+            {
+                return Sources[0].IsDamageCast;
             }
 
              // Links support gems.
@@ -314,11 +322,11 @@ namespace POESKillTree.SkillTreeFiles
             {
                 AttributeSet props = new AttributeSet();
 
-                props.Add("Damage per Second: #", new List<float> { FloorValue(DamagePerSecond(), 1) });
+                props.Add(IsDamageCast() ? "Damage per Second: #" : "Damage per Use: #", new List<float> { RoundHalfDownValue(DamagePerSecond(), 1) });
 
                 if (Nature.Is(DamageSource.Attack))
                 {
-                    props.Add("Attacks per Second: #", new List<float> { RoundValue(APS, 1) });
+                    props.Add("Attacks per Second: #", new List<float> { RoundHalfDownValue(APS, 1) });
                     float chanceToHit;
                     if (IsDualWielding) // XXX: When dual wielding compute chance to hit from average accuracy of both hands.
                         chanceToHit = ChanceToHit(Level, (Sources[0].Accuracy + Sources[1].Accuracy) / 2);
@@ -344,7 +352,7 @@ namespace POESKillTree.SkillTreeFiles
                     if (source.CriticalChance > 0)
                     {
                         // XXX: Different rounding style for spells and attacks. Really?
-                        props.Add(source.Name + " Critical Strike Chance: #%", new List<float> { Nature.Is(DamageSource.Spell) ? RoundValue(source.CriticalChance, 1) : FloorValue(source.CriticalChance, 1) });
+                        props.Add(source.Name + " Critical Strike Chance: #%", new List<float> { Nature.Is(DamageSource.Spell) ? RoundValue(source.CriticalChance, 1) : RoundHalfDownValue(source.CriticalChance, 1) });
                         props.Add(source.Name + " Critical Strike Multiplier: #%", new List<float> { RoundValue(source.CriticalMultiplier, 0) });
                     }
                 }
@@ -624,9 +632,9 @@ namespace POESKillTree.SkillTreeFiles
                 Damage total = Deals.Find(d => d.Type == DamageType.Total);
                 if (total != null)
                 {
-                    float baseDPS = total.DamagePerSecond(IsDamageCast ? RoundValue(APS, 2) : 1); // XXX: CeilValue(2) is also possibility.
-                    // TODO: Confirm tooltip DPS of Arc(spell echo), FBall(spell echo).
-                    float chanceToHit = Nature.Is(DamageSource.Attack) ? ChanceToHit(Level, Accuracy) : 100;
+                    // TODO: Get rid of these IsDualWielding conditions. Maybe make separate Hit() method to return average hit for AttackSkill DPS method.
+                    float baseDPS = total.DamagePerSecond(IsDamageCast && !IsDualWielding ? RoundHalfDownEvenValue(APS, 2) : 1); // XXX: CeilValue(2) is also possibility.
+                    float chanceToHit = Nature.Is(DamageSource.Attack) && !IsDualWielding ? ChanceToHit(Level, Accuracy) : 100;
                     if (Local.ContainsKey("Hits can't be Evaded")) chanceToHit = 100; // Local weapon modifier (Kongor's Undying Rage).
 
                     return baseDPS * (1 + (CriticalChance / 100) * (RoundValue(CriticalMultiplier, 0) - 100) / 100) * (RoundValue(chanceToHit, 0) / 100); // XXX: CeilValue(CriticalMultiplier, 0) is also possibility.
@@ -1213,6 +1221,12 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Min = Compute.RoundValue(Min, 0);
                 Max = Compute.RoundValue(Max, 0);
+            }
+
+            public void RoundHalfDown()
+            {
+                Min = Compute.RoundHalfDownValue(Min, 0);
+                Max = Compute.RoundHalfDownValue(Max, 0);
             }
 
             public string ToAttribute()
@@ -2015,10 +2029,34 @@ namespace POESKillTree.SkillTreeFiles
             return reduction;
         }
 
+        // Returns rounded value with specified number of fractional digits (round half down if even digit before half).
+        public static float RoundHalfDownEvenValue(float value, int precision)
+        {
+            // Detect half.
+            float coeff = (float)Math.Pow(10, precision);
+            float half = value * coeff;
+
+            return (half - (int)half == 0.5 || half - (int)half == -0.5) && (int)half % 2 == 0
+                   ? (float)((int)half) / coeff
+                   : (float)Math.Round((decimal)value, precision, MidpointRounding.AwayFromZero);
+        }
+
+        // Returns rounded value with specified number of fractional digits (round half down).
+        public static float RoundHalfDownValue(float value, int precision)
+        {
+            // Detect half.
+            float coeff = (float)Math.Pow(10, precision);
+            float half = value * coeff;
+
+            return half - (int)half == 0.5 || half - (int)half == -0.5
+                   ? (float)((int)half) / coeff
+                   : (float)Math.Round((decimal)value, precision, MidpointRounding.AwayFromZero);
+        }
+
         // Returns rounded value with specified number of fractional digits.
         public static float RoundValue(float value, int precision)
         {
-            return (float)Math.Round((Decimal)value, precision, MidpointRounding.AwayFromZero);
+            return (float)Math.Round((decimal)value, precision, MidpointRounding.AwayFromZero);
         }
     }
 }
