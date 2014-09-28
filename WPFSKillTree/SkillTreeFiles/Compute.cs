@@ -32,7 +32,7 @@ namespace POESKillTree.SkillTreeFiles
             // List of damage gains.
             List<Damage.Gained> Gains = new List<Damage.Gained>();
             // The flag whether skill is useable.
-            public bool Useable = true;
+            public bool IsUseable = true;
 
             // The nature to match physical weapon damage while dual wielding.
             static DamageNature PhysicalWeaponDamage = new DamageNature() { Source = DamageSource.Attack, Type = DamageType.Physical };
@@ -42,11 +42,9 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Gem = gem;
                 Name = gem.Name;
-                Nature = new DamageNature(gem.Keywords);
+                Nature = Gems.NatureOf(gem);
 
                 Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness:  #%") ? gem.Attributes["Damage Effectiveness:  #%"][0] : 100;
-
-                Fixup();
             }
 
             // Applies item modifiers.
@@ -159,6 +157,12 @@ namespace POESKillTree.SkillTreeFiles
                 APS /= Sources.Count;
             }
 
+            // Returns true if skill can be used with weapon.
+            public bool CanUse(Weapon weapon)
+            {
+                return weapon.IsWeapon() && Nature.Is(weapon.Nature.WeaponType) && Gems.CanUse(Gem, weapon.Hand);
+            }
+
             // Converts damage types (applies damage conversions and gains).
             public void Convert(List<Damage> deals)
             {
@@ -258,6 +262,10 @@ namespace POESKillTree.SkillTreeFiles
 
                     if (OffHand.IsWeapon())
                         Sources.Add(new AttackSource("Off Hand", this, OffHand));
+
+                    // Skill can't be used with any hand, flag it as unuseable.
+                    if (!CanUse(MainHand) && !CanUse(OffHand))
+                        IsUseable = false;
                 }
                 else // Spell
                 {
@@ -265,47 +273,17 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
-            // Fixes properties of attack skill.
-            void Fixup()
+            // Returns damage per second.
+            public float DamagePerSecond()
             {
-                switch (Name)
-                {
-                    // Fireball doesn't show AoE part, remove it.
-                    case "Fireball":
-                        Nature.Area ^= DamageArea.Area;
-                        break;
+                float dps = 0;
 
-                    // Herald of Ice ignores Spell related bonuses, remove Spell source.
-                    case "Herald of Ice":
-                        Nature.Source ^= DamageSource.Spell;
-                        break;
+                foreach (AttackSource source in Sources)
+                    dps += source.DamagePerSecond();
 
-                    // Requires an Axe, Mace, Sword or Staff.
-                    // TODO: Parse weapon type requirements from description.
-                    // TODO: Leap Slam uses only main hand. Parse description for "with main hand"?
-                    // Leap Slam uses own Attacks per Second (1 / 1.4s).
-                    // @see http://pathofexile.gamepedia.com/Leap_Slam
-                    case "Leap Slam":
-                        Nature.WeaponType = WeaponType.Axe | WeaponType.Mace | WeaponType.Sword | WeaponType.Staff;
-                        Local.Add("Attacks per Second:  #", new List<float> { 1 / 1.4f });
-                        break;
+                dps /= Sources.Count;
 
-                    // Lightning Strike doesn't show projectile part, remove it.
-                    case "Lightning Strike":
-                        Nature.Form ^= DamageForm.Projectile;
-                        break;
-
-                    // Molten Strike doesn't show projectile part, remove it.
-                    case "Molten Strike":
-                        Nature.Area ^= DamageArea.Area;
-                        Nature.Form ^= DamageForm.Projectile;
-                        break;
-
-                    // Power Siphon requires Wands.
-                    case "Power Siphon":
-                        Nature.WeaponType = WeaponType.Wand;
-                        break;
-                }
+                return dps;
             }
 
             // Returns true if gem is an attack skill, false otherwise.
@@ -336,11 +314,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 AttributeSet props = new AttributeSet();
 
-                /*
-                props.Add("DPS: #", new List<float> { RoundValue(Sources[0].DamagePerSecond(), 1) });
-                if (Sources.Count > 1)
-                    props.Add("DPS2: #", new List<float> { RoundValue(Sources[1].DamagePerSecond(), 1) });
-                 */
+                props.Add("Damage per Second: #", new List<float> { FloorValue(DamagePerSecond(), 1) });
 
                 if (Nature.Is(DamageSource.Attack))
                 {
@@ -375,7 +349,7 @@ namespace POESKillTree.SkillTreeFiles
                     }
                 }
 
-                return new ListGroup(Name + (Useable ? "" : " (Unuseable)"), props);
+                return new ListGroup(Name + (IsUseable ? "" : " (Unuseable)"), props);
             }
         }
 
@@ -397,6 +371,8 @@ namespace POESKillTree.SkillTreeFiles
             public string Name;
             // The result nature of skill used with weapon.
             public DamageNature Nature;
+            // The flag whether damage is cast by character and thus affected by cast speed.
+            public bool IsDamageCast = true;
 
             // The increased/reduced accuracy rating with weapon type pattern.
             static Regex ReIncreasedAccuracyRatingWithWeaponType = new Regex("#% (increased|reduced) Accuracy Rating with (.+)$");
@@ -413,6 +389,8 @@ namespace POESKillTree.SkillTreeFiles
                 if (weapon == null) // Spells get damage from gem local attributes.
                 {
                     Nature = new DamageNature(skill.Nature);
+
+                    IsDamageCast = Gems.IsDamageCast(skill.Gem);
 
                     foreach (var attr in skill.Local)
                     {
@@ -435,12 +413,8 @@ namespace POESKillTree.SkillTreeFiles
                 else
                 {
                     if ((skill.Nature.WeaponType & weapon.Nature.WeaponType) == 0) // Skill can't be used.
-                    {
                         // Override weapon type of skill with actual weapon (client shows damage of unuseable skills as well).
                         Nature = new DamageNature(skill.Nature) { WeaponType = weapon.Nature.WeaponType };
-
-                        skill.Useable = false; // Flag skill as unuseable.
-                    }
                     else // Narrow down weapon type of skill gem to actual weapon (e.g. Frenzy).
                         Nature = new DamageNature(skill.Nature) { WeaponType = skill.Nature.WeaponType & weapon.Nature.WeaponType };
 
@@ -571,7 +545,6 @@ namespace POESKillTree.SkillTreeFiles
                 Deals.Add(total);
             }
 
-            // TODO: Resolute Technique & Unwavering Stance
             // Computes critical strike chance and multiplier.
             public void CriticalStrike(AttributeSet attrs)
             {
@@ -651,13 +624,12 @@ namespace POESKillTree.SkillTreeFiles
                 Damage total = Deals.Find(d => d.Type == DamageType.Total);
                 if (total != null)
                 {
-                    // TODO: Molten Shell, Lightning Warp, etc. doesn't get cast speed bonus (APS = 1).
-                    float baseDPS = total.DamagePerSecond(APS);
+                    float baseDPS = total.DamagePerSecond(IsDamageCast ? RoundValue(APS, 2) : 1); // XXX: CeilValue(2) is also possibility.
+                    // TODO: Confirm tooltip DPS of Arc(spell echo), FBall(spell echo).
                     float chanceToHit = Nature.Is(DamageSource.Attack) ? ChanceToHit(Level, Accuracy) : 100;
+                    if (Local.ContainsKey("Hits can't be Evaded")) chanceToHit = 100; // Local weapon modifier (Kongor's Undying Rage).
 
-                    // Arc: RoundValue(CriticalChance, 0)
-                    // Molten Shell, Lightning Warp, Temptes Shield, ... (non-cast damaging skills): CriticalChance
-                    return baseDPS * (1 + (CriticalChance / 100) * (RoundValue(CriticalMultiplier, 0) - 100) / 100) * chanceToHit / 100;
+                    return baseDPS * (1 + (CriticalChance / 100) * (RoundValue(CriticalMultiplier, 0) - 100) / 100) * (RoundValue(chanceToHit, 0) / 100); // XXX: CeilValue(CriticalMultiplier, 0) is also possibility.
                 }
 
                 return 0;
@@ -1258,6 +1230,8 @@ namespace POESKillTree.SkillTreeFiles
         {
             // List of all damage dealt by weapon.
             public List<Damage> Deals = new List<Damage>();
+            // Which hand is used to hold this weapon.
+            public WeaponHand Hand;
             // The item.
             public Item Item;
             // All attributes and mods.
@@ -1285,6 +1259,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 if (item != null)
                 {
+                    Hand = item.Class == Item.ItemClass.MainHand ? WeaponHand.Main : WeaponHand.Off;
                     Item = item;
 
                     // Get weapon type (damage nature).
@@ -1341,6 +1316,11 @@ namespace POESKillTree.SkillTreeFiles
             {
                 return Nature != null && (Nature.WeaponType & WeaponType.Weapon) != 0;
             }
+        }
+
+        public enum WeaponHand
+        {
+            Any, Main, Off
         }
 
         // Bitset.
@@ -1464,7 +1444,9 @@ namespace POESKillTree.SkillTreeFiles
         // Returns rounded value with all fractional digits after specified precision cut off.
         public static float CeilValue(float value, int precision)
         {
-            return (float)(Math.Ceiling(value * Math.Pow(10, precision)) / Math.Pow(10, precision));
+            float coeff = (float)Math.Pow(10, precision);
+
+            return (float)(Math.Ceiling((float)(value * coeff)) / coeff);
         }
 
         // Chance to Evade = 1 - Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
@@ -1472,6 +1454,8 @@ namespace POESKillTree.SkillTreeFiles
         // @see http://pathofexile.gamepedia.com/Evasion
         public static float ChanceToEvade(int level, float evasionRating)
         {
+            if (Global.ContainsKey("Cannot Evade enemy Attacks")) return 0; // The modifier can be from other source than Unwavering Stance.
+
             int maa = MonsterAverageAccuracy[level];
 
             float chance = RoundValue((float)(1 - maa / (maa + Math.Pow(evasionRating / 4, 0.8))) * 100, 0);
@@ -1486,6 +1470,8 @@ namespace POESKillTree.SkillTreeFiles
         // @see http://pathofexile.gamepedia.com/Accuracy
         public static float ChanceToHit(int level, float accuracyRating)
         {
+            if (ResoluteTechnique) return 100;
+
             int mae = MonsterAverageEvasion[level - 1]; // XXX: For some reason this works.
 
             float chance = (float)(accuracyRating / (accuracyRating + Math.Pow(mae / 4, 0.8))) * 100;
@@ -1898,7 +1884,9 @@ namespace POESKillTree.SkillTreeFiles
         // Returns rounded value with all fractional digits after specified precision cut off.
         public static float FloorValue(float value, int precision)
         {
-            return (float)(Math.Floor(value * Math.Pow(10, precision)) / Math.Pow(10, precision));
+            float coeff = (float)Math.Pow(10, precision);
+
+            return (float)(Math.Floor((float)(value * coeff)) / coeff);
         }
 
         // Returns value increased by specified percentage.

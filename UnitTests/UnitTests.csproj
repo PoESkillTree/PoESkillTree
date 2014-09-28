@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="TestCharacterSheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDPS.cs" />
+    <Compile Include="TestGems.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPFSKillTree\WPFSKillTree.csproj">
@@ -85,9 +87,15 @@
     <None Include="TestBuilds\T6-SA-BowGemLevel.json" />
     <None Include="TestBuilds\T6-SA-EK-Bow-AddPhy2BowAtkQuiver.json" />
     <None Include="TestBuilds\T6-VS-Dual-Dagger.json" />
+    <None Include="TestBuilds\T7-GH-OffHandMace.json" />
+    <None Include="TestBuilds\T7-LeapSlam-OffHandMace.json" />
+    <None Include="TestBuilds\T7-MS-WingsOfEntropy.json" />
+    <None Include="TestBuilds\T7-Sweep-WingsOfEntropy.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestBuilds\Builds.xml" />
+    <Content Include="TestBuilds\Builds.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
