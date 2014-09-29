@@ -492,11 +492,15 @@ namespace POESKillTree.Views
 
         private void ImportItems_Click(object sender, RoutedEventArgs e)
         {
-            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName, 
-                !string.IsNullOrEmpty(_persistentData.CurrentBuild.ItemData));
-            diw.Owner = this;
+            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName) {Owner = this};
             diw.ShowDialog();
             _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
+        }
+
+
+        private void ClearItems_Click(object sender, RoutedEventArgs e)
+        {
+            ClearCurrentItemData();
         }
 
         private void RedownloadTreeAssets_Click(object sender, RoutedEventArgs e)
@@ -541,6 +545,7 @@ namespace POESKillTree.Views
                 {
                     _itemAttributes = new ItemAttributes(itemData);
                     lbItemAttr.ItemsSource = _itemAttributes.Attributes;
+                    mnuClearItems.IsEnabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -566,6 +571,7 @@ namespace POESKillTree.Views
             lbItemAttr.ItemsSource = null;
             _allAttributesList.Clear();
             _allAttributeCollection.Refresh();
+            mnuClearItems.IsEnabled = false;
         }
 
         private void btnOverwriteBuild_Click(object sender, RoutedEventArgs e)
@@ -1249,6 +1255,5 @@ namespace POESKillTree.Views
         }
 
         #endregion
-
     }
 }

@@ -18,12 +18,10 @@ namespace POESKillTree.Views
             InitializeComponent();
         }
 
-        public DownloadItemsWindow(string characterName, bool showClear)
+        public DownloadItemsWindow(string characterName)
         {
             InitializeComponent();
             tbCharName.Text = string.IsNullOrEmpty(characterName) ? "YourCharacterName" : characterName;
-            if (showClear)
-                btnPopupClear.Visibility = Visibility.Visible;
         }
 
         public string GetCharacterName()
@@ -50,19 +48,13 @@ namespace POESKillTree.Views
             {
                 var itemData = File.ReadAllText(fileDialog.FileName);
                 (Owner as MainWindow).LoadItemData(itemData);
-                btnPopupClear.Visibility = Visibility.Visible;
+                DialogResult = true;
             }
         }
 
         private void btnPopupClose_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
-        }
-
-        private void btnPopupClear_Click(object sender, RoutedEventArgs e)
-        {
-            (Owner as MainWindow).ClearCurrentItemData();
-            btnPopupClear.Visibility = Visibility.Collapsed;
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
