@@ -33,7 +33,7 @@ namespace POESKillTree.SkillTreeFiles
                     var _WebClient = new WebClient();
                     _WebClient.DownloadFile(urlpath + image, "Data\\Assets\\" + image);
                 }
-                Images[image] = new BitmapImage(new Uri("Data\\Assets\\" + image, UriKind.Relative));
+                Images[image] = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\" + image, UriKind.Relative));
             }
         }
     }

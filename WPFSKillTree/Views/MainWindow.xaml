@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:POESKillTree.Controls"
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
-        Closing="Window_Closing" Icon="/POESKillTree;component/naja.ico" Loaded="Window_Loaded"
+        Closing="Window_Closing" Icon="/POESKillTree;component/naja.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown"
         TextOptions.TextFormattingMode="Display">
     <Window.Resources>
@@ -82,6 +82,12 @@
                       Data="F1 M 34.0001,60C 32.3433,60 31.0001,58.6569 31.0001,57L 31.0001,54.0001L 23,54.0001C 21.3431,54.0001 20,52.6569 20,51.0001L 20,24.0001C 20,22.3432 21.3431,21.0001 23,21.0001L 26.5001,20.9999C 26.5001,20.9999 27.4999,20.8807 27.4999,19.5C 27.4999,18.1193 29.1191,17 30.4999,17L 38.4998,17.0001C 39.8798,17.0001 41.4988,18.6176 41.5,19.9979L 41.4998,19.5024C 41.5009,20.881 42.5,21 42.5,21L 46,21.0001C 47.6569,21.0001 49,22.3432 49,24.0001L 49,31L 56,38L 56.0001,57C 56.0001,58.6569 54.657,60 53.0001,60L 34.0001,60 Z M 33.9999,31.0001L 33.9999,57.0001L 53.0001,57L 53.0001,43L 42.0002,43L 42.0001,31L 33.9999,31.0001 Z M 53,40.0001L 45,32.0001L 45.0001,40L 53,40.0001 Z M 28.5,25L 40.5,25C 40.5,25 39.4998,23.8809 39.4998,22.5002C 39.4998,21.1194 38.3805,20.0002 36.9998,20.0002L 31.9998,20.0002C 30.6191,20.0002 29.4998,21.1194 29.4998,22.5002C 29.4998,23.8809 28.5,25 28.5,25 Z "/>
             </Canvas>
         </ControlTemplate>
+        <ControlTemplate x:Key="RedownloadIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}"  
+                      Data="F1 M 20,17L 43.25,17L 56,29.75L 56,59L 20,59L 20,17 Z M 24,21L 24,55L 52,55L 52,34L 39,34L 39,21L 24,21 Z M 43,22.25L 43,30L 50.75,30L 43,22.25 Z M 30,33L 34,33L 34,41.5L 37,38.5L 37,43.25L 32,48.25L 27,42.75L 27,38.5L 30,41.5L 30,33 Z M 38,49L 38,53L 26,53L 26,49L 38,49 Z "/>
+            </Canvas>
+        </ControlTemplate>
         <ControlTemplate x:Key="GlobeIcon">
             <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
                 <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
@@ -96,27 +102,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Popup x:Name="popup1" Height="Auto" Placement="Center" Margin="0" >
-            <Border BorderThickness="1">
-                <StackPanel Background="{DynamicResource WhiteColorBrush}">
-                    <TextBlock Text="No Item Data Found" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Please enter Your Character Name Below and click on Download. " HorizontalAlignment="Center"/>
-                    <TextBlock Text="This Will open your default Web-browser and download the Item data.  " HorizontalAlignment="Center"/>
-                    <TextBlock Text="Save it to the data folder beside this executable  " HorizontalAlignment="Center"/>
-                    <TextBlock HorizontalAlignment="Center"><Run Text="it's name should be 'get-items"/><Run Language="de-de" Text="' or 'get-items.txt."/><LineBreak/><Run Language="de-de" Text="You can also load a specific file using the 'Load specific file' Button."/></TextBlock>
-                    <TextBlock Text="click on the Load Items Button Again to Load the items after the download' " HorizontalAlignment="Center"/>
-                    <TextBlock Text="" HorizontalAlignment="Center"/>
-                    <TextBlock Text="if you don't like the button or the tool just crashes the next time you click on Load Items " HorizontalAlignment="Center"/>
-                    <TextBlock Text="copy this link to your browser after typing your name " HorizontalAlignment="Center"/>
-                    <TextBox x:Name="tbCharLink" />
-                    <TextBox Text="YourCharacterName" x:Name="tbCharName" TextChanged="tbCharName_TextChanged"  HorizontalAlignment="Center"/>
-                    <TextBlock Text=""/>
-                    <Button Content="Download" x:Name="btnDownloadItemData" Width="auto" Height="auto" Click="btnDownloadItemData_Click"/>
-                    <Button Content="Ok" x:Name="btnPopup" Click="btnPopup_OnClick" Width="auto" Height="auto" />
-                    <Button Content="Load specific file" x:Name="btnDownloadItemData_Copy" Width="auto" Height="auto" Click="btnDownloadItemData_Copy_Click" />
-                </StackPanel>
-            </Border>
-        </Popup>
 
         <!-- grid row 0 - upper part-->
         <Menu IsMainMenu="True" x:Name="menu1" Grid.Row="0" Margin="0,0,0,2">
@@ -157,6 +142,34 @@
                     <MenuItem x:Name="mnuViewThemeLight" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Light" Click="mnuSetTheme_Click" />
                     <MenuItem x:Name="mnuViewThemeDark" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Dark" Click="mnuSetTheme_Click"/>
                 </MenuItem>
+                <MenuItem Header="_Accent ">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource ThemeIcon}" />
+                    </MenuItem.Icon>
+                    <MenuItem x:Name="mnuViewAccentAmber" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Amber" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentBlue" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Blue" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentBrown" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Brown" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentCobalt" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Cobalt" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentCrimson" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Crimson" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentCyan" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Cyan" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentEmerald" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Emerald" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentGreen" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Green" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentIndigo" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Indigo" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentLime" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Lime" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentMagenta" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Magenta" Click="mnuSetAccent_Click"/>
+                    <MenuItem x:Name="mnuViewAccentMauve" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Mauve" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentOlive" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Olive" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentOrange" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Orange" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentPink" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Pink" Click="mnuSetAccent_Click"/>
+                    <MenuItem x:Name="mnuViewAccentPurple" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Purple" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentRed" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Red" Click="mnuSetAccent_Click"/>
+                    <MenuItem x:Name="mnuViewAccentSienna" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Sienna" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentSteel" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Steel" Click="mnuSetAccent_Click"/>
+                    <MenuItem x:Name="mnuViewAccentTaupe" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Taupe" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentTeal" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Teal" Click="mnuSetAccent_Click" />
+                    <MenuItem x:Name="mnuViewAccentViolet" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Violet" Click="mnuSetAccent_Click"/>
+                    <MenuItem x:Name="mnuViewAccentYellow" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Yellow" Click="mnuSetAccent_Click" />
+                </MenuItem>
                 <Separator />
                 <MenuItem x:Name="mnuViewBuilds" Header="_Builds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="False" Click="ToggleBuilds_Click"/>
                 <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="False" InputGestureText="Ctrl+Q" Click="ToggleAttributes_Click"/>
@@ -182,6 +195,11 @@
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="_Redownload Tree Assets" Click="RedownloadTreeAssets_Click">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource RedownloadIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Help ">
                 <MenuItem Header="_Links ">
@@ -195,8 +213,10 @@
         </Menu>
 
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
-        <Grid x:Name="BtnGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Width="234" Panel.ZIndex="99" >
-            <ComboBox Height="26" HorizontalAlignment="Left" Margin="0,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox1_SelectionChanged" VerticalContentAlignment="Center">
+        <Grid x:Name="BtnGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Width="314" Panel.ZIndex="99" >
+            <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
+            <TextBox HorizontalAlignment="Left" Margin="40,0,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="textBox3_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
+            <ComboBox Height="26" HorizontalAlignment="Left" Margin="80,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox1_SelectionChanged" VerticalContentAlignment="Center">
                 <ComboBoxItem Content="Scion" />
                 <ComboBoxItem Content="Marauder" />
                 <ComboBoxItem Content="Ranger" />
@@ -205,8 +225,8 @@
                 <ComboBoxItem Content="Templar" />
                 <ComboBoxItem Content="Shadow" />
             </ComboBox>
-            <Label Content="Used:" Height="26" HorizontalAlignment="Left" Margin="107,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
-            <TextBox Height="26" Margin="143,0,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="32"/>
+            <Label Content="Used:" Height="26" HorizontalAlignment="Left" Margin="182,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
+            <TextBox Height="26" Margin="218,0,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="32"/>
 
             <Button Content="Reset" Height="26" HorizontalAlignment="Right" x:Name="button4" VerticalAlignment="Top" Width="40" Click="RecSkillTree_Reset_Click" VerticalContentAlignment="Center" Margin="0,0,0,0"/>
         </Grid>
@@ -256,8 +276,6 @@
                     <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Attributes</TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
-                    <Label Content="Level:" Height="28" HorizontalAlignment="Right" Margin="0,-28,40,0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
-                    <TextBox HorizontalAlignment="Right" Margin="0,-28,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="textBox3_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
                     <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Header="Passive Attributes" Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                             <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">

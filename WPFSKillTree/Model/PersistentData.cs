@@ -10,7 +10,19 @@ namespace POESKillTree.Model
     public class PersistentData
     {
         public Options Options { get; set; }
+        public PoEBuild CurrentBuild { get; set; }
         public List<PoEBuild> Builds { get; set; }
+
+        public PersistentData()
+        {
+            Options = new Options();
+            CurrentBuild = new PoEBuild
+            {
+                Url = "http://www.pathofexile.com/passive-skill-tree/AAAAAgMA",
+                Level = "1"
+            };
+            Builds = new List<PoEBuild>();
+        }
 
         public void SavePersistentDataToFile()
         {
@@ -29,6 +41,7 @@ namespace POESKillTree.Model
                 var obj = (PersistentData)ser.Deserialize(reader);
                 Options = obj.Options;
                 Builds = obj.Builds;
+                CurrentBuild = obj.CurrentBuild;
                 reader.Close();
             }
         }

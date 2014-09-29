@@ -4,22 +4,29 @@ using MahApps.Metro.Controls;
 namespace POESKillTree.Views
 {
     /// <summary>
-    /// Interaction logic for FormBuildName.xaml
+    /// Interaction logic for FormChooseBuildName.xaml
     /// </summary>
-    public partial class FormBuildName : MetroWindow
+    public partial class FormChooseBuildName : MetroWindow
     {
-        public FormBuildName()
+        public FormChooseBuildName()
         {
             InitializeComponent();
         }
-
-        public FormBuildName(string name, string note)
+        public FormChooseBuildName(string characterName, string itemData)
+        {
+            InitializeComponent();
+            txtCharacterName.Text = characterName;
+            txtItemData.Text = itemData;
+        }
+        public FormChooseBuildName(string name, string note, string characterName, string itemData)
         {
             InitializeComponent();
             txtName.Text = name;
-            txtName.Select(txtName.Text.Length, 0);
             txtName2.Text = note;
-            txtName2.Select(txtName2.Text.Length, 0);
+            txtCharacterName.Text = characterName;
+            txtItemData.Text = itemData;
+
+            txtName.Select(txtName.Text.Length, 0);
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
@@ -35,7 +42,14 @@ namespace POESKillTree.Views
         {
             return txtName2.Text;
         }
-
+        public string GetCharacterName()
+        {
+            return txtCharacterName.Text;
+        }
+        public string GetItemData()
+        {
+            return txtItemData.Text;
+        }
         private void FormChooseBuildName_Loaded(object sender, RoutedEventArgs e)
         {
             txtName.Focus();

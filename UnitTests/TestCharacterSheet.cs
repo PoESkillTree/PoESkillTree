@@ -80,7 +80,9 @@ namespace UnitTests
             // Initialize structures.
             Tree.LoadFromURL(treeURL);
             Tree.Level = level;
-            ItemAttributes itemAttributes = new ItemAttributes(buildFile);
+
+            string itemData = File.ReadAllText(buildFile);
+            ItemAttributes itemAttributes = new ItemAttributes(itemData);
             Compute.Initialize(Tree, itemAttributes);
 
             // Compare defense properties.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Cache;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -322,12 +323,12 @@ namespace POESKillTree.SkillTreeFiles
         {
             foreach (string faceName in FaceNames)
             {
-                var bi = new BitmapImage(new Uri("Data\\Assets\\" + faceName + ".png", UriKind.Relative));
+                var bi = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\" + faceName + ".png", UriKind.Relative));
                 FacesBrush.Add(new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi.PixelWidth, bi.PixelHeight),
                     new ImageBrush(bi)));
             }
 
-            var bi2 = new BitmapImage(new Uri("Data\\Assets\\PSStartNodeBackgroundInactive.png", UriKind.Relative));
+            var bi2 = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\PSStartNodeBackgroundInactive.png", UriKind.Relative));
             StartBackgrounds.Add(false,
                 (new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight),
                     new ImageBrush(bi2))));

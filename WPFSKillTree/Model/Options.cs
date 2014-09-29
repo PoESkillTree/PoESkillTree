@@ -1,23 +1,16 @@
 ﻿namespace POESKillTree.Model
 {
-    public enum OptionsTheme
-    {
-        Light,
-        Dark
-    }
     public class Options
     {
-        public string SkillTreeAddress { get; set; }
-        public string CharacterLevel { get; set; }
-        public OptionsTheme OptionsTheme { get; set; }
+        public string Theme { get; set; }
+        public string Accent { get; set; } //Controlled by Menu Accent Headers
         public bool AttributesBarOpened  { get; set; }
         public bool BuildsBarOpened { get; set; }
 
         public Options()
         {
-            SkillTreeAddress = "http://www.pathofexile.com/passive-skill-tree/AAAAAgMA";
-            OptionsTheme = OptionsTheme.Dark;
-            CharacterLevel = "1";
+            Theme = "Dark";
+            Accent = "Steel";
             AttributesBarOpened = false;
             BuildsBarOpened = false;
         }
