@@ -7,8 +7,6 @@ using Item = POESKillTree.ViewModels.ItemAttributes.Item;
 
 namespace POESKillTree.SkillTreeFiles
 {
-    // TODO: Add support for "Counts as Dual Wielding" mod. // @see http://pathofexile.gamepedia.com/Wings_of_Entropy
-    // XXX: "Uses both hand slots" mod on one-handed weapon locks off-hand slot, @see http://pathofexile.gamepedia.com/The_Goddess_Scorned
     public class Compute
     {
         public class AttackSkill
@@ -94,6 +92,28 @@ namespace POESKillTree.SkillTreeFiles
                 // Merge local gems and global attributes.
                 AttributeSet attrs = Global.Merge(Local);
 
+                // Iron Grip.
+                if (IronGrip || attrs.ContainsKey("Strength's damage bonus applies to Projectile Attacks made with Supported Skills"))
+                {
+                    // Create projectile attack damage bonus from value of implicit melee physical damage increase.
+                    float bonus = Implicit["#% increased Melee Physical Damage"][0];
+                    if (attrs.ContainsKey("#% increased Projectile Weapon Damage"))
+                        attrs["#% increased Projectile Weapon Damage"][0] += bonus;
+                    else
+                        attrs.Add("#% increased Projectile Weapon Damage", new List<float> { bonus });
+                }
+
+                // Iron Will.
+                if (attrs.ContainsKey("Strength's damage bonus applies to Spell Damage as well for Supported Skills"))
+                {
+                    // Create spell damage bonus from value of implicit melee physical damage increase.
+                    float bonus = Implicit["#% increased Melee Physical Damage"][0];
+                    if (attrs.ContainsKey("#% increased Spell Damage"))
+                        attrs["#% increased Spell Damage"][0] += bonus;
+                    else
+                        attrs.Add("#% increased Spell Damage", new List<float> { bonus });
+                }
+
                 // Collect damage gains, increases and multipliers.
                 foreach (var attr in attrs)
                 {
@@ -160,7 +180,7 @@ namespace POESKillTree.SkillTreeFiles
             // Returns true if skill can be used with weapon.
             public bool CanUse(Weapon weapon)
             {
-                return weapon.IsWeapon() && Nature.Is(weapon.Nature.WeaponType) && Gems.CanUse(Gem, weapon.Hand);
+                return weapon.IsWeapon() && Nature.Is(weapon.Nature.WeaponType) && Gems.CanUse(Gem, weapon);
             }
 
             // Converts damage types (applies damage conversions and gains).
@@ -250,7 +270,7 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // Creates sources of attack skill (spell, main hand and/or off hand).
-            // TODO: Iron Grip, Iron Will (http://pathofexile.gamepedia.com/Physical_damage)
+            // XXX: "Uses both hand slots" mod on one-handed weapon locks off-hand slot, @see http://pathofexile.gamepedia.com/The_Goddess_Scorned
             public void CreateSources()
             {
                 Sources = new List<AttackSource>();
@@ -259,7 +279,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     if (MainHand.IsWeapon())
                         Sources.Add(new AttackSource("Main Hand", this, MainHand));
-
+                        
                     if (OffHand.IsWeapon())
                         Sources.Add(new AttackSource("Off Hand", this, OffHand));
 
@@ -326,13 +346,13 @@ namespace POESKillTree.SkillTreeFiles
 
                 if (Nature.Is(DamageSource.Attack))
                 {
-                    props.Add("Attacks per Second: #", new List<float> { RoundHalfDownValue(APS, 1) });
                     float chanceToHit;
                     if (IsDualWielding) // XXX: When dual wielding compute chance to hit from average accuracy of both hands.
                         chanceToHit = ChanceToHit(Level, (Sources[0].Accuracy + Sources[1].Accuracy) / 2);
                     else
                         chanceToHit = ChanceToHit(Level, Sources[0].Accuracy);
                     props.Add("Chance to Hit: #%", new List<float> { RoundValue(chanceToHit, 0) });
+                    props.Add("Attacks per Second: #", new List<float> { RoundHalfDownValue(APS, 1) });
                 }
                 else
                     props.Add("Casts per Second: #", new List<float> { RoundValue(APS, 1) });
@@ -429,6 +449,10 @@ namespace POESKillTree.SkillTreeFiles
                     foreach (Damage damage in weapon.Deals)
                         Deals.Add(new Damage(damage) { Area = Nature.Area, Form = Nature.Form, Source = Nature.Source, WeaponType = Nature.WeaponType });
 
+                    foreach (Damage.Added added in weapon.Added)
+                        if (added.Hand == WeaponHand.Any || added.Hand == weapon.Hand) // Added damage may require specific hand.
+                        added.Apply(this, 100);
+
                     APS = weapon.Attributes["Attacks per Second:  #"][0];
 
                     if (weapon.Attributes.ContainsKey("Critical Strike Chance:  #%"))
@@ -464,7 +488,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 if (IsDualWielding && attrs.ContainsKey("#% increased Accuracy Rating while Dual Wielding"))
                     incAcc += attrs["#% increased Accuracy Rating while Dual Wielding"][0];
-                if (incAcc > 0)
+                if (incAcc != 0)
                     Accuracy = IncreaseValueByPercentage(Accuracy, incAcc);
             }
 
@@ -495,7 +519,7 @@ namespace POESKillTree.SkillTreeFiles
                     }
                     if (IsDualWielding && attrs.ContainsKey("#% increased Attack Speed while Dual Wielding"))
                         incAS += attrs["#% increased Attack Speed while Dual Wielding"][0];
-                    if (incAS > 0)
+                    if (incAS != 0)
                         APS = IncreaseValueByPercentage(APS, incAS);
 
                     float moreAS = 0;
@@ -503,7 +527,7 @@ namespace POESKillTree.SkillTreeFiles
                         moreAS += attrs["#% more Attack Speed"][0];
                     if (attrs.ContainsKey("#% less Attack Speed"))
                         moreAS -= attrs["#% less Attack Speed"][0];
-                    if (moreAS > 0)
+                    if (moreAS != 0)
                         APS = IncreaseValueByPercentage(APS, moreAS);
                 }
                 else
@@ -515,7 +539,7 @@ namespace POESKillTree.SkillTreeFiles
                         incCS -= attrs["#% reduced Cast Speed"][0];
                     if (IsDualWielding && attrs.ContainsKey("#% increased Cast Speed while Dual Wielding"))
                         incCS += attrs["#% increased Cast Speed while Dual Wielding"][0];
-                    if (incCS > 0)
+                    if (incCS != 0)
                         APS = IncreaseValueByPercentage(APS, incCS);
 
                     float moreCS = 0;
@@ -523,7 +547,7 @@ namespace POESKillTree.SkillTreeFiles
                         moreCS += attrs["#% more Cast Speed"][0];
                     if (attrs.ContainsKey("#% less Cast Speed"))
                         moreCS -= attrs["#% less Cast Speed"][0];
-                    if (moreCS > 0)
+                    if (moreCS != 0)
                         APS = IncreaseValueByPercentage(APS, moreCS);
                 }
             }
@@ -847,8 +871,11 @@ namespace POESKillTree.SkillTreeFiles
                 float Min;
                 // The added damage maximum.
                 float Max;
+                // The weapon hand to be applied to only.
+                public WeaponHand Hand = WeaponHand.Any;
 
                 static Regex ReAddMod = new Regex("Adds #-# ([^ ]+) Damage$");
+                static Regex ReAddInHandMod = new Regex("Adds #-# ([^ ]+) Damage in (Main|Off) Hand$");
                 static Regex ReAddWithBows = new Regex("Adds #-# ([^ ]+) Damage to attacks with Bows");
 
                 public Added(DamageSource source, string type, float min, float max)
@@ -873,6 +900,22 @@ namespace POESKillTree.SkillTreeFiles
                         {
                             return new Added(DamageSource.Attack, m.Groups[1].Value, attr.Value[0], attr.Value[1]) { WeaponType = WeaponType.Bow };
                         }
+                    }
+
+                    return null;
+                }
+
+                // Creates added damage from weapon local mod.
+                public static Added Create(DamageSource source, Item.Mod mod)
+                {
+                    Match m = ReAddMod.Match(mod.Attribute);
+                    if (m.Success)
+                        return new Added(source, m.Groups[1].Value, mod.Value[0], mod.Value[1]);
+                    else
+                    {
+                        m = ReAddInHandMod.Match(mod.Attribute);
+                        if (m.Success)
+                            return new Added(source, m.Groups[1].Value, mod.Value[0], mod.Value[1]) { Hand = m.Groups[2].Value == "Main" ? WeaponHand.Main : WeaponHand.Off };
                     }
 
                     return null;
@@ -1244,6 +1287,8 @@ namespace POESKillTree.SkillTreeFiles
         {
             // List of all damage dealt by weapon.
             public List<Damage> Deals = new List<Damage>();
+            // List of all non-physical damage added.
+            public List<Damage.Added> Added = new List<Damage.Added>();
             // Which hand is used to hold this weapon.
             public WeaponHand Hand;
             // The item.
@@ -1268,6 +1313,18 @@ namespace POESKillTree.SkillTreeFiles
                 { "Wand",               WeaponType.Wand },
                 { "Melee",              WeaponType.Melee }
             };
+
+            // Copy constructor.
+            Weapon(Weapon weapon)
+            {
+                Item = weapon.Item;
+                Nature = new DamageNature(weapon.Nature);
+                Attributes = new AttributeSet(weapon.Attributes);
+
+                foreach (Damage damage in weapon.Deals)
+                    Deals.Add(new Damage(damage));
+                Added = weapon.Added;
+            }
 
             public Weapon(Item item)
             {
@@ -1301,13 +1358,29 @@ namespace POESKillTree.SkillTreeFiles
                         Attributes.Add(attr);
 
                         Damage damage = Damage.Create(Nature, attr);
-                        if (damage != null) Deals.Add(damage);
+                        if (damage != null && damage.Type == DamageType.Physical) // Create only physical damage from item properties.
+                            Deals.Add(damage);
                     }
 
-                    // Copy local and non-local mods.
+                    // Copy local and non-local mods and collect added non-physical damage.
                     foreach (var mod in item.Mods)
+                    {
+                        if (mod.isLocal)
+                        {
+                            Damage.Added added = Damage.Added.Create(Nature.Source, mod);
+                            if (added != null && added.Type != DamageType.Physical)
+                                Added.Add(added);
+                        }
+
                         Attributes.Add(mod);
+                    }
                 }
+            }
+
+            // Returns clone of weapon for specified hand.
+            public Weapon Clone(WeaponHand forHand)
+            {
+                return new Weapon(this) { Hand = forHand };
             }
 
             // Returns attribute's list of values, or empty list if not found.
@@ -1382,6 +1455,7 @@ namespace POESKillTree.SkillTreeFiles
         public static bool BloodMagic;
         public static bool ChaosInoculation;
         public static bool EldritchBattery;
+        public static bool IronGrip;
         public static bool IronReflexes;
         public static bool NecromanticAegis;
         public static bool ResoluteTechnique;
@@ -1916,6 +1990,12 @@ namespace POESKillTree.SkillTreeFiles
 
             MainHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.MainHand));
             OffHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.OffHand));
+
+            // If main hand weapon has Counts as Dual Wielding modifier, then clone weapon to off hand.
+            // @see http://pathofexile.gamepedia.com/Wings_of_Entropy
+            if (MainHand.Attributes.ContainsKey("Counts as Dual Wielding"))
+                OffHand = MainHand.Clone(WeaponHand.Off);
+
             IsDualWielding = MainHand.IsWeapon() && OffHand.IsWeapon();
             IsWieldingStaff = MainHand.Is(WeaponType.Staff);
 
@@ -1932,6 +2012,7 @@ namespace POESKillTree.SkillTreeFiles
             BloodMagic = Tree.ContainsKey("Removes all mana. Spend Life instead of Mana for Skills");
             ChaosInoculation = Tree.ContainsKey("Maximum Life becomes #, Immune to Chaos Damage");
             EldritchBattery = Tree.ContainsKey("Converts all Energy Shield to Mana");
+            IronGrip = Tree.ContainsKey("The increase to Physical Damage from Strength applies to Projectile Attacks as well as Melee Attacks");
             IronReflexes = Tree.ContainsKey("Converts all Evasion Rating to Armour. Dexterity provides no bonus to Evasion Rating");
             NecromanticAegis = Tree.ContainsKey("All bonuses from an equipped Shield apply to your Minions instead of you");
             ResoluteTechnique = Tree.ContainsKey("Never deal Critical Strikes");

@@ -13,6 +13,7 @@ using DamageNature = POESKillTree.SkillTreeFiles.Compute.DamageNature;
 using DamageSource = POESKillTree.SkillTreeFiles.Compute.DamageSource;
 using WeaponHand = POESKillTree.SkillTreeFiles.Compute.WeaponHand;
 using WeaponType = POESKillTree.SkillTreeFiles.Compute.WeaponType;
+using Weapon = POESKillTree.SkillTreeFiles.Compute.Weapon;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -50,7 +51,7 @@ namespace POESKillTree.SkillTreeFiles
      * Searing Bond                                 None
      * Shield Charge                                Unknown
      * Shockwave Totem                              None
-     * Sweep                                        Unknown
+     * Sweep                                        Partial
      * Vitality                                     None
      * Warlord's Mark                               None
      * 
@@ -148,7 +149,7 @@ namespace POESKillTree.SkillTreeFiles
      * Added Cold Damage                            Unknown
      * Added Fire Damage                            Unknown
      * Added Lightning Damage                       Partial
-     * Additional Accuracy                          None
+     * Additional Accuracy                          Unknown
      * Blind                                        None
      * Block Chance Reduction                       None
      * Blood Magic                                  None
@@ -170,8 +171,8 @@ namespace POESKillTree.SkillTreeFiles
      * Endurance Charge on Melee Stun               None
      * Enhance                                      None
      * Enlighten                                    None
-     * Faster Attacks                               None
-     * Faster Casting                               None
+     * Faster Attacks                               Unknown
+     * Faster Casting                               Unknown
      * Faster Projectiles                           Partial
      * Fire Penetration                             None
      * Fork                                         None
@@ -179,11 +180,11 @@ namespace POESKillTree.SkillTreeFiles
      * Greater Multiple Projectiles                 Unknown
      * Increased Area of Effect                     None
      * Increased Burning Damage                     None
-     * Increased Critical Damage                    None
-     * Increased Critical Strikes                   None
+     * Increased Critical Damage                    Partial
+     * Increased Critical Strikes                   Partial
      * Increased Duration                           None
-     * Iron Grip                                    None
-     * Iron Will                                    None
+     * Iron Grip                                    Partial
+     * Iron Will                                    Partial
      * Item Quantity                                None
      * Item Rarity                                  None
      * Knockback                                    None
@@ -203,14 +204,14 @@ namespace POESKillTree.SkillTreeFiles
      * Multistrike                                  Unknown
      * Physical Projectile Attack Damage            Unknown
      * Pierce                                       None
-     * Point Blank                                  None
+     * Point Blank                                  Unknown
      * Power Charge On Critical                     None
      * Ranged Attack Totem                          None
      * Reduced Duration                             None
      * Reduced Mana                                 None
      * Remote Mine                                  None
-     * Slower Projectiles                           None
-     * Spell Echo                                   None
+     * Slower Projectiles                           Unknown
+     * Spell Echo                                   Partial
      * Spell Totem                                  None
      * Stun                                         None
      * Trap                                         None
@@ -232,6 +233,8 @@ namespace POESKillTree.SkillTreeFiles
             internal DamageForm IgnoreForm = DamageForm.Any;
             // Defines which damage source nature of skill should be ignored.
             internal DamageSource IgnoreSource = DamageSource.Any;
+            // Defines which damage form should be included.
+            internal DamageForm IncludeForm = DamageForm.Any;
             // Defines whether damage dealt by skill is cast by character and thus affected by cast speed.
             internal bool NonCastDamage = false;
 
@@ -439,11 +442,21 @@ namespace POESKillTree.SkillTreeFiles
         }
 
 
-        // Returns true if gem can use specified hand, false otherwise.
-        public static bool CanUse(Item gem, WeaponHand hand)
+        // Returns true if gem can use weapon, false otherwise.
+        public static bool CanUse(Item gem, Weapon weapon)
         {
-            if (DB.ContainsKey(gem.Name) && DB[gem.Name].RequiredHand != WeaponHand.Any)
-                return hand == DB[gem.Name].RequiredHand;
+            if (DB.ContainsKey(gem.Name))
+            {
+                Gem entry = DB[gem.Name];
+                if (entry.RequiredHand != WeaponHand.Any && weapon.Hand != entry.RequiredHand)
+                    return false;
+
+                // Weapon having "Counts as Dual Wielding" mod cannot be used to perform skills that require a two-handed weapon.
+                // @see http://pathofexile.gamepedia.com/Wings_of_Entropy
+                if (entry.RequiredWeapon != WeaponType.Any && (entry.RequiredWeapon & WeaponType.TwoHandedMelee) != 0
+                    && weapon.Attributes.ContainsKey("Counts as Dual Wielding"))
+                    return false;
+            }
 
             return true;
         }
@@ -479,6 +492,10 @@ namespace POESKillTree.SkillTreeFiles
                 // Ignore source.
                 if (entry.IgnoreSource != DamageSource.Any)
                     nature.Source ^= entry.IgnoreSource;
+
+                // Include form.
+                if (entry.IncludeForm != DamageForm.Any)
+                    nature.Form |= entry.IncludeForm;
             }
 
             return nature;
@@ -592,7 +609,16 @@ namespace POESKillTree.SkillTreeFiles
                         { "Mana Cost:  #", new RangeMap(1, 1, 5, 2, 4, 6, 5, 8, 7, 9, 16, 8, 17, MaxLevel, 10) },
                         { "#% increased Physical Damage", new Linear(3, -3) },
                         { "# additional Arrows", new RangeMap(1, 4, 2, 5, 9, 3, 10, 16, 4, 17, 20, 5, 21, MaxLevel, 6) }
-                    }
+                    },
+                    IncludeForm = DamageForm.Projectile
+                }
+            }, {
+                "Sweep",
+                new Gem {
+                    Attrs = new Values {
+                        { "Attacks per Second:  #", new RangeMap(1, MaxLevel, 1 / 1.15f) }, // Sweep has its own attack time of 1.15 seconds.
+                    },
+                    RequiredWeapon = WeaponType.Staff | WeaponType.TwoHandedAxe | WeaponType.TwoHandedMace
                 }
             }, {
                 "Tempest Shield",

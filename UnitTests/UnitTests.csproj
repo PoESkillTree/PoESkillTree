@@ -91,6 +91,7 @@
     <None Include="TestBuilds\T7-LeapSlam-OffHandMace.json" />
     <None Include="TestBuilds\T7-MS-WingsOfEntropy.json" />
     <None Include="TestBuilds\T7-Sweep-WingsOfEntropy.json" />
+    <None Include="TestBuilds\T8-EK-IronGrip-IronWill.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestBuilds\Builds.xml">

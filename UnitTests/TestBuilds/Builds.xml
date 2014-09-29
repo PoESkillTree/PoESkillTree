@@ -530,35 +530,35 @@
       Estimated chance to Evade Attacks: 9%
       Maximum Energy Shield: 177
       Energy Shield Recharge per Second: 59
+      Life Regeneration per Second: 11.5
       Mana Regeneration per Second: 57.4
-      #FIXME Chance to Block Attacks: 25%
-      #FIXME Chance to Block Spells: 6%
+      Chance to Block Attacks: 25%
+      Chance to Block Spells: 6%
       #TODO Movement Speed modifier: +6%
     </ExpectDefence>
     <ExpectOffence>
       Molten Strike
-      #TOOLTIP Damage per Second: 799.4
-      #TODO Damage per Second: 799.4
+      Damage per Second: 799.4
       Chance to Hit: 62%
       #NOTE Attack Time: 0.69
-      #FIXME Attacks per Second: 1.4
-      #FIXME Main Hand Total Combined Damage: 481-1099
-      #FIXME Main Hand Physical Damage: 99-204
-      #FIXME Main Hand Fire Damage: 379-752
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 481-1099
+      Main Hand Physical Damage: 99-204
+      Main Hand Fire Damage: 379-752
       Main Hand Lightning Damage: 3-143
       Main Hand Accuracy Rating: 448
       #TODO Main Hand Attack Speed modifier: +21%
       Main Hand Critical Strike Chance: 15.5%
       Main Hand Critical Strike Multiplier: 218%
-      #TODO Off Hand Total Combined Damage: 424-1003
-      #TODO Off Hand Physical Damage: 99-204
-      #TODO Off Hand Fire Damage: 241-496
-      #TODO Off Hand Lightning Damage: 3-143
-      #TODO Off Hand Chaos Damage: 81-160
-      #TODO Off Hand Accuracy Rating: 448
+      Off Hand Total Combined Damage: 424-1003
+      Off Hand Physical Damage: 99-204
+      Off Hand Fire Damage: 241-496
+      Off Hand Lightning Damage: 3-143
+      Off Hand Chaos Damage: 81-160
+      Off Hand Accuracy Rating: 448
       #TODO Off Hand Attack Speed modifier: +21%
-      #TODO Off Hand Critical Strike Chance: 15.5%
-      #TODO Off Hand Critical Strike Multiplier: 218%
+      Off Hand Critical Strike Chance: 15.5%
+      Off Hand Critical Strike Multiplier: 218%
     </ExpectOffence>
   </TestBuild>
   <TestBuild>
@@ -566,14 +566,13 @@
     <Level>81</Level>
     <BuildFile>T7-Sweep-WingsOfEntropy.json</BuildFile>
     <ExpectOffence>
-      Sweep
-      #TOOLIP Damage per Second: 333.8
-      #TODO Damage per Second: 333.8
+      Sweep (Unuseable)
+      Damage per Second: 333.8
       Chance to Hit: 62%
       #NOTE Attack Time: 0.95
-      #FIXME Attacks per Second: 1
-      #FIXME Main Hand Total Combined Damage: 276-646
-      #FIXME Main Hand Physical Damage: 176-362
+      Attacks per Second: 1
+      Main Hand Total Combined Damage: 276-646
+      Main Hand Physical Damage: 176-362
       Main Hand Fire Damage: 98-182
       Main Hand Lightning Damage: 2-102
       Main Hand Accuracy Rating: 448
@@ -581,15 +580,41 @@
       Main Hand Critical Strike Chance: 15.5%
       Main Hand Critical Strike Multiplier: 218%
       #TODO Main Hand chance to Knockback: 30%
-      #TODO Off Hand Total Combined Damage: 235-577
-      #TODO Off Hand Physical Damage: 176-362
-      #TODO Off Hand Lightning Damage: 2-102
-      #TODO Off Hand Chaos Damage: 57-113
-      #TODO Off Hand Accuracy Rating: 448
+      Off Hand Total Combined Damage: 235-577
+      Off Hand Physical Damage: 176-362
+      Off Hand Lightning Damage: 2-102
+      Off Hand Chaos Damage: 57-113
+      Off Hand Accuracy Rating: 448
       #TODO Off Hand Attack Speed modifier: +21%
-      #TODO Off Hand Critical Strike Chance: 15.5%
-      #TODO Off Hand Critical Strike Multiplier: 218%
+      Off Hand Critical Strike Chance: 15.5%
+      Off Hand Critical Strike Multiplier: 218%
       #TODO Off Hand chance to Knockback: 30%
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Irong Grip, Iron Will -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-EK-IronGrip-IronWill.json</BuildFile>
+    <ExpectOffence>
+      Split Arrow
+      Damage per Second: 38.1
+      Chance to Hit: 62%
+      Attacks per Second: 1
+      Main Hand Total Combined Damage: 25-74
+      Main Hand Physical Damage: 25-74
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: -9%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Ethereal Knives
+      Damage per Second: 22.5
+      Casts per Second: 1.2
+      Spell Total Combined Damage: 11-17
+      Spell Physical Damage: 11-17
+      #TODO Cast Speed modifier: -7%
+      Spell Critical Strike Chance: 26.3%
+      Spell Critical Strike Multiplier: 248%
     </ExpectOffence>
   </TestBuild>
 </TestData>

@@ -102,7 +102,7 @@ namespace POESKillTree.ViewModels
                               && (attr == "#% increased Attack Speed"
                                   || attr == "#% increased Accuracy Rating"
                                   || attr == "+# to Accuracy Rating"
-                                  || attr.StartsWith("Adds ") && attr.EndsWith(" Damage")
+                                  || attr.StartsWith("Adds ") && (attr.EndsWith(" Damage") || attr.EndsWith(" Damage in Main Hand") || attr.EndsWith(" Damage in Off Hand"))
                                   || attr == "#% increased Physical Damage");
                 }
             }
@@ -117,8 +117,6 @@ namespace POESKillTree.ViewModels
             public GemColorClass GemClass;
             // The socket group of gem (all gems with same socket group value are linked).
             public int SocketGroup;
-
-            static string[] ElementalValueColor = new string[] { "", "", "", "", "Fire", "Cold", "Lightning" };
 
             public Item(ItemClass iClass, RavenJObject val)
             {
@@ -183,16 +181,7 @@ namespace POESKillTree.ViewModels
                         }
                         string cs = obj["name"].Value<string>() + ": " + (numberfilter.Replace(s, "#"));
 
-                        if (cs.StartsWith("Elemental Damage:")) // Split Elemental Damage property to respective Fire/Cold/Lightning Damage attributes.
-                        {
-                            int i = 0;
-                            foreach (RavenJArray jva in (RavenJArray)obj["values"])
-                            {
-                                Attributes.Add(ElementalValueColor[jva[1].Value<int>()] + " Damage:  #-#", new List<float>() { values[i], values[i + 1] });
-                                i += 2;
-                            }
-
-                        } else Attributes.Add(cs, values);
+                        Attributes.Add(cs, values);
                     }
                 if (val.ContainsKey("explicitMods"))
                     foreach (string s in val["explicitMods"].Values<string>())
