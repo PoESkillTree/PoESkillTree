@@ -752,4 +752,90 @@
       Off Hand Critical Strike Multiplier: 218%
     </ExpectOffence>
   </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-GroundSlam-FlickerStrike-AddAccuracy-AddColdDmg.json</BuildFile>
+    <ExpectOffence>
+      Flicker Strike
+      Damage per Use: 81.8
+      Chance to Hit: 63%
+      Attacks per Second: 1.8
+      Main Hand Total Combined Damage: 65-105
+      Main Hand Physical Damage: 62-94
+      Main Hand Fire Damage: 3-11
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +49%
+      Main Hand Critical Strike Chance: 26.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 45-178
+      Off Hand Physical Damage: 45-178
+      Off Hand Accuracy Rating: 487
+      #TODO Off Hand Attack Speed modifier: +49%
+      Off Hand Critical Strike Chance: 27.7%
+      Off Hand Critical Strike Multiplier: 218%
+      Ground Slam
+      Damage per Second: 90.4
+      Chance to Hit: 66%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 49-77
+      Main Hand Physical Damage: 40-60
+      Main Hand Fire Damage: 2-7
+      Main Hand Cold Damage: 7-10
+      Main Hand Accuracy Rating: 530
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 26.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 36-124
+      Off Hand Physical Damage: 29-114
+      Off Hand Cold Damage: 7-10
+      Off Hand Accuracy Rating: 569
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 27.7%
+      Off Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-Cleave-WhirlingBlades.json</BuildFile>
+    <ExpectOffence>
+      Whirling Blades
+      Damage per Use: 81.8
+      Chance to Hit: 63%
+      Attacks per Second: 0.4
+      Main Hand Total Combined Damage: 41-168
+      Main Hand Physical Damage: 39-72
+      Main Hand Lightning Damage: 2-96
+      Main Hand Accuracy Rating: 529
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 35-195
+      Off Hand Physical Damage: 33-99
+      Off Hand Lightning Damage: 2-96
+      Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 15.5%
+      Off Hand Critical Strike Multiplier: 218%
+      Cleave
+      Damage per Second: 184.9
+      Chance to Hit: 63%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 33-137
+      Main Hand Physical Damage: 31-59
+      Main Hand Lightning Damage: 2-78
+      Main Hand Accuracy Rating: 529
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 29-158
+      Off Hand Physical Damage: 27-80
+      Off Hand Lightning Damage: 2-78
+      Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 15.5%
+      Off Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
 </TestData>

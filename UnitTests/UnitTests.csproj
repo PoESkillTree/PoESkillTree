@@ -91,11 +91,13 @@
     <None Include="TestBuilds\T7-LeapSlam-OffHandMace.json" />
     <None Include="TestBuilds\T7-MS-WingsOfEntropy.json" />
     <None Include="TestBuilds\T7-Sweep-WingsOfEntropy.json" />
+    <None Include="TestBuilds\T8-Cleave-WhirlingBlades.json" />
     <None Include="TestBuilds\T8-DualStrike-MeleePhyDmg.json" />
     <None Include="TestBuilds\T8-DualStrike-MeleeSplash.json" />
     <None Include="TestBuilds\T8-DualStrike-NoSupport.json" />
     <None Include="TestBuilds\T8-DualStrike-Reave-MeleeSplash-MeleePhyDmg.json" />
     <None Include="TestBuilds\T8-EK-IronGrip-IronWill.json" />
+    <None Include="TestBuilds\T8-GroundSlam-FlickerStrike-AddAccuracy-AddColdDmg.json" />
     <None Include="TestBuilds\T8-HS-Multistrike-FasterAttacks.json" />
   </ItemGroup>
   <ItemGroup>

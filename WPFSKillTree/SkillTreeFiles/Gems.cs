@@ -29,7 +29,7 @@ namespace POESKillTree.SkillTreeFiles
      * ====================
      * Anger                                        None
      * Animate Guardian                             None
-     * Cleave                                       Unknown
+     * Cleave                                       Partial
      * Decoy Totem                                  None
      * Determination                                None
      * Devouring Totem                              None
@@ -37,7 +37,7 @@ namespace POESKillTree.SkillTreeFiles
      * Enduring Cry                                 None
      * Flame Totem                                  None
      * Glacial Hammer                               Partial
-     * Ground Slam                                  Unknown
+     * Ground Slam                                  Partial
      * Heavy Strike                                 Full
      * Herald of Ash                                None
      * Immortal Call                                None
@@ -46,7 +46,7 @@ namespace POESKillTree.SkillTreeFiles
      * Lightning Strike                             Incomplete
      * Molten Shell                                 Incomplete
      * Molten Strike                                Incomplete
-     * Punishment                                   Unknown
+     * Punishment                                   None
      * Purity of Fire                               None
      * Rejuvenation Totem                           None
      * Searing Bond                                 None
@@ -95,7 +95,7 @@ namespace POESKillTree.SkillTreeFiles
      * Temporal Chains                              None
      * Tornado Shot                                 Partial
      * Viper Strike                                 Partial
-     * Whirling Blades                              Unknown
+     * Whirling Blades                              Partial
      *
      * Intelligence skill gems:
      * ========================
@@ -147,10 +147,10 @@ namespace POESKillTree.SkillTreeFiles
      * Support gems:
      * =============
      * Added Chaos Damage                           Unknown
-     * Added Cold Damage                            Unknown
+     * Added Cold Damage                            Partial
      * Added Fire Damage                            Unknown
      * Added Lightning Damage                       Partial
-     * Additional Accuracy                          Unknown
+     * Additional Accuracy                          Partial
      * Blind                                        None
      * Block Chance Reduction                       None
      * Blood Magic                                  None
@@ -238,8 +238,8 @@ namespace POESKillTree.SkillTreeFiles
             internal DamageSource IgnoreSource = DamageSource.Any;
             // Defines which damage form should be included.
             internal DamageForm IncludeForm = DamageForm.Any;
-            // Defines whether damage dealt by skill is cast by character and thus affected by cast speed.
-            internal bool NonCastDamage = false;
+            // Defines whether damage is affected by attack/cast speed.
+            internal bool DamageOnUse = false;
             // Defines whether gem supports AoE skill gems.
             internal bool SupportsAoE = true;
             // Defines whether skill strikes with both weapons at once instead of alternating weapons while dual wielding.
@@ -514,16 +514,16 @@ namespace POESKillTree.SkillTreeFiles
             return true;
         }
 
+        // Returns true if DamageOnUse is set to true, false otherwise.
+        public static bool IsDamageOnUse(Item gem)
+        {
+            return DB.ContainsKey(gem.Name) ? DB[gem.Name].DamageOnUse : false;
+        }
+
         // Returns true if skill strikes with both weapons at once.
         public static bool IsStrikingWithBothWeaponsAtOnce(Item gem)
         {
             return DB.ContainsKey(gem.Name) && DB[gem.Name].StrikesWithBothWeapons ? true : false;
-        }
-
-        // Returns false if NonCastDamage is set to true, true otherwise.
-        public static bool IsDamageCast(Item gem)
-        {
-            return DB.ContainsKey(gem.Name) && DB[gem.Name].NonCastDamage ? false : true;
         }
 
         // Returns level of gem.
@@ -594,6 +594,9 @@ namespace POESKillTree.SkillTreeFiles
             {
                 "Cleave",
                 new Gem {
+                    PerLevel = new Values {
+                        { "#% increased Physical Damage", new Linear(4, -4) }
+                    },
                     RequiredWeapon = WeaponType.Axe | WeaponType.Sword,
                     StrikesWithBothWeapons = true
                 }
@@ -623,6 +626,14 @@ namespace POESKillTree.SkillTreeFiles
                     IgnoreArea = true
                 }
             }, {
+                "Flicker Strike",
+                new Gem {
+                    PerLevel = new Values {
+                        { "#% increased Physical Damage", new Linear(3, -3) }
+                    },
+                    DamageOnUse = true
+                }
+            }, {
                 "Glacial Hammer",
                 new Gem {
                     PerLevel = new Values {
@@ -630,6 +641,15 @@ namespace POESKillTree.SkillTreeFiles
                         { "#% increased Physical Damage", new Linear(4, -4) },
                         { "#% Chance to Freeze enemies", new RangeMap(1, 12, new Table(15, 16, 17, 18, 19, 20, 21, 21, 22, 22, 23, 23), 13, 15, 24, 16, 18, 25, 19, MaxLevel, 26) }
                     },
+                    RequiredWeapon = WeaponType.Mace | WeaponType.Staff
+                }
+            }, {
+                "Ground Slam",
+                new Gem {
+                    PerLevel = new Values {
+                        { "#% increased Physical Damage", new Linear(4, -4) }
+                    },
+                    RequiredHand = WeaponHand.Main,
                     RequiredWeapon = WeaponType.Mace | WeaponType.Staff
                 }
             }, {
@@ -654,7 +674,7 @@ namespace POESKillTree.SkillTreeFiles
                                                              "141-211", "154-231", "168-253") }
                     },
                     IgnoreSource = DamageSource.Spell,
-                    NonCastDamage = true
+                    DamageOnUse = true
                 }
             }, {
                 "Leap Slam",
@@ -686,7 +706,7 @@ namespace POESKillTree.SkillTreeFiles
                                                                   "12–221", "13–244", "14–270", "16–299", "17–330", "19–364", "21–401", "23–441", "26–485", "28–534",
                                                                   "31–586", "34–644", "34–644", "34–644", "45-850") }
                     },
-                    NonCastDamage = true
+                    DamageOnUse = true
                 }
             }, {
                 "Melee Splash",
@@ -705,7 +725,7 @@ namespace POESKillTree.SkillTreeFiles
                                                              "372–558", "455–682", "554–831", "674–1010", "817–1226", "989–1483", "1195–1792", "1354–2031", "1533–2300", "1735–2602",
                                                              "1962–2943", "2217–3326") }
                     },
-                    NonCastDamage = true
+                    DamageOnUse = true
                 }
             }, {
                 "Molten Strike",
@@ -764,7 +784,17 @@ namespace POESKillTree.SkillTreeFiles
                                                                   "56–84", "64–96", "72–108", "82–123", "92–138", "104–156", "117–175", "126–189", "136–204", "147–220") }
                     },
                     RequiredWeapon = WeaponType.Shield,
-                    NonCastDamage = true
+                    DamageOnUse = true
+                }
+            }, {
+                "Whirling Blades",
+                new Gem {
+                    PerLevel = new Values {
+                        { "Attacks per Second:  #", new RangeMap(1, MaxLevel, 1 / 2.75f) }, // XXX: Just a guess, it doesn't use weapon APS and no info on Wiki.
+                        { "#% increased Physical Damage", new Linear(3, -3) }
+                    },
+                    RequiredWeapon = WeaponType.Dagger | WeaponType.Claw | WeaponType.OneHandedSword,
+                    DamageOnUse = true
                 }
             }
         };

@@ -7,12 +7,17 @@ using Item = POESKillTree.ViewModels.ItemAttributes.Item;
 
 namespace POESKillTree.SkillTreeFiles
 {
+    /* Known issues:
+     * - No support for unarmed combat.
+     * - No support for minions, traps, mines and totems.
+     * - No support for Cast on Critical builds
+     * - Mana regeneration shows sometimes incorrect value (0.1 difference from in-game value).
+     * - Damage type ranges shows sometimes incorrect value affecting overall DPS (0.1 difference from in-game value, occurs with damage conversions, Melee Splash).
+     */
     public class Compute
     {
         public class AttackSkill
         {
-            // Attacks/casts per second.
-            public float APS;
             // The skill gem.
             public Item Gem;
             // The name.
@@ -127,11 +132,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (increased != null) increases.Add(increased);
 
                     Damage.More more = Damage.More.Create(attr);
-                    if (more != null)
-                        mores.Add(more);
+                    if (more != null) mores.Add(more);
                 }
-
-                APS = 0;
 
                 foreach (AttackSource source in Sources)
                 {
@@ -155,6 +157,7 @@ namespace POESKillTree.SkillTreeFiles
                         if (inc > 0)
                             damage.Increase(inc);
 
+                        // TODO: When Dual Wielding, Deals 65% Damage from each Weapon combined (Cleave)
                         foreach (Damage.More more in mores)
                             if (damage.Matches(more))
                                 more.Apply(damage);
@@ -172,19 +175,33 @@ namespace POESKillTree.SkillTreeFiles
                     source.AccuracyRating(attrs);
 
                     source.AttackSpeed(this, attrs);
-                    APS += RoundHalfDownEvenValue(source.APS, 2); // XXX: Might as well round it inside of AttackSpeed method, if rounding in DPS method is correct.
 
                     source.CriticalStrike(attrs);
                 }
+            }
 
-                // Attacks per second of skill is average attack speed of all sources.
-                APS /= Sources.Count;
+            // Returns attacks/casts per second.
+            public float AttacksPerSecond()
+            {
+                return IsDualWielding ? (Sources[0].APS + Sources[1].APS) / 2 : Sources[0].APS;
+            }
+
+            // Returns average hit including critical strikes.
+            public float AverageHit()
+            {
+                return IsDualWielding ? (Sources[0].AverageHit() + Sources[1].AverageHit()) / 2 : Sources[0].AverageHit();
             }
 
             // Returns true if skill can be used with weapon.
             public bool CanUse(Weapon weapon)
             {
                 return weapon.IsWeapon() && Nature.Is(weapon.Nature.WeaponType) && Gems.CanUse(Gem, weapon);
+            }
+
+            // Returns chance to hit.
+            public float ChanceToHit()
+            {
+                return IsDualWielding ? (Sources[0].ChanceToHit() + Sources[1].ChanceToHit()) / 2 : Sources[0].ChanceToHit();
             }
 
             // Converts damage types (applies damage conversions and gains).
@@ -300,18 +317,10 @@ namespace POESKillTree.SkillTreeFiles
             // Returns damage per second.
             public float DamagePerSecond()
             {
-                // XXX: Dual wielding DPS is average hit dealt with average accuracy at average attack speed.
-                if (IsDualWielding)
-                {
-                    float avgHit = (Sources[0].DamagePerSecond() + Sources[1].DamagePerSecond()) / 2;
-                    float avgChanceToHit = RoundValue(ChanceToHit(Level, (Sources[0].Accuracy + Sources[1].Accuracy) / 2), 0) / 100;
-                    float dps = avgHit * APS * avgChanceToHit;
+                float dps = AverageHit() * (IsDamageOnUse() ? 1 : AttacksPerSecond()) * RoundValue(ChanceToHit(), 0) / 100;
 
-                    // XXX: If skill doesn't alternate weapons (i.e. strikes with both hands at once), then DPS is doubled.
-                    return IsStrikingWithBothWeaponsAtOnce ? dps * 2 : dps;
-                }
-
-                return Sources[0].DamagePerSecond();
+                // XXX: If skill doesn't alternate weapons (i.e. strikes with both weapons at once), then DPS is doubled.
+                return IsStrikingWithBothWeaponsAtOnce ? dps * 2 : dps;
             }
 
             // Returns true if gem is an attack skill, false otherwise.
@@ -325,9 +334,9 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // Returns true if damage is begin cast by character.
-            public bool IsDamageCast()
+            public bool IsDamageOnUse()
             {
-                return Sources[0].IsDamageCast;
+                return Sources[0].IsDamageOnUse;
             }
 
              // Links support gems.
@@ -349,20 +358,15 @@ namespace POESKillTree.SkillTreeFiles
             {
                 AttributeSet props = new AttributeSet();
 
-                props.Add(IsDamageCast() ? "Damage per Second: #" : "Damage per Use: #", new List<float> { RoundHalfDownValue(DamagePerSecond(), 1) });
+                props.Add(IsDamageOnUse() ? "Damage per Use: #" : "Damage per Second: #", new List<float> { RoundHalfDownValue(DamagePerSecond(), 1) });
 
                 if (Nature.Is(DamageSource.Attack))
                 {
-                    float chanceToHit;
-                    if (IsDualWielding) // XXX: When dual wielding compute chance to hit from average accuracy of both hands.
-                        chanceToHit = ChanceToHit(Level, (Sources[0].Accuracy + Sources[1].Accuracy) / 2);
-                    else
-                        chanceToHit = ChanceToHit(Level, Sources[0].Accuracy);
-                    props.Add("Chance to Hit: #%", new List<float> { RoundValue(chanceToHit, 0) });
-                    props.Add("Attacks per Second: #", new List<float> { RoundHalfDownValue(APS, 1) });
+                    props.Add("Chance to Hit: #%", new List<float> { RoundValue(ChanceToHit(), 0) });
+                    props.Add("Attacks per Second: #", new List<float> { RoundHalfDownValue(AttacksPerSecond(), 1) });
                 }
                 else
-                    props.Add("Casts per Second: #", new List<float> { RoundValue(APS, 1) });
+                    props.Add("Casts per Second: #", new List<float> { RoundValue(AttacksPerSecond(), 1) });
 
                 foreach (AttackSource source in Sources)
                 {
@@ -406,8 +410,8 @@ namespace POESKillTree.SkillTreeFiles
             public string Name;
             // The result nature of skill used with weapon.
             public DamageNature Nature;
-            // The flag whether damage is cast by character and thus affected by cast speed.
-            public bool IsDamageCast = true;
+            // The flag whether damage is affected by attack/cast speed.
+            public bool IsDamageOnUse = false;
 
             // The increased/reduced accuracy rating with weapon type pattern.
             static Regex ReIncreasedAccuracyRatingWithWeaponType = new Regex("#% (increased|reduced) Accuracy Rating with (.+)$");
@@ -424,11 +428,11 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Name = name;
 
+                IsDamageOnUse = Gems.IsDamageOnUse(skill.Gem);
+
                 if (weapon == null) // Spells get damage from gem local attributes.
                 {
                     Nature = new DamageNature(skill.Nature);
-
-                    IsDamageCast = Gems.IsDamageCast(skill.Gem);
 
                     foreach (var attr in skill.Local)
                     {
@@ -485,7 +489,9 @@ namespace POESKillTree.SkillTreeFiles
                 // Local weapon accuracy bonus.
                 if (Local.ContainsKey("#% increased Accuracy Rating"))
                     incAcc += Local["#% increased Accuracy Rating"][0];
-                // Global.
+                // Gems & global bonuses.
+                if (attrs.ContainsKey("+# to Accuracy Rating"))
+                    Accuracy += attrs["+# to Accuracy Rating"][0];
                 if (attrs.ContainsKey("#% increased Accuracy Rating"))
                     incAcc += attrs["#% increased Accuracy Rating"][0];
                 if (attrs.ContainsKey("#% reduced Accuracy Rating"))
@@ -571,6 +577,16 @@ namespace POESKillTree.SkillTreeFiles
                     if (moreCS != 0)
                         APS = IncreaseValueByPercentage(APS, moreCS);
                 }
+
+                APS = RoundHalfDownEvenValue(APS, 2);
+            }
+
+            // Returns average hit including critical strikes.
+            public float AverageHit()
+            {
+                Damage total = Deals.Find(d => d.Type == DamageType.Total);
+
+                return total.AverageHit() * (1 + (CriticalChance / 100) * (RoundValue(CriticalMultiplier, 0) - 100) / 100); // XXX: CeilValue(CriticalMultiplier, 0) is also possibility.
             }
 
             // Combines damage type into total combined damage.
@@ -596,6 +612,18 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 Deals.Add(total);
+            }
+
+            // Returns chance to hit.
+            public float ChanceToHit()
+            {
+                // Chance to hit is always 100% when:
+                if (ResoluteTechnique                               // Resolute Technique keystone.
+                    || Local.ContainsKey("Hits can't be Evaded")    // Local weapon modifier (Kongor's Undying Rage).
+                    || ! Nature.Is(DamageSource.Attack))            // Not an attack (either spell or buff damage).
+                    return 100;
+
+                return Compute.ChanceToHit(Level, Accuracy);
             }
 
             // Computes critical strike chance and multiplier.
@@ -669,23 +697,6 @@ namespace POESKillTree.SkillTreeFiles
                             CriticalMultiplier = IncreaseValueByPercentage(CriticalMultiplier, incCM);
                     }
                 }
-            }
-
-            // Returns damage per second.
-            public float DamagePerSecond()
-            {
-                Damage total = Deals.Find(d => d.Type == DamageType.Total);
-                if (total != null)
-                {
-                    // TODO: Get rid of these IsDualWielding conditions. Maybe make separate Hit() method to return average hit for AttackSkill DPS method.
-                    float baseDPS = total.DamagePerSecond(IsDamageCast && !IsDualWielding ? RoundHalfDownEvenValue(APS, 2) : 1); // XXX: CeilValue(2) is also possibility.
-                    float chanceToHit = Nature.Is(DamageSource.Attack) && !IsDualWielding ? ChanceToHit(Level, Accuracy) : 100;
-                    if (Local.ContainsKey("Hits can't be Evaded")) chanceToHit = 100; // Local weapon modifier (Kongor's Undying Rage).
-
-                    return baseDPS * (1 + (CriticalChance / 100) * (RoundValue(CriticalMultiplier, 0) - 100) / 100) * (RoundValue(chanceToHit, 0) / 100); // XXX: CeilValue(CriticalMultiplier, 0) is also possibility.
-                }
-
-                return 0;
             }
        }
 
@@ -1149,6 +1160,11 @@ namespace POESKillTree.SkillTreeFiles
                                     m = ReMoreWith.Match(attr.Key);
                                     if (m.Success)
                                         return new More(m.Groups[1].Value, attr.Value[0]) { Source = DamageSource.Attack };
+                                    else
+                                    {
+                                        if (IsDualWielding && attr.Key == "When Dual Wielding, Deals #% Damage from each Weapon combined")
+                                            return new More(attr.Value[0] - 100);
+                                    }
                                 }
                             }
                         }
@@ -1228,6 +1244,12 @@ namespace POESKillTree.SkillTreeFiles
                 Max += damage.Max;
             }
 
+            // Returns average hit.
+            public float AverageHit()
+            {
+                return (Min + Max) / 2;
+            }
+
             // Creates damage from attribute.
             public static Damage Create(DamageNature nature, KeyValuePair<string, List<float>> attr)
             {
@@ -1242,12 +1264,6 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 return null;
-            }
-
-            // Returns damage per second according to specified attacks per second.
-            public float DamagePerSecond(float aps)
-            {
-                return aps * (Min + Max) / 2;
             }
 
             // Increases damage.
@@ -1596,8 +1612,6 @@ namespace POESKillTree.SkillTreeFiles
         // @see http://pathofexile.gamepedia.com/Accuracy
         public static float ChanceToHit(int level, float accuracyRating)
         {
-            if (ResoluteTechnique) return 100;
-
             int mae = MonsterAverageEvasion[level - 1]; // XXX: For some reason this works.
 
             float chance = (float)(accuracyRating / (accuracyRating + Math.Pow(mae / 4, 0.8))) * 100;
