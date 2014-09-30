@@ -206,26 +206,31 @@ namespace POESKillTree.Views
 
         public void UpdateStatistics(Dictionary<string, List<float>> attrs)
         {
-            Compute.Initialize(Tree, _itemAttributes);
-
             _defenceList.Clear();
-            foreach (ListGroup group in Compute.Defense())
-            {
-                foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
-                {
-                    _defenceList.Add(new ListGroupItem(item, group.Name));
-                }
-            }
-            _defenceCollection.Refresh();
-
             _offenceList.Clear();
-            foreach (ListGroup group in Compute.Offense())
+
+            if (_itemAttributes != null)
             {
-                foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
+                Compute.Initialize(Tree, _itemAttributes);
+
+                foreach (ListGroup group in Compute.Defense())
                 {
-                    _offenceList.Add(new ListGroupItem(item, group.Name));
+                    foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
+                    {
+                        _defenceList.Add(new ListGroupItem(item, group.Name));
+                    }
+                }
+
+                foreach (ListGroup group in Compute.Offense())
+                {
+                    foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
+                    {
+                        _offenceList.Add(new ListGroupItem(item, group.Name));
+                    }
                 }
             }
+
+            _defenceCollection.Refresh();
             _offenceCollection.Refresh();
         }
 
