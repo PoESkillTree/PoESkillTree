@@ -145,6 +145,8 @@ namespace POESKillTree.Views
 
         public void UpdateAllAttributeList()
         {
+            _allAttributesList.Clear();
+
             if (_itemAttributes != null)
             {
                 Dictionary<string, List<float>> attritemp = Tree.SelectedAttributesWithoutImplicit;
@@ -178,15 +180,16 @@ namespace POESKillTree.Views
                     }
                 }
 
-                _allAttributesList.Clear();
                 foreach (string item in (attritemp.Select(InsertNumbersInAttributes)))
                 {
                     _allAttributesList.Add(new Attribute(item));
                 }
-                _allAttributeCollection.Refresh();
 
                 UpdateStatistics(attritemp);
             }
+
+            _allAttributeCollection.Refresh();
+
             UpdateAttributeList();
         }
 
@@ -603,8 +606,7 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild.ItemData = "";
             _itemAttributes = null;
             lbItemAttr.ItemsSource = null;
-            _allAttributesList.Clear();
-            _allAttributeCollection.Refresh();
+            UpdateAllAttributeList();
         }
 
         private void btnOverwriteBuild_Click(object sender, RoutedEventArgs e)
