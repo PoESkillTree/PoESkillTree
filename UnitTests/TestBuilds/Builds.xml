@@ -617,4 +617,139 @@
       Spell Critical Strike Multiplier: 248%
     </ExpectOffence>
   </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-HS-Multistrike-FasterAttacks.json</BuildFile>
+    <ExpectOffence>
+      Heavy Strike
+      Damage per Second: 823.8
+      Chance to Hit: 62%
+      Attacks per Second: 3.5
+      Main Hand Total Combined Damage: 212-428
+      Main Hand Physical Damage: 209-313
+      Main Hand Lightning Damage: 3-115
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +192%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      #TODO Main Hand Stun Threshold reduction: 25%
+      #TODO Main Hand chance to Knockback: 30%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-DualStrike-NoSupport.json</BuildFile>
+    <ExpectOffence>
+      Dual Strike
+      Damage per Second: 250.4
+      Chance to Hit: 63%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 47-187
+      Main Hand Physical Damage: 47-187
+      Main Hand Accuracy Rating: 487
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 30%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 67-106
+      Off Hand Physical Damage: 65-98
+      Off Hand Fire Damage: 2-8
+      Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 28.7%
+      Off Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-DualStrike-MeleePhyDmg.json</BuildFile>
+    <ExpectOffence>
+      Dual Strike
+      Damage per Second: 323.7
+      Chance to Hit: 63%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 61-243
+      Main Hand Physical Damage: 61-243
+      Main Hand Accuracy Rating: 487
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 30%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 86-136
+      Off Hand Physical Damage: 84-128
+      Off Hand Fire Damage: 2-8
+      Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 28.7%
+      Off Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-DualStrike-MeleeSplash.json</BuildFile>
+    <ExpectOffence>
+      Dual Strike
+      Damage per Second: 212.3
+      Chance to Hit: 63%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 40-158
+      Main Hand Physical Damage: 40-158
+      Main Hand Accuracy Rating: 487
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 30%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 57-90
+      Off Hand Physical Damage: 55-83
+      Off Hand Fire Damage: 2-7
+      Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 28.7%
+      Off Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-DualStrike-Reave-MeleeSplash-MeleePhyDmg.json</BuildFile>
+    <ExpectOffence>
+      Dual Strike
+      #FIXME Damage per Second: 273.9
+      # This might have to do something with Tempest Shield being off by 0.1 too.
+      Damage per Second: 273.8
+      Chance to Hit: 63%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 52-205
+      Main Hand Physical Damage: 52-205
+      Main Hand Accuracy Rating: 487
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 30%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 73-115
+      Off Hand Physical Damage: 71-108
+      Off Hand Fire Damage: 2-7
+      Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 28.7%
+      Off Hand Critical Strike Multiplier: 218%
+      Reave
+      Damage per Second: 178.9
+      Chance to Hit: 63%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 69-274
+      Main Hand Physical Damage: 69-274
+      Main Hand Accuracy Rating: 487
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 27.7%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 97-153
+      Off Hand Physical Damage: 95-144
+      Off Hand Fire Damage: 2-9
+      Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 26.5%
+      Off Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
 </TestData>

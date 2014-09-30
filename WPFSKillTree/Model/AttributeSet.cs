@@ -74,6 +74,19 @@ namespace POESKillTree.Model
             return matches;
         }
 
+        // Returns attribute set of attributes whose key matches any of regular expressions passed.
+        public AttributeSet MatchesAny(Regex[] rea)
+        {
+            AttributeSet matches = new AttributeSet();
+
+            foreach (var attr in this)
+                foreach (Regex re in rea)
+                    if (re.IsMatch(attr.Key))
+                        matches.Add(attr);
+
+            return matches;
+        }
+
         // Merges specified attribute set with this one returning new attribute set.
         // Existing attributes have value increased by value of attribute being merged.
         public AttributeSet Merge(AttributeSet merge)

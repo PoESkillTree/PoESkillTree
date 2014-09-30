@@ -29,6 +29,8 @@ namespace POESKillTree.SkillTreeFiles
             List<Damage.Converted> Converts = new List<Damage.Converted>();
             // List of damage gains.
             List<Damage.Gained> Gains = new List<Damage.Gained>();
+            // The flag whether skill strikes with both weapons at once instead of alternating weapons while dual wielding.
+            public bool IsStrikingWithBothWeaponsAtOnce = false;
             // The flag whether skill is useable.
             public bool IsUseable = true;
 
@@ -41,6 +43,7 @@ namespace POESKillTree.SkillTreeFiles
                 Gem = gem;
                 Name = gem.Name;
                 Nature = Gems.NatureOf(gem);
+                IsStrikingWithBothWeaponsAtOnce = Gems.IsStrikingWithBothWeaponsAtOnce(gem);
 
                 Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness:  #%") ? gem.Attributes["Damage Effectiveness:  #%"][0] : 100;
             }
@@ -124,7 +127,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (increased != null) increases.Add(increased);
 
                     Damage.More more = Damage.More.Create(attr);
-                    if (more != null) mores.Add(more);
+                    if (more != null)
+                        mores.Add(more);
                 }
 
                 APS = 0;
@@ -301,8 +305,10 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     float avgHit = (Sources[0].DamagePerSecond() + Sources[1].DamagePerSecond()) / 2;
                     float avgChanceToHit = RoundValue(ChanceToHit(Level, (Sources[0].Accuracy + Sources[1].Accuracy) / 2), 0) / 100;
+                    float dps = avgHit * APS * avgChanceToHit;
 
-                    return avgHit * APS * avgChanceToHit;
+                    // XXX: If skill doesn't alternate weapons (i.e. strikes with both hands at once), then DPS is doubled.
+                    return IsStrikingWithBothWeaponsAtOnce ? dps * 2 : dps;
                 }
 
                 return Sources[0].DamagePerSecond();
@@ -331,6 +337,7 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (Item gem in gems)
                 {
                     if (!gem.Keywords.Contains("Support")) continue; // Skip non-support gems.
+                    if (!Gems.CanSupport(this, gem)) continue; // Check whether gem can support our skill gem.
 
                     // Add support gem attributes.
                     Local.Add(Gems.AttributesOf(gem, item));
@@ -404,8 +411,11 @@ namespace POESKillTree.SkillTreeFiles
 
             // The increased/reduced accuracy rating with weapon type pattern.
             static Regex ReIncreasedAccuracyRatingWithWeaponType = new Regex("#% (increased|reduced) Accuracy Rating with (.+)$");
-            // The increased/reduced attack speed with weapon type pattern.
+            // The increased/reduced attack speed patterns.
+            static Regex ReIncreasedAttackSpeedWeaponType = new Regex("#% (increased|reduced) (.+) Attack Speed$");
             static Regex ReIncreasedAttackSpeedWithWeaponType = new Regex("#% (increased|reduced) Attack Speed with (.+)$");
+            // The more/less attack speed patterns.
+            static Regex ReMoreAttackSpeedWeaponType = new Regex("#% (more|less) (.+) Attack Speed$");
             // The increased/reduced critical chance/multiplier with weapon type patterns.
             static Regex ReIncreasedCriticalChanceWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Chance with (.+)$");
             static Regex ReIncreasedCriticalMultiplierWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Multiplier with (.+)$");
@@ -450,8 +460,8 @@ namespace POESKillTree.SkillTreeFiles
                         Deals.Add(new Damage(damage) { Area = Nature.Area, Form = Nature.Form, Source = Nature.Source, WeaponType = Nature.WeaponType });
 
                     foreach (Damage.Added added in weapon.Added)
-                        if (added.Hand == WeaponHand.Any || added.Hand == weapon.Hand) // Added damage may require specific hand.
-                        added.Apply(this, 100);
+                        if (weapon.Is(added.Hand)) // Added damage may require specific hand.
+                            added.Apply(this, 100);
 
                     APS = weapon.Attributes["Attacks per Second:  #"][0];
 
@@ -511,11 +521,16 @@ namespace POESKillTree.SkillTreeFiles
                         incAS += attrs["#% increased Attack Speed"][0];
                     if (attrs.ContainsKey("#% reduced Attack Speed"))
                         incAS -= attrs["#% reduced Attack Speed"][0];
-                    foreach (var attr in attrs.Matches(ReIncreasedAttackSpeedWithWeaponType))
+                    foreach (var attr in attrs.MatchesAny(new Regex[] { ReIncreasedAttackSpeedWithWeaponType, ReIncreasedAttackSpeedWeaponType }))
                     {
                         Match m = ReIncreasedAttackSpeedWithWeaponType.Match(attr.Key);
-                        if (Nature.Is(WithWeaponType[m.Groups[2].Value]))
+                        if (m.Success && Nature.Is(WithWeaponType[m.Groups[2].Value]))
                             incAS += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                        {
+                            m = ReIncreasedAttackSpeedWeaponType.Match(attr.Key);
+                            if (m.Success && Weapon.Types.ContainsKey(m.Groups[2].Value) && Nature.Is(Weapon.Types[m.Groups[2].Value]))
+                                incAS += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                        }
                     }
                     if (IsDualWielding && attrs.ContainsKey("#% increased Attack Speed while Dual Wielding"))
                         incAS += attrs["#% increased Attack Speed while Dual Wielding"][0];
@@ -527,6 +542,12 @@ namespace POESKillTree.SkillTreeFiles
                         moreAS += attrs["#% more Attack Speed"][0];
                     if (attrs.ContainsKey("#% less Attack Speed"))
                         moreAS -= attrs["#% less Attack Speed"][0];
+                    foreach (var attr in attrs.Matches(ReMoreAttackSpeedWeaponType))
+                    {
+                        Match m = ReMoreAttackSpeedWeaponType.Match(attr.Key);
+                        if (m.Success && Weapon.Types.ContainsKey(m.Groups[2].Value) && Nature.Is(Weapon.Types[m.Groups[2].Value]))
+                            moreAS += m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0];
+                    }
                     if (moreAS != 0)
                         APS = IncreaseValueByPercentage(APS, moreAS);
                 }
@@ -1084,7 +1105,7 @@ namespace POESKillTree.SkillTreeFiles
                 // The percentage of damage multiplier.
                 float Percent;
 
-                static Regex ReMoreAll = new Regex("#% (more|less) Damage$");
+                static Regex ReMoreAll = new Regex("#% (more|less) Damage( to main target)?$");
                 static Regex ReMoreBase = new Regex("Deals #% of Base Damage$");
                 static Regex ReMoreSimple = new Regex("#% (more|less) (.+) Damage$");
                 static Regex ReMoreWhen = new Regex("#% more (.+) Damage when on Full Life$");
@@ -1389,25 +1410,42 @@ namespace POESKillTree.SkillTreeFiles
                 return Attributes.ContainsKey(attr) ? Attributes[attr] : new List<float>();
             }
 
+            // Returns true if weapon is in specified hand, false otherwise.
+            public bool Is(WeaponHand hand)
+            {
+                return hand == WeaponHand.Any || (Hand & hand) != 0;
+            }
+
+            // Returns true if weapon is of specified type, false otherwise.
             public bool Is(WeaponType type)
             {
                 return Nature != null && (Nature.WeaponType & type) != 0;
             }
 
+            // Returns true if weapon is dual wielded, false otherwise.
+            public bool IsDualWielded()
+            {
+                return (Hand & WeaponHand.DualWielded) != 0;
+            }
+
+            // Returns true if weapon is a shield, false otherwise.
             public bool IsShield()
             {
                 return Nature != null && Nature.WeaponType == WeaponType.Shield;
             }
 
+            // Returns true if weapon is a regular weapon, false otherwise.
             public bool IsWeapon()
             {
                 return Nature != null && (Nature.WeaponType & WeaponType.Weapon) != 0;
             }
         }
 
+        // Bitset.
         public enum WeaponHand
         {
-            Any, Main, Off
+            Any = 0, Main = 1, Off = 2, DualWielded = 4,
+            HandMask = 3
         }
 
         // Bitset.
@@ -1997,6 +2035,12 @@ namespace POESKillTree.SkillTreeFiles
                 OffHand = MainHand.Clone(WeaponHand.Off);
 
             IsDualWielding = MainHand.IsWeapon() && OffHand.IsWeapon();
+            if (IsDualWielding)
+            {
+                // Set dual wielded bit on weapons.
+                MainHand.Hand |= WeaponHand.DualWielded;
+                OffHand.Hand |= WeaponHand.DualWielded;
+            }
             IsWieldingStaff = MainHand.Is(WeaponType.Staff);
 
             Level = skillTree._level;
