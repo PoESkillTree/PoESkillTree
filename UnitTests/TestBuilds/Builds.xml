@@ -838,4 +838,167 @@
       Off Hand Critical Strike Multiplier: 218%
     </ExpectOffence>
   </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-Cyclone-Frenzy.json</BuildFile>
+    <ExpectOffence>
+      Cyclone
+      Damage per Second: 149.1
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 43-111
+      Main Hand Physical Damage: 42-63
+      Main Hand Lightning Damage: 1-48
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Frenzy
+      Damage per Second: 199.9
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 119-294
+      Main Hand Physical Damage: 116-174
+      Main Hand Lightning Damage: 3-120
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-Cyclone-Frenzy-DualWield.json</BuildFile>
+    <ExpectOffence>
+      Cyclone
+      Damage per Second: 113.4
+      Chance to Hit: 63%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 20-84
+      Main Hand Physical Damage: 19-36
+      Main Hand Lightning Damage: 1-48
+      Main Hand Accuracy Rating: 529
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 18-97
+      Off Hand Physical Damage: 17-49
+      Off Hand Lightning Damage: 1-48
+      Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 15.5%
+      Off Hand Critical Strike Multiplier: 218%
+      Frenzy
+      Damage per Second: 150.2
+      Chance to Hit: 63%
+      Attacks per Second: 1.4
+      Main Hand Total Combined Damage: 56-219
+      Main Hand Physical Damage: 53-99
+      Main Hand Lightning Damage: 3-120
+      Main Hand Accuracy Rating: 529
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Off Hand Total Combined Damage: 49-256
+      Off Hand Physical Damage: 46-136
+      Off Hand Lightning Damage: 3-120
+      Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 15.5%
+      Off Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-Frenzy-SlowerProjectiles-Bow.json</BuildFile>
+    <ExpectOffence>
+      Frenzy
+      Damage per Second: 54.5
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 30-88
+      Main Hand Physical Damage: 30-88
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-BurningArrow-EK-PhyProjectileAtkDmg.json</BuildFile>
+    <ExpectOffence>
+      Burning Arrow
+      Damage per Second: 112
+      Chance to Hit: 62%
+      Attacks per Second: 1.1
+      Main Hand Total Combined Damage: 68-200
+      Main Hand Physical Damage: 24-70
+      Main Hand Fire Damage: 44-130
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: -1%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Ethereal Knives
+      Damage per Second: 25.3
+      Casts per Second: 1.4
+      Spell Total Combined Damage: 10-16
+      Spell Physical Damage: 10-16
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 26.3%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-Barrage-EK-LMP-Wand.json</BuildFile>
+    <ExpectOffence>
+      Barrage
+      Damage per Second: 15.5
+      Chance to Hit: 62%
+      Attacks per Second: 1.2
+      Main Hand Total Combined Damage: 11-19
+      Main Hand Physical Damage: 11-19
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 32.3%
+      Main Hand Critical Strike Multiplier: 218%
+      Ethereal Knives
+      Damage per Second: 13.6
+      Casts per Second: 1.6
+      Spell Total Combined Damage: 5-7
+      Spell Physical Damage: 5-7
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 28.8%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-ST-Fork-DualWield.json</BuildFile>
+    <ExpectOffence>
+      Spectral Throw
+      #TODO Damage per Second: 15
+      Chance to Hit: 63%
+      Attacks per Second: 1.4
+      #TODO Main Hand Total Combined Damage: 9-17
+      #TODO Main Hand Physical Damage: 9-17
+      #TODO Main Hand Accuracy Rating: 529
+      #TODO Main Hand Attack Speed modifier: +21%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      #TODO Off Hand Total Combined Damage: 8-24
+      #TODO Off Hand Physical Damage: 8-24
+      #TODO Off Hand Accuracy Rating: 448
+      #TODO Off Hand Attack Speed modifier: +21%
+      Off Hand Critical Strike Chance: 15.5%
+      Off Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
 </TestData>

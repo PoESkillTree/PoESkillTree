@@ -60,11 +60,11 @@ namespace POESKillTree.SkillTreeFiles
      * =====================
      * Animate Weapon                               None
      * Arctic Armour                                None
-     * Barrage                                      Unknown
+     * Barrage                                      Partial
      * Bear Trap                                    None
      * Blood Rage                                   None
-     * Burning Arrow                                Unknown
-     * Cyclone                                      Unknown
+     * Burning Arrow                                Partial
+     * Cyclone                                      Partial
      * Desecrate                                    None
      * Detonate Dead                                None
      * Double Strike                                Partial
@@ -73,9 +73,9 @@ namespace POESKillTree.SkillTreeFiles
      * Ethereal Knives                              Partial
      * Explosive Arrow                              Unknown
      * Fire Trap                                    None
-     * Flicker Strike                               Unknown
+     * Flicker Strike                               Partial
      * Freeze Mine                                  None
-     * Frenzy                                       Unknown
+     * Frenzy                                       Partial
      * Grace                                        None
      * Haste                                        None
      * Hatred                                       None
@@ -189,7 +189,7 @@ namespace POESKillTree.SkillTreeFiles
      * Item Quantity                                None
      * Item Rarity                                  None
      * Knockback                                    None
-     * Lesser Multiple Projectiles                  Unknown
+     * Lesser Multiple Projectiles                  Partial
      * Life Gain on Hit                             None
      * Life Leech                                   None
      * Lightning Penetration                        None
@@ -203,7 +203,7 @@ namespace POESKillTree.SkillTreeFiles
      * Minion Speed                                 None
      * Multiple Traps                               None
      * Multistrike                                  Partial
-     * Physical Projectile Attack Damage            Unknown
+     * Physical Projectile Attack Damage            Partial
      * Pierce                                       None
      * Point Blank                                  Unknown
      * Power Charge On Critical                     None
@@ -211,7 +211,7 @@ namespace POESKillTree.SkillTreeFiles
      * Reduced Duration                             None
      * Reduced Mana                                 None
      * Remote Mine                                  None
-     * Slower Projectiles                           Unknown
+     * Slower Projectiles                           Partial
      * Spell Echo                                   Partial
      * Spell Totem                                  None
      * Stun                                         None
@@ -240,6 +240,8 @@ namespace POESKillTree.SkillTreeFiles
             internal DamageForm IncludeForm = DamageForm.Any;
             // Defines whether damage is affected by attack/cast speed.
             internal bool DamageOnUse = false;
+            // Defines number of hits skill does per single attack.
+            internal float HitsPerAttack = 1;
             // Defines whether gem supports AoE skill gems.
             internal bool SupportsAoE = true;
             // Defines whether skill strikes with both weapons at once instead of alternating weapons while dual wielding.
@@ -514,6 +516,12 @@ namespace POESKillTree.SkillTreeFiles
             return true;
         }
 
+        // Returns numbner of hits skill gem does per single attack.
+        public static float HitsPerAttackOf(Item gem)
+        {
+            return DB.ContainsKey(gem.Name) ? DB[gem.Name].HitsPerAttack : 1;
+        }
+
         // Returns true if DamageOnUse is set to true, false otherwise.
         public static bool IsDamageOnUse(Item gem)
         {
@@ -592,6 +600,11 @@ namespace POESKillTree.SkillTreeFiles
 
         readonly static Dictionary<string, Gem> DB = new Dictionary<string, Gem> {
             {
+                "Barrage",
+                new Gem {
+                    RequiredWeapon = WeaponType.Ranged
+                }
+            }, {
                 "Cleave",
                 new Gem {
                     PerLevel = new Values {
@@ -599,6 +612,15 @@ namespace POESKillTree.SkillTreeFiles
                     },
                     RequiredWeapon = WeaponType.Axe | WeaponType.Sword,
                     StrikesWithBothWeapons = true
+                }
+            }, {
+                "Cyclone",
+                new Gem {
+                    PerLevel = new Values {
+                        { "#% increased Physical Damage", new Linear(4, -4) },
+                        { "#% increased Attack Speed", new Linear(2, -2) }
+                    },
+                    HitsPerAttack = 2
                 }
             }, {
                 "Dual Strike",
@@ -757,6 +779,11 @@ namespace POESKillTree.SkillTreeFiles
                         { "#% increased Attack Speed", new Linear(0.5f, 0) }
                     },
                     RequiredWeapon = WeaponType.Dagger | WeaponType.Claw | WeaponType.OneHandedSword
+                }
+            }, {
+                "Spectral Throw",
+                new Gem {
+                    RequiredWeapon = WeaponType.Melee
                 }
             }, {
                 "Split Arrow",

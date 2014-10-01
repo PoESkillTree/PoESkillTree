@@ -10,9 +10,11 @@ namespace POESKillTree.SkillTreeFiles
     /* Known issues:
      * - No support for unarmed combat.
      * - No support for minions, traps, mines and totems.
-     * - No support for Cast on Critical builds
+     * - No support for Cast on X and linked gems.
+     * - No support for support gems as item modifiers.
+     * - No support for Vaal gems.
      * - Mana regeneration shows sometimes incorrect value (0.1 difference from in-game value).
-     * - Damage type ranges shows sometimes incorrect value affecting overall DPS (0.1 difference from in-game value, occurs with damage conversions, Melee Splash).
+     * - Damage type ranges shows sometimes incorrect value affecting overall DPS (0.1 difference from in-game value, occurs with damage conversions, Temptest Shield, Melee Splash).
      */
     public class Compute
     {
@@ -34,8 +36,10 @@ namespace POESKillTree.SkillTreeFiles
             List<Damage.Converted> Converts = new List<Damage.Converted>();
             // List of damage gains.
             List<Damage.Gained> Gains = new List<Damage.Gained>();
+            // The number of hits skill does per single attack.
+            public float HitsPerAttack;
             // The flag whether skill strikes with both weapons at once instead of alternating weapons while dual wielding.
-            public bool IsStrikingWithBothWeaponsAtOnce = false;
+            public bool IsStrikingWithBothWeaponsAtOnce;
             // The flag whether skill is useable.
             public bool IsUseable = true;
 
@@ -48,6 +52,7 @@ namespace POESKillTree.SkillTreeFiles
                 Gem = gem;
                 Name = gem.Name;
                 Nature = Gems.NatureOf(gem);
+                HitsPerAttack = Gems.HitsPerAttackOf(gem);
                 IsStrikingWithBothWeaponsAtOnce = Gems.IsStrikingWithBothWeaponsAtOnce(gem);
 
                 Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness:  #%") ? gem.Attributes["Damage Effectiveness:  #%"][0] : 100;
@@ -157,7 +162,6 @@ namespace POESKillTree.SkillTreeFiles
                         if (inc > 0)
                             damage.Increase(inc);
 
-                        // TODO: When Dual Wielding, Deals 65% Damage from each Weapon combined (Cleave)
                         foreach (Damage.More more in mores)
                             if (damage.Matches(more))
                                 more.Apply(damage);
@@ -319,8 +323,10 @@ namespace POESKillTree.SkillTreeFiles
             {
                 float dps = AverageHit() * (IsDamageOnUse() ? 1 : AttacksPerSecond()) * RoundValue(ChanceToHit(), 0) / 100;
 
-                // XXX: If skill doesn't alternate weapons (i.e. strikes with both weapons at once), then DPS is doubled.
-                return IsStrikingWithBothWeaponsAtOnce ? dps * 2 : dps;
+                dps *= HitsPerAttack;
+
+                // XXX: If skill doesn't alternate weapons while dual wielding (i.e. strikes with both weapons at once), then DPS is doubled.
+                return IsDualWielding && IsStrikingWithBothWeaponsAtOnce ? dps * 2 : dps;
             }
 
             // Returns true if gem is an attack skill, false otherwise.
@@ -333,7 +339,7 @@ namespace POESKillTree.SkillTreeFiles
                        && !gem.Keywords.Contains("Support"); // Not a support gem.
             }
 
-            // Returns true if damage is begin cast by character.
+            // Returns true if damage isn't affected by attack/cast speed, false otherwise.
             public bool IsDamageOnUse()
             {
                 return Sources[0].IsDamageOnUse;
@@ -419,7 +425,7 @@ namespace POESKillTree.SkillTreeFiles
             static Regex ReIncreasedAttackSpeedWeaponType = new Regex("#% (increased|reduced) (.+) Attack Speed$");
             static Regex ReIncreasedAttackSpeedWithWeaponType = new Regex("#% (increased|reduced) Attack Speed with (.+)$");
             // The more/less attack speed patterns.
-            static Regex ReMoreAttackSpeedWeaponType = new Regex("#% (more|less) (.+) Attack Speed$");
+            static Regex ReMoreAttackSpeedType = new Regex("#% (more|less) (.+) Attack Speed$");
             // The increased/reduced critical chance/multiplier with weapon type patterns.
             static Regex ReIncreasedCriticalChanceWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Chance with (.+)$");
             static Regex ReIncreasedCriticalMultiplierWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Multiplier with (.+)$");
@@ -459,6 +465,10 @@ namespace POESKillTree.SkillTreeFiles
                         Nature = new DamageNature(skill.Nature) { WeaponType = weapon.Nature.WeaponType };
                     else // Narrow down weapon type of skill gem to actual weapon (e.g. Frenzy).
                         Nature = new DamageNature(skill.Nature) { WeaponType = skill.Nature.WeaponType & weapon.Nature.WeaponType };
+
+                    // XXX: All ranged skills without projectile form will get one.
+                    if (Nature.Is(WeaponType.Ranged) && Nature.Form == DamageForm.Any)
+                        Nature.Form |= DamageForm.Projectile;
 
                     foreach (Damage damage in weapon.Deals)
                         Deals.Add(new Damage(damage) { Area = Nature.Area, Form = Nature.Form, Source = Nature.Source, WeaponType = Nature.WeaponType });
@@ -548,11 +558,16 @@ namespace POESKillTree.SkillTreeFiles
                         moreAS += attrs["#% more Attack Speed"][0];
                     if (attrs.ContainsKey("#% less Attack Speed"))
                         moreAS -= attrs["#% less Attack Speed"][0];
-                    foreach (var attr in attrs.Matches(ReMoreAttackSpeedWeaponType))
+                    foreach (var attr in attrs.Matches(ReMoreAttackSpeedType))
                     {
-                        Match m = ReMoreAttackSpeedWeaponType.Match(attr.Key);
-                        if (m.Success && Weapon.Types.ContainsKey(m.Groups[2].Value) && Nature.Is(Weapon.Types[m.Groups[2].Value]))
-                            moreAS += m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0];
+                        Match m = ReMoreAttackSpeedType.Match(attr.Key);
+                        if (m.Success)
+                        {
+                            if (Weapon.Types.ContainsKey(m.Groups[2].Value) && Nature.Is(Weapon.Types[m.Groups[2].Value]))
+                                moreAS += m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0];
+                            else if (DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
+                                moreAS += m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0];
+                        }
                     }
                     if (moreAS != 0)
                         APS = IncreaseValueByPercentage(APS, moreAS);
@@ -751,7 +766,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 { "Burning",    DamageOverTime.Burning }
             };
-            static Dictionary<string, DamageForm> Forms = new Dictionary<string, DamageForm>()
+            public static Dictionary<string, DamageForm> Forms = new Dictionary<string, DamageForm>()
             {
                 { "Projectile", DamageForm.Projectile }
             };
@@ -849,10 +864,15 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     if (Forms.ContainsKey(word)) Form = Forms[word];
                     else if (Sources.ContainsKey(word)) Source = Sources[word];
-                    else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
+                    else if (Weapon.Types.ContainsKey(word)) WeaponType |= Weapon.Types[word];
                     else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
                     else if (Areas.ContainsKey(word)) Area = Areas[word];
                 }
+            }
+
+            public bool Is(DamageForm form)
+            {
+                return Form == form;
             }
 
             public bool Is(DamageSource source)
@@ -1118,6 +1138,7 @@ namespace POESKillTree.SkillTreeFiles
 
                 static Regex ReMoreAll = new Regex("#% (more|less) Damage( to main target)?$");
                 static Regex ReMoreBase = new Regex("Deals #% of Base Damage$");
+                static Regex ReMoreBaseType = new Regex("Deals #% of Base (.+) Damage$");
                 static Regex ReMoreSimple = new Regex("#% (more|less) (.+) Damage$");
                 static Regex ReMoreWhen = new Regex("#% more (.+) Damage when on Full Life$");
                 static Regex ReMoreWith = new Regex("#% more (.+) Damage with Weapons$");
@@ -1142,28 +1163,34 @@ namespace POESKillTree.SkillTreeFiles
                         return new More(attr.Value[0] - 100);
                     else
                     {
-                        m = ReMoreSimple.Match(attr.Key);
+                        m = ReMoreBaseType.Match(attr.Key);
                         if (m.Success)
-                            return new More(m.Groups[2].Value, m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0]);
+                            return new More(m.Groups[1].Value, attr.Value[0] - 100);
                         else
                         {
-                            m = ReMoreAll.Match(attr.Key);
+                            m = ReMoreSimple.Match(attr.Key);
                             if (m.Success)
-                                return new More(m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0]);
+                                return new More(m.Groups[2].Value, m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0]);
                             else
                             {
-                                m = ReMoreWhen.Match(attr.Key);
+                                m = ReMoreAll.Match(attr.Key);
                                 if (m.Success)
-                                    return new More(m.Groups[1].Value, attr.Value[0]);
+                                    return new More(m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0]);
                                 else
                                 {
-                                    m = ReMoreWith.Match(attr.Key);
+                                    m = ReMoreWhen.Match(attr.Key);
                                     if (m.Success)
-                                        return new More(m.Groups[1].Value, attr.Value[0]) { Source = DamageSource.Attack };
+                                        return new More(m.Groups[1].Value, attr.Value[0]);
                                     else
                                     {
-                                        if (IsDualWielding && attr.Key == "When Dual Wielding, Deals #% Damage from each Weapon combined")
-                                            return new More(attr.Value[0] - 100);
+                                        m = ReMoreWith.Match(attr.Key);
+                                        if (m.Success)
+                                            return new More(m.Groups[1].Value, attr.Value[0]) { Source = DamageSource.Attack };
+                                        else
+                                        {
+                                            if (IsDualWielding && attr.Key == "When Dual Wielding, Deals #% Damage from each Weapon combined")
+                                                return new More(attr.Value[0] - 100);
+                                        }
                                     }
                                 }
                             }
