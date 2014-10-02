@@ -984,21 +984,309 @@
     <BuildFile>T8-ST-Fork-DualWield.json</BuildFile>
     <ExpectOffence>
       Spectral Throw
-      #TODO Damage per Second: 15
+      Damage per Second: 15
       Chance to Hit: 63%
       Attacks per Second: 1.4
-      #TODO Main Hand Total Combined Damage: 9-17
-      #TODO Main Hand Physical Damage: 9-17
-      #TODO Main Hand Accuracy Rating: 529
+      Main Hand Total Combined Damage: 9-17
+      Main Hand Physical Damage: 9-17
+      Main Hand Accuracy Rating: 529
       #TODO Main Hand Attack Speed modifier: +21%
       Main Hand Critical Strike Chance: 15.5%
       Main Hand Critical Strike Multiplier: 218%
-      #TODO Off Hand Total Combined Damage: 8-24
-      #TODO Off Hand Physical Damage: 8-24
-      #TODO Off Hand Accuracy Rating: 448
+      Off Hand Total Combined Damage: 8-24
+      Off Hand Physical Damage: 8-24
+      Off Hand Accuracy Rating: 448
       #TODO Off Hand Attack Speed modifier: +21%
       Off Hand Critical Strike Chance: 15.5%
       Off Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-ST-1hAxe.json</BuildFile>
+    <ExpectOffence>
+      Spectral Throw
+      #FIXME Damage per Second: 11.7
+      Chance to Hit: 65%
+      Attacks per Second: 1.3
+      # Damage range rounding bug!
+      #FIXME Main Hand Total Combined Damage: 8-15
+      #FIXME Main Hand Physical Damage: 8-15
+      Main Hand Accuracy Rating: 529
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-ST-2hAxe-ALDRing.json</BuildFile>
+    <ExpectOffence>
+      Spectral Throw
+      #FIXME Damage per Second: 40.7
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      #FIXME Main Hand Total Combined Damage: 22-62
+      #FIXME Main Hand Physical Damage: 21-31
+      #FIXME Main Hand Lightning Damage: 1-31
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-IB-ShieldCharge-AddFireDmg.json</BuildFile>
+    <ExpectOffence>
+      Infernal Blow
+      Damage per Second: 142.1
+      Chance to Hit: 65%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 98-182
+      Main Hand Physical Damage: 32-59
+      Main Hand Fire Damage: 66-123
+      Main Hand Accuracy Rating: 529
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Shield Charge
+      Damage per Use: 41.9
+      Chance to Hit: 65%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 38-71
+      Main Hand Physical Damage: 38-71
+      Main Hand Accuracy Rating: 529
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-Puncture-EA-GMP-AddChaosDmg.json</BuildFile>
+    <ExpectOffence>
+      Puncture
+      Damage per Second: 45.7
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 25-74
+      Main Hand Physical Damage: 25-74
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Explosive Arrow
+      Damage per Second: 43
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 28-65
+      Main Hand Physical Damage: 16-48
+      Main Hand Chaos Damage: 12-17
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-FStorm-EH-PointBlank.json</BuildFile>
+    <ExpectOffence>
+      Elemental Hit
+      Damage per Second: 38.1
+      Chance to Hit: 62%
+      Attacks per Second: 1
+      Main Hand Total Combined Damage: 25-74
+      Main Hand Physical Damage: 25-74
+      Main Hand Accuracy Rating: 448
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Firestorm
+      Damage per Use: 86.8
+      Casts per Second: 1.1
+      Spell Total Combined Damage: 50-75
+      Spell Fire Damage: 50-75
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 26.3%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-AB-CS-BL-FBlast-FasterCasting.json</BuildFile>
+    <ExpectOffence>
+      Cold Snap
+      Damage per Use: 191.7
+      Casts per Second: 1.5
+      Spell Total Combined Damage: 114-172
+      Spell Cold Damage: 114-172
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 23%
+      Spell Critical Strike Multiplier: 248%
+      Flameblast
+      Damage per Use: 44.9
+      Casts per Second: 4.2
+      Spell Total Combined Damage: 25-38
+      Spell Fire Damage: 25-38
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 28.8%
+      Spell Critical Strike Multiplier: 248%
+      Arctic Breath
+      Damage per Second: 283.3
+      Casts per Second: 1.8
+      Spell Total Combined Damage: 87-129
+      Spell Cold Damage: 87-129
+      #TODO Cast Speed modifier: +47%
+      Spell Critical Strike Chance: 28.8%
+      Spell Critical Strike Multiplier: 248%
+      Ball Lightning
+      Damage per Second: 153.4
+      Casts per Second: 1.8
+      Spell Total Combined Damage: 6-111
+      Spell Lightning Damage: 6-111
+      #TODO Cast Speed modifier: +47%
+      Spell Critical Strike Chance: 28.8%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-GC-FP-FWall-IN.json</BuildFile>
+    <ExpectOffence>
+      Glacial Cascade
+      Damage per Second: 49.5
+      Casts per Second: 1.5
+      Spell Total Combined Damage: 16-28
+      Spell Physical Damage: 3-6
+      Spell Cold Damage: 13-22
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 34.5%
+      Spell Critical Strike Multiplier: 248%
+      Freezing Pulse
+      Damage per Second: 172.3
+      # Display rounding
+      #FIXME Casts per Second: 1.9
+      Casts per Second: 2
+      Spell Total Combined Damage: 47-70
+      Spell Cold Damage: 47-70
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 34.5%
+      Spell Critical Strike Multiplier: 248%
+      Frost Wall
+      Damage per Second: 22.3
+      Casts per Second: 1.5
+      Spell Total Combined Damage: 8-13
+      Spell Cold Damage: 8-13
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 28.8%
+      Spell Critical Strike Multiplier: 248%
+      Ice Nova
+      Damage per Second: 88.2
+      Casts per Second: 1.4
+      Spell Total Combined Damage: 36-55
+      Spell Cold Damage: 36-55
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 28.8%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-Inc-IS-SN-Park.json</BuildFile>
+    <ExpectOffence>
+      Incinerate
+      Damage per Second: 37
+      Casts per Second: 5.3
+      Spell Total Combined Damage: 6-8
+      Spell Fire Damage: 6-8
+      #TODO Cast Speed modifier: +27%
+      #NOTE No ciritcal strikes!
+      Ice Spear
+      Damage per Second: 1354
+      Casts per Second: 1.5
+      Spell Total Combined Damage: 456-683
+      Spell Cold Damage: 456-683
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 40.3%
+      Spell Critical Strike Multiplier: 248%
+      Shock Nova
+      Damage per Second: 185.8
+      Casts per Second: 1.7
+      Spell Total Combined Damage: 9-155
+      Spell Lightning Damage: 9-155
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 23%
+      Spell Critical Strike Multiplier: 248%
+      Spark
+      Damage per Second: 105.6
+      #FIXME Casts per Second: 1.9
+      Casts per Second: 2
+      Spell Total Combined Damage: 3-73
+      Spell Lightning Damage: 3-73
+      #TODO Cast Speed modifier: +27%
+      Spell Critical Strike Chance: 28.8%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-IShot-Chain-FSurge.json</BuildFile>
+    <ExpectOffence>
+      Ice Shot
+      Damage per Second: 38.3
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 21-62
+      Main Hand Physical Damage: 9-27
+      Main Hand Cold Damage: 12-35
+      Main Hand Accuracy Rating: 448
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Flame Surge
+      Damage per Second: 272
+      Casts per Second: 1.4
+      Spell Total Combined Damage: 105-160
+      Spell Fire Damage: 105-160
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 31.5%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-PA-SC.json</BuildFile>
+    <ExpectOffence>
+      Poison Arrow
+      Damage per Second: 59.6
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 33-96
+      Main Hand Physical Damage: 25-74
+      Main Hand Chaos Damage: 8-22
+      Main Hand Accuracy Rating: 448
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      Storm Call
+      Damage per Use: 599.7
+      Casts per Second: 2.2
+      Spell Total Combined Damage: 43-801
+      Spell Lightning Damage: 43-801
+      #TODO Cast Speed modifier: +12%
+      # Display rounding.
+      #FIXME Spell Critical Strike Chance: 28.4%
+      Spell Critical Strike Chance: 28.5%
+      Spell Critical Strike Multiplier: 248%
     </ExpectOffence>
   </TestBuild>
 </TestData>

@@ -41,7 +41,7 @@ namespace POESKillTree.SkillTreeFiles
      * Heavy Strike                                 Full
      * Herald of Ash                                None
      * Immortal Call                                None
-     * Infernal Blow                                Unknown
+     * Infernal Blow                                Partial
      * Leap Slam                                    Incomplete
      * Lightning Strike                             Incomplete
      * Molten Shell                                 Incomplete
@@ -50,7 +50,7 @@ namespace POESKillTree.SkillTreeFiles
      * Purity of Fire                               None
      * Rejuvenation Totem                           None
      * Searing Bond                                 None
-     * Shield Charge                                Unknown
+     * Shield Charge                                Partial
      * Shockwave Totem                              None
      * Sweep                                        Partial
      * Vitality                                     None
@@ -69,9 +69,9 @@ namespace POESKillTree.SkillTreeFiles
      * Detonate Dead                                None
      * Double Strike                                Partial
      * Dual Strike                                  Incomplete
-     * Elemental Hit                                Unknown
+     * Elemental Hit                                Partial
      * Ethereal Knives                              Partial
-     * Explosive Arrow                              Unknown
+     * Explosive Arrow                              Partial
      * Fire Trap                                    None
      * Flicker Strike                               Partial
      * Freeze Mine                                  None
@@ -80,17 +80,17 @@ namespace POESKillTree.SkillTreeFiles
      * Haste                                        None
      * Hatred                                       None
      * Herald of Ice                                Incomplete
-     * Ice Shot                                     Unknown
+     * Ice Shot                                     Partial
      * Lightning Arrow                              Partial
      * Poacher's Mark                               None
-     * Poison Arrow                                 Unknown
+     * Poison Arrow                                 Partial
      * Projectile Weakness                          None
-     * Puncture                                     Unknown
+     * Puncture                                     Partial
      * Purity of Ice                                None
      * Rain of Arrows                               Partial
      * Reave                                        Incomplete
      * Smoke Mine                                   None
-     * Spectral Throw                               Unknown
+     * Spectral Throw                               Partial
      * Split Arrow                                  Incomplete
      * Temporal Chains                              None
      * Tornado Shot                                 Partial
@@ -100,12 +100,12 @@ namespace POESKillTree.SkillTreeFiles
      * Intelligence skill gems:
      * ========================
      * Arc                                          Partial
-     * Arctic Breath                                Unknown
+     * Arctic Breath                                Partial
      * Assassin's Mark                              None
-     * Ball Lightning                               Unknown
+     * Ball Lightning                               Partial
      * Bone Offering                                None
      * Clarity                                      None
-     * Cold Snap                                    Unknown
+     * Cold Snap                                    Partial
      * Conductivity                                 None
      * Conversion Trap                              None
      * Convocation                                  None
@@ -115,18 +115,18 @@ namespace POESKillTree.SkillTreeFiles
      * Elemental Weakness                           None
      * Enfeeble                                     None
      * Fireball                                     Full
-     * Firestorm                                    Unknown
-     * Flameblast                                   Unknown
-     * Flame Surge                                  Unknown
+     * Firestorm                                    Partial
+     * Flameblast                                   Partial
+     * Flame Surge                                  Partial
      * Flammability                                 None
      * Flesh Offering                               None
-     * Freezing Pulse                               Unknown
-     * Frost Wall                                   Unknown
-     * Frostbite                                    Unknown
-     * Glacial Cascade                              Unknown
-     * Ice Nova                                     Unknown
-     * Ice Spear                                    Unknown
-     * Incinerate                                   Unknown
+     * Freezing Pulse                               Partial
+     * Frost Wall                                   Partial
+     * Frostbite                                    None
+     * Glacial Cascade                              Partial
+     * Ice Nova                                     Partial
+     * Ice Spear                                    Partial
+     * Incinerate                                   Partial
      * Lightning Trap                               None
      * Lightning Warp                               Incomplete
      * Power Siphon                                 Incomplete
@@ -135,9 +135,9 @@ namespace POESKillTree.SkillTreeFiles
      * Raise Spectre                                None
      * Raise Zombie                                 None
      * Righteous Fire                               None
-     * Shock Nova                                   Unknown
-     * Spark                                        Unknown
-     * Storm Call                                   Unknown
+     * Shock Nova                                   Partial
+     * Spark                                        Partial
+     * Storm Call                                   Partial
      * Summon Raging Spirit                         None
      * Summon Skeletons                             None
      * Tempest Shield                               Incomplete
@@ -146,9 +146,9 @@ namespace POESKillTree.SkillTreeFiles
      * 
      * Support gems:
      * =============
-     * Added Chaos Damage                           Unknown
+     * Added Chaos Damage                           Partial
      * Added Cold Damage                            Partial
-     * Added Fire Damage                            Unknown
+     * Added Fire Damage                            Partial
      * Added Lightning Damage                       Partial
      * Additional Accuracy                          Partial
      * Blind                                        None
@@ -159,7 +159,7 @@ namespace POESKillTree.SkillTreeFiles
      * Cast on Melee Kill                           None
      * Cast when Damage Taken                       None
      * Cast when Stunned                            None
-     * Chain                                        None
+     * Chain                                        Partial
      * Chance to Flee                               None
      * Chance to Ignite                             None
      * Cold Penetration                             None
@@ -173,12 +173,12 @@ namespace POESKillTree.SkillTreeFiles
      * Enhance                                      None
      * Enlighten                                    None
      * Faster Attacks                               Partial
-     * Faster Casting                               Unknown
+     * Faster Casting                               Partial
      * Faster Projectiles                           Partial
      * Fire Penetration                             None
-     * Fork                                         None
+     * Fork                                         Partial
      * Generosity                                   None
-     * Greater Multiple Projectiles                 Unknown
+     * Greater Multiple Projectiles                 Partial
      * Increased Area of Effect                     None
      * Increased Burning Damage                     None
      * Increased Critical Damage                    Partial
@@ -205,7 +205,7 @@ namespace POESKillTree.SkillTreeFiles
      * Multistrike                                  Partial
      * Physical Projectile Attack Damage            Partial
      * Pierce                                       None
-     * Point Blank                                  Unknown
+     * Point Blank                                  Partial
      * Power Charge On Critical                     None
      * Ranged Attack Totem                          None
      * Reduced Duration                             None
@@ -230,6 +230,8 @@ namespace POESKillTree.SkillTreeFiles
             internal WeaponHand RequiredHand = WeaponHand.Any;
             // Defines requirement of specific weapon type.
             internal WeaponType RequiredWeapon = WeaponType.Any;
+            // Defines whether skill requires shield being equipped.
+            internal bool RequiresEquippedShield = false;
             // Defines whether AoE nature of skill should be ignored.
             internal bool IgnoreArea = false;
             // Defines which form of skill should be ignored.
@@ -503,7 +505,11 @@ namespace POESKillTree.SkillTreeFiles
             if (DB.ContainsKey(gem.Name))
             {
                 Gem entry = DB[gem.Name];
+
                 if (entry.RequiredHand != WeaponHand.Any && !weapon.Is(entry.RequiredHand))
+                    return false;
+
+                if (entry.RequiresEquippedShield && !Compute.IsWieldingShield)
                     return false;
 
                 // Weapon having "Counts as Dual Wielding" mod cannot be used to perform skills that require a two-handed weapon.
@@ -547,6 +553,16 @@ namespace POESKillTree.SkillTreeFiles
         {
             // Implicit nature from keywords.
             DamageNature nature = new DamageNature(gem.Keywords);
+
+            if (nature.Is(DamageSource.Attack))
+            {
+                // Attacks with melee form implicitly gets melee weapon type.
+                if ((nature.Form & DamageForm.Melee) != 0)
+                    nature.WeaponType |= WeaponType.Melee;
+                // Attacks with ranged weapons implicitly gets projectile form.
+                if (nature.Is(WeaponType.Ranged))
+                    nature.Form |= DamageForm.Projectile;
+            }
 
             if (DB.ContainsKey(gem.Name))
             {
@@ -614,6 +630,11 @@ namespace POESKillTree.SkillTreeFiles
                     StrikesWithBothWeapons = true
                 }
             }, {
+                "Cold Snap",
+                new Gem {
+                    DamageOnUse = true
+                }
+            }, {
                 "Cyclone",
                 new Gem {
                     PerLevel = new Values {
@@ -646,6 +667,16 @@ namespace POESKillTree.SkillTreeFiles
                                                              "431–647", "472–709", "518–776", "567–850", "620–930", "678–1017", "741–1111", "809–1214", "884–1326", "965–1447") }
                     },
                     IgnoreArea = true
+                }
+            }, {
+                "Flameblast",
+                new Gem {
+                    DamageOnUse = true
+                }
+            }, {
+                "Firestorm",
+                new Gem {
+                    DamageOnUse = true
                 }
             }, {
                 "Flicker Strike",
@@ -781,6 +812,12 @@ namespace POESKillTree.SkillTreeFiles
                     RequiredWeapon = WeaponType.Dagger | WeaponType.Claw | WeaponType.OneHandedSword
                 }
             }, {
+                "Shield Charge",
+                new Gem {
+                    RequiresEquippedShield = true,
+                    DamageOnUse = true
+                }
+            }, {
                 "Spectral Throw",
                 new Gem {
                     RequiredWeapon = WeaponType.Melee
@@ -794,6 +831,11 @@ namespace POESKillTree.SkillTreeFiles
                         { "# additional Arrows", new RangeMap(1, 4, 2, 5, 9, 3, 10, 16, 4, 17, 20, 5, 21, MaxLevel, 6) }
                     },
                     IncludeForm = DamageForm.Projectile
+                }
+            }, {
+                "Storm Call",
+                new Gem {
+                    DamageOnUse = true
                 }
             }, {
                 "Sweep",
@@ -810,7 +852,7 @@ namespace POESKillTree.SkillTreeFiles
                         { "Deals #–# Lightning Damage", new Table("9–13", "11–17", "13–20", "16–24", "19–29", "23–34", "27–40", "32–49", "39–59", "47–70",
                                                                   "56–84", "64–96", "72–108", "82–123", "92–138", "104–156", "117–175", "126–189", "136–204", "147–220") }
                     },
-                    RequiredWeapon = WeaponType.Shield,
+                    RequiresEquippedShield = true,
                     DamageOnUse = true
                 }
             }, {

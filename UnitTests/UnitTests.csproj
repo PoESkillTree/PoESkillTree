@@ -91,6 +91,7 @@
     <None Include="TestBuilds\T7-LeapSlam-OffHandMace.json" />
     <None Include="TestBuilds\T7-MS-WingsOfEntropy.json" />
     <None Include="TestBuilds\T7-Sweep-WingsOfEntropy.json" />
+    <None Include="TestBuilds\T8-AB-CS-BL-FBlast-FasterCasting.json" />
     <None Include="TestBuilds\T8-Barrage-EK-LMP-Wand.json" />
     <None Include="TestBuilds\T8-BurningArrow-EK-PhyProjectileAtkDmg.json" />
     <None Include="TestBuilds\T8-Cleave-WhirlingBlades.json" />
@@ -102,8 +103,17 @@
     <None Include="TestBuilds\T8-DualStrike-Reave-MeleeSplash-MeleePhyDmg.json" />
     <None Include="TestBuilds\T8-EK-IronGrip-IronWill.json" />
     <None Include="TestBuilds\T8-Frenzy-SlowerProjectiles-Bow.json" />
+    <None Include="TestBuilds\T8-FStorm-EH-PointBlank.json" />
+    <None Include="TestBuilds\T8-GC-FP-FWall-IN.json" />
     <None Include="TestBuilds\T8-GroundSlam-FlickerStrike-AddAccuracy-AddColdDmg.json" />
     <None Include="TestBuilds\T8-HS-Multistrike-FasterAttacks.json" />
+    <None Include="TestBuilds\T8-IB-ShieldCharge-AddFireDmg.json" />
+    <None Include="TestBuilds\T8-Inc-IS-SN-Park.json" />
+    <None Include="TestBuilds\T8-IShot-Chain-FSurge.json" />
+    <None Include="TestBuilds\T8-PA-SC.json" />
+    <None Include="TestBuilds\T8-Puncture-EA-GMP-AddChaosDmg.json" />
+    <None Include="TestBuilds\T8-ST-1hAxe.json" />
+    <None Include="TestBuilds\T8-ST-2hAxe-ALDRing.json" />
     <None Include="TestBuilds\T8-ST-Fork-DualWield.json" />
   </ItemGroup>
   <ItemGroup>

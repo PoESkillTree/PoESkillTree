@@ -461,14 +461,19 @@ namespace POESKillTree.SkillTreeFiles
                 else
                 {
                     if ((skill.Nature.WeaponType & weapon.Nature.WeaponType) == 0) // Skill can't be used.
-                        // Override weapon type of skill with actual weapon (client shows damage of unuseable skills as well).
-                        Nature = new DamageNature(skill.Nature) { WeaponType = weapon.Nature.WeaponType };
-                    else // Narrow down weapon type of skill gem to actual weapon (e.g. Frenzy).
-                        Nature = new DamageNature(skill.Nature) { WeaponType = skill.Nature.WeaponType & weapon.Nature.WeaponType };
+                        // Override weapon type and form of skill with actual weapon (client shows damage of unuseable skills as well).
+                        Nature = new DamageNature(skill.Nature) { Form = weapon.Nature.Form, WeaponType = weapon.Nature.WeaponType };
+                    else // Narrow down weapon type and form of skill gem to actual weapon (e.g. Frenzy).
+                        Nature = new DamageNature(skill.Nature)
+                        {
+                            Form = skill.Nature.Form & weapon.Nature.Form,
+                            WeaponType = skill.Nature.WeaponType & weapon.Nature.WeaponType
+                        };
 
-                    // XXX: All ranged skills without projectile form will get one.
-                    if (Nature.Is(WeaponType.Ranged) && Nature.Form == DamageForm.Any)
-                        Nature.Form |= DamageForm.Projectile;
+                    // XXX: If source has no form, but skill has form defined, then force form of skill.
+                    // This happens in form transition from melee to projectile with skills like Spectral Throw.
+                    if (Nature.Form == DamageForm.Any && skill.Nature.Form != DamageForm.Any)
+                        Nature.Form = skill.Nature.Form;
 
                     foreach (Damage damage in weapon.Deals)
                         Deals.Add(new Damage(damage) { Area = Nature.Area, Form = Nature.Form, Source = Nature.Source, WeaponType = Nature.WeaponType });
@@ -725,9 +730,10 @@ namespace POESKillTree.SkillTreeFiles
             Any, Area
         }
 
+        // Bitset.
         public enum DamageForm
         {
-            Any, Projectile
+            Any, Melee = 1, Projectile = 2
         }
 
         public enum DamageOverTime
@@ -768,6 +774,7 @@ namespace POESKillTree.SkillTreeFiles
             };
             public static Dictionary<string, DamageForm> Forms = new Dictionary<string, DamageForm>()
             {
+                { "Melee",      DamageForm.Melee },
                 { "Projectile", DamageForm.Projectile }
             };
             static Dictionary<string, DamageSource> Sources = new Dictionary<string, DamageSource>()
@@ -813,7 +820,7 @@ namespace POESKillTree.SkillTreeFiles
                     if (Types.ContainsKey(word)) Type = Types[word];
                     else if (Sources.ContainsKey(word)) Source = Sources[word];
                     else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
-                    else if (Forms.ContainsKey(word)) Form = Forms[word];
+                    else if (Forms.ContainsKey(word)) Form |= Forms[word];
                     else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
                     else if (Areas.ContainsKey(word)) Area = Areas[word];
                     else throw new Exception("Unknown keyword: " + word);
@@ -828,7 +835,7 @@ namespace POESKillTree.SkillTreeFiles
                     if (Types.ContainsKey(word)) Type = Types[word];
                     else if (Sources.ContainsKey(word)) Source = Sources[word];
                     else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
-                    else if (Forms.ContainsKey(word)) Form = Forms[word];
+                    else if (Forms.ContainsKey(word)) Form |= Forms[word];
                     else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
                     else if (Areas.ContainsKey(word)) Area = Areas[word];
                     else throw new Exception("Unknown keyword: " + word);
@@ -851,7 +858,7 @@ namespace POESKillTree.SkillTreeFiles
                     if (Types.ContainsKey(word)) Type = Types[word];
                     else if (Sources.ContainsKey(word)) Source = Sources[word];
                     else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
-                    else if (Forms.ContainsKey(word)) Form = Forms[word];
+                    else if (Forms.ContainsKey(word)) Form |= Forms[word];
                     else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
                     else if (Areas.ContainsKey(word)) Area = Areas[word];
                     else throw new Exception("Unknown keyword: " + word);
@@ -862,7 +869,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (string word in keywords)
                 {
-                    if (Forms.ContainsKey(word)) Form = Forms[word];
+                    if (Forms.ContainsKey(word)) Form |= Forms[word];
                     else if (Sources.ContainsKey(word)) Source = Sources[word];
                     else if (Weapon.Types.ContainsKey(word)) WeaponType |= Weapon.Types[word];
                     else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
@@ -1374,8 +1381,7 @@ namespace POESKillTree.SkillTreeFiles
                 { "Two Handed Axe",     WeaponType.TwoHandedAxe },
                 { "Two Handed Mace",    WeaponType.TwoHandedMace },
                 { "Two Handed Sword",   WeaponType.TwoHandedSword },
-                { "Wand",               WeaponType.Wand },
-                { "Melee",              WeaponType.Melee }
+                { "Wand",               WeaponType.Wand }
             };
 
             // Copy constructor.
@@ -1415,6 +1421,13 @@ namespace POESKillTree.SkillTreeFiles
                                 Nature = new DamageNature() { WeaponType = Types[keyword] };
                                 break;
                             }
+
+                    // If weapon is melee, it defaults to melee form. If it's ranged then projectile.
+                    if (Nature.Is(WeaponType.Melee))
+                        Nature.Form = DamageForm.Melee;
+                    else
+                        if (Nature.Is(WeaponType.Ranged))
+                            Nature.Form = DamageForm.Projectile;
 
                     // Copy attributes and create damage dealt.
                     foreach (var attr in item.Attributes)
@@ -1517,6 +1530,8 @@ namespace POESKillTree.SkillTreeFiles
         public static Weapon OffHand;
         // The flag whether character is dual wielding.
         public static bool IsDualWielding;
+        // The flag whether character is wielding a shield.
+        public static bool IsWieldingShield;
         // The flag whether character is wielding a staff.
         public static bool IsWieldingStaff;
         // Character level.
@@ -2082,6 +2097,7 @@ namespace POESKillTree.SkillTreeFiles
                 MainHand.Hand |= WeaponHand.DualWielded;
                 OffHand.Hand |= WeaponHand.DualWielded;
             }
+            IsWieldingShield = MainHand.Is(WeaponType.Shield) || OffHand.Is(WeaponType.Shield);
             IsWieldingStaff = MainHand.Is(WeaponType.Staff);
 
             Level = skillTree._level;
