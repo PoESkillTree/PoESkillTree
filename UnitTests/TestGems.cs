@@ -19,7 +19,7 @@ namespace UnitTests
             // Level 1+ fixed value ranges.
             expect = new List<float> { float.NaN, 14, 14, 14, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 18 };
             for (int level = 1; level < expect.Count; ++level)
-                Assert.AreEqual(expect[level], GetValueOf("Leap Slam", level, "Mana Cost:  #")[0]);
+                Assert.AreEqual(expect[level], GetValueOf("Leap Slam", level, "Mana Cost: #")[0]);
 
             // Level 1-9 Table, Level 10+ fixed value range.
             expect = new List<float> { float.NaN, 10, 12, 14, 16, 18, 20, 21, 22, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 };
@@ -29,7 +29,7 @@ namespace UnitTests
             // Level 1-12 Table, Level 13+ Linear.
             expect = new List<float> { float.NaN, 5, 6, 7, 8, 10, 11, 13, 15, 18, 20, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 };
             for (int level = 1; level < expect.Count; ++level)
-                Assert.AreEqual(expect[level], GetValueOf("Fireball", level, "Mana Cost:  #")[0]);
+                Assert.AreEqual(expect[level], GetValueOf("Fireball", level, "Mana Cost: #")[0]);
 
             // Level 1+ Linear.
             expect = new List<float> { float.NaN, 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80 };
