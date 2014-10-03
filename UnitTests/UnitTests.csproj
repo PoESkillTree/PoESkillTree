@@ -115,6 +115,8 @@
     <None Include="TestBuilds\T8-ST-1hAxe.json" />
     <None Include="TestBuilds\T8-ST-2hAxe-ALDRing.json" />
     <None Include="TestBuilds\T8-ST-Fork-DualWield.json" />
+    <None Include="TestBuilds\T9-CoC-GMP-ISpear-Barrage-CwDT-INova.json" />
+    <None Include="TestBuilds\T9-CoD-INova-DominatingBlow-CoMK-ISpear.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestBuilds\Builds.xml">

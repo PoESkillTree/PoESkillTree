@@ -1312,4 +1312,76 @@
       Spell Critical Strike Multiplier: 248%
     </ExpectOffence>
   </TestBuild>
+  <!-- Cast On Critical Strike, Cast when Damage Taken -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T9-CoC-GMP-ISpear-Barrage-CwDT-INova.json</BuildFile>
+    <ExpectOffence>
+      Barrage
+      Damage per Second: 12
+      Chance to Hit: 62%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 7-19
+      Main Hand Physical Damage: 7-19
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+      #TODO Number of Arrows to fire: 8
+      Ice Spear
+      Damage per Use: 634.5
+      Casts per Second: 1.3
+      Spell Total Combined Damage: 329-493
+      Spell Cold Damage: 329-493
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 36.8%
+      Spell Critical Strike Multiplier: 248%
+      #TODO Number of Projectiles to fire: 5
+      Ice Nova
+      Damage per Use: 25
+      Casts per Second: 1.2
+      Spell Total Combined Damage: 14-22
+      Spell Cold Damage: 14-22
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 26.3%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <!-- Cast on Death, Cast on Melee Kill -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T9-CoD-INova-DominatingBlow-CoMK-ISpear.json</BuildFile>
+    <ExpectOffence>
+      Dominating Blow
+      Damage per Second: 100.3
+      Chance to Hit: 64%
+      Attacks per Second: 1.3
+      Main Hand Total Combined Damage: 36-143
+      Main Hand Physical Damage: 36-143
+      Main Hand Accuracy Rating: 487
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 27.7%
+      Main Hand Critical Strike Multiplier: 218%
+      Ice Spear
+      Damage per Use: 1345.3
+      Casts per Second: 1.3
+      Spell Total Combined Damage: 662-992
+      Spell Cold Damage: 662-992
+      #TODO Cast Speed modifier: +12%
+      #FIXME Spell Critical Strike Chance: 42.3%
+      Spell Critical Strike Chance: 42.4%
+      Spell Critical Strike Multiplier: 248%
+      #TODO Number of Projectiles to fire: 1
+      Ice Nova
+      Damage per Use: 86.1
+      Casts per Second: 1.2
+      Spell Total Combined Damage: 47-72
+      Spell Cold Damage: 47-72
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 30.3%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
 </TestData>

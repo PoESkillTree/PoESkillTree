@@ -31,7 +31,7 @@ namespace POESKillTree.SkillTreeFiles
      * Decoy Totem                                  None
      * Determination                                None
      * Devouring Totem                              None
-     * Dominating Blow                              None
+     * Dominating Blow                              Partial
      * Enduring Cry                                 None
      * Flame Totem                                  None
      * Glacial Hammer                               Partial

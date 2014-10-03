@@ -10,7 +10,6 @@ namespace POESKillTree.SkillTreeFiles
     /* Known issues:
      * - No support for unarmed combat.
      * - No support for minions, traps, mines and totems.
-     * - No support for Cast on X and linked gems.
      * - No support for support gems as item modifiers.
      * - No support for Vaal gems.
      * - Mana regeneration shows sometimes incorrect value (0.1 difference from in-game value).
@@ -160,6 +159,8 @@ namespace POESKillTree.SkillTreeFiles
                                 inc += increase.Percent;
                         if (IsDualWielding && damage.Matches(PhysicalWeaponDamage) && attrs.ContainsKey("#% increased Physical Weapon Damage while Dual Wielding"))
                             inc += attrs["#% increased Physical Weapon Damage while Dual Wielding"][0];
+                        if (source.Nature.Is(DamageSource.Spell) && attrs.ContainsKey("Supported Triggered Spells have #% increased Spell Damage")) // Cast on Melee Kill.
+                            inc += attrs["Supported Triggered Spells have #% increased Spell Damage"][0];
                         if (inc > 0)
                             damage.Increase(inc);
 
@@ -346,7 +347,7 @@ namespace POESKillTree.SkillTreeFiles
                 return Nature.Is(DamageForm.OnUse);
             }
 
-             // Links support gems.
+            // Links support gems.
             // TODO: In case of same gems slotted only highest level one is used.
             public void Link(List<Item> gems, Item item)
             {
@@ -354,6 +355,11 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     if (!gem.Keywords.Contains("Support")) continue; // Skip non-support gems.
                     if (!Gems.CanSupport(this, gem)) continue; // Check whether gem can support our skill gem.
+
+                    // XXX: Spells linked to Cast on/when are treated as cast on use spells (i.e. their cast speed is ignored).
+                    if ((gem.Name.StartsWith("Cast On") || gem.Name.StartsWith("Cast on") || gem.Name.StartsWith("Cast when"))
+                        && Nature.Is(DamageSource.Spell))
+                        Nature.Form |= DamageForm.OnUse;
 
                     // Add support gem attributes.
                     Local.Add(Gems.AttributesOf(gem, item));
@@ -2143,8 +2149,7 @@ namespace POESKillTree.SkillTreeFiles
                     if (AttackSkill.IsAttackSkill(gem))
                     {
                         // Skip gems linked to totems and Cast on gems for now.
-                        if (item.GetLinkedGems(gem).Find(g => g.Name.Contains("Totem")
-                                                              || g.Name.StartsWith("Cast on")) != null) continue;
+                        if (item.GetLinkedGems(gem).Find(g => g.Name.Contains("Totem")) != null) continue;
 
                         AttackSkill attack = AttackSkill.Create(gem);
 
