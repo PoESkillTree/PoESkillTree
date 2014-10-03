@@ -218,6 +218,15 @@
     </ExpectOffence>
   </TestBuild>
   <!-- Necromantic Aegis -->
+  <!--
+    Known Issue: Mana regeneration shows sometimes incorrect value (0.1 difference from in-game value).
+    Mana: 1178.68
+    #% increased Mana Regeneration: 224%
+    baseManaRegen = Round(1178.68) * 0.0175 = 1179 * 0.0175 = 20.6325
+    manaRegen = baseManaRegen * (1 + increased Mana Regeneration / 100) = 20.6325 * 3.24 = 66.8493
+    Mana Regeneration per Second (expected): 66.9
+    Mana Regeneration per Second (actual): 66.8
+    -->
   <TestBuild>
     <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8ewdw==</TreeURL>
     <Level>81</Level>
@@ -1001,6 +1010,17 @@
       Off Hand Critical Strike Multiplier: 218%
     </ExpectOffence>
   </TestBuild>
+  <!--
+    Known Issue: Damage type ranges shows sometimes incorrect value affecting overall DPS (0.1 difference from in-game value, occurs with damage conversions, Spectral Throw, Temptest Shield, Melee Splash)
+    Axe Physical Damage: 29 - 54
+    (No increase damage modifiers)
+      Fork (30% less Projectile Damage): * 0.7
+        Damage: 20.3 - 37.8
+      Spectral Throw (Deals 38% of Base Damage): * 0.38
+        Damage: 7.71399975 - 14.346
+    Main Hand Physical Damage (expected): 8 - 15
+    Main Hand Physical Damage (actual): 8 - 14
+    -->
   <TestBuild>
     <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
     <Level>81</Level>
@@ -1261,7 +1281,7 @@
     </ExpectOffence>
   </TestBuild>
   <!--
-    Spell Critical Strike Chance display rounding bug:
+    Known Issue: Spell Critical Strike chance shows sometimes incorrect value (0.1 difference from in-game value).
     Ethereal Knives, Spell Critical Strike Chance:   26.25 => 26.3 (in-game) [T6-SA-EK-Bow-AddPhy2BowAtkQuiver.json]
     Storm Call (Q+11), Spell Critical Strike Chance: 28.45 => 28.4 (in-game) [T8-PA-SC.json]
     -->
