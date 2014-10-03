@@ -144,11 +144,6 @@ namespace POESKillTree.ViewModels
 
         public class Item
         {
-            public enum GemColorClass
-            {
-                Str, Int, Dex, White
-            }
-
             public enum ItemClass
             {
                 Armor,
@@ -245,7 +240,6 @@ namespace POESKillTree.ViewModels
             public List<Mod> Mods;
             public List<Item> Gems;
             public List<string> Keywords;
-            public GemColorClass GemClass;
             // The socket group of gem (all gems with same socket group value are linked).
             public int SocketGroup;
 
@@ -254,31 +248,6 @@ namespace POESKillTree.ViewModels
                 Attributes = new Dictionary<string, List<float>>();
                 Mods = new List<Mod>();
                 Class = iClass;
-                if (iClass == ItemClass.Gem)
-                {
-                    switch (val["colour"].Value<string>())
-                    {
-                        case "S":
-                            GemClass = GemColorClass.Str;
-                            break;
-
-                        case "D":
-                            GemClass = GemColorClass.Dex;
-                            break;
-
-                        case "I":
-                            GemClass = GemColorClass.Int;
-                            break;
-
-                        default:
-                            GemClass = GemColorClass.White;
-                            break;
-                    }
-                }
-                else
-                {
-                    Gems = new List<Item>();
-                }
 
                 Name = val["name"].Value<string>();
                 if (Name == "")
@@ -295,6 +264,7 @@ namespace POESKillTree.ViewModels
                         {
                             s += " "+jva[0].Value<string>() ;
                         }
+                        s = s.TrimStart();
 
                         if (s == "")
                         {
@@ -332,6 +302,28 @@ namespace POESKillTree.ViewModels
                         var mods = Mod.CreateMods(this, s.Replace("Additional ", ""));
                         Mods.AddRange(mods);
                     }
+
+                if (iClass == ItemClass.Gem)
+                {
+                    switch (val["colour"].Value<string>())
+                    {
+                        case "S":
+                            Keywords.Add("Strength");
+                            break;
+
+                        case "D":
+                            Keywords.Add("Dexterity");
+                            break;
+
+                        case "I":
+                            Keywords.Add("Intelligence");
+                            break;
+                    }
+                }
+                else
+                {
+                    Gems = new List<Item>();
+                }
 
                 List<int> Sockets = new List<int>();
                 if (val.ContainsKey("sockets"))

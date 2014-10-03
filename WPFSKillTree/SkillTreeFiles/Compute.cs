@@ -14,7 +14,7 @@ namespace POESKillTree.SkillTreeFiles
      * - No support for support gems as item modifiers.
      * - No support for Vaal gems.
      * - Mana regeneration shows sometimes incorrect value (0.1 difference from in-game value).
-     * - Damage type ranges shows sometimes incorrect value affecting overall DPS (0.1 difference from in-game value, occurs with damage conversions, Temptest Shield, Melee Splash).
+     * - Damage type ranges shows sometimes incorrect value affecting overall DPS (0.1 difference from in-game value, occurs with damage conversions, Spectral Throw, Temptest Shield, Melee Splash).
      */
     public class Compute
     {
@@ -55,7 +55,7 @@ namespace POESKillTree.SkillTreeFiles
                 HitsPerAttack = Gems.HitsPerAttackOf(gem);
                 IsStrikingWithBothWeaponsAtOnce = Gems.IsStrikingWithBothWeaponsAtOnce(gem);
 
-                Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness:  #%") ? gem.Attributes["Damage Effectiveness:  #%"][0] : 100;
+                Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness: #%") ? gem.Attributes["Damage Effectiveness: #%"][0] : 100;
             }
 
             // Applies item modifiers.
@@ -144,7 +144,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     // Apply damage added.
                     foreach (Damage.Added added in adds)
-                        if (added.MatchesIgnoreType(source.Nature))
+                        if (added.MatchesExceptType(source.Nature))
                             added.Apply(source, Effectiveness);
 
                     // Apply damage conversions and gains.
@@ -342,7 +342,7 @@ namespace POESKillTree.SkillTreeFiles
             // Returns true if damage isn't affected by attack/cast speed, false otherwise.
             public bool IsDamageOnUse()
             {
-                return Sources[0].IsDamageOnUse;
+                return Nature.Is(DamageForm.OnUse);
             }
 
              // Links support gems.
@@ -416,8 +416,6 @@ namespace POESKillTree.SkillTreeFiles
             public string Name;
             // The result nature of skill used with weapon.
             public DamageNature Nature;
-            // The flag whether damage is affected by attack/cast speed.
-            public bool IsDamageOnUse = false;
 
             // The increased/reduced accuracy rating with weapon type pattern.
             static Regex ReIncreasedAccuracyRatingWithWeaponType = new Regex("#% (increased|reduced) Accuracy Rating with (.+)$");
@@ -434,8 +432,6 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Name = name;
 
-                IsDamageOnUse = Gems.IsDamageOnUse(skill.Gem);
-
                 if (weapon == null) // Spells get damage from gem local attributes.
                 {
                     Nature = new DamageNature(skill.Nature);
@@ -446,13 +442,13 @@ namespace POESKillTree.SkillTreeFiles
                         if (damage != null) Deals.Add(damage);
                     }
 
-                    if (skill.Gem.Attributes.ContainsKey("Cast Time:  # sec"))
-                        APS = 1 / skill.Gem.Attributes["Cast Time:  # sec"][0];
+                    if (skill.Gem.Attributes.ContainsKey("Cast Time: # sec"))
+                        APS = 1 / skill.Gem.Attributes["Cast Time: # sec"][0];
                     else
                         APS = 1; // Spell without Cast Time has cast time of 1 second.
 
-                    if (skill.Gem.Attributes.ContainsKey("Critical Strike Chance:  #%"))
-                        CriticalChance = skill.Gem.Attributes["Critical Strike Chance:  #%"][0];
+                    if (skill.Gem.Attributes.ContainsKey("Critical Strike Chance: #%"))
+                        CriticalChance = skill.Gem.Attributes["Critical Strike Chance: #%"][0];
                     else
                         CriticalChance = 0; // Spell without Critical Strike Chance has none.
 
@@ -466,7 +462,7 @@ namespace POESKillTree.SkillTreeFiles
                     else // Narrow down weapon type and form of skill gem to actual weapon (e.g. Frenzy).
                         Nature = new DamageNature(skill.Nature)
                         {
-                            Form = skill.Nature.Form & weapon.Nature.Form,
+                            Form = skill.Nature.ChooseWeaponForm(weapon.Nature), // XXX: Choose between melee or projectile form according to weapon.
                             WeaponType = skill.Nature.WeaponType & weapon.Nature.WeaponType
                         };
 
@@ -476,16 +472,16 @@ namespace POESKillTree.SkillTreeFiles
                         Nature.Form = skill.Nature.Form;
 
                     foreach (Damage damage in weapon.Deals)
-                        Deals.Add(new Damage(damage) { Area = Nature.Area, Form = Nature.Form, Source = Nature.Source, WeaponType = Nature.WeaponType });
+                        Deals.Add(new Damage(damage) { Form = Nature.Form, Source = Nature.Source, WeaponType = Nature.WeaponType });
 
                     foreach (Damage.Added added in weapon.Added)
                         if (weapon.Is(added.Hand)) // Added damage may require specific hand.
                             added.Apply(this, 100);
 
-                    APS = weapon.Attributes["Attacks per Second:  #"][0];
+                    APS = weapon.Attributes["Attacks per Second: #"][0];
 
-                    if (weapon.Attributes.ContainsKey("Critical Strike Chance:  #%"))
-                        CriticalChance = weapon.Attributes["Critical Strike Chance:  #%"][0];
+                    if (weapon.Attributes.ContainsKey("Critical Strike Chance: #%"))
+                        CriticalChance = weapon.Attributes["Critical Strike Chance: #%"][0];
                     else
                         CriticalChance = 0; // Weapon without Critical Strike Chance has none.
 
@@ -529,9 +525,9 @@ namespace POESKillTree.SkillTreeFiles
                 if (Nature.Is(DamageSource.Attack))
                 {
                     // If gem has own Attacks per Second, use it instead of weapon one.
-                    if (skill.Local.ContainsKey("Attacks per Second:  #"))
+                    if (skill.Local.ContainsKey("Attacks per Second: #"))
                     {
-                        APS = skill.Local["Attacks per Second:  #"][0];
+                        APS = skill.Local["Attacks per Second: #"][0];
                         // Apply local increased attack speed of weapon.
                         if (Local.ContainsKey("#% increased Attack Speed"))
                             APS = IncreaseValueByPercentage(APS, Local["#% increased Attack Speed"][0]);
@@ -725,20 +721,11 @@ namespace POESKillTree.SkillTreeFiles
             Gem, Equipment, Tree
         }
 
-        public enum DamageArea
-        {
-            Any, Area
-        }
-
-        // Bitset.
+        [Flags]
         public enum DamageForm
         {
-            Any, Melee = 1, Projectile = 2
-        }
-
-        public enum DamageOverTime
-        {
-            Any, Burning
+            Any, Melee = 1, Projectile = 2, AoE = 4, DoT = 8, OnUse = 16,
+            WeaponMask = Melee | Projectile
         }
 
         public enum DamageSource
@@ -746,7 +733,7 @@ namespace POESKillTree.SkillTreeFiles
             Any, Attack, Spell
         }
 
-        // Bitset.
+        [Flags]
         public enum DamageType
         {
             Any, Physical = 1, Fire = 2, Cold = 4, Lightning = 8, Chaos = 16,
@@ -756,26 +743,18 @@ namespace POESKillTree.SkillTreeFiles
 
         public class DamageNature
         {
-            public DamageArea Area = DamageArea.Any;
-            public DamageOverTime DoT = DamageOverTime.Any;
             public DamageForm Form = DamageForm.Any;
             public DamageSource Source = DamageSource.Any;
             public DamageType Type = DamageType.Any;
             public WeaponType WeaponType = WeaponType.Any;
 
-            static Dictionary<string, DamageArea> Areas = new Dictionary<string, DamageArea>()
-            {
-                { "AoE",        DamageArea.Area },
-                { "Area",       DamageArea.Area }
-            };
-            static Dictionary<string, DamageOverTime> DoTs = new Dictionary<string, DamageOverTime>()
-            {
-                { "Burning",    DamageOverTime.Burning }
-            };
             public static Dictionary<string, DamageForm> Forms = new Dictionary<string, DamageForm>()
             {
                 { "Melee",      DamageForm.Melee },
-                { "Projectile", DamageForm.Projectile }
+                { "Projectile", DamageForm.Projectile },
+                { "AoE",        DamageForm.AoE },
+                { "Area",       DamageForm.AoE },
+                { "Burning",    DamageForm.DoT }
             };
             static Dictionary<string, DamageSource> Sources = new Dictionary<string, DamageSource>()
             {
@@ -790,15 +769,14 @@ namespace POESKillTree.SkillTreeFiles
                 { "Cold",       DamageType.Cold },
                 { "Lightning",  DamageType.Lightning },
                 { "Elemental",  DamageType.Elemental },
-                { "Chaos",      DamageType.Chaos }
+                { "Chaos",      DamageType.Chaos },
+                { "Burning",    DamageType.Fire }
             };
 
             public DamageNature() { }
 
             public DamageNature(DamageNature nature)
             {
-                Area = nature.Area;
-                DoT = nature.DoT;
                 Form = nature.Form;
                 Source = nature.Source;
                 Type = nature.Type;
@@ -807,8 +785,6 @@ namespace POESKillTree.SkillTreeFiles
 
             public DamageNature(DamageNature nature, string str)
             {
-                Area = nature.Area;
-                DoT = nature.DoT;
                 Form = nature.Form;
                 Source = nature.Source;
                 Type = nature.Type;
@@ -817,13 +793,10 @@ namespace POESKillTree.SkillTreeFiles
                 string[] words = str.Split(' ');
                 foreach (string word in words)
                 {
+                    if (Forms.ContainsKey(word)) Form |= Forms[word];
                     if (Types.ContainsKey(word)) Type = Types[word];
-                    else if (Sources.ContainsKey(word)) Source = Sources[word];
-                    else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
-                    else if (Forms.ContainsKey(word)) Form |= Forms[word];
-                    else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
-                    else if (Areas.ContainsKey(word)) Area = Areas[word];
-                    else throw new Exception("Unknown keyword: " + word);
+                    if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
+                    if (Sources.ContainsKey(word)) Source = Sources[word];
                 }
             }
 
@@ -832,13 +805,10 @@ namespace POESKillTree.SkillTreeFiles
                 string[] words = str.Split(' ');
                 foreach (string word in words)
                 {
+                    if (Forms.ContainsKey(word)) Form |= Forms[word];
                     if (Types.ContainsKey(word)) Type = Types[word];
-                    else if (Sources.ContainsKey(word)) Source = Sources[word];
-                    else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
-                    else if (Forms.ContainsKey(word)) Form |= Forms[word];
-                    else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
-                    else if (Areas.ContainsKey(word)) Area = Areas[word];
-                    else throw new Exception("Unknown keyword: " + word);
+                    if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
+                    if (Sources.ContainsKey(word)) Source = Sources[word];
                 }
             }
 
@@ -855,13 +825,10 @@ namespace POESKillTree.SkillTreeFiles
                 string[] words = str.Split(' ');
                 foreach (string word in words)
                 {
+                    if (Forms.ContainsKey(word)) Form |= Forms[word];
                     if (Types.ContainsKey(word)) Type = Types[word];
-                    else if (Sources.ContainsKey(word)) Source = Sources[word];
-                    else if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
-                    else if (Forms.ContainsKey(word)) Form |= Forms[word];
-                    else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
-                    else if (Areas.ContainsKey(word)) Area = Areas[word];
-                    else throw new Exception("Unknown keyword: " + word);
+                    if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
+                    if (Sources.ContainsKey(word)) Source = Sources[word];
                 }
             }
 
@@ -870,16 +837,20 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (string word in keywords)
                 {
                     if (Forms.ContainsKey(word)) Form |= Forms[word];
-                    else if (Sources.ContainsKey(word)) Source = Sources[word];
-                    else if (Weapon.Types.ContainsKey(word)) WeaponType |= Weapon.Types[word];
-                    else if (DoTs.ContainsKey(word)) DoT = DoTs[word];
-                    else if (Areas.ContainsKey(word)) Area = Areas[word];
+                    if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
+                    if (Sources.ContainsKey(word)) Source = Sources[word];
                 }
+            }
+
+            // Returns damage form narrowed down according to weapon.
+            public DamageForm ChooseWeaponForm(DamageNature weapon)
+            {
+                return (Form & ~DamageForm.WeaponMask) | (Form & weapon.Form);
             }
 
             public bool Is(DamageForm form)
             {
-                return Form == form;
+                return (Form & form) != 0;
             }
 
             public bool Is(DamageSource source)
@@ -899,21 +870,17 @@ namespace POESKillTree.SkillTreeFiles
 
             public bool Matches(DamageNature nature)
             {
-                return (Area == DamageArea.Any || nature.Area == Area)
-                       && (DoT == DamageOverTime.Any || nature.DoT == DoT)
-                       && (Form == DamageForm.Any || nature.Form == Form)
-                       && (Source == DamageSource.Any || nature.Source == Source)
+                return (Form == DamageForm.Any || (nature.Form & Form) != 0)
+                       && (Type == DamageType.Any || (nature.Type & Type) != 0)
                        && (WeaponType == WeaponType.Any || (nature.WeaponType & WeaponType) != 0)
-                       && (Type == DamageType.Any || (nature.Type & Type) != 0);
+                       && (Source == DamageSource.Any || nature.Source == Source);
             }
 
-            public bool MatchesIgnoreType(DamageNature nature)
+            public bool MatchesExceptType(DamageNature nature)
             {
-                return (Area == DamageArea.Any || nature.Area == Area)
-                       && (DoT == DamageOverTime.Any || nature.DoT == DoT)
-                       && (Form == DamageForm.Any || nature.Form == Form)
-                       && (Source == DamageSource.Any || nature.Source == Source)
-                       && (WeaponType == WeaponType.Any || (nature.WeaponType & WeaponType) != 0);
+                return (Form == DamageForm.Any || (nature.Form & Form) != 0)
+                       && (WeaponType == WeaponType.Any || (nature.WeaponType & WeaponType) != 0)
+                       && (Source == DamageSource.Any || nature.Source == Source);
             }
 
             public static DamageType TypeOf(string type)
@@ -1221,7 +1188,7 @@ namespace POESKillTree.SkillTreeFiles
             // The damage range maximum.
             float Max;
 
-            static Regex ReDamageAttribute = new Regex("([^ ]+) Damage:  #-#");
+            static Regex ReDamageAttribute = new Regex("([^ ]+) Damage: #-#");
             static Regex ReDamageMod = new Regex("Deals #-# ([^ ]+) Damage$");
 
             // Copy constructor.
@@ -1497,14 +1464,14 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        // Bitset.
+        [Flags]
         public enum WeaponHand
         {
             Any = 0, Main = 1, Off = 2, DualWielded = 4,
-            HandMask = 3
+            HandMask = Main | Off
         }
 
-        // Bitset.
+        [Flags]
         public enum WeaponType
         {
             Any,
@@ -1519,7 +1486,7 @@ namespace POESKillTree.SkillTreeFiles
             Mace = OneHandedMace | TwoHandedMace,
             Sword = OneHandedSword | TwoHandedSword,
             Ranged = Bow | Wand,
-            Weapon = Melee | Ranged,
+            Weapon = Melee | Ranged
         }
 
         // Equipped items.
@@ -1709,8 +1676,8 @@ namespace POESKillTree.SkillTreeFiles
             if (Global.ContainsKey("+# to maximum Energy Shield"))
                 es += Global["+# to maximum Energy Shield"][0];
             // Add maximum shield from items.
-            if (Global.ContainsKey("Energy Shield:  #"))
-                es += Global["Energy Shield:  #"][0];
+            if (Global.ContainsKey("Energy Shield: #"))
+                es += Global["Energy Shield: #"][0];
             // Increase % maximum shield from intelligence.
             float incES = RoundValue(Global["+#% Energy Shield"][0], 0);
             // Increase % maximum shield from tree and items.
@@ -1741,15 +1708,15 @@ namespace POESKillTree.SkillTreeFiles
             float shieldES = 0;
             if (incDefencesShield > 0 || incArmourShield > 0 || incESShield > 0)
             {
-                List<float> value = OffHand.GetValues("Armour:  #");
+                List<float> value = OffHand.GetValues("Armour: #");
                 if (value.Count > 0)
                     shieldArmour += PercentOfValue(value[0], incArmourShield + incDefencesShield);
 
-                value = OffHand.GetValues("Evasion Rating:  #");
+                value = OffHand.GetValues("Evasion Rating: #");
                 if (value.Count > 0)
                     shieldEvasion += PercentOfValue(value[0], incDefencesShield);
 
-                value = OffHand.GetValues("Energy Shield:  #");
+                value = OffHand.GetValues("Energy Shield: #");
                 if (value.Count > 0)
                     shieldES += PercentOfValue(value[0], incESShield + incDefencesShield);
             }
@@ -1785,11 +1752,8 @@ namespace POESKillTree.SkillTreeFiles
             ch["Mana: #"] = new List<float>() { RoundValue(mana, 0) };
             ch["Maximum Energy Shield: #"] = new List<float>() { RoundValue(es, 0) };
 
-            // Evasion Rating from level.
+            // Evasion Rating from level, tree and items.
             float evasion = Global["Evasion Rating: #"][0];
-            // Evasion Rating from tree, items.
-            if (Global.ContainsKey("Evasion Rating:  #"))
-                evasion += Global["Evasion Rating:  #"][0];
             if (Global.ContainsKey("+# to Evasion Rating"))
                 evasion += Global["+# to Evasion Rating"][0];
             // Increase % from dexterity, tree and items.
@@ -1800,8 +1764,8 @@ namespace POESKillTree.SkillTreeFiles
 
             float armour = 0;
             // Armour from items.
-            if (Global.ContainsKey("Armour:  #"))
-                armour += Global["Armour:  #"][0];
+            if (Global.ContainsKey("Armour: #"))
+                armour += Global["Armour: #"][0];
             float incArmour = 0;
             if (Global.ContainsKey("#% increased Armour"))
                 incArmour += Global["#% increased Armour"][0];
@@ -1991,7 +1955,7 @@ namespace POESKillTree.SkillTreeFiles
             }
             if (hasShield)
             {
-                List<float> values = OffHand.GetValues("Chance to Block:  #%");
+                List<float> values = OffHand.GetValues("Chance to Block: #%");
                 if (values.Count > 0) chanceBlockAttacks += values[0];
             }
             else if (IsWieldingStaff)

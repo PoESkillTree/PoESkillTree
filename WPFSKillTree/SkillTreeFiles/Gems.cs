@@ -5,10 +5,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using POESKillTree.Model;
 using Item = POESKillTree.ViewModels.ItemAttributes.Item;
-using GemColorClass = POESKillTree.ViewModels.ItemAttributes.Item.GemColorClass;
 using Mod = POESKillTree.ViewModels.ItemAttributes.Item.Mod;
 using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
-using DamageArea = POESKillTree.SkillTreeFiles.Compute.DamageArea;
 using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;
 using DamageNature = POESKillTree.SkillTreeFiles.Compute.DamageNature;
 using DamageSource = POESKillTree.SkillTreeFiles.Compute.DamageSource;
@@ -226,26 +224,22 @@ namespace POESKillTree.SkillTreeFiles
             internal Dictionary<string, Value> PerLevel;
             // Defines attribute value progression along the gem quality.
             internal Dictionary<string, Value> PerQuality;
-            // Defines requirement of specific hand.
+            // Defines requirement of specific hand as source of damage.
             internal WeaponHand RequiredHand = WeaponHand.Any;
-            // Defines requirement of specific weapon type.
+            // Defines requirement of specific weapon type as source of damage.
             internal WeaponType RequiredWeapon = WeaponType.Any;
             // Defines whether skill requires shield being equipped.
             internal bool RequiresEquippedShield = false;
-            // Defines whether AoE nature of skill should be ignored.
-            internal bool IgnoreArea = false;
             // Defines which form of skill should be ignored.
-            internal DamageForm IgnoreForm = DamageForm.Any;
+            internal DamageForm ExcludeForm = DamageForm.Any;
+            // Defines which forms gem does not support.
+            internal DamageForm ExcludeFormSupport = DamageForm.Any;
             // Defines which damage source nature of skill should be ignored.
-            internal DamageSource IgnoreSource = DamageSource.Any;
-            // Defines which damage form should be included.
+            internal DamageSource ExcludeSource = DamageSource.Any;
+            // Defines form which should be included to skill.
             internal DamageForm IncludeForm = DamageForm.Any;
-            // Defines whether damage is affected by attack/cast speed.
-            internal bool DamageOnUse = false;
             // Defines number of hits skill does per single attack.
             internal float HitsPerAttack = 1;
-            // Defines whether gem supports AoE skill gems.
-            internal bool SupportsAoE = true;
             // Defines whether skill strikes with both weapons at once instead of alternating weapons while dual wielding.
             internal bool StrikesWithBothWeapons = false;
 
@@ -442,18 +436,9 @@ namespace POESKillTree.SkillTreeFiles
                         level += mod.Value[0];
                     else
                     {
-                        Match m = ReGemLevelClass.Match(mod.Attribute);
-                        if (m.Success
-                            && (m.Groups[1].Value == "Strength" && gem.GemClass == GemColorClass.Str
-                                || m.Groups[1].Value == "Dexterity" && gem.GemClass == GemColorClass.Dex
-                                || gem.GemClass == GemColorClass.Int))
+                        Match m = ReGemLevelKeyword.Match(mod.Attribute);
+                        if (m.Success && gem.Keywords.Contains(m.Groups[1].Value))
                             level += mod.Value[0];
-                        else
-                        {
-                            m = ReGemLevelKeyword.Match(mod.Attribute);
-                            if (m.Success && gem.Keywords.Contains(m.Groups[1].Value))
-                                level += mod.Value[0];
-                        }
                     }
                 }
 
@@ -464,9 +449,7 @@ namespace POESKillTree.SkillTreeFiles
                 // Override attributes if Quality attributes are defined.
                 if (entry.PerQuality != null)
                 {
-                    float quality = 0;
-                    if (gem.Attributes.ContainsKey("Quality:  +#%"))
-                        quality += gem.Attributes["Quality:  +#%"][0];
+                    float quality = QualityOf(gem);
 
                     if (quality > 0)
                     {
@@ -492,8 +475,8 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Gem entry = DB[gem.Name];
 
-                // No support for skill with AoE nature.
-                if (!entry.SupportsAoE && skill.Nature.Area == DamageArea.Area) return false;
+                // No support for excluded forms.
+                if (entry.ExcludeFormSupport != DamageForm.Any && skill.Nature.Is(entry.ExcludeFormSupport)) return false;
             }
 
             return true;
@@ -528,12 +511,6 @@ namespace POESKillTree.SkillTreeFiles
             return DB.ContainsKey(gem.Name) ? DB[gem.Name].HitsPerAttack : 1;
         }
 
-        // Returns true if DamageOnUse is set to true, false otherwise.
-        public static bool IsDamageOnUse(Item gem)
-        {
-            return DB.ContainsKey(gem.Name) ? DB[gem.Name].DamageOnUse : false;
-        }
-
         // Returns true if skill strikes with both weapons at once.
         public static bool IsStrikingWithBothWeaponsAtOnce(Item gem)
         {
@@ -543,9 +520,9 @@ namespace POESKillTree.SkillTreeFiles
         // Returns level of gem.
         public static float LevelOf(Item gem)
         {
-            return gem.Attributes.ContainsKey("Level:  #")
-                   ? gem.Attributes["Level:  #"][0]
-                   : (gem.Attributes.ContainsKey("Level:  # (Max)") ? gem.Attributes["Level:  # (Max)"][0] : 1);
+            return gem.Attributes.ContainsKey("Level: #")
+                   ? gem.Attributes["Level: #"][0]
+                   : (gem.Attributes.ContainsKey("Level: # (Max)") ? gem.Attributes["Level: # (Max)"][0] : 1);
         }
 
         // Returns damage nature of gem.
@@ -572,17 +549,13 @@ namespace POESKillTree.SkillTreeFiles
                 if (entry.RequiredWeapon != WeaponType.Any)
                     nature.WeaponType = entry.RequiredWeapon;
 
-                // Ignore AoE nature.
-                if (entry.IgnoreArea)
-                    nature.Area ^= DamageArea.Area;
-
                 // Ignore form.
-                if (entry.IgnoreForm != DamageForm.Any)
-                    nature.Form ^= entry.IgnoreForm;
+                if (entry.ExcludeForm != DamageForm.Any)
+                    nature.Form ^= entry.ExcludeForm;
 
                 // Ignore source.
-                if (entry.IgnoreSource != DamageSource.Any)
-                    nature.Source ^= entry.IgnoreSource;
+                if (entry.ExcludeSource != DamageSource.Any)
+                    nature.Source ^= entry.ExcludeSource;
 
                 // Include form.
                 if (entry.IncludeForm != DamageForm.Any)
@@ -590,6 +563,14 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             return nature;
+        }
+
+        // Returns quality of gem.
+        public static float QualityOf(Item gem)
+        {
+            return gem.Attributes.ContainsKey("Quality: +#%")
+                   ? gem.Attributes["Quality: +#%"][0]
+                   : (gem.Attributes.ContainsKey("Quality: +#% (Max)") ? gem.Attributes["Quality: +#% (Max)"][0] : 0);
         }
 
         // Returns rounded value.
@@ -632,7 +613,7 @@ namespace POESKillTree.SkillTreeFiles
             }, {
                 "Cold Snap",
                 new Gem {
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Cyclone",
@@ -647,7 +628,7 @@ namespace POESKillTree.SkillTreeFiles
                 "Dual Strike",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 5, 8, 6, 10, 9, 11, 15, 10, 16, MaxLevel, 11) },
+                        { "Mana Cost: #", new RangeMap(1, 5, 8, 6, 10, 9, 11, 15, 10, 16, MaxLevel, 11) },
                         { "#% increased Physical Damage", new Linear(3, -3) }
                     },
                     PerQuality = new Values {
@@ -661,22 +642,22 @@ namespace POESKillTree.SkillTreeFiles
                 "Fireball",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 12, new Table(5, 6, 7, 8, 10, 11, 13, 15, 18, 20, 22, 23), 13, MaxLevel, new Linear(1, 12)) },
+                        { "Mana Cost: #", new RangeMap(1, 12, new Table(5, 6, 7, 8, 10, 11, 13, 15, 18, 20, 22, 23), 13, MaxLevel, new Linear(1, 12)) },
                         { "Deals #-# Fire Damage", new Table("5–10", "7–11", "9–14", "13–19", "17–25", "23–34", "32–48", "44–67", "63–95", "89–133",
                                                              "110–165", "135–203", "157–236", "183–274", "212–318", "245–368", "283–425", "326–489", "358–537", "393–590",
                                                              "431–647", "472–709", "518–776", "567–850", "620–930", "678–1017", "741–1111", "809–1214", "884–1326", "965–1447") }
                     },
-                    IgnoreArea = true
+                    ExcludeForm = DamageForm.AoE
                 }
             }, {
                 "Flameblast",
                 new Gem {
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Firestorm",
                 new Gem {
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Flicker Strike",
@@ -684,13 +665,13 @@ namespace POESKillTree.SkillTreeFiles
                     PerLevel = new Values {
                         { "#% increased Physical Damage", new Linear(3, -3) }
                     },
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Glacial Hammer",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 9, 11, 10, 15, 12, 16, MaxLevel, 13) },
+                        { "Mana Cost: #", new RangeMap(1, 9, 11, 10, 15, 12, 16, MaxLevel, 13) },
                         { "#% increased Physical Damage", new Linear(4, -4) },
                         { "#% Chance to Freeze enemies", new RangeMap(1, 12, new Table(15, 16, 17, 18, 19, 20, 21, 21, 22, 22, 23, 23), 13, 15, 24, 16, 18, 25, 19, MaxLevel, 26) }
                     },
@@ -709,7 +690,7 @@ namespace POESKillTree.SkillTreeFiles
                 "Heavy Strike",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 9, 8, 10, 15, 9, 16, MaxLevel, 10) },
+                        { "Mana Cost: #", new RangeMap(1, 9, 8, 10, 15, 9, 16, MaxLevel, 10) },
                         { "#% increased Physical Damage", new Linear(5, -5) },
                     },
                     PerQuality = new Values {
@@ -726,15 +707,15 @@ namespace POESKillTree.SkillTreeFiles
                                                              "61-91", "67-100", "74-110", "81-121", "89-133", "98-146", "107-161", "117-176", "129-193",
                                                              "141-211", "154-231", "168-253") }
                     },
-                    IgnoreSource = DamageSource.Spell,
-                    DamageOnUse = true
+                    ExcludeSource = DamageSource.Spell,
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Leap Slam",
                 new Gem {
                     PerLevel = new Values {
-                        { "Attacks per Second:  #", new RangeMap(1, MaxLevel, 1 / 1.4f) }, // Leap Slam has its own attack time of 1.40 seconds.
-                        { "Mana Cost:  #", new RangeMap(1, 5, 14, 6, 9, 15, 10, 13, 16, 14, 17, 17, 18, MaxLevel, 18) },
+                        { "Attacks per Second: #", new RangeMap(1, MaxLevel, 1 / 1.4f) }, // Leap Slam has its own attack time of 1.40 seconds.
+                        { "Mana Cost: #", new RangeMap(1, 5, 14, 6, 9, 15, 10, 13, 16, 14, 17, 17, 18, MaxLevel, 18) },
                         { "#% increased Physical Damage", new Linear(4, -4) },
                         { "#% Chance to Knock enemies Back on hit", new RangeMap(1, 9, new Table(10, 12, 14, 16, 18, 20, 21, 22, 23), 10, MaxLevel, 24) }
                     },
@@ -745,56 +726,55 @@ namespace POESKillTree.SkillTreeFiles
                 "Lightning Strike",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 9, 9, 10, MaxLevel, 10) },
+                        { "Mana Cost: #", new RangeMap(1, 9, 9, 10, MaxLevel, 10) },
                         { "#% increased Physical Damage", new Linear(3, -3) }
                     },
-                    IgnoreForm = DamageForm.Projectile
+                    ExcludeForm = DamageForm.Projectile
                 }
             }, {
                 "Lightning Warp",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new Table(26, 28, 30, 32, 33, 36, 37, 39, 41, 42, 44, 45, 46, 47, 48, 49, 49, 50, 51, 51, 52, 52) },
+                        { "Mana Cost: #", new Table(26, 28, 30, 32, 33, 36, 37, 39, 41, 42, 44, 45, 46, 47, 48, 49, 49, 50, 51, 51, 52, 52) },
                         { "Deals #–# Lightning Damage", new Table("3–51", "3–62", "4–74", "5–88", "5–99", "6–117", "7–130", "8–153", "9–180", "10–199",
                                                                   "12–221", "13–244", "14–270", "16–299", "17–330", "19–364", "21–401", "23–441", "26–485", "28–534",
                                                                   "31–586", "34–644", "34–644", "34–644", "45-850") }
                     },
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Melee Splash",
                 new Gem {
                     PerLevel = new Values {
-                        { "#% less Damage to main target", new RangeMap(1, MaxLevel, 15.5f) } // XXX: 16% in JSON data seems rounded.
+                        { "#% less Damage to main target", new RangeMap(1, MaxLevel, 15.5f) } // XXX: MeleeSplash 16% in JSON data seems rounded or damage range rounding bug.
                     },
-                    SupportsAoE = false // TODO: Whirling Blades, although it is a Melee Skill and is not AoE, it is not supported by Melee Splash.
+                    ExcludeFormSupport = DamageForm.AoE | DamageForm.OnUse
                 }
             }, {
                 "Molten Shell",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 17, new Table(22, 24, 28, 30, 34, 36, 38, 42, 46, 50, 54, 58, 60, 62, 64, 66, 66), 18, MaxLevel, new Linear(1, 50)) },
+                        { "Mana Cost: #", new RangeMap(1, 17, new Table(22, 24, 28, 30, 34, 36, 38, 42, 46, 50, 54, 58, 60, 62, 64, 66, 66), 18, MaxLevel, new Linear(1, 50)) },
                         { "Deals #–# Fire Damage", new Table("26–39", "35–52", "45–68", "59–88", "75–113", "95–143", "120–180", "161–241", "214–321", "283–425",
                                                              "372–558", "455–682", "554–831", "674–1010", "817–1226", "989–1483", "1195–1792", "1354–2031", "1533–2300", "1735–2602",
                                                              "1962–2943", "2217–3326") }
                     },
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Molten Strike",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 1, 6, 2, 5, 7, 6, 18, 8, 19, MaxLevel, 10) },
+                        { "Mana Cost: #", new RangeMap(1, 1, 6, 2, 5, 7, 6, 18, 8, 19, MaxLevel, 10) },
                         { "#% increased Physical Damage", new Linear(4, -4) }
                     },
-                    IgnoreArea = true,
-                    IgnoreForm = DamageForm.Projectile
+                    ExcludeForm = DamageForm.AoE | DamageForm.Projectile
                 }
             }, {
                 "Power Siphon",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 10, 13, 11, MaxLevel, 14 ) },
+                        { "Mana Cost: #", new RangeMap(1, 10, 13, 11, MaxLevel, 14 ) },
                         { "#% increased Physical Damage", new Linear(4, -4) }
                     },
                     RequiredWeapon = WeaponType.Wand
@@ -803,7 +783,7 @@ namespace POESKillTree.SkillTreeFiles
                 "Reave",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 5, 5, 6, 12, 6, 7, 16, 7, 17, 20, 8, 21, MaxLevel, 9) },
+                        { "Mana Cost: #", new RangeMap(1, 5, 5, 6, 12, 6, 7, 16, 7, 17, 20, 8, 21, MaxLevel, 9) },
                         { "#% increased Physical Damage", new Linear(4, -4) }
                     },
                     PerQuality = new Values {
@@ -815,7 +795,7 @@ namespace POESKillTree.SkillTreeFiles
                 "Shield Charge",
                 new Gem {
                     RequiresEquippedShield = true,
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Spectral Throw",
@@ -826,22 +806,21 @@ namespace POESKillTree.SkillTreeFiles
                 "Split Arrow",
                 new Gem {
                     PerLevel = new Values {
-                        { "Mana Cost:  #", new RangeMap(1, 1, 5, 2, 4, 6, 5, 8, 7, 9, 16, 8, 17, MaxLevel, 10) },
+                        { "Mana Cost: #", new RangeMap(1, 1, 5, 2, 4, 6, 5, 8, 7, 9, 16, 8, 17, MaxLevel, 10) },
                         { "#% increased Physical Damage", new Linear(3, -3) },
                         { "# additional Arrows", new RangeMap(1, 4, 2, 5, 9, 3, 10, 16, 4, 17, 20, 5, 21, MaxLevel, 6) }
-                    },
-                    IncludeForm = DamageForm.Projectile
+                    }
                 }
             }, {
                 "Storm Call",
                 new Gem {
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Sweep",
                 new Gem {
                     PerLevel = new Values {
-                        { "Attacks per Second:  #", new RangeMap(1, MaxLevel, 1 / 1.15f) }, // Sweep has its own attack time of 1.15 seconds.
+                        { "Attacks per Second: #", new RangeMap(1, MaxLevel, 1 / 1.15f) }, // Sweep has its own attack time of 1.15 seconds.
                     },
                     RequiredWeapon = WeaponType.Staff | WeaponType.TwoHandedAxe | WeaponType.TwoHandedMace
                 }
@@ -853,17 +832,17 @@ namespace POESKillTree.SkillTreeFiles
                                                                   "56–84", "64–96", "72–108", "82–123", "92–138", "104–156", "117–175", "126–189", "136–204", "147–220") }
                     },
                     RequiresEquippedShield = true,
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }, {
                 "Whirling Blades",
                 new Gem {
                     PerLevel = new Values {
-                        { "Attacks per Second:  #", new RangeMap(1, MaxLevel, 1 / 2.75f) }, // XXX: Just a guess, it doesn't use weapon APS and no info on Wiki.
+                        { "Attacks per Second: #", new RangeMap(1, MaxLevel, 1 / 2.75f) }, // XXX: Just a guess, it doesn't use weapon APS and no info on Wiki.
                         { "#% increased Physical Damage", new Linear(3, -3) }
                     },
                     RequiredWeapon = WeaponType.Dagger | WeaponType.Claw | WeaponType.OneHandedSword,
-                    DamageOnUse = true
+                    IncludeForm = DamageForm.OnUse
                 }
             }
         };
