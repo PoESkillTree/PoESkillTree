@@ -1173,8 +1173,7 @@
       Freezing Pulse
       Damage per Second: 172.3
       # Display rounding
-      #FIXME Casts per Second: 1.9
-      Casts per Second: 2
+      Casts per Second: 1.9
       Spell Total Combined Damage: 47-70
       Spell Cold Damage: 47-70
       #TODO Cast Speed modifier: +27%
@@ -1209,7 +1208,7 @@
       Spell Total Combined Damage: 6-8
       Spell Fire Damage: 6-8
       #TODO Cast Speed modifier: +27%
-      #NOTE No ciritcal strikes!
+      #NOTE No critical strikes!
       Ice Spear
       Damage per Second: 1354
       Casts per Second: 1.5
@@ -1228,8 +1227,7 @@
       Spell Critical Strike Multiplier: 248%
       Spark
       Damage per Second: 105.6
-      #FIXME Casts per Second: 1.9
-      Casts per Second: 2
+      Casts per Second: 1.9
       Spell Total Combined Damage: 3-73
       Spell Lightning Damage: 3-73
       #TODO Cast Speed modifier: +27%
@@ -1262,6 +1260,11 @@
       Spell Critical Strike Multiplier: 248%
     </ExpectOffence>
   </TestBuild>
+  <!--
+    Spell Critical Strike Chance display rounding bug:
+    Ethereal Knives, Spell Critical Strike Chance:   26.25 => 26.3 (in-game) [T6-SA-EK-Bow-AddPhy2BowAtkQuiver.json]
+    Storm Call (Q+11), Spell Critical Strike Chance: 28.45 => 28.4 (in-game) [T8-PA-SC.json]
+    -->
   <TestBuild>
     <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
     <Level>81</Level>

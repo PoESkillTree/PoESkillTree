@@ -15,6 +15,7 @@ namespace POESKillTree.SkillTreeFiles
      * - No support for Vaal gems.
      * - Mana regeneration shows sometimes incorrect value (0.1 difference from in-game value).
      * - Damage type ranges shows sometimes incorrect value affecting overall DPS (0.1 difference from in-game value, occurs with damage conversions, Spectral Throw, Temptest Shield, Melee Splash).
+     * - Spell Critical Strike chance shows sometimes incorrect value (0.1 difference from in-game value).
      */
     public class Compute
     {
@@ -372,7 +373,7 @@ namespace POESKillTree.SkillTreeFiles
                     props.Add("Attacks per Second: #", new List<float> { RoundHalfDownValue(AttacksPerSecond(), 1) });
                 }
                 else
-                    props.Add("Casts per Second: #", new List<float> { RoundValue(AttacksPerSecond(), 1) });
+                    props.Add("Casts per Second: #", new List<float> { RoundHalfDownValue(AttacksPerSecond(), 1) });
 
                 foreach (AttackSource source in Sources)
                 {
