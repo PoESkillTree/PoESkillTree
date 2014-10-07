@@ -20,12 +20,20 @@ namespace UnitTests
             set { TestContextInstance = value; }
         }
 
-        SkillTree Tree;
+        static SkillTree Tree;
 
-        [TestInitialize]
-        public void Initalize()
+        [ClassInitialize]
+        public static void Initalize(TestContext testContext)
         {
+            if (ItemDB.IsEmpty())
+                ItemDB.Initialize(@"..\..\..\WPFSkillTree");
             Tree = SkillTree.CreateSkillTree(() => { }, (double dummy1, double dummy2) => { }, () => { });
+        }
+
+        [ClassCleanup]
+        public static void Cleanup()
+        {
+            ItemDB.Clear();
         }
 
         readonly Regex _backreplace = new Regex("#");

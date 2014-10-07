@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Gem Name="Barrage" RequiredWeapon="Ranged" />
+  <Gem Name="Cleave" RequiredWeapon="Axe Sword" StrikesWithBothWeapons="true">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cold Snap" IncludeForm="OnUse" />
+  <Gem Name="Cyclone" HitsPerAttack="2">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerLevel>2</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Dual Strike" RequiredHand="DualWielded" RequiredWeapon="Melee" StrikesWithBothWeapons="true">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Critical Strike Chance">
+      <ValuePerQuality>4</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Fireball" ExcludeForm="AoE">
+    <Attribute Name="Deals #-# Fire Damage">
+      <Value Level="1">5–10</Value>
+      <Value Level="2">7–11</Value>
+      <Value Level="3">9–14</Value>
+      <Value Level="4">13–19</Value>
+      <Value Level="5">17–25</Value>
+      <Value Level="6">23–34</Value>
+      <Value Level="7">32–48</Value>
+      <Value Level="8">44–67</Value>
+      <Value Level="9">63–95</Value>
+      <Value Level="10">89–133</Value>
+      <Value Level="11">110–165</Value>
+      <Value Level="12">135–203</Value>
+      <Value Level="13">157–236</Value>
+      <Value Level="14">183–274</Value>
+      <Value Level="15">212–318</Value>
+      <Value Level="16">245–368</Value>
+      <Value Level="17">283–425</Value>
+      <Value Level="18">326–489</Value>
+      <Value Level="19">358–537</Value>
+      <Value Level="20">393–590</Value>
+      <Value Level="21">431–647</Value>
+      <Value Level="22">472–709</Value>
+      <Value Level="23">518–776</Value>
+      <Value Level="24">567–850</Value>
+      <Value Level="25">620–930</Value>
+      <Value Level="26">678–1017</Value>
+      <Value Level="27">741–1111</Value>
+      <Value Level="28">809–1214</Value>
+      <Value Level="29">884–1326</Value>
+      <Value Level="30">965–1447</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Flameblast" IncludeForm="OnUse" />
+  <Gem Name="Firestorm" IncludeForm="OnUse" />
+  <Gem Name="Flicker Strike" IncludeForm="OnUse">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Glacial Hammer" RequiredWeapon="Mace Staff">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Ground Slam" RequiredHand="Main" RequiredWeapon="Mace Staff">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Heavy Strike" RequiredWeapon="Mace Axe Sword TwoHandedMelee">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>5</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed"><!-- XXX: This looks like table instead of 0.75 per level (i.e. values are rounded to precision of 0.5). -->
+      <Value Quality="1">0.5</Value>
+      <Value Quality="2">1.5</Value>
+      <Value Quality="3">2</Value>
+      <Value Quality="4">3</Value>
+      <Value Quality="5">3.5</Value>
+      <Value Quality="6">4.5</Value>
+      <Value Quality="7">5</Value>
+      <Value Quality="8">6</Value>
+      <Value Quality="9">6.5</Value>
+      <Value Quality="10">7.5</Value>
+      <Value Quality="11">8</Value>
+      <Value Quality="12">9</Value>
+      <Value Quality="13">9.5</Value>
+      <Value Quality="14">10.5</Value>
+      <Value Quality="15">11</Value>
+      <Value Quality="16">12</Value>
+      <Value Quality="17">12.5</Value>
+      <Value Quality="18">13.5</Value>
+      <Value Quality="19">14</Value>
+      <Value Quality="20">15</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Herald of Ice" ExcludeSource="Spell" IncludeForm="OnUse" />
+  <Gem Name="Leap Slam" RequiredHand="Main" RequiredWeapon="Axe Mace Sword Staff">
+    <Attribute Name="Attacks per Second: #"><!-- Leap Slam has its own attack time of 1.40 seconds. -->
+      <ValueForLevel From="1">0.714</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Lightning Strike" ExcludeForm="Projectile">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Lightning Warp" IncludeForm="OnUse" />
+  <Gem Name="Melee Splash" ExcludeFormSupport="AoE OnUse" />
+  <Gem Name="Molten Shell" IncludeForm="OnUse" />
+  <Gem Name="Molten Strike" ExcludeForm="AoE Projectile">
+    <Attribute Name="Mana Cost: #">
+      <Value Level="1">6</Value>
+      <ValueForLevel From="2" To="5">7</ValueForLevel>
+      <ValueForLevel From="6" To="18">8</ValueForLevel>
+      <ValueForLevel From="19">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Fire Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Power Siphon" RequiredWeapon="Wand">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Reave" RequiredWeapon="Dagger Claw OneHandedSword">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Shield Charge" IncludeForm="OnUse" RequiresEquippedShield="true" />
+  <Gem Name="Spectral Throw" RequiredWeapon="Melee" />
+  <Gem Name="Split Arrow">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Storm Call" IncludeForm="OnUse" />
+  <Gem Name="Sweep" RequiredWeapon="Staff TwoHandedAxe TwoHandedMace">
+    <Attribute Name="Attacks per Second: #"><!-- Sweep has its own attack time of 1.15 seconds. -->
+      <ValueForLevel From="1">0.87</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Tempest Shield" IncludeForm="OnUse" RequiresEquippedShield="true" />
+  <Gem Name="Whirling Blades"  IncludeForm="OnUse" RequiredWeapon="Dagger Claw OneHandedSword">
+    <Attribute Name="Attacks per Second: #"><!-- XXX: Just a guess, it doesn't use weapon APS and no info on Wiki. -->
+      <ValueForLevel From="1">0.364</ValueForLevel>
+    </Attribute>
+  </Gem>
+</ItemDB>

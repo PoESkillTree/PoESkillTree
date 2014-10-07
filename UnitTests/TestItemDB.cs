@@ -4,39 +4,43 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Model;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace UnitTests
 {
     [TestClass]
-    public class TestGems
+    public class TestItemDB
     {
+        [ClassInitialize]
+        public static void Initalize(TestContext testContext)
+        {
+            if (ItemDB.IsEmpty())
+                ItemDB.Initialize(@"..\..\..\WPFSkillTree");
+        }
+
+        [ClassCleanup]
+        public static void Cleanup()
+        {
+            ItemDB.Clear();
+        }
+
         [TestMethod]
-        public void TestRangeMap()
+        public void TestGems()
         {
             List<float> expect;
             List<float[]> expectPair;
 
-            // Level 1+ fixed value ranges.
-            expect = new List<float> { float.NaN, 14, 14, 14, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 18 };
+            // Mixed table and ranges.
+            expect = new List<float> { float.NaN, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 10, 10, 10 };
             for (int level = 1; level < expect.Count; ++level)
-                Assert.AreEqual(expect[level], GetValueOf("Leap Slam", level, "Mana Cost: #")[0]);
+                Assert.AreEqual(expect[level], GetValueOf("Molten Strike", level, "Mana Cost: #")[0]);
 
-            // Level 1-9 Table, Level 10+ fixed value range.
-            expect = new List<float> { float.NaN, 10, 12, 14, 16, 18, 20, 21, 22, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 };
-            for (int level = 1; level < expect.Count; ++level)
-                Assert.AreEqual(expect[level], GetValueOf("Leap Slam", level, "#% Chance to Knock enemies Back on hit")[0]);
-
-            // Level 1-12 Table, Level 13+ Linear.
-            expect = new List<float> { float.NaN, 5, 6, 7, 8, 10, 11, 13, 15, 18, 20, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 };
-            for (int level = 1; level < expect.Count; ++level)
-                Assert.AreEqual(expect[level], GetValueOf("Fireball", level, "Mana Cost: #")[0]);
-
-            // Level 1+ Linear.
-            expect = new List<float> { float.NaN, 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80 };
+            // Per level gain.
+            expect = new List<float> { float.NaN, float.NaN, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80 };
             for (int level = 1; level < expect.Count; ++level)
                 Assert.AreEqual(expect[level], GetValueOf("Molten Strike", level, "#% increased Physical Damage")[0]);
 
-            // Level 1+ Table
+            // Table of damage ranges.
             expectPair = new List<float[]> { new float[] { float.NaN, float.NaN },
                 new float[] { 5, 10 }, new float[] { 7, 11 }, new float[] { 9, 14 }, new float[] { 13, 19 }, new float[] { 17, 25 },
                 new float[] { 23, 34 }, new float[] { 32, 48 }, new float[] { 44, 67 }, new float[] { 63, 95 }, new float[] { 89, 133 },
@@ -55,16 +59,16 @@ namespace UnitTests
 
         List<float> GetValueOf(string gemName, int level, string attr)
         {
-            AttributeSet attrs = Gems.AttributesOf(gemName, level);
+            AttributeSet attrs = ItemDB.AttributesOf(gemName, level);
 
-            return attrs.ContainsKey(attr) ? Gems.AttributesOf(gemName, level)[attr] : new List<float> { float.NaN };
+            return attrs.ContainsKey(attr) ? ItemDB.AttributesOf(gemName, level)[attr] : new List<float> { float.NaN };
         }
 
         List<float> GetValuePairOf(string gemName, int level, string attr)
         {
-            AttributeSet attrs = Gems.AttributesOf(gemName, level);
+            AttributeSet attrs = ItemDB.AttributesOf(gemName, level);
 
-            return attrs.ContainsKey(attr) ? Gems.AttributesOf(gemName, level)[attr] : new List<float> { float.NaN, float.NaN };
+            return attrs.ContainsKey(attr) ? ItemDB.AttributesOf(gemName, level)[attr] : new List<float> { float.NaN, float.NaN };
         }
     }
 }

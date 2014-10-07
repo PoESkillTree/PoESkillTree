@@ -51,9 +51,9 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Gem = gem;
                 Name = gem.Name;
-                Nature = Gems.NatureOf(gem);
-                HitsPerAttack = Gems.HitsPerAttackOf(gem);
-                IsStrikingWithBothWeaponsAtOnce = Gems.IsStrikingWithBothWeaponsAtOnce(gem);
+                Nature = ItemDB.NatureOf(gem);
+                HitsPerAttack = ItemDB.HitsPerAttackOf(gem);
+                IsStrikingWithBothWeaponsAtOnce = ItemDB.IsStrikingWithBothWeaponsAtOnce(gem);
 
                 Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness: #%") ? gem.Attributes["Damage Effectiveness: #%"][0] : 100;
             }
@@ -62,7 +62,7 @@ namespace POESKillTree.SkillTreeFiles
             public void Apply(Item item)
             {
                 // Add skill gem attributes.
-                Local.Add(Gems.AttributesOf(Gem, item));
+                Local.Add(ItemDB.AttributesOf(Gem, item));
 
                 CreateSources();
 
@@ -201,7 +201,7 @@ namespace POESKillTree.SkillTreeFiles
             // Returns true if skill can be used with weapon.
             public bool CanUse(Weapon weapon)
             {
-                return weapon.IsWeapon() && Nature.Is(weapon.Nature.WeaponType) && Gems.CanUse(Gem, weapon);
+                return weapon.IsWeapon() && Nature.Is(weapon.Nature.WeaponType) && ItemDB.CanUse(Gem, weapon);
             }
 
             // Returns chance to hit.
@@ -354,7 +354,7 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (Item gem in gems)
                 {
                     if (!gem.Keywords.Contains("Support")) continue; // Skip non-support gems.
-                    if (!Gems.CanSupport(this, gem)) continue; // Check whether gem can support our skill gem.
+                    if (!ItemDB.CanSupport(this, gem)) continue; // Check whether gem can support our skill gem.
 
                     // XXX: Spells linked to Cast on/when are treated as cast on use spells (i.e. their cast speed is ignored).
                     if ((gem.Name.StartsWith("Cast On") || gem.Name.StartsWith("Cast on") || gem.Name.StartsWith("Cast when"))
@@ -362,7 +362,7 @@ namespace POESKillTree.SkillTreeFiles
                         Nature.Form |= DamageForm.OnUse;
 
                     // Add support gem attributes.
-                    Local.Add(Gems.AttributesOf(gem, item));
+                    Local.Add(ItemDB.AttributesOf(gem, item));
                 }
             }
 

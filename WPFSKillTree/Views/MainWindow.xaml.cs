@@ -250,6 +250,8 @@ namespace POESKillTree.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            ItemDB.Initialize(".");
+
             _attibuteCollection = new ListCollectionView(_attiblist);
             listBox1.ItemsSource = _attibuteCollection;
             var pgd = new PropertyGroupDescription("") {Converter = new GroupStringConverter()};

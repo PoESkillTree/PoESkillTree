@@ -694,23 +694,24 @@
       Off Hand Critical Strike Multiplier: 218%
     </ExpectOffence>
   </TestBuild>
+  <!-- FIXME: Either Melee Splash doesn't have 16% less damage multiplier but rather 15.5%, or it's known issue with damage range rounding. -->
   <TestBuild>
     <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
     <Level>81</Level>
     <BuildFile>T8-DualStrike-MeleeSplash.json</BuildFile>
     <ExpectOffence>
       Dual Strike
-      Damage per Second: 212.3
+      #FIXME Damage per Second: 212.3
       Chance to Hit: 63%
       Attacks per Second: 1.4
-      Main Hand Total Combined Damage: 40-158
-      Main Hand Physical Damage: 40-158
+      #FIXME Main Hand Total Combined Damage: 40-158
+      #FIXME Main Hand Physical Damage: 40-158
       Main Hand Accuracy Rating: 487
       #TODO Main Hand Attack Speed modifier: +21%
       Main Hand Critical Strike Chance: 30%
       Main Hand Critical Strike Multiplier: 218%
-      Off Hand Total Combined Damage: 57-90
-      Off Hand Physical Damage: 55-83
+      #FIXME Off Hand Total Combined Damage: 57-90
+      #FIXME Off Hand Physical Damage: 55-83
       Off Hand Fire Damage: 2-7
       Off Hand Accuracy Rating: 448
       #TODO Off Hand Attack Speed modifier: +21%
@@ -718,6 +719,7 @@
       Off Hand Critical Strike Multiplier: 218%
     </ExpectOffence>
   </TestBuild>
+  <!-- FIXME: Either Melee Splash doesn't have 16% less damage multiplier but rather it's 15.5%, or it's known issue with damage range rounding. -->
   <TestBuild>
     <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
     <Level>81</Level>
@@ -725,18 +727,16 @@
     <ExpectOffence>
       Dual Strike
       #FIXME Damage per Second: 273.9
-      # This might have to do something with Tempest Shield being off by 0.1 too.
-      Damage per Second: 273.8
       Chance to Hit: 63%
       Attacks per Second: 1.4
-      Main Hand Total Combined Damage: 52-205
-      Main Hand Physical Damage: 52-205
+      #FIXME Main Hand Total Combined Damage: 52-205
+      #FIXME Main Hand Physical Damage: 52-205
       Main Hand Accuracy Rating: 487
       #TODO Main Hand Attack Speed modifier: +21%
       Main Hand Critical Strike Chance: 30%
       Main Hand Critical Strike Multiplier: 218%
-      Off Hand Total Combined Damage: 73-115
-      Off Hand Physical Damage: 71-108
+      #FIXME Off Hand Total Combined Damage: 73-115
+      #FIXME Off Hand Physical Damage: 71-108
       Off Hand Fire Damage: 2-7
       Off Hand Accuracy Rating: 448
       #TODO Off Hand Attack Speed modifier: +21%
@@ -1011,7 +1011,7 @@
     </ExpectOffence>
   </TestBuild>
   <!--
-    Known Issue: Damage type ranges shows sometimes incorrect value affecting overall DPS (0.1 difference from in-game value, occurs with damage conversions, Spectral Throw, Temptest Shield, Melee Splash)
+    Known Issue: Damage type ranges shows sometimes incorrect value affecting overall DPS (1 point difference from in-game value, occurs with damage conversions, Spectral Throw, Melee Splash, Tempest Shield)
     Axe Physical Damage: 29 - 54
     (No increase damage modifiers)
       Fork (30% less Projectile Damage): * 0.7

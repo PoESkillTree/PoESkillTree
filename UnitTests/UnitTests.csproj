@@ -55,7 +55,7 @@
     <Compile Include="TestCharacterSheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDPS.cs" />
-    <Compile Include="TestGems.cs" />
+    <Compile Include="TestItemDB.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPFSKillTree\WPFSKillTree.csproj">
