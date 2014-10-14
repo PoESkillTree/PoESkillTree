@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ItemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Gem Name="TestGem">
+    <Attribute Name="Attribute1: #">
+      <Value Level="5">21</Value>
+      <ValuePerLevel>5</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Attribute2: #">
+      <Value Level="5">6</Value>
+      <Value Level="6">7</Value>
+    </Attribute>
+    <Attribute Name="Attribute3: #">
+      <ValueForLevel From="8" To="15">15</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Attribute4: #">
+      <ValueForLevel From="8" To="9">15</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Attribute5: #">
+      <Value Level="1">1</Value>
+      <Value Level="2">2</Value>
+      <Value Level="3">3</Value>
+    </Attribute>
+    <Attribute Name="Attribute6: #">
+      <Value Level="1">1"</Value>
+      <Value Level="2">2"</Value>
+      <Value Level="3">3"</Value>
+      <Value Level="4">4"</Value>
+      <Value Level="5">5"</Value>
+      <Value Level="6">6"</Value>
+      <Value Level="7">7"</Value>
+      <Value Level="8">8"</Value>
+      <Value Level="9">9"</Value>
+      <Value Level="10">10</Value>
+      <Value Level="11">11</Value>
+      <Value Level="12">12</Value>
+      <Value Level="13">13</Value>
+      <Value Level="14">14</Value>
+      <Value Level="15">15</Value>
+      <Value Level="16">16</Value>
+      <Value Level="17">17</Value>
+      <Value Level="18">18</Value>
+      <Value Level="19">19</Value>
+      <Value Level="20">20</Value>
+      <Value Level="21">21</Value>
+      <Value Level="22">22</Value>
+      <Value Level="23">23</Value>
+      <Value Level="24">24</Value>
+      <Value Level="25">25</Value>
+      <Value Level="26">26</Value>
+      <Value Level="27">27</Value>
+      <Value Level="28">28</Value>
+      <Value Level="29">29</Value>
+      <Value Level="30">30</Value>
+    </Attribute>
+    <Attribute Name="Attribute7: #">
+      <ValueForLevel From="1">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Attribute8: #">
+      <Value>10</Value>
+    </Attribute>
+  </Gem>
+</ItemDB>

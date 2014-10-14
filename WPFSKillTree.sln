@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSKillTree", "WPFSKillTre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{494FD68A-38A7-4EEB-867A-44C2CDE13836}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateDB", "UpdateDB\UpdateDB.csproj", "{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,12 @@ Global
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.Release|Any CPU.Build.0 = Release|Any CPU
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.Release|x86.ActiveCfg = Release|Any CPU
+		{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

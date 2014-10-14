@@ -250,7 +250,10 @@ namespace POESKillTree.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ItemDB.Initialize(".");
+            ItemDB.Load("Items.xml");
+            if (File.Exists("ItemsLocal.xml"))
+                ItemDB.Merge("ItemsLocal.xml");
+            ItemDB.Index();
 
             _attibuteCollection = new ListCollectionView(_attiblist);
             listBox1.ItemsSource = _attibuteCollection;

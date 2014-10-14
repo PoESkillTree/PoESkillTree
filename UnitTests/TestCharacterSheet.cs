@@ -26,14 +26,8 @@ namespace UnitTests
         public static void Initalize(TestContext testContext)
         {
             if (ItemDB.IsEmpty())
-                ItemDB.Initialize(@"..\..\..\WPFSkillTree");
+                ItemDB.Load(@"..\..\..\WPFSkillTree\Items.xml", true);
             Tree = SkillTree.CreateSkillTree(() => { }, (double dummy1, double dummy2) => { }, () => { });
-        }
-
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            ItemDB.Clear();
         }
 
         readonly Regex _backreplace = new Regex("#");

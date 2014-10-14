@@ -419,9 +419,9 @@
       Spell Critical Strike Multiplier: 248%
       #TODO Mana Cost: 100
       Herald of Ice
-      Damage per Use: 265.5
+      Damage per Use: 530
       Casts per Second: 1.3
-      Spell Cold Damage: 212-319
+      Spell Cold Damage: 424-636
       #TODO Cast Speed modifier: +27%
       Molten Shell
       Damage per Use: 183.5
@@ -1024,7 +1024,7 @@
   <TestBuild>
     <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
     <Level>81</Level>
-    <BuildFile>T8-ST-1hAxe.json</BuildFile>
+    <BuildFile>T8-ST-Fork-1hSword.json</BuildFile>
     <ExpectOffence>
       Spectral Throw
       #FIXME Damage per Second: 11.7
@@ -1034,6 +1034,40 @@
       #FIXME Main Hand Total Combined Damage: 8-15
       #FIXME Main Hand Physical Damage: 8-15
       Main Hand Accuracy Rating: 529
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-ST-Fork-1HAxe.json</BuildFile>
+    <ExpectOffence>
+      Spectral Throw
+      Damage per Second: 12
+      Chance to Hit: 62%
+      Attacks per Second: 1.2
+      Main Hand Total Combined Damage: 7-20
+      Main Hand Physical Damage: 7-20
+      Main Hand Accuracy Rating: 448
+      #TODO Main Hand Attack Speed modifier: +10%
+      Main Hand Critical Strike Chance: 15.5%
+      Main Hand Critical Strike Multiplier: 218%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T8-ST-1HAxe.json</BuildFile>
+    <ExpectOffence>
+      Spectral Throw
+      Damage per Second: 16.9
+      Chance to Hit: 62%
+      Attacks per Second: 1.2
+      Main Hand Total Combined Damage: 10-28
+      Main Hand Physical Damage: 10-28
+      Main Hand Accuracy Rating: 448
       #TODO Main Hand Attack Speed modifier: +10%
       Main Hand Critical Strike Chance: 15.5%
       Main Hand Critical Strike Multiplier: 218%
