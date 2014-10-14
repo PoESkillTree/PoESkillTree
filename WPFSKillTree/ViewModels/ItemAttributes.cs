@@ -194,7 +194,7 @@ namespace POESKillTree.ViewModels
                             Value = values,
                             Attribute = "+# to Intelligence"
                         });
-                    }        
+                    }
                     else
                     {
                         mods.Add(new Mod()
@@ -217,9 +217,9 @@ namespace POESKillTree.ViewModels
                 static bool DetermineLocal(Item item, string attr)
                 {
                     return (item.Class != Item.ItemClass.Amulet && item.Class != Item.ItemClass.Ring && item.Class != Item.ItemClass.Belt)
-                           && (attr.Contains("Armour")
+                           && ((attr.Contains("Armour") && !attr.EndsWith("Armour against Projectiles"))
                                || attr.Contains("Evasion")
-                               || attr.Contains("Energy Shield")
+                               || (attr.Contains("Energy Shield") && !attr.EndsWith("Energy Shield Recharge"))
                                || attr.Contains("Weapon Class")
                                || attr.Contains("Critical Strike Chance with this Weapon")
                                || attr.Contains("Critical Strike Damage Multiplier with this Weapon"))

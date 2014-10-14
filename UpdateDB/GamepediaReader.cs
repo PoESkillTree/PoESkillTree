@@ -14,6 +14,7 @@ using ValuePerQuality = POESKillTree.SkillTreeFiles.ItemDB.ValuePerQuality;
 namespace UpdateDB
 {
     // Reader for Unofficial Path of Exile Wiki @ Gamepedia.
+    // TODO: Parse for static modifiers as well (e.g. Spell Echo's "10% less Damage").
     public class GamepediaReader : Reader
     {
         // Parsed token.

@@ -75,6 +75,7 @@
     <None Include="TestBuilds\T1-PS-Wand-ALDRing.json" />
     <None Include="TestBuilds\T1-TS-EK-FP-Bow-AddPhyQuiver.json" />
     <None Include="TestBuilds\T1-TS-EK-FP-Bow-IncEDWQuiver.json" />
+    <None Include="TestBuilds\T10-RimeGaze-INova-ColdSnap-TituciusSpan.json" />
     <None Include="TestBuilds\T2-LA-ALD-Blackgleam-Hrimsorrow.json" />
     <None Include="TestBuilds\T2-LA-ALD-CtF-Blackgleam-Hrimsorrow.json" />
     <None Include="TestBuilds\T2-LA-ALD-CtF-Blackgleam.json" />

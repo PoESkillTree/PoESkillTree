@@ -1418,4 +1418,54 @@
       Spell Critical Strike Multiplier: 248%
     </ExpectOffence>
   </TestBuild>
+  <!--
+    Gems in this item are Supported by level 15 Concentrated Effect
+    increased Armour against Projectiles
+    additional Block Chance against Projectiles
+    -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQiL0dhFBlmwLrrPQ9Q2NTLMc3FAwf8aTJ9teJ6l-WcHFtAzsGOq6RnFwu4_6DXyDCdDQ6_VXyW-eRwZknSj6ykry4dvn8h2Cx1FMwzpjQ7TFX2r56KxHDkgegX1bXfJLjSpNcNV-M_8cPyeJ06SRSshwUhOeKguMNvPq5Rm0OPv1l5dFfBEPfq-NGeASrJj315uhj0YdFPrSdFVfKpykhxN3Byt4H8c=</TreeURL>
+    <Level>81</Level>
+    <BuildFile>T10-RimeGaze-INova-ColdSnap-TituciusSpan.json</BuildFile>
+    <ExpectDefence>
+      Defence
+      Armour: 635
+      Estimated Physical Damage reduction: 6%
+      Armour against Projectiles: 1517
+      Estimated Physical Damage reduction against Projectiles: 12%
+      Maximum Energy Shield: 589
+      Energy Shield Recharge per Second: 196.3
+      Energy Shield Recharge Occurrence modifier: -50%
+      Mana Regeneration per Second: 62.2
+      Chance to Block Attacks: 32%
+      Chance to Block Projectile Attacks: 57%
+      #TODO Movement Speed modifier: +3%
+    </ExpectDefence>
+    <ExpectOffence>
+      Cold Snap
+      Damage per Use: 414.9
+      Casts per Second: 1.3
+      Spell Total Combined Damage: 253-380
+      Spell Cold Damage: 253-380
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 21%
+      Spell Critical Strike Multiplier: 248%
+      Ice Nova
+      Damage per Second: 168.3
+      Casts per Second: 1.2
+      Spell Total Combined Damage: 80-122
+      Spell Cold Damage: 80-122
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 26.3%
+      Spell Critical Strike Multiplier: 248%
+      Spark
+      Damage per Second: 111.1
+      Casts per Second: 1.7
+      Spell Total Combined Damage: 4-89
+      Spell Lightning Damage: 4-89
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 26.3%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
 </TestData>

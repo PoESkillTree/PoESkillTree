@@ -2283,6 +2283,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Spell Echo">
+    <Attribute Name="#% less Damage">
+      <Value>10%</Value>
+    </Attribute>
     <Attribute Name="#% more Cast Speed">
       <Value Level="1">50%</Value>
       <Value Level="2">51%</Value>

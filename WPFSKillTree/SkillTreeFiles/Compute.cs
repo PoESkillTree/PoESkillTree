@@ -45,6 +45,8 @@ namespace POESKillTree.SkillTreeFiles
 
             // The nature to match physical weapon damage while dual wielding.
             static DamageNature PhysicalWeaponDamage = new DamageNature() { Source = DamageSource.Attack, Type = DamageType.Physical };
+            // Gem support from item modifier pattern.
+            static Regex ReGemSupportFromItem = new Regex(@"Gems in this item are Supported by level # (.+)$");
 
             // Creates attack from gem.
             AttackSkill(Item gem)
@@ -351,6 +353,17 @@ namespace POESKillTree.SkillTreeFiles
             // TODO: In case of same gems slotted only highest level one is used.
             public void Link(List<Item> gems, Item item)
             {
+                // Check for gem support from item modifier.
+                foreach (Item.Mod mod in item.Mods.FindAll(m => ReGemSupportFromItem.IsMatch(m.Attribute)))
+                {
+                    Match m = ReGemSupportFromItem.Match(mod.Attribute);
+                    string gemName = m.Groups[1].Value;
+                    int level = (int)mod.Value[0];
+
+                    if (!ItemDB.CanSupport(this, gemName)) continue;
+                    Local.Add(ItemDB.AttributesOf(gemName, level, 0));
+                }
+
                 foreach (Item gem in gems)
                 {
                     if (!gem.Keywords.Contains("Support")) continue; // Skip non-support gems.
@@ -1770,12 +1783,19 @@ namespace POESKillTree.SkillTreeFiles
                 incEvasionAndArmour += Global["#% increased Evasion Rating and Armour"][0];
 
             float armour = 0;
+            float armourProjectile = 0;
             // Armour from items.
             if (Global.ContainsKey("Armour: #"))
                 armour += Global["Armour: #"][0];
             float incArmour = 0;
+            float incArmourProjectile = 0;
             if (Global.ContainsKey("#% increased Armour"))
                 incArmour += Global["#% increased Armour"][0];
+            if (Global.ContainsKey("#% increased Armour against Projectiles"))
+                incArmourProjectile += Global["#% increased Armour against Projectiles"][0];
+            // Enable armour against projectile calculations once there is some Armour against Projectiles modifier.
+            if (incArmourProjectile != 0)
+                armourProjectile = armour;
 
             // Final Armour = Base Evasion * ( 1 + % increased Evasion Rating + % increased Armour + % increased Evasion Rating and Armour )
             //              + Base Armour  * ( 1 + % increased Armour                              + % increased Evasion Rating and Armour )
@@ -1786,20 +1806,36 @@ namespace POESKillTree.SkillTreeFiles
                 incEvasion -= Implicit["#% increased Evasion Rating"][0];
                 armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
                 armour += shieldArmour + shieldEvasion;
+                if (armourProjectile > 0)
+                {
+                    armourProjectile = IncreaseValueByPercentage(armourProjectile, incArmour + incArmourProjectile + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
+                    armourProjectile += shieldArmour + shieldEvasion;
+                }
                 evasion = 0;
             }
             else
             {
                 evasion = IncreaseValueByPercentage(evasion, incEvasion + incEvasionAndArmour) + shieldEvasion;
                 armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + shieldArmour;
+                if (armourProjectile > 0)
+                    armourProjectile = IncreaseValueByPercentage(armourProjectile, incArmour + incArmourProjectile + incEvasionAndArmour) + shieldArmour;
             }
             if (lessArmourAndES > 0)
+            {
                 armour = IncreaseValueByPercentage(armour, -lessArmourAndES);
+                if (armourProjectile > 0)
+                    armourProjectile = IncreaseValueByPercentage(armourProjectile, -lessArmourAndES);
+            }
 
             if (armour > 0)
             {
                 def["Armour: #"] = new List<float>() { RoundValue(armour, 0) };
-                def["Estimated Physical Damage reduction: #%"] = new List<float>() { PhysicalDamageReduction(Level, RoundValue(armour, 0)) };
+                def["Estimated Physical Damage reduction: #%"] = new List<float>() { RoundValue(PhysicalDamageReduction(Level, RoundValue(armour, 0)), 0) };
+            }
+            if (armourProjectile > 0)
+            {
+                def["Armour against Projectiles: #"] = new List<float>() { RoundValue(armourProjectile, 0) };
+                def["Estimated Physical Damage reduction against Projectiles: #%"] = new List<float>() { RoundValue(PhysicalDamageReduction(Level, RoundValue(armourProjectile, 0)), 0) };
             }
             if (evasion > 0)
                 def["Evasion Rating: #"] = new List<float>() { RoundValue(evasion, 0) };
@@ -1828,8 +1864,14 @@ namespace POESKillTree.SkillTreeFiles
                 float esRecharge = RoundValue(es, 0) / 3; // By default, energy shield recharges at a rate equal to a third of the character's maximum energy shield per second.
                 def["Energy Shield Recharge per Second: #"] = new List<float>() { RoundValue(esRecharge, 1) };
                 float esDelay = 6; // By default, the delay period for energy shield to begin to recharge is 6 seconds.
+                float esOccurrence = 0;
                 if (Global.ContainsKey("#% faster start of Energy Shield Recharge"))
-                    esDelay = esDelay * 100 / (100 + Global["#% faster start of Energy Shield Recharge"][0]);
+                    esOccurrence += Global["#% faster start of Energy Shield Recharge"][0];
+                if (Global.ContainsKey("#% slower start of Energy Shield Recharge"))
+                    esOccurrence -= Global["#% slower start of Energy Shield Recharge"][0];
+                esDelay = esDelay * 100 / (100 + esOccurrence);
+                if (esOccurrence != 0)
+                    def["Energy Shield Recharge Occurrence modifier: " + (esOccurrence > 0 ? "+" : "") + "#%"] = new List<float>() { esOccurrence };
                 def["Energy Shield Recharge Delay: #s"] = new List<float>() { RoundValue(esDelay, 1) };
             }
 
@@ -1953,12 +1995,15 @@ namespace POESKillTree.SkillTreeFiles
             // @see http://pathofexile.gamepedia.com/Blocking
             float maxChanceBlockAttacks = 75;
             float maxChanceBlockSpells = 75;
+            float maxChanceBlockProjectiles = 75;
             float chanceBlockAttacks = 0;
             float chanceBlockSpells = 0;
+            float chanceBlockProjectiles = 0;
             if (Global.ContainsKey("+#% to maximum Block Chance"))
             {
                 maxChanceBlockAttacks += Global["+#% to maximum Block Chance"][0];
                 maxChanceBlockSpells += Global["+#% to maximum Block Chance"][0];
+                maxChanceBlockProjectiles += Global["+#% to maximum Block Chance"][0];
             }
             if (hasShield)
             {
@@ -1984,10 +2029,14 @@ namespace POESKillTree.SkillTreeFiles
                 chanceBlockSpells = PercentOfValue(chanceBlockAttacks, Global["#% of Block Chance applied to Spells"][0]);
             if (hasShield && Global.ContainsKey("#% additional Chance to Block Spells with Shields"))
                 chanceBlockSpells += Global["#% additional Chance to Block Spells with Shields"][0];
+            if (Global.ContainsKey("+#% additional Block Chance against Projectiles"))
+                chanceBlockProjectiles = chanceBlockAttacks + Global["+#% additional Block Chance against Projectiles"][0];
             if (chanceBlockAttacks > 0)
                 def["Chance to Block Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockAttacks, 0), maxChanceBlockAttacks) };
             if (chanceBlockSpells > 0)
                 def["Chance to Block Spells: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockSpells, 0), maxChanceBlockSpells) };
+            if (chanceBlockProjectiles > 0)
+                def["Chance to Block Projectile Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockProjectiles, 0), maxChanceBlockProjectiles) };
 
             // Elemental stataus ailments.
             float igniteAvoidance = 0;
@@ -2134,7 +2183,7 @@ namespace POESKillTree.SkillTreeFiles
             float c = 17.789f;
             float d = -7.0896f;
 
-            return (float)Math.Pow(a + b * level, c) + d;
+            return RoundValue((float)Math.Pow(a + b * level, c) + d, 0);
         }
 
         // Computes offensive attacks.
@@ -2175,7 +2224,8 @@ namespace POESKillTree.SkillTreeFiles
         // @see http://pathofexile.gamepedia.com/Armour
         public static float PhysicalDamageReduction(int level, float armour)
         {
-            float reduction = RoundValue(armour / (armour + 12 * MonsterAverageDamage(level)) * 100, 0);
+            float mad = MonsterAverageDamage(level);
+            float reduction = RoundValue(armour / (armour + 12 * mad) * 100, 1);
             if (reduction > 90f) reduction = 90f;
 
             return reduction;

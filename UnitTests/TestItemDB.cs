@@ -58,6 +58,10 @@ namespace UnitTests
              * </Attribute>
              */
             Assert.AreEqual(13, GetValueOf("Fork", "#% increased Projectile Damage", 5, 10)[0]);
+
+            // Test of "Gems in this item are Supported by level 30 Spell Echo" modifier on Pledge of Hands.
+            Assert.AreEqual(10, GetValueOf("Spell Echo", "#% less Damage", 30)[0]);
+            Assert.AreEqual(79, GetValueOf("Spell Echo", "#% more Cast Speed", 30)[0]);
         }
 
         List<float> GetValueOf(string gemName, string attr, int level, int quality = 0)

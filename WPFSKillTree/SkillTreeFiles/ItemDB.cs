@@ -1209,6 +1209,20 @@ namespace POESKillTree.SkillTreeFiles
             return true;
         }
 
+        // Returns true if gem can support attack skill, false otherwise.
+        public static bool CanSupport(AttackSkill skill, string gemName)
+        {
+            if (GemIndex.ContainsKey(gemName))
+            {
+                Gem entry = GemIndex[gemName];
+
+                // No support for excluded forms.
+                if (entry.ExcludeFormSupport != DamageForm.Any && skill.Nature.Is(entry.ExcludeFormSupport)) return false;
+            }
+
+            return true;
+        }
+
         // Returns true if gem can use weapon, false otherwise.
         public static bool CanUse(Item gem, Weapon weapon)
         {
