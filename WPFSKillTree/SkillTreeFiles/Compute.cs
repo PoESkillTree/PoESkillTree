@@ -13,7 +13,8 @@ namespace POESKillTree.SkillTreeFiles
      * - No support for support gems as item modifiers.
      * - No support for Vaal gems.
      * - Mana regeneration shows sometimes incorrect value (0.1 difference from in-game value).
-     * - Damage type ranges shows sometimes incorrect value affecting overall DPS (0.1 difference from in-game value, occurs with damage conversions, Spectral Throw, Temptest Shield, Melee Splash).
+     * - Damage type ranges shows sometimes incorrect value affecting overall DPS (1 difference from in-game value, occurs with damage conversions).
+     * - Damage per Second shows sometimes incorrect value (0.1 difference from in-game value).
      * - Spell Critical Strike chance shows sometimes incorrect value (0.1 difference from in-game value).
      */
     public class Compute
@@ -163,12 +164,21 @@ namespace POESKillTree.SkillTreeFiles
                             inc += attrs["#% increased Physical Weapon Damage while Dual Wielding"][0];
                         if (source.Nature.Is(DamageSource.Spell) && attrs.ContainsKey("Supported Triggered Spells have #% increased Spell Damage")) // Cast on Melee Kill.
                             inc += attrs["Supported Triggered Spells have #% increased Spell Damage"][0];
-                        if (inc > 0)
+                        if (inc != 0)
                             damage.Increase(inc);
 
-                        foreach (Damage.More more in mores)
-                            if (damage.Matches(more))
-                                more.Apply(damage);
+                        // Apply all less multipliers.
+                        float mul = 1;
+                        foreach (Damage.More more in mores.FindAll(m => m.IsLess && damage.Matches(m)))
+                            mul *= (100 + more.Percent) / 100;
+                        if (mul != 1)
+                            damage.Multiply(RoundHalfDownValue(mul, 2));
+                        // Apply all more multipliers.
+                        mul = 1;
+                        foreach (Damage.More more in mores.FindAll(m => !m.IsLess && damage.Matches(m)))
+                            mul *= (100 + more.Percent) / 100;
+                        if (mul != 1)
+                            damage.Multiply(RoundHalfDownValue(mul, 2));
                     }
 
                     // Avatar of Fire (remove non-Fire damage).
@@ -1128,7 +1138,9 @@ namespace POESKillTree.SkillTreeFiles
             public class More : DamageNature
             {
                 // The percentage of damage multiplier.
-                float Percent;
+                public float Percent;
+                // The flag whether multiplier is actualy dividier.
+                public bool IsLess { get { return Percent < 0; } }
 
                 static Regex ReMoreAll = new Regex("#% (more|less) Damage( to main target)?$");
                 static Regex ReMoreBase = new Regex("Deals #% of Base Damage$");
@@ -1316,6 +1328,13 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Min = Min * percent / 100;
                 Max = Max * percent / 100;
+            }
+
+            // Multiplies damage by multiplier.
+            public void Multiply(float multiplier)
+            {
+                Min *= multiplier;
+                Max *= multiplier;
             }
 
             public void Round()
