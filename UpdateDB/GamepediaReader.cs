@@ -104,6 +104,7 @@ namespace UpdateDB
             { "Cast_When_Damage_Taken", "Cast_when_Damage_Taken" },
             { "Cold_To_Fire", "Cold_to_Fire" },
             { "Herald_Of_Ice", "Herald_of_Ice" },
+            { "Herald_Of_Thunder", "Herald_of_Thunder" },
             { "Iron_Grip", "Iron_Grip_(support_gem)" },
             { "Knockback", "Knockback_(support_gem)" },
             { "Life_Leech", "Life_Leech_(support_gem)" },

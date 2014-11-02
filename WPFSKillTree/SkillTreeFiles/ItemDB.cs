@@ -1161,8 +1161,12 @@ namespace POESKillTree.SkillTreeFiles
                     else
                     {
                         Match m = ReGemLevelKeyword.Match(mod.Attribute);
-                        if (m.Success && gem.Keywords.Contains(m.Groups[1].Value))
-                            plusLevel += (int)mod.Value[0];
+                        if (m.Success)
+                        {
+                            if (gem.Keywords.Contains(m.Groups[1].Value)
+                                || m.Groups[1].Value == "Elemental" && (gem.Keywords.Contains("Cold") || gem.Keywords.Contains("Fire") || gem.Keywords.Contains("Lightning")))
+                                plusLevel += (int)mod.Value[0];
+                        }
                     }
                 }
 
@@ -1375,6 +1379,8 @@ namespace POESKillTree.SkillTreeFiles
                 if (nature.Is(WeaponType.Ranged))
                     nature.Form |= DamageForm.Projectile;
             }
+            else if (nature.Is(DamageSource.Cast)) // All Cast skill gems have damage on use form.
+                nature.Form |= DamageForm.OnUse;
 
             if (GemIndex.ContainsKey(gem.Name))
             {

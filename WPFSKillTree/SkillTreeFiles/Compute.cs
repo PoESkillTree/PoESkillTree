@@ -16,6 +16,7 @@ namespace POESKillTree.SkillTreeFiles
      * - Damage type ranges shows sometimes incorrect value affecting overall DPS (1 difference from in-game value, occurs with damage conversions).
      * - Damage per Second shows sometimes incorrect value (0.1 difference from in-game value).
      * - Spell Critical Strike chance shows sometimes incorrect value (0.1 difference from in-game value).
+     * - Estimated chance to Evade Attacks shows sometimes incorrect value.
      */
     public class Compute
     {
@@ -201,13 +202,13 @@ namespace POESKillTree.SkillTreeFiles
             // Returns attacks/casts per second.
             public float AttacksPerSecond()
             {
-                return IsDualWielding ? (Sources[0].APS + Sources[1].APS) / 2 : Sources[0].APS;
+                return Nature.Is(DamageSource.Attack) && IsDualWielding ? (Sources[0].APS + Sources[1].APS) / 2 : Sources[0].APS;
             }
 
             // Returns average hit including critical strikes.
             public float AverageHit()
             {
-                return IsDualWielding ? (Sources[0].AverageHit() + Sources[1].AverageHit()) / 2 : Sources[0].AverageHit();
+                return Nature.Is(DamageSource.Attack) && IsDualWielding ? (Sources[0].AverageHit() + Sources[1].AverageHit()) / 2 : Sources[0].AverageHit();
             }
 
             // Returns true if skill can be used with weapon.
@@ -219,7 +220,7 @@ namespace POESKillTree.SkillTreeFiles
             // Returns chance to hit.
             public float ChanceToHit()
             {
-                return IsDualWielding ? (Sources[0].ChanceToHit() + Sources[1].ChanceToHit()) / 2 : Sources[0].ChanceToHit();
+                return Nature.Is(DamageSource.Attack) && IsDualWielding ? (Sources[0].ChanceToHit() + Sources[1].ChanceToHit()) / 2 : Sources[0].ChanceToHit();
             }
 
             // Converts damage types (applies damage conversions and gains).
@@ -326,9 +327,13 @@ namespace POESKillTree.SkillTreeFiles
                     if (!CanUse(MainHand) && !CanUse(OffHand))
                         IsUseable = false;
                 }
-                else // Spell
+                else if (Nature.Is(DamageSource.Spell))
                 {
                     Sources.Add(new AttackSource("Spell", this, null));
+                }
+                else // Cast
+                {
+                    Sources.Add(new AttackSource("", this, null));
                 }
             }
 
@@ -346,9 +351,9 @@ namespace POESKillTree.SkillTreeFiles
             // Returns true if gem is an attack skill, false otherwise.
             public static bool IsAttackSkill(Item gem)
             {
-                // A gem is an attack if it has Attack keyword or Spell keyword with damage dealing mod.
+                // A gem is an attack if it has Attack, Cast or Spell keyword with damage dealing mod.
                 return (gem.Keywords.Contains("Attack") // It's Attack.
-                        || gem.Keywords.Contains("Spell") && gem.Mods.Find(mod => mod.Attribute.StartsWith("Deals")) != null) // It's Spell and deals damage.
+                        || (gem.Keywords.Contains("Spell") || gem.Keywords.Contains("Cast")) && gem.Mods.Exists(mod => mod.Attribute.StartsWith("Deals"))) // It's Spell or Cast buff which deals damage.
                        && !gem.Keywords.Contains("Trap") && !gem.Keywords.Contains("Mine") // No traps & mines.
                        && !gem.Keywords.Contains("Support"); // Not a support gem.
             }
@@ -406,21 +411,23 @@ namespace POESKillTree.SkillTreeFiles
 
                 foreach (AttackSource source in Sources)
                 {
+                    string sourcePrefix = source.Name.Length == 0 ? "" : source.Name + " ";
+
                     foreach (DamageType type in DamageTypes)
                     {
                         Damage damage = source.Deals.Find(d => d.Is(type));
                         if (damage != null)
-                            props.Add(source.Name + " " + damage.ToAttribute(), damage.ToValue());
+                            props.Add(sourcePrefix + damage.ToAttribute(), damage.ToValue());
                     }
 
                     if (source.Nature.Is(DamageSource.Attack))
-                        props.Add(source.Name + " Accuracy Rating: #", new List<float> { RoundValue(source.Accuracy, 0) });
+                        props.Add(sourcePrefix + "Accuracy Rating: #", new List<float> { RoundValue(source.Accuracy, 0) });
 
                     if (source.CriticalChance > 0)
                     {
                         // XXX: Different rounding style for spells and attacks. Really?
-                        props.Add(source.Name + " Critical Strike Chance: #%", new List<float> { Nature.Is(DamageSource.Spell) ? RoundValue(source.CriticalChance, 1) : RoundHalfDownValue(source.CriticalChance, 1) });
-                        props.Add(source.Name + " Critical Strike Multiplier: #%", new List<float> { RoundValue(source.CriticalMultiplier, 0) });
+                        props.Add(sourcePrefix + "Critical Strike Chance: #%", new List<float> { Nature.Is(DamageSource.Spell) ? RoundValue(source.CriticalChance, 1) : RoundHalfDownValue(source.CriticalChance, 1) });
+                        props.Add(sourcePrefix + "Critical Strike Multiplier: #%", new List<float> { RoundValue(source.CriticalMultiplier, 0) });
                     }
                 }
 
@@ -760,7 +767,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public enum DamageSource
         {
-            Any, Attack, Spell
+            Any, Attack, Cast, Spell
         }
 
         [Flags]
@@ -789,6 +796,7 @@ namespace POESKillTree.SkillTreeFiles
             static Dictionary<string, DamageSource> Sources = new Dictionary<string, DamageSource>()
             {
                 { "Attack",     DamageSource.Attack },
+                { "Cast",       DamageSource.Cast },
                 { "Spell",      DamageSource.Spell },
                 { "Weapon",     DamageSource.Attack }
             };
@@ -1806,6 +1814,8 @@ namespace POESKillTree.SkillTreeFiles
             // Armour from items.
             if (Global.ContainsKey("Armour: #"))
                 armour += Global["Armour: #"][0];
+            if (Global.ContainsKey("+# to Armour"))
+                armour += Global["+# to Armour"][0];
             float incArmour = 0;
             float incArmourProjectile = 0;
             if (Global.ContainsKey("#% increased Armour"))

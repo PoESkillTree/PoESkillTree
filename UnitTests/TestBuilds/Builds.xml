@@ -421,11 +421,6 @@
       Spell Critical Strike Chance: 35.8%
       Spell Critical Strike Multiplier: 248%
       #TODO Mana Cost: 100
-      Herald of Ice
-      Damage per Use: 530
-      Casts per Second: 1.3
-      Spell Cold Damage: 424-636
-      #TODO Cast Speed modifier: +27%
       Molten Shell
       Damage per Use: 183.5
       Casts per Second: 1.3
@@ -1454,6 +1449,95 @@
       Spell Lightning Damage: 4-89
       #TODO Cast Speed modifier: +12%
       Spell Critical Strike Chance: 26.3%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQit4IvR2EUGWH8dsC66z0PUNjUyzHNxQMH_GkyfbXiepflnBxbQMEQ_sGEZxfq-smHC7j_rhiIMJjRl0VffX0NDr9R2qb57gEl8qm6FHBmSdykqcpI9G8uHb5_IdwzqHEx0UY0O0xV9qm7V3B_rSDkgegRmKFy9-4l3yS437CWTngFZw1X4z_xz22lXWT32J06SRGo-ApHBSE54qC4w28-rlGbQ4-_WXl0V8UWA=</TreeURL>
+    <Level>84</Level>
+    <BuildFile>T11-LT-HoT.json</BuildFile>
+    <ExpectOffence>
+      Lightning Tendrils
+      Damage per Second: 70
+      Casts per Second: 1.4
+      Spell Total Combined Damage: 4-14
+      Spell Lightning Damage: 4-14
+      #TODO Cast Speed modifier: +12%
+      Spell Critical Strike Chance: 26.3%
+      Spell Critical Strike Multiplier: 248%
+      Herald of Thunder
+      Damage per Use: 77.5
+      Casts per Second: 1.1
+      Total Combined Damage: 3-152
+      Lightning Damage: 3-152
+      #TODO Cast Speed modifier: +12%
+    </ExpectOffence>
+  </TestBuild>
+  <!--
+    Known Issue: Estimated chance to Evade Attacks shows sometimes incorrect value.
+    MonsterAverageAccuracy = 707
+    EvasionRating = 2125
+    ChanceToEvade = 1 - MonsterAverageAccuracy / ( MonsterAverageAccuracy + (EvasionRating / 4) ^ 0.8 )
+    ChanceToEvade = 1 - 707 / ( 707 + (2125 / 4) ^ 0.8 )
+    ChanceToEvade = 1 - 707 / ( 707 + 531.25 ^ 0.8 )
+    ChanceToEvade = 1 - 707 / ( 707 + 151.44 )
+    ChanceToEvade = 1 - 707 / 858.44
+    ChanceToEvade = 1 - 707 / 858.44
+    ChanceToEvade = 0.1764 = 18%
+    In-game chance to Evade Attacks: 20%
+    -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQit4IvR2EUGWH8dsC66z0PUNjUyzHNxQMH_GkyfbXiepflnBxbQMEQ_sGEZxfq-smHC7j_rhiIMJjRl0VffX0NDr9R2qb57gEl8qm6FHBmSdykqcpI9G8uHb5_IdwzqHEx0UY0O0xV9qm7V3B_rSDkgegRmKFy9-4l3yS437CWTngFZw1X4z_xz22lXWT32J06SRGo-ApHBSE54qC4w28-rlGbQ4-_WXl0V8UWA=</TreeURL>
+    <Level>84</Level>
+    <BuildFile>T11-Arc-LW-CwDT.json</BuildFile>
+    <ExpectDefence>
+      Character
+      Life: 1387
+      Mana: 1138
+      Maximum Energy Shield: 1502
+      Strength: 99
+      Dexterity: 134
+      Intelligence: 342
+      Defence
+      Armour: 346
+      Estimated Physical Damage reduction: 3%
+      Evasion Rating: 2125
+      #FIXME Estimated chance to Evade Attacks: 20%
+      Maximum Energy Shield: 1502
+      Energy Shield Recharge per Second: 500.7
+      Mana Regeneration per Second: 56.6
+      Chance to Block Attacks: 46%
+      Chance to Block Spells: 36%
+    </ExpectDefence>
+    <ExpectOffence>
+      Herald of Ice
+      Damage per Use: 636.5
+      Casts per Second: 1.3
+      Cold Damage: 509-764
+      #TODO Cast Speed modifier: +32%
+      Arc
+      #FIXME Damage per Second: 7912.4
+      Casts per Second: 2.8
+      Spell Total Combined Damage: 126-2405
+      Spell Lightning Damage: 126-2405
+      #TODO Cast Speed modifier: +122%
+      Spell Critical Strike Chance: 36.1%
+      Spell Critical Strike Multiplier: 446%
+      #TODO Mana Cost: 111
+      Lightning Warp
+      #FIXME Damage per Use: 1489.9
+      Casts per Second: 1.7
+      Spell Lightning Damage: 99-1843
+      #TODO Cast Speed modifier: +69%
+      Spell Critical Strike Chance: 36.1%
+      Spell Critical Strike Multiplier: 248%
+      #TODO Mana Cost: 106
+      Tempest Shield
+      Damage per Use: 1144.7
+      Casts per Second: 1.3
+      Spell Lightning Damage: 559-836
+      #TODO Cast Speed modifier: +32%
+      Spell Critical Strike Chance: 43.3%
       Spell Critical Strike Multiplier: 248%
     </ExpectOffence>
   </TestBuild>

@@ -1332,7 +1332,7 @@
       <ValueForLevel From="21" To="23">9</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Herald of Ice" ExcludeSource="Spell" IncludeForm="OnUse">
+  <Gem Name="Herald of Ice">
     <Attribute Name="Deals #-# Cold Damage">
       <Value Level="1">30-45</Value>
       <Value Level="2">36-53</Value>
@@ -1366,6 +1366,34 @@
       <Value Level="30">N/A</Value>
     </Attribute>
     <Attribute Name="#% increased Cold Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Herald of Thunder">
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">1-57</Value>
+      <Value Level="2">2-73</Value>
+      <Value Level="3">2-92</Value>
+      <Value Level="4">2-115</Value>
+      <Value Level="5">3-136</Value>
+      <Value Level="6">3-167</Value>
+      <Value Level="7">4-195</Value>
+      <Value Level="8">5-238</Value>
+      <Value Level="9">6-289</Value>
+      <Value Level="10">7-332</Value>
+      <Value Level="11">8-381</Value>
+      <Value Level="12">9-436</Value>
+      <Value Level="13">10-498</Value>
+      <Value Level="14">12-567</Value>
+      <Value Level="15">13-645</Value>
+      <Value Level="16">15-732</Value>
+      <Value Level="17">17-828</Value>
+      <Value Level="18">20-937</Value>
+      <Value Level="19">22-1057</Value>
+      <Value Level="20">25-1191</Value>
+      <Value Level="21">28-1328</Value>
+    </Attribute>
+    <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
@@ -1698,6 +1726,60 @@
       <ValueForLevel From="10" To="18">10</ValueForLevel>
       <Value Level="19">??</Value>
       <Value Level="20">??</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Lightning Tendrils" HitsPerAttack="4">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">5</Value>
+      <Value Level="2">6</Value>
+      <Value Level="3">7</Value>
+      <Value Level="4">8</Value>
+      <Value Level="5">9</Value>
+      <Value Level="6">10</Value>
+      <Value Level="7">11</Value>
+      <Value Level="8">12</Value>
+      <Value Level="9">14</Value>
+      <Value Level="10">16</Value>
+      <Value Level="11">18</Value>
+      <Value Level="12">19</Value>
+      <Value Level="13">20</Value>
+      <Value Level="14">21</Value>
+      <Value Level="15">22</Value>
+      <Value Level="16">23</Value>
+      <Value Level="17">24</Value>
+      <Value Level="18">25</Value>
+      <ValueForLevel From="19" To="20">26</ValueForLevel>
+      <ValueForLevel From="21" To="22">27</ValueForLevel>
+      <ValueForLevel From="23" To="24">28</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">1-4</Value>
+      <Value Level="2">1-5</Value>
+      <Value Level="3">1-7</Value>
+      <Value Level="4">1-10</Value>
+      <Value Level="5">1-14</Value>
+      <Value Level="6">1-19</Value>
+      <Value Level="7">1-28</Value>
+      <Value Level="8">2-38</Value>
+      <Value Level="9">3-56</Value>
+      <Value Level="10">4-80</Value>
+      <Value Level="11">5-100</Value>
+      <Value Level="12">7-125</Value>
+      <Value Level="13">8-147</Value>
+      <Value Level="14">9-173</Value>
+      <Value Level="15">11-202</Value>
+      <Value Level="16">12-236</Value>
+      <Value Level="17">15-276</Value>
+      <Value Level="18">17-321</Value>
+      <Value Level="19">19-355</Value>
+      <Value Level="20">21-392</Value>
+      <Value Level="21">23-433</Value>
+      <Value Level="22">25-478</Value>
+      <Value Level="23">28-527</Value>
+      <Value Level="24">31-580</Value>
+    </Attribute>
+    <Attribute Name="#% increased Lightning Damage">
+      <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
   <Gem Name="Lightning Warp" IncludeForm="OnUse">
