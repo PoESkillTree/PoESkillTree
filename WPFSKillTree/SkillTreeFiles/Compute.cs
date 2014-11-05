@@ -16,6 +16,7 @@ namespace POESKillTree.SkillTreeFiles
      * - Damage per Second shows sometimes incorrect value (0.1 difference from in-game value).
      * - Spell Critical Strike chance shows sometimes incorrect value (0.1 difference from in-game value).
      * - Estimated chance to Evade Attacks shows sometimes incorrect value.
+     * - Cast gems (Herald of Ice, Herald of Thunder) have their quality bonuses applied in inactive state.
      */
     public class Compute
     {

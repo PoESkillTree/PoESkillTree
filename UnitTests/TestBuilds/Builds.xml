@@ -1548,6 +1548,7 @@
       Herald of Ice
       #FIXME Damage per Use: 163.5
       Casts per Second: 1.3
+      #NOTE #% increased Cold Damage from quality is part of buff (applied only when buff is active)
       #FIXME Cold Damage: 131-196
       #TODO Cast Speed modifier: +32%
       Arc
