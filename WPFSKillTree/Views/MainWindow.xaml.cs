@@ -184,11 +184,11 @@ namespace POESKillTree.Views
                 {
                     _allAttributesList.Add(new Attribute(item));
                 }
-
-                UpdateStatistics(attritemp);
             }
 
             _allAttributeCollection.Refresh();
+
+            UpdateStatistics();
 
             UpdateAttributeList();
         }
@@ -204,7 +204,7 @@ namespace POESKillTree.Views
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
         }
 
-        public void UpdateStatistics(Dictionary<string, List<float>> attrs)
+        public void UpdateStatistics()
         {
             _defenceList.Clear();
             _offenceList.Clear();
@@ -544,11 +544,15 @@ namespace POESKillTree.Views
 
         private void ImportItems_Click(object sender, RoutedEventArgs e)
         {
-            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName, 
-                !string.IsNullOrEmpty(_persistentData.CurrentBuild.ItemData));
-            diw.Owner = this;
+            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName) {Owner = this};
             diw.ShowDialog();
             _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
+        }
+
+
+        private void ClearItems_Click(object sender, RoutedEventArgs e)
+        {
+            ClearCurrentItemData();
         }
 
         private void RedownloadTreeAssets_Click(object sender, RoutedEventArgs e)
@@ -592,7 +596,8 @@ namespace POESKillTree.Views
                 try
                 {
                     _itemAttributes = new ItemAttributes(itemData);
-                lbItemAttr.ItemsSource = _itemAttributes.Attributes;
+                    lbItemAttr.ItemsSource = _itemAttributes.Attributes;
+                    mnuClearItems.IsEnabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -608,8 +613,8 @@ namespace POESKillTree.Views
                 ClearCurrentItemData(); 
             }
 
-                UpdateAllAttributeList();
-            }
+            UpdateAllAttributeList();
+        }
 
         public void ClearCurrentItemData()
         {
@@ -617,6 +622,7 @@ namespace POESKillTree.Views
             _itemAttributes = null;
             lbItemAttr.ItemsSource = null;
             UpdateAllAttributeList();
+            mnuClearItems.IsEnabled = false;
         }
 
         private void btnOverwriteBuild_Click(object sender, RoutedEventArgs e)
@@ -661,36 +667,36 @@ namespace POESKillTree.Views
             if (!double.IsNaN(contentBounds.Width) && !double.IsNaN(contentBounds.Height))
             {
                 double aspect = contentBounds.Width/contentBounds.Height;
-            double xmax = contentBounds.Width;
-            double ymax = contentBounds.Height;
-            if (aspect > 1 && xmax > maxsize)
-            {
-                xmax = maxsize;
+                double xmax = contentBounds.Width;
+                double ymax = contentBounds.Height;
+                if (aspect > 1 && xmax > maxsize)
+                {
+                    xmax = maxsize;
                     ymax = xmax/aspect;
-            }
-            if (aspect < 1 & ymax > maxsize)
-            {
-                ymax = maxsize;
+                }
+                if (aspect < 1 & ymax > maxsize)
+                {
+                    ymax = maxsize;
                     xmax = ymax*aspect;
-            }
+                }
 
                 _clipboardBmp = new RenderTargetBitmap((int) xmax, (int) ymax, 96, 96, PixelFormats.Pbgra32);
-            var db = new VisualBrush(Tree.SkillTreeVisual);
-            db.ViewboxUnits = BrushMappingMode.Absolute;
-            db.Viewbox = contentBounds;
-            var dw = new DrawingVisual();
+                var db = new VisualBrush(Tree.SkillTreeVisual);
+                db.ViewboxUnits = BrushMappingMode.Absolute;
+                db.Viewbox = contentBounds;
+                var dw = new DrawingVisual();
 
-            using (DrawingContext dc = dw.RenderOpen())
-            {
-                dc.DrawRectangle(db, null, new Rect(0, 0, xmax, ymax));
+                using (DrawingContext dc = dw.RenderOpen())
+                {
+                    dc.DrawRectangle(db, null, new Rect(0, 0, xmax, ymax));
+                }
+                _clipboardBmp.Render(dw);
+                _clipboardBmp.Freeze();
+
+                Clipboard.SetImage(_clipboardBmp);
+
+                recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
             }
-            _clipboardBmp.Render(dw);
-            _clipboardBmp.Freeze();
-
-            Clipboard.SetImage(_clipboardBmp);
-
-            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
-        }
         }
 
         private void btnLoadBuild_Click(object sender, RoutedEventArgs e)
@@ -1215,7 +1221,7 @@ namespace POESKillTree.Views
         }
 
         private void SetTheme(string sTheme)
-            {
+        {
             var accent = ThemeManager.Accents.First(x => Equals(x.Name, _persistentData.Options.Accent));
             var theme = ThemeManager.GetAppTheme("Base" + sTheme);
             ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
@@ -1310,6 +1316,5 @@ namespace POESKillTree.Views
         }
 
         #endregion
-
     }
 }

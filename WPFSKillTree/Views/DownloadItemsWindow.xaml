@@ -16,7 +16,6 @@
         <TextBox x:Name="tbTreeLink" Margin="4" HorizontalContentAlignment="Center" Visibility="Collapsed"/>
         <Button Content="Open In Browser" x:Name="btnPopupOpenBrowser" Width="auto" Height="auto" Click="btnPopupOpenBrowser_Click" Margin="4,25,4,2"/>
         <Button Content="Load File" x:Name="btnPopupLoadFile" Width="auto" Height="auto" Click="btnPopupLoadFile_Click" Margin="4,2,4,2"/>
-        <Button Content="Clear Item Data" x:Name="btnPopupClear" Click="btnPopupClear_Click" Width="auto" Height="auto" Visibility="Collapsed" Margin="4,2,4,2"/>
         <Button Content="Close" x:Name="btnPopupClose" Click="btnPopupClose_Click" Width="auto" Height="auto" Margin="4,8,4,2"/>
     </StackPanel>
 </controls:MetroWindow>
