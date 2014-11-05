@@ -1210,7 +1210,6 @@
       Spell Critical Strike Multiplier: 248%
       Freezing Pulse
       Damage per Second: 172.3
-      # Display rounding
       Casts per Second: 1.9
       Spell Total Combined Damage: 47-70
       Spell Cold Damage: 47-70
@@ -1516,7 +1515,7 @@
       Cold Damage: 509-764
       #TODO Cast Speed modifier: +32%
       Arc
-      #FIXME Damage per Second: 7912.4
+      Damage per Second: 7912.4
       Casts per Second: 2.8
       Spell Total Combined Damage: 126-2405
       Spell Lightning Damage: 126-2405
@@ -1525,7 +1524,7 @@
       Spell Critical Strike Multiplier: 446%
       #TODO Mana Cost: 111
       Lightning Warp
-      #FIXME Damage per Use: 1489.9
+      Damage per Use: 1489.8
       Casts per Second: 1.7
       Spell Lightning Damage: 99-1843
       #TODO Cast Speed modifier: +69%
@@ -1539,6 +1538,92 @@
       #TODO Cast Speed modifier: +32%
       Spell Critical Strike Chance: 43.3%
       Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQit4IvR2EUGWH8dsC66z0PUNjUyzHNxQMH_GkyfbXiepflnBxbQMEQ_sGEZxfq-smHC7j_rhiIMJjRl0VffX0NDr9R2qb57gEl8qm6FHBmSdykqcpI9G8uHb5_IdwzqHEx0UY0O0xV9qm7V3B_rSDkgegRmKFy9-4l3yS437CWTngFZw1X4z_xz22lXWT32J06SRGo-ApHBSE54qC4w28-rlGbQ4-_WXl0V8UWA=</TreeURL>
+    <Level>85</Level>
+    <BuildFile>T11-Arc-LW-CwDT-MF.json</BuildFile>
+    <ExpectOffence>
+      Herald of Ice
+      #FIXME Damage per Use: 163.5
+      Casts per Second: 1.3
+      #FIXME Cold Damage: 131-196
+      #TODO Cast Speed modifier: +32%
+      Arc
+      Damage per Second: 5397.7
+      Casts per Second: 2.8
+      #NOTE Cast Time: 0.36
+      Spell Total Combined Damage: 126-2405
+      Spell Lightning Damage: 126-2405
+      #TODO Cast Speed modifier: +122%
+      Spell Critical Strike Chance: 36.1%
+      Spell Critical Strike Multiplier: 248%
+      #TODO Mana Cost: 86
+      Lightning Warp
+      Damage per Use: 1489.8
+      Casts per Second: 1.8
+      Spell Lightning Damage: 99-1843
+      #TODO Cast Speed modifier: +77%
+      Spell Critical Strike Chance: 36.1%
+      Spell Critical Strike Multiplier: 248%
+      #TODO Mana Cost: 106
+      Tempest Shield
+      Damage per Use: 1746
+      Casts per Second: 1.3
+      Spell Lightning Damage: 559-836
+      #TODO Cast Speed modifier: +32%
+      Spell Critical Strike Chance: 43.3%
+      Spell Critical Strike Multiplier: 447%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQit4IvR2EUGWH8dsC66z0PUNjUyzHNxQMH_GkyfbXiepflnBxbQMEQ_sGEZxfq-smHC7j_rhiIMJjRl0VffX0NDr9R2qb57gEl8qm6FHBmSdykqcpI9G8uHb5_IdwzqHEx0UY0O0xV9qm7V3B_rSDkgegRmKFy9-4l3yS437CWTngFZw1X4z_xz22lXWT32J06SRGo-ApHBSE54qC4w28-rlGbQ4-_WXl0V8UWA=</TreeURL>
+    <Level>85</Level>
+    <BuildFile>T11-FBall-EK.json</BuildFile>
+    <ExpectOffence>
+      Fireball
+      Damage per Second: 1105.1
+      Casts per Second: 2.6
+      #NOTE Cast Time: 0.38
+      Spell Total Combined Damage: 207-309
+      Spell Fire Damage: 207-309
+      #TODO Cast Speed modifier: +122%
+      Spell Critical Strike Chance: 43.3%
+      Spell Critical Strike Multiplier: 248%
+      #TODO Mana Cost: 52
+      Ethereal Knives
+      Damage per Second: 29.1
+      Casts per Second: 1.6
+      #NOTE Cast Time: 0.61
+      Spell Total Combined Damage: 9-14
+      Spell Physical Damage: 9-14
+      #TODO Cast Speed modifier: +32%
+      Spell Critical Strike Chance: 36.1%
+      Spell Critical Strike Multiplier: 248%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpv6zRKtXK1WuvYIsnG0ZEFgFQit4IvR2EUGWH8dsC66z0PUNjUyzHNxQMH_GkyfbXiepflnBxbQMEQ_sGEZxfq-smHC7j_rhiIMJjRl0VffX0NDr9R2qb57gEl8qm6FHBmSdykqcpI9G8uHb5_IdwzqHEx0UY0O0xV9qm7V3B_rSDkgegRmKFy9-4l3yS437CWTngFZw1X4z_xz22lXWT32J06SRGo-ApHBSE54qC4w28-rlGbQ4-_WXl0V8UWA=</TreeURL>
+    <Level>85</Level>
+    <BuildFile>T11-FP-Incinerate.json</BuildFile>
+    <ExpectOffence>
+      Freezing Pulse
+      Damage per Second: 183.2
+      Casts per Second: 2
+      #NOTE Cast Time: 0.49
+      Spell Total Combined Damage: 48-71
+      Spell Cold Damage: 48-71
+      #TODO Cast Speed modifier: +32%
+      Spell Critical Strike Chance: 34.9%
+      Spell Critical Strike Multiplier: 248%
+      Incinerate
+      Damage per Second: 41.2
+      Casts per Second: 5.5
+      #NOTE Cast Time: 0.18
+      Spell Total Combined Damage: 6-9
+      Spell Fire Damage: 6-9
+      #TODO Cast Speed modifier: +32%
     </ExpectOffence>
   </TestBuild>
 </TestData>

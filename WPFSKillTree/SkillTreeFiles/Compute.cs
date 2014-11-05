@@ -10,7 +10,6 @@ namespace POESKillTree.SkillTreeFiles
     /* Known issues:
      * - No support for unarmed combat.
      * - No support for minions, traps, mines and totems.
-     * - No support for support gems as item modifiers.
      * - No support for Vaal gems.
      * - Mana regeneration shows sometimes incorrect value (0.1 difference from in-game value).
      * - Damage type ranges shows sometimes incorrect value affecting overall DPS (1 difference from in-game value, occurs with damage conversions).
@@ -441,6 +440,8 @@ namespace POESKillTree.SkillTreeFiles
             public float Accuracy;
             // Attacks/casts per second.
             public float APS;
+            // Cast time.
+            public float CastTime;
             // Critical strike chance (in percent).
             public float CriticalChance;
             // Critical strike multiplier (in percent).
@@ -480,9 +481,12 @@ namespace POESKillTree.SkillTreeFiles
                     }
 
                     if (skill.Gem.Attributes.ContainsKey("Cast Time: # sec"))
-                        APS = 1 / skill.Gem.Attributes["Cast Time: # sec"][0];
+                    {
+                        CastTime = skill.Gem.Attributes["Cast Time: # sec"][0];
+                        APS = 1 / CastTime;
+                    }
                     else
-                        APS = 1; // Spell without Cast Time has cast time of 1 second.
+                        APS = CastTime = 1; // Spell without Cast Time has cast time of 1 second.
 
                     if (skill.Gem.Attributes.ContainsKey("Critical Strike Chance: #%"))
                         CriticalChance = skill.Gem.Attributes["Critical Strike Chance: #%"][0];
@@ -609,8 +613,10 @@ namespace POESKillTree.SkillTreeFiles
                     }
                     if (moreAS != 0)
                         APS = IncreaseValueByPercentage(APS, moreAS);
+
+                    APS = RoundHalfDownEvenValue(APS, 2);
                 }
-                else
+                else // Spell (use Cast Time directly).
                 {
                     float incCS = 0;
                     if (attrs.ContainsKey("#% increased Cast Speed"))
@@ -620,7 +626,7 @@ namespace POESKillTree.SkillTreeFiles
                     if (IsDualWielding && attrs.ContainsKey("#% increased Cast Speed while Dual Wielding"))
                         incCS += attrs["#% increased Cast Speed while Dual Wielding"][0];
                     if (incCS != 0)
-                        APS = IncreaseValueByPercentage(APS, incCS);
+                        CastTime = RoundValue(CastTime / ((100 + incCS) / 100), 3);
 
                     float moreCS = 0;
                     if (attrs.ContainsKey("#% more Cast Speed"))
@@ -628,10 +634,10 @@ namespace POESKillTree.SkillTreeFiles
                     if (attrs.ContainsKey("#% less Cast Speed"))
                         moreCS -= attrs["#% less Cast Speed"][0];
                     if (moreCS != 0)
-                        APS = IncreaseValueByPercentage(APS, moreCS);
-                }
+                        CastTime = FloorValue(CastTime / ((100 + moreCS) / 100), 3);
 
-                APS = RoundHalfDownEvenValue(APS, 2);
+                    APS = RoundValue(1 / CastTime, 2);
+                }
             }
 
             // Returns average hit including critical strikes.
@@ -639,7 +645,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Damage total = Deals.Find(d => d.Type == DamageType.Total);
 
-                return total.AverageHit() * (1 + (CriticalChance / 100) * (RoundValue(CriticalMultiplier, 0) - 100) / 100); // XXX: CeilValue(CriticalMultiplier, 0) is also possibility.
+                return total.AverageHit() * (1 + (CriticalChance / 100) * (RoundValue(CriticalMultiplier, 0) - 100) / 100);
             }
 
             // Combines damage type into total combined damage.

@@ -76,7 +76,10 @@
     <None Include="TestBuilds\T1-TS-EK-FP-Bow-AddPhyQuiver.json" />
     <None Include="TestBuilds\T1-TS-EK-FP-Bow-IncEDWQuiver.json" />
     <None Include="TestBuilds\T10-RimeGaze-INova-ColdSnap-TituciusSpan.json" />
+    <None Include="TestBuilds\T11-Arc-LW-CwDT-MF.json" />
     <None Include="TestBuilds\T11-Arc-LW-CwDT.json" />
+    <None Include="TestBuilds\T11-FBall-EK.json" />
+    <None Include="TestBuilds\T11-FP-Incinerate.json" />
     <None Include="TestBuilds\T11-LT-HoT.json" />
     <None Include="TestBuilds\T2-LA-ALD-Blackgleam-Hrimsorrow.json" />
     <None Include="TestBuilds\T2-LA-ALD-CtF-Blackgleam-Hrimsorrow.json" />
