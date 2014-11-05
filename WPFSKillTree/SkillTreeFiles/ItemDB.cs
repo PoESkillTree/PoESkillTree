@@ -469,7 +469,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     List<float> value = lookup.Value.ValueAt(level);
                     if (value != null)
-                        attrs.Add(lookup.Key, value);
+                        attrs.Add(lookup.Key, new List<float>(value));
                 }
 
                 return attrs;
@@ -484,7 +484,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     List<float> value = lookup.Value.ValueAt(quality);
                     if (value != null)
-                        attrs.Add(lookup.Key, value);
+                        attrs.Add(lookup.Key, new List<float>(value));
                 }
 
                 return attrs;
