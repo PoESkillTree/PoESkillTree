@@ -10,6 +10,8 @@ using System.Windows;
 using System.Windows.Media;
 using Newtonsoft.Json;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
+using POESKillTree.ViewModels;
+using ItemClass = POESKillTree.ViewModels.ItemAttributes.Item.ItemClass;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -23,6 +25,7 @@ namespace POESKillTree.SkillTreeFiles
 
 
         public static float LifePerLevel = 12;
+        public static float AccPerLevel = 2;
         public static float EvasPerLevel = 3;
         public static float ManaPerLevel = 4;
         public static float IntPerMana = 2;
@@ -86,7 +89,7 @@ namespace POESKillTree.SkillTreeFiles
         private List<SkillNode> _highlightnodes;
         public SkillIcons IconActiveSkills = new SkillIcons();
         public SkillIcons IconInActiveSkills = new SkillIcons();
-        private int _level = 1;
+        public int _level = 1;
 
         public Dictionary<string, string> NodeBackgrounds = new Dictionary<string, string>
         {
@@ -593,11 +596,21 @@ namespace POESKillTree.SkillTreeFiles
             {
                 attribs["+# to Strength"][0] / IntPerMana + _level * LifePerLevel
             };
-            retval["+#% increased Melee Physical Damage"] = new List<float> {attribs["+# to Strength"][0] / StrPerED};
-
-            retval["+# Accuracy Rating"] = new List<float> {attribs["+# to Dexterity"][0] / DexPerAcc};
+            // Every 10 strength grants 2% increased melee physical damage. 
+            int str = (int)attribs["+# to Strength"][0];
+            if (str % (int)StrPerED > 0) str += (int)StrPerED - (str % (int)StrPerED);
+            retval["#% increased Melee Physical Damage"] = new List<float> { str / StrPerED };
+            // Every point of Dexterity gives 2 additional base accuracy, and characters gain 2 base accuracy when leveling up.
+            // @see http://pathofexile.gamepedia.com/Accuracy
+            retval["+# Accuracy Rating"] = new List<float> { attribs["+# to Dexterity"][0] / DexPerAcc + (_level - 1) * AccPerLevel };
             retval["Evasion Rating: #"] = new List<float> {_level * EvasPerLevel};
-            retval["#% increased Evasion Rating"] = new List<float> {attribs["+# to Dexterity"][0] / DexPerEvas};
+
+            // Dexterity value is not getting rounded up any more but rounded normally to the nearest multiple of 5.
+            // @see http://pathofexile.gamepedia.com/Talk:Evasion
+            float dex = attribs["+# to Dexterity"][0];
+            dex = (float)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
+            retval["#% increased Evasion Rating"] = new List<float> { dex / DexPerEvas };
+
             return retval;
         }
 

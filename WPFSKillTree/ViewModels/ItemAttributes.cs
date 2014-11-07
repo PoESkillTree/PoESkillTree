@@ -5,10 +5,11 @@ using System.Text.RegularExpressions;
 using System.Windows.Data;
 using System.Xml;
 using Raven.Json.Linq;
+using Damage = POESKillTree.SkillTreeFiles.Compute.Damage;
 
 namespace POESKillTree.ViewModels
 {
-    class ItemAttributes
+    public class ItemAttributes
     {
         public ItemAttributes(string itemData)
         {
@@ -163,8 +164,9 @@ namespace POESKillTree.ViewModels
                 {
                     Flat, Percentage, FlatMinMax
                 }
-                public static List<Mod> CreateMods(string attribute, ItemClass ic)
+                public static List<Mod> CreateMods(Item item, string attribute)
                 {
+                    ItemClass ic = item.Class;
                     List<Mod> mods = new List<Mod>();
                     List<float> values = new List<float>();
                     foreach (Match match in numberfilter.Matches(attribute))
@@ -192,14 +194,15 @@ namespace POESKillTree.ViewModels
                             Value = values,
                             Attribute = "+# to Intelligence"
                         });
-                    }        
+                    }
                     else
                     {
                         mods.Add(new Mod()
                         {
                             itemclass = ic,
                             Value = values,
-                            Attribute = at
+                            Attribute = at,
+                            isLocal = DetermineLocal(item, at)
                         });
                     }
                     return mods;
@@ -208,23 +211,27 @@ namespace POESKillTree.ViewModels
                 private ItemClass itemclass;
                 public string Attribute;
                 public List<float> Value;
-                public bool isLocal
+                public bool isLocal = false;
+
+                // Returns true if property/mod is local, false otherwise.
+                static bool DetermineLocal(Item item, string attr)
                 {
-                    get
-                    {
-                        return ( itemclass != Item.ItemClass.Amulet && itemclass != Item.ItemClass.Ring && itemclass != Item.ItemClass.Belt ) &&
-                              (Attribute.Contains("increased Physical Damage") ||
-                                Attribute.Contains("Armour") ||
-                                Attribute.Contains("Evasion") ||
-                                Attribute.Contains("Energy Shield") ||
-                                Attribute.Contains("Weapon Class") ||
-                                Attribute.Contains("Critical Strike Chance with this Weapon") ||
-                                Attribute.Contains("Critical Strike Damage Multiplier with this Weapon")) ||
-                               ((itemclass == Item.ItemClass.MainHand ||itemclass == Item.ItemClass.OffHand)&&  Attribute.Contains("increased Attack Speed"));
-                    }
+                    return (item.Class != Item.ItemClass.Amulet && item.Class != Item.ItemClass.Ring && item.Class != Item.ItemClass.Belt)
+                           && ((attr.Contains("Armour") && !attr.EndsWith("Armour against Projectiles"))
+                               || attr.Contains("Evasion")
+                               || (attr.Contains("Energy Shield") && !attr.EndsWith("Energy Shield Recharge"))
+                               || attr.Contains("Weapon Class")
+                               || attr.Contains("Critical Strike Chance with this Weapon")
+                               || attr.Contains("Critical Strike Damage Multiplier with this Weapon"))
+                           || (item.Class == Item.ItemClass.MainHand || item.Class == Item.ItemClass.OffHand)
+                              && item.Keywords != null // Only weapons have keyword.
+                              && (attr == "#% increased Attack Speed"
+                                  || attr == "#% increased Accuracy Rating"
+                                  || attr == "+# to Accuracy Rating"
+                                  || attr.StartsWith("Adds ") && (attr.EndsWith(" Damage") || attr.EndsWith(" Damage in Main Hand") || attr.EndsWith(" Damage in Off Hand"))
+                                  || attr == "#% increased Physical Damage");
                 }
             }
-
 
             public ItemClass Class;
             public string Type;
@@ -232,30 +239,41 @@ namespace POESKillTree.ViewModels
             public Dictionary<string, List<float>> Attributes;
             public List<Mod> Mods;
             public List<Item> Gems;
+            public List<string> Keywords;
+            // The socket group of gem (all gems with same socket group value are linked).
+            public int SocketGroup;
 
             public Item(ItemClass iClass, RavenJObject val)
             {
-                Type = "";
                 Attributes = new Dictionary<string, List<float>>();
                 Mods = new List<Mod>();
                 Class = iClass;
-                if (iClass != ItemClass.Gem)
-                {
-                    Gems = new List<Item>();
-                }
-                Name = val["typeLine"].Value<string>();
+
+                Name = val["name"].Value<string>();
+                if (Name == "")
+                    Name = val["typeLine"].Value<string>();
+                Type = val["typeLine"].Value<string>();
+
                 if (val.ContainsKey("properties"))
                     foreach (RavenJObject obj in (RavenJArray)val["properties"])
                     {
                         List<float> values = new List<float>();
                         string s = "";
                       
-                            foreach (RavenJArray jva in (RavenJArray)obj["values"])
-                            {
-                                s += " "+jva[0].Value<string>() ;
-                            }
+                        foreach (RavenJArray jva in (RavenJArray)obj["values"])
+                        {
+                            s += " "+jva[0].Value<string>() ;
+                        }
+                        s = s.TrimStart();
 
-                            if (s == "") continue;
+                        if (s == "")
+                        {
+                            Keywords = new List<string>();
+                            string[] sl = obj["name"].Value<string>().Split(',');
+                            foreach (string i in sl)
+                                Keywords.Add(i.Trim());
+                            continue;
+                        }
                         
                         foreach (Match m in numberfilter.Matches(s))
                         {
@@ -264,99 +282,83 @@ namespace POESKillTree.ViewModels
                         }
                         string cs = obj["name"].Value<string>() + ": " + (numberfilter.Replace(s, "#"));
 
-
                         Attributes.Add(cs, values);
                     }
                 if (val.ContainsKey("explicitMods"))
                     foreach (string s in val["explicitMods"].Values<string>())
                     {
-                        var mods = Mod.CreateMods(s.Replace("Additional ", ""), this.Class);
+                        var mods = Mod.CreateMods(this, s.Replace("Additional ", ""));
                         Mods.AddRange(mods);
                     }
                 if (val.ContainsKey("implicitMods"))
                     foreach (string s in val["implicitMods"].Values<string>())
                     {
-                        var mods = Mod.CreateMods(s.Replace("Additional ", ""), this.Class);
+                        var mods = Mod.CreateMods(this, s.Replace("Additional ", ""));
                         Mods.AddRange(mods);
                     }
+                if (val.ContainsKey("craftedMods"))
+                    foreach (string s in val["craftedMods"].Values<string>())
+                    {
+                        var mods = Mod.CreateMods(this, s.Replace("Additional ", ""));
+                        Mods.AddRange(mods);
+                    }
+
+                if (iClass == ItemClass.Gem)
+                {
+                    switch (val["colour"].Value<string>())
+                    {
+                        case "S":
+                            Keywords.Add("Strength");
+                            break;
+
+                        case "D":
+                            Keywords.Add("Dexterity");
+                            break;
+
+                        case "I":
+                            Keywords.Add("Intelligence");
+                            break;
+                    }
+                }
+                else
+                {
+                    Gems = new List<Item>();
+                }
+
+                List<int> Sockets = new List<int>();
+                if (val.ContainsKey("sockets"))
+                    foreach (RavenJObject obj in (RavenJArray)val["sockets"])
+                    {
+                        Sockets.Add(obj["group"].Value<int>());
+                    }
+                if (val.ContainsKey("socketedItems"))
+                {
+                    int socket = 0;
+                    foreach (RavenJObject obj in (RavenJArray)val["socketedItems"])
+                    {
+                        var item = new Item(ItemClass.Gem, obj);
+                        item.SocketGroup = Sockets[socket++];
+                        Gems.Add(item);
+                    }
+                }
             }
             static Regex colorcleaner = new Regex("\\<.+?\\>");
             static Regex numberfilter = new Regex("[0-9]*\\.?[0-9]+");
-            public Item XmlRead(XmlReader xml)
+
+            // Returns gems linked to specified gem.
+            public List<Item> GetLinkedGems(Item gem)
             {
+                List<Item> link = new List<Item>();
 
-                while (xml.Read())
-                {
-                    if (xml.HasAttributes)
-                    {
-                        for (int i = 0; i < xml.AttributeCount; i++)
-                        {
-                            string s = xml.GetAttribute(i);
-                            if (s == "socketPopups")
-                                return this;
-                            if (s.Contains("itemName"))
-                            {
-                                var xs = xml.ReadSubtree();
-                                xs.ReadToDescendant("span");
-                                for (int j = 0; xs.Read(); )
-                                {
-                                    if (xs.NodeType == XmlNodeType.Text)
-                                    {
-                                        if (j == 0) Name = xs.Value.Replace("Additional ", "");
-                                        if (j == 1) Type = xs.Value;
-                                        j++;
-                                    }
-                                }
-                            }
-                            if (s.Contains("displayProperty"))
-                            {
-                                List<float> attrval = new List<float>();
-                                string[] span = new string[2] { "", "" };
-                                var xs = xml.ReadSubtree();
-                                xs.ReadToDescendant("span");
-                                for (int j = 0; xs.Read(); )
-                                {
-                                    if (xs.NodeType == XmlNodeType.Text)
-                                    {
-                                        span[j] = xs.Value.Replace("Additional ", ""); ;
-                                        j++;
-                                    }
-                                }
-                                var matches = numberfilter.Matches(span[1]);
-                                if (matches != null && matches.Count != 0)
-                                {
-                                    foreach (Match match in matches)
-                                    {
-                                        attrval.Add(float.Parse(match.Value, System.Globalization.CultureInfo.InvariantCulture));
-                                    }
-                                    Attributes.Add(span[0] + "#", attrval);
-                                }
-                            }
-                            if (s == "implicitMod" || s == "explicitMod")
-                            {
-                                string span = "";
-                                var xs = xml.ReadSubtree();
-                                xs.ReadToDescendant("span");
-                                while (xs.Read())
-                                {
-                                    if (xs.NodeType == XmlNodeType.Text)
-                                    {
-                                        var mods = Mod.CreateMods(xs.Value.Replace("Additional ", ""), this.Class);
-                                        Mods.AddRange(mods);
-                                    }
-                                }
+                foreach (Item linked in Gems)
+                    if (linked != gem && linked.SocketGroup == gem.SocketGroup)
+                        link.Add(linked);
 
-                            }
-
-                        }
-                    }
-                }
-                return this;
-
+                return link;
             }
         }
 
-        List<Item> Equip = new List<Item>();
+        public List<Item> Equip = new List<Item>();
 
         private Dictionary<string, List<float>> AgregatedAttributes;
         public ListCollectionView Attributes;

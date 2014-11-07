@@ -335,6 +335,45 @@
                     </TabControl>
                 </Grid>
             </Expander>
+
+            <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" x:Name="expSheet" Expanded="expSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
+                <Expander.Header>
+                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Character Sheet</TextBlock>
+                </Expander.Header>
+                <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-108,0,0,0">
+                    <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
+                        <TabItem Header="Defence" Margin="0" x:Name="tabItemDefence" controls:ControlsHelper.HeaderFontSize="15">
+                            <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                                <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="listBoxDefence" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.GroupStyle>
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
+                                    </ListBox.GroupStyle>
+                                </ListBox>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Offence" Margin="0" x:Name="tabItemOffence" controls:ControlsHelper.HeaderFontSize="15">
+                            <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                                <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="listBoxOffence" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.GroupStyle>
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
+                                    </ListBox.GroupStyle>
+                                </ListBox>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Expander>
+
         </Grid>
         <!-- grid row 2 - bottom part, search and tree -->
         <TextBox Height="24" HorizontalAlignment="Right" x:Name="textBox1" VerticalAlignment="Bottom" Width="120" Grid.Row="2" Margin="0,0,0,66" Visibility="Hidden"/>

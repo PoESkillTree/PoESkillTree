@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{494FD68A-38A7-4EEB-867A-44C2CDE13836}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UnitTests</RootNamespace>
+    <AssemblyName>UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="TestCharacterSheet.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDPS.cs" />
+    <Compile Include="TestItemDB.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UpdateDB\UpdateDB.csproj">
+      <Project>{e69f0c33-980e-4a6b-baea-b8d41a93a481}</Project>
+      <Name>UpdateDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFSKillTree\WPFSKillTree.csproj">
+      <Project>{fcda18d8-4fd9-484b-b7dc-dbf771b3aec7}</Project>
+      <Name>WPFSKillTree</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestBuilds\T1-DS-PS-Mace-IncPhyDmgShield-ALDRing.json" />
+    <None Include="TestBuilds\T1-DS-PS-Wand-IncPhyDmgShield-ALDRing.json" />
+    <None Include="TestBuilds\T1-PS-ALD-Wand-ALDRing.json" />
+    <None Include="TestBuilds\T1-PS-ALD-Wand.json" />
+    <None Include="TestBuilds\T1-PS-Wand-ALDRing.json" />
+    <None Include="TestBuilds\T1-TS-EK-FP-Bow-AddPhyQuiver.json" />
+    <None Include="TestBuilds\T1-TS-EK-FP-Bow-IncEDWQuiver.json" />
+    <None Include="TestBuilds\T10-RimeGaze-INova-ColdSnap-TituciusSpan.json" />
+    <None Include="TestBuilds\T11-Arc-LW-CwDT-MF.json" />
+    <None Include="TestBuilds\T11-Arc-LW-CwDT.json" />
+    <None Include="TestBuilds\T11-FBall-EK.json" />
+    <None Include="TestBuilds\T11-FP-Incinerate.json" />
+    <None Include="TestBuilds\T11-LT-HoT.json" />
+    <None Include="TestBuilds\T2-LA-ALD-Blackgleam-Hrimsorrow.json" />
+    <None Include="TestBuilds\T2-LA-ALD-CtF-Blackgleam-Hrimsorrow.json" />
+    <None Include="TestBuilds\T2-LA-ALD-CtF-Blackgleam.json" />
+    <None Include="TestBuilds\T2-LA-ALD.json" />
+    <None Include="TestBuilds\T3-SA-RoA-Hrimsorrow.json" />
+    <None Include="TestBuilds\T4-DS-PS-Dual-Wand.json" />
+    <None Include="TestBuilds\T5-NecromanticAegis.json" />
+    <None Include="TestBuilds\T6-Arc-LW-CwDT.json" />
+    <None Include="TestBuilds\T6-Arc-SpellEcho.json" />
+    <None Include="TestBuilds\T6-FBall-SpellEcho.json" />
+    <None Include="TestBuilds\T6-Leap-2HSword.json" />
+    <None Include="TestBuilds\T6-MS-2HAxe-Limbsplit.json" />
+    <None Include="TestBuilds\T6-MS-2HAxe-Wideswing.json" />
+    <None Include="TestBuilds\T6-SA-BowGemLevel.json" />
+    <None Include="TestBuilds\T6-SA-EK-Bow-AddPhy2BowAtkQuiver.json" />
+    <None Include="TestBuilds\T6-VS-Dual-Dagger.json" />
+    <None Include="TestBuilds\T7-GH-OffHandMace.json" />
+    <None Include="TestBuilds\T7-LeapSlam-OffHandMace.json" />
+    <None Include="TestBuilds\T7-MS-WingsOfEntropy.json" />
+    <None Include="TestBuilds\T7-Sweep-WingsOfEntropy.json" />
+    <None Include="TestBuilds\T8-AB-CS-BL-FBlast-FasterCasting.json" />
+    <None Include="TestBuilds\T8-Barrage-EK-LMP-Wand.json" />
+    <None Include="TestBuilds\T8-BurningArrow-EK-PhyProjectileAtkDmg.json" />
+    <None Include="TestBuilds\T8-Cleave-WhirlingBlades.json" />
+    <None Include="TestBuilds\T8-Cyclone-Frenzy-DualWield.json" />
+    <None Include="TestBuilds\T8-Cyclone-Frenzy.json" />
+    <None Include="TestBuilds\T8-DualStrike-MeleePhyDmg.json" />
+    <None Include="TestBuilds\T8-DualStrike-MeleeSplash.json" />
+    <None Include="TestBuilds\T8-DualStrike-NoSupport.json" />
+    <None Include="TestBuilds\T8-DualStrike-Reave-MeleeSplash-MeleePhyDmg.json" />
+    <None Include="TestBuilds\T8-EK-IronGrip-IronWill.json" />
+    <None Include="TestBuilds\T8-Frenzy-SlowerProjectiles-Bow.json" />
+    <None Include="TestBuilds\T8-FStorm-EH-PointBlank.json" />
+    <None Include="TestBuilds\T8-GC-FP-FWall-IN.json" />
+    <None Include="TestBuilds\T8-GroundSlam-FlickerStrike-AddAccuracy-AddColdDmg.json" />
+    <None Include="TestBuilds\T8-HS-Multistrike-FasterAttacks.json" />
+    <None Include="TestBuilds\T8-IB-ShieldCharge-AddFireDmg.json" />
+    <None Include="TestBuilds\T8-Inc-IS-SN-Park.json" />
+    <None Include="TestBuilds\T8-IShot-Chain-FSurge.json" />
+    <None Include="TestBuilds\T8-PA-SC.json" />
+    <None Include="TestBuilds\T8-Puncture-EA-GMP-AddChaosDmg.json" />
+    <None Include="TestBuilds\T8-ST-1HAxe.json" />
+    <None Include="TestBuilds\T8-ST-Fork-1HAxe.json" />
+    <None Include="TestBuilds\T8-ST-Fork-1hSword.json" />
+    <None Include="TestBuilds\T8-ST-2hAxe-ALDRing.json" />
+    <None Include="TestBuilds\T8-ST-Fork-DualWield.json" />
+    <None Include="TestBuilds\T9-CoC-GMP-ISpear-Barrage-CwDT-INova.json" />
+    <None Include="TestBuilds\T9-CoD-INova-DominatingBlow-CoMK-ISpear.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestBuilds\Builds.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="TestItems.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="TestMerge.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

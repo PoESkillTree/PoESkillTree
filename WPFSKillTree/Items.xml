@@ -1,0 +1,2649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Gem Name="Added Chaos Damage">
+    <Attribute Name="Adds #-# Chaos Damage">
+      <Value Level="1">18–26</Value>
+      <Value Level="2">20–30</Value>
+      <Value Level="3">23–34</Value>
+      <Value Level="4">26–39</Value>
+      <Value Level="5">29–44</Value>
+      <Value Level="6">33–49</Value>
+      <Value Level="7">37–56</Value>
+      <Value Level="8">42–63</Value>
+      <Value Level="9">47–71</Value>
+      <Value Level="10">53–79</Value>
+      <Value Level="11">59–89</Value>
+      <Value Level="12">67–100</Value>
+      <Value Level="13">75–112</Value>
+      <Value Level="14">84–125</Value>
+      <Value Level="15">93–140</Value>
+      <Value Level="16">104–157</Value>
+      <Value Level="17">117–175</Value>
+      <Value Level="18">130–195</Value>
+      <Value Level="19">145–217</Value>
+      <Value Level="20">161–242</Value>
+      <Value Level="21">180-270</Value>
+      <Value Level="22">200-300</Value>
+      <Value Level="23">222-334</Value>
+    </Attribute>
+    <Attribute Name="#% increased Chaos Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Added Cold Damage">
+    <Attribute Name="Adds #-# Cold Damage">
+      <Value Level="1">4–6</Value>
+      <Value Level="2">5–8</Value>
+      <Value Level="3">6–9</Value>
+      <Value Level="4">8–12</Value>
+      <Value Level="5">9–14</Value>
+      <Value Level="6">11–17</Value>
+      <Value Level="7">14–21</Value>
+      <Value Level="8">18–26</Value>
+      <Value Level="9">21–31</Value>
+      <Value Level="10">24–36</Value>
+      <Value Level="11">30–44</Value>
+      <Value Level="12">34–52</Value>
+      <Value Level="13">40–60</Value>
+      <Value Level="14">46–69</Value>
+      <Value Level="15">53–80</Value>
+      <Value Level="16">61–92</Value>
+      <Value Level="17">67–100</Value>
+      <Value Level="18">73–110</Value>
+      <Value Level="19">80–121</Value>
+      <Value Level="20">88–132</Value>
+      <Value Level="21">96–144</Value>
+      <Value Level="22">105–158</Value>
+      <Value Level="23">115–172</Value>
+      <Value Level="24">126–188</Value>
+      <Value Level="25">137–205</Value>
+      <Value Level="26">149–224</Value>
+      <Value Level="27">163–244</Value>
+      <Value Level="28">178–266</Value>
+      <Value Level="29">193–290</Value>
+      <Value Level="30">211–316</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Added Fire Damage">
+    <Attribute Name="Gain #% of Physical Damage as Extra Fire Damage">
+      <Value Level="1">20%</Value>
+      <Value Level="2">21%</Value>
+      <Value Level="3">22%</Value>
+      <Value Level="4">23%</Value>
+      <Value Level="5">24%</Value>
+      <Value Level="6">25%</Value>
+      <Value Level="7">26%</Value>
+      <Value Level="8">27%</Value>
+      <Value Level="9">28%</Value>
+      <Value Level="10">29%</Value>
+      <Value Level="11">30%</Value>
+      <Value Level="12">31%</Value>
+      <Value Level="13">32%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">34%</Value>
+      <Value Level="16">35%</Value>
+      <Value Level="17">36%</Value>
+      <Value Level="18">37%</Value>
+      <Value Level="19">38%</Value>
+      <Value Level="20">39%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Fire Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Added Lightning Damage">
+    <Attribute Name="Adds #-# Lightning Damage">
+      <Value Level="1">1–8</Value>
+      <Value Level="2">1–11</Value>
+      <Value Level="3">1–13</Value>
+      <Value Level="4">1–17</Value>
+      <Value Level="5">1–20</Value>
+      <Value Level="6">1–25</Value>
+      <Value Level="7">2–32</Value>
+      <Value Level="8">2–40</Value>
+      <Value Level="9">3–48</Value>
+      <Value Level="10">3–57</Value>
+      <Value Level="11">4–72</Value>
+      <Value Level="12">4–84</Value>
+      <Value Level="13">5–99</Value>
+      <Value Level="14">6–116</Value>
+      <Value Level="15">7–136</Value>
+      <Value Level="16">8–159</Value>
+      <Value Level="17">9–176</Value>
+      <Value Level="18">10-195</Value>
+      <Value Level="19">11–216</Value>
+      <Value Level="20">13–238</Value>
+      <Value Level="21">14–263</Value>
+      <Value Level="22">15-291</Value>
+      <Value Level="23">17–320</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Additional Accuracy">
+    <Attribute Name="+# to Accuracy Rating">
+      <Value Level="1">82</Value>
+      <Value Level="2">109</Value>
+      <Value Level="3">139</Value>
+      <Value Level="4">171</Value>
+      <Value Level="5">206</Value>
+      <Value Level="6">244</Value>
+      <Value Level="7">299</Value>
+      <Value Level="8">359</Value>
+      <Value Level="9">407</Value>
+      <Value Level="10">457</Value>
+      <Value Level="11">529</Value>
+      <Value Level="12">586</Value>
+      <Value Level="13">645</Value>
+      <Value Level="14">707</Value>
+      <Value Level="15">772</Value>
+      <Value Level="16">840</Value>
+      <Value Level="17">887</Value>
+      <Value Level="18">934</Value>
+      <Value Level="19">983</Value>
+      <Value Level="20">1034</Value>
+      <Value Level="21">1085</Value>
+      <Value Level="22">1138</Value>
+      <Value Level="23">1191</Value>
+      <Value Level="24">1246</Value>
+      <Value Level="25">1301</Value>
+    </Attribute>
+    <Attribute Name="#% increased Critical Strike Chance">
+      <ValuePerQuality>2</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Arc">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">11</Value>
+      <Value Level="2">12</Value>
+      <ValueForLevel From="3" To="4">13</ValueForLevel>
+      <ValueForLevel From="5" To="6">14</ValueForLevel>
+      <Value Level="7">15</Value>
+      <Value Level="8">16</Value>
+      <Value Level="9">27</Value>
+      <Value Level="10">18</Value>
+      <Value Level="11">19</Value>
+      <Value Level="12">20</Value>
+      <Value Level="13">21</Value>
+      <ValueForLevel From="14" To="15">22</ValueForLevel>
+      <ValueForLevel From="16" To="17">23</ValueForLevel>
+      <ValueForLevel From="18" To="19">25</ValueForLevel>
+      <ValueForLevel From="20" To="21">26</ValueForLevel>
+      <Value Level="22">-</Value>
+      <Value Level="23">27</Value>
+      <Value Level="24">-</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">3–50</Value>
+      <Value Level="2">3–65</Value>
+      <Value Level="3">4–74</Value>
+      <Value Level="4">5–89</Value>
+      <Value Level="5">7–125</Value>
+      <Value Level="6">6–107</Value>
+      <Value Level="7">8–150</Value>
+      <Value Level="8">9–177</Value>
+      <Value Level="9">11–208</Value>
+      <Value Level="10">13–244</Value>
+      <Value Level="11">15–285</Value>
+      <Value Level="12">17–332</Value>
+      <Value Level="13">19–368</Value>
+      <Value Level="14">21–406</Value>
+      <Value Level="15">24–448</Value>
+      <Value Level="16">26–494</Value>
+      <Value Level="17">29–545</Value>
+      <Value Level="18">32–600</Value>
+      <Value Level="19">35–660</Value>
+      <Value Level="20">38–726</Value>
+      <Value Level="21">42–797</Value>
+      <Value Level="22">-</Value>
+      <Value Level="23">51–961</Value>
+      <Value Level="24">-</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Arctic Breath">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">12</Value>
+      <Value Level="2">13</Value>
+      <ValueForLevel From="3" To="4">14</ValueForLevel>
+      <Value Level="5">15</Value>
+      <Value Level="6">16</Value>
+      <Value Level="7">17</Value>
+      <ValueForLevel From="8" To="10">18</ValueForLevel>
+      <ValueForLevel From="11" To="12">19</ValueForLevel>
+      <ValueForLevel From="13" To="14">20</ValueForLevel>
+      <ValueForLevel From="15" To="18">21</ValueForLevel>
+      <ValueForLevel From="19" To="21">22</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Cold Damage">
+      <Value Level="1">41-61</Value>
+      <Value Level="2">46-69</Value>
+      <Value Level="3">52-79</Value>
+      <Value Level="4">60-89</Value>
+      <Value Level="5">67-101</Value>
+      <Value Level="6">76-114</Value>
+      <Value Level="7">86-129</Value>
+      <Value Level="8">97-145</Value>
+      <Value Level="9">109-163</Value>
+      <Value Level="10">123-184</Value>
+      <Value Level="11">138-206</Value>
+      <Value Level="12">154-231</Value>
+      <Value Level="13">173-259</Value>
+      <Value Level="14">193-290</Value>
+      <Value Level="15">216-324</Value>
+      <Value Level="16">242-363</Value>
+      <Value Level="17">270-405</Value>
+      <Value Level="18">301-452</Value>
+      <Value Level="19">336-503</Value>
+      <Value Level="20">374-561</Value>
+      <Value Level="21">416-624</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Ball Lightning">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">15</Value>
+      <Value Level="2">16</Value>
+      <Value Level="3">17</Value>
+      <Value Level="4">18</Value>
+      <Value Level="5">19</Value>
+      <Value Level="6">20</Value>
+      <Value Level="7">21</Value>
+      <ValueForLevel From="8" To="9">22</ValueForLevel>
+      <Value Level="10">23</Value>
+      <ValueForLevel From="11" To="12">24</ValueForLevel>
+      <ValueForLevel From="13" To="14">25</ValueForLevel>
+      <ValueForLevel From="15" To="18">26</ValueForLevel>
+      <ValueForLevel From="19" To="20">27</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">2–38</Value>
+      <Value Level="2">2–43</Value>
+      <Value Level="3">3–48</Value>
+      <Value Level="4">3–53</Value>
+      <Value Level="5">3–59</Value>
+      <Value Level="6">3–66</Value>
+      <Value Level="7">4–74</Value>
+      <Value Level="8">4–82</Value>
+      <Value Level="9">5–90</Value>
+      <Value Level="10">5–100</Value>
+      <Value Level="11">6–111</Value>
+      <Value Level="12">6–122</Value>
+      <Value Level="13">7–135</Value>
+      <Value Level="14">8–149</Value>
+      <Value Level="15">9–164</Value>
+      <Value Level="16">9–180</Value>
+      <Value Level="17">10–198</Value>
+      <Value Level="18">11–217</Value>
+      <Value Level="19">13–239</Value>
+      <Value Level="20">14–262</Value>
+    </Attribute>
+    <Attribute Name="#% increased Lightning Damage">
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Barrage" RequiredWeapon="Ranged">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">6</ValueForLevel>
+      <ValueForLevel From="6" To="10">7</ValueForLevel>
+      <ValueForLevel From="11" To="15">8</ValueForLevel>
+      <ValueForLevel From="16" To="20">9</ValueForLevel>
+      <ValueForLevel From="21" To="25">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Burning Arrow">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">5</ValueForLevel>
+      <ValueForLevel From="6" To="10">6</ValueForLevel>
+      <ValueForLevel From="11" To="12">7</ValueForLevel>
+      <Value Level="13">N/A</Value>
+      <Value Level="14">N/A</Value>
+      <Value Level="15">N/A</Value>
+      <Value Level="16">N/A</Value>
+      <Value Level="17">8</Value>
+      <Value Level="18">N/A</Value>
+      <Value Level="19">N/A</Value>
+      <Value Level="20">N/A</Value>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cast On Critical Strike">
+    <Attribute Name="#% increased Critical Strike Chance">
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cast on Death">
+    <Attribute Name="#% more Damage">
+      <ValuePerLevel>16</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cast on Melee Kill">
+    <Attribute Name="Supported Triggered Spells have #% increased Spell Damage">
+      <Value Level="1">20%</Value>
+      <Value Level="2">23%</Value>
+      <Value Level="3">26%</Value>
+      <Value Level="4">29%</Value>
+      <Value Level="5">32%</Value>
+      <Value Level="6">35%</Value>
+      <Value Level="7">38%</Value>
+      <Value Level="8">41%</Value>
+      <Value Level="9">44%</Value>
+      <Value Level="10">47%</Value>
+      <Value Level="11">50%</Value>
+      <Value Level="12">53%</Value>
+      <Value Level="13">56%</Value>
+      <Value Level="14">59%</Value>
+      <Value Level="15">62%</Value>
+      <Value Level="16">65%</Value>
+      <Value Level="17">68%</Value>
+      <Value Level="18">71%</Value>
+      <Value Level="19">74%</Value>
+      <Value Level="20">77%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cast when Damage Taken">
+    <Attribute Name="#% less Damage" NoUpdate="true">
+      <Value Level="1">70%</Value>
+      <Value Level="2">66%</Value>
+      <Value Level="3">62%</Value>
+      <Value Level="4">58%</Value>
+      <Value Level="5">54%</Value>
+      <Value Level="6">50%</Value>
+      <Value Level="7">46%</Value>
+      <Value Level="8">42%</Value>
+      <Value Level="9">38%</Value>
+      <Value Level="10">34%</Value>
+      <Value Level="11">30%</Value>
+      <Value Level="12">26%</Value>
+      <Value Level="13">22%</Value>
+      <Value Level="14">18%</Value>
+      <Value Level="15">14%</Value>
+      <Value Level="16">10%</Value>
+      <Value Level="17">6%</Value>
+      <Value Level="18">2%</Value>
+      <Value Level="19">-2%</Value>
+      <Value Level="20">-6%</Value>
+      <Value Level="21">-10%</Value>
+      <Value Level="22">-14%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cast when Stunned">
+    <Attribute Name="#% increased Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Chain">
+    <Attribute Name="#% increased Damage">
+      <ValuePerLevel>2</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cleave" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" StrikesWithBothWeapons="true">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">6</ValueForLevel>
+      <ValueForLevel From="6" To="10">7</ValueForLevel>
+      <ValueForLevel From="11" To="13">8</ValueForLevel>
+      <Value Level="14">9</Value>
+      <Value Level="15">8</Value>
+      <ValueForLevel From="16" To="20">9</ValueForLevel>
+      <ValueForLevel From="21" To="23">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cold Snap" IncludeForm="OnUse">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">11</Value>
+      <Value Level="2">12</Value>
+      <Value Level="3">13</Value>
+      <Value Level="4">14</Value>
+      <Value Level="5">15</Value>
+      <Value Level="6">16</Value>
+      <Value Level="7">17</Value>
+      <Value Level="8">18</Value>
+      <Value Level="9">19</Value>
+      <Value Level="10">20</Value>
+      <Value Level="11">21</Value>
+      <Value Level="12">22</Value>
+      <Value Level="13">23</Value>
+      <Value Level="14">24</Value>
+      <Value Level="15">25</Value>
+      <ValueForLevel From="16" To="17">26</ValueForLevel>
+      <ValueForLevel From="18" To="19">27</ValueForLevel>
+      <ValueForLevel From="20" To="21">28</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Cold Damage">
+      <Value Level="1">8-15</Value>
+      <Value Level="2">12-17</Value>
+      <Value Level="3">15-22</Value>
+      <Value Level="4">18-27</Value>
+      <Value Level="5">23-34</Value>
+      <Value Level="6">30-45</Value>
+      <Value Level="7">39-59</Value>
+      <Value Level="8">54-81</Value>
+      <Value Level="9">72-108</Value>
+      <Value Level="10">100-150</Value>
+      <Value Level="11">124-186</Value>
+      <Value Level="12">145-217</Value>
+      <Value Level="13">169-253</Value>
+      <Value Level="14">196-294</Value>
+      <Value Level="15">227-341</Value>
+      <Value Level="16">263-394</Value>
+      <Value Level="17">303-455</Value>
+      <Value Level="18">350-524</Value>
+      <Value Level="19">384-576</Value>
+      <Value Level="20">421-632</Value>
+      <Value Level="21">462-693</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cold to Fire">
+    <Attribute Name="Gain #% of Cold Damage Added as Extra Fire Damage">
+      <Value Level="1">10%</Value>
+      <Value Level="2">11%</Value>
+      <Value Level="3">12%</Value>
+      <Value Level="4">13%</Value>
+      <Value Level="5">14%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">16%</Value>
+      <Value Level="8">17%</Value>
+      <Value Level="9">18%</Value>
+      <Value Level="10">19%</Value>
+      <Value Level="11">20%</Value>
+      <Value Level="12">21%</Value>
+      <Value Level="13">22%</Value>
+      <Value Level="14">23%</Value>
+      <Value Level="15">24%</Value>
+      <Value Level="16">25%</Value>
+      <Value Level="17">26%</Value>
+      <Value Level="18">27%</Value>
+      <Value Level="19">28%</Value>
+      <Value Level="20">29%</Value>
+      <Value Level="21">30%</Value>
+      <Value Level="22">31%</Value>
+      <Value Level="23">32%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Fire Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Cold Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Concentrated Effect">
+    <Attribute Name="#% more Area Damage">
+      <Value Level="1">50%</Value>
+      <Value Level="2">51%</Value>
+      <Value Level="3">52%</Value>
+      <Value Level="4">53%</Value>
+      <Value Level="5">54%</Value>
+      <Value Level="6">55%</Value>
+      <Value Level="7">56%</Value>
+      <Value Level="8">57%</Value>
+      <Value Level="9">58%</Value>
+      <Value Level="10">59%</Value>
+      <Value Level="11">60%</Value>
+      <Value Level="12">61%</Value>
+      <Value Level="13">62%</Value>
+      <Value Level="14">63%</Value>
+      <Value Level="15">64%</Value>
+      <Value Level="16">65%</Value>
+      <Value Level="17">66%</Value>
+      <Value Level="18">67%</Value>
+      <Value Level="19">68%</Value>
+      <Value Level="20">69%</Value>
+    </Attribute>
+    <Attribute Name="#% reduced Mana Cost">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cyclone" HitsPerAttack="2">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">24</ValueForLevel>
+      <ValueForLevel From="6" To="7">25</ValueForLevel>
+      <Value Level="8">-</Value>
+      <Value Level="9">-</Value>
+      <Value Level="10">-</Value>
+      <Value Level="11">-</Value>
+      <Value Level="12">-</Value>
+      <Value Level="13">-</Value>
+      <Value Level="14">-</Value>
+      <Value Level="15">-</Value>
+      <Value Level="16">-</Value>
+      <Value Level="17">-</Value>
+      <Value Level="18">-</Value>
+      <Value Level="19">-</Value>
+      <Value Level="20">-</Value>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerLevel>2</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Dominating Blow">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">20</Value>
+      <Value Level="2">21</Value>
+      <Value Level="3">22</Value>
+      <Value Level="4">23</Value>
+      <Value Level="5">24</Value>
+      <Value Level="6">26</Value>
+      <Value Level="7">27</Value>
+      <Value Level="8">29</Value>
+      <ValueForLevel From="9" To="10">30</ValueForLevel>
+      <Value Level="11">31</Value>
+      <Value Level="12">33</Value>
+      <ValueForLevel From="13" To="15">34</ValueForLevel>
+      <ValueForLevel From="16" To="17">35</ValueForLevel>
+      <Value Level="18">36</Value>
+      <ValueForLevel From="19" To="20">37</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Double Strike">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">8</ValueForLevel>
+      <ValueForLevel From="6" To="10">9</ValueForLevel>
+      <ValueForLevel From="11" To="15">10</ValueForLevel>
+      <ValueForLevel From="16" To="20">11</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Dual Strike" RequiredHand="DualWielded" RequiredWeapon="Melee" StrikesWithBothWeapons="true">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Critical Strike Chance">
+      <ValuePerQuality>4</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">8</ValueForLevel>
+      <ValueForLevel From="6" To="10">9</ValueForLevel>
+      <ValueForLevel From="11" To="15">10</ValueForLevel>
+      <ValueForLevel From="16" To="20">11</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Elemental Hit">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">12</Value>
+      <Value Level="2">14</Value>
+      <Value Level="3">15</Value>
+      <Value Level="4">16</Value>
+      <Value Level="5">17</Value>
+      <Value Level="6">18</Value>
+      <Value Level="7">19</Value>
+      <Value Level="8">21</Value>
+      <Value Level="9">22</Value>
+      <Value Level="10">23</Value>
+      <Value Level="11">24</Value>
+      <Value Level="12">25</Value>
+      <Value Level="13">26</Value>
+      <Value Level="14">27</Value>
+      <Value Level="15">28</Value>
+      <ValueForLevel From="16" To="17">29</ValueForLevel>
+      <Value Level="18">30</Value>
+      <Value Level="19">31</Value>
+      <Value Level="20">32</Value>
+      <Value Level="21">?</Value>
+      <Value Level="22">?</Value>
+      <Value Level="23">?</Value>
+      <Value Level="24">?</Value>
+      <Value Level="25">?</Value>
+      <Value Level="26">?</Value>
+    </Attribute>
+    <Attribute Name="#% increased Critical Strike Chance">
+      <ValuePerQuality>4</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Ethereal Knives">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">6</Value>
+      <Value Level="2">7</Value>
+      <Value Level="3">8</Value>
+      <Value Level="4">9</Value>
+      <Value Level="5">11</Value>
+      <Value Level="6">12</Value>
+      <Value Level="7">13</Value>
+      <Value Level="8">15</Value>
+      <Value Level="9">16</Value>
+      <Value Level="10">18</Value>
+      <Value Level="11">20</Value>
+      <Value Level="12">21</Value>
+      <Value Level="13">22</Value>
+      <Value Level="14">23</Value>
+      <Value Level="15">24</Value>
+      <Value Level="16">25</Value>
+      <Value Level="17">26</Value>
+      <ValueForLevel From="18" To="19">27</ValueForLevel>
+      <Value Level="20">29</Value>
+      <ValueForLevel From="21" To="23">30</ValueForLevel>
+      <Value Level="24">31</Value>
+      <Value Level="25">32</Value>
+      <Value Level="26">33</Value>
+      <ValueForLevel From="27" To="28">34</ValueForLevel>
+      <Value Level="29">35</Value>
+      <Value Level="30">36</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Physical Damage">
+      <Value Level="1">6–9</Value>
+      <Value Level="2">7–11</Value>
+      <Value Level="3">10–15</Value>
+      <Value Level="4">13–19</Value>
+      <Value Level="5">16–24</Value>
+      <Value Level="6">22–33</Value>
+      <Value Level="7">29–43</Value>
+      <Value Level="8">39–59</Value>
+      <Value Level="9">54–80</Value>
+      <Value Level="10">76–114</Value>
+      <Value Level="11">95–143</Value>
+      <Value Level="12">112–168</Value>
+      <Value Level="13">132–198</Value>
+      <Value Level="14">154–232</Value>
+      <Value Level="15">181–271</Value>
+      <Value Level="16">211–316</Value>
+      <Value Level="17">245–368</Value>
+      <Value Level="18">285–428</Value>
+      <Value Level="19">315–473</Value>
+      <Value Level="20">348–522</Value>
+      <Value Level="21">384–575</Value>
+      <Value Level="22">423–634</Value>
+      <Value Level="23">466–699</Value>
+      <Value Level="24">513–769</Value>
+      <Value Level="25">564–847</Value>
+      <Value Level="26">621–931</Value>
+      <Value Level="27">682–1024</Value>
+      <Value Level="28">750–1125</Value>
+      <Value Level="29">824–1235</Value>
+      <Value Level="30">904–1356</Value>
+    </Attribute>
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Explosive Arrow">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">13</Value>
+      <Value Level="2">14</Value>
+      <ValueForLevel From="3" To="4">15</ValueForLevel>
+      <Value Level="5">16</Value>
+      <Value Level="6">?</Value>
+      <Value Level="7">18</Value>
+      <Value Level="8">20</Value>
+      <Value Level="9">21</Value>
+      <Value Level="10">22</Value>
+      <Value Level="11">?</Value>
+      <Value Level="12">?</Value>
+      <Value Level="13">?</Value>
+      <Value Level="14">?</Value>
+      <Value Level="15">?</Value>
+      <Value Level="16">?</Value>
+      <ValueForLevel From="17" To="18">26</ValueForLevel>
+      <Value Level="19">?</Value>
+      <Value Level="20">?</Value>
+      <Value Level="21">?</Value>
+      <Value Level="22">?</Value>
+      <Value Level="23">?</Value>
+      <Value Level="24">?</Value>
+      <Value Level="25">?</Value>
+      <Value Level="26">?</Value>
+      <Value Level="27">?</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Faster Attacks">
+    <Attribute Name="#% increased Attack Speed">
+      <Value Level="1">25%</Value>
+      <Value Level="2">26%</Value>
+      <Value Level="3">27%</Value>
+      <Value Level="4">28%</Value>
+      <Value Level="5">29%</Value>
+      <Value Level="6">30%</Value>
+      <Value Level="7">31%</Value>
+      <Value Level="8">32%</Value>
+      <Value Level="9">33%</Value>
+      <Value Level="10">34%</Value>
+      <Value Level="11">35%</Value>
+      <Value Level="12">36%</Value>
+      <Value Level="13">37%</Value>
+      <Value Level="14">38%</Value>
+      <Value Level="15">39%</Value>
+      <Value Level="16">40%</Value>
+      <Value Level="17">41%</Value>
+      <Value Level="18">42%</Value>
+      <Value Level="19">43%</Value>
+      <Value Level="20">44%</Value>
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Faster Casting">
+    <Attribute Name="#% increased Cast Speed">
+      <Value Level="1">20%</Value>
+      <Value Level="2">21%</Value>
+      <Value Level="3">22%</Value>
+      <Value Level="4">23%</Value>
+      <Value Level="5">24%</Value>
+      <Value Level="6">25%</Value>
+      <Value Level="7">26%</Value>
+      <Value Level="8">27%</Value>
+      <Value Level="9">28%</Value>
+      <Value Level="10">29%</Value>
+      <Value Level="11">30%</Value>
+      <Value Level="12">31%</Value>
+      <Value Level="13">32%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">34%</Value>
+      <Value Level="16">35%</Value>
+      <Value Level="17">36%</Value>
+      <Value Level="18">37%</Value>
+      <Value Level="19">38%</Value>
+      <Value Level="20">39%</Value>
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Faster Projectiles">
+    <Attribute Name="#% increased Projectile Damage">
+      <ValueForLevel From="1" To="2">10%</ValueForLevel>
+      <ValueForLevel From="3" To="4">11%</ValueForLevel>
+      <ValueForLevel From="5" To="6">12%</ValueForLevel>
+      <ValueForLevel From="7" To="8">13%</ValueForLevel>
+      <ValueForLevel From="9" To="10">14%</ValueForLevel>
+      <ValueForLevel From="11" To="12">15%</ValueForLevel>
+      <ValueForLevel From="13" To="14">16%</ValueForLevel>
+      <ValueForLevel From="15" To="16">17%</ValueForLevel>
+      <ValueForLevel From="17" To="18">18%</ValueForLevel>
+      <ValueForLevel From="19" To="20">19%</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Cast Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Fireball" ExcludeForm="AoE">
+    <Attribute Name="Deals #-# Fire Damage">
+      <Value Level="1">5–10</Value>
+      <Value Level="2">7–11</Value>
+      <Value Level="3">9–14</Value>
+      <Value Level="4">13–19</Value>
+      <Value Level="5">17–25</Value>
+      <Value Level="6">23–34</Value>
+      <Value Level="7">32–48</Value>
+      <Value Level="8">44–67</Value>
+      <Value Level="9">63–95</Value>
+      <Value Level="10">89–133</Value>
+      <Value Level="11">110–165</Value>
+      <Value Level="12">135–203</Value>
+      <Value Level="13">157–236</Value>
+      <Value Level="14">183–274</Value>
+      <Value Level="15">212–318</Value>
+      <Value Level="16">245–368</Value>
+      <Value Level="17">283–425</Value>
+      <Value Level="18">326–489</Value>
+      <Value Level="19">358–537</Value>
+      <Value Level="20">393–590</Value>
+      <Value Level="21">431–647</Value>
+      <Value Level="22">472–709</Value>
+      <Value Level="23">518–776</Value>
+      <Value Level="24">567–850</Value>
+      <Value Level="25">620–930</Value>
+      <Value Level="26">678–1017</Value>
+      <Value Level="27">741–1111</Value>
+      <Value Level="28">809–1214</Value>
+      <Value Level="29">884–1326</Value>
+      <Value Level="30">965–1447</Value>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">5</Value>
+      <Value Level="2">6</Value>
+      <Value Level="3">7</Value>
+      <Value Level="4">8</Value>
+      <Value Level="5">10</Value>
+      <Value Level="6">11</Value>
+      <Value Level="7">13</Value>
+      <Value Level="8">15</Value>
+      <Value Level="9">18</Value>
+      <Value Level="10">20</Value>
+      <Value Level="11">22</Value>
+      <Value Level="12">23</Value>
+      <Value Level="13">25</Value>
+      <Value Level="14">26</Value>
+      <Value Level="15">27</Value>
+      <Value Level="16">28</Value>
+      <Value Level="17">29</Value>
+      <Value Level="18">30</Value>
+      <Value Level="19">31</Value>
+      <Value Level="20">32</Value>
+      <Value Level="21">33</Value>
+      <Value Level="22">34</Value>
+      <Value Level="23">35</Value>
+      <Value Level="24">36</Value>
+      <Value Level="25">37</Value>
+      <Value Level="26">38</Value>
+      <Value Level="27">39</Value>
+      <Value Level="28">40</Value>
+      <Value Level="29">41</Value>
+      <Value Level="30">42</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Firestorm" IncludeForm="OnUse">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">6</Value>
+      <Value Level="2">7</Value>
+      <Value Level="3">8</Value>
+      <Value Level="4">9</Value>
+      <Value Level="5">10</Value>
+      <Value Level="6">12</Value>
+      <Value Level="7">14</Value>
+      <Value Level="8">16</Value>
+      <Value Level="9">18</Value>
+      <Value Level="10">20</Value>
+      <Value Level="11">22</Value>
+      <Value Level="12">23</Value>
+      <Value Level="13">24</Value>
+      <Value Level="14">25</Value>
+      <Value Level="15">27</Value>
+      <Value Level="16">28</Value>
+      <Value Level="17">29</Value>
+      <Value Level="18">30</Value>
+      <Value Level="19">31</Value>
+      <Value Level="20">32</Value>
+      <ValueForLevel From="21" To="22">33</ValueForLevel>
+      <Value Level="23">34</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Fire Damage">
+      <Value Level="1">2–5</Value>
+      <Value Level="2">4–6</Value>
+      <Value Level="3">5–8</Value>
+      <Value Level="4">7–10</Value>
+      <Value Level="5">8–12</Value>
+      <Value Level="6">11–16</Value>
+      <Value Level="7">14–20</Value>
+      <Value Level="8">18–27</Value>
+      <Value Level="9">24–36</Value>
+      <Value Level="10">32–49</Value>
+      <Value Level="11">39–59</Value>
+      <Value Level="12">46–68</Value>
+      <Value Level="13">53–79</Value>
+      <Value Level="14">60–90</Value>
+      <Value Level="15">69–104</Value>
+      <Value Level="16">79–118</Value>
+      <Value Level="17">90–135</Value>
+      <Value Level="18">103–154</Value>
+      <Value Level="19">112-168</Value>
+      <Value Level="20">122–183</Value>
+      <Value Level="21">133-199</Value>
+      <Value Level="22">144-216</Value>
+      <Value Level="23">157-235</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Flame Surge">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">12</Value>
+      <Value Level="2">14</Value>
+      <Value Level="3">15</Value>
+      <Value Level="4">16</Value>
+      <Value Level="5">17</Value>
+      <Value Level="6">18</Value>
+      <Value Level="7">19</Value>
+      <Value Level="8">21</Value>
+      <Value Level="9">22</Value>
+      <Value Level="10">23</Value>
+      <Value Level="11">24</Value>
+      <Value Level="12">25</Value>
+      <Value Level="13">26</Value>
+      <Value Level="14">27</Value>
+      <Value Level="15">28</Value>
+      <ValueForLevel From="16" To="17">29</ValueForLevel>
+      <Value Level="18">30</Value>
+      <Value Level="19">31</Value>
+      <Value Level="20">32</Value>
+      <ValueForLevel From="21" To="22">33</ValueForLevel>
+      <Value Level="23">34</Value>
+      <Value Level="24">35</Value>
+      <Value Level="25">36</Value>
+      <ValueForLevel From="26" To="27">37</ValueForLevel>
+      <Value Level="28">38</Value>
+      <Value Level="29">39</Value>
+      <Value Level="30">40</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Fire Damage">
+      <Value Level="1">38-58</Value>
+      <Value Level="2">50-75</Value>
+      <Value Level="3">56-85</Value>
+      <Value Level="4">68-102</Value>
+      <Value Level="5">81-121</Value>
+      <Value Level="6">96-143</Value>
+      <Value Level="7">113-169</Value>
+      <Value Level="8">133-199</Value>
+      <Value Level="9">155-233</Value>
+      <Value Level="10">181-271</Value>
+      <Value Level="11">211-316</Value>
+      <Value Level="12">244-366</Value>
+      <Value Level="13">269-404</Value>
+      <Value Level="14">297-445</Value>
+      <Value Level="15">327-490</Value>
+      <Value Level="16">359-539</Value>
+      <Value Level="17">395-592</Value>
+      <Value Level="18">433-650</Value>
+      <Value Level="19">475-713</Value>
+      <Value Level="20">521-782</Value>
+      <Value Level="21">571-856</Value>
+      <Value Level="22">625-938</Value>
+      <Value Level="23">684-1026</Value>
+      <Value Level="24">748-1122</Value>
+      <Value Level="25">818-1226</Value>
+      <Value Level="26">893-1340</Value>
+      <Value Level="27">975-1463</Value>
+      <Value Level="28">1064-1597</Value>
+      <Value Level="29">1161-1742</Value>
+      <Value Level="30">1266-1899</Value>
+    </Attribute>
+    <Attribute Name="#% increased Cast Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Flameblast" IncludeForm="OnUse">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="4">5</ValueForLevel>
+      <ValueForLevel From="5" To="8">6</ValueForLevel>
+      <ValueForLevel From="9" To="12">7</ValueForLevel>
+      <ValueForLevel From="13" To="16">8</ValueForLevel>
+      <ValueForLevel From="17" To="20">9</ValueForLevel>
+      <ValueForLevel From="21" To="23">10</ValueForLevel>
+      <ValueForLevel From="24" To="26">11</ValueForLevel>
+      <ValueForLevel From="27" To="29">12</ValueForLevel>
+      <Value Level="30">13</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Fire Damage">
+      <Value Level="1">12–18</Value>
+      <Value Level="2">15–22</Value>
+      <Value Level="3">18–27</Value>
+      <Value Level="4">22–33</Value>
+      <Value Level="5">26–39</Value>
+      <Value Level="6">31–57</Value>
+      <Value Level="7">37–55</Value>
+      <Value Level="8">45–68</Value>
+      <Value Level="9">55–83</Value>
+      <Value Level="10">67–101</Value>
+      <Value Level="11">81–121</Value>
+      <Value Level="12">93–139</Value>
+      <Value Level="13">106–159</Value>
+      <Value Level="14">121–281</Value>
+      <Value Level="15">138–206</Value>
+      <Value Level="16">156–234</Value>
+      <Value Level="17">177–265</Value>
+      <Value Level="18">192–288</Value>
+      <Value Level="19">209–313</Value>
+      <Value Level="20">226–339</Value>
+      <Value Level="21">245–367</Value>
+      <Value Level="22">265–398</Value>
+      <Value Level="23">287–430</Value>
+      <Value Level="24">310–466</Value>
+      <Value Level="25">336–503</Value>
+      <Value Level="26">362–544</Value>
+      <Value Level="27">391–587</Value>
+      <Value Level="28">423–634</Value>
+      <Value Level="29">456–684</Value>
+      <Value Level="30">492–737</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Flicker Strike" IncludeForm="OnUse">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="6">9</ValueForLevel>
+      <ValueForLevel From="7" To="12">10</ValueForLevel>
+      <ValueForLevel From="13" To="18">11</ValueForLevel>
+      <ValueForLevel From="19" To="23">12</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <Value Level="1">25%</Value>
+      <Value Level="2">26%</Value>
+      <Value Level="3">27%</Value>
+      <Value Level="4">28%</Value>
+      <Value Level="5">29%</Value>
+      <ValueForLevel From="6" To="7">30%</ValueForLevel>
+      <ValueForLevel From="8" To="9">31%</ValueForLevel>
+      <ValueForLevel From="10" To="11">32%</ValueForLevel>
+      <ValueForLevel From="12" To="13">33%</ValueForLevel>
+      <ValueForLevel From="14" To="15">34%</ValueForLevel>
+      <ValueForLevel From="16" To="18">35%</ValueForLevel>
+      <ValueForLevel From="19" To="20">36%</ValueForLevel>
+      <ValueForLevel From="21" To="22">37%</ValueForLevel>
+      <Value Level="23">38%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Critical Strike Chance">
+      <ValuePerQuality>4</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Fork">
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerLevel>2</ValuePerLevel>
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Freezing Pulse">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">4</Value>
+      <ValueForLevel From="2" To="3">5</ValueForLevel>
+      <Value Level="4">6</Value>
+      <Value Level="5">7</Value>
+      <Value Level="6">8</Value>
+      <Value Level="7">9</Value>
+      <Value Level="8">10</Value>
+      <Value Level="9">11</Value>
+      <Value Level="10">13</Value>
+      <ValueForLevel From="11" To="12">14</ValueForLevel>
+      <Value Level="13">15</Value>
+      <Value Level="14">16</Value>
+      <Value Level="15">17</Value>
+      <ValueForLevel From="16" To="21">18</ValueForLevel>
+      <Value Level="22">19</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Cold Damage">
+      <Value Level="1">7–11</Value>
+      <Value Level="2">8-12</Value>
+      <Value Level="3">9–14</Value>
+      <Value Level="4">13–19</Value>
+      <Value Level="5">17-25</Value>
+      <Value Level="6">22-33</Value>
+      <Value Level="7">30-45</Value>
+      <Value Level="8">40-60</Value>
+      <Value Level="9">54-82</Value>
+      <Value Level="10">72-109</Value>
+      <Value Level="11">87-131</Value>
+      <Value Level="12">104-156</Value>
+      <Value Level="13">118-177</Value>
+      <Value Level="14">134-201</Value>
+      <Value Level="15">152-228</Value>
+      <Value Level="16">172-258</Value>
+      <Value Level="17">194-291</Value>
+      <Value Level="18">218-327</Value>
+      <Value Level="19">236-354</Value>
+      <Value Level="20">255-382</Value>
+      <Value Level="21">275-413</Value>
+      <Value Level="22">297-445</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Frenzy">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">12</ValueForLevel>
+      <ValueForLevel From="6" To="10">13</ValueForLevel>
+      <Value Level="11">14</Value>
+      <Value Level="12">?</Value>
+      <Value Level="13">?</Value>
+      <Value Level="14">?</Value>
+      <Value Level="15">?</Value>
+      <Value Level="16">?</Value>
+      <Value Level="17">15</Value>
+      <Value Level="18">?</Value>
+      <Value Level="19">?</Value>
+      <Value Level="20">?</Value>
+      <Value Level="21">?</Value>
+      <Value Level="22">?</Value>
+      <Value Level="23">?</Value>
+      <Value Level="24">?</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Frost Wall">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">20</Value>
+      <Value Level="2">23</Value>
+      <Value Level="3">24</Value>
+      <Value Level="4">26</Value>
+      <Value Level="5">28</Value>
+      <Value Level="6">30</Value>
+      <Value Level="7">32</Value>
+      <Value Level="8">34</Value>
+      <Value Level="9">36</Value>
+      <Value Level="10">37</Value>
+      <Value Level="11">39</Value>
+      <Value Level="12">41</Value>
+      <Value Level="13">42</Value>
+      <ValueForLevel From="14" To="15">43</ValueForLevel>
+      <ValueForLevel From="16" To="17">44</ValueForLevel>
+      <Value Level="18">45</Value>
+      <ValueForLevel From="19" To="20">46</ValueForLevel>
+      <Value Level="21">47</Value>
+      <ValueForLevel From="22" To="23">48</ValueForLevel>
+      <Value Level="24">49</Value>
+      <ValueForLevel From="25" To="26">50</ValueForLevel>
+      <Value Level="27">51</Value>
+      <ValueForLevel From="28" To="29">52</ValueForLevel>
+      <Value Level="30">53</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Cold Damage">
+      <Value Level="1">4–6</Value>
+      <Value Level="2">5–7</Value>
+      <Value Level="3">5–8</Value>
+      <Value Level="4">6–9</Value>
+      <Value Level="5">7–10</Value>
+      <Value Level="6">8–12</Value>
+      <Value Level="7">9–13</Value>
+      <Value Level="8">10–15</Value>
+      <Value Level="9">11–16</Value>
+      <Value Level="10">12–18</Value>
+      <Value Level="11">13–20</Value>
+      <Value Level="12">15–22</Value>
+      <Value Level="13">16–23</Value>
+      <Value Level="14">17–25</Value>
+      <Value Level="15">18–26</Value>
+      <Value Level="16">19–28</Value>
+      <Value Level="17">20–30</Value>
+      <Value Level="18">21–32</Value>
+      <Value Level="19">22–33</Value>
+      <Value Level="20">24–35</Value>
+      <Value Level="21">25–38</Value>
+      <Value Level="22">26–40</Value>
+      <Value Level="23">28–42</Value>
+      <Value Level="24">30–44</Value>
+      <Value Level="25">31–47</Value>
+      <Value Level="26">33–49</Value>
+      <Value Level="27">35–52</Value>
+      <Value Level="28">37–55</Value>
+      <Value Level="29">39–58</Value>
+      <Value Level="30">41–61</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Glacial Cascade">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">8</Value>
+      <Value Level="2">10</Value>
+      <Value Level="3">12</Value>
+      <Value Level="4">13</Value>
+      <Value Level="5">14</Value>
+      <Value Level="6">15</Value>
+      <Value Level="7">16</Value>
+      <Value Level="8">17</Value>
+      <Value Level="9">18</Value>
+      <Value Level="10">20</Value>
+      <Value Level="11">21</Value>
+      <Value Level="12">22</Value>
+      <Value Level="13">24</Value>
+      <Value Level="14">25</Value>
+      <ValueForLevel From="15" To="17">26</ValueForLevel>
+      <Value Level="18">33</Value>
+      <ValueForLevel From="19" To="20">34</ValueForLevel>
+      <ValueForLevel From="21" To="22">35</ValueForLevel>
+      <ValueForLevel From="23" To="24">36</ValueForLevel>
+      <ValueForLevel From="25" To="26">37</ValueForLevel>
+      <ValueForLevel From="27" To="28">38</ValueForLevel>
+      <ValueForLevel From="29" To="30">39</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Physical Damage">
+      <Value Level="1">3–5</Value>
+      <Value Level="2">4–7</Value>
+      <Value Level="3">5–8</Value>
+      <Value Level="4">7–10</Value>
+      <Value Level="5">8–12</Value>
+      <Value Level="6">10–15</Value>
+      <Value Level="7">12–18</Value>
+      <Value Level="8">14–22</Value>
+      <Value Level="9">18–28</Value>
+      <Value Level="10">22–34</Value>
+      <Value Level="11">27–42</Value>
+      <Value Level="12">31–48</Value>
+      <Value Level="13">36–56</Value>
+      <Value Level="14">42–65</Value>
+      <Value Level="15">48–74</Value>
+      <Value Level="16">55–85</Value>
+      <Value Level="17">64–98</Value>
+      <Value Level="18">70–107</Value>
+      <Value Level="19">66–102</Value>
+      <Value Level="20">72–111</Value>
+      <Value Level="21">79–122</Value>
+      <Value Level="22">86–133</Value>
+      <Value Level="23">94–145</Value>
+      <Value Level="24">103–158</Value>
+      <Value Level="25">112–172</Value>
+      <Value Level="26">122–187</Value>
+      <Value Level="27">132–204</Value>
+      <Value Level="28">144–222</Value>
+      <Value Level="29">157–241</Value>
+      <Value Level="30">170–262</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Cold Damage">
+      <Value Level="1">6–10</Value>
+      <Value Level="2">8–12</Value>
+      <Value Level="3">10–15</Value>
+      <Value Level="4">12–19</Value>
+      <Value Level="5">15–22</Value>
+      <Value Level="6">18–27</Value>
+      <Value Level="7">21–32</Value>
+      <Value Level="8">27–40</Value>
+      <Value Level="9">33–50</Value>
+      <Value Level="10">41–62</Value>
+      <Value Level="11">50–76</Value>
+      <Value Level="12">58–88</Value>
+      <Value Level="13">67–102</Value>
+      <Value Level="14">78–117</Value>
+      <Value Level="15">89–135</Value>
+      <Value Level="16">103–155</Value>
+      <Value Level="17">118–178</Value>
+      <Value Level="18">129–194</Value>
+      <Value Level="19">123–185</Value>
+      <Value Level="20">134–203</Value>
+      <Value Level="21">147–221</Value>
+      <Value Level="22">160–241</Value>
+      <Value Level="23">174–263</Value>
+      <Value Level="24">190–287</Value>
+      <Value Level="25">207–313</Value>
+      <Value Level="26">225–340</Value>
+      <Value Level="27">245–370</Value>
+      <Value Level="28">267–403</Value>
+      <Value Level="29">290–438</Value>
+      <Value Level="30">315–476</Value>
+    </Attribute>
+    <Attribute Name="#% increased Area Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Glacial Hammer" RequiredWeapon="OneHandedMace Staff TwoHandedMace">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="9">11</ValueForLevel>
+      <ValueForLevel From="10" To="15">12</ValueForLevel>
+      <ValueForLevel From="16" To="20">13</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Greater Multiple Projectiles">
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerLevel>2</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Cast Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Ground Slam" RequiredHand="Main" RequiredWeapon="OneHandedMace Staff TwoHandedMace">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">10</ValueForLevel>
+      <ValueForLevel From="6" To="15">11</ValueForLevel>
+      <ValueForLevel From="16" To="18">12</ValueForLevel>
+      <ValueForLevel From="19" To="20">13</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Heavy Strike" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>5</ValuePerLevel>
+    </Attribute>
+    <Attribute Comment="This looks like table instead of 0.75 per level (i.e. values are truncated to multiplies of 0.5)" Name="#% increased Attack Speed" NoUpdate="true">
+      <Value Quality="1">0.5</Value>
+      <Value Quality="2">1.5</Value>
+      <Value Quality="3">2</Value>
+      <Value Quality="4">3</Value>
+      <Value Quality="5">3.5</Value>
+      <Value Quality="6">4.5</Value>
+      <Value Quality="7">5</Value>
+      <Value Quality="8">6</Value>
+      <Value Quality="9">6.5</Value>
+      <Value Quality="10">7.5</Value>
+      <Value Quality="11">8</Value>
+      <Value Quality="12">9</Value>
+      <Value Quality="13">9.5</Value>
+      <Value Quality="14">10.5</Value>
+      <Value Quality="15">11</Value>
+      <Value Quality="16">12</Value>
+      <Value Quality="17">12.5</Value>
+      <Value Quality="18">13.5</Value>
+      <Value Quality="19">14</Value>
+      <Value Quality="20">15</Value>
+      <Value Quality="21">15.5</Value>
+      <Value Quality="22">16.5</Value>
+      <Value Quality="23">17</Value>
+      <Value Quality="24">18</Value>
+      <Value Quality="25">18.5</Value>
+      <Value Quality="26">19.5</Value>
+      <Value Quality="27">20</Value>
+      <Value Quality="28">21</Value>
+      <Value Quality="29">21.5</Value>
+      <Value Quality="30">22.5</Value>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">6</ValueForLevel>
+      <ValueForLevel From="6" To="15">7</ValueForLevel>
+      <ValueForLevel From="16" To="20">8</ValueForLevel>
+      <ValueForLevel From="21" To="23">9</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Herald of Ice">
+    <Attribute Name="Deals #-# Cold Damage">
+      <Value Level="1">30-45</Value>
+      <Value Level="2">36-53</Value>
+      <Value Level="3">42-64</Value>
+      <Value Level="4">50-75</Value>
+      <Value Level="5">56-84</Value>
+      <Value Level="6">66-99</Value>
+      <Value Level="7">73-110</Value>
+      <Value Level="8">85-128</Value>
+      <Value Level="9">99-149</Value>
+      <Value Level="10">110-165</Value>
+      <Value Level="11">121-182</Value>
+      <Value Level="12">134-200</Value>
+      <Value Level="13">147-221</Value>
+      <Value Level="14">162-243</Value>
+      <Value Level="15">178-267</Value>
+      <Value Level="16">195-293</Value>
+      <Value Level="17">214-321</Value>
+      <Value Level="18">235-352</Value>
+      <Value Level="19">257-386</Value>
+      <Value Level="20">282-422</Value>
+      <Value Level="21">154-231</Value>
+      <Value Level="22">168-253</Value>
+      <Value Level="23">N/A</Value>
+      <Value Level="24">N/A</Value>
+      <Value Level="25">N/A</Value>
+      <Value Level="26">N/A</Value>
+      <Value Level="27">N/A</Value>
+      <Value Level="28">N/A</Value>
+      <Value Level="29">N/A</Value>
+      <Value Level="30">N/A</Value>
+    </Attribute>
+    <Attribute Name="#% increased Cold Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Herald of Thunder">
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">1-57</Value>
+      <Value Level="2">2-73</Value>
+      <Value Level="3">2-92</Value>
+      <Value Level="4">2-115</Value>
+      <Value Level="5">3-136</Value>
+      <Value Level="6">3-167</Value>
+      <Value Level="7">4-195</Value>
+      <Value Level="8">5-238</Value>
+      <Value Level="9">6-289</Value>
+      <Value Level="10">7-332</Value>
+      <Value Level="11">8-381</Value>
+      <Value Level="12">9-436</Value>
+      <Value Level="13">10-498</Value>
+      <Value Level="14">12-567</Value>
+      <Value Level="15">13-645</Value>
+      <Value Level="16">15-732</Value>
+      <Value Level="17">17-828</Value>
+      <Value Level="18">20-937</Value>
+      <Value Level="19">22-1057</Value>
+      <Value Level="20">25-1191</Value>
+      <Value Level="21">28-1328</Value>
+    </Attribute>
+    <Attribute Name="#% increased Lightning Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Ice Nova">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">8</Value>
+      <Value Level="2">9</Value>
+      <Value Level="3">10</Value>
+      <Value Level="4">11</Value>
+      <Value Level="5">13</Value>
+      <Value Level="6">14</Value>
+      <Value Level="7">16</Value>
+      <Value Level="8">18</Value>
+      <Value Level="9">20</Value>
+      <Value Level="10">22</Value>
+      <Value Level="11">24</Value>
+      <Value Level="12">26</Value>
+      <Value Level="13">27</Value>
+      <Value Level="14">28</Value>
+      <Value Level="15">29</Value>
+      <Value Level="16">30</Value>
+      <ValueForLevel From="17" To="18">31</ValueForLevel>
+      <ValueForLevel From="19" To="20">32</ValueForLevel>
+      <ValueForLevel From="21" To="22">33</ValueForLevel>
+      <ValueForLevel From="23" To="26">34</ValueForLevel>
+      <ValueForLevel From="27" To="30">35</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Cold Damage">
+      <Value Level="1">3–5</Value>
+      <Value Level="2">4–6</Value>
+      <Value Level="3">4–7</Value>
+      <Value Level="4">6–10</Value>
+      <Value Level="5">9–14</Value>
+      <Value Level="6">12–19</Value>
+      <Value Level="7">17–26</Value>
+      <Value Level="8">23–36</Value>
+      <Value Level="9">32–50</Value>
+      <Value Level="10">44–70</Value>
+      <Value Level="11">55–85</Value>
+      <Value Level="12">67–104</Value>
+      <Value Level="13">77–121</Value>
+      <Value Level="14">89–139</Value>
+      <Value Level="15">103–160</Value>
+      <Value Level="16">118–184</Value>
+      <Value Level="17">135–211</Value>
+      <Value Level="18">155–242</Value>
+      <Value Level="19">169–264</Value>
+      <Value Level="20">185–289</Value>
+      <Value Level="21">202–315</Value>
+      <Value Level="22">220–344</Value>
+      <Value Level="23">240–375</Value>
+      <Value Level="24">261–409</Value>
+      <Value Level="25">285 –445</Value>
+      <Value Level="26">310–484</Value>
+      <Value Level="27">337–527</Value>
+      <Value Level="28">367–573</Value>
+      <Value Level="29">399–623</Value>
+      <Value Level="30">433–677</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Ice Shot">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="6">9</ValueForLevel>
+      <ValueForLevel From="7" To="12">10</ValueForLevel>
+      <ValueForLevel From="13" To="15">11</ValueForLevel>
+      <ValueForLevel From="16" To="18">12</ValueForLevel>
+      <ValueForLevel From="19" To="20">13</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Ice Spear">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">6</Value>
+      <Value Level="2">7</Value>
+      <Value Level="3">8</Value>
+      <Value Level="4">9</Value>
+      <Value Level="5">10</Value>
+      <Value Level="6">12</Value>
+      <Value Level="7">14</Value>
+      <Value Level="8">15</Value>
+      <Value Level="9">17</Value>
+      <Value Level="10">19</Value>
+      <Value Level="11">21</Value>
+      <Value Level="12">22</Value>
+      <Value Level="13">24</Value>
+      <Value Level="14">25</Value>
+      <ValueForLevel From="15" To="17">26</ValueForLevel>
+      <ValueForLevel From="18" To="19">27</ValueForLevel>
+      <ValueForLevel From="20" To="21">28</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Cold Damage">
+      <Value Level="1">8-12</Value>
+      <Value Level="2">9-14</Value>
+      <Value Level="3">11-17</Value>
+      <Value Level="4">14-21</Value>
+      <Value Level="5">18-26</Value>
+      <Value Level="6">23-35</Value>
+      <Value Level="7">30-45</Value>
+      <Value Level="8">41-61</Value>
+      <Value Level="9">54-81</Value>
+      <Value Level="10">74-111</Value>
+      <Value Level="11">91-136</Value>
+      <Value Level="12">106-158</Value>
+      <Value Level="13">122-183</Value>
+      <Value Level="14">141-212</Value>
+      <Value Level="15">163-244</Value>
+      <Value Level="16">187-281</Value>
+      <Value Level="17">215-322</Value>
+      <Value Level="18">246-369</Value>
+      <Value Level="19">269-404</Value>
+      <Value Level="20">294-441</Value>
+      <Value Level="21">321-482</Value>
+      <Value Level="23">–</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Incinerate">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="2">5</ValueForLevel>
+      <ValueForLevel From="3" To="4">6</ValueForLevel>
+      <ValueForLevel From="5" To="14">7</ValueForLevel>
+      <ValueForLevel From="15" To="19">8</ValueForLevel>
+      <ValueForLevel From="20" To="24">9</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Fire Damage">
+      <Value Level="1">3–4</Value>
+      <Value Level="2">3–5</Value>
+      <Value Level="3">4–6</Value>
+      <Value Level="4">5–8</Value>
+      <Value Level="5">6–10</Value>
+      <Value Level="6">8–12</Value>
+      <Value Level="7">9–14</Value>
+      <Value Level="8">12–17</Value>
+      <Value Level="9">14–22</Value>
+      <Value Level="10">18–27</Value>
+      <Value Level="11">22–33</Value>
+      <Value Level="12">25–38</Value>
+      <Value Level="13">29–44</Value>
+      <Value Level="14">34–51</Value>
+      <Value Level="15">39–59</Value>
+      <Value Level="16">45–68</Value>
+      <Value Level="17">52–78</Value>
+      <Value Level="18">57–85</Value>
+      <Value Level="19">62–93</Value>
+      <Value Level="20">68–102</Value>
+      <Value Level="21">74-111</Value>
+      <Value Level="22">81-122</Value>
+      <Value Level="23">89-133</Value>
+      <Value Level="24">97-145</Value>
+      <Value Level="25">106-158</Value>
+      <Value Level="26">115-173</Value>
+      <Value Level="27">125-188</Value>
+      <Value Level="28">137-205</Value>
+      <Value Level="29">149-223</Value>
+      <Value Level="30">162-243</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Increased Critical Damage">
+    <Attribute Name="#% increased Critical Strike Multiplier">
+      <Value Level="1">53%</Value>
+      <Value Level="2">57%</Value>
+      <Value Level="3">60%</Value>
+      <Value Level="4">63%</Value>
+      <Value Level="5">67%</Value>
+      <Value Level="6">70%</Value>
+      <Value Level="7">73%</Value>
+      <Value Level="8">77%</Value>
+      <Value Level="9">80%</Value>
+      <Value Level="10">83%</Value>
+      <Value Level="11">87%</Value>
+      <Value Level="12">90%</Value>
+      <Value Level="13">93%</Value>
+      <Value Level="14">97%</Value>
+      <Value Level="15">100%</Value>
+      <Value Level="16">102%</Value>
+      <Value Level="17">104%</Value>
+      <Value Level="18">105%</Value>
+      <Value Level="19">107%</Value>
+      <Value Level="20">109%</Value>
+      <Value Level="21">111%</Value>
+      <Value Level="22">???%</Value>
+      <Value Level="23">???%</Value>
+      <Value Level="24">???%</Value>
+      <Value Level="25">???%</Value>
+      <Value Level="26">???%</Value>
+      <Value Level="27">???%</Value>
+      <Value Level="28">???%</Value>
+      <Value Level="29">???%</Value>
+      <Value Level="30">???%</Value>
+      <ValuePerQuality>2</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Increased Critical Strikes">
+    <Attribute Name="#% increased Critical Strike Chance">
+      <Value Level="1">72%</Value>
+      <Value Level="2">74%</Value>
+      <Value Level="3">76%</Value>
+      <Value Level="4">78%</Value>
+      <Value Level="5">80%</Value>
+      <Value Level="6">82%</Value>
+      <Value Level="7">84%</Value>
+      <Value Level="8">86%</Value>
+      <Value Level="9">88%</Value>
+      <Value Level="10">90%</Value>
+      <Value Level="11">92%</Value>
+      <Value Level="12">94%</Value>
+      <Value Level="13">96%</Value>
+      <Value Level="14">98%</Value>
+      <Value Level="15">100%</Value>
+      <Value Level="16">101%</Value>
+      <Value Level="17">102%</Value>
+      <Value Level="18">103%</Value>
+      <Value Level="19">104%</Value>
+      <Value Level="20">105%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Infernal Blow">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="4">8</ValueForLevel>
+      <ValueForLevel From="5" To="12">9</ValueForLevel>
+      <ValueForLevel From="13" To="14">11*</ValueForLevel>
+      <ValueForLevel From="15" To="18">12*</ValueForLevel>
+      <Value Level="19">10</Value>
+      <ValueForLevel From="20" To="21">13*</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Iron Grip">
+    <Attribute Name="#% reduced Attack Speed">
+      <Value Level="1">19%</Value>
+      <Value Level="2">18%</Value>
+      <Value Level="3">17%</Value>
+      <Value Level="4">16%</Value>
+      <Value Level="5">15%</Value>
+      <Value Level="6">14%</Value>
+      <Value Level="7">13%</Value>
+      <Value Level="8">12%</Value>
+      <Value Level="9">11%</Value>
+      <Value Level="10">10%</Value>
+      <Value Level="11">9%</Value>
+      <Value Level="12">8%</Value>
+      <Value Level="13">7%</Value>
+      <Value Level="14">6%</Value>
+      <Value Level="15">5%</Value>
+      <Value Level="16">4%</Value>
+      <Value Level="17">3%</Value>
+      <Value Level="18">2%</Value>
+      <Value Level="19">1%</Value>
+      <Value Level="20">N/A</Value>
+    </Attribute>
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Iron Will">
+    <Attribute Name="#% reduced Cast Speed">
+      <Value Level="1">19%</Value>
+      <Value Level="2">18%</Value>
+      <Value Level="3">17%</Value>
+      <Value Level="4">16%</Value>
+      <Value Level="5">15%</Value>
+      <Value Level="6">14%</Value>
+      <Value Level="7">13%</Value>
+      <Value Level="8">12%</Value>
+      <Value Level="9">11%</Value>
+      <Value Level="10">10%</Value>
+      <Value Level="11">9%</Value>
+      <Value Level="12">8%</Value>
+      <Value Level="13">7%</Value>
+      <Value Level="14">6%</Value>
+      <Value Level="15">5%</Value>
+      <Value Level="16">4%</Value>
+      <Value Level="17">3%</Value>
+      <Value Level="18">2%</Value>
+      <Value Level="19">1%</Value>
+      <Value Level="20">0%</Value>
+      <Value Level="30">-10%?</Value>
+    </Attribute>
+    <Attribute Name="#% increased Spell Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Leap Slam" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword">
+    <Attribute Comment="Leap Slam has its own attack time of 1.40 seconds" Name="Attacks per Second: #">
+      <Value>0.714</Value>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">14</ValueForLevel>
+      <ValueForLevel From="6" To="9">15</ValueForLevel>
+      <ValueForLevel From="10" To="13">16</ValueForLevel>
+      <ValueForLevel From="14" To="17">17</ValueForLevel>
+      <ValueForLevel From="18" To="21">18</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Lesser Multiple Projectiles">
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerLevel>2</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Cast Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Lightning Arrow">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">12</ValueForLevel>
+      <ValueForLevel From="6" To="10">13</ValueForLevel>
+      <ValueForLevel From="11" To="15">14</ValueForLevel>
+      <ValueForLevel From="16" To="20">15</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Lightning Strike" ExcludeForm="Projectile">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="9">9</ValueForLevel>
+      <ValueForLevel From="10" To="18">10</ValueForLevel>
+      <Value Level="19">??</Value>
+      <Value Level="20">??</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Lightning Tendrils" HitsPerAttack="4">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">5</Value>
+      <Value Level="2">6</Value>
+      <Value Level="3">7</Value>
+      <Value Level="4">8</Value>
+      <Value Level="5">9</Value>
+      <Value Level="6">10</Value>
+      <Value Level="7">11</Value>
+      <Value Level="8">12</Value>
+      <Value Level="9">14</Value>
+      <Value Level="10">16</Value>
+      <Value Level="11">18</Value>
+      <Value Level="12">19</Value>
+      <Value Level="13">20</Value>
+      <Value Level="14">21</Value>
+      <Value Level="15">22</Value>
+      <Value Level="16">23</Value>
+      <Value Level="17">24</Value>
+      <Value Level="18">25</Value>
+      <ValueForLevel From="19" To="20">26</ValueForLevel>
+      <ValueForLevel From="21" To="22">27</ValueForLevel>
+      <ValueForLevel From="23" To="24">28</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">1-4</Value>
+      <Value Level="2">1-5</Value>
+      <Value Level="3">1-7</Value>
+      <Value Level="4">1-10</Value>
+      <Value Level="5">1-14</Value>
+      <Value Level="6">1-19</Value>
+      <Value Level="7">1-28</Value>
+      <Value Level="8">2-38</Value>
+      <Value Level="9">3-56</Value>
+      <Value Level="10">4-80</Value>
+      <Value Level="11">5-100</Value>
+      <Value Level="12">7-125</Value>
+      <Value Level="13">8-147</Value>
+      <Value Level="14">9-173</Value>
+      <Value Level="15">11-202</Value>
+      <Value Level="16">12-236</Value>
+      <Value Level="17">15-276</Value>
+      <Value Level="18">17-321</Value>
+      <Value Level="19">19-355</Value>
+      <Value Level="20">21-392</Value>
+      <Value Level="21">23-433</Value>
+      <Value Level="22">25-478</Value>
+      <Value Level="23">28-527</Value>
+      <Value Level="24">31-580</Value>
+    </Attribute>
+    <Attribute Name="#% increased Lightning Damage">
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Lightning Warp" IncludeForm="OnUse">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">26</Value>
+      <Value Level="2">28</Value>
+      <Value Level="3">30</Value>
+      <Value Level="4">32</Value>
+      <Value Level="5">33</Value>
+      <Value Level="6">36</Value>
+      <Value Level="7">37</Value>
+      <Value Level="8">39</Value>
+      <Value Level="9">41</Value>
+      <Value Level="10">42</Value>
+      <Value Level="11">44</Value>
+      <Value Level="12">45</Value>
+      <Value Level="13">46</Value>
+      <Value Level="14">47</Value>
+      <Value Level="15">48</Value>
+      <ValueForLevel From="16" To="17">49</ValueForLevel>
+      <Value Level="18">50</Value>
+      <ValueForLevel From="19" To="20">51</ValueForLevel>
+      <ValueForLevel From="21" To="22">52</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">3–51</Value>
+      <Value Level="2">3–62</Value>
+      <Value Level="3">4–74</Value>
+      <Value Level="4">5–88</Value>
+      <Value Level="5">5–99</Value>
+      <Value Level="6">6–117</Value>
+      <Value Level="7">7–130</Value>
+      <Value Level="8">8–153</Value>
+      <Value Level="9">9–180</Value>
+      <Value Level="10">10–199</Value>
+      <Value Level="11">12–221</Value>
+      <Value Level="12">13–244</Value>
+      <Value Level="13">14–270</Value>
+      <Value Level="14">16–299</Value>
+      <Value Level="15">17–330</Value>
+      <Value Level="16">19–364</Value>
+      <Value Level="17">21–401</Value>
+      <Value Level="18">23–441</Value>
+      <Value Level="19">26–485</Value>
+      <Value Level="20">28–534</Value>
+      <Value Level="21">31–586</Value>
+      <Value Level="22">34–644</Value>
+      <Value Level="25">45-850</Value>
+    </Attribute>
+    <Attribute Name="#% increased Cast Speed">
+      <ValuePerQuality>1.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Melee Damage on Full Life">
+    <Attribute Name="#% more Melee Physical Damage when on Full Life">
+      <Value Level="1">30%</Value>
+      <Value Level="2">31%</Value>
+      <Value Level="3">32%</Value>
+      <Value Level="4">33%</Value>
+      <Value Level="5">34%</Value>
+      <Value Level="6">35%</Value>
+      <Value Level="7">36%</Value>
+      <Value Level="8">37%</Value>
+      <Value Level="9">38%</Value>
+      <Value Level="10">39%</Value>
+      <Value Level="11">40%</Value>
+      <Value Level="12">41%</Value>
+      <Value Level="13">42%</Value>
+      <Value Level="14">43%</Value>
+      <Value Level="15">44%</Value>
+      <Value Level="16">45%</Value>
+      <Value Level="17">46%</Value>
+      <Value Level="18">47%</Value>
+      <Value Level="19">48%</Value>
+      <Value Level="20">49%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Melee Physical Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Melee Physical Damage">
+    <Attribute Name="#% more Melee Physical Damage">
+      <Value Level="1">30%</Value>
+      <Value Level="2">31%</Value>
+      <Value Level="3">32%</Value>
+      <Value Level="4">33%</Value>
+      <Value Level="5">34%</Value>
+      <Value Level="6">35%</Value>
+      <Value Level="7">36%</Value>
+      <Value Level="8">37%</Value>
+      <Value Level="9">38%</Value>
+      <Value Level="10">39%</Value>
+      <Value Level="11">40%</Value>
+      <Value Level="12">41%</Value>
+      <Value Level="13">42%</Value>
+      <Value Level="14">43%</Value>
+      <Value Level="15">44%</Value>
+      <Value Level="16">45%</Value>
+      <Value Level="17">46%</Value>
+      <Value Level="18">47%</Value>
+      <Value Level="19">48%</Value>
+      <Value Level="20">49%</Value>
+      <Value Level="21">50%</Value>
+      <Value Level="22">51%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Melee Physical Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Melee Splash" ExcludeFormSupport="AoE OnUse">
+    <Attribute Name="#% increased Melee Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Molten Shell" IncludeForm="OnUse">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">22</Value>
+      <Value Level="2">24</Value>
+      <Value Level="3">28</Value>
+      <Value Level="4">30</Value>
+      <Value Level="5">34</Value>
+      <Value Level="6">36</Value>
+      <Value Level="7">38</Value>
+      <Value Level="8">42</Value>
+      <Value Level="9">46</Value>
+      <Value Level="10">50</Value>
+      <Value Level="11">54</Value>
+      <Value Level="12">58</Value>
+      <Value Level="13">60</Value>
+      <Value Level="14">62</Value>
+      <Value Level="15">64</Value>
+      <ValueForLevel From="16" To="17">66</ValueForLevel>
+      <Value Level="18">68</Value>
+      <Value Level="19">69</Value>
+      <Value Level="20">70</Value>
+      <Value Level="21">71</Value>
+      <Value Level="22">72</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Fire Damage">
+      <Value Level="1">26–39</Value>
+      <Value Level="2">35–52</Value>
+      <Value Level="3">45–68</Value>
+      <Value Level="4">59–88</Value>
+      <Value Level="5">75–113</Value>
+      <Value Level="6">95–143</Value>
+      <Value Level="7">120–180</Value>
+      <Value Level="8">161–241</Value>
+      <Value Level="9">214–321</Value>
+      <Value Level="10">283–425</Value>
+      <Value Level="11">372–558</Value>
+      <Value Level="12">455–682</Value>
+      <Value Level="13">554–831</Value>
+      <Value Level="14">674–1010</Value>
+      <Value Level="15">817–1226</Value>
+      <Value Level="16">989–1483</Value>
+      <Value Level="17">1195–1792</Value>
+      <Value Level="18">1354–2031</Value>
+      <Value Level="19">1533–2300</Value>
+      <Value Level="20">1735–2602</Value>
+      <Value Level="21">1962–2943</Value>
+      <Value Level="22">2217–3326</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Molten Strike" ExcludeForm="Projectile AoE">
+    <Attribute Name="Mana Cost: #">
+      <Value Level="1">6</Value>
+      <ValueForLevel From="2" To="5">7</ValueForLevel>
+      <ValueForLevel From="6" To="18">8</ValueForLevel>
+      <ValueForLevel From="19">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Fire Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">6</Value>
+      <ValueForLevel From="2" To="5">7</ValueForLevel>
+      <ValueForLevel From="6" To="18">8</ValueForLevel>
+      <ValueForLevel From="19" To="20">10</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Multistrike">
+    <Attribute Name="#% increased Melee Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% more Melee Attack Speed">
+      <Value Level="1">88%</Value>
+      <Value Level="2">89%</Value>
+      <Value Level="3">90%</Value>
+      <Value Level="4">91%</Value>
+      <Value Level="5">92%</Value>
+      <Value Level="6">93%</Value>
+      <Value Level="7">94%</Value>
+      <Value Level="8">95%</Value>
+      <Value Level="9">96%</Value>
+      <Value Level="10">97%</Value>
+      <Value Level="11">98%</Value>
+      <Value Level="12">99%</Value>
+      <Value Level="13">100%</Value>
+      <Value Level="14">101%</Value>
+      <Value Level="15">102%</Value>
+      <Value Level="16">103%</Value>
+      <Value Level="17">104%</Value>
+      <Value Level="18">105%</Value>
+      <Value Level="19">106%</Value>
+      <Value Level="20">107%</Value>
+      <Value Level="21">108%</Value>
+      <Value Level="22">109%</Value>
+      <Value Level="23">110%</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Physical Projectile Attack Damage">
+    <Attribute Name="#% more Physical Projectile Attack Damage">
+      <Value Level="1">30%</Value>
+      <Value Level="2">31%</Value>
+      <Value Level="3">32%</Value>
+      <Value Level="4">33%</Value>
+      <Value Level="5">34%</Value>
+      <Value Level="6">35%</Value>
+      <Value Level="7">36%</Value>
+      <Value Level="8">37%</Value>
+      <Value Level="9">38%</Value>
+      <Value Level="10">39%</Value>
+      <Value Level="11">40%</Value>
+      <Value Level="12">41%</Value>
+      <Value Level="13">42%</Value>
+      <Value Level="14">43%</Value>
+      <Value Level="15">44%</Value>
+      <Value Level="16">45%</Value>
+      <Value Level="17">46%</Value>
+      <Value Level="18">47%</Value>
+      <Value Level="19">48%</Value>
+      <Value Level="20">49%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Point Blank">
+    <Attribute Name="#% reduced Attack Speed">
+      <Value Level="1">19%</Value>
+      <Value Level="2">18%</Value>
+      <Value Level="3">17%</Value>
+      <Value Level="4">16%</Value>
+      <Value Level="5">15%</Value>
+      <Value Level="6">14%</Value>
+      <Value Level="7">13%</Value>
+      <Value Level="8">12%</Value>
+      <Value Level="9">11%</Value>
+      <Value Level="10">10%</Value>
+      <Value Level="11">9%</Value>
+      <Value Level="12">8%</Value>
+      <Value Level="13">7%</Value>
+      <Value Level="14">6%</Value>
+      <Value Level="15">5%</Value>
+      <Value Level="16">4%</Value>
+      <Value Level="17">3%</Value>
+      <Value Level="18">2%</Value>
+      <Value Level="19">1%</Value>
+      <Value Level="20">N/A</Value>
+    </Attribute>
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Poison Arrow">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">6</Value>
+      <ValueForLevel From="2" To="3">7</ValueForLevel>
+      <Value Level="4">9</Value>
+      <Value Level="5">10</Value>
+      <Value Level="6">12</Value>
+      <Value Level="7">14</Value>
+      <Value Level="8">15</Value>
+      <Value Level="9">17</Value>
+      <Value Level="10">19</Value>
+      <Value Level="11">21</Value>
+      <Value Level="12">22</Value>
+      <Value Level="13">N/A</Value>
+      <Value Level="14">N/A</Value>
+      <Value Level="15">N/A</Value>
+      <Value Level="16">N/A</Value>
+      <Value Level="17">N/A</Value>
+      <Value Level="18">N/A</Value>
+      <Value Level="19">N/A</Value>
+      <Value Level="20">N/A</Value>
+      <Value Level="21">N/A</Value>
+      <Value Level="22">N/A</Value>
+      <Value Level="23">N/A</Value>
+      <Value Level="24">N/A</Value>
+      <Value Level="25">N/A</Value>
+      <Value Level="26">N/A</Value>
+      <Value Level="27">N/A</Value>
+      <Value Level="28">N/A</Value>
+      <Value Level="29">N/A</Value>
+      <Value Level="30">N/A</Value>
+    </Attribute>
+    <Attribute Name="Gain #% of Physical Damage as Extra Chaos Damage">
+      <Value Level="1">30%</Value>
+      <Value Level="2">31%</Value>
+      <Value Level="3">32%</Value>
+      <Value Level="4">33%</Value>
+      <Value Level="5">34%</Value>
+      <Value Level="6">35%</Value>
+      <Value Level="7">36%</Value>
+      <Value Level="8">37%</Value>
+      <Value Level="9">38%</Value>
+      <Value Level="10">39%</Value>
+      <Value Level="11">40%</Value>
+      <Value Level="12">41%</Value>
+      <Value Level="13">42%</Value>
+      <Value Level="14">43%</Value>
+      <Value Level="15">44%</Value>
+      <Value Level="16">45%</Value>
+      <Value Level="17">46%</Value>
+      <Value Level="18">47%</Value>
+      <Value Level="19">48%</Value>
+      <Value Level="20">49%</Value>
+      <Value Level="21">50%</Value>
+      <Value Level="22">51%</Value>
+      <Value Level="23">52%</Value>
+      <Value Level="24">53%</Value>
+      <Value Level="25">54%</Value>
+      <Value Level="26">55%</Value>
+      <Value Level="27">56%</Value>
+      <Value Level="28">57%</Value>
+      <Value Level="29">58%</Value>
+      <Value Level="30">59%</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Power Siphon" RequiredWeapon="Wand">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="10">13</ValueForLevel>
+      <ValueForLevel From="11" To="20">14</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Puncture">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="7">9</ValueForLevel>
+      <ValueForLevel From="8" To="13">10</ValueForLevel>
+      <ValueForLevel From="14" To="16">11</ValueForLevel>
+      <ValueForLevel From="17" To="19">12</ValueForLevel>
+      <Value Level="20">13</Value>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Rain of Arrows">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">N/A</Value>
+      <ValueForLevel From="2" To="5">11</ValueForLevel>
+      <ValueForLevel From="6" To="7">12</ValueForLevel>
+      <Value Level="8">N/A</Value>
+      <Value Level="9">N/A</Value>
+      <Value Level="10">N/A</Value>
+      <Value Level="11">N/A</Value>
+      <Value Level="12">N/A</Value>
+      <Value Level="13">N/A</Value>
+      <Value Level="14">N/A</Value>
+      <Value Level="15">N/A</Value>
+      <Value Level="16">N/A</Value>
+      <Value Level="17">N/A</Value>
+      <Value Level="18">N/A</Value>
+      <Value Level="19">N/A</Value>
+      <Value Level="20">N/A</Value>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Reave" RequiredWeapon="Claw Dagger OneHandedSword">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">5</ValueForLevel>
+      <ValueForLevel From="6" To="12">6</ValueForLevel>
+      <ValueForLevel From="13" To="16">7</ValueForLevel>
+      <ValueForLevel From="17" To="20">8</ValueForLevel>
+      <Value Level="21">9</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Shield Charge" IncludeForm="OnUse" RequiresEquippedShield="true">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="10">8</ValueForLevel>
+      <ValueForLevel From="11" To="15">9</ValueForLevel>
+      <ValueForLevel From="16" To="20">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Shock Nova">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">10</Value>
+      <Value Level="2">12</Value>
+      <Value Level="3">13</Value>
+      <Value Level="4">15</Value>
+      <Value Level="5">16</Value>
+      <Value Level="6">18</Value>
+      <Value Level="7">19</Value>
+      <Value Level="8">21</Value>
+      <Value Level="9">23</Value>
+      <Value Level="10">25</Value>
+      <Value Level="11">27</Value>
+      <Value Level="12">28</Value>
+      <Value Level="13">30</Value>
+      <Value Level="14">31</Value>
+      <Value Level="15">32</Value>
+      <Value Level="16">34</Value>
+      <Value Level="17">35</Value>
+      <Value Level="18">36</Value>
+      <Value Level="19">37</Value>
+      <Value Level="20">38</Value>
+      <Value Level="21">39</Value>
+      <Value Level="22">40</Value>
+      <Value Level="23">41</Value>
+      <Value Level="24">42</Value>
+      <Value Level="25">43</Value>
+      <Value Level="26">44</Value>
+      <Value Level="27">45</Value>
+      <Value Level="28">46</Value>
+      <Value Level="29">47</Value>
+      <Value Level="30">48</Value>
+    </Attribute>
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">2–35</Value>
+      <Value Level="2">2–43</Value>
+      <Value Level="3">3–53</Value>
+      <Value Level="4">3–64</Value>
+      <Value Level="5">4–77</Value>
+      <Value Level="6">5–91</Value>
+      <Value Level="7">6–108</Value>
+      <Value Level="8">7–133</Value>
+      <Value Level="9">9–162</Value>
+      <Value Level="10">10–196</Value>
+      <Value Level="11">12–236</Value>
+      <Value Level="12">14–271</Value>
+      <Value Level="13">16–309</Value>
+      <Value Level="14">19–352</Value>
+      <Value Level="15">21–400</Value>
+      <Value Level="16">24–454</Value>
+      <Value Level="17">27–514</Value>
+      <Value Level="18">29–558</Value>
+      <Value Level="19">32–605</Value>
+      <Value Level="20">35–656</Value>
+      <Value Level="21">37–710</Value>
+      <Value Level="22">40–768</Value>
+      <Value Level="23">44–831</Value>
+      <Value Level="24">47–898</Value>
+      <Value Level="25">51–971</Value>
+      <Value Level="26">55–1048</Value>
+      <Value Level="27">60–1131</Value>
+      <Value Level="28">64–1220</Value>
+      <Value Level="29">69–1316</Value>
+      <Value Level="30">75–1418</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Slower Projectiles">
+    <Attribute Name="#% increased Projectile Damage">
+      <Value Level="1">8%</Value>
+      <Value Level="2">9%</Value>
+      <Value Level="3">10%</Value>
+      <Value Level="4">11%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">13%</Value>
+      <Value Level="7">14%</Value>
+      <Value Level="8">15%</Value>
+      <Value Level="9">16%</Value>
+      <Value Level="10">17%</Value>
+      <Value Level="11">18%</Value>
+      <Value Level="12">19%</Value>
+      <Value Level="13">20%</Value>
+      <Value Level="14">21%</Value>
+      <Value Level="15">22%</Value>
+      <Value Level="16">23%</Value>
+      <Value Level="17">24%</Value>
+      <Value Level="18">25%</Value>
+      <Value Level="19">26%</Value>
+      <Value Level="20">27%</Value>
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Spark">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">5</Value>
+      <Value Level="2">6</Value>
+      <Value Level="3">7</Value>
+      <Value Level="4">8</Value>
+      <Value Level="5">9</Value>
+      <Value Level="6">10</Value>
+      <Value Level="7">11</Value>
+      <Value Level="8">12</Value>
+      <Value Level="9">14</Value>
+      <Value Level="10">16</Value>
+      <Value Level="11">17</Value>
+      <Value Level="12">18</Value>
+      <Value Level="13">19</Value>
+      <Value Level="14">20</Value>
+      <Value Level="15">21</Value>
+      <ValueForLevel From="16" To="19">22</ValueForLevel>
+      <ValueForLevel From="20" To="21">23</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">1–10</Value>
+      <Value Level="2">1–12</Value>
+      <Value Level="3">1–14</Value>
+      <Value Level="4">1–19</Value>
+      <Value Level="5">1–25</Value>
+      <Value Level="6">2–32</Value>
+      <Value Level="7">2–44</Value>
+      <Value Level="8">3–58</Value>
+      <Value Level="9">4–78</Value>
+      <Value Level="10">5–104</Value>
+      <Value Level="11">7–125</Value>
+      <Value Level="12">8–149</Value>
+      <Value Level="13">9–169</Value>
+      <Value Level="14">10–192</Value>
+      <Value Level="15">11–217</Value>
+      <Value Level="16">13–245</Value>
+      <Value Level="17">15–276</Value>
+      <Value Level="18">16–310</Value>
+      <Value Level="19">18–335</Value>
+      <Value Level="20">19–362</Value>
+      <Value Level="21">21–391</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Spectral Throw" RequiredWeapon="Melee">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="10">7</ValueForLevel>
+      <ValueForLevel From="11" To="15">8</ValueForLevel>
+      <ValueForLevel From="16" To="20">9</ValueForLevel>
+      <Value Level="21">10</Value>
+      <Value Level="22">?</Value>
+      <Value Level="23">?</Value>
+    </Attribute>
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Deals #% of Base Damage">
+      <Value Level="1">38%</Value>
+      <Value Level="2">39%</Value>
+      <Value Level="3">40%</Value>
+      <Value Level="4">41%</Value>
+      <Value Level="5">42%</Value>
+      <Value Level="6">43%</Value>
+      <Value Level="7">44%</Value>
+      <Value Level="8">45%</Value>
+      <Value Level="9">46%</Value>
+      <Value Level="10">47%</Value>
+      <Value Level="11">48%</Value>
+      <Value Level="12">49%</Value>
+      <Value Level="13">50%</Value>
+      <Value Level="14">51%</Value>
+      <Value Level="15">52%</Value>
+      <Value Level="16">53%</Value>
+      <Value Level="17">54%</Value>
+      <Value Level="18">55%</Value>
+      <Value Level="19">56%</Value>
+      <Value Level="20">57%</Value>
+      <Value Level="21">58%</Value>
+      <Value Level="22">59%</Value>
+      <Value Level="23">60%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Spell Echo">
+    <Attribute Name="#% less Damage">
+      <Value>10%</Value>
+    </Attribute>
+    <Attribute Name="#% more Cast Speed">
+      <Value Level="1">50%</Value>
+      <Value Level="2">51%</Value>
+      <Value Level="3">52%</Value>
+      <Value Level="4">53%</Value>
+      <Value Level="5">54%</Value>
+      <Value Level="6">55%</Value>
+      <Value Level="7">56%</Value>
+      <Value Level="8">57%</Value>
+      <Value Level="9">58%</Value>
+      <Value Level="10">59%</Value>
+      <Value Level="11">60%</Value>
+      <Value Level="12">61%</Value>
+      <Value Level="13">62%</Value>
+      <Value Level="14">63%</Value>
+      <Value Level="15">64%</Value>
+      <Value Level="16">65%</Value>
+      <Value Level="17">66%</Value>
+      <Value Level="18">67%</Value>
+      <Value Level="19">68%</Value>
+      <Value Level="20">69%</Value>
+      <Value Level="21">70%</Value>
+      <Value Level="22">71%</Value>
+      <Value Level="23">72%</Value>
+      <Value Level="24">73%</Value>
+      <Value Level="25">74%</Value>
+      <Value Level="26">75%</Value>
+      <Value Level="27">76%</Value>
+      <Value Level="28">77%</Value>
+      <Value Level="29">78%</Value>
+      <Value Level="30">79%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Spell Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Split Arrow">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">5</Value>
+      <ValueForLevel From="2" To="4">6</ValueForLevel>
+      <ValueForLevel From="5" To="8">7</ValueForLevel>
+      <ValueForLevel From="9" To="11">8</ValueForLevel>
+      <Value Level="12">N/A</Value>
+      <Value Level="13">N/A</Value>
+      <Value Level="14">N/A</Value>
+      <Value Level="15">N/A</Value>
+      <Value Level="16">N/A</Value>
+      <Value Level="17">10</Value>
+      <Value Level="18">N/A</Value>
+      <Value Level="19">N/A</Value>
+      <Value Level="20">N/A</Value>
+      <Value Level="21">N/A</Value>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Storm Call" IncludeForm="OnUse">
+    <Attribute Name="Mana Cost: #%">
+      <Value Level="1">4</Value>
+      <ValueForLevel From="2" To="3">5</ValueForLevel>
+      <ValueForLevel From="4" To="5">6</ValueForLevel>
+      <Value Level="6">7</Value>
+      <ValueForLevel From="7" To="8">8</ValueForLevel>
+      <Value Level="9">9</Value>
+      <Value Level="10">10</Value>
+      <Value Level="11">11</Value>
+      <ValueForLevel From="12" To="13">12</ValueForLevel>
+      <ValueForLevel From="14" To="15">13</ValueForLevel>
+      <ValueForLevel From="16" To="20">14</ValueForLevel>
+      <ValueForLevel From="21" To="22">18*</ValueForLevel>
+      <ValueForLevel From="23" To="30">19*</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">1–16</Value>
+      <Value Level="2">1–19</Value>
+      <Value Level="3">1–24</Value>
+      <Value Level="4">2–30</Value>
+      <Value Level="5">2–38</Value>
+      <Value Level="6">3–50</Value>
+      <Value Level="7">3–65</Value>
+      <Value Level="8">5–87</Value>
+      <Value Level="9">6–115</Value>
+      <Value Level="10">8–159</Value>
+      <Value Level="11">10–194</Value>
+      <Value Level="12">12–225</Value>
+      <Value Level="13">14–261</Value>
+      <Value Level="14">16–301</Value>
+      <Value Level="15">18–347</Value>
+      <Value Level="16">21–398</Value>
+      <Value Level="17">24–457</Value>
+      <Value Level="18">28–523</Value>
+      <Value Level="19">30–572</Value>
+      <Value Level="20">33–625</Value>
+      <Value Level="21">36–682</Value>
+      <Value Level="22">39–744</Value>
+      <Value Level="23">43-811</Value>
+      <Value Level="24">47-884</Value>
+      <Value Level="25">51-963</Value>
+      <Value Level="26">55-1049</Value>
+      <Value Level="27">60-1141</Value>
+      <Value Level="28">65-1241</Value>
+      <Value Level="29">71-1349</Value>
+      <Value Level="30">77-1466</Value>
+    </Attribute>
+    <Attribute Name="#% increased Critical Strike Chance">
+      <ValuePerQuality>4</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Sweep" RequiredWeapon="Staff TwoHandedAxe TwoHandedMace">
+    <Attribute Comment="Sweep has its own attack time of 1.15 seconds" Name="Attacks per Second: #">
+      <Value>0.87</Value>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">8</ValueForLevel>
+      <ValueForLevel From="6" To="10">9</ValueForLevel>
+      <ValueForLevel From="11" To="15">10</ValueForLevel>
+      <Value Level="16">15*</Value>
+      <ValueForLevel From="17" To="18">16*</ValueForLevel>
+      <ValueForLevel From="19" To="20">17*</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Tempest Shield" IncludeForm="OnUse" RequiresEquippedShield="true">
+    <Attribute Name="Deals #-# Lightning Damage">
+      <Value Level="1">9–13</Value>
+      <Value Level="2">11–17</Value>
+      <Value Level="3">13–20</Value>
+      <Value Level="4">16–24</Value>
+      <Value Level="5">19–29</Value>
+      <Value Level="6">23–34</Value>
+      <Value Level="7">27–40</Value>
+      <Value Level="8">32–49</Value>
+      <Value Level="9">39–59</Value>
+      <Value Level="10">47–70</Value>
+      <Value Level="11">56–84</Value>
+      <Value Level="12">64–96</Value>
+      <Value Level="13">72–108</Value>
+      <Value Level="14">82–123</Value>
+      <Value Level="15">92–138</Value>
+      <Value Level="16">104–156</Value>
+      <Value Level="17">117–175</Value>
+      <Value Level="18">126–189</Value>
+      <Value Level="19">136–204</Value>
+      <Value Level="20">147–220</Value>
+    </Attribute>
+    <Attribute Name="#% increased Lightning Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Tornado Shot">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="9">8</ValueForLevel>
+      <ValueForLevel From="10" To="16">9</ValueForLevel>
+      <ValueForLevel From="17" To="20">10</ValueForLevel>
+      <Value Level="21">N/A</Value>
+      <Value Level="22">N/A</Value>
+      <Value Level="23">N/A</Value>
+      <Value Level="24">N/A</Value>
+      <Value Level="25">N/A</Value>
+      <Value Level="26">N/A</Value>
+      <Value Level="27">N/A</Value>
+      <Value Level="28">N/A</Value>
+      <Value Level="29">N/A</Value>
+      <Value Level="30">N/A</Value>
+    </Attribute>
+    <Attribute Name="Deals #% of Base Damage">
+      <Value Level="1">90%</Value>
+      <Value Level="2">91%</Value>
+      <Value Level="3">92%</Value>
+      <Value Level="4">93%</Value>
+      <Value Level="5">94%</Value>
+      <Value Level="6">95%</Value>
+      <Value Level="7">96%</Value>
+      <Value Level="8">97%</Value>
+      <Value Level="9">98%</Value>
+      <Value Level="10">99%</Value>
+      <Value Level="11">100%</Value>
+      <Value Level="12">101%</Value>
+      <Value Level="13">102%</Value>
+      <Value Level="14">103%</Value>
+      <Value Level="15">104%</Value>
+      <Value Level="16">105%</Value>
+      <Value Level="17">106%</Value>
+      <Value Level="18">107%</Value>
+      <Value Level="19">108%</Value>
+      <Value Level="20">109%</Value>
+      <Value Level="21">110%</Value>
+      <Value Level="22">111%</Value>
+      <Value Level="23">112%</Value>
+      <Value Level="24">113%</Value>
+      <Value Level="25">114%</Value>
+      <Value Level="26">115%</Value>
+      <Value Level="27">116%</Value>
+      <Value Level="28">117%</Value>
+      <Value Level="29">118%</Value>
+      <Value Level="30">119%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Viper Strike">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">5</ValueForLevel>
+      <ValueForLevel From="6" To="10">6</ValueForLevel>
+      <ValueForLevel From="11" To="15">7</ValueForLevel>
+      <ValueForLevel From="16" To="20">8</ValueForLevel>
+      <ValueForLevel From="21" To="23">9</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Weapon Elemental Damage">
+    <Attribute Name="#% more Weapon Elemental Damage">
+      <Value Level="1">40%</Value>
+      <Value Level="2">41%</Value>
+      <Value Level="3">42%</Value>
+      <Value Level="4">43%</Value>
+      <Value Level="5">44%</Value>
+      <Value Level="6">45%</Value>
+      <Value Level="7">46%</Value>
+      <Value Level="8">47%</Value>
+      <Value Level="9">48%</Value>
+      <Value Level="10">49%</Value>
+      <Value Level="11">50%</Value>
+      <Value Level="12">51%</Value>
+      <Value Level="13">52%</Value>
+      <Value Level="14">53%</Value>
+      <Value Level="15">54%</Value>
+      <Value Level="16">55%</Value>
+      <Value Level="17">56%</Value>
+      <Value Level="18">57%</Value>
+      <Value Level="19">58%</Value>
+      <Value Level="20">59%</Value>
+      <Value Level="21">60%</Value>
+      <Value Level="22">61%</Value>
+      <Value Level="23">62%</Value>
+      <Value Level="24">63%</Value>
+      <Value Level="25">64%</Value>
+      <Value Level="26">65%</Value>
+      <Value Level="27">66%</Value>
+      <Value Level="28">67%</Value>
+      <Value Level="29">68%</Value>
+      <Value Level="30">69%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Elemental Damage with Weapons">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Whirling Blades" IncludeForm="OnUse" RequiredWeapon="Claw Dagger OneHandedSword">
+    <Attribute Comment="Just a guess, it doesn't use weapon's APS and no info on Wiki" Name="Attacks per Second: #">
+      <Value>0.364</Value>
+    </Attribute>
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="4">7</ValueForLevel>
+      <ValueForLevel From="5" To="8">8</ValueForLevel>
+      <ValueForLevel From="9" To="12">9</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+</ItemDB>

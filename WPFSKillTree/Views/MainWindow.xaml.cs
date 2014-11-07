@@ -49,11 +49,15 @@ namespace POESKillTree.Views
         private static readonly Action EmptyDelegate = delegate { };
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
+        private readonly List<ListGroupItem> _defenceList = new List<ListGroupItem>();
+        private readonly List<ListGroupItem> _offenceList = new List<ListGroupItem>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly ToolTip _noteTip = new ToolTip();
         private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attibuteCollection;
+        private ListCollectionView _defenceCollection;
+        private ListCollectionView _offenceCollection;
         private RenderTargetBitmap _clipboardBmp;
 
         private ItemAttributes _itemAttributes;
@@ -141,6 +145,8 @@ namespace POESKillTree.Views
 
         public void UpdateAllAttributeList()
         {
+            _allAttributesList.Clear();
+
             if (_itemAttributes != null)
             {
                 Dictionary<string, List<float>> attritemp = Tree.SelectedAttributesWithoutImplicit;
@@ -174,13 +180,16 @@ namespace POESKillTree.Views
                     }
                 }
 
-                _allAttributesList.Clear();
                 foreach (string item in (attritemp.Select(InsertNumbersInAttributes)))
                 {
                     _allAttributesList.Add(new Attribute(item));
                 }
-                _allAttributeCollection.Refresh();
             }
+
+            _allAttributeCollection.Refresh();
+
+            UpdateStatistics();
+
             UpdateAttributeList();
         }
 
@@ -193,6 +202,36 @@ namespace POESKillTree.Views
             }
             _attibuteCollection.Refresh();
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
+        }
+
+        public void UpdateStatistics()
+        {
+            _defenceList.Clear();
+            _offenceList.Clear();
+
+            if (_itemAttributes != null)
+            {
+                Compute.Initialize(Tree, _itemAttributes);
+
+                foreach (ListGroup group in Compute.Defense())
+                {
+                    foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
+                    {
+                        _defenceList.Add(new ListGroupItem(item, group.Name));
+                    }
+                }
+
+                foreach (ListGroup group in Compute.Offense())
+                {
+                    foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
+                    {
+                        _offenceList.Add(new ListGroupItem(item, group.Name));
+                    }
+                }
+            }
+
+            _defenceCollection.Refresh();
+            _offenceCollection.Refresh();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -211,6 +250,11 @@ namespace POESKillTree.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            ItemDB.Load("Items.xml");
+            if (File.Exists("ItemsLocal.xml"))
+                ItemDB.Merge("ItemsLocal.xml");
+            ItemDB.Index();
+
             _attibuteCollection = new ListCollectionView(_attiblist);
             listBox1.ItemsSource = _attibuteCollection;
             var pgd = new PropertyGroupDescription("") {Converter = new GroupStringConverter()};
@@ -219,6 +263,14 @@ namespace POESKillTree.Views
             _allAttributeCollection = new ListCollectionView(_allAttributesList);
             _allAttributeCollection.GroupDescriptions.Add(pgd);
             lbAllAttr.ItemsSource = _allAttributeCollection;
+
+            _defenceCollection = new ListCollectionView(_defenceList);
+            _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
+            listBoxDefence.ItemsSource = _defenceCollection;
+
+            _offenceCollection = new ListCollectionView(_offenceList);
+            _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
+            listBoxOffence.ItemsSource = _offenceCollection;
 
             //Load Persistent Data and set theme
             _persistentData.LoadPersistentDataFromFile();
@@ -569,8 +621,7 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild.ItemData = "";
             _itemAttributes = null;
             lbItemAttr.ItemsSource = null;
-            _allAttributesList.Clear();
-            _allAttributeCollection.Refresh();
+            UpdateAllAttributeList();
             mnuClearItems.IsEnabled = false;
         }
 
@@ -717,6 +768,8 @@ namespace POESKillTree.Views
             if (sender == e.Source) // Ignore contained ListBox group collapsion events.
             {
                 mnuViewAttributes.IsChecked = true;
+
+                if (expSheet.IsExpanded) expSheet.IsExpanded = false;
             }
         }
 
@@ -729,6 +782,14 @@ namespace POESKillTree.Views
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
         {
             SearchUpdate();
+        }
+
+        private void expSheet_Expanded(object sender, RoutedEventArgs e)
+        {
+            if (sender == e.Source) // Ignore contained ListBox group expansion events.
+            {
+                if (expAttributes.IsExpanded) ToggleAttributes();
+            }
         }
 
         private void ToggleBuilds()
