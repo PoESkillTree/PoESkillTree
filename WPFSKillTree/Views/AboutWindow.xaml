@@ -11,6 +11,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="110"/>
@@ -20,8 +21,16 @@
         <Label Grid.Row="0" Grid.Column="0" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom">PoESkillTree</Label>
         <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontStyle="Italic">v2.0.0</Label>
         <Separator Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
-        <Label Grid.Row="1" Grid.Column="0">Credits</Label>
-        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
+        <Label Grid.Row="1" Grid.Column="0">Updates</Label>
+        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+            Check the git page for new versions: 
+            <Hyperlink NavigateUri="https://github.com/EmmittJ/PoESkillTree" RequestNavigate="Href_Navigation">
+                Link
+            </Hyperlink>
+        </TextBlock>
+        <Separator Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
+        <Label Grid.Row="2" Grid.Column="0">Credits</Label>
+        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
             Headhorr - for his original
             <Hyperlink NavigateUri="http://www.pathofexile.com/forum/view-thread/19723" RequestNavigate="Href_Navigation">
                 Unofficial Offline Skilltree Calc
@@ -31,15 +40,15 @@
             SpaceOgre<LineBreak/>
             l0g0sys
         </TextBlock>
-        <Separator Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
-        <Label Grid.Row="2" Grid.Column="0">Legal</Label>
-        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+        <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
+        <Label Grid.Row="3" Grid.Column="0">Legal</Label>
+        <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
             Skill Tree assets and images belong to <Bold>Grinding Gear Games</Bold><LineBreak/>
             Data used in character calculations are from
             <Hyperlink NavigateUri="http://pathofexile.gamepedia.com/Path_of_Exile_Wiki:Copyrights" RequestNavigate="Href_Navigation">
                 Path of Exile Wiki
             </Hyperlink><LineBreak/>
         </TextBlock>
-        <Button Grid.Row="3" Grid.Column="1" Content="Close" x:Name="btnPopupClose" Click="btnPopupClose_Click" />
+        <Button Grid.Row="4" Grid.Column="1" Content="Close" x:Name="btnPopupClose" Click="btnPopupClose_Click" />
     </Grid>
 </controls:MetroWindow>
