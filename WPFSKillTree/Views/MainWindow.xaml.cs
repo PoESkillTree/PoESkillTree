@@ -1315,6 +1315,18 @@ namespace POESKillTree.Views
             Process.Start("http://pathofexile.gamepedia.com/");
         }
 
+        private void mnuOpenHotkeys(object sender, RoutedEventArgs e)
+        {
+            var aboutWindow = new HotkeysWindow();
+            aboutWindow.ShowDialog();
+        }
+
+        private void mnuOpenAbout(object sender, RoutedEventArgs e)
+        {
+            var aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
+        }
+
         #endregion
     }
 }

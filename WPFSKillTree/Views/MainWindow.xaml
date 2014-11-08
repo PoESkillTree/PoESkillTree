@@ -100,6 +100,18 @@
                       Data="F1 M 43,30L 50.75,30L 43,22.25L 43,30 Z M 52,34L 39,34L 39,21L 24,21L 24,39L 20,43L 20,17L 43.25,17L 56,29.75L 56,59L 36.5,59L 40.5,55L 52,55L 52,34 Z M 35.1379,40.67L 38.4967,44.0287L 32.8988,49.6266L 38.4967,55.2246L 35.1379,58.5833L 29.54,52.9854L 23.9421,58.5833L 20.5833,55.2246L 26.1813,49.6266L 20.5833,44.0287L 23.9421,40.67L 29.54,46.2679L 35.1379,40.67 Z "/>
             </Canvas>
         </ControlTemplate>
+        <ControlTemplate x:Key="KeyboardIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="10.3333" Canvas.Left="0.8333" Canvas.Top="2.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 15.8333,23.75L 60.1667,23.75C 61.9156,23.75 63.3333,25.1678 63.3333,26.9167L 63.3333,49.0833C 63.3333,50.8322 61.9156,52.25 60.1667,52.25L 15.8333,52.25C 14.0844,52.25 12.6667,50.8322 12.6667,49.0833L 12.6667,26.9167C 12.6667,25.1678 14.0844,23.75 15.8333,23.75 Z M 17.4167,28.5L 17.4167,47.5L 58.5833,47.5L 58.5833,28.5L 17.4167,28.5 Z M 20.5833,30.0834L 28.5,30.0833L 28.5,38L 20.5833,38L 20.5833,30.0834 Z M 30.0833,30.0833L 36.4166,30.0834L 36.4166,38L 30.0833,38L 30.0833,30.0833 Z M 20.5833,39.5834L 28.5,39.5833L 28.5,45.9167L 20.5833,45.9167L 20.5833,39.5834 Z M 30.0833,39.5833L 45.9167,39.5834L 45.9167,45.9167L 30.0833,45.9167L 30.0833,39.5833 Z M 38,30.0834L 45.9167,30.0833L 45.9167,38L 38,38L 38,30.0834 Z M 47.5,30.0833L 55.4167,30.0833L 55.4167,38L 47.5,38L 47.5,30.0833 Z M 47.5,39.5834L 55.4167,39.5833L 55.4167,45.9167L 47.5,45.9167L 47.5,39.5834 Z "/>
+            </Canvas>
+        </ControlTemplate>
+        <ControlTemplate x:Key="AboutIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="8.3333" Height="14.3333" Canvas.Left="3.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 31.6666,30.0834L 42.7499,30.0834L 42.7499,33.2501L 42.7499,52.2501L 45.9165,52.2501L 45.9165,57.0001L 31.6666,57.0001L 31.6666,52.2501L 34.8332,52.2501L 34.8332,34.8335L 31.6666,34.8335L 31.6666,30.0834 Z M 38.7917,19C 40.9778,19 42.75,20.7722 42.75,22.9583C 42.75,25.1445 40.9778,26.9167 38.7917,26.9167C 36.6055,26.9167 34.8333,25.1445 34.8333,22.9583C 34.8333,20.7722 36.6055,19 38.7917,19 Z "/>
+            </Canvas>
+        </ControlTemplate>
     </Window.Resources>
     <Grid Margin="0">
         <Grid.RowDefinitions>
@@ -219,6 +231,16 @@
                     </MenuItem.Icon>
                     <MenuItem Header="_Path of Exile Website" Click="mnuOpenPoEWebsite"/>
                     <MenuItem Header="_Path of Exile Wiki" Click="mnuOpenWiki"/>
+                </MenuItem>
+                <MenuItem Header="_Hotkeys" Click="mnuOpenHotkeys">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource KeyboardIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_About" Click="mnuOpenAbout">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource AboutIcon}" />
+                    </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
         </Menu>
