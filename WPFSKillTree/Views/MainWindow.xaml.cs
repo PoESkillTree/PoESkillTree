@@ -595,6 +595,7 @@ namespace POESKillTree.Views
             {
                 try
                 {
+                    _persistentData.CurrentBuild.ItemData = itemData;
                     _itemAttributes = new ItemAttributes(itemData);
                     lbItemAttr.ItemsSource = _itemAttributes.Attributes;
                     mnuClearItems.IsEnabled = true;
@@ -966,7 +967,6 @@ namespace POESKillTree.Views
 
             tbSkillURL.Text = build.Url;
             tbLevel.Text = build.Level;
-            _persistentData.CurrentBuild.ItemData = build.ItemData;
             LoadItemData(build.ItemData);
         }
 
