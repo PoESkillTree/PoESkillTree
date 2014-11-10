@@ -21,7 +21,7 @@ namespace POESKillTree.Utils
             new[] {"Cold Damage Converted to Fire Damage", "Keystone"},
             new[] {"Lightning Damage Converted to Fire Damage", "Keystone"},
             new[] {"Physical Damage Converted to Fire Damage", "Keystone"},
-            new[] {"Deal no Non-Fire Damage", "Keyston"},
+            new[] {"Deal no Non-Fire Damage", "Keystone"},
             new[] {"All bonuses from an equipped Shield apply to your Minions instead of you", "Keystone"},
             new[] {"Can summon up to 1 additional totem", "Keystone"},
             new[] {"Cannot be Stunned", "Keystone"},
