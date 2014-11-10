@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -52,6 +53,12 @@ namespace POESKillTree.SkillTreeFiles
             {"#% Attack Speed Increase per Frenzy Charge", 5},
             {"#% Cast Speed Increase per Frenzy Charge", 5},
             {"#% Critical Strike Chance Increase per Power Charge", 50},
+        };
+
+        private readonly Dictionary<string, List<string>> _hybridAttributes = new Dictionary<string, List<string>>
+        {
+            {"#% increased Evasion Rating and Armour", new List<string> {"#% increased Evasion Rating", "#% increased Armour"}},
+            {"#% additional Chance to Block while Dual Wielding or holding a Shield", new List<string>{"#% additional Chance to Block while Dual Wielding", "#% additional Chance to Block with Shields"}}
         };
 
         public Dictionary<string, float>[] CharBaseAttributes = new Dictionary<string, float>[7];
@@ -350,7 +357,7 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (ushort inode in SkilledNodes)
                 {
                     SkillNode node = Skillnodes[inode];
-                    foreach (var attr in node.Attributes)
+                    foreach (var attr in ExpandHybridAttributes(node.Attributes))
                     {
                         if (!temp.ContainsKey(attr.Key))
                             temp[attr.Key] = new List<float>();
@@ -736,6 +743,25 @@ namespace POESKillTree.SkillTreeFiles
             }
             // picActiveLinks.Clear();
             DrawNodeSurround();
+        }
+
+        private Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
+        {
+            foreach (var attribute in attributes.ToList())
+            {
+                List<string> expandedAttributes;
+                if (_hybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
+                {
+                    attributes.Remove(attribute.Key);
+
+                    foreach (var expandedAttribute in expandedAttributes)
+                    {
+                        attributes.Add(expandedAttribute, attribute.Value);
+                    }
+                }
+            }
+
+            return attributes;
         }
     }
 }
