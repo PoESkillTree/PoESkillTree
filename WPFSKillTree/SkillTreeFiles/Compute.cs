@@ -1726,17 +1726,16 @@ namespace POESKillTree.SkillTreeFiles
                 incMana = Global["#% increased maximum Mana"][0];
 
             float es = 0;
+            float incES = 0;
             // Add maximum shield from tree.
             if (Global.ContainsKey("+# to maximum Energy Shield"))
                 es += Global["+# to maximum Energy Shield"][0];
             // Add maximum shield from items.
             if (Global.ContainsKey("Energy Shield: #"))
                 es += Global["Energy Shield: #"][0];
-            // Increase % maximum shield from intelligence.
-            float incES = RoundValue(Global["+#% Energy Shield"][0], 0);
-            // Increase % maximum shield from tree and items.
+            // Increase % maximum shield from tree, items and intelligence.
             if (Global.ContainsKey("#% increased maximum Energy Shield"))
-                incES += Global["#% increased maximum Energy Shield"][0];
+                incES += RoundValue(Global["#% increased maximum Energy Shield"][0], 0);
 
             float moreES = 0;
             // More % maximum shield from tree and items.
