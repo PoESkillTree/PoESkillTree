@@ -714,7 +714,7 @@ namespace POESKillTree.SkillTreeFiles
                             foreach (var attr in attrs.Matches(ReIncreasedCriticalChanceWithWeaponType))
                             {
                                 Match m = ReIncreasedCriticalChanceWithWeaponType.Match(attr.Key);
-                                if (Nature.Is(WithWeaponType[m.Groups[2].Value]))
+                                if (WithWeaponType.ContainsKey(m.Groups[2].Value) && Nature.Is(WithWeaponType[m.Groups[2].Value]))
                                     incCC += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
                             }
                             if (IsDualWielding && attrs.ContainsKey("#% increased Weapon Critical Strike Chance while Dual Wielding"))
@@ -732,7 +732,7 @@ namespace POESKillTree.SkillTreeFiles
                         if (attrs.ContainsKey("#% increased Critical Strike Multiplier"))
                             incCM += attrs["#% increased Critical Strike Multiplier"][0];
                         if (attrs.ContainsKey("#% increased Global Critical Strike Multiplier"))
-                            incCM += attrs["#% increased Global Critical Strike Chance"][0];
+                            incCM += attrs["#% increased Global Critical Strike Multiplier"][0];
                         if (IsWieldingStaff && attrs.ContainsKey("#% increased Global Critical Strike Multiplier while wielding a Staff"))
                             incCM += attrs["#% increased Global Critical Strike Multiplier while wielding a Staff"][0];
                         if (Nature.Is(DamageSource.Spell))
@@ -747,7 +747,7 @@ namespace POESKillTree.SkillTreeFiles
                             foreach (var attr in attrs.Matches(ReIncreasedCriticalMultiplierWithWeaponType))
                             {
                                 Match m = ReIncreasedCriticalMultiplierWithWeaponType.Match(attr.Key);
-                                if (Nature.Is(WithWeaponType[m.Groups[2].Value]))
+                                if (WithWeaponType.ContainsKey(m.Groups[2].Value) && Nature.Is(WithWeaponType[m.Groups[2].Value]))
                                     incCM += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
                             }
                             if (IsDualWielding && attrs.ContainsKey("#% increased Weapon Critical Strike Multiplier while Dual Wielding"))
