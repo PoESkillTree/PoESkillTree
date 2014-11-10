@@ -83,8 +83,8 @@ namespace POESKillTree.SkillTreeFiles
                     dc.DrawRectangle(OrbitBrush[maxr], null,
                         new Rect(
                             ngp.Position -
-                            new Vector2D(iscr[maxr].PixelWidth * 1.5, iscr[maxr].PixelHeight * 1.5 * maxfac),
-                            new Size(iscr[maxr].PixelWidth * 3, iscr[maxr].PixelHeight * 3 * maxfac)));
+                            new Vector2D(iscr[maxr].PixelWidth * 1.25, iscr[maxr].PixelHeight * 1.25 * maxfac),
+                            new Size(iscr[maxr].PixelWidth * 2.5, iscr[maxr].PixelHeight * 2.5 * maxfac)));
                 }
             }
         }

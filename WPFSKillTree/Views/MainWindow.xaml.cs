@@ -285,7 +285,7 @@ namespace POESKillTree.Views
             Tree.UpdateAvailNodes();
             UpdateAllAttributeList();
 
-            _multransform = Tree.TRect.Size / recSkillTree.RenderSize.Height;
+            _multransform = Tree.TRect.Size/new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
             _addtransform = Tree.TRect.TopLeft;
 
             expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
