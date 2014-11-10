@@ -2157,6 +2157,8 @@ namespace POESKillTree.SkillTreeFiles
             IsWieldingStaff = MainHand.Is(WeaponType.Staff);
 
             Level = skillTree._level;
+            if (Level < 1) Level = 1;
+            else if (Level > 100) Level = 100;
 
             Global = new AttributeSet();
 
