@@ -597,7 +597,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 attribs["+# to Intelligence"][0] / IntPerMana + _level * ManaPerLevel
             };
-            retval["+#% increased maximum Energy Shield"] = new List<float> { attribs["+# to Intelligence"][0] / IntPerES };
+            retval["#% increased maximum Energy Shield"] = new List<float> { attribs["+# to Intelligence"][0] / IntPerES };
 
             retval["+# to maximum Life"] = new List<float>
             {
