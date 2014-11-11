@@ -1735,7 +1735,7 @@ namespace POESKillTree.SkillTreeFiles
                 es += Global["Energy Shield: #"][0];
             // Increase % maximum shield from tree, items and intelligence.
             if (Global.ContainsKey("#% increased maximum Energy Shield"))
-                incES += RoundValue(Global["#% increased maximum Energy Shield"][0], 0);
+                incES += Global["#% increased maximum Energy Shield"][0];
 
             float moreES = 0;
             // More % maximum shield from tree and items.
