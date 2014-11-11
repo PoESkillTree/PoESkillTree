@@ -1061,6 +1061,7 @@ namespace POESKillTree.Views
                 }
                 cbCharType.SelectedIndex = Tree.Chartype;
                 UpdateAllAttributeList();
+                _justLoaded = false;
             }
             catch (Exception)
             {
