@@ -597,11 +597,14 @@ namespace POESKillTree.SkillTreeFiles
             {
                 attribs["+# to Intelligence"][0] / IntPerMana + _level * ManaPerLevel
             };
-            retval["#% increased maximum Energy Shield"] = new List<float> { attribs["+# to Intelligence"][0] / IntPerES };
+            retval["#% increased maximum Energy Shield"] = new List<float> 
+            { 
+                (float) Math.Round(attribs["+# to Intelligence"][0] / IntPerES, 0)
+            };
 
             retval["+# to maximum Life"] = new List<float>
             {
-                attribs["+# to Strength"][0] / IntPerMana + _level * LifePerLevel
+                attribs["+# to Strength"][0] / StrPerLife + _level * LifePerLevel
             };
             // Every 10 strength grants 2% increased melee physical damage. 
             int str = (int)attribs["+# to Strength"][0];
