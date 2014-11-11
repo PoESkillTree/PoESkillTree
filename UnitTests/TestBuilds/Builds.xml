@@ -174,7 +174,7 @@
     <ExpectDefence>
       Character
       Life: 235
-      Mana: 123
+      Mana: 122
       Maximum Energy Shield: 22
       Strength: 58
       Dexterity: 136
@@ -236,11 +236,11 @@
     <BuildFile>T5-NecromanticAegis.json</BuildFile>
     <ExpectDefence>
       Character
-      Life: 1273
+      Life: 1272
       Mana: 1179
       Maximum Energy Shield: 1358
       Defence
-      Evasion Rating: 3548
+      Evasion Rating: 3531
       Life Regeneration per Second: 12.7
       #FIXME Mana Regeneration per Second: 66.9
       Mana Regeneration per Second: 66.8
@@ -265,7 +265,7 @@
     <ExpectDefence>
       Character
       Life: 228
-      Mana: 123
+      Mana: 122
       Maximum Energy Shield: 22
       Strength: 44
       Dexterity: 112
@@ -533,7 +533,7 @@
     <BuildFile>T7-MS-WingsOfEntropy.json</BuildFile>
     <ExpectDefence>
       Defence
-      Evasion Rating: 716
+      Evasion Rating: 713
       Estimated chance to Evade Attacks: 9%
       Maximum Energy Shield: 177
       Energy Shield Recharge per Second: 59
@@ -1491,7 +1491,7 @@
     <BuildFile>T11-Arc-LW-CwDT.json</BuildFile>
     <ExpectDefence>
       Character
-      Life: 1387
+      Life: 1386
       Mana: 1138
       Maximum Energy Shield: 1502
       Strength: 99
@@ -1500,7 +1500,7 @@
       Defence
       Armour: 346
       Estimated Physical Damage reduction: 3%
-      Evasion Rating: 2125
+      Evasion Rating: 2108
       #FIXME Estimated chance to Evade Attacks: 20%
       Maximum Energy Shield: 1502
       Energy Shield Recharge per Second: 500.7
