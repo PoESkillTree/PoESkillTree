@@ -523,6 +523,11 @@ namespace POESKillTree.Views
             }
         }
 
+        private void border1_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            border1.Child.RaiseEvent(e);
+        }
+
         private void btnCopyStats_Click(object sender, RoutedEventArgs e)
         {
             var sb = new StringBuilder();
