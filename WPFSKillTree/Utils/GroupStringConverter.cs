@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows.Data;
+using POESKillTree.ViewModels;
 
 namespace POESKillTree.Utils
 {
@@ -10,7 +12,8 @@ namespace POESKillTree.Utils
     //list view sorter here
     public class GroupStringConverter : IValueConverter
     {
-        public static List<string[]> Groups = new List<string[]>
+        public Dictionary<string, AttributeGroup> AttributeGroups = new Dictionary<string, AttributeGroup>();
+        private static readonly List<string[]> Groups = new List<string[]>
         {
             new[] {"and Endurance Charges on Hit with Claws", "Weapon"},
             new[] {"Endurance Charge", "Charges"},
@@ -137,7 +140,7 @@ namespace POESKillTree.Utils
             new[] {"chance to Ignite", "General"},
             new[] {"chance to Shock", "General"},
             new[] {"Mana Gained on Kill", "General"},
-            new[] {"Life gained on General,General"},
+            new[] {"Life gained on General", "General"},
             new[] {"Burning Damage", "General"},
             new[] {"Projectile Damage", "General"},
             new[] {"Knock enemies Back on hit", "General"},
@@ -207,16 +210,26 @@ namespace POESKillTree.Utils
             new[] {"Dexterity", "BaseStat"},
         };
 
-        static GroupStringConverter()
+        public GroupStringConverter()
         {
-            if (!File.Exists("groups.txt"))
-                return;
-            Groups.Clear();
-            foreach (string s in File.ReadAllLines("groups.txt"))
+            if (File.Exists("groups.txt"))
             {
-                string[] sa = s.Split(',');
-                Groups.Add(sa);
+                Groups.Clear();
+                foreach (string s in File.ReadAllLines("groups.txt"))
+                {
+                    string[] sa = s.Split(',');
+                    Groups.Add(sa);
+                }
             }
+
+            foreach (var group in Groups)
+            {
+                if (!AttributeGroups.ContainsKey(group[1]))
+                {
+                    AttributeGroups.Add(group[1], new AttributeGroup(group[1]));
+                }
+            }
+            AttributeGroups.Add("Everything else", new AttributeGroup("Everything else"));
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -226,10 +239,10 @@ namespace POESKillTree.Utils
             {
                 if (s.ToLower().Contains(gp[0].ToLower()))
                 {
-                    return gp[1];
+                    return AttributeGroups[gp[1]];
                 }
             }
-            return "Everything else";
+            return AttributeGroups["Everything else"];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

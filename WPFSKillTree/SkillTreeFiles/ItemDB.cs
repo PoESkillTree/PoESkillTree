@@ -6,8 +6,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using POESKillTree.Model;
-using Item = POESKillTree.ViewModels.ItemAttributes.Item;
-using Mod = POESKillTree.ViewModels.ItemAttributes.Item.Mod;
+using POESKillTree.ViewModels;
+using POESKillTree.ViewModels.ItemAttribute;
 using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
 using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;
 using DamageNature = POESKillTree.SkillTreeFiles.Compute.DamageNature;
@@ -1144,7 +1144,7 @@ namespace POESKillTree.SkillTreeFiles
             // Collect gem attributes and modifiers at gem level.
             foreach (var attr in gem.Attributes)
                 attrs.Add(attr.Key, new List<float>(attr.Value));
-            foreach (Mod mod in gem.Mods)
+            foreach (ItemMod mod in gem.Mods)
                 attrs.Add(mod.Attribute, new List<float>(mod.Value));
 
             // Check if gem is in database.
@@ -1154,7 +1154,7 @@ namespace POESKillTree.SkillTreeFiles
 
                 // Process +Level modifiers from item.
                 int plusLevel = 0;
-                foreach (Mod mod in item.Mods)
+                foreach (ItemMod mod in item.Mods)
                 {
                     if (mod.Attribute == "+# to Level of Gems in this item")
                         plusLevel += (int)mod.Value[0];

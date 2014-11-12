@@ -3,12 +3,12 @@
     internal class ListGroupItem
     {
         public string Text { get; set; }
-        public string GroupName { get; set; }
+        public AttributeGroup Group { get; set; }
 
-        public ListGroupItem(string text, string groupName)
+        public ListGroupItem(string text, AttributeGroup attributeGroup)
         {
             Text = text;
-            GroupName = groupName;
+            Group = attributeGroup;
         }
 
         public override string ToString()

@@ -12,7 +12,6 @@ using System.Windows.Media;
 using Newtonsoft.Json;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using POESKillTree.ViewModels;
-using ItemClass = POESKillTree.ViewModels.ItemAttributes.Item.ItemClass;
 
 namespace POESKillTree.SkillTreeFiles
 {

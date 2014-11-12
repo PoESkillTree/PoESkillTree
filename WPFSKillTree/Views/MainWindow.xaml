@@ -11,6 +11,17 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         TextOptions.TextFormattingMode="Display">
     <Window.Resources>
+        <Style x:Key="ContainerStyleIsExpanded" TargetType="{x:Type GroupItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Expander Header="{Binding Name}" IsExpanded="{Binding Name.IsExpanded}" FontSize="12" Width="370">
+                            <ItemsPresenter />
+                        </Expander>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="ContainerStyle" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -319,7 +330,7 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
                                     </ListBox.GroupStyle>
                                 </ListBox>
                             </Grid>
@@ -349,7 +360,7 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
                                     </ListBox.GroupStyle>
                                 </ListBox>
                             </Grid>
@@ -373,7 +384,7 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
                                     </ListBox.GroupStyle>
                                 </ListBox>
                             </Grid>
@@ -387,7 +398,7 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
                                     </ListBox.GroupStyle>
                                 </ListBox>
                             </Grid>

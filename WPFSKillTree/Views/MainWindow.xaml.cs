@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -19,12 +20,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using POESKillTree.Controls;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
+using POESKillTree.ViewModels.ItemAttribute;
 using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
 using Clipboard = System.Windows.Clipboard;
@@ -50,7 +51,9 @@ namespace POESKillTree.Views
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
         private readonly List<ListGroupItem> _defenceList = new List<ListGroupItem>();
+        private readonly Dictionary<string, AttributeGroup> _defenceListGroups = new Dictionary<string, AttributeGroup>();
         private readonly List<ListGroupItem> _offenceList = new List<ListGroupItem>();
+        private readonly Dictionary<string, AttributeGroup> _offenceListGroups = new Dictionary<string, AttributeGroup>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly ToolTip _noteTip = new ToolTip();
@@ -182,7 +185,8 @@ namespace POESKillTree.Views
 
                 foreach (string item in (attritemp.Select(InsertNumbersInAttributes)))
                 {
-                    _allAttributesList.Add(new Attribute(item));
+                    var a = new Attribute(item);
+                    _allAttributesList.Add(a);
                 }
             }
 
@@ -198,7 +202,8 @@ namespace POESKillTree.Views
             _attiblist.Clear();
             foreach (var item in (Tree.SelectedAttributes.Select(InsertNumbersInAttributes)))
             {
-                _attiblist.Add(new Attribute(item));
+                var a = new Attribute(item);
+                _attiblist.Add(a);
             }
             _attibuteCollection.Refresh();
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
@@ -217,7 +222,13 @@ namespace POESKillTree.Views
                 {
                     foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
                     {
-                        _defenceList.Add(new ListGroupItem(item, group.Name));
+                        AttributeGroup attributeGroup;
+                        if (!_defenceListGroups.TryGetValue(group.Name, out attributeGroup))
+                        {
+                            attributeGroup = new AttributeGroup(group.Name);
+                            _defenceListGroups.Add(group.Name, attributeGroup);
+                        }
+                        _defenceList.Add(new ListGroupItem(item, attributeGroup));
                     }
                 }
 
@@ -225,7 +236,13 @@ namespace POESKillTree.Views
                 {
                     foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
                     {
-                        _offenceList.Add(new ListGroupItem(item, group.Name));
+                        AttributeGroup attributeGroup;
+                        if (!_offenceListGroups.TryGetValue(group.Name, out attributeGroup))
+                        {
+                            attributeGroup = new AttributeGroup(group.Name);
+                            _offenceListGroups.Add(group.Name, attributeGroup);
+                        }
+                        _offenceList.Add(new ListGroupItem(item, attributeGroup));
                     }
                 }
             }
@@ -257,19 +274,18 @@ namespace POESKillTree.Views
 
             _attibuteCollection = new ListCollectionView(_attiblist);
             listBox1.ItemsSource = _attibuteCollection;
-            var pgd = new PropertyGroupDescription("") {Converter = new GroupStringConverter()};
-            _attibuteCollection.GroupDescriptions.Add(pgd);
+            _attibuteCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text") { Converter = new GroupStringConverter()});
 
             _allAttributeCollection = new ListCollectionView(_allAttributesList);
-            _allAttributeCollection.GroupDescriptions.Add(pgd);
+            _allAttributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text") { Converter = new GroupStringConverter() });
             lbAllAttr.ItemsSource = _allAttributeCollection;
 
             _defenceCollection = new ListCollectionView(_defenceList);
-            _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
+            _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
             listBoxDefence.ItemsSource = _defenceCollection;
 
             _offenceCollection = new ListCollectionView(_offenceList);
-            _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
+            _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
             listBoxOffence.ItemsSource = _offenceCollection;
 
             //Load Persistent Data and set theme

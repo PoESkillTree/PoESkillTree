@@ -7,7 +7,7 @@
         ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" Loaded="MetroWindow_Loaded">
     <StackPanel Background="{DynamicResource WhiteColorBrush}">
         <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Margin="15">
-            Please enter Your Character Name Below and click on 'Open Browser'.<LineBreak/>
+            Please enter Your Character itemGroupName Below and click on 'Open Browser'.<LineBreak/>
             This Will open your default Web-browser and download the Item data.<LineBreak/>
             Save it anywhere you like, then click on 'Load File' and select it.
         </TextBlock>

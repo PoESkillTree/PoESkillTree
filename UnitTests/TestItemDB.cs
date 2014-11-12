@@ -52,7 +52,7 @@ namespace UnitTests
             }
 
             /* Test Fork at Level 5, Quality 10:
-             * <Attribute Name="#% increased Projectile Damage">
+             * <Attribute GroupName="#% increased Projectile Damage">
              *   <ValuePerLevel>2</ValuePerLevel>
              *   <ValuePerQuality>0.5</ValuePerQuality>
              * </Attribute>

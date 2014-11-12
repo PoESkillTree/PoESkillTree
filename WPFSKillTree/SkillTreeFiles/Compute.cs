@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
-using Item = POESKillTree.ViewModels.ItemAttributes.Item;
+using POESKillTree.ViewModels.ItemAttribute;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -369,7 +369,7 @@ namespace POESKillTree.SkillTreeFiles
             public void Link(List<Item> gems, Item item)
             {
                 // Check for gem support from item modifier.
-                foreach (Item.Mod mod in item.Mods.FindAll(m => ReGemSupportFromItem.IsMatch(m.Attribute)))
+                foreach (ItemMod mod in item.Mods.FindAll(m => ReGemSupportFromItem.IsMatch(m.Attribute)))
                 {
                     Match m = ReGemSupportFromItem.Match(mod.Attribute);
                     string gemName = m.Groups[1].Value;
@@ -977,16 +977,16 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 // Creates added damage from weapon local mod.
-                public static Added Create(DamageSource source, Item.Mod mod)
+                public static Added Create(DamageSource source, ItemMod itemMod)
                 {
-                    Match m = ReAddMod.Match(mod.Attribute);
+                    Match m = ReAddMod.Match(itemMod.Attribute);
                     if (m.Success)
-                        return new Added(source, m.Groups[1].Value, mod.Value[0], mod.Value[1]);
+                        return new Added(source, m.Groups[1].Value, itemMod.Value[0], itemMod.Value[1]);
                     else
                     {
-                        m = ReAddInHandMod.Match(mod.Attribute);
+                        m = ReAddInHandMod.Match(itemMod.Attribute);
                         if (m.Success)
-                            return new Added(source, m.Groups[1].Value, mod.Value[0], mod.Value[1]) { Hand = m.Groups[2].Value == "Main" ? WeaponHand.Main : WeaponHand.Off };
+                            return new Added(source, m.Groups[1].Value, itemMod.Value[0], itemMod.Value[1]) { Hand = m.Groups[2].Value == "Main" ? WeaponHand.Main : WeaponHand.Off };
                     }
 
                     return null;
