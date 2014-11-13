@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Mod = POESKillTree.ViewModels.ItemAttributes.Item.Mod;
+using POESKillTree.ViewModels;
+using POESKillTree.ViewModels.ItemAttribute;
 
 namespace POESKillTree.Model
 {
@@ -38,7 +39,7 @@ namespace POESKillTree.Model
 
         // Adds item mod.
         // Existing attribute has value increased by value of attribute being added.
-        public void Add(Mod itemMod)
+        public void Add(ItemMod itemMod)
         {
             if (ContainsKey(itemMod.Attribute))
             {

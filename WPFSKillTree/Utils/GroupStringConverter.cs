@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows.Data;
+using POESKillTree.ViewModels;
 
 namespace POESKillTree.Utils
 {
@@ -10,7 +12,8 @@ namespace POESKillTree.Utils
     //list view sorter here
     public class GroupStringConverter : IValueConverter
     {
-        public static List<string[]> Groups = new List<string[]>
+        public Dictionary<string, AttributeGroup> AttributeGroups = new Dictionary<string, AttributeGroup>();
+        private static readonly List<string[]> Groups = new List<string[]>
         {
             new[] {"and Endurance Charges on Hit with Claws", "Weapon"},
             new[] {"Endurance Charge", "Charges"},
@@ -75,7 +78,6 @@ namespace POESKillTree.Utils
             new[] {"Effect of your Curses", "Curse"},
             new[] {"Radius of Curses", "Curse"},
             new[] {"Cast Speed for Curses", "Curse"},
-            new[] {"Radius of Area Skills", "Curse"},
             new[] {"Enemies can have 1 additional Curse", "Curse"},
             new[] {"Mana Reserved", "Aura"},
             new[] {"effect of Auras", "Aura"},
@@ -91,10 +93,12 @@ namespace POESKillTree.Utils
             new[] {"Chance to Block Spells with Shields", "Shield"},
             new[] {"Armour from equipped Shield", "Shield"},
             new[] {"Chance to Block while Dual Wielding or holding a Shield", "Shield"},
+            new[] {"Chance to Block with Shields", "Shield"},
             new[] {"Block and Stun Recovery", "Shield"},
             new[] {"Energy Shield from equipped Shield", "Shield"},
             new[] {"Block Recovery", "Shield"},
             new[] {"Defences from equipped Shield", "Shield"},
+            new[] {"Damage Penetrates", "General"}, //needs to be here to pull into the correct tab.
             new[] {"reduced Extra Damage from Critical Strikes", "Defense"},
             new[] {"Armour", "Defense"},
             new[] {"all Elemental Resistances", "Defense"},
@@ -107,7 +111,6 @@ namespace POESKillTree.Utils
             new[] {"Fire Resistance", "Defense"},
             new[] {"maximum Life", "Defense"},
             new[] {"Light Radius", "Defense"},
-            new[] {"Shock Duration on enemies", "Defense"},
             new[] {"Evasion Rating and Armour", "Defense"},
             new[] {"Energy Shield Recharge", "Defense"},
             new[] {"Life Regenerated", "Defense"},
@@ -127,17 +130,17 @@ namespace POESKillTree.Utils
             new[] {"Armour", "Defense"},
             new[] {"Avoid interruption from Stuns while Casting", "Defense"},
             new[] {"Movement Speed", "Defense"},
-            new[] {"Chance to Block with Shields", "Defense"},
             new[] {"Mana Recovery from Flasks", "Defense"},
             new[] {"Life Recovery from Flasks", "Defense"},
             new[] {"Enemies Cannot Leech Life From You", "Defense"},
             new[] {"Enemies Cannot Leech Mana From You", "Defense"},
             new[] {"Ignore all Movement Penalties", "Defense"},
+            new[] {"Shock Duration on enemies", "General"},
             new[] {"Radius of Area Skills", "General"},
             new[] {"chance to Ignite", "General"},
             new[] {"chance to Shock", "General"},
             new[] {"Mana Gained on Kill", "General"},
-            new[] {"Life gained on General,General"},
+            new[] {"Life gained on General", "General"},
             new[] {"Burning Damage", "General"},
             new[] {"Projectile Damage", "General"},
             new[] {"Knock enemies Back on hit", "General"},
@@ -151,10 +154,12 @@ namespace POESKillTree.Utils
             new[] {"Freeze Duration on enemies", "General"},
             new[] {"Damage over Time", "General"},
             new[] {"Chaos Damage", "General"},
-            new[] {"Damage Penetrates", "General"},
             new[] {"Enemies Become Chilled as they Unfreeze", "General"},
             new[] {"Skill Effect Duration", "General"},
             new[] {"Life Gained on Kill", "General"},
+            new[] {"Area Damage", "General"},
+            new[] {"Enemy Stun Threshold", "General"},
+            new[] {"Stun Duration", "General"},
             new[] {"Spell Damage", "Spell"},
             new[] {"Elemental Damage with Spells", "Spell"},
             new[] {"Accuracy Rating", "Weapon"},
@@ -162,17 +167,14 @@ namespace POESKillTree.Utils
             new[] {"Melee Weapon and Unarmed range", "Weapon"},
             new[] {"Life gained for each enemy hit by your Attacks", "Weapon"},
             new[] {"Wand Physical Damage", "Weapon"},
-            new[] {"Enemy Stun Threshold", "Weapon"},
             new[] {"Attack Speed", "Weapon"},
             new[] {"Melee Attack Speed", "Weapon"},
             new[] {"Melee Damage", "Weapon"},
-            new[] {"Stun Duration", "Weapon"},
             new[] {"Physical Damage with Claws", "Weapon"},
             new[] {"Block Chance With Staves", "Weapon"},
             new[] {"Physical Damage with Daggers", "Weapon"},
             new[] {"Physical Attack Damage Leeched as Mana", "Weapon"},
             new[] {"Physical Damage Dealt with Claws Leeched as Mana", "Weapon"},
-            new[] {"Area Damage", "Weapon"},
             new[] {"Arrow Speed", "Weapon"},
             new[] {"Cast Speed while Dual Wielding", "Weapon"},
             new[] {"Physical Damage with Staves", "Weapon"},
@@ -207,16 +209,26 @@ namespace POESKillTree.Utils
             new[] {"Dexterity", "BaseStat"},
         };
 
-        static GroupStringConverter()
+        public GroupStringConverter()
         {
-            if (!File.Exists("groups.txt"))
-                return;
-            Groups.Clear();
-            foreach (string s in File.ReadAllLines("groups.txt"))
+            if (File.Exists("groups.txt"))
             {
-                string[] sa = s.Split(',');
-                Groups.Add(sa);
+                Groups.Clear();
+                foreach (string s in File.ReadAllLines("groups.txt"))
+                {
+                    string[] sa = s.Split(',');
+                    Groups.Add(sa);
+                }
             }
+
+            foreach (var group in Groups)
+            {
+                if (!AttributeGroups.ContainsKey(group[1]))
+                {
+                    AttributeGroups.Add(group[1], new AttributeGroup(group[1]));
+                }
+            }
+            AttributeGroups.Add("Everything else", new AttributeGroup("Everything else"));
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -226,10 +238,10 @@ namespace POESKillTree.Utils
             {
                 if (s.ToLower().Contains(gp[0].ToLower()))
                 {
-                    return gp[1];
+                    return AttributeGroups[gp[1]];
                 }
             }
-            return "Everything else";
+            return AttributeGroups["Everything else"];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

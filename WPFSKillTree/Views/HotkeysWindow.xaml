@@ -27,6 +27,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="110"/>
@@ -72,6 +73,8 @@
         <TextBlock Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Redo last skill tree change</TextBlock>
         <TextBlock Grid.Row="18" Grid.Column="0">Ctrl + S</TextBlock>
         <TextBlock Grid.Row="18" Grid.Column="1" Grid.ColumnSpan="3">Save build as</TextBlock>
-        <Button Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0" Content="Close" x:Name="btnPopupClose" Click="btnPopupClose_Click" />
+        <TextBlock Grid.Row="19" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Right Click</TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Center tree and reset zoom</TextBlock>
+        <Button Grid.Row="20" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0" Content="Close" x:Name="btnPopupClose" Click="btnPopupClose_Click" />
     </Grid>
 </controls:MetroWindow>

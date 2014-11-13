@@ -134,14 +134,17 @@
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
+    <Compile Include="ViewModels\AttributeGroup.cs" />
+    <Compile Include="ViewModels\ItemAttribute\Item.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
     <Compile Include="SkillTreeFiles\ImageHelper.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
     <Compile Include="Controls\DragAdorner.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
     <Compile Include="Utils\GroupStringConverter.cs" />
-    <Compile Include="ViewModels\ItemAttributes.cs" />
+    <Compile Include="ViewModels\ItemAttribute\ItemAttributes.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
+    <Compile Include="ViewModels\ItemAttribute\ItemMod.cs" />
     <Compile Include="Views\HotkeysWindow.xaml.cs">
       <DependentUpon>HotkeysWindow.xaml</DependentUpon>
     </Compile>
