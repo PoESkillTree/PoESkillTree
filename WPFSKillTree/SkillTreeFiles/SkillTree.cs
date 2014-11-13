@@ -387,6 +387,10 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     skilltreeobj = File.ReadAllText("Data\\Skilltree.txt");
                 }
+                if (!File.Exists("Data\\Assets"))
+                {
+                    Directory.CreateDirectory("Data\\Assets");
+                }
             }
             else
             {
