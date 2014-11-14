@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Cache;
@@ -194,23 +194,27 @@ namespace POESKillTree.SkillTreeFiles
                     if (Skillnodes[skillNode].IsNotable)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[3].Value, null,
-                            new Rect((int) pos.X - NodeSurroundBrush[3].Key.Width,
-                                (int) pos.Y - NodeSurroundBrush[3].Key.Height,
+                            new Rect((int)pos.X - NodeSurroundBrush[3].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[3].Key.Height,
                                 NodeSurroundBrush[3].Key.Width * 2,
                                 NodeSurroundBrush[3].Key.Height * 2));
                     }
                     else if (Skillnodes[skillNode].IsKeyStone)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[2].Value, null,
-                            new Rect((int) pos.X - NodeSurroundBrush[2].Key.Width,
-                                (int) pos.Y - NodeSurroundBrush[2].Key.Height,
+                            new Rect((int)pos.X - NodeSurroundBrush[2].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[2].Key.Height,
                                 NodeSurroundBrush[2].Key.Width * 2,
                                 NodeSurroundBrush[2].Key.Height * 2));
                     }
+                    else if (Skillnodes[skillNode].IsMastery)
+                    {
+                        //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
+                    }
                     else
                         dc.DrawRectangle(NodeSurroundBrush[0].Value, null,
-                            new Rect((int) pos.X - NodeSurroundBrush[0].Key.Width,
-                                (int) pos.Y - NodeSurroundBrush[0].Key.Height,
+                            new Rect((int)pos.X - NodeSurroundBrush[0].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[0].Key.Height,
                                 NodeSurroundBrush[0].Key.Width * 2,
                                 NodeSurroundBrush[0].Key.Height * 2));
                 }
@@ -228,23 +232,27 @@ namespace POESKillTree.SkillTreeFiles
                     if (Skillnodes[skillNode].IsNotable)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[5].Value, null,
-                            new Rect((int) pos.X - NodeSurroundBrush[5].Key.Width,
-                                (int) pos.Y - NodeSurroundBrush[5].Key.Height,
+                            new Rect((int)pos.X - NodeSurroundBrush[5].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[5].Key.Height,
                                 NodeSurroundBrush[5].Key.Width * 2,
                                 NodeSurroundBrush[5].Key.Height * 2));
                     }
                     else if (Skillnodes[skillNode].IsKeyStone)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[4].Value, null,
-                            new Rect((int) pos.X - NodeSurroundBrush[4].Key.Width,
-                                (int) pos.Y - NodeSurroundBrush[4].Key.Height,
+                            new Rect((int)pos.X - NodeSurroundBrush[4].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[4].Key.Height,
                                 NodeSurroundBrush[4].Key.Width * 2,
                                 NodeSurroundBrush[4].Key.Height * 2));
                     }
+                    else if (Skillnodes[skillNode].IsMastery)
+                    {
+                        //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
+                    }
                     else
                         dc.DrawRectangle(NodeSurroundBrush[1].Value, null,
-                            new Rect((int) pos.X - NodeSurroundBrush[1].Key.Width,
-                                (int) pos.Y - NodeSurroundBrush[1].Key.Height,
+                            new Rect((int)pos.X - NodeSurroundBrush[1].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[1].Key.Height,
                                 NodeSurroundBrush[1].Key.Width * 2,
                                 NodeSurroundBrush[1].Key.Height * 2));
                 }
@@ -254,7 +262,7 @@ namespace POESKillTree.SkillTreeFiles
         public void DrawPath(List<ushort> path)
         {
             var pen2 = new Pen(Brushes.LawnGreen, 15f);
-            pen2.DashStyle = new DashStyle(new DoubleCollection {2}, 2);
+            pen2.DashStyle = new DashStyle(new DoubleCollection { 2 }, 2);
 
             using (DrawingContext dc = picPathOverlay.RenderOpen())
             {
@@ -273,7 +281,7 @@ namespace POESKillTree.SkillTreeFiles
         public void DrawRefundPreview(HashSet<ushort> nodes)
         {
             var pen2 = new Pen(Brushes.Red, 15f);
-            pen2.DashStyle = new DashStyle(new DoubleCollection {2}, 2);
+            pen2.DashStyle = new DashStyle(new DoubleCollection { 2 }, 2);
 
             using (DrawingContext dc = picPathOverlay.RenderOpen())
             {
