@@ -1187,6 +1187,9 @@ namespace POESKillTree.SkillTreeFiles
         // Returns attributes of gem at specified level and quality.
         public static AttributeSet AttributesOf(string gemName, int level, int quality)
         {
+            if (!GemIndex.ContainsKey(gemName))
+                return new AttributeSet();
+
             Gem gem = GemIndex[gemName];
 
             // Get level-based attributes.
