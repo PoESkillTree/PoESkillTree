@@ -132,8 +132,8 @@ namespace POESKillTree.SkillTreeFiles
 
             tree.Chartype = character;
             tree.SkilledNodes.Clear( );
-            SkillNode startnode = tree.Skillnodes.First( nd => nd.Value.name == tree.CharName[ tree.Chartype ].ToUpper( ) ).Value;
-            tree.SkilledNodes.Add( startnode.id );
+            SkillNode startnode = tree.Skillnodes.First( nd => nd.Value.Name == tree.CharName[ tree.Chartype ].ToUpper( ) ).Value;
+            tree.SkilledNodes.Add( startnode.Id );
 
             for ( int i = 1 ; i < buildResp.Length ; ++i )
             {

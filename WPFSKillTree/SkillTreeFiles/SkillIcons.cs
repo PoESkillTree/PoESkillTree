@@ -10,12 +10,11 @@ namespace POESKillTree.SkillTreeFiles
 {
     public class SkillIcons
     {
-        public enum IconType
-        {
-            Normal,
-            Notable,
-            Keystone
-        }
+
+        public static int NormalIconWidth = 27;
+        public static int NotableIconWidth = 38;
+        public static int KeystoneIconWidth = 53;
+        public static int MasteryIconWidth = 99;
 
         public static string urlpath = "http://www.pathofexile.com/image/build-gen/passive-skill-sprite/";
         public Dictionary<string, BitmapImage> Images = new Dictionary<string, BitmapImage>();
