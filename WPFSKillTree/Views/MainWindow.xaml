@@ -373,8 +373,8 @@
                 <Expander.Header>
                     <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Character Sheet</TextBlock>
                 </Expander.Header>
-                <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-108,0,0,0">
-                    <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
+                <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-109,0,0,-1">
+                    <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Header="Defence" Margin="0" x:Name="tabItemDefence" controls:ControlsHelper.HeaderFontSize="15">
                             <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                                 <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="listBoxDefence" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
