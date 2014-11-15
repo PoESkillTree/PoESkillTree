@@ -1,8 +1,7 @@
 ﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Cache;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -55,36 +54,75 @@ namespace POESKillTree.SkillTreeFiles
         private void DrawBackgroundLayer()
         {
             picBackground = new DrawingVisual();
-            using (DrawingContext dc = picBackground.RenderOpen())
+            using (var drawingContext = picBackground.RenderOpen())
             {
                 BitmapImage[] iscr =
                 {
-                    _assets["PSGroupBackground1"].PImage, _assets["PSGroupBackground2"].PImage,
+                    _assets["PSGroupBackground1"].PImage, 
+                    _assets["PSGroupBackground2"].PImage,
                     _assets["PSGroupBackground3"].PImage
                 };
-                var OrbitBrush = new Brush[3];
-                OrbitBrush[0] = new ImageBrush(_assets["PSGroupBackground1"].PImage);
-                OrbitBrush[1] = new ImageBrush(_assets["PSGroupBackground2"].PImage);
-                OrbitBrush[2] = new ImageBrush(_assets["PSGroupBackground3"].PImage);
-                (OrbitBrush[2] as ImageBrush).TileMode = TileMode.FlipXY;
-                (OrbitBrush[2] as ImageBrush).Viewport = new Rect(0, 0, 1, .5f);
+                var orbitBrush = new Brush[3];
+                orbitBrush[0] = new ImageBrush(_assets["PSGroupBackground1"].PImage);
+                orbitBrush[1] = new ImageBrush(_assets["PSGroupBackground2"].PImage);
+                orbitBrush[2] = new ImageBrush(_assets["PSGroupBackground3"].PImage);
+                (orbitBrush[2] as ImageBrush).TileMode = TileMode.FlipXY;
+                (orbitBrush[2] as ImageBrush).Viewport = new Rect(0, 0, 1, .5f);
 
-                var BackgroundBrush = new ImageBrush(_assets["Background1"].PImage);
-                BackgroundBrush.TileMode = TileMode.FlipXY;
-                dc.DrawRectangle(BackgroundBrush, null, TRect);
-                foreach (SkillNodeGroup ngp in NodeGroups)
+                var backgroundBrush = new ImageBrush(_assets["Background1"].PImage);
+                backgroundBrush.TileMode = TileMode.Tile;
+                backgroundBrush.Viewport = new Rect(0, 0, 
+                    6 * backgroundBrush.ImageSource.Width / TRect.Width, 
+                    6 * backgroundBrush.ImageSource.Height / TRect.Width);
+                drawingContext.DrawRectangle(backgroundBrush, null, TRect);
+
+                var topGradient = new LinearGradientBrush();
+                topGradient.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
+                topGradient.GradientStops.Add(new GradientStop(new Color(), 0.0));
+                topGradient.StartPoint = new Point(0, 1);
+                topGradient.EndPoint = new Point(0, 0);
+
+                var leftGradient = new LinearGradientBrush();
+                leftGradient.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
+                leftGradient.GradientStops.Add(new GradientStop(new Color(), 0.0));
+                leftGradient.StartPoint = new Point(1, 0);
+                leftGradient.EndPoint = new Point(0, 0);
+
+                var bottomGradient = new LinearGradientBrush();
+                bottomGradient.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
+                bottomGradient.GradientStops.Add(new GradientStop(new Color(), 0.0));
+                bottomGradient.StartPoint = new Point(0, 0);
+                bottomGradient.EndPoint = new Point(0, 1);
+
+                var rightGradient = new LinearGradientBrush();
+                rightGradient.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
+                rightGradient.GradientStops.Add(new GradientStop(new Color(), 0.0));
+                rightGradient.StartPoint = new Point(0, 0);
+                rightGradient.EndPoint = new Point(1, 0);
+
+                const int gradientWidth = 200;
+                var topRect = new Rect2D(TRect.Left, TRect.Top, TRect.Width, gradientWidth);
+                var leftRect = new Rect2D(TRect.Left, TRect.Top, gradientWidth, TRect.Height);
+                var bottomRect = new Rect2D(TRect.Left, TRect.Bottom - gradientWidth, TRect.Width, gradientWidth);
+                var rightRect = new Rect2D(TRect.Right - gradientWidth, TRect.Top, gradientWidth, TRect.Height);
+
+                drawingContext.DrawRectangle(topGradient, null, topRect);
+                drawingContext.DrawRectangle(leftGradient, null, leftRect);
+                drawingContext.DrawRectangle(bottomGradient, null, bottomRect);
+                drawingContext.DrawRectangle(rightGradient, null, rightRect);
+                foreach (var skillNodeGroup in NodeGroups)
                 {
-                    if (ngp.OcpOrb == null)
-                        ngp.OcpOrb = new Dictionary<int, bool>();
-                    IEnumerable<int> cgrp = ngp.OcpOrb.Keys.Where(ng => ng <= 3);
-                    if (cgrp.Count() == 0) continue;
-                    int maxr = cgrp.Max(ng => ng);
+                    if (skillNodeGroup.OcpOrb == null)
+                        skillNodeGroup.OcpOrb = new Dictionary<int, bool>();
+                    var cgrp = skillNodeGroup.OcpOrb.Keys.Where(ng => ng <= 3);
+                    if (!cgrp.Any()) continue;
+                    var maxr = cgrp.Max(ng => ng);
                     if (maxr == 0) continue;
                     maxr = maxr > 3 ? 2 : maxr - 1;
-                    int maxfac = maxr == 2 ? 2 : 1;
-                    dc.DrawRectangle(OrbitBrush[maxr], null,
+                    var maxfac = maxr == 2 ? 2 : 1;
+                    drawingContext.DrawRectangle(orbitBrush[maxr], null,
                         new Rect(
-                            ngp.Position -
+                            skillNodeGroup.Position -
                             new Vector2D(iscr[maxr].PixelWidth * 1.25, iscr[maxr].PixelHeight * 1.25 * maxfac),
                             new Size(iscr[maxr].PixelWidth * 2.5, iscr[maxr].PixelHeight * 2.5 * maxfac)));
                 }
@@ -139,7 +177,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public void DrawHighlights(List<SkillNode> nodes, SolidColorBrush brush = null)
         {
-            var hpen = new Pen(brush == null ? Brushes.Aqua : brush, 20);
+            var hpen = new Pen(brush ?? Brushes.Aqua, 20);
             using (DrawingContext dc = picHighlights.RenderOpen())
             {
                 foreach (SkillNode node in nodes)
@@ -384,41 +422,36 @@ namespace POESKillTree.SkillTreeFiles
             sizeNot = new Size(PImageNot.PixelWidth, PImageNot.PixelHeight);
 
 
-            Size sizeKs;
             var brKS = new ImageBrush();
             brKS.Stretch = Stretch.Uniform;
             BitmapImage PImageKr = _assets[NodeBackgrounds["keystone"]].PImage;
             brKS.ImageSource = PImageKr;
-            sizeKs = new Size(PImageKr.PixelWidth, PImageKr.PixelHeight);
+            Size sizeKs = new Size(PImageKr.PixelWidth, PImageKr.PixelHeight);
 
-            Size sizeNotH;
             var brNotH = new ImageBrush();
             brNotH.Stretch = Stretch.Uniform;
             BitmapImage PImageNotH = _assets[NodeBackgroundsActive["notable"]].PImage;
             brNotH.ImageSource = PImageNotH;
-            sizeNotH = new Size(PImageNotH.PixelWidth, PImageNotH.PixelHeight);
+            Size sizeNotH = new Size(PImageNotH.PixelWidth, PImageNotH.PixelHeight);
 
 
-            Size sizeKsH;
             var brKSH = new ImageBrush();
             brKSH.Stretch = Stretch.Uniform;
             BitmapImage PImageKrH = _assets[NodeBackgroundsActive["keystone"]].PImage;
             brKSH.ImageSource = PImageKrH;
-            sizeKsH = new Size(PImageKrH.PixelWidth, PImageKrH.PixelHeight);
+            Size sizeKsH = new Size(PImageKrH.PixelWidth, PImageKrH.PixelHeight);
 
-            Size isizeNorm;
             var brNorm = new ImageBrush();
             brNorm.Stretch = Stretch.Uniform;
             BitmapImage PImageNorm = _assets[NodeBackgrounds["normal"]].PImage;
             brNorm.ImageSource = PImageNorm;
-            isizeNorm = new Size(PImageNorm.PixelWidth, PImageNorm.PixelHeight);
+            Size isizeNorm = new Size(PImageNorm.PixelWidth, PImageNorm.PixelHeight);
 
-            Size isizeNormA;
             var brNormA = new ImageBrush();
             brNormA.Stretch = Stretch.Uniform;
             BitmapImage PImageNormA = _assets[NodeBackgroundsActive["normal"]].PImage;
             brNormA.ImageSource = PImageNormA;
-            isizeNormA = new Size(PImageNormA.PixelWidth, PImageNormA.PixelHeight);
+            Size isizeNormA = new Size(PImageNormA.PixelWidth, PImageNormA.PixelHeight);
 
             NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isizeNorm, brNorm));
             NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isizeNormA, brNormA));
