@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -11,7 +10,6 @@ using System.Windows;
 using System.Windows.Media;
 using Newtonsoft.Json;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
-using POESKillTree.ViewModels;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -22,7 +20,6 @@ namespace POESKillTree.SkillTreeFiles
         public delegate void CloseLoadingWindow();
 
         public delegate void StartLoadingWindow();
-
 
         public static float LifePerLevel = 12;
         public static float AccPerLevel = 2;
@@ -56,8 +53,18 @@ namespace POESKillTree.SkillTreeFiles
 
         private readonly Dictionary<string, List<string>> _hybridAttributes = new Dictionary<string, List<string>>
         {
-            {"#% increased Evasion Rating and Armour", new List<string> {"#% increased Evasion Rating", "#% increased Armour"}},
-            {"#% additional Chance to Block while Dual Wielding or holding a Shield", new List<string>{"#% additional Chance to Block while Dual Wielding", "#% additional Chance to Block with Shields"}}
+            {
+                "#% increased Evasion Rating and Armour",
+                new List<string> {"#% increased Evasion Rating", "#% increased Armour"}
+            },
+            {
+                "#% additional Chance to Block while Dual Wielding or holding a Shield",
+                new List<string>
+                {
+                    "#% additional Chance to Block while Dual Wielding",
+                    "#% additional Chance to Block with Shields"
+                }
+            }
         };
 
         public Dictionary<string, float>[] CharBaseAttributes = new Dictionary<string, float>[7];
@@ -125,7 +132,7 @@ namespace POESKillTree.SkillTreeFiles
             };
 
             var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring.Replace("Additional ", ""), jss);
-            var qindex = 0;
+            int qindex = 0;
 
             //TODO: (SpaceOgre) This is not used atm, so no need to run it.
             foreach (var obj in inTree.skillSprites)
@@ -200,7 +207,9 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (ushort i in skillNode.Value.LinkId)
                 {
-                    if (links.Count(nd => (nd[0] == i && nd[1] == skillNode.Key) || nd[0] == skillNode.Key && nd[1] == i) == 1)
+                    if (
+                        links.Count(nd => (nd[0] == i && nd[1] == skillNode.Key) || nd[0] == skillNode.Key && nd[1] == i) ==
+                        1)
                     {
                         continue;
                     }
@@ -232,8 +241,8 @@ namespace POESKillTree.SkillTreeFiles
                     Skillnodes[node].SkillNodeGroup = group;
                 }
             }
-            TRect = new Rect2D(new Vector2D(inTree.min_x * 1.1, inTree.min_y * 1.1),
-                new Vector2D(inTree.max_x * 1.1, inTree.max_y * 1.1));
+            TRect = new Rect2D(new Vector2D(inTree.min_x*1.1, inTree.min_y*1.1),
+                new Vector2D(inTree.max_x*1.1, inTree.max_y*1.1));
 
 
             InitNodeSurround();
@@ -568,9 +577,9 @@ namespace POESKillTree.SkillTreeFiles
                         _highlightnodes =
                             Skillnodes.Values.Where(
                                 nd =>
-                                    nd.attributes.Where(att => new Regex(search, RegexOptions.IgnoreCase).IsMatch(att))
-                                        .Count() > 0 ||
-                                    new Regex(search, RegexOptions.IgnoreCase).IsMatch(nd.Name) && !nd.IsMastery).ToList();
+                                    nd.attributes.Any(att => new Regex(search, RegexOptions.IgnoreCase).IsMatch(att)) ||
+                                    new Regex(search, RegexOptions.IgnoreCase).IsMatch(nd.Name) && !nd.IsMastery)
+                                .ToList();
                     DrawHighlights(_highlightnodes, brushColor);
                 }
                 catch (Exception)
@@ -582,7 +591,7 @@ namespace POESKillTree.SkillTreeFiles
                 _highlightnodes =
                     Skillnodes.Values.Where(
                         nd =>
-                            nd.attributes.Where(att => att.ToLower().Contains(search.ToLower())).Count() != 0 ||
+                            nd.attributes.Count(att => att.ToLower().Contains(search.ToLower())) != 0 ||
                             nd.Name.ToLower().Contains(search.ToLower()) && !nd.IsMastery).ToList();
 
                 DrawHighlights(_highlightnodes, brushColor);
@@ -595,31 +604,34 @@ namespace POESKillTree.SkillTreeFiles
             // +# to Strength", co["base_str"].Value<int>() }, { "+# to Dexterity", co["base_dex"].Value<int>() }, { "+# to Intelligence", co["base_int"].Value<int>() } };
             retval["+# to maximum Mana"] = new List<float>
             {
-                attribs["+# to Intelligence"][0] / IntPerMana + _level * ManaPerLevel
+                attribs["+# to Intelligence"][0]/IntPerMana + _level*ManaPerLevel
             };
-            retval["#% increased maximum Energy Shield"] = new List<float> 
-            { 
-                (float) Math.Round(attribs["+# to Intelligence"][0] / IntPerES, 0)
+            retval["#% increased maximum Energy Shield"] = new List<float>
+            {
+                (float) Math.Round(attribs["+# to Intelligence"][0]/IntPerES, 0)
             };
 
             retval["+# to maximum Life"] = new List<float>
             {
-                attribs["+# to Strength"][0] / StrPerLife + _level * LifePerLevel
+                attribs["+# to Strength"][0]/StrPerLife + _level*LifePerLevel
             };
             // Every 10 strength grants 2% increased melee physical damage. 
-            int str = (int)attribs["+# to Strength"][0];
-            if (str % (int)StrPerED > 0) str += (int)StrPerED - (str % (int)StrPerED);
-            retval["#% increased Melee Physical Damage"] = new List<float> { str / StrPerED };
+            var str = (int) attribs["+# to Strength"][0];
+            if (str%(int) StrPerED > 0) str += (int) StrPerED - (str%(int) StrPerED);
+            retval["#% increased Melee Physical Damage"] = new List<float> {str/StrPerED};
             // Every point of Dexterity gives 2 additional base accuracy, and characters gain 2 base accuracy when leveling up.
             // @see http://pathofexile.gamepedia.com/Accuracy
-            retval["+# Accuracy Rating"] = new List<float> { attribs["+# to Dexterity"][0] / DexPerAcc + (_level - 1) * AccPerLevel };
-            retval["Evasion Rating: #"] = new List<float> {_level * EvasPerLevel};
+            retval["+# Accuracy Rating"] = new List<float>
+            {
+                attribs["+# to Dexterity"][0]/DexPerAcc + (_level - 1)*AccPerLevel
+            };
+            retval["Evasion Rating: #"] = new List<float> {_level*EvasPerLevel};
 
             // Dexterity value is not getting rounded up any more but rounded normally to the nearest multiple of 5.
             // @see http://pathofexile.gamepedia.com/Talk:Evasion
             float dex = attribs["+# to Dexterity"][0];
-            dex = (float)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
-            retval["#% increased Evasion Rating"] = new List<float> { dex / DexPerEvas };
+            dex = (float) Math.Round(dex/DexPerEvas, 0, MidpointRounding.AwayFromZero)*DexPerEvas;
+            retval["#% increased Evasion Rating"] = new List<float> {dex/DexPerEvas};
 
             return retval;
         }
@@ -664,7 +676,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public string SaveToURL()
         {
-            var b = new byte[(SkilledNodes.Count - 1) * 2 + 6];
+            var b = new byte[(SkilledNodes.Count - 1)*2 + 6];
             byte[] b2 = BitConverter.GetBytes(2);
             b[0] = b2[3];
             b[1] = b2[2];
@@ -758,7 +770,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     attributes.Remove(attribute.Key);
 
-                    foreach (var expandedAttribute in expandedAttributes)
+                    foreach (string expandedAttribute in expandedAttributes)
                     {
                         attributes.Add(expandedAttribute, attribute.Value);
                     }

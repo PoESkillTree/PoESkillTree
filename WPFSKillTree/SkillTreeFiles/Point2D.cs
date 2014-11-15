@@ -22,24 +22,24 @@ namespace POESKillTree.SkillTreeFiles
 
         public float Length
         {
-            get { return (float) Math.Sqrt(X * X + Y * Y); }
+            get { return (float) Math.Sqrt(X*X + Y*Y); }
         }
 
         public float LengthSqr
         {
-            get { return X * X + Y * Y; }
+            get { return X*X + Y*Y; }
         }
 
         public Point2D Discretizise(int size)
         {
             int newX = X;
             int newY = Y;
-            if (newX % size != 0)
-                if (newX > 0) newX -= newX % size;
-                else newX -= newX % size + size;
-            if (newY % size != 0)
-                if (newY > 0) newY -= newY % size;
-                else newY -= newY % size + size;
+            if (newX%size != 0)
+                if (newX > 0) newX -= newX%size;
+                else newX -= newX%size + size;
+            if (newY%size != 0)
+                if (newY > 0) newY -= newY%size;
+                else newY -= newY%size + size;
             return new Point2D(newX, newY);
         }
 
@@ -70,12 +70,12 @@ namespace POESKillTree.SkillTreeFiles
 
         public static Point2D operator *(Point2D lhs, int f)
         {
-            return new Point2D(lhs.X * f, lhs.Y * f);
+            return new Point2D(lhs.X*f, lhs.Y*f);
         }
 
         public static Point2D operator /(Point2D lhs, int f)
         {
-            return new Point2D(lhs.X / f, lhs.Y / f);
+            return new Point2D(lhs.X/f, lhs.Y/f);
         }
 
         public static bool operator ==(Point2D lhs, Point2D rhs)
