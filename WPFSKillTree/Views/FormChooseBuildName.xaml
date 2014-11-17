@@ -6,7 +6,7 @@
                       ShowInTaskbar="False" ResizeMode="NoResize" Loaded="FormChooseBuildName_Loaded" SizeToContent="Height" Width="360">
     <StackPanel Margin="0">
         <Label x:Name="lblName" Content="Choose a name for this build:" HorizontalAlignment="Left" Margin="4,4,4,2"/>
-        <TextBox x:Name="txtName" HorizontalAlignment="Stretch" Margin="4,2,4,4" MaxLength="24" />
+        <TextBox x:Name="txtName" HorizontalAlignment="Stretch" Margin="4,2,4,4" MaxLength="255" />
         <Label x:Name="lblNote" Content="Add a note to this build:" HorizontalAlignment="Left" Margin="4,4,4,2" />
         <TextBox x:Name="txtName2" HorizontalAlignment="Stretch" Margin="4,2,4,4" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MaxLines="5" AcceptsReturn="True" AcceptsTab="True"/>
         <Expander Header="Character Info" Margin="4" HorizontalAlignment="Stretch">
