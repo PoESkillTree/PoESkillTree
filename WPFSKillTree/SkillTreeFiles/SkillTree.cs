@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -11,7 +10,6 @@ using System.Windows;
 using System.Windows.Media;
 using Newtonsoft.Json;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
-using POESKillTree.ViewModels;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -22,7 +20,6 @@ namespace POESKillTree.SkillTreeFiles
         public delegate void CloseLoadingWindow();
 
         public delegate void StartLoadingWindow();
-
 
         public static float LifePerLevel = 12;
         public static float AccPerLevel = 2;
@@ -56,8 +53,18 @@ namespace POESKillTree.SkillTreeFiles
 
         private readonly Dictionary<string, List<string>> _hybridAttributes = new Dictionary<string, List<string>>
         {
-            {"#% increased Evasion Rating and Armour", new List<string> {"#% increased Evasion Rating", "#% increased Armour"}},
-            {"#% additional Chance to Block while Dual Wielding or holding a Shield", new List<string>{"#% additional Chance to Block while Dual Wielding", "#% additional Chance to Block with Shields"}}
+            {
+                "#% increased Evasion Rating and Armour",
+                new List<string> {"#% increased Evasion Rating", "#% increased Armour"}
+            },
+            {
+                "#% additional Chance to Block while Dual Wielding or holding a Shield",
+                new List<string>
+                {
+                    "#% additional Chance to Block while Dual Wielding",
+                    "#% additional Chance to Block with Shields"
+                }
+            }
         };
 
         public Dictionary<string, float>[] CharBaseAttributes = new Dictionary<string, float>[7];
@@ -127,15 +134,15 @@ namespace POESKillTree.SkillTreeFiles
             var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring.Replace("Additional ", ""), jss);
             int qindex = 0;
 
-
+            //TODO: (SpaceOgre) This is not used atm, so no need to run it.
             foreach (var obj in inTree.skillSprites)
             {
                 if (obj.Key.Contains("inactive"))
                     continue;
-                IconActiveSkills.Images[obj.Value[3].filename] = null;
+                IconInActiveSkills.Images[obj.Value[3].filename] = null;
                 foreach (var o in obj.Value[3].coords)
                 {
-                    IconActiveSkills.SkillPositions[o.Key] =
+                    IconInActiveSkills.SkillPositions[o.Key + "_" + o.Value.w] =
                         new KeyValuePair<Rect, string>(new Rect(o.Value.x, o.Value.y, o.Value.w, o.Value.h),
                             obj.Value[3].filename);
                 }
@@ -147,7 +154,7 @@ namespace POESKillTree.SkillTreeFiles
                 IconActiveSkills.Images[obj.Value[3].filename] = null;
                 foreach (var o in obj.Value[3].coords)
                 {
-                    IconActiveSkills.SkillPositions[o.Key] =
+                    IconActiveSkills.SkillPositions[o.Key + "_" + o.Value.w] =
                         new KeyValuePair<Rect, string>(new Rect(o.Value.x, o.Value.y, o.Value.w, o.Value.h),
                             obj.Value[3].filename);
                 }
@@ -178,32 +185,30 @@ namespace POESKillTree.SkillTreeFiles
             {
                 Skillnodes.Add(nd.id, new SkillNode
                 {
-                    id = nd.id,
-                    name = nd.dn,
+                    Id = nd.id,
+                    Name = nd.dn,
                     attributes = nd.sd,
-                    orbit = nd.o,
-                    orbitIndex = nd.oidx,
-                    icon = nd.icon,
-                    linkID = nd.ot,
-                    g = nd.g,
-                    da = nd.da,
-                    ia = nd.ia,
-                    ks = nd.ks,
-                    m = nd.m,
-                    not = nd.not,
-                    sa = nd.sa,
-                    Mastery = nd.m,
-                    spc = nd.spc.Count() > 0 ? (int?) nd.spc[0] : null
+                    Orbit = nd.o,
+                    OrbitIndex = nd.oidx,
+                    Icon = nd.icon,
+                    LinkId = nd.ot,
+                    G = nd.g,
+                    Da = nd.da,
+                    Ia = nd.ia,
+                    IsKeyStone = nd.ks,
+                    IsNotable = nd.not,
+                    Sa = nd.sa,
+                    IsMastery = nd.m,
+                    Spc = nd.spc.Count() > 0 ? (int?) nd.spc[0] : null
                 });
             }
             var links = new List<ushort[]>();
             foreach (var skillNode in Skillnodes)
             {
-                foreach (ushort i in skillNode.Value.linkID)
+                foreach (ushort i in skillNode.Value.LinkId)
                 {
                     if (
-                        links.Count(
-                            nd => (nd[0] == i && nd[1] == skillNode.Key) || nd[0] == skillNode.Key && nd[1] == i) ==
+                        links.Count(nd => (nd[0] == i && nd[1] == skillNode.Key) || nd[0] == skillNode.Key && nd[1] == i) ==
                         1)
                     {
                         continue;
@@ -236,13 +241,14 @@ namespace POESKillTree.SkillTreeFiles
                     Skillnodes[node].SkillNodeGroup = group;
                 }
             }
-            TRect = new Rect2D(new Vector2D(inTree.min_x * 1.1, inTree.min_y * 1.1),
-                new Vector2D(inTree.max_x * 1.1, inTree.max_y * 1.1));
+            TRect = new Rect2D(new Vector2D(inTree.min_x*1.1, inTree.min_y*1.1),
+                new Vector2D(inTree.max_x*1.1, inTree.max_y*1.1));
 
 
             InitNodeSurround();
             DrawNodeSurround();
             DrawNodeBaseSurround();
+            InitSkillIconLayers();
             DrawSkillIconLayer();
             DrawBackgroundLayer();
             InitFaceBrushesAndLayer();
@@ -291,8 +297,8 @@ namespace POESKillTree.SkillTreeFiles
                 _chartype = value;
                 SkilledNodes.Clear();
                 KeyValuePair<ushort, SkillNode> node =
-                    Skillnodes.First(nd => nd.Value.name.ToUpper() == CharName[_chartype]);
-                SkilledNodes.Add(node.Value.id);
+                    Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[_chartype]);
+                SkilledNodes.Add(node.Value.Id);
                 UpdateAvailNodes();
                 DrawFaces();
             }
@@ -431,14 +437,14 @@ namespace POESKillTree.SkillTreeFiles
             var front = new HashSet<ushort>();
             front.Add(SkilledNodes.First());
             foreach (SkillNode i in Skillnodes[SkilledNodes.First()].Neighbor)
-                if (SkilledNodes.Contains(i.id))
-                    front.Add(i.id);
+                if (SkilledNodes.Contains(i.Id))
+                    front.Add(i.Id);
             var skilled_reachable = new HashSet<ushort>(front);
             while (front.Count > 0)
             {
                 var newFront = new HashSet<ushort>();
                 foreach (ushort i in front)
-                    foreach (ushort j in Skillnodes[i].Neighbor.Select(nd => nd.id))
+                    foreach (ushort j in Skillnodes[i].Neighbor.Select(nd => nd.Id))
                         if (!skilled_reachable.Contains(j) && SkilledNodes.Contains(j))
                         {
                             newFront.Add(j);
@@ -463,15 +469,15 @@ namespace POESKillTree.SkillTreeFiles
             var front = new HashSet<ushort>();
             front.Add(SkilledNodes.First());
             foreach (SkillNode i in Skillnodes[SkilledNodes.First()].Neighbor)
-                if (SkilledNodes.Contains(i.id))
-                    front.Add(i.id);
+                if (SkilledNodes.Contains(i.Id))
+                    front.Add(i.Id);
 
             var skilled_reachable = new HashSet<ushort>(front);
             while (front.Count > 0)
             {
                 var newFront = new HashSet<ushort>();
                 foreach (ushort i in front)
-                    foreach (ushort j in Skillnodes[i].Neighbor.Select(nd => nd.id))
+                    foreach (ushort j in Skillnodes[i].Neighbor.Select(nd => nd.Id))
                         if (!skilled_reachable.Contains(j) && SkilledNodes.Contains(j))
                         {
                             newFront.Add(j);
@@ -515,15 +521,15 @@ namespace POESKillTree.SkillTreeFiles
                 ushort newNode = newOnes.Dequeue();
                 int dis = distance[newNode];
                 visited.Add(newNode);
-                foreach (ushort connection in Skillnodes[newNode].Neighbor.Select(nd => nd.id))
+                foreach (ushort connection in Skillnodes[newNode].Neighbor.Select(nd => nd.Id))
                 {
                     if (visited.Contains(connection))
                         continue;
                     if (distance.ContainsKey(connection))
                         continue;
-                    if (Skillnodes[newNode].spc.HasValue)
+                    if (Skillnodes[newNode].Spc.HasValue)
                         continue;
-                    if (Skillnodes[newNode].Mastery)
+                    if (Skillnodes[newNode].IsMastery)
                         continue;
                     distance.Add(connection, dis + 1);
                     newOnes.Enqueue(connection);
@@ -571,9 +577,9 @@ namespace POESKillTree.SkillTreeFiles
                         _highlightnodes =
                             Skillnodes.Values.Where(
                                 nd =>
-                                    nd.attributes.Where(att => new Regex(search, RegexOptions.IgnoreCase).IsMatch(att))
-                                        .Count() > 0 ||
-                                    new Regex(search, RegexOptions.IgnoreCase).IsMatch(nd.name) && !nd.Mastery).ToList();
+                                    nd.attributes.Any(att => new Regex(search, RegexOptions.IgnoreCase).IsMatch(att)) ||
+                                    new Regex(search, RegexOptions.IgnoreCase).IsMatch(nd.Name) && !nd.IsMastery)
+                                .ToList();
                     DrawHighlights(_highlightnodes, brushColor);
                 }
                 catch (Exception)
@@ -585,8 +591,8 @@ namespace POESKillTree.SkillTreeFiles
                 _highlightnodes =
                     Skillnodes.Values.Where(
                         nd =>
-                            nd.attributes.Where(att => att.ToLower().Contains(search.ToLower())).Count() != 0 ||
-                            nd.name.ToLower().Contains(search.ToLower()) && !nd.Mastery).ToList();
+                            nd.attributes.Count(att => att.ToLower().Contains(search.ToLower())) != 0 ||
+                            nd.Name.ToLower().Contains(search.ToLower()) && !nd.IsMastery).ToList();
 
                 DrawHighlights(_highlightnodes, brushColor);
             }
@@ -598,31 +604,35 @@ namespace POESKillTree.SkillTreeFiles
             // +# to Strength", co["base_str"].Value<int>() }, { "+# to Dexterity", co["base_dex"].Value<int>() }, { "+# to Intelligence", co["base_int"].Value<int>() } };
             retval["+# to maximum Mana"] = new List<float>
             {
-                attribs["+# to Intelligence"][0] / IntPerMana + _level * ManaPerLevel
+                attribs["+# to Intelligence"][0]/IntPerMana + _level*ManaPerLevel
             };
-            retval["#% increased maximum Energy Shield"] = new List<float> 
-            { 
-                (float) Math.Round(attribs["+# to Intelligence"][0] / IntPerES, 0)
+            retval["#% increased maximum Energy Shield from Intelligence"] = new List<float>
+            {
+                (float) Math.Round(attribs["+# to Intelligence"][0]/IntPerES, 0)
             };
 
             retval["+# to maximum Life"] = new List<float>
             {
-                attribs["+# to Strength"][0] / StrPerLife + _level * LifePerLevel
+                attribs["+# to Strength"][0]/StrPerLife + _level*LifePerLevel
             };
             // Every 10 strength grants 2% increased melee physical damage. 
-            int str = (int)attribs["+# to Strength"][0];
-            if (str % (int)StrPerED > 0) str += (int)StrPerED - (str % (int)StrPerED);
-            retval["#% increased Melee Physical Damage"] = new List<float> { str / StrPerED };
+            retval["#% increased Melee Physical Damage from Strength"] = new List<float> 
+            {
+                (float) Math.Round(attribs["+# to Strength"][0]/StrPerED, 0)
+            };
             // Every point of Dexterity gives 2 additional base accuracy, and characters gain 2 base accuracy when leveling up.
             // @see http://pathofexile.gamepedia.com/Accuracy
-            retval["+# Accuracy Rating"] = new List<float> { attribs["+# to Dexterity"][0] / DexPerAcc + (_level - 1) * AccPerLevel };
-            retval["Evasion Rating: #"] = new List<float> {_level * EvasPerLevel};
+            retval["+# Accuracy Rating"] = new List<float>
+            {
+                attribs["+# to Dexterity"][0]/DexPerAcc + (_level - 1)*AccPerLevel
+            };
+            retval["Evasion Rating: #"] = new List<float> {_level*EvasPerLevel};
 
             // Dexterity value is not getting rounded up any more but rounded normally to the nearest multiple of 5.
             // @see http://pathofexile.gamepedia.com/Talk:Evasion
             float dex = attribs["+# to Dexterity"][0];
-            dex = (float)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
-            retval["#% increased Evasion Rating"] = new List<float> { dex / DexPerEvas };
+            dex = (float) Math.Round(dex/DexPerEvas, 0, MidpointRounding.AwayFromZero)*DexPerEvas;
+            retval["#% increased Evasion Rating from Dexterity"] = new List<float> {dex/DexPerEvas};
 
             return retval;
         }
@@ -648,8 +658,8 @@ namespace POESKillTree.SkillTreeFiles
             }
             Chartype = b;
             SkilledNodes.Clear();
-            SkillNode startnode = Skillnodes.First(nd => nd.Value.name.ToUpper() == CharName[Chartype].ToUpper()).Value;
-            SkilledNodes.Add(startnode.id);
+            SkillNode startnode = Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[Chartype].ToUpper()).Value;
+            SkilledNodes.Add(startnode.Id);
             foreach (ushort node in nodes)
             {
                 SkilledNodes.Add(node);
@@ -660,14 +670,14 @@ namespace POESKillTree.SkillTreeFiles
         public void Reset()
         {
             SkilledNodes.Clear();
-            KeyValuePair<ushort, SkillNode> node = Skillnodes.First(nd => nd.Value.name.ToUpper() == CharName[_chartype]);
-            SkilledNodes.Add(node.Value.id);
+            KeyValuePair<ushort, SkillNode> node = Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[_chartype]);
+            SkilledNodes.Add(node.Value.Id);
             UpdateAvailNodes();
         }
 
         public string SaveToURL()
         {
-            var b = new byte[(SkilledNodes.Count - 1) * 2 + 6];
+            var b = new byte[(SkilledNodes.Count - 1)*2 + 6];
             byte[] b2 = BitConverter.GetBytes(2);
             b[0] = b2[3];
             b[1] = b2[2];
@@ -678,7 +688,7 @@ namespace POESKillTree.SkillTreeFiles
             int pos = 6;
             foreach (ushort inn in SkilledNodes)
             {
-                if (CharName.Contains(Skillnodes[inn].name.ToUpper()))
+                if (CharName.Contains(Skillnodes[inn].Name.ToUpper()))
                     continue;
                 byte[] dbff = BitConverter.GetBytes((Int16) inn);
                 b[pos++] = dbff[1];
@@ -694,7 +704,7 @@ namespace POESKillTree.SkillTreeFiles
             var nodes = new HashSet<int>();
             foreach (SkillNode nd in _highlightnodes)
             {
-                nodes.Add(nd.id);
+                nodes.Add(nd.Id);
             }
             SkillStep(nodes);
         }
@@ -704,7 +714,7 @@ namespace POESKillTree.SkillTreeFiles
             var pathes = new List<List<ushort>>();
             foreach (SkillNode nd in _highlightnodes)
             {
-                pathes.Add(GetShortestPathTo(nd.id));
+                pathes.Add(GetShortestPathTo(nd.Id));
             }
             pathes.Sort((p1, p2) => p1.Count.CompareTo(p2.Count));
             pathes.RemoveAll(p => p.Count == 0);
@@ -726,8 +736,8 @@ namespace POESKillTree.SkillTreeFiles
                 SkillNode node = Skillnodes[inode];
                 foreach (SkillNode skillNode in node.Neighbor)
                 {
-                    if (!CharName.Contains(skillNode.name) && !SkilledNodes.Contains(skillNode.id))
-                        AvailNodes.Add(skillNode.id);
+                    if (!CharName.Contains(skillNode.Name) && !SkilledNodes.Contains(skillNode.Id))
+                        AvailNodes.Add(skillNode.Id);
                 }
             }
             //  picActiveLinks = new DrawingVisual();
@@ -740,7 +750,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     foreach (SkillNode n2 in Skillnodes[n1].Neighbor)
                     {
-                        if (SkilledNodes.Contains(n2.id))
+                        if (SkilledNodes.Contains(n2.Id))
                         {
                             DrawConnection(dc, pen2, n2, Skillnodes[n1]);
                         }
@@ -748,6 +758,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
             // picActiveLinks.Clear();
+            DrawActiveNodeIcons();
             DrawNodeSurround();
         }
 
@@ -760,7 +771,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     attributes.Remove(attribute.Key);
 
-                    foreach (var expandedAttribute in expandedAttributes)
+                    foreach (string expandedAttribute in expandedAttributes)
                     {
                         attributes.Add(expandedAttribute, attribute.Value);
                     }

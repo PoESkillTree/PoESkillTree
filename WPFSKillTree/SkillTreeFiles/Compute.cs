@@ -112,8 +112,13 @@ namespace POESKillTree.SkillTreeFiles
                 // Iron Grip.
                 if (IronGrip || attrs.ContainsKey("Strength's damage bonus applies to Projectile Attacks made with Supported Skills"))
                 {
+                    float bonus = 0;
                     // Create projectile attack damage bonus from value of implicit melee physical damage increase.
-                    float bonus = Implicit["#% increased Melee Physical Damage"][0];
+                    if (Global.ContainsKey("#% increased Melee Physical Damage from Strength"))
+                        bonus += Implicit["#% increased Melee Physical Damage from Strength"][0];
+                    if (Global.ContainsKey("#% increased Melee Physical Damage"))
+                        bonus += Implicit["#% increased Melee Physical Damage"][0];
+
                     if (attrs.ContainsKey("#% increased Projectile Weapon Damage"))
                         attrs["#% increased Projectile Weapon Damage"][0] += bonus;
                     else
@@ -123,8 +128,13 @@ namespace POESKillTree.SkillTreeFiles
                 // Iron Will.
                 if (attrs.ContainsKey("Strength's damage bonus applies to Spell Damage as well for Supported Skills"))
                 {
+                    float bonus = 0;
                     // Create spell damage bonus from value of implicit melee physical damage increase.
-                    float bonus = Implicit["#% increased Melee Physical Damage"][0];
+                    if (Global.ContainsKey("#% increased Melee Physical Damage from Strength"))
+                        bonus += Implicit["#% increased Melee Physical Damage from Strength"][0];
+                    if (Global.ContainsKey("#% increased Melee Physical Damage"))
+                        bonus += Implicit["#% increased Melee Physical Damage"][0];
+
                     if (attrs.ContainsKey("#% increased Spell Damage"))
                         attrs["#% increased Spell Damage"][0] += bonus;
                     else
@@ -1096,6 +1106,7 @@ namespace POESKillTree.SkillTreeFiles
                 static Regex ReIncreasedType = new Regex("^#% (increased|reduced) (.+) Damage$");
                 static Regex ReIncreasedTypeWithWeaponType = new Regex("#% (increased|reduced) (.+) Damage with (.+)$");
                 static Regex ReIncreasedWithSource = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Weapons)$");
+                static Regex ReIncreasedTypeFromStr = new Regex("^#% (increased|reduced) (.+) Damage from (.+)$");
 
                 public Increased(float percent)
                     : base()
@@ -1141,6 +1152,12 @@ namespace POESKillTree.SkillTreeFiles
                                     m = ReIncreasedAllWithWeaponType.Match(attr.Key);
                                     if (m.Success && WithWeaponType.ContainsKey(m.Groups[2].Value))
                                         return new Increased(m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = WithWeaponType[m.Groups[2].Value] };
+                                   else
+                                    {
+                                        m = ReIncreasedTypeFromStr.Match(attr.Key);
+                                        if (m.Success)
+                                            return new Increased(DamageSource.Any, m.Groups[2].Value, attr.Value[0]);
+                                    }
                                 }
                             }
                         }
@@ -1733,9 +1750,13 @@ namespace POESKillTree.SkillTreeFiles
             // Add maximum shield from items.
             if (Global.ContainsKey("Energy Shield: #"))
                 es += Global["Energy Shield: #"][0];
+            //Increased %maximum Energy Shield from Intelligence
+            if (Global.ContainsKey("#% increased maximum Energy Shield from Intelligence"))
+                incES += Global["#% increased maximum Energy Shield from Intelligence"][0];
             // Increase % maximum shield from tree, items and intelligence.
             if (Global.ContainsKey("#% increased maximum Energy Shield"))
                 incES += Global["#% increased maximum Energy Shield"][0];
+            
 
             float moreES = 0;
             // More % maximum shield from tree and items.
@@ -1810,7 +1831,10 @@ namespace POESKillTree.SkillTreeFiles
             if (Global.ContainsKey("+# to Evasion Rating"))
                 evasion += Global["+# to Evasion Rating"][0];
             // Increase % from dexterity, tree and items.
-            float incEvasion = Global["#% increased Evasion Rating"][0];
+            float incEvasion = Global["#% increased Evasion Rating from Dexterity"][0];
+            if(Global.ContainsKey("#% increased Evasion Rating"))
+                incEvasion += Global["#% increased Evasion Rating"][0];
+            
             float incEvasionAndArmour = 0;
             if (Global.ContainsKey("#% increased Evasion Rating and Armour"))
                 incEvasionAndArmour += Global["#% increased Evasion Rating and Armour"][0];
@@ -1838,7 +1862,7 @@ namespace POESKillTree.SkillTreeFiles
             if (IronReflexes)
             {
                 // Substract "#% increased Evasion Rating" from Dexterity (it's not being applied).
-                incEvasion -= Implicit["#% increased Evasion Rating"][0];
+                incEvasion -= Global["#% increased Evasion Rating from Dexterity"][0];
                 armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
                 armour += shieldArmour + shieldEvasion;
                 if (armourProjectile > 0)
