@@ -67,6 +67,20 @@ namespace POESKillTree.SkillTreeFiles
             }
         };
 
+        public static readonly Dictionary<string, string> RenameImplicitAttributes = new Dictionary<string, string>
+        {
+            {
+                "#% increased Evasion Rating",
+                "#% increased Evasion Rating from Dexterity"
+            }, {
+                "#% increased maximum Energy Shield",
+                "#% increased maximum Energy Shield from Intelligence"
+            }, {
+                "#% increased Melee Physical Damage",
+                "#% increased Melee Physical Damage from Strength"
+            }
+        };
+
         public Dictionary<string, float>[] CharBaseAttributes = new Dictionary<string, float>[7];
 
         public List<string> CharName = new List<string>
@@ -312,15 +326,17 @@ namespace POESKillTree.SkillTreeFiles
 
                 foreach (var a in ImplicitAttributes(temp))
                 {
-                    if (!temp.ContainsKey(a.Key))
-                        temp[a.Key] = new List<float>();
+                    string key = RenameImplicitAttributes.ContainsKey(a.Key) ? RenameImplicitAttributes[a.Key] : a.Key;
+
+                    if (!temp.ContainsKey(key))
+                        temp[key] = new List<float>();
                     for (int i = 0; i < a.Value.Count; i++)
                     {
-                        if (temp.ContainsKey(a.Key) && temp[a.Key].Count > i)
-                            temp[a.Key][i] += a.Value[i];
+                        if (temp.ContainsKey(key) && temp[key].Count > i)
+                            temp[key][i] += a.Value[i];
                         else
                         {
-                            temp[a.Key].Add(a.Value[i]);
+                            temp[key].Add(a.Value[i]);
                         }
                     }
                 }

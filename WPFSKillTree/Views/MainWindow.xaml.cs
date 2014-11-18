@@ -169,15 +169,17 @@ namespace POESKillTree.Views
 
                 foreach (var a in Tree.ImplicitAttributes(attritemp))
                 {
-                    if (!attritemp.ContainsKey(a.Key))
-                        attritemp[a.Key] = new List<float>();
+                    string key = SkillTree.RenameImplicitAttributes.ContainsKey(a.Key) ? SkillTree.RenameImplicitAttributes[a.Key] : a.Key;
+
+                    if (!attritemp.ContainsKey(key))
+                        attritemp[key] = new List<float>();
                     for (int i = 0; i < a.Value.Count; i++)
                     {
-                        if (attritemp.ContainsKey(a.Key) && attritemp[a.Key].Count > i)
-                            attritemp[a.Key][i] += a.Value[i];
+                        if (attritemp.ContainsKey(key) && attritemp[key].Count > i)
+                            attritemp[key][i] += a.Value[i];
                         else
                         {
-                            attritemp[a.Key].Add(a.Value[i]);
+                            attritemp[key].Add(a.Value[i]);
                         }
                     }
                 }
