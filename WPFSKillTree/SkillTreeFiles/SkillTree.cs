@@ -606,7 +606,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 attribs["+# to Intelligence"][0]/IntPerMana + _level*ManaPerLevel
             };
-            retval["#% increased maximum Energy Shield from Intelligence"] = new List<float>
+            retval["#% increased maximum Energy Shield"] = new List<float>
             {
                 (float) Math.Round(attribs["+# to Intelligence"][0]/IntPerES, 0)
             };
@@ -616,10 +616,9 @@ namespace POESKillTree.SkillTreeFiles
                 attribs["+# to Strength"][0]/StrPerLife + _level*LifePerLevel
             };
             // Every 10 strength grants 2% increased melee physical damage. 
-            retval["#% increased Melee Physical Damage from Strength"] = new List<float> 
-            {
-                (float) Math.Round(attribs["+# to Strength"][0]/StrPerED, 0)
-            };
+            var str = (int) attribs["+# to Strength"][0];
+            if (str%(int) StrPerED > 0) str += (int) StrPerED - (str%(int) StrPerED);
+            retval["#% increased Melee Physical Damage"] = new List<float> {str/StrPerED};
             // Every point of Dexterity gives 2 additional base accuracy, and characters gain 2 base accuracy when leveling up.
             // @see http://pathofexile.gamepedia.com/Accuracy
             retval["+# Accuracy Rating"] = new List<float>
@@ -632,7 +631,7 @@ namespace POESKillTree.SkillTreeFiles
             // @see http://pathofexile.gamepedia.com/Talk:Evasion
             float dex = attribs["+# to Dexterity"][0];
             dex = (float) Math.Round(dex/DexPerEvas, 0, MidpointRounding.AwayFromZero)*DexPerEvas;
-            retval["#% increased Evasion Rating from Dexterity"] = new List<float> {dex/DexPerEvas};
+            retval["#% increased Evasion Rating"] = new List<float> {dex/DexPerEvas};
 
             return retval;
         }

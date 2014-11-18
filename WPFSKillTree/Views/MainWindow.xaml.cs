@@ -204,8 +204,6 @@ namespace POESKillTree.Views
                 var a = new Attribute(item);
                 _attiblist.Add(a);
             }
-
-            
             _attibuteCollection.Refresh();
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
         }
