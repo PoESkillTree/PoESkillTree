@@ -236,6 +236,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="dist-clean.bat" />
+    <None Include="dist-update.bat" />
     <None Include="dist-release.bat" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />

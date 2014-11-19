@@ -45,7 +45,7 @@
       <InstallFiles Include="..\UpdateDB\bin\Release\*.*" />
     </ItemGroup>
 
-    <!-- Create distribution package -->
+    <!-- Create release directory -->
     <MakeDir Directories="$(DistDir)" />
     <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(DistDir)" ContinueOnError="false" />
     <Exec Command="..\$(ZipTool) $(InstallDir)-$(Version).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
@@ -57,5 +57,10 @@
 
     <!-- Run tests -->
     <Exec Command="vstest.console ..\..\UnitTests\bin\Debug\UnitTests.dll" WorkingDirectory="$(WorkDir)" />
+  </Target>
+
+  <Target Name="Update" DependsOnTargets="Build">
+    <!-- Update items database -->
+    <Exec Command="..\UpdateDB\bin\Release\updatedb /N" />
   </Target>
 </Project>
