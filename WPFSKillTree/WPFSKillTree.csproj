@@ -128,6 +128,11 @@
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
+    <Compile Include="Properties\Version.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.resx</DependentUpon>
+    </Compile>
     <Compile Include="SkillTreeFiles\Asset.cs" />
     <Compile Include="SkillTreeFiles\Compute.cs" />
     <Compile Include="SkillTreeFiles\ItemDB.cs" />
@@ -225,7 +230,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Version.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Version.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="dist-clean.bat" />
+    <None Include="dist-release.bat" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -285,6 +296,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Resource Include="release.xml" />
+    <Content Include="Tools\7z.exe" />
+    <Resource Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
