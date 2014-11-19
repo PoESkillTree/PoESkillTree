@@ -86,6 +86,9 @@
     <ApplicationIcon>naja.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=0.15.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.0.15.0-ALPHA2\lib\net40\MahApps.Metro.dll</HintPath>
@@ -139,6 +142,7 @@
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
+    <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\ItemAttribute\Item.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
