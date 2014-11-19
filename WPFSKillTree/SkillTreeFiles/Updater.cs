@@ -12,7 +12,7 @@ namespace POESKillTree.SkillTreeFiles
     public class Updater
     {
         // Work directory of update process (relative to installation root).
-        private static readonly string WorkDir = @".update";
+        private static readonly string WorkDir = @".install";
 
         // Release informations.
         public class Release
