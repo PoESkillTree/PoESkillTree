@@ -3,6 +3,7 @@
     x:Class="POESKillTree.Views.AboutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Properties="clr-namespace:POESKillTree.Properties"
         Title="About" Width="500" WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height">
     <Grid Background="{DynamicResource WhiteColorBrush}">
@@ -19,7 +20,7 @@
             <ColumnDefinition Width="110"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom">PoESkillTree</Label>
-        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontStyle="Italic">v2.0.0</Label>
+        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontStyle="Italic" Content="{x:Static Properties:Version.AppVersionString}"/>
         <Separator Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
         <Label Grid.Row="1" Grid.Column="0">Updates</Label>
         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">

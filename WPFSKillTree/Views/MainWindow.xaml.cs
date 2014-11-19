@@ -1340,8 +1340,18 @@ namespace POESKillTree.Views
 
         private void mnuOpenHotkeys(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new HotkeysWindow();
-            aboutWindow.ShowDialog();
+            //var aboutWindow = new HotkeysWindow();
+            //aboutWindow.ShowDialog();
+            try
+            {
+                Updater.Release release = Updater.CheckForUpdates();
+                if (release != null)
+                    Updater.UpdateTo(release);
+            }
+            catch (UpdaterException ue)
+            {
+                // ue.Message
+            }
         }
 
         private void mnuOpenAbout(object sender, RoutedEventArgs e)

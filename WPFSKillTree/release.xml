@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <InstallDir>PoESkillTree</InstallDir>
+    <WorkDir>dist</WorkDir>
+    <ZipTool>Tools\7z.exe a -tzip</ZipTool>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DistDir>$(WorkDir)\$(InstallDir)</DistDir>
+    <TagFile>$(WorkDir)\tag</TagFile>
+    <VersionFile>$(WorkDir)\Version.restext</VersionFile>
+  </PropertyGroup>
+
+  <Target Name="Build">
+    <!-- Create working directory for release -->
+    <MakeDir Directories="$(WorkDir)" />
+
+    <!-- Create version text resource file -->
+    <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
+    <ReadLinesFromFile File="$(TagFile)">
+      <Output TaskParameter="Lines" ItemName="Tag" />
+    </ReadLinesFromFile>
+    <CreateProperty Value="@(Tag -> '%(identity)', '')">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </CreateProperty>
+    <WriteLinesToFile File="$(VersionFile)" Lines="AppVersionString=$(Version)" Overwrite="true" />
+
+    <!-- Compile version resource file -->
+    <GenerateResource Sources="$(WorkDir)\Version.restext" OutputResources="Properties\Version.resx" />
+
+    <!-- Build projects -->
+    <MSBuild Projects="WPFSKillTree.csproj;..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;WarningLevel=0" />
+  </Target>
+
+  <Target Name="Clean">
+    <MSBuild Projects="WPFSKillTree.csproj;..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release" />
+    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Clean" Properties="Configuration=Debug" />
+    <RemoveDir Directories="$(WorkDir)" />
+  </Target>
+
+  <Target Name="Release" DependsOnTargets="Test">
+    <ItemGroup>
+      <InstallFiles Include=".\bin\Release\*.*" />
+      <InstallFiles Include="..\UpdateDB\bin\Release\*.*" />
+    </ItemGroup>
+
+    <!-- Create release directory -->
+    <MakeDir Directories="$(DistDir)" />
+    <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(DistDir)" ContinueOnError="false" />
+    <Exec Command="..\$(ZipTool) $(InstallDir)-$(Version).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
+  </Target>
+
+  <Target Name="Test" DependsOnTargets="Build">
+    <!-- Build unit tests -->
+    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Build" Properties="Configuration=Debug;WarningLevel=0" />
+
+    <!-- Run tests -->
+    <Exec Command="vstest.console ..\..\UnitTests\bin\Debug\UnitTests.dll" WorkingDirectory="$(WorkDir)" />
+  </Target>
+
+  <Target Name="Update" DependsOnTargets="Build">
+    <!-- Update items database -->
+    <Exec Command="..\UpdateDB\bin\Release\updatedb /N" />
+  </Target>
+</Project>
