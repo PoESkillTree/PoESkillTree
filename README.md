@@ -2,14 +2,17 @@ PoESkillTree
 ==================
 
 ###Features: 
-* Hide sidebars
-* PoEBuilder, PoEUrl and Tinyurl parsing
-* Button to change current tree link to poeurl link
+* Url Improvments
+  * PoEBuilder, PoEUrl and Tinyurl parsing
+  * Button to change current tree link to poeurl link
+  * Enter in url to load build
 * Hotkeys
-* Enter in url to load build
-* Drag&Drop in builds list
+* GUI Improvments
+  * Hide sidebars
+  * Drag&Drop in builds list
+  * New Look and the ability to choose color theme
+  * And lots of other changes and updates
 * Character Sheet: DPS and Defensive calculations
-* Lots of UI changes and updates
 
 ###Hotkeys:
 * Shift + Left Click: Zoom In
