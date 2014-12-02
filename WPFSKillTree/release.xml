@@ -9,25 +9,27 @@
   <PropertyGroup>
     <DistDir>$(WorkDir)\$(InstallDir)</DistDir>
     <TagFile>$(WorkDir)\tag</TagFile>
-    <VersionFile>$(WorkDir)\Version.restext</VersionFile>
   </PropertyGroup>
 
   <Target Name="Build">
-    <!-- Create working directory for release -->
-    <MakeDir Directories="$(WorkDir)" />
+    <!-- Get release version string from Version resource file -->
+    <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AppVersionString']/value/text()">
+      <Output PropertyName="Version" TaskParameter="Result" />
+    </XmlPeek>
 
-    <!-- Create version text resource file -->
+    <!-- Get most recent tag (version) from Git repository -->
     <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
     <ReadLinesFromFile File="$(TagFile)">
-      <Output TaskParameter="Lines" ItemName="Tag" />
+      <Output PropertyName="GitVersion" TaskParameter="Lines" />
     </ReadLinesFromFile>
-    <CreateProperty Value="@(Tag -> '%(identity)', '')">
-      <Output TaskParameter="Value" PropertyName="Version" />
-    </CreateProperty>
-    <WriteLinesToFile File="$(VersionFile)" Lines="AppVersionString=$(Version)" Overwrite="true" />
+    
+    <!-- Compare version strings -->
+    <Message Text="Release version: $(Version)" />
+    <Message Text="Recent Git version: $(GitVersion)" />
+    <Error Text="Release version and recent Git version are identical!%0APlease, edit Properties\Version.resx file to reflect a new release." Condition="'$(Version)' == '$(GitVersion)'" />
 
-    <!-- Compile version resource file -->
-    <GenerateResource Sources="$(WorkDir)\Version.restext" OutputResources="Properties\Version.resx" />
+    <!-- Create working directory for release -->
+    <MakeDir Directories="$(WorkDir)" />
 
     <!-- Build projects -->
     <MSBuild Projects="WPFSKillTree.csproj;..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;WarningLevel=0" />
@@ -45,9 +47,14 @@
       <InstallFiles Include="..\UpdateDB\bin\Release\*.*" />
     </ItemGroup>
 
-    <!-- Create release directory -->
+    <!-- Create package root directory and copy built files -->
     <MakeDir Directories="$(DistDir)" />
-    <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(DistDir)" ContinueOnError="false" />
+    <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(DistDir)" />
+
+    <!-- Download skill tree assets -->
+    <Exec Command="$(MSBuildProjectDirectory)\..\UpdateDB\bin\Release\UpdateDB.exe /A" WorkingDirectory="$(DistDir)" />
+
+    <!-- Create release package -->
     <Exec Command="..\$(ZipTool) $(InstallDir)-$(Version).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
   </Target>
 
@@ -61,6 +68,6 @@
 
   <Target Name="Update" DependsOnTargets="Build">
     <!-- Update items database -->
-    <Exec Command="..\UpdateDB\bin\Release\updatedb /N" />
+    <Exec Command="..\UpdateDB\bin\Release\UpdateDB.exe /N" />
   </Target>
 </Project>
