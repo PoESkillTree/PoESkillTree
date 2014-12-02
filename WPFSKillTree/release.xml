@@ -17,6 +17,9 @@
       <Output PropertyName="Version" TaskParameter="Result" />
     </XmlPeek>
 
+    <!-- Create working directory for release -->
+    <MakeDir Directories="$(WorkDir)" />
+
     <!-- Get most recent tag (version) from Git repository -->
     <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
     <ReadLinesFromFile File="$(TagFile)">
@@ -27,9 +30,6 @@
     <Message Text="Release version: $(Version)" />
     <Message Text="Recent Git version: $(GitVersion)" />
     <Error Text="Release version and recent Git version are identical!%0APlease, edit Properties\Version.resx file to reflect a new release." Condition="'$(Version)' == '$(GitVersion)'" />
-
-    <!-- Create working directory for release -->
-    <MakeDir Directories="$(WorkDir)" />
 
     <!-- Build projects -->
     <MSBuild Projects="WPFSKillTree.csproj;..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;WarningLevel=0" />
