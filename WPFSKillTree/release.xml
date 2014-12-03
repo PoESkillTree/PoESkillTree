@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <InstallDir>PoESkillTree</InstallDir>
+    <WorkDir>dist</WorkDir>
+    <ZipTool>Tools\7z.exe a -tzip</ZipTool>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DistDir>$(WorkDir)\$(InstallDir)</DistDir>
+    <TagFile>$(WorkDir)\tag</TagFile>
+  </PropertyGroup>
+
+  <Target Name="Build">
+    <!-- Get release version string from Version resource file -->
+    <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AppVersionString']/value/text()">
+      <Output PropertyName="Version" TaskParameter="Result" />
+    </XmlPeek>
+
+    <!-- Create working directory for release -->
+    <MakeDir Directories="$(WorkDir)" />
+
+    <!-- Get most recent tag (version) from Git repository -->
+    <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
+    <ReadLinesFromFile File="$(TagFile)">
+      <Output PropertyName="GitVersion" TaskParameter="Lines" />
+    </ReadLinesFromFile>
+    
+    <!-- Compare version strings -->
+    <Message Text="Release version: $(Version)" />
+    <Message Text="Recent Git version: $(GitVersion)" />
+    <Error Text="Release version and recent Git version are identical!%0APlease, edit Properties\Version.resx file to reflect a new release." Condition="'$(Version)' == '$(GitVersion)'" />
+
+    <!-- Build projects -->
+    <MSBuild Projects="WPFSKillTree.csproj;..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;WarningLevel=0" />
+  </Target>
+
+  <Target Name="Clean">
+    <MSBuild Projects="WPFSKillTree.csproj;..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release" />
+    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Clean" Properties="Configuration=Debug" />
+    <RemoveDir Directories="$(WorkDir)" />
+  </Target>
+
+  <Target Name="Release" DependsOnTargets="Test">
+    <ItemGroup>
+      <InstallFiles Include=".\bin\Release\*.*" />
+      <InstallFiles Include="..\UpdateDB\bin\Release\*.*" />
+    </ItemGroup>
+
+    <!-- Create package root directory and copy built files -->
+    <MakeDir Directories="$(DistDir)" />
+    <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(DistDir)" />
+
+    <!-- Download skill tree assets -->
+    <Exec Command="$(MSBuildProjectDirectory)\..\UpdateDB\bin\Release\UpdateDB.exe /A" WorkingDirectory="$(DistDir)" />
+
+    <!-- Create release package -->
+    <Exec Command="..\$(ZipTool) $(InstallDir)-$(Version).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
+  </Target>
+
+  <Target Name="Test" DependsOnTargets="Build">
+    <!-- Build unit tests -->
+    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Build" Properties="Configuration=Debug;WarningLevel=0" />
+
+    <!-- Run tests -->
+    <Exec Command="vstest.console ..\..\UnitTests\bin\Debug\UnitTests.dll" WorkingDirectory="$(WorkDir)" />
+  </Target>
+
+  <Target Name="Update" DependsOnTargets="Build">
+    <!-- Update items database -->
+    <Exec Command="..\UpdateDB\bin\Release\UpdateDB.exe /N" />
+  </Target>
+</Project>

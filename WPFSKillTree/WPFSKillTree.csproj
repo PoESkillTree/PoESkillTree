@@ -85,7 +85,13 @@
   <PropertyGroup>
     <ApplicationIcon>naja.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>POESKillTree.SkillTreeFiles.Bootstrap</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=0.15.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.0.15.0-ALPHA2\lib\net40\MahApps.Metro.dll</HintPath>
@@ -128,12 +134,19 @@
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
+    <Compile Include="Properties\Version.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.resx</DependentUpon>
+    </Compile>
     <Compile Include="SkillTreeFiles\Asset.cs" />
+    <Compile Include="SkillTreeFiles\Bootstrap.cs" />
     <Compile Include="SkillTreeFiles\Compute.cs" />
     <Compile Include="SkillTreeFiles\ItemDB.cs" />
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
+    <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\ItemAttribute\Item.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
@@ -225,7 +238,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Version.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Version.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="dist-clean.bat" />
+    <None Include="dist-update.bat" />
+    <None Include="dist-release.bat" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -285,6 +305,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Resource Include="release.xml" />
+    <Content Include="Tools\7z.exe" />
+    <Resource Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

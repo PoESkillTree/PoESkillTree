@@ -1350,6 +1350,91 @@ namespace POESKillTree.Views
             aboutWindow.ShowDialog();
         }
 
+        // Checks for updates.
+        private void mnuCheckForUpdates(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Updater.Release release = Updater.CheckForUpdates();
+                if (release == null)
+                {
+                    // Show "No update is available" dialog.
+                }
+                else
+                {
+                    // Show dialog with release informations and "Install & Restart" button.
+                }
+            }
+            catch (UpdaterException ex)
+            {
+                // Display error message: ex.Message.
+            }
+        }
+
+        // Starts update process.
+        private void btnUpdateInstall(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Show download progress bar and Cancel button.
+
+                // Start downloading.
+                Updater.Download(UpdateDownloadCompleted, UpdateDownloadProgressChanged);
+            }
+            catch (UpdaterException ex)
+            {
+                // Display error message: ex.Message.
+            }
+        }
+
+        // Cancels update download (also invoked when download progress dialog is closed).
+        private void btnUpdateCancel(object sender, RoutedEventArgs e)
+        {
+            if (Updater.IsDownloading)
+                Updater.Cancel();
+            else
+            {
+                Updater.Dispose();
+
+                // Close dialog.
+            }
+        }
+
+        // Invoked when update download completes, aborts or fails.
+        private void UpdateDownloadCompleted(Object sender, AsyncCompletedEventArgs e)
+        {
+            if (e.Cancelled) // Check whether download was cancelled.
+            {
+                Updater.Dispose();
+
+                // Close dialog.
+            }
+            else if (e.Error != null) // Check whether error occured.
+            {
+                // Display error message: e.Error.Message.
+            }
+            else // Download completed.
+            {
+                try
+                {
+                    Updater.Install();
+                    Updater.RestartApplication();
+                }
+                catch (UpdaterException ex)
+                {
+                    Updater.Dispose();
+
+                    // Display error message: ex.Message.
+                }
+            }
+        }
+
+        // Invoked when update download progress changes.
+        private void UpdateDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            // Update download progres bar.
+        }
+
         #endregion
     }
 }

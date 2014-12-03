@@ -166,10 +166,12 @@
       <ValueForLevel From="14" To="15">22</ValueForLevel>
       <ValueForLevel From="16" To="17">23</ValueForLevel>
       <ValueForLevel From="18" To="19">25</ValueForLevel>
-      <ValueForLevel From="20" To="21">26</ValueForLevel>
-      <Value Level="22">-</Value>
+      <ValueForLevel From="20" To="22">26</ValueForLevel>
       <Value Level="23">27</Value>
       <Value Level="24">-</Value>
+      <Value Level="25">-</Value>
+      <Value Level="26">-</Value>
+      <Value Level="27">30</Value>
     </Attribute>
     <Attribute Name="Deals #-# Lightning Damage">
       <Value Level="1">3–50</Value>
@@ -193,9 +195,12 @@
       <Value Level="19">35–660</Value>
       <Value Level="20">38–726</Value>
       <Value Level="21">42–797</Value>
-      <Value Level="22">-</Value>
+      <Value Level="22">46–876</Value>
       <Value Level="23">51–961</Value>
-      <Value Level="24">-</Value>
+      <Value Level="24">55–1054</Value>
+      <Value Level="25">61–1155</Value>
+      <Value Level="26">67–1266</Value>
+      <Value Level="27">73–1386</Value>
     </Attribute>
   </Gem>
   <Gem Name="Arctic Breath">
@@ -424,6 +429,7 @@
       <ValueForLevel From="16" To="17">26</ValueForLevel>
       <ValueForLevel From="18" To="19">27</ValueForLevel>
       <ValueForLevel From="20" To="21">28</ValueForLevel>
+      <Value Level="23">29</Value>
     </Attribute>
     <Attribute Name="Deals #-# Cold Damage">
       <Value Level="1">8-15</Value>
@@ -447,6 +453,7 @@
       <Value Level="19">384-576</Value>
       <Value Level="20">421-632</Value>
       <Value Level="21">462-693</Value>
+      <Value Level="23">554-832</Value>
     </Attribute>
   </Gem>
   <Gem Name="Cold to Fire">
@@ -978,7 +985,7 @@
       <Value Level="3">18–27</Value>
       <Value Level="4">22–33</Value>
       <Value Level="5">26–39</Value>
-      <Value Level="6">31–57</Value>
+      <Value Level="6">31–47</Value>
       <Value Level="7">37–55</Value>
       <Value Level="8">45–68</Value>
       <Value Level="9">55–83</Value>
@@ -1057,7 +1064,7 @@
       <Value Level="14">16</Value>
       <Value Level="15">17</Value>
       <ValueForLevel From="16" To="21">18</ValueForLevel>
-      <Value Level="22">19</Value>
+      <ValueForLevel From="22" To="23">19</ValueForLevel>
     </Attribute>
     <Attribute Name="Deals #-# Cold Damage">
       <Value Level="1">7–11</Value>
@@ -1082,23 +1089,15 @@
       <Value Level="20">255-382</Value>
       <Value Level="21">275-413</Value>
       <Value Level="22">297-445</Value>
+      <Value Level="23">320-480</Value>
     </Attribute>
   </Gem>
   <Gem Name="Frenzy">
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="5">12</ValueForLevel>
       <ValueForLevel From="6" To="10">13</ValueForLevel>
-      <Value Level="11">14</Value>
-      <Value Level="12">?</Value>
-      <Value Level="13">?</Value>
-      <Value Level="14">?</Value>
-      <Value Level="15">?</Value>
-      <Value Level="16">?</Value>
-      <Value Level="17">15</Value>
-      <Value Level="18">?</Value>
-      <Value Level="19">?</Value>
-      <Value Level="20">?</Value>
-      <Value Level="21">?</Value>
+      <ValueForLevel From="11" To="16">14</ValueForLevel>
+      <ValueForLevel From="17" To="21">15</ValueForLevel>
       <Value Level="22">?</Value>
       <Value Level="23">?</Value>
       <Value Level="24">?</Value>
@@ -1262,9 +1261,9 @@
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
     <Attribute Name="Mana Cost: #%">
-      <ValueForLevel From="1" To="9">11</ValueForLevel>
-      <ValueForLevel From="10" To="15">12</ValueForLevel>
-      <ValueForLevel From="16" To="20">13</ValueForLevel>
+      <ValueForLevel From="1" To="7">9</ValueForLevel>
+      <ValueForLevel From="8" To="20">10</ValueForLevel>
+      <Value Level="21">11</Value>
     </Attribute>
   </Gem>
   <Gem Name="Greater Multiple Projectiles">
@@ -1354,11 +1353,11 @@
       <Value Level="18">235-352</Value>
       <Value Level="19">257-386</Value>
       <Value Level="20">282-422</Value>
-      <Value Level="21">154-231</Value>
-      <Value Level="22">168-253</Value>
-      <Value Level="23">N/A</Value>
-      <Value Level="24">N/A</Value>
-      <Value Level="25">N/A</Value>
+      <Value Level="21">308-462</Value>
+      <Value Level="22">337-505</Value>
+      <Value Level="23">368-552</Value>
+      <Value Level="24">402-603</Value>
+      <Value Level="25">438-658</Value>
       <Value Level="26">N/A</Value>
       <Value Level="27">N/A</Value>
       <Value Level="28">N/A</Value>
@@ -1392,6 +1391,11 @@
       <Value Level="19">22-1057</Value>
       <Value Level="20">25-1191</Value>
       <Value Level="21">28-1328</Value>
+      <Value Level="22">31-1478</Value>
+      <Value Level="23">35-1645</Value>
+      <Value Level="24">39-1828</Value>
+      <Value Level="25">44-2031</Value>
+      <Value Level="26">49-2254</Value>
     </Attribute>
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
@@ -2328,9 +2332,7 @@
       <ValueForLevel From="1" To="10">7</ValueForLevel>
       <ValueForLevel From="11" To="15">8</ValueForLevel>
       <ValueForLevel From="16" To="20">9</ValueForLevel>
-      <Value Level="21">10</Value>
-      <Value Level="22">?</Value>
-      <Value Level="23">?</Value>
+      <ValueForLevel From="21" To="23">10</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerLevel>3</ValuePerLevel>
@@ -2488,7 +2490,7 @@
       <ValueForLevel From="1" To="5">8</ValueForLevel>
       <ValueForLevel From="6" To="10">9</ValueForLevel>
       <ValueForLevel From="11" To="15">10</ValueForLevel>
-      <Value Level="16">15*</Value>
+      <Value Level="16">11</Value>
       <ValueForLevel From="17" To="18">16*</ValueForLevel>
       <ValueForLevel From="19" To="20">17*</ValueForLevel>
     </Attribute>

@@ -26,6 +26,7 @@ namespace UpdateDB
             string optFileName = null;
             string optGemName = null;
             string optMergeName = null;
+            bool assetsDownload = false;
             bool noBackup = false;
 
             // Get options.
@@ -46,6 +47,8 @@ namespace UpdateDB
                             case "/?":
                                 Console.WriteLine("Updates item database.\r\n");
                                 Console.WriteLine("UPDATEDB [/F file] [[/G string] | [/M file]] [/N] [/Q | /V]\r\n");
+                                Console.WriteLine("UPDATEDB /A\r\n");
+                                Console.WriteLine("/A\tDownloads skill tree assets.");
                                 Console.WriteLine("/F\tUpdate specified file instead of default file \"Items.xml\".");
                                 Console.WriteLine("/G\tUpdate single gem specified by string.");
                                 Console.WriteLine("/M\tMerge data of specified file instead of update.");
@@ -53,6 +56,10 @@ namespace UpdateDB
                                 Console.WriteLine("/Q\tDoes not display any output.");
                                 Console.WriteLine("/V\tEnables verbose output.");
                                 exit = true;
+                                break;
+
+                            case "/A":
+                                assetsDownload = true;
                                 break;
 
                             case "/F":
@@ -88,6 +95,25 @@ namespace UpdateDB
                         args.RemoveAt(i);
                     }
                     else ++i; // Skip non-switch argument.
+                }
+
+                // Download assets if requested.
+                if (assetsDownload)
+                {
+                    try
+                    {
+                        Info("Downloading skill tree assests...");
+                        SkillTree.CreateSkillTree();
+                        Info("Done.");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Error: " + e.Message);
+
+                        return 1;
+                    }
+
+                    return 0;
                 }
 
                 // Consume non-switch arguments in order of their switch appearance.
