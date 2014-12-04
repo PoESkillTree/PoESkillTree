@@ -21,10 +21,15 @@ namespace POESKillTree.SkillTreeFiles
         private const int RESTART_EXIT_CODE = 42;
 
         // Entry point method.
-        [LoaderOptimization(LoaderOptimization.MultiDomainHost)]
+        //[LoaderOptimization(LoaderOptimization.MultiDomainHost)]
         [STAThread]
         public static void Main(string[] arguments)
         {
+            // TODO: Disabled shadow copying for further testing.
+            Run();
+
+            return;
+
             // Don't do shadow copying when being debugged in VS.
             if (Debugger.IsAttached)
             {

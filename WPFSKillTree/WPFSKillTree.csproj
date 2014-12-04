@@ -306,6 +306,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Resource Include="release.xml" />
+    <Content Include="Tools\7z.dll" />
     <Content Include="Tools\7z.exe" />
     <Resource Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
