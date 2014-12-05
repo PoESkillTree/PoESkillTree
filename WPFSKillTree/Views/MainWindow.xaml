@@ -167,6 +167,18 @@
                         <ContentControl Template="{StaticResource ClearIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="C_hange Class">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource GlobeIcon}" />
+                    </MenuItem.Icon>
+                    <MenuItem Header="Scion" Click="changeClassNoReset"/>
+                    <MenuItem Header="Marauder" Click="changeClassNoReset"/>
+                    <MenuItem Header="Ranger" Click="changeClassNoReset"/>
+                    <MenuItem Header="Witch" Click="changeClassNoReset"/>
+                    <MenuItem Header="Duelist" Click="changeClassNoReset"/>
+                    <MenuItem Header="Templar" Click="changeClassNoReset"/>
+                    <MenuItem Header="Shadow" Click="changeClassNoReset"/>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_View ">
                 <MenuItem Header="_Theme ">
