@@ -140,7 +140,7 @@
                         <ContentControl Template="{StaticResource SaveIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Exit" Click="menu_exit">
+                <MenuItem Header="_Exit" Click="Menu_Exit">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ExitIcon}" />
                     </MenuItem.Icon>
@@ -229,7 +229,7 @@
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Redownload Tree Assets" Click="RedownloadTreeAssets_Click">
+                <MenuItem Header="_Redownload Tree Assets" Click="Menu_RedownloadTreeAssets">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource RedownloadIcon}" />
                     </MenuItem.Icon>
@@ -240,15 +240,15 @@
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource GlobeIcon}" />
                     </MenuItem.Icon>
-                    <MenuItem Header="_Path of Exile Website" Click="mnuOpenPoEWebsite"/>
-                    <MenuItem Header="_Path of Exile Wiki" Click="mnuOpenWiki"/>
+                    <MenuItem Header="_Path of Exile Website" Click="Menu_OpenPoEWebsite"/>
+                    <MenuItem Header="_Path of Exile Wiki" Click="Menu_OpenWiki"/>
                 </MenuItem>
-                <MenuItem Header="_Hotkeys" Click="mnuOpenHotkeys">
+                <MenuItem Header="_Hotkeys" Click="Menu_OpenHotkeys">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource KeyboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_About" Click="mnuOpenAbout">
+                <MenuItem Header="_About" Click="Menu_OpenAbout">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource AboutIcon}" />
                     </MenuItem.Icon>
