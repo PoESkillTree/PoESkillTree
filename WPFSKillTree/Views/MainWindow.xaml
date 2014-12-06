@@ -157,12 +157,12 @@
                         <ContentControl Template="{StaticResource RedoIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Reset" InputGestureText="Ctrl+R" Click="RecSkillTree_Reset_Click">
+                <MenuItem Header="_Reset" InputGestureText="Ctrl+R" Click="btnReset_Click">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ResetIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="mnuClearItems" Header="_Clear Items" Click="ClearItems_Click" IsEnabled="False">
+                <MenuItem x:Name="mnuClearItems" Header="_Clear Items" Click="Menu_ClearItems" IsEnabled="False">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ClearIcon}" />
                     </MenuItem.Icon>
@@ -209,22 +209,22 @@
                 <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="False" InputGestureText="Ctrl+Q" Click="ToggleAttributes_Click"/>
             </MenuItem>
             <MenuItem Header="_Tools ">
-                <MenuItem Header="_ScreenShot of Skilled Nodes" Click="ScreenShot_Click">
+                <MenuItem Header="_ScreenShot of Skilled Nodes" Click="Menu_ScreenShot">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ScreenShotIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Download/Import Items" Click="ImportItems_Click">
+                <MenuItem Header="_Download/Import Items" Click="Menu_ImportItems">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource DownloadIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Skill highlighted nodes" Click="SkillHighlightedNodes_Click">
+                <MenuItem Header="_Skill highlighted nodes" Click="Menu_SkillHighlightedNodes">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource SkillIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="btnCopyStats_Click">
+                <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="Menu_CopyStats">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
@@ -259,8 +259,8 @@
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
         <Grid x:Name="BtnGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Width="314" Panel.ZIndex="99" >
             <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
-            <TextBox HorizontalAlignment="Left" Margin="40,0,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="textBox3_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
-            <ComboBox Height="26" HorizontalAlignment="Left" Margin="80,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox1_SelectionChanged" VerticalContentAlignment="Center">
+            <TextBox HorizontalAlignment="Left" Margin="40,0,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="tbLevel_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
+            <ComboBox Height="26" HorizontalAlignment="Left" Margin="80,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="cbCharType_SelectionChanged" VerticalContentAlignment="Center">
                 <ComboBoxItem Content="Scion" />
                 <ComboBoxItem Content="Marauder" />
                 <ComboBoxItem Content="Ranger" />
@@ -272,7 +272,7 @@
             <Label Content="Used:" Height="26" HorizontalAlignment="Left" Margin="182,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
             <TextBox Height="26" Margin="218,0,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="32"/>
 
-            <Button Content="Reset" Height="26" HorizontalAlignment="Right" x:Name="button4" VerticalAlignment="Top" Width="40" Click="RecSkillTree_Reset_Click" VerticalContentAlignment="Center" Margin="0,0,0,0"/>
+            <Button Content="Reset" Height="26" HorizontalAlignment="Right" x:Name="btnReset" VerticalAlignment="Top" Width="40" Click="btnReset_Click" VerticalContentAlignment="Center" Margin="0,0,0,0"/>
         </Grid>
         <!-- grid row 1 - center part, tree and shit -->
         <Grid Grid.Row="2" Margin="0,0,0,0">
@@ -414,7 +414,7 @@
 
         <Label Content="Search:" Height="28" HorizontalAlignment="Left" Margin="1,1,1,1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" Grid.Row="3" />
         <TextBox Height="24" HorizontalAlignment="Left" Margin="60,2,2,2" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" Grid.Row="3" />
-        <CheckBox Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="352,1,1,1" x:Name="checkBox1" VerticalAlignment="Bottom" Grid.Row="3" VerticalContentAlignment="Center" Click="checkBox1_Click"/>
+        <CheckBox Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="352,1,1,1" x:Name="cbRegEx" VerticalAlignment="Bottom" Grid.Row="3" VerticalContentAlignment="Center" Click="cbRegEx_Click"/>
 
         <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="415,0,0,1" Height="28" VerticalAlignment="Bottom" Grid.Row="3" VerticalContentAlignment="Center"/>
         <TextBox Height="24" Margin="482,0,166,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  
