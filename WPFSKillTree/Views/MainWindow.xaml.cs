@@ -716,11 +716,11 @@ namespace POESKillTree.Views
 
         #endregion
 
-        #region border1
+        #region zbSkillTreeBackground
 
-        private void border1_Click(object sender, RoutedEventArgs e)
+        private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
-            Point p = ((MouseEventArgs) e.OriginalSource).GetPosition(border1.Child);
+            Point p = ((MouseEventArgs) e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
 
             v = v*_multransform + _addtransform;
@@ -759,7 +759,7 @@ namespace POESKillTree.Views
             tbSkillURL.Text = Tree.SaveToURL();
         }
 
-        private void border1_MouseLeave(object sender, MouseEventArgs e)
+        private void zbSkillTreeBackground_MouseLeave(object sender, MouseEventArgs e)
         {
             // We might have popped up a tooltip while the window didn't have focus,
             // so we should close tooltips whenever the mouse leaves the canvas in addition to
@@ -767,9 +767,9 @@ namespace POESKillTree.Views
             _sToolTip.IsOpen = false;
         }
 
-        private void border1_MouseMove(object sender, MouseEventArgs e)
+        private void zbSkillTreeBackground_MouseMove(object sender, MouseEventArgs e)
         {
-            Point p = e.GetPosition(border1.Child);
+            Point p = e.GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
             v = v*_multransform + _addtransform;
             textBox1.Text = "" + v.X;
@@ -815,9 +815,9 @@ namespace POESKillTree.Views
             }
         }
 
-        private void border1_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void zbSkillTreeBackground_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            border1.Child.RaiseEvent(e);
+            zbSkillTreeBackground.Child.RaiseEvent(e);
         }
 
         #endregion

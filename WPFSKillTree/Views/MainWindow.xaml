@@ -276,7 +276,7 @@
         </Grid>
         <!-- grid row 1 - center part, tree and shit -->
         <Grid Grid.Row="2" Margin="0,0,0,0">
-            <local:ZoomBorder IsManipulationEnabled="True" x:Name="border1" ClipToBounds="True" MouseMove="border1_MouseMove" Click="border1_Click" Background="Black" MouseLeave="border1_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseRightButtonDown="border1_PreviewMouseRightButtonDown">
+            <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseRightButtonDown="zbSkillTreeBackground_PreviewMouseRightButtonDown">
                 <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </local:ZoomBorder>
 
