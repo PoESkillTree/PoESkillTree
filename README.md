@@ -1,7 +1,8 @@
 PoESkillTree
-==================
+===
 ![](https://cloud.githubusercontent.com/assets/381657/5123351/e9985f18-70aa-11e4-9cc7-250bade5f481.png)
 ###Features
+---
 * Url Improvments
   * PoEBuilder, PoEUrl and Tinyurl parsing
   * Button to change current tree link to poeurl link
@@ -15,6 +16,7 @@ PoESkillTree
 * Character Sheet: DPS and Defensive calculations
 
 ###Install/Update
+---
 ####Install
 1. Got to the [release page](https://github.com/EmmittJ/PoESkillTree/releases) and select the version you would like, most likly the latest.
 2. Download the zip file
@@ -38,6 +40,7 @@ The program always ships with the latest skilltree data available when the relea
 Note: Both these options require that you can access the official Path of Exile website.
 
 ###Hotkeys
+---
 * Shift + Left Click: Zoom In
 * Ctrl + Left Click: Zoom Out
 * Right Click: (Skill Tree) Center tree and reset zoom
@@ -59,11 +62,13 @@ Note: Both these options require that you can access the official Path of Exile 
 * Ctrl + S: Save build as
 
 ###Help/Issues
+---
 * For help please check out the thread in the offical forum: https://www.pathofexile.com/forum/view-thread/996805/
 * If you find any bugs/faults please report it here on Github
 * Miss any features? Create an issue here or post in the forum thread
 
 ###Credits
+---
 * Headhorr - for his original "Unofficial Offline Skilltree Calc" http://www.pathofexile.com/forum/view-thread/19723
 * Emmitt
 * Kaezin
@@ -71,4 +76,5 @@ Note: Both these options require that you can access the official Path of Exile 
 * l0g0sys
 
 ###Screenshoots
+---
 ![](https://cloud.githubusercontent.com/assets/381657/5124182/64ca624a-70b4-11e4-9a8e-f63323c8dea3.png)
