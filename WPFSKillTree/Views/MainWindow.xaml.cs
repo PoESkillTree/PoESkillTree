@@ -759,14 +759,35 @@ namespace POESKillTree.Views
 
             if (Tree == null)
                 return;
-            SkillNode startnode =
-                Tree.Skillnodes.First(
-                    nd => nd.Value.Name.ToUpper() == (Tree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
-            Tree.SkilledNodes.Clear();
-            Tree.SkilledNodes.Add(startnode.Id);
-            Tree.Chartype = Tree.CharName.IndexOf((Tree.CharName[cbCharType.SelectedIndex]).ToUpper());
+            ComboBoxItem ComboItem = (ComboBoxItem)cbCharType.SelectedItem;
+            string className = ComboItem.Name;
+
+            if (Tree.canSwitchClass(className))
+            {
+                string[] currentClassArray = getCurrentClass();
+                string[] changeClassArray = getAnyClass(className);
+                if (currentClassArray[0] == "ERROR")
+                    return;
+                if (changeClassArray[0] == "ERROR")
+                    return;
+                string usedPoints = tbUsedPoints.Text;
+                cbCharType.Text = changeClassArray[0];
+
+                Tree.LoadFromURL(tbSkillURL.Text.Replace(currentClassArray[1], changeClassArray[1]));
+                tbUsedPoints.Text = usedPoints;
+            }
+            else
+            {
+                SkillNode startnode =
+                    Tree.Skillnodes.First(
+                        nd => nd.Value.Name.ToUpper() == (Tree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
+                Tree.SkilledNodes.Clear();
+                Tree.SkilledNodes.Add(startnode.Id);
+                Tree.Chartype = Tree.CharName.IndexOf((Tree.CharName[cbCharType.SelectedIndex]).ToUpper());
+            }
             Tree.UpdateAvailNodes();
             UpdateAllAttributeList();
+            tbSkillURL.Text = Tree.SaveToURL();
         }
 
         private void ToggleAttributes()
@@ -1274,21 +1295,6 @@ namespace POESKillTree.Views
 
         #region Change Class - No Reset
 
-        private void changeClassNoReset(object sender, RoutedEventArgs e)
-        {
-            var classMenuItem = sender as MenuItem;
-            if (classMenuItem == null) return;
-
-            string[] currentClassArray = getCurrentClass();
-            string[] changeClassArray = getAnyClass(classMenuItem.Header as string);         
-            string usedPoints = tbUsedPoints.Text;
-            cbCharType.Text = changeClassArray[0];
-
-            Tree.LoadFromURL(tbSkillURL.Text.Replace(currentClassArray[1], changeClassArray[1]));
-            tbSkillURL.Text = tbSkillURL.Text.Replace(currentClassArray[1], changeClassArray[1]);
-            tbUsedPoints.Text = usedPoints;
-
-        }
         /**
          * Will get the current class name and start string from the tree url
          * return: array[]
