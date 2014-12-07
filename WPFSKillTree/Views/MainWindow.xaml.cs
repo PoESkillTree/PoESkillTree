@@ -397,7 +397,7 @@ namespace POESKillTree.Views
                         ToggleBuilds();
                         break;
                     case Key.R:
-                        RecSkillTree_Reset_Click(sender, e);
+                        btnReset_Click(sender, e);
                         break;
                     case Key.E:
                         btnPoeUrl_Click(sender, e);
@@ -440,14 +440,14 @@ namespace POESKillTree.Views
         {
         }
 
-        private void menu_exit(object sender, RoutedEventArgs e)
+        private void Menu_Exit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void border1_Click(object sender, RoutedEventArgs e)
+        private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
-            Point p = ((MouseEventArgs) e.OriginalSource).GetPosition(border1.Child);
+            Point p = ((MouseEventArgs) e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
 
             v = v * _multransform + _addtransform;
@@ -486,7 +486,7 @@ namespace POESKillTree.Views
             tbSkillURL.Text = Tree.SaveToURL();
         }
 
-        private void border1_MouseLeave(object sender, MouseEventArgs e)
+        private void zbSkillTreeBackground_MouseLeave(object sender, MouseEventArgs e)
         {
             // We might have popped up a tooltip while the window didn't have focus,
             // so we should close tooltips whenever the mouse leaves the canvas in addition to
@@ -494,9 +494,9 @@ namespace POESKillTree.Views
             _sToolTip.IsOpen = false;
         }
 
-        private void border1_MouseMove(object sender, MouseEventArgs e)
+        private void zbSkillTreeBackground_MouseMove(object sender, MouseEventArgs e)
         {
-            Point p = e.GetPosition(border1.Child);
+            Point p = e.GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
             v = v * _multransform + _addtransform;
             textBox1.Text = "" + v.X;
@@ -542,12 +542,12 @@ namespace POESKillTree.Views
             }
         }
 
-        private void border1_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void zbSkillTreeBackground_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            border1.Child.RaiseEvent(e);
+            zbSkillTreeBackground.Child.RaiseEvent(e);
         }
 
-        private void btnCopyStats_Click(object sender, RoutedEventArgs e)
+        private void Menu_CopyStats(object sender, RoutedEventArgs e)
         {
             var sb = new StringBuilder();
             foreach (var at in _attiblist)
@@ -566,7 +566,7 @@ namespace POESKillTree.Views
             }
         }
 
-        private void ImportItems_Click(object sender, RoutedEventArgs e)
+        private void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
             var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName) {Owner = this};
             diw.ShowDialog();
@@ -574,12 +574,12 @@ namespace POESKillTree.Views
         }
 
 
-        private void ClearItems_Click(object sender, RoutedEventArgs e)
+        private void Menu_ClearItems(object sender, RoutedEventArgs e)
         {
             ClearCurrentItemData();
         }
 
-        private void RedownloadTreeAssets_Click(object sender, RoutedEventArgs e)
+        private void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
         {
             const string sMessageBoxText = "This will delete your data folder and Redownload all the SkillTree assets.\nThis requires an internet connection!\n\nDo you want to proced?";
             const string sCaption = "Redownload SkillTree Assets - Warning";
@@ -684,7 +684,7 @@ namespace POESKillTree.Views
             SaveNewBuild();
         }
 
-        private void ScreenShot_Click(object sender, RoutedEventArgs e)
+        private void Menu_ScreenShot(object sender, RoutedEventArgs e)
         {
             const int maxsize = 3000;
             Rect2D contentBounds = Tree.picActiveLinks.ContentBounds;
@@ -735,13 +735,13 @@ namespace POESKillTree.Views
                 LoadBuildFromUrl();
         }
 
-        private void SkillHighlightedNodes_Click(object sender, RoutedEventArgs e)
+        private void Menu_SkillHighlightedNodes(object sender, RoutedEventArgs e)
         {
             Tree.SkillAllHighligtedNodes();
             UpdateAllAttributeList();
         }
 
-        private void RecSkillTree_Reset_Click(object sender, RoutedEventArgs e)
+        private void btnReset_Click(object sender, RoutedEventArgs e)
         {
             if (Tree == null)
                 return;
@@ -749,7 +749,7 @@ namespace POESKillTree.Views
             UpdateAllAttributeList();
         }
 
-        private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbCharType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_justLoaded)
             {
@@ -933,14 +933,14 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
         
-        private void checkBox1_Click(object sender, RoutedEventArgs e)
+        private void cbRegEx_Click(object sender, RoutedEventArgs e)
         {
             SearchUpdate();
         }
 
         private void SearchUpdate()
         {
-            Tree.HighlightNodes(tbSearch.Text, checkBox1.IsChecked != null && checkBox1.IsChecked.Value);
+            Tree.HighlightNodes(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value);
         }
 
 
@@ -997,7 +997,7 @@ namespace POESKillTree.Views
             }
         }
 
-        private void textBox3_TextChanged(object sender, TextChangedEventArgs e)
+        private void tbLevel_TextChanged(object sender, TextChangedEventArgs e)
         {
             int lvl;
             if (!int.TryParse(tbLevel.Text, out lvl)) return;
@@ -1454,23 +1454,23 @@ namespace POESKillTree.Views
 
         #region Menu - Help
 
-        private void mnuOpenPoEWebsite(object sender, RoutedEventArgs e)
+        private void Menu_OpenPoEWebsite(object sender, RoutedEventArgs e)
         {
             Process.Start("https://www.pathofexile.com/");
         }
 
-        private void mnuOpenWiki(object sender, RoutedEventArgs e)
+        private void Menu_OpenWiki(object sender, RoutedEventArgs e)
         {
             Process.Start("http://pathofexile.gamepedia.com/");
         }
 
-        private void mnuOpenHotkeys(object sender, RoutedEventArgs e)
+        private void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
         {
             var aboutWindow = new HotkeysWindow();
             aboutWindow.ShowDialog();
         }
 
-        private void mnuOpenAbout(object sender, RoutedEventArgs e)
+        private void Menu_OpenAbout(object sender, RoutedEventArgs e)
         {
             var aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
