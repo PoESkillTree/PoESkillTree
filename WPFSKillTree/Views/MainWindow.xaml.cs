@@ -311,13 +311,6 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
         }
 
-        private void Menu_ImportItems(object sender, RoutedEventArgs e)
-        {
-            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName) { Owner = this };
-            diw.ShowDialog();
-            _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
-        }
-
         private void Menu_ClearItems(object sender, RoutedEventArgs e)
         {
             ClearCurrentItemData();
