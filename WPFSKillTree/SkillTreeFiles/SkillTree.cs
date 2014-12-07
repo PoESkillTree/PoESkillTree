@@ -225,12 +225,19 @@ namespace POESKillTree.SkillTreeFiles
                 if (rootNodeList.Contains(nd.id))
                 {
                     rootNodeClassDictionary.Add(nd.dn.ToString().ToUpper(), nd.id);
+                    foreach (int linkedNode in nd.ot)
+                    {
+                        startNodeDictionary.Add(linkedNode, nd.id);
+                    }
                 }
-                foreach (int linkedNode in nd.ot)
+                foreach (int node in nd.ot)
                 {
-                    if (rootNodeList.Contains(linkedNode))
-                        startNodeDictionary.Add(nd.id, linkedNode);
+                    if (!startNodeDictionary.ContainsKey(nd.id) && rootNodeList.Contains(node))
+                    {
+                        startNodeDictionary.Add(nd.id, node);
+                    }
                 }
+
             }
             var links = new List<ushort[]>();
             foreach (var skillNode in Skillnodes)
@@ -825,12 +832,12 @@ namespace POESKillTree.SkillTreeFiles
                 className = "SEVEN";
             }
             rootNodeClassDictionary.TryGetValue(className.ToUpper(), out rootNodeValue);
-            int[] startNode = startNodeDictionary.Where(pair => pair.Value == rootNodeValue)
-                                                .Select(pair => pair.Key)
-                                                .ToArray();
-            foreach (int node in startNode)
+            var classSpecificStartNodes = startNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key);
+
+            foreach (int node in classSpecificStartNodes)
             {
                 temp = GetShortestPathTo((ushort) node);
+                
                 if (temp.Count() <= 0)
                     return true;
             }
