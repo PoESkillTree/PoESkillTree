@@ -311,6 +311,13 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
         }
 
+        private void Menu_ImportItems(object sender, RoutedEventArgs e)
+        {
+            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName) { Owner = this };
+            diw.ShowDialog();
+            _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
+        }
+
         private void Menu_ClearItems(object sender, RoutedEventArgs e)
         {
             ClearCurrentItemData();
@@ -325,6 +332,7 @@ namespace POESKillTree.Views
             }
             System.Windows.Forms.Clipboard.SetText(sb.ToString());
         }
+
         private void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
         {
             const string sMessageBoxText = "This will delete your data folder and Redownload all the SkillTree assets.\nThis requires an internet connection!\n\nDo you want to proced?";
@@ -385,6 +393,7 @@ namespace POESKillTree.Views
             var aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
         }
+
         // Checks for updates.
         private void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
         {
@@ -412,7 +421,6 @@ namespace POESKillTree.Views
             try
             {
                 // Show download progress bar and Cancel button.
-
                 // Start downloading.
                 Updater.Download(UpdateDownloadCompleted, UpdateDownloadProgressChanged);
             }
@@ -434,13 +442,13 @@ namespace POESKillTree.Views
                 // Close dialog.
             }
         }
+
         // Invoked when update download completes, aborts or fails.
         private void UpdateDownloadCompleted(Object sender, AsyncCompletedEventArgs e)
         {
             if (e.Cancelled) // Check whether download was cancelled.
             {
                 Updater.Dispose();
-
                 // Close dialog.
             }
             else if (e.Error != null) // Check whether error occured.
@@ -457,7 +465,6 @@ namespace POESKillTree.Views
                 catch (UpdaterException ex)
                 {
                     Updater.Dispose();
-
                     // Display error message: ex.Message.
                 }
             }
@@ -891,6 +898,7 @@ namespace POESKillTree.Views
             SetCurrentBuild(build);
             btnLoadBuild_Click(this, null); // loading the build
         }
+
         private void lvi_MouseLeave(object sender, MouseEventArgs e)
         {
             _noteTip.IsOpen = false;

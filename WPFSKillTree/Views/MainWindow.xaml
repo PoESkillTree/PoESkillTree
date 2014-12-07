@@ -209,7 +209,7 @@
                 <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="False" InputGestureText="Ctrl+Q" Click="ToggleAttributes_Click"/>
             </MenuItem>
             <MenuItem Header="_Tools ">
-                <MenuItem Header="_ScreenShot" Click="Menu_ScreenShot">
+                <MenuItem Header="_ScreenShot of Skilled Nodes" Click="Menu_ScreenShot">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ScreenShotIcon}" />
                     </MenuItem.Icon>
