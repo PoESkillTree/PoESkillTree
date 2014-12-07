@@ -113,6 +113,8 @@ namespace POESKillTree.SkillTreeFiles
 
         public Main root { get; set; }
 
+        public Main main { get; set; }
+
         public Node[] nodes { get; set; }
 
         public int min_x { get; set; }

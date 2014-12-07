@@ -182,9 +182,19 @@ namespace POESKillTree.SkillTreeFiles
                 _assets[ass.Key] = new Asset(ass.Key,
                     ass.Value.ContainsKey(0.3835f) ? ass.Value[0.3835f] : ass.Value.Values.First());
             }
-            foreach(int i in inTree.root.ot)
+            if (inTree.root != null)
             {
-                rootNodeList.Add(i);
+                foreach (int i in inTree.root.ot)
+                {
+                    rootNodeList.Add(i);
+                }
+            }
+            else if (inTree.main != null)
+            {
+                foreach (int i in inTree.main.ot)
+                {
+                    rootNodeList.Add(i);
+                }
             }
 
             if (displayProgress)
