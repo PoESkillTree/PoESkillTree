@@ -759,14 +759,35 @@ namespace POESKillTree.Views
 
             if (Tree == null)
                 return;
-            SkillNode startnode =
-                Tree.Skillnodes.First(
-                    nd => nd.Value.Name.ToUpper() == (Tree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
-            Tree.SkilledNodes.Clear();
-            Tree.SkilledNodes.Add(startnode.Id);
-            Tree.Chartype = Tree.CharName.IndexOf((Tree.CharName[cbCharType.SelectedIndex]).ToUpper());
+            ComboBoxItem ComboItem = (ComboBoxItem)cbCharType.SelectedItem;
+            string className = ComboItem.Name;
+
+            if (Tree.canSwitchClass(className))
+            {
+                string[] currentClassArray = getCurrentClass();
+                string[] changeClassArray = getAnyClass(className);
+                if (currentClassArray[0] == "ERROR")
+                    return;
+                if (changeClassArray[0] == "ERROR")
+                    return;
+                string usedPoints = tbUsedPoints.Text;
+                cbCharType.Text = changeClassArray[0];
+
+                Tree.LoadFromURL(tbSkillURL.Text.Replace(currentClassArray[1], changeClassArray[1]));
+                tbUsedPoints.Text = usedPoints;
+            }
+            else
+            {
+                SkillNode startnode =
+                    Tree.Skillnodes.First(
+                        nd => nd.Value.Name.ToUpper() == (Tree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
+                Tree.SkilledNodes.Clear();
+                Tree.SkilledNodes.Add(startnode.Id);
+                Tree.Chartype = Tree.CharName.IndexOf((Tree.CharName[cbCharType.SelectedIndex]).ToUpper());
+            }
             Tree.UpdateAvailNodes();
             UpdateAllAttributeList();
+            tbSkillURL.Text = Tree.SaveToURL();
         }
 
         private void ToggleAttributes()
@@ -1270,8 +1291,111 @@ namespace POESKillTree.Views
             ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewAccent" + sAccent)).IsChecked = true;
             _persistentData.Options.Accent = sAccent;
         }
-
         #endregion
+
+        #region Change Class - No Reset
+
+        /**
+         * Will get the current class name and start string from the tree url
+         * return: array[]
+         *         index 0 containing the Class Name
+         *         index 1 containing the Class Start String
+         **/
+        private string[] getCurrentClass()
+        {
+            if (tbSkillURL.Text.IndexOf("AAAAAgAA") != -1)
+            {
+                return getAnyClass("Scion");
+            }
+            else if (tbSkillURL.Text.IndexOf("AAAAAgEA") != -1)
+            {
+                return getAnyClass("Marauder");
+            }
+            else if (tbSkillURL.Text.IndexOf("AAAAAgIA") != -1)
+            {
+                return getAnyClass("Ranger");
+            }
+            else if (tbSkillURL.Text.IndexOf("AAAAAgMA") != -1)
+            {
+                return getAnyClass("Witch");
+            }
+            else if (tbSkillURL.Text.IndexOf("AAAAAgQA") != -1)
+            {
+                return getAnyClass("Duelist");
+            }
+            else if (tbSkillURL.Text.IndexOf("AAAAAgUA") != -1)
+            {
+                return getAnyClass("Templar");
+            }
+            else if (tbSkillURL.Text.IndexOf("AAAAAgYA") != -1)
+            {
+                return getAnyClass("Shadow");
+            }
+            else
+            {
+                return getAnyClass("ERROR");
+            }
+        }
+
+        /**
+         * parameters: className - any valid class name string
+         * return: array[]
+         *         index 0 containing the Class Name
+         *         index 1 containing the Class Start String
+         **/
+        private string[] getAnyClass(string className)
+        {
+            string[] array = new string[2];
+            if (className == "Scion")
+            {
+                array[0] = "Scion";
+                array[1] = "AAAAAgAA";
+                return array;
+            }
+            else if (className == "Marauder")
+            {
+                array[0] = "Marauder";
+                array[1] = "AAAAAgEA";
+                return array;
+            }
+            else if (className == "Ranger")
+            {
+                array[0] = "Ranger";
+                array[1] = "AAAAAgIA";
+                return array;
+            }
+            else if (className == "Witch")
+            {
+                array[0] = "Witch";
+                array[1] = "AAAAAgMA";
+                return array;
+            }
+            else if (className == "Duelist")
+            {
+                array[0] = "Duelist";
+                array[1] = "AAAAAgQA";
+                return array;
+            }
+            else if (className == "Templar")
+            {
+                array[0] = "Templar";
+                array[1] = "AAAAAgUA";
+                return array;
+            }
+            else if (className == "Shadow")
+            {
+                array[0] = "Shadow";
+                array[1] = "AAAAAgYA";
+                return array;
+            }
+            else
+            {
+                array[0] = "ERROR";
+                array[1] = "ERROR";
+                return array;
+            }
+        }
+        #endregion  
 
         #region Legacy
 

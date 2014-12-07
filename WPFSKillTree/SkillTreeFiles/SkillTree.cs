@@ -34,6 +34,9 @@ namespace POESKillTree.SkillTreeFiles
         private static Action _emptyDelegate = delegate { };
         private readonly Dictionary<string, Asset> _assets = new Dictionary<string, Asset>();
         public List<string> AttributeTypes = new List<string>();
+        public List<int> rootNodeList = new List<int>();
+        public Dictionary<string, int> rootNodeClassDictionary = new Dictionary<string, int>();
+        public Dictionary<int, int> startNodeDictionary = new Dictionary<int, int>();
         public HashSet<ushort> AvailNodes = new HashSet<ushort>();
 
         public Dictionary<string, float> BaseAttributes = new Dictionary<string, float>
@@ -179,6 +182,10 @@ namespace POESKillTree.SkillTreeFiles
                 _assets[ass.Key] = new Asset(ass.Key,
                     ass.Value.ContainsKey(0.3835f) ? ass.Value[0.3835f] : ass.Value.Values.First());
             }
+            foreach(int i in inTree.root.ot)
+            {
+                rootNodeList.Add(i);
+            }
 
             if (displayProgress)
                 update(50, 100);
@@ -215,6 +222,15 @@ namespace POESKillTree.SkillTreeFiles
                     IsMastery = nd.m,
                     Spc = nd.spc.Count() > 0 ? (int?) nd.spc[0] : null
                 });
+                if (rootNodeList.Contains(nd.id))
+                {
+                    rootNodeClassDictionary.Add(nd.dn.ToString().ToUpper(), nd.id);
+                }
+                foreach (int linkedNode in nd.ot)
+                {
+                    if (rootNodeList.Contains(linkedNode))
+                        startNodeDictionary.Add(nd.id, linkedNode);
+                }
             }
             var links = new List<ushort[]>();
             foreach (var skillNode in Skillnodes)
@@ -794,6 +810,31 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             return attributes;
+        }
+        public bool canSwitchClass(string className)
+        {
+            int rootNodeValue;
+            List<ushort> temp = new List<ushort>();
+
+            if(className.ToUpper() == "SHADOW")
+            {
+                className = "SIX";
+            }
+            if(className.ToUpper() == "SCION")
+            {
+                className = "SEVEN";
+            }
+            rootNodeClassDictionary.TryGetValue(className.ToUpper(), out rootNodeValue);
+            int[] startNode = startNodeDictionary.Where(pair => pair.Value == rootNodeValue)
+                                                .Select(pair => pair.Key)
+                                                .ToArray();
+            foreach (int node in startNode)
+            {
+                temp = GetShortestPathTo((ushort) node);
+                if (temp.Count() <= 0)
+                    return true;
+            }
+            return false;
         }
     }
 }
