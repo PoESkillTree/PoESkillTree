@@ -111,6 +111,8 @@ namespace POESKillTree.SkillTreeFiles
 
         public Dictionary<int, NodeGroup> groups { get; set; }
 
+        public Main root { get; set; }
+
         public Main main { get; set; }
 
         public Node[] nodes { get; set; }

@@ -261,13 +261,13 @@
             <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
             <TextBox HorizontalAlignment="Left" Margin="40,0,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="tbLevel_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
             <ComboBox Height="26" HorizontalAlignment="Left" Margin="80,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="cbCharType_SelectionChanged" VerticalContentAlignment="Center">
-                <ComboBoxItem Content="Scion" />
-                <ComboBoxItem Content="Marauder" />
-                <ComboBoxItem Content="Ranger" />
-                <ComboBoxItem Content="Witch" IsSelected="True" />
-                <ComboBoxItem Content="Duelist" />
-                <ComboBoxItem Content="Templar" />
-                <ComboBoxItem Content="Shadow" />
+                <ComboBoxItem Content="Scion" Name="Scion"/>
+                <ComboBoxItem Content="Marauder" Name="Marauder"/>
+                <ComboBoxItem Content="Ranger" Name="Ranger"/>
+                <ComboBoxItem Content="Witch" Name="Witch" IsSelected="True" />
+                <ComboBoxItem Content="Duelist" Name="Duelist"/>
+                <ComboBoxItem Content="Templar" Name="Templar" />
+                <ComboBoxItem Content="Shadow" Name="Shadow"/>
             </ComboBox>
             <Label Content="Used:" Height="26" HorizontalAlignment="Left" Margin="182,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
             <TextBox Height="26" Margin="218,0,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="32"/>
