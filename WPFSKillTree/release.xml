@@ -2,7 +2,8 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <InstallDir>PoESkillTree</InstallDir>
-    <WorkDir>dist</WorkDir>
+    <Platform>x86</Platform>
+    <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
     <ZipTool>Tools\7z.exe a -tzip</ZipTool>
   </PropertyGroup>
 
@@ -31,43 +32,42 @@
     <Message Text="Recent Git version: $(GitVersion)" />
     <Error Text="Release version and recent Git version are identical!%0APlease, edit Properties\Version.resx file to reflect a new release." Condition="'$(Version)' == '$(GitVersion)'" />
 
-    <!-- Build projects -->
-    <MSBuild Projects="WPFSKillTree.csproj;..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;WarningLevel=0" />
+    <!-- Build projects (OutputPath=$(DistDir) => No copying needed) -->
+    <MSBuild Projects="WPFSKillTree.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
+    <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
   </Target>
 
   <Target Name="Clean">
-    <MSBuild Projects="WPFSKillTree.csproj;..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release" />
-    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Clean" Properties="Configuration=Debug" />
+    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
+    <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
+    <MSBuild Projects="WPFSKillTree.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
     <RemoveDir Directories="$(WorkDir)" />
   </Target>
 
   <Target Name="Release" DependsOnTargets="Test">
-    <ItemGroup>
-      <InstallFiles Include=".\bin\Release\*.*" />
-      <InstallFiles Include="..\UpdateDB\bin\Release\*.*" />
-    </ItemGroup>
-
-    <!-- Create package root directory and copy built files -->
-    <MakeDir Directories="$(DistDir)" />
-    <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(DistDir)" />
-
     <!-- Download skill tree assets -->
-    <Exec Command="$(MSBuildProjectDirectory)\..\UpdateDB\bin\Release\UpdateDB.exe /A" WorkingDirectory="$(DistDir)" />
+    <Exec Command="$(DistDir)\UpdateDB.exe /A" WorkingDirectory="$(DistDir)" />
 
     <!-- Create release package -->
     <Exec Command="..\$(ZipTool) $(InstallDir)-$(Version).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
   </Target>
 
   <Target Name="Test" DependsOnTargets="Build">
-    <!-- Build unit tests -->
-    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Build" Properties="Configuration=Debug;WarningLevel=0" />
+    <!-- Build unit tests using project defined output path -->
+    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Build" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
 
     <!-- Run tests -->
     <Exec Command="vstest.console ..\..\UnitTests\bin\Debug\UnitTests.dll" WorkingDirectory="$(WorkDir)" />
   </Target>
 
-  <Target Name="Update" DependsOnTargets="Build">
+  <Target Name="Update">
+    <!-- Make regular build using project defined output path -->
+    <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
+
     <!-- Update items database -->
     <Exec Command="..\UpdateDB\bin\Release\UpdateDB.exe /N" />
+
+    <!-- Make regular clean using project defined output path -->
+    <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
   </Target>
 </Project>
