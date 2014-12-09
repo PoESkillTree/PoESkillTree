@@ -687,6 +687,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public void LoadFromURL(string url)
         {
+            url = Regex.Replace(url, @"\t| |\n|\r", "");
             string s =
                 url.Substring(TreeAddress.Length + (url.StartsWith("https") ? 1 : 0))
                     .Replace("-", "+")
