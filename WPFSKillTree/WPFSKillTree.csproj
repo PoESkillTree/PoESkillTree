@@ -147,6 +147,7 @@
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
+    <Compile Include="Utils\IOHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\ItemAttribute\Item.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />

@@ -137,7 +137,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public float ScaleFactor = 1;
 
-        public SkillTree(String treestring, bool displayProgress, UpdateLoadingWindow update)
+        public SkillTree(String treestring, string dataFolder, bool displayProgress, UpdateLoadingWindow update)
         {
             var jss = new JsonSerializerSettings
             {
@@ -180,7 +180,7 @@ namespace POESKillTree.SkillTreeFiles
             foreach (var ass in inTree.assets)
             {
                 _assets[ass.Key] = new Asset(ass.Key,
-                    ass.Value.ContainsKey(0.3835f) ? ass.Value[0.3835f] : ass.Value.Values.First());
+                    ass.Value.ContainsKey(0.3835f) ? ass.Value[0.3835f] : ass.Value.Values.First(), dataFolder);
             }
             if (inTree.root != null)
             {
@@ -199,10 +199,10 @@ namespace POESKillTree.SkillTreeFiles
 
             if (displayProgress)
                 update(50, 100);
-            IconActiveSkills.OpenOrDownloadImages(update);
+            IconActiveSkills.OpenOrDownloadImages(dataFolder, update);
             if (displayProgress)
                 update(75, 100);
-            IconInActiveSkills.OpenOrDownloadImages(update);
+            IconInActiveSkills.OpenOrDownloadImages(dataFolder, update);
             foreach (var c in inTree.characterData)
             {
                 CharBaseAttributes[c.Key] = new Dictionary<string, float>
@@ -298,7 +298,7 @@ namespace POESKillTree.SkillTreeFiles
             InitSkillIconLayers();
             DrawSkillIconLayer();
             DrawBackgroundLayer();
-            InitFaceBrushesAndLayer();
+            InitFaceBrushesAndLayer(dataFolder);
             DrawLinkBackgroundLayer(links);
             InitOtherDynamicLayers();
             CreateCombineVisual();
@@ -431,25 +431,25 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        public static SkillTree CreateSkillTree(StartLoadingWindow start = null, UpdateLoadingWindow update = null,
+        public static SkillTree CreateSkillTree(string dataFolder, StartLoadingWindow start = null, UpdateLoadingWindow update = null,
             CloseLoadingWindow finish = null)
         {
             string skilltreeobj = "";
-            if (Directory.Exists("Data"))
+            if (Directory.Exists(dataFolder))
             {
-                if (File.Exists("Data\\Skilltree.txt"))
+                if (File.Exists(dataFolder + @"\Skilltree.txt"))
                 {
-                    skilltreeobj = File.ReadAllText("Data\\Skilltree.txt");
+                    skilltreeobj = File.ReadAllText(dataFolder + @"\Skilltree.txt");
                 }
-                if (!File.Exists("Data\\Assets"))
+                if (!File.Exists(dataFolder + @"\Assets"))
                 {
-                    Directory.CreateDirectory("Data\\Assets");
+                    Directory.CreateDirectory(dataFolder + @"\Assets");
                 }
             }
             else
             {
-                Directory.CreateDirectory("Data");
-                Directory.CreateDirectory("Data\\Assets");
+                Directory.CreateDirectory(dataFolder);
+                Directory.CreateDirectory(dataFolder + @"\Assets");
             }
 
             bool displayProgress = false;
@@ -465,12 +465,12 @@ namespace POESKillTree.SkillTreeFiles
                 var regex = new Regex("var passiveSkillTreeData.*");
                 skilltreeobj = regex.Match(code).Value.Replace("root", "main").Replace("\\/", "/");
                 skilltreeobj = skilltreeobj.Substring(27, skilltreeobj.Length - 27 - 2) + "";
-                File.WriteAllText("Data\\Skilltree.txt", skilltreeobj);
+                File.WriteAllText(dataFolder + @"\Skilltree.txt", skilltreeobj);
             }
 
             if (displayProgress)
                 update(25, 100);
-            var skillTree = new SkillTree(skilltreeobj, displayProgress, update);
+            var skillTree = new SkillTree(skilltreeobj, dataFolder, displayProgress, update);
             if (displayProgress)
                 finish();
             return skillTree;
@@ -687,7 +687,6 @@ namespace POESKillTree.SkillTreeFiles
 
         public void LoadFromURL(string url)
         {
-            url = Regex.Replace(url, @"\t| |\n|\r", "");
             string s =
                 url.Substring(TreeAddress.Length + (url.StartsWith("https") ? 1 : 0))
                     .Replace("-", "+")

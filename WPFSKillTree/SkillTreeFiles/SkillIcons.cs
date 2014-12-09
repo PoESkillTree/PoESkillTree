@@ -22,17 +22,17 @@ namespace POESKillTree.SkillTreeFiles
         public Dictionary<string, KeyValuePair<Rect, string>> SkillPositions =
             new Dictionary<string, KeyValuePair<Rect, string>>();
 
-        public void OpenOrDownloadImages(SkillTree.UpdateLoadingWindow update = null)
+        public void OpenOrDownloadImages(string dataFolder, SkillTree.UpdateLoadingWindow update = null)
         {
             //Application
             foreach (string image in Images.Keys.ToArray())
             {
-                if (!File.Exists("Data\\Assets\\" + image))
+                if (!File.Exists(dataFolder + "\\Assets\\" + image))
                 {
                     var _WebClient = new WebClient();
-                    _WebClient.DownloadFile(urlpath + image, "Data\\Assets\\" + image);
+                    _WebClient.DownloadFile(urlpath + image, dataFolder + "\\Assets\\" + image);
                 }
-                Images[image] = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\" + image, UriKind.Relative));
+                Images[image] = ImageHelper.OnLoadBitmapImage(new Uri(dataFolder + "\\Assets\\" + image, UriKind.Relative));
             }
         }
     }

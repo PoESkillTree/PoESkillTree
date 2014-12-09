@@ -99,6 +99,13 @@
                       Data="F1 M 20,17L 43.25,17L 56,29.75L 56,59L 20,59L 20,17 Z M 24,21L 24,55L 52,55L 52,34L 39,34L 39,21L 24,21 Z M 43,22.25L 43,30L 50.75,30L 43,22.25 Z M 30,33L 34,33L 34,41.5L 37,38.5L 37,43.25L 32,48.25L 27,42.75L 27,38.5L 30,41.5L 30,33 Z M 38,49L 38,53L 26,53L 26,49L 38,49 Z "/>
             </Canvas>
         </ControlTemplate>
+        <ControlTemplate x:Key="ChangeTreeVersion">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="12.3333" Height="14.3333" Canvas.Left="1.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}"  
+                       Data="F1 M 20,17L 43.25,17L 56,29.75L 56,59L 20,59L 20,17 Z M 24,21L 24,55L 52,55L 52,34L 39,34L 39,21L 24,21 Z M 43,22.25L 43,30L 50.75,30L 43,22.25 Z M 30,33L 34,33L 34,41.5L 37,38.5L 37,43.25L 32,48.25L 27,42.75L 27,38.5L 30,41.5L 30,33 Z M 38,49L 38,53L 26,53L 26,49L 38,49 Z "/>
+                <!-- TODO: change icon data to a better one-->
+            </Canvas>
+        </ControlTemplate>
         <ControlTemplate x:Key="GlobeIcon">
             <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
                 <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
@@ -232,6 +239,11 @@
                 <MenuItem Header="_Redownload Tree Assets" Click="Menu_RedownloadTreeAssets">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource RedownloadIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="S_witch tree data" x:Name="mnuTreeVersion">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource ChangeTreeVersion}" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
