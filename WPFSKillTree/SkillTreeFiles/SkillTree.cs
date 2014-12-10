@@ -34,6 +34,9 @@ namespace POESKillTree.SkillTreeFiles
         private static Action _emptyDelegate = delegate { };
         private readonly Dictionary<string, Asset> _assets = new Dictionary<string, Asset>();
         public List<string> AttributeTypes = new List<string>();
+        public List<int> rootNodeList = new List<int>();
+        public Dictionary<string, int> rootNodeClassDictionary = new Dictionary<string, int>();
+        public Dictionary<int, int> startNodeDictionary = new Dictionary<int, int>();
         public HashSet<ushort> AvailNodes = new HashSet<ushort>();
 
         public Dictionary<string, float> BaseAttributes = new Dictionary<string, float>
@@ -179,6 +182,20 @@ namespace POESKillTree.SkillTreeFiles
                 _assets[ass.Key] = new Asset(ass.Key,
                     ass.Value.ContainsKey(0.3835f) ? ass.Value[0.3835f] : ass.Value.Values.First());
             }
+            if (inTree.root != null)
+            {
+                foreach (int i in inTree.root.ot)
+                {
+                    rootNodeList.Add(i);
+                }
+            }
+            else if (inTree.main != null)
+            {
+                foreach (int i in inTree.main.ot)
+                {
+                    rootNodeList.Add(i);
+                }
+            }
 
             if (displayProgress)
                 update(50, 100);
@@ -215,6 +232,22 @@ namespace POESKillTree.SkillTreeFiles
                     IsMastery = nd.m,
                     Spc = nd.spc.Count() > 0 ? (int?) nd.spc[0] : null
                 });
+                if (rootNodeList.Contains(nd.id))
+                {
+                    rootNodeClassDictionary.Add(nd.dn.ToString().ToUpper(), nd.id);
+                    foreach (int linkedNode in nd.ot)
+                    {
+                        startNodeDictionary.Add(linkedNode, nd.id);
+                    }
+                }
+                foreach (int node in nd.ot)
+                {
+                    if (!startNodeDictionary.ContainsKey(nd.id) && rootNodeList.Contains(node))
+                    {
+                        startNodeDictionary.Add(nd.id, node);
+                    }
+                }
+
             }
             var links = new List<ushort[]>();
             foreach (var skillNode in Skillnodes)
@@ -654,6 +687,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public void LoadFromURL(string url)
         {
+            url = Regex.Replace(url, @"\t| |\n|\r", "");
             string s =
                 url.Substring(TreeAddress.Length + (url.StartsWith("https") ? 1 : 0))
                     .Replace("-", "+")
@@ -719,28 +753,40 @@ namespace POESKillTree.SkillTreeFiles
             var nodes = new HashSet<int>();
             foreach (SkillNode nd in _highlightnodes)
             {
-                nodes.Add(nd.Id);
+                if(!rootNodeList.Contains(nd.Id))
+                    nodes.Add(nd.Id);
             }
-            SkillStep(nodes);
+            SkillNodeList(nodes);
         }
 
-        private HashSet<int> SkillStep(HashSet<int> hs)
+        private void SkillNodeList(HashSet<int> hs)
         {
             var pathes = new List<List<ushort>>();
-            foreach (SkillNode nd in _highlightnodes)
+            var removeList = new List<ushort>();
+            foreach (ushort id in hs)
             {
-                pathes.Add(GetShortestPathTo(nd.Id));
+                List<ushort> shortestPathTemp = GetShortestPathTo(id);
+                if (shortestPathTemp.Count <= 0)
+                {
+                    removeList.Add(id);
+                    pathes.Add(shortestPathTemp);
+                }
+                else
+                    pathes.Add(shortestPathTemp);
             }
             pathes.Sort((p1, p2) => p1.Count.CompareTo(p2.Count));
+            foreach (ushort removeID in removeList)
+                hs.Remove(removeID);
             pathes.RemoveAll(p => p.Count == 0);
-            foreach (ushort i in pathes[0])
+            foreach (List<ushort> pathToNode in pathes)
             {
-                hs.Remove(i);
-                SkilledNodes.Add(i);
+                foreach (ushort i in pathToNode)
+                {
+                    hs.Remove(i);
+                    SkilledNodes.Add(i);
+                }   
             }
             UpdateAvailNodes();
-
-            return hs.Count == 0 ? hs : SkillStep(hs);
         }
 
         public void UpdateAvailNodes()
@@ -794,6 +840,31 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             return attributes;
+        }
+        public bool canSwitchClass(string className)
+        {
+            int rootNodeValue;
+            List<ushort> temp = new List<ushort>();
+
+            if(className.ToUpper() == "SHADOW")
+            {
+                className = "SIX";
+            }
+            if(className.ToUpper() == "SCION")
+            {
+                className = "SEVEN";
+            }
+            rootNodeClassDictionary.TryGetValue(className.ToUpper(), out rootNodeValue);
+            var classSpecificStartNodes = startNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key);
+
+            foreach (int node in classSpecificStartNodes)
+            {
+                temp = GetShortestPathTo((ushort) node);
+                
+                if (temp.Count() <= 0)
+                    return true;
+            }
+            return false;
         }
     }
 }
