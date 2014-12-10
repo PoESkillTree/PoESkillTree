@@ -752,28 +752,40 @@ namespace POESKillTree.SkillTreeFiles
             var nodes = new HashSet<int>();
             foreach (SkillNode nd in _highlightnodes)
             {
-                nodes.Add(nd.Id);
+                if(!rootNodeList.Contains(nd.Id))
+                    nodes.Add(nd.Id);
             }
-            SkillStep(nodes);
+            SkillNodeList(nodes);
         }
 
-        private HashSet<int> SkillStep(HashSet<int> hs)
+        private void SkillNodeList(HashSet<int> hs)
         {
             var pathes = new List<List<ushort>>();
-            foreach (SkillNode nd in _highlightnodes)
+            var removeList = new List<ushort>();
+            foreach (ushort id in hs)
             {
-                pathes.Add(GetShortestPathTo(nd.Id));
+                List<ushort> shortestPathTemp = GetShortestPathTo(id);
+                if (shortestPathTemp.Count <= 0)
+                {
+                    removeList.Add(id);
+                    pathes.Add(shortestPathTemp);
+                }
+                else
+                    pathes.Add(shortestPathTemp);
             }
             pathes.Sort((p1, p2) => p1.Count.CompareTo(p2.Count));
+            foreach (ushort removeID in removeList)
+                hs.Remove(removeID);
             pathes.RemoveAll(p => p.Count == 0);
-            foreach (ushort i in pathes[0])
+            foreach (List<ushort> pathToNode in pathes)
             {
-                hs.Remove(i);
-                SkilledNodes.Add(i);
+                foreach (ushort i in pathToNode)
+                {
+                    hs.Remove(i);
+                    SkilledNodes.Add(i);
+                }   
             }
             UpdateAvailNodes();
-
-            return hs.Count == 0 ? hs : SkillStep(hs);
         }
 
         public void UpdateAvailNodes()
