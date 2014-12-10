@@ -110,20 +110,6 @@ namespace POESKillTree.Views
             _addtransform = Tree.TRect.TopLeft;
         }
 
-        private void GetTreeVersions()
-        {
-            mnuTreeVersion.Items.Clear();
-            var treeDataDirs = Directory.GetDirectories(@".", @"Data*");
-            foreach (string dir in treeDataDirs)
-            {
-                MenuItem newDir = new MenuItem();
-
-                newDir.Header = dir.Equals(DefaultDataFolder) ? @"Current version" : Regex.Replace(dir, @".\\Data_", @"");
-                newDir.Click += new RoutedEventHandler(Menu_SwitchTreeAssets);
-                mnuTreeVersion.Items.Add(newDir);
-            }
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ItemDB.Load("Items.xml");
@@ -178,7 +164,6 @@ namespace POESKillTree.Views
             }
 
             ImportLegacySavedBuilds();
-            GetTreeVersions();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -356,7 +341,6 @@ namespace POESKillTree.Views
                 "Tree data backup", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) ) 
             {
                 Utils.IOHelper.BackupDirectory(DefaultDataFolder);
-                GetTreeVersions();
             }
 
             const string sMessageBoxText = "This will delete your " + DefaultDataFolder + 
@@ -392,7 +376,7 @@ namespace POESKillTree.Views
                                     Directory.Delete(DefaultDataFolder, true);
 
                                     //restore latest Data_backup 
-                                    BuildTreeFromData(latestBackupName);
+                                    Utils.IOHelper.CopyDirectory(latestBackupName, DefaultDataFolder);
                                     LoadBuildFromUrl();
                                 }
                                 else
@@ -416,41 +400,6 @@ namespace POESKillTree.Views
                 case MessageBoxResult.No:
                     //Do nothing
                     break;
-            }
-        }
-
-        private void Menu_SwitchTreeAssets(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var selectedMenuItem = sender as MenuItem;
-                if (selectedMenuItem == null) return;
-
-                string selectedVersion = selectedMenuItem.Header as string;
-                string menuDataFolder = DefaultDataFolder;
-
-                if (!(selectedVersion).Equals(@"Current version"))
-                {
-                    menuDataFolder += (@"_" + selectedVersion);
-                }
-                BuildTreeFromData(menuDataFolder);
-                LoadBuildFromUrl();
-            }
-            catch (Exception ex)
-            {
-                CloseLoadingWindow();
-                MessageBox.Show("Something went wrong :( Switching back to the original data.",
-                    @"Oops!", MessageBoxButton.OK, MessageBoxImage.Error);
-                try
-                {
-                    BuildTreeFromData(DefaultDataFolder);
-                }
-                catch (Exception)
-                {
-                    CloseLoadingWindow();
-                    MessageBox.Show("Ooh... Now it's completely broken. The only thing you can do now: remove " + 
-                        DefaultDataFolder + " folder, then restart your app.", @"Oops!", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
         }
 
