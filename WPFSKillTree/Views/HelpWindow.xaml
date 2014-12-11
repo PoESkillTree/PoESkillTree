@@ -1,0 +1,102 @@
+﻿<controls:MetroWindow
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    x:Class="POESKillTree.Views.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Help"  WindowStartupLocation="CenterOwner" Width="500" Height="600"
+        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
+        Icon="/POESKillTree;component/logo.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="550"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <FlowDocumentScrollViewer Grid.Row="0" Width="500" Height="550">
+            <FlowDocument>
+                <Section BreakPageBefore="True">
+                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
+                        <Run FontSize="40">Basics</Run>
+                    </Paragraph>
+                    <Paragraph>
+                        Welcome to the help section of PoESkillTree. We will start by going over how to use the basic functions.
+                    </Paragraph>
+
+                    <!-- Load Builds from URL -->
+                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
+                        <Run FontSize="20" >Load Builds from URL</Run>
+                    </Paragraph>
+                    <Paragraph>
+                        You want to load a cool build some one else have done? Or maybe your own from somewhere else? This is how you do it:
+                    </Paragraph>
+                    <List>
+                        <ListItem>
+                            <Paragraph>
+                                Paste the URL in the
+                                <Run FontWeight="Bold">Build Link</Run> box and press enter or click the
+                                <Run FontWeight="Bold">Load Build</Run> button, and that's it.
+                            </Paragraph>
+                        </ListItem>
+                    </List>
+
+                    <!-- Create Build -->
+                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
+                        <Run FontSize="20" >Create Build</Run>
+                    </Paragraph>
+                    <Paragraph>
+                        Lets create a build from scratch!
+                    </Paragraph>
+                    <List MarkerStyle="Decimal">
+                        <ListItem>
+                            <Paragraph>
+                                Choose class from dropdown.
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem>
+                            <Paragraph>
+                                Set level (this will affect your attributes).
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem>
+                            <Paragraph>
+                                Start adding nodes you want.
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem>
+                            <Paragraph>
+                                When happy, save your build.
+                            </Paragraph>
+                            <List Margin="0" MarkerStyle="LowerLatin">
+                                <ListItem>
+                                    <Paragraph>
+                                        CTRL+S
+                                    </Paragraph>
+                                </ListItem>
+                                <ListItem>
+                                    <Paragraph>
+                                        From Menu: File -> Save As
+                                    </Paragraph>
+                                </ListItem>
+                                <ListItem>
+                                    <Paragraph>
+                                        Open the
+                                        <Run FontWeight="Bold">Saved builds</Run> panel and click Save New
+                                    </Paragraph>
+                                </ListItem>
+                            </List>
+                        </ListItem>
+                    </List>
+
+                    <!-- Load Saved Builds -->
+                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
+                        <Run FontSize="20" >Load Saved Builds</Run>
+                    </Paragraph>
+                    <Paragraph>
+                        To load a saved build open the
+                        <Run FontWeight="Bold">Saved builds</Run> panel and dubble click on the build you want to load.
+                    </Paragraph>
+                </Section>
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
+        <Button Content="Close" Grid.Row="1" x:Name="btnPopupClose" Click="btnPopupClose_Click" Height="20" Width="200" Margin="0,20,0,0" />
+    </Grid>
+</controls:MetroWindow>

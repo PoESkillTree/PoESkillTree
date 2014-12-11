@@ -5,9 +5,6 @@ using MahApps.Metro.Controls;
 
 namespace POESKillTree.Views
 {
-    /// <summary>
-    /// Interaction logic for DownloadItemsWindow.xaml
-    /// </summary>
     public partial class AboutWindow : MetroWindow
     {
         public AboutWindow()

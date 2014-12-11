@@ -376,6 +376,12 @@ namespace POESKillTree.Views
             Process.Start("http://pathofexile.gamepedia.com/");
         }
 
+        private void Menu_OpenHelp(object sender, RoutedEventArgs e)
+        {
+            var helpWindow = new HelpWindow();
+            helpWindow.ShowDialog();
+        }
+
         private void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
         {
             var aboutWindow = new HotkeysWindow();

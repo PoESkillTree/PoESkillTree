@@ -169,6 +169,9 @@
     <Compile Include="ViewModels\ItemAttribute\ItemAttributes.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
     <Compile Include="ViewModels\ItemAttribute\ItemMod.cs" />
+    <Compile Include="Views\HelpWindow.xaml.cs">
+      <DependentUpon>HelpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HotkeysWindow.xaml.cs">
       <DependentUpon>HotkeysWindow.xaml</DependentUpon>
     </Compile>
@@ -194,6 +197,10 @@
     <Compile Include="Views\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\HelpWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\HotkeysWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
