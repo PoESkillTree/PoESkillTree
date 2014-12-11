@@ -553,10 +553,10 @@ namespace POESKillTree.SkillTreeFiles
             if (AvailNodes.Contains(targetNode))
                 return new List<ushort> {targetNode};
 
-            HashSet<ushort> visited = new HashSet<ushort>(SkilledNodes);
-            Dictionary<int, int> distance = new Dictionary<int, int>();
-            Dictionary<ushort, ushort> parent = new Dictionary<ushort, ushort>();
-            Queue<ushort> newOnes = new Queue<ushort>();
+            var visited = new HashSet<ushort>(SkilledNodes);
+            var distance = new Dictionary<int, int>();
+            var parent = new Dictionary<ushort, ushort>();
+            var newOnes = new Queue<ushort>();
             foreach (var node in AvailNodes)
             {
                 newOnes.Enqueue(node);
@@ -565,14 +565,11 @@ namespace POESKillTree.SkillTreeFiles
 
             while (newOnes.Count > 0)
             {
-                ushort newNode = newOnes.Dequeue();
-
-                int dis = distance[newNode];
+                var newNode = newOnes.Dequeue();
+                var dis = distance[newNode];
                 visited.Add(newNode);
-
-                for (ushort i = 0; i < Skillnodes[newNode].Neighbor.Count; i++)
+                foreach (var connection in Skillnodes[newNode].Neighbor.Select(x => x.Id))
                 {
-                    ushort connection = Skillnodes[newNode].Neighbor[i].Id;
                     if (visited.Contains(connection))
                         continue;
                     if (distance.ContainsKey(connection))
@@ -594,19 +591,14 @@ namespace POESKillTree.SkillTreeFiles
             if (!distance.ContainsKey(targetNode))
                 return new List<ushort>();
 
-            Stack<ushort> path = new Stack<ushort>();
-            ushort curr = targetNode;
-            path.Push(curr);
+            var curr = targetNode;
+            var result = new List<ushort>();
             while (parent.ContainsKey(curr))
             {
-                path.Push(parent[curr]);
+                result.Add(parent[curr]);
                 curr = parent[curr];
             }
-
-            List<ushort> result = new List<ushort>();
-            while (path.Count > 0)
-                result.Add(path.Pop());
-
+            result.Reverse();
             return result;
         }
 
@@ -762,16 +754,15 @@ namespace POESKillTree.SkillTreeFiles
 
         private void SkillNodeList(HashSet<int> hs)
         {
-            while (true)
+            while (hs.Count != 0)
             {
                 var currentShortestPath = new List<ushort>();
-                var removeList = new List<ushort>();
                 foreach (ushort id in hs)
                 {
                     var shortestPathTemp = GetShortestPathTo(id);
                     if (shortestPathTemp.Count <= 0)
                     {
-                        removeList.Add(id);
+                        hs.Remove(id);
                     }
                     else if (shortestPathTemp.Count == 1)
                     {
@@ -783,17 +774,14 @@ namespace POESKillTree.SkillTreeFiles
                         currentShortestPath = shortestPathTemp;
                     }
                 }
-                foreach (ushort id in removeList)
-                    hs.Remove(id);
                 foreach (ushort i in currentShortestPath)
                 {
                     hs.Remove(i);
                     SkilledNodes.Add(i);
                 }
-                UpdateAvailNodes(false);
-                if (hs.Count == 0) break;
+                UpdateAvailNodesList();
             }
-            UpdateAvailNodes();
+            UpdateAvailNodesDraw();
         }
 
         public void UpdateAvailNodes(bool draw = true)
