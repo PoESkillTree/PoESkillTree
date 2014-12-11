@@ -795,6 +795,20 @@ namespace POESKillTree.SkillTreeFiles
                 UpdateAvailNodesDraw();
         }
 
+        private void UpdateAvailNodesList()
+        {
+            AvailNodes.Clear();
+            foreach (ushort inode in SkilledNodes)
+            {
+                SkillNode node = Skillnodes[inode];
+                foreach (SkillNode skillNode in node.Neighbor)
+                {
+                    if (!CharName.Contains(skillNode.Name) && !SkilledNodes.Contains(skillNode.Id))
+                        AvailNodes.Add(skillNode.Id);
+                }
+            }
+        }
+
         private void UpdateAvailNodesDraw()
         {
             var pen2 = new Pen(Brushes.Yellow, 15f);
@@ -816,20 +830,6 @@ namespace POESKillTree.SkillTreeFiles
             DrawNodeSurround();
         }
 
-        private void UpdateAvailNodesList()
-        {
-            AvailNodes.Clear();
-            foreach (ushort inode in SkilledNodes)
-            {
-                SkillNode node = Skillnodes[inode];
-                foreach (SkillNode skillNode in node.Neighbor)
-                {
-                    if (!CharName.Contains(skillNode.Name) && !SkilledNodes.Contains(skillNode.Id))
-                        AvailNodes.Add(skillNode.Id);
-                }
-            }
-        }
-
         private Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
         {
             foreach (var attribute in attributes.ToList())
@@ -848,10 +848,11 @@ namespace POESKillTree.SkillTreeFiles
 
             return attributes;
         }
-        public bool canSwitchClass(string className)
+
+        public bool CanSwitchClass(string className)
         {
             int rootNodeValue;
-            List<ushort> temp = new List<ushort>();
+            var temp = new List<ushort>();
 
             if(className.ToUpper() == "SHADOW")
             {
@@ -868,7 +869,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 temp = GetShortestPathTo((ushort) node);
                 
-                if (temp.Count() <= 0)
+                if (!temp.Any())
                     return true;
             }
             return false;

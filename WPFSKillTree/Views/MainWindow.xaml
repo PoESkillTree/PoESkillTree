@@ -123,6 +123,12 @@
                       Data="F1 M 31.6666,30.0834L 42.7499,30.0834L 42.7499,33.2501L 42.7499,52.2501L 45.9165,52.2501L 45.9165,57.0001L 31.6666,57.0001L 31.6666,52.2501L 34.8332,52.2501L 34.8332,34.8335L 31.6666,34.8335L 31.6666,30.0834 Z M 38.7917,19C 40.9778,19 42.75,20.7722 42.75,22.9583C 42.75,25.1445 40.9778,26.9167 38.7917,26.9167C 36.6055,26.9167 34.8333,25.1445 34.8333,22.9583C 34.8333,20.7722 36.6055,19 38.7917,19 Z "/>
             </Canvas>
         </ControlTemplate>
+        <ControlTemplate x:Key="HelpIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="8.3333" Height="14.3333" Canvas.Left="3.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 37.2083,49.0833C 39.3945,49.0833 41.1667,50.8555 41.1667,53.0417C 41.1667,55.2278 39.3945,57 37.2083,57C 35.0222,57 33.25,55.2278 33.25,53.0417C 33.25,50.8555 35.0222,49.0833 37.2083,49.0833 Z M 38,17.4167C 44.9956,17.4167 50.6666,21.9416 50.6666,28.5C 50.6666,30.875 49.0833,34.8333 45.9167,36.4167C 42.75,38 41.1667,40.1267 41.1667,42.75L 41.1667,45.9167L 33.25,45.9167L 33.25,43.5417C 33.25,38.1571 38,34.8333 39.5833,33.25C 42.75,30.0833 42.75,29.644 42.75,28.5C 42.75,25.8767 40.6233,23.75 38,23.75C 35.3766,23.75 33.25,25.8767 33.25,28.5L 33.25,30.875L 25.3333,30.875L 25.3333,29.2917C 25.3333,22.7333 31.0044,17.4167 38,17.4167 Z "/>
+            </Canvas>
+        </ControlTemplate>
     </Window.Resources>
     <Grid Margin="0">
         <Grid.RowDefinitions>
@@ -242,6 +248,11 @@
                     </MenuItem.Icon>
                     <MenuItem Header="_Path of Exile Website" Click="Menu_OpenPoEWebsite"/>
                     <MenuItem Header="_Path of Exile Wiki" Click="Menu_OpenWiki"/>
+                </MenuItem>
+                <MenuItem Header="_View Help" Click="Menu_OpenHelp">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource HelpIcon}" />
+                    </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="_Hotkeys" Click="Menu_OpenHotkeys">
                     <MenuItem.Icon>
