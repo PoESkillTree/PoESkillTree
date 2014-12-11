@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -8,7 +9,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
-using Newtonsoft.Json;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 namespace POESKillTree.SkillTreeFiles
@@ -552,48 +552,49 @@ namespace POESKillTree.SkillTreeFiles
                 return new List<ushort>();
             if (AvailNodes.Contains(targetNode))
                 return new List<ushort> {targetNode};
-            var visited = new HashSet<ushort>(SkilledNodes);
-            var distance = new Dictionary<int, int>();
-            var parent = new Dictionary<ushort, ushort>();
-            var newOnes = new Queue<ushort>();
-            foreach (ushort node in SkilledNodes)
-            {
-                distance.Add(node, 0);
-            }
-            foreach (ushort node in AvailNodes)
+
+            HashSet<ushort> visited = new HashSet<ushort>(SkilledNodes);
+            Dictionary<int, int> distance = new Dictionary<int, int>();
+            Dictionary<ushort, ushort> parent = new Dictionary<ushort, ushort>();
+            Queue<ushort> newOnes = new Queue<ushort>();
+            foreach (var node in AvailNodes)
             {
                 newOnes.Enqueue(node);
                 distance.Add(node, 1);
             }
+
             while (newOnes.Count > 0)
             {
                 ushort newNode = newOnes.Dequeue();
+
                 int dis = distance[newNode];
                 visited.Add(newNode);
-                foreach (ushort connection in Skillnodes[newNode].Neighbor.Select(nd => nd.Id))
+
+                for (ushort i = 0; i < Skillnodes[newNode].Neighbor.Count; i++)
                 {
+                    ushort connection = Skillnodes[newNode].Neighbor[i].Id;
                     if (visited.Contains(connection))
                         continue;
                     if (distance.ContainsKey(connection))
                         continue;
-                    if (Skillnodes[newNode].Spc.HasValue)
-                        continue;
-                    if (Skillnodes[newNode].IsMastery)
-                        continue;
+
                     distance.Add(connection, dis + 1);
                     newOnes.Enqueue(connection);
 
                     parent.Add(connection, newNode);
 
                     if (connection == targetNode)
+                    {
+                        newOnes.Clear();
                         break;
+                    }
                 }
             }
 
             if (!distance.ContainsKey(targetNode))
                 return new List<ushort>();
 
-            var path = new Stack<ushort>();
+            Stack<ushort> path = new Stack<ushort>();
             ushort curr = targetNode;
             path.Push(curr);
             while (parent.ContainsKey(curr))
@@ -602,7 +603,7 @@ namespace POESKillTree.SkillTreeFiles
                 curr = parent[curr];
             }
 
-            var result = new List<ushort>();
+            List<ushort> result = new List<ushort>();
             while (path.Count > 0)
                 result.Add(path.Pop());
 
@@ -761,48 +762,49 @@ namespace POESKillTree.SkillTreeFiles
 
         private void SkillNodeList(HashSet<int> hs)
         {
-            var pathes = new List<List<ushort>>();
-            var removeList = new List<ushort>();
-            foreach (ushort id in hs)
+            while (true)
             {
-                List<ushort> shortestPathTemp = GetShortestPathTo(id);
-                if (shortestPathTemp.Count <= 0)
+                var currentShortestPath = new List<ushort>();
+                var removeList = new List<ushort>();
+                foreach (ushort id in hs)
                 {
-                    removeList.Add(id);
-                    pathes.Add(shortestPathTemp);
+                    var shortestPathTemp = GetShortestPathTo(id);
+                    if (shortestPathTemp.Count <= 0)
+                    {
+                        removeList.Add(id);
+                    }
+                    else if (shortestPathTemp.Count == 1)
+                    {
+                        currentShortestPath = shortestPathTemp;
+                        break;
+                    }
+                    else if (currentShortestPath.Count == 0 || shortestPathTemp.Count < currentShortestPath.Count)
+                    {
+                        currentShortestPath = shortestPathTemp;
+                    }
                 }
-                else
-                    pathes.Add(shortestPathTemp);
-            }
-            pathes.Sort((p1, p2) => p1.Count.CompareTo(p2.Count));
-            foreach (ushort removeID in removeList)
-                hs.Remove(removeID);
-            pathes.RemoveAll(p => p.Count == 0);
-            foreach (List<ushort> pathToNode in pathes)
-            {
-                foreach (ushort i in pathToNode)
+                foreach (ushort id in removeList)
+                    hs.Remove(id);
+                foreach (ushort i in currentShortestPath)
                 {
                     hs.Remove(i);
                     SkilledNodes.Add(i);
-                }   
+                }
+                UpdateAvailNodes(false);
+                if (hs.Count == 0) break;
             }
             UpdateAvailNodes();
         }
 
-        public void UpdateAvailNodes()
+        public void UpdateAvailNodes(bool draw = true)
         {
-            AvailNodes.Clear();
-            foreach (ushort inode in SkilledNodes)
-            {
-                SkillNode node = Skillnodes[inode];
-                foreach (SkillNode skillNode in node.Neighbor)
-                {
-                    if (!CharName.Contains(skillNode.Name) && !SkilledNodes.Contains(skillNode.Id))
-                        AvailNodes.Add(skillNode.Id);
-                }
-            }
-            //  picActiveLinks = new DrawingVisual();
+            UpdateAvailNodesList();
+            if(draw)
+                UpdateAvailNodesDraw();
+        }
 
+        private void UpdateAvailNodesDraw()
+        {
             var pen2 = new Pen(Brushes.Yellow, 15f);
 
             using (DrawingContext dc = picActiveLinks.RenderOpen())
@@ -818,9 +820,22 @@ namespace POESKillTree.SkillTreeFiles
                     }
                 }
             }
-            // picActiveLinks.Clear();
             DrawActiveNodeIcons();
             DrawNodeSurround();
+        }
+
+        private void UpdateAvailNodesList()
+        {
+            AvailNodes.Clear();
+            foreach (ushort inode in SkilledNodes)
+            {
+                SkillNode node = Skillnodes[inode];
+                foreach (SkillNode skillNode in node.Neighbor)
+                {
+                    if (!CharName.Contains(skillNode.Name) && !SkilledNodes.Contains(skillNode.Id))
+                        AvailNodes.Add(skillNode.Id);
+                }
+            }
         }
 
         private Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
