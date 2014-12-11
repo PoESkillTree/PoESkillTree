@@ -263,6 +263,7 @@ namespace POESKillTree.Views
         {
             Tree.SkillAllHighligtedNodes();
             UpdateAllAttributeList();
+            tbSkillURL.Text = Tree.SaveToURL();
         }
 
         private void Menu_ScreenShot(object sender, RoutedEventArgs e)
@@ -529,6 +530,7 @@ namespace POESKillTree.Views
                 return;
             Tree.Reset();
             UpdateAllAttributeList();
+            tbSkillURL.Text = Tree.SaveToURL();
         }
 
         #endregion
