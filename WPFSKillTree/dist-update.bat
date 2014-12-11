@@ -1,5 +1,5 @@
 @ECHO OFF
-@REM Release batch script
+@REM Updates Items.xml file using UpdateDB tool.
 
 @REM Check whether Git is found in PATH
 WHERE /Q git

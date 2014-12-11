@@ -1,5 +1,5 @@
 @ECHO OFF
-@REM Release batch script
+@REM Cleans up everything dist-release script created.
 
 @REM Check whether vsvars32 is found in PATH
 WHERE /Q vsvars32

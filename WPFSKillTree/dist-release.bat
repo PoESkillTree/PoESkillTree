@@ -1,5 +1,8 @@
 @ECHO OFF
-@REM Release batch script
+@REM Creates release package.
+@REM 1) Change version string in Properties\Version.resx to reflect new release version.
+@REM 2) Run this script.
+@REM 3) Enjoy dist\<release-package>.zip
 
 @REM Check whether Git is found in PATH
 WHERE /Q git
