@@ -83,7 +83,7 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>naja.ico</ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>POESKillTree.SkillTreeFiles.Bootstrap</StartupObject>
@@ -277,9 +277,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="naja.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Marauder.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +303,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Resource Include="release.xml" />
+    <Resource Include="logo.ico" />
     <Content Include="Tools\7z.dll" />
     <Content Include="Tools\7z.exe" />
     <Resource Include="Tools\7z.LICENSE.txt" />
