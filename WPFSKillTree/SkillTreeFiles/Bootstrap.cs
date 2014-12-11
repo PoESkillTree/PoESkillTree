@@ -54,6 +54,12 @@ namespace POESKillTree.SkillTreeFiles
             return location;
         }
 
+        // Returns location of executing assembly.
+        public string GetExecutingAssemblyLocation()
+        {
+            return Assembly.GetExecutingAssembly().Location;
+        }
+
         // Returns location of original executable when invoked from shadow copy enabled application domain.
         private static string GetOriginalLocation(bool executable = false)
         {
@@ -98,10 +104,18 @@ namespace POESKillTree.SkillTreeFiles
                 case Mode.SHADOW_COPY:
                     // Use current working directory as application base.
                     setup.ApplicationBase = Environment.CurrentDirectory;
-                    domain = AppDomain.CreateDomain(AppDomain.CurrentDomain.FriendlyName, AppDomain.CurrentDomain.Evidence, setup);
 
-                    boot = (Bootstrap)domain.CreateInstanceFromAndUnwrap(Path.Combine(Environment.CurrentDirectory, AppDomain.CurrentDomain.FriendlyName), typeof(Bootstrap).FullName);
-                    boot.Run();
+                    try
+                    {
+                        domain = AppDomain.CreateDomain(AppDomain.CurrentDomain.FriendlyName, null, setup);
+
+                        boot = (Bootstrap)domain.CreateInstanceFromAndUnwrap(Path.Combine(Environment.CurrentDirectory, AppDomain.CurrentDomain.FriendlyName), typeof(Bootstrap).FullName);
+                        boot.Run();
+                    }
+                    catch (Exception e)
+                    {
+                        File.WriteAllText("crash.txt", e.ToString());
+                    }
                     break;
 
                 case Mode.RESTART:
@@ -122,10 +136,23 @@ namespace POESKillTree.SkillTreeFiles
                 default:
                     // Use current domain base directory as application base.
                     setup.ApplicationBase = AppDomain.CurrentDomain.BaseDirectory;
-                    domain = AppDomain.CreateDomain(AppDomain.CurrentDomain.FriendlyName, AppDomain.CurrentDomain.Evidence, setup);
 
-                    boot = (Bootstrap)domain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().Location, typeof(Bootstrap).FullName);
-                    boot.Spawn(Mode.SHADOW_COPY);
+                    try
+                    {
+                        domain = AppDomain.CreateDomain(AppDomain.CurrentDomain.FriendlyName, null, setup);
+
+                        boot = (Bootstrap)domain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().Location, typeof(Bootstrap).FullName);
+
+                        // Copy .exe.config file to shadow copy location.
+                        string shadowLocation = boot.GetExecutingAssemblyLocation();
+                        File.Copy(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, shadowLocation + ".config", true);
+
+                        boot.Spawn(Mode.SHADOW_COPY);
+                    }
+                    catch (Exception e)
+                    {
+                        File.WriteAllText("crash.txt", e.ToString());
+                    }
                     break;
             }
         }
