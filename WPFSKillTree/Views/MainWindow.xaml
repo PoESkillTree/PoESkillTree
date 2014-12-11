@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:POESKillTree.Controls"
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
-        Closing="Window_Closing" Icon="/POESKillTree;component/naja.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown"
         TextOptions.TextFormattingMode="Display">
     <Window.Resources>

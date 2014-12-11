@@ -12,7 +12,7 @@
     <TagFile>$(WorkDir)\tag</TagFile>
   </PropertyGroup>
 
-  <Target Name="Build">
+  <Target Name="Build" DependsOnTargets="Clean">
     <!-- Get release version string from Version resource file -->
     <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AppVersionString']/value/text()">
       <Output PropertyName="Version" TaskParameter="Result" />
