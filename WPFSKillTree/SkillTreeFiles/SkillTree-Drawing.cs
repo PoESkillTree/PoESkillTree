@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -170,9 +172,31 @@ namespace POESKillTree.SkillTreeFiles
                         dc.DrawRectangle(FacesBrush[i].Value, null,
                             new Rect(pos - new Vector2D(FacesBrush[i].Key.Width, FacesBrush[i].Key.Height),
                                 pos + new Vector2D(FacesBrush[i].Key.Width, FacesBrush[i].Key.Height)));
+
+                        var charBaseAttr = CharBaseAttributes[Chartype];
+
+                        var text = CreateAttributeText(charBaseAttr["+# to Intelligence"].ToString(), Brushes.DodgerBlue);
+                        dc.DrawText(text, pos - new Vector2D(19, 117));
+
+                        text = CreateAttributeText(charBaseAttr["+# to Strength"].ToString(), Brushes.IndianRed);
+                        dc.DrawText(text, pos - new Vector2D(102, -32));
+
+                        text = CreateAttributeText(charBaseAttr["+# to Dexterity"].ToString(), Brushes.MediumSeaGreen);
+                        dc.DrawText(text, pos - new Vector2D(-69, -32));
+
                     }
                 }
             }
+        }
+
+        private FormattedText CreateAttributeText(string text, SolidColorBrush colorBrush)
+        {
+            return new FormattedText(text,
+                new CultureInfo("en-us"),
+                FlowDirection.LeftToRight,
+                new Typeface(new FontFamily("Arial"), FontStyles.Normal, FontWeights.Normal,
+                    new FontStretch()),
+                30, colorBrush);
         }
 
         public void DrawHighlights(List<SkillNode> nodes, SolidColorBrush brush = null)
