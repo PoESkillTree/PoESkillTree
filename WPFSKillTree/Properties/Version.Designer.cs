@@ -61,7 +61,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.1.1pre2.
+        ///   Looks up a localized string similar to 2.1.1pre3.
         /// </summary>
         public static string AppVersionString {
             get {
