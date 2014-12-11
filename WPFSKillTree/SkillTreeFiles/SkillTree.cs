@@ -574,7 +574,10 @@ namespace POESKillTree.SkillTreeFiles
                         continue;
                     if (distance.ContainsKey(connection))
                         continue;
-
+                    if (Skillnodes[newNode].Spc.HasValue)
+                        continue;
+                    if (Skillnodes[newNode].IsMastery)
+                        continue;
                     distance.Add(connection, dis + 1);
                     newOnes.Enqueue(connection);
 
@@ -592,7 +595,7 @@ namespace POESKillTree.SkillTreeFiles
                 return new List<ushort>();
 
             var curr = targetNode;
-            var result = new List<ushort>();
+            var result = new List<ushort> {curr};
             while (parent.ContainsKey(curr))
             {
                 result.Add(parent[curr]);
@@ -757,12 +760,13 @@ namespace POESKillTree.SkillTreeFiles
             while (hs.Count != 0)
             {
                 var currentShortestPath = new List<ushort>();
+                var removeList = new List<ushort>();
                 foreach (ushort id in hs)
                 {
                     var shortestPathTemp = GetShortestPathTo(id);
                     if (shortestPathTemp.Count <= 0)
                     {
-                        hs.Remove(id);
+                        removeList.Add(id);
                     }
                     else if (shortestPathTemp.Count == 1)
                     {
@@ -774,6 +778,7 @@ namespace POESKillTree.SkillTreeFiles
                         currentShortestPath = shortestPathTemp;
                     }
                 }
+                removeList.ForEach(x => hs.Remove(x));
                 foreach (ushort i in currentShortestPath)
                 {
                     hs.Remove(i);
