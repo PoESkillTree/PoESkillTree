@@ -323,6 +323,7 @@
     </Content>
     <Resource Include="release.xml" />
     <Resource Include="logo.ico" />
+    <None Include="Properties\app.manifest.i" />
     <Content Include="Tools\7z.dll" />
     <Content Include="Tools\7z.exe" />
     <Resource Include="Tools\7z.LICENSE.txt" />
