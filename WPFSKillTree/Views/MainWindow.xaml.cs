@@ -395,17 +395,22 @@ namespace POESKillTree.Views
         }
 
         // Checks for updates.
-        private void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
+        private void  Menu_CheckForUpdates(object sender, RoutedEventArgs e)
         {
             try
             {
                 Updater.Release release = Updater.CheckForUpdates();
                 if (release == null)
                 {
-                    // Show "No update is available" dialog.
+                    MessageBox.Show("You have the lastest version!", "No update found.");
                 }
                 else
                 {
+                    MessageBoxResult download = MessageBox.Show("Install Update?", "Update Found!", MessageBoxButton.YesNo);
+                    if (download == MessageBoxResult.Yes)
+                        btnUpdateInstall(sender, e);
+                    else
+                        btnUpdateCancel(sender, e);
                     // Show dialog with release informations and "Install & Restart" button.
                 }
             }
@@ -422,11 +427,13 @@ namespace POESKillTree.Views
             {
                 // Show download progress bar and Cancel button.
                 // Start downloading.
+                StartLoadingWindow();
                 Updater.Download(UpdateDownloadCompleted, UpdateDownloadProgressChanged);
             }
             catch (UpdaterException ex)
             {
                 // Display error message: ex.Message.
+                MessageBox.Show(ex.Message.ToString(), "Failed to install update!");
             }
         }
 
@@ -438,7 +445,6 @@ namespace POESKillTree.Views
             else
             {
                 Updater.Dispose();
-
                 // Close dialog.
             }
         }
@@ -454,6 +460,7 @@ namespace POESKillTree.Views
             else if (e.Error != null) // Check whether error occured.
             {
                 // Display error message: e.Error.Message.
+                MessageBox.Show(e.Error.Message.ToString(), "Failed to install update!");
             }
             else // Download completed.
             {
@@ -466,14 +473,17 @@ namespace POESKillTree.Views
                 {
                     Updater.Dispose();
                     // Display error message: ex.Message.
+                    MessageBox.Show(ex.Message.ToString(), "Failed to install update!");
                 }
             }
+            CloseLoadingWindow();
         }
 
         // Invoked when update download progress changes.
         private void UpdateDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             // Update download progres bar.
+            UpdateLoadingWindow(e.BytesReceived, e.TotalBytesToReceive);
         }
 
         #endregion
