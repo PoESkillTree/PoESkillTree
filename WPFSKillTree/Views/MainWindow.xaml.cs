@@ -490,19 +490,19 @@ namespace POESKillTree.Views
 
             if (Tree == null)
                 return;
-            ComboBoxItem ComboItem = (ComboBoxItem)cbCharType.SelectedItem;
-            string className = ComboItem.Name;
+            var ComboItem = (ComboBoxItem)cbCharType.SelectedItem;
+            var className = ComboItem.Name;
 
-            if (Tree.canSwitchClass(className))
+            if (Tree.CanSwitchClass(className))
             {
-                string[] currentClassArray = getCurrentClass();
-                string[] changeClassArray = getAnyClass(className);
+                var currentClassArray = getCurrentClass();
+                var changeClassArray = getAnyClass(className);
 
                 if (currentClassArray[0] == "ERROR")
                     return;
                 if (changeClassArray[0] == "ERROR")
                     return;
-                string usedPoints = tbUsedPoints.Text;
+                var usedPoints = tbUsedPoints.Text;
                 cbCharType.Text = changeClassArray[0];
 
                 Tree.LoadFromURL(tbSkillURL.Text.Replace(currentClassArray[1], changeClassArray[1]));
@@ -510,7 +510,7 @@ namespace POESKillTree.Views
             }
             else
             {
-                SkillNode startnode =
+                var startnode =
                     Tree.Skillnodes.First(
                         nd => nd.Value.Name.ToUpper() == (Tree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
                 Tree.SkilledNodes.Clear();

@@ -23,7 +23,7 @@
 
                     <!-- Load Builds from URL -->
                     <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="20" >Load Builds from URL</Run>
+                        <Run FontSize="20">Load Builds from URL</Run>
                     </Paragraph>
                     <Paragraph>
                         You want to load a cool build some one else have done? Or maybe your own from somewhere else? This is how you do it:
@@ -40,7 +40,7 @@
 
                     <!-- Create Build -->
                     <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="20" >Create Build</Run>
+                        <Run FontSize="20">Create Build</Run>
                     </Paragraph>
                     <Paragraph>
                         Lets create a build from scratch!
@@ -78,21 +78,54 @@
                                 </ListItem>
                                 <ListItem>
                                     <Paragraph>
-                                        Open the
-                                        <Run FontWeight="Bold">Saved builds</Run> panel and click Save New
+                                        Open the <Run FontWeight="Bold">Saved builds</Run> panel and click Save New
                                     </Paragraph>
                                 </ListItem>
                             </List>
                         </ListItem>
                     </List>
 
-                    <!-- Load Saved Builds -->
+                    <!-- Load Saved Build -->
                     <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="20" >Load Saved Builds</Run>
+                        <Run FontSize="20">Load Saved Build</Run>
                     </Paragraph>
                     <Paragraph>
-                        To load a saved build open the
-                        <Run FontWeight="Bold">Saved builds</Run> panel and dubble click on the build you want to load.
+                        To load a saved build open the <Run FontWeight="Bold">Saved builds</Run> panel and 
+                        dubble click on the build you want to load.
+                    </Paragraph>
+                    
+                    <!-- Overwrite Build -->
+                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
+                        <Run FontSize="20">Overwrite Build</Run>
+                    </Paragraph>
+                    <Paragraph>
+                        If you do changes to an already saved build or just want to replace one, 
+                        select the desired build and click <Run FontWeight="Bold">Overwrite Build</Run>. 
+                        You can also change the name/note on a build by right clicking it. 
+                        <Run FontWeight="Bold">(Advanced)</Run> In this window you can also inspect, 
+                        change and remove item data, keep in mind that it is raw data so only change if
+                        you know what you are doing.
+                    </Paragraph>
+                </Section>
+                <Section BreakPageBefore="True">
+                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
+                        <Run FontSize="40">Items and Gems</Run>
+                    </Paragraph>
+                    <Paragraph>
+                        Now that you have a nice skilltree it is time to add some items and gems to calculate your DPS and defences.
+                    </Paragraph>
+                    <Paragraph>
+                        <Run FontStyle="Italic">This feature require you to download data from pathofexile.com!</Run>
+                    </Paragraph>
+
+                    <!-- Load Builds from URL -->
+                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
+                        <Run FontSize="20">Setup character</Run>
+                    </Paragraph>
+                    <Paragraph>
+                        To get item and gem data we are going to access one of your characters from pathofexile.com.
+                        This character needs be equiped with the items and gems that you want for your build, so head over
+                        to the client and fix that.
                     </Paragraph>
                 </Section>
             </FlowDocument>
