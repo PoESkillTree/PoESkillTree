@@ -21,7 +21,7 @@
             <ColumnDefinition Width="110"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom">PoESkillTree</Label>
-        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontStyle="Italic" Content="{x:Static Properties:Version.AppVersionString}"/>
+        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontStyle="Italic" Content="{x:Static Properties:Version.ProductVersion}"/>
         <Separator Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
         <Label Grid.Row="1" Grid.Column="0">Updates</Label>
         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
