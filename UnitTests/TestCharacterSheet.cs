@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace UnitTests
         {
             if (ItemDB.IsEmpty())
                 ItemDB.Load(@"..\..\..\WPFSkillTree\Items.xml", true);
-            Tree = SkillTree.CreateSkillTree(() => { }, (double dummy1, double dummy2) => { }, () => { });
+            Tree = SkillTree.CreateSkillTree(() => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
         }
 
         readonly Regex _backreplace = new Regex("#");
@@ -42,14 +43,14 @@ namespace UnitTests
             return s;
         }
 
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", "..\\..\\TestBuilds\\Builds.xml", "TestBuild", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"..\..\TestBuilds\Builds.xml", "TestBuild", DataAccessMethod.Sequential)]
         [TestMethod]
         public void TestBuild()
         {
             // Read build entry.
             string treeURL = TestContext.DataRow["TreeURL"].ToString();
             int level = Convert.ToInt32(TestContext.DataRow["Level"]);
-            string buildFile = "..\\..\\TestBuilds\\" + TestContext.DataRow["BuildFile"].ToString();
+            string buildFile = @"..\..\TestBuilds\" + TestContext.DataRow["BuildFile"].ToString();
             List<string> expectDefense = new List<string>();
             List<string> expectOffense = new List<string>();
             if (TestContext.DataRow.Table.Columns.Contains("ExpectDefence"))

@@ -1368,7 +1368,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Herald of Thunder">
+  <Gem Name="Herald of Thunder" ExcludeForm="AoE">
     <Attribute Name="Deals #-# Lightning Damage">
       <Value Level="1">1-57</Value>
       <Value Level="2">2-73</Value>
@@ -1558,7 +1558,7 @@
   </Gem>
   <Gem Name="Increased Critical Damage">
     <Attribute Name="#% increased Critical Strike Multiplier">
-      <Value Level="1">53%</Value>
+      <Value Level="1">50%</Value>
       <Value Level="2">57%</Value>
       <Value Level="3">60%</Value>
       <Value Level="4">63%</Value>
@@ -1576,8 +1576,8 @@
       <Value Level="16">102%</Value>
       <Value Level="17">104%</Value>
       <Value Level="18">105%</Value>
-      <Value Level="19">107%</Value>
-      <Value Level="20">109%</Value>
+      <Value Level="19">68%</Value>
+      <Value Level="20">69%</Value>
       <Value Level="21">111%</Value>
       <Value Level="22">???%</Value>
       <Value Level="23">???%</Value>
@@ -2523,6 +2523,7 @@
       <Value Level="18">126–189</Value>
       <Value Level="19">136–204</Value>
       <Value Level="20">147–220</Value>
+      <Value Level="21">158–237</Value>
     </Attribute>
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
