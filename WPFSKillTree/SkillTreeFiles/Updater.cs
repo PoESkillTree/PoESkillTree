@@ -345,7 +345,7 @@ namespace POESKillTree.SkillTreeFiles
         // Returns current version.
         public static string GetCurrentVersion()
         {
-            return Properties.Version.AppVersionString;
+            return Properties.Version.ProductVersion;
         }
 
         // Return latest release, or null if there is none or it wasn't checked for yet.

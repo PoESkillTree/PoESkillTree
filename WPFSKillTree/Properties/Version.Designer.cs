@@ -61,11 +61,20 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 2.0.0.0.
+        /// </summary>
+        public static string AssemblyVersion {
+            get {
+                return ResourceManager.GetString("AssemblyVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 2.1.1pre3.
         /// </summary>
-        public static string AppVersionString {
+        public static string ProductVersion {
             get {
-                return ResourceManager.GetString("AppVersionString", resourceCulture);
+                return ResourceManager.GetString("ProductVersion", resourceCulture);
             }
         }
     }
