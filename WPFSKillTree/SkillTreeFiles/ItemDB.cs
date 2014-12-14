@@ -1114,7 +1114,7 @@ namespace POESKillTree.SkillTreeFiles
         private static Dictionary<string, Gem> GemIndex = new Dictionary<string, Gem>();
 
         // Pattern to match +Level item modifiers.
-        private static Regex ReGemLevelKeyword = new Regex("\\+# to Level of (.+) Gems in this item");
+        private static Regex ReGemLevelKeyword = new Regex(@"\+# to Level of Socketed (.+) Gems");
 
         // Adds gem to deserialized gems.
         public static void Add(Gem gem)
@@ -1156,7 +1156,7 @@ namespace POESKillTree.SkillTreeFiles
                 int plusLevel = 0;
                 foreach (ItemMod mod in item.Mods)
                 {
-                    if (mod.Attribute == "+# to Level of Gems in this item")
+                    if (mod.Attribute == "+# to Level of Socketed Gems")
                         plusLevel += (int)mod.Value[0];
                     else
                     {
