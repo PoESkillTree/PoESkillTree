@@ -406,7 +406,15 @@ namespace POESKillTree.Views
                 }
                 else
                 {
-                    MessageBoxResult download = MessageBox.Show("Install Update?", "Update Found!", MessageBoxButton.YesNo);
+                    var message = "Would you like to install " + release.Version + "?";
+                    MessageBoxResult download = new MessageBoxResult();
+                    if (release.Version.ToLower().Contains("pre"))
+                    {
+                        download = MessageBox.Show(message + "\nThis is a pre-release, meaning there could be some bugs!", "Pre-release Found!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    }
+                    else
+                        download = MessageBox.Show(message, "Release Found!", MessageBoxButton.YesNo, MessageBoxImage.None);
+
                     if (download == MessageBoxResult.Yes)
                         btnUpdateInstall(sender, e);
                     else
