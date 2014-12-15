@@ -17,6 +17,7 @@ namespace POESKillTree.SkillTreeFiles
      * - Spell Critical Strike chance shows sometimes incorrect value (0.1 difference from in-game value).
      * - Estimated chance to Evade Attacks shows sometimes incorrect value.
      * - Cast gems (Herald of Ice, Herald of Thunder) have their quality bonuses applied in inactive state.
+     * - Chance to Hit shows sometimes incorrect value affecting overall DPS.
      */
     public class Compute
     {
@@ -48,7 +49,7 @@ namespace POESKillTree.SkillTreeFiles
             // The nature to match physical weapon damage while dual wielding.
             static DamageNature PhysicalWeaponDamage = new DamageNature() { Source = DamageSource.Attack, Type = DamageType.Physical };
             // Gem support from item modifier pattern.
-            static Regex ReGemSupportFromItem = new Regex(@"Gems in this item are Supported by level # (.+)$");
+            static Regex ReGemSupportFromItem = new Regex(@"Socketed Gems are Supported by level # (.+)$");
 
             // Creates attack from gem.
             AttackSkill(Item gem)
@@ -463,6 +464,9 @@ namespace POESKillTree.SkillTreeFiles
             static Regex ReIncreasedAttackSpeedWithWeaponType = new Regex("#% (increased|reduced) Attack Speed with (.+)$");
             // The more/less attack speed patterns.
             static Regex ReMoreAttackSpeedType = new Regex("#% (more|less) (.+) Attack Speed$");
+            // The form specific increased/reduced critical chance/multiplier patterns.
+            static Regex ReIncreasedCriticalChanceForm = new Regex("#% (increased|reduced) (.+) Critical Strike Chance$");
+            static Regex ReIncreasedCriticalMultiplierForm = new Regex("#% (increased|reduced) (.+) Critical Strike Multiplier$");
             // The increased/reduced critical chance/multiplier with weapon type patterns.
             static Regex ReIncreasedCriticalChanceWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Chance with (.+)$");
             static Regex ReIncreasedCriticalMultiplierWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Multiplier with (.+)$");
@@ -720,6 +724,13 @@ namespace POESKillTree.SkillTreeFiles
                             if (IsDualWielding && attrs.ContainsKey("#% increased Weapon Critical Strike Chance while Dual Wielding"))
                                 incCC += attrs["#% increased Weapon Critical Strike Chance while Dual Wielding"][0];
                         }
+                        // Form specific.
+                        foreach (var attr in attrs.Matches(ReIncreasedCriticalChanceForm))
+                        {
+                            Match m = ReIncreasedCriticalChanceForm.Match(attr.Key);
+                            if (DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
+                                incCC += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                        }
                         if (incCC > 0)
                             CriticalChance = IncreaseValueByPercentage(CriticalChance, incCC);
 
@@ -752,6 +763,13 @@ namespace POESKillTree.SkillTreeFiles
                             }
                             if (IsDualWielding && attrs.ContainsKey("#% increased Weapon Critical Strike Multiplier while Dual Wielding"))
                                 incCM += attrs["#% increased Weapon Critical Strike Multiplier while Dual Wielding"][0];
+                        }
+                        // Form specific.
+                        foreach (var attr in attrs.Matches(ReIncreasedCriticalMultiplierForm))
+                        {
+                            Match m = ReIncreasedCriticalMultiplierForm.Match(attr.Key);
+                            if (DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
+                                incCM += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
                         }
                         if (incCM > 0)
                             CriticalMultiplier = IncreaseValueByPercentage(CriticalMultiplier, incCM);
@@ -1684,6 +1702,60 @@ namespace POESKillTree.SkillTreeFiles
             return chance;
         }
 
+        // Computes core attributes.
+        private static void CoreAttributes ()
+        {
+            float strength = 0;
+            float dexterity = 0;
+            float intelligence = 0;
+
+            // Citrine Amulet
+            if (Global.ContainsKey("+# to Strength and Dexterity"))
+            {
+                strength += Global["+# to Strength and Dexterity"][0];
+                dexterity += Global["+# to Strength and Dexterity"][0];
+
+                Global.Remove("+# to Strength and Dexterity");
+            }
+
+            // Agate Amulet
+            if (Global.ContainsKey("+# to Strength and Intelligence"))
+            {
+                strength += Global["+# to Strength and Intelligence"][0];
+                intelligence += Global["+# to Strength and Intelligence"][0];
+
+                Global.Remove("+# to Strength and Intelligence");
+            }
+
+            // Turquoise Amulet
+            if (Global.ContainsKey("+# to Dexterity and Intelligence"))
+            {
+                dexterity += Global["+# to Dexterity and Intelligence"][0];
+                intelligence += Global["+# to Dexterity and Intelligence"][0];
+
+                Global.Remove("+# to Dexterity and Intelligence");
+            }
+
+            // TODO: Onyx Amulet (when hack in POESKillTree.ViewModels.ItemAttribute.ItemMod.CreateMods will be removed).
+            /*
+            if (Global.ContainsKey("+# to all Attributes"))
+            {
+                strength += Global["+# to all Attributes"][0];
+                dexterity += Global["+# to all Attributes"][0];
+                intelligence += Global["+# to all Attributes"][0];
+
+                Global.Remove("+# to all Attributes");
+            }
+             */
+
+            if (strength != 0)
+                Global["+# to Strength"][0] += strength;
+            if (dexterity != 0)
+                Global["+# to Dexterity"][0] += dexterity;
+            if (intelligence != 0)
+                Global["+# to Intelligence"][0] += intelligence;
+        }
+
         // Computes defensive statistics.
         public static List<ListGroup> Defense()
         {
@@ -2192,6 +2264,8 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             Global.Add(Equipment);
+
+            CoreAttributes();
 
             Implicit = new AttributeSet(skillTree.ImplicitAttributes(Global));
             Global.Add(Implicit);
