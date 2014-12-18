@@ -198,6 +198,9 @@
     <Compile Include="Views\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UpdaterWindow.xaml.cs">
+      <DependentUpon>UpdaterWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -231,6 +234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DownloadItemsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UpdaterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
