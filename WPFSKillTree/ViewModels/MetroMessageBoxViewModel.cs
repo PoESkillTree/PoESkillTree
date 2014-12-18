@@ -192,6 +192,10 @@ namespace POESKillTree.ViewModels
             }
         }
 
+        public string ImageColumnWidth
+        {
+            get { return _imageSource == null ? "0" : "Auto"; }
+        }
         #endregion
 
         #region buttons visibility
