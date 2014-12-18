@@ -11,17 +11,17 @@ namespace POESKillTree.SkillTreeFiles
         public BitmapImage PImage;
         public string URL;
 
-        public Asset(string name, string url)
+        public Asset(string name, string url, string dataFolder)
         {
             Name = name;
             URL = url;
-            if (!File.Exists("Data\\Assets\\" + Name + ".png"))
+            if (!File.Exists( dataFolder + "\\Assets\\" + Name + ".png"))
             {
                 var webClient = new WebClient();
-                webClient.DownloadFile(URL, "Data\\Assets\\" + Name + ".png");
+                webClient.DownloadFile(URL, dataFolder + "\\Assets\\" + Name + ".png");
             }
 
-            PImage = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\" + Name + ".png", UriKind.Relative));
+            PImage = ImageHelper.OnLoadBitmapImage(new Uri(dataFolder + "\\Assets\\" + Name + ".png", UriKind.Relative));
         }
     }
 }

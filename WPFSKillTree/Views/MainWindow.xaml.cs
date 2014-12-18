@@ -82,6 +82,8 @@ namespace POESKillTree.Views
         private DragAdorner _adorner;
         private AdornerLayer _layer;
 
+        public const string DefaultDataFolder = @".\Data";
+
         public MainWindow()
         {
             Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
@@ -91,6 +93,22 @@ namespace POESKillTree.Views
         }
 
         #region Window methods
+        /*build the tree from the given dataFolder*/
+        private void BuildTreeFromData(string dataFolder = DefaultDataFolder) 
+        {
+            Tree = SkillTree.CreateSkillTree(dataFolder, StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+            recSkillTree.Width = Tree.TRect.Width / Tree.TRect.Height * 500;
+            recSkillTree.UpdateLayout();
+            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+
+            Tree.Chartype =
+                Tree.CharName.IndexOf(((string)((ComboBoxItem)cbCharType.SelectedItem).Content).ToUpper());
+            Tree.UpdateAvailNodes();
+            UpdateAllAttributeList();
+
+            _multransform = Tree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
+            _addtransform = Tree.TRect.TopLeft;
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -126,27 +144,16 @@ namespace POESKillTree.Views
             SetTheme(_persistentData.Options.Theme);
             SetAccent(_persistentData.Options.Accent);
 
-            Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
-            recSkillTree.Width = Tree.TRect.Width/Tree.TRect.Height*500;
-            recSkillTree.UpdateLayout();
-            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
-
-            Tree.Chartype =
-                Tree.CharName.IndexOf(((string) ((ComboBoxItem) cbCharType.SelectedItem).Content).ToUpper());
-            Tree.UpdateAvailNodes();
-            UpdateAllAttributeList();
-
-            _multransform = Tree.TRect.Size/new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
-            _addtransform = Tree.TRect.TopLeft;
-
             expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
             expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
+
+            BuildTreeFromData(DefaultDataFolder);
 
             // loading last build
             if (_persistentData.CurrentBuild != null)
                 SetCurrentBuild(_persistentData.CurrentBuild);
 
-            btnLoadBuild_Click(this, new RoutedEventArgs());
+            LoadBuildFromUrl();
             _justLoaded = false;
 
             // loading saved build
@@ -329,28 +336,64 @@ namespace POESKillTree.Views
 
         private void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
         {
-            const string sMessageBoxText = "This will delete your data folder and Redownload all the SkillTree assets.\nThis requires an internet connection!\n\nDo you want to proced?";
+
+            if (MessageBoxResult.Yes == MessageBox.Show(
+                "You are about to re-download you tree data!\n Do you want to backup existing tree data?",
+                "Tree data backup", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) ) 
+            {
+                Utils.IOHelper.BackupDirectory(DefaultDataFolder);
+            }
+
+            const string sMessageBoxText = "This will delete your " + DefaultDataFolder + 
+                " folder and Redownload all the SkillTree assets.\nThis requires an internet connection!\n\nDo you want to proced?";
             const string sCaption = "Redownload SkillTree Assets - Warning";
 
             var rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    if (Directory.Exists("Data"))
+                    if (Directory.Exists(DefaultDataFolder))
                     {
                         try
                         {
-                            Directory.Delete("Data", true);
+                            string latestBackupName = Utils.IOHelper.GetLatestBackupFolder(DefaultDataFolder);
+                            Directory.Delete(DefaultDataFolder, true);
 
-                            Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
-                            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
-
-                            btnLoadBuild_Click(this, new RoutedEventArgs());
-                            _justLoaded = false;
+                            BuildTreeFromData(DefaultDataFolder);
+                            LoadBuildFromUrl();
                         }
                         catch (Exception)
                         {
-                            MessageBox.Show("Something went wrong!\n1.Close the program\n2.Delete the data folder\n3.Start the program again");
+                            CloseLoadingWindow();
+                            try
+                            {
+                                string latestBackupName = Utils.IOHelper.GetLatestBackupFolder(DefaultDataFolder);
+                                if (!latestBackupName.Equals(""))
+                                {
+                                    MessageBox.Show(@"Something went wrong! Switching to the latest backup (" + latestBackupName + ")",
+                                        @"Oops!", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                                    // clean old folder
+                                    Directory.Delete(DefaultDataFolder, true);
+
+                                    //restore latest Data_backup 
+                                    Utils.IOHelper.CopyDirectory(latestBackupName, DefaultDataFolder);
+                                    LoadBuildFromUrl();
+                                }
+                                else
+                                {
+                                    MessageBox.Show(@"Now it's completely broken :( \n1.Close the program\n2.Delete the " + 
+                                        DefaultDataFolder + @" folder\n3.Start the program again",
+                                        @"Oops!", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                CloseLoadingWindow();
+                                MessageBox.Show(@"Now it's completely broken :( \n1.Close the program\n2.Delete the " + 
+                                    DefaultDataFolder + @" folder\n3.Start the program again",
+                                    @"Ouch!", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
                     }
                     break;
@@ -915,7 +958,7 @@ namespace POESKillTree.Views
             if (lvi == null) return;
             var build = ((PoEBuild)lvi);
             SetCurrentBuild(build);
-            btnLoadBuild_Click(this, null); // loading the build
+            LoadBuildFromUrl(); // loading the build
         }
 
         private void lvi_MouseLeave(object sender, MouseEventArgs e)
