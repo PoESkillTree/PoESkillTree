@@ -143,9 +143,11 @@
     </ApplicationDefinition>
     <Compile Include="Controls\MenuItemExtensions.cs" />
     <Compile Include="Model\AttributeSet.cs" />
+    <Compile Include="Model\Notifier.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
+    <Compile Include="Model\RelayCommand.cs" />
     <Compile Include="Properties\Version.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -170,6 +172,7 @@
     <Compile Include="ViewModels\ItemAttribute\ItemAttributes.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
     <Compile Include="ViewModels\ItemAttribute\ItemMod.cs" />
+    <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
@@ -197,6 +200,9 @@
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Views\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MetroMessageBoxWindow.xaml.cs">
+      <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -233,6 +239,10 @@
     <Page Include="Views\DownloadItemsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MetroMessageBoxWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\WindowsRes.xaml">
       <SubType>Designer</SubType>

@@ -1,0 +1,32 @@
+<controls:MetroWindow
+    x:Class="POESKillTree.Views.MetroMessageBoxView"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        ResizeMode="NoResize" IsTabStop="False" ShowInTaskbar="False" ShowCloseButton="False" Height="225" WindowStartupLocation="CenterScreen" Width="460" 
+        Title="{Binding BoxTitle}" KeyDown="MetroWindow_KeyDown">
+    <Grid Width="400" HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Height="32" Grid.Column="0" Grid.Row="0" Source="{Binding NotificationImageSource}"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="Auto" Grid.Column="1" Grid.Row="0" >
+            <TextBlock Margin="10" Text="{Binding Path=Message}"  TextWrapping="Wrap" HorizontalAlignment="Stretch" />
+        </ScrollViewer>
+        <DockPanel HorizontalAlignment="Right" Margin="0" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" >
+            <Button x:Name="btnYes" Margin="4" Content="Yes" Width="80" Visibility="{Binding Path=IsYesVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Command="{Binding Path=YesCommand}" IsDefault="{Binding Path=IsYesDefault}"/>
+            <Button x:Name="btnNo" Margin="4" Content="No"  Width="80" Visibility="{Binding Path=IsNoVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Command="{Binding Path=NoCommand}" IsDefault="{Binding Path=IsNoDefault}"/>
+            <Button x:Name="btnOk" Margin="4" Content="Ok" Width="80" Visibility="{Binding Path=IsOKVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Command="{Binding Path=OKCommand}" IsDefault="{Binding Path=IsOKDefault}"/>
+            <Button x:Name="btnCancel" Margin="4" Content="Cancel" Width="80" IsCancel="True" Visibility="{Binding Path=IsCancelVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Command="{Binding Path=CancelCommand}" IsDefault="{Binding Path=IsCancelDefault}"/>
+        </DockPanel>
+    </Grid>
+</controls:MetroWindow>
