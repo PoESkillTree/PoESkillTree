@@ -340,17 +340,33 @@ namespace POESKillTree.Views
                     {
                         try
                         {
-                            Directory.Delete("Data", true);
+                            if (Directory.Exists("DataBackup"))
+                                Directory.Delete("DataBackup", true);
+                            Directory.Move("Data", "DataBackup");
 
                             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
                             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
                             btnLoadBuild_Click(this, new RoutedEventArgs());
                             _justLoaded = false;
+
+                            if (Directory.Exists("DataBackup"))
+                                Directory.Delete("DataBackup", true);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            MessageBox.Show("Something went wrong!\n1.Close the program\n2.Delete the data folder\n3.Start the program again");
+                            if (Directory.Exists("Data"))
+                                Directory.Delete("Data", true);
+                            try
+                            {
+                                CloseLoadingWindow();
+                            }
+                            catch (Exception)
+                            {
+                                //Nothing
+                            }
+                            Directory.Move("DataBackup", "Data");
+                            MessageBox.Show(ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     break;
@@ -425,6 +441,7 @@ namespace POESKillTree.Views
             catch (UpdaterException ex)
             {
                 // Display error message: ex.Message.
+                MessageBox.Show(ex.Message.ToString(), "Error while checking for updates", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
