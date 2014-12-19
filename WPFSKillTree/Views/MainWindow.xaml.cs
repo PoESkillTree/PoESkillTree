@@ -1391,55 +1391,57 @@ namespace POESKillTree.Views
 
         private void btnPoeUrl_Click(object sender, RoutedEventArgs e)
         {
-            string poeurl = "http://poeurl.com/" + ToPoeURLS(tbSkillURL.Text);
-            System.Windows.Forms.Clipboard.SetDataObject(poeurl, true);
-            MessageBox.Show("The URL below has been copied to you clipboard: \n" + poeurl, "poeurl Link",
-                MessageBoxButton.OK);
+            StartDownloadPoeUrl();
         }
 
-        protected string ToPoeURLS(string txt)
+        private void StartDownloadPoeUrl()
         {
             var regx =
                 new Regex(
                     "http://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*)?",
                     RegexOptions.IgnoreCase);
 
-            MatchCollection mactches = regx.Matches(txt);
+            var matches = regx.Matches(tbSkillURL.Text);
 
-            foreach (Match match in mactches)
+            if (matches.Count == 1)
             {
-                string pURL = MakePoeUrl(match.Value);
-                txt = txt.Replace(match.Value, pURL);
+                try
+                {
+                    var url = matches[0].ToString();
+                    if (url.Length <= 12)
+                    {
+                        ShowPoeUrlMessageAndAddToClipboard(url);
+                    }
+                    if (!url.ToLower().StartsWith("http") && !url.ToLower().StartsWith("ftp"))
+                    {
+                        url = "http://" + url;
+                    }
+                    var client = new WebClient();
+                    client.DownloadStringCompleted += DownloadCompletedPoeUrl;
+                    client.DownloadStringAsync(new Uri("http://poeurl.com/shrink.php?url=" + url));
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Failed to create PoEURL", "poeurl error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-
-            return txt;
         }
 
-        private static string MakePoeUrl(string url)
+        private void DownloadCompletedPoeUrl(Object sender, DownloadStringCompletedEventArgs e)
         {
-            try
+            if (e.Error != null)
             {
-                if (url.Length <= 12)
-                {
-                    return url;
-                }
-                if (!url.ToLower().StartsWith("http") && !url.ToLower().StartsWith("ftp"))
-                {
-                    url = "http://" + url;
-                }
-                var request = WebRequest.Create("http://poeurl.com/shrink.php?url=" + url);
-                var res = request.GetResponse();
-                string text;
-                using (var reader = new StreamReader(res.GetResponseStream()))
-                {
-                    text = reader.ReadToEnd();
-                }
-                return text;
+                MessageBox.Show("Failed to create PoEURL", "poeurl error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            catch (Exception)
-            {
-                return url;
-            }
+            ShowPoeUrlMessageAndAddToClipboard("http://poeurl.com/" + e.Result.Trim());
+        }
+
+        private static void ShowPoeUrlMessageAndAddToClipboard(string poeurl)
+        {
+            System.Windows.Forms.Clipboard.SetDataObject(poeurl, true);
+            MessageBox.Show("The URL below has been copied to you clipboard: \n" + poeurl, "poeurl Link",
+                MessageBoxButton.OK);
         }
 
         #endregion
