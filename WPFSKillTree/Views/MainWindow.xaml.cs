@@ -261,9 +261,18 @@ namespace POESKillTree.Views
 
         private void Menu_SkillHighlightedNodes(object sender, RoutedEventArgs e)
         {
-            Tree.SkillAllHighligtedNodes();
-            UpdateAllAttributeList();
-            tbSkillURL.Text = Tree.SaveToURL();
+            var currentCursor = Cursor;
+            try
+            {
+                Cursor = Cursors.Wait;
+                Tree.SkillAllHighligtedNodes();
+                UpdateAllAttributeList();
+                tbSkillURL.Text = Tree.SaveToURL();
+            }
+            finally
+            {
+                Cursor = currentCursor;
+            }
         }
 
         private void Menu_ScreenShot(object sender, RoutedEventArgs e)
