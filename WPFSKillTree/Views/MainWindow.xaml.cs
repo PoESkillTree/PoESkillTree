@@ -333,7 +333,14 @@ namespace POESKillTree.Views
             {
                 sb.AppendLine(at.ToString());
             }
-            System.Windows.Forms.Clipboard.SetText(sb.ToString());
+            try
+            {
+                System.Windows.Forms.Clipboard.SetText(sb.ToString());
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Clipboard could not be copied to. Please try again.", "Failed Copy!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
