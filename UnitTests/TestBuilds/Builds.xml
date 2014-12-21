@@ -89,4 +89,58 @@
       Spell Critical Strike Multiplier: 200%
     </ExpectOffence>
   </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUATwRDyPndi4zAmgmq2fzAZgSzogDhc5o77TzVpg==</TreeURL>
+    <Level>20</Level>
+    <BuildFile>init\FP-Templar-14p.json</BuildFile>
+    <ExpectDefence>
+      Character
+      Life: 535
+      Mana: 236
+      Maximum Energy Shield: 92
+      Strength: 70
+      Dexterity: 33
+      Intelligence: 80
+
+      Defence
+      Armour: 22
+      Estimated Physical Damage reduction: 5%
+      Evasion Rating: 242
+      Estimated chance to Evade Attacks: 35%
+      Energy Shield Recharge per Second: 30.7
+      #FIXME Mana Regeneration per Second: 6.7
+      Fire Resistance: 19% (19%)
+      Cold Resistance: 38% (38%)
+      Lightning Resistance: 26% (26%)
+      Chaos Resistance: 0% (0%)
+      Chance to Block Attacks: 24%
+    </ExpectDefence>
+    <ExpectOffence>
+      Freezing Pulse
+      Damage per Second: 136.4
+      Casts per Second: 1.7
+      #TODO Cast Speed modifier: +12%
+      Spell Total Combined Damage: 51-103
+      Spell Cold Damage: 49-74
+      Spell Lightning Damage: 2-29
+      Spell Critical Strike Chance: 6%
+      Spell Critical Strike Multiplier: 150%
+
+      Storm Call
+      Damage per Use: 61
+      Casts per Second: 2.2
+      #TODO Cast Speed modifier: +12%
+      Spell Lightning Damage: 7-112
+      Spell Critical Strike Chance: 5%
+      Spell Critical Strike Multiplier: 150%
+
+      Molten Shell
+      Damage per Use: 168.6
+      Casts per Second: 1.1
+      #TODO Cast Speed modifier: +12%
+      Spell Fire Damage: 132-197
+      Spell Critical Strike Chance: 5%
+      Spell Critical Strike Multiplier: 150%
+    </ExpectOffence>
+  </TestBuild>
 </TestData>
