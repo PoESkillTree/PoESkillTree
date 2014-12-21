@@ -585,6 +585,10 @@ namespace POESKillTree.SkillTreeFiles
                         incAS += attrs["#% increased Attack Speed"][0];
                     if (attrs.ContainsKey("#% reduced Attack Speed"))
                         incAS -= attrs["#% reduced Attack Speed"][0];
+                    if (attrs.ContainsKey("#% increased Attack and Cast Speed"))
+                        incAS += attrs["#% increased Attack and Cast Speed"][0];
+                    if (attrs.ContainsKey("#% reduced Attack and Cast Speed"))
+                        incAS -= attrs["#% reduced Attack and Cast Speed"][0];
                     foreach (var attr in attrs.MatchesAny(new Regex[] { ReIncreasedAttackSpeedWithWeaponHandOrType, ReIncreasedAttackSpeedWeaponType }))
                     {
                         Match m = ReIncreasedAttackSpeedWithWeaponHandOrType.Match(attr.Key);
@@ -635,6 +639,10 @@ namespace POESKillTree.SkillTreeFiles
                         incCS += attrs["#% increased Cast Speed"][0];
                     if (attrs.ContainsKey("#% reduced Cast Speed"))
                         incCS -= attrs["#% reduced Cast Speed"][0];
+                    if (attrs.ContainsKey("#% increased Attack and Cast Speed"))
+                        incCS += attrs["#% increased Attack and Cast Speed"][0];
+                    if (attrs.ContainsKey("#% reduced Attack and Cast Speed"))
+                        incCS -= attrs["#% reduced Attack and Cast Speed"][0];
                     if (IsDualWielding && attrs.ContainsKey("#% increased Cast Speed while Dual Wielding"))
                         incCS += attrs["#% increased Cast Speed while Dual Wielding"][0];
                     if (incCS != 0)
@@ -1159,19 +1167,19 @@ namespace POESKillTree.SkillTreeFiles
                         return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
                     else
                     {
-                        m = ReIncreasedTypeWithWeaponTypeOrHand.Match(attr.Key);
+                        m = ReIncreasedWithSource.Match(attr.Key);
                         if (m.Success)
-                        {
-                            if (WithWeaponHand.ContainsKey(m.Groups[3].Value))
-                                return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponHand = WithWeaponHand[m.Groups[3].Value] };
-                            else if (WithWeaponType.ContainsKey(m.Groups[3].Value))
-                                return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = WithWeaponType[m.Groups[3].Value] };
-                        }
+                            return new Increased(m.Groups[3].Value == "Spells" ? DamageSource.Spell : DamageSource.Attack, m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
                         else
                         {
-                            m = ReIncreasedWithSource.Match(attr.Key);
+                            m = ReIncreasedTypeWithWeaponTypeOrHand.Match(attr.Key);
                             if (m.Success)
-                                return new Increased(m.Groups[3].Value == "Spells" ? DamageSource.Spell : DamageSource.Attack, m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
+                            {
+                                if (WithWeaponHand.ContainsKey(m.Groups[3].Value))
+                                    return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponHand = WithWeaponHand[m.Groups[3].Value] };
+                                else if (WithWeaponType.ContainsKey(m.Groups[3].Value))
+                                    return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = WithWeaponType[m.Groups[3].Value] };
+                            }
                             else
                             {
                                 m = ReIncreasedAll.Match(attr.Key);
@@ -1471,7 +1479,7 @@ namespace POESKillTree.SkillTreeFiles
                         if (item.Type.Contains("Quiver"))
                             Nature = new DamageNature() { WeaponType = WeaponType.Quiver };
                         else
-                            if (item.Type.Contains("Shield") || item.Type.Contains("Buckler"))
+                            if (item.Type.Contains("Shield") || item.Type.Contains("Buckler") || item.Type == "Spiked Bundle")
                                 Nature = new DamageNature() { WeaponType = WeaponType.Shield };
                             else
                                 throw new Exception("Unknown weapon type: " + item.Type);
