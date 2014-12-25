@@ -1206,12 +1206,12 @@ namespace POESKillTree.SkillTreeFiles
                 // The flag whether multiplier is actualy dividier.
                 public bool IsLess { get { return Percent < 0; } }
 
-                static Regex ReMoreAll = new Regex("#% (more|less) Damage( to main target)?$");
-                static Regex ReMoreBase = new Regex("Deals #% of Base Damage$");
-                static Regex ReMoreBaseType = new Regex("Deals #% of Base (.+) Damage$");
-                static Regex ReMoreSimple = new Regex("#% (more|less) (.+) Damage$");
-                static Regex ReMoreWhen = new Regex("#% more (.+) Damage when on Full Life$");
-                static Regex ReMoreWith = new Regex("#% more (.+) Damage with Weapons$");
+                static Regex ReMoreAll = new Regex("^#% (more|less) Damage( to main target)?$");
+                static Regex ReMoreBase = new Regex("^Deals #% of Base Damage$");
+                static Regex ReMoreBaseType = new Regex("^Deals #% of Base (.+) Damage$");
+                static Regex ReMoreSimple = new Regex("^#% (more|less) (.+) Damage$");
+                static Regex ReMoreWhen = new Regex("^#% more (.+) Damage when on Full Life$");
+                static Regex ReMoreWith = new Regex("^#% more (.+) Damage with Weapons$");
 
                 public More(float percent)
                     : base()
@@ -1853,7 +1853,7 @@ namespace POESKillTree.SkillTreeFiles
 
             float lessArmourAndES = 0;
             if (Acrobatics)
-                lessArmourAndES += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield"][1];
+                lessArmourAndES += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][1];
 
             // Equipped Shield bonuses.
             float incArmourShield = 0;
@@ -1989,7 +1989,7 @@ namespace POESKillTree.SkillTreeFiles
             float chanceToDodgeAttacks = 0;
             float chanceToDodgeSpells = 0;
             if (Acrobatics)
-                chanceToDodgeAttacks += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield"][0];
+                chanceToDodgeAttacks += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][0];
             if (Global.ContainsKey("#% additional chance to Dodge Attacks"))
                 chanceToDodgeAttacks += Global["#% additional chance to Dodge Attacks"][0];
             if (Global.ContainsKey("#% Chance to Dodge Spell Damage"))
@@ -2175,6 +2175,12 @@ namespace POESKillTree.SkillTreeFiles
                 chanceBlockSpells += Global["#% additional Chance to Block Spells with Shields"][0];
             if (Global.ContainsKey("+#% additional Block Chance against Projectiles"))
                 chanceBlockProjectiles = chanceBlockAttacks + Global["+#% additional Block Chance against Projectiles"][0];
+            if (Acrobatics)
+            {
+                float lessChanceBlock = Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][2];
+                chanceBlockAttacks = IncreaseValueByPercentage(chanceBlockAttacks, -lessChanceBlock);
+                chanceBlockSpells = IncreaseValueByPercentage(chanceBlockSpells, -lessChanceBlock);
+            }
             if (chanceBlockAttacks > 0)
                 def["Chance to Block Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockAttacks, 0), maxChanceBlockAttacks) };
             if (chanceBlockSpells > 0)
@@ -2274,7 +2280,7 @@ namespace POESKillTree.SkillTreeFiles
             Global.Add(Tree);
 
             // Keystones.
-            Acrobatics = Tree.ContainsKey("#% Chance to Dodge Attacks. #% less Armour and Energy Shield");
+            Acrobatics = Tree.ContainsKey("#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks");
             AvatarOfFire = Tree.ContainsKey("Deal no Non-Fire Damage");
             BloodMagic = Tree.ContainsKey("Removes all mana. Spend Life instead of Mana for Skills");
             ChaosInoculation = Tree.ContainsKey("Maximum Life becomes #, Immune to Chaos Damage");
