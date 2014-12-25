@@ -1653,6 +1653,16 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
+  <Gem Name="Kinetic Blast" ExcludeForm="AoE" RequiredWeapon="Wand">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="8">14</ValueForLevel>
+      <ValueForLevel From="9" To="16">15</ValueForLevel>
+      <ValueForLevel From="17" To="21">16</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>3</ValuePerLevel>
+    </Attribute>
+  </Gem>
   <Gem Name="Leap Slam" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword">
     <Attribute Comment="Leap Slam has its own attack time of 1.40 seconds" Name="Attacks per Second: #">
       <Value>0.714</Value>
@@ -2008,6 +2018,14 @@
       <Value Level="20">49%</Value>
     </Attribute>
     <Attribute Name="#% increased Physical Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Physical to Lightning">
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
@@ -2383,6 +2401,20 @@
     </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Static Strike" ExcludeForm="AoE">
+    <Attribute Name="Mana Cost: #%">
+      <ValueForLevel From="1" To="5">6</ValueForLevel>
+      <ValueForLevel From="6" To="10">7</ValueForLevel>
+      <ValueForLevel From="11" To="13">8</ValueForLevel>
+      <Value Level="14">9</Value>
+      <Value Level="15">8</Value>
+      <ValueForLevel From="16" To="20">9</ValueForLevel>
+      <ValueForLevel From="21" To="23">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage">
+      <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
   </Gem>
   <Gem Name="Storm Call" IncludeForm="OnUse">
