@@ -143,4 +143,48 @@
       Spell Critical Strike Multiplier: 150%
     </ExpectOffence>
   </TestBuild>
+  <!-- 1.3 gems -->
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUA-d1PBIuMQ8jAmgmq2fzAZgSzogDhc-0gmjuCm-081aZXlClPhX0WQGaewBpZ8_rSFy9k51XWgKRFRzLRuJPr7ij6V8kNfOq6tAxGcYMJb57KSsM6m7UZii2DlwbEovsJ9toaj-GIHaq2hpZ0</TreeURL>
+    <Level>55</Level>
+    <BuildFile>gems\KineticBlast.json</BuildFile>
+    <ExpectOffence>
+      Kinetic Blast
+      #FIXME Damage per Second: 86.3
+      Damage per Second: 86.8
+      Chance to Hit: 79%
+      #NOTE Attack Time: 0.67
+      Attacks per Second: 1.5
+      Main Hand Total Combined Damage: 20-117
+      Main Hand Physical Damage: 12-22
+      Main Hand Lightning Damage: 8-95
+      Main Hand Accuracy Rating: 434
+      #TODO Main Hand Attack Speed Modifier: +15%
+      Main Hand Critical Strike Chance: 10.4%
+      Main Hand Critical Strike Multiplier: 167%
+    </ExpectOffence>
+  </TestBuild>
+  <TestBuild>
+    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUA-d1PBIuMQ8jAmgmq2fzAZgSzogDhc-0gmjuCm-081aZXlClPhX0WQGaewBpZ8_rSFy9k51XWgKRFRzLRuJPr7ij6V8kNfOq6tAxGcYMJb57KSsM6m7UZii2DlwbEovsJ9toaj-GIHaq2hpZ0</TreeURL>
+    <Level>55</Level>
+    <BuildFile>gems\StaticStrike.json</BuildFile>
+    <ExpectOffence>
+      Static Strike
+      #FIXME Damage per Second: 123.1
+      Damage per Second: 124.3
+      Chance to Hit: 79%
+      #NOTE Attack Time: 0.65
+      Attacks per Second: 1.5
+      #FIXME Main Hand Total Combined Damage: 45-147
+      Main Hand Total Combined Damage: 45-149
+      #FIXME Main Hand Physical Damage: 12-19
+      Main Hand Physical Damage: 12-20
+      #FIXME Main Hand Lightning Damage: 33-128
+      Main Hand Lightning Damage: 33-129
+      Main Hand Accuracy Rating: 434
+      #TODO Main Hand Attack Speed Modifier: +24%
+      Main Hand Critical Strike Chance: 9.4%
+      Main Hand Critical Strike Multiplier: 150%
+    </ExpectOffence>
+  </TestBuild>
 </TestData>

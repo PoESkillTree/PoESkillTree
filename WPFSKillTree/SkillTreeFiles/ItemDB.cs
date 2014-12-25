@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Serialization;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
@@ -188,11 +189,27 @@ namespace POESKillTree.SkillTreeFiles
                         // Shorten range intersecting merged one from left (<with.From  <merge.From  with.To>  merge.To>).
                         with = (ValueForLevelRange)Values.Find(v => v is ValueForLevelRange && ((ValueForLevelRange)v).From < merge.From && ((ValueForLevelRange)v).To >= merge.From);
                         if (with != null)
+                        {
                             with.To = merge.From - 1;
+                            // Replace single-level shortened range with ValueAt.
+                            if (with.From == with.To)
+                            {
+                                Values.Add(new ValueAt { Level = with.From, Text = with.Text });
+                                Values.Remove(with);
+                            }
+                        }
                         // Shorten range intersecting merged one from right (<merge.From  <with.From  merge.To>  with.To>).
                         with = (ValueForLevelRange)Values.Find(v => v is ValueForLevelRange && ((ValueForLevelRange)v).From <= merge.To && ((ValueForLevelRange)v).To > merge.To);
                         if (with != null)
+                        {
                             with.From = merge.To + 1;
+                            // Replace single-level shortened range with ValueAt.
+                            if (with.From == with.To)
+                            {
+                                Values.Add(new ValueAt { Level = with.From, Text = with.Text });
+                                Values.Remove(with);
+                            }
+                        }
                     }
                     Values.Add(merge);
                 }
@@ -214,11 +231,27 @@ namespace POESKillTree.SkillTreeFiles
                         // Shorten range intersecting merged one from left (<with.From  <merge.From  with.To>  merge.To>).
                         with = (ValueForQualityRange)Values.Find(v => v is ValueForQualityRange && ((ValueForQualityRange)v).From < merge.From && ((ValueForQualityRange)v).To >= merge.From);
                         if (with != null)
+                        {
                             with.To = merge.From - 1;
+                            // Replace single-quality shortened range with ValueAt.
+                            if (with.From == with.To)
+                            {
+                                Values.Add(new ValueAt { Quality = with.From, Text = with.Text });
+                                Values.Remove(with);
+                            }
+                        }
                         // Shorten range intersecting merged one from right (<merge.From  <with.From  merge.To>  with.To>).
                         with = (ValueForQualityRange)Values.Find(v => v is ValueForQualityRange && ((ValueForQualityRange)v).From <= merge.To && ((ValueForQualityRange)v).To > merge.To);
                         if (with != null)
+                        {
                             with.From = merge.To + 1;
+                            // Replace single-quality shortened range with ValueAt.
+                            if (with.From == with.To)
+                            {
+                                Values.Add(new ValueAt { Quality = with.From, Text = with.Text });
+                                Values.Remove(with);
+                            }
+                        }
                     }
                     Values.Add(merge);
                 }
@@ -1424,7 +1457,10 @@ namespace POESKillTree.SkillTreeFiles
             DB.Gems.Sort(delegate(Gem gem1, Gem gem2) { return String.Compare(gem1.Name, gem2.Name, true, System.Globalization.CultureInfo.InvariantCulture); });
 
             var serializer = new XmlSerializer(typeof(ItemDB));
-            var writer = new StreamWriter(file);
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.NewLineChars = "\n";
+            XmlWriter writer = XmlTextWriter.Create(file, settings);
             serializer.Serialize(writer, DB);
             writer.Close();
         }

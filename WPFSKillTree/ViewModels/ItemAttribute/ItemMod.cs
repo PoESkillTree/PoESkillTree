@@ -67,15 +67,13 @@ namespace POESKillTree.ViewModels.ItemAttribute
                        || attr.Contains("Critical Strike Chance with this Weapon")
                        || attr.Contains("Critical Strike Damage Multiplier with this Weapon"))
                    || (item.Class == Item.ItemClass.MainHand || item.Class == Item.ItemClass.OffHand)
-                   && item.Keywords != null // Only weapons have keyword.
-                   && (attr == "#% increased Attack Speed"
-                       || attr == "#% increased Accuracy Rating"
-                       || attr == "+# to Accuracy Rating"
-                       ||
-                       attr.StartsWith("Adds ") &&
-                       (attr.EndsWith(" Damage") || attr.EndsWith(" Damage in Main Hand") ||
-                        attr.EndsWith(" Damage in Off Hand"))
-                       || attr == "#% increased Physical Damage");
+                      && item.Keywords != null // Only weapons have keyword.
+                      && (attr == "#% increased Attack Speed"
+                          || attr == "#% increased Accuracy Rating"
+                          || attr == "+# to Accuracy Rating"
+                          || attr.StartsWith("Adds ") && (attr.EndsWith(" Damage") || attr.EndsWith(" Damage in Main Hand") || attr.EndsWith(" Damage in Off Hand"))
+                          || attr == "#% increased Physical Damage"
+                          || attr == "#% increased Critical Strike Chance");
         }
 
         private enum ValueType

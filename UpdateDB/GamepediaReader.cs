@@ -110,6 +110,7 @@ namespace UpdateDB
             { "Life_Leech", "Life_Leech_(support_gem)" },
             { "Mana_Leech", "Mana_Leech_(support_gem)" },
             { "Melee_Damage_On_Full_Life", "Melee_Damage_on_Full_Life" },
+            { "Physical_To_Lightning", "Physical_to_Lightning" },
             { "Pierce", "Pierce_(support_gem)" },
             { "Point_Blank", "Point_Blank_(support_gem)" },
             { "Rain_Of_Arrows", "Rain_of_Arrows" },
