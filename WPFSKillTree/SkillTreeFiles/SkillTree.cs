@@ -56,7 +56,10 @@ namespace POESKillTree.SkillTreeFiles
 
         private readonly Dictionary<string, List<string>> _hybridAttributes = new Dictionary<string, List<string>>
         {
-            //currently not being used. May find a use for this in the future. 
+            {
+               "+# to Strength and Intelligence", 
+               new List<string> {"+# to Strength", "+# to Intelligence"} 
+            },
         };
 
         public static readonly Dictionary<string, string> RenameImplicitAttributes = new Dictionary<string, string>
