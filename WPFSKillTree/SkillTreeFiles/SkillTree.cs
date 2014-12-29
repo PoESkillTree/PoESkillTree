@@ -56,18 +56,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private readonly Dictionary<string, List<string>> _hybridAttributes = new Dictionary<string, List<string>>
         {
-            {
-                "#% increased Evasion Rating and Armour",
-                new List<string> {"#% increased Evasion Rating", "#% increased Armour"}
-            },
-            {
-                "#% additional Chance to Block while Dual Wielding or holding a Shield",
-                new List<string>
-                {
-                    "#% additional Chance to Block while Dual Wielding",
-                    "#% additional Chance to Block with Shields"
-                }
-            }
+            //currently not being used. May find a use for this in the future. 
         };
 
         public static readonly Dictionary<string, string> RenameImplicitAttributes = new Dictionary<string, string>
