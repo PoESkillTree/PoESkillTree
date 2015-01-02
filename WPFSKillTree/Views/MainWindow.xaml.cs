@@ -754,7 +754,7 @@ namespace POESKillTree.Views
                         .Value.Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
                         .Replace(@"%", @"\%"), @"\d+", @"\d+");
-            Tree.HighlightNodes(selectedAttr, true, Brushes.Azure);
+            Tree.HighlightNodesBySearch(selectedAttr, true, false);
         }
 
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
@@ -894,7 +894,28 @@ namespace POESKillTree.Views
 
         private void zbSkillTreeBackground_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            zbSkillTreeBackground.Child.RaiseEvent(e);
+            Point p = e.GetPosition(zbSkillTreeBackground.Child);
+            var v = new Vector2D(p.X, p.Y);
+
+            v = v*_multransform + _addtransform;
+
+            IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
+                Tree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
+            if (nodes.Count() != 0)
+            {
+                var node = nodes.First().Value;
+
+                if (node.Spc == null && !node.IsMastery)
+                {
+                    Tree.ToggleNodeHighlight(node);
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void zbSkillTreeBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //zbSkillTreeBackground.Child.RaiseEvent(e);
         }
 
         #endregion
@@ -1338,7 +1359,7 @@ namespace POESKillTree.Views
 
         private void SearchUpdate()
         {
-            Tree.HighlightNodes(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value);
+            Tree.HighlightNodesBySearch(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value, true);
         }
 
         private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)

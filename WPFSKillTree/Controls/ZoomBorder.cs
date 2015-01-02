@@ -72,7 +72,6 @@ namespace POESKillTree.Controls
                 _child.MouseLeftButtonUp += child_MouseLeftButtonUp;
                 _child.MouseMove += child_MouseMove;
                 _child.KeyUp += child_KeyDown;
-                _child.PreviewMouseRightButtonDown += child_PreviewMouseRightButtonDown;
             }
         }
 
@@ -279,11 +278,6 @@ namespace POESKillTree.Controls
                 else
                     ZoomOut(e);
             }
-        }
-
-        private void child_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Reset();
         }
 
 

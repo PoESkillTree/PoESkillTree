@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -19,6 +20,8 @@ namespace POESKillTree.SkillTreeFiles
 
         public Dictionary<bool, KeyValuePair<Rect, ImageBrush>> StartBackgrounds =
             new Dictionary<bool, KeyValuePair<Rect, ImageBrush>>();
+
+        private NodeHighlighter _nodeHighlighter = new NodeHighlighter();
 
         public DrawingVisual picActiveLinks;
         public DrawingVisual picBackground;
@@ -199,14 +202,21 @@ namespace POESKillTree.SkillTreeFiles
                 30, colorBrush);
         }
 
-        public void DrawHighlights(List<SkillNode> nodes, SolidColorBrush brush = null)
+        public void DrawHighlights(NodeHighlighter nh)
         {
-            var hpen = new Pen(brush ?? Brushes.Aqua, 20);
+            var hpen = new Pen(Brushes.White, 20);
             using (DrawingContext dc = picHighlights.RenderOpen())
             {
-                foreach (SkillNode node in nodes)
+                foreach (var pair in nh.nodeHighlights)
                 {
-                    dc.DrawEllipse(null, hpen, node.Position, 80, 80);
+                    // TODO: Make more elegant? Needs profiling.
+                    HighlightState hs = pair.Value;
+                    byte red = (byte)(hs.HasFlag(HighlightState.FromSearch) ? 255 : 0);
+                    byte green = (byte)(hs.HasFlag(HighlightState.FromAttrib) ? 255 : 0);
+                    byte blue = (byte)(hs.HasFlag(HighlightState.FromNode) ? 255 : 0);
+                    hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, blue)), 20);
+
+                    dc.DrawEllipse(null, hpen, pair.Key.Position, 80, 80);
                 }
             }
         }
