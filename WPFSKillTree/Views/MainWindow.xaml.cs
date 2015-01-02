@@ -82,6 +82,8 @@ namespace POESKillTree.Views
         private DragAdorner _adorner;
         private AdornerLayer _layer;
 
+        private MouseButton _lastMouseButton;
+
         public MainWindow()
         {
             Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
@@ -795,6 +797,11 @@ namespace POESKillTree.Views
 
         #region zbSkillTreeBackground
 
+        private void zbSkillTreeBackground_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _lastMouseButton = e.ChangedButton;
+        }
+
         private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
             Point p = ((MouseEventArgs) e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
@@ -808,28 +815,38 @@ namespace POESKillTree.Views
             {
                 var node = nodes.First().Value;
 
-                if (node.Spc == null)
+                // Ignore clicks on character portraits and masteries
+                if (node.Spc == null && !node.IsMastery)
                 {
-                    if (Tree.SkilledNodes.Contains(node.Id))
+                    if (_lastMouseButton == MouseButton.Right)
                     {
-                        Tree.ForceRefundNode(node.Id);
-                        UpdateAllAttributeList();
-
-                        _prePath = Tree.GetShortestPathTo(node.Id);
-                        Tree.DrawPath(_prePath);
+                        Tree.ToggleNodeHighlight(node);
+                        e.Handled = true;
                     }
-                    else if (_prePath != null)
+                    else
                     {
-                        foreach (ushort i in _prePath)
+                        // Toggle whether the node is included in the tree
+                        if (Tree.SkilledNodes.Contains(node.Id))
                         {
-                            Tree.SkilledNodes.Add(i);
-                        }
-                        UpdateAllAttributeList();
-                        Tree.UpdateAvailNodes();
+                            Tree.ForceRefundNode(node.Id);
+                            UpdateAllAttributeList();
 
-                        _toRemove = Tree.ForceRefundNodePreview(node.Id);
-                        if (_toRemove != null)
-                            Tree.DrawRefundPreview(_toRemove);
+                            _prePath = Tree.GetShortestPathTo(node.Id);
+                            Tree.DrawPath(_prePath);
+                        }
+                        else if (_prePath != null)
+                        {
+                            foreach (ushort i in _prePath)
+                            {
+                                Tree.SkilledNodes.Add(i);
+                            }
+                            UpdateAllAttributeList();
+                            Tree.UpdateAvailNodes();
+
+                            _toRemove = Tree.ForceRefundNodePreview(node.Id);
+                            if (_toRemove != null)
+                                Tree.DrawRefundPreview(_toRemove);
+                        }
                     }
                 }
             }
@@ -888,27 +905,6 @@ namespace POESKillTree.Views
                 if (Tree != null)
                 {
                     Tree.ClearPath();
-                }
-            }
-        }
-
-        private void zbSkillTreeBackground_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Point p = e.GetPosition(zbSkillTreeBackground.Child);
-            var v = new Vector2D(p.X, p.Y);
-
-            v = v*_multransform + _addtransform;
-
-            IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
-                Tree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            if (nodes.Count() != 0)
-            {
-                var node = nodes.First().Value;
-
-                if (node.Spc == null && !node.IsMastery)
-                {
-                    Tree.ToggleNodeHighlight(node);
-                    e.Handled = true;
                 }
             }
         }
@@ -1683,5 +1679,6 @@ namespace POESKillTree.Views
         {
             _sToolTip.IsOpen = false;
         }
+
     }
 }
