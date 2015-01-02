@@ -1139,7 +1139,7 @@ namespace POESKillTree.SkillTreeFiles
                 static Regex ReIncreasedAllWithWeaponType = new Regex("#% (increased|reduced) Damage with (.+)$");
                 static Regex ReIncreasedType = new Regex("^#% (increased|reduced) (.+) Damage$");
                 static Regex ReIncreasedTypeWithWeaponTypeOrHand = new Regex("#% (increased|reduced) (.+) Damage with (.+)$");
-                static Regex ReIncreasedWithSource = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Weapons)$");
+                static Regex ReIncreasedWithSource = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Attacks|Weapons)$");
 
                 public Increased(float percent)
                     : base()
