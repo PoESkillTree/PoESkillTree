@@ -410,19 +410,19 @@ namespace POESKillTree.Views
 
         private void Menu_OpenHelp(object sender, RoutedEventArgs e)
         {
-            var helpWindow = new HelpWindow();
+            var helpWindow = new HelpWindow() { Owner = this };
             helpWindow.ShowDialog();
         }
 
         private void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new HotkeysWindow();
+            var aboutWindow = new HotkeysWindow() { Owner = this };
             aboutWindow.ShowDialog();
         }
 
         private void Menu_OpenAbout(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new AboutWindow();
+            var aboutWindow = new AboutWindow() { Owner = this };
             aboutWindow.ShowDialog();
         }
 
@@ -971,6 +971,7 @@ namespace POESKillTree.Views
         {
             var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
             var formBuildName = new FormChooseBuildName(selectedBuild.Name, selectedBuild.Note, selectedBuild.CharacterName, selectedBuild.ItemData);
+            formBuildName.Owner = this;
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
             {
@@ -1086,6 +1087,7 @@ namespace POESKillTree.Views
         private void SaveNewBuild()
         {
             var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.ItemData);
+            formBuildName.Owner = this;
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
             {
