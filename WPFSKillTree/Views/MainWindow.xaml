@@ -352,7 +352,7 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" MouseRightButtonUp="TextBlock_MouseRightButtonUp"/>
+                                                <TextBlock x:Name="pasiveAttributeText" Text="{Binding Text}" TextWrapping="Wrap" MouseRightButtonUp="TextBlock_MouseRightButtonUp"/>
                                                 <StackPanel Orientation="Horizontal" Visibility="{Binding Deltas, Converter={StaticResource arrayToVisibilityConverter}}">
                                                     <TextBlock Text=" "/>
                                                     <ItemsControl ItemsSource="{Binding Deltas}">
@@ -369,7 +369,12 @@
                                                     </ItemsControl>
                                                 </StackPanel>
                                             </StackPanel>
-                                        </DataTemplate>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding Missing}" Value="true">
+                                                    <Setter TargetName="pasiveAttributeText" Property="Foreground" Value="Red"></Setter>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate> 
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
                                         <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
