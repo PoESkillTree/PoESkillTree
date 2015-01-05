@@ -654,11 +654,34 @@ namespace POESKillTree.Views
         public void UpdateAttributeList()
         {
             _attiblist.Clear();
-            foreach (var item in (Tree.SelectedAttributes.Select(InsertNumbersInAttributes)))
+            Dictionary<string, List<float>> copy = (Tree.HighlightedAttributes == null)?null:new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
+            
+            foreach (var item in Tree.SelectedAttributes)
             {
-                var a = new Attribute(item);
+                var a = new Attribute(InsertNumbersInAttributes(item));
+                if (copy!=null && copy.ContainsKey(item.Key))
+                {
+                    var citem = copy[item.Key];
+                    a.Deltas = item.Value.Zip(citem, (s, h) => s - h).ToArray();
+                    copy.Remove(item.Key);
+                }
+                else
+                {
+                    a.Deltas = (copy != null)?item.Value.ToArray():item.Value.Select(v=>0f).ToArray();
+                }
                 _attiblist.Add(a);
             }
+
+            if (copy != null)
+            {
+                foreach (var item in copy)
+                {
+                    var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<float>>(item.Key, item.Value.Select(v => 0f).ToList())));
+                    a.Deltas = item.Value.Select((h) => 0 - h).ToArray();
+                    _attiblist.Add(a);
+                }
+            }
+
             _attibuteCollection.Refresh();
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
         }
@@ -1682,5 +1705,20 @@ namespace POESKillTree.Views
             _sToolTip.IsOpen = false;
         }
 
+        private void lvSavedBuilds_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var list = sender as ListView;
+            if (list != null && list.SelectedItem is PoEBuild)
+            {
+                var tree2 = SkillTree.CreateSkillTree();
+                tree2.LoadFromURL(((PoEBuild)list.SelectedItem).Url);
+
+                Tree.HighlightedNodes = tree2.SkilledNodes;
+
+                Tree.HighlightedAttributes = tree2.SelectedAttributes;
+                Tree.DrawNodeBaseSurroundHighlight();
+                UpdateAttributeList();
+            }
+        }
     }
 }

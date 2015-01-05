@@ -104,6 +104,9 @@ namespace POESKillTree.SkillTreeFiles
         public HashSet<int[]> Links = new HashSet<int[]>();
         public List<SkillNodeGroup> NodeGroups = new List<SkillNodeGroup>();
         public HashSet<ushort> SkilledNodes = new HashSet<ushort>();
+
+        public HashSet<ushort> HighlightedNodes = new HashSet<ushort>();
+
         public Dictionary<UInt16, SkillNode> Skillnodes = new Dictionary<UInt16, SkillNode>();
 
         public Rect2D TRect = new Rect2D();
@@ -343,6 +346,9 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
+
+        public Dictionary<string, List<float>> HighlightedAttributes;
+
         public Dictionary<string, List<float>> SelectedAttributes
         {
             get
@@ -374,6 +380,7 @@ namespace POESKillTree.SkillTreeFiles
             get
             {
                 var temp = new Dictionary<string, List<float>>();
+
                 foreach (var attr in CharBaseAttributes[Chartype])
                 {
                     if (!temp.ContainsKey(attr.Key))
