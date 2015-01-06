@@ -195,7 +195,7 @@ namespace POESKillTree.SkillTreeFiles
         private int _chartype;
         private List<SkillNode> _highlightnodes;
 
-        public int _level = 1;
+        private int _level = 1;
 
 
 
