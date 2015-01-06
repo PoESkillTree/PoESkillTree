@@ -287,49 +287,56 @@ namespace POESKillTree.SkillTreeFiles
             float factor = 1.2f;
             using (DrawingContext dc = picSkillSurroundHighlight.RenderOpen())
             {
-                foreach (ushort skillNode in HighlightedNodes)
+                if (HighlightedNodes != null)
                 {
-                    Vector2D pos = (Skillnodes[skillNode].Position);
+                    foreach (ushort skillNode in HighlightedNodes)
+                    {
+                        Vector2D pos = (Skillnodes[skillNode].Position);
 
-                    if (Skillnodes[skillNode].IsNotable)
-                    {
-                        dc.DrawRectangle(NodeSurroundHighlightBrush[3].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[3].Key.Width * factor,
-                                (int)pos.Y - NodeSurroundBrush[3].Key.Height * factor,
-                                NodeSurroundBrush[3].Key.Width * 2 * factor,
-                                NodeSurroundBrush[3].Key.Height * 2 * factor));
+                        if (Skillnodes[skillNode].IsNotable)
+                        {
+                            dc.DrawRectangle(NodeSurroundHighlightBrush[3].Value, null,
+                                new Rect((int)pos.X - NodeSurroundBrush[3].Key.Width * factor,
+                                    (int)pos.Y - NodeSurroundBrush[3].Key.Height * factor,
+                                    NodeSurroundBrush[3].Key.Width * 2 * factor,
+                                    NodeSurroundBrush[3].Key.Height * 2 * factor));
+                        }
+                        else if (Skillnodes[skillNode].IsKeyStone)
+                        {
+                            dc.DrawRectangle(NodeSurroundHighlightBrush[2].Value, null,
+                                new Rect((int)pos.X - NodeSurroundBrush[2].Key.Width * factor,
+                                    (int)pos.Y - NodeSurroundBrush[2].Key.Height * factor,
+                                    NodeSurroundBrush[2].Key.Width * 2 * factor,
+                                    NodeSurroundBrush[2].Key.Height * 2 * factor));
+                        }
+                        else if (Skillnodes[skillNode].IsMastery)
+                        {
+                            //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
+                        }
+                        else
+                            dc.DrawRectangle(NodeSurroundHighlightBrush[0].Value, null,
+                                new Rect((int)pos.X - NodeSurroundBrush[0].Key.Width * factor,
+                                    (int)pos.Y - NodeSurroundBrush[0].Key.Height * factor,
+                                    NodeSurroundBrush[0].Key.Width * 2 * factor,
+                                    NodeSurroundBrush[0].Key.Height * 2 * factor));
                     }
-                    else if (Skillnodes[skillNode].IsKeyStone)
-                    {
-                        dc.DrawRectangle(NodeSurroundHighlightBrush[2].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[2].Key.Width * factor,
-                                (int)pos.Y - NodeSurroundBrush[2].Key.Height * factor,
-                                NodeSurroundBrush[2].Key.Width * 2 * factor,
-                                NodeSurroundBrush[2].Key.Height * 2 * factor));
-                    }
-                    else if (Skillnodes[skillNode].IsMastery)
-                    {
-                        //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
-                    }
-                    else
-                        dc.DrawRectangle(NodeSurroundHighlightBrush[0].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[0].Key.Width * factor,
-                                (int)pos.Y - NodeSurroundBrush[0].Key.Height * factor,
-                                NodeSurroundBrush[0].Key.Width * 2 * factor,
-                                NodeSurroundBrush[0].Key.Height * 2 * factor));
                 }
             }
 
             var pen2 = new Pen(Brushes.Lime, 20 * factor);
             using (DrawingContext dc = picPathHighlight.RenderOpen())
             {
-                foreach (ushort n1 in HighlightedNodes)
+                if (HighlightedNodes != null)
                 {
-                    foreach (SkillNode n2 in Skillnodes[n1].Neighbor)
+                    foreach (ushort n1 in HighlightedNodes)
                     {
-                        if (HighlightedNodes.Contains(n2.Id))
+
+                        foreach (SkillNode n2 in Skillnodes[n1].Neighbor)
                         {
-                            DrawConnection(dc, pen2, n2, Skillnodes[n1]);
+                            if (HighlightedNodes.Contains(n2.Id))
+                            {
+                                DrawConnection(dc, pen2, n2, Skillnodes[n1]);
+                            }
                         }
                     }
                 }

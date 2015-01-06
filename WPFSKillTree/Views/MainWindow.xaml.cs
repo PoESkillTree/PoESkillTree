@@ -1720,14 +1720,20 @@ namespace POESKillTree.Views
                 var build = (PoEBuild)list.SelectedItem;
                 HashSet<ushort> nodes;
                 int ctype;
-                SkillTree.DecodeURL(build.Url,out nodes, out ctype);
+                SkillTree.DecodeURL(build.Url, out nodes, out ctype);
 
                 Tree.HighlightedNodes = nodes;
-
-                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes,ctype,int.Parse(build.Level));
-                Tree.DrawNodeBaseSurroundHighlight();
-                UpdateAttributeList();
+                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, int.Parse(build.Level));
+                
             }
+            else
+            {
+                Tree.HighlightedNodes = null;
+                Tree.HighlightedAttributes = null;
+            }
+
+            Tree.DrawNodeBaseSurroundHighlight();
+            UpdateAttributeList();
         }
     }
 }
