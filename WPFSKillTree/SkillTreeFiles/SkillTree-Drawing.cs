@@ -626,5 +626,10 @@ namespace POESKillTree.SkillTreeFiles
             picSkillSurroundHighlight = new DrawingVisual();
             picPathHighlight = new DrawingVisual();
         }
+
+        public static void ClearAssets()
+        {
+            _Initialized = false;
+        }
     }
 }

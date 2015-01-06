@@ -365,6 +365,11 @@ namespace POESKillTree.Views
                             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
                             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
+
+                            SkillTree.ClearAssets();//enable recaching of assets
+                            SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
+                            
+
                             btnLoadBuild_Click(this, new RoutedEventArgs());
                             _justLoaded = false;
 
