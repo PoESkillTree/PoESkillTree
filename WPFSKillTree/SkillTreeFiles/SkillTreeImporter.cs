@@ -123,7 +123,7 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             double nminx = float.MaxValue, nminy = float.MaxValue, nmaxx = float.MinValue, nmaxy = float.MinValue;
-            foreach (SkillNode node in tree.Skillnodes.Values)
+            foreach (SkillNode node in SkillTree.Skillnodes.Values)
             {
                 Vector2D pos = node.Position;
                 nminx = Math.Min(pos.X, nminx);
@@ -140,7 +140,7 @@ namespace POESKillTree.SkillTreeFiles
             tree.Chartype = character;
             tree.SkilledNodes.Clear();
             SkillNode startnode =
-                tree.Skillnodes.First(nd => nd.Value.Name == tree.CharName[tree.Chartype].ToUpper()).Value;
+                SkillTree.Skillnodes.First(nd => nd.Value.Name == SkillTree.CharName[tree.Chartype].ToUpper()).Value;
             tree.SkilledNodes.Add(startnode.Id);
 
             for (int i = 1; i < buildResp.Length; ++i)
@@ -151,7 +151,7 @@ namespace POESKillTree.SkillTreeFiles
                                       new Vector2D(1/(maxx - minx), 1/(maxy - miny));
                 double minDis = 2;
                 var minNode = new KeyValuePair<ushort, SkillNode>();
-                foreach (var node in tree.Skillnodes)
+                foreach (var node in SkillTree.Skillnodes)
                 {
                     Vector2D nodePos = (node.Value.Position - new Vector2D(nminx, nminy))*
                                        new Vector2D(1/(nmaxx - nminx), 1/(nmaxy - nminy));
