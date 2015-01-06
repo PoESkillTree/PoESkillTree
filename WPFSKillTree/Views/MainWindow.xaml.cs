@@ -127,17 +127,17 @@ namespace POESKillTree.Views
             SetAccent(_persistentData.Options.Accent);
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
-            recSkillTree.Width = Tree.TRect.Width/Tree.TRect.Height*500;
+            recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * 500;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
             Tree.Chartype =
-                Tree.CharName.IndexOf(((string) ((ComboBoxItem) cbCharType.SelectedItem).Content).ToUpper());
+                SkillTree.CharName.IndexOf(((string)((ComboBoxItem)cbCharType.SelectedItem).Content).ToUpper());
             Tree.UpdateAvailNodes();
             UpdateAllAttributeList();
 
-            _multransform = Tree.TRect.Size/new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
-            _addtransform = Tree.TRect.TopLeft;
+            _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
+            _addtransform = SkillTree.TRect.TopLeft;
 
             expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
             expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
@@ -562,11 +562,11 @@ namespace POESKillTree.Views
             else
             {
                 var startnode =
-                    Tree.Skillnodes.First(
-                        nd => nd.Value.Name.ToUpper() == (Tree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
+                    SkillTree.Skillnodes.First(
+                        nd => nd.Value.Name.ToUpper() == (SkillTree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
                 Tree.SkilledNodes.Clear();
                 Tree.SkilledNodes.Add(startnode.Id);
-                Tree.Chartype = Tree.CharName.IndexOf((Tree.CharName[cbCharType.SelectedIndex]).ToUpper());
+                Tree.Chartype = SkillTree.CharName.IndexOf((SkillTree.CharName[cbCharType.SelectedIndex]).ToUpper());
             }
             Tree.UpdateAvailNodes();
             UpdateAllAttributeList();
@@ -616,7 +616,7 @@ namespace POESKillTree.Views
                     }
                 }
 
-                foreach (var a in Tree.ImplicitAttributes(attritemp))
+                foreach (var a in SkillTree.ImplicitAttributes(attritemp,Tree.Level))
                 {
                     string key = SkillTree.RenameImplicitAttributes.ContainsKey(a.Key)
                         ? SkillTree.RenameImplicitAttributes[a.Key]
@@ -828,7 +828,7 @@ namespace POESKillTree.Views
             v = v*_multransform + _addtransform;
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
-                Tree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
+                SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
             if (nodes.Count() != 0)
             {
                 var node = nodes.First().Value;
@@ -879,7 +879,7 @@ namespace POESKillTree.Views
             SkillNode node = null;
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
-                Tree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
+                SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
             if (nodes.Count() != 0)
                 node = nodes.First().Value;
 
@@ -1693,12 +1693,14 @@ namespace POESKillTree.Views
             var list = sender as ListView;
             if (list != null && list.SelectedItem is PoEBuild)
             {
-                var tree2 = SkillTree.CreateSkillTree();
-                tree2.LoadFromURL(((PoEBuild)list.SelectedItem).Url);
+                var build = (PoEBuild)list.SelectedItem;
+                HashSet<ushort> nodes;
+                int ctype;
+                SkillTree.DecodeURL(build.Url,out nodes, out ctype);
 
-                Tree.HighlightedNodes = tree2.SkilledNodes;
+                Tree.HighlightedNodes = nodes;
 
-                Tree.HighlightedAttributes = tree2.SelectedAttributes;
+                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes,ctype,int.Parse(build.Level));
                 Tree.DrawNodeBaseSurroundHighlight();
                 UpdateAttributeList();
             }

@@ -2310,7 +2310,7 @@ namespace POESKillTree.SkillTreeFiles
 
             CoreAttributes();
 
-            Implicit = new AttributeSet(skillTree.ImplicitAttributes(Global));
+            Implicit = new AttributeSet(SkillTree.ImplicitAttributes(Global, skillTree.Level));
             Global.Add(Implicit);
 
             // Innate dual wielding bonuses.
