@@ -366,7 +366,7 @@ namespace POESKillTree.Views
 
                             SkillTree.ClearAssets();//enable recaching of assets
                             SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
-                            
+
 
                             btnLoadBuild_Click(this, new RoutedEventArgs());
                             _justLoaded = false;
@@ -432,7 +432,7 @@ namespace POESKillTree.Views
         }
 
         // Checks for updates.
-        private void  Menu_CheckForUpdates(object sender, RoutedEventArgs e)
+        private void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -621,7 +621,7 @@ namespace POESKillTree.Views
                     }
                 }
 
-                foreach (var a in SkillTree.ImplicitAttributes(attritemp,Tree.Level))
+                foreach (var a in SkillTree.ImplicitAttributes(attritemp, Tree.Level))
                 {
                     string key = SkillTree.RenameImplicitAttributes.ContainsKey(a.Key)
                         ? SkillTree.RenameImplicitAttributes[a.Key]
@@ -657,12 +657,12 @@ namespace POESKillTree.Views
         public void UpdateAttributeList()
         {
             _attiblist.Clear();
-            Dictionary<string, List<float>> copy = (Tree.HighlightedAttributes == null)?null:new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
-            
+            Dictionary<string, List<float>> copy = (Tree.HighlightedAttributes == null) ? null : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
+
             foreach (var item in Tree.SelectedAttributes)
             {
                 var a = new Attribute(InsertNumbersInAttributes(item));
-                if (copy!=null && copy.ContainsKey(item.Key))
+                if (copy != null && copy.ContainsKey(item.Key))
                 {
                     var citem = copy[item.Key];
                     a.Deltas = item.Value.Zip(citem, (s, h) => s - h).ToArray();
@@ -670,7 +670,7 @@ namespace POESKillTree.Views
                 }
                 else
                 {
-                    a.Deltas = (copy != null)?item.Value.ToArray():item.Value.Select(v=>0f).ToArray();
+                    a.Deltas = (copy != null) ? item.Value.ToArray() : item.Value.Select(v => 0f).ToArray();
                 }
                 _attiblist.Add(a);
             }
@@ -827,10 +827,10 @@ namespace POESKillTree.Views
 
         private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
-            Point p = ((MouseEventArgs) e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
+            Point p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
 
-            v = v*_multransform + _addtransform;
+            v = v * _multransform + _addtransform;
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
@@ -878,7 +878,7 @@ namespace POESKillTree.Views
         {
             Point p = e.GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
-            v = v*_multransform + _addtransform;
+            v = v * _multransform + _addtransform;
             textBox1.Text = "" + v.X;
             textBox2.Text = "" + v.Y;
             SkillNode node = null;
@@ -1237,7 +1237,7 @@ namespace POESKillTree.Views
         private void BeginDrag(MouseEventArgs e)
         {
             var listView = lvSavedBuilds;
-            var listViewItem = FindAnchestor<ListViewItem>((DependencyObject) e.OriginalSource);
+            var listViewItem = FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
 
             if (listViewItem == null)
                 return;
@@ -1309,7 +1309,7 @@ namespace POESKillTree.Views
         private void InitialiseAdorner(UIElement listViewItem)
         {
             var brush = new VisualBrush(listViewItem);
-            _adorner = new DragAdorner(listViewItem, listViewItem.RenderSize, brush) {Opacity = 0.5};
+            _adorner = new DragAdorner(listViewItem, listViewItem.RenderSize, brush) { Opacity = 0.5 };
             _layer = AdornerLayer.GetAdornerLayer(lvSavedBuilds);
             _layer.Add(_adorner);
         }
@@ -1631,7 +1631,7 @@ namespace POESKillTree.Views
                 return array;
             }
         }
-        #endregion  
+        #endregion
 
         #region Legacy
 
@@ -1705,7 +1705,7 @@ namespace POESKillTree.Views
 
                 Tree.HighlightedNodes = nodes;
                 Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, int.Parse(build.Level));
-                
+
             }
             else
             {
