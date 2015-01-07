@@ -12,8 +12,8 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         TextOptions.TextFormattingMode="Display">
     <Window.Resources>
-        <conv:SignConverter x:Key="signConverter" />
-        <conv:ArrayToVisibilityConverter x:Key="arrayToVisibilityConverter" />
+        <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
+        
         <Style x:Key="ContainerStyleIsExpanded" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -351,29 +351,7 @@
                                 <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock x:Name="pasiveAttributeText" Text="{Binding Text}" TextWrapping="Wrap" MouseRightButtonUp="TextBlock_MouseRightButtonUp"/>
-                                                <StackPanel Orientation="Horizontal" Visibility="{Binding Deltas, Converter={StaticResource arrayToVisibilityConverter}}">
-                                                    <TextBlock Text=" "/>
-                                                    <ItemsControl ItemsSource="{Binding Deltas}">
-                                                        <ItemsControl.ItemsPanel>
-                                                            <ItemsPanelTemplate>
-                                                                <StackPanel Orientation="Horizontal"/>
-                                                            </ItemsPanelTemplate>
-                                                        </ItemsControl.ItemsPanel>
-                                                        <ItemsControl.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock Text="{Binding StringFormat=+#;-#;0}" Foreground="{Binding Converter={StaticResource signConverter}}"/>
-                                                            </DataTemplate>
-                                                        </ItemsControl.ItemTemplate>
-                                                    </ItemsControl>
-                                                </StackPanel>
-                                            </StackPanel>
-                                            <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding Missing}" Value="true">
-                                                    <Setter TargetName="pasiveAttributeText" Property="Foreground" Value="Red"></Setter>
-                                                </DataTrigger>
-                                            </DataTemplate.Triggers>
+                                            <ContentControl Content="{Binding Converter={StaticResource attributeToTextblockConverter}}"/>
                                         </DataTemplate> 
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
