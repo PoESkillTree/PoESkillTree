@@ -10,10 +10,12 @@
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown"
-        TextOptions.TextFormattingMode="Display">
+        TextOptions.TextFormattingMode="Display"
+        x:Name="window"
+        >
     <Window.Resources>
         <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
-        
+
         <Style x:Key="ContainerStyleIsExpanded" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -222,6 +224,7 @@
                 <Separator />
                 <MenuItem x:Name="mnuViewBuilds" Header="_Builds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="False" Click="ToggleBuilds_Click"/>
                 <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="False" InputGestureText="Ctrl+Q" Click="ToggleAttributes_Click"/>
+                <MenuItem x:Name="mnuViewComparison" Header="_Tree comparison" IsCheckable="true" IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click"  />
             </MenuItem>
             <MenuItem Header="_Tools ">
                 <MenuItem Header="_ScreenShot of Skilled Nodes" Click="Menu_ScreenShot">
@@ -312,10 +315,16 @@
                 </Expander.Header>
 
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left"  FlowDirection="LeftToRight" Background="{DynamicResource WhiteColorBrush}">
-                    <ListView x:Name="lvSavedBuilds" Margin="0,0,0,31" HorizontalAlignment="Left" Width="255"
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="lvSavedBuilds" Margin="0,0,0,2.476" HorizontalAlignment="Left" Width="255" Grid.Row="0"
                               ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"
                               AllowDrop="True" DragEnter="ListViewDragEnter" Drop="ListViewDrop" PreviewMouseMove="ListViewPreviewMouseMove" PreviewMouseLeftButtonDown="ListViewMouseLeftButtonDown"
-                              MouseDoubleClick="lvi_MouseDoubleClick" SelectionChanged="lvSavedBuilds_SelectionChanged">
+                              MouseDoubleClick="lvi_MouseDoubleClick" SelectionChanged="lvSavedBuilds_SelectionChanged" Grid.RowSpan="2"
+                              SelectedIndex="{Binding ElementName=window,Path=PersistentData.Options.SelectedBuildIndex}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave">
@@ -334,9 +343,17 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Button x:Name="btnSaveNewBuild" Content="Save new" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="80" Click="btnSaveNewBuild_Click"/>
-                    <Button x:Name="btnOverwriteBuild" Content="Overwrite" Margin="88,0,0,0" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="84"/>
-                    <Button x:Name="btnDelete" Content="Delete" Margin="0,0,0,0" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Right" Width="60"/>
+                    <CheckBox Grid.Row="1" Margin="2" IsChecked="{Binding IsChecked,ElementName=mnuViewComparison}">Tree comparison</CheckBox>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="85"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="btnSaveNewBuild" Content="Save new" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="80" Click="btnSaveNewBuild_Click"/>
+                        <Button x:Name="btnOverwriteBuild" Content="Overwrite" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="84" Grid.Column="1"/>
+                        <Button x:Name="btnDelete" Content="Delete" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Right" Width="60" Grid.Column="2"/>
+                    </Grid>
                 </Grid>
             </Expander>
 
@@ -352,7 +369,7 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <ContentControl Content="{Binding Converter={StaticResource attributeToTextblockConverter}}"/>
-                                        </DataTemplate> 
+                                        </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
                                         <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />

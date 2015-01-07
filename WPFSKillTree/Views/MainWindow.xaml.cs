@@ -46,6 +46,13 @@ namespace POESKillTree.Views
     public partial class MainWindow : MetroWindow
     {
         private readonly PersistentData _persistentData = new PersistentData();
+
+        public PersistentData PersistentData
+        {
+            get { return _persistentData; }
+        } 
+
+
         private static readonly Action EmptyDelegate = delegate { };
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
@@ -1695,10 +1702,12 @@ namespace POESKillTree.Views
 
         private void lvSavedBuilds_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var list = sender as ListView;
-            if (list != null && list.SelectedItem is PoEBuild)
+            if (Tree == null)
+                return;
+
+            if (lvSavedBuilds != null && lvSavedBuilds.SelectedItem is PoEBuild && _persistentData.Options.TreeComparisonEnabled)
             {
-                var build = (PoEBuild)list.SelectedItem;
+                var build = (PoEBuild)lvSavedBuilds.SelectedItem;
                 HashSet<ushort> nodes;
                 int ctype;
                 SkillTree.DecodeURL(build.Url, out nodes, out ctype);
@@ -1715,6 +1724,11 @@ namespace POESKillTree.Views
 
             Tree.DrawNodeBaseSurroundHighlight();
             UpdateAttributeList();
+        }
+
+        private void ToggleTreeComparison_Click(object sender, RoutedEventArgs e)
+        {
+            lvSavedBuilds_SelectionChanged(null, null);
         }
     }
 }
