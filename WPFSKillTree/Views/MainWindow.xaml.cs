@@ -683,8 +683,8 @@ namespace POESKillTree.Views
                 {
                     var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<float>>(item.Key, item.Value.Select(v => 0f).ToList())));
                     a.Deltas = item.Value.Select((h) => 0 - h).ToArray();
-                    if(item.Value.Count == 0)
-                        a.Missing = true;
+                    // if(item.Value.Count == 0)
+                    a.Missing = true;
                     _attiblist.Add(a);
                 }
             }
