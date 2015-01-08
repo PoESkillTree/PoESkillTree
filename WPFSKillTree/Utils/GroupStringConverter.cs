@@ -15,6 +15,7 @@ namespace POESKillTree.Utils
         public Dictionary<string, AttributeGroup> AttributeGroups = new Dictionary<string, AttributeGroup>();
         private static readonly List<string[]> Groups = new List<string[]>
         {
+            new[] {"Share Endurance, Frenzy and Power Charges with nearby party members", "Keystone"},
             new[] {"and Endurance Charges on Hit with Claws", "Weapon"},
             new[] {"Endurance Charge", "Charges"},
             new[] {"Frenzy Charge", "Charges"},
