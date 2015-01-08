@@ -26,6 +26,13 @@ PoESkillTree
 4. Start POESKillTree.exe
 
 ####Update
+
+|Automatic (2.1.1 and above)|
+---
+Go to *Help > Check for Updates*
+
+|Manually|
+---
 If you have settings and/or saved builds you want to keep when updating do this:
 
 1. Follow the first three steps above
