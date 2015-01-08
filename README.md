@@ -35,7 +35,7 @@ Go to *Help > Check for Updates*
 ---
 If you have settings and/or saved builds you want to keep when updating do this:
 
-1. Follow the first three steps above
+1. Follow the first three steps under *Install*
 2. Now either unzip to same directory and overwrite everything. Or choose a new location and then copy over PersistentData.xml
 
 If you are using a version that still uses the savedBuilds file, just copy that over to the new version and the program will migrate all saves to PersistentData.xml
