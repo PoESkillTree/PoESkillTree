@@ -46,6 +46,13 @@ namespace POESKillTree.Views
     public partial class MainWindow : MetroWindow
     {
         private readonly PersistentData _persistentData = new PersistentData();
+
+        public PersistentData PersistentData
+        {
+            get { return _persistentData; }
+        } 
+
+
         private static readonly Action EmptyDelegate = delegate { };
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
@@ -127,17 +134,17 @@ namespace POESKillTree.Views
             SetAccent(_persistentData.Options.Accent);
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
-            recSkillTree.Width = Tree.TRect.Width/Tree.TRect.Height*500;
+            recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * 500;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
             Tree.Chartype =
-                Tree.CharName.IndexOf(((string) ((ComboBoxItem) cbCharType.SelectedItem).Content).ToUpper());
+                SkillTree.CharName.IndexOf(((string)((ComboBoxItem)cbCharType.SelectedItem).Content).ToUpper());
             Tree.UpdateAvailNodes();
             UpdateAllAttributeList();
 
-            _multransform = Tree.TRect.Size/new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
-            _addtransform = Tree.TRect.TopLeft;
+            _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
+            _addtransform = SkillTree.TRect.TopLeft;
 
             expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
             expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
@@ -363,6 +370,11 @@ namespace POESKillTree.Views
                             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
                             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
+
+                            SkillTree.ClearAssets();//enable recaching of assets
+                            SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
+
+
                             btnLoadBuild_Click(this, new RoutedEventArgs());
                             _justLoaded = false;
 
@@ -427,7 +439,7 @@ namespace POESKillTree.Views
         }
 
         // Checks for updates.
-        private void  Menu_CheckForUpdates(object sender, RoutedEventArgs e)
+        private void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -562,11 +574,11 @@ namespace POESKillTree.Views
             else
             {
                 var startnode =
-                    Tree.Skillnodes.First(
-                        nd => nd.Value.Name.ToUpper() == (Tree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
+                    SkillTree.Skillnodes.First(
+                        nd => nd.Value.Name.ToUpper() == (SkillTree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
                 Tree.SkilledNodes.Clear();
                 Tree.SkilledNodes.Add(startnode.Id);
-                Tree.Chartype = Tree.CharName.IndexOf((Tree.CharName[cbCharType.SelectedIndex]).ToUpper());
+                Tree.Chartype = SkillTree.CharName.IndexOf((SkillTree.CharName[cbCharType.SelectedIndex]).ToUpper());
             }
             Tree.UpdateAvailNodes();
             UpdateAllAttributeList();
@@ -616,7 +628,7 @@ namespace POESKillTree.Views
                     }
                 }
 
-                foreach (var a in Tree.ImplicitAttributes(attritemp))
+                foreach (var a in SkillTree.ImplicitAttributes(attritemp, Tree.Level))
                 {
                     string key = SkillTree.RenameImplicitAttributes.ContainsKey(a.Key)
                         ? SkillTree.RenameImplicitAttributes[a.Key]
@@ -652,11 +664,36 @@ namespace POESKillTree.Views
         public void UpdateAttributeList()
         {
             _attiblist.Clear();
-            foreach (var item in (Tree.SelectedAttributes.Select(InsertNumbersInAttributes)))
+            Dictionary<string, List<float>> copy = (Tree.HighlightedAttributes == null) ? null : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
+
+            foreach (var item in Tree.SelectedAttributes)
             {
-                var a = new Attribute(item);
+                var a = new Attribute(InsertNumbersInAttributes(item));
+                if (copy != null && copy.ContainsKey(item.Key))
+                {
+                    var citem = copy[item.Key];
+                    a.Deltas = item.Value.Zip(citem, (s, h) => s - h).ToArray();
+                    copy.Remove(item.Key);
+                }
+                else
+                {
+                    a.Deltas = (copy != null) ? item.Value.ToArray() : item.Value.Select(v => 0f).ToArray();
+                }
                 _attiblist.Add(a);
             }
+
+            if (copy != null)
+            {
+                foreach (var item in copy)
+                {
+                    var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<float>>(item.Key, item.Value.Select(v => 0f).ToList())));
+                    a.Deltas = item.Value.Select((h) => 0 - h).ToArray();
+                    // if(item.Value.Count == 0)
+                    a.Missing = true;
+                    _attiblist.Add(a);
+                }
+            }
+
             _attibuteCollection.Refresh();
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
         }
@@ -797,13 +834,13 @@ namespace POESKillTree.Views
 
         private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
-            Point p = ((MouseEventArgs) e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
+            Point p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
 
-            v = v*_multransform + _addtransform;
+            v = v * _multransform + _addtransform;
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
-                Tree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
+                SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
             if (nodes.Count() != 0)
             {
                 var node = nodes.First().Value;
@@ -848,13 +885,13 @@ namespace POESKillTree.Views
         {
             Point p = e.GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
-            v = v*_multransform + _addtransform;
+            v = v * _multransform + _addtransform;
             textBox1.Text = "" + v.X;
             textBox2.Text = "" + v.Y;
             SkillNode node = null;
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
-                Tree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
+                SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
             if (nodes.Count() != 0)
                 node = nodes.First().Value;
 
@@ -1207,7 +1244,7 @@ namespace POESKillTree.Views
         private void BeginDrag(MouseEventArgs e)
         {
             var listView = lvSavedBuilds;
-            var listViewItem = FindAnchestor<ListViewItem>((DependencyObject) e.OriginalSource);
+            var listViewItem = FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
 
             if (listViewItem == null)
                 return;
@@ -1279,7 +1316,7 @@ namespace POESKillTree.Views
         private void InitialiseAdorner(UIElement listViewItem)
         {
             var brush = new VisualBrush(listViewItem);
-            _adorner = new DragAdorner(listViewItem, listViewItem.RenderSize, brush) {Opacity = 0.5};
+            _adorner = new DragAdorner(listViewItem, listViewItem.RenderSize, brush) { Opacity = 0.5 };
             _layer = AdornerLayer.GetAdornerLayer(lvSavedBuilds);
             _layer.Add(_adorner);
         }
@@ -1601,7 +1638,7 @@ namespace POESKillTree.Views
                 return array;
             }
         }
-        #endregion  
+        #endregion
 
         #region Legacy
 
@@ -1661,6 +1698,37 @@ namespace POESKillTree.Views
         private void image1_LostFocus(object sender, MouseEventArgs e)
         {
             _sToolTip.IsOpen = false;
+        }
+
+        private void lvSavedBuilds_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Tree == null)
+                return;
+
+            if (lvSavedBuilds != null && lvSavedBuilds.SelectedItem is PoEBuild && _persistentData.Options.TreeComparisonEnabled)
+            {
+                var build = (PoEBuild)lvSavedBuilds.SelectedItem;
+                HashSet<ushort> nodes;
+                int ctype;
+                SkillTree.DecodeURL(build.Url, out nodes, out ctype);
+
+                Tree.HighlightedNodes = nodes;
+                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, int.Parse(build.Level));
+
+            }
+            else
+            {
+                Tree.HighlightedNodes = null;
+                Tree.HighlightedAttributes = null;
+            }
+
+            Tree.DrawNodeBaseSurroundHighlight();
+            UpdateAttributeList();
+        }
+
+        private void ToggleTreeComparison_Click(object sender, RoutedEventArgs e)
+        {
+            lvSavedBuilds_SelectionChanged(null, null);
         }
     }
 }
