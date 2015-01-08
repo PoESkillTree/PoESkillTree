@@ -3,7 +3,7 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        ResizeMode="NoResize" IsTabStop="False" ShowInTaskbar="False" ShowCloseButton="False" MinHeight="77" MaxHeight="300" SizeToContent="Height" WindowStartupLocation="CenterScreen" Width="430" 
+        ResizeMode="NoResize" IsTabStop="False" ShowInTaskbar="False" ShowCloseButton="False" MinHeight="77" MaxHeight="300" SizeToContent="Height" WindowStartupLocation="CenterScreen" Width="430"  WindowStyle="ToolWindow"
         Title="{Binding BoxTitle}" KeyDown="MetroWindow_KeyDown" Background="{DynamicResource WhiteColorBrush}"  EnableDWMDropShadow="True">
     <Grid HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
