@@ -14,6 +14,8 @@ PoESkillTree
   * New Look and the ability to choose color theme
   * And lots of other changes and updates
 * Character Sheet: DPS and Defensive calculations
+* Tree comparison: Compare current tree with a saved one
+* Performace improvements
 
 ###Install/Update
 ---
@@ -74,6 +76,8 @@ Note: Both these options require that you can access the official Path of Exile 
 * Kaezin
 * SpaceOgre
 * l0g0sys
+* NadenOfficial
+* Ttxman
 
 ###Screenshoots
 ---
