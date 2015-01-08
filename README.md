@@ -38,7 +38,7 @@ If you have settings and/or saved builds you want to keep when updating do this:
 1. Follow the first three steps under *Install*
 2. Now either unzip to same directory and overwrite everything. Or choose a new location and then copy over PersistentData.xml
 
-If you are using a version that still uses the savedBuilds file, just copy that over to the new version and the program will migrate all saves to PersistentData.xml
+If you are using a version that still uses the savedBuilds file, just copy that over to the new version and the program will migrate all saves to PersistentData.xml, after this the savedBuilds file is no longer needed.
 
 ####Skilltree version
 The program always ships with the latest skilltree data available when the release is done. If you know there is a new version of the tree on the offical website but no new version of this program is available you can do this:
