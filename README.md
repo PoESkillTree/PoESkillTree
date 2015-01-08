@@ -29,7 +29,7 @@ PoESkillTree
 
 |Automatic (2.1.1 and above)|
 ---
-Go to *Help > Check for Updates*
+Go to: ```Help -> Check for Updates```
 
 |Manually|
 ---
