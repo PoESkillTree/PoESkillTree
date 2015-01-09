@@ -346,7 +346,7 @@ namespace POESKillTree.Views
             }
             catch (Exception)
             {
-                MessageBox.Show("Clipboard could not be copied to. Please try again.", "Failed Copy!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, "Clipboard could not be copied to. Please try again.", "Failed Copy!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -355,7 +355,7 @@ namespace POESKillTree.Views
             const string sMessageBoxText = "This will delete your data folder and Redownload all the SkillTree assets.\nThis requires an internet connection!\n\nDo you want to proced?";
             const string sCaption = "Redownload SkillTree Assets - Warning";
 
-            var rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            var rsltMessageBox = MessageBox.Show(this, sMessageBoxText, sCaption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
@@ -394,7 +394,7 @@ namespace POESKillTree.Views
                                 //Nothing
                             }
                             Directory.Move("DataBackup", "Data");
-                            MessageBox.Show(ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show(this, ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     break;
@@ -422,19 +422,19 @@ namespace POESKillTree.Views
 
         private void Menu_OpenHelp(object sender, RoutedEventArgs e)
         {
-            var helpWindow = new HelpWindow();
+            var helpWindow = new HelpWindow() { Owner = this };
             helpWindow.ShowDialog();
         }
 
         private void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new HotkeysWindow();
+            var aboutWindow = new HotkeysWindow() { Owner = this };
             aboutWindow.ShowDialog();
         }
 
         private void Menu_OpenAbout(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new AboutWindow();
+            var aboutWindow = new AboutWindow() { Owner = this };
             aboutWindow.ShowDialog();
         }
 
@@ -446,7 +446,7 @@ namespace POESKillTree.Views
                 Updater.Release release = Updater.CheckForUpdates();
                 if (release == null)
                 {
-                    MessageBox.Show("You have the lastest version!", "No update found.");
+                    MessageBox.Show(this, "You have the lastest version!", "No update found.");
                 }
                 else
                 {
@@ -454,10 +454,10 @@ namespace POESKillTree.Views
                     MessageBoxResult download = new MessageBoxResult();
                     if (release.Version.ToLower().Contains("pre"))
                     {
-                        download = MessageBox.Show(message + "\nThis is a pre-release, meaning there could be some bugs!", "Pre-release Found!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        download = MessageBox.Show(this, message + "\nThis is a pre-release, meaning there could be some bugs!", "Pre-release Found!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     }
                     else
-                        download = MessageBox.Show(message, "Release Found!", MessageBoxButton.YesNo, MessageBoxImage.None);
+                        download = MessageBox.Show(this, message, "Release Found!", MessageBoxButton.YesNo, MessageBoxImage.None);
 
                     if (download == MessageBoxResult.Yes)
                         btnUpdateInstall(sender, e);
@@ -469,7 +469,7 @@ namespace POESKillTree.Views
             catch (UpdaterException ex)
             {
                 // Display error message: ex.Message.
-                MessageBox.Show(ex.Message.ToString(), "Error while checking for updates", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, ex.Message.ToString(), "Error while checking for updates", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -486,7 +486,7 @@ namespace POESKillTree.Views
             catch (UpdaterException ex)
             {
                 // Display error message: ex.Message.
-                MessageBox.Show(ex.Message.ToString(), "Failed to install update!");
+                MessageBox.Show(this, ex.Message.ToString(), "Failed to install update!");
             }
         }
 
@@ -513,7 +513,7 @@ namespace POESKillTree.Views
             else if (e.Error != null) // Check whether error occured.
             {
                 // Display error message: e.Error.Message.
-                MessageBox.Show(e.Error.Message.ToString(), "Failed to install update!");
+                MessageBox.Show(this, e.Error.Message.ToString(), "Failed to install update!");
             }
             else // Download completed.
             {
@@ -526,7 +526,7 @@ namespace POESKillTree.Views
                 {
                     Updater.Dispose();
                     // Display error message: ex.Message.
-                    MessageBox.Show(ex.Message.ToString(), "Failed to install update!");
+                    MessageBox.Show(this, ex.Message.ToString(), "Failed to install update!");
                 }
             }
             CloseLoadingWindow();
@@ -951,7 +951,7 @@ namespace POESKillTree.Views
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Item data currupted!");
+                    MessageBox.Show(this, "Item data currupted!");
                     _persistentData.CurrentBuild.ItemData = "";
                     _itemAttributes = null;
                     lbItemAttr.ItemsSource = null;
@@ -1008,6 +1008,7 @@ namespace POESKillTree.Views
         {
             var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
             var formBuildName = new FormChooseBuildName(selectedBuild.Name, selectedBuild.Note, selectedBuild.CharacterName, selectedBuild.ItemData);
+            formBuildName.Owner = this;
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
             {
@@ -1066,7 +1067,7 @@ namespace POESKillTree.Views
             }
             else
             {
-                MessageBox.Show("Please select an existing build first.", "Error", MessageBoxButton.OK,
+                MessageBox.Show(this, "Please select an existing build first.", "Error", MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
@@ -1123,6 +1124,7 @@ namespace POESKillTree.Views
         private void SaveNewBuild()
         {
             var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.ItemData);
+            formBuildName.Owner = this;
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
             {
@@ -1215,7 +1217,7 @@ namespace POESKillTree.Views
             }
             catch (Exception)
             {
-                MessageBox.Show("The Build you tried to load, is invalid");
+                MessageBox.Show(this, "The Build you tried to load, is invalid");
             }
         }
         #endregion
@@ -1475,7 +1477,7 @@ namespace POESKillTree.Views
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Failed to create PoEURL", "poeurl error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(this, "Failed to create PoEURL", "poeurl error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -1484,16 +1486,16 @@ namespace POESKillTree.Views
         {
             if (e.Error != null)
             {
-                MessageBox.Show("Failed to create PoEURL", "poeurl error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, "Failed to create PoEURL", "poeurl error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             ShowPoeUrlMessageAndAddToClipboard("http://poeurl.com/" + e.Result.Trim());
         }
 
-        private static void ShowPoeUrlMessageAndAddToClipboard(string poeurl)
+        private void ShowPoeUrlMessageAndAddToClipboard(string poeurl)
         {
             System.Windows.Forms.Clipboard.SetDataObject(poeurl, true);
-            MessageBox.Show("The URL below has been copied to you clipboard: \n" + poeurl, "poeurl Link",
+            MessageBox.Show(this, "The URL below has been copied to you clipboard: \n" + poeurl, "poeurl Link",
                 MessageBoxButton.OK);
         }
 
@@ -1683,7 +1685,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unable to load the saved builds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, "Unable to load the saved builds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

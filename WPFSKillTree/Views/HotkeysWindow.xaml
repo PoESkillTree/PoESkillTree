@@ -3,7 +3,7 @@
     x:Class="POESKillTree.Views.HotkeysWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Hotkeys" Width="500" WindowStartupLocation="CenterOwner"
+    Title="Hotkeys" Width="500" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"
     ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
     Icon="/POESKillTree;component/logo.ico">
     <Grid Background="{DynamicResource WhiteColorBrush}" Margin="2">
