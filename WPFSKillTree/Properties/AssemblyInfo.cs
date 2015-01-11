@@ -42,5 +42,5 @@ using System.Windows;
 
 // Updated by release.xml. DO NOT MODIFY!
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.1.1.279")]
-[assembly: AssemblyInformationalVersion("2.1.1")]
+[assembly: AssemblyFileVersion("2.1.2.319")]
+[assembly: AssemblyInformationalVersion("2.1.2")]

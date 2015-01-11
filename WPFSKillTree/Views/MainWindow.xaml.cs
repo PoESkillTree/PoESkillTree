@@ -1732,7 +1732,16 @@ namespace POESKillTree.Views
                 SkillTree.DecodeURL(build.Url, out nodes, out ctype);
 
                 Tree.HighlightedNodes = nodes;
-                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, int.Parse(build.Level));
+                int level = 0;
+                try
+                {
+                    level = int.Parse(build.Level);
+                }
+                catch
+                {
+                    level = 0;
+                }
+                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, level);
 
             }
             else
