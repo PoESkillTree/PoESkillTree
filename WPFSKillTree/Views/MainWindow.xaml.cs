@@ -90,6 +90,7 @@ namespace POESKillTree.Views
         private AdornerLayer _layer;
 
         private MouseButton _lastMouseButton;
+        private String _highlightedAttribute = "";
 
         public MainWindow()
         {
@@ -787,13 +788,17 @@ namespace POESKillTree.Views
 
         private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var selectedAttr =
+            var newHighlightedAttribute =
                 Regex.Replace(
                     Regex.Match(listBox1.SelectedItem.ToString(), @"(?!\d)\w.*\w")
                         .Value.Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
                         .Replace(@"%", @"\%"), @"\d+", @"\d+");
-            Tree.HighlightNodesBySearch(selectedAttr, true, false);
+            if (newHighlightedAttribute == _highlightedAttribute)
+                _highlightedAttribute = "";
+            else
+                _highlightedAttribute = newHighlightedAttribute;
+            Tree.HighlightNodesBySearch(_highlightedAttribute, true, false);
         }
 
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
