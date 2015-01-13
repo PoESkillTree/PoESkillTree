@@ -42,6 +42,8 @@ namespace POESKillTree.SkillTreeFiles
             get { return SkillTree._StartBackgrounds; }
         }
 
+        private NodeHighlighter _nodeHighlighter = new NodeHighlighter();
+
         public DrawingVisual SkillTreeVisual;
         public DrawingVisual picActiveLinks;
         public DrawingVisual picBackground;

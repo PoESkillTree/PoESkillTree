@@ -789,6 +789,11 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
+        public void UnhighlightAllNodes()
+        {
+            _nodeHighlighter.UnhighlightAllNodes(HighlightState.All);
+        }
+
         public static Dictionary<string, List<float>> ImplicitAttributes(Dictionary<string, List<float>> attribs, int level)
         {
             var retval = new Dictionary<string, List<float>>();
