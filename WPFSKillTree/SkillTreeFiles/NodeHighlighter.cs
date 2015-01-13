@@ -55,17 +55,15 @@ namespace POESKillTree.SkillTreeFiles
 
         public void UnhighlightAllNodes(HighlightState removeFlags)
         {
-            // Kludge cast
+            // Kludge cast to avoid a "Collection was modified" exception.
             var keys = nodeHighlights.Keys.ToArray();
             foreach (SkillNode node in keys)
                 UnhighlightNode(node, removeFlags);
-            //removeUnhighlightedNodes();
         }
 
         public void ReplaceHighlights(List<SkillNode> newNodes, HighlightState replaceFlags)
         {
             UnhighlightAllNodes(replaceFlags);
-            //removeUnhighlightedNodes();
             HighlightNodes(newNodes, replaceFlags);
         }
     }
