@@ -4,10 +4,11 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Serialization;
 using POESKillTree.ViewModels;
+using System.ComponentModel;
 
 namespace POESKillTree.Model
 {
-    public class PersistentData
+    public class PersistentData : INotifyPropertyChanged
     {
         public Options Options { get; set; }
         public PoEBuild CurrentBuild { get; set; }
@@ -43,6 +44,7 @@ namespace POESKillTree.Model
                 Builds = obj.Builds;
                 CurrentBuild = obj.CurrentBuild;
                 reader.Close();
+                OnPropertyChanged(null);
             }
         }
 
@@ -51,5 +53,13 @@ namespace POESKillTree.Model
             Builds = (from PoEBuild item in items select item).ToList();
             SavePersistentDataToFile();
         }
+
+        private void OnPropertyChanged(string caller)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(caller));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

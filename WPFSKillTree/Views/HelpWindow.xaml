@@ -4,7 +4,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Help"  WindowStartupLocation="CenterOwner" Width="500" Height="600"
-        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
+        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
         Icon="/POESKillTree;component/logo.ico">
     <Grid>
         <Grid.RowDefinitions>

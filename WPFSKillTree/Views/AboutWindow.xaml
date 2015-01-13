@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Properties="clr-namespace:POESKillTree.Properties"
     Title="About" Width="500" WindowStartupLocation="CenterOwner"
-    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
     Icon="/POESKillTree;component/logo.ico">
     <Grid Background="{DynamicResource WhiteColorBrush}">
         <Grid.RowDefinitions>
@@ -41,7 +41,9 @@
             Kaezin<LineBreak/>
             SpaceOgre<LineBreak/>
             l0g0sys<LineBreak/>
-            NadenOfficial
+            NadenOfficial<LineBreak/>
+            Ttxman<LineBreak/>
+            yazilliclick
         </TextBlock>
         <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
         <Label Grid.Row="3" Grid.Column="0">Legal</Label>

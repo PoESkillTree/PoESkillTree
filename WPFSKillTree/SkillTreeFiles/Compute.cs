@@ -1139,7 +1139,7 @@ namespace POESKillTree.SkillTreeFiles
                 static Regex ReIncreasedAllWithWeaponType = new Regex("#% (increased|reduced) Damage with (.+)$");
                 static Regex ReIncreasedType = new Regex("^#% (increased|reduced) (.+) Damage$");
                 static Regex ReIncreasedTypeWithWeaponTypeOrHand = new Regex("#% (increased|reduced) (.+) Damage with (.+)$");
-                static Regex ReIncreasedWithSource = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Weapons)$");
+                static Regex ReIncreasedWithSource = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Attacks|Weapons)$");
 
                 public Increased(float percent)
                     : base()
@@ -2270,7 +2270,7 @@ namespace POESKillTree.SkillTreeFiles
             IsWieldingShield = MainHand.Is(WeaponType.Shield) || OffHand.Is(WeaponType.Shield);
             IsWieldingStaff = MainHand.Is(WeaponType.Staff);
 
-            Level = skillTree._level;
+            Level = skillTree.Level;
             if (Level < 1) Level = 1;
             else if (Level > 100) Level = 100;
 
@@ -2310,7 +2310,7 @@ namespace POESKillTree.SkillTreeFiles
 
             CoreAttributes();
 
-            Implicit = new AttributeSet(skillTree.ImplicitAttributes(Global));
+            Implicit = new AttributeSet(SkillTree.ImplicitAttributes(Global, Level));
             Global.Add(Implicit);
 
             // Innate dual wielding bonuses.

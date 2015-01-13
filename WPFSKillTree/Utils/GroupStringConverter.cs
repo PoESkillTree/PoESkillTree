@@ -15,6 +15,7 @@ namespace POESKillTree.Utils
         public Dictionary<string, AttributeGroup> AttributeGroups = new Dictionary<string, AttributeGroup>();
         private static readonly List<string[]> Groups = new List<string[]>
         {
+            new[] {"Share Endurance, Frenzy and Power Charges with nearby party members", "Keystone"},
             new[] {"and Endurance Charges on Hit with Claws", "Weapon"},
             new[] {"Endurance Charge", "Charges"},
             new[] {"Frenzy Charge", "Charges"},
@@ -26,7 +27,7 @@ namespace POESKillTree.Utils
             new[] {"Physical Damage Converted to Fire Damage", "Keystone"},
             new[] {"Deal no Non-Fire Damage", "Keystone"},
             new[] {"All bonuses from an equipped Shield apply to your Minions instead of you", "Keystone"},
-            new[] {"Can summon up to 1 additional totem", "Keystone"},
+            new[] {"additional totem", "Keystone"},
             new[] {"Cannot be Stunned", "Keystone"},
             new[] {"Cannot Evade enemy Attacks", "Keystone"},
             new[] {"Converts all Energy Shield to Mana", "Keystone"},
@@ -36,7 +37,7 @@ namespace POESKillTree.Utils
             new[] {"Life Leech applies instantly", "Keystone"},
             new[] {"Life Leech applies to Energy Shield instead of Life", "Keystone"},
             new[] {"Life Regeneration applies to Energy Shield instead of Life", "Keystone"},
-            new[] {"Maximum Life becomes 1", "Keystone"},
+            new[] {"Immune to Chaos Damage", "Keystone"},
             new[] {"Minions explode when reduced to low life", "Keystone"},
             new[] {"Never deal Critical Strikes", "Keystone"},
             new[] {"Projectile Attacks deal up to", "Keystone"},
