@@ -89,6 +89,9 @@ namespace POESKillTree.Views
         private DragAdorner _adorner;
         private AdornerLayer _layer;
 
+        private MouseButton _lastMouseButton;
+        private String _highlightedAttribute = "";
+
         public MainWindow()
         {
             Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
@@ -785,13 +788,17 @@ namespace POESKillTree.Views
 
         private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var selectedAttr =
+            var newHighlightedAttribute =
                 Regex.Replace(
                     Regex.Match(listBox1.SelectedItem.ToString(), @"(?!\d)\w.*\w")
                         .Value.Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
                         .Replace(@"%", @"\%"), @"\d+", @"\d+");
-            Tree.HighlightNodes(selectedAttr, true, Brushes.Azure);
+            if (newHighlightedAttribute == _highlightedAttribute)
+                _highlightedAttribute = "";
+            else
+                _highlightedAttribute = newHighlightedAttribute;
+            Tree.HighlightNodesBySearch(_highlightedAttribute, true, false);
         }
 
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
@@ -832,6 +839,11 @@ namespace POESKillTree.Views
 
         #region zbSkillTreeBackground
 
+        private void zbSkillTreeBackground_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _lastMouseButton = e.ChangedButton;
+        }
+
         private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
             Point p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
@@ -845,28 +857,38 @@ namespace POESKillTree.Views
             {
                 var node = nodes.First().Value;
 
-                if (node.Spc == null)
+                // Ignore clicks on character portraits and masteries
+                if (node.Spc == null && !node.IsMastery)
                 {
-                    if (Tree.SkilledNodes.Contains(node.Id))
+                    if (_lastMouseButton == MouseButton.Right)
                     {
-                        Tree.ForceRefundNode(node.Id);
-                        UpdateAllAttributeList();
-
-                        _prePath = Tree.GetShortestPathTo(node.Id);
-                        Tree.DrawPath(_prePath);
+                        Tree.ToggleNodeHighlight(node);
+                        e.Handled = true;
                     }
-                    else if (_prePath != null)
+                    else
                     {
-                        foreach (ushort i in _prePath)
+                        // Toggle whether the node is included in the tree
+                        if (Tree.SkilledNodes.Contains(node.Id))
                         {
-                            Tree.SkilledNodes.Add(i);
-                        }
-                        UpdateAllAttributeList();
-                        Tree.UpdateAvailNodes();
+                            Tree.ForceRefundNode(node.Id);
+                            UpdateAllAttributeList();
 
-                        _toRemove = Tree.ForceRefundNodePreview(node.Id);
-                        if (_toRemove != null)
-                            Tree.DrawRefundPreview(_toRemove);
+                            _prePath = Tree.GetShortestPathTo(node.Id);
+                            Tree.DrawPath(_prePath);
+                        }
+                        else if (_prePath != null)
+                        {
+                            foreach (ushort i in _prePath)
+                            {
+                                Tree.SkilledNodes.Add(i);
+                            }
+                            UpdateAllAttributeList();
+                            Tree.UpdateAvailNodes();
+
+                            _toRemove = Tree.ForceRefundNodePreview(node.Id);
+                            if (_toRemove != null)
+                                Tree.DrawRefundPreview(_toRemove);
+                        }
                     }
                 }
             }
@@ -929,9 +951,9 @@ namespace POESKillTree.Views
             }
         }
 
-        private void zbSkillTreeBackground_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void zbSkillTreeBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            zbSkillTreeBackground.Child.RaiseEvent(e);
+            //zbSkillTreeBackground.Child.RaiseEvent(e);
         }
 
         #endregion
@@ -1377,7 +1399,7 @@ namespace POESKillTree.Views
 
         private void SearchUpdate()
         {
-            Tree.HighlightNodes(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value);
+            Tree.HighlightNodesBySearch(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value, true);
         }
 
         private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)

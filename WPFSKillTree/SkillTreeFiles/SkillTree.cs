@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
+using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -741,12 +742,19 @@ namespace POESKillTree.SkillTreeFiles
             return result;
         }
 
-        public void HighlightNodes(string search, bool useregex, SolidColorBrush brushColor = null)
+        public void ToggleNodeHighlight(SkillNode node)
         {
+            _nodeHighlighter.ToggleHighlightNode(node, HighlightState.FromNode);
+            DrawHighlights(_nodeHighlighter);
+        }
+
+        public void HighlightNodesBySearch(string search, bool useregex, bool fromSearchBox)
+        {
+            HighlightState flag = fromSearchBox ? HighlightState.FromSearch : HighlightState.FromAttrib;
             if (search == "")
             {
-                DrawHighlights(_highlightnodes = new List<SkillNode>());
-                _highlightnodes = null;
+                _nodeHighlighter.UnhighlightAllNodes(flag);
+                DrawHighlights(_nodeHighlighter);
                 return;
             }
 
@@ -755,28 +763,35 @@ namespace POESKillTree.SkillTreeFiles
                 try
                 {
                     List<SkillNode> nodes =
-                        _highlightnodes =
                             Skillnodes.Values.Where(
                                 nd =>
                                     nd.attributes.Any(att => new Regex(search, RegexOptions.IgnoreCase).IsMatch(att)) ||
                                     new Regex(search, RegexOptions.IgnoreCase).IsMatch(nd.Name) && !nd.IsMastery)
                                 .ToList();
-                    DrawHighlights(_highlightnodes, brushColor);
+                    _nodeHighlighter.ReplaceHighlights(nodes, flag);
+                    DrawHighlights(_nodeHighlighter);
                 }
                 catch (Exception)
                 {
+                    Debugger.Break();
+                    // ?
                 }
             }
             else
             {
-                _highlightnodes =
+                List<SkillNode> nodes =
                     Skillnodes.Values.Where(
                         nd =>
                             nd.attributes.Count(att => att.ToLower().Contains(search.ToLower())) != 0 ||
                             nd.Name.ToLower().Contains(search.ToLower()) && !nd.IsMastery).ToList();
-
-                DrawHighlights(_highlightnodes, brushColor);
+                _nodeHighlighter.ReplaceHighlights(nodes, flag);
+                DrawHighlights(_nodeHighlighter);
             }
+        }
+
+        public void UnhighlightAllNodes()
+        {
+            _nodeHighlighter.UnhighlightAllNodes(HighlightState.All);
         }
 
         public static Dictionary<string, List<float>> ImplicitAttributes(Dictionary<string, List<float>> attribs, int level)
@@ -895,10 +910,10 @@ namespace POESKillTree.SkillTreeFiles
 
         public void SkillAllHighligtedNodes()
         {
-            if (_highlightnodes == null)
+            if (_nodeHighlighter == null)
                 return;
             var nodes = new HashSet<int>();
-            foreach (SkillNode nd in _highlightnodes)
+            foreach (SkillNode nd in _nodeHighlighter.nodeHighlights.Keys)
             {
                 if (!rootNodeList.Contains(nd.Id))
                     nodes.Add(nd.Id);
