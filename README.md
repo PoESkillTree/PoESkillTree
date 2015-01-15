@@ -86,7 +86,7 @@ Note: Both these options require that you can access the official Path of Exile 
 * NadenOfficial
 * Ttxman
 * yazilliclick
-* MLanghof
+* MauranKilom
 
 ###Screenshoots
 ---
