@@ -389,14 +389,17 @@ namespace POESKillTree.SkillTreeFiles
 
                     ng.OcpOrb = gp.Value.oo;
                     ng.Position = new Vector2D(gp.Value.x, gp.Value.y);
-                    ng.Nodes = gp.Value.n;
+                    foreach (ushort node in gp.Value.n)
+                    {
+                        ng.Nodes.Add(Skillnodes[node]);
+                    }
                     NodeGroups.Add(ng);
                 }
                 foreach (SkillNodeGroup group in NodeGroups)
                 {
-                    foreach (ushort node in group.Nodes)
+                    foreach (SkillNode node in group.Nodes)
                     {
-                        Skillnodes[node].SkillNodeGroup = group;
+                        node.SkillNodeGroup = group;
                     }
                 }
 
@@ -683,18 +686,20 @@ namespace POESKillTree.SkillTreeFiles
             return unreachable;
         }
 
-        public List<ushort> GetShortestPathTo(ushort targetNode)
+        public List<ushort> GetShortestPathTo(ushort targetNode, HashSet<ushort> start)
         {
-            if (SkilledNodes.Contains(targetNode))
+            if (start.Contains(targetNode))
                 return new List<ushort>();
-            if (AvailNodes.Contains(targetNode))
+            var adjacent = GetAvailableNodes(start);
+            if (adjacent.Contains(targetNode))
                 return new List<ushort> { targetNode };
 
-            var visited = new HashSet<ushort>(SkilledNodes);
+            var visited = new HashSet<ushort>(start);
             var distance = new Dictionary<int, int>();
             var parent = new Dictionary<ushort, ushort>();
             var newOnes = new Queue<ushort>();
-            foreach (var node in AvailNodes)
+
+            foreach (var node in adjacent)
             {
                 newOnes.Enqueue(node);
                 distance.Add(node, 1);
@@ -929,7 +934,7 @@ namespace POESKillTree.SkillTreeFiles
                 var removeList = new List<ushort>();
                 foreach (ushort id in hs)
                 {
-                    var shortestPathTemp = GetShortestPathTo(id);
+                    var shortestPathTemp = GetShortestPathTo(id, SkilledNodes);
                     if (shortestPathTemp.Count <= 0)
                     {
                         removeList.Add(id);
@@ -950,30 +955,33 @@ namespace POESKillTree.SkillTreeFiles
                     hs.Remove(i);
                     SkilledNodes.Add(i);
                 }
-                UpdateAvailNodesList();
+                //UpdateAvailNodesList();
             }
-            UpdateAvailNodesDraw();
+            UpdateAvailNodes();
         }
 
         public void UpdateAvailNodes(bool draw = true)
         {
-            UpdateAvailNodesList();
+            AvailNodes = GetAvailableNodes(SkilledNodes);
+            
             if (draw)
                 UpdateAvailNodesDraw();
         }
 
-        private void UpdateAvailNodesList()
+        private HashSet<ushort> GetAvailableNodes(HashSet<ushort> skilledNodes)
         {
-            AvailNodes.Clear();
-            foreach (ushort inode in SkilledNodes)
+            HashSet<ushort> availNodes = new HashSet<ushort>();
+
+            foreach (ushort inode in skilledNodes)
             {
                 SkillNode node = Skillnodes[inode];
                 foreach (SkillNode skillNode in node.Neighbor)
                 {
                     if (!CharName.Contains(skillNode.Name) && !SkilledNodes.Contains(skillNode.Id))
-                        AvailNodes.Add(skillNode.Id);
+                        availNodes.Add(skillNode.Id);
                 }
             }
+            return availNodes;
         }
 
         private void UpdateAvailNodesDraw()
@@ -1034,7 +1042,7 @@ namespace POESKillTree.SkillTreeFiles
 
             foreach (int node in classSpecificStartNodes)
             {
-                temp = GetShortestPathTo((ushort)node);
+                temp = GetShortestPathTo((ushort)node, SkilledNodes);
 
                 if (!temp.Any())
                     return true;
