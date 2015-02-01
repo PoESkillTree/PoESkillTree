@@ -340,6 +340,9 @@
     <Content Include="Tools\7z.exe" />
     <Resource Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SkillTreeFiles\SteinerTrees\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
