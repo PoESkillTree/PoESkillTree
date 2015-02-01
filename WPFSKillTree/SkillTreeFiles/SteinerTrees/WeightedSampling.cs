@@ -33,6 +33,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         bool isSorted;
         double totalWeight;
 
+        public bool CanSample
+        { get { return totalWeight > 0; } }
+
         Random random;
 
         public WeightedSampler(Random r = null)
@@ -47,6 +50,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         public void AddEntry(T entry, double weight)
         {
+            if (weight < 0)
+                throw new ArgumentException("Negative weights are not allowed!", "weight");
+
+            // No need to sample 0 weight individuals;
+            if (weight == 0) return;
+
             totalWeight += weight;
 
             // This is where the CDF comes from.
@@ -54,7 +63,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             isSorted = false;
         }
 
-        public T Sample()
+        public T RandomSample()
         {
             if (!isSorted)
             {
