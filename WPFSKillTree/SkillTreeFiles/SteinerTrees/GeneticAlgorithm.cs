@@ -85,17 +85,21 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="dnaLength">The (fixed) length of the DNA bitstrings used
         /// to encode solutions.</param>
         /// <param name="estimatedMaxFitness">An optional estimate of the maximum
-        /// achievable fitness value of the cost function. Better estimates may
-        /// improve the convergence behavior.</param>
-        public void StartEvolution(int populationSize, int dnaLength, double estimatedMaxFitness = 0)
+        /// achievable fitness value of the fitness function. Better estimates may
+        /// improve the convergence behavior by .</param>
+        /// <param name="estimatedMinFitness">An optional estimate of the minimum
+        /// achievable fitness value of the fitness function.</param>
+        public void StartEvolution(int populationSize, int dnaLength,
+            double estimatedMaxFitness = 0, double estimatedMinFitness = double.MaxValue)
             //BitArray initialSolution = null)
         {
             this.populationSize = populationSize;
 
-            // These assignments look paradoxical here, but they'll be adjusted
-            // by evaluating individuals before ever being used.
+            /// These assignments (based on the defaults) look paradoxical here,
+            /// but they'll be adjusted by evaluating individuals before ever being
+            /// used.
             this.maxFitness = estimatedMaxFitness;
-            this.minFitness = double.MaxValue;
+            this.minFitness = estimatedMinFitness;
 
             this.dnaLength = dnaLength;
 
@@ -108,7 +112,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             List<Individual> newPopulation = new List<Individual>();
             for (int i = 0; i < populationSize; i++)
             {
-                // TODO: DNA size
                 Individual individual = new Individual(randomBitarray(dnaLength));
                 newPopulation.Add(individual);
             }
@@ -137,50 +140,61 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 double fitness = solutionFitness(individual.DNA);
                 if (fitness < 0)
                     throw new ArgumentOutOfRangeException("solutionFitness function",
-                        "Negative fitness values are not allowed! Use 0 fitness" +
+                        "Negative fitness values are not allowed! Use 0 fitness " +
                         "for solutions that should not reproduce.");
 
                 sampler.AddEntry(individual, fitness);
 
                 if (fitness > bestSolution.fitness)
                     bestSolution = individual;
+
                 if (fitness > maxFitness)
                     maxFitness = fitness;
+                else if (fitness < minFitness)
+                    minFitness = fitness;
             }
 
             if (!sampler.CanSample)
             {
                 population = createPopulation();
                 Console.WriteLine("Entire population was infertile (Generation " +
-                                   generationCount + ")");
+                                   generationCount + ").");
             }
 
             // Mutate based on fitness
             for (int i = 0; i < populationSize; i++)
             {
-                Individual parent1 = sampler.RandomSample();
+                Individual parent = sampler.RandomSample();
 
-                Individual mutation = new Individual(mutateDNA(parent1));
+                Individual mutation = new Individual(mutateDNA(parent));
                 newPopulation.Add(mutation);
             }
 
-            // TODO: Apply crossover
+            // Apply DNA crossover
+            foreach (Individual individual in newPopulation)
+            {
+                Individual partner = sampler.RandomSample();
+                /// The higher the relative fitness of the partner, the more
+                /// likely DNA crossover is allowed.
+                /// Note: This likely has an effect on (premature) convergence.
+                if (random.NextDouble() <
+                    partner.fitness / (partner.fitness + individual.fitness))
+                    combineIndividuals(individual, partner);
+            }
 
             population = newPopulation;
             return generationCount;
         }
 
+        // Maps fitness values into the 0 - 1 range.
         private double normalizeFitness(double fitness)
         {
-            // Could incorporate something like a min fitness, in case it's
-            // far away from 0.
-            return fitness / maxFitness;
+            return (fitness - minFitness) / (maxFitness - minFitness);
         }
-
 
         private BitArray mutateDNA(Individual individual)
         {
-            // Normalized fitness will never be > 1.
+            // Chance for each individual bit to be mutated.
             double mutationProbability = 1 - Math.Sqrt(normalizeFitness(individual.fitness));
 
             BitArray newDNA = new BitArray(individual.DNA);
@@ -195,7 +209,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return newDNA;
         }
 
-        private BitArray breedIndividuals(Individual parent1, Individual parent2)
+        private BitArray combineIndividuals(Individual parent1, Individual parent2)
         {
             int length = parent1.DNA.Length;
             if (parent2.DNA.Length != length)

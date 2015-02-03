@@ -161,6 +161,9 @@
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\GeneticAlgorithm.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\ItemAttribute\Item.cs" />
@@ -340,9 +343,7 @@
     <Content Include="Tools\7z.exe" />
     <Resource Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SkillTreeFiles\SteinerTrees\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -88,7 +88,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         // Yes, this is ugly.
         public class KVPComparer : Comparer<KeyValuePair<T, double>>
         {
-            public int Compare(KeyValuePair<T, double> kvp1, KeyValuePair<T, double> kvp2)
+            public override int Compare(KeyValuePair<T, double> kvp1, KeyValuePair<T, double> kvp2)
             {
                 return kvp1.Value.CompareTo(kvp2.Value);
             }
