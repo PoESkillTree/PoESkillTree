@@ -8,29 +8,50 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
     class Steiner
     {
-        /// Data structures:
-        ///  - SkillTree: A "real" skilltree. All edges have weight one.
-        ///  - SteinerSet: A set of steiner points.
-        ///  - SteinerTree: A minimal spanning tree of a SteinerSet. Edge weights
+        /// Terminology:
+        ///  - Skilltree: A "real" skilltree as used in PoE.
+        ///  - Steiner point: A point that has more than two neighbors.
+        ///  - Steiner set: A set of steiner points.
+        ///  - Steiner tree: A minimal spanning tree of a Steiner set. Edge weights
         ///    equal the node distance in the corresponding SkillTree.
         ///  - DistanceLookup: Calculates and caches distances between nodes.
 
         /// Algorithm:
-        ///  The search space is all SteinerSets. A GA optimizes the solution
-        ///  vectors (bitstrings encoding the SteinerSets).
-        ///  The fitness function for a given SteinerSet is computed by:
-        ///   - Finding the corresponding SteinerTree (greedy, in polynomial time).
-        ///   - All target nodes are connected to their closest steiner point.
-        ///   - The total nodes used are calculated and used as a fitness measure.
+        ///  The search space is all steiner sets. A GA optimizes the solution
+        ///  vectors (bitstrings encoding the steiner sets).
         ///  
+        ///  The fitness function for a given steiner set is computed by finding
+        ///  the minimal spanning tree (MST) of the contained points plus the
+        ///  target nodes (in polynomial time with a greedy algorithm).
+        ///  The sum of its edge weights is then used as a fitness measure.
+        ///  Note that this can overestimate the cost of an encoded skill tree!
+        ///  However, since 1) it never underestimates the cost and 2) every
+        ///  optimal skilltree still has a same-cost representation in the search
+        ///  space, we're fine: No encoded tree can have a better fitness than the
+        ///  optimal one.
+        ///  
+        /// 
         /// For the later goal of using weighted nodes (or even a tree-wide
-        /// fitness function like "dps"), the search space would be extended to
-        /// include the potential (weighted) target nodes.
+        /// fitness function like "dps"), the search space would be extended by
+        /// including the (potential, weighted) target nodes.
         ///
         /// It would make sense to limit the amount of steiner points under
         /// consideration when the target nodes aren't spread out too much.
+        /// 
+        /// Also note that the actual associated skilltree isn't created at any
+        /// point during the algorithm. 
+        /// 
 
-        List<Hypernode> potentialSteinerPoints;
+        /// A nodegroup is only contracted if
+        ///  - It has exactly one adjacent node, and
+        ///  - It does not contain any skilled nodes.
+
+
+        List<SkillNode> potentialSteinerPoints;
+
+
+        List<SkillNode> targetNodes = new List<SkillNode>();
+
 
         public void SkillHighlightedNodes(SkillTree tree)
         {
@@ -38,34 +59,38 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             ///  - Contract "isolated" node groups.
             ///  - Find and collect potential steiner points.
             ///  - Contract current tree
-            ///  - Build graph for DistanceLookup
-            /// 
-            /// Solution:
-            ///  - Let the GA handle it.
-
+            ///  - Build graph for DistanceLooku
             
-            var targetNodes = tree.HighlightedNodes;
+            
 
+            SearchGraph searchGraph = new SearchGraph();
+
+            // Add the skilled nodes as a single hypernode.
             var skilledNodes = tree.SkilledNodes;
-            
-            
-            /// Contract node groups.
-            //List<Hypernode> hypernodes;
+            searchGraph.AddNodeIdSet(skilledNodes);
 
-            HypernodeGraph graph = new HypernodeGraph();
+
+            // Add all target nodes to the graph individdually
+            var targetSkillnodes = tree.HighlightedNodes;
+            foreach (ushort nodeId in targetSkillnodes)
+            {
+                // Add target node to the graph.
+                searchGraph.AddNodeIdSet(new HashSet<ushort>() { nodeId });
+            }
+
 
             foreach (SkillNodeGroup ng in SkillTree.NodeGroups)
             {
-                bool partlySkilled = false;
+                bool includeNodes = true;
                 
                 HashSet<SkillNode> adjacent = new HashSet<SkillNode>();
 
                 foreach (SkillNode node in ng.Nodes)
                 {
-                    if (skilledNodes.Contains(node.Id))
+                    // Don't 
+                    if (searchGraph.relevantNodes.Contains(node))
                     {
-                        // Don't contract this then.
-                        partlySkilled = true;
+                        includeNodes = false;
                         break;
                     }
 
@@ -76,39 +101,35 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     }
                 }
 
-                /// TODO: Contract to single node
-                if ((adjacent.Count == 1) && (!partlySkilled))
+                // Can be contracted?
+                if ((adjacent.Count == 1) && (!includeNodes))
                 {
-                    graph.AddHypernode(new Hypernode(new HashSet<SkillNode>(ng.Nodes)));
+                    // Add nodes contraced
+                    //contractedGraph.AddHypernode(new Hypernode(new HashSet<SkillNode>(ng.Nodes)));
+                }
+                else
+                {
+                    // Add nodes individually
+                    foreach (SkillNode node in ng.Nodes)
+                    {
+                        searchGraph.AddNodeIdSet(new HashSet<ushort>() { node.Id });
+                    }
                 }
             }
 
-            // Add the skilled nodes as a single hypernode.
-            graph.AddNodeIdSet(skilledNodes);
 
-            foreach (ushort nodeId in targetNodes)
-            {
-                // Target node is already contained in a contracted node.
-                if (graph.nodeIdToHypernodes.ContainsKey(nodeId)) continue;
-
-                // Target node needs to be added to the graph.
-                graph.AddNodeIdSet(new HashSet<ushort>() { nodeId });
-            }
+            potentialSteinerPoints = new List<SkillNode>();
 
             // Find potential steiner points (> 2 neighbors)
-            foreach (Hypernode hypernode in graph.hypernodes)
+            foreach (SkillNode node in searchGraph.relevantNodes)
             {
-                if (hypernode.neighborCount > 2)
-                    potentialSteinerPoints.Add(hypernode);
+                if (node.Neighbor.Count > 2)
+                    potentialSteinerPoints.Add(node);
             }
 
-
-            potentialSteinerPoints = new List<Hypernode>();
-
-            foreach (var node in targetNodes)
+            foreach (ushort nodeId in targetSkillnodes)
             {
-                Hypernode hypernode = new Hypernode(new HashSet<SkillNode> { SkillTree.Skillnodes[node] });
-                potentialSteinerPoints.Add(hypernode);
+                potentialSteinerPoints.Add(SkillTree.Skillnodes[nodeId]);
             }
 
 
@@ -123,35 +144,46 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         private double fitnessFunction(BitArray representation)
         {
-            List<Hypernode> usedSteinerPoints = new List<Hypernode>();
+            List<SkillNode> usedSteinerPoints = new List<SkillNode>();
             for (int i = 0; i < representation.Length; i++)
             {
                 if (representation[i])
                     usedSteinerPoints.Add(potentialSteinerPoints[i]);
             }
 
+
+            List<SkillNode> mstNodes = usedSteinerPoints;
+            mstNodes.AddRange(targetNodes);
+
+            // TODO: MST of the points
+
+
+
+
             throw new NotImplementedException();
         }
 
 
-        class HypernodeGraph
+        class SteinerNode : SkillNode
         {
-            public List<Hypernode> hypernodes;
-            public Dictionary<ushort, Hypernode> nodeIdToHypernodes;
 
-            public HypernodeGraph()
+        }
+
+
+        class SearchGraph
+        {
+            public List<SkillNode> relevantNodes;
+
+            public HashSet<SkillNode> startNodes;
+
+            public SearchGraph()
             {
-                hypernodes = new List<Hypernode>();
-                nodeIdToHypernodes = new Dictionary<ushort, Hypernode>();
+                relevantNodes = new List<SkillNode>();
             }
 
-            public void AddHypernode(Hypernode hypernode)
+            public void AddHypernode(SkillNode hypernode)
             {
-                hypernodes.Add(hypernode);
-                foreach (SkillNode node in hypernode.nodes)
-                {
-                    nodeIdToHypernodes.Add(node.Id, hypernode);
-                }
+                relevantNodes.Add(hypernode);
             }
 
             public void AddNodeIdSet(HashSet<ushort> nodes)
@@ -159,10 +191,16 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 HashSet<SkillNode> nodeSet = new HashSet<SkillNode>();
                 foreach (ushort nodeId in nodes)
                 {
-                    nodeSet.Add(SkillTree.Skillnodes[nodeId]);
+                    relevantNodes.Add(SkillTree.Skillnodes[nodeId]);
                 }
-                Hypernode hypernode = new Hypernode(nodeSet);
-                AddHypernode(hypernode);
+            }
+
+            public void LinkNodes()
+            {
+                foreach (SkillNode node in relevantNodes)
+                {
+
+                }
             }
         }
 
@@ -173,15 +211,14 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             public HashSet<SkillNode> nodes;
 
-            List<Hypernode> neighbors;
-
-            public int neighborCount;
+            public List<Hypernode> neighbors;
 
 
             public Hypernode(HashSet<SkillNode> nodes)
             {
                 neighbors = new List<Hypernode>();
                 this.nodes = nodes;
+                _id = nodes.First().Id;
             }
         }
 
@@ -189,13 +226,13 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         //  Calculates and caches distances between nodes
         class DistanceLookup
         {
-            readonly HypernodeGraph _graph;
+            readonly SearchGraph _graph;
 
             // The uint compounds both ushort indices.
             Dictionary<uint, int> _distances;
 
 
-            public DistanceLookup(HypernodeGraph graph)
+            public DistanceLookup(SearchGraph graph)
             {
                 _distances = new Dictionary<uint, int>();
                 _graph = graph;
