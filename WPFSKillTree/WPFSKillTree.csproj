@@ -166,6 +166,7 @@
     <Compile Include="SkillTreeFiles\SteinerTrees\Graphs.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\HeapPriorityQueue.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\IPriorityQueue.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\MinimalSpanningTree.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\PriorityQueueNode.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />

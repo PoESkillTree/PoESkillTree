@@ -31,7 +31,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         
         //List<KeyValuePair<T, double>> entries;
         SortedDictionary<double, T> entries;
-        bool isSorted;
         double totalWeight;
 
         public bool CanSample
@@ -39,12 +38,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         Random random;
 
-        IOrderedEnumerable<KeyValuePair<T, double>> sortedSet;
-
         public WeightedSampler(Random random = null)
         {
             entries = new SortedDictionary<double, T>();
-            isSorted = false;
             totalWeight = 0;
 
             if (random == null) this.random = new Random();
@@ -63,7 +59,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             // This is where the CDF comes from.
             entries.Add(totalWeight, entry);
-            isSorted = false;
         }
 
         public T RandomSample()
@@ -80,29 +75,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         public void Clear()
         {
             entries.Clear();
-            isSorted = false;
             totalWeight = 0;
         }
-
-        // Yes, this is ugly.
-        public class KVPComparer : Comparer<KeyValuePair<T, double>>
-        {
-            public override int Compare(KeyValuePair<T, double> kvp1, KeyValuePair<T, double> kvp2)
-            {
-                return kvp1.Value.CompareTo(kvp2.Value);
-            }
-        }
-        public static KVPComparer kvpComparer = new KVPComparer();
-
-        /// <summary>
-        ///  Performs a binary search
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /*private int binarySearch(double value)
-        {
-
-        }*/
-
     }
 }

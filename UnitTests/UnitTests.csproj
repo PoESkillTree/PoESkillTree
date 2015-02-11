@@ -107,6 +107,9 @@
     <None Include="TestBuilds\init\Arc-Barrage-45p.json" />
     <None Include="TestBuilds\init\FP-Templar-14p.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TestGraphs\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

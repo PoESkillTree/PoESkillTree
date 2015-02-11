@@ -27,8 +27,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         protected ushort id;
         public ushort Id { get { return id; } }
 
-        public bool isTarget;
-
         public HashSet<GraphNode> Adjacent = new HashSet<GraphNode>();
     }
 
@@ -39,11 +37,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     {
         SkillNode baseNode;
 
-        public SingleNode(SkillNode baseNode, bool isTarget = false)
+        public SingleNode(SkillNode baseNode)
         {
             this.baseNode = baseNode;
             this.id = baseNode.Id;
-            this.isTarget = isTarget;
         }
     }
 
@@ -67,12 +64,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     }
 
     /// <summary>
-    /// A graph representing a simplified skill tree.
+    /// A graph representing a simplified skill tree. 
     /// </summary>
     class SearchGraph
     {
-        public Supernode startNodes;
-
         public Dictionary<SkillNode, GraphNode> nodeDict;
 
         public SearchGraph()
@@ -82,23 +77,23 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         /// <summary>
         ///  Adds a skill node to the graph. New nodes are automatically
-        ///  connected to existing nodes.
+        ///  connected to existing adjacent nodes.
         /// </summary>
         /// <param name="node">The skill node to be added.</param>
         /// <param name="isTarget">Whether or not this node is a target
         /// node.</param>
         /// <returns>The graph node that is added to the graph.</returns>
-        public GraphNode AddNode(SkillNode node, bool isTarget)
+        public GraphNode AddNode(SkillNode node)
         {
-            SingleNode graphNode = new SingleNode(node, isTarget);
+            SingleNode graphNode = new SingleNode(node);
             nodeDict.Add(node, graphNode);
             CheckLinks(node);
             return graphNode;
         }
 
-        public GraphNode AddNodeId(ushort nodeId, bool isTarget)
+        public GraphNode AddNodeId(ushort nodeId)
         {
-            return AddNode(SkillTree.Skillnodes[nodeId], isTarget);
+            return AddNode(SkillTree.Skillnodes[nodeId]);
         }
 
         public Supernode SetStartNodes(HashSet<ushort> startNodes)

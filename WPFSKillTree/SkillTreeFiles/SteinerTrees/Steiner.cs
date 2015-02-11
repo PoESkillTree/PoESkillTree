@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
-using Priority_Queue;
 using System.Runtime.CompilerServices;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
@@ -71,7 +70,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             
 
             SearchGraph searchGraph = new SearchGraph();
-            distances = new DistanceLookup();
 
             var skilledNodes = tree.SkilledNodes;
             startNodes = searchGraph.SetStartNodes(skilledNodes);
@@ -80,7 +78,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             foreach (ushort nodeId in targets)
             {
                 // Add target node to the graph.
-                GraphNode node = searchGraph.AddNodeId(nodeId, true);
+                GraphNode node = searchGraph.AddNodeId(nodeId);
                 targetNodes.Add(node);
             }
 
@@ -126,7 +124,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     {
                         // Don't add nodes that are already in the graph.
                         if (!searchGraph.nodeDict.ContainsKey(node))
-                            searchGraph.AddNode(node, false);
+                            searchGraph.AddNode(node);
                     }
                 }
             }
@@ -169,11 +167,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
 
             BitArray bestDna = ga.BestDNA();
-            List<GraphEdge> mst = dnaToMst(bestDna);
+            MinimalSpanningTree mst = dnaToMst(bestDna);
+            mst.Span(startNodes);
 
             HashSet<ushort> newSkilledNodes = new HashSet<ushort>();
 
-            foreach (GraphEdge edge in mst)
+            foreach (GraphEdge edge in mst.SpanningEdges)
             {
                 ushort target = edge.outside.Id;
 
@@ -192,7 +191,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return newSkilledNodes;
         }
 
-        List<GraphEdge> dnaToMst(BitArray dna)
+        MinimalSpanningTree dnaToMst(BitArray dna)
         {
             List<GraphNode> usedSteinerPoints = new List<GraphNode>();
             for (int i = 0; i < dna.Length; i++)
@@ -209,75 +208,19 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 mstNodes.Add(targetNode);
             }
 
-            return minimalSpanningTree(mstNodes, startNodes);
-        }
-
-        int nodeCountUsedByMst(List<GraphEdge> mst)
-        {
-            int count = 0;
-            // TODO: Check for off-by-one.
-            foreach (GraphEdge edge in mst)
-            {
-                count += distances.GetDistance(edge);
-            }
-            return count;
+            return new MinimalSpanningTree(mstNodes, distances);
         }
 
         double fitnessFunction(BitArray representation)
         {
-            int usedNodes = nodeCountUsedByMst(dnaToMst(representation));
+            MinimalSpanningTree mst = dnaToMst(representation);
+            mst.Span(startNodes);
+            int usedNodes = mst.UsedNodeCount;
 
             // TODO: Better cost function.
             return 1.0 / usedNodes;
         }
 
-        List<GraphEdge> minimalSpanningTree(HashSet<GraphNode> mstNodes, GraphNode start)
-        {
-            // We will have at most one adjacent edge to each node.
-            HeapPriorityQueue<GraphEdge> adjacentEdgeQueue = new HeapPriorityQueue<GraphEdge>(mstNodes.Count * mstNodes.Count);
-
-            HashSet<GraphNode> inMst = new HashSet<GraphNode>();
-            HashSet<GraphNode> toAdd = new HashSet<GraphNode>(mstNodes);
-
-            List<GraphEdge> mstEdges = new List<GraphEdge>();
-
-            // Initialize the MST with the start nodes.
-            inMst.Add(start);
-            toAdd.Remove(start);
-
-            foreach (GraphNode otherNode in toAdd)
-            {
-                GraphEdge adjacentEdge = new GraphEdge(start, otherNode);
-                // Priority is set to negative distance.
-                adjacentEdgeQueue.Enqueue(adjacentEdge, -distances.GetDistance(adjacentEdge));
-            }
-
-            // TODO: Fails if the graph is not connected
-            while (toAdd.Count > 0)
-            {
-                GraphEdge shortestEdge = adjacentEdgeQueue.Dequeue();
-                mstEdges.Add(shortestEdge);
-                GraphNode newIn = shortestEdge.outside;
-
-                mstNodes.Add(newIn);
-                toAdd.Remove(newIn);
-
-                // Remove all edges that are entirely inside the MST now.
-                // TODO: This will break because of "collection modified".
-                foreach (GraphEdge obsoleteEdge in adjacentEdgeQueue.Where(e => e.outside == newIn))
-                {
-                    adjacentEdgeQueue.Remove(obsoleteEdge);
-                }
-
-                // Find all newly adjacent edges and enqueue them.
-                foreach (GraphNode otherNode in toAdd)
-                {
-                    GraphEdge adjacentEdge = new GraphEdge(startNodes, otherNode);
-                    adjacentEdgeQueue.Enqueue(adjacentEdge, distances.GetDistance(adjacentEdge));
-                }
-            }
-
-            return mstEdges;
-        }
+        
     }
 }

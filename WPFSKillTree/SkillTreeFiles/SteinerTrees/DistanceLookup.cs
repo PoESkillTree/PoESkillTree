@@ -8,7 +8,8 @@ using System.Text;
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
     /// <summary>
-    /// Calculates and caches distances between nodes
+    ///  Calculates and caches distances between nodes. Only relies on adjacency
+    ///  information stored in the nodes.
     /// </summary>
     [assembly: InternalsVisibleTo("UnitTests")]
     class DistanceLookup
@@ -16,7 +17,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         // The uint compounds both ushort indices.
         Dictionary<uint, int> _distances;
 
-        // The search graph is never actually used anywhere...
         public DistanceLookup()
         {
             _distances = new Dictionary<uint, int>();
@@ -37,10 +37,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             // Otherwise, use pathfinding to find it...
             int pathLength = Dijkstra(a, b);
-
             //... and save it...
             _distances.Add(index, pathLength);
-
             // ...and return it.
             return pathLength;
         }
@@ -110,7 +108,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 newVisited.Add(node);
                 foreach (GraphNode adjacentNode in node.Adjacent)
                 {
-                    // TODO: Off-by-one?
                     if (adjacentNode == target) return distFromStart + 1;
 
                     // Could be combined in newVisited...
@@ -123,7 +120,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 }
             }
             // This wouldn't need recursion, but it's more convenient this way.
-            return dijkstraStep(start, target, newFront, newVisited, distFromStart + 1) + 1;
+            return dijkstraStep(start, target, newFront, newVisited, distFromStart + 1);
         }
     }
 }

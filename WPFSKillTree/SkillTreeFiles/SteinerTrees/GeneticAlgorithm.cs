@@ -158,6 +158,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
                 if (fitness > maxFitness)
                     maxFitness = fitness;
+                    // TODO: Treat 0 fitness special?
                 else if (fitness < minFitness)
                     minFitness = fitness;
             }
