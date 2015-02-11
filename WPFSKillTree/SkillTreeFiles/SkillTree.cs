@@ -913,11 +913,11 @@ namespace POESKillTree.SkillTreeFiles
             return TreeAddress + Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
-        public void SkillAllHighligtedNodes()
+        public void SkillAllHighlightedNodes()
         {
             if (_nodeHighlighter == null)
                 return;
-            var nodes = new HashSet<int>();
+            var nodes = new HashSet<ushort>();
             foreach (SkillNode nd in _nodeHighlighter.nodeHighlights.Keys)
             {
                 if (!rootNodeList.Contains(nd.Id))
@@ -926,9 +926,27 @@ namespace POESKillTree.SkillTreeFiles
             SkillNodeList(nodes);
         }
 
-        private void SkillNodeList(HashSet<int> hs)
+        private void SkillNodeList(HashSet<ushort> hs)
         {
-            while (hs.Count != 0)
+            SteinerTrees.Steiner steinerSolver = new SteinerTrees.Steiner();
+
+            //HashSet<SkillNode> resultNodes = steinerSolver.SkillHighlightedNodes(this);
+            HashSet<ushort> resultNodes = steinerSolver.ConnectNodes(this, hs);
+
+            foreach (ushort node in resultNodes)
+            {
+                SkilledNodes.Add(node);
+            }
+
+            /*foreach (SkillNode skillNode in resultNodes)
+            {
+                if (!SkilledNodes.Contains(skillNode.Id))
+                    SkilledNodes.Add(skillNode.Id);
+            }*/
+
+
+
+            /*while (hs.Count != 0)
             {
                 var currentShortestPath = new List<ushort>();
                 var removeList = new List<ushort>();
@@ -956,7 +974,7 @@ namespace POESKillTree.SkillTreeFiles
                     SkilledNodes.Add(i);
                 }
                 //UpdateAvailNodesList();
-            }
+            }*/
             UpdateAvailNodes();
         }
 

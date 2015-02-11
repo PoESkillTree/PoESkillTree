@@ -275,7 +275,7 @@ namespace POESKillTree.Views
             try
             {
                 Cursor = Cursors.Wait;
-                Tree.SkillAllHighligtedNodes();
+                Tree.SkillAllHighlightedNodes();
                 UpdateAllAttributeList();
                 tbSkillURL.Text = Tree.SaveToURL();
             }

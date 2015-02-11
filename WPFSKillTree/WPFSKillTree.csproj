@@ -162,6 +162,9 @@
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\GeneticAlgorithm.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\HeapPriorityQueue.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\IPriorityQueue.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\PriorityQueueNode.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />

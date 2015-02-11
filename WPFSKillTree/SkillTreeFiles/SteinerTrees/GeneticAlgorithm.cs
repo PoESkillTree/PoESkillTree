@@ -61,6 +61,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         }
 
         int generationCount;
+        public int GenerationCount { get { return generationCount; } }
 
         /// <summary>
         /// Initializes a new instance of the genetic algorithm optimizer.
@@ -102,6 +103,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             this.minFitness = estimatedMinFitness;
 
             this.dnaLength = dnaLength;
+
+            bestSolution = new Individual(null, 0);
 
             population = createPopulation();
             generationCount = 0;
@@ -184,6 +187,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             population = newPopulation;
             return generationCount;
+        }
+
+        public BitArray BestDNA()
+        {
+            return new BitArray(bestSolution.DNA);
         }
 
         // Maps fitness values into the 0 - 1 range.
