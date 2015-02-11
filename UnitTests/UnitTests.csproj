@@ -76,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDPS.cs" />
     <Compile Include="TestItemDB.cs" />
+    <Compile Include="TestMSTAlgorithm.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UpdateDB\UpdateDB.csproj">

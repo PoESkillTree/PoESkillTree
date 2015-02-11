@@ -29,7 +29,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// 
         /// Note that removing elements is not implemented!
         
-        List<KeyValuePair<T, double>> entries;
+        //List<KeyValuePair<T, double>> entries;
+        SortedDictionary<double, T> entries;
         bool isSorted;
         double totalWeight;
 
@@ -38,14 +39,16 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         Random random;
 
-        public WeightedSampler(Random r = null)
+        IOrderedEnumerable<KeyValuePair<T, double>> sortedSet;
+
+        public WeightedSampler(Random random = null)
         {
-            entries = new List<KeyValuePair<T, double>>();
+            entries = new SortedDictionary<double, T>();
             isSorted = false;
             totalWeight = 0;
 
-            if (r == null) random = new Random();
-            else random = r;
+            if (random == null) this.random = new Random();
+            else this.random = random;
         }
 
         public void AddEntry(T entry, double weight)
@@ -59,23 +62,19 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             totalWeight += weight;
 
             // This is where the CDF comes from.
-            entries.Add(new KeyValuePair<T, double>(entry, totalWeight));
+            entries.Add(totalWeight, entry);
             isSorted = false;
         }
 
         public T RandomSample()
         {
-            if (!isSorted)
-            {
-                entries.Sort(kvpComparer);
-                isSorted = true;
-            }
 
             // Randomly sample the CDF.
             double r = random.NextDouble() * totalWeight;
-            int index = entries.BinarySearch(new KeyValuePair<T, double>(default(T), r), kvpComparer);
+            var entry = entries.First(kvp => kvp.Key >= r);
 
-            return entries[index].Key;
+            return entry.Value;
+            return default(T);
         }
 
         public void Clear()
@@ -94,5 +93,16 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
         }
         public static KVPComparer kvpComparer = new KVPComparer();
+
+        /// <summary>
+        ///  Performs a binary search
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /*private int binarySearch(double value)
+        {
+
+        }*/
+
     }
 }

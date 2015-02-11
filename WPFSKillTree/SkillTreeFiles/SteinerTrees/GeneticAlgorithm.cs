@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -137,6 +138,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             WeightedSampler<Individual> sampler = new WeightedSampler<Individual>();
 
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             // Evaluate all individuals
             foreach (Individual individual in population)
             {
@@ -146,6 +150,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                         "Negative fitness values are not allowed! Use 0 fitness " +
                         "for solutions that should not reproduce.");
 
+                individual.fitness = fitness;
                 sampler.AddEntry(individual, fitness);
 
                 if (fitness > bestSolution.fitness)
@@ -156,6 +161,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 else if (fitness < minFitness)
                     minFitness = fitness;
             }
+            stopwatch.Stop();
+            Console.Write("Evaluation time for " + generationCount + " : ");
+            Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
+
+
+            stopwatch.Restart();
 
             if (!sampler.CanSample)
             {
@@ -186,6 +197,13 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
 
             population = newPopulation;
+
+            stopwatch.Stop();
+            Console.Write("Mutation time for " + generationCount + " : ");
+            Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
+
+            Console.WriteLine("Best value so far: " + 1 / bestSolution.fitness);
+
             return generationCount;
         }
 

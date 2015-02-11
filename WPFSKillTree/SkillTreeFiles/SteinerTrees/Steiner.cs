@@ -4,11 +4,13 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using Priority_Queue;
+using System.Runtime.CompilerServices;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
-    class Steiner
+    public class Steiner
     {
+        // TODO: Update explanation.
         /// Terminology:
         ///  - Skilltree: A "real" skilltree as used in PoE.
         ///  - Steiner point: A point that has more than two neighbors.
@@ -49,7 +51,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
 
         // TODO: Decide what needs to be a member and what should be passed
-        // around as local variable.
+        // around as parameters.
         List<GraphNode> searchSpaceBase;
 
         Supernode startNodes;
@@ -57,9 +59,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         DistanceLookup distances;
 
-
         public HashSet<ushort> ConnectNodes(SkillTree tree, HashSet<ushort> targets)
         {
+            // TODO: Update comment
             /// Preprocessing:
             ///  - Contract "isolated" node groups.
             ///  - Find and collect potential steiner points.
@@ -69,7 +71,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             
 
             SearchGraph searchGraph = new SearchGraph();
-            distances = new DistanceLookup(searchGraph);
+            distances = new DistanceLookup();
 
             var skilledNodes = tree.SkilledNodes;
             startNodes = searchGraph.SetStartNodes(skilledNodes);
@@ -140,6 +142,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             {
                 // This can be a steiner node.
                 if (node.Adjacent.Count > 2)
+                   // if (distances.GetDistance(startNodes, node) )
                     searchSpaceBase.Add(node);
             }
 
@@ -151,14 +154,16 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }*/
 
 
+            //distances.
+
 
 
             GeneticAlgorithm ga = new GeneticAlgorithm(fitnessFunction);
 
-            ga.StartEvolution(100, searchSpaceBase.Count);
+            ga.StartEvolution(5, searchSpaceBase.Count);
 
             // TODO: Better termination criteria.
-            while (ga.GenerationCount < 1000)
+            while (ga.GenerationCount < 100)
             {
                 ga.NewGeneration();
             }
@@ -180,14 +185,14 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
                 var path = tree.GetShortestPathTo(target, start);
 
-                newSkilledNodes = (HashSet<ushort>)newSkilledNodes.Concat(path);
+                newSkilledNodes = new HashSet<ushort>(newSkilledNodes.Concat(path));
             }
 
             
             return newSkilledNodes;
         }
 
-        private List<GraphEdge> dnaToMst(BitArray dna)
+        List<GraphEdge> dnaToMst(BitArray dna)
         {
             List<GraphNode> usedSteinerPoints = new List<GraphNode>();
             for (int i = 0; i < dna.Length; i++)
@@ -204,10 +209,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 mstNodes.Add(targetNode);
             }
 
-            return minimalSpanningTree(mstNodes);
+            return minimalSpanningTree(mstNodes, startNodes);
         }
 
-        private int nodeCountUsedByMst(List<GraphEdge> mst)
+        int nodeCountUsedByMst(List<GraphEdge> mst)
         {
             int count = 0;
             // TODO: Check for off-by-one.
@@ -218,7 +223,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return count;
         }
 
-        private double fitnessFunction(BitArray representation)
+        double fitnessFunction(BitArray representation)
         {
             int usedNodes = nodeCountUsedByMst(dnaToMst(representation));
 
@@ -226,7 +231,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return 1.0 / usedNodes;
         }
 
-        private List<GraphEdge> minimalSpanningTree(HashSet<GraphNode> mstNodes)
+        List<GraphEdge> minimalSpanningTree(HashSet<GraphNode> mstNodes, GraphNode start)
         {
             // We will have at most one adjacent edge to each node.
             HeapPriorityQueue<GraphEdge> adjacentEdgeQueue = new HeapPriorityQueue<GraphEdge>(mstNodes.Count * mstNodes.Count);
@@ -237,16 +242,18 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             List<GraphEdge> mstEdges = new List<GraphEdge>();
 
             // Initialize the MST with the start nodes.
-            inMst.Add(startNodes);
-            toAdd.Remove(startNodes);
+            inMst.Add(start);
+            toAdd.Remove(start);
 
             foreach (GraphNode otherNode in toAdd)
             {
-                GraphEdge adjacentEdge = new GraphEdge(startNodes, otherNode);
-                adjacentEdgeQueue.Enqueue(adjacentEdge, distances.GetDistance(adjacentEdge));
+                GraphEdge adjacentEdge = new GraphEdge(start, otherNode);
+                // Priority is set to negative distance.
+                adjacentEdgeQueue.Enqueue(adjacentEdge, -distances.GetDistance(adjacentEdge));
             }
 
-            while (adjacentEdgeQueue.Count > 0)
+            // TODO: Fails if the graph is not connected
+            while (toAdd.Count > 0)
             {
                 GraphEdge shortestEdge = adjacentEdgeQueue.Dequeue();
                 mstEdges.Add(shortestEdge);
@@ -272,326 +279,5 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             return mstEdges;
         }
-
-        class GraphEdge : PriorityQueueNode
-        {
-            public GraphNode inside, outside;
-
-            public GraphEdge(GraphNode inside, GraphNode outside)
-            {
-                this.inside = inside;
-                this.outside = outside;
-            }
-
-        }
-        
-        /// <summary>
-        ///  Abstract class representing a node (or a collection thereof) in the
-        ///  simplified skill tree.
-        /// </summary>
-        abstract class GraphNode
-        {
-            protected ushort id;
-            public ushort Id { get { return id; } }
-
-            public bool isTarget;
-
-            public HashSet<GraphNode> Adjacent = new HashSet<GraphNode>();
-        }
-
-        /// <summary>
-        ///  A graph node representing an actual node in the skill tree.
-        /// </summary>
-        class SingleNode : GraphNode
-        {
-            SkillNode baseNode;
-
-            public SingleNode(SkillNode baseNode, bool isTarget = false)
-            {
-                this.baseNode = baseNode;
-                this.id = baseNode.Id;
-                this.isTarget = isTarget;
-            }
-        }
-
-        /// <summary>
-        ///  A graph node representing a collection of nodes of the skill tree.
-        ///  This is used to group up the already skilled nodes.
-        /// </summary>
-        class Supernode : GraphNode
-        {
-            public HashSet<SkillNode> nodes = new HashSet<SkillNode>();
-
-            public Supernode(HashSet<ushort> nodes)
-            {
-                foreach (ushort nodeId in nodes)
-                {
-                    this.nodes.Add(SkillTree.Skillnodes[nodeId]);
-                }
-                // For lack of a better way.
-                this.id = this.nodes.First().Id;
-            }
-        }
-
-        /// <summary>
-        /// A graph representing a simplified skill tree.
-        /// </summary>
-        class SearchGraph
-        {
-            public Supernode startNodes;
-
-            public Dictionary<SkillNode, GraphNode> nodeDict;
-
-            public SearchGraph()
-            {
-                nodeDict = new Dictionary<SkillNode, GraphNode>();
-            }
-
-            /// <summary>
-            ///  Adds a skill node to the graph. New nodes are automatically
-            ///  connected to existing nodes.
-            /// </summary>
-            /// <param name="node">The skill node to be added.</param>
-            /// <param name="isTarget">Whether or not this node is a target
-            /// node.</param>
-            /// <returns>The graph node that is added to the graph.</returns>
-            public GraphNode AddNode(SkillNode node, bool isTarget)
-            {
-                SingleNode graphNode = new SingleNode(node, isTarget);
-                nodeDict.Add(node, graphNode);
-                CheckLinks(node);
-                return graphNode;
-            }
-
-            public GraphNode AddNodeId(ushort nodeId, bool isTarget)
-            {
-                return AddNode(SkillTree.Skillnodes[nodeId], isTarget);
-            }
-
-            public Supernode SetStartNodes(HashSet<ushort> startNodes)
-            {
-                Supernode supernode = new Supernode(startNodes);
-                foreach (ushort nodeId in startNodes)
-                {
-                    SkillNode node = SkillTree.Skillnodes[nodeId];
-                    nodeDict.Add(node, supernode);
-                    CheckLinks(node);
-                }
-                return supernode;
-            }
-
-            private void CheckLinks(SkillNode node)
-            {
-                if (!nodeDict.ContainsKey(node)) return;
-                GraphNode currentNode = nodeDict[node];
-
-                foreach (SkillNode neighbor in node.Neighbor)
-                {
-                    if (nodeDict.ContainsKey(neighbor))
-                    {
-                        GraphNode adjacentNode = nodeDict[neighbor];
-
-                        if (adjacentNode == currentNode) continue;
-
-                        adjacentNode.Adjacent.Add(currentNode);
-                        currentNode.Adjacent.Add(adjacentNode);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Calculates and caches distances between nodes
-        /// </summary>
-        class DistanceLookup
-        {
-            readonly SearchGraph _graph;
-
-            // The uint compounds both ushort indices.
-            Dictionary<uint, int> _distances;
-
-
-            public DistanceLookup(SearchGraph graph)
-            {
-                _distances = new Dictionary<uint, int>();
-                _graph = graph;
-            }
-
-            public int GetDistance(GraphEdge edge)
-            {
-                return GetDistance(edge.outside, edge.inside);
-            }
-
-            public int GetDistance(GraphNode a, GraphNode b)
-            {
-                uint index = getIndex(a, b);
-
-                // If we already calculated the shortest path, use that.
-                if (_distances.ContainsKey(index))
-                    return _distances[index];
-                
-                // Otherwise, use pathfinding to find it...
-                int pathLength = Dijkstra(a, b);
-
-                //... and save it...
-                _distances.Add(index, pathLength);
-
-                // ...and return it.
-                return pathLength;
-            }
-
-            private void setDistance(GraphNode a, GraphNode b, int distance)
-            {
-                uint index = getIndex(a, b);
-                if (!_distances.ContainsKey(index))
-                    _distances.Add(index, distance);
-            }
-
-            /// <summary>
-            ///  Compounds two ushort node indices into a single uint one, which
-            ///  is independent of the order of the two indices.
-            /// </summary>
-            /// <param name="a">The first index.</param>
-            /// <param name="b">The second index.</param>
-            /// <returns>The compounded index.</returns>
-            private uint getIndex(GraphNode a, GraphNode b)
-            {
-                ushort aI = a.Id;
-                ushort bI = b.Id;
-                return (uint)(Math.Max(aI, bI) + Math.Min(aI, bI) << 16);
-            }
-
-            /// <summary>
-            ///  Uses a djikstra-like algorithm to flood the graph from the start
-            ///  node until the target node is found.
-            ///  All visited nodes have their distance from the start node updated.
-            /// </summary>
-            /// <param name="start">The starting node.</param>
-            /// <param name="target">The target node.</param>
-            /// <returns>The distance from the start node to the target node.</returns>
-            public int Dijkstra(GraphNode start, GraphNode target)
-            {
-                if (start == target) return 0;
-                return dijkstraStep(start, target, new HashSet<GraphNode>() { start },
-                    new HashSet<GraphNode>(), 0);
-            }
-
-
-            /// <summary>
-            ///  Uses a djikstra-like algorithm to flood the graph from the start
-            ///  node until the target node is found.
-            ///  All visited nodes have their distance from the start node updated.
-            /// </summary>
-            /// <param name="start">The starting node.</param>
-            /// <param name="target">The target node.</param>
-            /// <param name="front">The last newly found nodes.</param>
-            /// <param name="visited">The already visited nodes.</param>
-            /// <param name="distFromStart">The traversed distance from the
-            /// starting node in edges.</param>
-            /// <returns>The distance from the start node to the target node.</returns>
-            /// <remarks> - Currently the target node is never found if contained
-            /// in front or visited.
-            ///  - If front = { start }, then distFromStart should be 0.</remarks>
-            public int dijkstraStep(GraphNode start, GraphNode target,
-                HashSet<GraphNode> front, HashSet<GraphNode> visited, int distFromStart)
-            {
-                HashSet<GraphNode> newFront = new HashSet<GraphNode>();
-                // Nodes that 
-                HashSet<GraphNode> newVisited = new HashSet<GraphNode>(visited);
-                newVisited.Concat(front);
-
-                foreach (GraphNode node in front)
-                {
-                    newVisited.Add(node);
-                    foreach (GraphNode adjacentNode in node.Adjacent)
-                    {
-                        // TODO: Off-by-one?
-                        if (adjacentNode == target) return distFromStart + 1;
-
-                        // Could be combined in newVisited...
-                        if (visited.Contains(adjacentNode)) continue;
-                        if (front.Contains(adjacentNode)) continue;
-
-                        newFront.Add(adjacentNode);
-                        // This must be the shortest path from start to this node.
-                        setDistance(start, adjacentNode, distFromStart + 1);
-                    }
-                }
-                // This wouldn't need recursion, but it's more convenient this way.
-                return dijkstraStep(start, target, newFront, newVisited, distFromStart + 1) + 1;
-            }
-        }
     }
 }
-
-
-/*class ContractedVertex : Hypernode
-{
-    public SkillNodeGroup original;
-    public SkillNode adjacent;
-
-    public ContractedVertex(SkillNodeGroup original, SkillNode adjacent)
-    {
-        this.original = original;
-        this.adjacent = adjacent;
-        neighborCount = (adjacent != null ? 1 : 0);
-    }
-}
-
-class TargetVertex : Hypernode
-{
-    public SkillNode original;
-
-    public TargetVertex(SkillNode original)
-    {
-        this.original = original;
-    }
-}
-
-class TreeVertex : Hypernode
-{
-    HashSet<ushort> skilledNodes;
-
-    public TreeVertex(HashSet<ushort> skilledNodes)
-    {
-        this.skilledNodes = skilledNodes;
-    }
-}
-class SteinerVertex : Hypernode
-{
-    public SteinerVertex()
-    {
-        ;
-    }
-}*/
-
-/*class SteinerSet
-{
-    List<SteinerVertex> steiners;
-
-    public Graph ConstructSteinerTree()
-    {
-        throw new NotImplementedException("ConstructSteinerTree() not yet implemented!");
-        return new Graph();
-    }
-}*/
-
-/*
-
-        class Hypernode
-        {
-            ushort _id;
-            public ushort Id { get { return _id; } }
-
-            public HashSet<SkillNode> nodes;
-
-            public List<Hypernode> neighbors;
-
-
-            public Hypernode(HashSet<SkillNode> nodes)
-            {
-                neighbors = new List<Hypernode>();
-                this.nodes = nodes;
-                _id = nodes.First().Id;
-            }
-        }*/
