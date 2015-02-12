@@ -124,7 +124,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         }
 
         /// <summary>
-        /// Progresses the optimization by evolving the current population.
+        ///  Progresses the optimization by evolving the current population.
         /// </summary>
         /// <returns>The number of generations thus far.</returns>
         public int NewGeneration()
@@ -189,14 +189,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             foreach (Individual individual in newPopulation)
             {
                 Individual partner = sampler.RandomSample();
+
                 /// The higher the fitness of the partner, the more
                 /// likely DNA crossover is allowed.
                 /// Note: This likely has an effect on (premature) convergence.
-
-                double partnerNFitness = normalizeFitness(partner.fitness);
-
                 if (random.NextDouble() < normalizeFitness(partner.fitness))
-                    //partnerNFitness / (partnerNFitness + individualNFitness))
                     combineIndividuals(individual, partner);
             }
 
@@ -224,8 +221,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         private BitArray mutateDNA(Individual individual)
         {
-            // Chance for each individual bit to be mutated.
-            double mutationProbability = 1 - Math.Sqrt(normalizeFitness(individual.fitness));
+            /// Chance for each individual bit to be mutated. Not currently used
+            /// since only one bit is mutated at a time anyway.
+            //double mutationProbability = 1 - Math.Sqrt(normalizeFitness(individual.fitness));
 
             BitArray newDNA = new BitArray(individual.DNA);
             BitArray mutationSequence = randomBitarray(newDNA.Length);
@@ -278,6 +276,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             BitArray bitArray = new BitArray(buffer); //(buffer);
             bitArray.Length = length;
             return bitArray;*/
+
+            if (length == 0)
+                return new BitArray(0);
 
             // Returns a bit array filled with 0s except for one spot.
             BitArray bitArray = new BitArray(length);

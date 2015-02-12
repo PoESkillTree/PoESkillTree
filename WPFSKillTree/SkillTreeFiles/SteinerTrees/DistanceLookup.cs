@@ -22,6 +22,13 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             _distances = new Dictionary<uint, int>();
         }
 
+        /// <summary>
+        ///  Retrieves the path distance from one node pf a graph edge to the other,
+        ///  or calculates it if it has not yet been found.
+        /// </summary>
+        /// <param name="edge">The graph edge.</param>
+        /// <returns>The length of the graph edge (equals the amount of edges
+        /// traversed).</returns>
         public int GetDistance(GraphEdge edge)
         {
             return GetDistance(edge.outside, edge.inside);
@@ -37,10 +44,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// traversed).</returns>
         public int GetDistance(GraphNode a, GraphNode b)
         {
-            //if ((a.Name == "Savagery") && (b.Name == "Constitution")) System.Diagnostics.Debugger.Break();
-            //if ((a.Name == "Constitution") && (b.Name == "Savagery")) System.Diagnostics.Debugger.Break();
             uint index = getIndex(a, b);
-            //if (index == 852951040) System.Diagnostics.Debugger.Break();
 
             // If we already calculated the shortest path, use that.
             if (_distances.ContainsKey(index))
@@ -56,11 +60,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         private void setDistance(GraphNode a, GraphNode b, int distance)
         {
-            //if ((a.Name == "Constitution") && (b.Name == "Savagery")) System.Diagnostics.Debugger.Break();
             uint index = getIndex(a, b);
             if (!_distances.ContainsKey(index))
                 _distances.Add(index, distance);
-            //else System.Diagnostics.Debugger.Break();
         }
 
         /// <summary>
@@ -112,7 +114,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             HashSet<GraphNode> front, HashSet<GraphNode> visited, int distFromStart)
         {
             HashSet<GraphNode> newFront = new HashSet<GraphNode>();
-            // Nodes that 
             HashSet<GraphNode> newVisited = new HashSet<GraphNode>(visited);
             newVisited.Concat(front);
 
@@ -129,6 +130,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
                     newFront.Add(adjacentNode);
                     // This must be the shortest path from start to this node.
+                    // TODO: This doesn't work yet. Not sure if needed.
                     //setDistance(start, adjacentNode, distFromStart + 2);
                 }
             }

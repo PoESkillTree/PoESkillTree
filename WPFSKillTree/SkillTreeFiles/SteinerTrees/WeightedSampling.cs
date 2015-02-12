@@ -29,7 +29,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// 
         /// Note that removing elements is not implemented!
         
-        //List<KeyValuePair<T, double>> entries;
         SortedDictionary<double, T> entries;
         double totalWeight;
 

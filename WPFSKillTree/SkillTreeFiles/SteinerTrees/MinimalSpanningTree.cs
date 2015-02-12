@@ -17,7 +17,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         public MinimalSpanningTree(HashSet<GraphNode> mstNodes, DistanceLookup distances = null)
         {
-            // Copy might be preferable.
+            // Copy might be preferable, doesn't really matter atm though.
             this.mstNodes = mstNodes;
 
             this.distances = (distances == null ? new DistanceLookup() : distances);
@@ -25,7 +25,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         public List<GraphEdge> Span(GraphNode startFrom)
         {
-            // We will have at most one adjacent edge to each node.
+            // We will have at most one adjacent edge to each node, so that's our limit.
             HeapPriorityQueue<GraphEdge> adjacentEdgeQueue = new HeapPriorityQueue<GraphEdge>(mstNodes.Count * mstNodes.Count);
             // I guess this is the easiest way to do it...
             Dictionary<GraphNode, List<GraphEdge>> edgesToNode = new Dictionary<GraphNode, List<GraphEdge>>();
@@ -53,9 +53,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 GraphEdge shortestEdge = adjacentEdgeQueue.Dequeue();
                 mstEdges.Add(shortestEdge);
                 GraphNode newIn = shortestEdge.outside;
-                //if (newIn.Name == "Savagery") Debugger.Break();
-                //if (newIn.Name == "Constitution") Debugger.Break();
-                //if (newIn.Name == "Bravery") Debugger.Break();
 
 
                 if (inMst.Contains(newIn)) throw new Exception();
@@ -68,8 +65,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 foreach (GraphEdge obsoleteEdge in edgesToNode[newIn])
                 {
                     if (!inMst.Contains(obsoleteEdge.inside)) throw new Exception("This edge's inside node is not inside");
-                    //if (obsoleteEdge.inside.Name == "Savagery") Debugger.Break();
-                    //if (obsoleteEdge.inside.Name == "Constitution") Debugger.Break();
                     adjacentEdgeQueue.Remove(obsoleteEdge);
                 }
                 edgesToNode.Remove(newIn);
@@ -78,8 +73,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 foreach (GraphNode otherNode in toAdd)
                 {
                     GraphEdge adjacentEdge = new GraphEdge(newIn, otherNode);
-                    //if (otherNode.Name == "Savagery") Debugger.Break();
-                    //if (otherNode.Name == "Constitution") Debugger.Break();
                     adjacentEdgeQueue.Enqueue(adjacentEdge, distances.GetDistance(adjacentEdge));
                     edgesToNode[otherNode].Add(adjacentEdge);
                 }
@@ -100,7 +93,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 if (_usedNodeCount == null) 
                 {
                     _usedNodeCount = 0;
-                    // TODO: Check for off-by-one.
                     foreach (GraphEdge edge in SpanningEdges)
                     {
                         _usedNodeCount += distances.GetDistance(edge);

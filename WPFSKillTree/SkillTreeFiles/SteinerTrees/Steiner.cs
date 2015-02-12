@@ -140,14 +140,16 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             distances = new DistanceLookup();
 
             searchSpaceBase = new List<GraphNode>();
-            // Find potential steiner points (> 2 neighbors)
+            // Find potential steiner points that are in reasonable vicinity.
             foreach (GraphNode node in searchGraph.nodeDict.Values)
             {
-                // This can be a steiner node.
+                // This can be a steiner node only if it has more than 2 neighbors.
                 if (node.Adjacent.Count > 2)
                 {
                     bool add = false;
 
+                    /// If every target node is closer to the start than to a certain
+                    /// steiner node, that node can't be needed for the steiner tree.
                     foreach (GraphNode targetNode in targetNodes)
                         if (distances.GetDistance(targetNode, node) < distances.GetDistance(targetNode, startNodes))
                             add = true;
@@ -175,12 +177,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 ga.NewGeneration();
             }
 
-            /*SkillNode quickness = SkillTree.Skillnodes.Values.First(node => node.Name == "Sentinel");
-            SkillNode trickery = SkillTree.Skillnodes.Values.First(node => node.Name == "Elementalist");
-            GraphNode q = searchGraph.nodeDict[quickness];
-            GraphNode t = searchGraph.nodeDict[trickery];
-            Console.WriteLine(distances.GetDistance(q, t));*/
-
             BitArray bestDna = ga.BestDNA();
             MinimalSpanningTree mst = dnaToMst(bestDna);
             mst.Span(startNodes);
@@ -188,10 +184,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             HashSet<ushort> newSkilledNodes = new HashSet<ushort>();
             foreach (GraphEdge edge in mst.SpanningEdges)
             {
-                //if (edge.outside.Name == "Constitution") Debugger.Break();
-
                 ushort target = edge.outside.Id;
-                //tree._nodeHighlighter.ToggleHighlightNode(SkillTree.Skillnodes[target], POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState.FromAttrib);
 
                 HashSet<ushort> start;
                 if (edge.inside is Supernode)
@@ -229,7 +222,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
 
             return new MinimalSpanningTree(mstNodes, distances);
-            //return new MinimalSpanningTree(mstNodes, null);
         }
 
         double fitnessFunction(BitArray representation)
@@ -244,7 +236,5 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // TODO: Improve fitness function
             return 2000 - usedNodes;
         }
-
-        
     }
 }
