@@ -27,9 +27,20 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return GetDistance(edge.outside, edge.inside);
         }
 
+        /// <summary>
+        ///  Retrieves the path distance from one node to another, or calculates
+        ///  it if it has not yet been found.
+        /// </summary>
+        /// <param name="a">The first graph node.</param>
+        /// <param name="b">The second graph node</param>
+        /// <returns>The length of the path from a to b (equals the amount of edges
+        /// traversed).</returns>
         public int GetDistance(GraphNode a, GraphNode b)
         {
+            //if ((a.Name == "Savagery") && (b.Name == "Constitution")) System.Diagnostics.Debugger.Break();
+            //if ((a.Name == "Constitution") && (b.Name == "Savagery")) System.Diagnostics.Debugger.Break();
             uint index = getIndex(a, b);
+            //if (index == 852951040) System.Diagnostics.Debugger.Break();
 
             // If we already calculated the shortest path, use that.
             if (_distances.ContainsKey(index))
@@ -45,9 +56,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         private void setDistance(GraphNode a, GraphNode b, int distance)
         {
+            //if ((a.Name == "Constitution") && (b.Name == "Savagery")) System.Diagnostics.Debugger.Break();
             uint index = getIndex(a, b);
             if (!_distances.ContainsKey(index))
                 _distances.Add(index, distance);
+            //else System.Diagnostics.Debugger.Break();
         }
 
         /// <summary>
@@ -61,7 +74,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             ushort aI = a.Id;
             ushort bI = b.Id;
-            return (uint)(Math.Max(aI, bI) + Math.Min(aI, bI) << 16);
+            return (uint)(Math.Min(aI, bI) << 16) + (uint)(Math.Max(aI, bI));
         }
 
         /// <summary>
@@ -116,11 +129,17 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
                     newFront.Add(adjacentNode);
                     // This must be the shortest path from start to this node.
-                    setDistance(start, adjacentNode, distFromStart + 1);
+                    //setDistance(start, adjacentNode, distFromStart + 2);
                 }
             }
             // This wouldn't need recursion, but it's more convenient this way.
-            return dijkstraStep(start, target, newFront, newVisited, distFromStart + 1);
+            if (newFront.Count > 0)
+                return dijkstraStep(start, target, newFront, newVisited, distFromStart + 1);
+            throw new GraphNotConnectedException();
+        }
+
+        internal class GraphNotConnectedException : Exception
+        {
         }
     }
 }

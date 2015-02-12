@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
@@ -77,6 +78,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             targetNodes = new HashSet<GraphNode>();
             foreach (ushort nodeId in targets)
             {
+                // Don't add nodes that are already skilled.
+                if (searchGraph.nodeDict.ContainsKey(SkillTree.Skillnodes[nodeId]))
+                    continue;
                 // Add target node to the graph.
                 GraphNode node = searchGraph.AddNodeId(nodeId);
                 targetNodes.Add(node);
@@ -133,48 +137,61 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             /// At this point, the graph is fully built.
             /// 
 
-            searchSpaceBase = new List<GraphNode>();
+            distances = new DistanceLookup();
 
+            searchSpaceBase = new List<GraphNode>();
             // Find potential steiner points (> 2 neighbors)
             foreach (GraphNode node in searchGraph.nodeDict.Values)
             {
                 // This can be a steiner node.
                 if (node.Adjacent.Count > 2)
-                   // if (distances.GetDistance(startNodes, node) )
-                    searchSpaceBase.Add(node);
+                {
+                    bool add = false;
+
+                    foreach (GraphNode targetNode in targetNodes)
+                        if (distances.GetDistance(targetNode, node) < distances.GetDistance(targetNode, startNodes))
+                            add = true;
+                    if (add)
+                        searchSpaceBase.Add(node);
+                }
             }
 
 
-            /* ONLY FOR THE OTHER THING
+
+            /* ONLY FOR WHEN NODES HAVE INDIVIDUAL WEIGHTS
              * foreach (ushort nodeId in targetSkillnodes)
             {
                 searchSpaceBase.Add(SkillTree.Skillnodes[nodeId]);
             }*/
 
 
-            //distances.
-
-
-
             GeneticAlgorithm ga = new GeneticAlgorithm(fitnessFunction);
 
-            ga.StartEvolution(5, searchSpaceBase.Count);
+            ga.StartEvolution(60, searchSpaceBase.Count);
 
             // TODO: Better termination criteria.
-            while (ga.GenerationCount < 100)
+            while (ga.GenerationCount < 200)
             {
                 ga.NewGeneration();
             }
+
+            /*SkillNode quickness = SkillTree.Skillnodes.Values.First(node => node.Name == "Sentinel");
+            SkillNode trickery = SkillTree.Skillnodes.Values.First(node => node.Name == "Elementalist");
+            GraphNode q = searchGraph.nodeDict[quickness];
+            GraphNode t = searchGraph.nodeDict[trickery];
+            Console.WriteLine(distances.GetDistance(q, t));*/
 
             BitArray bestDna = ga.BestDNA();
             MinimalSpanningTree mst = dnaToMst(bestDna);
             mst.Span(startNodes);
 
             HashSet<ushort> newSkilledNodes = new HashSet<ushort>();
-
             foreach (GraphEdge edge in mst.SpanningEdges)
             {
+                //if (edge.outside.Name == "Constitution") Debugger.Break();
+
                 ushort target = edge.outside.Id;
+                //tree._nodeHighlighter.ToggleHighlightNode(SkillTree.Skillnodes[target], POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState.FromAttrib);
 
                 HashSet<ushort> start;
                 if (edge.inside is Supernode)
@@ -186,8 +203,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
                 newSkilledNodes = new HashSet<ushort>(newSkilledNodes.Concat(path));
             }
-
             
+            foreach (GraphNode steinerNode in mst.mstNodes)
+                tree._nodeHighlighter.ToggleHighlightNode(SkillTree.Skillnodes[steinerNode.Id], NodeHighlighter.HighlightState.FromAttrib);
+
+            tree.DrawHighlights(tree._nodeHighlighter);
             return newSkilledNodes;
         }
 
@@ -209,16 +229,20 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
 
             return new MinimalSpanningTree(mstNodes, distances);
+            //return new MinimalSpanningTree(mstNodes, null);
         }
 
         double fitnessFunction(BitArray representation)
         {
             MinimalSpanningTree mst = dnaToMst(representation);
+
+            // This is the bottleneck, quite obviously.
             mst.Span(startNodes);
+
             int usedNodes = mst.UsedNodeCount;
 
-            // TODO: Better cost function.
-            return 1.0 / usedNodes;
+            // TODO: Improve fitness function
+            return 2000 - usedNodes;
         }
 
         

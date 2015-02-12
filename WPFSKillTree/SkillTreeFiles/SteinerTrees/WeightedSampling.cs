@@ -49,6 +49,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         public void AddEntry(T entry, double weight)
         {
+            if (double.IsInfinity(weight))
+                throw new ArgumentException("Infinite weights are not allowed!", "weight");
             if (weight < 0)
                 throw new ArgumentException("Negative weights are not allowed!", "weight");
 

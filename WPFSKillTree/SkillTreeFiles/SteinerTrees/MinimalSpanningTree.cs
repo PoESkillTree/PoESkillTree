@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Priority_Queue;
+using System.Diagnostics;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
@@ -26,6 +27,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             // We will have at most one adjacent edge to each node.
             HeapPriorityQueue<GraphEdge> adjacentEdgeQueue = new HeapPriorityQueue<GraphEdge>(mstNodes.Count * mstNodes.Count);
+            // I guess this is the easiest way to do it...
+            Dictionary<GraphNode, List<GraphEdge>> edgesToNode = new Dictionary<GraphNode, List<GraphEdge>>();
+            foreach (GraphNode node in mstNodes)
+                edgesToNode[node] = new List<GraphEdge>();
 
             HashSet<GraphNode> inMst = new HashSet<GraphNode>();
             HashSet<GraphNode> toAdd = new HashSet<GraphNode>(mstNodes);
@@ -35,12 +40,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // Initialize the MST with the start nodes.
             inMst.Add(startFrom);
             toAdd.Remove(startFrom);
-
+            edgesToNode[startFrom] = new List<GraphEdge>();
             foreach (GraphNode otherNode in toAdd)
             {
                 GraphEdge adjacentEdge = new GraphEdge(startFrom, otherNode);
-                // Priority is set to negative distance.
                 adjacentEdgeQueue.Enqueue(adjacentEdge, distances.GetDistance(adjacentEdge));
+                edgesToNode[otherNode].Add(adjacentEdge);
             }
 
             while (toAdd.Count > 0 && adjacentEdgeQueue.Count > 0)
@@ -48,27 +53,39 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 GraphEdge shortestEdge = adjacentEdgeQueue.Dequeue();
                 mstEdges.Add(shortestEdge);
                 GraphNode newIn = shortestEdge.outside;
+                //if (newIn.Name == "Savagery") Debugger.Break();
+                //if (newIn.Name == "Constitution") Debugger.Break();
+                //if (newIn.Name == "Bravery") Debugger.Break();
+
 
                 if (inMst.Contains(newIn)) throw new Exception();
+                if (!toAdd.Contains(newIn)) throw new Exception("No edge to this node should remain!");
 
-                mstNodes.Add(newIn);
+                inMst.Add(newIn);
                 toAdd.Remove(newIn);
 
                 // Remove all edges that are entirely inside the MST now.
-                foreach (GraphEdge obsoleteEdge in adjacentEdgeQueue.Where(e => e.outside == newIn))
+                foreach (GraphEdge obsoleteEdge in edgesToNode[newIn])
                 {
+                    if (!inMst.Contains(obsoleteEdge.inside)) throw new Exception("This edge's inside node is not inside");
+                    //if (obsoleteEdge.inside.Name == "Savagery") Debugger.Break();
+                    //if (obsoleteEdge.inside.Name == "Constitution") Debugger.Break();
                     adjacentEdgeQueue.Remove(obsoleteEdge);
                 }
+                edgesToNode.Remove(newIn);
 
                 // Find all newly adjacent edges and enqueue them.
                 foreach (GraphNode otherNode in toAdd)
                 {
                     GraphEdge adjacentEdge = new GraphEdge(newIn, otherNode);
+                    //if (otherNode.Name == "Savagery") Debugger.Break();
+                    //if (otherNode.Name == "Constitution") Debugger.Break();
                     adjacentEdgeQueue.Enqueue(adjacentEdge, distances.GetDistance(adjacentEdge));
+                    edgesToNode[otherNode].Add(adjacentEdge);
                 }
             }
             if (toAdd.Count > 0)
-                throw new GraphNotConnectedException();
+                throw new DistanceLookup.GraphNotConnectedException();
 
             this.SpanningEdges = mstEdges;
             return mstEdges;
@@ -91,11 +108,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 }
                 return _usedNodeCount.Value;
             }
-        }
-
-
-        internal class GraphNotConnectedException : Exception
-        {
         }
     }
 }

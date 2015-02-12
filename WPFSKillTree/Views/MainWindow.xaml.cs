@@ -803,7 +803,7 @@ namespace POESKillTree.Views
 
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
         {
-            SearchUpdate();
+            //SearchUpdate();
         }
 
         private void expSheet_Expanded(object sender, RoutedEventArgs e)
@@ -1389,7 +1389,7 @@ namespace POESKillTree.Views
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SearchUpdate();
+            //SearchUpdate();
         }
 
         private void cbRegEx_Click(object sender, RoutedEventArgs e)

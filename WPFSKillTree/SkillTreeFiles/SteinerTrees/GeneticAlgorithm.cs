@@ -189,11 +189,14 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             foreach (Individual individual in newPopulation)
             {
                 Individual partner = sampler.RandomSample();
-                /// The higher the relative fitness of the partner, the more
+                /// The higher the fitness of the partner, the more
                 /// likely DNA crossover is allowed.
                 /// Note: This likely has an effect on (premature) convergence.
-                if (random.NextDouble() <
-                    partner.fitness / (partner.fitness + individual.fitness))
+
+                double partnerNFitness = normalizeFitness(partner.fitness);
+
+                if (random.NextDouble() < normalizeFitness(partner.fitness))
+                    //partnerNFitness / (partnerNFitness + individualNFitness))
                     combineIndividuals(individual, partner);
             }
 
@@ -203,7 +206,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             Console.Write("Mutation time for " + generationCount + " : ");
             Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
 
-            Console.WriteLine("Best value so far: " + 1 / bestSolution.fitness);
+            Console.WriteLine("Best value so far: " + (bestSolution.fitness));
 
             return generationCount;
         }
@@ -229,7 +232,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             for (int i = 0; i < newDNA.Length; i++)
             {
-                if (random.NextDouble() < mutationProbability)
+                //if (random.NextDouble() < mutationProbability)
                     newDNA[i] = mutationSequence[i];
             }
 
@@ -269,11 +272,17 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         private BitArray randomBitarray(int length)
         {
             // Each byte provides 8 bits.
-            byte[] buffer = new byte[(int)Math.Ceiling(length/8.0)];
+            /*byte[] buffer = new byte[(int)Math.Ceiling(length/8.0)];
             random.NextBytes(buffer);
 
-            BitArray bitArray = new BitArray(buffer);
+            BitArray bitArray = new BitArray(buffer); //(buffer);
             bitArray.Length = length;
+            return bitArray;*/
+
+            // Returns a bit array filled with 0s except for one spot.
+            BitArray bitArray = new BitArray(length);
+            int i0 = random.Next(length);
+            bitArray[i0] = true;
             return bitArray;
         }
     }

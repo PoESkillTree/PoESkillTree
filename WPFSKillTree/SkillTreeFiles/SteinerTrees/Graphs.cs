@@ -26,6 +26,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     {
         protected ushort id;
         public ushort Id { get { return id; } }
+        public string Name { get { return SkillTree.Skillnodes[id].Name; } }
 
         public HashSet<GraphNode> Adjacent = new HashSet<GraphNode>();
     }
