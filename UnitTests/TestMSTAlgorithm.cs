@@ -88,44 +88,21 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestMSTNodeCounter()
-        {
-            Steiner testSteiner = new Steiner();
-
-            /// 0 -- 1 -- 2 -- 3
-            ///  \        |   /
-            ///    \      | /
-            ///      4 -- 5
-            bool[,] graph1 = {
-                                 { false, true,  false, false, true,  false },
-                                 { true,  false, true,  false, false, false },
-                                 { false, true,  false, true,  false, true  },
-                                 { false, false, true,  false, false, true  },
-                                 { true,  false, false, false, false, true  },
-                                 { false, false, true,  true,  true,  false },
-                             };
-
-            SearchGraph searchGraph1 = SearchGraphFromData(graph1);
-            Dictionary<int, GraphNode> graphNodes = GetGraphNodesIdIndex(searchGraph1);
-
-
-        }
-
-
-        [TestMethod]
         public void TestMST()
         {
             /// 0 -- 1 -- 2 -- 3
             ///  \        |   /
             ///    \      | /
-            ///      4 -- 5
+            ///      4 -- 5 -- 6 -- 7
             bool[,] graph1 = {
-                                 { false, true,  false, false, true,  false },
-                                 { true,  false, true,  false, false, false },
-                                 { false, true,  false, true,  false, true  },
-                                 { false, false, true,  false, false, true  },
-                                 { true,  false, false, false, false, true  },
-                                 { false, false, true,  true,  true,  false },
+                                 { false, true,  false, false, true,  false, false, false },
+                                 { true,  false, true,  false, false, false, false, false },
+                                 { false, true,  false, true,  false, true,  false, false },
+                                 { false, false, true,  false, false, true,  false, false },
+                                 { true,  false, false, false, false, true,  false, false },
+                                 { false, false, true,  true,  true,  false, true,  false },
+                                 { false, false, false, false, false, true,  false, true  },
+                                 { false, false, false, false, false, false, true,  false },
                              };
 
             SearchGraph searchGraph1 = SearchGraphFromData(graph1);
@@ -133,10 +110,22 @@ namespace UnitTests
             Dictionary<int, GraphNode> graphNodes1 = GetGraphNodesIdIndex(searchGraph1);
             DistanceLookup distanceLookup = new DistanceLookup();
 
-            HashSet<GraphNode> mstNodes1 = new HashSet<GraphNode> { graphNodes1[2], graphNodes1[5] };
+            HashSet<GraphNode> mstNodes1 = new HashSet<GraphNode>
+                { graphNodes1[3], graphNodes1[5], graphNodes1[7] };
             MinimalSpanningTree mst1 = new MinimalSpanningTree(mstNodes1);
-            mst1.Span(graphNodes1[0]);
-            Assert.IsTrue(mst1.UsedNodeCount == 3, "Wrong MST length");
+            mst1.Span(startFrom: graphNodes1[0]);
+
+            Assert.IsTrue(mst1.SpanningEdges.Count == 3, "Wrong amount of spanning edges");
+            /// This can fail even if the mst would be valid! The test only works for
+            /// the current implementation of the mst algorithm, but I can't find a
+            /// better way to do this with the current data structures...
+            Assert.IsTrue(mst1.SpanningEdges[0].inside.Id == 0 && mst1.SpanningEdges[0].outside.Id == 5,
+                "First edge is wrong");
+            Assert.IsTrue(mst1.SpanningEdges[1].inside.Id == 5 && mst1.SpanningEdges[1].outside.Id == 3,
+                "Second edge is wrong");
+            Assert.IsTrue(mst1.SpanningEdges[2].inside.Id == 5 && mst1.SpanningEdges[2].outside.Id == 7,
+                "Third edge is wrong");
+            Assert.IsTrue(mst1.UsedNodeCount == 5, "Wrong MST length");
 
 
             /// Test unconnected graph

@@ -920,6 +920,7 @@ namespace POESKillTree.Views
             if (node != null && node.Attributes.Count != 0)
             {
                 var tooltip = node.Name + "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
+                //tooltip += "\n" + node.Id;
                 if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
                 {
                     _sToolTip.Content = tooltip;

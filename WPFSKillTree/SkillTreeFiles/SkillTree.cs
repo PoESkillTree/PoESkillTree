@@ -199,10 +199,6 @@ namespace POESKillTree.SkillTreeFiles
         private int _level = 1;
 
 
-
-        public float ScaleFactor = 1;
-
-
         private static bool _Initialized = false;
         public SkillTree(String treestring, bool displayProgress, UpdateLoadingWindow update)
         {

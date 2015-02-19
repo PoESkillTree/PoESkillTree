@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using System.Threading;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
@@ -166,16 +167,22 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 searchSpaceBase.Add(SkillTree.Skillnodes[nodeId]);
             }*/
 
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            GeneticAlgorithm ga = new GeneticAlgorithm(fitnessFunction, new Random(DateTime.Now.GetHashCode()));
 
-            GeneticAlgorithm ga = new GeneticAlgorithm(fitnessFunction);
-
-            ga.StartEvolution(60, searchSpaceBase.Count);
+            Console.WriteLine("Search space dimension: " + searchSpaceBase.Count);
+            ga.StartEvolution(populationSize: searchSpaceBase.Count, dnaLength: searchSpaceBase.Count);
 
             // TODO: Better termination criteria.
+            
             while (ga.GenerationCount < 200)
             {
                 ga.NewGeneration();
+                Thread.Yield();
             }
+            timer.Stop();
+            Console.WriteLine("Optimization time: " + timer.ElapsedMilliseconds + " ms");
 
             BitArray bestDna = ga.BestDNA();
             MinimalSpanningTree mst = dnaToMst(bestDna);
@@ -229,7 +236,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             MinimalSpanningTree mst = dnaToMst(representation);
 
             // This is the bottleneck, quite obviously.
-            mst.Span(startNodes);
+            mst.Span(startFrom: startNodes);
 
             int usedNodes = mst.UsedNodeCount;
 

@@ -53,6 +53,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             public BitArray DNA;
             public double fitness;
+            public double normalizedFitness;
 
             public Individual(BitArray DNA, double fitness = 0)
             {
@@ -141,6 +142,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+
+            double minCurrentFitness = double.MaxValue;
+            double maxCurrentFitness = double.MinValue;
+            
+
             // Evaluate all individuals
             foreach (Individual individual in population)
             {
@@ -151,21 +157,29 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                         "for solutions that should not reproduce.");
 
                 individual.fitness = fitness;
-                sampler.AddEntry(individual, fitness);
 
                 if (fitness > bestSolution.fitness)
                     bestSolution = individual;
 
-                if (fitness > maxFitness)
-                    maxFitness = fitness;
-                    // TODO: Treat 0 fitness special?
-                else if (fitness < minFitness)
-                    minFitness = fitness;
+                // TODO: Treat 0 fitness special?
+                maxFitness = Math.Max(fitness, maxFitness);
+                minFitness = Math.Min(fitness, minFitness);
+
+                maxCurrentFitness = Math.Max(fitness, maxCurrentFitness);
+                minCurrentFitness = Math.Min(fitness, minCurrentFitness);
+            }
+                
+            foreach (Individual individual in population)
+            {
+                individual.normalizedFitness = normalizeFitness(individual.fitness);
+
+                sampler.AddEntry(individual, individual.normalizedFitness);
             }
             stopwatch.Stop();
             Console.Write("Evaluation time for " + generationCount + " : ");
             Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
-
+            if (minCurrentFitness == maxCurrentFitness)
+                Console.WriteLine("Entire population had the same fitness value.");
 
             stopwatch.Restart();
 
@@ -176,25 +190,20 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                                    generationCount + ").");
             }
 
-            // Mutate based on fitness
-            for (int i = 0; i < populationSize; i++)
+            // Breed population and apply random mutations.
+            foreach (Individual partner in population)
             {
-                Individual parent = sampler.RandomSample();
+                BitArray parentDNA = sampler.RandomSample().DNA;
 
-                Individual mutation = new Individual(mutateDNA(parent));
-                newPopulation.Add(mutation);
-            }
+                BitArray partnerDNA = partner.DNA;
+                if ((partner.fitness == minCurrentFitness))// && (minCurrentFitness != maxCurrentFitness))
+                    partnerDNA = randomBitarray(dnaLength);
 
-            // Apply DNA crossover
-            foreach (Individual individual in newPopulation)
-            {
-                Individual partner = sampler.RandomSample();
+                Individual newIndividual = new Individual(combineIndividualsDNA(parentDNA, partnerDNA));
 
-                /// The higher the fitness of the partner, the more
-                /// likely DNA crossover is allowed.
-                /// Note: This likely has an effect on (premature) convergence.
-                if (random.NextDouble() < normalizeFitness(partner.fitness))
-                    combineIndividuals(individual, partner);
+                newIndividual.DNA = mutateDNA(newIndividual.DNA);
+
+                newPopulation.Add(newIndividual);
             }
 
             population = newPopulation;
@@ -204,6 +213,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
 
             Console.WriteLine("Best value so far: " + (bestSolution.fitness));
+
 
             return generationCount;
         }
@@ -216,31 +226,36 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         // Maps fitness values into the 0 - 1 range.
         private double normalizeFitness(double fitness)
         {
+            if (maxFitness - minFitness <= 0) return 0.5; // What can you say...
             return (fitness - minFitness) / (maxFitness - minFitness);
         }
 
-        private BitArray mutateDNA(Individual individual)
+        private BitArray mutateDNA(BitArray dna)
         {
             /// Chance for each individual bit to be mutated. Not currently used
             /// since only one bit is mutated at a time anyway.
             //double mutationProbability = 1 - Math.Sqrt(normalizeFitness(individual.fitness));
 
-            BitArray newDNA = new BitArray(individual.DNA);
+            /*BitArray newDNA = new BitArray(individual.DNA);
             BitArray mutationSequence = randomBitarray(newDNA.Length);
 
             for (int i = 0; i < newDNA.Length; i++)
             {
                 //if (random.NextDouble() < mutationProbability)
-                    newDNA[i] = mutationSequence[i];
+                newDNA[i] = (mutationSequence[i] ? !newDNA[i] : newDNA[i]);
             }
 
+            return newDNA;*/
+            BitArray newDNA = new BitArray(dna);
+            int index = random.Next(newDNA.Length);
+            newDNA[index] = !newDNA[index];
             return newDNA;
         }
 
-        private BitArray combineIndividuals(Individual parent1, Individual parent2)
+        private BitArray combineIndividualsDNA(BitArray dna1, BitArray dna2)
         {
-            int length = parent1.DNA.Length;
-            if (parent2.DNA.Length != length)
+            int length = dna1.Length;
+            if (dna2.Length != length)
                 throw new NotImplementedException("Breeding of individuals with" +
                             "differing DNA lengths is not yet implemented!");
 
@@ -251,11 +266,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // the middle parts of the DNA and basically never affecting the
             // start or end of it.
             if (crossoverStart > crossoverEnd)
-                return crossoverDNA(parent2.DNA, parent1.DNA,
-                                    crossoverEnd, crossoverStart);
+                return crossoverDNA(dna2, dna1, crossoverEnd, crossoverStart);
             else
-                return crossoverDNA(parent1.DNA, parent2.DNA,
-                                    crossoverStart, crossoverEnd);
+                return crossoverDNA(dna1, dna2, crossoverStart, crossoverEnd);
         }
 
         private BitArray crossoverDNA(BitArray DNA1, BitArray DNA2, int start, int end)

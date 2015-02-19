@@ -27,7 +27,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             // We will have at most one adjacent edge to each node, so that's our limit.
             HeapPriorityQueue<GraphEdge> adjacentEdgeQueue = new HeapPriorityQueue<GraphEdge>(mstNodes.Count * mstNodes.Count);
-            // I guess this is the easiest way to do it...
+            /// Removing all edges that satisfy a property (here a certain "outside"
+            /// node) from the queue is not actually trivial, since you could only
+            /// iterate over all entries (and you want to avoid that) if you don't
+            /// have the references to the edges at hand.
+            /// I guess this is the easiest way to do it...
             Dictionary<GraphNode, List<GraphEdge>> edgesToNode = new Dictionary<GraphNode, List<GraphEdge>>();
             foreach (GraphNode node in mstNodes)
                 edgesToNode[node] = new List<GraphEdge>();
