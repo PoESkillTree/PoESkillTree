@@ -922,12 +922,12 @@ namespace POESKillTree.SkillTreeFiles
             SkillNodeList(nodes);
         }
 
-        private void SkillNodeList(HashSet<ushort> hs)
+        private void SkillNodeList(HashSet<ushort> targetNodeIds)
         {
-            SteinerTrees.Steiner steinerSolver = new SteinerTrees.Steiner();
+            SteinerTrees.Steiner steinerSolver = new SteinerTrees.Steiner(this);
 
             //HashSet<SkillNode> resultNodes = steinerSolver.SkillHighlightedNodes(this);
-            HashSet<ushort> resultNodes = steinerSolver.ConnectNodes(this, hs);
+            HashSet<ushort> resultNodes = steinerSolver.ConnectNodes(targetNodeIds);
 
             foreach (ushort node in resultNodes)
             {

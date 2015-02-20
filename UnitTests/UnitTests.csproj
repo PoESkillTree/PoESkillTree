@@ -77,6 +77,7 @@
     <Compile Include="TestDPS.cs" />
     <Compile Include="TestItemDB.cs" />
     <Compile Include="TestMSTAlgorithm.cs" />
+    <Compile Include="TestGeneticAlgorithmEasy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UpdateDB\UpdateDB.csproj">
