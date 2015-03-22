@@ -285,6 +285,12 @@ namespace POESKillTree.Views
             }
         }
 
+        private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
+        {
+            Tree.UnhighlightAllNodes();
+            ClearSearch();
+        }
+
         private void Menu_ScreenShot(object sender, RoutedEventArgs e)
         {
             const int maxsize = 3000;
@@ -324,6 +330,7 @@ namespace POESKillTree.Views
                 recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
             }
         }
+        
         private void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
             var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName) { Owner = this };
@@ -1400,6 +1407,12 @@ namespace POESKillTree.Views
         private void SearchUpdate()
         {
             Tree.HighlightNodesBySearch(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value, true);
+        }
+
+        private void ClearSearch()
+        {
+            tbSearch.Text = "";
+            SearchUpdate();
         }
 
         private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
