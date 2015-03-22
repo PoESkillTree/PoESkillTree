@@ -228,8 +228,9 @@
                     <MenuItem x:Name="mnuViewAccentYellow" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Yellow" Click="mnuSetAccent_Click" />
                 </MenuItem>
                 <Separator />
-                <MenuItem x:Name="mnuViewBuilds" Header="_Builds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="False" Click="ToggleBuilds_Click"/>
-                <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="False" InputGestureText="Ctrl+Q" Click="ToggleAttributes_Click"/>
+                <MenuItem x:Name="mnuViewBuilds" Header="_Builds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="{Binding PersistentData.Options.BuildsBarOpened,ElementName=window, Mode=TwoWay}"/>
+                <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" InputGestureText="Ctrl+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.AttributesBarOpened,ElementName=window, Mode=TwoWay}"/>
+                <MenuItem x:Name="mnuViewCharacterSheet" Header="_Character Sheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}"/>
                 <MenuItem x:Name="mnuViewComparison" Header="_Tree comparison" IsCheckable="true" IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click"  />
             </MenuItem>
             <MenuItem Header="_Tools ">
@@ -320,7 +321,7 @@
             </local:ZoomBorder>
 
 
-            <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" Expanded="expSavedBuilds_Expanded" Collapsed="expSavedBuilds_Collapsed" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
+            <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
                     <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Saved builds</TextBlock>
                 </Expander.Header>
@@ -368,9 +369,9 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" x:Name="expAttributes" Collapsed="expAttributes_Collapsed" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}" MouseLeave="expAttributes_MouseLeave">
+            <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewAttributes}" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}" MouseLeave="expAttributes_MouseLeave">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Attributes</TextBlock>
+                    <TextBlock Margin="6,0" TextAlignment="Left" FontSize="16">Attributes</TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
                     <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
@@ -422,7 +423,7 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" x:Name="expSheet" Expanded="expSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
+            <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}" Expanded="expCharacterSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
                     <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Character Sheet</TextBlock>
                 </Expander.Header>

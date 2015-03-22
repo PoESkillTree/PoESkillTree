@@ -149,9 +149,6 @@ namespace POESKillTree.Views
             _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
             _addtransform = SkillTree.TRect.TopLeft;
 
-            expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
-            expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
-
             // loading last build
             if (_persistentData.CurrentBuild != null)
                 SetCurrentBuild(_persistentData.CurrentBuild);
@@ -219,6 +216,16 @@ namespace POESKillTree.Views
                         break;
                 }
             }
+
+            if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                switch (e.Key)
+                {
+                    case Key.Q:
+                        ToggleCharacterSheet();
+                        break;
+                }
+            }
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -229,8 +236,6 @@ namespace POESKillTree.Views
         {
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
             _persistentData.CurrentBuild.Level = tbLevel.Text;
-            _persistentData.Options.AttributesBarOpened = expAttributes.IsExpanded;
-            _persistentData.Options.BuildsBarOpened = expSavedBuilds.IsExpanded;
             _persistentData.SavePersistentDataToFile();
 
             if (lvSavedBuilds.Items.Count > 0)
@@ -766,30 +771,29 @@ namespace POESKillTree.Views
 
         private void ToggleAttributes()
         {
-            mnuViewAttributes.IsChecked = !mnuViewAttributes.IsChecked;
-            expAttributes.IsExpanded = !expAttributes.IsExpanded;
+            _persistentData.Options.AttributesBarOpened = !_persistentData.Options.AttributesBarOpened;
         }
 
-        private void ToggleAttributes_Click(object sender, RoutedEventArgs e)
+        private void ToggleAttributes(bool expanded)
         {
-            ToggleAttributes();
+            _persistentData.Options.AttributesBarOpened = expanded;
         }
 
-        private void expAttributes_Collapsed(object sender, RoutedEventArgs e)
+        private void ToggleCharacterSheet()
         {
-            if (sender == e.Source) // Ignore contained ListBox group collapsion events.
-            {
-                mnuViewAttributes.IsChecked = false;
-            }
+            _persistentData.Options.CharacterSheetBarOpened = !_persistentData.Options.CharacterSheetBarOpened;
+        }
+
+        private void ToggleCharacterSheet(bool expanded)
+        {
+            _persistentData.Options.CharacterSheetBarOpened = expanded;
         }
 
         private void expAttributes_Expanded(object sender, RoutedEventArgs e)
         {
             if (sender == e.Source) // Ignore contained ListBox group collapsion events.
             {
-                mnuViewAttributes.IsChecked = true;
-
-                if (expSheet.IsExpanded) expSheet.IsExpanded = false;
+                ToggleCharacterSheet(false);
             }
         }
 
@@ -801,10 +805,7 @@ namespace POESKillTree.Views
                         .Value.Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
                         .Replace(@"%", @"\%"), @"\d+", @"\d+");
-            if (newHighlightedAttribute == _highlightedAttribute)
-                _highlightedAttribute = "";
-            else
-                _highlightedAttribute = newHighlightedAttribute;
+            _highlightedAttribute = newHighlightedAttribute == _highlightedAttribute ? "" : newHighlightedAttribute;
             Tree.HighlightNodesBySearch(_highlightedAttribute, true, false);
         }
 
@@ -813,33 +814,17 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
-        private void expSheet_Expanded(object sender, RoutedEventArgs e)
+        private void expCharacterSheet_Expanded(object sender, RoutedEventArgs e)
         {
             if (sender == e.Source) // Ignore contained ListBox group expansion events.
             {
-                if (expAttributes.IsExpanded) ToggleAttributes();
+                ToggleAttributes(false);
             }
         }
 
         private void ToggleBuilds()
         {
-            mnuViewBuilds.IsChecked = !mnuViewBuilds.IsChecked;
-            expSavedBuilds.IsExpanded = !expSavedBuilds.IsExpanded;
-        }
-
-        private void ToggleBuilds_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleBuilds();
-        }
-
-        private void expSavedBuilds_Collapsed(object sender, RoutedEventArgs e)
-        {
-            mnuViewBuilds.IsChecked = false;
-        }
-
-        private void expSavedBuilds_Expanded(object sender, RoutedEventArgs e)
-        {
-            mnuViewBuilds.IsChecked = true;
+            _persistentData.Options.BuildsBarOpened = !_persistentData.Options.BuildsBarOpened;
         }
 
         #endregion
