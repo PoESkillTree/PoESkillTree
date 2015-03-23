@@ -41,20 +41,22 @@ namespace UnitTests
             Tree.Reset();
             Tree._nodeHighlighter.UnhighlightAllNodes(NodeHighlighter.HighlightState.All);
 
-
+            // Test if the optimal tree for this also uses all steiner nodes.
             SkillNode dynamo = SkillTree.Skillnodes.Values.Where(n => n.Name == "Dynamo").First();
             SkillNode skittering = SkillTree.Skillnodes.Values.Where(n => n.Name == "Skittering Runes").First();
             SkillNode innerForce = SkillTree.Skillnodes.Values.Where(n => n.Name == "Inner Force").First();
             SkillNode equilibrium = SkillTree.Skillnodes.Values.Where(n => n.Name == "Elemental Equilibrium").First();
 
-            Tree._nodeHighlighter.ToggleHighlightNode(dynamo, NodeHighlighter.HighlightState.FromNode);
+            /*Tree._nodeHighlighter.ToggleHighlightNode(dynamo, NodeHighlighter.HighlightState.FromNode);
             Tree._nodeHighlighter.ToggleHighlightNode(skittering, NodeHighlighter.HighlightState.FromNode);
             Tree._nodeHighlighter.ToggleHighlightNode(innerForce, NodeHighlighter.HighlightState.FromNode);
-            Tree._nodeHighlighter.ToggleHighlightNode(equilibrium, NodeHighlighter.HighlightState.FromNode);
+            Tree._nodeHighlighter.ToggleHighlightNode(equilibrium, NodeHighlighter.HighlightState.FromNode);*/
+            HashSet<ushort> targetNodes = new HashSet<ushort>{ dynamo.Id, skittering.Id, innerForce.Id, equilibrium.Id };
             Tree.Chartype = 0; // Scion
 
             Steiner steiner = new Steiner(Tree);
-            steiner.;
+            steiner.constructSearchSpace(steiner.buildSearchGraph(targetNodes));
+            steiner.findBestMst();
         }
     }
 }

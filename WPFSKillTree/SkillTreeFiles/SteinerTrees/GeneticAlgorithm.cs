@@ -54,11 +54,13 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             public BitArray DNA;
             public double fitness;
             public double normalizedFitness;
+            public int age;
 
             public Individual(BitArray DNA, double fitness = 0)
             {
                 this.DNA = DNA;
                 this.fitness = fitness;
+                this.age = 0;
             }
         }
 
@@ -145,39 +147,66 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             double minCurrentFitness = double.MaxValue;
             double maxCurrentFitness = double.MinValue;
-            
+
 
             // Evaluate all individuals
             foreach (Individual individual in population)
             {
-                double fitness = solutionFitness(individual.DNA);
-                if (fitness < 0)
+                if (individual.age == 0)
+                    individual.fitness = solutionFitness(individual.DNA);
+
+                if (individual.fitness < 0)
                     throw new ArgumentOutOfRangeException("solutionFitness function",
                         "Negative fitness values are not allowed! Use 0 fitness " +
                         "for solutions that should not reproduce.");
 
-                individual.fitness = fitness;
+                individual.fitness = individual.fitness;
 
-                if (fitness > bestSolution.fitness)
+                if (individual.fitness > bestSolution.fitness)
                     bestSolution = individual;
 
                 // TODO: Treat 0 fitness special?
-                maxFitness = Math.Max(fitness, maxFitness);
-                minFitness = Math.Min(fitness, minFitness);
+                maxFitness = Math.Max(individual.fitness, maxFitness);
+                minFitness = Math.Min(individual.fitness, minFitness);
 
-                maxCurrentFitness = Math.Max(fitness, maxCurrentFitness);
-                minCurrentFitness = Math.Min(fitness, minCurrentFitness);
+                maxCurrentFitness = Math.Max(individual.fitness, maxCurrentFitness);
+                minCurrentFitness = Math.Min(individual.fitness, minCurrentFitness);
             }
-                
+
+            double averageFitness = 0;
+            double averageBitsSet = 0;
+            double averageAge = 0;
+            int bestFitnessCount = 0;
+            int purgedIndividuals = 0;
+
+            population = population.OrderBy(ind => ind.fitness).ToList();
+
             foreach (Individual individual in population)
             {
                 individual.normalizedFitness = normalizeFitness(individual.fitness);
+                averageFitness += individual.normalizedFitness;
+                averageBitsSet += SetBits(individual.DNA);
+                if (individual.normalizedFitness == 1) bestFitnessCount++;
 
-                sampler.AddEntry(individual, individual.normalizedFitness);
+                if (individual.normalizedFitness > 0.5)
+                {
+                    averageAge += individual.age++;
+                    newPopulation.Add(individual);
+                    sampler.AddEntry(individual, individual.normalizedFitness);
+                }
+                else purgedIndividuals++;
             }
+            /*if (purgedIndividuals == 0)
+                minFitness = minCurrentFitness;*/
+
             stopwatch.Stop();
             Console.Write("Evaluation time for " + generationCount + " : ");
             Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
+            Console.WriteLine("Average fitness: " + averageFitness / populationSize);
+            Console.WriteLine("Average bits set: " + averageBitsSet / populationSize);
+            Console.WriteLine("Average age: " + averageAge / populationSize);
+            Console.WriteLine("Best fitness count: " + bestFitnessCount);
+            Console.WriteLine("Purged individuals: " + purgedIndividuals);
             if (minCurrentFitness == maxCurrentFitness)
                 Console.WriteLine("Entire population had the same fitness value.");
 
@@ -191,15 +220,14 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
 
             // Breed population and apply random mutations.
-            foreach (Individual partner in population)
+            int dnaResets = 0;
+            // Replace purged individuals
+            for (int i = 0; i < purgedIndividuals; i++)
             {
-                BitArray parentDNA = sampler.RandomSample().DNA;
+                BitArray parent1 = sampler.RandomSample().DNA;
+                BitArray parent2 = sampler.RandomSample().DNA;
 
-                BitArray partnerDNA = partner.DNA;
-                if ((partner.fitness == minCurrentFitness))// && (minCurrentFitness != maxCurrentFitness))
-                    partnerDNA = randomBitarray(dnaLength);
-
-                Individual newIndividual = new Individual(combineIndividualsDNA(parentDNA, partnerDNA));
+                Individual newIndividual = new Individual(combineIndividualsDNA(parent1, parent2));
 
                 newIndividual.DNA = mutateDNA(newIndividual.DNA);
 
@@ -209,11 +237,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             population = newPopulation;
 
             stopwatch.Stop();
-            Console.Write("Mutation time for " + generationCount + " : ");
-            Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
+            //Console.Write("Mutation time for " + generationCount + " : ");
+            //Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
 
             Console.WriteLine("Best value so far: " + (bestSolution.fitness));
-
+            Console.WriteLine("------------------");
+            Console.Out.Flush();
 
             return generationCount;
         }
@@ -298,6 +327,14 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             int i0 = random.Next(length);
             bitArray[i0] = true;
             return bitArray;
+        }
+
+        private int SetBits(BitArray dna)
+        {
+            int sum = 0;
+            for (int i = 0; i < dna.Length; i++)
+                sum += (dna[i] ? 1 : 0);
+            return sum;
         }
     }
 }

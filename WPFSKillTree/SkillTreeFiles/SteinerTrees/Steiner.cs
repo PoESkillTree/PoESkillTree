@@ -93,35 +93,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         }
 
-        void constructSearchSpace(SearchGraph searchGraph)
-        {
-            searchSpaceBase = new List<GraphNode>();
-            // Find potential steiner points that are in reasonable vicinity.
-            foreach (GraphNode node in searchGraph.nodeDict.Values)
-            {
-                // This can be a steiner node only if it has more than 2 neighbors.
-                if (node.Adjacent.Count > 2)
-                {
-                    bool add = false;
-
-                    /// If every target node is closer to the start than to a certain
-                    /// steiner node, that node can't be needed for the steiner tree.
-                    foreach (GraphNode targetNode in targetNodes)
-                        if (distances.GetDistance(targetNode, node) < distances.GetDistance(targetNode, startNodes))
-                            add = true;
-                    if (add)
-                        searchSpaceBase.Add(node);
-                }
-            }
-
-            /* ONLY FOR WHEN NODES HAVE INDIVIDUAL WEIGHTS
-             * foreach (ushort nodeId in targetSkillnodes)
-            {
-                searchSpaceBase.Add(SkillTree.Skillnodes[nodeId]);
-            }*/
-        }
-
-        SearchGraph buildSearchGraph(HashSet<ushort> targets)
+        // Tired of kludging things for unit tests, let it be internal.
+        internal SearchGraph buildSearchGraph(HashSet<ushort> targets)
         {
             SearchGraph searchGraph = new SearchGraph();
 
@@ -142,7 +115,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             foreach (SkillNodeGroup ng in SkillTree.NodeGroups)
             {
                 bool mustInclude = false;
-                
+
                 SkillNode firstNeighbor = null;
 
                 // Find out if this node group can be omitted.
@@ -186,10 +159,38 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
 
             return searchGraph;
-
         }
 
-        MinimalSpanningTree findBestMst()
+        internal void constructSearchSpace(SearchGraph searchGraph)
+        {
+            searchSpaceBase = new List<GraphNode>();
+            // Find potential steiner points that are in reasonable vicinity.
+            foreach (GraphNode node in searchGraph.nodeDict.Values)
+            {
+                // This can be a steiner node only if it has more than 2 neighbors.
+                if (node.Adjacent.Count > 2)
+                {
+                    bool add = false;
+
+                    /// If every target node is closer to the start than to a certain
+                    /// steiner node, that node can't be needed for the steiner tree.
+                    foreach (GraphNode targetNode in targetNodes)
+                        if (distances.GetDistance(targetNode, node) < distances.GetDistance(targetNode, startNodes))
+                            add = true;
+                    if (add)
+                        searchSpaceBase.Add(node);
+                }
+            }
+
+            /* ONLY FOR WHEN NODES HAVE INDIVIDUAL WEIGHTS
+             * foreach (ushort nodeId in targetSkillnodes)
+            {
+                searchSpaceBase.Add(SkillTree.Skillnodes[nodeId]);
+            }*/
+        }
+
+
+        internal MinimalSpanningTree findBestMst()
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
