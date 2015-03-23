@@ -215,6 +215,10 @@
     <Compile Include="Views\MetroMessageBoxWindow.xaml.cs">
       <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\OptimizerControllerWindow.xaml.cs">
+      <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -254,6 +258,10 @@
     <Page Include="Views\MetroMessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\OptimizerControllerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WindowsRes.xaml">
       <SubType>Designer</SubType>
