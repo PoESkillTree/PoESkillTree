@@ -6,6 +6,7 @@ using System.Text;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.Threading;
+using System.ComponentModel;
 
 [assembly: InternalsVisibleTo("UnitTests")]
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
@@ -57,22 +58,27 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         // TODO: Decide what needs to be a member and what should be passed
         // around as parameters.
-        List<GraphNode> searchSpaceBase;
+
 
         SkillTree tree;
+
+        SearchGraph searchGraph;
+
+        List<GraphNode> searchSpaceBase;
 
 
         Supernode startNodes;
         HashSet<GraphNode> targetNodes;
 
-        DistanceLookup distances;
+        DistanceLookup distances = new DistanceLookup();
 
         public Steiner(SkillTree tree)
         {
             this.tree = tree;
+
         }
 
-        public HashSet<ushort> ConnectNodes(HashSet<ushort> targets)
+        public void InitializeSolver(HashSet<ushort> targets)
         {
             // TODO: Update comment
             /// Preprocessing:
@@ -81,53 +87,35 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             ///  - Contract current tree
             ///  - Build graph for DistanceLookup
             ///  
-            SearchGraph searchGraph = buildSearchGraph(targets);
+            buildSearchGraph(targets);
 
-            distances = new DistanceLookup();
+            buildSearchSpaceBase();
+        }
 
-            constructSearchSpace(searchGraph);
-
+        public void ASD()
+        {
             MinimalSpanningTree mst = findBestMst();
 
             return SpannedMstToSkillnodes(mst);
 
         }
 
-        void constructSearchSpace(SearchGraph searchGraph)
+        /// <summary>
+        ///  Preprocesses the SkillTree graph into a simplified graph that omits
+        ///  any isolated node groups (single pass) and contracts all skilled nodes
+        ///  into a single node.
+        /// </summary>
+        /// <param name="targets">A set of node IDs representing the target nodes.</param>
+        /// <returns>A SearchGraph representing the simplified SkillTree</returns>
+        void buildSearchGraph(HashSet<ushort> targets)
         {
-            searchSpaceBase = new List<GraphNode>();
-            // Find potential steiner points that are in reasonable vicinity.
-            foreach (GraphNode node in searchGraph.nodeDict.Values)
-            {
-                // This can be a steiner node only if it has more than 2 neighbors.
-                if (node.Adjacent.Count > 2)
-                {
-                    bool add = false;
+            searchGraph = new SearchGraph();
 
-                    /// If every target node is closer to the start than to a certain
-                    /// steiner node, that node can't be needed for the steiner tree.
-                    foreach (GraphNode targetNode in targetNodes)
-                        if (distances.GetDistance(targetNode, node) < distances.GetDistance(targetNode, startNodes))
-                            add = true;
-                    if (add)
-                        searchSpaceBase.Add(node);
-                }
-            }
-
-            /* ONLY FOR WHEN NODES HAVE INDIVIDUAL WEIGHTS
-             * foreach (ushort nodeId in targetSkillnodes)
-            {
-                searchSpaceBase.Add(SkillTree.Skillnodes[nodeId]);
-            }*/
-        }
-
-        SearchGraph buildSearchGraph(HashSet<ushort> targets)
-        {
-            SearchGraph searchGraph = new SearchGraph();
-
+            // Add the start nodes to the graph.
             startNodes = searchGraph.SetStartNodes(tree.SkilledNodes);
 
             targetNodes = new HashSet<GraphNode>();
+            // Add the target nodes to the graph.
             foreach (ushort nodeId in targets)
             {
                 // Don't add nodes that are already skilled.
@@ -142,7 +130,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             foreach (SkillNodeGroup ng in SkillTree.NodeGroups)
             {
                 bool mustInclude = false;
-                
+
                 SkillNode firstNeighbor = null;
 
                 // Find out if this node group can be omitted.
@@ -157,7 +145,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     }
 
                     /// If the group is adjacent to more than one node, it must
-                    /// also be fully included (since it's not isolated).
+                    /// also be fully included (since it's not isolated and could
+                    /// be part of a path to other nodes).
                     foreach (SkillNode neighbor in node.Neighbor.Where(neighbor => neighbor.SkillNodeGroup != ng))
                     {
                         if (firstNeighbor == null)
@@ -175,25 +164,62 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
                 if (mustInclude)
                 {
-                    // Add nodes individually
+                    // Add the group's nodes individually
                     foreach (SkillNode node in ng.Nodes)
                     {
-                        // Don't add nodes that are already in the graph.
+                        /// Don't add nodes that are already in the graph (as
+                        /// target or start nodes).
                         if (!searchGraph.nodeDict.ContainsKey(node))
                             searchGraph.AddNode(node);
                     }
                 }
             }
-
-            return searchGraph;
-
         }
 
-        MinimalSpanningTree findBestMst()
+        /// <summary>
+        ///  Finds the nodes in the search graph that can be potential steiner
+        ///  nodes. Those form the search space base.
+        /// </summary>
+        /// <param name="searchGraph"></param>
+        void buildSearchSpaceBase()
+        {
+            searchSpaceBase = new List<GraphNode>();
+            // Find potential steiner points that are in reasonable vicinity.
+            foreach (GraphNode node in searchGraph.nodeDict.Values)
+            {
+                // This can be a steiner node only if it has more than 2 neighbors.
+                if (node.Adjacent.Count > 2)
+                {
+                    /// If every target node is closer to the start than to a certain
+                    /// steiner node, that node can't be needed for the steiner tree.
+                    bool add = false;
+                    foreach (GraphNode targetNode in targetNodes)
+                        if (distances.GetDistance(targetNode, node) < distances.GetDistance(targetNode, startNodes))
+                            add = true;
+                    if (add)
+                        searchSpaceBase.Add(node);
+                }
+            }
+
+            /* ONLY FOR WHEN NODES HAVE INDIVIDUAL WEIGHTS
+             * foreach (ushort nodeId in targetSkillnodes)
+            {
+                searchSpaceBase.Add(SkillTree.Skillnodes[nodeId]);
+            }*/
+        }
+
+        /// <summary>
+        ///  Employs a genetic algorithm to search the search space (spanned by
+        ///  the search space base) for a skill tree with lowest possible point
+        ///  investment.
+        /// </summary>
+        /// <returns></returns>
+        MinimalSpanningTree findBestMst(int? randomSeed = null)
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            GeneticAlgorithm ga = new GeneticAlgorithm(fitnessFunction, new Random(DateTime.Now.GetHashCode()));
+            if (randomSeed == null) randomSeed = DateTime.Now.GetHashCode();
+            GeneticAlgorithm ga = new GeneticAlgorithm(fitnessFunction, new Random(randomSeed.Value));
 
             Console.WriteLine("Search space dimension: " + searchSpaceBase.Count);
             ga.StartEvolution(populationSize: searchSpaceBase.Count, dnaLength: searchSpaceBase.Count);

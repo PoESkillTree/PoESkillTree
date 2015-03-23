@@ -54,7 +54,8 @@ namespace UnitTests
             Tree.Chartype = 0; // Scion
 
             Steiner steiner = new Steiner(Tree);
-            steiner.;
+            //TODO: 
+            //steiner.;
         }
     }
 }
