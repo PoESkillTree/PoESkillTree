@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POESKillTree.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -924,6 +925,12 @@ namespace POESKillTree.SkillTreeFiles
 
         private void SkillNodeList(HashSet<ushort> targetNodeIds)
         {
+            OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds);
+
+            optimizerDialog.ShowDialog();
+            if (optimizerDialog.DialogResult == true)
+                break;
+
             SteinerTrees.Steiner steinerSolver = new SteinerTrees.Steiner(this);
 
             //HashSet<SkillNode> resultNodes = steinerSolver.SkillHighlightedNodes(this);

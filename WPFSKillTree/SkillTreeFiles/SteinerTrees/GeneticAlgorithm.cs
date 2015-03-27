@@ -247,7 +247,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return generationCount;
         }
 
-        public BitArray BestDNA()
+        public BitArray GetBestDNA()
         {
             return new BitArray(bestSolution.DNA);
         }

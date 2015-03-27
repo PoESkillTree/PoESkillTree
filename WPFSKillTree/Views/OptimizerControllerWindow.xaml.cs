@@ -24,12 +24,44 @@ namespace POESKillTree.Views
     {
         private Steiner steinerSolver;
 
+        private readonly BackgroundWorker worker = new BackgroundWorker();
+
+
         public OptimizerControllerWindow(SkillTree Tree, HashSet<ushort> targetNodes)
         {
-            steinerSolver = new Steiner(Tree);
             InitializeComponent();
+
+            steinerSolver = new Steiner(Tree);
+            // This should maybe also be part of a background task since it might take a moment.
+            steinerSolver.InitializeSolver(targetNodes);
+
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
         }
 
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i < 200; i++)
+            {
+                steinerSolver.EvolutionStep();
+                
+            }
+            e.Result = steinerSolver.BestSolution;
+        }
+
+
+        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            e.ProgressPercentage
+        }
+
+        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            btnPopupCancelClose.Content = "Close";
+            btnPopupPauseResume.IsEnabled = false;
+            lblProgressText.Content = "Finished!";
+        }
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             // TODO: Initialize labels

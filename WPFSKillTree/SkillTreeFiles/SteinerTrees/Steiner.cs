@@ -63,42 +63,38 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         SkillTree tree;
 
         SearchGraph searchGraph;
-
+        DistanceLookup distances = new DistanceLookup();
         List<GraphNode> searchSpaceBase;
-
 
         Supernode startNodes;
         HashSet<GraphNode> targetNodes;
 
-        DistanceLookup distances = new DistanceLookup();
+
+
+        GeneticAlgorithm ga;
+
+        private bool _initialized = false;
+        public bool IsInitialized
+        { get { return _initialized; } }
 
         public Steiner(SkillTree tree)
         {
             this.tree = tree;
-
         }
 
         public void InitializeSolver(HashSet<ushort> targets)
         {
-            // TODO: Update comment
-            /// Preprocessing:
-            ///  - Contract "isolated" node groups.
-            ///  - Find and collect potential steiner points.
-            ///  - Contract current tree
-            ///  - Build graph for DistanceLookup
-            ///  
+            // (This is not in the constructor since it might take a moment.)
+
             buildSearchGraph(targets);
 
             buildSearchSpaceBase();
+
+            initializeGA();
+
+            _initialized = true;
         }
 
-        public void ASD()
-        {
-            MinimalSpanningTree mst = findBestMst();
-
-            return SpannedMstToSkillnodes(mst);
-
-        }
         /// <summary>
         ///  Preprocesses the SkillTree graph into a simplified graph that omits
         ///  any isolated node groups (single pass) and contracts all skilled nodes
@@ -106,7 +102,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// </summary>
         /// <param name="targets">A set of node IDs representing the target nodes.</param>
         /// <returns>A SearchGraph representing the simplified SkillTree</returns>
-        void buildSearchGraph(HashSet<ushort> targets)
+        private void buildSearchGraph(HashSet<ushort> targets)
         {
             searchGraph = new SearchGraph();
 
@@ -179,7 +175,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  nodes. Those form the search space base.
         /// </summary>
         /// <param name="searchGraph"></param>
-        void buildSearchSpaceBase()
+        private void buildSearchSpaceBase()
         {
             searchSpaceBase = new List<GraphNode>();
             // Find potential steiner points that are in reasonable vicinity.
@@ -206,20 +202,50 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         }
 
         /// <summary>
+        ///  Sets up the genetic algorithm to be ready for the evolutionary search.
+        /// </summary>
+        /// <param name="randomSeed">The random seed to be used for the RNG of the
+        /// genetic algorithm. When left empty, a seed is generated based on the
+        /// current date and time.</param>
+        void initializeGA(int? randomSeed = null)
+        {
+            if (randomSeed == null) randomSeed = DateTime.Now.GetHashCode();
+            ga = new GeneticAlgorithm(fitnessFunction, new Random(randomSeed.Value));
+
+            Console.WriteLine("Search space dimension: " + searchSpaceBase.Count);
+            ga.StartEvolution(populationSize: searchSpaceBase.Count, dnaLength: searchSpaceBase.Count);
+        }
+
+        private BitArray _bestDNA;
+        public HashSet<ushort> BestSolution;
+
+        public void EvolutionStep()
+        {
+            if (!_initialized)
+                throw new InvalidOperationException("Solver not initialized!");
+
+            ga.NewGeneration();
+
+            if (ga.GetBestDNA() != _bestDNA)
+            {
+                _bestDNA = ga.GetBestDNA();
+                MinimalSpanningTree bestMst = dnaToMst(_bestDNA);
+                bestMst.Span(startFrom: startNodes);
+                BestSolution = SpannedMstToSkillnodes(bestMst);
+            }
+        }
+
+
+        /// <summary>
         ///  Employs a genetic algorithm to search the search space (spanned by
         ///  the search space base) for a skill tree with lowest possible point
         ///  investment.
         /// </summary>
         /// <returns></returns>
-        MinimalSpanningTree findBestMst(int? randomSeed = null)
+        MinimalSpanningTree findBestMst()
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            if (randomSeed == null) randomSeed = DateTime.Now.GetHashCode();
-            GeneticAlgorithm ga = new GeneticAlgorithm(fitnessFunction, new Random(randomSeed.Value));
-
-            Console.WriteLine("Search space dimension: " + searchSpaceBase.Count);
-            ga.StartEvolution(populationSize: searchSpaceBase.Count, dnaLength: searchSpaceBase.Count);
 
             // TODO: Better termination criteria.
             
@@ -231,7 +257,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             timer.Stop();
             Console.WriteLine("Optimization time: " + timer.ElapsedMilliseconds + " ms");
 
-            BitArray bestDna = ga.BestDNA();
+            BitArray bestDna = ga.GetBestDNA();
             MinimalSpanningTree mst = dnaToMst(bestDna);
             mst.Span(startNodes);
 
