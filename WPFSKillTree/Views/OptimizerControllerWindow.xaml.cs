@@ -22,30 +22,45 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class OptimizerControllerWindow : MetroWindow
     {
-        private Steiner steinerSolver;
+        private SteinerSolver steinerSolver;
 
         private readonly BackgroundWorker worker = new BackgroundWorker();
 
+        int maxSteps = 200;
+        int step;
+
+        public HashSet<ushort> bestSoFar;
+        
+        private bool isPaused;
+        private bool canceling;
 
         public OptimizerControllerWindow(SkillTree Tree, HashSet<ushort> targetNodes)
         {
             InitializeComponent();
 
-            steinerSolver = new Steiner(Tree);
+            steinerSolver = new SteinerSolver(Tree);
             // This should maybe also be part of a background task since it might take a moment.
             steinerSolver.InitializeSolver(targetNodes);
+            progressBar.Maximum = maxSteps;
 
             worker.DoWork += worker_DoWork;
             worker.ProgressChanged += worker_ProgressChanged;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
         }
 
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (int i = 0; i < 200; i++)
+            BackgroundWorker worker = (BackgroundWorker)sender;
+            for (; step <= maxSteps; step++)
             {
                 steinerSolver.EvolutionStep();
-                
+
+                worker.ReportProgress(step, steinerSolver.BestSolution);
+
+                if (worker.CancellationPending)
+                    break;
             }
             e.Result = steinerSolver.BestSolution;
         }
@@ -53,28 +68,74 @@ namespace POESKillTree.Views
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            e.ProgressPercentage
+            progressBar.Value = e.ProgressPercentage;
+            lblProgressText.Content = e.ProgressPercentage.ToString() + "/" + maxSteps;
+            bestSoFar = (HashSet<ushort>)(e.UserState);
+            lblBestResult.Content = "Best result so far: " + bestSoFar.Count +
+                " additional points spent.";
         }
 
         void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (canceling)
+            {
+                btnPopupPauseResume.IsEnabled = true;
+                canceling = false;
+                return;
+            }
+            
+            lblProgressText.Content = "Finished!";
             btnPopupCancelClose.Content = "Close";
             btnPopupPauseResume.IsEnabled = false;
-            lblProgressText.Content = "Finished!";
+            bestSoFar = (HashSet<ushort>)e.Result;
+            isPaused = true;
         }
+
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             // TODO: Initialize labels
+            btnPopupCancelClose.Content = "Cancel";
+            btnPopupPauseResume.Content = "Pause";
+            step = 0;
+            isPaused = false;
+            canceling = false;
+            worker.RunWorkerAsync();
         }
 
         private void btnPopupCancelClose_Click(object sender, RoutedEventArgs e)
         {
             // Stop the optimizer and/or close the window.
+            if (!isPaused)
+            {
+                worker.CancelAsync();
+                canceling = true;
+                DialogResult = false;
+            }
+            else
+                DialogResult = true;
         }
 
         private void btnPopupPauseResume_Click(object sender, RoutedEventArgs e)
         {
             // Pause the optimizer
+            if (isPaused)
+            {
+                btnPopupPauseResume.Content = "Pause";
+                progressBar.IsEnabled = true;
+                worker.RunWorkerAsync();
+                isPaused = false;
+            }
+            else
+            {
+                btnPopupPauseResume.Content = "Continue";
+                // Disable the button until the worker has actually finished.
+                btnPopupPauseResume.IsEnabled = false;
+                progressBar.IsEnabled = false;
+                //lblProgressText.Content += " (paused)";
+                worker.CancelAsync();
+                canceling = true;
+                isPaused = true;
+            }
         }
 
 

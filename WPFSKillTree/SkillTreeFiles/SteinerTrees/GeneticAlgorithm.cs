@@ -53,7 +53,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             public BitArray DNA;
             public double fitness;
-            public double normalizedFitness;
+            public double health;
             public int age;
 
             public Individual(BitArray DNA, double fitness = 0)
@@ -149,7 +149,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             double maxCurrentFitness = double.MinValue;
 
 
-            // Evaluate all individuals
+            // Evaluate all new individuals
             foreach (Individual individual in population)
             {
                 if (individual.age == 0)
@@ -159,8 +159,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     throw new ArgumentOutOfRangeException("solutionFitness function",
                         "Negative fitness values are not allowed! Use 0 fitness " +
                         "for solutions that should not reproduce.");
-
-                individual.fitness = individual.fitness;
 
                 if (individual.fitness > bestSolution.fitness)
                     bestSolution = individual;
@@ -173,7 +171,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 minCurrentFitness = Math.Min(individual.fitness, minCurrentFitness);
             }
 
-            double averageFitness = 0;
+            double averageHealth = 0;
             double averageBitsSet = 0;
             double averageAge = 0;
             int bestFitnessCount = 0;
@@ -183,16 +181,21 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             foreach (Individual individual in population)
             {
-                individual.normalizedFitness = normalizeFitness(individual.fitness);
-                averageFitness += individual.normalizedFitness;
-                averageBitsSet += SetBits(individual.DNA);
-                if (individual.normalizedFitness == 1) bestFitnessCount++;
+                if (individual.age == 0)
+                    individual.health = normalizeFitness(individual.fitness);
+                else
+                    individual.health *= 0.9;
 
-                if (individual.normalizedFitness > 0.5)
+                averageHealth += individual.health;
+                averageBitsSet += SetBits(individual.DNA);
+                //if (individual.normalizedFitness == 1) bestFitnessCount++;
+
+                if (individual.health > 0.5)
                 {
-                    averageAge += individual.age++;
+                    individual.age++;
+                    averageAge += individual.age;
                     newPopulation.Add(individual);
-                    sampler.AddEntry(individual, individual.normalizedFitness);
+                    sampler.AddEntry(individual, individual.health);
                 }
                 else purgedIndividuals++;
             }
@@ -202,7 +205,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             stopwatch.Stop();
             Console.Write("Evaluation time for " + generationCount + " : ");
             Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
-            Console.WriteLine("Average fitness: " + averageFitness / populationSize);
+            Console.WriteLine("Average fitness: " + averageHealth / populationSize);
             Console.WriteLine("Average bits set: " + averageBitsSet / populationSize);
             Console.WriteLine("Average age: " + averageAge / populationSize);
             Console.WriteLine("Best fitness count: " + bestFitnessCount);
@@ -239,8 +242,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             stopwatch.Stop();
             //Console.Write("Mutation time for " + generationCount + " : ");
             //Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
-
-            Console.WriteLine("Best value so far: " + (bestSolution.fitness));
+            //63976
+            Console.WriteLine("Best value so far: " + (1500 - bestSolution.fitness));
             Console.WriteLine("------------------");
             Console.Out.Flush();
 
@@ -249,6 +252,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         public BitArray GetBestDNA()
         {
+            Console.WriteLine("Returning DNA with fitness " + bestSolution.fitness);
             return new BitArray(bestSolution.DNA);
         }
 
@@ -329,7 +333,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return bitArray;
         }
 
-        private int SetBits(BitArray dna)
+        public static int SetBits(BitArray dna)
         {
             int sum = 0;
             for (int i = 0; i < dna.Length; i++)

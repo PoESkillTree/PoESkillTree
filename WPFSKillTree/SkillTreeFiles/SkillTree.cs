@@ -928,18 +928,20 @@ namespace POESKillTree.SkillTreeFiles
             OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds);
 
             optimizerDialog.ShowDialog();
-            if (optimizerDialog.DialogResult == true)
-                break;
+            if (optimizerDialog.DialogResult == false)
+                return;
 
-            SteinerTrees.Steiner steinerSolver = new SteinerTrees.Steiner(this);
+            SteinerTrees.SteinerSolver steinerSolver = new SteinerTrees.SteinerSolver(this);
 
             //HashSet<SkillNode> resultNodes = steinerSolver.SkillHighlightedNodes(this);
-            HashSet<ushort> resultNodes = steinerSolver.ConnectNodes(targetNodeIds);
+            //HashSet<ushort> resultNodes = steinerSolver.ConnectNodes(targetNodeIds);
 
-            foreach (ushort node in resultNodes)
+            foreach (ushort node in optimizerDialog.bestSoFar)
             {
                 SkilledNodes.Add(node);
             }
+
+            this.DrawHighlights(_nodeHighlighter);
 
             /*foreach (SkillNode skillNode in resultNodes)
             {

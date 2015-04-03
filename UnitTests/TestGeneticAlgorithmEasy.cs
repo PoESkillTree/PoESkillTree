@@ -54,7 +54,7 @@ namespace UnitTests
             HashSet<ushort> targetNodes = new HashSet<ushort>{ dynamo.Id, skittering.Id, innerForce.Id, equilibrium.Id };
             Tree.Chartype = 0; // Scion
 
-            Steiner steiner = new Steiner(Tree);
+            SteinerSolver steiner = new SteinerSolver(Tree);
             // FIXME: Fix test.
             //steiner.constructSearchSpace(steiner.buildSearchGraph(targetNodes));
             //steiner.findBestMst();

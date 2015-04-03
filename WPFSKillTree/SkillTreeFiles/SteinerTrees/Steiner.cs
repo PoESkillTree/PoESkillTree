@@ -12,7 +12,7 @@ using System.ComponentModel;
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
     [assembly: InternalsVisibleTo("UnitTests")]
-    public class Steiner
+    public class SteinerSolver
     {
         // TODO: Update explanation.
         /// 
@@ -77,7 +77,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         public bool IsInitialized
         { get { return _initialized; } }
 
-        public Steiner(SkillTree tree)
+        public SteinerSolver(SkillTree tree)
         {
             this.tree = tree;
         }
@@ -226,12 +226,20 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             ga.NewGeneration();
 
-            if (ga.GetBestDNA() != _bestDNA)
+            if ((_bestDNA == null) || (GeneticAlgorithm.SetBits(ga.GetBestDNA().Xor(_bestDNA)) != 0))
             {
                 _bestDNA = ga.GetBestDNA();
                 MinimalSpanningTree bestMst = dnaToMst(_bestDNA);
                 bestMst.Span(startFrom: startNodes);
-                BestSolution = SpannedMstToSkillnodes(bestMst);
+                BestSolution = SpannedMstToSkillnodes(bestMst, true);
+
+                MinimalSpanningTree copy = dnaToMst(_bestDNA);
+                copy.mstNodes.Add(searchGraph.nodeDict[SkillTree.Skillnodes[63976]]);
+                copy.mstNodes.Add(searchGraph.nodeDict[SkillTree.Skillnodes[16775]]);
+                copy.mstNodes.Add(searchGraph.nodeDict[SkillTree.Skillnodes[33479]]);
+                copy.Span(startNodes);
+                Console.WriteLine("Improvement? " + copy.UsedNodeCount);
+                //Console.WriteLine("Fitness: ")
             }
         }
 
@@ -264,7 +272,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return mst;
         }
 
-        HashSet<ushort> SpannedMstToSkillnodes(MinimalSpanningTree mst)
+        HashSet<ushort> SpannedMstToSkillnodes(MinimalSpanningTree mst, bool visualize)
         {
             HashSet<ushort> newSkilledNodes = new HashSet<ushort>();
             foreach (GraphEdge edge in mst.SpanningEdges)
@@ -281,11 +289,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
                 newSkilledNodes = new HashSet<ushort>(newSkilledNodes.Concat(path));
             }
-            
-            foreach (GraphNode steinerNode in mst.mstNodes)
-                tree._nodeHighlighter.ToggleHighlightNode(SkillTree.Skillnodes[steinerNode.Id], NodeHighlighter.HighlightState.FromAttrib);
 
-            tree.DrawHighlights(tree._nodeHighlighter);
+            if (visualize)
+            {
+                tree._nodeHighlighter.UnhighlightAllNodes(NodeHighlighter.HighlightState.FromAttrib);
+                foreach (GraphNode steinerNode in mst.mstNodes)
+                    tree._nodeHighlighter.HighlightNode(SkillTree.Skillnodes[steinerNode.Id], NodeHighlighter.HighlightState.FromAttrib);
+            }
+
+            //tree.DrawHighlights(tree._nodeHighlighter);
             return newSkilledNodes;
         }
 
@@ -319,7 +331,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             int usedNodes = mst.UsedNodeCount;
 
             // TODO: Improve fitness function
-            return 2000 - usedNodes;
+            return 1500 - usedNodes;
         }
     }
 }
