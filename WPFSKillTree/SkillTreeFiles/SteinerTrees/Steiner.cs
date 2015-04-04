@@ -70,12 +70,21 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         HashSet<GraphNode> targetNodes;
 
 
-
         GeneticAlgorithm ga;
 
         private bool _initialized = false;
         public bool IsInitialized
         { get { return _initialized; } }
+
+        // This is kinda crude but should work...
+        public bool IsConsideredDone
+        { get { return (_initialized ? CurrentGeneration >= MaxGeneration : false); } }
+
+        public int MaxGeneration
+        { get { return (_initialized ? searchSpaceBase.Count : 0); } }
+
+        public int CurrentGeneration
+        { get { return (_initialized ? ga.GenerationCount : 0); } }
 
         public SteinerSolver(SkillTree tree)
         {
@@ -170,20 +179,50 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 }
             }
         }
+        
         /// <summary>
         ///  Finds the nodes in the search graph that can be potential steiner
         ///  nodes. Those form the search space base.
         /// </summary>
-        /// <param name="searchGraph"></param>
         private void buildSearchSpaceBase()
         {
             searchSpaceBase = new List<GraphNode>();
+
+            MinimalSpanningTree leastSolution = new MinimalSpanningTree(targetNodes, distances);
+            leastSolution.Span(startFrom: startNodes);
+
+            int maxEdgeDistance = 0;
+            foreach (GraphEdge edge in leastSolution.SpanningEdges)
+            {
+                int edgeDistance = distances.GetDistance(edge);
+                if (edgeDistance > maxEdgeDistance)
+                    maxEdgeDistance = edgeDistance;
+            }
+            /*
+            int maxTargetDistance = 0;
+            foreach (GraphNode targetNode in targetNodes)
+            {
+                int targetDistance = distances.GetDistance(targetNode, startNodes);
+                if (targetDistance > maxTargetDistance)
+                    maxTargetDistance = targetDistance;
+            }*/
+
             // Find potential steiner points that are in reasonable vicinity.
+            /// TODO: This can surely be improved in some shape or form, but I
+            /// can't figure it out right now. Since the GA also has to work well
+            /// with larger input sizes, I won't investigate this right now.
             foreach (GraphNode node in searchGraph.nodeDict.Values)
             {
                 // This can be a steiner node only if it has more than 2 neighbors.
                 if (node.Adjacent.Count > 2)
                 {
+                    /* 
+                     * While this would mathematically be correct, it's not a
+                     * good criterium for the skill tree. I don't think the
+                     * relevant cases can appear and this permits way too many
+                     * nodes to be considered that will never be included in an
+                     * actual solution.
+                     * 
                     /// If every target node is closer to the start than to a certain
                     /// steiner node, that node can't be needed for the steiner tree.
                     bool add = false;
@@ -192,6 +231,23 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                             add = true;
                     if (add)
                         searchSpaceBase.Add(node);
+                     */
+
+                    /*
+                    /// This is a pretty handwavy approach... If anybody figures
+                    /// out a case that causes this to fail, let me know please!
+                    if (distances.GetDistance(node, startNodes) < 1.2 * maxTargetDistance)
+                        searchSpaceBase.Add(node);
+                     */
+
+                    // This should be a reasonable approach.
+                    bool add = false;
+                    foreach (GraphNode targetNode in targetNodes)
+                        if (distances.GetDistance(targetNode, node) < maxEdgeDistance)
+                            add = true;
+                    if (add)
+                        searchSpaceBase.Add(node);
+                    
                 }
             }
             /* ONLY FOR WHEN NODES HAVE INDIVIDUAL WEIGHTS
@@ -293,7 +349,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (visualize)
             {
                 tree._nodeHighlighter.UnhighlightAllNodes(NodeHighlighter.HighlightState.FromAttrib);
-                foreach (GraphNode steinerNode in mst.mstNodes)
+                foreach (GraphNode steinerNode in searchSpaceBase)//mst.mstNodes)
                     tree._nodeHighlighter.HighlightNode(SkillTree.Skillnodes[steinerNode.Id], NodeHighlighter.HighlightState.FromAttrib);
             }
 

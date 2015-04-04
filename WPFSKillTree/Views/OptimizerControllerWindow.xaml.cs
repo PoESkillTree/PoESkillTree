@@ -14,6 +14,7 @@ using MahApps.Metro.Controls;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.SkillTreeFiles.SteinerTrees;
 using System.ComponentModel;
+using MessageBox = POESKillTree.Views.MetroMessageBox;
 
 namespace POESKillTree.Views
 {
@@ -41,6 +42,7 @@ namespace POESKillTree.Views
             steinerSolver = new SteinerSolver(Tree);
             // This should maybe also be part of a background task since it might take a moment.
             steinerSolver.InitializeSolver(targetNodes);
+            maxSteps = steinerSolver.MaxGeneration;
             progressBar.Maximum = maxSteps;
 
             worker.DoWork += worker_DoWork;
@@ -53,11 +55,12 @@ namespace POESKillTree.Views
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = (BackgroundWorker)sender;
-            for (; step <= maxSteps; step++)
+            //for (; step <= maxSteps; step++)
+            while (!steinerSolver.IsConsideredDone)
             {
                 steinerSolver.EvolutionStep();
 
-                worker.ReportProgress(step, steinerSolver.BestSolution);
+                worker.ReportProgress(steinerSolver.CurrentGeneration, steinerSolver.BestSolution);
 
                 if (worker.CancellationPending)
                     break;

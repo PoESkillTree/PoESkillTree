@@ -25,7 +25,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         public List<GraphEdge> Span(GraphNode startFrom)
         {
-            // We will have at most one adjacent edge to each node, so that's our limit.
+            /// With n nodes, we can have up to n (actually n-1) edges adjacent to each node.
             HeapPriorityQueue<GraphEdge> adjacentEdgeQueue = new HeapPriorityQueue<GraphEdge>(mstNodes.Count * mstNodes.Count);
             /// Removing all edges that satisfy a property (here a certain "outside"
             /// node) from the queue is not actually trivial, since you could only
@@ -58,9 +58,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 mstEdges.Add(shortestEdge);
                 GraphNode newIn = shortestEdge.outside;
 
-
-                if (inMst.Contains(newIn)) throw new Exception();
-                if (!toAdd.Contains(newIn)) throw new Exception("No edge to this node should remain!");
+                
+                //if (inMst.Contains(newIn)) throw new Exception();
+                //if (!toAdd.Contains(newIn)) throw new Exception("No edge to this node should remain!");
 
                 inMst.Add(newIn);
                 toAdd.Remove(newIn);
@@ -68,7 +68,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 // Remove all edges that are entirely inside the MST now.
                 foreach (GraphEdge obsoleteEdge in edgesToNode[newIn])
                 {
-                    if (!inMst.Contains(obsoleteEdge.inside)) throw new Exception("This edge's inside node is not inside");
+                    //if (!inMst.Contains(obsoleteEdge.inside)) throw new Exception("This edge's inside node is not inside");
                     adjacentEdgeQueue.Remove(obsoleteEdge);
                 }
                 edgesToNode.Remove(newIn);

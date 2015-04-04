@@ -917,7 +917,7 @@ namespace POESKillTree.SkillTreeFiles
             var nodes = new HashSet<ushort>();
             foreach (SkillNode nd in _nodeHighlighter.nodeHighlights.Keys)
             {
-                if (!rootNodeList.Contains(nd.Id))
+                if (!(rootNodeList.Contains(nd.Id) | SkilledNodes.Contains(nd.Id)))
                     nodes.Add(nd.Id);
             }
             SkillNodeList(nodes);
@@ -925,6 +925,12 @@ namespace POESKillTree.SkillTreeFiles
 
         private void SkillNodeList(HashSet<ushort> targetNodeIds)
         {
+            if (targetNodeIds.Count == 0)
+            {
+                MessageBox.Show("Please highlight some non-skilled nodes first!");
+                return;
+            }
+
             OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds);
 
             optimizerDialog.ShowDialog();
@@ -943,43 +949,6 @@ namespace POESKillTree.SkillTreeFiles
 
             this.DrawHighlights(_nodeHighlighter);
 
-            /*foreach (SkillNode skillNode in resultNodes)
-            {
-                if (!SkilledNodes.Contains(skillNode.Id))
-                    SkilledNodes.Add(skillNode.Id);
-            }*/
-
-
-
-            /*while (hs.Count != 0)
-            {
-                var currentShortestPath = new List<ushort>();
-                var removeList = new List<ushort>();
-                foreach (ushort id in hs)
-                {
-                    var shortestPathTemp = GetShortestPathTo(id, SkilledNodes);
-                    if (shortestPathTemp.Count <= 0)
-                    {
-                        removeList.Add(id);
-                    }
-                    else if (shortestPathTemp.Count == 1)
-                    {
-                        currentShortestPath = shortestPathTemp;
-                        break;
-                    }
-                    else if (currentShortestPath.Count == 0 || shortestPathTemp.Count < currentShortestPath.Count)
-                    {
-                        currentShortestPath = shortestPathTemp;
-                    }
-                }
-                removeList.ForEach(x => hs.Remove(x));
-                foreach (ushort i in currentShortestPath)
-                {
-                    hs.Remove(i);
-                    SkilledNodes.Add(i);
-                }
-                //UpdateAvailNodesList();
-            }*/
             UpdateAvailNodes();
         }
 
