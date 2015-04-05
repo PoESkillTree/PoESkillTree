@@ -156,7 +156,6 @@ namespace POESKillTree.Views
 
             btnLoadBuild_Click(this, new RoutedEventArgs());
             _justLoaded = false;
-
             // loading saved build
             lvSavedBuilds.Items.Clear();
             foreach (var build in _persistentData.Builds)
@@ -1005,6 +1004,33 @@ namespace POESKillTree.Views
         #endregion
 
         #region Builds - Event Handlers
+
+        private void SavedBuildFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SavedBuildFilterChanged();
+        }
+
+        private void SavedBuildFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SavedBuildFilterChanged();
+        }
+
+        private void SavedBuildFilterChanged()
+        {
+            if (lvSavedBuilds == null) return;
+
+            var selectedItem = (ComboBoxItem)cbCharTypeSavedBuildFilter.SelectedItem;
+            var className = selectedItem.Content.ToString();
+            var filterText = tbSavedBuildFilter.Text.ToLower();
+
+            foreach (PoEBuild item in lvSavedBuilds.Items)
+            {
+                item.Visible = (className.Equals("All") || item.Class.Equals(className)) && 
+                    (item.Name.ToLower().Contains(filterText) || item.Note.ToLower().Contains(filterText));
+            }
+
+            lvSavedBuilds.Items.Refresh();
+        }
 
         private void lvi_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

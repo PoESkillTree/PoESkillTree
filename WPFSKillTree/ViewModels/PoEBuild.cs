@@ -19,9 +19,12 @@ namespace POESKillTree.ViewModels
         public string Image { get { return "/POESKillTree;component/Images/" + Class + ".jpg"; } }
         [XmlIgnoreAttribute]
         public string Description {get { return Class + ", " + PointsUsed + " points used"; }}
+        [XmlIgnoreAttribute]
+        public bool Visible { get; set; }
 
         public PoEBuild()
         {
+            Visible = true;
         }
 
         public PoEBuild(string name, string poeClass, string pointsUsed, string url, string note)

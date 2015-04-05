@@ -328,18 +328,38 @@
 
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left"  FlowDirection="LeftToRight" Background="{DynamicResource WhiteColorBrush}">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lvSavedBuilds" Margin="0,0,0,2.476" HorizontalAlignment="Left" Width="255" Grid.Row="0"
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="110"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Filter:"></Label>
+                        <ComboBox Grid.Column="1" Height="26" x:Name="cbCharTypeSavedBuildFilter" VerticalAlignment="Top" Width="100" SelectionChanged="SavedBuildFilter_SelectionChanged">
+                            <ComboBoxItem Content="All" IsSelected="True" />
+                            <ComboBoxItem Content="Scion"/>
+                            <ComboBoxItem Content="Marauder"/>
+                            <ComboBoxItem Content="Ranger"/>
+                            <ComboBoxItem Content="Witch"/>
+                            <ComboBoxItem Content="Duelist"/>
+                            <ComboBoxItem Content="Templar"/>
+                            <ComboBoxItem Content="Shadow"/>
+                        </ComboBox>
+                        <TextBox Height="26" x:Name="tbSavedBuildFilter" Width="105" Margin="5,0,0,0" TextChanged="SavedBuildFilter_TextChanged" Grid.Column="2" />
+                    </Grid>
+                    <ListView x:Name="lvSavedBuilds" Margin="0,0,0,2.476" HorizontalAlignment="Left" Width="255" Grid.Row="1"
                               ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"
                               AllowDrop="True" DragEnter="ListViewDragEnter" Drop="ListViewDrop" PreviewMouseMove="ListViewPreviewMouseMove" PreviewMouseLeftButtonDown="ListViewMouseLeftButtonDown"
                               MouseDoubleClick="lvi_MouseDoubleClick" SelectionChanged="lvSavedBuilds_SelectionChanged"
                               SelectedIndex="{Binding ElementName=window,Path=PersistentData.Options.SelectedBuildIndex}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave">
+                                <Grid Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -354,9 +374,14 @@
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MetroListViewItem}">
+                                <Setter Property="MinHeight" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                     </ListView>
-                    <CheckBox Grid.Row="1" Margin="2" IsChecked="{Binding IsChecked,ElementName=mnuViewComparison}">Tree comparison</CheckBox>
-                    <Grid Grid.Row="2">
+                    <CheckBox Grid.Row="2" Margin="2" IsChecked="{Binding IsChecked,ElementName=mnuViewComparison}">Tree comparison</CheckBox>
+                    <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="85"/>
                             <ColumnDefinition Width="*"/>
