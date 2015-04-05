@@ -18,6 +18,7 @@
                 <TextBox x:Name="txtItemData" HorizontalAlignment="Stretch" Margin="4,2,4,4" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MaxLines="10" AcceptsTab="True" AcceptsReturn="True"/>
             </StackPanel>
         </Expander>
+        <Label x:Name="lblLastUpdated"></Label>
         <Button x:Name="btnOk" Content="OK" HorizontalAlignment="Right" Margin="4" Width="75" Click="btnOk_Click" IsDefault="True" />
     </StackPanel>
 </controls:MetroWindow>

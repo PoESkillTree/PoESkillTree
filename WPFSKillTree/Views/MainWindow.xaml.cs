@@ -1034,7 +1034,7 @@ namespace POESKillTree.Views
         private void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
-            var formBuildName = new FormChooseBuildName(selectedBuild.Name, selectedBuild.Note, selectedBuild.CharacterName, selectedBuild.ItemData);
+            var formBuildName = new FormChooseBuildName(selectedBuild);
             formBuildName.Owner = this;
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
@@ -1089,6 +1089,7 @@ namespace POESKillTree.Views
                 selectedBuild.PointsUsed = tbUsedPoints.Text;
                 selectedBuild.Url = tbSkillURL.Text;
                 selectedBuild.ItemData = _persistentData.CurrentBuild.ItemData;
+                selectedBuild.LastUpdated = DateTime.Now;
                 lvSavedBuilds.Items.Refresh();
                 SaveBuildsToFile();
             }
@@ -1164,7 +1165,8 @@ namespace POESKillTree.Views
                     Url = tbSkillURL.Text,
                     Note = formBuildName.GetNote(),
                     CharacterName = formBuildName.GetCharacterName(),
-                    ItemData = formBuildName.GetItemData()
+                    ItemData = formBuildName.GetItemData(),
+                    LastUpdated = DateTime.Now
                 };
                 SetCurrentBuild(newBuild);
                 lvSavedBuilds.Items.Add(newBuild);

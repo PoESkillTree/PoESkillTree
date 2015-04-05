@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Serialization;
 
 namespace POESKillTree.ViewModels
@@ -12,6 +13,7 @@ namespace POESKillTree.ViewModels
         public string Url { get; set; }
         public string Note { get; set; }
         public string ItemData { get; set; }
+        public DateTime LastUpdated { get; set; }
 
         [XmlIgnoreAttribute]
         public string Image { get { return "/POESKillTree;component/Images/" + Class + ".jpg"; } }
