@@ -16,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
@@ -911,13 +912,6 @@ namespace POESKillTree.Views
 
             if (node != null && node.Attributes.Count != 0)
             {
-                var tooltip = node.Name + "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
-                if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
-                {
-                    _sToolTip.Content = tooltip;
-                    _sToolTip.IsOpen = true;
-                    _lasttooltip = tooltip;
-                }
                 if (Tree.SkilledNodes.Contains(node.Id))
                 {
                     _toRemove = Tree.ForceRefundNodePreview(node.Id);
@@ -928,6 +922,25 @@ namespace POESKillTree.Views
                 {
                     _prePath = Tree.GetShortestPathTo(node.Id);
                     Tree.DrawPath(_prePath);
+                }
+                
+                var tooltip = node.Name + "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
+                if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
+                {
+                    var sp = new StackPanel();
+                    sp.Children.Add(new TextBlock
+                    {
+                        Text = tooltip
+                    });
+                    if (_prePath != null)
+                    {
+                        sp.Children.Add(new Separator());
+                        sp.Children.Add(new TextBlock {Text = "Points to skill node: " + _prePath.Count});
+                    }
+
+                    _sToolTip.Content = sp;
+                    _sToolTip.IsOpen = true;
+                    _lasttooltip = tooltip;
                 }
             }
             else
@@ -1716,11 +1729,6 @@ namespace POESKillTree.Views
         }
 
         #endregion
-
-        private void image1_LostFocus(object sender, MouseEventArgs e)
-        {
-            _sToolTip.IsOpen = false;
-        }
 
         private void lvSavedBuilds_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
