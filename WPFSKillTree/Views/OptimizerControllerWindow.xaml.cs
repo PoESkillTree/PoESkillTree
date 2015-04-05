@@ -24,6 +24,7 @@ namespace POESKillTree.Views
     public partial class OptimizerControllerWindow : MetroWindow
     {
         private SteinerSolver steinerSolver;
+        private SkillTree tree;
 
         private readonly BackgroundWorker worker = new BackgroundWorker();
 
@@ -38,7 +39,7 @@ namespace POESKillTree.Views
         public OptimizerControllerWindow(SkillTree Tree, HashSet<ushort> targetNodes)
         {
             InitializeComponent();
-
+            tree = Tree;
             steinerSolver = new SteinerSolver(Tree);
             // This should maybe also be part of a background task since it might take a moment.
             steinerSolver.InitializeSolver(targetNodes);
@@ -76,6 +77,8 @@ namespace POESKillTree.Views
             bestSoFar = (HashSet<ushort>)(e.UserState);
             lblBestResult.Content = "Best result so far: " + bestSoFar.Count +
                 " additional points spent.";
+            tree.HighlightedNodes = bestSoFar;
+            tree.DrawNodeBaseSurroundHighlight();
         }
 
         void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

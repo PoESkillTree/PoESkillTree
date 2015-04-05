@@ -32,7 +32,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// Asking for delegates to convert the bitstrings to the actual objects in
         /// here (and making this class generic) would be pretty silly in my eyes.
 
-        List<Individual> population;
+        Individual[] population;
 
         int populationSize;
 
@@ -54,14 +54,19 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         class Individual
         {
             public BitArray DNA;
-            public double fitness;
+
+            // Enforcing this to be set in the constructor (and never changed).
+            private double _fitness;
+            public double Fitness
+            { get { return _fitness; } }
+
             public double health;
             public int age;
 
-            public Individual(BitArray DNA, double fitness = 0)
+            public Individual(BitArray DNA, double fitness)
             {
                 this.DNA = DNA;
-                this.fitness = fitness;
+                _fitness = fitness;
                 this.age = 0;
             }
         }
@@ -115,17 +120,17 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             population = createPopulation();
             generationCount = 0;
+            temperature = 6.0;
         }
 
-        private List<Individual> createPopulation()
+        private Individual[] createPopulation()
         {
-            List<Individual> newPopulation = new List<Individual>();
+            Individual[] newPopulation = new Individual[populationSize];
             for (int i = 0; i < populationSize; i++)
             {
-                Individual individual = new Individual(randomBitarray(dnaLength));
-                newPopulation.Add(individual);
+                newPopulation[i] = spawnIndividual(randomBitarray(dnaLength));
+                newPopulation[i].age++;
             }
-
             return newPopulation;
         }
 
@@ -152,56 +157,81 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             double maxCurrentFitness = double.MinValue;
 
 
-            // Evaluate all new individuals
+            // Check the fitness values of the current generation.
             foreach (Individual individual in population)
             {
-                if (individual.age == 0)
-                    individual.fitness = solutionFitness(individual.DNA);
-
-                if (individual.fitness < 0)
+                if (individual.Fitness < 0)
                     throw new ArgumentOutOfRangeException("solutionFitness function",
                         "Negative fitness values are not allowed! Use 0 fitness " +
                         "for solutions that should not reproduce.");
 
-                if (individual.fitness > bestSolution.fitness)
-                    bestSolution = new Individual(individual.DNA, individual.fitness);
+                if (individual.Fitness > bestSolution.Fitness)
+                    bestSolution = new Individual(individual.DNA, individual.Fitness);
 
                 // TODO: Treat 0 fitness special?
-                maxFitness = Math.Max(individual.fitness, maxFitness);
-                minFitness = Math.Min(individual.fitness, minFitness);
+                maxFitness = Math.Max(individual.Fitness, maxFitness);
+                minFitness = Math.Min(individual.Fitness, minFitness);
 
-                maxCurrentFitness = Math.Max(individual.fitness, maxCurrentFitness);
-                minCurrentFitness = Math.Min(individual.fitness, minCurrentFitness);
+                // Basically only for debugging purposes.
+                maxCurrentFitness = Math.Max(individual.Fitness, maxCurrentFitness);
+                minCurrentFitness = Math.Min(individual.Fitness, minCurrentFitness);
             }
 
             double averageHealth = 0;
             double averageBitsSet = 0;
             double averageAge = 0;
-            int maxFitnessCount = 0;
+            int acceptedTotal = 0;
+            int acceptedWorse = 0;
             int purgedIndividuals = 0;
 
-            population = population.OrderBy(ind => ind.fitness).ToList();
+            population = population.OrderBy(ind => ind.Fitness).ToArray();
 
+            int index = 0;
             foreach (Individual individual in population)
             {
-                if (individual.age == 0)
-                    individual.health = normalizeFitness(individual.fitness);
-                else
-                    individual.health *= degradationFactor;
+                index++;
+                /*if (individual.age == 0)*/
+                 individual.health = normalizeFitness(individual.Fitness);
+                /*else
+                    individual.health *= degradationFactor;*/
 
                 averageHealth += individual.health;
                 averageBitsSet += SetBits(individual.DNA);
-                if (individual.health == 1) maxFitnessCount++;
 
-                if (individual.health >= 0.5)
+                // Survival of the fittest (population was ordered by fitness above)
+                if (index < 0.5 * populationSize)
                 {
-                    individual.age++;
-                    //individual.DNA = mutateDNA(individual.DNA);
-                    averageAge += individual.age;
-                    newPopulation.Add(individual);
-                    sampler.AddEntry(individual, individual.health);
+                    purgedIndividuals++;
+                    continue;
                 }
-                else purgedIndividuals++;
+
+                //if (individual.health == 1) maxFitnessCount++;
+
+                if (individual.age >= 1)
+                    sampler.AddEntry(individual, individual.health);
+                averageAge += individual.age;
+
+                individual.age++;
+
+                // Simulated annealing
+                Individual temp = individual;
+                Individual mutation = spawnIndividual(mutateDNA(individual.DNA));
+                mutation.age = individual.age - 1; // TODO: Investigate.
+                if (acceptNewState(individual, mutation))
+                {
+                    acceptedTotal++;
+                    if (mutation.Fitness < individual.Fitness)
+                        acceptedWorse++;
+                    temp = mutation;
+                }
+                newPopulation.Add(temp);
+                //if (temp.health >= 0.5)
+                //{
+            
+                    //individual.age++;
+                    //individual.DNA = mutateDNA(individual.DNA);
+            
+                //}
             }
             /*if (purgedIndividuals == 0)
                 minFitness = minCurrentFitness;*/
@@ -209,17 +239,20 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             stopwatch.Stop();
             Console.Write("Evaluation time for " + generationCount + " : ");
             Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
+            Console.WriteLine("Temperature: " + temperature);
             Console.WriteLine("Average health: " + averageHealth / populationSize);
-            //Console.WriteLine("Average bits set: " + averageBitsSet / populationSize);
+            Console.WriteLine("Average bits set: " + averageBitsSet / populationSize);
             Console.WriteLine("Average age: " + averageAge / populationSize);
-            Console.WriteLine("Max-fitness count: " + maxFitnessCount);
-            Console.WriteLine("Purged individuals: " + purgedIndividuals + "/" + populationSize);
+            Console.WriteLine("Accepted new states (all/worse): " + acceptedTotal + "/" + acceptedWorse);
+            //Console.WriteLine("Purged individuals: " + purgedIndividuals + "/" + populationSize);
+            Console.WriteLine("Sampler entries: " + sampler.EntryCount);
             if (minCurrentFitness == maxCurrentFitness)
                 Console.WriteLine("Entire population had the same fitness value.");
 
             stopwatch.Restart();
 
             if (!sampler.CanSample)
+            //if (false)
             {
                 population = createPopulation();
                 Console.WriteLine("Entire population was infertile (Generation " +
@@ -235,23 +268,31 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 BitArray parent1 = sampler.RandomSample().DNA;
                 BitArray parent2 = sampler.RandomSample().DNA;
 
-                Individual newIndividual = new Individual(combineIndividualsDNA(parent1, parent2));
+                BitArray newDNA = combineIndividualsDNA(parent1, parent2);
+                //newDNA = mutateDNA(newDNA);
 
-                newIndividual.DNA = mutateDNA(newIndividual.DNA);
-
-                newPopulation.Add(newIndividual);
+                newPopulation.Add(spawnIndividual(newDNA));
             }
 
-            population = newPopulation;
+            population = newPopulation.ToArray();
+            // Yeah, I know, out of thin air.
+            temperature *= degradationFactor;
 
             stopwatch.Stop();
             //Console.Write("Mutation time for " + generationCount + " : ");
             //Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
-            Console.WriteLine("Best value so far: " + (1500 - bestSolution.fitness));
+            Console.WriteLine("Best value so far: " + (1500 - bestSolution.Fitness));
             Console.WriteLine("------------------");
             Console.Out.Flush();
 
             return generationCount;
+        }
+
+        private Individual spawnIndividual(BitArray dna)
+        {
+            Individual individual = new Individual(dna, solutionFitness(dna));
+            individual.health = normalizeFitness(individual.Fitness);
+            return individual;
         }
 
         public BitArray GetBestDNA()
@@ -267,6 +308,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return (fitness - minFitness) / (maxFitness - minFitness);
         }
 
+        #region DNA mutation
         private BitArray mutateDNA(BitArray dna)
         {
             /// Chance for each individual bit to be mutated. Not currently used
@@ -294,7 +336,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             int length = dna1.Length;
             if (dna2.Length != length)
                 throw new NotImplementedException("Breeding of individuals with" +
-                            "differing DNA lengths is not yet implemented!");
+                            " differing DNA lengths is not yet implemented!");
 
             int crossoverStart = random.Next(length);
             int crossoverEnd   = random.Next(length);
@@ -311,7 +353,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         private BitArray crossoverDNA(BitArray DNA1, BitArray DNA2, int start, int end)
         {
             BitArray cross = new BitArray(DNA1);
-            for (int i = start; i < end; i++)
+            for (int i = start; i <= end; i++)
                 cross[i] = DNA2[i];
             return cross;
         }
@@ -337,6 +379,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return bitArray;
         }
 
+        /// <summary>
+        ///  Returns the amount of bits that are set in the dna BitArray.
+        /// </summary>
+        /// <param name="dna">The BitArray whose set bits shall be counted.</param>
+        /// <returns>The amount of bits set in dna.</returns>
         public static int SetBits(BitArray dna)
         {
             int sum = 0;
@@ -344,5 +391,20 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 sum += (dna[i] ? 1 : 0);
             return sum;
         }
+        #endregion
+
+        #region Simulated Annealing
+        private double temperature;
+
+        private bool acceptNewState(Individual oldState, Individual newState)
+        {
+            double df = newState.Fitness - oldState.Fitness;
+            if (df >= 0) return true;
+            double acceptanceProbability = Math.Exp(df / temperature);
+            if (random.NextDouble() < acceptanceProbability) return true;
+            return false;
+        }
+
+        #endregion
     }
 }

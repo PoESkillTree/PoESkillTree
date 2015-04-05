@@ -32,10 +32,13 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         SortedDictionary<double, T> entries;
         double totalWeight;
 
+        Random random;
+
         public bool CanSample
         { get { return totalWeight > 0; } }
 
-        Random random;
+        public int EntryCount
+        { get { return entries.Count; } }
 
         public WeightedSampler(Random random = null)
         {

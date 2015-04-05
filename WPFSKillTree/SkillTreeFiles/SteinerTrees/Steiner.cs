@@ -81,7 +81,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         { get { return (_initialized ? CurrentGeneration >= MaxGeneration : false); } }
 
         public int MaxGeneration
-        { get { return (_initialized ? searchSpaceBase.Count : 0); } }
+        { get { return (_initialized ? 2*searchSpaceBase.Count : 0); } }
 
         public int CurrentGeneration
         { get { return (_initialized ? ga.GenerationCount : 0); } }
@@ -349,7 +349,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (visualize)
             {
                 tree._nodeHighlighter.UnhighlightAllNodes(NodeHighlighter.HighlightState.FromAttrib);
-                foreach (GraphNode steinerNode in searchSpaceBase)//mst.mstNodes)
+                foreach (GraphNode steinerNode in mst.mstNodes)
                     tree._nodeHighlighter.HighlightNode(SkillTree.Skillnodes[steinerNode.Id], NodeHighlighter.HighlightState.FromAttrib);
             }
 
