@@ -109,7 +109,7 @@ namespace POESKillTree.Views
             bestSoFar = (HashSet<ushort>)(e.UserState);
             lblBestResult.Content = "Best result so far: " + bestSoFar.Count +
                 " additional points spent.";
-            tree.HighlightedNodes = bestSoFar;
+            tree.HighlightedNodes = new HashSet<ushort>(bestSoFar.Concat(tree.SkilledNodes));
             tree.DrawNodeBaseSurroundHighlight();
         }
 
