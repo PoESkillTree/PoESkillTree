@@ -5,29 +5,58 @@ namespace POESKillTree.Model
     {
         public string Theme { get; set; }
         public string Accent { get; set; } //Controlled by Menu Accent Headers
-        public bool AttributesBarOpened { get; set; }
-        public bool BuildsBarOpened { get; set; }
 
-
-        private bool _TreeComparisonEnabled = false;
-        public bool TreeComparisonEnabled
+        private bool _attributesBarOpened;
+        public bool AttributesBarOpened
         {
-            get { return _TreeComparisonEnabled; }
+            get { return _attributesBarOpened; }
             set
             {
-                _TreeComparisonEnabled = value;
+                _attributesBarOpened = value;
+                OnPropertyChanged("AttributesBarOpened");
+            }
+        }
+
+        private bool _characterSheetBarOpened;
+        public bool CharacterSheetBarOpened
+        {
+            get { return _characterSheetBarOpened; }
+            set
+            {
+                _characterSheetBarOpened = value;
+                OnPropertyChanged("CharacterSheetBarOpened");
+            }
+        }
+
+        private bool _buildsBarOpened;
+        public bool BuildsBarOpened
+        {
+            get { return _buildsBarOpened; }
+            set
+            {
+                _buildsBarOpened = value;
+                OnPropertyChanged("BuildsBarOpened");
+            }
+        }
+
+        private bool _treeComparisonEnabled;
+        public bool TreeComparisonEnabled
+        {
+            get { return _treeComparisonEnabled; }
+            set
+            {
+                _treeComparisonEnabled = value;
                 OnPropertyChanged("TreeComparisonEnabled");
             }
         }
 
-        private int _SelectedBuildIndex = -1;
-
+        private int _selectedBuildIndex = -1;
         public int SelectedBuildIndex
         {
-            get { return _SelectedBuildIndex; }
+            get { return _selectedBuildIndex; }
             set 
             { 
-                _SelectedBuildIndex = value;
+                _selectedBuildIndex = value;
                 OnPropertyChanged("SelectedBuildIndex");
             }
         }
@@ -36,8 +65,6 @@ namespace POESKillTree.Model
         {
             Theme = "Dark";
             Accent = "Steel";
-            AttributesBarOpened = false;
-            BuildsBarOpened = false;
         }
 
         private void OnPropertyChanged(string caller)

@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using MahApps.Metro.Controls;
+using POESKillTree.ViewModels;
 
 namespace POESKillTree.Views
 {
@@ -18,14 +20,15 @@ namespace POESKillTree.Views
             txtCharacterName.Text = characterName;
             txtItemData.Text = itemData;
         }
-        public FormChooseBuildName(string name, string note, string characterName, string itemData)
+        public FormChooseBuildName(PoEBuild selectedBuild)
         {
             InitializeComponent();
-            txtName.Text = name;
-            txtName2.Text = note;
-            txtCharacterName.Text = characterName;
-            txtItemData.Text = itemData;
-
+            txtName.Text = selectedBuild.Name;
+            txtName2.Text = selectedBuild.Note;
+            txtCharacterName.Text = selectedBuild.CharacterName;
+            txtItemData.Text = selectedBuild.ItemData;
+            lblLastUpdated.Content = "Last updated: " +
+                                     (selectedBuild.LastUpdated == DateTime.MinValue ? "Not Available" : selectedBuild.LastUpdated.ToString());
             txtName.Select(txtName.Text.Length, 0);
         }
 

@@ -61,6 +61,7 @@ Note: Both these options require that you can access the official Path of Exile 
 * Ctrl + 6: Templar
 * Ctrl + 7: Shadow
 * Ctrl + Q: Toggles Attribute Sidebar
+* Ctrl + Shift + Q: Toggles Character Sheet Sidebar
 * Ctrl + B: Toggles Saved Build Sidebar
 * Ctrl + E: Creates a PoEUrl link and copies to clipboard
 * Ctrl + R: Resets tree
@@ -86,6 +87,7 @@ Note: Both these options require that you can access the official Path of Exile 
 * NadenOfficial
 * Ttxman
 * yazilliclick
+* MauranKilom
 
 ###Screenshoots
 ---

@@ -68,6 +68,12 @@
                       Data="F1 M 19,45.9167L 25.6082,45.9167C 28.6524,49.3179 33.0762,51.4583 38,51.4583C 42.9238,51.4583 47.3476,49.3179 50.3918,45.9167L 58.5833,45.9167L 58.5833,57L 19,57L 19,45.9167 Z M 56.2083,48.2917L 53.4374,48.2917L 53.4374,53.0417L 56.2083,53.0417L 56.2083,48.2917 Z M 39.5833,33.25L 30.0833,23.75L 39.5833,14.25L 39.5833,20.6703C 46.7082,21.4579 52.25,27.4985 52.25,34.8333C 52.25,42.7034 45.8701,49.0833 38,49.0833C 30.1299,49.0833 23.75,42.7034 23.75,34.8333C 23.75,32.0174 24.5668,29.3923 25.9763,27.1819L 30.6522,30.1575C 29.7908,31.5083 29.2917,33.1125 29.2917,34.8333C 29.2917,39.6428 33.1905,43.5417 38,43.5417C 42.8095,43.5417 46.7083,39.6428 46.7083,34.8333C 46.7083,30.5646 43.6368,27.0132 39.5833,26.2686L 39.5833,33.25 Z "/>
             </Canvas>
         </ControlTemplate>
+        <ControlTemplate x:Key="CircelIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+            </Canvas>
+        </ControlTemplate>
         <ControlTemplate x:Key="ThemeIcon">
             <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
                 <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
@@ -174,7 +180,7 @@
                         <ContentControl Template="{StaticResource RedoIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Reset" InputGestureText="Ctrl+R" Click="btnReset_Click">
+                <MenuItem Header="_Reset Tree" InputGestureText="Ctrl+R" Click="btnReset_Click">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ResetIcon}" />
                     </MenuItem.Icon>
@@ -222,8 +228,9 @@
                     <MenuItem x:Name="mnuViewAccentYellow" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Yellow" Click="mnuSetAccent_Click" />
                 </MenuItem>
                 <Separator />
-                <MenuItem x:Name="mnuViewBuilds" Header="_Builds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="False" Click="ToggleBuilds_Click"/>
-                <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" IsCheckable="true" IsChecked="False" InputGestureText="Ctrl+Q" Click="ToggleAttributes_Click"/>
+                <MenuItem x:Name="mnuViewBuilds" Header="_Builds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="{Binding PersistentData.Options.BuildsBarOpened,ElementName=window, Mode=TwoWay}"/>
+                <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" InputGestureText="Ctrl+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.AttributesBarOpened,ElementName=window, Mode=TwoWay}"/>
+                <MenuItem x:Name="mnuViewCharacterSheet" Header="_Character Sheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}"/>
                 <MenuItem x:Name="mnuViewComparison" Header="_Tree comparison" IsCheckable="true" IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click"  />
             </MenuItem>
             <MenuItem Header="_Tools ">
@@ -240,6 +247,11 @@
                 <MenuItem Header="_Skill highlighted nodes" Click="Menu_SkillHighlightedNodes">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource SkillIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Unhighlight All Nodes" Click="Menu_UnhighlightAllNodes">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource CircelIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="Menu_CopyStats">
@@ -309,25 +321,45 @@
             </local:ZoomBorder>
 
 
-            <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" Expanded="expSavedBuilds_Expanded" Collapsed="expSavedBuilds_Collapsed" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
+            <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
                     <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Saved builds</TextBlock>
                 </Expander.Header>
 
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left"  FlowDirection="LeftToRight" Background="{DynamicResource WhiteColorBrush}">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lvSavedBuilds" Margin="0,0,0,2.476" HorizontalAlignment="Left" Width="255" Grid.Row="0"
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="110"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Filter:"></Label>
+                        <ComboBox Grid.Column="1" Height="26" x:Name="cbCharTypeSavedBuildFilter" VerticalAlignment="Top" Width="100" SelectionChanged="SavedBuildFilter_SelectionChanged">
+                            <ComboBoxItem Content="All" IsSelected="True" />
+                            <ComboBoxItem Content="Scion"/>
+                            <ComboBoxItem Content="Marauder"/>
+                            <ComboBoxItem Content="Ranger"/>
+                            <ComboBoxItem Content="Witch"/>
+                            <ComboBoxItem Content="Duelist"/>
+                            <ComboBoxItem Content="Templar"/>
+                            <ComboBoxItem Content="Shadow"/>
+                        </ComboBox>
+                        <TextBox Height="26" x:Name="tbSavedBuildFilter" Width="105" Margin="5,0,0,0" TextChanged="SavedBuildFilter_TextChanged" Grid.Column="2" />
+                    </Grid>
+                    <ListView x:Name="lvSavedBuilds" Margin="0,0,0,2.476" HorizontalAlignment="Left" Width="255" Grid.Row="1"
                               ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"
                               AllowDrop="True" DragEnter="ListViewDragEnter" Drop="ListViewDrop" PreviewMouseMove="ListViewPreviewMouseMove" PreviewMouseLeftButtonDown="ListViewMouseLeftButtonDown"
-                              MouseDoubleClick="lvi_MouseDoubleClick" SelectionChanged="lvSavedBuilds_SelectionChanged" Grid.RowSpan="2"
+                              MouseDoubleClick="lvi_MouseDoubleClick" SelectionChanged="lvSavedBuilds_SelectionChanged"
                               SelectedIndex="{Binding ElementName=window,Path=PersistentData.Options.SelectedBuildIndex}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave">
+                                <Grid Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -342,9 +374,14 @@
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MetroListViewItem}">
+                                <Setter Property="MinHeight" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                     </ListView>
-                    <CheckBox Grid.Row="1" Margin="2" IsChecked="{Binding IsChecked,ElementName=mnuViewComparison}">Tree comparison</CheckBox>
-                    <Grid Grid.Row="2">
+                    <CheckBox Grid.Row="2" Margin="2" IsChecked="{Binding IsChecked,ElementName=mnuViewComparison}">Tree comparison</CheckBox>
+                    <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="85"/>
                             <ColumnDefinition Width="*"/>
@@ -357,9 +394,9 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" x:Name="expAttributes" Collapsed="expAttributes_Collapsed" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}" MouseLeave="expAttributes_MouseLeave">
+            <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewAttributes}" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}" MouseLeave="expAttributes_MouseLeave">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Attributes</TextBlock>
+                    <TextBlock Margin="6,0" TextAlignment="Left" FontSize="16">Attributes</TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
                     <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
@@ -411,7 +448,7 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" x:Name="expSheet" Expanded="expSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
+            <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}" Expanded="expCharacterSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
                     <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Character Sheet</TextBlock>
                 </Expander.Header>

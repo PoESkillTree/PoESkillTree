@@ -16,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
@@ -149,16 +150,12 @@ namespace POESKillTree.Views
             _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
             _addtransform = SkillTree.TRect.TopLeft;
 
-            expAttributes.IsExpanded = _persistentData.Options.AttributesBarOpened;
-            expSavedBuilds.IsExpanded = _persistentData.Options.BuildsBarOpened;
-
             // loading last build
             if (_persistentData.CurrentBuild != null)
                 SetCurrentBuild(_persistentData.CurrentBuild);
 
             btnLoadBuild_Click(this, new RoutedEventArgs());
             _justLoaded = false;
-
             // loading saved build
             lvSavedBuilds.Items.Clear();
             foreach (var build in _persistentData.Builds)
@@ -219,6 +216,16 @@ namespace POESKillTree.Views
                         break;
                 }
             }
+
+            if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                switch (e.Key)
+                {
+                    case Key.Q:
+                        ToggleCharacterSheet();
+                        break;
+                }
+            }
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -229,8 +236,6 @@ namespace POESKillTree.Views
         {
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
             _persistentData.CurrentBuild.Level = tbLevel.Text;
-            _persistentData.Options.AttributesBarOpened = expAttributes.IsExpanded;
-            _persistentData.Options.BuildsBarOpened = expSavedBuilds.IsExpanded;
             _persistentData.SavePersistentDataToFile();
 
             if (lvSavedBuilds.Items.Count > 0)
@@ -285,6 +290,12 @@ namespace POESKillTree.Views
             }
         }
 
+        private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
+        {
+            Tree.UnhighlightAllNodes();
+            ClearSearch();
+        }
+
         private void Menu_ScreenShot(object sender, RoutedEventArgs e)
         {
             const int maxsize = 3000;
@@ -324,6 +335,7 @@ namespace POESKillTree.Views
                 recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
             }
         }
+        
         private void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
             var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName) { Owner = this };
@@ -759,30 +771,29 @@ namespace POESKillTree.Views
 
         private void ToggleAttributes()
         {
-            mnuViewAttributes.IsChecked = !mnuViewAttributes.IsChecked;
-            expAttributes.IsExpanded = !expAttributes.IsExpanded;
+            _persistentData.Options.AttributesBarOpened = !_persistentData.Options.AttributesBarOpened;
         }
 
-        private void ToggleAttributes_Click(object sender, RoutedEventArgs e)
+        private void ToggleAttributes(bool expanded)
         {
-            ToggleAttributes();
+            _persistentData.Options.AttributesBarOpened = expanded;
         }
 
-        private void expAttributes_Collapsed(object sender, RoutedEventArgs e)
+        private void ToggleCharacterSheet()
         {
-            if (sender == e.Source) // Ignore contained ListBox group collapsion events.
-            {
-                mnuViewAttributes.IsChecked = false;
-            }
+            _persistentData.Options.CharacterSheetBarOpened = !_persistentData.Options.CharacterSheetBarOpened;
+        }
+
+        private void ToggleCharacterSheet(bool expanded)
+        {
+            _persistentData.Options.CharacterSheetBarOpened = expanded;
         }
 
         private void expAttributes_Expanded(object sender, RoutedEventArgs e)
         {
             if (sender == e.Source) // Ignore contained ListBox group collapsion events.
             {
-                mnuViewAttributes.IsChecked = true;
-
-                if (expSheet.IsExpanded) expSheet.IsExpanded = false;
+                ToggleCharacterSheet(false);
             }
         }
 
@@ -794,10 +805,7 @@ namespace POESKillTree.Views
                         .Value.Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
                         .Replace(@"%", @"\%"), @"\d+", @"\d+");
-            if (newHighlightedAttribute == _highlightedAttribute)
-                _highlightedAttribute = "";
-            else
-                _highlightedAttribute = newHighlightedAttribute;
+            _highlightedAttribute = newHighlightedAttribute == _highlightedAttribute ? "" : newHighlightedAttribute;
             Tree.HighlightNodesBySearch(_highlightedAttribute, true, false);
         }
 
@@ -806,33 +814,17 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
-        private void expSheet_Expanded(object sender, RoutedEventArgs e)
+        private void expCharacterSheet_Expanded(object sender, RoutedEventArgs e)
         {
             if (sender == e.Source) // Ignore contained ListBox group expansion events.
             {
-                if (expAttributes.IsExpanded) ToggleAttributes();
+                ToggleAttributes(false);
             }
         }
 
         private void ToggleBuilds()
         {
-            mnuViewBuilds.IsChecked = !mnuViewBuilds.IsChecked;
-            expSavedBuilds.IsExpanded = !expSavedBuilds.IsExpanded;
-        }
-
-        private void ToggleBuilds_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleBuilds();
-        }
-
-        private void expSavedBuilds_Collapsed(object sender, RoutedEventArgs e)
-        {
-            mnuViewBuilds.IsChecked = false;
-        }
-
-        private void expSavedBuilds_Expanded(object sender, RoutedEventArgs e)
-        {
-            mnuViewBuilds.IsChecked = true;
+            _persistentData.Options.BuildsBarOpened = !_persistentData.Options.BuildsBarOpened;
         }
 
         #endregion
@@ -919,14 +911,6 @@ namespace POESKillTree.Views
 
             if (node != null && node.Attributes.Count != 0)
             {
-                var tooltip = node.Name + "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
-                tooltip += "\n" + node.Id;
-                if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
-                {
-                    _sToolTip.Content = tooltip;
-                    _sToolTip.IsOpen = true;
-                    _lasttooltip = tooltip;
-                }
                 if (Tree.SkilledNodes.Contains(node.Id))
                 {
                     _toRemove = Tree.ForceRefundNodePreview(node.Id);
@@ -937,6 +921,25 @@ namespace POESKillTree.Views
                 {
                     _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
                     Tree.DrawPath(_prePath);
+                }
+                
+                var tooltip = node.Name + "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
+                if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
+                {
+                    var sp = new StackPanel();
+                    sp.Children.Add(new TextBlock
+                    {
+                        Text = tooltip
+                    });
+                    if (_prePath != null)
+                    {
+                        sp.Children.Add(new Separator());
+                        sp.Children.Add(new TextBlock {Text = "Points to skill node: " + _prePath.Count});
+                    }
+
+                    _sToolTip.Content = sp;
+                    _sToolTip.IsOpen = true;
+                    _lasttooltip = tooltip;
                 }
             }
             else
@@ -1002,6 +1005,33 @@ namespace POESKillTree.Views
 
         #region Builds - Event Handlers
 
+        private void SavedBuildFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SavedBuildFilterChanged();
+        }
+
+        private void SavedBuildFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SavedBuildFilterChanged();
+        }
+
+        private void SavedBuildFilterChanged()
+        {
+            if (lvSavedBuilds == null) return;
+
+            var selectedItem = (ComboBoxItem)cbCharTypeSavedBuildFilter.SelectedItem;
+            var className = selectedItem.Content.ToString();
+            var filterText = tbSavedBuildFilter.Text.ToLower();
+
+            foreach (PoEBuild item in lvSavedBuilds.Items)
+            {
+                item.Visible = (className.Equals("All") || item.Class.Equals(className)) && 
+                    (item.Name.ToLower().Contains(filterText) || item.Note.ToLower().Contains(filterText));
+            }
+
+            lvSavedBuilds.Items.Refresh();
+        }
+
         private void lvi_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var lvi = ((ListView)sender).SelectedItem;
@@ -1030,7 +1060,7 @@ namespace POESKillTree.Views
         private void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
-            var formBuildName = new FormChooseBuildName(selectedBuild.Name, selectedBuild.Note, selectedBuild.CharacterName, selectedBuild.ItemData);
+            var formBuildName = new FormChooseBuildName(selectedBuild);
             formBuildName.Owner = this;
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
@@ -1085,6 +1115,7 @@ namespace POESKillTree.Views
                 selectedBuild.PointsUsed = tbUsedPoints.Text;
                 selectedBuild.Url = tbSkillURL.Text;
                 selectedBuild.ItemData = _persistentData.CurrentBuild.ItemData;
+                selectedBuild.LastUpdated = DateTime.Now;
                 lvSavedBuilds.Items.Refresh();
                 SaveBuildsToFile();
             }
@@ -1160,7 +1191,8 @@ namespace POESKillTree.Views
                     Url = tbSkillURL.Text,
                     Note = formBuildName.GetNote(),
                     CharacterName = formBuildName.GetCharacterName(),
-                    ItemData = formBuildName.GetItemData()
+                    ItemData = formBuildName.GetItemData(),
+                    LastUpdated = DateTime.Now
                 };
                 SetCurrentBuild(newBuild);
                 lvSavedBuilds.Items.Add(newBuild);
@@ -1401,6 +1433,12 @@ namespace POESKillTree.Views
         private void SearchUpdate()
         {
             Tree.HighlightNodesBySearch(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value, true);
+        }
+
+        private void ClearSearch()
+        {
+            tbSearch.Text = "";
+            SearchUpdate();
         }
 
         private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
@@ -1719,11 +1757,6 @@ namespace POESKillTree.Views
         }
 
         #endregion
-
-        private void image1_LostFocus(object sender, MouseEventArgs e)
-        {
-            _sToolTip.IsOpen = false;
-        }
 
         private void lvSavedBuilds_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
