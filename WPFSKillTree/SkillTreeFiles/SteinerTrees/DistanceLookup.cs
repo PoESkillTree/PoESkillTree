@@ -129,9 +129,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     if (front.Contains(adjacentNode)) continue;
 
                     newFront.Add(adjacentNode);
-                    // This must be the shortest path from start to this node.
-                    // TODO: This doesn't work yet. Not sure if needed.
-                    //setDistance(start, adjacentNode, distFromStart + 2);
                 }
             }
             // This wouldn't need recursion, but it's more convenient this way.

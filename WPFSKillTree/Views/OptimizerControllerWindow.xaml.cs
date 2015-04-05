@@ -25,38 +25,70 @@ namespace POESKillTree.Views
     {
         private SteinerSolver steinerSolver;
         private SkillTree tree;
+        private HashSet<ushort> targetNodes;
 
-        private readonly BackgroundWorker worker = new BackgroundWorker();
+        private readonly BackgroundWorker solutionWorker = new BackgroundWorker();
+        private readonly BackgroundWorker initializationWorker = new BackgroundWorker();
 
-        int maxSteps = 200;
+        int maxSteps;
         int step;
 
         public HashSet<ushort> bestSoFar;
-        
-        private bool isPaused;
-        private bool canceling;
 
-        public OptimizerControllerWindow(SkillTree Tree, HashSet<ushort> targetNodes)
+        private bool isInitializing;
+        private bool isPaused;
+        private bool isCanceling;
+
+        public OptimizerControllerWindow(SkillTree tree, HashSet<ushort> targetNodes)
         {
             InitializeComponent();
-            tree = Tree;
-            steinerSolver = new SteinerSolver(Tree);
-            // This should maybe also be part of a background task since it might take a moment.
-            steinerSolver.InitializeSolver(targetNodes);
-            maxSteps = steinerSolver.MaxGeneration;
-            progressBar.Maximum = maxSteps;
+            this.tree = tree;
+            steinerSolver = new SteinerSolver(tree);
+            this.targetNodes = targetNodes;
+            
+            initializationWorker.DoWork += initializationWorker_DoWork;
+            initializationWorker.RunWorkerCompleted += initializationWorker_RunWorkerCompleted;
 
-            worker.DoWork += worker_DoWork;
-            worker.ProgressChanged += worker_ProgressChanged;
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-            worker.WorkerReportsProgress = true;
-            worker.WorkerSupportsCancellation = true;
+            solutionWorker.DoWork += solutionWorker_DoWork;
+            solutionWorker.ProgressChanged += solutionWorker_ProgressChanged;
+            solutionWorker.RunWorkerCompleted += solutionWorker_RunWorkerCompleted;
+            solutionWorker.WorkerReportsProgress = true;
+            solutionWorker.WorkerSupportsCancellation = true;
         }
 
-        void worker_DoWork(object sender, DoWorkEventArgs e)
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            btnPopupCancelClose.Content = "Cancel";
+            btnPopupPauseResume.Content = "Pause";
+
+            initializationWorker.RunWorkerAsync();
+        }
+
+
+        void initializationWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // This is also deferred to a background task as it might take a while.
+            steinerSolver.InitializeSolver(targetNodes);
+        }
+
+        void initializationWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            maxSteps = steinerSolver.MaxGeneration;
+            progressBar.Maximum = maxSteps;
+            lblProgressText.Content = "0/" + maxSteps;
+            isInitializing = false;
+
+            isPaused = false;
+            isCanceling = false;
+            btnPopupCancelClose.IsEnabled = true;
+            btnPopupPauseResume.IsEnabled = true;
+            step = 0;
+            solutionWorker.RunWorkerAsync();
+        }
+
+        void solutionWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = (BackgroundWorker)sender;
-            //for (; step <= maxSteps; step++)
             while (!steinerSolver.IsConsideredDone)
             {
                 steinerSolver.EvolutionStep();
@@ -70,7 +102,7 @@ namespace POESKillTree.Views
         }
 
 
-        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        void solutionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar.Value = e.ProgressPercentage;
             lblProgressText.Content = e.ProgressPercentage.ToString() + "/" + maxSteps;
@@ -81,12 +113,12 @@ namespace POESKillTree.Views
             tree.DrawNodeBaseSurroundHighlight();
         }
 
-        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        void solutionWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (canceling)
+            if (isCanceling)
             {
                 btnPopupPauseResume.IsEnabled = true;
-                canceling = false;
+                isCanceling = false;
                 return;
             }
             
@@ -97,24 +129,14 @@ namespace POESKillTree.Views
             isPaused = true;
         }
 
-        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            // TODO: Initialize labels
-            btnPopupCancelClose.Content = "Cancel";
-            btnPopupPauseResume.Content = "Pause";
-            step = 0;
-            isPaused = false;
-            canceling = false;
-            worker.RunWorkerAsync();
-        }
-
+        #region UI interaction
         private void btnPopupCancelClose_Click(object sender, RoutedEventArgs e)
         {
             // Stop the optimizer and/or close the window.
             if (!isPaused)
             {
-                worker.CancelAsync();
-                canceling = true;
+                solutionWorker.CancelAsync();
+                isCanceling = true;
                 DialogResult = false;
             }
             else
@@ -128,7 +150,7 @@ namespace POESKillTree.Views
             {
                 btnPopupPauseResume.Content = "Pause";
                 progressBar.IsEnabled = true;
-                worker.RunWorkerAsync();
+                solutionWorker.RunWorkerAsync();
                 isPaused = false;
             }
             else
@@ -138,13 +160,11 @@ namespace POESKillTree.Views
                 btnPopupPauseResume.IsEnabled = false;
                 progressBar.IsEnabled = false;
                 //lblProgressText.Content += " (paused)";
-                worker.CancelAsync();
-                canceling = true;
+                solutionWorker.CancelAsync();
+                isCanceling = true;
                 isPaused = true;
             }
         }
-
-
-
+        #endregion
     }
 }

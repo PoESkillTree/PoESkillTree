@@ -6,40 +6,41 @@ using System.Text;
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
     /// <summary>
-    ///  A generic collection of objects that can be randomly sampled from. The
-    ///  probability of a particular object being picked is directly proportional
-    ///  to its weight.
+    ///  A generic class storing entries that can be randomly sampled from. The
+    ///  probability of a particular entry being picked as a sample is directly
+    ///  proportional to its weight.
     /// </summary>
     /// <typeparam name="T">The type of the stored objects.</typeparam>
     class WeightedSampler<T>
     {
         /// The basic idea is to generate the (discrete) cumulative distribution
         /// function (CDF) and then randomly sample from its value range (which
-        /// equals the sum of all weights). This would be very easy with a binary
-        /// search tree structure, with the CDF values as keys and the stored
-        /// entries as values.
-        /// 
-        /// I would've liked to use something like a Java TreeMap data structure,
-        /// but the C# equivalent (SortedDictionary) 1. doesn't accept duplicate
-        /// keys and 2. doesn't expose any binary search in the underlying binary
-        /// tree. So it's pretty much useless and I have to resort to this...
-        /// well, ugliness.
-        /// If you have a better idea, let me know.
-        /// 
+        /// equals the sum of all weights).
         /// 
         /// Note that removing elements is not implemented!
         
-        SortedDictionary<double, T> entries;
-        double totalWeight;
+        private SortedDictionary<double, T> entries;
+        private double totalWeight;
 
-        Random random;
+        private Random random;
 
+        /// <summary>
+        ///  Indicates whether any entries are present to sample from.
+        /// </summary>
         public bool CanSample
         { get { return totalWeight > 0; } }
 
+        /// <summary>
+        ///  The number of entries in the sampler.
+        /// </summary>
         public int EntryCount
         { get { return entries.Count; } }
 
+        /// <summary>
+        ///  A new instance of the WeigtedSampler class.
+        /// </summary>
+        /// <param name="random">A random number generator. If nothing is passed, a
+        /// new one is created.</param>
         public WeightedSampler(Random random = null)
         {
             entries = new SortedDictionary<double, T>();
@@ -49,6 +50,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             else this.random = random;
         }
 
+        /// <summary>
+        ///  Adds a new entry with a specified weight to the sampler.
+        /// </summary>
+        /// <param name="entry">The object that should be randomly selected.</param>
+        /// <param name="weight">A value proportional to the object's chance to be
+        /// selected.</param>
         public void AddEntry(T entry, double weight)
         {
             if (double.IsInfinity(weight))
@@ -65,17 +72,23 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             entries.Add(totalWeight, entry);
         }
 
+        /// <summary>
+        ///  Draw a random element from the stored entries. Each element's chance to
+        ///  be drawn here is proportional to the weight it was inserted with.
+        /// </summary>
+        /// <returns>The randomly drawn element.</returns>
         public T RandomSample()
         {
-
             // Randomly sample the CDF.
             double r = random.NextDouble() * totalWeight;
             var entry = entries.First(kvp => kvp.Key >= r);
 
             return entry.Value;
-            return default(T);
         }
 
+        /// <summary>
+        ///  Resets the sampler.
+        /// </summary>
         public void Clear()
         {
             entries.Clear();

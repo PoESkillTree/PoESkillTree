@@ -20,14 +20,14 @@
             Finding optimal skill tree...
         </Label>
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            <ProgressBar x:Name="progressBar"  Value="10" Height="20" HorizontalAlignment="Stretch" BorderThickness="0"  Margin="5" Background="{DynamicResource WhiteColorBrush}"/>
+            <ProgressBar x:Name="progressBar"  Value="0" Height="20" HorizontalAlignment="Stretch" BorderThickness="0"  Margin="5" Background="{DynamicResource WhiteColorBrush}"/>
             <Label x:Name="lblProgressText" HorizontalAlignment="Center" VerticalAlignment="Center">Initializing...</Label>
         </Grid>
 
         <Label x:Name="lblBestResult" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5">
-            Best result so far:
+            Best result so far: -
         </Label>
-        <Button Grid.Row="3" Grid.Column="0" Content="Pause/Resume" x:Name="btnPopupPauseResume" Click="btnPopupPauseResume_Click" Width="auto" Height="auto" Margin="5"/>
-        <Button Grid.Row="3" Grid.Column="1" Content="Cancel/Close" x:Name="btnPopupCancelClose" Click="btnPopupCancelClose_Click" Width="auto" Height="auto" Margin="5"/>
+        <Button Grid.Row="3" Grid.Column="0" Content="Pause/Resume" IsEnabled="False" x:Name="btnPopupPauseResume" Click="btnPopupPauseResume_Click" Width="auto" Height="auto" Margin="5"/>
+        <Button Grid.Row="3" Grid.Column="1" Content="Cancel/Close" IsEnabled="False" x:Name="btnPopupCancelClose" Click="btnPopupCancelClose_Click" Width="auto" Height="auto" Margin="5"/>
     </Grid>
 </controls:MetroWindow>

@@ -11,9 +11,11 @@ using System.ComponentModel;
 [assembly: InternalsVisibleTo("UnitTests")]
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
-    [assembly: InternalsVisibleTo("UnitTests")]
     public class SteinerSolver
     {
+        /// 
+
+
         // TODO: Update explanation.
         /// 
         /// 
@@ -56,10 +58,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  - It does not contain any skilled nodes.
 
 
-        // TODO: Decide what needs to be a member and what should be passed
-        // around as parameters.
-
-
         SkillTree tree;
 
         SearchGraph searchGraph;
@@ -69,31 +67,54 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         Supernode startNodes;
         HashSet<GraphNode> targetNodes;
 
+        GeneticAnnealingAlgorithm ga;
 
-        GeneticAlgorithm ga;
+
+        double durationModifier;
+        double populationModifier;
 
         private bool _initialized = false;
         public bool IsInitialized
         { get { return _initialized; } }
 
+        private BitArray _bestDNA;
+        public HashSet<ushort> BestSolution;
+
         // This is kinda crude but should work...
         public bool IsConsideredDone
         { get { return (_initialized ? CurrentGeneration >= MaxGeneration : false); } }
 
+        private int maxGeneration;
         public int MaxGeneration
-        { get { return (_initialized ? 2*searchSpaceBase.Count : 0); } }
+        { get { return (_initialized ? maxGeneration : 0); } }
 
         public int CurrentGeneration
         { get { return (_initialized ? ga.GenerationCount : 0); } }
 
+        /// <summary>
+        ///  A new instance of the SteinerSolver optimizer that still needs to be
+        ///  initialized.
+        /// </summary>
+        /// <param name="tree">The skill tree in which to optimize.</param>
         public SteinerSolver(SkillTree tree)
         {
             this.tree = tree;
         }
 
-        public void InitializeSolver(HashSet<ushort> targets)
+        /// <summary>
+        ///  Initializes the solver so that the optimization can be run.
+        /// </summary>
+        /// <param name="targets">The set of target nodes that shall be connected.</param>
+        /// <param name="durationModifier">A multiplier to the amount of iterations
+        /// to go through (default: 1.0).</param>
+        /// <param name="populationModifier">A multiplier to the size of the
+        /// algorithm's solution pool (default: 1.0).</param>
+        public void InitializeSolver(HashSet<ushort> targets,
+            double durationModifier = 1.0, double populationModifier = 1.0)
         {
             // (This is not in the constructor since it might take a moment.)
+            this.durationModifier = durationModifier;
+            this.populationModifier = populationModifier;
 
             buildSearchGraph(targets);
 
@@ -171,10 +192,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     // Add the group's nodes individually
                     foreach (SkillNode node in ng.Nodes)
                     {
+                        // Can't path through class starts.
+                        if (SkillTree.rootNodeList.Contains(node.Id))
+                            continue;
                         /// Don't add nodes that are already in the graph (as
                         /// target or start nodes).
-                        if (!searchGraph.nodeDict.ContainsKey(node))
-                            searchGraph.AddNode(node);
+                        if (searchGraph.nodeDict.ContainsKey(node))
+                            continue;
+
+                        searchGraph.AddNode(node);
                     }
                 }
             }
@@ -266,15 +292,21 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         void initializeGA(int? randomSeed = null)
         {
             if (randomSeed == null) randomSeed = DateTime.Now.GetHashCode();
-            ga = new GeneticAlgorithm(fitnessFunction, new Random(randomSeed.Value));
+            ga = new GeneticAnnealingAlgorithm(fitnessFunction, new Random(randomSeed.Value));
 
             Console.WriteLine("Search space dimension: " + searchSpaceBase.Count);
-            ga.StartEvolution(populationSize: searchSpaceBase.Count, dnaLength: searchSpaceBase.Count);
+
+            int populationSize = (int)(populationModifier * searchSpaceBase.Count);
+            maxGeneration = (int)(durationModifier * searchSpaceBase.Count);
+            int dnaLength = searchSpaceBase.Count; // Just being verbose.
+
+            ga.InitializeEvolution(populationSize, maxGeneration, dnaLength);
         }
 
-        private BitArray _bestDNA;
-        public HashSet<ushort> BestSolution;
-
+        /// <summary>
+        ///  Tells the genetic algorithm to advance one generation and processes
+        ///  the resulting (possibly) improved solution.
+        /// </summary>
         public void EvolutionStep()
         {
             if (!_initialized)
@@ -282,50 +314,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             ga.NewGeneration();
 
-            if ((_bestDNA == null) || (GeneticAlgorithm.SetBits(ga.GetBestDNA().Xor(_bestDNA)) != 0))
+            if ((_bestDNA == null) || (GeneticAnnealingAlgorithm.SetBits(ga.GetBestDNA().Xor(_bestDNA)) != 0))
             {
                 _bestDNA = ga.GetBestDNA();
                 MinimalSpanningTree bestMst = dnaToMst(_bestDNA);
                 bestMst.Span(startFrom: startNodes);
-                BestSolution = SpannedMstToSkillnodes(bestMst, true);
 
-                MinimalSpanningTree copy = dnaToMst(_bestDNA);
-                copy.mstNodes.Add(searchGraph.nodeDict[SkillTree.Skillnodes[63976]]);
-                copy.mstNodes.Add(searchGraph.nodeDict[SkillTree.Skillnodes[16775]]);
-                copy.mstNodes.Add(searchGraph.nodeDict[SkillTree.Skillnodes[33479]]);
-                copy.Span(startNodes);
-                Console.WriteLine("Improvement? " + copy.UsedNodeCount);
-                //Console.WriteLine("Fitness: ")
+                // #DEBUG#: Pass true to show the used steiner nodes.
+                BestSolution = SpannedMstToSkillnodes(bestMst, false);
             }
-        }
-
-
-        /// <summary>
-        ///  Employs a genetic algorithm to search the search space (spanned by
-        ///  the search space base) for a skill tree with lowest possible point
-        ///  investment.
-        /// </summary>
-        /// <returns></returns>
-        MinimalSpanningTree findBestMst()
-        {
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-
-            // TODO: Better termination criteria.
-            
-            while (ga.GenerationCount < 200)
-            {
-                ga.NewGeneration();
-                Thread.Yield();
-            }
-            timer.Stop();
-            Console.WriteLine("Optimization time: " + timer.ElapsedMilliseconds + " ms");
-
-            BitArray bestDna = ga.GetBestDNA();
-            MinimalSpanningTree mst = dnaToMst(bestDna);
-            mst.Span(startNodes);
-
-            return mst;
         }
 
         HashSet<ushort> SpannedMstToSkillnodes(MinimalSpanningTree mst, bool visualize)
@@ -386,8 +383,36 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             int usedNodes = mst.UsedNodeCount;
 
-            // TODO: Improve fitness function
+            // TODO: Investigate fitness function
             return 1500 - usedNodes;
         }
     }
 }
+
+
+
+/*/// <summary>
+///  Employs a genetic algorithm to search the search space (spanned by
+///  the search space base) for a skill tree with lowest possible point
+///  investment.
+/// </summary>
+/// <returns></returns>
+MinimalSpanningTree findBestMst()
+{
+    Stopwatch timer = new Stopwatch();
+    timer.Start();
+     
+    while (ga.GenerationCount < 200)
+    {
+        ga.NewGeneration();
+        Thread.Yield();
+    }
+    timer.Stop();
+    Console.WriteLine("Optimization time: " + timer.ElapsedMilliseconds + " ms");
+
+    BitArray bestDna = ga.GetBestDNA();
+    MinimalSpanningTree mst = dnaToMst(bestDna);
+    mst.Span(startNodes);
+
+    return mst;
+}*/

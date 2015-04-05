@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Media;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
+using MessageBox = POESKillTree.Views.MetroMessageBox;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -931,21 +932,19 @@ namespace POESKillTree.SkillTreeFiles
                 return;
             }
 
+            /// These are used for visualization of the simulation progress, so
+            /// they're saved for restoring them afterwards.
+            var savedHighlights = HighlightedNodes;
+
             OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds);
 
             optimizerDialog.ShowDialog();
-            if (optimizerDialog.DialogResult == false)
-                return;
+            if (optimizerDialog.DialogResult == true)
+                foreach (ushort node in optimizerDialog.bestSoFar)
+                    SkilledNodes.Add(node);
 
-            SteinerTrees.SteinerSolver steinerSolver = new SteinerTrees.SteinerSolver(this);
-
-            //HashSet<SkillNode> resultNodes = steinerSolver.SkillHighlightedNodes(this);
-            //HashSet<ushort> resultNodes = steinerSolver.ConnectNodes(targetNodeIds);
-
-            foreach (ushort node in optimizerDialog.bestSoFar)
-            {
-                SkilledNodes.Add(node);
-            }
+            HighlightedNodes = savedHighlights;
+            DrawNodeBaseSurroundHighlight();
 
             this.DrawHighlights(_nodeHighlighter);
 

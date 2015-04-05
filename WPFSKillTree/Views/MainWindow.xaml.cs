@@ -1748,7 +1748,6 @@ namespace POESKillTree.Views
                     level = 0;
                 }
                 Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, level);
-
             }
             else
             {

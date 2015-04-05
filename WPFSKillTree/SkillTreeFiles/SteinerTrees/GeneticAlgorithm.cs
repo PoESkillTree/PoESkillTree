@@ -8,8 +8,7 @@ using System.Text;
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
     /// <summary>
-    /// Implements a genetic algorithm that uses bitstrings to represent solutions
-    /// and attempts to find the lowest cost one through mutation and crossovers.
+    ///  Implements a hybrid genetic algorithm with simulated annealing.
     /// </summary>
     /// <remarks>
     /// It is encouraged to adapt this code to the problem at hand. In particular,
@@ -17,7 +16,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     /// bilities involved are best suited for certain shapes of fitness functions.
     /// Also see the NFL-theorem.
     /// </remarks>
-    class GeneticAlgorithm
+    class GeneticAnnealingAlgorithm
     {
         /// <summary>
         ///  The fitness function to be used for evaluating individuals.
@@ -26,26 +25,42 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// evaluated.</param>
         /// <returns>The fitness of the DNA, a score for how good the
         /// corresponding solution is.</returns>
-        public delegate double SolutionFitness(BitArray DNA);
-        SolutionFitness solutionFitness;
+        public delegate double SolutionFitnessFunction(BitArray DNA);
+        SolutionFitnessFunction solutionFitness;
 
         /// Asking for delegates to convert the bitstrings to the actual objects in
         /// here (and making this class generic) would be pretty silly in my eyes.
 
-        Individual[] population;
+        private int dnaLength;
 
-        int populationSize;
+        private Individual[] population;
 
-        Individual bestSolution;
+        private int populationSize;
+        public int PopulationSize
+        { get { return populationSize; } }
 
-        double maxFitness;
-        double minFitness;
+        private int generationCount;
+        public int GenerationCount { get { return generationCount; } }
 
-        int dnaLength;
+        private Individual bestSolution;
 
-        Random random;
+        /// <summary>
+        ///  Retreives the DNA with the highest encountered fitness value thus far.
+        /// </summary>
+        /// <returns>The DNA holding the current fitness record.</returns>
+        public BitArray GetBestDNA()
+        {
+            return new BitArray(bestSolution.DNA);
+        }
 
-        double degradationFactor;
+        private double maxFitness;
+        private double minFitness;
+
+        private Random random;
+
+        // Used by the simulated annealing.
+        private double temperature;
+        private double annealingFactor;
 
         /// <summary>
         ///  An individual, comprised of a DNA and a fitness value, for use in
@@ -53,6 +68,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// </summary>
         class Individual
         {
+            // I'll refrain from making this immutable...
             public BitArray DNA;
 
             // Enforcing this to be set in the constructor (and never changed).
@@ -60,19 +76,20 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             public double Fitness
             { get { return _fitness; } }
 
-            public double health;
-            public int age;
+            // The relative health (between 0 and 1) of this individual with
+            // respect to the overall population.
+            public double normalizedFitness;
+
+            // The amount of generations this individual has lived.
+            public int Age;
 
             public Individual(BitArray DNA, double fitness)
             {
                 this.DNA = DNA;
                 _fitness = fitness;
-                this.age = 0;
+                this.Age = 0;
             }
         }
-
-        int generationCount;
-        public int GenerationCount { get { return generationCount; } }
 
         /// <summary>
         /// Initializes a new instance of the genetic algorithm optimizer.
@@ -80,7 +97,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="solutionFitness">A delegate to the fitness function.</param>
         /// <param name="random">An optional Random instance to allow for seeding.
         /// If none is provided, a newly created one is used.</param>
-        public GeneticAlgorithm(SolutionFitness solutionFitness, Random random = null)
+        public GeneticAnnealingAlgorithm(SolutionFitnessFunction solutionFitness, Random random = null)
         {
             // Save the fitness function
             this.solutionFitness = solutionFitness;
@@ -94,6 +111,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// </summary>
         /// <param name="populationSize">The amount of individuals to be kept in
         /// the genetic pool.</param>
+        /// <param name="maxGeneration">An estimate for the amount of generations
+        /// to be simulated (needed for annealing schedule).</param>
         /// <param name="dnaLength">The (fixed) length of the DNA bitstrings used
         /// to encode solutions.</param>
         /// <param name="estimatedMaxFitness">An optional estimate of the maximum
@@ -101,12 +120,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// improve the convergence behavior by .</param>
         /// <param name="estimatedMinFitness">An optional estimate of the minimum
         /// achievable fitness value of the fitness function.</param>
-        public void StartEvolution(int populationSize, int dnaLength,
-            double estimatedMaxFitness = 0, double estimatedMinFitness = double.MaxValue)
+        public void InitializeEvolution(int populationSize, int maxGeneration, int dnaLength, double estimatedMaxFitness = 0, double estimatedMinFitness = double.MaxValue)
             //BitArray initialSolution = null)
         {
             this.populationSize = populationSize;
-            degradationFactor = 1.0 - (1.0 / populationSize);
+            annealingFactor = 1.0 - (1.0 / maxGeneration);
 
             /// These assignments (based on the defaults) look paradoxical here,
             /// but they'll be adjusted by evaluating individuals before ever being
@@ -120,16 +138,24 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             population = createPopulation();
             generationCount = 0;
+            
+            /// TODO: Investigate the influence of this, as well as possible
+            /// (automatic) parametrizations.
             temperature = 6.0;
         }
 
+        /// <summary>
+        ///  Generates populationSize random individuals.
+        /// </summary>
+        /// <returns>The random individuals.</returns>
         private Individual[] createPopulation()
         {
             Individual[] newPopulation = new Individual[populationSize];
             for (int i = 0; i < populationSize; i++)
             {
                 newPopulation[i] = spawnIndividual(randomBitarray(dnaLength));
-                newPopulation[i].age++;
+                // Without this, nothing would be allowed to breed in the first step.
+                newPopulation[i].Age++;
             }
             return newPopulation;
         }
@@ -149,13 +175,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             WeightedSampler<Individual> sampler = new WeightedSampler<Individual>();
 
-
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-
-            double minCurrentFitness = double.MaxValue;
-            double maxCurrentFitness = double.MinValue;
-
 
             // Check the fitness values of the current generation.
             foreach (Individual individual in population)
@@ -168,13 +189,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 if (individual.Fitness > bestSolution.Fitness)
                     bestSolution = new Individual(individual.DNA, individual.Fitness);
 
-                // TODO: Treat 0 fitness special?
                 maxFitness = Math.Max(individual.Fitness, maxFitness);
                 minFitness = Math.Min(individual.Fitness, minFitness);
-
-                // Basically only for debugging purposes.
-                maxCurrentFitness = Math.Max(individual.Fitness, maxCurrentFitness);
-                minCurrentFitness = Math.Min(individual.Fitness, minCurrentFitness);
             }
 
             double averageHealth = 0;
@@ -184,39 +200,41 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             int acceptedWorse = 0;
             int purgedIndividuals = 0;
 
+            // Sort the population by fitness.
             population = population.OrderBy(ind => ind.Fitness).ToArray();
 
             int index = 0;
             foreach (Individual individual in population)
             {
                 index++;
-                /*if (individual.age == 0)*/
-                 individual.health = normalizeFitness(individual.Fitness);
-                /*else
-                    individual.health *= degradationFactor;*/
+                /// Max and min fitness might have changed, so we need to
+                /// normalize the fitnesses again.
+                individual.normalizedFitness = normalizeFitness(individual.Fitness);
 
-                averageHealth += individual.health;
+                averageHealth += individual.normalizedFitness;
                 averageBitsSet += SetBits(individual.DNA);
 
                 // Survival of the fittest (population was ordered by fitness above)
                 if (index < 0.5 * populationSize)
                 {
+                    // Could be slightly more concise, I know.
                     purgedIndividuals++;
                     continue;
                 }
 
-                //if (individual.health == 1) maxFitnessCount++;
+                /// This seems to have a good effect on convergence speed.
+                /// By only allowing solutions that survived a round of culling
+                /// to procreate, the solution quality is kept high.
+                if (individual.Age >= 1)
+                    sampler.AddEntry(individual, individual.normalizedFitness);
+                averageAge += individual.Age;
 
-                if (individual.age >= 1)
-                    sampler.AddEntry(individual, individual.health);
-                averageAge += individual.age;
-
-                individual.age++;
+                individual.Age++;
 
                 // Simulated annealing
                 Individual temp = individual;
                 Individual mutation = spawnIndividual(mutateDNA(individual.DNA));
-                mutation.age = individual.age - 1; // TODO: Investigate.
+                mutation.Age = individual.Age - 1; // TODO: Investigate.
                 if (acceptNewState(individual, mutation))
                 {
                     acceptedTotal++;
@@ -225,13 +243,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     temp = mutation;
                 }
                 newPopulation.Add(temp);
-                //if (temp.health >= 0.5)
-                //{
-            
-                    //individual.age++;
-                    //individual.DNA = mutateDNA(individual.DNA);
-            
-                //}
             }
             /*if (purgedIndividuals == 0)
                 minFitness = minCurrentFitness;*/
@@ -246,17 +257,16 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             Console.WriteLine("Accepted new states (all/worse): " + acceptedTotal + "/" + acceptedWorse);
             //Console.WriteLine("Purged individuals: " + purgedIndividuals + "/" + populationSize);
             Console.WriteLine("Sampler entries: " + sampler.EntryCount);
-            if (minCurrentFitness == maxCurrentFitness)
-                Console.WriteLine("Entire population had the same fitness value.");
-
+            
             stopwatch.Restart();
 
             if (!sampler.CanSample)
-            //if (false)
             {
+                // This is actually a pretty serious problem.
                 population = createPopulation();
                 Console.WriteLine("Entire population was infertile (Generation " +
                                    generationCount + ").");
+                //Debug.Fail("Population went extinct, not good...");
                 return generationCount;
             }
 
@@ -269,18 +279,16 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 BitArray parent2 = sampler.RandomSample().DNA;
 
                 BitArray newDNA = combineIndividualsDNA(parent1, parent2);
-                //newDNA = mutateDNA(newDNA);
 
                 newPopulation.Add(spawnIndividual(newDNA));
             }
 
             population = newPopulation.ToArray();
+
             // Yeah, I know, out of thin air.
-            temperature *= degradationFactor;
+            temperature *= annealingFactor;
 
             stopwatch.Stop();
-            //Console.Write("Mutation time for " + generationCount + " : ");
-            //Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
             Console.WriteLine("Best value so far: " + (1500 - bestSolution.Fitness));
             Console.WriteLine("------------------");
             Console.Out.Flush();
@@ -288,20 +296,25 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return generationCount;
         }
 
+        /// <summary>
+        ///  Factory method for generating a new individual from a DNA. Passing the
+        ///  fitness function to every individual is weird, so that gets done here.
+        /// </summary>
+        /// <param name="dna">The DNA of the new individual.</param>
+        /// <returns>The new individual.</returns>
         private Individual spawnIndividual(BitArray dna)
         {
             Individual individual = new Individual(dna, solutionFitness(dna));
-            individual.health = normalizeFitness(individual.Fitness);
+            //individual.health = normalizeFitness(individual.Fitness);
             return individual;
         }
 
-        public BitArray GetBestDNA()
-        {
-            //Console.WriteLine("Returning DNA with fitness " + bestSolution.fitness);
-            return new BitArray(bestSolution.DNA);
-        }
-
-        // Maps fitness values into the 0 - 1 range.
+        /// <summary>
+        ///  Maps fitness values into the 0 - 1 range, relative to the fitness
+        ///  range of the encountered individuals.
+        /// </summary>
+        /// <param name="fitness">The fitness to be normalized.</param>
+        /// <returns>A value between 0 and 1 (inclusive).</returns>
         private double normalizeFitness(double fitness)
         {
             if (maxFitness - minFitness <= 0) return 0.5; // What can you say...
@@ -309,28 +322,26 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         }
 
         #region DNA mutation
+        /// <summary>
+        ///  Flips a random bit in the passed DNA bitstring and returns the result.
+        /// </summary>
+        /// <param name="dna">The DNA to be mutated.</param>
+        /// <returns>The mutated DNA.</returns>
         private BitArray mutateDNA(BitArray dna)
         {
-            /// Chance for each individual bit to be mutated. Not currently used
-            /// since only one bit is mutated at a time anyway.
-            //double mutationProbability = 1 - Math.Sqrt(normalizeFitness(individual.fitness));
-
-            /*BitArray newDNA = new BitArray(individual.DNA);
-            BitArray mutationSequence = randomBitarray(newDNA.Length);
-
-            for (int i = 0; i < newDNA.Length; i++)
-            {
-                //if (random.NextDouble() < mutationProbability)
-                newDNA[i] = (mutationSequence[i] ? !newDNA[i] : newDNA[i]);
-            }
-
-            return newDNA;*/
             BitArray newDNA = new BitArray(dna);
             int index = random.Next(newDNA.Length);
             newDNA[index] = !newDNA[index];
             return newDNA;
         }
 
+        /// <summary>
+        ///  Creates a new DNA bitstring from two input ones. A (random) sequence
+        ///  of one input DNA is "filled up" with the data of the other one.
+        /// </summary>
+        /// <param name="dna1">The first input DNA.</param>
+        /// <param name="dna2">The second input DNA:</param>
+        /// <returns>The combined DNA.</returns>
         private BitArray combineIndividualsDNA(BitArray dna1, BitArray dna2)
         {
             int length = dna1.Length;
@@ -350,6 +361,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 return crossoverDNA(dna1, dna2, crossoverStart, crossoverEnd);
         }
 
+        /// <summary>
+        ///  Replaces the bits in DNA1 from start to end with those from DNA2 and
+        ///  returns the result.
+        /// </summary>
+        /// <param name="DNA1">The "base" DNA.</param>
+        /// <param name="DNA2">The "overwriting" DNA.</param>
+        /// <param name="start">The index of the start of the DNA exchange.</param>
+        /// <param name="end">The index of the end of the DNA exchange.</param>
+        /// <returns></returns>
         private BitArray crossoverDNA(BitArray DNA1, BitArray DNA2, int start, int end)
         {
             BitArray cross = new BitArray(DNA1);
@@ -358,7 +378,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return cross;
         }
 
-
+        /// <summary>
+        ///  Generates a random BitArray. Currently this means that exactly one of
+        ///  the bits is set.
+        /// </summary>
+        /// <param name="length">The desired length of the BitArray.</param>
+        /// <returns>The random BitArray.</returns>
         private BitArray randomBitarray(int length)
         {
             // Each byte provides 8 bits.
@@ -372,7 +397,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (length == 0)
                 return new BitArray(0);
 
-            // Returns a bit array filled with 0s except for one spot.
             BitArray bitArray = new BitArray(length);
             int i0 = random.Next(length);
             bitArray[i0] = true;
@@ -394,8 +418,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         #endregion
 
         #region Simulated Annealing
-        private double temperature;
-
         private bool acceptNewState(Individual oldState, Individual newState)
         {
             double df = newState.Fitness - oldState.Fitness;
@@ -404,7 +426,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (random.NextDouble() < acceptanceProbability) return true;
             return false;
         }
-
         #endregion
     }
 }
