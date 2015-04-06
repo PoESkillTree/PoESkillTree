@@ -9,15 +9,66 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
     /// <summary>
     ///  Implements a hybrid genetic algorithm with simulated annealing.
+    ///  Please see the code documentation inside the class for more information.
     /// </summary>
     /// <remarks>
-    /// It is encouraged to adapt this code to the problem at hand. In particular,
-    /// variable length DNA is not implemented and the mutation/crossover proba-
-    /// bilities involved are best suited for certain shapes of fitness functions.
+    /// While this class can't/shouldn't hold model knowledge and is only connected
+    /// to the problem via the SolutionFitnessFunction, it is encouraged to adapt
+    /// this code to the problem at hand. In particular, variable length DNA is not
+    /// implemented and the mutation/crossover probabilities involved are best
+    /// suited for certain shapes of fitness functions.
+    /// 
     /// Also see the NFL-theorem.
     /// </remarks>
     class GeneticAnnealingAlgorithm
     {
+        ///////////////////////////////////////////////////////////////////////////
+        /// This genetic algorithm involves the standard two operations (mutation
+        /// and crossover) performed on the DNA of the individuals comprised by
+        /// the population, with a few twists.
+        /// 
+        /// Currently, a few things have been altered from standard procedures:
+        ///  1. Half the population (the lower fitness half) is culled from the
+        ///     pool every generation. New members are generated from the DNA
+        ///     crossover (this part is still fairly standard, the choice of "half"
+        ///     the population is arbitrary though).
+        ///     Any surviving member is undergoes 3.
+        ///  2. An individual must have survived a previous round of culling to
+        ///     procreate via crossover. This seems to significantly improve the
+        ///     quality of the crossover'd solutions without affecting genetic
+        ///     diversity.
+        ///  3. Mutations happen in the style of simulated annealing:
+        ///     The DNA is mutated (a single bit is flipped) and always accepted
+        ///     if it results in a higher fitness value, otherwise the mutation is
+        ///     discarded if a random roll (hardened by a higher fitness difference
+        ///     and a lower temperature, which decreases progressively) fails.
+        ///     
+        /// The first alteration ensures that the evolutionary pressure is kept on,
+        /// in order to ensure a good pace of search progress.
+        /// 
+        /// The second one, as mentioned above, significantly reduces the amount of
+        /// low fitness (therefore immediately discarded) DNA introduced from cross-
+        /// overs. At the moment, a mutation will postpone this "maturity" by one
+        /// generation, the effect of this (and alternatives) could be investigated.
+        /// 
+        /// Introducing simulated annealing proved to be a great way of exploring
+        /// the search space, since the fitness function (for the steiner tree
+        /// problem and the given skill tree) is nicely behaved. I don't have a pre-
+        /// cise way of saying this, but the way adding or removing steiner nodes
+        /// changes the fitness value is suited for simulated annealing in my eyes.
+        /// 
+        /// 
+        /// For the actual crossover, two DNA "parents" are chosen at random (each
+        /// via a random sample from "mature" individuals), with each individual's
+        /// chance being proportional to its fitness. More precisely, fitness values
+        /// are normalized to the 0-1 range (based on the so far observed max and
+        /// min fitness) and used as the respective individual's weight in the
+        /// random sampling. This ensures that the crossover in general is quite
+        /// agnostic to the absolute values of the fitness function and therefore
+        /// works similarly for all inputs.
+        /// Also see WeightedSampling.
+
+
         /// <summary>
         ///  The fitness function to be used for evaluating individuals.
         /// </summary>
@@ -45,7 +96,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         private Individual bestSolution;
 
         /// <summary>
-        ///  Retreives the DNA with the highest encountered fitness value thus far.
+        ///  Retrieves the DNA with the highest encountered fitness value thus far.
         /// </summary>
         /// <returns>The DNA holding the current fitness record.</returns>
         public BitArray GetBestDNA()

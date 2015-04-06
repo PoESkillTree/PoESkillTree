@@ -11,52 +11,178 @@ using System.ComponentModel;
 [assembly: InternalsVisibleTo("UnitTests")]
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
+    /// <summary>
+    ///  A class controlling the interaction between the skill tree data and the
+    ///  genetic algorithm used to find (hopefully) optimal solutions.
+    ///  Please see the code documentation inside the class for more information.
+    /// </summary>
     public class SteinerSolver
     {
+        ///////////////////////////////////////////////////////////////////////////
+        /// This code is a heuristic solution to the Steiner tree problem (STP).
+        /// (The reader's knowledge of the STP and commonly associated terms is
+        /// assumed.)
         /// 
-
-
-        // TODO: Update explanation.
+        /// The main code logic is found in these classes:
+        ///  - SteinerSolver:
+        ///         Handles all model knowledge and converts between the SkillNode
+        ///         and preprocessed GraphNode tree versions. Also defines the fit-
+        ///         ness function used in the genetic algorithm.
+        ///  - GeneticAlgorithm:
+        ///         The actual optimization "engine". It searches an n-dimensional
+        ///         binary search space (bitstrings of length n) for an argument
+        ///         that maximizes the value of the provided fitness function.
         /// 
         /// 
-        /// Terminology:
-        ///  - Skilltree: A "real" skilltree as used in PoE.
-        ///  - Steiner point: A point that has more than two neighbors.
-        ///  - Steiner set: A set of steiner points.
-        ///  - Steiner tree: A minimal spanning tree of a Steiner set. Edge weights
-        ///    equal the node distance in the corresponding SkillTree.
-        ///  - DistanceLookup: Calculates and caches distances between nodes.
-
-        /// Algorithm:
-        ///  The search space is all steiner sets. A GA optimizes the solution
-        ///  vectors (bitstrings encoding the steiner sets).
+        /// Model and solution idea:
+        ///   Every steiner tree can be described by its used steiner nodes (plus
+        ///   the set of target nodes). Conversion back to a tree is possible by
+        ///   building the minimal spanning tree (MST) of those (combined) point
+        ///   sets. (The resulting tree may be different, but will have the same
+        ///   total weight, which is all we care about).
+        ///   Since the problem is to find a minimum weight steiner tree with fixed
+        ///   target nodes, the search can be restricted to the space of all pos-
+        ///   sible steiner node sets: A steiner node is either included or not in-
+        ///   cluded in a particular solution, the search space is thus binary with
+        ///   a dimension equal to the amount of potential steiner nodes under 
+        ///   consideration.
+        ///   
+        ///   The actual implementation preprocesses the skill tree graph into an
+        ///   alternate representation in order to reduce the search space size
+        ///   (and improve pathfinding speed).
+        ///   To clarify: "skill node" and "skill tree" will refer to the represen-
+        ///   tation used in the main view (SkillNode, SkillTree), while "graph
+        ///   nodes" and "graph" will refer to this processed, reduced version that
+        ///   is used in most parts of this code (GraphNode, SearchGraph & similar).
+        /// 
+        /// 
+        /// Description of the main algorithm:
+        ///  0. The input received is the set of target points that shall be reached
+        ///     by a connected graph, a subset of the skill tree net (as found by
+        ///     examining the static SkillNodes dictionary in SkillTree). A SkillTree
+        ///     instance is also passed to find the currently skilled nodes (and for
+        ///     debugging convenience).
+        ///     
+        ///  1. A search graph is built, which simplifies the skill tree net in two
+        ///     ways:
+        ///         - All currently skilled nodes are contracted to a single
+        ///           GraphNode.
+        ///         - Any clusters that are adjacent to only one node (e.g. Fingers
+        ///           of Frost) are omitted, unless they contain target or skilled
+        ///           nodes.
+        ///     Unless otherwise specified, "node" refers to GraphNode instances
+        ///     from here on.
+        ///     
+        ///  2. Potential steiner nodes are determined. Only nodes with three or
+        ///     more neighbors qualify for this.
+        ///     In addition, nodes too far away from the start or target nodes also
+        ///     do not qualify. The precise criteria for this are not exactly clear
+        ///     yet, but the current approach seems to work.
+        /// 
+        /// Steps 1 and 2 greatly reduce the dimension of the search space, which
+        /// enables an optimal (or near-optimal) solution to be found within quite
+        /// short time.
         ///  
-        ///  The fitness function for a given steiner set is computed by finding
-        ///  the minimal spanning tree (MST) of the contained points plus the
-        ///  target nodes (in polynomial time with a greedy algorithm).
-        ///  The sum of its edge weights is then used as a fitness measure.
-        ///  Note that this can overestimate the cost of an encoded skill tree!
-        ///  However, since 1) it never underestimates the cost and 2) every
-        ///  optimal skilltree still has a same-cost representation in the search
-        ///  space, we're fine: No encoded tree can have a better fitness than the
-        ///  optimal one.
-        ///  
+        ///  3. A genetic algorithm is employed to find the maximum of the fitness
+        ///     function over the search space (see "Model and solution idea"). Its
+        ///     inner workings won't be elaborated here, it is to note though that
+        ///     scaling population size and maximum generation (as termination cri-
+        ///     terium) linearly with the search space dimensions seems to ensure
+        ///     finding optimal results, based on the tests so far.
+        ///     Provided to the GA are only the search space dimension and the fit-
+        ///     ness function, which will subsequently be discussed.
+        ///     
+        /// Fitness function:
+        ///     In order to save computation time, not every bitstring (or DNA)
+        ///     that the GA requests to be evaluated is converted back to an actual
+        ///     skill tree. Instead, an MST on the steiner node set represented by
+        ///     the DNA is built, based on the steiner node - steiner node distance
+        ///     values (which are cached and thus inexpensive to access).
+        ///     This introduces considerable ambiguity, to the point where DNAs
+        ///     that would map to the same output skill tree can have substantially
+        ///     different fitnesses, as well as (consequently) a DNA with a better
+        ///     skill tree having worse fitness than a DNA with a worse skill tree.
+        ///     A more detailed explanation is found in Example 1 below.
+        ///     
+        ///     However, the DNA with the global maximum fitness value will always
+        ///     map to the best possible skill tree (as do many other DNAs with
+        ///     near-optimal fitness). It is therefore imperative that the GA is
+        ///     granted enough computational budget (and is robust enough) to find
+        ///     the optimum, as the DNA with the best encountered fitness value
+        ///     might not even correspond to the best skill tree when far away from
+        ///     the optimum.
+        ///     Since the claim of this solver is to actually provide optimal solu-
+        ///     tions in as many cases as possible (anything that is "only close"
+        ///     could easily be done by the user himself), while the fitness func-
+        ///     tion is "nicely" shaped (since the skill tree is, well, quite
+        ///     structured), trading usability outside the optimum for speed is a
+        ///     reasonable approach.
+        ///     
+        ///     Obviously, the evaluation of the fitness function is the bottleneck
+        ///     for the computation speed, so the use of a fast MST algorithm is
+        ///     preferred. Refer to the MinimalSpanningTree class.
         /// 
-        /// For the later goal of using weighted nodes (or even a tree-wide
-        /// fitness function like "dps"), the search space would be extended by
-        /// including the (potential, weighted) target nodes.
+        ///  4. The resulting high-fitness DNA is converted back to a steiner node
+        ///     set, the target nodes and start node are added and the MST is built
+        ///     (all of this is similarly part of the fitness function).
+        ///     Since the result of the MST algorithm is a set of edges between
+        ///     (graph) nodes, what is left is finding shortest paths for those
+        ///     edges between the equivalent skill nodes of the graph nodes. These
+        ///     paths are not cached and have to be computed anew for every conver-
+        ///     sion from DNA -> graph MST -> skill tree.
+        ///     
+        /// Step 4 is performed after every generation of the GA (for giving the
+        /// user visual feedback about the optimization progress), as well as after
+        /// the termination of the GA optimization.
+        /// The conversion back to the skill tree completes an optimization run.
+        /// 
         ///
-        /// It would make sense to limit the amount of steiner points under
-        /// consideration when the target nodes aren't spread out too much.
+        /// Example 1: Necessity of steiner nodes
+        /// Highlight Void Barrier and Coldhearted Calculation as a shadow without
+        /// any skilled nodes.
+        /// Observe how the optimal tree involves branching at a particular dex
+        /// node, which will not be introduced by a greedy algorithm: The edges of
+        /// the triangle formed by the two nodes and the shadow start all have dif-
+        /// ferent lengths, and start - void barrier is the longest one. Taking the
+        /// shortest path from start to Coldhearted Calculation and then taking the
+        /// shortest path to Void Barrier results in a tree with 1 more point spent.
         /// 
-        /// Also note that the actual associated skilltree isn't created at any
-        /// point during the algorithm. 
+        /// Example 2: Ambiguity/inaccuracy of the fitness function
+        /// You start as Scion (no nodes skilled) and highlight Inner Force as well
+        /// as Elemental Equilibrium and let the optimizer run. (All subsequently
+        /// mentioned skill nodes will have a 1:1 equivalent as graph nodes, so no
+        /// distinction will be made).
+        /// Assume that a DNA (DNA1) corresponds to only using the Shaper node as
+        /// steiner node. When building the MST, first the scion start will be con-
+        /// nected to Shaper, then Shaper to EE, then Shaper to IF. These distances
+        /// are then summed up for the weight of the MST, which counts the int node
+        /// above Shaper twice (and thus overestimates the cost by 1 point).
+        /// A different DNA (DNA2) that would correspond to the only steiner node
+        /// being the middle mana node at scion start would similarly have its cost
+        /// overestimated by three points, despite mapping to the very same (optimal)
+        /// skill tree in the end.
         /// 
-
-        /// A nodegroup is only contracted if
-        ///  - It has exactly one adjacent node, and
-        ///  - It does not contain any skilled nodes.
-
+        /// It should be obvious from this that a non-optimal DNA can thus beat the
+        /// fitness of an optimal, but "badly" represented tree/DNA: An otherwise
+        /// optimal-fitness DNA (see below) could also include (for the sake of the
+        /// example) the strength node below Shaper as a steiner node. It would thus
+        /// have a fitness of 1 below optimal and, for the GA, would be considered
+        /// superior to DNA2 which has a fitness of 2 points worse.
+        /// 
+        /// An optimal DNA would have the above-mentioned int node as steiner node.
+        /// It can potentially have more steiner nodes on the path (which won't be
+        /// real steiner nodes - it doesn't matter though since they don't affect
+        /// the cost in the end), so more than one optimal DNA exists. Note how the
+        /// sum of the MST edge lengths of this ideal DNA will always equal the
+        /// amount of points that the corresponding skill tree actually needs, so
+        /// it will always be a minimum cost (maximum fitness) solution, which the
+        /// GA can eventually find.
+        /// 
+        /// In short: The fitness function will never overestimate the fitness of
+        /// a given DNA. There exists a DNA that represents the optimal skill tree
+        /// and is not overestimated (by virtue of having selected the steiner nodes
+        /// that the optimal skill tree involves), so any DNA representing a non-
+        /// optimal tree will necessarily have worse fitness values.
 
         SkillTree tree;
 
@@ -68,7 +194,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         HashSet<GraphNode> targetNodes;
 
         GeneticAnnealingAlgorithm ga;
-
 
         double durationModifier;
         double populationModifier;
@@ -325,8 +450,20 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
         }
 
+        /// <summary>
+        ///  Converts an MST spanning a set of GraphNodes back into its equivalent
+        ///  as a HashSet of SkillNode IDs.
+        /// </summary>
+        /// <param name="mst">The spanned MinimalSpanningTree.</param>
+        /// <param name="visualize">A debug parameter that highlights all used
+        /// GraphNodes' SkillNode equivalents in the tree.</param>
+        /// <returns>A HashSet containing the node IDs of all SkillNodes spanned
+        /// by the MST.</returns>
         HashSet<ushort> SpannedMstToSkillnodes(MinimalSpanningTree mst, bool visualize)
         {
+            if (!mst.IsSpanned)
+                throw new Exception("The passed MST is not spanned!");
+
             HashSet<ushort> newSkilledNodes = new HashSet<ushort>();
             foreach (GraphEdge edge in mst.SpanningEdges)
             {
