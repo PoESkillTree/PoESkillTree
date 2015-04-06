@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POESKillTree.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +12,7 @@ using System.Windows;
 using System.Windows.Media;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
+using MessageBox = POESKillTree.Views.MetroMessageBox;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -199,10 +201,6 @@ namespace POESKillTree.SkillTreeFiles
         private int _level = 1;
 
 
-
-        public float ScaleFactor = 1;
-
-
         private static bool _Initialized = false;
         public SkillTree(String treestring, bool displayProgress, UpdateLoadingWindow update)
         {
@@ -389,14 +387,17 @@ namespace POESKillTree.SkillTreeFiles
 
                     ng.OcpOrb = gp.Value.oo;
                     ng.Position = new Vector2D(gp.Value.x, gp.Value.y);
-                    ng.Nodes = gp.Value.n;
+                    foreach (ushort node in gp.Value.n)
+                    {
+                        ng.Nodes.Add(Skillnodes[node]);
+                    }
                     NodeGroups.Add(ng);
                 }
                 foreach (SkillNodeGroup group in NodeGroups)
                 {
-                    foreach (ushort node in group.Nodes)
+                    foreach (SkillNode node in group.Nodes)
                     {
-                        Skillnodes[node].SkillNodeGroup = group;
+                        node.SkillNodeGroup = group;
                     }
                 }
 
@@ -683,18 +684,20 @@ namespace POESKillTree.SkillTreeFiles
             return unreachable;
         }
 
-        public List<ushort> GetShortestPathTo(ushort targetNode)
+        public List<ushort> GetShortestPathTo(ushort targetNode, HashSet<ushort> start)
         {
-            if (SkilledNodes.Contains(targetNode))
+            if (start.Contains(targetNode))
                 return new List<ushort>();
-            if (AvailNodes.Contains(targetNode))
+            var adjacent = GetAvailableNodes(start);
+            if (adjacent.Contains(targetNode))
                 return new List<ushort> { targetNode };
 
-            var visited = new HashSet<ushort>(SkilledNodes);
+            var visited = new HashSet<ushort>(start);
             var distance = new Dictionary<int, int>();
             var parent = new Dictionary<ushort, ushort>();
             var newOnes = new Queue<ushort>();
-            foreach (var node in AvailNodes)
+
+            foreach (var node in adjacent)
             {
                 newOnes.Enqueue(node);
                 distance.Add(node, 1);
@@ -908,72 +911,68 @@ namespace POESKillTree.SkillTreeFiles
             return TreeAddress + Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
-        public void SkillAllHighligtedNodes()
+        public void SkillAllHighlightedNodes()
         {
             if (_nodeHighlighter == null)
                 return;
-            var nodes = new HashSet<int>();
+            var nodes = new HashSet<ushort>();
             foreach (SkillNode nd in _nodeHighlighter.nodeHighlights.Keys)
             {
-                if (!rootNodeList.Contains(nd.Id))
+                if (!(rootNodeList.Contains(nd.Id) | SkilledNodes.Contains(nd.Id)))
                     nodes.Add(nd.Id);
             }
             SkillNodeList(nodes);
         }
 
-        private void SkillNodeList(HashSet<int> hs)
+        private void SkillNodeList(HashSet<ushort> targetNodeIds)
         {
-            while (hs.Count != 0)
+            if (targetNodeIds.Count == 0)
             {
-                var currentShortestPath = new List<ushort>();
-                var removeList = new List<ushort>();
-                foreach (ushort id in hs)
-                {
-                    var shortestPathTemp = GetShortestPathTo(id);
-                    if (shortestPathTemp.Count <= 0)
-                    {
-                        removeList.Add(id);
-                    }
-                    else if (shortestPathTemp.Count == 1)
-                    {
-                        currentShortestPath = shortestPathTemp;
-                        break;
-                    }
-                    else if (currentShortestPath.Count == 0 || shortestPathTemp.Count < currentShortestPath.Count)
-                    {
-                        currentShortestPath = shortestPathTemp;
-                    }
-                }
-                removeList.ForEach(x => hs.Remove(x));
-                foreach (ushort i in currentShortestPath)
-                {
-                    hs.Remove(i);
-                    SkilledNodes.Add(i);
-                }
-                UpdateAvailNodesList();
+                MessageBox.Show("Please highlight some non-skilled nodes first!");
+                return;
             }
-            UpdateAvailNodesDraw();
+
+            /// These are used for visualization of the simulation progress, so
+            /// they're saved for restoring them afterwards.
+            var savedHighlights = HighlightedNodes;
+
+            OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds);
+
+            optimizerDialog.ShowDialog();
+            if (optimizerDialog.DialogResult == true)
+                foreach (ushort node in optimizerDialog.bestSoFar)
+                    SkilledNodes.Add(node);
+
+            HighlightedNodes = savedHighlights;
+            DrawNodeBaseSurroundHighlight();
+
+            this.DrawHighlights(_nodeHighlighter);
+
+            UpdateAvailNodes();
         }
 
         public void UpdateAvailNodes(bool draw = true)
         {
-            UpdateAvailNodesList();
+            AvailNodes = GetAvailableNodes(SkilledNodes);
+            
             if (draw)
                 UpdateAvailNodesDraw();
         }
 
-        private void UpdateAvailNodesList()
+        private HashSet<ushort> GetAvailableNodes(HashSet<ushort> skilledNodes)
         {
-            AvailNodes.Clear();
-            foreach (ushort inode in SkilledNodes)
+            HashSet<ushort> availNodes = new HashSet<ushort>();
+
+            foreach (ushort inode in skilledNodes)
             {
                 SkillNode node = Skillnodes[inode];
                 foreach (SkillNode skillNode in node.Neighbor)
                 {
                     if (!CharName.Contains(skillNode.Name) && !SkilledNodes.Contains(skillNode.Id))
-                        AvailNodes.Add(skillNode.Id);
+                        availNodes.Add(skillNode.Id);
                 }
             }
+            return availNodes;
         }
 
         private void UpdateAvailNodesDraw()
@@ -1034,7 +1033,7 @@ namespace POESKillTree.SkillTreeFiles
 
             foreach (int node in classSpecificStartNodes)
             {
-                temp = GetShortestPathTo((ushort)node);
+                temp = GetShortestPathTo((ushort)node, SkilledNodes);
 
                 if (!temp.Any())
                     return true;

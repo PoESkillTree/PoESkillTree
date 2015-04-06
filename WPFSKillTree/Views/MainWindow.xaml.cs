@@ -280,7 +280,7 @@ namespace POESKillTree.Views
             try
             {
                 Cursor = Cursors.Wait;
-                Tree.SkillAllHighligtedNodes();
+                Tree.SkillAllHighlightedNodes();
                 UpdateAllAttributeList();
                 tbSkillURL.Text = Tree.SaveToURL();
             }
@@ -865,7 +865,7 @@ namespace POESKillTree.Views
                             Tree.ForceRefundNode(node.Id);
                             UpdateAllAttributeList();
 
-                            _prePath = Tree.GetShortestPathTo(node.Id);
+                            _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
                             Tree.DrawPath(_prePath);
                         }
                         else if (_prePath != null)
@@ -919,7 +919,7 @@ namespace POESKillTree.Views
                 }
                 else
                 {
-                    _prePath = Tree.GetShortestPathTo(node.Id);
+                    _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
                     Tree.DrawPath(_prePath);
                 }
                 
@@ -1781,7 +1781,6 @@ namespace POESKillTree.Views
                     level = 0;
                 }
                 Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, level);
-
             }
             else
             {
