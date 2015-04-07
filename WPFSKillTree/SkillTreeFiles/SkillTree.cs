@@ -977,7 +977,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private void UpdateAvailNodesDraw()
         {
-            var pen2 = new Pen(Brushes.Yellow, 15f);
+            var pen2 = new Pen(Brushes.DarkKhaki, 15f);
 
             using (DrawingContext dc = picActiveLinks.RenderOpen())
             {
