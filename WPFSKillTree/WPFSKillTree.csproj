@@ -161,6 +161,15 @@
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\DistanceLookup.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\GeneticAlgorithm.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\Graphs.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\HeapPriorityQueue.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\IPriorityQueue.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\MinimalSpanningTree.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\PriorityQueueNode.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
+    <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="Utils\NullableToIntConverter.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
@@ -217,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Views\OptimizerControllerWindow.xaml.cs">
+      <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -257,6 +270,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\OptimizerControllerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\WindowsRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -279,6 +296,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Version.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

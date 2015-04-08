@@ -76,6 +76,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDPS.cs" />
     <Compile Include="TestItemDB.cs" />
+    <Compile Include="TestMSTAlgorithm.cs" />
+    <Compile Include="TestGeneticAlgorithmEasy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UpdateDB\UpdateDB.csproj">
@@ -105,6 +107,9 @@
     <None Include="TestBuilds\gems\StaticStrike.json" />
     <None Include="TestBuilds\init\Arc-Barrage-45p.json" />
     <None Include="TestBuilds\init\FP-Templar-14p.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TestGraphs\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

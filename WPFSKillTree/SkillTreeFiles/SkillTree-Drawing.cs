@@ -14,6 +14,8 @@ namespace POESKillTree.SkillTreeFiles
     {
         #region Members
 
+        private static readonly Color _treeComparisonColor = Colors.RoyalBlue;
+
         private static List<KeyValuePair<Rect, ImageBrush>> _FacesBrush = new List<KeyValuePair<Rect, ImageBrush>>();
 
         public static List<KeyValuePair<Rect, ImageBrush>> FacesBrush
@@ -41,8 +43,8 @@ namespace POESKillTree.SkillTreeFiles
         {
             get { return SkillTree._StartBackgrounds; }
         }
-
-        private NodeHighlighter _nodeHighlighter = new NodeHighlighter();
+        // FIXME: private
+        public NodeHighlighter _nodeHighlighter = new NodeHighlighter();
 
         public DrawingVisual SkillTreeVisual;
         public DrawingVisual picActiveLinks;
@@ -325,7 +327,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
-            var pen2 = new Pen(Brushes.Lime, 20 * factor);
+            var pen2 = new Pen(new SolidColorBrush(_treeComparisonColor), 25 * factor);
             using (DrawingContext dc = picPathHighlight.RenderOpen())
             {
                 if (HighlightedNodes != null)
@@ -467,7 +469,6 @@ namespace POESKillTree.SkillTreeFiles
         private void DrawSkillIconLayer()
         {
             var pen = new Pen(Brushes.Black, 5);
-            var pen3 = new Pen(Brushes.Green, 10);
 
             Geometry g = new RectangleGeometry(TRect);
             using (DrawingContext dc = picSkillIconLayer.RenderOpen())
@@ -494,7 +495,6 @@ namespace POESKillTree.SkillTreeFiles
         private void DrawActiveNodeIcons()
         {
             var pen = new Pen(Brushes.Black, 5);
-            var pen3 = new Pen(Brushes.Green, 10);
 
             Geometry g = new RectangleGeometry(TRect);
             using (DrawingContext dc = picActiveSkillIconLayer.RenderOpen())
@@ -598,7 +598,7 @@ namespace POESKillTree.SkillTreeFiles
                 //outline generator
                 foreach (var item in NodeSurroundBrush)
                 {
-                    var outlinecolor = Colors.Lime;
+                    var outlinecolor = _treeComparisonColor;
                     uint omask = (uint)outlinecolor.B | (uint)outlinecolor.G << 8 | (uint)outlinecolor.R << 16;
 
                     var bitmap = (BitmapImage)item.Value.ImageSource;
