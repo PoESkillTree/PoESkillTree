@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
 using POESKillTree.ViewModels.ItemAttribute;
+using POESKillTree.Utils;
 using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
 using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;
 using DamageNature = POESKillTree.SkillTreeFiles.Compute.DamageNature;
@@ -16,6 +17,10 @@ using DamageSource = POESKillTree.SkillTreeFiles.Compute.DamageSource;
 using WeaponHand = POESKillTree.SkillTreeFiles.Compute.WeaponHand;
 using WeaponType = POESKillTree.SkillTreeFiles.Compute.WeaponType;
 using Weapon = POESKillTree.SkillTreeFiles.Compute.Weapon;
+using System.Windows.Media;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -433,12 +438,42 @@ namespace POESKillTree.SkillTreeFiles
         // The deserialized gem and gem index entry.
         public class Gem
         {
+            public enum Keyword
+            {
+                AoE,
+                Aura,
+                Cast,
+                Curse,
+                Trigger,
+                Support,
+            }
             // Deserialized name.
             [XmlAttribute]
-            public string Name;
+            public string Name {get; set;}
+
+            // Deserialized keywords
+            [XmlArray("Keywords"), XmlArrayItem(typeof(string), ElementName = "Keyword")]
+            public List<string> Keywords;
+
+            // Deserialized Mana reserved
+            [XmlAttribute("ManaReserved")]
+            public string ManaReserved { get; set; }
+
+            // Deserialized Mana Multiplier
+            [XmlAttribute("ManaMultiplier")]
+            public string ManaMultiplier { get; set; }
+
             // Deserialized attributes.
             [XmlElement("Attribute")]
-            public List<Attribute> Attributes;
+            public List<Attribute> Attributes { get; set; }
+
+            // path to a gem icon
+            [XmlAttribute]
+            public string GemIcon { get; set; }
+
+            // path to a skill icon, if exists
+            [XmlAttribute]
+            public string SkillIcon { get; set; }
 
             // Indexed level dependant attributes.
             [XmlIgnore]
@@ -492,6 +527,7 @@ namespace POESKillTree.SkillTreeFiles
             public bool StrikesWithBothWeapons = false;
             [XmlIgnore]
             public bool StrikesWithBothWeaponsSpecified { get { return StrikesWithBothWeapons; } }
+          
 
             // Returns all attributes of gem with defined values for specified level.
             internal AttributeSet AttributesAtLevel(int level)
@@ -626,6 +662,20 @@ namespace POESKillTree.SkillTreeFiles
             // Merges attributes of specified gem.
             public void Merge(Gem gem)
             {
+                // sort keywords and copy to actuall gem
+                Keywords = gem.Keywords;
+
+                // copy mana multiplier value
+                ManaMultiplier = gem.ManaMultiplier;
+
+                // copy mana reserved value
+                ManaReserved = gem.ManaReserved;
+
+                // copy images paths
+                GemIcon = gem.GemIcon;
+                SkillIcon = gem.SkillIcon;
+
+                // copy attributes
                 if (gem.Attributes != null)
                 {
                     if (Attributes == null) Attributes = new List<Attribute>();
@@ -1311,6 +1361,11 @@ namespace POESKillTree.SkillTreeFiles
             return DB == null ? null : DB.Gems.Find(g => g.Name == gemName);
         }
 
+        // Returns list of deserialized aura gems or empty list
+        public static List<Gem> GetGemsByKeyword(Gem.Keyword keyword)
+        {
+            return DB == null ? new List<Gem>() : DB.Gems.FindAll(g => g.Keywords.Contains(keyword.ToString()) == true);
+        }
         // Returns numbner of hits skill gem does per single attack.
         public static float HitsPerAttackOf(Item gem)
         {

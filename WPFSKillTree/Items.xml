@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ItemDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Gem Name="Added Chaos Damage">
+  <Gem Name="Added Chaos Damage" ManaMultiplier="130%" GemIcon="Added_Chaos_Damage_gem_icon.png">
+    <Keywords>
+      <Keyword>Chaos</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="Adds #-# Chaos Damage">
       <Value Level="1">18–26</Value>
       <Value Level="2">20–30</Value>
@@ -30,7 +34,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Added Cold Damage">
+  <Gem Name="Added Cold Damage" ManaMultiplier="130%" GemIcon="Added_Cold_Damage_gem_icon.png">
+    <Keywords>
+      <Keyword>Cold</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="Adds #-# Cold Damage">
       <Value Level="1">4–6</Value>
       <Value Level="2">5–8</Value>
@@ -64,7 +72,11 @@
       <Value Level="30">211–316</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Added Fire Damage">
+  <Gem Name="Added Fire Damage" ManaMultiplier="120%" GemIcon="Added_Fire_Damage_gem_icon.png">
+    <Keywords>
+      <Keyword>Fire</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="Gain #% of Physical Damage as Extra Fire Damage">
       <Value Level="1">20%</Value>
       <Value Level="2">21%</Value>
@@ -91,7 +103,11 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Added Lightning Damage">
+  <Gem Name="Added Lightning Damage" ManaMultiplier="130%" GemIcon="Added_Lightning_Damage_gem_icon.png">
+    <Keywords>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="Adds #-# Lightning Damage">
       <Value Level="1">1–8</Value>
       <Value Level="2">1–11</Value>
@@ -118,7 +134,11 @@
       <Value Level="23">17–320</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Additional Accuracy">
+  <Gem Name="Additional Accuracy" GemIcon="Additional_Accuracy_gem_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="+# to Accuracy Rating">
       <Value Level="1">82</Value>
       <Value Level="2">109</Value>
@@ -150,7 +170,85 @@
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Arc">
+  <Gem Name="Anger" ManaReserved="60%" GemIcon="Anger_gem_icon.png" SkillIcon="Anger_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="You and nearby allies deal #–# additional Fire Damage with attacks">
+      <Value Level="1">5-9</Value>
+      <Value Level="2">6-11</Value>
+      <Value Level="3">8-13</Value>
+      <Value Level="4">9-16</Value>
+      <Value Level="5">11-18</Value>
+      <Value Level="6">13-22</Value>
+      <Value Level="7">15-25</Value>
+      <Value Level="8">18-30</Value>
+      <Value Level="9">22-37</Value>
+      <Value Level="10">26-44</Value>
+      <Value Level="11">31-52</Value>
+      <Value Level="12">35-58</Value>
+      <Value Level="13">39-66</Value>
+      <Value Level="14">44-74</Value>
+      <Value Level="15">50-83</Value>
+      <Value Level="16">56-93</Value>
+      <Value Level="17">62-104</Value>
+      <Value Level="18">67-111</Value>
+      <Value Level="19">72-120</Value>
+      <Value Level="20">77-129</Value>
+      <Value Level="21">83-138</Value>
+      <Value Level="22">89-148</Value>
+      <Value Level="23">95-159</Value>
+      <Value Level="24">102-170</Value>
+      <Value Level="25">109-182</Value>
+      <Value Level="26">117-195</Value>
+      <Value Level="27">???-???</Value>
+      <Value Level="28">???-???</Value>
+      <Value Level="29">???-???</Value>
+      <Value Level="30">???-???</Value>
+    </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">0%</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Arc" GemIcon="Arc_gem_icon.png" SkillIcon="Arc_skill_icon.png">
+    <Keywords>
+      <Keyword>Chaining</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">11</Value>
       <Value Level="2">12</Value>
@@ -168,10 +266,9 @@
       <ValueForLevel From="18" To="19">25</ValueForLevel>
       <ValueForLevel From="20" To="22">26</ValueForLevel>
       <Value Level="23">27</Value>
-      <Value Level="24">-</Value>
-      <Value Level="25">-</Value>
-      <Value Level="26">-</Value>
-      <Value Level="27">30</Value>
+      <Value Level="24">28</Value>
+      <Value Level="25">29</Value>
+      <ValueForLevel From="26" To="27">30</ValueForLevel>
     </Attribute>
     <Attribute Name="Deals #-# Lightning Damage">
       <Value Level="1">3–50</Value>
@@ -203,7 +300,14 @@
       <Value Level="27">73–1386</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Arctic Breath">
+  <Gem Name="Arctic Breath" GemIcon="Arctic_Breath_gem_icon.png" SkillIcon="Arctic_Breath_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Cold</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">12</Value>
       <Value Level="2">13</Value>
@@ -241,7 +345,13 @@
       <Value Level="21">416-624</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Ball Lightning">
+  <Gem Name="Ball Lightning" GemIcon="Ball_Lightning_gem_icon.png" SkillIcon="Ball_Lightning_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">15</Value>
       <Value Level="2">16</Value>
@@ -283,7 +393,11 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Barrage" RequiredWeapon="Ranged">
+  <Gem RequiredWeapon="Ranged" Name="Barrage" GemIcon="Barrage_gem_icon.png" SkillIcon="Barrage_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="5">6</ValueForLevel>
       <ValueForLevel From="6" To="10">7</ValueForLevel>
@@ -298,7 +412,42 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Burning Arrow">
+  <Gem Name="Blood Magic" ManaMultiplier="245%" GemIcon="Blood_Magic_(support_gem)_gem_icon.png">
+    <Keywords>
+      <Keyword>Support</Keyword>
+    </Keywords>
+    <Attribute Name="Mana cost multiplier #%">
+      <Value Level="1">245%</Value>
+      <Value Level="2">242%</Value>
+      <Value Level="3">239%</Value>
+      <Value Level="4">237%</Value>
+      <Value Level="5">234%</Value>
+      <Value Level="6">232%</Value>
+      <Value Level="7">229%</Value>
+      <Value Level="8">226%</Value>
+      <Value Level="9">224%</Value>
+      <Value Level="10">221%</Value>
+      <Value Level="11">218%</Value>
+      <Value Level="12">216%</Value>
+      <Value Level="13">213%</Value>
+      <Value Level="14">211%</Value>
+      <Value Level="15">208%</Value>
+      <Value Level="16">205%</Value>
+      <Value Level="17">203%</Value>
+      <Value Level="18">200%</Value>
+      <Value Level="19">197%</Value>
+      <Value Level="20">196%</Value>
+      <Value Level="21">193%</Value>
+      <Value Level="22">190%</Value>
+      <Value Level="23">187%</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Burning Arrow" GemIcon="Burning_Arrow_gem_icon.png" SkillIcon="Burning_Arrow_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+      <Keyword>Fire</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="5">5</ValueForLevel>
       <ValueForLevel From="6" To="10">6</ValueForLevel>
@@ -310,17 +459,37 @@
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Cast On Critical Strike">
+  <Gem Name="Cast On Critical Strike" ManaMultiplier="140%">
+    <Keywords>
+      <Keyword>Spell</Keyword>
+      <Keyword>Support</Keyword>
+      <Keyword>Trigger</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Critical Strike Chance">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Cast on Death">
+  <Gem Name="Cast on Death" GemIcon="Cast_On_Death_gem_icon.png">
+    <Keywords>
+      <Keyword>Spell</Keyword>
+      <Keyword>Support</Keyword>
+      <Keyword>Trigger</Keyword>
+    </Keywords>
     <Attribute Name="#% more Damage">
       <ValuePerLevel>16</ValuePerLevel>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValuePerQuality>3</ValuePerQuality>
+    </Attribute>
   </Gem>
-  <Gem Name="Cast on Melee Kill">
+  <Gem Name="Cast on Melee Kill" ManaMultiplier="140%" GemIcon="Cast_on_Melee_Kill_gem_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Spell</Keyword>
+      <Keyword>Support</Keyword>
+      <Keyword>Trigger</Keyword>
+    </Keywords>
     <Attribute Name="Supported Triggered Spells have #% increased Spell Damage">
       <Value Level="1">20%</Value>
       <Value Level="2">23%</Value>
@@ -347,7 +516,12 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Cast when Damage Taken">
+  <Gem Name="Cast when Damage Taken" GemIcon="Cast_when_Damage_Taken_gem_icon.png">
+    <Keywords>
+      <Keyword>Spell</Keyword>
+      <Keyword>Support</Keyword>
+      <Keyword>Trigger</Keyword>
+    </Keywords>
     <Attribute Name="#% less Damage" NoUpdate="true">
       <Value Level="1">70%</Value>
       <Value Level="2">66%</Value>
@@ -376,17 +550,136 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Cast when Stunned">
+  <Gem Name="Cast when Stunned" GemIcon="Cast_When_Stunned_gem_icon.png">
+    <Keywords>
+      <Keyword>Spell</Keyword>
+      <Keyword>Support</Keyword>
+      <Keyword>Trigger</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Chain">
+  <Gem Name="Chain" ManaMultiplier="175%" GemIcon="Chain_gem_icon.png">
+    <Keywords>
+      <Keyword>Chaining</Keyword>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Damage">
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Cleave" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" StrikesWithBothWeapons="true">
+  <Gem Name="Clarity" GemIcon="Clarity_gem_icon.png" SkillIcon="Clarity_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="# Mana Reserved">
+      <Value Level="1">64</Value>
+      <Value Level="2">88</Value>
+      <Value Level="3">112</Value>
+      <Value Level="4">136</Value>
+      <Value Level="5">160</Value>
+      <Value Level="6">184</Value>
+      <Value Level="7">208</Value>
+      <Value Level="8">232</Value>
+      <Value Level="9">256</Value>
+      <Value Level="10">280</Value>
+      <Value Level="11">304</Value>
+      <Value Level="12">328</Value>
+      <Value Level="13">352</Value>
+      <Value Level="14">376</Value>
+      <Value Level="15">400</Value>
+      <Value Level="16">424</Value>
+      <Value Level="17">448</Value>
+      <Value Level="18">472</Value>
+      <Value Level="19">496</Value>
+      <Value Level="20">520</Value>
+      <Value Level="21">544</Value>
+      <Value Level="22">568</Value>
+      <Value Level="23">592</Value>
+      <Value Level="24">616</Value>
+      <Value Level="25">640</Value>
+      <Value Level="26">664</Value>
+      <Value Level="27">688</Value>
+      <Value Level="28">712</Value>
+      <Value Level="29">736</Value>
+      <Value Level="30">760</Value>
+    </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">0%</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies regenerate # Mana per second">
+      <Value Level="1">2.9</Value>
+      <Value Level="2">4.0</Value>
+      <Value Level="3">5.2</Value>
+      <Value Level="4">6.3</Value>
+      <Value Level="5">7.4</Value>
+      <Value Level="6">8.5</Value>
+      <Value Level="7">9.6</Value>
+      <Value Level="8">10.8</Value>
+      <Value Level="9">11.9</Value>
+      <Value Level="10">13.1</Value>
+      <Value Level="11">14.2</Value>
+      <Value Level="12">15.3</Value>
+      <Value Level="13">16.0</Value>
+      <Value Level="14">17.6</Value>
+      <Value Level="15">18.8</Value>
+      <Value Level="16">20.0</Value>
+      <Value Level="17">21.1</Value>
+      <Value Level="18">22.3</Value>
+      <Value Level="19">23.5</Value>
+      <Value Level="20">24.7</Value>
+      <Value Level="21">25.8</Value>
+      <Value Level="22">27.0</Value>
+      <Value Level="23">??.?</Value>
+      <Value Level="24">29.4</Value>
+      <Value Level="25">??.?</Value>
+      <Value Level="26">31.8</Value>
+      <Value Level="27">??.?</Value>
+      <Value Level="28">??.?</Value>
+      <Value Level="29">??.?</Value>
+      <Value Level="30">??.?</Value>
+    </Attribute>
+  </Gem>
+  <Gem RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" StrikesWithBothWeapons="true" Name="Cleave" GemIcon="Cleave_gem_icon.png" SkillIcon="Cleave_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
@@ -403,7 +696,12 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Cold Snap" IncludeForm="OnUse">
+  <Gem IncludeForm="OnUse" Name="Cold Snap" GemIcon="Cold_Snap_gem_icon.png" SkillIcon="Cold_Snap_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Cold</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">11</Value>
       <Value Level="2">12</Value>
@@ -423,7 +721,8 @@
       <ValueForLevel From="16" To="17">26</ValueForLevel>
       <ValueForLevel From="18" To="19">27</ValueForLevel>
       <ValueForLevel From="20" To="21">28</ValueForLevel>
-      <Value Level="23">29</Value>
+      <ValueForLevel From="22" To="23">29</ValueForLevel>
+      <ValueForLevel From="24" To="27">30</ValueForLevel>
     </Attribute>
     <Attribute Name="Deals #-# Cold Damage">
       <Value Level="1">8-15</Value>
@@ -447,10 +746,20 @@
       <Value Level="19">384-576</Value>
       <Value Level="20">421-632</Value>
       <Value Level="21">462-693</Value>
+      <Value Level="22">506-759</Value>
       <Value Level="23">554-832</Value>
+      <Value Level="24">607-910</Value>
+      <Value Level="25">664-996</Value>
+      <Value Level="26">726-1089</Value>
+      <Value Level="27">794-1191</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Cold to Fire">
+  <Gem Name="Cold to Fire" ManaMultiplier="110%" GemIcon="Cold_to_Fire_gem_icon.png">
+    <Keywords>
+      <Keyword>Cold</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="Gain #% of Cold Damage Added as Extra Fire Damage">
       <Value Level="1">10%</Value>
       <Value Level="2">11%</Value>
@@ -483,7 +792,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Concentrated Effect">
+  <Gem Name="Concentrated Effect" ManaMultiplier="160%" GemIcon="Concentrated_Effect_gem_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% more Area Damage">
       <Value Level="1">50%</Value>
       <Value Level="2">51%</Value>
@@ -510,7 +823,43 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Cyclone" HitsPerAttack="2">
+  <Gem Name="Curse On Hit" ManaMultiplier="100%" GemIcon="Curse_On_Hit_gem_icon.png">
+    <Keywords>
+      <Keyword>Curse</Keyword>
+      <Keyword>Support</Keyword>
+      <Keyword>Trigger</Keyword>
+    </Keywords>
+    <Attribute Name="Curse duration reduced by #%">
+      <Value Level="1">50%</Value>
+      <Value Level="2">48%</Value>
+      <Value Level="3">46%</Value>
+      <Value Level="4">44%</Value>
+      <Value Level="5">42%</Value>
+      <Value Level="6">40%</Value>
+      <Value Level="7">38%</Value>
+      <Value Level="8">36%</Value>
+      <Value Level="9">34%</Value>
+      <Value Level="10">32%</Value>
+      <Value Level="11">30%</Value>
+      <Value Level="12">28%</Value>
+      <Value Level="13">26%</Value>
+      <Value Level="14">24%</Value>
+      <Value Level="15">22%</Value>
+      <Value Level="16">20%</Value>
+      <Value Level="17">18%</Value>
+      <Value Level="18">16%</Value>
+      <Value Level="19">14%</Value>
+      <Value Level="20">12%</Value>
+      <Value Level="21">10%</Value>
+    </Attribute>
+  </Gem>
+  <Gem HitsPerAttack="2" Name="Cyclone" GemIcon="Cyclone_gem_icon.png" SkillIcon="Cyclone_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Movement</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
@@ -524,8 +873,181 @@
     <Attribute Name="#% increased Attack Speed">
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
   </Gem>
-  <Gem Name="Dominating Blow">
+  <Gem Name="Determination" ManaReserved="60%" GemIcon="Determination_gem_icon.png" SkillIcon="Determination_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">0%</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain #% more Armour">
+      <Value Level="1">32%</Value>
+      <Value Level="2">33%</Value>
+      <Value Level="3">34%</Value>
+      <Value Level="4">35%</Value>
+      <Value Level="5">36%</Value>
+      <Value Level="6">37%</Value>
+      <Value Level="7">38%</Value>
+      <Value Level="8">39%</Value>
+      <Value Level="9">40%</Value>
+      <Value Level="10">41%</Value>
+      <Value Level="11">42%</Value>
+      <Value Level="12">43%</Value>
+      <Value Level="13">44%</Value>
+      <Value Level="14">45%</Value>
+      <Value Level="15">46%</Value>
+      <Value Level="16">47%</Value>
+      <Value Level="17">48%</Value>
+      <Value Level="18">49%</Value>
+      <Value Level="19">50%</Value>
+      <Value Level="20">51%</Value>
+      <Value Level="21">52%</Value>
+      <Value Level="22">53%</Value>
+      <Value Level="23">54%</Value>
+      <Value Level="24">55%</Value>
+      <Value Level="25">56%</Value>
+      <Value Level="26">57%</Value>
+      <Value Level="27">??%</Value>
+      <Value Level="28">??%</Value>
+      <Value Level="29">??%</Value>
+      <Value Level="30">??%</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Discipline" ManaReserved="60%" GemIcon="Discipline_gem_icon.png" SkillIcon="Discipline_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">0%</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain #% additional Energy Shield">
+      <Value Level="1">90</Value>
+      <Value Level="2">99</Value>
+      <Value Level="3">108</Value>
+      <Value Level="4">117</Value>
+      <Value Level="5">128</Value>
+      <Value Level="6">137</Value>
+      <Value Level="7">147</Value>
+      <Value Level="8">159</Value>
+      <Value Level="9">170</Value>
+      <Value Level="10">182</Value>
+      <Value Level="11">194</Value>
+      <Value Level="12">206</Value>
+      <Value Level="13">219</Value>
+      <Value Level="14">231</Value>
+      <Value Level="15">245</Value>
+      <Value Level="16">260</Value>
+      <Value Level="17">273</Value>
+      <Value Level="18">288</Value>
+      <Value Level="19">303</Value>
+      <Value Level="20">318</Value>
+      <Value Level="21">333</Value>
+      <Value Level="22">350</Value>
+      <Value Level="23">366</Value>
+      <Value Level="24">383</Value>
+      <Value Level="25">399</Value>
+      <Value Level="26">417</Value>
+    </Attribute>
+    <Attribute Name="Energy Shield efficiency #%">
+      <Value Level="1">1.5</Value>
+      <Value Level="2">1.65</Value>
+      <Value Level="3">1.8</Value>
+      <Value Level="4">1.95</Value>
+      <Value Level="5">2.13</Value>
+      <Value Level="6">2.28</Value>
+      <Value Level="7">2.45</Value>
+      <Value Level="8">2.65</Value>
+      <Value Level="9">2.83</Value>
+      <Value Level="10">3.03</Value>
+      <Value Level="11">3.23</Value>
+      <Value Level="12">3.43</Value>
+      <Value Level="13">3.65</Value>
+      <Value Level="14">3.85</Value>
+      <Value Level="15">4.08</Value>
+      <Value Level="16">4.33</Value>
+      <Value Level="17">4.55</Value>
+      <Value Level="18">4.8</Value>
+      <Value Level="19">5.05</Value>
+      <Value Level="20">5.3</Value>
+      <Value Level="21">5.55</Value>
+      <Value Level="22">5.83</Value>
+      <Value Level="23">6.1</Value>
+      <Value Level="24">6.38</Value>
+      <Value Level="25">6.65</Value>
+      <Value Level="26">6.95</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Dominating Blow" GemIcon="Dominating_Blow_gem_icon.png" SkillIcon="Dominating_Blow_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Minion</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">20</Value>
       <Value Level="2">21</Value>
@@ -544,7 +1066,11 @@
       <ValueForLevel From="19" To="24">37</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Double Strike">
+  <Gem Name="Double Strike" GemIcon="Double_Strike_gem_icon.png" SkillIcon="Double_Strike_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="5">8</ValueForLevel>
       <ValueForLevel From="6" To="10">9</ValueForLevel>
@@ -558,7 +1084,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Dual Strike" RequiredHand="DualWielded" RequiredWeapon="Melee" StrikesWithBothWeapons="true">
+  <Gem RequiredHand="DualWielded" RequiredWeapon="Melee" StrikesWithBothWeapons="true" Name="Dual Strike" GemIcon="Dual_Strike_gem_icon.png" SkillIcon="Dual_Strike_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
@@ -572,7 +1102,15 @@
       <ValueForLevel From="16" To="20">11</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Elemental Hit">
+  <Gem Name="Elemental Hit" GemIcon="Elemental_Hit_gem_icon.png" SkillIcon="Elemental_Hit_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+      <Keyword>Cold</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="2">11</ValueForLevel>
       <ValueForLevel From="3" To="4">12</ValueForLevel>
@@ -587,19 +1125,31 @@
       <ValueForLevel From="14" To="15">22</ValueForLevel>
       <ValueForLevel From="16" To="17">23</ValueForLevel>
       <Value Level="18">24</Value>
-      <Value Level="19">25</Value>
-      <ValueForLevel From="20" To="21">26</ValueForLevel>
-      <Value Level="22">?</Value>
-      <Value Level="23">?</Value>
+      <ValueForLevel From="19" To="21">25</ValueForLevel>
+      <ValueForLevel From="22" To="23">26</ValueForLevel>
       <Value Level="24">?</Value>
-      <Value Level="25">?</Value>
+      <Value Level="25">27</Value>
       <Value Level="26">?</Value>
+      <Value Level="27">28</Value>
+      <Value Level="28">?</Value>
     </Attribute>
     <Attribute Name="#% increased Critical Strike Chance">
       <ValuePerQuality>4</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Ethereal Knives">
+  <Gem Name="Empower" ManaMultiplier="125%" GemIcon="Empower_gem_icon.png">
+    <Keywords>
+      <Keyword>Support</Keyword>
+    </Keywords>
+    <Attribute Name="+# Level of Supported Active Skill Gems">
+      <ValuePerLevel>1</ValuePerLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Ethereal Knives" GemIcon="Ethereal_Knives_gem_icon.png" SkillIcon="Ethereal_Knives_skill_icon.png">
+    <Keywords>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">6</Value>
       <Value Level="2">7</Value>
@@ -664,36 +1214,42 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Explosive Arrow">
+  <Gem Name="Explosive Arrow" GemIcon="Explosive_Arrow_gem_icon.png" SkillIcon="Explosive_Arrow_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Fire</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">13</Value>
       <Value Level="2">14</Value>
       <ValueForLevel From="3" To="4">15</ValueForLevel>
       <Value Level="5">16</Value>
-      <Value Level="6">?</Value>
+      <Value Level="6">17</Value>
       <Value Level="7">18</Value>
       <Value Level="8">20</Value>
       <Value Level="9">21</Value>
       <Value Level="10">22</Value>
-      <Value Level="11">?</Value>
-      <Value Level="12">?</Value>
-      <Value Level="13">?</Value>
-      <Value Level="14">?</Value>
-      <Value Level="15">?</Value>
-      <Value Level="16">?</Value>
-      <ValueForLevel From="17" To="18">26</ValueForLevel>
-      <Value Level="19">?</Value>
-      <Value Level="20">?</Value>
-      <Value Level="21">?</Value>
-      <Value Level="22">?</Value>
+      <Value Level="11">23</Value>
+      <Value Level="12">24</Value>
+      <ValueForLevel From="13" To="14">25</ValueForLevel>
+      <ValueForLevel From="15" To="18">26</ValueForLevel>
+      <ValueForLevel From="19" To="20">27</ValueForLevel>
+      <ValueForLevel From="21" To="22">28</ValueForLevel>
       <Value Level="23">?</Value>
       <Value Level="24">?</Value>
-      <Value Level="25">?</Value>
+      <Value Level="25">30</Value>
       <Value Level="26">?</Value>
       <Value Level="27">?</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Faster Attacks">
+  <Gem Name="Faster Attacks" ManaMultiplier="115%" GemIcon="Faster_Attacks_gem_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Attack Speed">
       <Value Level="1">25%</Value>
       <Value Level="2">26%</Value>
@@ -718,7 +1274,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Faster Casting">
+  <Gem Name="Faster Casting" ManaMultiplier="120%" GemIcon="Faster_Casting_gem_icon.png">
+    <Keywords>
+      <Keyword>Spell</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Cast Speed">
       <Value Level="1">20%</Value>
       <Value Level="2">21%</Value>
@@ -743,7 +1303,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Faster Projectiles">
+  <Gem Name="Faster Projectiles" ManaMultiplier="110%" GemIcon="Faster_Projectiles_gem_icon.png">
+    <Keywords>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Projectile Damage">
       <ValueForLevel From="1" To="2">10%</ValueForLevel>
       <ValueForLevel From="3" To="4">11%</ValueForLevel>
@@ -764,7 +1328,13 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Fireball" ExcludeForm="AoE">
+  <Gem ExcludeForm="AoE" Name="Fireball" GemIcon="Fireball_gem_icon.png" SkillIcon="Fireball_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Deals #-# Fire Damage">
       <Value Level="1">5–10</Value>
       <Value Level="2">7–11</Value>
@@ -830,7 +1400,13 @@
       <Value Level="30">42</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Firestorm" IncludeForm="OnUse">
+  <Gem IncludeForm="OnUse" Name="Firestorm" GemIcon="Firestorm_gem_icon.png" SkillIcon="Firestorm_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">6</Value>
       <Value Level="2">7</Value>
@@ -881,7 +1457,12 @@
       <Value Level="23">157-235</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Flame Surge">
+  <Gem Name="Flame Surge" GemIcon="Flame_Surge_gem_icon.png" SkillIcon="Flame_Surge_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">12</Value>
       <Value Level="2">14</Value>
@@ -947,7 +1528,12 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Flameblast" IncludeForm="OnUse">
+  <Gem IncludeForm="OnUse" Name="Flameblast" GemIcon="Flameblast_gem_icon.png" SkillIcon="Flameblast_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="4">5</ValueForLevel>
       <ValueForLevel From="5" To="8">6</ValueForLevel>
@@ -992,7 +1578,12 @@
       <Value Level="30">492–737</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Flicker Strike" IncludeForm="OnUse">
+  <Gem IncludeForm="OnUse" Name="Flicker Strike" GemIcon="Flicker_Strike_gem_icon.png" SkillIcon="Flicker_Strike_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Movement</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
@@ -1022,13 +1613,22 @@
       <ValuePerQuality>4</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Fork">
+  <Gem Name="Fork" ManaMultiplier="115%" GemIcon="Fork_gem_icon.png">
+    <Keywords>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerLevel>2</ValuePerLevel>
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Freezing Pulse">
+  <Gem Name="Freezing Pulse" GemIcon="Freezing_Pulse_gem_icon.png" SkillIcon="Freezing_Pulse_skill_icon.png">
+    <Keywords>
+      <Keyword>Cold</Keyword>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">4</Value>
       <ValueForLevel From="2" To="3">5</ValueForLevel>
@@ -1072,7 +1672,12 @@
       <Value Level="23">320-480</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Frenzy">
+  <Gem Name="Frenzy" GemIcon="Frenzy_gem_icon.png" SkillIcon="Frenzy_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="5">12</ValueForLevel>
       <ValueForLevel From="6" To="10">13</ValueForLevel>
@@ -1080,7 +1685,12 @@
       <ValueForLevel From="17" To="24">15</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Frost Wall">
+  <Gem Name="Frost Wall" GemIcon="Frost_Wall_gem_icon.png" SkillIcon="Frost_Wall_skill_icon.png">
+    <Keywords>
+      <Keyword>Cold</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">20</Value>
       <Value Level="2">23</Value>
@@ -1140,7 +1750,12 @@
       <Value Level="30">41–61</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Glacial Cascade">
+  <Gem Name="Glacial Cascade" GemIcon="Glacial_Cascade_gem_icon.png" SkillIcon="Glacial_Cascade_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Cold</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">8</Value>
       <Value Level="2">10</Value>
@@ -1156,9 +1771,9 @@
       <Value Level="12">22</Value>
       <Value Level="13">24</Value>
       <Value Level="14">25</Value>
-      <ValueForLevel From="15" To="17">26</ValueForLevel>
-      <Value Level="18">33</Value>
-      <ValueForLevel From="19" To="20">34</ValueForLevel>
+      <ValueForLevel From="15" To="18">26</ValueForLevel>
+      <Value Level="19">27</Value>
+      <Value Level="20">34</Value>
       <ValueForLevel From="21" To="22">35</ValueForLevel>
       <ValueForLevel From="23" To="24">36</ValueForLevel>
       <ValueForLevel From="25" To="26">37</ValueForLevel>
@@ -1184,8 +1799,8 @@
       <Value Level="16">55–85</Value>
       <Value Level="17">64–98</Value>
       <Value Level="18">70–107</Value>
-      <Value Level="19">66–102</Value>
-      <Value Level="20">72–111</Value>
+      <Value Level="19">76–117</Value>
+      <Value Level="20">83–128</Value>
       <Value Level="21">79–122</Value>
       <Value Level="22">86–133</Value>
       <Value Level="23">94–145</Value>
@@ -1216,8 +1831,8 @@
       <Value Level="16">103–155</Value>
       <Value Level="17">118–178</Value>
       <Value Level="18">129–194</Value>
-      <Value Level="19">123–185</Value>
-      <Value Level="20">134–203</Value>
+      <Value Level="19">141–213</Value>
+      <Value Level="20">154–232</Value>
       <Value Level="21">147–221</Value>
       <Value Level="22">160–241</Value>
       <Value Level="23">174–263</Value>
@@ -1233,7 +1848,12 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Glacial Hammer" RequiredWeapon="OneHandedMace Staff TwoHandedMace">
+  <Gem RequiredWeapon="OneHandedMace Staff TwoHandedMace" Name="Glacial Hammer" GemIcon="Glacial_Hammer_gem_icon.png" SkillIcon="Glacial_Hammer_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Cold</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
@@ -1243,7 +1863,83 @@
       <Value Level="21">11</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Greater Multiple Projectiles">
+  <Gem Name="Grace" ManaReserved="60%" GemIcon="Grace_gem_icon.png" SkillIcon="Grace_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">0%</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain # additional Evasion rating">
+      <Value Level="1">395</Value>
+      <Value Level="2">468</Value>
+      <Value Level="3">546</Value>
+      <Value Level="4">630</Value>
+      <Value Level="5">720</Value>
+      <Value Level="6">816</Value>
+      <Value Level="7">918</Value>
+      <Value Level="8">1026</Value>
+      <Value Level="9">1140</Value>
+      <Value Level="10">1259</Value>
+      <Value Level="11">1383</Value>
+      <Value Level="12">1448</Value>
+      <Value Level="13">1514</Value>
+      <Value Level="14">1581</Value>
+      <Value Level="15">1650</Value>
+      <Value Level="16">1721</Value>
+      <Value Level="17">1793</Value>
+      <Value Level="18">1866</Value>
+      <Value Level="19">1940</Value>
+      <Value Level="20">2016</Value>
+      <Value Level="21">2091</Value>
+      <Value Level="22">2166</Value>
+      <Value Level="23">2241</Value>
+      <Value Level="24">2316</Value>
+      <Value Level="25">2391</Value>
+      <Value Level="26">2466</Value>
+      <Value Level="27">????</Value>
+      <Value Level="28">????</Value>
+      <Value Level="29">????</Value>
+      <Value Level="30">????</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Greater Multiple Projectiles" ManaMultiplier="165%" GemIcon="Greater_Multiple_Projectiles_gem_icon.png">
+    <Keywords>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
@@ -1254,7 +1950,12 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Ground Slam" RequiredHand="Main" RequiredWeapon="OneHandedMace Staff TwoHandedMace">
+  <Gem RequiredHand="Main" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Name="Ground Slam" GemIcon="Ground_Slam_gem_icon.png" SkillIcon="Ground_Slam_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
@@ -1265,7 +1966,157 @@
       <ValueForLevel From="19" To="20">13</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Heavy Strike" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword">
+  <Gem Name="Haste" ManaReserved="60%" GemIcon="Haste_gem_icon.png" SkillIcon="Haste_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">0%</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain #% increased Movement Speed">
+      <ValueForLevel From="1" To="3">4%</ValueForLevel>
+      <ValueForLevel From="4" To="6">5%</ValueForLevel>
+      <ValueForLevel From="7" To="9">6%</ValueForLevel>
+      <ValueForLevel From="10" To="12">7%</ValueForLevel>
+      <ValueForLevel From="13" To="19">8%</ValueForLevel>
+      <ValueForLevel From="20" To="22">9%</ValueForLevel>
+      <ValueForLevel From="23" To="25">10%</ValueForLevel>
+      <Value Level="26">??%</Value>
+      <Value Level="27">??%</Value>
+      <Value Level="28">??%</Value>
+      <Value Level="29">??%</Value>
+      <Value Level="30">??%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <Value Level="1">9%</Value>
+      <ValueForLevel From="2" To="4">10%</ValueForLevel>
+      <ValueForLevel From="5" To="7">11%</ValueForLevel>
+      <ValueForLevel From="8" To="10">12%</ValueForLevel>
+      <ValueForLevel From="11" To="13">13%</ValueForLevel>
+      <ValueForLevel From="14" To="15">14%</ValueForLevel>
+      <ValueForLevel From="16" To="17">15%</ValueForLevel>
+      <ValueForLevel From="18" To="20">16%</ValueForLevel>
+      <ValueForLevel From="21" To="23">17%</ValueForLevel>
+      <ValueForLevel From="24" To="25">18%</ValueForLevel>
+      <Value Level="26">??%</Value>
+      <Value Level="27">??%</Value>
+      <Value Level="28">??%</Value>
+      <Value Level="29">??%</Value>
+      <Value Level="30">??%</Value>
+    </Attribute>
+    <Attribute Name="#% increased Cast Speed">
+      <ValueForLevel From="1" To="2">9%</ValueForLevel>
+      <ValueForLevel From="3" To="5">10%</ValueForLevel>
+      <ValueForLevel From="6" To="8">11%</ValueForLevel>
+      <ValueForLevel From="9" To="11">12%</ValueForLevel>
+      <ValueForLevel From="12" To="14">13%</ValueForLevel>
+      <ValueForLevel From="15" To="16">14%</ValueForLevel>
+      <ValueForLevel From="17" To="18">15%</ValueForLevel>
+      <ValueForLevel From="19" To="21">16%</ValueForLevel>
+      <ValueForLevel From="22" To="24">17%</ValueForLevel>
+      <Value Level="25">18%</Value>
+      <Value Level="26">??%</Value>
+      <Value Level="27">??%</Value>
+      <Value Level="28">??%</Value>
+      <Value Level="29">??%</Value>
+      <Value Level="30">??%</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Hatred" ManaReserved="60%" GemIcon="Hatred_gem_icon.png" SkillIcon="Hatred_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Cold</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">0%</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies add #% of your Physical Damage as Cold Damage">
+      <ValueForLevel From="1" To="2">26%</ValueForLevel>
+      <ValueForLevel From="3" To="4">27%</ValueForLevel>
+      <ValueForLevel From="5" To="6">28%</ValueForLevel>
+      <ValueForLevel From="7" To="8">29%</ValueForLevel>
+      <ValueForLevel From="9" To="10">30%</ValueForLevel>
+      <ValueForLevel From="11" To="12">31%</ValueForLevel>
+      <ValueForLevel From="13" To="14">32%</ValueForLevel>
+      <Value Level="15">33%</Value>
+      <ValueForLevel From="16" To="17">34%</ValueForLevel>
+      <ValueForLevel From="18" To="19">35%</ValueForLevel>
+      <ValueForLevel From="20" To="21">36%</ValueForLevel>
+      <ValueForLevel From="22" To="23">37%</ValueForLevel>
+      <ValueForLevel From="24" To="25">38%</ValueForLevel>
+      <ValueForLevel From="26" To="27">39%</ValueForLevel>
+      <ValueForLevel From="28" To="29">40%</ValueForLevel>
+      <Value Level="30">41%</Value>
+    </Attribute>
+  </Gem>
+  <Gem RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Name="Heavy Strike" GemIcon="Heavy_Strike_gem_icon.png" SkillIcon="Heavy_Strike_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>5</ValuePerLevel>
     </Attribute>
@@ -1308,7 +2159,56 @@
       <ValueForLevel From="21" To="23">9</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Herald of Ice">
+  <Gem Name="Herald of Ash" ManaReserved="25%" GemIcon="Herald_of_Ash_gem_icon.png" SkillIcon="Herald_of_Ash_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="Ignites for #% of Overkill Damage">
+      <Value Level="1">100</Value>
+      <Value Level="2">103</Value>
+      <Value Level="3">106</Value>
+      <Value Level="4">109</Value>
+      <Value Level="5">112</Value>
+      <Value Level="6">115</Value>
+      <Value Level="7">118</Value>
+      <Value Level="8">121</Value>
+      <Value Level="9">124</Value>
+      <Value Level="10">127</Value>
+      <Value Level="11">130</Value>
+      <Value Level="12">133</Value>
+      <Value Level="13">136</Value>
+      <Value Level="14">139</Value>
+      <Value Level="15">142</Value>
+      <Value Level="16">145</Value>
+      <Value Level="17">148</Value>
+      <Value Level="18">151</Value>
+      <Value Level="19">154</Value>
+      <Value Level="20">157</Value>
+      <Value Level="21">160</Value>
+      <Value Level="22">163</Value>
+      <Value Level="23">166</Value>
+      <Value Level="24">169</Value>
+      <Value Level="25">172</Value>
+      <Value Level="26">175</Value>
+      <Value Level="27">178</Value>
+      <Value Level="28">181</Value>
+      <Value Level="29">184</Value>
+      <Value Level="30">187</Value>
+    </Attribute>
+    <Attribute Name="#% increased Fire Damage">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Herald of Ice" ManaReserved="25%" GemIcon="Herald_of_Ice_gem_icon.png" SkillIcon="Herald_of_Ice_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Cast</Keyword>
+      <Keyword>Cold</Keyword>
+    </Keywords>
     <Attribute Name="Deals #-# Cold Damage">
       <Value Level="1">30-45</Value>
       <Value Level="2">36-53</Value>
@@ -1335,6 +2235,70 @@
       <Value Level="23">368-552</Value>
       <Value Level="24">402-603</Value>
       <Value Level="25">438-658</Value>
+      <Value Level="26">478-717</Value>
+      <Value Level="27">521-782</Value>
+      <Value Level="28">568-852</Value>
+      <Value Level="29">N/A</Value>
+      <Value Level="30">N/A</Value>
+    </Attribute>
+    <Attribute Name="Adds #-# Cold Damage to Spells">
+      <Value Level="1">6-7</Value>
+      <Value Level="2">7-9</Value>
+      <Value Level="3">8-11</Value>
+      <Value Level="4">9-13</Value>
+      <Value Level="5">11-14</Value>
+      <Value Level="6">12-16</Value>
+      <Value Level="7">14-18</Value>
+      <Value Level="8">16-21</Value>
+      <Value Level="9">19-25</Value>
+      <Value Level="10">21-27</Value>
+      <Value Level="11">23-30</Value>
+      <Value Level="12">25-33</Value>
+      <Value Level="13">28-37</Value>
+      <Value Level="14">30-40</Value>
+      <Value Level="15">33-44</Value>
+      <Value Level="16">37-49</Value>
+      <Value Level="17">40-54</Value>
+      <Value Level="18">44-59</Value>
+      <Value Level="19">48-64</Value>
+      <Value Level="20">53-70</Value>
+      <Value Level="21">58-77</Value>
+      <Value Level="22">63-84</Value>
+      <Value Level="23">69-92</Value>
+      <Value Level="24">75-100</Value>
+      <Value Level="25">82-110</Value>
+      <Value Level="26">N/A</Value>
+      <Value Level="27">N/A</Value>
+      <Value Level="28">N/A</Value>
+      <Value Level="29">N/A</Value>
+      <Value Level="30">N/A</Value>
+    </Attribute>
+    <Attribute Name="Adds #-# Cold Damage to Attacks">
+      <Value Level="1">6-7</Value>
+      <Value Level="2">7-9</Value>
+      <Value Level="3">8-11</Value>
+      <Value Level="4">9-13</Value>
+      <Value Level="5">11-14</Value>
+      <Value Level="6">12-16</Value>
+      <Value Level="7">14-18</Value>
+      <Value Level="8">16-21</Value>
+      <Value Level="9">19-25</Value>
+      <Value Level="10">21-27</Value>
+      <Value Level="11">23-30</Value>
+      <Value Level="12">25-33</Value>
+      <Value Level="13">28-37</Value>
+      <Value Level="14">30-40</Value>
+      <Value Level="15">33-44</Value>
+      <Value Level="16">37-49</Value>
+      <Value Level="17">40-54</Value>
+      <Value Level="18">44-59</Value>
+      <Value Level="19">48-64</Value>
+      <Value Level="20">53-70</Value>
+      <Value Level="21">58-77</Value>
+      <Value Level="22">63-84</Value>
+      <Value Level="23">69-92</Value>
+      <Value Level="24">75-100</Value>
+      <Value Level="25">82-110</Value>
       <Value Level="26">N/A</Value>
       <Value Level="27">N/A</Value>
       <Value Level="28">N/A</Value>
@@ -1345,7 +2309,14 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Herald of Thunder" ExcludeForm="AoE">
+  <Gem ExcludeForm="AoE" Name="Herald of Thunder" ManaReserved="25%" GemIcon="Herald_of_Thunder_gem_icon.png" SkillIcon="Herald_of_Thunder_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Cast</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Lightning</Keyword>
+    </Keywords>
     <Attribute Name="Deals #-# Lightning Damage">
       <Value Level="1">1-57</Value>
       <Value Level="2">2-73</Value>
@@ -1377,8 +2348,41 @@
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Adds #-# Lightning Damage to Attacks and Spells">
+      <Value Level="1">1-18</Value>
+      <Value Level="2">1-22</Value>
+      <Value Level="3">2-26</Value>
+      <Value Level="4">2-30</Value>
+      <Value Level="5">2-34</Value>
+      <Value Level="6">3-40</Value>
+      <Value Level="7">3-44</Value>
+      <Value Level="8">3-52</Value>
+      <Value Level="9">4-60</Value>
+      <Value Level="10">4-66</Value>
+      <Value Level="11">5-73</Value>
+      <Value Level="12">5-81</Value>
+      <Value Level="13">6-89</Value>
+      <Value Level="14">7-98</Value>
+      <Value Level="15">7-107</Value>
+      <Value Level="16">8-118</Value>
+      <Value Level="17">9-129</Value>
+      <Value Level="18">9-142</Value>
+      <Value Level="19">10-155</Value>
+      <Value Level="20">11-170</Value>
+      <Value Level="21">12-186</Value>
+      <Value Level="22">14-203</Value>
+      <Value Level="23">15-222</Value>
+      <Value Level="24">16-243</Value>
+      <Value Level="25">18-265</Value>
+      <Value Level="26">19-289</Value>
+    </Attribute>
   </Gem>
-  <Gem Name="Ice Nova">
+  <Gem Name="Ice Nova" GemIcon="Ice_Nova_gem_icon.png" SkillIcon="Ice_Nova_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Cold</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">8</Value>
       <Value Level="2">9</Value>
@@ -1434,8 +2438,18 @@
       <Value Level="29">399–623</Value>
       <Value Level="30">433–677</Value>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
   </Gem>
-  <Gem Name="Ice Shot">
+  <Gem Name="Ice Shot" GemIcon="Ice_Shot_gem_icon.png" SkillIcon="Ice_Shot_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+      <Keyword>Cold</Keyword>
+      <Keyword>Duration</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="6">9</ValueForLevel>
       <ValueForLevel From="7" To="12">10</ValueForLevel>
@@ -1447,7 +2461,12 @@
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Ice Spear">
+  <Gem Name="Ice Spear" GemIcon="Ice_Spear_gem_icon.png" SkillIcon="Ice_Spear_skill_icon.png">
+    <Keywords>
+      <Keyword>Cold</Keyword>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">6</Value>
       <Value Level="2">7</Value>
@@ -1494,7 +2513,12 @@
       <Value Level="23">383-574</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Incinerate">
+  <Gem Name="Incinerate" GemIcon="Incinerate_gem_icon.png" SkillIcon="Incinerate_skill_icon.png">
+    <Keywords>
+      <Keyword>Fire</Keyword>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="2">5</ValueForLevel>
       <ValueForLevel From="3" To="4">6</ValueForLevel>
@@ -1535,7 +2559,10 @@
       <Value Level="30">162-243</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Increased Critical Damage">
+  <Gem Name="Increased Critical Damage" ManaMultiplier="130%" GemIcon="Increased_Critical_Damage_gem_icon.png">
+    <Keywords>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Critical Strike Multiplier">
       <Value Level="1">50%</Value>
       <Value Level="2">51%</Value>
@@ -1557,20 +2584,13 @@
       <Value Level="18">67%</Value>
       <Value Level="19">68%</Value>
       <Value Level="20">69%</Value>
-      <Value Level="21">111%</Value>
-      <Value Level="22">???%</Value>
-      <Value Level="23">???%</Value>
-      <Value Level="24">???%</Value>
-      <Value Level="25">???%</Value>
-      <Value Level="26">???%</Value>
-      <Value Level="27">???%</Value>
-      <Value Level="28">???%</Value>
-      <Value Level="29">???%</Value>
-      <Value Level="30">???%</Value>
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Increased Critical Strikes">
+  <Gem Name="Increased Critical Strikes" ManaMultiplier="115%" GemIcon="Increased_Critical_Strikes_gem_icon.png">
+    <Keywords>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Critical Strike Chance">
       <Value Level="1">90%</Value>
       <Value Level="2">93%</Value>
@@ -1595,7 +2615,13 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Infernal Blow">
+  <Gem Name="Infernal Blow" GemIcon="Infernal_Blow_gem_icon.png" SkillIcon="Infernal_Blow_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="4">8</ValueForLevel>
       <ValueForLevel From="5" To="12">9</ValueForLevel>
@@ -1607,8 +2633,15 @@
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
   </Gem>
-  <Gem Name="Iron Grip">
+  <Gem Name="Iron Grip" GemIcon="Iron_Grip_(support_gem)_gem_icon.png">
+    <Keywords>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% reduced Attack Speed">
       <Value Level="1">19%</Value>
       <Value Level="2">18%</Value>
@@ -1635,7 +2668,11 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Iron Will">
+  <Gem Name="Iron Will" GemIcon="Iron_Will_gem_icon.png">
+    <Keywords>
+      <Keyword>Spell</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% reduced Cast Speed">
       <Value Level="1">19%</Value>
       <Value Level="2">18%</Value>
@@ -1657,13 +2694,18 @@
       <Value Level="18">2%</Value>
       <Value Level="19">1%</Value>
       <Value Level="20">0%</Value>
-      <Value Level="30">-28%</Value>
+      <Value Level="30">-10%</Value>
     </Attribute>
     <Attribute Name="#% increased Spell Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Kinetic Blast" ExcludeForm="AoE" RequiredWeapon="Wand">
+  <Gem ExcludeForm="AoE" RequiredWeapon="Wand" Name="Kinetic Blast" GemIcon="Kinetic_Blast_gem_icon.png" SkillIcon="Kinetic_Blast_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Projectile</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="8">14</ValueForLevel>
       <ValueForLevel From="9" To="16">15</ValueForLevel>
@@ -1672,8 +2714,17 @@
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
   </Gem>
-  <Gem Name="Leap Slam" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword">
+  <Gem RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Name="Leap Slam" GemIcon="Leap_Slam_gem_icon.png" SkillIcon="Leap_Slam_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Movement</Keyword>
+    </Keywords>
     <Attribute Comment="Leap Slam has its own attack time of 1.40 seconds" Name="Attacks per Second: #">
       <Value>0.714</Value>
     </Attribute>
@@ -1682,14 +2733,16 @@
     </Attribute>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="5">12</ValueForLevel>
-      <ValueForLevel From="6" To="8">13</ValueForLevel>
-      <Value Level="9">15</Value>
-      <ValueForLevel From="10" To="13">16</ValueForLevel>
-      <ValueForLevel From="14" To="17">17</ValueForLevel>
-      <ValueForLevel From="18" To="21">18</ValueForLevel>
+      <ValueForLevel From="6" To="13">13</ValueForLevel>
+      <ValueForLevel From="14" To="20">14</ValueForLevel>
+      <Value Level="21">15</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Lesser Multiple Projectiles">
+  <Gem Name="Lesser Multiple Projectiles" ManaMultiplier="140%" GemIcon="Lesser_Multiple_Projectiles_gem_icon.png">
+    <Keywords>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
@@ -1700,7 +2753,13 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Lightning Arrow">
+  <Gem Name="Lightning Arrow" GemIcon="Lightning_Arrow_gem_icon.png" SkillIcon="Lightning_Arrow_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+      <Keyword>Lightning</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="10">10</ValueForLevel>
       <ValueForLevel From="11" To="15">11</ValueForLevel>
@@ -1711,18 +2770,28 @@
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Lightning Strike" ExcludeForm="Projectile">
+  <Gem ExcludeForm="Projectile" Name="Lightning Strike" GemIcon="Lightning_Strike_gem_icon.png" SkillIcon="Lightning_Strike_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Projectile</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
     <Attribute Name="Mana Cost: #%">
-      <ValueForLevel From="1" To="9">9</ValueForLevel>
-      <ValueForLevel From="10" To="18">10</ValueForLevel>
-      <Value Level="19">??</Value>
-      <Value Level="20">??</Value>
+      <ValueForLevel From="1" To="9">8</ValueForLevel>
+      <ValueForLevel From="10" To="20">9</ValueForLevel>
+      <Value Level="21">10</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Lightning Tendrils" HitsPerAttack="4">
+  <Gem HitsPerAttack="4" Name="Lightning Tendrils" GemIcon="Lightning_Tendrils_gem_icon.png" SkillIcon="Lightning_Tendrils_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">5</Value>
       <Value Level="2">6</Value>
@@ -1776,7 +2845,14 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Lightning Warp" IncludeForm="OnUse">
+  <Gem IncludeForm="OnUse" Name="Lightning Warp" GemIcon="Lightning_Warp_gem_icon.png" SkillIcon="Lightning_Warp_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Movement</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">26</Value>
       <Value Level="2">28</Value>
@@ -1827,7 +2903,11 @@
       <ValuePerQuality>1.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Melee Damage on Full Life">
+  <Gem Name="Melee Damage on Full Life" ManaMultiplier="130%" GemIcon="Melee_Damage_on_Full_Life_gem_icon.png">
+    <Keywords>
+      <Keyword>Melee</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% more Melee Physical Damage when on Full Life">
       <Value Level="1">30%</Value>
       <Value Level="2">31%</Value>
@@ -1854,7 +2934,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Melee Physical Damage">
+  <Gem Name="Melee Physical Damage" ManaMultiplier="140%" GemIcon="Melee_Physical_Damage_gem_icon.png">
+    <Keywords>
+      <Keyword>Melee</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% more Melee Physical Damage">
       <Value Level="1">30%</Value>
       <Value Level="2">31%</Value>
@@ -1883,12 +2967,27 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Melee Splash" ExcludeFormSupport="AoE OnUse">
+  <Gem ExcludeFormSupport="AoE OnUse" Name="Melee Splash" ManaMultiplier="160%" GemIcon="Melee_Splash_gem_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Melee Physical Damage">
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
   </Gem>
-  <Gem Name="Molten Shell" IncludeForm="OnUse">
+  <Gem IncludeForm="OnUse" Name="Molten Shell" GemIcon="Molten_Shell_gem_icon.png" SkillIcon="Molten_Shell_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">22</Value>
       <Value Level="2">24</Value>
@@ -1953,7 +3052,14 @@
       <Value Level="30">5787–8680</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Molten Strike" ExcludeForm="Projectile AoE">
+  <Gem ExcludeForm="Projectile AoE" Name="Molten Strike" GemIcon="Molten_Strike_gem_icon.png" SkillIcon="Molten_Strike_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Projectile</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #">
       <Value Level="1">6</Value>
       <ValueForLevel From="2" To="5">7</ValueForLevel>
@@ -1973,7 +3079,12 @@
       <ValueForLevel From="19" To="20">10</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Multistrike">
+  <Gem Name="Multistrike" ManaMultiplier="180%" GemIcon="Multistrike_gem_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Melee Physical Damage">
       <ValuePerLevel>3</ValuePerLevel>
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -2004,7 +3115,11 @@
       <Value Level="23">110%</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Physical Projectile Attack Damage">
+  <Gem Name="Physical Projectile Attack Damage" ManaMultiplier="120%" GemIcon="Physical_Projectile_Attack_Damage_gem_icon.png">
+    <Keywords>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% more Physical Projectile Attack Damage">
       <Value Level="1">30%</Value>
       <Value Level="2">31%</Value>
@@ -2031,7 +3146,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Physical to Lightning">
+  <Gem Name="Physical to Lightning" ManaMultiplier="110%" GemIcon="Physical_to_Lightning_gem_icon.png">
+    <Keywords>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -2039,7 +3158,12 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Point Blank">
+  <Gem Name="Point Blank" ManaMultiplier="120%" GemIcon="Point_Blank_(support_gem)_gem_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% reduced Attack Speed">
       <Value Level="1">19%</Value>
       <Value Level="2">18%</Value>
@@ -2066,7 +3190,14 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Poison Arrow">
+  <Gem Name="Poison Arrow" GemIcon="Poison_Arrow_gem_icon.png" SkillIcon="Poison_Arrow_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+      <Keyword>Chaos</Keyword>
+      <Keyword>Duration</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">6</Value>
       <ValueForLevel From="2" To="3">7</ValueForLevel>
@@ -2118,8 +3249,15 @@
       <Value Level="29">58%</Value>
       <Value Level="30">59%</Value>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
   </Gem>
-  <Gem Name="Power Siphon" RequiredWeapon="Wand">
+  <Gem RequiredWeapon="Wand" Name="Power Siphon" GemIcon="Power_Siphon_gem_icon.png" SkillIcon="Power_Siphon_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Projectile</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
@@ -2131,7 +3269,13 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Puncture">
+  <Gem Name="Puncture" GemIcon="Puncture_gem_icon.png" SkillIcon="Puncture_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="7">9</ValueForLevel>
       <ValueForLevel From="8" To="13">10</ValueForLevel>
@@ -2143,7 +3287,325 @@
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Rain of Arrows">
+  <Gem Name="Purity of Elements" ManaReserved="40%" GemIcon="Purity_of_Elements_gem_icon.png" SkillIcon="Purity_of_Elements_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">N/A</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain +#% to all Elemental Resistances">
+      <Value Level="1">12%</Value>
+      <Value Level="2">13%</Value>
+      <Value Level="3">14%</Value>
+      <ValueForLevel From="4" To="5">15%</ValueForLevel>
+      <Value Level="6">16%</Value>
+      <Value Level="7">17%</Value>
+      <Value Level="8">18%</Value>
+      <Value Level="9">19%</Value>
+      <ValueForLevel From="10" To="11">20%</ValueForLevel>
+      <Value Level="12">21%</Value>
+      <Value Level="13">22%</Value>
+      <Value Level="14">23%</Value>
+      <Value Level="15">24%</Value>
+      <ValueForLevel From="16" To="17">25%</ValueForLevel>
+      <Value Level="18">26%</Value>
+      <ValueForLevel From="19" To="20">27%</ValueForLevel>
+      <Value Level="21">28%</Value>
+      <ValueForLevel From="22" To="23">29%</ValueForLevel>
+      <Value Level="24">30%</Value>
+      <Value Level="25">31%</Value>
+      <Value Level="26">??%</Value>
+      <Value Level="27">??%</Value>
+      <Value Level="28">??%</Value>
+      <Value Level="29">??%</Value>
+      <Value Level="30">??%</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Purity of Fire" ManaReserved="40%" GemIcon="Purity_of_Fire_gem_icon.png" SkillIcon="Purity_of_Fire_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Fire</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">0%</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain #% additional Fire Resistance">
+      <Value Level="1">20%</Value>
+      <Value Level="2">21%</Value>
+      <Value Level="3">22%</Value>
+      <Value Level="4">23%</Value>
+      <Value Level="5">24%</Value>
+      <Value Level="6">25%</Value>
+      <Value Level="7">26%</Value>
+      <Value Level="8">27%</Value>
+      <Value Level="9">28%</Value>
+      <Value Level="10">29%</Value>
+      <Value Level="11">30%</Value>
+      <Value Level="12">31%</Value>
+      <Value Level="13">32%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">34%</Value>
+      <Value Level="16">35%</Value>
+      <Value Level="17">36%</Value>
+      <Value Level="18">37%</Value>
+      <Value Level="19">38%</Value>
+      <Value Level="20">39%</Value>
+      <Value Level="21">40%</Value>
+      <Value Level="22">41%</Value>
+      <Value Level="23">42%</Value>
+      <Value Level="24">43%</Value>
+      <Value Level="25">44%</Value>
+      <Value Level="26">45%</Value>
+      <Value Level="27">46%</Value>
+      <Value Level="28">47%</Value>
+      <Value Level="29">48%</Value>
+      <Value Level="30">49%</Value>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain #% additional maximum Fire Resistance">
+      <ValueForLevel From="1" To="4">0%</ValueForLevel>
+      <ValueForLevel From="5" To="10">1%</ValueForLevel>
+      <ValueForLevel From="11" To="16">2%</ValueForLevel>
+      <ValueForLevel From="17" To="19">3%</ValueForLevel>
+      <ValueForLevel From="20" To="22">4%</ValueForLevel>
+      <ValueForLevel From="23" To="30">5%</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Purity of Ice" ManaReserved="40%" GemIcon="Purity_of_Ice_gem_icon.png" SkillIcon="Purity_of_Ice_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Cold</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">0%</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain #% additional Lightning Resistance">
+      <Value Level="1">20%</Value>
+      <Value Level="2">21%</Value>
+      <Value Level="3">22%</Value>
+      <Value Level="4">23%</Value>
+      <Value Level="5">24%</Value>
+      <Value Level="6">25%</Value>
+      <Value Level="7">26%</Value>
+      <Value Level="8">27%</Value>
+      <Value Level="9">28%</Value>
+      <Value Level="10">29%</Value>
+      <Value Level="11">30%</Value>
+      <Value Level="12">31%</Value>
+      <Value Level="13">32%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">34%</Value>
+      <Value Level="16">35%</Value>
+      <Value Level="17">36%</Value>
+      <Value Level="18">37%</Value>
+      <Value Level="19">38%</Value>
+      <Value Level="20">39%</Value>
+      <Value Level="21">40%</Value>
+      <Value Level="22">41%</Value>
+      <Value Level="23">42%</Value>
+      <Value Level="24">43%</Value>
+      <Value Level="25">44%</Value>
+      <Value Level="26">45%</Value>
+      <Value Level="27">46%</Value>
+      <Value Level="28">47%</Value>
+      <Value Level="29">48%</Value>
+      <Value Level="30">49%</Value>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain #% additional maximum Cold Resistance">
+      <ValueForLevel From="1" To="4">0%</ValueForLevel>
+      <ValueForLevel From="5" To="10">1%</ValueForLevel>
+      <ValueForLevel From="11" To="16">2%</ValueForLevel>
+      <ValueForLevel From="17" To="19">3%</ValueForLevel>
+      <ValueForLevel From="20" To="22">4%</ValueForLevel>
+      <ValueForLevel From="23" To="30">5%</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Purity of Lightning" ManaReserved="40%" GemIcon="Purity_of_Lightning_gem_icon.png" SkillIcon="Purity_of_Lightning_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">N/A</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain #% additional Lightning Resistance">
+      <Value Level="1">20%</Value>
+      <Value Level="2">21%</Value>
+      <Value Level="3">22%</Value>
+      <Value Level="4">23%</Value>
+      <Value Level="5">24%</Value>
+      <Value Level="6">25%</Value>
+      <Value Level="7">26%</Value>
+      <Value Level="8">27%</Value>
+      <Value Level="9">28%</Value>
+      <Value Level="10">29%</Value>
+      <Value Level="11">30%</Value>
+      <Value Level="12">31%</Value>
+      <Value Level="13">32%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">34%</Value>
+      <Value Level="16">35%</Value>
+      <Value Level="17">36%</Value>
+      <Value Level="18">37%</Value>
+      <Value Level="19">38%</Value>
+      <Value Level="20">39%</Value>
+      <Value Level="21">40%</Value>
+      <Value Level="22">41%</Value>
+      <Value Level="23">42%</Value>
+      <Value Level="24">43%</Value>
+      <Value Level="25">44%</Value>
+      <Value Level="26">45%</Value>
+      <Value Level="27">46%</Value>
+      <Value Level="28">47%</Value>
+      <Value Level="29">48%</Value>
+      <Value Level="30">49%</Value>
+    </Attribute>
+    <Attribute Name="You and nearby allies gain #% additional maximum Lightning Resistance">
+      <Value Level="1">N/A</Value>
+      <Value Level="2">N/A</Value>
+      <Value Level="3">N/A</Value>
+      <Value Level="4">N/A</Value>
+      <ValueForLevel From="5" To="10">1%</ValueForLevel>
+      <ValueForLevel From="11" To="16">2%</ValueForLevel>
+      <ValueForLevel From="17" To="19">3%</ValueForLevel>
+      <ValueForLevel From="20" To="22">4%</ValueForLevel>
+      <ValueForLevel From="23" To="30">5%</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Rain of Arrows" GemIcon="Rain_of_Arrows_gem_icon.png" SkillIcon="Rain_of_Arrows_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="5">11</ValueForLevel>
       <ValueForLevel From="6" To="12">12</ValueForLevel>
@@ -2156,8 +3618,35 @@
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">N/A</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">11%</Value>
+      <Value Level="6">13%</Value>
+      <Value Level="7">15%</Value>
+      <Value Level="8">17%</Value>
+      <Value Level="9">19%</Value>
+      <Value Level="10">21%</Value>
+      <Value Level="11">23%</Value>
+      <Value Level="12">24%</Value>
+      <Value Level="13">25%</Value>
+      <Value Level="14">26%</Value>
+      <Value Level="15">27%</Value>
+      <Value Level="16">28%</Value>
+      <Value Level="17">29%</Value>
+      <Value Level="18">30%</Value>
+      <Value Level="19">31%</Value>
+      <Value Level="20">32%</Value>
+    </Attribute>
   </Gem>
-  <Gem Name="Reave" RequiredWeapon="Claw Dagger OneHandedSword">
+  <Gem RequiredWeapon="Claw Dagger OneHandedSword" Name="Reave" GemIcon="Reave_gem_icon.png" SkillIcon="Reave_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
@@ -2172,7 +3661,50 @@
       <Value Level="21">9</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Shield Charge" IncludeForm="OnUse" RequiresEquippedShield="true">
+  <Gem Name="Reduced Mana" ManaMultiplier="Depends on gem level" GemIcon="Reduced_Mana_gem_icon.png">
+    <Keywords>
+      <Keyword>Support</Keyword>
+    </Keywords>
+    <Attribute Name="Mana cost multiplier #%">
+      <Value Level="1">90%</Value>
+      <Value Level="2">89%</Value>
+      <Value Level="3">88%</Value>
+      <Value Level="4">87%</Value>
+      <Value Level="5">86%</Value>
+      <Value Level="6">85%</Value>
+      <Value Level="7">84%</Value>
+      <Value Level="8">83%</Value>
+      <Value Level="9">82%</Value>
+      <Value Level="10">81%</Value>
+      <Value Level="11">80%</Value>
+      <Value Level="12">79%</Value>
+      <Value Level="13">78%</Value>
+      <Value Level="14">77%</Value>
+      <Value Level="15">76%</Value>
+      <Value Level="16">75%</Value>
+      <Value Level="17">74%</Value>
+      <Value Level="18">73%</Value>
+      <Value Level="19">72%</Value>
+      <Value Level="20">71%</Value>
+      <Value Level="21">70%</Value>
+      <Value Level="22">69%</Value>
+      <Value Level="23">68%</Value>
+      <Value Level="24">67%</Value>
+      <Value Level="25">66%</Value>
+      <Value Level="26">65%</Value>
+      <Value Level="27">64%</Value>
+      <Value Level="28">63%</Value>
+    </Attribute>
+    <Attribute Name="#% reduced Mana Cost">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem IncludeForm="OnUse" RequiresEquippedShield="true" Name="Shield Charge" GemIcon="Shield_Charge_gem_icon.png" SkillIcon="Shield_Charge_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Movement</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="7">6</ValueForLevel>
       <ValueForLevel From="8" To="15">7</ValueForLevel>
@@ -2182,8 +3714,20 @@
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
+    <Attribute Name="You and nearby allies gain #% increased Movement Speed">
+      <ValueForLevel From="1" To="6">50%</ValueForLevel>
+      <Value Level="7">55%</Value>
+      <Value Level="8">60%</Value>
+      <Value Level="9">65%</Value>
+      <ValueForLevel From="10" To="20">70%</ValueForLevel>
+    </Attribute>
   </Gem>
-  <Gem Name="Shock Nova">
+  <Gem Name="Shock Nova" GemIcon="Shock_Nova_gem_icon.png" SkillIcon="Shock_Nova_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">10</Value>
       <Value Level="2">12</Value>
@@ -2249,7 +3793,11 @@
       <Value Level="30">75–1418</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Slower Projectiles">
+  <Gem Name="Slower Projectiles" ManaMultiplier="140%" GemIcon="Slower_Projectiles_gem_icon.png">
+    <Keywords>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Projectile Damage">
       <Value Level="1">8%</Value>
       <Value Level="2">9%</Value>
@@ -2274,7 +3822,13 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Spark">
+  <Gem Name="Spark" GemIcon="Spark_gem_icon.png" SkillIcon="Spark_skill_icon.png">
+    <Keywords>
+      <Keyword>Duration</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Projectile</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">5</Value>
       <Value Level="2">6</Value>
@@ -2318,7 +3872,11 @@
       <Value Level="21">21–391</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Spectral Throw" RequiredWeapon="Melee">
+  <Gem RequiredWeapon="Melee" Name="Spectral Throw" GemIcon="Spectral_Throw_gem_icon.png" SkillIcon="Spectral_Throw_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Projectile</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="10">7</ValueForLevel>
       <ValueForLevel From="11" To="15">8</ValueForLevel>
@@ -2357,7 +3915,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Spell Echo">
+  <Gem Name="Spell Echo" ManaMultiplier="130%" GemIcon="Spell_Echo_gem_icon.png">
+    <Keywords>
+      <Keyword>Spell</Keyword>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% less Damage">
       <Value>10%</Value>
     </Attribute>
@@ -2397,7 +3959,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Split Arrow">
+  <Gem Name="Split Arrow" GemIcon="Split_Arrow_gem_icon.png" SkillIcon="Split_Arrow_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+    </Keywords>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
@@ -2413,7 +3979,14 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Static Strike" ExcludeForm="AoE">
+  <Gem ExcludeForm="AoE" Name="Static Strike" GemIcon="Static_Strike_gem_icon.png" SkillIcon="Static_Strike_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="5">6</ValueForLevel>
       <ValueForLevel From="6" To="10">7</ValueForLevel>
@@ -2426,8 +3999,17 @@
     <Attribute Name="#% increased Physical Damage">
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
   </Gem>
-  <Gem Name="Storm Call" IncludeForm="OnUse">
+  <Gem IncludeForm="OnUse" Name="Storm Call" GemIcon="Storm_Call_gem_icon.png" SkillIcon="Storm_Call_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <Value Level="1">4</Value>
       <ValueForLevel From="2" To="3">5</ValueForLevel>
@@ -2479,7 +4061,12 @@
       <ValuePerQuality>4</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Sweep" RequiredWeapon="Staff TwoHandedAxe TwoHandedMace">
+  <Gem RequiredWeapon="Staff TwoHandedAxe TwoHandedMace" Name="Sweep" GemIcon="Sweep_gem_icon.png" SkillIcon="Sweep_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Comment="Sweep has its own attack time of 1.15 seconds" Name="Attacks per Second: #">
       <Value>0.87</Value>
     </Attribute>
@@ -2498,7 +4085,11 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Tempest Shield" IncludeForm="OnUse" RequiresEquippedShield="true">
+  <Gem IncludeForm="OnUse" RequiresEquippedShield="true" Name="Tempest Shield" ManaReserved="25%" GemIcon="Tempest_Shield_gem_icon.png" SkillIcon="Tempest_Shield_skill_icon.png">
+    <Keywords>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
     <Attribute Name="Deals #-# Lightning Damage">
       <Value Level="1">9–13</Value>
       <Value Level="2">11–17</Value>
@@ -2526,7 +4117,11 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Tornado Shot">
+  <Gem Name="Tornado Shot" GemIcon="Tornado_Shot_gem_icon.png" SkillIcon="Tornado_Shot_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Bow</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="8">8</ValueForLevel>
       <ValueForLevel From="9" To="16">9</ValueForLevel>
@@ -2568,7 +4163,13 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Viper Strike">
+  <Gem Name="Viper Strike" GemIcon="Viper_Strike_gem_icon.png" SkillIcon="Viper_Strike_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Chaos</Keyword>
+      <Keyword>Duration</Keyword>
+      <Keyword>Melee</Keyword>
+    </Keywords>
     <Attribute Name="Mana Cost: #%">
       <ValueForLevel From="1" To="5">5</ValueForLevel>
       <ValueForLevel From="6" To="10">6</ValueForLevel>
@@ -2583,7 +4184,66 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Weapon Elemental Damage">
+  <Gem Name="Vitality" ManaReserved="40%" GemIcon="Vitality_gem_icon.png" SkillIcon="Vitality_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">N/A</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies regenerate #% Life per second">
+      <Value Level="1">0.70%</Value>
+      <Value Level="2">0.75%</Value>
+      <Value Level="3">0.80%</Value>
+      <Value Level="4">0.85%</Value>
+      <Value Level="5">0.90%</Value>
+      <Value Level="6">0.95%</Value>
+      <Value Level="7">1.00%</Value>
+      <Value Level="8">1.05%</Value>
+      <Value Level="9">1.10%</Value>
+      <Value Level="10">1.15%</Value>
+      <Value Level="11">1.20%</Value>
+      <Value Level="12">1.25%</Value>
+      <Value Level="13">1.30%</Value>
+      <Value Level="14">1.35%</Value>
+      <Value Level="15">1.40%</Value>
+      <Value Level="16">1.45%</Value>
+      <Value Level="17">1.50%</Value>
+      <Value Level="18">1.55%</Value>
+      <Value Level="19">1.60%</Value>
+      <Value Level="20">1.65%</Value>
+      <Value Level="21">1.70%</Value>
+      <Value Level="22">1.75%</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Weapon Elemental Damage" ManaMultiplier="150%" GemIcon="Weapon_Elemental_Damage_gem_icon.png">
+    <Keywords>
+      <Keyword>Support</Keyword>
+    </Keywords>
     <Attribute Name="#% more Weapon Elemental Damage">
       <Value Level="1">40%</Value>
       <Value Level="2">41%</Value>
@@ -2620,7 +4280,12 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Whirling Blades" IncludeForm="OnUse" RequiredWeapon="Claw Dagger OneHandedSword">
+  <Gem IncludeForm="OnUse" RequiredWeapon="Claw Dagger OneHandedSword" Name="Whirling Blades" GemIcon="Whirling_Blades_gem_icon.png" SkillIcon="Whirling_Blades_skill_icon.png">
+    <Keywords>
+      <Keyword>Attack</Keyword>
+      <Keyword>Melee</Keyword>
+      <Keyword>Movement</Keyword>
+    </Keywords>
     <Attribute Comment="Just a guess, it doesn't use weapon's APS and no info on Wiki" Name="Attacks per Second: #">
       <Value>0.364</Value>
     </Attribute>
@@ -2634,6 +4299,79 @@
     </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Wrath" ManaReserved="60%" GemIcon="Wrath_gem_icon.png" SkillIcon="Wrath_skill_icon.png">
+    <Keywords>
+      <Keyword>AoE</Keyword>
+      <Keyword>Aura</Keyword>
+      <Keyword>Lightning</Keyword>
+      <Keyword>Spell</Keyword>
+    </Keywords>
+    <Attribute Name="#% increased Area of Effect radius">
+      <Value Level="1">N/A</Value>
+      <Value Level="2">3%</Value>
+      <Value Level="3">6%</Value>
+      <Value Level="4">9%</Value>
+      <Value Level="5">12%</Value>
+      <Value Level="6">15%</Value>
+      <Value Level="7">18%</Value>
+      <Value Level="8">21%</Value>
+      <Value Level="9">23%</Value>
+      <Value Level="10">25%</Value>
+      <Value Level="11">27%</Value>
+      <Value Level="12">29%</Value>
+      <Value Level="13">31%</Value>
+      <Value Level="14">33%</Value>
+      <Value Level="15">35%</Value>
+      <Value Level="16">36%</Value>
+      <Value Level="17">37%</Value>
+      <Value Level="18">38%</Value>
+      <Value Level="19">39%</Value>
+      <Value Level="20">40%</Value>
+      <Value Level="21">41%</Value>
+      <Value Level="22">42%</Value>
+      <Value Level="23">43%</Value>
+      <Value Level="24">44%</Value>
+      <Value Level="25">45%</Value>
+      <Value Level="26">46%</Value>
+      <Value Level="27">47%</Value>
+      <Value Level="28">48%</Value>
+      <Value Level="29">49%</Value>
+      <Value Level="30">50%</Value>
+      <ValuePerQuality>1.0</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="You and nearby allies deal #-# additional Lightning Damage with attacks">
+      <Value Level="1">1-16</Value>
+      <Value Level="2">1-19</Value>
+      <Value Level="3">1-24</Value>
+      <Value Level="4">2-28</Value>
+      <Value Level="5">2-33</Value>
+      <Value Level="6">2-39</Value>
+      <Value Level="7">3-45</Value>
+      <Value Level="8">3-55</Value>
+      <Value Level="9">4-66</Value>
+      <Value Level="10">5-78</Value>
+      <Value Level="11">6-93</Value>
+      <Value Level="12">7-105</Value>
+      <Value Level="13">7-118</Value>
+      <Value Level="14">8-133</Value>
+      <Value Level="15">9-149</Value>
+      <Value Level="16">10-167</Value>
+      <Value Level="17">12–186</Value>
+      <Value Level="18">13-200</Value>
+      <Value Level="19">13-215</Value>
+      <Value Level="20">14-231</Value>
+      <Value Level="21">16-248</Value>
+      <Value Level="22">17-267</Value>
+      <Value Level="23">18-286</Value>
+      <Value Level="24">19-306</Value>
+      <Value Level="25">20-328</Value>
+      <Value Level="26">22-351</Value>
+      <Value Level="27">23-375</Value>
+      <Value Level="28">25-401</Value>
+      <Value Level="29">27-429</Value>
+      <Value Level="30">29-458</Value>
     </Attribute>
   </Gem>
 </ItemDB>

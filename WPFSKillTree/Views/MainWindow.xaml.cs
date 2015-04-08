@@ -408,6 +408,11 @@ namespace POESKillTree.Views
             }
         }
 
+        private void Menu_AuraCalculator(object sender, RoutedEventArgs e)
+        {
+            AuraCalculator.Show(this, _attiblist);
+        }
+
         private void Menu_Exit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();

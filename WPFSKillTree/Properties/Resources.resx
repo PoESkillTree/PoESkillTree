@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,577 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Added_Chaos_Damage_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Added_Chaos_Damage_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Added_Cold_Damage_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Added_Cold_Damage_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Added_Fire_Damage_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Added_Fire_Damage_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Added_Lightning_Damage_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Added_Lightning_Damage_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Additional_Accuracy_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Additional_Accuracy_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alpha_s_Howl_alternative" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Items\Alpha's_Howl_alternative.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Anger_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Anger_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Anger_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Anger_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arctic_Breath_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Arctic_Breath_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arctic_Breath_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Arctic_Breath_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arc_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Arc_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arc_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Arc_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ball_Lightning_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ball_Lightning_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ball_Lightning_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ball_Lightning_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Barrage_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Barrage_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Barrage_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Barrage_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Blood_Magic_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Blood_Magic_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Blood_Magic_passive_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Passives\Blood_Magic_passive_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Blood_Magic__support_gem__gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Blood_Magic_(support_gem)_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Burning_Arrow_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Burning_Arrow_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Burning_Arrow_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Burning_Arrow_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cast_On_Death_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cast_On_Death_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cast_on_Melee_Kill_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cast_on_Melee_Kill_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cast_when_Damage_Taken_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cast_when_Damage_Taken_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cast_When_Stunned_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cast_When_Stunned_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Chain_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Chain_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Clarity_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Clarity_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Clarity_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Clarity_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cleave_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cleave_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cleave_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cleave_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cold_Snap_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cold_Snap_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cold_Snap_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cold_Snap_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cold_to_Fire_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cold_to_Fire_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Concentrated_Effect_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Concentrated_Effect_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Curse_On_Hit_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Curse_On_Hit_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cyclone_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cyclone_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cyclone_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Cyclone_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Determination_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Determination_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Determination_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Determination_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Discipline_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Discipline_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Discipline_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Discipline_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dominating_Blow_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Dominating_Blow_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dominating_Blow_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Dominating_Blow_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Double_Strike_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Double_Strike_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Double_Strike_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Double_Strike_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dual_Strike_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Dual_Strike_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dual_Strike_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Dual_Strike_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Elemental_Hit_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Elemental_Hit_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Elemental_Hit_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Elemental_Hit_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Empower_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Empower_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ethereal_Knives_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ethereal_Knives_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ethereal_Knives_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ethereal_Knives_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Explosive_Arrow_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Explosive_Arrow_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Explosive_Arrow_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Explosive_Arrow_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Faster_Attacks_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Faster_Attacks_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Faster_Casting_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Faster_Casting_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Faster_Projectiles_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Faster_Projectiles_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fireball_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Fireball_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fireball_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Fireball_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Firestorm_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Firestorm_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Firestorm_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Firestorm_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flameblast_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Flameblast_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flameblast_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Flameblast_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flame_Surge_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Flame_Surge_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flame_Surge_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Flame_Surge_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flicker_Strike_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Flicker_Strike_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flicker_Strike_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Flicker_Strike_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fork_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Fork_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Freezing_Pulse_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Freezing_Pulse_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Freezing_Pulse_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Freezing_Pulse_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Frenzy_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Frenzy_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Frenzy_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Frenzy_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Frost_Wall_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Frost_Wall_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Frost_Wall_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Frost_Wall_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Glacial_Cascade_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Glacial_Cascade_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Glacial_Cascade_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Glacial_Cascade_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Glacial_Hammer_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Glacial_Hammer_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Glacial_Hammer_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Glacial_Hammer_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Grace_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Grace_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Grace_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Grace_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Greater_Multiple_Projectiles_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Greater_Multiple_Projectiles_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ground_Slam_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ground_Slam_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ground_Slam_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ground_Slam_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Haste_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Haste_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Haste_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Haste_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Hatred_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Hatred_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Hatred_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Hatred_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Heavy_Strike_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Heavy_Strike_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Heavy_Strike_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Heavy_Strike_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Herald_Of_Ash_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Herald_Of_Ash_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Herald_Of_Ash_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Herald_Of_Ash_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Herald_Of_Ice_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Herald_Of_Ice_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Herald_Of_Ice_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Herald_Of_Ice_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Herald_Of_Thunder_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Herald_Of_Thunder_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Herald_Of_Thunder_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Herald_Of_Thunder_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ice_Nova_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ice_Nova_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ice_Nova_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ice_Nova_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ice_Shot_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ice_Shot_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ice_Shot_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ice_Shot_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ice_Spear_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ice_Spear_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ice_Spear_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Ice_Spear_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Incinerate_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Incinerate_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Incinerate_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Incinerate_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Increased_Critical_Damage_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Increased_Critical_Damage_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Increased_Critical_Strikes_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Increased_Critical_Strikes_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Infernal_Blow_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Infernal_Blow_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Infernal_Blow_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Infernal_Blow_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Iron_Grip__support_gem__gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Iron_Grip_(support_gem)_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Iron_Will_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Iron_Will_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Kinetic_Blast_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Kinetic_Blast_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Kinetic_Blast_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Kinetic_Blast_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Leap_Slam_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Leap_Slam_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Leap_Slam_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Leap_Slam_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lesser_Multiple_Projectiles_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Lesser_Multiple_Projectiles_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Life_passive_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Passives\Life_passive_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lightning_Arrow_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Lightning_Arrow_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lightning_Arrow_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Lightning_Arrow_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lightning_Strike_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Lightning_Strike_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lightning_Strike_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Lightning_Strike_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lightning_Tendrils_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Lightning_Tendrils_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lightning_Tendrils_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Lightning_Tendrils_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lightning_Warp_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Lightning_Warp_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lightning_Warp_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Lightning_Warp_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Mana_passive_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Passives\Mana_passive_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Melee_Damage_on_Full_Life_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Melee_Damage_on_Full_Life_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Melee_Physical_Damage_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Melee_Physical_Damage_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Melee_Splash_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Melee_Splash_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Molten_Shell_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Molten_Shell_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Molten_Shell_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Molten_Shell_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Molten_Strike_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Molten_Strike_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Molten_Strike_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Molten_Strike_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Mortal_Conviction_passive_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Passives\Mortal_Conviction_passive_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Multistrike_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Multistrike_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Physical_Projectile_Attack_Damage_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Physical_Projectile_Attack_Damage_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Point_Blank__support_gem__gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Point_Blank_(support_gem)_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Poison_Arrow_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Poison_Arrow_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Poison_Arrow_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Poison_Arrow_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Power_Siphon_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Power_Siphon_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Power_Siphon_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Power_Siphon_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Prism_Guardian" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Items\Prism_Guardian.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Puncture_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Puncture_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Puncture_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Puncture_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Purity_Of_Elements_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Purity_Of_Elements_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Purity_Of_Elements_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Purity_Of_Elements_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Purity_Of_Fire_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Purity_Of_Fire_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Purity_Of_Fire_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Purity_Of_Fire_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Purity_Of_Ice_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Purity_Of_Ice_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Purity_Of_Ice_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Purity_Of_Ice_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Purity_Of_Lightning_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Purity_Of_Lightning_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Purity_Of_Lightning_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Purity_Of_Lightning_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Rain_of_Arrows_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Rain_of_Arrows_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Rain_of_Arrows_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Rain_of_Arrows_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Reave_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Reave_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Reave_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Reave_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Reduced_Mana_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Reduced_Mana_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Reduced_Mana_Reservation_passive_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Passives\Reduced_Mana_Reservation_passive_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Shield_Charge_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Shield_Charge_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Shield_Charge_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Shield_Charge_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Shock_Nova_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Shock_Nova_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Shock_Nova_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Shock_Nova_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Slower_Projectiles_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Slower_Projectiles_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sovereignty_passive_icon_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Sovereignty_passive_icon_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spark_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Spark_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spark_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Spark_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spectral_Throw_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Spectral_Throw_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spectral_Throw_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Spectral_Throw_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spell_Echo_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Spell_Echo_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Split_Arrow_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Split_Arrow_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Split_Arrow_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Split_Arrow_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Static_Strike_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Static_Strike_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Static_Strike_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Static_Strike_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Storm_Call_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Storm_Call_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Storm_Call_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Storm_Call_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sweep_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Sweep_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sweep_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Sweep_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tempest_Shield_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Tempest_Shield_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tempest_Shield_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Tempest_Shield_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tornado_Shot_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Tornado_Shot_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tornado_Shot_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Tornado_Shot_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Viper_Strike_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Viper_Strike_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Viper_Strike_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Viper_Strike_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Vitality_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Vitality_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Vitality_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Vitality_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Weapon_Elemental_Damage_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Weapon_Elemental_Damage_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Whirling_Blades_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Whirling_Blades_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Whirling_Blades_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Whirling_Blades_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wrath_gem_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Wrath_gem_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wrath_skill_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Gems\Wrath_skill_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sovereignty_passive_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Passives\Sovereignty_passive_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
