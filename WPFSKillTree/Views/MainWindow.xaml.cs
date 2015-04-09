@@ -138,6 +138,7 @@ namespace POESKillTree.Views
             SetAccent(_persistentData.Options.Accent);
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+            Tree.MainWindow = this;
             recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * 500;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);

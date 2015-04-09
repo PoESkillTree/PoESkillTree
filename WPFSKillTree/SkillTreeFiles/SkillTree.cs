@@ -151,16 +151,12 @@ namespace POESKillTree.SkillTreeFiles
             get { return SkillTree._NodeGroups; }
         }
 
-
         private static Rect2D _TRect;
 
         public static Rect2D TRect
         {
             get { return SkillTree._TRect; }
         }
-
-
-
 
         public static Dictionary<string, int> rootNodeClassDictionary
         {
@@ -187,7 +183,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private static readonly List<ushort[]> _links = new List<ushort[]>();
 
-
+        public Window MainWindow;
 
         public HashSet<ushort> AvailNodes = new HashSet<ushort>();
 
@@ -937,7 +933,7 @@ namespace POESKillTree.SkillTreeFiles
             var savedHighlights = HighlightedNodes;
 
             OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds);
-
+            optimizerDialog.Owner = MainWindow;
             optimizerDialog.ShowDialog();
             if (optimizerDialog.DialogResult == true)
                 foreach (ushort node in optimizerDialog.bestSoFar)
