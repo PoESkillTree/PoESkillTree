@@ -83,8 +83,8 @@ namespace POESKillTree.Views
         private List<ushort> _prePath;
         private HashSet<ushort> _toRemove;
 
-        readonly Stack<string> _undoList = new Stack<string>();
-        readonly Stack<string> _redoList = new Stack<string>();
+        readonly Stack<SkilltreeUndoState> _undoList = new Stack<SkilltreeUndoState>();
+        readonly Stack<SkilltreeUndoState> _redoList = new Stack<SkilltreeUndoState>();
 
         private Point _dragAndDropStartPoint;
         private DragAdorner _adorner;
@@ -1262,7 +1262,7 @@ namespace POESKillTree.Views
                 {
                     if (_undoList.Count > 1)
                     {
-                        string holder = _undoList.Pop();
+                        SkilltreeUndoState holder = _undoList.Pop();
                         _undoList.Pop();
                         _undoList.Push(holder);
                     }
@@ -1455,7 +1455,9 @@ namespace POESKillTree.Views
 
         private void tbSkillURL_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _undoList.Push(tbSkillURL.Text);
+            SkilltreeUndoState newSaveState = new SkilltreeUndoState();
+            newSaveState.getCurrentState(this);
+            _undoList.Push(newSaveState);
         }
 
         private void tbSkillURL_Undo_Click(object sender, RoutedEventArgs e)
@@ -1466,15 +1468,22 @@ namespace POESKillTree.Views
         private void tbSkillURL_Undo()
         {
             if (_undoList.Count <= 0) return;
-            if (_undoList.Peek() == tbSkillURL.Text && _undoList.Count > 1)
+
+            SkilltreeUndoState undoState = _undoList.Peek();
+            if (undoState.skillTreeURL == tbSkillURL.Text && _undoList.Count > 1)
             {
                 _undoList.Pop();
                 tbSkillURL_Undo();
             }
-            else if (_undoList.Peek() != tbSkillURL.Text)
+            else if (undoState.skillTreeURL != tbSkillURL.Text)
             {
-                _redoList.Push(tbSkillURL.Text);
-                tbSkillURL.Text = _undoList.Pop();
+                SkilltreeUndoState newSaveState = new SkilltreeUndoState();
+                newSaveState.getCurrentState(this);
+                _redoList.Push(newSaveState);
+
+                undoState = _undoList.Pop();
+                undoState.setCurrentState(this);
+
                 Tree.LoadFromURL(tbSkillURL.Text);
                 tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
             }
@@ -1488,14 +1497,18 @@ namespace POESKillTree.Views
         private void tbSkillURL_Redo()
         {
             if (_redoList.Count <= 0) return;
-            if (_redoList.Peek() == tbSkillURL.Text && _redoList.Count > 1)
+
+            SkilltreeUndoState redoState = _redoList.Peek();
+            if (redoState.skillTreeURL == tbSkillURL.Text && _redoList.Count > 1)
             {
                 _redoList.Pop();
                 tbSkillURL_Redo();
             }
-            else if (_redoList.Peek() != tbSkillURL.Text)
+            else if (redoState.skillTreeURL != tbSkillURL.Text)
             {
-                tbSkillURL.Text = _redoList.Pop();
+                redoState = _redoList.Pop();
+                redoState.setCurrentState(this);
+
                 Tree.LoadFromURL(tbSkillURL.Text);
                 tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
             }
