@@ -21,6 +21,9 @@ using System.Windows.Media;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Media.Imaging;
+using System.Windows;
+using System.Drawing.Imaging;
+using System.Resources;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -467,13 +470,39 @@ namespace POESKillTree.SkillTreeFiles
             [XmlElement("Attribute")]
             public List<Attribute> Attributes { get; set; }
 
-            // path to a gem icon
-            [XmlAttribute]
-            public string GemIcon { get; set; }
+            // gem icon
+            [XmlIgnore]
+            public BitmapSource GemIcon
+            {
+                get
+                {
+                    try
+                    {
+                        return new BitmapImage(new Uri("pack://application:,,,/POESKillTree;component/Images/Gems/" + Name + ".png"));
+                    }
+                    catch
+                    {
+                        return Imaging.BitmapToBitmapSourceConverter(POESKillTree.Properties.Resources.WhiteSocket);
+                    }
+                }
+            }
 
-            // path to a skill icon, if exists
-            [XmlAttribute]
-            public string SkillIcon { get; set; }
+            // skill icon
+            [XmlIgnore]
+            public BitmapSource SkillIcon
+            {
+                get
+                {
+                    try
+                    {
+                        return new BitmapImage(new Uri("pack://application:,,,/POESKillTree;component/Images/Skills/" + Name + ".png"));
+                    }
+                    catch
+                    {
+                        return Imaging.BitmapToBitmapSourceConverter(POESKillTree.Properties.Resources.WhiteSocket);
+                    }
+                }
+            }
 
             // Indexed level dependant attributes.
             [XmlIgnore]
@@ -670,10 +699,6 @@ namespace POESKillTree.SkillTreeFiles
 
                 // copy mana reserved value
                 ManaReserved = gem.ManaReserved;
-
-                // copy images paths
-                GemIcon = gem.GemIcon;
-                SkillIcon = gem.SkillIcon;
 
                 // copy attributes
                 if (gem.Attributes != null)

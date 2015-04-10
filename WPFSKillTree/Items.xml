@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ItemDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Gem Name="Added Chaos Damage" ManaMultiplier="130%" GemIcon="Added_Chaos_Damage_gem_icon.png">
+  <Gem Name="Added Chaos Damage" ManaMultiplier="130%">
     <Keywords>
       <Keyword>Chaos</Keyword>
       <Keyword>Support</Keyword>
@@ -34,7 +34,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Added Cold Damage" ManaMultiplier="130%" GemIcon="Added_Cold_Damage_gem_icon.png">
+  <Gem Name="Added Cold Damage" ManaMultiplier="130%">
     <Keywords>
       <Keyword>Cold</Keyword>
       <Keyword>Support</Keyword>
@@ -72,7 +72,7 @@
       <Value Level="30">211–316</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Added Fire Damage" ManaMultiplier="120%" GemIcon="Added_Fire_Damage_gem_icon.png">
+  <Gem Name="Added Fire Damage" ManaMultiplier="120%">
     <Keywords>
       <Keyword>Fire</Keyword>
       <Keyword>Support</Keyword>
@@ -103,7 +103,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Added Lightning Damage" ManaMultiplier="130%" GemIcon="Added_Lightning_Damage_gem_icon.png">
+  <Gem Name="Added Lightning Damage" ManaMultiplier="130%">
     <Keywords>
       <Keyword>Lightning</Keyword>
       <Keyword>Support</Keyword>
@@ -134,7 +134,7 @@
       <Value Level="23">17–320</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Additional Accuracy" GemIcon="Additional_Accuracy_gem_icon.png">
+  <Gem Name="Additional Accuracy">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Support</Keyword>
@@ -170,7 +170,7 @@
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Anger" ManaReserved="60%" GemIcon="Anger_gem_icon.png" SkillIcon="Anger_skill_icon.png">
+  <Gem Name="Anger" ManaReserved="60%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -243,7 +243,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Arc" GemIcon="Arc_gem_icon.png" SkillIcon="Arc_skill_icon.png">
+  <Gem Name="Arc">
     <Keywords>
       <Keyword>Chaining</Keyword>
       <Keyword>Lightning</Keyword>
@@ -300,7 +300,7 @@
       <Value Level="27">73–1386</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Arctic Breath" GemIcon="Arctic_Breath_gem_icon.png" SkillIcon="Arctic_Breath_skill_icon.png">
+  <Gem Name="Arctic Breath">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Cold</Keyword>
@@ -345,7 +345,7 @@
       <Value Level="21">416-624</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Ball Lightning" GemIcon="Ball_Lightning_gem_icon.png" SkillIcon="Ball_Lightning_skill_icon.png">
+  <Gem Name="Ball Lightning">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Lightning</Keyword>
@@ -393,7 +393,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem RequiredWeapon="Ranged" Name="Barrage" GemIcon="Barrage_gem_icon.png" SkillIcon="Barrage_skill_icon.png">
+  <Gem RequiredWeapon="Ranged" Name="Barrage">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Bow</Keyword>
@@ -412,7 +412,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Blood Magic" ManaMultiplier="245%" GemIcon="Blood_Magic_(support_gem)_gem_icon.png">
+  <Gem Name="Blood Magic" ManaMultiplier="245%">
     <Keywords>
       <Keyword>Support</Keyword>
     </Keywords>
@@ -442,7 +442,7 @@
       <Value Level="23">187%</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Burning Arrow" GemIcon="Burning_Arrow_gem_icon.png" SkillIcon="Burning_Arrow_skill_icon.png">
+  <Gem Name="Burning Arrow">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Bow</Keyword>
@@ -469,7 +469,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Cast on Death" GemIcon="Cast_On_Death_gem_icon.png">
+  <Gem Name="Cast on Death">
     <Keywords>
       <Keyword>Spell</Keyword>
       <Keyword>Support</Keyword>
@@ -482,7 +482,7 @@
       <ValuePerQuality>3</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Cast on Melee Kill" ManaMultiplier="140%" GemIcon="Cast_on_Melee_Kill_gem_icon.png">
+  <Gem Name="Cast on Melee Kill" ManaMultiplier="140%">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Melee</Keyword>
@@ -516,7 +516,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Cast when Damage Taken" GemIcon="Cast_when_Damage_Taken_gem_icon.png">
+  <Gem Name="Cast when Damage Taken">
     <Keywords>
       <Keyword>Spell</Keyword>
       <Keyword>Support</Keyword>
@@ -550,7 +550,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Cast when Stunned" GemIcon="Cast_When_Stunned_gem_icon.png">
+  <Gem Name="Cast when Stunned">
     <Keywords>
       <Keyword>Spell</Keyword>
       <Keyword>Support</Keyword>
@@ -560,7 +560,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Chain" ManaMultiplier="175%" GemIcon="Chain_gem_icon.png">
+  <Gem Name="Chain" ManaMultiplier="175%">
     <Keywords>
       <Keyword>Chaining</Keyword>
       <Keyword>Projectile</Keyword>
@@ -570,7 +570,7 @@
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Clarity" GemIcon="Clarity_gem_icon.png" SkillIcon="Clarity_skill_icon.png">
+  <Gem Name="Clarity">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -674,7 +674,7 @@
       <Value Level="30">??.?</Value>
     </Attribute>
   </Gem>
-  <Gem RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" StrikesWithBothWeapons="true" Name="Cleave" GemIcon="Cleave_gem_icon.png" SkillIcon="Cleave_skill_icon.png">
+  <Gem RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" StrikesWithBothWeapons="true" Name="Cleave">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -696,7 +696,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" Name="Cold Snap" GemIcon="Cold_Snap_gem_icon.png" SkillIcon="Cold_Snap_skill_icon.png">
+  <Gem IncludeForm="OnUse" Name="Cold Snap">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Cold</Keyword>
@@ -754,7 +754,7 @@
       <Value Level="27">794-1191</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Cold to Fire" ManaMultiplier="110%" GemIcon="Cold_to_Fire_gem_icon.png">
+  <Gem Name="Cold to Fire" ManaMultiplier="110%">
     <Keywords>
       <Keyword>Cold</Keyword>
       <Keyword>Fire</Keyword>
@@ -792,7 +792,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Concentrated Effect" ManaMultiplier="160%" GemIcon="Concentrated_Effect_gem_icon.png">
+  <Gem Name="Concentrated Effect" ManaMultiplier="160%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Support</Keyword>
@@ -823,7 +823,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Curse On Hit" ManaMultiplier="100%" GemIcon="Curse_On_Hit_gem_icon.png">
+  <Gem Name="Curse On Hit" ManaMultiplier="100%">
     <Keywords>
       <Keyword>Curse</Keyword>
       <Keyword>Support</Keyword>
@@ -853,7 +853,7 @@
       <Value Level="21">10%</Value>
     </Attribute>
   </Gem>
-  <Gem HitsPerAttack="2" Name="Cyclone" GemIcon="Cyclone_gem_icon.png" SkillIcon="Cyclone_skill_icon.png">
+  <Gem HitsPerAttack="2" Name="Cyclone">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -877,7 +877,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Determination" ManaReserved="60%" GemIcon="Determination_gem_icon.png" SkillIcon="Determination_skill_icon.png">
+  <Gem Name="Determination" ManaReserved="60%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -949,7 +949,7 @@
       <Value Level="30">??%</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Discipline" ManaReserved="60%" GemIcon="Discipline_gem_icon.png" SkillIcon="Discipline_skill_icon.png">
+  <Gem Name="Discipline" ManaReserved="60%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -1041,7 +1041,7 @@
       <Value Level="26">6.95</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Dominating Blow" GemIcon="Dominating_Blow_gem_icon.png" SkillIcon="Dominating_Blow_skill_icon.png">
+  <Gem Name="Dominating Blow">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Duration</Keyword>
@@ -1066,7 +1066,7 @@
       <ValueForLevel From="19" To="24">37</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Double Strike" GemIcon="Double_Strike_gem_icon.png" SkillIcon="Double_Strike_skill_icon.png">
+  <Gem Name="Double Strike">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Melee</Keyword>
@@ -1084,7 +1084,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem RequiredHand="DualWielded" RequiredWeapon="Melee" StrikesWithBothWeapons="true" Name="Dual Strike" GemIcon="Dual_Strike_gem_icon.png" SkillIcon="Dual_Strike_skill_icon.png">
+  <Gem RequiredHand="DualWielded" RequiredWeapon="Melee" StrikesWithBothWeapons="true" Name="Dual Strike">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Melee</Keyword>
@@ -1102,7 +1102,7 @@
       <ValueForLevel From="16" To="20">11</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Elemental Hit" GemIcon="Elemental_Hit_gem_icon.png" SkillIcon="Elemental_Hit_skill_icon.png">
+  <Gem Name="Elemental Hit">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Bow</Keyword>
@@ -1137,7 +1137,7 @@
       <ValuePerQuality>4</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Empower" ManaMultiplier="125%" GemIcon="Empower_gem_icon.png">
+  <Gem Name="Empower" ManaMultiplier="125%">
     <Keywords>
       <Keyword>Support</Keyword>
     </Keywords>
@@ -1145,7 +1145,7 @@
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Ethereal Knives" GemIcon="Ethereal_Knives_gem_icon.png" SkillIcon="Ethereal_Knives_skill_icon.png">
+  <Gem Name="Ethereal Knives">
     <Keywords>
       <Keyword>Projectile</Keyword>
       <Keyword>Spell</Keyword>
@@ -1214,7 +1214,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Explosive Arrow" GemIcon="Explosive_Arrow_gem_icon.png" SkillIcon="Explosive_Arrow_skill_icon.png">
+  <Gem Name="Explosive Arrow">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -1245,7 +1245,7 @@
       <Value Level="27">?</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Faster Attacks" ManaMultiplier="115%" GemIcon="Faster_Attacks_gem_icon.png">
+  <Gem Name="Faster Attacks" ManaMultiplier="115%">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Support</Keyword>
@@ -1274,7 +1274,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Faster Casting" ManaMultiplier="120%" GemIcon="Faster_Casting_gem_icon.png">
+  <Gem Name="Faster Casting" ManaMultiplier="120%">
     <Keywords>
       <Keyword>Spell</Keyword>
       <Keyword>Support</Keyword>
@@ -1303,7 +1303,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Faster Projectiles" ManaMultiplier="110%" GemIcon="Faster_Projectiles_gem_icon.png">
+  <Gem Name="Faster Projectiles" ManaMultiplier="110%">
     <Keywords>
       <Keyword>Projectile</Keyword>
       <Keyword>Support</Keyword>
@@ -1328,7 +1328,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem ExcludeForm="AoE" Name="Fireball" GemIcon="Fireball_gem_icon.png" SkillIcon="Fireball_skill_icon.png">
+  <Gem ExcludeForm="AoE" Name="Fireball">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Fire</Keyword>
@@ -1400,7 +1400,7 @@
       <Value Level="30">42</Value>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" Name="Firestorm" GemIcon="Firestorm_gem_icon.png" SkillIcon="Firestorm_skill_icon.png">
+  <Gem IncludeForm="OnUse" Name="Firestorm">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Duration</Keyword>
@@ -1457,7 +1457,7 @@
       <Value Level="23">157-235</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Flame Surge" GemIcon="Flame_Surge_gem_icon.png" SkillIcon="Flame_Surge_skill_icon.png">
+  <Gem Name="Flame Surge">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Fire</Keyword>
@@ -1528,7 +1528,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" Name="Flameblast" GemIcon="Flameblast_gem_icon.png" SkillIcon="Flameblast_skill_icon.png">
+  <Gem IncludeForm="OnUse" Name="Flameblast">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Fire</Keyword>
@@ -1578,7 +1578,7 @@
       <Value Level="30">492–737</Value>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" Name="Flicker Strike" GemIcon="Flicker_Strike_gem_icon.png" SkillIcon="Flicker_Strike_skill_icon.png">
+  <Gem IncludeForm="OnUse" Name="Flicker Strike">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Melee</Keyword>
@@ -1613,7 +1613,7 @@
       <ValuePerQuality>4</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Fork" ManaMultiplier="115%" GemIcon="Fork_gem_icon.png">
+  <Gem Name="Fork" ManaMultiplier="115%">
     <Keywords>
       <Keyword>Projectile</Keyword>
       <Keyword>Support</Keyword>
@@ -1623,7 +1623,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Freezing Pulse" GemIcon="Freezing_Pulse_gem_icon.png" SkillIcon="Freezing_Pulse_skill_icon.png">
+  <Gem Name="Freezing Pulse">
     <Keywords>
       <Keyword>Cold</Keyword>
       <Keyword>Projectile</Keyword>
@@ -1672,7 +1672,7 @@
       <Value Level="23">320-480</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Frenzy" GemIcon="Frenzy_gem_icon.png" SkillIcon="Frenzy_skill_icon.png">
+  <Gem Name="Frenzy">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Bow</Keyword>
@@ -1685,7 +1685,7 @@
       <ValueForLevel From="17" To="24">15</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Frost Wall" GemIcon="Frost_Wall_gem_icon.png" SkillIcon="Frost_Wall_skill_icon.png">
+  <Gem Name="Frost Wall">
     <Keywords>
       <Keyword>Cold</Keyword>
       <Keyword>Duration</Keyword>
@@ -1750,7 +1750,7 @@
       <Value Level="30">41–61</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Glacial Cascade" GemIcon="Glacial_Cascade_gem_icon.png" SkillIcon="Glacial_Cascade_skill_icon.png">
+  <Gem Name="Glacial Cascade">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Cold</Keyword>
@@ -1848,7 +1848,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem RequiredWeapon="OneHandedMace Staff TwoHandedMace" Name="Glacial Hammer" GemIcon="Glacial_Hammer_gem_icon.png" SkillIcon="Glacial_Hammer_skill_icon.png">
+  <Gem RequiredWeapon="OneHandedMace Staff TwoHandedMace" Name="Glacial Hammer">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Cold</Keyword>
@@ -1863,7 +1863,7 @@
       <Value Level="21">11</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Grace" ManaReserved="60%" GemIcon="Grace_gem_icon.png" SkillIcon="Grace_skill_icon.png">
+  <Gem Name="Grace" ManaReserved="60%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -1935,7 +1935,7 @@
       <Value Level="30">????</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Greater Multiple Projectiles" ManaMultiplier="165%" GemIcon="Greater_Multiple_Projectiles_gem_icon.png">
+  <Gem Name="Greater Multiple Projectiles" ManaMultiplier="165%">
     <Keywords>
       <Keyword>Projectile</Keyword>
       <Keyword>Support</Keyword>
@@ -1950,7 +1950,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem RequiredHand="Main" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Name="Ground Slam" GemIcon="Ground_Slam_gem_icon.png" SkillIcon="Ground_Slam_skill_icon.png">
+  <Gem RequiredHand="Main" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Name="Ground Slam">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -1966,7 +1966,7 @@
       <ValueForLevel From="19" To="20">13</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Haste" ManaReserved="60%" GemIcon="Haste_gem_icon.png" SkillIcon="Haste_skill_icon.png">
+  <Gem Name="Haste" ManaReserved="60%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -2053,7 +2053,7 @@
       <Value Level="30">??%</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Hatred" ManaReserved="60%" GemIcon="Hatred_gem_icon.png" SkillIcon="Hatred_skill_icon.png">
+  <Gem Name="Hatred" ManaReserved="60%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -2112,7 +2112,7 @@
       <Value Level="30">41%</Value>
     </Attribute>
   </Gem>
-  <Gem RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Name="Heavy Strike" GemIcon="Heavy_Strike_gem_icon.png" SkillIcon="Heavy_Strike_skill_icon.png">
+  <Gem RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Name="Heavy Strike">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Melee</Keyword>
@@ -2159,7 +2159,7 @@
       <ValueForLevel From="21" To="23">9</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Herald of Ash" ManaReserved="25%" GemIcon="Herald_of_Ash_gem_icon.png" SkillIcon="Herald_of_Ash_skill_icon.png">
+  <Gem Name="Herald of Ash" ManaReserved="25%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -2202,7 +2202,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Herald of Ice" ManaReserved="25%" GemIcon="Herald_of_Ice_gem_icon.png" SkillIcon="Herald_of_Ice_skill_icon.png">
+  <Gem Name="Herald of Ice" ManaReserved="25%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -2309,7 +2309,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem ExcludeForm="AoE" Name="Herald of Thunder" ManaReserved="25%" GemIcon="Herald_of_Thunder_gem_icon.png" SkillIcon="Herald_of_Thunder_skill_icon.png">
+  <Gem ExcludeForm="AoE" Name="Herald of Thunder" ManaReserved="25%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -2377,7 +2377,7 @@
       <Value Level="26">19-289</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Ice Nova" GemIcon="Ice_Nova_gem_icon.png" SkillIcon="Ice_Nova_skill_icon.png">
+  <Gem Name="Ice Nova">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Cold</Keyword>
@@ -2442,7 +2442,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Ice Shot" GemIcon="Ice_Shot_gem_icon.png" SkillIcon="Ice_Shot_skill_icon.png">
+  <Gem Name="Ice Shot">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -2461,7 +2461,7 @@
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Ice Spear" GemIcon="Ice_Spear_gem_icon.png" SkillIcon="Ice_Spear_skill_icon.png">
+  <Gem Name="Ice Spear">
     <Keywords>
       <Keyword>Cold</Keyword>
       <Keyword>Projectile</Keyword>
@@ -2513,7 +2513,7 @@
       <Value Level="23">383-574</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Incinerate" GemIcon="Incinerate_gem_icon.png" SkillIcon="Incinerate_skill_icon.png">
+  <Gem Name="Incinerate">
     <Keywords>
       <Keyword>Fire</Keyword>
       <Keyword>Projectile</Keyword>
@@ -2559,7 +2559,7 @@
       <Value Level="30">162-243</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Increased Critical Damage" ManaMultiplier="130%" GemIcon="Increased_Critical_Damage_gem_icon.png">
+  <Gem Name="Increased Critical Damage" ManaMultiplier="130%">
     <Keywords>
       <Keyword>Support</Keyword>
     </Keywords>
@@ -2587,7 +2587,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Increased Critical Strikes" ManaMultiplier="115%" GemIcon="Increased_Critical_Strikes_gem_icon.png">
+  <Gem Name="Increased Critical Strikes" ManaMultiplier="115%">
     <Keywords>
       <Keyword>Support</Keyword>
     </Keywords>
@@ -2615,7 +2615,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Infernal Blow" GemIcon="Infernal_Blow_gem_icon.png" SkillIcon="Infernal_Blow_skill_icon.png">
+  <Gem Name="Infernal Blow">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -2637,7 +2637,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Iron Grip" GemIcon="Iron_Grip_(support_gem)_gem_icon.png">
+  <Gem Name="Iron Grip">
     <Keywords>
       <Keyword>Projectile</Keyword>
       <Keyword>Support</Keyword>
@@ -2668,7 +2668,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Iron Will" GemIcon="Iron_Will_gem_icon.png">
+  <Gem Name="Iron Will">
     <Keywords>
       <Keyword>Spell</Keyword>
       <Keyword>Support</Keyword>
@@ -2700,7 +2700,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem ExcludeForm="AoE" RequiredWeapon="Wand" Name="Kinetic Blast" GemIcon="Kinetic_Blast_gem_icon.png" SkillIcon="Kinetic_Blast_skill_icon.png">
+  <Gem ExcludeForm="AoE" RequiredWeapon="Wand" Name="Kinetic Blast">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -2718,7 +2718,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Name="Leap Slam" GemIcon="Leap_Slam_gem_icon.png" SkillIcon="Leap_Slam_skill_icon.png">
+  <Gem RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Name="Leap Slam">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -2738,7 +2738,7 @@
       <Value Level="21">15</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Lesser Multiple Projectiles" ManaMultiplier="140%" GemIcon="Lesser_Multiple_Projectiles_gem_icon.png">
+  <Gem Name="Lesser Multiple Projectiles" ManaMultiplier="140%">
     <Keywords>
       <Keyword>Projectile</Keyword>
       <Keyword>Support</Keyword>
@@ -2753,7 +2753,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Lightning Arrow" GemIcon="Lightning_Arrow_gem_icon.png" SkillIcon="Lightning_Arrow_skill_icon.png">
+  <Gem Name="Lightning Arrow">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -2770,7 +2770,7 @@
       <ValuePerLevel>3</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem ExcludeForm="Projectile" Name="Lightning Strike" GemIcon="Lightning_Strike_gem_icon.png" SkillIcon="Lightning_Strike_skill_icon.png">
+  <Gem ExcludeForm="Projectile" Name="Lightning Strike">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Lightning</Keyword>
@@ -2786,7 +2786,7 @@
       <Value Level="21">10</Value>
     </Attribute>
   </Gem>
-  <Gem HitsPerAttack="4" Name="Lightning Tendrils" GemIcon="Lightning_Tendrils_gem_icon.png" SkillIcon="Lightning_Tendrils_skill_icon.png">
+  <Gem HitsPerAttack="4" Name="Lightning Tendrils">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Lightning</Keyword>
@@ -2845,7 +2845,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" Name="Lightning Warp" GemIcon="Lightning_Warp_gem_icon.png" SkillIcon="Lightning_Warp_skill_icon.png">
+  <Gem IncludeForm="OnUse" Name="Lightning Warp">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Duration</Keyword>
@@ -2903,7 +2903,7 @@
       <ValuePerQuality>1.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Melee Damage on Full Life" ManaMultiplier="130%" GemIcon="Melee_Damage_on_Full_Life_gem_icon.png">
+  <Gem Name="Melee Damage on Full Life" ManaMultiplier="130%">
     <Keywords>
       <Keyword>Melee</Keyword>
       <Keyword>Support</Keyword>
@@ -2934,7 +2934,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Melee Physical Damage" ManaMultiplier="140%" GemIcon="Melee_Physical_Damage_gem_icon.png">
+  <Gem Name="Melee Physical Damage" ManaMultiplier="140%">
     <Keywords>
       <Keyword>Melee</Keyword>
       <Keyword>Support</Keyword>
@@ -2967,7 +2967,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem ExcludeFormSupport="AoE OnUse" Name="Melee Splash" ManaMultiplier="160%" GemIcon="Melee_Splash_gem_icon.png">
+  <Gem ExcludeFormSupport="AoE OnUse" Name="Melee Splash" ManaMultiplier="160%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -2981,7 +2981,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" Name="Molten Shell" GemIcon="Molten_Shell_gem_icon.png" SkillIcon="Molten_Shell_skill_icon.png">
+  <Gem IncludeForm="OnUse" Name="Molten Shell">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Duration</Keyword>
@@ -3052,7 +3052,7 @@
       <Value Level="30">5787–8680</Value>
     </Attribute>
   </Gem>
-  <Gem ExcludeForm="Projectile AoE" Name="Molten Strike" GemIcon="Molten_Strike_gem_icon.png" SkillIcon="Molten_Strike_skill_icon.png">
+  <Gem ExcludeForm="Projectile AoE" Name="Molten Strike">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -3079,7 +3079,7 @@
       <ValueForLevel From="19" To="20">10</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Multistrike" ManaMultiplier="180%" GemIcon="Multistrike_gem_icon.png">
+  <Gem Name="Multistrike" ManaMultiplier="180%">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Melee</Keyword>
@@ -3115,7 +3115,7 @@
       <Value Level="23">110%</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Physical Projectile Attack Damage" ManaMultiplier="120%" GemIcon="Physical_Projectile_Attack_Damage_gem_icon.png">
+  <Gem Name="Physical Projectile Attack Damage" ManaMultiplier="120%">
     <Keywords>
       <Keyword>Projectile</Keyword>
       <Keyword>Support</Keyword>
@@ -3146,7 +3146,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Physical to Lightning" ManaMultiplier="110%" GemIcon="Physical_to_Lightning_gem_icon.png">
+  <Gem Name="Physical to Lightning" ManaMultiplier="110%">
     <Keywords>
       <Keyword>Lightning</Keyword>
       <Keyword>Support</Keyword>
@@ -3158,7 +3158,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Point Blank" ManaMultiplier="120%" GemIcon="Point_Blank_(support_gem)_gem_icon.png">
+  <Gem Name="Point Blank" ManaMultiplier="120%">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Projectile</Keyword>
@@ -3190,7 +3190,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Poison Arrow" GemIcon="Poison_Arrow_gem_icon.png" SkillIcon="Poison_Arrow_skill_icon.png">
+  <Gem Name="Poison Arrow">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -3253,7 +3253,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem RequiredWeapon="Wand" Name="Power Siphon" GemIcon="Power_Siphon_gem_icon.png" SkillIcon="Power_Siphon_skill_icon.png">
+  <Gem RequiredWeapon="Wand" Name="Power Siphon">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Projectile</Keyword>
@@ -3269,7 +3269,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Puncture" GemIcon="Puncture_gem_icon.png" SkillIcon="Puncture_skill_icon.png">
+  <Gem Name="Puncture">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Bow</Keyword>
@@ -3287,7 +3287,7 @@
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Purity of Elements" ManaReserved="40%" GemIcon="Purity_of_Elements_gem_icon.png" SkillIcon="Purity_of_Elements_skill_icon.png">
+  <Gem Name="Purity of Elements" ManaReserved="40%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -3354,7 +3354,7 @@
       <Value Level="30">??%</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Purity of Fire" ManaReserved="40%" GemIcon="Purity_of_Fire_gem_icon.png" SkillIcon="Purity_of_Fire_skill_icon.png">
+  <Gem Name="Purity of Fire" ManaReserved="40%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -3435,7 +3435,7 @@
       <ValueForLevel From="23" To="30">5%</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Purity of Ice" ManaReserved="40%" GemIcon="Purity_of_Ice_gem_icon.png" SkillIcon="Purity_of_Ice_skill_icon.png">
+  <Gem Name="Purity of Ice" ManaReserved="40%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -3516,7 +3516,7 @@
       <ValueForLevel From="23" To="30">5%</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Purity of Lightning" ManaReserved="40%" GemIcon="Purity_of_Lightning_gem_icon.png" SkillIcon="Purity_of_Lightning_skill_icon.png">
+  <Gem Name="Purity of Lightning" ManaReserved="40%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -3600,7 +3600,7 @@
       <ValueForLevel From="23" To="30">5%</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Rain of Arrows" GemIcon="Rain_of_Arrows_gem_icon.png" SkillIcon="Rain_of_Arrows_skill_icon.png">
+  <Gem Name="Rain of Arrows">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -3641,7 +3641,7 @@
       <Value Level="20">32%</Value>
     </Attribute>
   </Gem>
-  <Gem RequiredWeapon="Claw Dagger OneHandedSword" Name="Reave" GemIcon="Reave_gem_icon.png" SkillIcon="Reave_skill_icon.png">
+  <Gem RequiredWeapon="Claw Dagger OneHandedSword" Name="Reave">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -3661,7 +3661,7 @@
       <Value Level="21">9</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Reduced Mana" ManaMultiplier="Depends on gem level" GemIcon="Reduced_Mana_gem_icon.png">
+  <Gem Name="Reduced Mana" ManaMultiplier="Depends on gem level">
     <Keywords>
       <Keyword>Support</Keyword>
     </Keywords>
@@ -3699,7 +3699,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" RequiresEquippedShield="true" Name="Shield Charge" GemIcon="Shield_Charge_gem_icon.png" SkillIcon="Shield_Charge_skill_icon.png">
+  <Gem IncludeForm="OnUse" RequiresEquippedShield="true" Name="Shield Charge">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Melee</Keyword>
@@ -3722,7 +3722,7 @@
       <ValueForLevel From="10" To="20">70%</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Shock Nova" GemIcon="Shock_Nova_gem_icon.png" SkillIcon="Shock_Nova_skill_icon.png">
+  <Gem Name="Shock Nova">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Lightning</Keyword>
@@ -3793,7 +3793,7 @@
       <Value Level="30">75–1418</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Slower Projectiles" ManaMultiplier="140%" GemIcon="Slower_Projectiles_gem_icon.png">
+  <Gem Name="Slower Projectiles" ManaMultiplier="140%">
     <Keywords>
       <Keyword>Projectile</Keyword>
       <Keyword>Support</Keyword>
@@ -3822,7 +3822,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Spark" GemIcon="Spark_gem_icon.png" SkillIcon="Spark_skill_icon.png">
+  <Gem Name="Spark">
     <Keywords>
       <Keyword>Duration</Keyword>
       <Keyword>Lightning</Keyword>
@@ -3872,7 +3872,7 @@
       <Value Level="21">21–391</Value>
     </Attribute>
   </Gem>
-  <Gem RequiredWeapon="Melee" Name="Spectral Throw" GemIcon="Spectral_Throw_gem_icon.png" SkillIcon="Spectral_Throw_skill_icon.png">
+  <Gem RequiredWeapon="Melee" Name="Spectral Throw">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Projectile</Keyword>
@@ -3915,7 +3915,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Spell Echo" ManaMultiplier="130%" GemIcon="Spell_Echo_gem_icon.png">
+  <Gem Name="Spell Echo" ManaMultiplier="130%">
     <Keywords>
       <Keyword>Spell</Keyword>
       <Keyword>Support</Keyword>
@@ -3959,7 +3959,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Split Arrow" GemIcon="Split_Arrow_gem_icon.png" SkillIcon="Split_Arrow_skill_icon.png">
+  <Gem Name="Split Arrow">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Bow</Keyword>
@@ -3979,7 +3979,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem ExcludeForm="AoE" Name="Static Strike" GemIcon="Static_Strike_gem_icon.png" SkillIcon="Static_Strike_skill_icon.png">
+  <Gem ExcludeForm="AoE" Name="Static Strike">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -4003,7 +4003,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" Name="Storm Call" GemIcon="Storm_Call_gem_icon.png" SkillIcon="Storm_Call_skill_icon.png">
+  <Gem IncludeForm="OnUse" Name="Storm Call">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Duration</Keyword>
@@ -4061,7 +4061,7 @@
       <ValuePerQuality>4</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem RequiredWeapon="Staff TwoHandedAxe TwoHandedMace" Name="Sweep" GemIcon="Sweep_gem_icon.png" SkillIcon="Sweep_skill_icon.png">
+  <Gem RequiredWeapon="Staff TwoHandedAxe TwoHandedMace" Name="Sweep">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Attack</Keyword>
@@ -4085,7 +4085,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" RequiresEquippedShield="true" Name="Tempest Shield" ManaReserved="25%" GemIcon="Tempest_Shield_gem_icon.png" SkillIcon="Tempest_Shield_skill_icon.png">
+  <Gem IncludeForm="OnUse" RequiresEquippedShield="true" Name="Tempest Shield" ManaReserved="25%">
     <Keywords>
       <Keyword>Lightning</Keyword>
       <Keyword>Spell</Keyword>
@@ -4117,7 +4117,7 @@
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Tornado Shot" GemIcon="Tornado_Shot_gem_icon.png" SkillIcon="Tornado_Shot_skill_icon.png">
+  <Gem Name="Tornado Shot">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Bow</Keyword>
@@ -4163,7 +4163,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Viper Strike" GemIcon="Viper_Strike_gem_icon.png" SkillIcon="Viper_Strike_skill_icon.png">
+  <Gem Name="Viper Strike">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Chaos</Keyword>
@@ -4184,7 +4184,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Vitality" ManaReserved="40%" GemIcon="Vitality_gem_icon.png" SkillIcon="Vitality_skill_icon.png">
+  <Gem Name="Vitality" ManaReserved="40%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>
@@ -4240,7 +4240,7 @@
       <Value Level="22">1.75%</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Weapon Elemental Damage" ManaMultiplier="150%" GemIcon="Weapon_Elemental_Damage_gem_icon.png">
+  <Gem Name="Weapon Elemental Damage" ManaMultiplier="150%">
     <Keywords>
       <Keyword>Support</Keyword>
     </Keywords>
@@ -4280,7 +4280,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem IncludeForm="OnUse" RequiredWeapon="Claw Dagger OneHandedSword" Name="Whirling Blades" GemIcon="Whirling_Blades_gem_icon.png" SkillIcon="Whirling_Blades_skill_icon.png">
+  <Gem IncludeForm="OnUse" RequiredWeapon="Claw Dagger OneHandedSword" Name="Whirling Blades">
     <Keywords>
       <Keyword>Attack</Keyword>
       <Keyword>Melee</Keyword>
@@ -4301,7 +4301,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
-  <Gem Name="Wrath" ManaReserved="60%" GemIcon="Wrath_gem_icon.png" SkillIcon="Wrath_skill_icon.png">
+  <Gem Name="Wrath" ManaReserved="60%">
     <Keywords>
       <Keyword>AoE</Keyword>
       <Keyword>Aura</Keyword>

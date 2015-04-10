@@ -222,8 +222,6 @@ namespace UpdateDB
             List<string> keywords = new List<string>();
             string manaReseverd = null;
             string manaMultiplier = null;
-            string gemIconPath = null;
-            string skillIconPath = null;
 
             #region GemLevelTable: Gem level progression table
             HtmlNodeCollection found = doc.DocumentNode.SelectNodes("//table[contains(@class,'GemLevelTable')]");
@@ -322,21 +320,20 @@ namespace UpdateDB
                 Warning("GemInfoboxHeader not found");
             else
             {
-                System.IO.Directory.CreateDirectory("icons");
+                System.IO.Directory.CreateDirectory("Images/Gems/");
+                System.IO.Directory.CreateDirectory("Images/Skills/");
                 HtmlNode table = found[0];
                 HtmlNodeCollection gemImages = table.SelectNodes(".//a[contains(@class,'image')]/img");
                 if (gemImages != null)
                 {
                     using (WebClient client = new WebClient())
                     {
-                        gemIconPath = PathOf(name) + "_gem_icon.png";
-                        client.DownloadFile(new Uri(gemImages[0].Attributes["src"].Value), gemIconPath);
+                        client.DownloadFile(new Uri(gemImages[0].Attributes["src"].Value), "Images/Gems/" + gemName + ".png");
                     }
                     if (gemImages.Count > 1) {
                         using (WebClient client = new WebClient())
                         {
-                            skillIconPath = PathOf(name) + "_skill_icon.png";
-                            client.DownloadFile(new Uri(gemImages[1].Attributes["src"].Value), skillIconPath);
+                            client.DownloadFile(new Uri(gemImages[1].Attributes["src"].Value), "Images/Skills/" + gemName + ".png");
                         }
                     }
                 }
@@ -399,8 +396,6 @@ namespace UpdateDB
                 Keywords = keywords, 
                 ManaReserved = manaReseverd, 
                 ManaMultiplier = manaMultiplier,
-                GemIcon = gemIconPath,
-                SkillIcon = skillIconPath,
             }; ;
         }
 

@@ -59,56 +59,6 @@ namespace POESKillTree.Properties {
                 resourceCulture = value;
             }
         }
-    
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Added_Chaos_Damage_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Added_Chaos_Damage_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Added_Cold_Damage_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Added_Cold_Damage_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Added_Fire_Damage_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Added_Fire_Damage_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Added_Lightning_Damage_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Added_Lightning_Damage_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Additional_Accuracy_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Additional_Accuracy_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
@@ -123,9 +73,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Anger_gem_icon {
+        internal static System.Drawing.Bitmap Anger {
             get {
-                object obj = ResourceManager.GetObject("Anger_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Anger", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +83,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Anger_skill_icon {
+        internal static System.Drawing.Bitmap Anger_gem {
             get {
-                object obj = ResourceManager.GetObject("Anger_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Anger_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +93,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Arc_gem_icon {
+        internal static System.Drawing.Bitmap Blood_Magic {
             get {
-                object obj = ResourceManager.GetObject("Arc_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Blood_Magic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +103,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Arc_skill_icon {
+        internal static System.Drawing.Bitmap Blood_Magic_gem {
             get {
-                object obj = ResourceManager.GetObject("Arc_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Blood_Magic_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +113,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Arctic_Breath_gem_icon {
+        internal static System.Drawing.Bitmap Clarity {
             get {
-                object obj = ResourceManager.GetObject("Arctic_Breath_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Clarity", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +123,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Arctic_Breath_skill_icon {
+        internal static System.Drawing.Bitmap Clarity_gem {
             get {
-                object obj = ResourceManager.GetObject("Arctic_Breath_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Clarity_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +133,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Ball_Lightning_gem_icon {
+        internal static System.Drawing.Bitmap Determination {
             get {
-                object obj = ResourceManager.GetObject("Ball_Lightning_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Determination", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +143,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Ball_Lightning_skill_icon {
+        internal static System.Drawing.Bitmap Determination_gem {
             get {
-                object obj = ResourceManager.GetObject("Ball_Lightning_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Determination_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +153,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Barrage_gem_icon {
+        internal static System.Drawing.Bitmap Discipline {
             get {
-                object obj = ResourceManager.GetObject("Barrage_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Discipline", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,9 +163,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Barrage_skill_icon {
+        internal static System.Drawing.Bitmap Discipline_gem {
             get {
-                object obj = ResourceManager.GetObject("Barrage_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Discipline_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +173,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Blood_Magic__support_gem__gem_icon {
+        internal static System.Drawing.Bitmap Grace {
             get {
-                object obj = ResourceManager.GetObject("Blood_Magic__support_gem__gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Grace", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +183,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Blood_Magic_gem_icon {
+        internal static System.Drawing.Bitmap Grace_gem {
             get {
-                object obj = ResourceManager.GetObject("Blood_Magic_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Grace_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,9 +193,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Blood_Magic_passive_icon {
+        internal static System.Drawing.Bitmap Haste {
             get {
-                object obj = ResourceManager.GetObject("Blood_Magic_passive_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Haste", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -253,9 +203,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Burning_Arrow_gem_icon {
+        internal static System.Drawing.Bitmap Haste_gem {
             get {
-                object obj = ResourceManager.GetObject("Burning_Arrow_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Haste_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,9 +213,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Burning_Arrow_skill_icon {
+        internal static System.Drawing.Bitmap Hatred {
             get {
-                object obj = ResourceManager.GetObject("Burning_Arrow_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Hatred", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,9 +223,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cast_On_Death_gem_icon {
+        internal static System.Drawing.Bitmap Hatred_gem {
             get {
-                object obj = ResourceManager.GetObject("Cast_On_Death_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Hatred_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -283,9 +233,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cast_on_Melee_Kill_gem_icon {
+        internal static System.Drawing.Bitmap Herald_of_Ash {
             get {
-                object obj = ResourceManager.GetObject("Cast_on_Melee_Kill_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Herald_of_Ash", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -293,9 +243,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cast_when_Damage_Taken_gem_icon {
+        internal static System.Drawing.Bitmap Herald_of_Ash_gem {
             get {
-                object obj = ResourceManager.GetObject("Cast_when_Damage_Taken_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Herald_of_Ash_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -303,9 +253,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cast_When_Stunned_gem_icon {
+        internal static System.Drawing.Bitmap Herald_of_Ice {
             get {
-                object obj = ResourceManager.GetObject("Cast_When_Stunned_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Herald_of_Ice", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -313,9 +263,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Chain_gem_icon {
+        internal static System.Drawing.Bitmap Herald_of_Ice_gem {
             get {
-                object obj = ResourceManager.GetObject("Chain_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Herald_of_Ice_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -323,9 +273,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Clarity_gem_icon {
+        internal static System.Drawing.Bitmap Herald_of_Thunder {
             get {
-                object obj = ResourceManager.GetObject("Clarity_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Herald_of_Thunder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -333,9 +283,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Clarity_skill_icon {
+        internal static System.Drawing.Bitmap Herald_of_Thunder_gem {
             get {
-                object obj = ResourceManager.GetObject("Clarity_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Herald_of_Thunder_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -343,9 +293,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cleave_gem_icon {
+        internal static System.Drawing.Bitmap Life {
             get {
-                object obj = ResourceManager.GetObject("Cleave_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Life", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -353,9 +303,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cleave_skill_icon {
+        internal static System.Drawing.Bitmap Mana {
             get {
-                object obj = ResourceManager.GetObject("Cleave_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Mana", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -363,1089 +313,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cold_Snap_gem_icon {
+        internal static System.Drawing.Bitmap Mortal_Conviction {
             get {
-                object obj = ResourceManager.GetObject("Cold_Snap_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Cold_Snap_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Cold_Snap_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Cold_to_Fire_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Cold_to_Fire_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Concentrated_Effect_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Concentrated_Effect_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Curse_On_Hit_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Curse_On_Hit_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Cyclone_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Cyclone_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Cyclone_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Cyclone_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Determination_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Determination_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Determination_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Determination_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Discipline_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Discipline_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Discipline_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Discipline_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Dominating_Blow_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Dominating_Blow_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Dominating_Blow_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Dominating_Blow_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Double_Strike_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Double_Strike_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Double_Strike_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Double_Strike_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Dual_Strike_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Dual_Strike_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Dual_Strike_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Dual_Strike_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Elemental_Hit_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Elemental_Hit_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Elemental_Hit_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Elemental_Hit_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Empower_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Empower_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ethereal_Knives_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ethereal_Knives_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ethereal_Knives_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ethereal_Knives_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Explosive_Arrow_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Explosive_Arrow_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Explosive_Arrow_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Explosive_Arrow_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Faster_Attacks_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Faster_Attacks_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Faster_Casting_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Faster_Casting_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Faster_Projectiles_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Faster_Projectiles_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Fireball_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Fireball_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Fireball_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Fireball_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Firestorm_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Firestorm_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Firestorm_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Firestorm_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Flame_Surge_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Flame_Surge_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Flame_Surge_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Flame_Surge_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Flameblast_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Flameblast_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Flameblast_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Flameblast_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Flicker_Strike_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Flicker_Strike_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Flicker_Strike_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Flicker_Strike_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Fork_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Fork_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Freezing_Pulse_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Freezing_Pulse_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Freezing_Pulse_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Freezing_Pulse_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Frenzy_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Frenzy_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Frenzy_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Frenzy_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Frost_Wall_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Frost_Wall_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Frost_Wall_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Frost_Wall_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Glacial_Cascade_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Glacial_Cascade_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Glacial_Cascade_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Glacial_Cascade_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Glacial_Hammer_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Glacial_Hammer_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Glacial_Hammer_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Glacial_Hammer_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Grace_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Grace_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Grace_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Grace_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Greater_Multiple_Projectiles_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Greater_Multiple_Projectiles_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ground_Slam_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ground_Slam_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ground_Slam_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ground_Slam_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Haste_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Haste_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Haste_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Haste_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Hatred_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Hatred_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Hatred_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Hatred_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Heavy_Strike_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Heavy_Strike_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Heavy_Strike_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Heavy_Strike_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Herald_Of_Ash_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Herald_Of_Ash_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Herald_Of_Ash_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Herald_Of_Ash_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Herald_Of_Ice_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Herald_Of_Ice_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Herald_Of_Ice_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Herald_Of_Ice_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Herald_Of_Thunder_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Herald_Of_Thunder_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Herald_Of_Thunder_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Herald_Of_Thunder_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ice_Nova_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ice_Nova_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ice_Nova_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ice_Nova_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ice_Shot_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ice_Shot_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ice_Shot_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ice_Shot_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ice_Spear_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ice_Spear_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ice_Spear_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Ice_Spear_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Incinerate_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Incinerate_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Incinerate_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Incinerate_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Increased_Critical_Damage_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Increased_Critical_Damage_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Increased_Critical_Strikes_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Increased_Critical_Strikes_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Infernal_Blow_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Infernal_Blow_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Infernal_Blow_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Infernal_Blow_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Iron_Grip__support_gem__gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Iron_Grip__support_gem__gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Iron_Will_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Iron_Will_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Kinetic_Blast_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Kinetic_Blast_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Kinetic_Blast_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Kinetic_Blast_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Leap_Slam_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Leap_Slam_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Leap_Slam_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Leap_Slam_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lesser_Multiple_Projectiles_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lesser_Multiple_Projectiles_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Life_passive_icon {
-            get {
-                object obj = ResourceManager.GetObject("Life_passive_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lightning_Arrow_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lightning_Arrow_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lightning_Arrow_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lightning_Arrow_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lightning_Strike_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lightning_Strike_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lightning_Strike_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lightning_Strike_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lightning_Tendrils_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lightning_Tendrils_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lightning_Tendrils_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lightning_Tendrils_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lightning_Warp_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lightning_Warp_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lightning_Warp_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lightning_Warp_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Mana_passive_icon {
-            get {
-                object obj = ResourceManager.GetObject("Mana_passive_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Melee_Damage_on_Full_Life_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Melee_Damage_on_Full_Life_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Melee_Physical_Damage_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Melee_Physical_Damage_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Melee_Splash_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Melee_Splash_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Molten_Shell_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Molten_Shell_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Molten_Shell_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Molten_Shell_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Molten_Strike_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Molten_Strike_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Molten_Strike_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Molten_Strike_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Mortal_Conviction_passive_icon {
-            get {
-                object obj = ResourceManager.GetObject("Mortal_Conviction_passive_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Multistrike_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Multistrike_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Physical_Projectile_Attack_Damage_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Physical_Projectile_Attack_Damage_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Point_Blank__support_gem__gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Point_Blank__support_gem__gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Poison_Arrow_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Poison_Arrow_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Poison_Arrow_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Poison_Arrow_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Power_Siphon_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Power_Siphon_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Power_Siphon_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Power_Siphon_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Mortal_Conviction", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1463,9 +333,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Puncture_gem_icon {
+        internal static System.Drawing.Bitmap Purity_of_Elements {
             get {
-                object obj = ResourceManager.GetObject("Puncture_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Purity_of_Elements", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1473,9 +343,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Puncture_skill_icon {
+        internal static System.Drawing.Bitmap Purity_of_Elements_gem {
             get {
-                object obj = ResourceManager.GetObject("Puncture_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Purity_of_Elements_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1483,9 +353,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Purity_Of_Elements_gem_icon {
+        internal static System.Drawing.Bitmap Purity_of_Fire {
             get {
-                object obj = ResourceManager.GetObject("Purity_Of_Elements_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Purity_of_Fire", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1493,9 +363,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Purity_Of_Elements_skill_icon {
+        internal static System.Drawing.Bitmap Purity_of_Fire_gem {
             get {
-                object obj = ResourceManager.GetObject("Purity_Of_Elements_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Purity_of_Fire_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1503,9 +373,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Purity_Of_Fire_gem_icon {
+        internal static System.Drawing.Bitmap Purity_of_Ice {
             get {
-                object obj = ResourceManager.GetObject("Purity_Of_Fire_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Purity_of_Ice", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1513,9 +383,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Purity_Of_Fire_skill_icon {
+        internal static System.Drawing.Bitmap Purity_of_Ice_gem {
             get {
-                object obj = ResourceManager.GetObject("Purity_Of_Fire_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Purity_of_Ice_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1523,9 +393,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Purity_Of_Ice_gem_icon {
+        internal static System.Drawing.Bitmap Purity_of_Lightning {
             get {
-                object obj = ResourceManager.GetObject("Purity_Of_Ice_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Purity_of_Lightning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1533,9 +403,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Purity_Of_Ice_skill_icon {
+        internal static System.Drawing.Bitmap Purity_of_Lightning_gem {
             get {
-                object obj = ResourceManager.GetObject("Purity_Of_Ice_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Purity_of_Lightning_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1543,9 +413,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Purity_Of_Lightning_gem_icon {
+        internal static System.Drawing.Bitmap Reduced_Mana_gem {
             get {
-                object obj = ResourceManager.GetObject("Purity_Of_Lightning_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Reduced_Mana_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1553,9 +423,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Purity_Of_Lightning_skill_icon {
+        internal static System.Drawing.Bitmap Reduced_Mana_Reservation {
             get {
-                object obj = ResourceManager.GetObject("Purity_Of_Lightning_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Reduced_Mana_Reservation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1563,9 +433,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Rain_of_Arrows_gem_icon {
+        internal static System.Drawing.Bitmap Sovereignty {
             get {
-                object obj = ResourceManager.GetObject("Rain_of_Arrows_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Sovereignty", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1573,9 +443,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Rain_of_Arrows_skill_icon {
+        internal static System.Drawing.Bitmap Tempest_Shield {
             get {
-                object obj = ResourceManager.GetObject("Rain_of_Arrows_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Tempest_Shield", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1583,9 +453,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Reave_gem_icon {
+        internal static System.Drawing.Bitmap Tempest_Shield_gem {
             get {
-                object obj = ResourceManager.GetObject("Reave_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Tempest_Shield_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1593,9 +463,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Reave_skill_icon {
+        internal static System.Drawing.Bitmap Vitality {
             get {
-                object obj = ResourceManager.GetObject("Reave_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Vitality", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1603,9 +473,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Reduced_Mana_gem_icon {
+        internal static System.Drawing.Bitmap Vitality_gem {
             get {
-                object obj = ResourceManager.GetObject("Reduced_Mana_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Vitality_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1613,9 +483,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Reduced_Mana_Reservation_passive_icon {
+        internal static System.Drawing.Bitmap WhiteSocket {
             get {
-                object obj = ResourceManager.GetObject("Reduced_Mana_Reservation_passive_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("WhiteSocket", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1623,9 +493,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Shield_Charge_gem_icon {
+        internal static System.Drawing.Bitmap Wrath {
             get {
-                object obj = ResourceManager.GetObject("Shield_Charge_gem_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Wrath", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1633,319 +503,9 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Shield_Charge_skill_icon {
+        internal static System.Drawing.Bitmap Wrath_gem {
             get {
-                object obj = ResourceManager.GetObject("Shield_Charge_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Shock_Nova_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Shock_Nova_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Shock_Nova_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Shock_Nova_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Slower_Projectiles_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Slower_Projectiles_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Sovereignty_passive_icon {
-            get {
-                object obj = ResourceManager.GetObject("Sovereignty_passive_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Sovereignty_passive_icon_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Sovereignty_passive_icon_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Spark_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Spark_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Spark_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Spark_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Spectral_Throw_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Spectral_Throw_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Spectral_Throw_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Spectral_Throw_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Spell_Echo_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Spell_Echo_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Split_Arrow_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Split_Arrow_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Split_Arrow_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Split_Arrow_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Static_Strike_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Static_Strike_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Static_Strike_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Static_Strike_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Storm_Call_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Storm_Call_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Storm_Call_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Storm_Call_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Sweep_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Sweep_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Sweep_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Sweep_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Tempest_Shield_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Tempest_Shield_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Tempest_Shield_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Tempest_Shield_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Tornado_Shot_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Tornado_Shot_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Tornado_Shot_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Tornado_Shot_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Viper_Strike_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Viper_Strike_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Viper_Strike_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Viper_Strike_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Vitality_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Vitality_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Vitality_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Vitality_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Weapon_Elemental_Damage_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Weapon_Elemental_Damage_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Whirling_Blades_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Whirling_Blades_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Whirling_Blades_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Whirling_Blades_skill_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Wrath_gem_icon {
-            get {
-                object obj = ResourceManager.GetObject("Wrath_gem_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Wrath_skill_icon {
-            get {
-                object obj = ResourceManager.GetObject("Wrath_skill_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Wrath_gem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -77,12 +77,12 @@ namespace POESKillTree.ViewModels
 
         public BitmapSource AuraGemIcon
         {
-            get { return new BitmapImage(new Uri("pack://application:,,,/POESKillTree;component/Images/Gems/" + _auraGem.GemIcon));}
+            get { return _auraGem.GemIcon; }
         }
 
         public BitmapSource AuraSkillIcon
         {
-            get { return new BitmapImage(new Uri("pack://application:,,,/POESKillTree;component/Images/Gems/" + _auraGem.SkillIcon)); }
+            get { return _auraGem.SkillIcon; }
         }
 
         private int _auraLevel = 1;
