@@ -29,86 +29,89 @@
             <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
                     Data="F1 M 54.2499,34L 42,34L 42,21.7501L 45.9999,17.7501L 45.9999,26.7501L 53.9999,18.7501L 57.2499,22.0001L 49.2499,30.0001L 58.2499,30.0001L 54.2499,34 Z M 34,21.7501L 34,34L 21.75,34L 17.75,30.0001L 26.75,30.0001L 18.75,22.0001L 22,18.7501L 30,26.7501L 30,17.7501L 34,21.7501 Z M 21.75,42L 34,42L 34,54.25L 30,58.25L 30,49.25L 22,57.25L 18.75,54L 26.75,46L 17.75,46L 21.75,42 Z M 42,54.25L 42,42L 54.2499,42L 58.2499,46L 49.2499,46.0001L 57.2499,54L 53.9999,57.25L 45.9999,49.25L 45.9999,58.25L 42,54.25 Z "/>
         </Canvas>
-
+        <Canvas x:Key="AddAuraGroupIcon" Width="31" Height="31" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0" x:Shared="False">
+            <Path Width="30.3333" Height="30.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                  Data="F1 M 36,21L 40,21L 40,25L 44,25L 44,29L 40,29L 40,33L 36,33L 36,29L 32,29L 32,25L 36,25L 36,21 Z M 32,43L 40,43L 40,40L 32,40L 32,43 Z M 44,43L 52,43L 52,40L 44,40L 44,43 Z M 20,40L 20,43L 28,43L 28,40L 20,40 Z M 16,36L 60,36L 60,40L 56,40L 56,43L 60,43L 60,47L 56,47L 56,50L 60,50L 60,54L 56,54L 56,57L 52,57L 52,54L 44,54L 44,57L 40,57L 40,54L 32,54L 32,57L 28,57L 28,54L 20,54L 20,57L 16,57L 16,36 Z M 20,47L 20,50L 28,50L 28,47L 20,47 Z M 32,47L 32,50L 40,50L 40,47L 32,47 Z M 44,47L 44,50L 52,50L 52,47L 44,47 Z "/>
+        </Canvas>
         <!-- common styles -->
-        <!-- toggleButton that hides when is not checked and "collpse" button is pressed -->
-        <Style x:Key="toggleButtonMinimizableStyle" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource ResourceKey=MetroToggleButton}">
-            <Setter Property="Visibility" Value="Visible"/>
-            <Style.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource Self}}" Value="false"/>
-                        <Condition Binding="{Binding Path=IsChecked, ElementName=collapseGroupButton}" Value="true"/>
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </MultiDataTrigger>
-            </Style.Triggers>
-        </Style>
-        <!--toggle button restiled so it looks like window button. style mostly copied from MahApps.Controls.Buttons.MetroWindowButtonStyle sources-->
-        <Style x:Key="toggleWindowButtonStyle" TargetType="{x:Type ToggleButton}">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-            <Setter Property="IsTabStop" Value="False" />
-            <Setter Property="Width" Value="34" />
-            <Setter Property="Height" Value="34" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Background" Value="{DynamicResource TransparentWhiteBrush}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Grid Background="{TemplateBinding Background}">
-                            <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Margin}" 
+                <!-- toggleButton that hides when is not checked and "collpse" button is pressed -->
+                <Style x:Key="toggleButtonMinimizableStyle" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource ResourceKey=MetroToggleButton}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                <Condition Binding="{Binding Path=IsChecked, ElementName=collapseGroupButton}" Value="true"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+                <!--toggle button restiled so it looks like window button. style mostly copied from MahApps.Controls.Buttons.MetroWindowButtonStyle sources-->
+                <Style x:Key="toggleWindowButtonStyle" TargetType="{x:Type ToggleButton}">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="IsTabStop" Value="False" />
+                    <Setter Property="Width" Value="34" />
+                    <Setter Property="Height" Value="34" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Background" Value="{DynamicResource TransparentWhiteBrush}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                <Grid Background="{TemplateBinding Background}">
+                                    <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Margin}" 
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
                                               RecognizesAccessKey="True"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="contentPresenter" Property="Opacity" Value="1" />
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="False">
-                                <Setter TargetName="contentPresenter" Property="Opacity" Value="0.5" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource SemiTransparentWhiteBrush}" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource HighlightBrush}" />
-                    <Setter Property="Foreground" Value="White" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="numericUpDownAutoShowOnParentCheckStyle" TargetType="{x:Type MahApps:NumericUpDown}" BasedOn="{StaticResource {x:Type MahApps:NumericUpDown}}">
-            <Style.Resources>
-                <Style TargetType="{x:Type TextBox}">
-                    <Setter Property="MaxLength" Value="2"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="contentPresenter" Property="Opacity" Value="1" />
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="False">
+                                        <Setter TargetName="contentPresenter" Property="Opacity" Value="0.5" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource SemiTransparentWhiteBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource HighlightBrush}" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
-            </Style.Resources>
-            <Setter Property="Minimum" Value="1"/>
-            <Setter Property="Visibility" Value="Hidden"/>
-            <Style.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource AncestorType=ToggleButton}}" Value="true"/>
-                        <Condition Binding="{Binding Path=IsChecked, ElementName=collapseGroupButton}" Value="false"/>
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="Visibility" Value="Visible"/>
-                </MultiDataTrigger>
-            </Style.Triggers>
-        </Style>
 
-        <Style x:Key="textBlockAutoShowOnParentCheck" TargetType="TextBlock" BasedOn="{StaticResource ResourceKey={x:Type TextBlock}}">
-            <Setter Property="Visibility" Value="Hidden"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ToggleButton}, Path=IsChecked, Mode=OneWay}" Value="True">
-                    <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+                <Style x:Key="numericUpDownAutoShowOnParentCheckStyle" TargetType="{x:Type MahApps:NumericUpDown}" BasedOn="{StaticResource {x:Type MahApps:NumericUpDown}}">
+                    <Style.Resources>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="MaxLength" Value="2"/>
+                        </Style>
+                    </Style.Resources>
+                    <Setter Property="Minimum" Value="1"/>
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource AncestorType=ToggleButton}}" Value="true"/>
+                                <Condition Binding="{Binding Path=IsChecked, ElementName=collapseGroupButton}" Value="false"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+
+                <Style x:Key="textBlockAutoShowOnParentCheck" TargetType="TextBlock" BasedOn="{StaticResource ResourceKey={x:Type TextBlock}}">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ToggleButton}, Path=IsChecked, Mode=OneWay}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
     </Window.Resources>
     <!-- TODO: make it pretty -->
     <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" LastChildFill="True">
@@ -126,26 +129,26 @@
             <!-- global info -->
             <!-- column 0 -->
             <DockPanel Margin="4" Grid.Column="0" LastChildFill="False">
-                <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Life_passive_icon.png" Width="32" Height="32" DockPanel.Dock="Left" />
+                <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Life.png" Width="32" Height="32" DockPanel.Dock="Left" />
                 <Label Content="Total Life: " DockPanel.Dock="Left"/>
                 <MahApps:NumericUpDown Value="{Binding Path=TotalLife, Mode=TwoWay, Converter={StaticResource ResourceKey=nullableStringToIntConverter}}" 
-                                           Maximum="39999" Interval="500" HideUpDownButtons="True" DockPanel.Dock="Right"/>
+                                           Maximum="39999" Interval="500" HideUpDownButtons="True" DockPanel.Dock="Right" IsEnabled="{Binding ElementName=cbUnlockTreeData, Path=IsChecked}"/>
             </DockPanel>
             <DockPanel Margin="4" Grid.Column="0"  Grid.Row="1" LastChildFill="False">
-                <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Mana_passive_icon.png" Width="32" Height="32" DockPanel.Dock="Left"/>
+                <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Mana.png" Width="32" Height="32" DockPanel.Dock="Left"/>
                 <Label Content="Total Mana: " DockPanel.Dock="Left"/>
                 <MahApps:NumericUpDown Value="{Binding Path=TotalMana, Mode=TwoWay, Converter={StaticResource ResourceKey=nullableStringToIntConverter}}" 
-                                           Maximum="9999" Interval="100" HideUpDownButtons="True" DockPanel.Dock="Right"/>
+                                           Maximum="9999" Interval="100" HideUpDownButtons="True" DockPanel.Dock="Right" IsEnabled="{Binding ElementName=cbUnlockTreeData, Path=IsChecked}"/>
             </DockPanel>
             <!-- column 1 -->
             <DockPanel Margin="4" Grid.Column="1" LastChildFill="False">
-                <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Reduced_Mana_Reservation_passive_icon.png" Width="32" Height="32" DockPanel.Dock="Left"/>
+                <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Reduced_Mana_Reservation.png" Width="32" Height="32" DockPanel.Dock="Left"/>
                 <Label Content="Reduced mana reservation:" Grid.Row="0" Grid.Column="0" DockPanel.Dock="Left"/>
-                <MahApps:NumericUpDown Maximum="50" Grid.Row="0" Grid.Column="0" Width="Auto" DockPanel.Dock="Right"
+                <MahApps:NumericUpDown Maximum="50" Grid.Row="0" Grid.Column="0" Width="Auto" DockPanel.Dock="Right" IsEnabled="{Binding ElementName=cbUnlockTreeData, Path=IsChecked}"
                                             Value="{Binding Path=ReducedManaReserved, Mode=TwoWay, Converter={StaticResource ResourceKey=nullableStringToIntConverter}}"/>
             </DockPanel>
             <ToggleButton Margin="4" IsChecked="{Binding Path=GlobalAlphsaHowlUsed, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Stretch" 
-                           ToolTip="8% reduced Mana Reserved&#10;+2 to Level of Aura Gems in this item">
+                           ToolTip="8% reduced Mana Reserved&#10;+2 to Level of Aura Gems in this item" IsEnabled="{Binding ElementName=cbUnlockTreeData, Path=IsChecked}">
                 <DockPanel LastChildFill="False">
                     <Image Source="pack://application:,,,/POESKillTree;component/Images/Items/Alpha's_Howl_alternative.png" Width="32" Height="32" DockPanel.Dock="Left"/>
                     <TextBlock Text="Alpha's Howl"  VerticalAlignment="Center" DockPanel.Dock="Left" Margin="2"/>
@@ -154,31 +157,48 @@
                 </DockPanel>
             </ToggleButton>
             <!-- column 2 -->
-            <ToggleButton Margin="4" IsChecked="{Binding Path=GlobalBloodMagicUsed, Mode=TwoWay}" Name="cbBloodMagic" Grid.Column="2" HorizontalContentAlignment="Stretch"
-                          ToolTip="Removes all mana&#10;Spend Life instead of Mana for Skills">
+            <ToggleButton Margin="4" IsChecked="{Binding Path=GlobalBloodMagicUsed, Mode=TwoWay}" Grid.Column="2" HorizontalContentAlignment="Stretch"
+                          ToolTip="Removes all mana&#10;Spend Life instead of Mana for Skills" IsEnabled="{Binding ElementName=cbUnlockTreeData, Path=IsChecked}">
                 <DockPanel LastChildFill="False">
-                    <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Blood_Magic_passive_icon.png" Width="32" Height="32" DockPanel.Dock="Left"/>
+                    <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Blood_Magic.png" Width="32" Height="32" DockPanel.Dock="Left"/>
                     <TextBlock Text="Blood Magic"  VerticalAlignment="Center" DockPanel.Dock="Left" Margin="2"/>
                     <TextBlock Text="Spends Life" Style="{StaticResource ResourceKey=textBlockAutoShowOnParentCheck}" DockPanel.Dock="Right" TextAlignment="Right"
                                FontSize="9pt" VerticalAlignment="Center" Margin="2"/>
                 </DockPanel>
             </ToggleButton>
             <ToggleButton Margin="4" Grid.Row="1" Grid.Column="2" HorizontalContentAlignment="Stretch"
-                      IsChecked="{Binding Path=GlobalMortalConvictionUsed, Mode=TwoWay}" IsEnabled="{Binding ElementName=cbBloodMagic,Path=IsChecked, Mode=OneWay}"
-                          ToolTip="50% less Mana Reserved">
+                      IsChecked="{Binding Path=GlobalMortalConvictionUsed, Mode=TwoWay}" ToolTip="50% less Mana Reserved">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                        <Setter Property="IsEnabled" Value="False"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=cbUnlockTreeData, Path=IsChecked, Mode=OneWay}" Value="True"/>
+                                    <Condition Binding="{Binding GlobalBloodMagicUsed, Mode=OneWay}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
                 <DockPanel LastChildFill="False">
-                    <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Mortal_Conviction_passive_icon.png" Width="32" Height="32"/>
+                    <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Mortal_Conviction.png" Width="32" Height="32"/>
                     <TextBlock Text="Mortal Conviction"  VerticalAlignment="Center" DockPanel.Dock="Left" Margin="2"/>
                     <TextBlock Text="x50% MR" Style="{StaticResource ResourceKey=textBlockAutoShowOnParentCheck}" DockPanel.Dock="Right" TextAlignment="Right"
                                FontSize="9pt" VerticalAlignment="Center" Margin="2"/>
                 </DockPanel>
             </ToggleButton>
             <!-- column 3 -->
-            <Button Content="Save data" Width="auto" Background="{DynamicResource AccentColorBrush}" IsEnabled="False"
-                Padding="5" Grid.Column="3" Grid.Row="0"/>
-            <Button Content="Add aura group" Width="auto" Command="{Binding AddAuraGroupCommand, Mode=OneTime}" Background="{DynamicResource AccentColorBrush}"
-                Padding="5" Grid.Column="3" Grid.Row="1"/>
-
+            <MahApps:ToggleSwitch Grid.Column="3" Grid.Row="0" x:Name="cbUnlockTreeData" Content="Edit mode " Width="auto" Background="{DynamicResource AccentColorBrush}" 
+                                  VerticalAlignment="Center" ToolTip="Don't track changes from Skill Tree and modify values by hand" IsChecked="{Binding IsTreeDataEditable, Mode=TwoWay}"/>
+            <Button Margin="4" Width="auto" Command="{Binding AddAuraGroupCommand, Mode=OneTime}" Background="{DynamicResource AccentColorBrush}"
+                Padding="0" Grid.Column="3" Grid.Row="1">
+                <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
+                    <ContentControl Margin="1" Content="{StaticResource AddAuraGroupIcon}" DockPanel.Dock="Left"/>
+                    <TextBlock Text="Add&#10;aura group" DockPanel.Dock="Right" Margin="4" VerticalAlignment="Center" TextAlignment="Center"/>
+                </DockPanel>
+            </Button>
         </Grid>
         <!--TODO: invent this -->
         <!-- mana / life reservation visual indicators -->
@@ -345,7 +365,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="auto" SharedSizeGroup="supportMultiplier"/>
                                             </Grid.ColumnDefinitions>
-                                            <Image Source="pack://application:,,,/POESKillTree;component/Images/Gems/Reduced_Mana_gem_icon.png" ToolTip="Reduced Mana" Width="32" Height="32" Grid.Column="0"/>
+                                            <Image Source="pack://application:,,,/POESKillTree;component/Images/Gems/Reduced Mana.png" ToolTip="Reduced Mana" Width="32" Height="32" Grid.Column="0"/>
                                             <TextBlock Text="Reduced Mana" VerticalAlignment="Center" Margin="2" Grid.Column="1"/>
                                             <MahApps:NumericUpDown Maximum="{Binding Path=MAXGEMLEVEL, Mode=OneTime}" VerticalAlignment="Center" Grid.Column="2"
                                                                    Style="{StaticResource ResourceKey=numericUpDownAutoShowOnParentCheckStyle}"
@@ -362,7 +382,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="auto" SharedSizeGroup="supportMultiplier"/>
                                             </Grid.ColumnDefinitions>
-                                            <Image Source="pack://application:,,,/POESKillTree;component/Images/Gems/Blood_Magic_(support_gem)_gem_icon.png" ToolTip="Blood Magic" Width="32" Height="32" Grid.Column="0"/>
+                                            <Image Source="pack://application:,,,/POESKillTree;component/Images/Gems/Blood Magic (support gem).png" ToolTip="Blood Magic" Width="32" Height="32" Grid.Column="0"/>
                                             <TextBlock Text="Blood Magic" VerticalAlignment="Center" Margin="2" Grid.Column="1"/>
                                             <MahApps:NumericUpDown Maximum="{Binding Path=MAXGEMLEVEL, Mode=OneTime}" Margin="2" VerticalAlignment="Center" Grid.Column="2"
                                                                    Style="{StaticResource ResourceKey=numericUpDownAutoShowOnParentCheckStyle}"
@@ -373,7 +393,6 @@
                                     </ToggleButton>
                                     <ToggleButton IsChecked="{Binding Path=IsGemmedInPrismGuardian}" Style="{StaticResource toggleButtonMinimizableStyle}" HorizontalContentAlignment="Stretch">
                                         <ToggleButton.ToolTip>
-                                            <!-- TODO: bind ?-->
                                             <TextBlock Text="+1 to Level of Aura Gems in this item&#10;Gems in this item have Blood Magic&#10;Gems in this item have 25% reduced Mana Reservation"/>
                                         </ToggleButton.ToolTip>
                                         <DockPanel>
@@ -385,7 +404,7 @@
                                     </ToggleButton>
                                     <ToggleButton Style="{StaticResource toggleButtonMinimizableStyle}" IsChecked="{Binding Path=IsAdditionalManaCostMultiplier, Mode=OneWayToSource}" HorizontalContentAlignment="Stretch">
                                         <DockPanel LastChildFill="False">
-                                            <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Sovereignty_passive_icon.png" Width="32" Height="32" DockPanel.Dock="Left"/>
+                                            <Image Source="pack://application:,,,/POESKillTree;component/Images/Passives/Sovereignty.png" Width="32" Height="32" DockPanel.Dock="Left"/>
                                             <TextBlock Text="Add. cost multiplier:" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="2"/>
                                             <MahApps:NumericUpDown HideUpDownButtons="True" Interval="5" Minimum="0" StringFormat="{}+{0}%" DockPanel.Dock="Right"
                                                                    Value="{Binding AdditionalCostMultiplier, Mode=TwoWay, Converter={StaticResource ResourceKey=nullableStringToIntConverter}}">

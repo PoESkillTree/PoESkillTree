@@ -1,18 +1,12 @@
 ﻿using POESKillTree.Model;
-using POESKillTree.SkillTreeFiles;
 using POESKillTree.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using AuraGem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
 
 namespace POESKillTree.ViewModels
 {
@@ -50,15 +44,35 @@ namespace POESKillTree.ViewModels
                 AuraGroupList.Remove(auraGroup as AuraGroupViewModel);
             });
 
-            ReducedManaReserved = FetchAttributeValue("reduced Mana Reserved");
-            IncreasedBuffEffect = FetchAttributeValue("increased Effect of Buffs on You");
-            IncreasedAuraEffect = FetchAttributeValue("increased effect of Auras you Cast");
-            IncreasedAuraAOE = FetchAttributeValue("increased Radius of Auras");
-            TotalLife = FetchAttributeValue("Life: ", 3000);
-            TotalMana = FetchAttributeValue("Mana: ", 1000);
+            RefreshGlobalData();
 
             AddAuraGroupCommand.Execute(null);
             UpdateResourceReservation();
+        }
+
+        public void RefreshGlobalData()
+        {
+            if (!IsTreeDataEditable)
+            {
+                /* update values only if tree data is locked = in sync with the tree
+                 * we manually set the values and fire notify events so UpdateResourceReservation in setter is not called millions of times */
+                _reducedManaReserved = FetchAttributeValue("reduced Mana Reserved"); 
+                NotifyPropertyChanged("ReducedManaReserved");
+
+                _totalLife = FetchAttributeValue("Life: ", 3000); 
+                NotifyPropertyChanged("TotalLife");
+
+                _totalMana = FetchAttributeValue("Mana: ", 1000); 
+                NotifyPropertyChanged("TotalMana");
+
+                _bloodMagiclUsed = _globalAttributes.Exists(attr => attr.Text.Contains("Removes all mana. Spend Life instead of Mana for Skills")); 
+                NotifyPropertyChanged("GlobalBloodMagicUsed");
+
+                _mortalConvictionUsed = _globalAttributes.Exists(attr => attr.Text.Contains("50% less Mana Reserved")); 
+                NotifyPropertyChanged("GlobalMortalConvictionUsed");
+
+                UpdateResourceReservation();
+            }
         }
 
         private ObservableCollection<AuraGroupViewModel> _auraGroupList = new ObservableCollection<AuraGroupViewModel>();
@@ -79,6 +93,7 @@ namespace POESKillTree.ViewModels
             set
             {
                 _totalLife = value;
+                NotifyPropertyChanged("TotalLife");
                 UpdateResourceReservation();
             }
         }
@@ -90,6 +105,7 @@ namespace POESKillTree.ViewModels
             set
             {
                 _totalMana = value;
+                NotifyPropertyChanged("TotalMana");
                 UpdateResourceReservation();
             }
         }
@@ -101,6 +117,7 @@ namespace POESKillTree.ViewModels
             set
             {
                 _alphasHowlUsed = value;
+                NotifyPropertyChanged("GlobalAlphsaHowlUsed");
                 UpdateResourceReservation();
             }
         }
@@ -112,6 +129,7 @@ namespace POESKillTree.ViewModels
             set
             {
                 _bloodMagiclUsed = value;
+                NotifyPropertyChanged("GlobalBloodMagicUsed");
                 UpdateResourceReservation();
                 if (!_bloodMagiclUsed) GlobalMortalConvictionUsed = false;
             }
@@ -137,40 +155,23 @@ namespace POESKillTree.ViewModels
             set
             {
                 _reducedManaReserved = value;
+                NotifyPropertyChanged("ReducedManaReserved");
                 UpdateResourceReservation();
             }
         }
 
-        private int _increasedBuffEffect;
-        public int IncreasedBuffEffect
+        private bool _isTreeDataEditable;
+        public bool IsTreeDataEditable
         {
-            get { return _increasedBuffEffect; }
+            get { return _isTreeDataEditable; }
             set
             {
-                _increasedBuffEffect = value;
-                UpdateResourceReservation();
-            }
-        }
-
-        private int _increasedAuraEffect;
-        public int IncreasedAuraEffect
-        {
-            get { return _increasedAuraEffect; }
-            set
-            {
-                _increasedAuraEffect = value;
-                UpdateResourceReservation();
-            }
-        }
-
-        private int _increasedAuraAOE;
-        public int IncreasedAuraAOE
-        {
-            get { return _increasedAuraAOE; }
-            set
-            {
-                _increasedAuraAOE = value;
-                UpdateResourceReservation();
+                _isTreeDataEditable = value;
+                if (!value)
+                {
+                    RefreshGlobalData();
+                    UpdateResourceReservation();
+                }
             }
         }
         #endregion
@@ -181,10 +182,10 @@ namespace POESKillTree.ViewModels
 
         public int TotalLifeLeft
         {
-            get { return TotalLife - AuraGroupList.Aggregate(0, (summ, auraGroup) => summ + auraGroup.LifeReservedByGroup);  }
+            get { return TotalLife - AuraGroupList.Aggregate(0, (summ, auraGroup) => summ + auraGroup.LifeReservedByGroup); }
         }
 
-        private void UpdateResourceReservation()
+        internal void UpdateResourceReservation()
         {
             AuraGroupList.ForEach(aura => aura.UpdateResourceReservation());
         }
@@ -193,7 +194,7 @@ namespace POESKillTree.ViewModels
         {
             NotifyPropertyChanged("TotalManaLeft");
         }
-        public void NotifyLifeReservationChanged() 
+        public void NotifyLifeReservationChanged()
         {
             NotifyPropertyChanged("TotalLifeLeft");
         }
@@ -234,6 +235,7 @@ namespace POESKillTree.ViewModels
         public static readonly int AlphasHowlReduction = 8;
         public static readonly int MortalConvinctionReduction = 50;
         public static readonly int PrismGuardianReduction = 25;
+        private static AuraCalculatorViewModel viewModel = null;
         #endregion
         internal static void Show(Window parent, List<Attribute> globalAttributes)
         {
@@ -246,12 +248,20 @@ namespace POESKillTree.ViewModels
              * 
              * 2. change using of attribute names to some kind of enums?
              */
-            AuraCalculatorViewModel model = new AuraCalculatorViewModel(globalAttributes);
+            viewModel = new AuraCalculatorViewModel(globalAttributes);
             AuraCalculatorView view = new AuraCalculatorView();
 
             view.Owner = parent;
-            view.DataContext = model;
-            view.ShowDialog();
+            view.DataContext = viewModel;
+            view.Show();
+        }
+
+        internal static void RefreshData()
+        {
+            if (viewModel != null)
+            {
+                viewModel.RefreshGlobalData();
+            }
         }
     }
 }

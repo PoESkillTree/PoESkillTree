@@ -888,6 +888,7 @@ namespace POESKillTree.Views
                         }
                     }
                 }
+                AuraCalculator.RefreshData();
             }
             tbSkillURL.Text = Tree.SaveToURL();
         }
