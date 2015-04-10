@@ -155,6 +155,7 @@
     </Compile>
     <Compile Include="SkillTreeFiles\Asset.cs" />
     <Compile Include="SkillTreeFiles\Bootstrap.cs" />
+    <Compile Include="SkillTreeFiles\SkilltreeUndoState.cs" />
     <Compile Include="SkillTreeFiles\Compute.cs" />
     <Compile Include="SkillTreeFiles\ItemDB.cs" />
     <Compile Include="SkillTreeFiles\NodeHighlighter.cs" />
