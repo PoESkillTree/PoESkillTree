@@ -23,6 +23,7 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory("RequireGUI")]
         public void TestEasyCases()
         {
             SkillNode coldhearted = SkillTree.Skillnodes.Values.Where(n => n.Name == "Coldhearted Calculation").First();

@@ -98,7 +98,7 @@
     <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Build" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
 
     <!-- Run tests -->
-    <Exec Command="vstest.console ..\..\UnitTests\bin\Debug\UnitTests.dll" WorkingDirectory="$(WorkDir)" />
+    <Exec Command='vstest.console ..\..\UnitTests\bin\Debug\UnitTests.dll /TestCaseFilter:"TestCategory!=RequireGUI"' WorkingDirectory="$(WorkDir)" />
   </Target>
 
   <Target Name="Update">
