@@ -772,7 +772,6 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 catch (Exception)
                 {
-                    Debugger.Break();
                     // ?
                 }
             }
