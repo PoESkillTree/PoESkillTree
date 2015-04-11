@@ -1035,33 +1035,5 @@ namespace POESKillTree.SkillTreeFiles
             }
             return false;
         }
-        public string CurrentClass()
-        {
-            string curClass = "";
-            var temp = new List<ushort>();
-
-            foreach (int node in _rootNodeList)
-            {
-                temp = GetShortestPathTo((ushort)node, SkilledNodes);
-
-                if (!temp.Any())
-                {
-                    IEnumerable<string> keys = from entry in _rootNodeClassDictionary where entry.Value == node select entry.Key;
-                    foreach (var key in keys)
-                        curClass = key.ToString();
-                }
-            }
-            if (curClass.ToUpper() == "SIX")
-            {
-                curClass = "SHADOW";
-            }
-            if (curClass.ToUpper() == "SEVEN")
-            {
-                curClass = "SCION";
-            }
-            curClass = curClass.ToLower();
-            curClass = curClass.Substring(0, 1).ToUpper() + curClass.Substring(1);
-            return curClass;
-        }
     }
 }

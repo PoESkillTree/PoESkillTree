@@ -681,8 +681,7 @@ namespace POESKillTree.Views
         }
         public void UpdateClass()
         {
-            var currentClass = Tree.CurrentClass();
-            cbCharType.SelectedItem = cbCharType.FindName(currentClass);
+            cbCharType.SelectedIndex = Tree.Chartype;
         }
         public void UpdateAttributeList()
         {
