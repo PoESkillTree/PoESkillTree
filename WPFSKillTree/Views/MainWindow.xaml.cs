@@ -146,7 +146,7 @@ namespace POESKillTree.Views
             Tree.Chartype =
                 SkillTree.CharName.IndexOf(((string)((ComboBoxItem)cbCharType.SelectedItem).Content).ToUpper());
             Tree.UpdateAvailNodes();
-            UpdateAllAttributeList();
+            UpdateUI();
 
             _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
             _addtransform = SkillTree.TRect.TopLeft;
@@ -282,7 +282,7 @@ namespace POESKillTree.Views
             {
                 Cursor = Cursors.Wait;
                 Tree.SkillAllHighlightedNodes();
-                UpdateAllAttributeList();
+                UpdateUI();
                 tbSkillURL.Text = Tree.SaveToURL();
             }
             finally
@@ -597,7 +597,7 @@ namespace POESKillTree.Views
                 Tree.Chartype = SkillTree.CharName.IndexOf((SkillTree.CharName[cbCharType.SelectedIndex]).ToUpper());
             }
             Tree.UpdateAvailNodes();
-            UpdateAllAttributeList();
+            UpdateUI();
             tbSkillURL.Text = Tree.SaveToURL();
         }
 
@@ -606,7 +606,7 @@ namespace POESKillTree.Views
             int lvl;
             if (!int.TryParse(tbLevel.Text, out lvl)) return;
             Tree.Level = lvl;
-            UpdateAllAttributeList();
+            UpdateUI();
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
@@ -614,13 +614,20 @@ namespace POESKillTree.Views
             if (Tree == null)
                 return;
             Tree.Reset();
-            UpdateAllAttributeList();
+            UpdateUI();
             tbSkillURL.Text = Tree.SaveToURL();
         }
 
         #endregion
 
         #region Update Attribute and Character lists
+
+        public void UpdateUI()
+        {
+            UpdateAttributeList();
+            UpdateStatistics();
+            UpdateClass();
+        }
 
         public void UpdateAllAttributeList()
         {
@@ -671,12 +678,12 @@ namespace POESKillTree.Views
             }
 
             _allAttributeCollection.Refresh();
-
-            UpdateStatistics();
-
-            UpdateAttributeList();
         }
-
+        public void UpdateClass()
+        {
+            var currentClass = Tree.CurrentClass();
+            cbCharType.SelectedItem = cbCharType.FindName(currentClass);
+        }
         public void UpdateAttributeList()
         {
             _attiblist.Clear();
@@ -864,7 +871,7 @@ namespace POESKillTree.Views
                         if (Tree.SkilledNodes.Contains(node.Id))
                         {
                             Tree.ForceRefundNode(node.Id);
-                            UpdateAllAttributeList();
+                            UpdateUI();
 
                             _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
                             Tree.DrawPath(_prePath);
@@ -875,7 +882,7 @@ namespace POESKillTree.Views
                             {
                                 Tree.SkilledNodes.Add(i);
                             }
-                            UpdateAllAttributeList();
+                            UpdateUI();
                             Tree.UpdateAvailNodes();
 
                             _toRemove = Tree.ForceRefundNodePreview(node.Id);
@@ -990,7 +997,7 @@ namespace POESKillTree.Views
                 ClearCurrentItemData();
             }
 
-            UpdateAllAttributeList();
+            UpdateUI();
         }
 
         public void ClearCurrentItemData()
@@ -998,7 +1005,7 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild.ItemData = "";
             _itemAttributes = null;
             lbItemAttr.ItemsSource = null;
-            UpdateAllAttributeList();
+            UpdateUI();
             mnuClearItems.IsEnabled = false;
         }
 
@@ -1268,7 +1275,7 @@ namespace POESKillTree.Views
                     }
                 }
                 cbCharType.SelectedIndex = Tree.Chartype;
-                UpdateAllAttributeList();
+                UpdateUI();
                 _justLoaded = false;
             }
             catch (Exception)
@@ -1476,7 +1483,7 @@ namespace POESKillTree.Views
                 _redoList.Push(tbSkillURL.Text);
                 tbSkillURL.Text = _undoList.Pop();
                 Tree.LoadFromURL(tbSkillURL.Text);
-                tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
+                UpdateUI();
             }
         }
 
@@ -1497,7 +1504,7 @@ namespace POESKillTree.Views
             {
                 tbSkillURL.Text = _redoList.Pop();
                 Tree.LoadFromURL(tbSkillURL.Text);
-                tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
+                UpdateUI();
             }
         }
 
