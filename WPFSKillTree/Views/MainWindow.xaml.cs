@@ -1274,7 +1274,6 @@ namespace POESKillTree.Views
                         _undoList.Push(holder);
                     }
                 }
-                cbCharType.SelectedIndex = Tree.Chartype;
                 UpdateUI();
                 _justLoaded = false;
             }
