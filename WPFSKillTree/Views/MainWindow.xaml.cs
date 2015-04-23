@@ -44,14 +44,16 @@ namespace POESKillTree.Views
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
         private readonly PersistentData _persistentData = new PersistentData();
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public PersistentData PersistentData
         {
             get { return _persistentData; }
-        } 
+        }
 
 
         private static readonly Action EmptyDelegate = delegate { };
@@ -71,6 +73,19 @@ namespace POESKillTree.Views
         private RenderTargetBitmap _clipboardBmp;
 
         private ItemAttributes _itemAttributes;
+
+        public ItemAttributes ItemAttributes
+        {
+            get { return _itemAttributes; }
+            private set 
+            { 
+                _itemAttributes = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("ItemAttributes"));
+            }
+        }
+
+
         protected SkillTree Tree;
         private const string TreeAddress = "http://www.pathofexile.com/passive-skill-tree/";
         private Vector2D _addtransform;
@@ -978,7 +993,7 @@ namespace POESKillTree.Views
                 try
                 {
                     _persistentData.CurrentBuild.ItemData = itemData;
-                    _itemAttributes = new ItemAttributes(itemData);
+                    ItemAttributes = new ItemAttributes(itemData);
                     lbItemAttr.ItemsSource = _itemAttributes.Attributes;
                     mnuClearItems.IsEnabled = true;
                 }
@@ -986,7 +1001,7 @@ namespace POESKillTree.Views
                 {
                     MessageBox.Show(this, "Item data currupted!");
                     _persistentData.CurrentBuild.ItemData = "";
-                    _itemAttributes = null;
+                    ItemAttributes = null;
                     lbItemAttr.ItemsSource = null;
                     ClearCurrentItemData();
                 }
@@ -1002,7 +1017,7 @@ namespace POESKillTree.Views
         public void ClearCurrentItemData()
         {
             _persistentData.CurrentBuild.ItemData = "";
-            _itemAttributes = null;
+            ItemAttributes = null;
             lbItemAttr.ItemsSource = null;
             UpdateUI();
             mnuClearItems.IsEnabled = false;
@@ -1802,5 +1817,6 @@ namespace POESKillTree.Views
         {
             lvSavedBuilds_SelectionChanged(null, null);
         }
+
     }
 }

@@ -416,7 +416,7 @@
                         </TabItem>
                         <TabItem Header="Item Attributes" Margin="0" controls:ControlsHelper.HeaderFontSize="15">
                             <Grid>
-                                <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes, ElementName=window, Mode=OneWay}"  Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel>
