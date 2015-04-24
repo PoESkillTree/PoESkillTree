@@ -2,10 +2,21 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Raven.Json.Linq;
+using System.ComponentModel;
+using System.Linq;
 
 namespace POESKillTree.ViewModels.ItemAttribute
 {
-    public class Item
+    public enum FrameType
+    {
+        White = 0,
+        Magic = 1,
+        Rare = 2,
+        Unique = 3,
+        Gem = 4,
+    }
+
+    public class Item : INotifyPropertyChanged
     {
         public enum ItemClass
         {
@@ -28,11 +39,107 @@ namespace POESKillTree.ViewModels.ItemAttribute
         public ItemClass Class;
         public List<Item> Gems;
         public List<string> Keywords;
+
+
+        private FrameType _frame;
+        public FrameType Frame
+        {
+            get { return _frame; }
+            set { _frame = value; OnPropertyChanged("Frame"); }
+        }
+        List<Attribute> _properties = new List<Attribute>();
+        public List<Attribute> Properties
+        {
+            get { return _properties; }
+            set { _properties = value; OnPropertyChanged("Properties"); OnPropertyChanged("HaveProperties"); }
+        }
+
+        List<Attribute> _requirements = new List<Attribute>();
+        public List<Attribute> Requirements
+        {
+            get { return _requirements; }
+            set { _requirements = value; OnPropertyChanged("Requirements"); OnPropertyChanged("HaveRequirements"); }
+        }
+
+        List<Attribute> _implicitMods = new List<Attribute>();
+        public List<Attribute> ImplicitMods
+        {
+            get { return _implicitMods; }
+            set { _implicitMods = value; OnPropertyChanged("Implicitmods"); OnPropertyChanged("HaveImplicitMods"); }
+        }
+
+        List<Attribute> _explicitMods = new List<Attribute>();
+        public List<Attribute> ExplicitMods
+        {
+            get { return _explicitMods; }
+            set { _explicitMods = value; OnPropertyChanged("ExplicitMods"); OnPropertyChanged("HaveExplicitMods"); }
+        }
+
+        List<Attribute> _craftedMods = new List<Attribute>();
+        public List<Attribute> CraftedMods
+        {
+            get { return _craftedMods; }
+            set { _craftedMods = value; OnPropertyChanged("Implicitmods"); OnPropertyChanged("HaveCraftedMods"); }
+        }
+
+
+        public bool HaveProperties
+        {
+            get { return _properties.Count > 0; }
+        }
+
+        public bool HaveRequirements
+        {
+            get { return _requirements.Count > 0; }
+        }
+
+        public bool HaveImplicitMods
+        {
+            get { return _implicitMods.Count > 0; }
+        }
+
+        public bool HaveExplicitMods
+        {
+            get { return _explicitMods.Count > 0; }
+        }
+
+        public bool HaveCraftedMods
+        {
+            get { return _craftedMods.Count > 0; }
+        }
+
+        string _flavourText = null;
+
+        public string FlavourText
+        {
+            get { return _flavourText; }
+            set { _flavourText = value; OnPropertyChanged("FlavourText"); OnPropertyChanged("HaveFlavourText"); }
+        }
+
+        public bool HaveFlavourText
+        {
+            get { return !string.IsNullOrEmpty(_flavourText); }
+        }
+
+
         public List<ItemMod> Mods;
-        public string Name;
+
+        private string _Name;
+        public string Name
+        {
+            get { return _Name; }
+            set { _Name = value; OnPropertyChanged("Name"); }
+        }
         // The socket group of gem (all gems with same socket group value are linked).
         public int SocketGroup;
-        public string Type;
+        private string _Type;
+
+        public string Type
+        {
+            get { return _Type; }
+            private set { _Type = value; OnPropertyChanged("Type"); }
+        }
+
 
         public Item(ItemClass iClass, RavenJObject val)
         {
@@ -45,13 +152,15 @@ namespace POESKillTree.ViewModels.ItemAttribute
                 Name = val["typeLine"].Value<string>();
             Type = val["typeLine"].Value<string>();
 
+            Frame = (FrameType)val["frameType"].Value<int>();
+
             if (val.ContainsKey("properties"))
-                foreach (RavenJObject obj in (RavenJArray) val["properties"])
+                foreach (RavenJObject obj in (RavenJArray)val["properties"])
                 {
                     var values = new List<float>();
                     string s = "";
 
-                    foreach (RavenJArray jva in (RavenJArray) obj["values"])
+                    foreach (RavenJArray jva in (RavenJArray)obj["values"])
                     {
                         s += " " + jva[0].Value<string>();
                     }
@@ -59,6 +168,8 @@ namespace POESKillTree.ViewModels.ItemAttribute
 
                     if (s == "")
                     {
+                        Properties.Add(new Attribute(obj["name"].Value<string>()));
+
                         Keywords = new List<string>();
                         string[] sl = obj["name"].Value<string>().Split(',');
                         foreach (string i in sl)
@@ -73,26 +184,63 @@ namespace POESKillTree.ViewModels.ItemAttribute
                     }
                     string cs = obj["name"].Value<string>() + ": " + (numberfilter.Replace(s, "#"));
 
+                    Properties.Add(new Attribute(cs, values.ToArray()));
                     Attributes.Add(cs, values);
+                }
+            if (val.ContainsKey("requirements"))
+            {
+                string reqs = "";
+                List<float> numbers = new List<float>();
+                foreach (RavenJObject obj in (RavenJArray)val["requirements"])
+                {
+                    var n = obj["name"].Value<string>();
+
+                    if (obj["displayMode"].Value<int>() == 0)
+                        n = n + " #";
+                    else
+                        n = "# " + n;
+
+                    numbers.Add(((RavenJArray)((RavenJArray)obj["values"])[0])[0].Value<float>());
+
+                    if (!string.IsNullOrEmpty(reqs))
+                        reqs += ", " + n;
+                    else
+                        reqs += n;
+                }
+
+                Requirements.Add(new Attribute(reqs, numbers.ToArray()));
+            }
+
+
+            if (val.ContainsKey("implicitMods"))
+                foreach (string s in val["implicitMods"].Values<string>())
+                {
+                    List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
+                    Mods.AddRange(mods);
+
+                    ImplicitMods.AddRange(mods.Select(m => new Attribute(m.Attribute, m.Value.ToArray())));
                 }
             if (val.ContainsKey("explicitMods"))
                 foreach (string s in val["explicitMods"].Values<string>())
                 {
                     List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
                     Mods.AddRange(mods);
+
+                    ExplicitMods.AddRange(mods.Select(m=>new Attribute(m.Attribute,m.Value.ToArray())));
                 }
-            if (val.ContainsKey("implicitMods"))
-                foreach (string s in val["implicitMods"].Values<string>())
-                {
-                    List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
-                    Mods.AddRange(mods);
-                }
+
             if (val.ContainsKey("craftedMods"))
                 foreach (string s in val["craftedMods"].Values<string>())
                 {
                     List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
                     Mods.AddRange(mods);
+
+                    CraftedMods.AddRange(mods.Select(m => new Attribute(m.Attribute, m.Value.ToArray())));
                 }
+
+            if (val.ContainsKey("flavourText"))
+                FlavourText = string.Join("\r\n", val["flavourText"].Values<string>());
+
 
             if (iClass == ItemClass.Gem)
             {
@@ -118,14 +266,14 @@ namespace POESKillTree.ViewModels.ItemAttribute
 
             var Sockets = new List<int>();
             if (val.ContainsKey("sockets"))
-                foreach (RavenJObject obj in (RavenJArray) val["sockets"])
+                foreach (RavenJObject obj in (RavenJArray)val["sockets"])
                 {
                     Sockets.Add(obj["group"].Value<int>());
                 }
             if (val.ContainsKey("socketedItems"))
             {
                 int socket = 0;
-                foreach (RavenJObject obj in (RavenJArray) val["socketedItems"])
+                foreach (RavenJObject obj in (RavenJArray)val["socketedItems"])
                 {
                     var item = new Item(ItemClass.Gem, obj);
                     item.SocketGroup = Sockets[socket++];
@@ -145,5 +293,13 @@ namespace POESKillTree.ViewModels.ItemAttribute
 
             return link;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
+
     }
 }

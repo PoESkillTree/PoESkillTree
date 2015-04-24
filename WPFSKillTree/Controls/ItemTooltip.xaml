@@ -1,0 +1,310 @@
+﻿<UserControl x:Class="POESKillTree.Controls.UserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:items="clr-namespace:POESKillTree.ViewModels.ItemAttribute"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="control">
+    <Control.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    </Control.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <!--0 header-->
+            <RowDefinition Height="auto" />
+
+            <!--1 properties values - like armor or weapon damage -->
+            <RowDefinition Height="auto"/>
+
+            <!--2 requirement separator =Have properties -->
+            <RowDefinition Height="auto"/>
+            <!--3 requirement-->
+            <RowDefinition Height="auto"/>
+
+            <!--4 implicit mods separator-->
+            <RowDefinition Height="auto"/>
+            <!--5 implicit mods-->
+            <RowDefinition Height="auto"/>
+
+            <!--6 explicit mods separator-->
+            <RowDefinition Height="auto"/>
+            <!--7 explicit mods-->
+            <RowDefinition Height="auto"/>
+            <!--8 crafted mods-->
+            <RowDefinition Height="auto"/>
+
+            <!--9 flavour text separator-->
+            <RowDefinition Height="auto"/>
+            <!--10 flavour text-->
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <!--header-->
+        <Grid Grid.Row="0" Width="auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.RowSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Image Name="HeaderLeft" Grid.Column="0" Stretch="None" >
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderWhiteLeft.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderMagicLeft.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderRareLeft.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderUniqueLeft.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderGemLeft.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <Rectangle Grid.Column="1" Height="{Binding ActualHeight,ElementName=HeaderLeft}" >
+                    <Rectangle.Fill>
+                        <VisualBrush TileMode="Tile">
+                            <VisualBrush.Visual>
+                                <Image>
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderWhiteMiddle.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderMagicMiddle.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderRareMiddle.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderUniqueMiddle.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderGemMiddle.png"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Image Grid.Column="2">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderWhiteRight.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderMagicRight.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderRareRight.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderUniqueRight.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderGemRight.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Grid>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Name="ItemName" Text="{Binding Item.Name,ElementName=control}"/>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Name="ItemType" Text="{Binding Item.Type,ElementName=control}"/>
+        </Grid>
+
+        <!--properties values - like armor or weapon damage -->
+        <ItemsControl Grid.Row="1" Visibility="{Binding Item.HaveProperties,ElementName=control, Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.Properties,ElementName=control}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type system:String}">
+                    <TextBlock HorizontalAlignment="Center"><Run Text="{Binding Text, Mode=OneWay}" /><Run Text=" " /></TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!--requirement separator =Have properties -->
+        <Image Grid.Row="2" Visibility="{Binding Item.HaveProperties, ElementName=control, Converter={StaticResource BoolToVisConverter}}">
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorWhite.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorMagic.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorRare.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorUnique.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorGem.png"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+
+        <!--3requirements -->
+        <ItemsControl Grid.Row="3" Visibility="{Binding Item.HaveRequirements,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.Requirements,ElementName=control}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type system:String}">
+                    <TextBlock HorizontalAlignment="Center"><Run Text="{Binding Text, Mode=OneWay}" /><Run Text=" " /></TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!--4 implicit mods separator = have properties or requirements -->
+        <Image Grid.Row="4">
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Setters>
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Item.HaveProperties, ElementName=control}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorWhite.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorMagic.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorRare.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorUnique.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorGem.png"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+
+        <!--5 implicit mods-->
+        <ItemsControl Grid.Row="5" Visibility="{Binding Item.HaveImplicitMods,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.ImplicitMods,ElementName=control}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type system:String}">
+                    <TextBlock HorizontalAlignment="Center"><Run Text="{Binding Text, Mode=OneWay}" /><Run Text=" " /></TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
+        <!--6 explicit mods separator-->
+        <Image Grid.Row="6">
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Setters>
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        
+                        <DataTrigger Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorWhite.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorMagic.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorRare.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorUnique.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorGem.png"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+
+
+        <!--7 explicit mods-->
+        <ItemsControl Grid.Row="7" Visibility="{Binding Item.HaveExplicitMods,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.ExplicitMods,ElementName=control}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type system:String}">
+                    <TextBlock HorizontalAlignment="Center"><Run Text="{Binding Text, Mode=OneWay}" /><Run Text=" " /></TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <!--8 crafted mods-->
+        <ItemsControl Grid.Row="8" Visibility="{Binding Item.HaveCraftedMods,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.CraftedMods,ElementName=control}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type system:String}">
+                    <TextBlock HorizontalAlignment="Center"><Run Text="{Binding Text, Mode=OneWay}" /><Run Text=" " /></TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
+        <!--9 flavour text separator-->
+        <Image Grid.Row="9" Visibility="{Binding Item.HaveFlavourText,ElementName=control, Converter={StaticResource BoolToVisConverter}}">
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorWhite.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorMagic.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorRare.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorUnique.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
+                            <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorGem.png"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+
+        <TextBlock Grid.Row="10" Visibility="{Binding Item.HaveFlavourText,ElementName=control, Converter={StaticResource BoolToVisConverter}}" Text="{Binding Item.FlavourText, ElementName=control}" HorizontalAlignment="Center"></TextBlock>
+
+    </Grid>
+</UserControl>

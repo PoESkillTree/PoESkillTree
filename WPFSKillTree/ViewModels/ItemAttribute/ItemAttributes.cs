@@ -7,12 +7,23 @@ using Raven.Json.Linq;
 
 namespace POESKillTree.ViewModels.ItemAttribute
 {
-    public class ItemAttributes
+    public class ItemAttributes :INotifyPropertyChanged
     {
         private readonly List<Attribute> aList = new List<Attribute>();
         private Dictionary<string, List<float>> AgregatedAttributes;
         public ListCollectionView Attributes;
-        public List<Item> Equip = new List<Item>();
+        private List<Item> _Equip = new List<Item>();
+
+        public List<Item> Equip
+        {
+            get { return _Equip; }
+            set 
+            { 
+                _Equip = value;
+                OnPropertyChanged("Equip");
+            }
+        }
+
         public List<Attribute> NonLocalMods = new List<Attribute>();
 
         public ItemAttributes(string itemData)
@@ -241,6 +252,13 @@ namespace POESKillTree.ViewModels.ItemAttribute
             {
                 return numberfilter.Replace(x, "").CompareTo(numberfilter.Replace(y, ""));
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
     }
 }

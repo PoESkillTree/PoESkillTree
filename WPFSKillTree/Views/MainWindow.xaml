@@ -6,6 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
+        xmlns:items="clr-namespace:POESKillTree.ViewModels.ItemAttribute"
+    
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
@@ -436,6 +438,20 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.GroupStyle>
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
+                                    </ListBox.GroupStyle>
+                                </ListBox>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="ItemList" Margin="0" controls:ControlsHelper.HeaderFontSize="15">
+                            <Grid>
+                                <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Equip, ElementName=window, Mode=OneWay}" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemList" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="items:Item">
+                                            <local:ItemTooltip Item="{Binding}"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>

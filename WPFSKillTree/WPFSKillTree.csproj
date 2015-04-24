@@ -141,6 +141,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\ItemTooltip.xaml.cs">
+      <DependentUpon>ItemTooltip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MenuItemExtensions.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Notifier.cs" />
@@ -219,6 +222,10 @@
       <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Controls\ItemTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
