@@ -208,7 +208,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
                         reqs += n;
                 }
 
-                Requirements.Add(new Attribute(reqs, numbers.ToArray()));
+                Requirements.Add(new Attribute("Requires "+reqs, numbers.ToArray()));
             }
 
 

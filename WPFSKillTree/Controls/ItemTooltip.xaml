@@ -145,10 +145,17 @@
         </ItemsControl>
 
         <!--requirement separator =Have properties -->
-        <Image Grid.Row="2" Visibility="{Binding Item.HaveProperties, ElementName=control, Converter={StaticResource BoolToVisConverter}}">
+        <Image Grid.Row="2">
             <Image.Style>
                 <Style TargetType="{x:Type Image}">
+                    <Style.Setters>
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </Style.Setters>
                     <Style.Triggers>
+                        <DataTrigger Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" >
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+
                         <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
                             <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorWhite.png"/>
                         </DataTrigger>
@@ -183,17 +190,21 @@
             <Image.Style>
                 <Style TargetType="{x:Type Image}">
                     <Style.Setters>
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                     </Style.Setters>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </MultiDataTrigger>
 
-                        <DataTrigger Binding="{Binding Item.HaveProperties, ElementName=control}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
+                        <DataTrigger Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
-
+                        
                         <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
                             <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorWhite.png"/>
                         </DataTrigger>
@@ -229,17 +240,21 @@
             <Image.Style>
                 <Style TargetType="{x:Type Image}">
                     <Style.Setters>
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                     </Style.Setters>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="false" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </MultiDataTrigger>
+                        <DataTrigger Binding="{Binding Item.HaveExplicitMods, ElementName=control}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
-                        
-                        <DataTrigger Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        
+
                         <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
                             <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorWhite.png"/>
                         </DataTrigger>
@@ -283,7 +298,21 @@
         <Image Grid.Row="9" Visibility="{Binding Item.HaveFlavourText,ElementName=control, Converter={StaticResource BoolToVisConverter}}">
             <Image.Style>
                 <Style TargetType="{x:Type Image}">
+                    <Style.Setters>
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </Style.Setters>
                     <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.HaveExplicitMods, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.HaveCraftedMods, ElementName=control}" Value="false" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </MultiDataTrigger>
+
                         <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
                             <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorWhite.png"/>
                         </DataTrigger>
