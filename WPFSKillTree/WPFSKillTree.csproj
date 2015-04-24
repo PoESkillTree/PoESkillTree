@@ -346,6 +346,34 @@
     <Resource Include="Images\Witch.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\ItemImages\ItemHeaderGemLeft.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderGemMiddle.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderGemRight.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderMagicLeft.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderMagicMiddle.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderMagicRight.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderRareLeft.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderRareMiddle.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderRareRight.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderUniqueLeft.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderUniqueMiddle.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderUniqueRight.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderWhiteLeft.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderWhiteMiddle.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderWhiteRight.png" />
+    <Resource Include="Images\ItemImages\SeparatorGem.png" />
+    <Resource Include="Images\ItemImages\SeparatorMagic.png" />
+    <Resource Include="Images\ItemImages\SeparatorRare.png" />
+    <Resource Include="Images\ItemImages\SeparatorUnique.png" />
+    <Resource Include="Images\ItemImages\SeparatorWhite.png" />
+    <Resource Include="Images\ItemImages\SocketSkillBlue.png" />
+    <Resource Include="Images\ItemImages\SocketSkillGreen.png" />
+    <Resource Include="Images\ItemImages\SocketSkillRed.png" />
+    <Resource Include="Images\ItemImages\SocketSupportBlue.png" />
+    <Resource Include="Images\ItemImages\SocketSupportGreen.png" />
+    <Resource Include="Images\ItemImages\SocketSupportRed.png" />
+    <Resource Include="Images\ItemImages\Socket_Link_Horizontal.png" />
+    <Resource Include="Images\ItemImages\Socket_Link_Vertical.png" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
