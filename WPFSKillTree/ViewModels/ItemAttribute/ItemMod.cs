@@ -55,8 +55,10 @@ namespace POESKillTree.ViewModels.ItemAttribute
                         floats.Add(val);
                     }else
                     {
-                        floats.Add(float.Parse(numberfilter.Match(v).Value, CultureInfo.InvariantCulture));
-                        at += numberfilter.Replace(v, "#");
+                        foreach (Match m in numberfilter.Matches(v))
+                            floats.Add(float.Parse(m.Value, CultureInfo.InvariantCulture));
+
+                        at += " "+numberfilter.Replace(v, "#");
                     }
                 }
 
