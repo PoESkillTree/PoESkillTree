@@ -219,6 +219,9 @@
                         <Setter Property="Visibility" Value="Visible"/>
                     </Style.Setters>
                     <Style.Triggers>
+                        <DataTrigger Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" >
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" >
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>

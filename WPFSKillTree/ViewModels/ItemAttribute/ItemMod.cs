@@ -47,18 +47,36 @@ namespace POESKillTree.ViewModels.ItemAttribute
             {
                 var str = ((RavenJArray)a)[0].Value<string>();
                 var floats = new List<float>();
-                foreach (var v in str.Split('-'))
+                var parts = str.Split('-');
+
+                if (dmode != 3)
+                    if (parts.Length > 1)
+                        at += ": ";
+                    else
+                        at += " ";
+
+                for (int i = 0; i < parts.Length; i++)
                 {
+                    string v = parts[i];
                     float val = 0;
-                    if(float.TryParse(v,NumberStyles.Float,CultureInfo.InvariantCulture,out val))
+                    if (float.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
                     {
                         floats.Add(val);
-                    }else
+                        if (dmode != 3)
+                            at += "#";
+                    }
+                    else
                     {
                         foreach (Match m in numberfilter.Matches(v))
                             floats.Add(float.Parse(m.Value, CultureInfo.InvariantCulture));
 
-                        at += " "+numberfilter.Replace(v, "#");
+                        at += " " + numberfilter.Replace(v, "#");
+                    }
+
+                    if (i < parts.Length - 1)
+                    {
+                        if (dmode != 3)
+                            at += "-";
                     }
                 }
 
