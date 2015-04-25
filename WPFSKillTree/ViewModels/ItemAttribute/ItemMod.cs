@@ -6,6 +6,15 @@ namespace POESKillTree.ViewModels.ItemAttribute
 {
     public class ItemMod
     {
+        public enum ValueColoring
+        {
+            White = 0,
+            LocallyAffected = 1,
+
+            Fire = 4,
+            Cold = 5,
+            Lightning = 6
+        }
 
         private string _Attribute;
 
@@ -16,6 +25,8 @@ namespace POESKillTree.ViewModels.ItemAttribute
         }
 
         public List<float> Value;
+        public List<ValueColoring> ValueColor = new List<ValueColoring>();
+
         public bool isLocal = false;
         private Item.ItemClass itemclass;
 
@@ -47,6 +58,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             Item.ItemClass ic = item.Class;
             var mods = new List<ItemMod>();
             var values = new List<float>();
+
             foreach (Match match in numberfilter.Matches(attribute))
             {
                 values.Add(float.Parse(match.Value, CultureInfo.InvariantCulture));

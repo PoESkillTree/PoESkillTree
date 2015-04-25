@@ -14,6 +14,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
         Rare = 2,
         Unique = 3,
         Gem = 4,
+        Currency = 5,
     }
 
     public class Item : INotifyPropertyChanged
@@ -29,7 +30,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             Gloves,
             Boots,
             Gem,
-            Belt
+            Belt,
         }
 
         private static Regex colorcleaner = new Regex("\\<.+?\\>");
@@ -130,6 +131,19 @@ namespace POESKillTree.ViewModels.ItemAttribute
             get { return _Name; }
             set { _Name = value; OnPropertyChanged("Name"); }
         }
+
+        private string _NameLine;
+        public string NameLine
+        {
+            get { return _NameLine; }
+            set { _NameLine = value; OnPropertyChanged("NameLine"); OnPropertyChanged("HaveName"); }
+        }
+
+        public bool HaveName
+        {
+            get { return !string.IsNullOrEmpty(NameLine); }
+        }
+
         // The socket group of gem (all gems with same socket group value are linked).
         public int SocketGroup;
         private string _Type;
@@ -147,7 +161,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             Mods = new List<ItemMod>();
             Class = iClass;
 
-            Name = val["name"].Value<string>();
+            NameLine = Name = val["name"].Value<string>();
             if (Name == "")
                 Name = val["typeLine"].Value<string>();
             Type = val["typeLine"].Value<string>();
@@ -184,7 +198,16 @@ namespace POESKillTree.ViewModels.ItemAttribute
                     }
                     string cs = obj["name"].Value<string>() + ": " + (numberfilter.Replace(s, "#"));
 
-                    Properties.Add(ItemMod.CreateMod(this, obj["name"].Value<string>()+": "+s, numberfilter));
+                    var mod = ItemMod.CreateMod(this, obj["name"].Value<string>() + ": " + s, numberfilter);
+                    Properties.Add(mod);
+
+
+                    mod.ValueColor = ((RavenJArray)obj["values"]).Select(a =>
+                        {
+                            var floats = ((RavenJArray)a)[0].Value<string>().Split('-');
+                            return floats.Select(f => (ItemMod.ValueColoring)((RavenJArray)a)[1].Value<int>());
+                        }).SelectMany(c => c).ToList();
+
                     Attributes.Add(cs, values);
                 }
 
@@ -192,6 +215,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             {
                 string reqs = "";
                 List<float> numbers = new List<float>();
+                List<ItemMod.ValueColoring> affects = new List<ItemMod.ValueColoring>();
 
                 foreach (RavenJObject obj in (RavenJArray)val["requirements"])
                 {
@@ -203,6 +227,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
                         n = "# " + n;
 
                     numbers.Add(((RavenJArray)((RavenJArray)obj["values"])[0])[0].Value<float>());
+                    affects.Add((ItemMod.ValueColoring)((RavenJArray)((RavenJArray)obj["values"])[0])[1].Value<int>());
 
                     if (!string.IsNullOrEmpty(reqs))
                         reqs += ", " + n;
@@ -212,7 +237,8 @@ namespace POESKillTree.ViewModels.ItemAttribute
 
                 var m = ItemMod.CreateMod(this, "Requires " + reqs, numberfilter);
                 m.Value = numbers;
-                Requirements.Add(m);          
+                m.ValueColor = affects;
+                Requirements.Add(m);
             }
 
 

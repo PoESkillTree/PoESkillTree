@@ -381,6 +381,10 @@
     <Resource Include="Images\ItemImages\SocketSupportRed.png" />
     <Resource Include="Images\ItemImages\Socket_Link_Horizontal.png" />
     <Resource Include="Images\ItemImages\Socket_Link_Vertical.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderCurrencyLeft.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderCurrencyMiddle.png" />
+    <Resource Include="Images\ItemImages\ItemHeaderCurrencyRight.png" />
+    <Resource Include="Images\ItemImages\SeparatorCurrency.png" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

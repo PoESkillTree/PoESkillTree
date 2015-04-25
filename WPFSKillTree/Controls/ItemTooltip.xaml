@@ -37,6 +37,9 @@
                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
                     <Setter Property="Foreground" Value="#FF1BA29B"/>
                 </DataTrigger>
+                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Currency}">
+                    <Setter Property="Foreground" Value="#FFAA9E82"/>
+                </DataTrigger>
             </Style.Triggers>
         </Style>
 
@@ -59,6 +62,9 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
                     <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorGem.png"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Currency}">
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorCurrency.png"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -96,8 +102,8 @@
         <!--header-->
         <Grid Grid.Row="0" Width="auto">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid Grid.RowSpan="2">
                 <Grid.ColumnDefinitions>
@@ -123,6 +129,9 @@
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
                                     <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderGemLeft.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Currency}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderCurrencyLeft.png"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -151,6 +160,9 @@
                                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
                                                     <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderGemMiddle.png"/>
                                                 </DataTrigger>
+                                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Currency}">
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderCurrencyMiddle.png"/>
+                                                </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Image.Style>
@@ -178,13 +190,16 @@
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
                                     <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderGemRight.png"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Currency}">
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderCurrencyRight.png"/>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Image.Style>
                 </Image>
             </Grid>
-            <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Grid.Row="0" Name="ItemName" Text="{Binding Item.Name,ElementName=control}"/>
-            <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Top" Grid.Row="1" Name="ItemType" Text="{Binding Item.Type,ElementName=control}"/>
+            <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" Margin="0,3,0,0" VerticalAlignment="Stretch" Grid.Row="0" Name="ItemName" Text="{Binding Item.NameLine,ElementName=control}" Visibility="{Binding Item.HaveName,ElementName=control, Converter={StaticResource BoolToVisConverter}}"/>
+            <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" Margin="0,0,0,3" VerticalAlignment="Stretch" Grid.Row="1" Name="ItemType" Text="{Binding Item.Type,ElementName=control}"/>
         </Grid>
 
         <!--properties values - like armor or weapon damage -->
@@ -204,7 +219,7 @@
                         <Setter Property="Visibility" Value="Visible"/>
                     </Style.Setters>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" >
+                        <DataTrigger Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" >
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -268,6 +283,13 @@
                                 <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
                                 <Condition Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" />
                                 <Condition Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="false" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Item.HaveExplicitMods, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.HaveCraftedMods, ElementName=control}" Value="false" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>

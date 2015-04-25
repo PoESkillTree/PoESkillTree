@@ -91,6 +91,11 @@ namespace POESKillTree.ViewModels
     [ValueConversion(typeof(ItemMod), typeof(IEnumerable<Inline>))]
     class ItemModToInlinesConverter : IValueConverter
     {
+        private static SolidColorBrush locallyAffectedColor = new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0xFF));
+        private static SolidColorBrush fireAffectedColor = new SolidColorBrush(Color.FromRgb(0x96, 0x00, 0x04));
+        private static SolidColorBrush coldAffectedColor = new SolidColorBrush(Color.FromRgb(0x36, 0x64, 0x92));
+        private static SolidColorBrush lightningAffectedColor = new SolidColorBrush(Color.FromRgb(0xFF, 0xD7, 0x00));
+
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var mod = value as ItemMod;
@@ -108,16 +113,44 @@ namespace POESKillTree.ViewModels
                 var m = matches[i];
                 var istring = mod.Attribute.Substring(from, m.Index - from);
                 var r = new Run(istring);
-                if (istring == "-" && parameter!=null)
-                    r.Foreground = Brushes.White;
+
+                SolidColorBrush clr = null;
+
+                if (mod.ValueColor.Count > i)
+                    switch (mod.ValueColor[i])
+                    {
+                        case ItemMod.ValueColoring.LocallyAffected:
+                            clr = locallyAffectedColor;
+                            break;
+                        case ItemMod.ValueColoring.Fire:
+                            clr = fireAffectedColor;
+                            break;
+                        case ItemMod.ValueColoring.Cold:
+                            clr = coldAffectedColor;
+                            break;
+                        case ItemMod.ValueColoring.Lightning:
+                            clr = lightningAffectedColor;
+                            break;
+                    }
+
+
+                if ((istring == "-" || istring == "/") && parameter != null)
+                    if (clr != null)
+                        r.Foreground = clr;
+                    else
+                        r.Foreground = Brushes.White;
+
                 inlines.Add(r);
 
                 r = new Run(mod.Value[i].ToString());
                 if (parameter != null)
-                    r.Foreground = Brushes.White;
+                    if (clr != null)
+                        r.Foreground = clr;
+                    else
+                        r.Foreground = Brushes.White;
                 inlines.Add(r);
 
-                from  = m.Index + m.Length;
+                from = m.Index + m.Length;
             }
             inlines.Add(new Run(mod.Attribute.Substring(from, mod.Attribute.Length - from)));
 
