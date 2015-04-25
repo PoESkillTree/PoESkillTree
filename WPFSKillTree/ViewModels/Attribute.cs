@@ -4,14 +4,11 @@ namespace POESKillTree.ViewModels
     {
         public string Text { get; set; }
         public float[] Deltas { get; set; }
-        public float[] Values { get; set; }
         public bool Missing { get; set; }
-        public Attribute(string text, float[] values=null)
+        public Attribute(string text)
         {
             Text = text;
-            Values = values;
         }
-
 
         public override string ToString()
         {
