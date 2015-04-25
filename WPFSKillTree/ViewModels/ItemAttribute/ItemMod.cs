@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Raven.Json.Linq;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace POESKillTree.ViewModels.ItemAttribute
 {
@@ -30,6 +32,50 @@ namespace POESKillTree.ViewModels.ItemAttribute
         public bool isLocal = false;
         private Item.ItemClass itemclass;
 
+
+
+        public static ItemMod CreateMod(Item item, RavenJObject obj, Regex numberfilter)
+        {
+            Item.ItemClass ic = item.Class;
+            var mod = new ItemMod();
+
+            int dmode = (obj.ContainsKey("displayMode")) ? obj["displayMode"].Value<int>() : 0;
+            string at = obj["name"].Value<string>();
+            at = numberfilter.Replace(at, "#");
+
+            var parsed = ((RavenJArray)obj["values"]).Select(a =>
+            {
+                var str = ((RavenJArray)a)[0].Value<string>();
+                var floats = new List<float>();
+                foreach (var v in str.Split('-'))
+                {
+                    float val = 0;
+                    if(float.TryParse(v,NumberStyles.Float,CultureInfo.InvariantCulture,out val))
+                    {
+                        floats.Add(val);
+                    }else
+                    {
+                        floats.Add(float.Parse(numberfilter.Match(v).Value, CultureInfo.InvariantCulture));
+                        at += numberfilter.Replace(v, "#");
+                    }
+                }
+
+                var cols = floats.Select(f => (ItemMod.ValueColoring)((RavenJArray)a)[1].Value<int>()).ToList();
+                return new { floats, cols };
+            }).ToList();
+
+
+            mod = new ItemMod
+            {
+                itemclass = ic,
+                Value = parsed.Select(p => p.floats).SelectMany(v => v).ToList(),
+                ValueColor = parsed.Select(p => p.cols).SelectMany(v => v).ToList(),
+                _Attribute = at,
+                isLocal = DetermineLocal(item, at)
+            };
+
+            return mod;
+        }
 
         public static ItemMod CreateMod(Item item, string attribute, Regex numberfilter)
         {

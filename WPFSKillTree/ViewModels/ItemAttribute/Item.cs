@@ -34,7 +34,8 @@ namespace POESKillTree.ViewModels.ItemAttribute
         }
 
         private static Regex colorcleaner = new Regex("\\<.+?\\>");
-        private static readonly Regex numberfilter = new Regex("[0-9]*\\.?[0-9]+");
+        private static readonly Regex numberfilter = new Regex(@"[0-9]*\.?[0-9]+");
+        private static readonly Regex numberfilter2 = new Regex(@"%\d|[0-9]*\.?[0-9]+");
 
         public Dictionary<string, List<float>> Attributes;
         public ItemClass Class;
@@ -198,7 +199,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
                     }
                     string cs = obj["name"].Value<string>() + ": " + (numberfilter.Replace(s, "#"));
 
-                    var mod = ItemMod.CreateMod(this, obj["name"].Value<string>() + ": " + s, numberfilter);
+                    var mod = ItemMod.CreateMod(this, obj, numberfilter2);
                     Properties.Add(mod);
 
 

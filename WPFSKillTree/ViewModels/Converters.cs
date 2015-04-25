@@ -108,54 +108,59 @@ namespace POESKillTree.ViewModels
 
             var matches = backrep.Matches(mod.Attribute).Cast<Match>().ToArray();
             int from = 0;
+            string istring;
+            Run r;
             for (int i = 0; i < matches.Length && i < mod.Value.Count; i++)
             {
                 var m = matches[i];
-                var istring = mod.Attribute.Substring(from, m.Index - from);
-                var r = new Run(istring);
+                istring = mod.Attribute.Substring(from, m.Index - from);
+                r = new Run(istring);
 
-                SolidColorBrush clr = null;
+                SolidColorBrush clr = GetColoringFor(mod, i);
 
-                if (mod.ValueColor.Count > i)
-                    switch (mod.ValueColor[i])
-                    {
-                        case ItemMod.ValueColoring.LocallyAffected:
-                            clr = locallyAffectedColor;
-                            break;
-                        case ItemMod.ValueColoring.Fire:
-                            clr = fireAffectedColor;
-                            break;
-                        case ItemMod.ValueColoring.Cold:
-                            clr = coldAffectedColor;
-                            break;
-                        case ItemMod.ValueColoring.Lightning:
-                            clr = lightningAffectedColor;
-                            break;
-                    }
-
-
-                if ((istring == "-" || istring == "/") && parameter != null)
-                    if (clr != null)
+                if ((istring == "-" || istring == "/" || istring == "+") && parameter != null)
                         r.Foreground = clr;
-                    else
-                        r.Foreground = Brushes.White;
+
+                if (parameter != null && !string.IsNullOrEmpty(istring) && istring[0] == '%')
+                    r.Foreground = GetColoringFor(mod, i - 1);
 
                 inlines.Add(r);
 
                 r = new Run(mod.Value[i].ToString());
                 if (parameter != null)
-                    if (clr != null)
-                        r.Foreground = clr;
-                    else
-                        r.Foreground = Brushes.White;
+                    r.Foreground = clr;
+
                 inlines.Add(r);
 
                 from = m.Index + m.Length;
             }
-            inlines.Add(new Run(mod.Attribute.Substring(from, mod.Attribute.Length - from)));
+
+            istring = mod.Attribute.Substring(from, mod.Attribute.Length - from);
+            r = new Run(istring);
+            if (parameter != null && !string.IsNullOrEmpty(istring) && istring[0] == '%')
+                r.Foreground = GetColoringFor(mod, matches.Length - 1);
+            inlines.Add(r);
 
 
             return inlines;
+        }
+
+        private static SolidColorBrush GetColoringFor(ItemMod mod, int i)
+        {
+            if (mod.ValueColor.Count > i && i >=0)
+                switch (mod.ValueColor[i])
+                {
+                    case ItemMod.ValueColoring.LocallyAffected:
+                        return locallyAffectedColor;
+                    case ItemMod.ValueColoring.Fire:
+                        return fireAffectedColor;
+                    case ItemMod.ValueColoring.Cold:
+                        return coldAffectedColor;
+                    case ItemMod.ValueColoring.Lightning:
+                        return lightningAffectedColor;
+                }
+
+            return Brushes.White;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
