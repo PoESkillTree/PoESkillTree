@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using Raven.Json.Linq;
 using Ionic.Zip;
 
@@ -27,6 +28,8 @@ namespace POESKillTree.SkillTreeFiles
         public static bool IsInstalled = false;
         // Latest release.
         private static Release Latest;
+        // Regular expression for a released ZIP package file name.
+        private static readonly Regex ReZipPackage = new Regex(@"PoESkillTree.*\.zip$", RegexOptions.IgnoreCase);
         // HTTP request timeout for release checks and downloads (in seconds).
         private const int REQUEST_TIMEOUT = 15;
         // Work directory of update process (relative to installation root).
@@ -45,6 +48,8 @@ namespace POESKillTree.SkillTreeFiles
             public bool IsDownloaded { get { return Client == null && TemporaryFile != null; } }
             // The flag whether download is still in progress.
             public bool IsDownloading { get { return Client != null; } }
+            // The flag whether release is a pre-release.
+            public bool Prerelease;
             // The temporary file for package download.
             private string TemporaryFile;
             // The URI of release package.
@@ -218,10 +223,11 @@ namespace POESKillTree.SkillTreeFiles
 
         /* Checks for updates and returns release informations when there is newer one.
          * Returns null if there is no newer release.
+         * If Prerelease argument is true, it will return also Pre-release, otherwise Pre-releases are ignored.
          * An existing last checked release will be discarded.
          * Throws UpdaterException if error occurs.
          */
-        public static Release CheckForUpdates()
+        public static Release CheckForUpdates(bool Prerelease = true)
         {
             if (Latest != null)
             {
@@ -243,30 +249,66 @@ namespace POESKillTree.SkillTreeFiles
                 if (releases.Length < 1)
                     throw new UpdaterException("No release found");
 
-                RavenJObject latest = (RavenJObject)releases[0];
-                RavenJArray assets = (RavenJArray)latest["assets"];
-                if (assets.Length < 1)
-                    throw new UpdaterException("Package for release is missing");
+                string current = GetCurrentVersion(); // Current version (tag).
 
-                string current = GetCurrentVersion();
-                string tag = latest["tag_name"].Value<string>();
-                if (tag == current)
+                // Iterate thru avialable releases.
+                foreach (RavenJObject release in (RavenJArray)releases)
                 {
+                    // Drafts are not returned by API, but just in case...
+                    bool draft = release["draft"].Value<bool>();
+                    if (draft) continue; // Ignore drafts.
+
+                    // Check if there are assets attached.
+                    RavenJArray assets = (RavenJArray)release["assets"];
+                    if (assets.Length < 1) continue; // No assets, ignore it.
+
+                    // Compare release tag with our version (tag).
+                    // Assumption is that no one will make realease with older version tag.
+                    // So, any different version should be newer.
+                    string tag = release["tag_name"].Value<string>();
+                    if (tag == current) // If we didn't find different tag till now, then there is no newer version.
+                    {
+                        IsChecked = true;
+
+                        return null;
+                    }
+
+                    // Check if it is pre-release and we want to update to it.
+                    bool prerelease = release["prerelease"].Value<bool>();
+                    if (prerelease && !Prerelease) continue; // Found unwanted pre-release, ignore it.
+
+                    // Find PoESkillTree ZIP package.
+                    RavenJObject zipAsset = null;
+                    foreach (RavenJObject asset in assets)
+                    {
+                        string content_type = asset["content_type"].Value<string>();
+                        if (content_type != "application/zip") continue; // Not a ZIP, ignore it.
+
+                        string name = asset["name"].Value<string>();
+                        Match m = ReZipPackage.Match(name);
+                        if (m.Success)
+                        {
+                            // Found ZIP package.
+                            zipAsset = asset;
+                            break;
+                        }
+                    }
+                    if (zipAsset == null) continue; // No ZIP package found.
+
+                    // This is newer release (probably).
                     IsChecked = true;
+                    Latest = new Release
+                    {
+                        Name = release["name"].Value<string>(),
+                        Description = release["body"].Value<string>(),
+                        Prerelease = prerelease,
+                        Version = tag,
+                        URI = new Uri(zipAsset["browser_download_url"].Value<string>())
+                    };
 
-                    return null;
+                    // We are done, exit loop.
+                    break;
                 }
-
-                string url = ((RavenJObject)assets[0])["browser_download_url"].Value<string>();
-
-                IsChecked = true;
-                Latest = new Release
-                {
-                    Name = latest["name"].Value<string>(),
-                    Description = latest["body"].Value<string>(),
-                    Version = tag,
-                    URI = new Uri(url)
-                };
             }
             catch (WebException e)
             {
