@@ -167,7 +167,13 @@ namespace POESKillTree.ViewModels.ItemAttribute
         public class Attribute : INotifyPropertyChanged
         {
             private readonly string _attribute;
-            private readonly Regex _backreplace = new Regex("#");
+            private static readonly Regex _backreplace = new Regex("#");
+
+            public static Regex Backreplace
+            {
+                get { return _backreplace; }
+            } 
+
             private readonly string _group;
             private readonly List<float> _value;
 

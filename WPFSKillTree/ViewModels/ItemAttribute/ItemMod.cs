@@ -6,10 +6,41 @@ namespace POESKillTree.ViewModels.ItemAttribute
 {
     public class ItemMod
     {
-        public string Attribute;
+
+        private string _Attribute;
+
+        public string Attribute
+        {
+            get { return _Attribute; }
+            set { _Attribute = value; }
+        }
+
         public List<float> Value;
         public bool isLocal = false;
         private Item.ItemClass itemclass;
+
+
+        public static ItemMod CreateMod(Item item, string attribute, Regex numberfilter)
+        {
+            Item.ItemClass ic = item.Class;
+            var mod = new ItemMod();
+            var values = new List<float>();
+            foreach (Match match in numberfilter.Matches(attribute))
+            {
+                values.Add(float.Parse(match.Value, CultureInfo.InvariantCulture));
+            }
+            string at = numberfilter.Replace(attribute, "#");
+
+            mod = new ItemMod
+            {
+                itemclass = ic,
+                Value = values,
+                _Attribute = at,
+                isLocal = DetermineLocal(item, at)
+            };
+
+            return mod;
+        }
 
         public static List<ItemMod> CreateMods(Item item, string attribute, Regex numberfilter)
         {
@@ -27,19 +58,19 @@ namespace POESKillTree.ViewModels.ItemAttribute
                 {
                     itemclass = ic,
                     Value = values,
-                    Attribute = "+# to Strength"
+                    _Attribute = "+# to Strength"
                 });
                 mods.Add(new ItemMod
                 {
                     itemclass = ic,
                     Value = values,
-                    Attribute = "+# to Dexterity"
+                    _Attribute = "+# to Dexterity"
                 });
                 mods.Add(new ItemMod
                 {
                     itemclass = ic,
                     Value = values,
-                    Attribute = "+# to Intelligence"
+                    _Attribute = "+# to Intelligence"
                 });
             }
             else
@@ -48,7 +79,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
                 {
                     itemclass = ic,
                     Value = values,
-                    Attribute = at,
+                    _Attribute = at,
                     isLocal = DetermineLocal(item, at)
                 });
             }

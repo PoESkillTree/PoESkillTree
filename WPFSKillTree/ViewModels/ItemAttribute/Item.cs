@@ -47,36 +47,36 @@ namespace POESKillTree.ViewModels.ItemAttribute
             get { return _frame; }
             set { _frame = value; OnPropertyChanged("Frame"); }
         }
-        List<Attribute> _properties = new List<Attribute>();
-        public List<Attribute> Properties
+        List<ItemMod> _properties = new List<ItemMod>();
+        public List<ItemMod> Properties
         {
             get { return _properties; }
             set { _properties = value; OnPropertyChanged("Properties"); OnPropertyChanged("HaveProperties"); }
         }
 
-        List<Attribute> _requirements = new List<Attribute>();
-        public List<Attribute> Requirements
+        List<ItemMod> _requirements = new List<ItemMod>();
+        public List<ItemMod> Requirements
         {
             get { return _requirements; }
             set { _requirements = value; OnPropertyChanged("Requirements"); OnPropertyChanged("HaveRequirements"); }
         }
 
-        List<Attribute> _implicitMods = new List<Attribute>();
-        public List<Attribute> ImplicitMods
+        List<ItemMod> _implicitMods = new List<ItemMod>();
+        public List<ItemMod> ImplicitMods
         {
             get { return _implicitMods; }
             set { _implicitMods = value; OnPropertyChanged("Implicitmods"); OnPropertyChanged("HaveImplicitMods"); }
         }
 
-        List<Attribute> _explicitMods = new List<Attribute>();
-        public List<Attribute> ExplicitMods
+        List<ItemMod> _explicitMods = new List<ItemMod>();
+        public List<ItemMod> ExplicitMods
         {
             get { return _explicitMods; }
             set { _explicitMods = value; OnPropertyChanged("ExplicitMods"); OnPropertyChanged("HaveExplicitMods"); }
         }
 
-        List<Attribute> _craftedMods = new List<Attribute>();
-        public List<Attribute> CraftedMods
+        List<ItemMod> _craftedMods = new List<ItemMod>();
+        public List<ItemMod> CraftedMods
         {
             get { return _craftedMods; }
             set { _craftedMods = value; OnPropertyChanged("Implicitmods"); OnPropertyChanged("HaveCraftedMods"); }
@@ -168,7 +168,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
 
                     if (s == "")
                     {
-                        Properties.Add(new Attribute(obj["name"].Value<string>()));
+                        Properties.Add(ItemMod.CreateMod(this, obj["name"].Value<string>(), numberfilter));
 
                         Keywords = new List<string>();
                         string[] sl = obj["name"].Value<string>().Split(',');
@@ -184,13 +184,15 @@ namespace POESKillTree.ViewModels.ItemAttribute
                     }
                     string cs = obj["name"].Value<string>() + ": " + (numberfilter.Replace(s, "#"));
 
-                    Properties.Add(new Attribute(cs, values.ToArray()));
+                    Properties.Add(ItemMod.CreateMod(this, obj["name"].Value<string>()+": "+s, numberfilter));
                     Attributes.Add(cs, values);
                 }
+
             if (val.ContainsKey("requirements"))
             {
                 string reqs = "";
                 List<float> numbers = new List<float>();
+
                 foreach (RavenJObject obj in (RavenJArray)val["requirements"])
                 {
                     var n = obj["name"].Value<string>();
@@ -208,7 +210,9 @@ namespace POESKillTree.ViewModels.ItemAttribute
                         reqs += n;
                 }
 
-                Requirements.Add(new Attribute("Requires "+reqs, numbers.ToArray()));
+                var m = ItemMod.CreateMod(this, "Requires " + reqs, numberfilter);
+                m.Value = numbers;
+                Requirements.Add(m);          
             }
 
 
@@ -218,7 +222,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
                     List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
                     Mods.AddRange(mods);
 
-                    ImplicitMods.AddRange(mods.Select(m => new Attribute(m.Attribute, m.Value.ToArray())));
+                    ImplicitMods.Add(ItemMod.CreateMod(this, s, numberfilter));
                 }
             if (val.ContainsKey("explicitMods"))
                 foreach (string s in val["explicitMods"].Values<string>())
@@ -226,7 +230,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
                     List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
                     Mods.AddRange(mods);
 
-                    ExplicitMods.AddRange(mods.Select(m=>new Attribute(m.Attribute,m.Value.ToArray())));
+                    ExplicitMods.Add(ItemMod.CreateMod(this, s, numberfilter));
                 }
 
             if (val.ContainsKey("craftedMods"))
@@ -235,7 +239,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
                     List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
                     Mods.AddRange(mods);
 
-                    CraftedMods.AddRange(mods.Select(m => new Attribute(m.Attribute, m.Value.ToArray())));
+                    CraftedMods.Add(ItemMod.CreateMod(this, s, numberfilter));
                 }
 
             if (val.ContainsKey("flavourText"))
