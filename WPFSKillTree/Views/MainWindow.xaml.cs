@@ -922,8 +922,6 @@ namespace POESKillTree.Views
             Point p = e.GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
             v = v * _multransform + _addtransform;
-            textBox1.Text = "" + v.X;
-            textBox2.Text = "" + v.Y;
             SkillNode node = null;
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
