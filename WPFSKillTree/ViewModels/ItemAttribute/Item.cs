@@ -25,6 +25,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             MainHand,
             OffHand,
             Ring,
+            Ring2,
             Amulet,
             Helm,
             Gloves,

@@ -42,9 +42,13 @@ namespace POESKillTree.ViewModels.ItemAttribute
                 {
                     AddItem(jobj, Item.ItemClass.Armor);
                 }
-                if (id == "Ring" || id == "Ring2")
+                if (id == "Ring")
                 {
                     AddItem(jobj, Item.ItemClass.Ring);
+                }
+                if (id == "Ring2")
+                {
+                    AddItem(jobj, Item.ItemClass.Ring2);
                 }
                 if (id == "Gloves")
                 {
