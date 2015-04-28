@@ -316,12 +316,24 @@
 
             <Button Content="Reset" Height="26" HorizontalAlignment="Right" x:Name="btnReset" VerticalAlignment="Top" Width="40" Click="btnReset_Click" VerticalContentAlignment="Center" Margin="0,0,0,0"/>
         </Grid>
-        <!-- grid row 1 - center part, tree and shit -->
-        <Grid Grid.Row="2" Margin="0,0,0,0">
-            <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
-                <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </local:ZoomBorder>
+        <!-- grid row 1 - center part, tree and editors -->
 
+        <Grid Grid.Row="2">
+            <TabControl Background="Transparent">
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="TabItem">
+                        <Style.Setters>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Style.Setters>
+                    </Style>
+                </TabControl.ItemContainerStyle>
+                <TabItem IsSelected="True" Header="Pasive Tree">
+                    <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
+                        <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </local:ZoomBorder>
+                </TabItem>
+                <TabItem>sdas</TabItem>
+            </TabControl>
 
             <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
@@ -503,6 +515,7 @@
             </Expander>
 
         </Grid>
+
         <!-- grid row 2 - bottom part, search and tree -->
         <TextBox Height="24" HorizontalAlignment="Right" x:Name="textBox1" VerticalAlignment="Bottom" Width="120" Grid.Row="2" Margin="0,0,0,66" Visibility="Hidden"/>
         <TextBox Height="24" HorizontalAlignment="Right" x:Name="textBox2" VerticalAlignment="Bottom" Width="120" Grid.Row="2" Margin="0,0,0,36" Visibility="Hidden"/>
