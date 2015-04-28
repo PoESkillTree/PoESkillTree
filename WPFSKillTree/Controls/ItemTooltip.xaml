@@ -49,22 +49,22 @@
             </Style.Setters>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorWhite.png"/>
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorWhite.png"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorMagic.png"/>
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorMagic.png"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorRare.png"/>
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorRare.png"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorUnique.png"/>
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorUnique.png"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorGem.png"/>
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorGem.png"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Currency}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/SeparatorCurrency.png"/>
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorCurrency.png"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -116,22 +116,22 @@
                         <Style TargetType="{x:Type Image}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderWhiteLeft.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderWhiteLeft.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderMagicLeft.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderMagicLeft.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderRareLeft.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderRareLeft.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderUniqueLeft.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderUniqueLeft.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderGemLeft.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderGemLeft.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Currency}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderCurrencyLeft.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderCurrencyLeft.png"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -146,22 +146,22 @@
                                         <Style TargetType="{x:Type Image}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
-                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderWhiteMiddle.png"/>
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderWhiteMiddle.png"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
-                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderMagicMiddle.png"/>
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderMagicMiddle.png"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
-                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderRareMiddle.png"/>
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderRareMiddle.png"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
-                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderUniqueMiddle.png"/>
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderUniqueMiddle.png"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
-                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderGemMiddle.png"/>
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderGemMiddle.png"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Currency}">
-                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderCurrencyMiddle.png"/>
+                                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderCurrencyMiddle.png"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -176,22 +176,22 @@
                         <Style TargetType="{x:Type Image}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderWhiteRight.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderWhiteRight.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Magic}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderMagicRight.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderMagicRight.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Rare}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderRareRight.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderRareRight.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Unique}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderUniqueRight.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderUniqueRight.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Gem}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderGemRight.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderGemRight.png"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.Currency}">
-                                    <Setter Property="Source" Value="/POESKillTree;component/Images/ItemImages/ItemHeaderCurrencyRight.png"/>
+                                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderCurrencyRight.png"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
