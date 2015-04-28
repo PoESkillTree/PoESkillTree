@@ -299,28 +299,39 @@
         </Menu>
 
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
-        <Grid x:Name="BtnGrid" Grid.Row="1" HorizontalAlignment="Center" Panel.ZIndex="99" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Level:" x:Name="lblLevel" />
-                <TextBox Margin="5,0,0,0" x:Name="tbLevel" TextChanged="tbLevel_TextChanged" MaxLength="3" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged">
-                    <ComboBoxItem Content="Scion" Name="Scion"/>
-                    <ComboBoxItem Content="Marauder" Name="Marauder"/>
-                    <ComboBoxItem Content="Ranger" Name="Ranger"/>
-                    <ComboBoxItem Content="Witch" Name="Witch" IsSelected="True" />
-                    <ComboBoxItem Content="Duelist" Name="Duelist"/>
-                    <ComboBoxItem Content="Templar" Name="Templar" />
-                    <ComboBoxItem Content="Shadow" Name="Shadow"/>
-                </ComboBox>
-                <Label Content="Used:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
-                <TextBox Margin="5,0,0,0" x:Name="tbUsedPoints" IsReadOnly="True" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                <Button Content="Reset" x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0"/>
-            </StackPanel>
-       </Grid>
+        <Grid x:Name="BtnGrid" Grid.Row="1" HorizontalAlignment="Stretch" Panel.ZIndex="99" VerticalAlignment="Center">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <Label Content="Level:" x:Name="lblLevel" />
+                    <TextBox Margin="5,0,0,0" x:Name="tbLevel" TextChanged="tbLevel_TextChanged" MaxLength="3" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                    <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged">
+                        <ComboBoxItem Content="Scion" Name="Scion"/>
+                        <ComboBoxItem Content="Marauder" Name="Marauder"/>
+                        <ComboBoxItem Content="Ranger" Name="Ranger"/>
+                        <ComboBoxItem Content="Witch" Name="Witch" IsSelected="True" />
+                        <ComboBoxItem Content="Duelist" Name="Duelist"/>
+                        <ComboBoxItem Content="Templar" Name="Templar" />
+                        <ComboBoxItem Content="Shadow" Name="Shadow"/>
+                    </ComboBox>
+                    <Label Content="Used:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
+                    <TextBox Margin="5,0,0,0" x:Name="tbUsedPoints" IsReadOnly="True" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button Content="Reset" x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Left" Margin="70,0,0,0">
+                    <ToggleButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" />
+                    <ToggleButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
         <!-- grid row 1 - center part, tree and editors -->
 
         <Grid Grid.Row="2">
-            <TabControl Background="Transparent">
+            <TabControl Background="Transparent" Name="tcMainArea">
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">
                         <Style.Setters>
@@ -328,12 +339,12 @@
                         </Style.Setters>
                     </Style>
                 </TabControl.ItemContainerStyle>
-                <TabItem IsSelected="True" Header="Pasive Tree">
+                <TabItem IsSelected="True" Header="Pasive Tree" Name="tyPAssiveTree">
                     <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
                         <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </local:ZoomBorder>
                 </TabItem>
-                <TabItem>sdas</TabItem>
+                <TabItem Header="Equipment" Name="tyEquipment">sdas</TabItem>
             </TabControl>
 
             <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
