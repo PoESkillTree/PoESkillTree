@@ -385,6 +385,7 @@
     <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyMiddle.png" />
     <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyRight.png" />
     <Resource Include="Images\EquipmentUI\SeparatorCurrency.png" />
+    <Resource Include="Images\EquipmentUI\Inventory.png" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
