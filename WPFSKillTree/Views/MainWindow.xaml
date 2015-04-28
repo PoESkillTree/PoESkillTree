@@ -299,23 +299,24 @@
         </Menu>
 
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
-        <Grid x:Name="BtnGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Width="314" Panel.ZIndex="99" >
-            <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
-            <TextBox HorizontalAlignment="Left" Margin="40,0,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="tbLevel_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
-            <ComboBox Height="26" HorizontalAlignment="Left" Margin="80,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="cbCharType_SelectionChanged" VerticalContentAlignment="Center">
-                <ComboBoxItem Content="Scion" Name="Scion"/>
-                <ComboBoxItem Content="Marauder" Name="Marauder"/>
-                <ComboBoxItem Content="Ranger" Name="Ranger"/>
-                <ComboBoxItem Content="Witch" Name="Witch" IsSelected="True" />
-                <ComboBoxItem Content="Duelist" Name="Duelist"/>
-                <ComboBoxItem Content="Templar" Name="Templar" />
-                <ComboBoxItem Content="Shadow" Name="Shadow"/>
-            </ComboBox>
-            <Label Content="Used:" Height="26" HorizontalAlignment="Left" Margin="182,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
-            <TextBox Height="26" Margin="218,0,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="32"/>
-
-            <Button Content="Reset" Height="26" HorizontalAlignment="Right" x:Name="btnReset" VerticalAlignment="Top" Width="40" Click="btnReset_Click" VerticalContentAlignment="Center" Margin="0,0,0,0"/>
-        </Grid>
+        <Grid x:Name="BtnGrid" Grid.Row="1" HorizontalAlignment="Center" Panel.ZIndex="99" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Level:" x:Name="lblLevel" />
+                <TextBox Margin="5,0,0,0" x:Name="tbLevel" TextChanged="tbLevel_TextChanged" MaxLength="3" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged">
+                    <ComboBoxItem Content="Scion" Name="Scion"/>
+                    <ComboBoxItem Content="Marauder" Name="Marauder"/>
+                    <ComboBoxItem Content="Ranger" Name="Ranger"/>
+                    <ComboBoxItem Content="Witch" Name="Witch" IsSelected="True" />
+                    <ComboBoxItem Content="Duelist" Name="Duelist"/>
+                    <ComboBoxItem Content="Templar" Name="Templar" />
+                    <ComboBoxItem Content="Shadow" Name="Shadow"/>
+                </ComboBox>
+                <Label Content="Used:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
+                <TextBox Margin="5,0,0,0" x:Name="tbUsedPoints" IsReadOnly="True" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <Button Content="Reset" x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0"/>
+            </StackPanel>
+       </Grid>
         <!-- grid row 1 - center part, tree and editors -->
 
         <Grid Grid.Row="2">
