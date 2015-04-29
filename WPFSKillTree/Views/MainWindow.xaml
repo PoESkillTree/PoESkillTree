@@ -344,7 +344,9 @@
                         <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </local:ZoomBorder>
                 </TabItem>
-                <TabItem Header="Equipment" Name="tyEquipment">sdas</TabItem>
+                <TabItem Header="Equipment" Name="tyEquipment">
+                    <local:Inventory HorizontalAlignment="Center" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}"/>
+                </TabItem>
             </TabControl>
 
             <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
