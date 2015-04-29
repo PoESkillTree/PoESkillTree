@@ -67,6 +67,17 @@ namespace POESKillTree.ViewModels.ItemAttribute
                 SetItemInSlot(value, Item.ItemSlot.Ring2);
             }
         }
+        public Item Amulet
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.Amulet);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.Amulet);
+            }
+        }
         public Item Helm
         {
             get
