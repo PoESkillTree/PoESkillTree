@@ -4,11 +4,174 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
 using Raven.Json.Linq;
+using System.Linq;
+using System;
 
 namespace POESKillTree.ViewModels.ItemAttribute
 {
-    public class ItemAttributes :INotifyPropertyChanged
+    public class ItemAttributes : INotifyPropertyChanged
     {
+        #region slotted items
+        public Item Armor
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.Armor);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.Armor);
+            }
+        }
+        public Item MainHand
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.MainHand);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.MainHand);
+            }
+        }
+        public Item OffHand
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.OffHand);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.OffHand);
+            }
+        }
+        public Item Ring
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.Ring);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.Ring);
+            }
+        }
+        public Item Ring2
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.Ring2);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.Ring2);
+            }
+        }
+        public Item Helm
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.Helm);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.Helm);
+            }
+        }
+        public Item Gloves
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.Gloves);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.Gloves);
+            }
+        }
+        public Item Boots
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.Boots);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.Boots);
+            }
+        }
+        public Item Gem
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.Gem);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.Gem);
+            }
+        }
+        public Item Belt
+        {
+            get
+            {
+                return GetItemInSlot(Item.ItemSlot.Belt);
+            }
+            set
+            {
+                SetItemInSlot(value, Item.ItemSlot.Belt);
+            }
+        }
+
+
+        public Item GetItemInSlot(Item.ItemSlot slot)
+        {
+            return _Equip.FirstOrDefault(i => i.Slot == slot);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="slot"></param>
+        /// <returns>true if item was set</returns>
+        public bool SetItemInSlot(Item value, Item.ItemSlot slot)
+        {
+            if (value == null)
+                return false;
+
+            if (value.Class == Item.ItemClass.Unequipable)
+                return false;
+
+            if (slot == Item.ItemSlot.Unequiped)
+                return false;
+
+            if ((int)value.Class != (int)slot && (slot == Item.ItemSlot.Ring2 && value.Class != Item.ItemClass.Ring))
+                return false;
+
+            RemoveItemFromSlot(slot);
+
+            value.Slot = slot;
+            _Equip.Add(value);
+            OnPropertyChanged(slot.ToString());
+            return true;
+        }
+
+
+        public Item RemoveItemFromSlot(Item.ItemSlot slot)
+        {
+            var itm = _Equip.FirstOrDefault(i => i.Slot == slot);
+            if (itm != null)
+                _Equip.Remove(itm);
+
+            OnPropertyChanged("Equip");
+            OnPropertyChanged(slot.ToString());
+
+            itm.Slot = Item.ItemSlot.Unequiped;
+            return itm;
+        }
+        #endregion
+
         private readonly List<Attribute> aList = new List<Attribute>();
         private Dictionary<string, List<float>> AgregatedAttributes;
         public ListCollectionView Attributes;
@@ -17,8 +180,8 @@ namespace POESKillTree.ViewModels.ItemAttribute
         public List<Item> Equip
         {
             get { return _Equip; }
-            set 
-            { 
+            set
+            {
                 _Equip = value;
                 OnPropertyChanged("Equip");
             }
@@ -31,7 +194,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             #region Readin
 
             RavenJObject jObject = RavenJObject.Parse(itemData);
-            foreach (RavenJObject jobj in (RavenJArray) jObject["items"])
+            foreach (RavenJObject jobj in (RavenJArray)jObject["items"])
             {
                 var html = jobj["x"].Value<string>();
                 //html =
@@ -40,43 +203,43 @@ namespace POESKillTree.ViewModels.ItemAttribute
                 var id = jobj["inventoryId"].Value<string>();
                 if (id == "BodyArmour")
                 {
-                    AddItem(jobj, Item.ItemClass.Armor);
+                    AddItem(jobj, Item.ItemClass.Armor, Item.ItemSlot.Armor);
                 }
                 if (id == "Ring")
                 {
-                    AddItem(jobj, Item.ItemClass.Ring);
+                    AddItem(jobj, Item.ItemClass.Ring, Item.ItemSlot.Ring);
                 }
                 if (id == "Ring2")
                 {
-                    AddItem(jobj, Item.ItemClass.Ring2);
+                    AddItem(jobj, Item.ItemClass.Ring, Item.ItemSlot.Ring2);
                 }
                 if (id == "Gloves")
                 {
-                    AddItem(jobj, Item.ItemClass.Gloves);
+                    AddItem(jobj, Item.ItemClass.Gloves, Item.ItemSlot.Gloves);
                 }
                 if (id == "Weapon")
                 {
-                    AddItem(jobj, Item.ItemClass.MainHand);
+                    AddItem(jobj, Item.ItemClass.MainHand, Item.ItemSlot.MainHand);
                 }
                 if (id == "Offhand")
                 {
-                    AddItem(jobj, Item.ItemClass.OffHand);
+                    AddItem(jobj, Item.ItemClass.OffHand, Item.ItemSlot.OffHand);
                 }
                 if (id == "Helm")
                 {
-                    AddItem(jobj, Item.ItemClass.Helm);
+                    AddItem(jobj, Item.ItemClass.Helm, Item.ItemSlot.Helm);
                 }
                 if (id == "Boots")
                 {
-                    AddItem(jobj, Item.ItemClass.Boots);
+                    AddItem(jobj, Item.ItemClass.Boots, Item.ItemSlot.Boots);
                 }
                 if (id == "Amulet")
                 {
-                    AddItem(jobj, Item.ItemClass.Amulet);
+                    AddItem(jobj, Item.ItemClass.Amulet, Item.ItemSlot.Amulet);
                 }
                 if (id == "Belt")
                 {
-                    AddItem(jobj, Item.ItemClass.Belt);
+                    AddItem(jobj, Item.ItemClass.Belt, Item.ItemSlot.Belt);
                 }
             }
 
@@ -161,10 +324,11 @@ namespace POESKillTree.ViewModels.ItemAttribute
             Attributes.Refresh();
         }
 
-        private void AddItem(RavenJObject val, Item.ItemClass iclass)
+        private void AddItem(RavenJObject val, Item.ItemClass iclass, Item.ItemSlot islot)
         {
             Item item = null;
             item = new Item(iclass, val);
+            item.Slot = islot;
             Equip.Add(item);
         }
 
@@ -176,7 +340,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             public static Regex Backreplace
             {
                 get { return _backreplace; }
-            } 
+            }
 
             private readonly string _group;
             private readonly List<float> _value;
@@ -249,11 +413,11 @@ namespace POESKillTree.ViewModels.ItemAttribute
             {
                 if (x is Attribute && y is Attribute)
                 {
-                    if (((Attribute) x).Group == "Independent" && !(((Attribute) y).Group == "Independent")) return +1;
-                    if (((Attribute) y).Group == "Independent" && !(((Attribute) x).Group == "Independent")) return -1;
+                    if (((Attribute)x).Group == "Independent" && !(((Attribute)y).Group == "Independent")) return +1;
+                    if (((Attribute)y).Group == "Independent" && !(((Attribute)x).Group == "Independent")) return -1;
                     return
-                        numberfilter.Replace(((Attribute) y).Group, "")
-                            .CompareTo(numberfilter.Replace(((Attribute) y).Group, ""));
+                        numberfilter.Replace(((Attribute)y).Group, "")
+                            .CompareTo(numberfilter.Replace(((Attribute)y).Group, ""));
                 }
                 return 0;
             }

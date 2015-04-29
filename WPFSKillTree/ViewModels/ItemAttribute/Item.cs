@@ -19,19 +19,41 @@ namespace POESKillTree.ViewModels.ItemAttribute
 
     public class Item : INotifyPropertyChanged
     {
+        /// <summary>
+        /// itemclass and itemslot values with same name must have same value
+        /// </summary>
         public enum ItemClass
         {
-            Armor,
-            MainHand,
-            OffHand,
-            Ring,
-            Ring2,
-            Amulet,
-            Helm,
-            Gloves,
-            Boots,
-            Gem,
-            Belt,
+            Unequipable = 0,
+            Armor = 1,
+            MainHand = 2,
+            OffHand = 3,
+            Ring = 4,
+            Amulet = 6,
+            Helm = 7,
+            Gloves = 8,
+            Boots = 9,
+            Gem = 10,
+            Belt = 11,
+        }
+
+        /// <summary>
+        /// itemclass and itemslot values with same name must have same value
+        /// </summary>
+        public enum ItemSlot
+        {
+            Unequiped = 0,
+            Armor = 1,
+            MainHand = 2,
+            OffHand = 3,
+            Ring = 4,
+            Ring2 = 5,
+            Amulet = 6,
+            Helm = 7,
+            Gloves = 8,
+            Boots = 9,
+            Gem = 10,
+            Belt = 11,
         }
 
         private static Regex colorcleaner = new Regex("\\<.+?\\>");
@@ -39,7 +61,23 @@ namespace POESKillTree.ViewModels.ItemAttribute
         private static readonly Regex numberfilter2 = new Regex(@"%\d|[0-9]*\.?[0-9]+");
 
         public Dictionary<string, List<float>> Attributes;
-        public ItemClass Class;
+        private ItemClass _Class;
+
+        public ItemClass Class
+        {
+            get { return _Class; }
+            set { _Class = value; OnPropertyChanged("Class"); }
+        }
+
+        private ItemSlot _Slot;
+
+        public ItemSlot Slot
+        {
+            get { return _Slot; }
+            set { _Slot = value; OnPropertyChanged("Slot"); }
+        }
+
+
         public List<Item> Gems;
         public List<string> Keywords;
 
