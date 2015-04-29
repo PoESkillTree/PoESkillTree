@@ -167,7 +167,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
         // Returns true if property/mod is local, false otherwise.
         private static bool DetermineLocal(Item item, string attr)
         {
-            return (item.Class != Item.ItemClass.Amulet && item.Class != Item.ItemClass.Ring && item.Class != Item.ItemClass.Ring2  &&
+            return (item.Class != Item.ItemClass.Amulet && item.Class != Item.ItemClass.Ring &&
                     item.Class != Item.ItemClass.Belt)
                    && ((attr.Contains("Armour") && !attr.EndsWith("Armour against Projectiles"))
                        || attr.Contains("Evasion")
