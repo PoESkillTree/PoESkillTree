@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="POESKillTree.Controls.ItemVisualizer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cont="clr-namespace:POESKillTree.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="control"
+             DataContext="{Binding Item, ElementName=control}" 
+             PreviewMouseMove="control_PreviewMouseMove"
+             >
+    <UserControl.Style>
+        <Style TargetType="{x:Type UserControl}">
+            <Style.Setters>
+                <Setter Property="Background" Value="#63181895"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#99181895" />
+                </Trigger>
+                <DataTrigger Binding="{Binding Item, ElementName=control}" Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+    <Grid>
+        <Popup AllowsTransparency="True" Name="tooltip" IsOpen="{Binding IsMouseOver,ElementName=control, Mode=OneWay}" Placement="RelativePoint" PlacementTarget="{Binding ElementName=control}" >
+            <cont:ItemTooltip Item="{Binding Item, ElementName=control}"/>
+        </Popup>
+    </Grid>
+</UserControl>

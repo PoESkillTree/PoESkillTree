@@ -141,8 +141,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\Inventory.xaml.cs">
+      <DependentUpon>Inventory.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controls\ItemTooltip.xaml.cs">
       <DependentUpon>ItemTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemVisualizer.xaml.cs">
+      <DependentUpon>ItemVisualizer.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\MenuItemExtensions.cs" />
     <Compile Include="Model\AttributeSet.cs" />
@@ -222,7 +230,15 @@
       <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Controls\Inventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ItemTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ItemVisualizer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
