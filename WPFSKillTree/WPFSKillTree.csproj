@@ -402,6 +402,16 @@
     <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyRight.png" />
     <Resource Include="Images\EquipmentUI\SeparatorCurrency.png" />
     <Resource Include="Images\EquipmentUI\Inventory.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\2HWeapon.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Amulet.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Armor.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Belt.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Boots.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Gloves.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Helm.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\MainHand.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OffHand.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Ring.png" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

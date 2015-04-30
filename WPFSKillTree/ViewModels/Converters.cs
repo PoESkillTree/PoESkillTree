@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.ViewModels.ItemAttribute;
 using System.Text.RegularExpressions;
+using System.Windows.Media.Imaging;
 
 namespace POESKillTree.ViewModels
 {
@@ -119,7 +120,7 @@ namespace POESKillTree.ViewModels
                 SolidColorBrush clr = GetColoringFor(mod, i);
 
                 if ((istring == "-" || istring == "/" || istring == "+") && parameter != null)
-                        r.Foreground = clr;
+                    r.Foreground = clr;
 
                 if (parameter != null && !string.IsNullOrEmpty(istring) && istring[0] == '%')
                     r.Foreground = GetColoringFor(mod, i - 1);
@@ -147,7 +148,7 @@ namespace POESKillTree.ViewModels
 
         private static SolidColorBrush GetColoringFor(ItemMod mod, int i)
         {
-            if (mod.ValueColor.Count > i && i >=0)
+            if (mod.ValueColor.Count > i && i >= 0)
                 switch (mod.ValueColor[i])
                 {
                     case ItemMod.ValueColoring.LocallyAffected:
@@ -168,4 +169,41 @@ namespace POESKillTree.ViewModels
             throw new NotImplementedException();
         }
     }
+
+    [ValueConversion(typeof(Item), typeof(ImageSource))]
+    class ItemToImageConverter : IValueConverter
+    {
+        static Dictionary<Item.ItemClass, BitmapImage> cache = new Dictionary<Item.ItemClass, BitmapImage>();
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var itm = value as Item;
+            BitmapImage img = null;
+            if (itm != null)
+            {
+                lock (cache)//i am not entirely sure that WPF isnt using converter concurently
+                {
+                    if (!cache.TryGetValue(itm.Class, out img))
+                    {
+                        img = new BitmapImage();
+
+                        //default
+
+                        img.BeginInit();
+                        img.UriSource = new Uri("/images/EquipmentUI/ItemDefaults/" + itm.Class + ".png", UriKind.Relative);
+                        img.EndInit();
+
+                        cache.Add(itm.Class, img);
+                    }
+                }
+
+            }
+            return img;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 }
