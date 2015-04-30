@@ -195,11 +195,37 @@ namespace POESKillTree.ViewModels.ItemAttribute
         }
 
 
+
+        public RavenJObject JSONBase
+        {
+            get;
+            set;
+        }
+
+        public Item(RavenJObject val)
+        {
+            var cls = ItemClass.Unequipable;
+            Init(cls, val);
+            //TODO: class decoder
+        }
+
         public Item(ItemClass iClass, RavenJObject val)
         {
+            Init(iClass, val);
+        }
+
+        private void Init(ItemClass iClass, RavenJObject val)
+        {
+            JSONBase = val;
+
             Attributes = new Dictionary<string, List<float>>();
             Mods = new List<ItemMod>();
             Class = iClass;
+
+            W = val["w"].Value<int>();
+            H = val["h"].Value<int>();
+            X = val["x"].Value<int>();
+            Y = val["y"].Value<int>();
 
             NameLine = Name = val["name"].Value<string>();
             if (Name == "")
@@ -243,10 +269,10 @@ namespace POESKillTree.ViewModels.ItemAttribute
 
 
                     mod.ValueColor = ((RavenJArray)obj["values"]).Select(a =>
-                        {
-                            var floats = ((RavenJArray)a)[0].Value<string>().Split('-');
-                            return floats.Select(f => (ItemMod.ValueColoring)((RavenJArray)a)[1].Value<int>());
-                        }).SelectMany(c => c).ToList();
+                    {
+                        var floats = ((RavenJArray)a)[0].Value<string>().Split('-');
+                        return floats.Select(f => (ItemMod.ValueColoring)((RavenJArray)a)[1].Value<int>());
+                    }).SelectMany(c => c).ToList();
 
                     Attributes.Add(cs, values);
                 }
@@ -371,5 +397,37 @@ namespace POESKillTree.ViewModels.ItemAttribute
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
 
+
+        private int _x;
+
+        public int X
+        {
+            get { return _x; }
+            set 
+            { 
+                _x = value;
+                if (JSONBase != null)
+                    JSONBase["x"] = value;
+                OnPropertyChanged("X");
+            }
+        }
+
+        private int _y;
+
+        public int Y
+        {
+            get { return _y; }
+            set 
+            { 
+                _y = value;
+                if (JSONBase != null)
+                    JSONBase["y"] = value;
+                OnPropertyChanged("Y");
+            }
+        }
+
+
+        public int W { get; set; }
+        public int H { get; set; }
     }
 }

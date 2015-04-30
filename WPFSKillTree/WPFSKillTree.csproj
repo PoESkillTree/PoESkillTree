@@ -153,6 +153,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\MenuItemExtensions.cs" />
+    <Compile Include="Controls\Stash.xaml.cs">
+      <DependentUpon>Stash.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Notifier.cs" />
     <Compile Include="Model\Options.cs" />
@@ -241,6 +244,10 @@
     <Page Include="Controls\ItemVisualizer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Stash.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

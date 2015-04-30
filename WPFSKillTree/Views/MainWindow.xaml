@@ -345,7 +345,14 @@
                     </local:ZoomBorder>
                 </TabItem>
                 <TabItem Header="Equipment" Name="tyEquipment">
-                    <local:Inventory HorizontalAlignment="Center" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
+                        <local:Stash Grid.Column="1" Items="{Binding PersistentData.Stash, ElementName=window}"></local:Stash>
+                    </Grid>
                 </TabItem>
             </TabControl>
 
