@@ -14,10 +14,11 @@ namespace POESKillTree.Views
         {
             InitializeComponent();
         }
-        public FormChooseBuildName(string characterName, string itemData)
+        public FormChooseBuildName(string characterName, string accountName, string itemData)
         {
             InitializeComponent();
             txtCharacterName.Text = characterName;
+            txtAccountName.Text = accountName;
             txtItemData.Text = itemData;
         }
         public FormChooseBuildName(PoEBuild selectedBuild)
@@ -26,6 +27,7 @@ namespace POESKillTree.Views
             txtName.Text = selectedBuild.Name;
             txtName2.Text = selectedBuild.Note;
             txtCharacterName.Text = selectedBuild.CharacterName;
+            txtAccountName.Text = selectedBuild.AccountName;
             txtItemData.Text = selectedBuild.ItemData;
             lblLastUpdated.Content = "Last updated: " +
                                      (selectedBuild.LastUpdated == DateTime.MinValue ? "Not Available" : selectedBuild.LastUpdated.ToString());
@@ -48,6 +50,10 @@ namespace POESKillTree.Views
         public string GetCharacterName()
         {
             return txtCharacterName.Text;
+        }
+        public string GetAccountName()
+        {
+            return txtAccountName.Text;
         }
         public string GetItemData()
         {

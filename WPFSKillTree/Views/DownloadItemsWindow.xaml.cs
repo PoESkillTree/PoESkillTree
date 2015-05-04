@@ -18,21 +18,26 @@ namespace POESKillTree.Views
             InitializeComponent();
         }
 
-        public DownloadItemsWindow(string characterName)
+        public DownloadItemsWindow(string characterName, string accountName)
         {
             InitializeComponent();
             tbCharName.Text = string.IsNullOrEmpty(characterName) ? "YourCharacterName" : characterName;
+            tbAccName.Text = string.IsNullOrEmpty(accountName) ? "YourAccountName" : accountName;
         }
 
         public string GetCharacterName()
         {
             return tbCharName.Text;
         }
+        public string GetAccountName()
+        {
+            return tbAccName.Text;
+        }
 
         private void tbCharName_TextChanged(object sender, TextChangedEventArgs e)
         {
-                tbCharLink.Text = "https://www.pathofexile.com/character-window/get-items?character=" + tbCharName.Text;
-                tbTreeLink.Text = "http://www.pathofexile.com/character-window/get-passive-skills?reqData=0&character=" + tbCharName.Text;
+                tbCharLink.Text = "https://www.pathofexile.com/character-window/get-items?character=" + tbCharName.Text + "&accountName=" + tbAccName.Text;
+                tbTreeLink.Text = "http://www.pathofexile.com/character-window/get-passive-skills?reqData=0&character=" + tbCharName.Text + "&accountName=" + tbAccName.Text;
         }
 
         private void btnPopupOpenBrowser_Click(object sender, RoutedEventArgs e)

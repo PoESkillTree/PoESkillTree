@@ -7,6 +7,7 @@ namespace POESKillTree.ViewModels
     {
         public string Name { get; set; }
         public string CharacterName { get; set; }
+        public string AccountName { get; set; }
         public string Level { get; set; }
         public string Class { get; set; }
         public string PointsUsed { get; set; }
@@ -47,6 +48,7 @@ namespace POESKillTree.ViewModels
             {
                 Name = build.Name,
                 CharacterName = build.CharacterName,
+                AccountName = build.AccountName,
                 Level = build.Level,
                 Class = build.Class,
                 PointsUsed = build.PointsUsed,

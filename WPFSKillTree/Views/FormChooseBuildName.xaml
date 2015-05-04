@@ -14,6 +14,8 @@
             <StackPanel Margin="0">
                 <Label Content="Character name:" HorizontalAlignment="Left" Margin="4,4,4,2"/>
                 <TextBox x:Name="txtCharacterName" HorizontalAlignment="Stretch" Height="23" Margin="4,2,4,4" MaxLength="24" />
+                <Label Content="Account name:" HorizontalAlignment="Left" Margin="4,4,4,2"/>
+                <TextBox x:Name="txtAccountName" HorizontalAlignment="Stretch" Height="23" Margin="4,2,4,4" MaxLength="24" />
                 <Label Content="Items data:" HorizontalAlignment="Left" Margin="4,4,4,2" />
                 <TextBox x:Name="txtItemData" HorizontalAlignment="Stretch" Margin="4,2,4,4" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MaxLines="10" AcceptsTab="True" AcceptsReturn="True"/>
             </StackPanel>
