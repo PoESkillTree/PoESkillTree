@@ -4,9 +4,11 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       Title="Fetching skilltree assets" Height="96" Width="500" ResizeMode="NoResize" 
                       WindowStartupLocation="CenterScreen" WindowStyle="None" 
-                      ShowCloseButton="False" ShowTitleBar="False">
+                      ShowCloseButton="False" ShowTitleBar="False"
+                      Name="control"
+                      >
     <Grid Margin="0,0,0,0">
-        <ProgressBar x:Name="progressBar1" BorderThickness="0" Margin="0" Height="96" Value="0" Maximum="100" Background="{DynamicResource WhiteColorBrush}"/>
+        <ProgressBar x:Name="progressBar1" BorderThickness="0" Margin="0" Height="96" Value="{Binding Progress,ElementName=control}" Maximum="{Binding MaxProgress,ElementName=control}" Background="{DynamicResource WhiteColorBrush}"/>
         <TextBlock Margin="0" Text="Fetching SkillTree Assets" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25"></TextBlock>
     </Grid>
 </controls:MetroWindow>

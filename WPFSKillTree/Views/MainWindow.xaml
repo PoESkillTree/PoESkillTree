@@ -266,6 +266,12 @@
                         <ContentControl Template="{StaticResource RedownloadIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
+                
+                <MenuItem Header="_Redownload Item Assets" Click="Menu_RedownloadItemAssets">
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource RedownloadIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Help ">
                 <MenuItem Header="_Links ">
@@ -351,7 +357,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
-                        <local:Stash Grid.Column="1" Items="{Binding PersistentData.Stash, ElementName=window}"></local:Stash>
+                        <local:Stash Grid.Column="1" Width="580" HorizontalAlignment="Left" Items="{Binding PersistentData.Stash, ElementName=window}"></local:Stash>
                     </Grid>
                 </TabItem>
             </TabControl>

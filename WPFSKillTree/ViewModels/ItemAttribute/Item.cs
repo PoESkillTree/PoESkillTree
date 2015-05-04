@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using Raven.Json.Linq;
 using System.ComponentModel;
 using System.Linq;
+using System;
 
 namespace POESKillTree.ViewModels.ItemAttribute
 {
@@ -22,38 +23,43 @@ namespace POESKillTree.ViewModels.ItemAttribute
         /// <summary>
         /// itemclass and itemslot values with same name must have same value
         /// </summary>
+        [Flags]
         public enum ItemClass
         {
-            Unequipable = 0,
-            Armor = 1,
-            MainHand = 2,
-            OffHand = 3,
-            Ring = 4,
-            Amulet = 6,
-            Helm = 7,
-            Gloves = 8,
-            Boots = 9,
-            Gem = 10,
-            Belt = 11,
+            Unequipable = 0x0,
+            Armor = 0x1,
+            MainHand = 0x2,
+            OffHand = 0x4,
+            OneHand = MainHand | OffHand,
+            Ring = 0x8,
+            Amulet = 0x20,
+            Helm = 0x40,
+            Gloves = 0x80,
+            Boots = 0x100,
+            Gem = 0x200,
+            Belt = 0x400,
+            TwoHand = 0x800 | OneHand,
         }
 
         /// <summary>
         /// itemclass and itemslot values with same name must have same value
         /// </summary>
+        [Flags]
         public enum ItemSlot
         {
-            Unequiped = 0,
-            Armor = 1,
-            MainHand = 2,
-            OffHand = 3,
-            Ring = 4,
-            Ring2 = 5,
-            Amulet = 6,
-            Helm = 7,
-            Gloves = 8,
-            Boots = 9,
-            Gem = 10,
-            Belt = 11,
+            Unequipable = 0x0,
+            Armor = 0x1,
+            MainHand = 0x2,
+            OffHand = 0x4,
+            Ring = 0x8,
+            Ring2 = 0x10,
+            Amulet = 0x20,
+            Helm = 0x40,
+            Gloves = 0x80,
+            Boots = 0x100,
+            Gem = 0x200,
+            Belt = 0x400,
+            TwoHand = 0x800,
         }
 
         private static Regex colorcleaner = new Regex("\\<.+?\\>");

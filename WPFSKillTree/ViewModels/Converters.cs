@@ -9,6 +9,7 @@ using System.Linq;
 using POESKillTree.ViewModels.ItemAttribute;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace POESKillTree.ViewModels
 {
@@ -173,16 +174,41 @@ namespace POESKillTree.ViewModels
     [ValueConversion(typeof(Item), typeof(ImageSource))]
     class ItemToImageConverter : IValueConverter
     {
-        static Dictionary<Item.ItemClass, BitmapImage> cache = new Dictionary<Item.ItemClass, BitmapImage>();
+        static Dictionary<Item.ItemClass, BitmapImage> DefaultCache = new Dictionary<Item.ItemClass, BitmapImage>();
+        static Dictionary<string, BitmapImage> TypeCache = new Dictionary<string, BitmapImage>();
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var itm = value as Item;
             BitmapImage img = null;
             if (itm != null)
             {
-                lock (cache)//i am not entirely sure that WPF isnt using converter concurently
+
+                lock (TypeCache)
                 {
-                    if (!cache.TryGetValue(itm.Class, out img))
+                    if (!TypeCache.TryGetValue(itm.Type, out img))
+                    {
+                        //default
+                        var imgfile = new FileInfo(Path.Combine("./Data/Equipment/Assets/", itm.Type + ".png"));
+
+                        if (imgfile.Exists)
+                        {
+
+                            img = new BitmapImage();
+                            img.BeginInit();
+
+                            img.UriSource = new Uri(imgfile.FullName, UriKind.Absolute);
+                            img.EndInit();
+
+                            TypeCache.Add(itm.Type, img);
+                            return img;
+                        }
+                    }else
+                        return img;
+                }
+
+                lock (DefaultCache)//i am not entirely sure that WPF isnt using converter concurently
+                {
+                    if (!DefaultCache.TryGetValue(itm.Class, out img))
                     {
                         img = new BitmapImage();
 
@@ -192,7 +218,7 @@ namespace POESKillTree.ViewModels
                         img.UriSource = new Uri("/images/EquipmentUI/ItemDefaults/" + itm.Class + ".png", UriKind.Relative);
                         img.EndInit();
 
-                        cache.Add(itm.Class, img);
+                        DefaultCache.Add(itm.Class, img);
                     }
                 }
 

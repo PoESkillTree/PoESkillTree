@@ -154,7 +154,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             if (value.Class == Item.ItemClass.Unequipable)
                 return false;
 
-            if (slot == Item.ItemSlot.Unequiped)
+            if (slot == Item.ItemSlot.Unequipable)
                 return false;
 
             if ((int)value.Class != (int)slot && (slot == Item.ItemSlot.Ring2 && value.Class != Item.ItemClass.Ring))
@@ -178,7 +178,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             OnPropertyChanged("Equip");
             OnPropertyChanged(slot.ToString());
 
-            itm.Slot = Item.ItemSlot.Unequiped;
+            itm.Slot = Item.ItemSlot.Unequipable;
             return itm;
         }
         #endregion

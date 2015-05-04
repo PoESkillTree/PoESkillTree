@@ -77,8 +77,8 @@ namespace POESKillTree.Views
         public ItemAttributes ItemAttributes
         {
             get { return _itemAttributes; }
-            private set 
-            { 
+            private set
+            {
                 _itemAttributes = value;
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("ItemAttributes"));
@@ -266,7 +266,7 @@ namespace POESKillTree.Views
 
         private void StartLoadingWindow()
         {
-            _loadingWindow = new LoadingWindow();
+            _loadingWindow = new LoadingWindow(){ Owner = this };
             _loadingWindow.Show();
             Thread.Sleep(400);
             _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
@@ -274,8 +274,9 @@ namespace POESKillTree.Views
 
         private void UpdateLoadingWindow(double c, double max)
         {
-            _loadingWindow.progressBar1.Maximum = max;
-            _loadingWindow.progressBar1.Value = c;
+            _loadingWindow.MaxProgress = max;
+            _loadingWindow.Progress = c;
+            _loadingWindow.UpdateLayout();
             _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
             if (Equals(c, max))
                 Thread.Sleep(100);
@@ -351,7 +352,7 @@ namespace POESKillTree.Views
                 recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
             }
         }
-        
+
         private void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
             var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName) { Owner = this };
@@ -942,7 +943,7 @@ namespace POESKillTree.Views
                     _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
                     Tree.DrawPath(_prePath);
                 }
-                
+
                 var tooltip = node.Name + "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
                 if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
                 {
@@ -954,7 +955,7 @@ namespace POESKillTree.Views
                     if (_prePath != null)
                     {
                         sp.Children.Add(new Separator());
-                        sp.Children.Add(new TextBlock {Text = "Points to skill node: " + _prePath.Count});
+                        sp.Children.Add(new TextBlock { Text = "Points to skill node: " + _prePath.Count });
                     }
 
                     _sToolTip.Content = sp;
@@ -1045,7 +1046,7 @@ namespace POESKillTree.Views
 
             foreach (PoEBuild item in lvSavedBuilds.Items)
             {
-                item.Visible = (className.Equals("All") || item.Class.Equals(className)) && 
+                item.Visible = (className.Equals("All") || item.Class.Equals(className)) &&
                     (item.Name.ToLower().Contains(filterText) || item.Note.ToLower().Contains(filterText));
             }
 
@@ -1814,6 +1815,112 @@ namespace POESKillTree.Views
         private void ToggleTreeComparison_Click(object sender, RoutedEventArgs e)
         {
             lvSavedBuilds_SelectionChanged(null, null);
+        }
+
+        private void Menu_RedownloadItemAssets(object sender, RoutedEventArgs e)
+        {
+            const string sMessageBoxText = "This will delete your data folder and Redownload all the Item assets.\nThis requires an internet connection!\n\nDo you want to proced?";
+            const string sCaption = "Redownload Item Assets - Warning";
+
+            var rsltMessageBox = MessageBox.Show(this, sMessageBoxText, sCaption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    if (Directory.Exists("Data"))
+                    {
+                        try
+                        {
+                            if (Directory.Exists("DataBackup"))
+                                Directory.Delete("DataBackup", true);
+                            Directory.Move("Data", "DataBackup");
+
+
+                            var bases = new List<ItemBase>();
+                            var images = new List<Tuple<string, string>>();
+
+                            Directory.CreateDirectory(@"Data\Equipment");
+
+                            StartLoadingWindow();
+                            UpdateLoadingWindow(0, 3);
+                            ItemAssetDownloader.ExtractJewelry(bases, images);
+                            UpdateLoadingWindow(1, 3);
+                            ItemAssetDownloader.ExtractArmors(bases, images);
+                            UpdateLoadingWindow(2, 3);
+                            ItemAssetDownloader.ExtractWeapons(bases, images);
+                            UpdateLoadingWindow(3, 3);
+
+                            new System.Xml.Linq.XElement("ItemBaseList", bases.Select(b => b.Serialize())).Save(System.IO.Path.Combine(@"Data\Equipment", "Itemlist.xml"));
+
+                            var imgroups = images.GroupBy(t => t.Item2).ToArray();
+
+                            UpdateLoadingWindow(0, imgroups.Length);
+
+                            Directory.CreateDirectory(@"Data\Equipment\Assets");
+                            using (var client = new WebClient())
+                            {
+                                for (int i = 0; i < imgroups.Length; i++)
+                                {
+                                    using (var ms = new MemoryStream(client.DownloadData(imgroups[i].Key)))
+                                    {
+                                        PngBitmapDecoder dec = new PngBitmapDecoder(ms, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+
+                                        var image = dec.Frames[0];
+                                        var cropped = new CroppedBitmap(image, new Int32Rect(4, 4, image.PixelWidth - 8, image.PixelHeight - 8));
+                                        PngBitmapEncoder encoder = new PngBitmapEncoder();
+                                        encoder.Frames.Add(BitmapFrame.Create(cropped));
+
+                                        using (var m = new MemoryStream())
+                                        {   encoder.Save(m);
+
+                                            foreach (var item in imgroups[i])
+                                            {
+                                                using (var f = File.Create(System.IO.Path.Combine(@"Data\Equipment\Assets", item.Item1 + ".png")))
+                                                {
+                                                    m.Seek(0, SeekOrigin.Begin);
+                                                    m.CopyTo(f);
+                                                }
+                                                
+                                            }
+                                        }
+
+                                        UpdateLoadingWindow(i + 1, imgroups.Length);
+                                    }
+                                }
+                            }
+
+
+                            Directory.Move(@"DataBackup\Assets", @"Data\Assets");
+
+                            foreach (var file in new DirectoryInfo(@"DataBackup").GetFiles())
+                                file.CopyTo(System.IO.Path.Combine(@"Data",file.Name));
+
+                            if (Directory.Exists("DataBackup"))
+                                Directory.Delete("DataBackup", true);
+
+                            CloseLoadingWindow();
+                        }
+                        catch (Exception ex)
+                        {
+                            if (Directory.Exists("Data"))
+                                Directory.Delete("Data", true);
+                            try
+                            {
+                                CloseLoadingWindow();
+                            }
+                            catch (Exception)
+                            {
+                                //Nothing
+                            }
+                            Directory.Move("DataBackup", "Data");
+                            MessageBox.Show(this, ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    break;
+
+                case MessageBoxResult.No:
+                    //Do nothing
+                    break;
+            }
         }
 
     }
