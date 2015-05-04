@@ -847,6 +847,7 @@ namespace POESKillTree.Views
         private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
             Point p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
+            Size size = zbSkillTreeBackground.Child.DesiredSize;
             var v = new Vector2D(p.X, p.Y);
 
             v = v * _multransform + _addtransform;
@@ -889,6 +890,16 @@ namespace POESKillTree.Views
                             if (_toRemove != null)
                                 Tree.DrawRefundPreview(_toRemove);
                         }
+                    }
+                }
+            }
+            else
+            {
+                if (p.X < 0 || p.Y < 0 || p.X > size.Width || p.Y > size.Height)
+                {
+                    if (_lastMouseButton == MouseButton.Right)
+                    {
+                        zbSkillTreeBackground.Reset();
                     }
                 }
             }
