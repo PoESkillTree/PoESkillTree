@@ -5,6 +5,7 @@ using Raven.Json.Linq;
 using System.ComponentModel;
 using System.Linq;
 using System;
+using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.ItemAttribute
 {
@@ -26,7 +27,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
         [Flags]
         public enum ItemClass
         {
-            Unequipable = 0x0,
+            Invalid = 0x0,
             Armor = 0x1,
             MainHand = 0x2,
             OffHand = 0x4,
@@ -39,6 +40,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             Gem = 0x200,
             Belt = 0x400,
             TwoHand = 0x800 | OneHand,
+            Unequipable = 0x800000,
         }
 
         /// <summary>
@@ -212,7 +214,16 @@ namespace POESKillTree.ViewModels.ItemAttribute
         {
             var cls = ItemClass.Unequipable;
             Init(cls, val);
-            //TODO: class decoder
+
+            if (this.Frame < FrameType.Rare)
+            {
+                this.Type = ItemBase.ItemTypeFromTypeline(this.Type);
+            }
+
+            if(cls == ItemClass.Invalid || cls == ItemClass.Unequipable)
+            {
+                this.Class = ItemBase.ClassForItemType(this.Type);
+            }
         }
 
         public Item(ItemClass iClass, RavenJObject val)

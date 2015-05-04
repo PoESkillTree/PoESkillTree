@@ -148,6 +148,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
         /// <returns>true if item was set</returns>
         public bool SetItemInSlot(Item value, Item.ItemSlot slot)
         {
+            //TODO: this is broken
             if (value == null)
                 return false;
 
@@ -167,7 +168,6 @@ namespace POESKillTree.ViewModels.ItemAttribute
             OnPropertyChanged(slot.ToString());
             return true;
         }
-
 
         public Item RemoveItemFromSlot(Item.ItemSlot slot)
         {
