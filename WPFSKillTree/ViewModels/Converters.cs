@@ -195,7 +195,7 @@ namespace POESKillTree.ViewModels
 
                             img = new BitmapImage();
                             img.BeginInit();
-
+                            img.CacheOption = BitmapCacheOption.OnLoad;
                             img.UriSource = new Uri(imgfile.FullName, UriKind.Absolute);
                             img.EndInit();
 
