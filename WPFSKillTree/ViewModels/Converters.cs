@@ -6,10 +6,10 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Collections.Generic;
 using System.Linq;
-using POESKillTree.ViewModels.ItemAttribute;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 using System.IO;
+using POESKillTree.ViewModels.Items;
 
 namespace POESKillTree.ViewModels
 {
@@ -174,7 +174,7 @@ namespace POESKillTree.ViewModels
     [ValueConversion(typeof(Item), typeof(ImageSource))]
     class ItemToImageConverter : IValueConverter
     {
-        static Dictionary<Item.ItemClass, BitmapImage> DefaultCache = new Dictionary<Item.ItemClass, BitmapImage>();
+        static Dictionary<ItemClass, BitmapImage> DefaultCache = new Dictionary<ItemClass, BitmapImage>();
         static Dictionary<string, BitmapImage> TypeCache = new Dictionary<string, BitmapImage>();
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

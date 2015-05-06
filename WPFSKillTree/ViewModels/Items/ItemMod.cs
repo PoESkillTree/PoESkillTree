@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Linq;
+using POESKillTree.ViewModels.Items;
 
-namespace POESKillTree.ViewModels.ItemAttribute
+namespace POESKillTree.ViewModels.Items
 {
     public class ItemMod
     {
@@ -30,13 +31,11 @@ namespace POESKillTree.ViewModels.ItemAttribute
         public List<ValueColoring> ValueColor = new List<ValueColoring>();
 
         public bool isLocal = false;
-        private Item.ItemClass itemclass;
-
-
+        private ItemClass itemclass;
 
         public static ItemMod CreateMod(Item item, RavenJObject obj, Regex numberfilter)
         {
-            Item.ItemClass ic = item.Class;
+            ItemClass ic = item.Class;
             var mod = new ItemMod();
 
             int dmode = (obj.ContainsKey("displayMode")) ? obj["displayMode"].Value<int>() : 0;
@@ -99,7 +98,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
 
         public static ItemMod CreateMod(Item item, string attribute, Regex numberfilter)
         {
-            Item.ItemClass ic = item.Class;
+            ItemClass ic = item.Class;
             var mod = new ItemMod();
             var values = new List<float>();
             foreach (Match match in numberfilter.Matches(attribute))
@@ -121,7 +120,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
 
         public static List<ItemMod> CreateMods(Item item, string attribute, Regex numberfilter)
         {
-            Item.ItemClass ic = item.Class;
+            ItemClass ic = item.Class;
             var mods = new List<ItemMod>();
             var values = new List<float>();
 
@@ -167,15 +166,15 @@ namespace POESKillTree.ViewModels.ItemAttribute
         // Returns true if property/mod is local, false otherwise.
         private static bool DetermineLocal(Item item, string attr)
         {
-            return (item.Class != Item.ItemClass.Amulet && item.Class != Item.ItemClass.Ring &&
-                    item.Class != Item.ItemClass.Belt)
+            return (item.Class != ItemClass.Amulet && item.Class != ItemClass.Ring &&
+                    item.Class != ItemClass.Belt)
                    && ((attr.Contains("Armour") && !attr.EndsWith("Armour against Projectiles"))
                        || attr.Contains("Evasion")
                        || (attr.Contains("Energy Shield") && !attr.EndsWith("Energy Shield Recharge"))
                        || attr.Contains("Weapon Class")
                        || attr.Contains("Critical Strike Chance with this Weapon")
                        || attr.Contains("Critical Strike Damage Multiplier with this Weapon"))
-                   || (item.Class == Item.ItemClass.MainHand || item.Class == Item.ItemClass.OffHand)
+                   || (item.Class == ItemClass.MainHand || item.Class == ItemClass.OffHand)
                       && item.Keywords != null // Only weapons have keyword.
                       && (attr == "#% increased Attack Speed"
                           || attr == "#% increased Accuracy Rating"

@@ -1,4 +1,4 @@
-﻿using POESKillTree.ViewModels.ItemAttribute;
+﻿using POESKillTree.ViewModels.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;

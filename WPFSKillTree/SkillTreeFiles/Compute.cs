@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.ItemAttribute;
+using POESKillTree.ViewModels.Items;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -1470,7 +1470,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 if (item != null)
                 {
-                    Hand = item.Class == Item.ItemClass.MainHand ? WeaponHand.Main : WeaponHand.Off;
+                    Hand = item.Class == ItemClass.MainHand ? WeaponHand.Main : WeaponHand.Off;
                     Item = item;
 
                     // Get weapon type (damage nature).
@@ -2252,8 +2252,8 @@ namespace POESKillTree.SkillTreeFiles
         {
             Items = itemAttrs.Equip;
 
-            MainHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.MainHand));
-            OffHand = new Weapon(Items.Find(i => i.Class == Item.ItemClass.OffHand));
+            MainHand = new Weapon(Items.Find(i => i.Class == ItemClass.MainHand));
+            OffHand = new Weapon(Items.Find(i => i.Class == ItemClass.OffHand));
 
             // If main hand weapon has Counts as Dual Wielding modifier, then clone weapon to off hand.
             // @see http://pathofexile.gamepedia.com/Wings_of_Entropy

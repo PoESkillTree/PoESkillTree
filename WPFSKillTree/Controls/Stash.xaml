@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cont="clr-namespace:POESKillTree.Controls"
-             xmlns:items ="clr-namespace:POESKillTree.ViewModels.ItemAttribute"
+             xmlns:items ="clr-namespace:POESKillTree.ViewModels.Items"
              mc:Ignorable="d" 
              d:DesignHeight="351" d:DesignWidth="339"
              Name="control"

@@ -6,8 +6,9 @@ using System.Windows.Data;
 using Raven.Json.Linq;
 using System.Linq;
 using System;
+using POESKillTree.ViewModels.Items;
 
-namespace POESKillTree.ViewModels.ItemAttribute
+namespace POESKillTree.ViewModels.Items
 {
     public class ItemAttributes : INotifyPropertyChanged
     {
@@ -152,13 +153,13 @@ namespace POESKillTree.ViewModels.ItemAttribute
             if (value == null)
                 return false;
 
-            if (value.Class == Item.ItemClass.Unequipable)
+            if (value.Class == ItemClass.Unequipable)
                 return false;
 
             if (slot == Item.ItemSlot.Unequipable)
                 return false;
 
-            if ((int)value.Class != (int)slot && (slot == Item.ItemSlot.Ring2 && value.Class != Item.ItemClass.Ring))
+            if ((int)value.Class != (int)slot && (slot == Item.ItemSlot.Ring2 && value.Class != ItemClass.Ring))
                 return false;
 
             RemoveItemFromSlot(slot);
@@ -214,43 +215,43 @@ namespace POESKillTree.ViewModels.ItemAttribute
                 var id = jobj["inventoryId"].Value<string>();
                 if (id == "BodyArmour")
                 {
-                    AddItem(jobj, Item.ItemClass.Armor, Item.ItemSlot.Armor);
+                    AddItem(jobj, ItemClass.Armor, Item.ItemSlot.Armor);
                 }
                 if (id == "Ring")
                 {
-                    AddItem(jobj, Item.ItemClass.Ring, Item.ItemSlot.Ring);
+                    AddItem(jobj, ItemClass.Ring, Item.ItemSlot.Ring);
                 }
                 if (id == "Ring2")
                 {
-                    AddItem(jobj, Item.ItemClass.Ring, Item.ItemSlot.Ring2);
+                    AddItem(jobj, ItemClass.Ring, Item.ItemSlot.Ring2);
                 }
                 if (id == "Gloves")
                 {
-                    AddItem(jobj, Item.ItemClass.Gloves, Item.ItemSlot.Gloves);
+                    AddItem(jobj, ItemClass.Gloves, Item.ItemSlot.Gloves);
                 }
                 if (id == "Weapon")
                 {
-                    AddItem(jobj, Item.ItemClass.MainHand, Item.ItemSlot.MainHand);
+                    AddItem(jobj, ItemClass.MainHand, Item.ItemSlot.MainHand);
                 }
                 if (id == "Offhand")
                 {
-                    AddItem(jobj, Item.ItemClass.OffHand, Item.ItemSlot.OffHand);
+                    AddItem(jobj, ItemClass.OffHand, Item.ItemSlot.OffHand);
                 }
                 if (id == "Helm")
                 {
-                    AddItem(jobj, Item.ItemClass.Helm, Item.ItemSlot.Helm);
+                    AddItem(jobj, ItemClass.Helm, Item.ItemSlot.Helm);
                 }
                 if (id == "Boots")
                 {
-                    AddItem(jobj, Item.ItemClass.Boots, Item.ItemSlot.Boots);
+                    AddItem(jobj, ItemClass.Boots, Item.ItemSlot.Boots);
                 }
                 if (id == "Amulet")
                 {
-                    AddItem(jobj, Item.ItemClass.Amulet, Item.ItemSlot.Amulet);
+                    AddItem(jobj, ItemClass.Amulet, Item.ItemSlot.Amulet);
                 }
                 if (id == "Belt")
                 {
-                    AddItem(jobj, Item.ItemClass.Belt, Item.ItemSlot.Belt);
+                    AddItem(jobj, ItemClass.Belt, Item.ItemSlot.Belt);
                 }
             }
 
@@ -335,7 +336,7 @@ namespace POESKillTree.ViewModels.ItemAttribute
             Attributes.Refresh();
         }
 
-        private void AddItem(RavenJObject val, Item.ItemClass iclass, Item.ItemSlot islot)
+        private void AddItem(RavenJObject val, ItemClass iclass, Item.ItemSlot islot)
         {
             Item item = null;
             item = new Item(iclass, val);

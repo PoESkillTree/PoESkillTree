@@ -5,8 +5,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
-        xmlns:items="clr-namespace:POESKillTree.ViewModels.ItemAttribute"
-        xmlns:utils="clr-namespace:POESKillTree.Utils"
+        xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
     
         Title="CraftWindow" MinHeight="500" Height="500"
         Name="window" Width="600"
@@ -21,7 +20,7 @@
             <ComboBox x:Name="cbClassSelection" ItemsSource="{Binding ClassList,ElementName=window}" SelectedIndex="0" SelectionChanged="cbClassSelection_SelectionChanged" />
             <ComboBox x:Name="cbBaseSelection" ItemsSource="{Binding BaseList,ElementName=window}" SelectedIndex="0" SelectionChanged="cbBaseSelection_SelectionChanged" >
                 <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type utils:ItemBase}">
+                    <DataTemplate DataType="{x:Type items:ItemBase}">
                         <TextBlock Text="{Binding ItemType}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>

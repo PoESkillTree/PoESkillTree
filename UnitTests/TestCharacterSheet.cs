@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.ItemAttribute;
+using POESKillTree.ViewModels.Items;
 
 namespace UnitTests
 {

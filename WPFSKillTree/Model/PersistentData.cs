@@ -5,9 +5,9 @@ using System.Windows.Controls;
 using System.Xml.Serialization;
 using POESKillTree.ViewModels;
 using System.ComponentModel;
-using POESKillTree.ViewModels.ItemAttribute;
 using System.Collections.ObjectModel;
 using Raven.Json.Linq;
+using POESKillTree.ViewModels.Items;
 
 namespace POESKillTree.Model
 {

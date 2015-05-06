@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using POESKillTree.Utils;
-using POESKillTree.ViewModels.ItemAttribute;
+using POESKillTree.ViewModels.Items;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -49,7 +49,7 @@ namespace POESKillTree.Views
         public CraftWindow()
         {
             InitializeComponent();
-            ClassList = Enum.GetNames(typeof(Item.ItemClass)).Except(new[] { "" + Item.ItemClass.Unequipable, "" + Item.ItemClass.Invalid, "" + Item.ItemClass.Gem, }).ToArray();
+            ClassList = Enum.GetNames(typeof(ItemClass)).Except(new[] { "" + ItemClass.Unequipable, "" + ItemClass.Invalid, "" + ItemClass.Gem, }).ToArray();
         }
 
 
@@ -63,7 +63,7 @@ namespace POESKillTree.Views
 
         private void cbClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var val = (Item.ItemClass)Enum.Parse(typeof(Item.ItemClass), (string)cbClassSelection.SelectedItem);
+            var val = (ItemClass)Enum.Parse(typeof(ItemClass), (string)cbClassSelection.SelectedItem);
             BaseList = ItemBase.BaseList.Where(b => (b.Class & val) == val).ToArray();
             cbBaseSelection.SelectedIndex = 0;
         }

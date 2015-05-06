@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using POESKillTree.ViewModels.ItemAttribute;
+using POESKillTree.ViewModels.Items;
 using Raven.Json.Linq;
 using System;
 using System.Collections.Generic;

@@ -25,7 +25,6 @@ using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.ItemAttribute;
 using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
 using Clipboard = System.Windows.Clipboard;
@@ -38,6 +37,7 @@ using ListViewItem = System.Windows.Controls.ListViewItem;
 using MessageBox = POESKillTree.Views.MetroMessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using ToolTip = System.Windows.Controls.ToolTip;
+using POESKillTree.ViewModels.Items;
 
 namespace POESKillTree.Views
 {

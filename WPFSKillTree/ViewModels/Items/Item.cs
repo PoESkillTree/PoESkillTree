@@ -6,43 +6,12 @@ using System.ComponentModel;
 using System.Linq;
 using System;
 using POESKillTree.Utils;
+using POESKillTree.ViewModels.Items;
 
-namespace POESKillTree.ViewModels.ItemAttribute
+namespace POESKillTree.ViewModels.Items
 {
-    public enum FrameType
-    {
-        White = 0,
-        Magic = 1,
-        Rare = 2,
-        Unique = 3,
-        Gem = 4,
-        Currency = 5,
-    }
-
     public class Item : INotifyPropertyChanged
     {
-        /// <summary>
-        /// itemclass and itemslot values with same name must have same value
-        /// </summary>
-        [Flags]
-        public enum ItemClass
-        {
-            Invalid = 0x0,
-            Armor = 0x1,
-            MainHand = 0x2,
-            OffHand = 0x4,
-            OneHand = MainHand | OffHand,
-            Ring = 0x8,
-            Amulet = 0x20,
-            Helm = 0x40,
-            Gloves = 0x80,
-            Boots = 0x100,
-            Gem = 0x200,
-            Belt = 0x400,
-            TwoHand = 0x800 | OneHand,
-            Unequipable = 0x800000,
-        }
-
         /// <summary>
         /// itemclass and itemslot values with same name must have same value
         /// </summary>
