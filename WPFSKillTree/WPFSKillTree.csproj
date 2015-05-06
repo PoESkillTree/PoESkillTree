@@ -156,6 +156,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\MenuItemExtensions.cs" />
+    <Compile Include="Controls\ModSelector.xaml.cs">
+      <DependentUpon>ModSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Stash.xaml.cs">
       <DependentUpon>Stash.xaml</DependentUpon>
     </Compile>
@@ -202,6 +205,9 @@
     <Compile Include="ViewModels\ItemAttribute\ItemMod.cs" />
     <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\Converters.cs" />
+    <Compile Include="Views\CraftWindow.xaml.cs">
+      <DependentUpon>CraftWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
@@ -249,9 +255,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ModSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Stash.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CraftWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

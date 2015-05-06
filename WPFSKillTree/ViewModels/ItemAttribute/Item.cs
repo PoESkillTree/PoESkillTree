@@ -199,9 +199,8 @@ namespace POESKillTree.ViewModels.ItemAttribute
         public string Type
         {
             get { return _Type; }
-            private set { _Type = value; OnPropertyChanged("Type"); }
+            set { _Type = value; OnPropertyChanged("Type"); }
         }
-
 
 
         public RavenJObject JSONBase
@@ -229,6 +228,11 @@ namespace POESKillTree.ViewModels.ItemAttribute
         public Item(ItemClass iClass, RavenJObject val)
         {
             Init(iClass, val);
+        }
+
+        public Item()
+        {
+            
         }
 
         private void Init(ItemClass iClass, RavenJObject val)

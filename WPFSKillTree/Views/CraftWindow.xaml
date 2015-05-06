@@ -1,0 +1,52 @@
+﻿<controls:MetroWindow
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        x:Class="POESKillTree.Views.CraftWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:POESKillTree.Controls"
+        xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
+        xmlns:items="clr-namespace:POESKillTree.ViewModels.ItemAttribute"
+        xmlns:utils="clr-namespace:POESKillTree.Utils"
+    
+        Title="CraftWindow" MinHeight="500" Height="500"
+        Name="window" Width="600"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <ComboBox x:Name="cbClassSelection" ItemsSource="{Binding ClassList,ElementName=window}" SelectedIndex="0" SelectionChanged="cbClassSelection_SelectionChanged" />
+            <ComboBox x:Name="cbBaseSelection" ItemsSource="{Binding BaseList,ElementName=window}" SelectedIndex="0" SelectionChanged="cbBaseSelection_SelectionChanged" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type utils:ItemBase}">
+                        <TextBlock Text="{Binding ItemType}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <Label>Prefixes</Label>
+                <local:ModSelector/>
+                <local:ModSelector/>
+                <local:ModSelector/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <Label>Affixes</Label>
+                <local:ModSelector/>
+                <local:ModSelector/>
+                <local:ModSelector/>
+            </StackPanel>
+            <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=window}" Width="94" Height="188" Grid.Row="0"/>
+        </Grid>
+        <local:ItemTooltip Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Item="{Binding Item, ElementName=window}" />
+    </Grid>
+</controls:MetroWindow>

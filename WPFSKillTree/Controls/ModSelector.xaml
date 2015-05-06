@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="POESKillTree.Controls.ModSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" d:DesignWidth="300">
+    <Grid>
+        <StackPanel>
+            <ComboBox>df</ComboBox>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Slider Grid.Column="0" Name="slValue" />
+                <TextBlock Grid.Column="1" TextAlignment="Center" Width="30" Text="{Binding Value,ElementName=slValue, StringFormat=###0.#}"/>
+            </Grid>
+
+            <TextBlock>T1</TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>

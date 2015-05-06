@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using System.Xml.Linq;
 using ItemClass = POESKillTree.ViewModels.ItemAttribute.Item.ItemClass;
 using System.IO;
+using POESKillTree.ViewModels.ItemAttribute;
 
 namespace POESKillTree.Utils
 {
@@ -219,7 +220,6 @@ namespace POESKillTree.Utils
             return elm;
         }
 
-
         public class ItemModRange
         {
             public ItemModRange()
@@ -240,6 +240,16 @@ namespace POESKillTree.Utils
                         new XAttribute("value", Value)
                     );
             }
+        }
+
+        public Item CreateItem()
+        {
+            var item = new Item();
+
+            item.Class = this.Class;
+            item.Type = this.ItemType;
+
+            return item;
         }
     }
 
