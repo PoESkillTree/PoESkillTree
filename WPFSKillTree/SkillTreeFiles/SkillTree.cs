@@ -179,7 +179,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private static readonly Dictionary<string, Asset> _assets = new Dictionary<string, Asset>();
 
-        private static readonly Dictionary<string, int> _rootNodeClassDictionary = new Dictionary<string, int>();
+        private static Dictionary<string, int> _rootNodeClassDictionary = new Dictionary<string, int>();
 
         private static readonly List<ushort[]> _links = new List<ushort[]>();
 
@@ -311,6 +311,9 @@ namespace POESKillTree.SkillTreeFiles
             if (!_Initialized)
             {
                 _Skillnodes = new Dictionary<ushort, SkillNode>();
+                _rootNodeClassDictionary = new Dictionary<string, int>();
+                _startNodeDictionary = new Dictionary<int, int>();
+
                 foreach (Node nd in inTree.nodes)
                 {
                     _Skillnodes.Add(nd.id, new SkillNode
@@ -333,10 +336,16 @@ namespace POESKillTree.SkillTreeFiles
                     });
                     if (_rootNodeList.Contains(nd.id))
                     {
-                        _rootNodeClassDictionary.Add(nd.dn.ToString().ToUpper(), nd.id);
+                        if (!_rootNodeClassDictionary.ContainsKey(nd.dn.ToString().ToUpper()))
+                        {
+                            _rootNodeClassDictionary.Add(nd.dn.ToString().ToUpper(), nd.id);
+                        }
                         foreach (int linkedNode in nd.ot)
                         {
-                            _startNodeDictionary.Add(linkedNode, nd.id);
+                            if (!_startNodeDictionary.ContainsKey(nd.id))
+                            {
+                                _startNodeDictionary.Add(linkedNode, nd.id);
+                            }
                         }
                     }
                     foreach (int node in nd.ot)
