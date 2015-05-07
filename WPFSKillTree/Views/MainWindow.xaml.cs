@@ -52,7 +52,7 @@ namespace POESKillTree.Views
         public PersistentData PersistentData
         {
             get { return _persistentData; }
-        } 
+        }
 
 
         private static readonly Action EmptyDelegate = delegate { };
@@ -333,12 +333,13 @@ namespace POESKillTree.Views
                 recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
             }
         }
-        
+
         private void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
-            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName) { Owner = this };
+            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName) { Owner = this };
             diw.ShowDialog();
             _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
+            _persistentData.CurrentBuild.AccountName = diw.GetAccountName();
         }
 
         private void Menu_ClearItems(object sender, RoutedEventArgs e)
@@ -843,6 +844,7 @@ namespace POESKillTree.Views
         private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
             Point p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
+            Size size = zbSkillTreeBackground.Child.DesiredSize;
             var v = new Vector2D(p.X, p.Y);
 
             v = v * _multransform + _addtransform;
@@ -888,6 +890,16 @@ namespace POESKillTree.Views
                     }
                 }
             }
+            else
+            {
+                if (p.X < 0 || p.Y < 0 || p.X > size.Width || p.Y > size.Height)
+                {
+                    if (_lastMouseButton == MouseButton.Right)
+                    {
+                        zbSkillTreeBackground.Reset();
+                    }
+                }
+            }
             tbSkillURL.Text = Tree.SaveToURL();
         }
 
@@ -926,7 +938,7 @@ namespace POESKillTree.Views
                     _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
                     Tree.DrawPath(_prePath);
                 }
-                
+
                 var tooltip = node.Name + "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
                 if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
                 {
@@ -938,7 +950,7 @@ namespace POESKillTree.Views
                     if (_prePath != null)
                     {
                         sp.Children.Add(new Separator());
-                        sp.Children.Add(new TextBlock {Text = "Points to skill node: " + _prePath.Count});
+                        sp.Children.Add(new TextBlock { Text = "Points to skill node: " + _prePath.Count });
                     }
 
                     _sToolTip.Content = sp;
@@ -1029,7 +1041,7 @@ namespace POESKillTree.Views
 
             foreach (PoEBuild item in lvSavedBuilds.Items)
             {
-                item.Visible = (className.Equals("All") || item.Class.Equals(className)) && 
+                item.Visible = (className.Equals("All") || item.Class.Equals(className)) &&
                     (item.Name.ToLower().Contains(filterText) || item.Note.ToLower().Contains(filterText));
             }
 
@@ -1072,6 +1084,7 @@ namespace POESKillTree.Views
                 selectedBuild.Name = formBuildName.GetBuildName();
                 selectedBuild.Note = formBuildName.GetNote();
                 selectedBuild.CharacterName = formBuildName.GetCharacterName();
+                selectedBuild.AccountName = formBuildName.GetAccountName();
                 selectedBuild.ItemData = formBuildName.GetItemData();
                 lvSavedBuilds.Items.Refresh();
             }
@@ -1115,6 +1128,7 @@ namespace POESKillTree.Views
                 var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
                 selectedBuild.Class = cbCharType.Text;
                 selectedBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
+                selectedBuild.AccountName = _persistentData.CurrentBuild.AccountName;
                 selectedBuild.Level = tbLevel.Text;
                 selectedBuild.PointsUsed = tbUsedPoints.Text;
                 selectedBuild.Url = tbSkillURL.Text;
@@ -1181,7 +1195,7 @@ namespace POESKillTree.Views
 
         private void SaveNewBuild()
         {
-            var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.ItemData);
+            var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName, _persistentData.CurrentBuild.ItemData);
             formBuildName.Owner = this;
             var show_dialog = formBuildName.ShowDialog();
             if (show_dialog != null && (bool)show_dialog)
@@ -1195,6 +1209,7 @@ namespace POESKillTree.Views
                     Url = tbSkillURL.Text,
                     Note = formBuildName.GetNote(),
                     CharacterName = formBuildName.GetCharacterName(),
+                    AccountName = formBuildName.GetAccountName(),
                     ItemData = formBuildName.GetItemData(),
                     LastUpdated = DateTime.Now
                 };
@@ -1222,21 +1237,7 @@ namespace POESKillTree.Views
                     SkillTreeImporter.LoadBuildFromPoezone(Tree, tbSkillURL.Text);
                     tbSkillURL.Text = Tree.SaveToURL();
                 }
-                else if (tbSkillURL.Text.Contains("poebuilder.com/"))
-                {
-                    const string poebuilderTree = "https://poebuilder.com/character/";
-                    const string poebuilderTreeWWW = "https://www.poebuilder.com/character/";
-                    const string poebuilderTreeOWWW = "http://www.poebuilder.com/character/";
-                    const string poebuilderTreeO = "http://poebuilder.com/character/";
-                    var urlString = tbSkillURL.Text;
-                    urlString = urlString.Replace(poebuilderTree, MainWindow.TreeAddress);
-                    urlString = urlString.Replace(poebuilderTreeO, MainWindow.TreeAddress);
-                    urlString = urlString.Replace(poebuilderTreeWWW, MainWindow.TreeAddress);
-                    urlString = urlString.Replace(poebuilderTreeOWWW, MainWindow.TreeAddress);
-                    tbSkillURL.Text = urlString;
-                    Tree.LoadFromURL(urlString);
-                }
-                else if (tbSkillURL.Text.Contains("tinyurl.com/"))
+                else if (tbSkillURL.Text.Contains("tinyurl.com"))
                 {
                     var request = (HttpWebRequest)WebRequest.Create(tbSkillURL.Text);
                     request.AllowAutoRedirect = false;
@@ -1245,7 +1246,7 @@ namespace POESKillTree.Views
                     tbSkillURL.Text = redirUrl;
                     LoadBuildFromUrl();
                 }
-                else if (tbSkillURL.Text.Contains("poeurl.com/"))
+                else if (tbSkillURL.Text.Contains("poeurl.com"))
                 {
                     tbSkillURL.Text = tbSkillURL.Text.Replace("http://poeurl.com/",
                         "http://poeurl.com/redirect.php?url=");
@@ -1257,7 +1258,26 @@ namespace POESKillTree.Views
                     LoadBuildFromUrl();
                 }
                 else
-                    Tree.LoadFromURL(tbSkillURL.Text);
+                {
+                    string[] urls = new string[] {
+                        "https://poebuilder.com/character/",
+                        "http://poebuilder.com/character/",
+                        "https://www.poebuilder.com/character/",
+                        "http://www.poebuilder.com/character/",
+                        "https://www.pathofexile.com/fullscreen-passive-skill-tree/",
+                        "http://www.pathofexile.com/fullscreen-passive-skill-tree/",
+                        "https://pathofexile.com/fullscreen-passive-skill-tree/",
+                        "http://pathofexile.com/fullscreen-passive-skill-tree/"
+                    };
+                    var urlString = tbSkillURL.Text;
+                    foreach (string link in urls)
+                    {
+                        urlString = urlString.Replace(link, MainWindow.TreeAddress);
+                    }
+                    tbSkillURL.Text = urlString;
+                    Tree.LoadFromURL(urlString);
+                }
+
 
                 _justLoaded = true;
                 //cleans the default tree on load if 2

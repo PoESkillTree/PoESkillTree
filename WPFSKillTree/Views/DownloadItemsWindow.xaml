@@ -7,11 +7,12 @@
         ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" Loaded="MetroWindow_Loaded">
     <StackPanel Background="{DynamicResource WhiteColorBrush}">
         <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Margin="15">
-            Please enter Your Character itemGroupName Below and click on 'Open Browser'.<LineBreak/>
+            Please enter Your Character and Account Name Below and click on 'Open Browser'.<LineBreak/>
             This Will open your default Web-browser and download the Item data.<LineBreak/>
             Save it anywhere you like, then click on 'Load File' and select it.
         </TextBlock>
         <TextBox Text="" x:Name="tbCharName" Margin="188,4,187,4" TextChanged="tbCharName_TextChanged" HorizontalContentAlignment="Center" HorizontalAlignment="Center" MinWidth="100" MaxLength="24"/>
+        <TextBox Text="" x:Name="tbAccName" Margin="188,4,187,4" TextChanged="tbCharName_TextChanged" HorizontalContentAlignment="Center" HorizontalAlignment="Center" MinWidth="100" MaxLength="24"/>
         <TextBox x:Name="tbCharLink" Margin="4" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
         <TextBox x:Name="tbTreeLink" Margin="4" HorizontalContentAlignment="Center" Visibility="Collapsed"/>
         <Button Content="Open In Browser" x:Name="btnPopupOpenBrowser" Width="auto" Height="auto" Click="btnPopupOpenBrowser_Click" Margin="4,25,4,2"/>
