@@ -158,7 +158,10 @@
 
         <!-- grid row 0 - upper part-->
         <Menu IsMainMenu="True" x:Name="menu1" Grid.Row="0" Margin="0,0,0,2">
-            <MenuItem Header="_File ">
+            <MenuItem>
+                <MenuItem.Header>
+                    <l:Catalog Message="_File " />
+                </MenuItem.Header>
                 <MenuItem InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click">
                     <MenuItem.Header>
                         <l:Catalog Message="Save _As" />
@@ -247,7 +250,10 @@
                         <ContentControl Template="{StaticResource ScreenShotIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Download/Import Items" Click="Menu_ImportItems">
+                <MenuItem Click="Menu_ImportItems">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Download &amp; Import Items"/>
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource DownloadIcon}" />
                     </MenuItem.Icon>
@@ -273,20 +279,36 @@
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="_Help ">
-                <MenuItem Header="_Links ">
+            <MenuItem>
+                <MenuItem.Header>
+                    <l:Catalog Message="_Help " />
+                </MenuItem.Header>
+                <MenuItem>
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Links" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource GlobeIcon}" />
                     </MenuItem.Icon>
-                    <MenuItem Header="_Path of Exile Website" Click="Menu_OpenPoEWebsite"/>
-                    <MenuItem Header="_Path of Exile Wiki" Click="Menu_OpenWiki"/>
+                    <MenuItem Click="Menu_OpenPoEWebsite">
+                        <MenuItem.Header>
+                            <l:Catalog Message="_Path of Exile Website" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Header="Path of Exile _Wiki" Click="Menu_OpenWiki"/>
                 </MenuItem>
-                <MenuItem Header="_View Help" Click="Menu_OpenHelp">
+                <MenuItem Click="Menu_OpenHelp">
+                    <MenuItem.Header>
+                        <l:Catalog Message="View _Help" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource HelpIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Hotkeys" Click="Menu_OpenHotkeys">
+                <MenuItem Click="Menu_OpenHotkeys">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Hotkeys" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource KeyboardIcon}" />
                     </MenuItem.Icon>

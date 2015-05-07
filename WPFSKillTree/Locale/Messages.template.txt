@@ -51,23 +51,220 @@ msgstr ""
 msgid "Data used in character calculations are from"
 msgstr ""
 
-#: Views\AboutWindow.xaml:65
+#: Views\AboutWindow.xaml:65 Views\DownloadItemsWindow.xaml:29
+#: Views\HotkeysWindow.xaml:140
 msgid "Close"
 msgstr ""
 
-#: Views\MainWindow.xaml:164
+#: Views\DownloadItemsWindow.xaml:10
+msgid "Download & Import Items"
+msgstr ""
+
+#: Views\DownloadItemsWindow.xaml:14
+msgid "Please enter Your Character and Account Name below and click on 'Open in Browser'."
+msgstr ""
+
+#: Views\DownloadItemsWindow.xaml:15
+msgid "This will open a page in your default Web-browser containing the item data."
+msgstr ""
+
+#: Views\DownloadItemsWindow.xaml:16
+msgid "Save the page anywhere, then click on 'Load File' and select the saved file."
+msgstr ""
+
+#: Views\DownloadItemsWindow.xaml:23
+msgid "Open in Browser"
+msgstr ""
+
+#: Views\DownloadItemsWindow.xaml:26
+msgid "Load File"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml:10
+msgid "Build Information"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml:14
+msgid "Build Name"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml:18
+msgid "Build Note"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml:23
+msgid "Character Information"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml:27
+msgid "Character Name"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml:31
+msgid "Account Name"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml:35
+msgid "Items Data"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml:42
+msgid "OK"
+msgstr ""
+
+#: Views\HelpWindow.xaml:11
+msgid "Help"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:11
+msgid "Hotkeys"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:45
+msgid "Key combination"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:48
+msgid "Function"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:51
+msgid "Shift + Left Click"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:54
+msgid "Zoom In"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:57
+msgid "Ctrl + Left Click"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:60
+msgid "Zoom Out"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:64
+msgid "Scion"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:68
+msgid "Marauder"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:72
+msgid "Ranger"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:76
+msgid "Witch"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:80
+msgid "Duelist"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:84
+msgid "Templar"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:88
+msgid "Shadow"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:92
+msgid "Toggle Attributes sidebar"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:96
+msgid "Toggle Character Sheet sidebar"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:100
+msgid "Toggle Saved Builds sidebar"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:104
+msgid "Copy PoEUrl link to clipboard"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:108
+msgid "Reset skill tree"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:111
+msgid "Ctrl + Up/Down"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:114
+msgid "(Saved builds) Move build up and down"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:118
+msgid "Undo last skill tree change"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:122
+msgid "Redo last skill tree change"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:126
+msgid "Save build as"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:129 Views\HotkeysWindow.xaml:134
+msgid "Right Click"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:132
+msgid "(Skill Tree) Center skill tree and reset zoom"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:137
+msgid "(Attributes) Highlight corresponding nodes in skill tree"
+msgstr ""
+
+#: Views\MainWindow.xaml:163
+msgid "_File "
+msgstr ""
+
+#: Views\MainWindow.xaml:167
 msgid "Save _As"
 msgstr ""
 
-#: Views\MainWindow.xaml:172
+#: Views\MainWindow.xaml:175
 msgid "E_xit"
 msgstr ""
 
-#: Views\MainWindow.xaml:296
+#: Views\MainWindow.xaml:255
+msgid "_Download & Import Items"
+msgstr ""
+
+#: Views\MainWindow.xaml:284
+msgid "_Help "
+msgstr ""
+
+#: Views\MainWindow.xaml:288
+msgid "_Links"
+msgstr ""
+
+#: Views\MainWindow.xaml:295
+msgid "_Path of Exile Website"
+msgstr ""
+
+#: Views\MainWindow.xaml:302
+msgid "View _Help"
+msgstr ""
+
+#: Views\MainWindow.xaml:310
+msgid "_Hotkeys"
+msgstr ""
+
+#: Views\MainWindow.xaml:318
 msgid "_Check for updates"
 msgstr ""
 
-#: Views\MainWindow.xaml:304
+#: Views\MainWindow.xaml:326
 msgid "_About PoESkillTree"
 msgstr ""
 
@@ -110,34 +307,51 @@ msgstr ""
 msgid "Download completed or still in progress"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:462
+#: Views\DownloadItemsWindow.xaml.cs:25 Views\DownloadItemsWindow.xaml.cs:31
+msgid "CharacterName"
+msgstr ""
+
+#: Views\DownloadItemsWindow.xaml.cs:26 Views\DownloadItemsWindow.xaml.cs:35
+msgid "AccountName"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml.cs:33
+msgid "Not Available"
+msgstr ""
+
+#: Views\FormChooseBuildName.xaml.cs:34
+#, csharp-format
+msgid "Last updated: {0}"
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:463
 msgid "You have the lastest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:462
+#: Views\MainWindow.xaml.cs:463
 msgid "No update"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:466
+#: Views\MainWindow.xaml.cs:467
 #, csharp-format
 msgid "Do you want to install version {0}?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:470
+#: Views\MainWindow.xaml.cs:471
 #, csharp-format
 msgid ""
 "{0}\n"
 "This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:470
+#: Views\MainWindow.xaml.cs:471
 msgid "New pre-release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:473
+#: Views\MainWindow.xaml.cs:474
 msgid "New release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:485
+#: Views\MainWindow.xaml.cs:486
 msgid "Error occured"
 msgstr ""

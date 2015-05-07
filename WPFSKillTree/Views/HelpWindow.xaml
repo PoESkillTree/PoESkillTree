@@ -1,11 +1,15 @@
 ﻿<controls:MetroWindow
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     x:Class="POESKillTree.Views.HelpWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Help"  WindowStartupLocation="CenterOwner" Width="500" Height="600"
-        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
-        Icon="/POESKillTree;component/logo.ico">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+    WindowStartupLocation="CenterOwner" Width="500" Height="600"
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
+    Icon="/POESKillTree;component/logo.ico">
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="Help"/>
+    </controls:MetroWindow.Title>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="550"/>

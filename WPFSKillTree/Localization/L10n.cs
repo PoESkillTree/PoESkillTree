@@ -6,6 +6,13 @@ using System.Linq;
 using System.Text;
 using POESKillTree.Model;
 
+/* TODO:
+ * - Catalog.Unload() to unload previously used Catalog (clear messages, etc.)
+ * - SetLanguage must return bool to indicate successul language change.
+ * - MakrdownSharp NuGet package for displaying md documents with XAML (for localized Help).ň
+ * - Some tool to remove potential BOM header from translation catalogs before msgmerge, in case someone is editing them in VS/Notepad/etc.
+ */
+
 namespace POESKillTree.Localization
 {
     // Localization API.
@@ -76,11 +83,40 @@ namespace POESKillTree.Localization
         {
             ScanLocaleDirectory();
 
+            string language = null;
             // TODO: Get UI language from persistent data.
 
-            // TODO: Use fallback CultureInfo.InstalledUICulture.
+            // No language in options, try to match OS language.
+            if (language == null)
+                language = MatchLanguage(CultureInfo.InstalledUICulture);
 
-            Apply();
+            // Apply default language if no suitable language was found.
+            if (language == null)
+                Apply();
+            else
+                SetLanguage(language);
+        }
+
+        // Find most suitable translation catalog for specified culture.
+        private static string MatchLanguage(CultureInfo culture)
+        {
+            string match = culture.Name;
+
+            // Do exact match first.
+            if (Catalogs.ContainsKey(match))
+                return match;
+
+            // Match primary subtag.
+            string[] matchSubtags = match.Split('-');
+            foreach (string language in Catalogs.Keys)
+            {
+                string[] subtags = language.Split('-');
+
+                if (subtags[0] == matchSubtags[0])
+                    return language;
+            }
+
+            return null;
         }
 
         // Scans locale directory for available catalogs.

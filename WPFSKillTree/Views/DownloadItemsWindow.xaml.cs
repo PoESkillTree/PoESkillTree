@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using POESKillTree.Localization;
 
 namespace POESKillTree.Views
 {
@@ -21,17 +22,17 @@ namespace POESKillTree.Views
         public DownloadItemsWindow(string characterName, string accountName)
         {
             InitializeComponent();
-            tbCharName.Text = string.IsNullOrEmpty(characterName) ? "YourCharacterName" : characterName;
-            tbAccName.Text = string.IsNullOrEmpty(accountName) ? "YourAccountName" : accountName;
+            tbCharName.Text = string.IsNullOrEmpty(characterName) ? L10n.Message("CharacterName") : characterName;
+            tbAccName.Text = string.IsNullOrEmpty(accountName) ? L10n.Message("AccountName") : accountName;
         }
 
         public string GetCharacterName()
         {
-            return tbCharName.Text;
+            return tbCharName.Text == L10n.Message("CharacterName") ? null : tbCharName.Text;
         }
         public string GetAccountName()
         {
-            return tbAccName.Text;
+            return tbAccName.Text == L10n.Message("AccountName") ? null : tbAccName.Text;
         }
 
         private void tbCharName_TextChanged(object sender, TextChangedEventArgs e)
