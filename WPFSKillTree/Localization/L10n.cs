@@ -80,8 +80,7 @@ namespace POESKillTree.Localization
 
             // TODO: Use fallback CultureInfo.InstalledUICulture.
 
-            SetLanguage("sk");
-            //Apply();
+            Apply();
         }
 
         // Scans locale directory for available catalogs.
