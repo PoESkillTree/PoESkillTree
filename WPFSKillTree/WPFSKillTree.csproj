@@ -90,6 +90,12 @@
     <StartupObject>POESKillTree.SkillTreeFiles.Bootstrap</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>.\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="ExpressionEvaluator">
+      <HintPath>.\ExpressionEvaluator.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
@@ -142,6 +148,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\MenuItemExtensions.cs" />
+    <Compile Include="Localization\Catalog.cs" />
+    <Compile Include="Localization\L10n.cs" />
+    <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Notifier.cs" />
     <Compile Include="Model\Options.cs" />
@@ -291,6 +300,7 @@
       <LastGenOutput>Version.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="build-locale.bat" />
     <None Include="dist-clean.bat" />
     <None Include="dist-update.bat" />
     <None Include="dist-release.bat" />
@@ -301,6 +311,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Tools\MSBuild.ExtensionPack.License.rtf" />
+    <None Include="Tools\MSBuild.ExtensionPack.README.md" />
+    <None Include="Tools\MSBuild.ExtensionPack.tasks" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -346,16 +359,41 @@
     <Resource Include="Images\Witch.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Antlr3.Runtime.dll" />
+    <Content Include="ExpressionEvaluator.dll" />
+    <Content Include="ExpressionEvaluator.pdb" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Resource Include="release.xml" />
+    <Content Include="Newtonsoft.Json.dll" />
+    <Content Include="Raven.Json.dll" />
+    <None Include="Tools\Ionic.Zip.dll" />
+    <None Include="Tools\MSBuild.ExtensionPack.dll" />
+    <None Include="Tools\XAMLText.exe" />
+    <None Include="Tools\XAMLText.pdb" />
+    <None Include="Tools\gettext\intl.dll" />
+    <None Include="Tools\gettext\libgcc_s_dw2-1.dll" />
+    <None Include="Tools\gettext\libgettextlib-0-18-1.dll" />
+    <None Include="Tools\gettext\libgettextsrc-0-18-1.dll" />
+    <None Include="Tools\gettext\libstdc++-6.dll" />
+    <None Include="Tools\gettext\msginit.exe" />
+    <None Include="Tools\gettext\msgmerge.exe" />
+    <None Include="Tools\gettext\xgettext.exe" />
+    <None Include="Locale\sk\Messages.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Resource Include="release.xml">
+      <SubType>Designer</SubType>
+    </Resource>
     <Resource Include="logo.ico" />
     <None Include="Properties\app.manifest.i" />
-    <Content Include="Tools\7z.dll" />
-    <Content Include="Tools\7z.exe" />
-    <Resource Include="Tools\7z.LICENSE.txt" />
+    <None Include="Locale\Messages.template.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Tools\7z.dll" />
+    <None Include="Tools\7z.exe" />
+    <None Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

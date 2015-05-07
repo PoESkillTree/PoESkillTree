@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
@@ -158,16 +159,23 @@
         <!-- grid row 0 - upper part-->
         <Menu IsMainMenu="True" x:Name="menu1" Grid.Row="0" Margin="0,0,0,2">
             <MenuItem Header="_File ">
-                <MenuItem Header="_Save As" InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click">
+                <MenuItem InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Save _As" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource SaveIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Exit" Click="Menu_Exit">
+                <MenuItem Click="Menu_Exit">
+                    <MenuItem.Header>
+                        <l:Catalog Message="E_xit" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ExitIcon}" />
                     </MenuItem.Icon>
-                </MenuItem>
+                
+              </MenuItem>
             </MenuItem>
             <MenuItem Header="_Edit ">
                 <MenuItem x:Name="mnuUndo" Header="_Undo" InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click">
@@ -283,14 +291,20 @@
                         <ContentControl Template="{StaticResource KeyboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_About" Click="Menu_OpenAbout">
-                    <MenuItem.Icon>
-                        <ContentControl Template="{StaticResource AboutIcon}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="_Check for Updates" Click="Menu_CheckForUpdates">
+                <MenuItem Click="Menu_CheckForUpdates">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Check for updates" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource UpdateIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Click="Menu_OpenAbout">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_About PoESkillTree" />
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource AboutIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>

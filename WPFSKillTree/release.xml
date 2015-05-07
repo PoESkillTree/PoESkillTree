@@ -1,114 +1,170 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- MSBuild file used by dist-*.bat scripts -->
-  <Import Project="$(MSBuildProjectDirectory)\Tools\MSBuild.ExtensionPack.tasks" />
+    <!-- MSBuild file used by dist-*.bat scripts -->
+    <Import Project="$(MSBuildProjectDirectory)\Tools\MSBuild.ExtensionPack.tasks" />
 
-  <PropertyGroup>
-    <InstallDir>PoESkillTree</InstallDir>
-    <Platform>x86</Platform>
-    <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
-    <ZipTool>Tools\7z.exe a -tzip</ZipTool>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <DistDir>$(WorkDir)\$(InstallDir)</DistDir>
-    <TagFile>$(WorkDir)\tag</TagFile>
-    <RevisionCountFile>$(WorkDir)\revcount</RevisionCountFile>
-  </PropertyGroup>
-
-  <Target Name="Build" DependsOnTargets="Clean">
-    <!-- Files updated by this target -->
-    <ItemGroup>
-      <ApplicationManifest Include="Properties\app.manifest" />
-      <AssemblyInfoFiles Include="Properties\AssemblyInfo.cs" />
-      <AssemblyInfoFiles Include="..\UpdateDB\Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-
-    <!-- Get ProductVersion and AssemblyVersion from Properties\Version.resx -->
-    <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='ProductVersion']/value/text()">
-      <Output PropertyName="ProductVersion" TaskParameter="Result" />
-    </XmlPeek>
-    <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AssemblyVersion']/value/text()">
-      <Output PropertyName="AssemblyVersion" TaskParameter="Result" />
-    </XmlPeek>
-
-    <!-- Create working directory for release -->
-    <MakeDir Directories="$(WorkDir)" />
-
-    <!-- Compare ProductVersion with recent Git tag (version) -->
-    <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
-    <ReadLinesFromFile File="$(TagFile)">
-      <Output PropertyName="GitVersion" TaskParameter="Lines" />
-    </ReadLinesFromFile>
-    <Message Text="%09Release product version: $(ProductVersion)" />
-    <Message Text="%09Recent Git version: $(GitVersion)" />
-    <Error Text="Release product version and recent Git version are identical!%0APlease, edit ProductVersion of Properties\Version.resx file to reflect a new release."
-           Condition="'$(ProductVersion)' == '$(GitVersion)'" />
-
-    <!-- Create FileVersion from ProductVersion using Git revision count as build number -->
-    <Exec Command="git rev-list --count HEAD >$(RevisionCountFile)" />
-    <ReadLinesFromFile File="$(RevisionCountFile)">
-      <Output PropertyName="BuildNumber" TaskParameter="Lines" />
-    </ReadLinesFromFile>
-    <Message Text="%09Revision count: $(BuildNumber)" />
     <PropertyGroup>
-      <!-- Keep only leading digits from Revision of ProductVersion and add format item for BuildNumber -->
-      <FormatFileVersion>$([System.Text.RegularExpressions.Regex]::Replace($(ProductVersion), "\.([0-9]+)([a-zA-Z][a-zA-Z0-9]+)?$", ".$1.{0}"))</FormatFileVersion>
-      <!-- Set BuildNumber -->
-      <FileVersion>$([System.String]::Format($(FormatFileVersion), $(BuildNumber)))</FileVersion>
+        <InstallDir>PoESkillTree</InstallDir>
+        <Platform>x86</Platform>
+        <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
+        <ZipTool>Tools\7z.exe a -tzip</ZipTool>
     </PropertyGroup>
 
-    <!-- Update AssemblyInfo files -->
-    <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" UpdateAssemblyInformationalVersion="true"
-                  AssemblyVersion="$(AssemblyVersion)"
-                  AssemblyFileVersion="$(FileVersion)"
-                  AssemblyInformationalVersion="$(ProductVersion)" />
+    <PropertyGroup>
+        <DistDir>$(WorkDir)\$(InstallDir)</DistDir>
+        <TagFile>$(WorkDir)\tag</TagFile>
+        <RevisionCountFile>$(WorkDir)\revcount</RevisionCountFile>
+        <ObjDir>obj</ObjDir>
+    </PropertyGroup>
 
-    <!-- Get assembly name from project file -->
-    <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//p:Project/p:PropertyGroup/p:AssemblyName/text()"
-             Namespaces="&lt;Namespace Prefix='p' Uri='http://schemas.microsoft.com/developer/msbuild/2003'/&gt;">
-      <Output PropertyName="ProjectAssemblyName" TaskParameter="Result" />
-    </XmlPeek>
-    <!-- Generate app.manifest -->
-    <GenerateApplicationManifest ManifestType="Native" InputManifest="@(ApplicationManifest -> '%(Identity).i')" OutputManifest="@(ApplicationManifest)"
-                                 AssemblyName="$(ProjectAssemblyName).exe" AssemblyVersion="$(AssemblyVersion)" />
+    <PropertyGroup>
+        <LocaleXGettextKeywords>-kL10n.Message -kL10n.Message:1,2c -kL10n.Plural:1,2 -kL10n.Plural:1,2,4c</LocaleXGettextKeywords>
+        <LocaleDir>Locale</LocaleDir>
+        <LocaleMessageFilename>Messages.txt</LocaleMessageFilename>
+        <LocaleTemplateFilename>Messages.template.txt</LocaleTemplateFilename>
+        <LocaleTemplateFile>$(LocaleDir)\$(LocaleTemplateFilename)</LocaleTemplateFile>
+        <LocaleWorkDir>$(ObjDir)\$(LocaleDir)</LocaleWorkDir>
+        <LocaleWorkTemplateFile>$(ObjDir)\$(LocaleDir)\$(LocaleTemplateFilename)</LocaleWorkTemplateFile>
+    </PropertyGroup>
 
-    <!-- Build projects (OutputPath=$(DistDir) => No copying needed) -->
-    <MSBuild Projects="WPFSKillTree.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
-    <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
-  </Target>
+    <ItemGroup>
+        <CSFile Include="**\*.cs" Exclude="$(ObjDir)\**" />
+        <XAMLFile Include="**\*.xaml" Exclude="$(LocaleWorkDir)\**" />
+        <LocaleLanguageDir Include="$([System.IO.Directory]::GetDirectories(&quot;$(LocaleDir)&quot;))">
+            <MessageFile>%(Identity)\$(LocaleMessageFilename)</MessageFile>
+        </LocaleLanguageDir>
+    </ItemGroup>
 
-  <Target Name="Clean">
-    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
-    <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
-    <MSBuild Projects="WPFSKillTree.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
-    <RemoveDir Directories="$(WorkDir)" />
-  </Target>
+    <Target Name="Build" DependsOnTargets="Clean;BuildLocale">
+        <!-- Files updated by this target -->
+        <ItemGroup>
+            <ApplicationManifest Include="Properties\app.manifest" />
+            <AssemblyInfoFiles Include="Properties\AssemblyInfo.cs" />
+            <AssemblyInfoFiles Include="..\UpdateDB\Properties\AssemblyInfo.cs" />
+        </ItemGroup>
 
-  <Target Name="Release" DependsOnTargets="Test">
-    <!-- Download skill tree assets -->
-    <Exec Command="$(DistDir)\UpdateDB.exe /A" WorkingDirectory="$(DistDir)" />
+        <!-- Get ProductVersion and AssemblyVersion from Properties\Version.resx -->
+        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='ProductVersion']/value/text()">
+            <Output PropertyName="ProductVersion" TaskParameter="Result" />
+        </XmlPeek>
+        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AssemblyVersion']/value/text()">
+            <Output PropertyName="AssemblyVersion" TaskParameter="Result" />
+        </XmlPeek>
 
-    <!-- Create release package -->
-    <Exec Command="..\$(ZipTool) $(InstallDir)-$(ProductVersion).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
-  </Target>
+        <!-- Create working directory for release -->
+        <MakeDir Directories="$(WorkDir)" />
 
-  <Target Name="Test" DependsOnTargets="Build">
-    <!-- Build unit tests using project defined output path -->
-    <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Build" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
+        <!-- Compare ProductVersion with recent Git tag (version) -->
+        <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
+        <ReadLinesFromFile File="$(TagFile)">
+            <Output PropertyName="GitVersion" TaskParameter="Lines" />
+        </ReadLinesFromFile>
+        <Message Text="%09Release product version: $(ProductVersion)" />
+        <Message Text="%09Recent Git version: $(GitVersion)" />
+        <Error Text="Release product version and recent Git version are identical!%0APlease, edit ProductVersion of Properties\Version.resx file to reflect a new release."
+               Condition="'$(ProductVersion)' == '$(GitVersion)'" />
 
-    <!-- Run tests -->
-    <Exec Command='vstest.console ..\..\UnitTests\bin\Debug\UnitTests.dll /TestCaseFilter:"TestCategory!=RequireGUI"' WorkingDirectory="$(WorkDir)" />
-  </Target>
+        <!-- Create FileVersion from ProductVersion using Git revision count as build number -->
+        <Exec Command="git rev-list --count HEAD >$(RevisionCountFile)" />
+        <ReadLinesFromFile File="$(RevisionCountFile)">
+            <Output PropertyName="BuildNumber" TaskParameter="Lines" />
+        </ReadLinesFromFile>
+        <Message Text="%09Revision count: $(BuildNumber)" />
+        <PropertyGroup>
+            <!-- Keep only leading digits from Revision of ProductVersion and add format item for BuildNumber -->
+            <FormatFileVersion>$([System.Text.RegularExpressions.Regex]::Replace($(ProductVersion), "\.([0-9]+)([a-zA-Z][a-zA-Z0-9]+)?$", ".$1.{0}"))</FormatFileVersion>
+            <!-- Set BuildNumber -->
+            <FileVersion>$([System.String]::Format($(FormatFileVersion), $(BuildNumber)))</FileVersion>
+        </PropertyGroup>
 
-  <Target Name="Update">
-    <!-- Make regular build using project defined output path -->
-    <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
+        <!-- Update AssemblyInfo files -->
+        <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" UpdateAssemblyInformationalVersion="true"
+                      AssemblyVersion="$(AssemblyVersion)"
+                      AssemblyFileVersion="$(FileVersion)"
+                      AssemblyInformationalVersion="$(ProductVersion)" />
 
-    <!-- Update items database -->
-    <Exec Command="..\UpdateDB\bin\Release\UpdateDB.exe /N" />
+        <!-- Get assembly name from project file -->
+        <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//p:Project/p:PropertyGroup/p:AssemblyName/text()"
+                 Namespaces="&lt;Namespace Prefix='p' Uri='http://schemas.microsoft.com/developer/msbuild/2003'/&gt;">
+            <Output PropertyName="ProjectAssemblyName" TaskParameter="Result" />
+        </XmlPeek>
+        <!-- Generate app.manifest -->
+        <GenerateApplicationManifest ManifestType="Native" InputManifest="@(ApplicationManifest -> '%(Identity).i')" OutputManifest="@(ApplicationManifest)"
+                                     AssemblyName="$(ProjectAssemblyName).exe" AssemblyVersion="$(AssemblyVersion)" />
 
-    <!-- Make regular clean using project defined output path -->
-    <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
-  </Target>
+        <!-- Build projects (OutputPath=$(DistDir) => No copying needed) -->
+        <MSBuild Projects="WPFSKillTree.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
+        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
+    </Target>
+
+    <Target Name="BuildLocale" DependsOnTargets="BuildLocaleCatalog">
+    </Target>
+
+    <Target Name="TransformXAML">
+        <!-- Make output directory for fake C# file -->
+        <MakeDir Directories="@(XAMLFile->'$(LocaleWorkDir)\%(RecursiveDir)')" />
+
+        <!-- Transform XAML file to fake C# file -->
+        <Exec Command="Tools\XAMLText %(XAMLFile.Identity) $(LocaleWorkDir)\%(XAMLFile.RecursiveDir)%(XAMLFile.Filename)%(XAMLFile.Extension)" />
+    </Target>
+
+    <Target Name="BuildLocaleTemplate" DependsOnTargets="TransformXAML">
+        <PropertyGroup>
+            <LocaleXAMLFileList>@(XAMLFile->'%(RecursiveDir)%(Filename)%(Extension)', ' ')</LocaleXAMLFileList>
+        </PropertyGroup>
+
+        <!-- Extract messages from transformed XAML files -->
+        <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -o $(LocaleWorkTemplateFile) -D $(LocaleWorkDir) $(LocaleXAMLFileList)" />
+
+        <!-- Extract messages from source C# files -->
+        <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -j -o $(LocaleWorkTemplateFile) @(CSFile, ' ')" />
+
+        <!-- Merge extracted messages into template catalog -->
+        <Exec Command="Tools\gettext\msgmerge -U --backup=none --no-wrap $(LocaleTemplateFile) $(LocaleWorkTemplateFile)" />
+    </Target>
+
+    <Target Name="BuildLocaleCatalog" DependsOnTargets="BuildLocaleTemplate">
+                <!-- Merge template catalog into translation catalog -->
+        <Exec Command="Tools\gettext\msgmerge -U --backup=none --no-wrap %(LocaleLanguageDir.MessageFile) $(LocaleTemplateFile)"
+              Condition="Exists('%(LocaleLanguageDir.MessageFile)')" />
+
+        <!-- Create translation catalog -->
+        <Exec Command="Tools\gettext\msginit -i $(LocaleTemplateFile) -o %(LocaleLanguageDir.MessageFile) -l @(LocaleLanguageDir->'%(Filename)'->Replace('-', '_')) --no-wrap --no-translator"
+              Condition="!Exists('%(LocaleLanguageDir.MessageFile)')" />
+    </Target>
+
+    <Target Name="Clean">
+        <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
+        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
+        <MSBuild Projects="WPFSKillTree.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
+        <RemoveDir Directories="$(LocaleWorkDir)" />
+        <RemoveDir Directories="$(WorkDir)" />
+    </Target>
+
+    <Target Name="Release" DependsOnTargets="Test">
+        <!-- Download skill tree assets -->
+        <Exec Command="$(DistDir)\UpdateDB.exe /A" WorkingDirectory="$(DistDir)" />
+
+        <!-- Create release package -->
+        <Exec Command="..\$(ZipTool) $(InstallDir)-$(ProductVersion).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
+    </Target>
+
+    <Target Name="Test" DependsOnTargets="Build">
+        <!-- Build unit tests using project defined output path -->
+        <MSBuild Projects="..\UnitTests\UnitTests.csproj" Targets="Build" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
+
+        <!-- Run tests -->
+        <Exec Command='vstest.console ..\..\UnitTests\bin\Debug\UnitTests.dll /TestCaseFilter:"TestCategory!=RequireGUI"' WorkingDirectory="$(WorkDir)" />
+    </Target>
+
+    <Target Name="Update">
+        <!-- Make regular build using project defined output path -->
+        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
+
+        <!-- Update items database -->
+        <Exec Command="..\UpdateDB\bin\Release\UpdateDB.exe /N" />
+
+        <!-- Make regular clean using project defined output path -->
+        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
+    </Target>
 </Project>

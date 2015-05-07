@@ -3,10 +3,12 @@
     x:Class="POESKillTree.Views.AboutWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:Properties="clr-namespace:POESKillTree.Properties"
-    Title="About" Width="500" WindowStartupLocation="CenterOwner"
+    Width="500" WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
     Icon="/POESKillTree;component/logo.ico">
+    <controls:MetroWindow.Title><l:Catalog Message="About PoESkillTree"/></controls:MetroWindow.Title>
     <Grid Background="{DynamicResource WhiteColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -20,20 +22,23 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="110"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom">PoESkillTree</Label>
-        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontStyle="Italic" Content="{x:Static Properties:Version.ProductVersion}"/>
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom"><l:Catalog Message="Version"/></Label>
+        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Content="{x:Static Properties:Version.ProductVersion}"/>
         <Separator Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
-        <Label Grid.Row="1" Grid.Column="0">Updates</Label>
-        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
-            Check the git page for new versions: 
+        <Label Grid.Row="1" Grid.Column="0"><l:Catalog Message="Updates"/></Label>
+        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
+            <l:Catalog Message="See the GitHub page for new versions and source code:"/>
+            <LineBreak/>
             <Hyperlink NavigateUri="https://github.com/EmmittJ/PoESkillTree" RequestNavigate="Href_Navigation">
-                Link
+                https://github.com/EmmittJ/PoESkillTree
             </Hyperlink>
         </TextBlock>
         <Separator Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
-        <Label Grid.Row="2" Grid.Column="0">Credits</Label>
+        <Label Grid.Row="2" Grid.Column="0">
+            <l:Catalog Message="Authors"/>
+        </Label>
         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
-            Headhorr - for his original
+            Headhorr - <l:Catalog Message="original author"/>
             <Hyperlink NavigateUri="http://www.pathofexile.com/forum/view-thread/19723" RequestNavigate="Href_Navigation">
                 Unofficial Offline Skilltree Calc
             </Hyperlink><LineBreak/>
@@ -47,14 +52,16 @@
             MauranKilom
         </TextBlock>
         <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
-        <Label Grid.Row="3" Grid.Column="0">Legal</Label>
+        <Label Grid.Row="3" Grid.Column="0">
+            <l:Catalog Message="Legal"/>
+        </Label>
         <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
-            Skill Tree assets and images belong to <Bold>Grinding Gear Games</Bold><LineBreak/>
-            Data used in character calculations are from
+            <l:Catalog Message="Skill Tree assets and images belong to"/> <Bold>Grinding Gear Games</Bold><LineBreak/>
+            <l:Catalog Message="Data used in character calculations are from"/>
             <Hyperlink NavigateUri="http://pathofexile.gamepedia.com/Path_of_Exile_Wiki:Copyrights" RequestNavigate="Href_Navigation">
                 Path of Exile Wiki
             </Hyperlink><LineBreak/>
         </TextBlock>
-        <Button Grid.Row="4" Grid.Column="1" Content="Close" x:Name="btnPopupClose" Click="btnPopupClose_Click" />
+        <Button Grid.Row="4" Grid.Column="1" x:Name="btnPopupClose" Click="btnPopupClose_Click"><l:Catalog Message="Close"/></Button>
     </Grid>
 </controls:MetroWindow>
