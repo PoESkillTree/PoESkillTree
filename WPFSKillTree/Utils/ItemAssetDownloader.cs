@@ -20,6 +20,13 @@ namespace POESKillTree.Utils
             {"Ring", ItemClass.Ring},
         };
 
+        static Dictionary<string, GearGroup> JewelryGroupMap = new Dictionary<string, GearGroup>()
+        {
+            {"Amulet", GearGroup.Amulet},
+            {"Belt",GearGroup.Belt},
+            {"Ring", GearGroup.Ring},
+        };
+
 
         static Dictionary<string, ItemClass> WeaponClassMap = new Dictionary<string, ItemClass>()
         {
@@ -38,6 +45,23 @@ namespace POESKillTree.Utils
             {"Wand",ItemClass.OneHand},
         };
 
+        static Dictionary<string, GearGroup> WeaponGroupMap = new Dictionary<string, GearGroup>()
+        {
+            {"Bow",GearGroup.Bow},
+            {"Claw",GearGroup.Claw},
+            {"Dagger",GearGroup.Dagger},
+            {"One Hand Axe",GearGroup.Axe},
+            {"One Hand Mace",GearGroup.Mace},
+            {"One Hand Sword",GearGroup.Sword},
+            {"Sceptre",GearGroup.Sceptre},
+            {"Staff",GearGroup.Staff},
+            {"Thrusting One Hand Sword",GearGroup.Sword},
+            {"Two Hand Axe",GearGroup.Axe},
+            {"Two Hand Mace",GearGroup.Mace},
+            {"Two Hand Sword",GearGroup.Sword},
+            {"Wand",GearGroup.Wand},
+        };
+
         static Dictionary<string, ItemClass> ArmorClassMap = new Dictionary<string, ItemClass>()
         {
             {"Body Armour",ItemClass.Armor},
@@ -46,6 +70,18 @@ namespace POESKillTree.Utils
             {"Helmet",ItemClass.Helm},
             {"Shield",ItemClass.OffHand},
         };
+
+
+        static Dictionary<string, GearGroup> ArmorGroupMap = new Dictionary<string, GearGroup>()
+        {
+            {"Body Armour",GearGroup.Chest},
+            {"Boots",GearGroup.Boots},
+            {"Gloves",GearGroup.Gloves},
+            {"Helmet",GearGroup.Helmet},
+            {"Shield",GearGroup.Shield},
+        };
+
+
 
 
         public static void ExtractJewelry(List<ItemBase> items, List<Tuple<string, string>> images)
@@ -77,7 +113,7 @@ namespace POESKillTree.Utils
 
                     var xe = new ItemBase()
                     {
-                        Group = h,
+                        GearGroup = JewelryGroupMap[h],
                         Class = JewelryClassMap[h],
                         ItemType = name,
                         Level = int.Parse(level)
@@ -148,7 +184,7 @@ namespace POESKillTree.Utils
 
                     var xe = new ItemBase()
                     {
-                        Group = h,
+                        GearGroup = ArmorGroupMap[h],
                         Class = ArmorClassMap[h],
                         ItemType = name,
                         Level = int.Parse(level),
@@ -228,7 +264,7 @@ namespace POESKillTree.Utils
 
                     var xe = new ItemBase()
                     {
-                        Group = h,
+                        GearGroup = WeaponGroupMap[h],
                         Class = WeaponClassMap[h],
                         ItemType = name,
                         Level = int.Parse(level),

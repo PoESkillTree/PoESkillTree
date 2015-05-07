@@ -68,6 +68,9 @@ namespace POESKillTree.Views
             cbBaseSelection.SelectedIndex = 0;
         }
 
+        List<Affix> prefixes = new List<Affix>();
+        List<Affix> suffixes = new List<Affix>();
+
         private void cbBaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbBaseSelection.SelectedItem == null)
@@ -77,9 +80,16 @@ namespace POESKillTree.Views
             }
 
             var itm = ((ItemBase)cbBaseSelection.SelectedItem).CreateItem();
-
-
             Item = itm;
+
+            var aaff = Affix.AllAffixes.Where(a => a.ApplicableGear.Contains(itm.GearGroup)).ToArray();
+
+            var prefixes = aaff.Where(a => a.IsPrefix).ToList();
+            var suffixes = aaff.Where(a => a.IsSuffix).ToList();
+
+            msp1.Affixes = msp2.Affixes = msp3.Affixes = prefixes;
+            mss1.Affixes = mss2.Affixes = mss3.Affixes = suffixes;
+
         }
 
 

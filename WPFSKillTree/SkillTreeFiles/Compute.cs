@@ -1476,13 +1476,13 @@ namespace POESKillTree.SkillTreeFiles
                     // Get weapon type (damage nature).
                     if (item.Keywords == null) // Quiver or shield.
                     {
-                        if (item.Type.Contains("Quiver"))
+                        if (item.BaseType.Contains("Quiver"))
                             Nature = new DamageNature() { WeaponType = WeaponType.Quiver };
                         else
-                            if (item.Type.Contains("Shield") || item.Type.Contains("Buckler") || item.Type == "Spiked Bundle")
+                            if (item.BaseType.Contains("Shield") || item.BaseType.Contains("Buckler") || item.BaseType == "Spiked Bundle")
                                 Nature = new DamageNature() { WeaponType = WeaponType.Shield };
                             else
-                                throw new Exception("Unknown weapon type: " + item.Type);
+                                throw new Exception("Unknown weapon type: " + item.BaseType);
                     }
                     else // Regular weapon.
                         foreach (string keyword in item.Keywords)

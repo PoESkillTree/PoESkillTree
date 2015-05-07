@@ -3,20 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" d:DesignWidth="300">
+             xmlns:itm="clr-namespace:POESKillTree.ViewModels.Items"
+             mc:Ignorable="d" d:DesignWidth="300" Name="control">
     <Grid>
         <StackPanel>
-            <ComboBox>df</ComboBox>
+            <ComboBox ItemsSource="{Binding Affixes,ElementName=control}" Name="cbAffix" SelectionChanged="cbAffix_SelectionChanged">
+                <!--<ComboBox.ItemsSource>
+                    <CompositeCollection>
+                        <ComboBoxItem IsEnabled="False" Foreground="Black">Select Item</ComboBoxItem>
+                        <CollectionContainer Collection="" />
+                    </CompositeCollection>
+                </ComboBox.ItemsSource>-->
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type itm:Affix}">
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <Slider Grid.Column="0" Name="slValue" />
+                <Slider Grid.Column="0" Name="slValue" SmallChange="1" TickPlacement="Both" TickFrequency="10000" ValueChanged="slValue_ValueChanged" />
                 <TextBlock Grid.Column="1" TextAlignment="Center" Width="30" Text="{Binding Value,ElementName=slValue, StringFormat=###0.#}"/>
             </Grid>
 
-            <TextBlock>T1</TextBlock>
+            <TextBlock><Run>T</Run><Run Text="{Binding CurrentTier.Tier,ElementName=control}"/><Run>: </Run><Run Text="{Binding CurrentTier.Name,ElementName=control}"/></TextBlock>
         </StackPanel>
     </Grid>
 </UserControl>

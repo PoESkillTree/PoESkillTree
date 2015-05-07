@@ -1894,6 +1894,8 @@ namespace POESKillTree.Views
                             foreach (var file in new DirectoryInfo(@"DataBackup").GetFiles())
                                 file.CopyTo(System.IO.Path.Combine(@"Data",file.Name));
 
+                            File.Copy(@"DataBackup\Equipment\Affixlist.xml", @"Data\Equipment\Affixlist.xml");
+
                             if (Directory.Exists("DataBackup"))
                                 Directory.Delete("DataBackup", true);
 

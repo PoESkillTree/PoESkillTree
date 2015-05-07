@@ -34,15 +34,15 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <Label>Prefixes</Label>
-                <local:ModSelector/>
-                <local:ModSelector/>
-                <local:ModSelector/>
+                <local:ModSelector x:Name="msp1"/>
+                <local:ModSelector x:Name="msp2"/>
+                <local:ModSelector x:Name="msp3"/>
             </StackPanel>
             <StackPanel Grid.Column="2">
-                <Label>Affixes</Label>
-                <local:ModSelector/>
-                <local:ModSelector/>
-                <local:ModSelector/>
+                <Label>Suffixes</Label>
+                <local:ModSelector x:Name="mss1"/>
+                <local:ModSelector x:Name="mss2"/>
+                <local:ModSelector x:Name="mss3"/>
             </StackPanel>
             <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=window}" Width="94" Height="188" Grid.Row="0"/>
         </Grid>

@@ -184,7 +184,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Grid.Row="0" Name="ItemName" Text="{Binding Item.NameLine,ElementName=control}" Visibility="{Binding Item.HaveName,ElementName=control, Converter={StaticResource BoolToVisConverter}}"/>
-                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Margin="0,0,0,4" Grid.Row="2" Name="ItemType" Text="{Binding Item.Type,ElementName=control}"/>
+                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Margin="0,0,0,4" Grid.Row="2" Name="ItemType" Text="{Binding Item.BaseType,ElementName=control}"/>
                 </Grid>
             </Grid>
             <Image Grid.Column="2">

@@ -185,10 +185,10 @@ namespace POESKillTree.ViewModels
 
                 lock (TypeCache)
                 {
-                    if (!TypeCache.TryGetValue(itm.Type, out img))
+                    if (!TypeCache.TryGetValue(itm.BaseType, out img))
                     {
                         //default
-                        var imgfile = new FileInfo(Path.Combine("./Data/Equipment/Assets/", itm.Type + ".png"));
+                        var imgfile = new FileInfo(Path.Combine("./Data/Equipment/Assets/", itm.BaseType + ".png"));
 
                         if (imgfile.Exists)
                         {
@@ -199,7 +199,7 @@ namespace POESKillTree.ViewModels
                             img.UriSource = new Uri(imgfile.FullName, UriKind.Absolute);
                             img.EndInit();
 
-                            TypeCache.Add(itm.Type, img);
+                            TypeCache.Add(itm.BaseType, img);
                             return img;
                         }
                     }else

@@ -193,10 +193,13 @@
     <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="Utils\ItemAssetDownloader.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
+    <Compile Include="ViewModels\Items\Affix.cs" />
+    <Compile Include="ViewModels\Items\GearType.cs" />
     <Compile Include="ViewModels\Items\Item.cs" />
     <Compile Include="ViewModels\Items\FrameType.cs" />
     <Compile Include="ViewModels\Items\ItemBase.cs" />
     <Compile Include="ViewModels\Items\ItemClass.cs" />
+    <Compile Include="ViewModels\Items\ItemModTier.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
     <Compile Include="SkillTreeFiles\ImageHelper.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
@@ -440,6 +443,12 @@
     <Resource Include="Images\EquipmentUI\ItemDefaults\MainHand.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\OffHand.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Ring.png" />
+    <None Include="Data\Equipment\Affixlist.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Equipment\Itemlist.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -451,7 +460,12 @@
     <Content Include="Tools\7z.exe" />
     <Resource Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RangeTree\RangeTree\RangeTree.csproj">
+      <Project>{9cc3eb9d-32d2-41e6-96ee-c01dc32a5aed}</Project>
+      <Name>RangeTree</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

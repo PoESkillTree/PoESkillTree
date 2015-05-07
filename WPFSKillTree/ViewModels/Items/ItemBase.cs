@@ -165,7 +165,7 @@ namespace POESKillTree.ViewModels.Items
         }
 
 
-        public string Group { get; set; }
+        public GearGroup GearGroup { get; set; }
         public int Level { get; set; }
         public string ItemType { get; set; }
         public ItemClass Class { get; set; }
@@ -186,7 +186,7 @@ namespace POESKillTree.ViewModels.Items
 
         public ItemBase(XElement x)
         {
-            this.Group = x.Attribute("group").Value;
+            this.GearGroup = (GearGroup)Enum.Parse(typeof(GearGroup), x.Attribute("group").Value);
             this.Class = (ItemClass)Enum.Parse(typeof(ItemClass), x.Attribute("class").Value);
             this.ItemType = x.Attribute("type").Value;
             this.Level = int.Parse(x.Attribute("level").Value);
@@ -201,7 +201,7 @@ namespace POESKillTree.ViewModels.Items
         public virtual XElement Serialize()
         {
             var elm = new XElement("ItemBase",
-                new XAttribute("group", Group),
+                new XAttribute("group", GearGroup),
                 new XAttribute("class", Class),
                 new XAttribute("type", ItemType),
                 new XAttribute("level", Level));
@@ -243,9 +243,21 @@ namespace POESKillTree.ViewModels.Items
             var item = new Item();
 
             item.Class = this.Class;
-            item.Type = this.ItemType;
+            item.BaseType = this.ItemType;
+            item.GearGroup = this.GearGroup;
 
             return item;
+        }
+
+
+        internal static GearGroup GroupTypeForItemType(string type)
+        {
+            var cls = BaseList.FirstOrDefault(b => b.ItemType == type);
+
+            if(cls!=null)
+                return cls.GearGroup;
+
+            return GearGroup.Unknown;
         }
     }
 }

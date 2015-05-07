@@ -54,6 +54,14 @@ namespace POESKillTree.ViewModels.Items
             set { _Slot = value; OnPropertyChanged("Slot"); }
         }
 
+        private GearGroup _geargroup;
+
+        public GearGroup GearGroup
+        {
+            get { return _geargroup; }
+            set { _geargroup = value; OnPropertyChanged("GearGroup"); }
+        }
+
 
         public List<Item> Gems;
         public List<string> Keywords;
@@ -165,7 +173,7 @@ namespace POESKillTree.ViewModels.Items
         public int SocketGroup;
         private string _Type;
 
-        public string Type
+        public string BaseType
         {
             get { return _Type; }
             set { _Type = value; OnPropertyChanged("Type"); }
@@ -185,13 +193,16 @@ namespace POESKillTree.ViewModels.Items
 
             if (this.Frame < FrameType.Rare)
             {
-                this.Type = ItemBase.ItemTypeFromTypeline(this.Type);
+                this.BaseType = ItemBase.ItemTypeFromTypeline(this.BaseType);
             }
 
             if(cls == ItemClass.Invalid || cls == ItemClass.Unequipable)
             {
-                this.Class = ItemBase.ClassForItemType(this.Type);
+                this.Class = ItemBase.ClassForItemType(this.BaseType);
             }
+
+            this.GearGroup = ItemBase.GroupTypeForItemType(this.BaseType);
+
         }
 
         public Item(ItemClass iClass, RavenJObject val)
@@ -220,7 +231,7 @@ namespace POESKillTree.ViewModels.Items
             NameLine = Name = val["name"].Value<string>();
             if (Name == "")
                 Name = val["typeLine"].Value<string>();
-            Type = val["typeLine"].Value<string>();
+            BaseType = val["typeLine"].Value<string>();
 
             Frame = (FrameType)val["frameType"].Value<int>();
 
@@ -419,5 +430,15 @@ namespace POESKillTree.ViewModels.Items
 
         public int W { get; set; }
         public int H { get; set; }
+
+        public bool IsWeapon 
+        {
+            get { return this.Class == ItemClass.OneHand || this.Class == ItemClass.TwoHand; }
+        }
+
+        public bool IsTwoHanded 
+        {
+            get { return this.Class == ItemClass.TwoHand; }
+        }
     }
 }

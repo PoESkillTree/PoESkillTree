@@ -1,0 +1,3 @@
+[submodule "RangeTree"]
+	path = RangeTree
+	url = https://github.com/Ttxman/RangeTree.git
