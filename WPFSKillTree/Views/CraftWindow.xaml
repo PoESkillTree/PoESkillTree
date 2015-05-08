@@ -34,15 +34,15 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <Label>Prefixes</Label>
-                <local:ModSelector x:Name="msp1" SelectedAffixChanged="msp1_SelectedAffixChanged"/>
-                <local:ModSelector x:Name="msp2" SelectedAffixChanged="msp1_SelectedAffixChanged"/>
-                <local:ModSelector x:Name="msp3" SelectedAffixChanged="msp1_SelectedAffixChanged"/>
+                <local:ModSelector x:Name="msp1" SelectedAffixChanged="msp1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
+                <local:ModSelector x:Name="msp2" SelectedAffixChanged="msp1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
+                <local:ModSelector x:Name="msp3" SelectedAffixChanged="msp1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
             </StackPanel>
             <StackPanel Grid.Column="2">
                 <Label>Suffixes</Label>
-                <local:ModSelector x:Name="mss1" SelectedAffixChanged="mss1_SelectedAffixChanged"/>
-                <local:ModSelector x:Name="mss2" SelectedAffixChanged="mss1_SelectedAffixChanged"/>
-                <local:ModSelector x:Name="mss3" SelectedAffixChanged="mss1_SelectedAffixChanged"/>
+                <local:ModSelector x:Name="mss1" SelectedAffixChanged="mss1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
+                <local:ModSelector x:Name="mss2" SelectedAffixChanged="mss1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
+                <local:ModSelector x:Name="mss3" SelectedAffixChanged="mss1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
             </StackPanel>
             <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=window}" Width="94" Height="188" Grid.Row="0" Margin="5"/>
         </Grid>

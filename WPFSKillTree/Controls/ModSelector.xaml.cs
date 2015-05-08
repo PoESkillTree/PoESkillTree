@@ -74,43 +74,44 @@ namespace POESKillTree.Controls
         private void cbAffix_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var aff = cbAffix.SelectedItem as Affix;
+
+            if (aff != null)
+            {
+                var tiers = aff.GetTiers();
+                spSLiders.Children.Clear();
+                sliders.Clear();
+                tbtlabel.Text = "";
+                if (aff != EmptySelection)
+                {
+                    for (int i = 0; i < aff.Mod.Length; i++)
+                    {
+                        OverlayedSlider os = new OverlayedSlider();
+                        os.OverlayText = aff.AliasStrings[i];
+
+                        sliders.Add(os);
+                        os.ValueChanged += slValue_ValueChanged;
+                        os.Tag = i;
+                        var tics = tiers.SelectMany(im => Enumerable.Range((int)Math.Round(im.Stats[i].Range.From), (int)Math.Round(im.Stats[i].Range.To - im.Stats[i].Range.From + 1))).Select(f => (double)f).ToList();
+
+                        if (aff.AliasStrings[i].Contains(" per second"))
+                        {
+                            tics = tics.Select(t => t / 60.0).ToList();
+                        }
+
+
+                        os.Minimum = tics.First();
+                        os.Maximum = tics.Last();
+                        os.Ticks = new DoubleCollection(tics);
+
+
+                        spSLiders.Children.Add(os);
+                    }
+                }
+            }
+
             OnpropertyChanged("SelectedAffix");
             if (SelectedAffixChanged != null)
                 SelectedAffixChanged(this, aff);
-
-            if (aff == null)
-                return;
-
-            var tiers = aff.GetTiers();
-            spSLiders.Children.Clear();
-            sliders.Clear();
-            tbtlabel.Text = "";
-            if (aff != EmptySelection)
-            {
-                for (int i = 0; i < aff.Mod.Length; i++)
-                {
-                    OverlayedSlider os = new OverlayedSlider();
-                    os.OverlayText = aff.AliasStrings[i];
-
-                    sliders.Add(os);
-                    os.ValueChanged += slValue_ValueChanged;
-                    os.Tag = i;
-                    var tics = tiers.SelectMany(im => Enumerable.Range((int)Math.Round(im.Stats[i].Range.From), (int)Math.Round(im.Stats[i].Range.To - im.Stats[i].Range.From + 1))).Select(f => (double)f).ToList();
-
-                    if (aff.AliasStrings[i].Contains(" per second"))
-                    {
-                        tics = tics.Select(t => t / 60.0).ToList();
-                    }
-
-
-                    os.Minimum = tics.First();
-                    os.Maximum = tics.Last();
-                    os.Ticks = new DoubleCollection(tics);
-
-
-                    spSLiders.Children.Add(os);
-                }
-            }
         }
 
         bool _updatingSliders = false;
@@ -140,6 +141,11 @@ namespace POESKillTree.Controls
                 }
             }
             _updatingSliders = false;
+            OnpropertyChanged("SelectedValues");
+            if (SelectedValuesChanged != null)
+            {
+                SelectedValuesChanged(this, SelectedValues);
+            }
 
             tbtlabel.Text = TiersString(tiers);
 
@@ -151,6 +157,13 @@ namespace POESKillTree.Controls
             if (tiers == null || tiers.Length == 0)
                 return "";
             return string.Join("/", tiers.Select(s => string.Format("T{0}:{1}", s.Tier, s.Name)));
+        }
+
+        public event Action<object, double[]> SelectedValuesChanged;
+
+        public double[] SelectedValues 
+        { 
+            get{ return sliders.Select(s=>s.Value).ToArray();}
         }
     }
 }

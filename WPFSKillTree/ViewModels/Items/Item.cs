@@ -150,11 +150,9 @@ namespace POESKillTree.ViewModels.Items
 
         public List<ItemMod> Mods;
 
-        private string _Name;
         public string Name
         {
-            get { return _Name; }
-            set { _Name = value; OnPropertyChanged("Name"); }
+            get { return string.IsNullOrEmpty(_NameLine)?TypeLine:NameLine; }
         }
 
         private string _NameLine;
@@ -162,6 +160,14 @@ namespace POESKillTree.ViewModels.Items
         {
             get { return _NameLine; }
             set { _NameLine = value; OnPropertyChanged("NameLine"); OnPropertyChanged("HaveName"); }
+        }
+
+        private string _TypeLine;
+
+        public string TypeLine
+        {
+            get { return _TypeLine; }
+            set { _TypeLine = value; OnPropertyChanged("TypeLine"); }
         }
 
         public bool HaveName
@@ -228,10 +234,7 @@ namespace POESKillTree.ViewModels.Items
             X = val["x"].Value<int>();
             Y = val["y"].Value<int>();
 
-            NameLine = Name = val["name"].Value<string>();
-            if (Name == "")
-                Name = val["typeLine"].Value<string>();
-            BaseType = val["typeLine"].Value<string>();
+            TypeLine =  BaseType = val["typeLine"].Value<string>();
 
             Frame = (FrameType)val["frameType"].Value<int>();
 

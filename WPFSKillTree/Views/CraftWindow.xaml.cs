@@ -90,9 +90,12 @@ namespace POESKillTree.Views
 
             msp1.Affixes = msp2.Affixes = msp3.Affixes = _prefixes;
             mss1.Affixes = mss2.Affixes = mss3.Affixes = _suffixes;
+            _selectedSuff= new[] { mss1, mss2, mss3 }.Where(s => s.SelectedAffix != null).ToArray();
+            RecalculateItem();
 
         }
 
+        ModSelector[] _selectedPreff = new ModSelector[0];
         private void msp1_SelectedAffixChanged(object sender, Affix aff)
         {
             var ms = sender as ModSelector;
@@ -105,8 +108,42 @@ namespace POESKillTree.Views
 
             if (msp3 != ms)
                 msp3.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp1.SelectedAffix }).ToList();
+            _selectedPreff = new[] { msp1, msp2, msp3 }.Where(s => s.SelectedAffix != null).ToArray();
+            RecalculateItem();
         }
 
+        private void RecalculateItem()
+        {
+
+            Item.NameLine = "";
+            Item.TypeLine = Item.BaseType;
+            if (_selectedPreff.Length + _selectedSuff.Length == 0)
+            { 
+                Item.Frame = FrameType.White;
+            }
+            else if (_selectedPreff.Length <= 1 && _selectedSuff.Length <= 1)
+            {
+                Item.Frame = FrameType.Magic;
+                string typeline = "";
+
+                if (_selectedPreff.Length > 0)
+                    typeline = _selectedPreff[0].SelectedAffix.Query(_selectedPreff[0].SelectedValues.Select(v => (float)v).ToArray())[0].Name + " ";
+
+                typeline += Item.BaseType;
+
+                if (_selectedSuff.Length > 0)
+                    typeline += " "+_selectedSuff[0].SelectedAffix.Query(_selectedSuff[0].SelectedValues.Select(v => (float)v).ToArray())[0].Name;
+
+                Item.TypeLine = typeline;
+            }
+            else
+            {
+                Item.Frame = FrameType.Rare;
+                Item.NameLine = "Crafted " + Item.BaseType;
+            }
+        }
+
+        ModSelector[] _selectedSuff = new ModSelector[0];
         private void mss1_SelectedAffixChanged(object sender, Affix aff)
         {
             var ms = sender as ModSelector;
@@ -119,6 +156,15 @@ namespace POESKillTree.Views
 
             if (mss3 != ms)
                 mss3.Affixes = _suffixes.Except(new[] { mss2.SelectedAffix, mss1.SelectedAffix }).ToList();
+
+            _selectedSuff = new[] { mss1, mss2, mss3 }.Where(s=>s.SelectedAffix!=null).ToArray();
+
+            RecalculateItem();
+        }
+
+        private void ms_SelectedValuesChanged(object sender, double[] values)
+        {
+            RecalculateItem();
         }
     }
 }
