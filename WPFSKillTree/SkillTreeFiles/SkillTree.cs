@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POESKillTree.Localization;
 using POESKillTree.Views;
 using System;
 using System.Collections.Generic;
@@ -923,7 +924,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (targetNodeIds.Count == 0)
             {
-                MessageBox.Show("Please highlight some non-skilled nodes first!");
+                MessageBox.Show(L10n.Message("Please highlight non-skilled nodes by right-clicking them!"));
                 return;
             }
 

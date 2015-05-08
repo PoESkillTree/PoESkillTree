@@ -101,7 +101,7 @@
         </TextBlock>
         <TextBlock Grid.Row="13" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + E</TextBlock>
         <TextBlock Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="Copy PoEUrl link to clipboard"/>
+            <l:Catalog Message="Copy PoEUrl link to Clipboard"/>
         </TextBlock>
         <TextBlock Grid.Row="14" Grid.Column="0">Ctrl + R</TextBlock>
         <TextBlock Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3">

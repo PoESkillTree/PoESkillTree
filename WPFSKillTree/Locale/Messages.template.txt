@@ -52,7 +52,7 @@ msgid "Data used in character calculations are from"
 msgstr ""
 
 #: Views\AboutWindow.xaml:65 Views\DownloadItemsWindow.xaml:29
-#: Views\HotkeysWindow.xaml:140
+#: Views\HotkeysWindow.xaml:140 Views\OptimizerControllerWindow.xaml.cs:126
 msgid "Close"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgid "Toggle Saved Builds sidebar"
 msgstr ""
 
 #: Views\HotkeysWindow.xaml:104
-msgid "Copy PoEUrl link to clipboard"
+msgid "Copy PoEUrl link to Clipboard"
 msgstr ""
 
 #: Views\HotkeysWindow.xaml:108
@@ -236,36 +236,76 @@ msgstr ""
 msgid "E_xit"
 msgstr ""
 
-#: Views\MainWindow.xaml:255
+#: Views\MainWindow.xaml:249
+msgid "_Tools "
+msgstr ""
+
+#: Views\MainWindow.xaml:253
+msgid "Take _Screenshot of Skilled Nodes"
+msgstr ""
+
+#: Views\MainWindow.xaml:261
 msgid "_Download & Import Items"
 msgstr ""
 
-#: Views\MainWindow.xaml:284
-msgid "_Help "
+#: Views\MainWindow.xaml:269
+msgid "Skill _Highlighted Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:288
-msgid "_Links"
+#: Views\MainWindow.xaml:277
+msgid "_Unhighlight All Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:295
-msgid "_Path of Exile Website"
+#: Views\MainWindow.xaml:285
+msgid "Copy _Passive Attributes to Clipboard"
+msgstr ""
+
+#: Views\MainWindow.xaml:293
+msgid "_Redownload Skill Tree Assets"
 msgstr ""
 
 #: Views\MainWindow.xaml:302
+msgid "_Help "
+msgstr ""
+
+#: Views\MainWindow.xaml:306
+msgid "_Links"
+msgstr ""
+
+#: Views\MainWindow.xaml:313
+msgid "_Path of Exile Website"
+msgstr ""
+
+#: Views\MainWindow.xaml:320
 msgid "View _Help"
 msgstr ""
 
-#: Views\MainWindow.xaml:310
+#: Views\MainWindow.xaml:328
 msgid "_Hotkeys"
 msgstr ""
 
-#: Views\MainWindow.xaml:318
+#: Views\MainWindow.xaml:336
 msgid "_Check for updates"
 msgstr ""
 
-#: Views\MainWindow.xaml:326
+#: Views\MainWindow.xaml:344
 msgid "_About PoESkillTree"
+msgstr ""
+
+#: Views\OptimizerControllerWindow.xaml:10
+msgid "Skill Tree Optimizer"
+msgstr ""
+
+#: Views\OptimizerControllerWindow.xaml:25
+msgid "Finding optimal skill tree..."
+msgstr ""
+
+#: Views\OptimizerControllerWindow.xaml:30
+msgid "Initializing..."
+msgstr ""
+
+#: SkillTreeFiles\SkillTree.cs:927
+msgid "Please highlight non-skilled nodes by right-clicking them!"
 msgstr ""
 
 #: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:236
@@ -354,4 +394,28 @@ msgstr ""
 
 #: Views\MainWindow.xaml.cs:486
 msgid "Error occured"
+msgstr ""
+
+#: Views\OptimizerControllerWindow.xaml.cs:62
+msgid "Cancel"
+msgstr ""
+
+#: Views\OptimizerControllerWindow.xaml.cs:63
+#: Views\OptimizerControllerWindow.xaml.cs:151
+msgid "Pause"
+msgstr ""
+
+#: Views\OptimizerControllerWindow.xaml.cs:111
+#, csharp-format
+msgid "Best result so far: {0} additional point spent"
+msgid_plural "Best result so far: {0} additional points spent"
+msgstr[0] ""
+msgstr[1] ""
+
+#: Views\OptimizerControllerWindow.xaml.cs:125
+msgid "Finished!"
+msgstr ""
+
+#: Views\OptimizerControllerWindow.xaml.cs:158
+msgid "Continue"
 msgstr ""

@@ -244,8 +244,14 @@
                 <MenuItem x:Name="mnuViewCharacterSheet" Header="_Character Sheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}"/>
                 <MenuItem x:Name="mnuViewComparison" Header="_Tree comparison" IsCheckable="true" IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click"  />
             </MenuItem>
-            <MenuItem Header="_Tools ">
-                <MenuItem Header="_ScreenShot of Skilled Nodes" Click="Menu_ScreenShot">
+            <MenuItem>
+                <MenuItem.Header>
+                    <l:Catalog Message="_Tools " />
+                </MenuItem.Header>
+                <MenuItem Click="Menu_ScreenShot">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Take _Screenshot of Skilled Nodes" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ScreenShotIcon}" />
                     </MenuItem.Icon>
@@ -258,22 +264,34 @@
                         <ContentControl Template="{StaticResource DownloadIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Skill highlighted nodes" Click="Menu_SkillHighlightedNodes">
+                <MenuItem Click="Menu_SkillHighlightedNodes">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Skill _Highlighted Nodes" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource SkillIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Unhighlight All Nodes" Click="Menu_UnhighlightAllNodes">
+                <MenuItem Click="Menu_UnhighlightAllNodes">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Unhighlight All Nodes" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CircelIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="Menu_CopyStats">
+                <MenuItem Click="Menu_CopyStats">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Copy _Passive Attributes to Clipboard" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Redownload Tree Assets" Click="Menu_RedownloadTreeAssets">
+                <MenuItem Click="Menu_RedownloadTreeAssets">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Redownload Skill Tree Assets" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource RedownloadIcon}" />
                     </MenuItem.Icon>

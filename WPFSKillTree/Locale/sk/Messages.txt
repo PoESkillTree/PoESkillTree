@@ -51,7 +51,7 @@ msgid "Data used in character calculations are from"
 msgstr "Údaje použité vo výpočtoch postavy pochádzajú z"
 
 #: Views\AboutWindow.xaml:65 Views\DownloadItemsWindow.xaml:29
-#: Views\HotkeysWindow.xaml:140
+#: Views\HotkeysWindow.xaml:140 Views\OptimizerControllerWindow.xaml.cs:126
 msgid "Close"
 msgstr "Zavrieť"
 
@@ -184,8 +184,8 @@ msgid "Toggle Saved Builds sidebar"
 msgstr "Prepnutie panela Uložené zostavy"
 
 #: Views\HotkeysWindow.xaml:104
-msgid "Copy PoEUrl link to clipboard"
-msgstr "Skopírovať PoEUrl odkaz do schránky"
+msgid "Copy PoEUrl link to Clipboard"
+msgstr "Skopírovať PoEUrl odkaz do Schránky"
 
 #: Views\HotkeysWindow.xaml:108
 msgid "Reset skill tree"
@@ -235,37 +235,77 @@ msgstr "Uložiť _ako"
 msgid "E_xit"
 msgstr "U_končiť"
 
-#: Views\MainWindow.xaml:255
+#: Views\MainWindow.xaml:249
+msgid "_Tools "
+msgstr "_Nástroje "
+
+#: Views\MainWindow.xaml:253
+msgid "Take _Screenshot of Skilled Nodes"
+msgstr "Zaznamenanie _snímky vycvičených uzlov"
+
+#: Views\MainWindow.xaml:261
 msgid "_Download & Import Items"
 msgstr "Stiahnutie a _import predmetov"
 
-#: Views\MainWindow.xaml:284
+#: Views\MainWindow.xaml:269
+msgid "Skill _Highlighted Nodes"
+msgstr "_Vycvičiť zvýraznené uzly"
+
+#: Views\MainWindow.xaml:277
+msgid "_Unhighlight All Nodes"
+msgstr "_Zrušiť zvýraznenie uzlov"
+
+#: Views\MainWindow.xaml:285
+msgid "Copy _Passive Attributes to Clipboard"
+msgstr "Skopírovať _pasívne atribúty do Schránky"
+
+#: Views\MainWindow.xaml:293
+msgid "_Redownload Skill Tree Assets"
+msgstr "_Opätovne stiahnuť údaje pasívneho stromu"
+
+#: Views\MainWindow.xaml:302
 msgid "_Help "
 msgstr "_Pomoc "
 
-#: Views\MainWindow.xaml:288
+#: Views\MainWindow.xaml:306
 msgid "_Links"
 msgstr "_Odkazy"
 
-#: Views\MainWindow.xaml:295
+#: Views\MainWindow.xaml:313
 msgid "_Path of Exile Website"
 msgstr "_Path of Exile stránka"
 
-#: Views\MainWindow.xaml:302
+#: Views\MainWindow.xaml:320
 msgid "View _Help"
 msgstr "Zobraziť _Pomoc"
 
-#: Views\MainWindow.xaml:310
+#: Views\MainWindow.xaml:328
 msgid "_Hotkeys"
 msgstr "_Klávesové skratky"
 
-#: Views\MainWindow.xaml:318
+#: Views\MainWindow.xaml:336
 msgid "_Check for updates"
 msgstr "Skontrolovať _aktualizácie"
 
-#: Views\MainWindow.xaml:326
+#: Views\MainWindow.xaml:344
 msgid "_About PoESkillTree"
 msgstr "_O PoESkillTree"
+
+#: Views\OptimizerControllerWindow.xaml:10
+msgid "Skill Tree Optimizer"
+msgstr "Optimalizátor stromu zručností"
+
+#: Views\OptimizerControllerWindow.xaml:25
+msgid "Finding optimal skill tree..."
+msgstr "Hľadanie optimálneho stromu zručností..."
+
+#: Views\OptimizerControllerWindow.xaml:30
+msgid "Initializing..."
+msgstr "Inicializácia..."
+
+#: SkillTreeFiles\SkillTree.cs:927
+msgid "Please highlight non-skilled nodes by right-clicking them!"
+msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom!"
 
 #: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:236
 msgid "Download already in progress"
@@ -356,3 +396,28 @@ msgstr "Nová verzia"
 #: Views\MainWindow.xaml.cs:486
 msgid "Error occured"
 msgstr "Nastala chyba"
+
+#: Views\OptimizerControllerWindow.xaml.cs:62
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: Views\OptimizerControllerWindow.xaml.cs:63
+#: Views\OptimizerControllerWindow.xaml.cs:151
+msgid "Pause"
+msgstr "Pozastaviť"
+
+#: Views\OptimizerControllerWindow.xaml.cs:111
+#, csharp-format
+msgid "Best result so far: {0} additional point spent"
+msgid_plural "Best result so far: {0} additional points spent"
+msgstr[0] "Najlepší doterajší výsledok: {0} dodatočný bod použitý"
+msgstr[1] "Najlepší doterajší výsledok: {0} dodatočné body použité"
+msgstr[2] "Najlepší doterajší výsledok: {0} dodatočných bodov použitých"
+
+#: Views\OptimizerControllerWindow.xaml.cs:125
+msgid "Finished!"
+msgstr "Dokončené!"
+
+#: Views\OptimizerControllerWindow.xaml.cs:158
+msgid "Continue"
+msgstr "Pokračovať"
