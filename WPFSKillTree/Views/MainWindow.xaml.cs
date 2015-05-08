@@ -500,7 +500,7 @@ namespace POESKillTree.Views
             catch (UpdaterException ex)
             {
                 // Display error message: ex.Message.
-                MessageBox.Show(this, ex.Message.ToString(), "Failed to install update!");
+                MessageBox.Show(this, ex.Message.ToString(), L10n.Message("Update failed"));
             }
         }
 
@@ -527,7 +527,7 @@ namespace POESKillTree.Views
             else if (e.Error != null) // Check whether error occured.
             {
                 // Display error message: e.Error.Message.
-                MessageBox.Show(this, e.Error.Message.ToString(), "Failed to install update!");
+                MessageBox.Show(this, e.Error.Message.ToString(), L10n.Message("Update failed"));
             }
             else // Download completed.
             {
@@ -540,7 +540,7 @@ namespace POESKillTree.Views
                 {
                     Updater.Dispose();
                     // Display error message: ex.Message.
-                    MessageBox.Show(this, ex.Message.ToString(), "Failed to install update!");
+                    MessageBox.Show(this, ex.Message.ToString(), L10n.Message("Update failed"));
                 }
             }
             CloseLoadingWindow();
@@ -1068,7 +1068,7 @@ namespace POESKillTree.Views
             if (highlightedItem != null)
             {
                 var build = (PoEBuild)highlightedItem.Content;
-                _noteTip.Content = build.Note == @"" ? @"Right Click To Edit" : build.Note;
+                _noteTip.Content = build.Note == @"" ? L10n.Message("Right click to edit") : build.Note;
                 _noteTip.IsOpen = true;
             }
         }
@@ -1139,7 +1139,7 @@ namespace POESKillTree.Views
             }
             else
             {
-                MessageBox.Show(this, "Please select an existing build first.", "Error", MessageBoxButton.OK,
+                MessageBox.Show(this, L10n.Message("Please select a saved build!"), L10n.Message("Error"), MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }

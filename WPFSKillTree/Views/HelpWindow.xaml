@@ -134,6 +134,8 @@
                 </Section>
             </FlowDocument>
         </FlowDocumentScrollViewer>
-        <Button Content="Close" Grid.Row="1" x:Name="btnPopupClose" Click="btnPopupClose_Click" Height="20" Width="200" Margin="0,20,0,0" />
+        <Button Grid.Row="1" x:Name="btnPopupClose" Click="btnPopupClose_Click" Height="20" Width="200" Margin="0,20,0,0">
+            <l:Catalog Message="Close"/>
+        </Button>
     </Grid>
 </controls:MetroWindow>

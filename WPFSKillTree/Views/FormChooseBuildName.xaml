@@ -11,11 +11,11 @@
     </controls:MetroWindow.Title>
     <StackPanel Margin="0">
         <Label x:Name="lblName" HorizontalAlignment="Left" Margin="4,4,4,2">
-            <l:Catalog Message="Build Name"/>
+            <l:Catalog Message="Build name"/>
         </Label>
         <TextBox x:Name="txtName" HorizontalAlignment="Stretch" Margin="4,2,4,4" MaxLength="255" />
         <Label x:Name="lblNote" HorizontalAlignment="Left" Margin="4,4,4,2">
-            <l:Catalog Message="Build Note"/>
+            <l:Catalog Message="Build note"/>
         </Label>
         <TextBox x:Name="txtName2" HorizontalAlignment="Stretch" Margin="4,2,4,4" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MaxLines="5" AcceptsReturn="True" AcceptsTab="True"/>
         <Expander Margin="4" HorizontalAlignment="Stretch">
@@ -24,15 +24,15 @@
             </Expander.Header>
             <StackPanel Margin="0">
                 <Label HorizontalAlignment="Left" Margin="4,4,4,2">
-                    <l:Catalog Message="Character Name"/>
+                    <l:Catalog Message="Character name"/>
                 </Label>
                 <TextBox x:Name="txtCharacterName" HorizontalAlignment="Stretch" Height="23" Margin="4,2,4,4" MaxLength="24" />
                 <Label HorizontalAlignment="Left" Margin="4,4,4,2">
-                    <l:Catalog Message="Account Name"/>
+                    <l:Catalog Message="Account name"/>
                 </Label>
                 <TextBox x:Name="txtAccountName" HorizontalAlignment="Stretch" Height="23" Margin="4,2,4,4" MaxLength="24" />
                 <Label HorizontalAlignment="Left" Margin="4,4,4,2">
-                    <l:Catalog Message="Items Data"/>
+                    <l:Catalog Message="Items data"/>
                 </Label>
                 <TextBox x:Name="txtItemData" HorizontalAlignment="Stretch" Margin="4,2,4,4" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MaxLines="10" AcceptsTab="True" AcceptsReturn="True"/>
             </StackPanel>

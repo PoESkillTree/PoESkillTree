@@ -7,10 +7,16 @@ using System.Text;
 using POESKillTree.Model;
 
 /* TODO:
- * - Catalog.Unload() to unload previously used Catalog (clear messages, etc.)
+ * - Catalog.Unload() to unload previously used Catalog (clear messages, etc.), only one catalog should be loaded at a time (two during switch).
  * - SetLanguage must return bool to indicate successul language change.
- * - MakrdownSharp NuGet package for displaying md documents with XAML (for localized Help).ň
+ * - MakrdownSharp NuGet package for displaying md documents with XAML (for localized Help).
  * - Some tool to remove potential BOM header from translation catalogs before msgmerge, in case someone is editing them in VS/Notepad/etc.
+ * - en/en-US locale folder must exists containing Help.md, must be excluded from BuildLocaleCatalog target.
+ * - BuildLocale target should be called after regular Build of project (due to possible generated content/source)
+ * - Locale folder should be copied in release.xml, to avoid forgetting to flag files in project as Copy always.
+ * - Menu Theme/Accent cannot be localized due to use of MenuItem Content directly.
+ * - Filter ComboBox cannot be localized due to use of ComboBoxItem Content directly.
+ * - Level/Used top-middle bar doesn't have enough space for localization.
  */
 
 namespace POESKillTree.Localization

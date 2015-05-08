@@ -8,7 +8,9 @@
     Width="500" WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
     Icon="/POESKillTree;component/logo.ico">
-    <controls:MetroWindow.Title><l:Catalog Message="About PoESkillTree"/></controls:MetroWindow.Title>
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="About PoESkillTree"/>
+    </controls:MetroWindow.Title>
     <Grid Background="{DynamicResource WhiteColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -56,7 +58,7 @@
             <l:Catalog Message="Legal"/>
         </Label>
         <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
-            <l:Catalog Message="Skill Tree assets and images belong to"/> <Bold>Grinding Gear Games</Bold><LineBreak/>
+            <l:Catalog Message="Skill tree assets and images belong to"/> <Bold>Grinding Gear Games</Bold><LineBreak/>
             <l:Catalog Message="Data used in character calculations are from"/>
             <Hyperlink NavigateUri="http://pathofexile.gamepedia.com/Path_of_Exile_Wiki:Copyrights" RequestNavigate="Href_Navigation">
                 Path of Exile Wiki
