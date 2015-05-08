@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using POESKillTree.Controls;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels.Items;
 using System;
@@ -68,8 +69,8 @@ namespace POESKillTree.Views
             cbBaseSelection.SelectedIndex = 0;
         }
 
-        List<Affix> prefixes = new List<Affix>();
-        List<Affix> suffixes = new List<Affix>();
+        List<Affix> _prefixes = new List<Affix>();
+        List<Affix> _suffixes = new List<Affix>();
 
         private void cbBaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -84,14 +85,40 @@ namespace POESKillTree.Views
 
             var aaff = Affix.AllAffixes.Where(a => a.ApplicableGear.Contains(itm.GearGroup)).ToArray();
 
-            var prefixes = aaff.Where(a => a.IsPrefix).ToList();
-            var suffixes = aaff.Where(a => a.IsSuffix).ToList();
+            _prefixes = aaff.Where(a => a.IsPrefix).ToList();
+            _suffixes = aaff.Where(a => a.IsSuffix).ToList();
 
-            msp1.Affixes = msp2.Affixes = msp3.Affixes = prefixes;
-            mss1.Affixes = mss2.Affixes = mss3.Affixes = suffixes;
+            msp1.Affixes = msp2.Affixes = msp3.Affixes = _prefixes;
+            mss1.Affixes = mss2.Affixes = mss3.Affixes = _suffixes;
 
         }
 
+        private void msp1_SelectedAffixChanged(object sender, Affix aff)
+        {
+            var ms = sender as ModSelector;
+            List<Affix> exc = new List<Affix>();
+            if (msp1 != ms)
+                msp1.Affixes = _prefixes.Except(new[] {msp2.SelectedAffix, msp3.SelectedAffix }).ToList();
 
+            if (msp2 != ms)
+                msp2.Affixes = _prefixes.Except(new[] { msp1.SelectedAffix, msp3.SelectedAffix }).ToList();
+
+            if (msp3 != ms)
+                msp3.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp1.SelectedAffix }).ToList();
+        }
+
+        private void mss1_SelectedAffixChanged(object sender, Affix aff)
+        {
+            var ms = sender as ModSelector;
+            List<Affix> exc = new List<Affix>();
+            if (mss1 != ms)
+                mss1.Affixes = _suffixes.Except(new[] { mss2.SelectedAffix, mss3.SelectedAffix }).ToList();
+
+            if (mss2 != ms)
+                mss2.Affixes = _suffixes.Except(new[] { mss1.SelectedAffix, mss3.SelectedAffix }).ToList();
+
+            if (mss3 != ms)
+                mss3.Affixes = _suffixes.Except(new[] { mss2.SelectedAffix, mss1.SelectedAffix }).ToList();
+        }
     }
 }

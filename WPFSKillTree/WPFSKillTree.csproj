@@ -168,6 +168,9 @@
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
     <Compile Include="Model\RelayCommand.cs" />
+    <Compile Include="Controls\OverlayedSlider.xaml.cs">
+      <DependentUpon>OverlayedSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Version.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -269,6 +272,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\OverlayedSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CraftWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -348,7 +355,7 @@
     <None Include="dist-clean.bat" />
     <None Include="dist-update.bat" />
     <None Include="dist-release.bat" />
-    <None Include="packages.config" />
+    <None Include="Controls\packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

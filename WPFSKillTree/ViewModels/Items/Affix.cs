@@ -137,9 +137,14 @@ namespace POESKillTree.ViewModels.Items
 
         public HashSet<string>[] Aliases { get; set; }
 
+        public string[] AliasStrings
+        {
+            get { return Aliases.Select(al =>String.Join(",", al.Select(a => a.Replace("minimum ", "").Replace("maximum ", "")).Distinct())).ToArray(); }
+        }
+
         public string Name
         {
-            get { return String.Join(",",Aliases[0]); }
+            get { return String.Join(",", AliasStrings.Distinct()); }
         }
 
         private RangeTree<float, ModWrapper>[] Tiers { get; set; }
