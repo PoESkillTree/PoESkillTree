@@ -21,20 +21,26 @@ namespace POESKillTree.Controls
     /// </summary>
     public partial class ModSelector : UserControl, INotifyPropertyChanged
     {
+
+        private static readonly Affix EmptySelection = new Affix(new[] { "--- Select Affix ---" }, new ItemModTier[0]);
+
+
         private List<Affix> _Affixes;
 
         public List<Affix> Affixes
         {
             get { return _Affixes; }
-            set 
+            set
             {
-                _Affixes = value;
+                var l = value.ToList();
+                l.Insert(0, EmptySelection);
+                _Affixes = l;
                 if (!_Affixes.Contains(SelectedAffix))
                 {
                     sliders.Clear();
                     spSLiders.Children.Clear();
                 }
-                OnpropertyChanged("Affixes"); 
+                OnpropertyChanged("Affixes");
             }
         }
 
@@ -43,7 +49,11 @@ namespace POESKillTree.Controls
 
         public Affix SelectedAffix
         {
-            get { return cbAffix.SelectedItem as Affix; }
+            get 
+            {
+                var fx = cbAffix.SelectedItem as Affix;
+                return (fx == EmptySelection)?null:fx; 
+            }
         }
 
 
@@ -74,26 +84,32 @@ namespace POESKillTree.Controls
             var tiers = aff.GetTiers();
             spSLiders.Children.Clear();
             sliders.Clear();
-            for (int i = 0; i < aff.Mod.Length; i++)
+            tbtlabel.Text = "";
+            if (aff != EmptySelection)
             {
-                OverlayedSlider os = new OverlayedSlider();
-                os.OverlayText = aff.AliasStrings[i];
-
-                sliders.Add(os);
-                os.ValueChanged += slValue_ValueChanged;
-                os.Tag = i;
-                var tics = tiers.SelectMany(im => Enumerable.Range((int)Math.Round(im.Stats[i].Range.From), (int)Math.Round(im.Stats[i].Range.To - im.Stats[i].Range.From + 1))).Select(f => (double)f).ToList();
-
-                if (aff.AliasStrings[i].Contains(" per second"))
+                for (int i = 0; i < aff.Mod.Length; i++)
                 {
-                    tics = tics.Select(t => t / 60.0).ToList();
-                }
+                    OverlayedSlider os = new OverlayedSlider();
+                    os.OverlayText = aff.AliasStrings[i];
 
-                os.Minimum = tics.First();
-                os.Maximum = tics.Last();
-                os.Ticks = new DoubleCollection(tics);
-                
-                spSLiders.Children.Add(os);
+                    sliders.Add(os);
+                    os.ValueChanged += slValue_ValueChanged;
+                    os.Tag = i;
+                    var tics = tiers.SelectMany(im => Enumerable.Range((int)Math.Round(im.Stats[i].Range.From), (int)Math.Round(im.Stats[i].Range.To - im.Stats[i].Range.From + 1))).Select(f => (double)f).ToList();
+
+                    if (aff.AliasStrings[i].Contains(" per second"))
+                    {
+                        tics = tics.Select(t => t / 60.0).ToList();
+                    }
+
+
+                    os.Minimum = tics.First();
+                    os.Maximum = tics.Last();
+                    os.Ticks = new DoubleCollection(tics);
+
+
+                    spSLiders.Children.Add(os);
+                }
             }
         }
 

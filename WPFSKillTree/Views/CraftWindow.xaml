@@ -44,7 +44,7 @@
                 <local:ModSelector x:Name="mss2" SelectedAffixChanged="mss1_SelectedAffixChanged"/>
                 <local:ModSelector x:Name="mss3" SelectedAffixChanged="mss1_SelectedAffixChanged"/>
             </StackPanel>
-            <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=window}" Width="94" Height="188" Grid.Row="0"/>
+            <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=window}" Width="94" Height="188" Grid.Row="0" Margin="5"/>
         </Grid>
         <local:ItemTooltip Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Item="{Binding Item, ElementName=window}" />
     </Grid>

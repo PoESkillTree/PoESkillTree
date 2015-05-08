@@ -50,14 +50,16 @@ namespace POESKillTree.ViewModels.Items
         {
             this.Mod = mod;
 
-            this.Tiers = new RangeTree<float, ModWrapper>[this.Mod.Length];
+            if (modlist.Count() > 0)
+            {
+                this.Tiers = new RangeTree<float, ModWrapper>[this.Mod.Length];
 
-            foreach (var item in modlist)
-                item.ParentAffix = this;
+                foreach (var item in modlist)
+                    item.ParentAffix = this;
 
-            for (int i = 0; i < Tiers.Length; i++)
-                this.Tiers[i] = new RangeTree<float, ModWrapper>(modlist.Select(im => new ModWrapper(Mod[i], im)), new ItemModComparer());
-
+                for (int i = 0; i < Tiers.Length; i++)
+                    this.Tiers[i] = new RangeTree<float, ModWrapper>(modlist.Select(im => new ModWrapper(Mod[i], im)), new ItemModComparer());
+            }
             Aliases = Enumerable.Range(0, mod.Length).Select(_ => new HashSet<string>()).ToArray();
             ApplicableGear = new HashSet<GearGroup>();
             this.IsSignatureMod = false;
@@ -221,6 +223,8 @@ namespace POESKillTree.ViewModels.Items
 
         public ItemModTier[] GetTiers()
         {
+            if (Tiers == null)
+                return new ItemModTier[0];
             return Tiers[0].Items.Select(w => w.ItemMod).ToArray();
         }
 

@@ -9,12 +9,6 @@
     <Grid>
         <StackPanel>
             <ComboBox ItemsSource="{Binding Affixes,ElementName=control}" Name="cbAffix" SelectionChanged="cbAffix_SelectionChanged">
-                <!--<ComboBox.ItemsSource>
-                    <CompositeCollection>
-                        <ComboBoxItem IsEnabled="False" Foreground="Black">Select Item</ComboBoxItem>
-                        <CollectionContainer Collection="" />
-                    </CompositeCollection>
-                </ComboBox.ItemsSource>-->
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type itm:Affix}">
                         <TextBlock Text="{Binding Name}"/>
