@@ -266,7 +266,7 @@
                         <ContentControl Template="{StaticResource RedownloadIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                
+
                 <MenuItem Header="_Redownload Item Assets" Click="Menu_RedownloadItemAssets">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource RedownloadIcon}" />
@@ -545,17 +545,27 @@
         </Grid>
 
         <!-- grid row 2 - bottom part, search and tree -->
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="1" Content="Search:" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" />
+            <TextBox Grid.Column="2" Height="24" HorizontalAlignment="Left" Margin="1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" />
+            <CheckBox Grid.Column="3" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="cbRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbRegEx_Click" />
 
-        <Label Content="Search:" Height="28" HorizontalAlignment="Left" Margin="1,1,1,1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" Grid.Row="3" />
-        <TextBox Height="24" HorizontalAlignment="Left" Margin="60,2,2,2" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" Grid.Row="3" />
-        <CheckBox Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="352,1,1,1" x:Name="cbRegEx" VerticalAlignment="Bottom" Grid.Row="3" VerticalContentAlignment="Center" Click="cbRegEx_Click"/>
+            <Label Grid.Column="4" x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="1,1,4,1" Height="28" VerticalAlignment="Bottom" VerticalContentAlignment="Center" />
+            <TextBox Grid.Column="5" Height="24" Margin="1,0,2.854,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  
+                     VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" />
 
-        <Label x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="415,0,0,1" Height="28" VerticalAlignment="Bottom" Grid.Row="3" VerticalContentAlignment="Center"/>
-        <TextBox Height="24" Margin="482,0,166,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  
-                     VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" Grid.Row="3" />
-
-        <Button Content="Load build" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" Width="75" Click="btnLoadBuild_Click" Margin="2,2,85,2" Grid.Row="3"/>
-        <Button Content="Poeurl it!" Height="24" HorizontalAlignment="Right" x:Name="btnPoeUrl" VerticalAlignment="Bottom" Width="75" Click="btnPoeUrl_Click" Margin="2" Grid.Row="3"/>
-
+            <Button Grid.Column="6" Content="Load build" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2"/>
+            <Button Grid.Column="7" Content="Poeurl it!" Height="24" HorizontalAlignment="Right" x:Name="btnPoeUrl" VerticalAlignment="Bottom" MinWidth="75" Click="btnPoeUrl_Click" Margin="0,0,2,2"/>
+        </Grid>
     </Grid>
 </controls:MetroWindow>
