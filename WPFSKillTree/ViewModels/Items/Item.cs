@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Raven.Json.Linq;
 using System.ComponentModel;
 using System.Linq;
 using System;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels.Items;
+using Newtonsoft.Json.Linq;
 
 namespace POESKillTree.ViewModels.Items
 {
@@ -152,7 +152,7 @@ namespace POESKillTree.ViewModels.Items
 
         public string Name
         {
-            get { return string.IsNullOrEmpty(_NameLine)?TypeLine:NameLine; }
+            get { return string.IsNullOrEmpty(_NameLine) ? TypeLine : NameLine; }
         }
 
         private string _NameLine;
@@ -186,13 +186,13 @@ namespace POESKillTree.ViewModels.Items
         }
 
 
-        public RavenJObject JSONBase
+        public JObject JSONBase
         {
             get;
             set;
         }
 
-        public Item(RavenJObject val)
+        public Item(JObject val)
         {
             var cls = ItemClass.Unequipable;
             Init(cls, val);
@@ -202,7 +202,7 @@ namespace POESKillTree.ViewModels.Items
                 this.BaseType = ItemBase.ItemTypeFromTypeline(this.BaseType);
             }
 
-            if(cls == ItemClass.Invalid || cls == ItemClass.Unequipable)
+            if (cls == ItemClass.Invalid || cls == ItemClass.Unequipable)
             {
                 this.Class = ItemBase.ClassForItemType(this.BaseType);
             }
@@ -211,17 +211,17 @@ namespace POESKillTree.ViewModels.Items
 
         }
 
-        public Item(ItemClass iClass, RavenJObject val)
+        public Item(ItemClass iClass, JObject val)
         {
             Init(iClass, val);
         }
 
         public Item()
         {
-            
+
         }
 
-        private void Init(ItemClass iClass, RavenJObject val)
+        private void Init(ItemClass iClass, JObject val)
         {
             JSONBase = val;
 
@@ -231,20 +231,25 @@ namespace POESKillTree.ViewModels.Items
 
             W = val["w"].Value<int>();
             H = val["h"].Value<int>();
-            X = val["x"].Value<int>();
-            Y = val["y"].Value<int>();
+            if (val["x"] != null)
+                X = val["x"].Value<int>();
+            if (val["y"] != null)
+                Y = val["y"].Value<int>();
 
-            TypeLine =  BaseType = val["typeLine"].Value<string>();
+            if (val["name"] != null)
+                NameLine = val["name"].Value<string>();
+
+            TypeLine = BaseType = val["typeLine"].Value<string>();
 
             Frame = (FrameType)val["frameType"].Value<int>();
 
-            if (val.ContainsKey("properties"))
-                foreach (RavenJObject obj in (RavenJArray)val["properties"])
+            if (val["properties"] != null)
+                foreach (JObject obj in (JArray)val["properties"])
                 {
                     var values = new List<float>();
                     string s = "";
 
-                    foreach (RavenJArray jva in (RavenJArray)obj["values"])
+                    foreach (JArray jva in (JArray)obj["values"])
                     {
                         s += " " + jva[0].Value<string>();
                     }
@@ -272,22 +277,22 @@ namespace POESKillTree.ViewModels.Items
                     Properties.Add(mod);
 
 
-                    mod.ValueColor = ((RavenJArray)obj["values"]).Select(a =>
+                    mod.ValueColor = ((JArray)obj["values"]).Select(a =>
                     {
-                        var floats = ((RavenJArray)a)[0].Value<string>().Split('-');
-                        return floats.Select(f => (ItemMod.ValueColoring)((RavenJArray)a)[1].Value<int>());
+                        var floats = ((JArray)a)[0].Value<string>().Split('-');
+                        return floats.Select(f => (ItemMod.ValueColoring)((JArray)a)[1].Value<int>());
                     }).SelectMany(c => c).ToList();
 
                     Attributes.Add(cs, values);
                 }
 
-            if (val.ContainsKey("requirements"))
+            if (val["requirements"] != null)
             {
                 string reqs = "";
                 List<float> numbers = new List<float>();
                 List<ItemMod.ValueColoring> affects = new List<ItemMod.ValueColoring>();
 
-                foreach (RavenJObject obj in (RavenJArray)val["requirements"])
+                foreach (JObject obj in (JArray)val["requirements"])
                 {
                     var n = obj["name"].Value<string>();
 
@@ -296,8 +301,8 @@ namespace POESKillTree.ViewModels.Items
                     else
                         n = "# " + n;
 
-                    numbers.Add(((RavenJArray)((RavenJArray)obj["values"])[0])[0].Value<float>());
-                    affects.Add((ItemMod.ValueColoring)((RavenJArray)((RavenJArray)obj["values"])[0])[1].Value<int>());
+                    numbers.Add(((JArray)((JArray)obj["values"])[0])[0].Value<float>());
+                    affects.Add((ItemMod.ValueColoring)((JArray)((JArray)obj["values"])[0])[1].Value<int>());
 
                     if (!string.IsNullOrEmpty(reqs))
                         reqs += ", " + n;
@@ -312,7 +317,7 @@ namespace POESKillTree.ViewModels.Items
             }
 
 
-            if (val.ContainsKey("implicitMods"))
+            if (val["implicitMods"] != null)
                 foreach (string s in val["implicitMods"].Values<string>())
                 {
                     List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
@@ -320,7 +325,7 @@ namespace POESKillTree.ViewModels.Items
 
                     ImplicitMods.Add(ItemMod.CreateMod(this, s, numberfilter));
                 }
-            if (val.ContainsKey("explicitMods"))
+            if (val["explicitMods"] != null)
                 foreach (string s in val["explicitMods"].Values<string>())
                 {
                     List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
@@ -329,7 +334,7 @@ namespace POESKillTree.ViewModels.Items
                     ExplicitMods.Add(ItemMod.CreateMod(this, s, numberfilter));
                 }
 
-            if (val.ContainsKey("craftedMods"))
+            if (val["craftedMods"] != null)
                 foreach (string s in val["craftedMods"].Values<string>())
                 {
                     List<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), numberfilter);
@@ -338,7 +343,7 @@ namespace POESKillTree.ViewModels.Items
                     CraftedMods.Add(ItemMod.CreateMod(this, s, numberfilter));
                 }
 
-            if (val.ContainsKey("flavourText"))
+            if (val["flavourText"] != null)
                 FlavourText = string.Join("\r\n", val["flavourText"].Values<string>());
 
 
@@ -365,15 +370,15 @@ namespace POESKillTree.ViewModels.Items
             }
 
             var Sockets = new List<int>();
-            if (val.ContainsKey("sockets"))
-                foreach (RavenJObject obj in (RavenJArray)val["sockets"])
+            if (val["sockets"] != null)
+                foreach (JObject obj in (JArray)val["sockets"])
                 {
                     Sockets.Add(obj["group"].Value<int>());
                 }
-            if (val.ContainsKey("socketedItems"))
+            if (val["socketedItems"] != null)
             {
                 int socket = 0;
-                foreach (RavenJObject obj in (RavenJArray)val["socketedItems"])
+                foreach (JObject obj in (JArray)val["socketedItems"])
                 {
                     var item = new Item(ItemClass.Gem, obj);
                     item.SocketGroup = Sockets[socket++];
@@ -407,8 +412,8 @@ namespace POESKillTree.ViewModels.Items
         public int X
         {
             get { return _x; }
-            set 
-            { 
+            set
+            {
                 _x = value;
                 if (JSONBase != null)
                     JSONBase["x"] = value;
@@ -421,8 +426,8 @@ namespace POESKillTree.ViewModels.Items
         public int Y
         {
             get { return _y; }
-            set 
-            { 
+            set
+            {
                 _y = value;
                 if (JSONBase != null)
                     JSONBase["y"] = value;
@@ -434,12 +439,12 @@ namespace POESKillTree.ViewModels.Items
         public int W { get; set; }
         public int H { get; set; }
 
-        public bool IsWeapon 
+        public bool IsWeapon
         {
             get { return this.Class == ItemClass.OneHand || this.Class == ItemClass.TwoHand; }
         }
 
-        public bool IsTwoHanded 
+        public bool IsTwoHanded
         {
             get { return this.Class == ItemClass.TwoHand; }
         }

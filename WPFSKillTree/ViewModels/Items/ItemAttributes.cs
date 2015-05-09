@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
-using Raven.Json.Linq;
 using System.Linq;
 using System;
 using POESKillTree.ViewModels.Items;
+using Newtonsoft.Json.Linq;
 
 namespace POESKillTree.ViewModels.Items
 {
@@ -205,8 +205,8 @@ namespace POESKillTree.ViewModels.Items
         {
             #region Readin
 
-            RavenJObject jObject = RavenJObject.Parse(itemData);
-            foreach (RavenJObject jobj in (RavenJArray)jObject["items"])
+            JObject jObject = JObject.Parse(itemData);
+            foreach (JObject jobj in (JArray)jObject["items"])
             {
                 var html = jobj["x"].Value<string>();
                 //html =
@@ -336,7 +336,7 @@ namespace POESKillTree.ViewModels.Items
             Attributes.Refresh();
         }
 
-        private void AddItem(RavenJObject val, ItemClass iclass, Item.ItemSlot islot)
+        private void AddItem(JObject val, ItemClass iclass, Item.ItemSlot islot)
         {
             Item item = null;
             item = new Item(iclass, val);

@@ -6,8 +6,8 @@ using System.Xml.Serialization;
 using POESKillTree.ViewModels;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using Raven.Json.Linq;
 using POESKillTree.ViewModels.Items;
+using Newtonsoft.Json.Linq;
 
 namespace POESKillTree.Model
 {
@@ -74,7 +74,7 @@ namespace POESKillTree.Model
             try
             {
 
-                RavenJArray arr = new RavenJArray();
+                JArray arr = new JArray();
                 foreach (var item in Stash)
                 {
                     arr.Add(item.JSONBase);
@@ -93,10 +93,10 @@ namespace POESKillTree.Model
                 Stash = new ObservableCollection<Item>();
                 if (!File.Exists("stash.json"))
                     return;
-                var arr = RavenJArray.Parse(File.ReadAllText("stash.json"));
+                var arr = JArray.Parse(File.ReadAllText("stash.json"));
                 foreach (var item in arr)
                 {
-                    var itm = new Item((RavenJObject)item);
+                    var itm = new Item((JObject)item);
                     Stash.Add(itm);
                 }
             }

@@ -1,9 +1,9 @@
-﻿using Raven.Json.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Linq;
 using POESKillTree.ViewModels.Items;
+using Newtonsoft.Json.Linq;
 
 namespace POESKillTree.ViewModels.Items
 {
@@ -33,18 +33,18 @@ namespace POESKillTree.ViewModels.Items
         public bool isLocal = false;
         private ItemClass itemclass;
 
-        public static ItemMod CreateMod(Item item, RavenJObject obj, Regex numberfilter)
+        public static ItemMod CreateMod(Item item, JObject obj, Regex numberfilter)
         {
             ItemClass ic = item.Class;
             var mod = new ItemMod();
 
-            int dmode = (obj.ContainsKey("displayMode")) ? obj["displayMode"].Value<int>() : 0;
+            int dmode = (obj["displayMode"]!=null) ? obj["displayMode"].Value<int>() : 0;
             string at = obj["name"].Value<string>();
             at = numberfilter.Replace(at, "#");
 
-            var parsed = ((RavenJArray)obj["values"]).Select(a =>
+            var parsed = ((JArray)obj["values"]).Select(a =>
             {
-                var str = ((RavenJArray)a)[0].Value<string>();
+                var str = ((JArray)a)[0].Value<string>();
                 var floats = new List<float>();
                 var parts = str.Split('-');
 
@@ -79,7 +79,7 @@ namespace POESKillTree.ViewModels.Items
                     }
                 }
 
-                var cols = floats.Select(f => (ItemMod.ValueColoring)((RavenJArray)a)[1].Value<int>()).ToList();
+                var cols = floats.Select(f => (ItemMod.ValueColoring)((JArray)a)[1].Value<int>()).ToList();
                 return new { floats, cols };
             }).ToList();
 

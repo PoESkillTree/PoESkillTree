@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using Raven.Json.Linq;
 using Ionic.Zip;
+using Newtonsoft.Json.Linq;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -239,13 +239,13 @@ namespace POESKillTree.SkillTreeFiles
             {
                 string json = webClient.DownloadString(GitAPILatestReleaseURL);
 
-                RavenJArray releases = RavenJArray.Parse(json);
-                if (releases.Length < 1)
+                JArray releases = JArray.Parse(json);
+                if (releases.Count < 1)
                     throw new UpdaterException("No release found");
 
-                RavenJObject latest = (RavenJObject)releases[0];
-                RavenJArray assets = (RavenJArray)latest["assets"];
-                if (assets.Length < 1)
+                JObject latest = (JObject)releases[0];
+                JArray assets = (JArray)latest["assets"];
+                if (assets.Count < 1)
                     throw new UpdaterException("Package for release is missing");
 
                 string current = GetCurrentVersion();
@@ -257,7 +257,7 @@ namespace POESKillTree.SkillTreeFiles
                     return null;
                 }
 
-                string url = ((RavenJObject)assets[0])["browser_download_url"].Value<string>();
+                string url = ((JObject)assets[0])["browser_download_url"].Value<string>();
 
                 IsChecked = true;
                 Latest = new Release

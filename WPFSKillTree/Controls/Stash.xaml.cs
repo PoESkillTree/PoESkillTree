@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using POESKillTree.ViewModels.Items;
-using Raven.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -133,8 +133,8 @@ namespace POESKillTree.Controls
                 {
                     var data = File.ReadAllText(of.FileName);
 
-                    var json = RavenJObject.Parse(data);
-                    var items = (json["items"] as RavenJArray).Select(i => new Item((RavenJObject)i));
+                    var json = JObject.Parse(data);
+                    var items = (json["items"] as JArray).Select(i => new Item((JObject)i));
 
                     //get free line
                     var y = (Items.Count >0)?Items.Max(i => i.Y + i.H) + 3:0;
