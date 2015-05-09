@@ -252,9 +252,8 @@ namespace POESKillTree.Views
         private void StartLoadingWindow()
         {
             _loadingWindow = new LoadingWindow();
-            _loadingWindow.Show();
-            Thread.Sleep(400);
             _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
+            _loadingWindow.Show();
         }
 
         private void UpdateLoadingWindow(double c, double max)
