@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Media.Imaging;
 using HtmlAgilityPack;
 using Attribute = POESKillTree.SkillTreeFiles.ItemDB.Attribute;
 using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
@@ -84,7 +85,67 @@ namespace UpdateDB
             { "gainx%ofphysicaldamageasextrachaosdamage", "Gain #% of Physical Damage as Extra Chaos Damage" },
             { "gainx%ofphysicaldamageasextrafiredamage", "Gain #% of Physical Damage as Extra Fire Damage" },
             { "manacost", "Mana Cost: #%" },
-            { "reducedmanacost", "#% reduced Mana Cost" }
+            { "reducedmanacost", "#% reduced Mana Cost" },
+
+            // blood magic
+            { "manacostmultiplier", "Mana cost multiplier #%"},
+            // reduced mana
+            { "manamultiplier", "Mana cost multiplier #%"},
+            // curse on hit
+            { "reducedcurseduration", "Curse duration reduced by #%"},
+            // empower
+            { "levelofsupportedactiveskillgems", "+# Level of Supported Active Skill Gems"},
+            // generosity
+            { "increasedeffectofauras", "#% increased effect of Auras you Cast"},
+            //auras
+
+            // aoe
+            { "increasedareaofeffectradius", "#% increased Area of Effect radius" },
+            //anger
+            { "additionalfiredamagewithattacksforyouandnearbyallies", "You and nearby allies deal #–# additional Fire Damage with attacks" },
+            //clarity
+            { "youandnearbyalliesregeneratexmanapersecond", "You and nearby allies regenerate # Mana per second" }, 
+            { "manaregen.per1manareserved(manaregen./manareserved)", "Manaregen efficiency #" },
+            { "manareserved", "# Mana Reserved" },
+            // determination
+            { "youandnearbyalliesgainx%morearmour", "You and nearby allies gain #% more Armour"}, 
+            // discipline
+            { "youandnearbyalliesgainxadditionalenergyshield", "You and nearby allies gain #% additional Energy Shield" }, 
+            { "energyshieldperpercentageofmanareserved", "Energy Shield efficiency #%" }, 
+            // grace
+            { "youandnearbyalliesgainxadditionalevasionrating", "You and nearby allies gain # additional Evasion rating" }, 
+            // haste
+            { "increasedmovementspeed", "You and nearby allies gain #% increased Movement Speed" }, 
+            //{ "increasedattackspeed", "You and nearby allies gain #% increased Attack Speed" },
+            //{ "increasedcastspeed", "You and nearby allies gain #% increased Cast Speed" },
+            // hatred
+            { "amountofphysicaldamageaddedascolddamageforyouandnearbyallies", "You and nearby allies add #% of your Physical Damage as Cold Damage" }, 
+            // purity of elements
+            { "additionalelementalresistancesforyouandnearbyallies", "You and nearby allies gain +#% to all Elemental Resistances" }, 
+            // purity of fire
+            { "additionalfireresistanceforyouandnearbyallies", "You and nearby allies gain #% additional Fire Resistance" }, 
+            { "additionalmaximumfireresistanceforyouandnearbyallies", "You and nearby allies gain #% additional maximum Fire Resistance" },
+            // puritfy of ice
+            { "additionalcoldresistanceforyouandnearbyallies", "You and nearby allies gain #% additional Cold Resistance" },
+            { "additionalmaximumcoldresistanceforyouandnearbyallies", "You and nearby allies gain #% additional maximum Cold Resistance" },
+            // puritfy of lightning
+            { "additionallightningresistanceforyouandnearbyallies", "You and nearby allies gain #% additional Lightning Resistance" },
+            { "additionalmaximumlightningresistanceforyouandnearbyallies", "You and nearby allies gain #% additional maximum Lightning Resistance" },
+            // vitality
+            { "youandnearbyalliesregeneratex%lifepersecond", "You and nearby allies regenerate #% Life per second" }, 
+            // wrath
+            { "additionallightningdamagewithattacksforyouandnearbyallies", "You and nearby allies deal #-# additional Lightning Damage with attacks" }, 
+            //herald of ice
+            //{ "colddamage", "Deals #-# Cold Damage" },
+            {"addedcolddamagetospells", "Adds #-# Cold Damage to Spells"},
+            {"addedcolddamagetoattacks", "Adds #-# Cold Damage to Attacks"},
+            // herald of thunder
+            //{"lightningdamage","Deals #-# Lightning Damage"},
+            {"addedlightningdamagetoattacksandspells", "Adds #-# Lightning Damage to Attacks and Spells"},
+            // herald of ash
+            {"ignitesforpercentageofoverkilldamage", "Ignites for #% of Overkill Damage"},
+            // blood magic
+
         };
         // The Wiki URL.
         static string URL = "http://pathofexile.gamepedia.com";
@@ -103,19 +164,26 @@ namespace UpdateDB
             { "Cast_On_Melee_Kill", "Cast_on_Melee_Kill" },
             { "Cast_When_Damage_Taken", "Cast_when_Damage_Taken" },
             { "Cold_To_Fire", "Cold_to_Fire" },
-            { "Herald_Of_Ice", "Herald_of_Ice" },
-            { "Herald_Of_Thunder", "Herald_of_Thunder" },
             { "Iron_Grip", "Iron_Grip_(support_gem)" },
             { "Knockback", "Knockback_(support_gem)" },
             { "Life_Leech", "Life_Leech_(support_gem)" },
             { "Mana_Leech", "Mana_Leech_(support_gem)" },
             { "Melee_Damage_On_Full_Life", "Melee_Damage_on_Full_Life" },
-            { "Physical_To_Lightning", "Physical_to_Lightning" },
             { "Pierce", "Pierce_(support_gem)" },
             { "Point_Blank", "Point_Blank_(support_gem)" },
+            { "Physical_To_Lightning", "Physical_to_Lightning" },
             { "Rain_Of_Arrows", "Rain_of_Arrows" },
             { "Stun", "Stun_(support_gem)" },
-            { "Trap", "Trap_(support_gem)" }
+            { "Trap", "Trap_(support_gem)" },
+            //auras
+            { "Purity_Of_Elements", "Purity_of_Elements" },
+            { "Purity_Of_Fire", "Purity_of_Fire" },
+            { "Purity_Of_Ice", "Purity_of_Ice" },
+            { "Purity_Of_Lightning", "Purity_of_Lightning" },
+            //heralds
+            {"Herald_Of_Ice", "Herald_of_Ice"},
+            {"Herald_Of_Ash", "Herald_of_Ash"},
+            {"Herald_Of_Thunder", "Herald_of_Thunder"},
         };
 
         // Fetches gem data.
@@ -151,9 +219,13 @@ namespace UpdateDB
             string gemName = span == null ? name : span.InnerText.Trim();
 
             List<Attribute> attributes = new List<Attribute>();
+            List<string> keywords = new List<string>();
+            string manaReseverd = null;
+            string manaMultiplier = null;
 
+            #region GemLevelTable: Gem level progression table
             HtmlNodeCollection found = doc.DocumentNode.SelectNodes("//table[contains(@class,'GemLevelTable')]");
-            if (found == null)
+            if (found == null)//*[@id="mw-content-text"]/table[2]
                 Warning("Gem level table not found");
             else
             {
@@ -200,7 +272,7 @@ namespace UpdateDB
                         foreach (HtmlNode cell in row.SelectNodes("td|th"))
                         {
                             HtmlNode abbr = cell.SelectSingleNode("abbr");
-                            if (abbr != null)
+                            if ((abbr != null) && (abbr.Attributes["title"].Value.Length != 0))
                             {
                                 text = abbr.Attributes["title"].Value;
                             }
@@ -239,10 +311,37 @@ namespace UpdateDB
                 if (columnAttribute.Count > 0)
                     attributes.AddRange(columnAttribute.Values);
             }
+            #endregion
+
+            #region GemInfoboxContainer
+
+            found = doc.DocumentNode.SelectNodes("//div[contains(@class,'GemInfoboxHeader')]");
+            if (found.Count == 0)
+                Warning("GemInfoboxHeader not found");
+            else
+            {
+                System.IO.Directory.CreateDirectory("Images/Gems/");
+                System.IO.Directory.CreateDirectory("Images/Skills/");
+                HtmlNode table = found[0];
+                HtmlNodeCollection gemImages = table.SelectNodes(".//a[contains(@class,'image')]/img");
+                if (gemImages != null)
+                {
+                    using (WebClient client = new WebClient())
+                    {
+                        client.DownloadFile(new Uri(gemImages[0].Attributes["src"].Value), "Images/Gems/" + gemName + ".png");
+                    }
+                    if (gemImages.Count > 1) {
+                        using (WebClient client = new WebClient())
+                        {
+                            client.DownloadFile(new Uri(gemImages[1].Attributes["src"].Value), "Images/Skills/" + gemName + ".png");
+                        }
+                    }
+                }
+            }
 
             found = doc.DocumentNode.SelectNodes("//table[contains(@class,'GemInfoboxInfo')]");
             if (found.Count == 0)
-                Warning("Gem infobox table not found");
+                Warning("GemInfoboxInfo table not found");
             else
             {
                 HtmlNode table = found[0];
@@ -271,9 +370,55 @@ namespace UpdateDB
                         }
                     }
                 }
-            }
+                // parse keywords
+                keywords = ParseGemInfoboxContainerAttribute(table, "Keywords").Where(keyword => keyword != ",").ToList();
 
-            return new Gem { Name = gemName, Attributes = attributes }; ;
+                // from the gameplay point of view heralds aren't auras, but from mechanic point of view they are
+                if (gemName.IndexOf("herald", StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    keywords.Add("Aura");
+                }
+
+                keywords.Sort();
+
+                // parse Mana Reserved
+                manaReseverd = ParseGemInfoboxContainerAttribute(table, "Mana Reserved").FirstOrDefault();
+
+                // parse Mana Multiplier. Blood magic's multiplier varies and is stored in attributes
+                if (gemName != "Blood Magic")
+                    manaMultiplier = ParseGemInfoboxContainerAttribute(table, "Mana Multiplier").FirstOrDefault();
+            }
+            #endregion
+
+            return new Gem { 
+                Name = gemName, 
+                Attributes = attributes, 
+                Keywords = keywords, 
+                ManaReserved = manaReseverd, 
+                ManaMultiplier = manaMultiplier,
+            }; ;
+        }
+
+        private List<string> ParseGemInfoboxContainerAttribute(HtmlNode gemInfoBoxTable, string attributeName)
+        {
+            List<string> result = new List<string>();
+            HtmlNode td = gemInfoBoxTable.SelectSingleNode("tr[td/text()='" + attributeName + "']/td[2]");
+            if (td != null)
+            {
+                HtmlNodeCollection textNodes = td.SelectNodes(".//text()");
+                if (textNodes != null)
+                {
+                    foreach (HtmlNode node in textNodes)
+                    {
+                        string tmpStr = node.InnerText.Trim(' ', '\t');
+                        if (tmpStr != "")
+                        {
+                            result.Add(tmpStr);
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         // Returns attribute names for known tokens, ignored tokens or null if unknown tokens.
@@ -364,7 +509,6 @@ namespace UpdateDB
             // If gem has different page than it's name, translate it.
             if (TranslateName.ContainsKey(name))
                 name = TranslateName[name];
-
             return name;
         }
 
