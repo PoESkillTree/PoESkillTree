@@ -171,40 +171,77 @@ namespace POESKillTree.ViewModels
         }
     }
 
-    [ValueConversion(typeof(Item), typeof(ImageSource))]
-    class ItemToImageConverter : IValueConverter
+
+
+
+
+    [ValueConversion(typeof(string), typeof(ImageSource))]
+    class ItemTypeToImageConverter : IValueConverter
     {
-        static Dictionary<ItemClass, BitmapImage> DefaultCache = new Dictionary<ItemClass, BitmapImage>();
-        static Dictionary<string, BitmapImage> TypeCache = new Dictionary<string, BitmapImage>();
+        protected static Dictionary<string, BitmapImage> TypeCache = new Dictionary<string, BitmapImage>();
+        protected BitmapImage GetImageForBase(string ibase)
+        {
+            BitmapImage img;
+            lock (TypeCache)
+            {
+                if (!TypeCache.TryGetValue(ibase, out img))
+                {
+                    //default
+                    var imgfile = new FileInfo(Path.Combine("./Data/Equipment/Assets/", ibase + ".png"));
+
+                    if (imgfile.Exists)
+                    {
+
+                        img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.UriSource = new Uri(imgfile.FullName, UriKind.Absolute);
+                        img.EndInit();
+
+                        TypeCache.Add(ibase, img);
+                        return img;
+                    }
+                }
+                else
+                    return img;
+            }
+
+            return null;
+        }
+
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var itm = value as string;
+            BitmapImage img = null;
+            if (itm != null)
+            {
+                return GetImageForBase(itm);
+            }
+            return img;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    [ValueConversion(typeof(Item), typeof(ImageSource))]
+    class ItemToImageConverter : ItemTypeToImageConverter, IValueConverter
+    {
+        protected static Dictionary<ItemClass, BitmapImage> DefaultCache = new Dictionary<ItemClass, BitmapImage>();
+
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var itm = value as Item;
             BitmapImage img = null;
             if (itm != null)
             {
-
-                lock (TypeCache)
-                {
-                    if (!TypeCache.TryGetValue(itm.BaseType, out img))
-                    {
-                        //default
-                        var imgfile = new FileInfo(Path.Combine("./Data/Equipment/Assets/", itm.BaseType + ".png"));
-
-                        if (imgfile.Exists)
-                        {
-
-                            img = new BitmapImage();
-                            img.BeginInit();
-                            img.CacheOption = BitmapCacheOption.OnLoad;
-                            img.UriSource = new Uri(imgfile.FullName, UriKind.Absolute);
-                            img.EndInit();
-
-                            TypeCache.Add(itm.BaseType, img);
-                            return img;
-                        }
-                    }else
-                        return img;
-                }
+                img = GetImageForBase(itm.BaseType);
+                if (img != null)
+                    return img;
 
                 lock (DefaultCache)//i am not entirely sure that WPF isnt using converter concurently
                 {

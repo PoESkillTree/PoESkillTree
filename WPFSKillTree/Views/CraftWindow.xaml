@@ -10,6 +10,9 @@
         Title="CraftWindow" MinHeight="500" Height="500"
         Name="window" Width="600"
         >
+    <controls:MetroWindow.Resources>
+        <conv:ItemTypeToImageConverter x:Key="ItemTypeToImageConverter"/>
+    </controls:MetroWindow.Resources>
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -21,7 +24,12 @@
             <ComboBox x:Name="cbBaseSelection" ItemsSource="{Binding BaseList,ElementName=window}" SelectedIndex="0" SelectionChanged="cbBaseSelection_SelectionChanged" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type items:ItemBase}">
-                        <TextBlock Text="{Binding ItemType}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="20" VerticalAlignment="Center" Source="{Binding ItemType, Converter={StaticResource ItemTypeToImageConverter}}" StretchDirection="DownOnly" Margin="0,0,3,0"/>
+                            <TextBlock VerticalAlignment="Center" >
+                                <Run Text="{Binding ItemType}"/><Run Text=" (ilvl "/><Run Text="{Binding Level}"/><Run Text=")"/>
+                            </TextBlock>
+                        </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
