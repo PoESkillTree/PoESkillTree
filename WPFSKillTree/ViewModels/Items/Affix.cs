@@ -26,7 +26,7 @@ namespace POESKillTree.ViewModels.Items
             {
                 if (_AllAffixes == null)
                 {
-                    if (File.Exists(@"Data\Equipment\Itemlist.xml"))
+                    if (File.Exists(@"Data\Equipment\Affixlist.xml"))
                     {
                         XElement xelm = XElement.Load(@"Data\Equipment\Affixlist.xml");
                         _AllAffixes = xelm.Elements().Select(x => new Affix(x)).ToList();
