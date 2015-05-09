@@ -175,13 +175,13 @@ namespace POESKillTree.ViewModels.Items
         public int RequiredInt { get; set; }
 
 
-        public List<ItemModRange> ImplicitMods { get; set; }
-        public List<ItemModRange> Properties { get; set; }
+        public List<Stat> ImplicitMods { get; set; }
+        public List<Stat> Properties { get; set; }
 
         public ItemBase()
         {
-            ImplicitMods = new List<ItemModRange>();
-            Properties = new List<ItemModRange>();
+            ImplicitMods = new List<Stat>();
+            Properties = new List<Stat>();
         }
 
         public ItemBase(XElement x)
@@ -192,10 +192,10 @@ namespace POESKillTree.ViewModels.Items
             this.Level = int.Parse(x.Attribute("level").Value);
 
             if (x.Element("implicitmods") != null)
-                ImplicitMods = x.Element("implicitmods").Elements().Select(e => new ItemModRange(e)).ToList();
+                ImplicitMods = x.Element("implicitmods").Elements().Select(e => new Stat(e)).ToList();
 
             if (x.Element("properties") != null)
-                Properties = x.Element("properties").Elements().Select(e => new ItemModRange(e)).ToList();
+                Properties = x.Element("properties").Elements().Select(e => new Stat(e)).ToList();
         }
 
         public virtual XElement Serialize()
@@ -214,28 +214,6 @@ namespace POESKillTree.ViewModels.Items
 
 
             return elm;
-        }
-
-        public class ItemModRange
-        {
-            public ItemModRange()
-            { }
-
-            public ItemModRange(XElement e)
-            {
-                this.Attribute = e.Attribute("attribute").Value;
-                this.Value = e.Attribute("value").Value;
-            }
-            public string Attribute { get; set; }
-            public string Value { get; set; }
-
-            public XElement Serialize()
-            {
-                return new XElement("mod",
-                        new XAttribute("attribute", Attribute),
-                        new XAttribute("value", Value)
-                    );
-            }
         }
 
         public Item CreateItem()

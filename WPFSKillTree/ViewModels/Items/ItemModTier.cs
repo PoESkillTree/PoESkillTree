@@ -10,34 +10,45 @@ using System.Xml.Linq;
 
 namespace POESKillTree.ViewModels.Items
 {
+    public class Stat
+    {
+        private string p;
+        private string armour;
+
+        public string Name { get; set; }
+        public Range<float> Range { get; set; }
+
+        public Stat(string name, Range<float> range)
+        {
+            this.Name = name;
+            this.Range = range;
+        }
+
+        public Stat(XElement e)
+        {
+            if (e.Name != "stat")
+                throw new ArgumentException();
+
+            this.Name = e.Attribute("name").Value;
+
+            this.Range = new Range<float>(XmlConvert.ToSingle(e.Attribute("from").Value), XmlConvert.ToSingle(e.Attribute("to").Value));
+        }
+
+        public Stat(string name, string value)
+        {
+            Name = name;
+            Range = Range<float>.Parse(value);
+        }
+
+        public XElement Serialize()
+        {
+            return new XElement("stat", new XAttribute("name", this.Name), new XAttribute("from", this.Range.From), new XAttribute("to", this.Range.To));
+        }
+    }
+
     public class ItemModTier : IEquatable<ItemModTier>
     {
-        public class Stat
-        {
-            public string Name { get; set; }
-            public Range<float> Range { get; set; }
 
-            public Stat(string name, Range<float> range)
-            {
-                this.Name = name;
-                this.Range = range;
-            }
-
-            public Stat(XElement e)
-            {
-                if (e.Name != "stat")
-                    throw new ArgumentException();
-
-                this.Name = e.Attribute("name").Value;
-
-                this.Range = new Range<float>(XmlConvert.ToSingle(e.Attribute("from").Value), XmlConvert.ToSingle(e.Attribute("to").Value));
-            }
-
-            public XElement Serialize()
-            {
-                return new XElement("stat", new XAttribute("name", this.Name), new XAttribute("from", this.Range.From), new XAttribute("to", this.Range.To));
-            }
-        }
 
         public Affix ParentAffix { get; set; }
         public string Name { get; set; }
@@ -94,7 +105,7 @@ namespace POESKillTree.ViewModels.Items
 
         public override string ToString()
         {
-            return ""+(ParentAffix!=null?ParentAffix.ModType == ModType.Prefix?"P":"S":"")+this.Tier+" "+Name+" - " + string.Join("; ", Stats.Select(s => s.Name + " {" + s.Range + "} "));
+            return "" + (ParentAffix != null ? ParentAffix.ModType == ModType.Prefix ? "P" : "S" : "") + this.Tier + " " + Name + " - " + string.Join("; ", Stats.Select(s => s.Name + " {" + s.Range + "} "));
         }
 
         public static readonly Regex ParseRegex = new Regex(@"(?<!\d)[-+]?\d*\.?\d+", RegexOptions.Compiled);
@@ -106,7 +117,7 @@ namespace POESKillTree.ViewModels.Items
 
         public static IEnumerable<string> StripValues(IEnumerable<string> values)
         {
-            return values.Select(v=>StripModValues(v));
+            return values.Select(v => StripModValues(v));
         }
 
         public static float[] GetModValues(string mod)

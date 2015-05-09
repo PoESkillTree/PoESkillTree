@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using System.Xml.Linq;
 using System.IO;
 using POESKillTree.ViewModels.Items;
+using MB.Algodat;
 
 namespace POESKillTree.Utils
 {
@@ -128,14 +129,7 @@ namespace POESKillTree.Utils
                     if (implModnodes.Length > 0)
                     {
                         for (int j = 0; j < implModnodes[0].Length; j++)
-                        {
-                            xe.ImplicitMods.Add(
-                                new ItemBase.ItemModRange()
-                                {
-                                    Attribute = implModnodes[0][j],
-                                    Value = implModnodes[1][j]
-                                });
-                        }
+                            xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
                     }
 
 
@@ -195,11 +189,11 @@ namespace POESKillTree.Utils
 
 
                     if (armour != "0")
-                        xe.Properties.Add(new ItemBase.ItemModRange() { Attribute = "Armour", Value = armour });
+                        xe.Properties.Add(new Stat("Armour", armour ));
                     if (evasionrating != "0")
-                        xe.Properties.Add(new ItemBase.ItemModRange() { Attribute = "Energy Shield", Value = evasionrating });
+                        xe.Properties.Add(new Stat( "Energy Shield", evasionrating ));
                     if (energyshield != "0")
-                        xe.Properties.Add(new ItemBase.ItemModRange() { Attribute = "Evasion Rating", Value = energyshield });
+                        xe.Properties.Add(new Stat( "Evasion Rating", energyshield ));
 
 
                     var implModnodes = lines[i + 1].SelectNodes("td")
@@ -212,12 +206,7 @@ namespace POESKillTree.Utils
 
                         for (int j = 0; j < implModnodes[0].Length; j++)
                         {
-                            xe.ImplicitMods.Add(
-                                   new ItemBase.ItemModRange()
-                                   {
-                                       Attribute = implModnodes[0][j],
-                                       Value = implModnodes[1][j]
-                                   });
+                            xe.ImplicitMods.Add(new Stat(implModnodes[0][j],implModnodes[1][j]));
                         }
                     }
 
@@ -275,11 +264,11 @@ namespace POESKillTree.Utils
 
 
 
-                    xe.Properties.Add(new ItemBase.ItemModRange() { Attribute = "Physycal Damage", Value = damage });
+                    xe.Properties.Add(new Stat("Physical Damage", damage));
 
-                    xe.Properties.Add(new ItemBase.ItemModRange() { Attribute = "Atacs Per Second", Value = aps });
+                    xe.Properties.Add(new Stat("Atacks Per Second", aps ));
 
-                    xe.Properties.Add(new ItemBase.ItemModRange() { Attribute = "Critical Strike Chance", Value = "5%" });
+                    xe.Properties.Add(new Stat("Critical Strike Chance %", "5"));
 
 
                     var implModnodes = lines[i + 1].SelectNodes("td")
@@ -292,12 +281,7 @@ namespace POESKillTree.Utils
 
                         for (int j = 0; j < implModnodes[0].Length; j++)
                         {
-                            xe.ImplicitMods.Add(
-                                   new ItemBase.ItemModRange()
-                                   {
-                                       Attribute = implModnodes[0][j],
-                                       Value = implModnodes[1][j]
-                                   });
+                            xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
                         }
                     }
 
