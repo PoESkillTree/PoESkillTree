@@ -99,6 +99,15 @@ namespace POESKillTree.ViewModels.Items
                 insetpos = name.IndexOf("  ");
                 if (insetpos >= 0)
                     insetpos++;
+                else
+                {
+                    insetpos = name.IndexOf(" - ");
+                    if (insetpos >= 0)
+                    {
+                        name = name.Replace(" - ", "  ");
+                        insetpos++;
+                    }
+                }
             }
 
             if (insetpos >= 0)
