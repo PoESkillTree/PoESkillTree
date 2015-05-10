@@ -9,6 +9,15 @@
     <Grid>
         <StackPanel>
             <ComboBox ItemsSource="{Binding Affixes,ElementName=control}" Name="cbAffix" SelectionChanged="cbAffix_SelectionChanged">
+                <ComboBox.Style>
+                    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Items.Count,ElementName=cbAffix}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type itm:Affix}">
                         <TextBlock Text="{Binding Name}"/>
@@ -16,7 +25,17 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <StackPanel Name="spSLiders"></StackPanel>
-            <TextBlock Name="tbtlabel"/>
+            <TextBlock Name="tbtlabel">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Items.Count,ElementName=cbAffix}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
         </StackPanel>
     </Grid>
 </UserControl>

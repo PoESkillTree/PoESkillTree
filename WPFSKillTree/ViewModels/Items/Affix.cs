@@ -22,7 +22,7 @@ namespace POESKillTree.ViewModels.Items
 
         public static List<Affix> AllAffixes
         {
-            get 
+            get
             {
                 if (_AllAffixes == null)
                 {
@@ -32,7 +32,7 @@ namespace POESKillTree.ViewModels.Items
                         _AllAffixes = xelm.Elements().Select(x => new Affix(x)).ToList();
                     }
                 }
-                return Affix._AllAffixes; 
+                return Affix._AllAffixes;
             }
         }
 
@@ -60,7 +60,7 @@ namespace POESKillTree.ViewModels.Items
                 for (int i = 0; i < Tiers.Length; i++)
                     this.Tiers[i] = new RangeTree<float, ModWrapper>(modlist.Select(im => new ModWrapper(Mod[i], im)), new ItemModComparer());
             }
-            Aliases = Enumerable.Range(0, mod.Length).Select(_ => new HashSet<string>()).ToArray();
+            Aliases = mod.Select(m => new HashSet<string>() { m }).ToArray();
             ApplicableGear = new HashSet<GearGroup>();
             this.IsSignatureMod = false;
             this.Category = "";
@@ -85,7 +85,7 @@ namespace POESKillTree.ViewModels.Items
         public bool IsRangeMod
         {
             get
-            { 
+            {
                 return Mod.Select(s => s.Replace("Minimum", "").Replace("Maximum", "")).Distinct().Count() == 1;
             }
         }
@@ -149,7 +149,7 @@ namespace POESKillTree.ViewModels.Items
 
         public string[] AliasStrings
         {
-            get { return Aliases.Select(al =>String.Join(",", al.Select(a => a.Replace("minimum ", "").Replace("maximum ", "")).Distinct())).ToArray(); }
+            get { return Aliases.Select(al => String.Join(",", al.Select(a => a.Replace("minimum ", "").Replace("maximum ", "")).Distinct())).ToArray(); }
         }
 
         public string Name
@@ -218,7 +218,7 @@ namespace POESKillTree.ViewModels.Items
                 throw new ArgumentException("different number ov number than search params");
             var matches = value.Select((v, i) => Tiers[i].Query(v).Select(w => w.ItemMod).ToArray()).ToArray();
 
-            return matches.Aggregate((a, n) => a.Intersect(n).ToArray()).OrderBy(c=>c.IsMasterCrafted?1:0).ToList();
+            return matches.Aggregate((a, n) => a.Intersect(n).ToArray()).OrderBy(c => c.IsMasterCrafted ? 1 : 0).ToList();
         }
 
         public List<ItemModTier> Query(params Range<float>[] range)

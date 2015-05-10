@@ -22,8 +22,16 @@ namespace POESKillTree.Controls
     public partial class ModSelector : UserControl, INotifyPropertyChanged
     {
 
-        private static readonly Affix EmptySelection = new Affix(new[] { "--- Select Affix ---" }, new ItemModTier[0]);
+        private static readonly Affix EmptySelection = new Affix(new[] { "" }, new ItemModTier[0]);
 
+
+        private bool _CanDeselect = true;
+
+        public bool CanDeselect
+        {
+            get { return _CanDeselect; }
+            set { _CanDeselect = value; OnpropertyChanged("CanDeselect"); }
+        }
 
         private List<Affix> _Affixes;
 
@@ -32,15 +40,25 @@ namespace POESKillTree.Controls
             get { return _Affixes; }
             set
             {
-                var l = value.ToList();
-                l.Insert(0, EmptySelection);
-                _Affixes = l;
-                if (!_Affixes.Contains(SelectedAffix))
+                if (value != null)
                 {
-                    sliders.Clear();
-                    spSLiders.Children.Clear();
+                    var l = value.ToList();
+                    if (CanDeselect)
+                        l.Insert(0, EmptySelection);
+                    _Affixes = l;
+                    if (!_Affixes.Contains(SelectedAffix))
+                    {
+                        sliders.Clear();
+                        spSLiders.Children.Clear();
+                    }
                 }
+                else
+                    _Affixes = null;
+
                 OnpropertyChanged("Affixes");
+
+                if (!CanDeselect && _Affixes != null)
+                    cbAffix.SelectedIndex = 0;
             }
         }
 
@@ -75,11 +93,13 @@ namespace POESKillTree.Controls
         {
             var aff = cbAffix.SelectedItem as Affix;
 
+            spSLiders.Children.Clear();
+            sliders.Clear();
+
             if (aff != null)
             {
                 var tiers = aff.GetTiers();
-                spSLiders.Children.Clear();
-                sliders.Clear();
+
                 tbtlabel.Text = "";
                 if (aff != EmptySelection)
                 {

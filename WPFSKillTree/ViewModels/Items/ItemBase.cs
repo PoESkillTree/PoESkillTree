@@ -224,10 +224,11 @@ namespace POESKillTree.ViewModels.Items
             item.BaseType = this.ItemType;
             item.GearGroup = this.GearGroup;
 
-            foreach (var prop in Properties)
-            {
-                item.Properties.Add(prop.ToItemMod());
-            }
+            if(Properties!=null)
+                foreach (var prop in Properties)
+                {
+                    item.Properties.Add(prop.ToItemMod());
+                }
 
             return item;
         }

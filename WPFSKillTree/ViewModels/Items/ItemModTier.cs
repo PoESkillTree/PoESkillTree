@@ -146,6 +146,13 @@ namespace POESKillTree.ViewModels.Items
             this.Stats = new List<Stat>(stat.Zip(val, (s, v) => new Stat(s, v)));
         }
 
+        public ItemModTier(string name, int level, IEnumerable<Stat> stats)
+        {
+            this.Name = name;
+            this.Level = level;
+            this.Stats = stats.ToList();
+        }
+
         public ItemModTier(XElement e)
         {
             if (e.Name != "mod")

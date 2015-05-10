@@ -72,6 +72,23 @@ namespace POESKillTree.Views
         List<Affix> _prefixes = new List<Affix>();
         List<Affix> _suffixes = new List<Affix>();
 
+        int _SkipRedraw = 0;
+
+        public bool SkipRedraw
+        {
+            get { return _SkipRedraw > 0; }
+            set
+            {
+                if (value)
+                    _SkipRedraw++;
+                else
+                    _SkipRedraw--;
+
+                if (_SkipRedraw == 0)
+                    RecalculateItem();
+            }
+        }
+
         private void cbBaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbBaseSelection.SelectedItem == null)
@@ -80,8 +97,20 @@ namespace POESKillTree.Views
                 return;
             }
 
-            var itm = ((ItemBase)cbBaseSelection.SelectedItem).CreateItem();
+            SkipRedraw = true;
+            var ibase = ((ItemBase)cbBaseSelection.SelectedItem);
+            var itm = ibase.CreateItem();
             Item = itm;
+
+            if (ibase.ImplicitMods != null)
+            {
+                Affix implaff = new Affix(ibase.ImplicitMods.Select(s => s.Name).ToArray(), new[] { new ItemModTier("implicits", 0, ibase.ImplicitMods) });
+                msImplicitMods.Affixes = new List<Affix>() { implaff };
+            }
+            else
+            {
+                msImplicitMods.Affixes = null;
+            }
 
             var aaff = Affix.AllAffixes.Where(a => a.ApplicableGear.Contains(itm.GearGroup)).ToArray();
 
@@ -93,7 +122,7 @@ namespace POESKillTree.Views
             _selectedSuff = new[] { mss1, mss2, mss3 }.Where(s => s.SelectedAffix != null).ToArray();
 
 
-            RecalculateItem();
+            SkipRedraw = false;
 
         }
 
@@ -116,6 +145,9 @@ namespace POESKillTree.Views
 
         private void RecalculateItem()
         {
+            if (SkipRedraw)
+                return;
+
 
             Item.NameLine = "";
             Item.TypeLine = Item.BaseType;
@@ -137,7 +169,7 @@ namespace POESKillTree.Views
                 if (_selectedSuff.Length > 0)
                     typeline += " " + _selectedSuff[0].SelectedAffix.Query(_selectedSuff[0].SelectedValues.Select(v => (_selectedSuff[0].SelectedAffix.Name.Contains(" per second")) ? (float)v * 60f : (float)v).ToArray()).First().Name;
 
-                Item.TypeLine = typeline.Replace(" (Master Crafted)","");
+                Item.TypeLine = typeline.Replace(" (Master Crafted)", "");
             }
             else
             {
@@ -149,9 +181,13 @@ namespace POESKillTree.Views
             var prefixes = _selectedPreff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
             var suffixes = _selectedSuff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
             var allmods = prefixes.Concat(suffixes);
-            Item.ExplicitMods = allmods.Where(m=>m.Parent==null || m.Parent.ParentTier == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
-
+            Item.ExplicitMods = allmods.Where(m => m.Parent == null || m.Parent.ParentTier == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
             Item.CraftedMods = allmods.Where(m => m.Parent != null && m.Parent.ParentTier != null && m.Parent.ParentTier.IsMasterCrafted).ToList();
+
+            if (msImplicitMods.Affixes != null)
+            {
+                Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
+            }
 
         }
 
