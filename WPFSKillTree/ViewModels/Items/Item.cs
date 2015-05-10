@@ -105,7 +105,7 @@ namespace POESKillTree.ViewModels.Items
         public List<ItemMod> CraftedMods
         {
             get { return _craftedMods; }
-            set { _craftedMods = value; OnPropertyChanged("Implicitmods"); OnPropertyChanged("HaveCraftedMods"); }
+            set { _craftedMods = value; OnPropertyChanged("CraftedMods"); OnPropertyChanged("HaveCraftedMods"); }
         }
 
 

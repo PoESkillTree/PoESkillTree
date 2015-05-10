@@ -128,7 +128,7 @@ namespace POESKillTree.ViewModels
 
                 inlines.Add(r);
 
-                r = new Run(mod.Value[i].ToString());
+                r = new Run(mod.Value[i].ToString("###0.#"));
                 if (parameter != null)
                     r.Foreground = clr;
 

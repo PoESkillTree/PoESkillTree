@@ -44,9 +44,9 @@ namespace POESKillTree.Views
         public Item Item
         {
             get { return _item; }
-            set { _item = value; OnpropertyChanged("Item");}
+            set { _item = value; OnpropertyChanged("Item"); }
         }
-        
+
         public CraftWindow()
         {
             InitializeComponent();
@@ -90,7 +90,9 @@ namespace POESKillTree.Views
 
             msp1.Affixes = msp2.Affixes = msp3.Affixes = _prefixes;
             mss1.Affixes = mss2.Affixes = mss3.Affixes = _suffixes;
-            _selectedSuff= new[] { mss1, mss2, mss3 }.Where(s => s.SelectedAffix != null).ToArray();
+            _selectedSuff = new[] { mss1, mss2, mss3 }.Where(s => s.SelectedAffix != null).ToArray();
+
+
             RecalculateItem();
 
         }
@@ -101,7 +103,7 @@ namespace POESKillTree.Views
             var ms = sender as ModSelector;
             List<Affix> exc = new List<Affix>();
             if (msp1 != ms)
-                msp1.Affixes = _prefixes.Except(new[] {msp2.SelectedAffix, msp3.SelectedAffix }).ToList();
+                msp1.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp3.SelectedAffix }).ToList();
 
             if (msp2 != ms)
                 msp2.Affixes = _prefixes.Except(new[] { msp1.SelectedAffix, msp3.SelectedAffix }).ToList();
@@ -117,8 +119,9 @@ namespace POESKillTree.Views
 
             Item.NameLine = "";
             Item.TypeLine = Item.BaseType;
+
             if (_selectedPreff.Length + _selectedSuff.Length == 0)
-            { 
+            {
                 Item.Frame = FrameType.White;
             }
             else if (_selectedPreff.Length <= 1 && _selectedSuff.Length <= 1)
@@ -127,20 +130,29 @@ namespace POESKillTree.Views
                 string typeline = "";
 
                 if (_selectedPreff.Length > 0)
-                    typeline = _selectedPreff[0].SelectedAffix.Query(_selectedPreff[0].SelectedValues.Select(v => (float)v).ToArray())[0].Name + " ";
+                    typeline = _selectedPreff[0].SelectedAffix.Query(_selectedPreff[0].SelectedValues.Select(v => (_selectedPreff[0].SelectedAffix.Name.Contains(" per second")) ? (float)v * 60f : (float)v).ToArray()).First().Name + " ";
 
                 typeline += Item.BaseType;
 
                 if (_selectedSuff.Length > 0)
-                    typeline += " "+_selectedSuff[0].SelectedAffix.Query(_selectedSuff[0].SelectedValues.Select(v => (float)v).ToArray())[0].Name;
+                    typeline += " " + _selectedSuff[0].SelectedAffix.Query(_selectedSuff[0].SelectedValues.Select(v => (_selectedSuff[0].SelectedAffix.Name.Contains(" per second")) ? (float)v * 60f : (float)v).ToArray()).First().Name;
 
-                Item.TypeLine = typeline;
+                Item.TypeLine = typeline.Replace(" (Master Crafted)","");
             }
             else
             {
                 Item.Frame = FrameType.Rare;
                 Item.NameLine = "Crafted " + Item.BaseType;
             }
+
+
+            var prefixes = _selectedPreff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
+            var suffixes = _selectedSuff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
+            var allmods = prefixes.Concat(suffixes);
+            Item.ExplicitMods = allmods.Where(m=>m.Parent==null || m.Parent.ParentTier == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
+
+            Item.CraftedMods = allmods.Where(m => m.Parent != null && m.Parent.ParentTier != null && m.Parent.ParentTier.IsMasterCrafted).ToList();
+
         }
 
         ModSelector[] _selectedSuff = new ModSelector[0];
@@ -157,7 +169,7 @@ namespace POESKillTree.Views
             if (mss3 != ms)
                 mss3.Affixes = _suffixes.Except(new[] { mss2.SelectedAffix, mss1.SelectedAffix }).ToList();
 
-            _selectedSuff = new[] { mss1, mss2, mss3 }.Where(s=>s.SelectedAffix!=null).ToArray();
+            _selectedSuff = new[] { mss1, mss2, mss3 }.Where(s => s.SelectedAffix != null).ToArray();
 
             RecalculateItem();
         }

@@ -48,11 +48,11 @@ namespace POESKillTree.ViewModels.Items
 
         public Affix(string[] mod, IEnumerable<ItemModTier> modlist)
         {
-            this.Mod = mod;
+            this.Mod = mod.ToList();
 
             if (modlist.Count() > 0)
             {
-                this.Tiers = new RangeTree<float, ModWrapper>[this.Mod.Length];
+                this.Tiers = new RangeTree<float, ModWrapper>[this.Mod.Count];
 
                 foreach (var item in modlist)
                     item.ParentAffix = this;
@@ -82,12 +82,20 @@ namespace POESKillTree.ViewModels.Items
             }
         }
 
+        public bool IsRangeMod
+        {
+            get
+            { 
+                return Mod.Select(s => s.Replace("Minimum", "").Replace("Maximum", "")).Distinct().Count() == 1;
+            }
+        }
+
         public Affix(XElement e)
         {
             if (e.Name != "affix")
                 throw new ArgumentException();
 
-            this.Mod = e.Attribute("mod").Value.Split('|').ToArray();
+            this.Mod = e.Attribute("mod").Value.Split('|').ToList();
             this.ModType = (ModType)Enum.Parse(typeof(ModType), e.Attribute("modtype").Value);
 
             if (e.Attribute("signaturemod") != null)
@@ -114,7 +122,7 @@ namespace POESKillTree.ViewModels.Items
             this.Aliases = e.Element("aliases").Elements().Where(el => el.Name == "alias").Select(a => new HashSet<string>(a.Value.Split('|'))).ToArray();
             var tiers = e.Element("tiers").Elements().Select(el => new ItemModTier(el) { ParentAffix = this });
 
-            this.Tiers = new RangeTree<float, ModWrapper>[this.Mod.Length];
+            this.Tiers = new RangeTree<float, ModWrapper>[this.Mod.Count];
             for (int i = 0; i < Tiers.Length; i++)
                 this.Tiers[i] = new RangeTree<float, ModWrapper>(tiers.Select(im => new ModWrapper(Mod[i], im)), new ItemModComparer());
         }
@@ -135,7 +143,7 @@ namespace POESKillTree.ViewModels.Items
                 );
         }
 
-        public string[] Mod { get; set; }
+        public List<string> Mod { get; set; }
 
         public HashSet<string>[] Aliases { get; set; }
 
@@ -210,7 +218,7 @@ namespace POESKillTree.ViewModels.Items
                 throw new ArgumentException("different number ov number than search params");
             var matches = value.Select((v, i) => Tiers[i].Query(v).Select(w => w.ItemMod).ToArray()).ToArray();
 
-            return matches.Aggregate((a, n) => a.Intersect(n).ToArray()).ToList();
+            return matches.Aggregate((a, n) => a.Intersect(n).ToArray()).OrderBy(c=>c.IsMasterCrafted?1:0).ToList();
         }
 
         public List<ItemModTier> Query(params Range<float>[] range)
@@ -291,6 +299,12 @@ namespace POESKillTree.ViewModels.Items
         public float Maximum
         {
             get { return Tiers[0].Items.Max(i => i.Range.To); }
+        }
+
+        public string Dealias(string attribute)
+        {
+            var aindex = Mod.IndexOf(attribute);
+            return AliasStrings[aindex];
         }
     }
 }

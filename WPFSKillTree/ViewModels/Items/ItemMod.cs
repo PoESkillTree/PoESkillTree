@@ -9,6 +9,7 @@ namespace POESKillTree.ViewModels.Items
 {
     public class ItemMod
     {
+        public Stat Parent { get; set; }
         public enum ValueColoring
         {
             White = 0,

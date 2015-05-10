@@ -46,6 +46,7 @@
         <Style TargetType="{x:Type Image}" x:Key="spacerBase">
             <Style.Setters>
                 <Setter Property="Visibility" Value="Visible"/>
+                <Setter Property="Stretch" Value="None"/>
             </Style.Setters>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static items:FrameType.White}">

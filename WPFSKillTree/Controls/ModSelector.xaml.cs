@@ -49,10 +49,10 @@ namespace POESKillTree.Controls
 
         public Affix SelectedAffix
         {
-            get 
+            get
             {
                 var fx = cbAffix.SelectedItem as Affix;
-                return (fx == EmptySelection)?null:fx; 
+                return (fx == EmptySelection) ? null : fx;
             }
         }
 
@@ -83,7 +83,7 @@ namespace POESKillTree.Controls
                 tbtlabel.Text = "";
                 if (aff != EmptySelection)
                 {
-                    for (int i = 0; i < aff.Mod.Length; i++)
+                    for (int i = 0; i < aff.Mod.Count; i++)
                     {
                         OverlayedSlider os = new OverlayedSlider();
                         os.OverlayText = aff.AliasStrings[i];
@@ -132,6 +132,22 @@ namespace POESKillTree.Controls
             {
                 if (i != indx)
                 {
+                    if (aff.IsRangeMod)
+                    {
+                        if (i > indx)
+                        {
+                            if (sliders[i].Value < sliders[indx].Value)
+                                sliders[i].Value = sliders[indx].Value;
+                        }
+                        else if (i < indx)
+                        {
+                            if (sliders[i].Value > sliders[indx].Value)
+                                sliders[i].Value = sliders[indx].Value;
+                        }
+
+                    }
+
+
                     if (aff.QueryMod(i, (float)sliders[i].Value).Intersect(tiers).FirstOrDefault() == null)
                     { //slider isnt inside current tier
                         var moveto = tiers[0].Stats[i].Range;
@@ -161,9 +177,34 @@ namespace POESKillTree.Controls
 
         public event Action<object, double[]> SelectedValuesChanged;
 
-        public double[] SelectedValues 
-        { 
-            get{ return sliders.Select(s=>s.Value).ToArray();}
+        public double[] SelectedValues
+        {
+            get { return sliders.Select(s => s.Value).ToArray(); }
+        }
+
+        public ItemMod[] GetExactMods()
+        {
+            if (SelectedAffix != null)
+            {
+                float[] values = sliders.Select(s => (float)s.Value).ToArray();
+                if (SelectedAffix.Name.Contains(" per second"))
+                    values = values.Select(v => v * 60f).ToArray();
+
+                var aff = SelectedAffix.Query(values).FirstOrDefault();
+
+
+                if (aff.ParentAffix.IsRangeMod)
+                {
+                    return new[] { aff.Stats[0].ToItemMod(sliders.Select(s => (float)s.Value).ToArray()) };
+                }
+
+                var fvalues = aff.Stats.Select((s, i) => s.ToItemMod((float)sliders[i].Value));
+
+                return fvalues.ToArray();
+
+            }
+
+            return new ItemMod[0];
         }
     }
 }

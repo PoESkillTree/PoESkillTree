@@ -16,7 +16,28 @@ namespace POESKillTree.ViewModels.Items
         private string armour;
 
         public string Name { get; set; }
+        public string NameAlias
+        {
+            get
+            {
+                if (this.ParentTier == null)
+                    return Name;
+
+                else
+                {
+                    return ParentTier.ParentAffix.Dealias(this.Name);
+
+                }
+                throw new NotImplementedException();
+            }
+        }
+
+
+
+
         public Range<float> Range { get; set; }
+
+        public ItemModTier ParentTier { get; set; }
 
         public Stat(string name, Range<float> range)
         {
@@ -44,12 +65,66 @@ namespace POESKillTree.ViewModels.Items
         {
             return new XElement("stat", new XAttribute("name", this.Name), new XAttribute("from", this.Range.From), new XAttribute("to", this.Range.To));
         }
+
+
+        public ItemMod ToItemMod(params float[] values)
+        {
+            if (values.Length != 0 && values.All(v => v == values[0]))
+            {
+                values = new float[] { values[0] };
+            }
+            else if (values.Length == 0)
+            {
+                if (Range.From == Range.To)
+                    values = new float[] { Range.To };
+                else
+                    values = new float[] { Range.From, Range.To };
+            }
+
+            if (values.Length == 0 || values.Length > 2)
+                throw new NotImplementedException();
+
+            bool singleVal = values.Length == 1;
+
+            string modval = singleVal ? "#" : "#-#";
+
+            var im = new ItemMod(){Parent = this};
+
+            string name = this.NameAlias;
+
+
+            int insetpos = name.IndexOf('%');
+            if (insetpos < 0)
+            {
+                insetpos = name.IndexOf("  ");
+                if (insetpos >= 0)
+                    insetpos++;
+            }
+
+            if (insetpos >= 0)
+            {
+                im.Attribute = name.Insert(insetpos, modval);
+            }
+            else if (name[0] == ' ' || Char.IsLower(name[0]))
+            {
+                im.Attribute = modval + name;
+            }
+            else if (Char.IsUpper(Name[0])) //value at end
+            {
+                im.Attribute = name + ": " + modval;
+            }
+            else
+                throw new NotImplementedException();
+
+            im.Value = values.ToList();
+            im.ValueColor = values.Select(_ => ItemMod.ValueColoring.White).ToList();
+
+            return im;
+        }
     }
 
     public class ItemModTier : IEquatable<ItemModTier>
     {
-
-
         public Affix ParentAffix { get; set; }
         public string Name { get; set; }
         public int Level { get; set; }
@@ -84,7 +159,7 @@ namespace POESKillTree.ViewModels.Items
 
             this.Name = e.Attribute("name").Value;
             this.Level = XmlConvert.ToInt32(e.Attribute("level").Value);
-            this.Stats = e.Element("stats").Elements().Select(el => new Stat(el)).ToList();
+            this.Stats = e.Element("stats").Elements().Select(el => new Stat(el) { ParentTier = this }).ToList();
         }
 
         public XElement Serialize()
