@@ -98,6 +98,8 @@ namespace POESKillTree.Views
             }
 
             SkipRedraw = true;
+            msp1.Affixes = msp2.Affixes = msp3.Affixes = mss1.Affixes = mss1.Affixes = mss2.Affixes = mss3.Affixes = null;
+
             var ibase = ((ItemBase)cbBaseSelection.SelectedItem);
             var itm = ibase.CreateItem();
             Item = itm;
