@@ -12,7 +12,7 @@
   </ItemBase>
   <ItemBase group="Amulet" class="Amulet" type="Paua Amulet" level="2">
     <implicitmods>
-      <stat name="Mana Regeneration Rate +%" from="20" to="30" />
+      <stat name="Mana Regeneration Rate %" from="20" to="30" />
     </implicitmods>
   </ItemBase>
   <ItemBase group="Amulet" class="Amulet" type="Amber Amulet" level="7">
@@ -32,7 +32,7 @@
   </ItemBase>
   <ItemBase group="Amulet" class="Amulet" type="Gold Amulet" level="15">
     <implicitmods>
-      <stat name="Base Item Found Rarity +%" from="12" to="20" />
+      <stat name="Base Item Found Rarity %" from="12" to="20" />
     </implicitmods>
   </ItemBase>
   <ItemBase group="Amulet" class="Amulet" type="Turquoise Amulet" level="20">
@@ -62,7 +62,7 @@
   </ItemBase>
   <ItemBase group="Belt" class="Belt" type="Rustic Sash" level="2">
     <implicitmods>
-      <stat name="Physical Damage +%" from="12" to="24" />
+      <stat name="Physical Damage %" from="12" to="24" />
     </implicitmods>
   </ItemBase>
   <ItemBase group="Belt" class="Belt" type="Heavy Belt" level="10">
@@ -77,17 +77,17 @@
   </ItemBase>
   <ItemBase group="Belt" class="Belt" type="Golden Obi" level="12">
     <implicitmods>
-      <stat name="Base Item Found Rarity +%" from="20" to="30" />
+      <stat name="Base Item Found Rarity %" from="20" to="30" />
     </implicitmods>
   </ItemBase>
   <ItemBase group="Belt" class="Belt" type="Cloth Belt" level="20">
     <implicitmods>
-      <stat name="Base Stun Recovery +%" from="15" to="25" />
+      <stat name="Base Stun Recovery %" from="15" to="25" />
     </implicitmods>
   </ItemBase>
   <ItemBase group="Belt" class="Belt" type="Studded Belt" level="20">
     <implicitmods>
-      <stat name="Base Stun Duration +%" from="20" to="30" />
+      <stat name="Base Stun Duration %" from="20" to="30" />
     </implicitmods>
   </ItemBase>
   <ItemBase group="Ring" class="Ring" type="Iron Ring" level="2">
@@ -123,7 +123,7 @@
   </ItemBase>
   <ItemBase group="Ring" class="Ring" type="Gold Ring" level="10">
     <implicitmods>
-      <stat name="Base Item Found Rarity +%" from="6" to="15" />
+      <stat name="Base Item Found Rarity %" from="6" to="15" />
     </implicitmods>
   </ItemBase>
   <ItemBase group="Ring" class="Ring" type="Golden Hoop" level="12">
@@ -153,7 +153,7 @@
   </ItemBase>
   <ItemBase group="Ring" class="Ring" type="Diamond Ring" level="25">
     <implicitmods>
-      <stat name="Critical Strike Chance +%" from="20" to="30" />
+      <stat name="Critical Strike Chance %" from="20" to="30" />
     </implicitmods>
   </ItemBase>
   <ItemBase group="Ring" class="Ring" type="Prismatic Ring" level="30">
@@ -173,7 +173,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Plate Vest" level="1">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="14" to="14" />
@@ -181,7 +181,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Shabby Jerkin" level="2">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="21" to="21" />
@@ -189,7 +189,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Simple Robe" level="3">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="11" to="11" />
@@ -197,7 +197,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Scale Vest" level="4">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="19" to="19" />
@@ -206,7 +206,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Padded Vest" level="4">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="19" to="19" />
@@ -215,7 +215,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Chainmail Vest" level="4">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="19" to="19" />
@@ -224,7 +224,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Chestplate" level="6">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="49" to="49" />
@@ -232,7 +232,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Chainmail Tunic" level="8">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="35" to="35" />
@@ -241,7 +241,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Light Brigandine" level="8">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="35" to="35" />
@@ -250,7 +250,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Strapped Leather" level="9">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="70" to="70" />
@@ -258,7 +258,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Oiled Vest" level="9">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="38" to="38" />
@@ -267,7 +267,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Silken Vest" level="11">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="27" to="27" />
@@ -275,7 +275,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Buckskin Tunic" level="17">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="126" to="126" />
@@ -283,7 +283,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Copper Plate" level="17">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="126" to="126" />
@@ -291,7 +291,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Ringmail Coat" level="17">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="69" to="69" />
@@ -300,7 +300,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Scale Doublet" level="17">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="69" to="69" />
@@ -309,7 +309,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Scholar's Robe" level="18">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="41" to="41" />
@@ -317,7 +317,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Padded Jacket" level="18">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="73" to="73" />
@@ -326,7 +326,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Chainmail Doublet" level="21">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="85" to="85" />
@@ -335,7 +335,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="War Plate" level="21">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="154" to="154" />
@@ -343,7 +343,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Infantry Brigandine" level="21">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="85" to="85" />
@@ -352,7 +352,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Oiled Coat" level="22">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="88" to="88" />
@@ -361,7 +361,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Wild Leather" level="25">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="182" to="182" />
@@ -369,7 +369,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Silken Garb" level="25">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="55" to="55" />
@@ -377,7 +377,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Scarlet Raiment" level="28">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="112" to="112" />
@@ -386,7 +386,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Ringmail" level="28">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="112" to="112" />
@@ -395,7 +395,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Scale Armour" level="28">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="112" to="112" />
@@ -404,7 +404,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Mage's Vestment" level="28">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="61" to="61" />
@@ -412,7 +412,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Leather" level="28">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="203" to="203" />
@@ -420,7 +420,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Plate" level="28">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="203" to="203" />
@@ -428,7 +428,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Waxed Garb" level="32">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="127" to="127" />
@@ -437,7 +437,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Soldier's Brigandine" level="32">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="127" to="127" />
@@ -446,7 +446,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Silk Robe" level="32">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="69" to="69" />
@@ -454,7 +454,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Arena Plate" level="32">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="231" to="231" />
@@ -462,7 +462,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Chainmail" level="32">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="127" to="127" />
@@ -471,7 +471,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sun Leather" level="32">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="231" to="231" />
@@ -479,7 +479,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Field Lamellar" level="35">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="138" to="138" />
@@ -488,7 +488,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Cabalist Regalia" level="35">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="75" to="75" />
@@ -496,7 +496,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Thief's Garb" level="35">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="252" to="252" />
@@ -504,7 +504,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Holy Chainmail" level="35">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="138" to="138" />
@@ -513,7 +513,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Bone Armour" level="35">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="138" to="138" />
@@ -522,7 +522,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Lordly Plate" level="35">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="252" to="252" />
@@ -530,7 +530,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Bronze Plate" level="37">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="266" to="266" />
@@ -538,7 +538,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Eelskin Tunic" level="37">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="266" to="266" />
@@ -546,7 +546,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sage's Robe" level="37">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="79" to="79" />
@@ -554,7 +554,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Wyrmscale Doublet" level="38">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="150" to="150" />
@@ -563,7 +563,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Latticed Ringmail" level="39">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="154" to="154" />
@@ -572,7 +572,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Quilted Jacket" level="40">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="158" to="158" />
@@ -581,7 +581,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Frontier Leather" level="41">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="294" to="294" />
@@ -589,7 +589,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Battle Plate" level="41">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="294" to="294" />
@@ -597,7 +597,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Silken Wrap" level="41">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="87" to="87" />
@@ -605,7 +605,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Hussar Brigandine" level="42">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="165" to="165" />
@@ -614,7 +614,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Crusader Chainmail" level="43">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="169" to="169" />
@@ -623,7 +623,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sleek Coat" level="44">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="173" to="173" />
@@ -632,7 +632,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sun Plate" level="45">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="322" to="322" />
@@ -640,7 +640,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Glorious Leather" level="45">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="322" to="322" />
@@ -648,7 +648,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Conjurer's Vestment" level="45">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="95" to="95" />
@@ -656,7 +656,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Wyrmscale" level="46">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="181" to="181" />
@@ -665,7 +665,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Ornate Ringmail" level="47">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="185" to="185" />
@@ -674,7 +674,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Crimson Raiment" level="48">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="189" to="189" />
@@ -683,7 +683,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Coronal Leather" level="49">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="350" to="350" />
@@ -691,7 +691,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Spidersilk Robe" level="49">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="103" to="103" />
@@ -699,7 +699,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Colosseum Plate" level="49">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="350" to="350" />
@@ -707,7 +707,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Commander's Brigandine" level="50">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="196" to="196" />
@@ -716,7 +716,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Chain Hauberk" level="51">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="200" to="200" />
@@ -725,7 +725,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Lacquered Garb" level="52">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="204" to="204" />
@@ -734,7 +734,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Destroyer Regalia" level="53">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="111" to="111" />
@@ -742,7 +742,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Majestic Plate" level="53">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="378" to="378" />
@@ -750,7 +750,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Cutthroat's Garb" level="53">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="378" to="378" />
@@ -758,7 +758,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Battle Lamellar" level="54">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="212" to="212" />
@@ -767,7 +767,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Devout Chainmail" level="55">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="215" to="215" />
@@ -776,7 +776,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Crypt Armour" level="56">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="219" to="219" />
@@ -785,7 +785,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Golden Plate" level="56">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="399" to="399" />
@@ -793,7 +793,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Savant's Robe" level="56">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="117" to="117" />
@@ -801,7 +801,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sharkskin Tunic" level="56">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="399" to="399" />
@@ -809,7 +809,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Dragonscale Doublet" level="57">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="223" to="223" />
@@ -818,7 +818,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Loricated Ringmail" level="58">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="232" to="232" />
@@ -827,7 +827,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Destiny Leather" level="59">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="428" to="428" />
@@ -835,7 +835,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Crusader Plate" level="59">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="428" to="428" />
@@ -843,7 +843,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Necromancer Silks" level="59">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="125" to="125" />
@@ -851,7 +851,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sentinel Jacket" level="59">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="235" to="235" />
@@ -860,7 +860,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Desert Brigandine" level="60">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="268" to="268" />
@@ -869,7 +869,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Conquest Chainmail" level="61">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="276" to="276" />
@@ -878,7 +878,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Exquisite Leather" level="62">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="502" to="502" />
@@ -886,7 +886,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Varnished Coat" level="62">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="276" to="276" />
@@ -895,8 +895,8 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Occultist's Vestment" level="62">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Spell Damage +%" from="3" to="10" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="3" to="10" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="140" to="140" />
@@ -905,7 +905,7 @@
   <ItemBase group="Chest" class="Armor" type="Astral Plate" level="62">
     <implicitmods>
       <stat name="Base Resist All Elements %" from="8" to="12" />
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="507" to="507" />
@@ -913,7 +913,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Dragonscale" level="63">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="335" to="335" />
@@ -922,7 +922,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Elegant Ringmail" level="64">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="269" to="269" />
@@ -931,7 +931,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Blood Raiment" level="65">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="311" to="311" />
@@ -940,7 +940,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Widowsilk Robe" level="65">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="161" to="161" />
@@ -948,7 +948,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Zodiac Leather" level="65">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="609" to="609" />
@@ -956,7 +956,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Gladiator Plate" level="65">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="526" to="526" />
@@ -964,7 +964,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="General's Brigandine" level="66">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="296" to="296" />
@@ -973,7 +973,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Saint's Hauberk" level="67">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="315" to="315" />
@@ -982,7 +982,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Vaal Regalia" level="68">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="175" to="175" />
@@ -995,7 +995,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Assassin's Garb" level="68">
     <implicitmods>
-      <stat name="Base Movement Velocity +%" from="3" to="3" />
+      <stat name="Base Movement Velocity %" from="3" to="3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="525" to="525" />
@@ -1003,7 +1003,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sadist Garb" level="68">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="304" to="304" />
@@ -1012,7 +1012,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Triumphant Lamellar" level="69">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="271" to="271" />
@@ -1021,7 +1021,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Saintly Chainmail" level="70">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-5" to="-5" />
+      <stat name="From Armour Movement Speed %" from="-5" to="-5" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="286" to="286" />
@@ -1031,7 +1031,7 @@
   <ItemBase group="Chest" class="Armor" type="Carnal Armour" level="71">
     <implicitmods>
       <stat name="Base  Mana" from="20" to="25" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="251" to="251" />
@@ -1040,7 +1040,7 @@
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sacrificial Garb" level="72">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="234" to="234" />
@@ -1965,7 +1965,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Splintered Tower Shield" level="1">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="8" to="8" />
@@ -1973,7 +1973,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Goathide Buckler" level="2">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="10" to="10" />
@@ -1981,8 +1981,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Twig Spirit Shield" level="3">
     <implicitmods>
-      <stat name="Spell Damage +%" from="10" to="10" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="10" to="10" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="5" to="5" />
@@ -1990,8 +1990,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Rotted Round Shield" level="5">
     <implicitmods>
-      <stat name="Block Recovery +%" from="60" to="60" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="60" to="60" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="11" to="11" />
@@ -2000,7 +2000,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Spiked Bundle" level="5">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="2" to="5" />
     </implicitmods>
     <properties>
@@ -2010,7 +2010,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Corroded Tower Shield" level="5">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="40" to="40" />
@@ -2019,7 +2019,7 @@
   <ItemBase group="Shield" class="OffHand" type="Plank Kite Shield" level="7">
     <implicitmods>
       <stat name="Base Resist All Elements %" from="4" to="4" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="15" to="15" />
@@ -2028,7 +2028,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Pine Buckler" level="8">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="38" to="38" />
@@ -2036,8 +2036,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Yew Spirit Shield" level="9">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Spell Damage +%" from="5" to="5" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="5" to="5" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="11" to="11" />
@@ -2045,7 +2045,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Rawhide Tower Shield" level="11">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="46" to="46" />
@@ -2053,8 +2053,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Fir Round Shield" level="12">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Block Recovery +%" from="180" to="180" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="180" to="180" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="25" to="25" />
@@ -2063,7 +2063,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Driftwood Spiked Shield" level="12">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="2" to="5" />
     </implicitmods>
     <properties>
@@ -2074,7 +2074,7 @@
   <ItemBase group="Shield" class="OffHand" type="Linden Kite Shield" level="13">
     <implicitmods>
       <stat name="Base Resist All Elements %" from="4" to="4" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="38" to="38" />
@@ -2083,8 +2083,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Bone Spirit Shield" level="15">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Spell Damage +%" from="15" to="15" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="15" to="15" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="17" to="17" />
@@ -2092,7 +2092,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Painted Buckler" level="16">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="95" to="95" />
@@ -2100,7 +2100,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Cedar Tower Shield" level="17">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="94" to="94" />
@@ -2108,8 +2108,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Studded Round Shield" level="20">
     <implicitmods>
-      <stat name="Block Recovery +%" from="60" to="60" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="60" to="60" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="40" to="40" />
@@ -2119,7 +2119,7 @@
   <ItemBase group="Shield" class="OffHand" type="Alloyed Spike Shield" level="20">
     <implicitmods>
       <stat name="Physical Damage To Return To Melee Attacker" from="5" to="12" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="48" to="48" />
@@ -2128,7 +2128,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Reinforced Kite Shield" level="20">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="56" to="56" />
@@ -2137,7 +2137,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Hammered Buckler" level="23">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="84" to="84" />
@@ -2145,8 +2145,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Tarnished Spirit Shield" level="23">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Spell Damage +%" from="5" to="5" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="5" to="5" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="25" to="25" />
@@ -2154,7 +2154,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Copper Tower Shield" level="24">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="166" to="166" />
@@ -2163,7 +2163,7 @@
   <ItemBase group="Shield" class="OffHand" type="Layered Kite Shield" level="27">
     <implicitmods>
       <stat name="Base Resist All Elements %" from="8" to="8" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="54" to="54" />
@@ -2172,7 +2172,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Burnished Spike Shield" level="27">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="10" to="23" />
     </implicitmods>
     <properties>
@@ -2182,7 +2182,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Scarlet Round Shield" level="27">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="75" to="75" />
@@ -2191,8 +2191,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Jingling Spirit Shield" level="28">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Spell Damage +%" from="10" to="10" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="10" to="10" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="30" to="30" />
@@ -2200,7 +2200,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="War Buckler" level="29">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="126" to="126" />
@@ -2208,7 +2208,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Reinforced Tower Shield" level="30">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="249" to="249" />
@@ -2216,7 +2216,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ornate Spiked Shield" level="33">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="24" to="35" />
     </implicitmods>
     <properties>
@@ -2226,8 +2226,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Splendid Round Shield" level="33">
     <implicitmods>
-      <stat name="Block Recovery +%" from="120" to="120" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="120" to="120" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="65" to="65" />
@@ -2236,7 +2236,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Brass Spirit Shield" level="33">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="43" to="43" />
@@ -2244,7 +2244,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ceremonial Kite Shield" level="34">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Base Resist All Elements %" from="12" to="12" />
     </implicitmods>
     <properties>
@@ -2254,7 +2254,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Gilded Buckler" level="34">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="171" to="171" />
@@ -2262,7 +2262,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Painted Tower Shield" level="35">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="189" to="189" />
@@ -2270,8 +2270,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Walnut Spirit Shield" level="37">
     <implicitmods>
-      <stat name="Spell Damage +%" from="5" to="5" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="5" to="5" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="39" to="39" />
@@ -2279,7 +2279,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Oak Buckler" level="38">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="164" to="164" />
@@ -2287,7 +2287,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Redwood Spiked Shield" level="39">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="36" to="50" />
     </implicitmods>
     <properties>
@@ -2297,8 +2297,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Maple Round Shield" level="39">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Block Recovery +%" from="180" to="180" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="180" to="180" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="77" to="77" />
@@ -2307,7 +2307,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Buckskin Tower Shield" level="39">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="154" to="154" />
@@ -2316,7 +2316,7 @@
   <ItemBase group="Shield" class="OffHand" type="Etched Kite Shield" level="40">
     <implicitmods>
       <stat name="Base Resist All Elements %" from="4" to="4" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="110" to="110" />
@@ -2325,8 +2325,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ivory Spirit Shield" level="41">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Spell Damage +%" from="15" to="15" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="15" to="15" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="43" to="43" />
@@ -2334,7 +2334,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Enameled Buckler" level="42">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="241" to="241" />
@@ -2342,7 +2342,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Mahogany Tower Shield" level="43">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="231" to="231" />
@@ -2350,7 +2350,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Compound Spiked Shield" level="45">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="51" to="70" />
     </implicitmods>
     <properties>
@@ -2360,8 +2360,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Spiked Round Shield" level="45">
     <implicitmods>
-      <stat name="Block Recovery +%" from="60" to="60" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="60" to="60" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="88" to="88" />
@@ -2370,8 +2370,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ancient Spirit Shield" level="45">
     <implicitmods>
-      <stat name="Spell Damage +%" from="5" to="5" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="5" to="5" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="47" to="47" />
@@ -2379,7 +2379,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Corrugated Buckler" level="46">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="164" to="164" />
@@ -2387,7 +2387,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Steel Kite Shield" level="46">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="127" to="127" />
@@ -2396,7 +2396,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Bronze Tower Shield" level="47">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="319" to="319" />
@@ -2404,7 +2404,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Crimson Round Shield" level="49">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="135" to="135" />
@@ -2413,8 +2413,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Chiming Spirit Shield" level="49">
     <implicitmods>
-      <stat name="Spell Damage +%" from="10" to="10" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="10" to="10" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="51" to="51" />
@@ -2422,7 +2422,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Polished Spiked Shield" level="49">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="71" to="90" />
     </implicitmods>
     <properties>
@@ -2432,7 +2432,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Laminated Kite Shield" level="50">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Base Resist All Elements %" from="8" to="8" />
     </implicitmods>
     <properties>
@@ -2442,7 +2442,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Battle Buckler" level="50">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="214" to="214" />
@@ -2450,7 +2450,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Girded Tower Shield" level="51">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="418" to="418" />
@@ -2458,7 +2458,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Thorium Spirit Shield" level="53">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="67" to="67" />
@@ -2466,7 +2466,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Golden Buckler" level="54">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="269" to="269" />
@@ -2474,7 +2474,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Sovereign Spiked Shield" level="54">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="91" to="120" />
     </implicitmods>
     <properties>
@@ -2484,8 +2484,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Baroque Round Shield" level="54">
     <implicitmods>
-      <stat name="Block Recovery +%" from="120" to="120" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="120" to="120" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="106" to="106" />
@@ -2494,7 +2494,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Angelic Kite Shield" level="55">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Base Resist All Elements %" from="12" to="12" />
     </implicitmods>
     <properties>
@@ -2504,7 +2504,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Crested Tower Shield" level="55">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="294" to="294" />
@@ -2512,8 +2512,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Lacewood Spirit Shield" level="56">
     <implicitmods>
-      <stat name="Spell Damage +%" from="5" to="5" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="5" to="5" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="58" to="58" />
@@ -2521,7 +2521,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ironwood Buckler" level="57">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="243" to="243" />
@@ -2530,7 +2530,7 @@
   <ItemBase group="Shield" class="OffHand" type="Alder Spike Shield" level="58">
     <implicitmods>
       <stat name="Physical Damage To Return To Melee Attacker" from="121" to="150" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="182" to="182" />
@@ -2539,7 +2539,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Shagreen Tower Shield" level="58">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="227" to="227" />
@@ -2547,8 +2547,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Teak Round Shield" level="58">
     <implicitmods>
-      <stat name="Block Recovery +%" from="180" to="180" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="180" to="180" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="114" to="114" />
@@ -2557,7 +2557,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Branded Kite Shield" level="59">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Base Resist All Elements %" from="4" to="4" />
     </implicitmods>
     <properties>
@@ -2567,8 +2567,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Fossilized Spirit Shield" level="59">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Spell Damage +%" from="15" to="15" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="15" to="15" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="61" to="61" />
@@ -2576,7 +2576,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Lacquered Buckler" level="60">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="382" to="382" />
@@ -2584,7 +2584,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ebony Tower Shield" level="61">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="358" to="358" />
@@ -2592,8 +2592,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Spiny Round Shield" level="62">
     <implicitmods>
-      <stat name="Block Recovery +%" from="60" to="60" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="60" to="60" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="134" to="134" />
@@ -2602,7 +2602,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ezomyte Spiked Shield" level="62">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="151" to="180" />
     </implicitmods>
     <properties>
@@ -2612,8 +2612,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Vaal Spirit Shield" level="62">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
-      <stat name="Spell Damage +%" from="5" to="5" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="5" to="5" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="70" to="70" />
@@ -2621,7 +2621,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Champion Kite Shield" level="62">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="187" to="187" />
@@ -2630,7 +2630,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Vaal Buckler" level="63">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="239" to="239" />
@@ -2638,7 +2638,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ezomyte Tower Shield" level="64">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="454" to="454" />
@@ -2646,8 +2646,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Harmonic Spirit Shield" level="65">
     <implicitmods>
-      <stat name="Spell Damage +%" from="10" to="10" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Spell Damage %" from="10" to="10" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="72" to="72" />
@@ -2656,7 +2656,7 @@
   <ItemBase group="Shield" class="OffHand" type="Mosaic Kite Shield" level="65">
     <implicitmods>
       <stat name="Base Resist All Elements %" from="8" to="8" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="127" to="127" />
@@ -2665,7 +2665,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Mirrored Spiked Shield" level="66">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
       <stat name="Physical Damage To Return To Melee Attacker" from="181" to="220" />
     </implicitmods>
     <properties>
@@ -2675,7 +2675,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Crusader Buckler" level="66">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="287" to="287" />
@@ -2683,7 +2683,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Cardinal Round Shield" level="66">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="181" to="181" />
@@ -2692,7 +2692,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Colossal Tower Shield" level="67">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="550" to="550" />
@@ -2701,7 +2701,7 @@
   <ItemBase group="Shield" class="OffHand" type="Archon Kite Shield" level="68">
     <implicitmods>
       <stat name="Base Resist All Elements %" from="12" to="12" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="135" to="135" />
@@ -2710,7 +2710,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Titanium Spirit Shield" level="68">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Evasion Rating" from="84" to="84" />
@@ -2718,7 +2718,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Imperial Buckler" level="69">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="335" to="335" />
@@ -2726,8 +2726,8 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Elegant Round Shield" level="70">
     <implicitmods>
-      <stat name="Block Recovery +%" from="120" to="120" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="Block Recovery %" from="120" to="120" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="129" to="129" />
@@ -2737,7 +2737,7 @@
   <ItemBase group="Shield" class="OffHand" type="Supreme Spiked Shield" level="70">
     <implicitmods>
       <stat name="Physical Damage To Return To Melee Attacker" from="221" to="260" />
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Energy Shield" from="210" to="210" />
@@ -2746,7 +2746,7 @@
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Pinnacle Tower Shield" level="70">
     <implicitmods>
-      <stat name="From Armour Movement Speed +%" from="-3" to="-3" />
+      <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
       <stat name="Armour" from="406" to="406" />

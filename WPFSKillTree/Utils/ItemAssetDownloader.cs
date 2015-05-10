@@ -128,6 +128,7 @@ namespace POESKillTree.Utils
 
                     if (implModnodes.Length > 0)
                     {
+                        implModnodes[0] = implModnodes[0].Select(n => n.Replace("+", "").Trim()).ToArray();
                         for (int j = 0; j < implModnodes[0].Length; j++)
                             xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
                     }
@@ -202,7 +203,7 @@ namespace POESKillTree.Utils
 
                     if (implModnodes.Length > 0)
                     {
-                        implModnodes[0] = implModnodes[0].Select(n => n.Replace("Minimum", "").Replace("Maximum", "").Trim()).Distinct().ToArray();
+                        implModnodes[0] = implModnodes[0].Select(n => n.Replace("Minimum", "").Replace("Maximum", "").Replace("+","").Trim()).Distinct().ToArray();
 
                         for (int j = 0; j < implModnodes[0].Length; j++)
                         {

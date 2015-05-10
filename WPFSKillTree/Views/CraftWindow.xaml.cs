@@ -105,6 +105,26 @@ namespace POESKillTree.Views
             if (ibase.ImplicitMods != null)
             {
                 Affix implaff = new Affix(ibase.ImplicitMods.Select(s => s.Name).ToArray(), new[] { new ItemModTier("implicits", 0, ibase.ImplicitMods) });
+
+                List<string> aliases = new List<string>();
+
+                foreach (var mn in ibase.ImplicitMods)
+	            {
+                    string mname = mn.Name.Replace("-", "").Replace("+", "");
+                    var afm = Affix.AllAffixes.FirstOrDefault(a=>a.Mod.Contains(mname));
+                    if (afm != null)
+                    {
+                        var indx = afm.Mod.IndexOf(mname);
+                        var al = afm.Aliases[indx].First();
+                        aliases.Add(al);
+                    }
+                    else
+                        aliases.Add(mn.Name);
+	            }
+
+                implaff.Aliases = aliases.Select(a => new HashSet<string>() { a }).ToArray();
+
+                
                 msImplicitMods.Affixes = new List<Affix>() { implaff };
             }
             else

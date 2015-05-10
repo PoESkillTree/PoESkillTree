@@ -159,7 +159,7 @@ namespace POESKillTree.ViewModels.Items
         {
             this.Name = name;
             this.Level = level;
-            this.Stats = stats.ToList();
+            this.Stats = stats.Select(s => new Stat(s.Name, s.Range) {ParentTier = this }).ToList();
         }
 
         public ItemModTier(XElement e)
