@@ -201,7 +201,13 @@ namespace POESKillTree.Views
             var prefixes = _selectedPreff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
             var suffixes = _selectedSuff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
             var allmods = prefixes.Concat(suffixes);
-            Item.ExplicitMods = allmods.Where(m => m.Parent == null || m.Parent.ParentTier == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
+
+
+            Item.ExplicitMods = allmods.Where(m => m.Parent == null || m.Parent.ParentTier == null || !m.Parent.ParentTier.IsMasterCrafted)
+                .GroupBy(m => m.Attribute)
+                .Select(g => g.Aggregate((m1, m2) => m1.Sum(m2)))
+                .ToList();
+
             Item.CraftedMods = allmods.Where(m => m.Parent != null && m.Parent.ParentTier != null && m.Parent.ParentTier.IsMasterCrafted).ToList();
 
             if (msImplicitMods.Affixes != null)

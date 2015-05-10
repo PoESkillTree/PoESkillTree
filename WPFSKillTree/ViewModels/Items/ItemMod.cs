@@ -191,5 +191,21 @@ namespace POESKillTree.ViewModels.Items
             Percentage,
             FlatMinMax
         }
+
+        public ItemMod Sum(ItemMod m)
+        {
+            var mod = new ItemMod() 
+            { 
+                Attribute = this.Attribute,
+                itemclass = this.itemclass,
+                isLocal = this.isLocal,
+                Parent = this.Parent,
+                ValueColor = this.ValueColor.ToList()
+            };
+
+            mod.Value = this.Value.Zip(m.Value, (f1, f2) => f1 + f2).ToList();
+
+            return mod;
+        }
     }
 }
