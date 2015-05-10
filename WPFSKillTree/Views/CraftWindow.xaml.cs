@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -64,9 +65,11 @@ namespace POESKillTree.Views
 
         private void cbClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            SkipRedraw = true;
             var val = (ItemClass)Enum.Parse(typeof(ItemClass), (string)cbClassSelection.SelectedItem);
             BaseList = ItemBase.BaseList.Where(b => (b.Class & val) == val).ToArray();
             cbBaseSelection.SelectedIndex = 0;
+            SkipRedraw = false;
         }
 
         List<Affix> _prefixes = new List<Affix>();
@@ -111,9 +114,9 @@ namespace POESKillTree.Views
                 List<string> aliases = new List<string>();
 
                 foreach (var mn in ibase.ImplicitMods)
-	            {
+                {
                     string mname = mn.Name.Replace("-", "").Replace("+", "");
-                    var afm = Affix.AllAffixes.FirstOrDefault(a=>a.Mod.Contains(mname));
+                    var afm = Affix.AllAffixes.FirstOrDefault(a => a.Mod.Contains(mname));
                     if (afm != null)
                     {
                         var indx = afm.Mod.IndexOf(mname);
@@ -122,11 +125,11 @@ namespace POESKillTree.Views
                     }
                     else
                         aliases.Add(mn.Name);
-	            }
+                }
 
                 implaff.Aliases = aliases.Select(a => new HashSet<string>() { a }).ToArray();
 
-                
+
                 msImplicitMods.Affixes = new List<Affix>() { implaff };
             }
             else
@@ -151,6 +154,7 @@ namespace POESKillTree.Views
         ModSelector[] _selectedPreff = new ModSelector[0];
         private void msp1_SelectedAffixChanged(object sender, Affix aff)
         {
+            SkipRedraw = true;
             var ms = sender as ModSelector;
             List<Affix> exc = new List<Affix>();
             if (msp1 != ms)
@@ -162,7 +166,7 @@ namespace POESKillTree.Views
             if (msp3 != ms)
                 msp3.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp1.SelectedAffix }).ToList();
             _selectedPreff = new[] { msp1, msp2, msp3 }.Where(s => s.SelectedAffix != null).ToArray();
-            RecalculateItem();
+            SkipRedraw = false;
         }
 
         private void RecalculateItem()
@@ -202,14 +206,13 @@ namespace POESKillTree.Views
 
             var prefixes = _selectedPreff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
             var suffixes = _selectedSuff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
-            var allmods = prefixes.Concat(suffixes);
-
-
-            Item.ExplicitMods = allmods.Where(m => m.Parent == null || m.Parent.ParentTier == null || !m.Parent.ParentTier.IsMasterCrafted)
+            var allmods = prefixes.Concat(suffixes)
                 .GroupBy(m => m.Attribute)
                 .Select(g => g.Aggregate((m1, m2) => m1.Sum(m2)))
                 .ToList();
 
+
+            Item.ExplicitMods = allmods.Where(m => m.Parent == null || m.Parent.ParentTier == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
             Item.CraftedMods = allmods.Where(m => m.Parent != null && m.Parent.ParentTier != null && m.Parent.ParentTier.IsMasterCrafted).ToList();
 
             if (msImplicitMods.Affixes != null)
@@ -217,6 +220,44 @@ namespace POESKillTree.Views
                 Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
             }
 
+            var ibase = ((ItemBase)cbBaseSelection.SelectedItem);
+            var plist = ibase.GetRawProperties();
+
+
+            var localmods = allmods.Where(m => m.DetermineLocalFor(Item)).ToList();
+
+            var r = new Regex(@"(?<!\B)(?:to |increased |decreased |more |less )(?!\B)|(?:#|%|:|\s\s)\s*|^\s+|\s+$", RegexOptions.IgnoreCase);
+
+            var localnames = localmods.Select(m => r.Replace(m.Attribute, "")).ToList();
+            if (localmods.Count > 0)
+            {
+                for (int j = 0; j < plist.Count; j++)
+                {
+
+                    var applymods = localmods.Where((m, i) => plist[j].Attribute.Contains(localnames[i])).ToList();
+                    var percm = applymods.Where(m => m.Attribute.Contains('%')).ToList();
+                    var valuem = applymods.Except(percm).ToList();
+
+                    if(valuem.Count >0)
+                    {
+                        var val = valuem.Select(m=>m.Value).Aggregate((l1,l2)=>l1.Zip(l2,(f1,f2)=>f1+f2).ToList());
+                        var nval = plist[j].Value.Zip(val,(f1,f2)=>f1+f2).ToList();
+                        plist[j].ValueColor = plist[j].ValueColor.Select((c,i)=>((val[i] == nval[i])?plist[j].ValueColor[i]:ItemMod.ValueColoring.LocallyAffected)).ToList();
+                        plist[j].Value = nval;
+
+                    }
+
+                    if(percm.Count >0)
+                    {
+                        var perc = 1f + percm.Select(m => m.Value[0]).Sum() / 100f;
+                        plist[j].ValueColor = plist[j].ValueColor.Select(c=>ItemMod.ValueColoring.LocallyAffected).ToList();
+                        plist[j].Value = plist[j].Value.Select(v => (float)Math.Round(v * perc)).ToList();
+                    }
+                }
+
+            }
+
+            Item.Properties = plist;
         }
 
         ModSelector[] _selectedSuff = new ModSelector[0];

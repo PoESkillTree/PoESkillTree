@@ -89,8 +89,10 @@ namespace POESKillTree.Controls
         public event PropertyChangedEventHandler PropertyChanged;
 
         List<OverlayedSlider> sliders = new List<OverlayedSlider>();
+        bool _changingaffix = false;
         private void cbAffix_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            _changingaffix = true;
             var aff = cbAffix.SelectedItem as Affix;
 
             spSLiders.Children.Clear();
@@ -132,12 +134,14 @@ namespace POESKillTree.Controls
             OnpropertyChanged("SelectedAffix");
             if (SelectedAffixChanged != null)
                 SelectedAffixChanged(this, aff);
+
+            _changingaffix = false;
         }
 
         bool _updatingSliders = false;
         private void slValue_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_updatingSliders)
+            if (_updatingSliders || _changingaffix)
                 return;
             var aff = cbAffix.SelectedItem as Affix;
             if (aff == null)

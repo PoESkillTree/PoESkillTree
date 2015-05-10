@@ -164,8 +164,13 @@ namespace POESKillTree.ViewModels.Items
             return mods;
         }
 
+        public bool DetermineLocalFor(Item itm)
+        {
+            return ItemMod.DetermineLocal(itm, this._Attribute);
+        }
+
         // Returns true if property/mod is local, false otherwise.
-        private static bool DetermineLocal(Item item, string attr)
+        public static bool DetermineLocal(Item item, string attr)
         {
             return (item.Class != ItemClass.Amulet && item.Class != ItemClass.Ring &&
                     item.Class != ItemClass.Belt)
@@ -206,6 +211,11 @@ namespace POESKillTree.ViewModels.Items
             mod.Value = this.Value.Zip(m.Value, (f1, f2) => f1 + f2).ToList();
 
             return mod;
+        }
+
+        internal void IncreaseBy(double p)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -224,13 +224,24 @@ namespace POESKillTree.ViewModels.Items
             item.BaseType = this.ItemType;
             item.GearGroup = this.GearGroup;
 
-            if(Properties!=null)
-                foreach (var prop in Properties)
-                {
-                    item.Properties.Add(prop.ToItemMod());
-                }
+            item.Properties = GetRawProperties();
 
             return item;
+        }
+
+        public List<ItemMod> GetRawProperties()
+        {
+            List<ItemMod> props = new List<ItemMod>();
+            if ((ItemClass.MainHand & this.Class) != 0 || this.Class == ItemClass.TwoHand)
+                props.Add(new ItemMod() { Attribute = ((this.Class == ItemClass.TwoHand && this.GearGroup != Items.GearGroup.Bow) ? "Two Handed " : "") + this.GearGroup });
+
+            if (Properties != null)
+                foreach (var prop in Properties)
+                {
+                    props.Add(prop.ToItemMod());
+                }
+
+            return props;
         }
 
 
