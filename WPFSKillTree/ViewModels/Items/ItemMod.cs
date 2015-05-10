@@ -180,7 +180,7 @@ namespace POESKillTree.ViewModels.Items
                        || attr.Contains("Weapon Class")
                        || attr.Contains("Critical Strike Chance with this Weapon")
                        || attr.Contains("Critical Strike Damage Multiplier with this Weapon"))
-                   || (item.Class == ItemClass.MainHand || item.Class == ItemClass.OffHand)
+                   || (item.Class == ItemClass.MainHand || item.Class == ItemClass.OffHand || item.Class == ItemClass.TwoHand)
                       && item.Keywords != null // Only weapons have keyword.
                       && (attr == "#% increased Attack Speed"
                           || attr == "#% increased Accuracy Rating"

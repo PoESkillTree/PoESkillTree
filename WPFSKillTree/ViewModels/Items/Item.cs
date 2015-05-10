@@ -64,7 +64,18 @@ namespace POESKillTree.ViewModels.Items
 
 
         public List<Item> Gems;
-        public List<string> Keywords;
+        private List<string> _Keywords;
+
+        public List<string> Keywords
+        {
+            get { return _Keywords; }
+            set { _Keywords = value; OnPropertyChanged("Keywords"); OnPropertyChanged("HaveKeywords"); }
+        }
+
+        public bool HaveKeywords
+        {
+            get { return Keywords != null && Keywords.Count > 0; }
+        }
 
 
         private FrameType _frame;
@@ -441,7 +452,7 @@ namespace POESKillTree.ViewModels.Items
 
         public bool IsWeapon
         {
-            get { return this.Class == ItemClass.OneHand || this.Class == ItemClass.TwoHand; }
+            get { return this.Class == ItemClass.MainHand || this.Class == ItemClass.TwoHand; }
         }
 
         public bool IsTwoHanded

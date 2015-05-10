@@ -2924,7 +2924,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Nailed Fist" level="3">
+  <ItemBase group="Claw" class="MainHand" type="Nailed Fist" level="3">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="3" to="3" />
     </implicitmods>
@@ -2934,7 +2934,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Sharktooth Claw" level="7">
+  <ItemBase group="Claw" class="MainHand" type="Sharktooth Claw" level="7">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="3" to="3" />
     </implicitmods>
@@ -2944,7 +2944,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Awl" level="12">
+  <ItemBase group="Claw" class="MainHand" type="Awl" level="12">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="3" to="3" />
     </implicitmods>
@@ -2954,7 +2954,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Cat's Paw" level="17">
+  <ItemBase group="Claw" class="MainHand" type="Cat's Paw" level="17">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="8" to="8" />
     </implicitmods>
@@ -2964,7 +2964,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Blinder" level="22">
+  <ItemBase group="Claw" class="MainHand" type="Blinder" level="22">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="8" to="8" />
     </implicitmods>
@@ -2974,7 +2974,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Timeworn Claw" level="26">
+  <ItemBase group="Claw" class="MainHand" type="Timeworn Claw" level="26">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="8" to="8" />
     </implicitmods>
@@ -2984,7 +2984,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Sparkling Claw" level="30">
+  <ItemBase group="Claw" class="MainHand" type="Sparkling Claw" level="30">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="8" to="8" />
     </implicitmods>
@@ -2994,7 +2994,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Fright Claw" level="34">
+  <ItemBase group="Claw" class="MainHand" type="Fright Claw" level="34">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="6" to="6" />
     </implicitmods>
@@ -3004,7 +3004,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Thresher Claw" level="37">
+  <ItemBase group="Claw" class="MainHand" type="Thresher Claw" level="37">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="15" to="15" />
     </implicitmods>
@@ -3014,7 +3014,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Gouger" level="40">
+  <ItemBase group="Claw" class="MainHand" type="Gouger" level="40">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="15" to="15" />
     </implicitmods>
@@ -3024,7 +3024,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Tiger's Paw" level="43">
+  <ItemBase group="Claw" class="MainHand" type="Tiger's Paw" level="43">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="15" to="15" />
     </implicitmods>
@@ -3034,7 +3034,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Gut Ripper" level="46">
+  <ItemBase group="Claw" class="MainHand" type="Gut Ripper" level="46">
     <implicitmods>
       <stat name="Base Life Gain Per Target" from="15" to="15" />
     </implicitmods>
@@ -3044,7 +3044,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Prehistoric Claw" level="49">
+  <ItemBase group="Claw" class="MainHand" type="Prehistoric Claw" level="49">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="3" to="3" />
     </implicitmods>
@@ -3054,7 +3054,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Noble Claw" level="52">
+  <ItemBase group="Claw" class="MainHand" type="Noble Claw" level="52">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="3" to="3" />
     </implicitmods>
@@ -3064,7 +3064,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Eagle Claw" level="55">
+  <ItemBase group="Claw" class="MainHand" type="Eagle Claw" level="55">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="6" to="6" />
     </implicitmods>
@@ -3074,7 +3074,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Great White Claw" level="58">
+  <ItemBase group="Claw" class="MainHand" type="Great White Claw" level="58">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="3" to="3" />
     </implicitmods>
@@ -3084,7 +3084,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Throat Stabber" level="60">
+  <ItemBase group="Claw" class="MainHand" type="Throat Stabber" level="60">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="3" to="3" />
     </implicitmods>
@@ -3094,7 +3094,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Hellion's Paw" level="62">
+  <ItemBase group="Claw" class="MainHand" type="Hellion's Paw" level="62">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="3" to="3" />
     </implicitmods>
@@ -3104,7 +3104,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Eye Gouger" level="64">
+  <ItemBase group="Claw" class="MainHand" type="Eye Gouger" level="64">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="3" to="3" />
     </implicitmods>
@@ -3114,7 +3114,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Vaal Claw" level="66">
+  <ItemBase group="Claw" class="MainHand" type="Vaal Claw" level="66">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="3" to="3" />
     </implicitmods>
@@ -3124,7 +3124,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Imperial Claw" level="68">
+  <ItemBase group="Claw" class="MainHand" type="Imperial Claw" level="68">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="3" to="3" />
     </implicitmods>
@@ -3134,7 +3134,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Claw" class="OneHand" type="Terror Claw" level="70">
+  <ItemBase group="Claw" class="MainHand" type="Terror Claw" level="70">
     <implicitmods>
       <stat name="Life Leech From Physical Damage %" from="6" to="6" />
     </implicitmods>
@@ -3144,7 +3144,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Glass Shank" level="1">
+  <ItemBase group="Dagger" class="MainHand" type="Glass Shank" level="1">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3154,7 +3154,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Skinning Knife" level="5">
+  <ItemBase group="Dagger" class="MainHand" type="Skinning Knife" level="5">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3164,7 +3164,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Carving Knife" level="10">
+  <ItemBase group="Dagger" class="MainHand" type="Carving Knife" level="10">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3174,7 +3174,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Stiletto" level="15">
+  <ItemBase group="Dagger" class="MainHand" type="Stiletto" level="15">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3184,7 +3184,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Boot Knife" level="20">
+  <ItemBase group="Dagger" class="MainHand" type="Boot Knife" level="20">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3194,7 +3194,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Copper Kris" level="24">
+  <ItemBase group="Dagger" class="MainHand" type="Copper Kris" level="24">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="80" to="80" />
     </implicitmods>
@@ -3204,7 +3204,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Skean" level="28">
+  <ItemBase group="Dagger" class="MainHand" type="Skean" level="28">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3214,7 +3214,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Imp Dagger" level="32">
+  <ItemBase group="Dagger" class="MainHand" type="Imp Dagger" level="32">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="60" to="60" />
     </implicitmods>
@@ -3224,7 +3224,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Flaying Knife" level="35">
+  <ItemBase group="Dagger" class="MainHand" type="Flaying Knife" level="35">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3234,7 +3234,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Butcher Knife" level="38">
+  <ItemBase group="Dagger" class="MainHand" type="Butcher Knife" level="38">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3244,7 +3244,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Poignard" level="41">
+  <ItemBase group="Dagger" class="MainHand" type="Poignard" level="41">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3254,7 +3254,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Boot Blade" level="44">
+  <ItemBase group="Dagger" class="MainHand" type="Boot Blade" level="44">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3264,7 +3264,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Golden Kris" level="47">
+  <ItemBase group="Dagger" class="MainHand" type="Golden Kris" level="47">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="80" to="80" />
     </implicitmods>
@@ -3274,7 +3274,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Royal Skean" level="50">
+  <ItemBase group="Dagger" class="MainHand" type="Royal Skean" level="50">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3284,7 +3284,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Fiend Dagger" level="53">
+  <ItemBase group="Dagger" class="MainHand" type="Fiend Dagger" level="53">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="60" to="60" />
     </implicitmods>
@@ -3294,7 +3294,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Gutting Knife" level="56">
+  <ItemBase group="Dagger" class="MainHand" type="Gutting Knife" level="56">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3304,7 +3304,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Slaughter Knife" level="58">
+  <ItemBase group="Dagger" class="MainHand" type="Slaughter Knife" level="58">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3314,7 +3314,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Ambusher" level="60">
+  <ItemBase group="Dagger" class="MainHand" type="Ambusher" level="60">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3324,7 +3324,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Ezomyte Dagger" level="62">
+  <ItemBase group="Dagger" class="MainHand" type="Ezomyte Dagger" level="62">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3334,7 +3334,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Platinum Kris" level="64">
+  <ItemBase group="Dagger" class="MainHand" type="Platinum Kris" level="64">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="80" to="80" />
     </implicitmods>
@@ -3344,7 +3344,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Imperial Skean" level="66">
+  <ItemBase group="Dagger" class="MainHand" type="Imperial Skean" level="66">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="40" to="40" />
     </implicitmods>
@@ -3354,7 +3354,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Dagger" class="OneHand" type="Demon Dagger" level="68">
+  <ItemBase group="Dagger" class="MainHand" type="Demon Dagger" level="68">
     <implicitmods>
       <stat name="Critical Strike Chance +%" from="60" to="60" />
     </implicitmods>
@@ -3364,161 +3364,161 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Rusted Hatchet" level="2">
+  <ItemBase group="Axe" class="MainHand" type="Rusted Hatchet" level="2">
     <properties>
       <stat name="Physical Damage" from="4" to="8" />
       <stat name="Atacks Per Second" from="1.5" to="1.5" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Jade Hatchet" level="6">
+  <ItemBase group="Axe" class="MainHand" type="Jade Hatchet" level="6">
     <properties>
       <stat name="Physical Damage" from="7" to="12" />
       <stat name="Atacks Per Second" from="1.4" to="1.4" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Boarding Axe" level="11">
+  <ItemBase group="Axe" class="MainHand" type="Boarding Axe" level="11">
     <properties>
       <stat name="Physical Damage" from="9" to="16" />
       <stat name="Atacks Per Second" from="1.5" to="1.5" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Cleaver" level="16">
+  <ItemBase group="Axe" class="MainHand" type="Cleaver" level="16">
     <properties>
       <stat name="Physical Damage" from="12" to="35" />
       <stat name="Atacks Per Second" from="1.1" to="1.1" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Broad Axe" level="21">
+  <ItemBase group="Axe" class="MainHand" type="Broad Axe" level="21">
     <properties>
       <stat name="Physical Damage" from="17" to="31" />
       <stat name="Atacks Per Second" from="1.25" to="1.25" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Arming Axe" level="25">
+  <ItemBase group="Axe" class="MainHand" type="Arming Axe" level="25">
     <properties>
       <stat name="Physical Damage" from="12" to="35" />
       <stat name="Atacks Per Second" from="1.4" to="1.4" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Decorative Axe" level="29">
+  <ItemBase group="Axe" class="MainHand" type="Decorative Axe" level="29">
     <properties>
       <stat name="Physical Damage" from="25" to="47" />
       <stat name="Atacks Per Second" from="1.1" to="1.1" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Spectral Axe" level="33">
+  <ItemBase group="Axe" class="MainHand" type="Spectral Axe" level="33">
     <properties>
       <stat name="Physical Damage" from="27" to="45" />
       <stat name="Atacks Per Second" from="1.25" to="1.25" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Jasper Axe" level="36">
+  <ItemBase group="Axe" class="MainHand" type="Jasper Axe" level="36">
     <properties>
       <stat name="Physical Damage" from="29" to="45" />
       <stat name="Atacks Per Second" from="1.25" to="1.25" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Tomahawk" level="39">
+  <ItemBase group="Axe" class="MainHand" type="Tomahawk" level="39">
     <properties>
       <stat name="Physical Damage" from="22" to="41" />
       <stat name="Atacks Per Second" from="1.5" to="1.5" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Wrist Chopper" level="42">
+  <ItemBase group="Axe" class="MainHand" type="Wrist Chopper" level="42">
     <properties>
       <stat name="Physical Damage" from="25" to="74" />
       <stat name="Atacks Per Second" from="1.1" to="1.1" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="War Axe" level="45">
+  <ItemBase group="Axe" class="MainHand" type="War Axe" level="45">
     <properties>
       <stat name="Physical Damage" from="31" to="58" />
       <stat name="Atacks Per Second" from="1.25" to="1.25" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Chest Splitter" level="48">
+  <ItemBase group="Axe" class="MainHand" type="Chest Splitter" level="48">
     <properties>
       <stat name="Physical Damage" from="20" to="61" />
       <stat name="Atacks Per Second" from="1.4" to="1.4" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Ceremonial Axe" level="51">
+  <ItemBase group="Axe" class="MainHand" type="Ceremonial Axe" level="51">
     <properties>
       <stat name="Physical Damage" from="41" to="76" />
       <stat name="Atacks Per Second" from="1.1" to="1.1" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Wraith Axe" level="54">
+  <ItemBase group="Axe" class="MainHand" type="Wraith Axe" level="54">
     <properties>
       <stat name="Physical Damage" from="41" to="68" />
       <stat name="Atacks Per Second" from="1.25" to="1.25" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Karui Axe" level="57">
+  <ItemBase group="Axe" class="MainHand" type="Karui Axe" level="57">
     <properties>
       <stat name="Physical Damage" from="43" to="67" />
       <stat name="Atacks Per Second" from="1.25" to="1.25" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Siege Axe" level="59">
+  <ItemBase group="Axe" class="MainHand" type="Siege Axe" level="59">
     <properties>
       <stat name="Physical Damage" from="32" to="59" />
       <stat name="Atacks Per Second" from="1.5" to="1.5" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Reaver Axe" level="61">
+  <ItemBase group="Axe" class="MainHand" type="Reaver Axe" level="61">
     <properties>
       <stat name="Physical Damage" from="34" to="101" />
       <stat name="Atacks Per Second" from="1.1" to="1.1" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Butcher Axe" level="63">
+  <ItemBase group="Axe" class="MainHand" type="Butcher Axe" level="63">
     <properties>
       <stat name="Physical Damage" from="40" to="74" />
       <stat name="Atacks Per Second" from="1.25" to="1.25" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Vaal Hatchet" level="65">
+  <ItemBase group="Axe" class="MainHand" type="Vaal Hatchet" level="65">
     <properties>
       <stat name="Physical Damage" from="25" to="74" />
       <stat name="Atacks Per Second" from="1.4" to="1.4" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Royal Axe" level="67">
+  <ItemBase group="Axe" class="MainHand" type="Royal Axe" level="67">
     <properties>
       <stat name="Physical Damage" from="47" to="87" />
       <stat name="Atacks Per Second" from="1.1" to="1.1" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Axe" class="OneHand" type="Infernal Axe" level="69">
+  <ItemBase group="Axe" class="MainHand" type="Infernal Axe" level="69">
     <properties>
       <stat name="Physical Damage" from="45" to="75" />
       <stat name="Atacks Per Second" from="1.25" to="1.25" />
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Driftwood Club" level="1">
+  <ItemBase group="Mace" class="MainHand" type="Driftwood Club" level="1">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3528,7 +3528,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Tribal Club" level="5">
+  <ItemBase group="Mace" class="MainHand" type="Tribal Club" level="5">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3538,7 +3538,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Spiked Club" level="10">
+  <ItemBase group="Mace" class="MainHand" type="Spiked Club" level="10">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3548,7 +3548,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Stone Hammer" level="15">
+  <ItemBase group="Mace" class="MainHand" type="Stone Hammer" level="15">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="40" to="40" />
     </implicitmods>
@@ -3558,7 +3558,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="War Hammer" level="20">
+  <ItemBase group="Mace" class="MainHand" type="War Hammer" level="20">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3568,7 +3568,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Bladed Mace" level="24">
+  <ItemBase group="Mace" class="MainHand" type="Bladed Mace" level="24">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3578,7 +3578,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Ceremonial Mace" level="28">
+  <ItemBase group="Mace" class="MainHand" type="Ceremonial Mace" level="28">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="40" to="40" />
     </implicitmods>
@@ -3588,7 +3588,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Dream Mace" level="32">
+  <ItemBase group="Mace" class="MainHand" type="Dream Mace" level="32">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3598,7 +3598,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Petrified Club" level="35">
+  <ItemBase group="Mace" class="MainHand" type="Petrified Club" level="35">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3608,7 +3608,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Barbed Club" level="38">
+  <ItemBase group="Mace" class="MainHand" type="Barbed Club" level="38">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3618,7 +3618,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Rock Breaker" level="41">
+  <ItemBase group="Mace" class="MainHand" type="Rock Breaker" level="41">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="40" to="40" />
     </implicitmods>
@@ -3628,7 +3628,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Battle Hammer" level="44">
+  <ItemBase group="Mace" class="MainHand" type="Battle Hammer" level="44">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3638,7 +3638,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Flanged Mace" level="47">
+  <ItemBase group="Mace" class="MainHand" type="Flanged Mace" level="47">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3648,7 +3648,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Ornate Mace" level="50">
+  <ItemBase group="Mace" class="MainHand" type="Ornate Mace" level="50">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="40" to="40" />
     </implicitmods>
@@ -3658,7 +3658,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Phantom Mace" level="53">
+  <ItemBase group="Mace" class="MainHand" type="Phantom Mace" level="53">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3668,7 +3668,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Ancestral Club" level="56">
+  <ItemBase group="Mace" class="MainHand" type="Ancestral Club" level="56">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3678,7 +3678,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Tenderizer" level="58">
+  <ItemBase group="Mace" class="MainHand" type="Tenderizer" level="58">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3688,7 +3688,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Gavel" level="60">
+  <ItemBase group="Mace" class="MainHand" type="Gavel" level="60">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="40" to="40" />
     </implicitmods>
@@ -3698,7 +3698,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Legion Hammer" level="62">
+  <ItemBase group="Mace" class="MainHand" type="Legion Hammer" level="62">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3708,7 +3708,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Pernarch" level="64">
+  <ItemBase group="Mace" class="MainHand" type="Pernarch" level="64">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3718,7 +3718,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Auric Mace" level="66">
+  <ItemBase group="Mace" class="MainHand" type="Auric Mace" level="66">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="40" to="40" />
     </implicitmods>
@@ -3728,7 +3728,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Mace" class="OneHand" type="Nightmare Mace" level="68">
+  <ItemBase group="Mace" class="MainHand" type="Nightmare Mace" level="68">
     <implicitmods>
       <stat name="Base Stun Duration +%" from="20" to="20" />
     </implicitmods>
@@ -3738,7 +3738,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Rusted Sword" level="1">
+  <ItemBase group="Sword" class="MainHand" type="Rusted Sword" level="1">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3748,7 +3748,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Copper Sword" level="5">
+  <ItemBase group="Sword" class="MainHand" type="Copper Sword" level="5">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3758,7 +3758,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Sabre" level="10">
+  <ItemBase group="Sword" class="MainHand" type="Sabre" level="10">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3768,7 +3768,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Broad Sword" level="15">
+  <ItemBase group="Sword" class="MainHand" type="Broad Sword" level="15">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3778,7 +3778,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="War Sword" level="20">
+  <ItemBase group="Sword" class="MainHand" type="War Sword" level="20">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3788,7 +3788,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Ancient Sword" level="24">
+  <ItemBase group="Sword" class="MainHand" type="Ancient Sword" level="24">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3798,7 +3798,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Elegant Sword" level="28">
+  <ItemBase group="Sword" class="MainHand" type="Elegant Sword" level="28">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3808,7 +3808,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Dusk Blade" level="32">
+  <ItemBase group="Sword" class="MainHand" type="Dusk Blade" level="32">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3818,7 +3818,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Variscite Blade" level="35">
+  <ItemBase group="Sword" class="MainHand" type="Variscite Blade" level="35">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3828,7 +3828,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Cutlass" level="38">
+  <ItemBase group="Sword" class="MainHand" type="Cutlass" level="38">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3838,7 +3838,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Baselard" level="41">
+  <ItemBase group="Sword" class="MainHand" type="Baselard" level="41">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3848,7 +3848,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Battle Sword" level="44">
+  <ItemBase group="Sword" class="MainHand" type="Battle Sword" level="44">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3858,7 +3858,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Elder Sword" level="47">
+  <ItemBase group="Sword" class="MainHand" type="Elder Sword" level="47">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3868,7 +3868,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Graceful Sword" level="50">
+  <ItemBase group="Sword" class="MainHand" type="Graceful Sword" level="50">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3878,7 +3878,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Twilight Blade" level="53">
+  <ItemBase group="Sword" class="MainHand" type="Twilight Blade" level="53">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3888,7 +3888,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Gemstone Sword" level="56">
+  <ItemBase group="Sword" class="MainHand" type="Gemstone Sword" level="56">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3898,7 +3898,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Corsair Sword" level="58">
+  <ItemBase group="Sword" class="MainHand" type="Corsair Sword" level="58">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3908,7 +3908,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Gladius" level="60">
+  <ItemBase group="Sword" class="MainHand" type="Gladius" level="60">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3918,7 +3918,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Legion Sword" level="62">
+  <ItemBase group="Sword" class="MainHand" type="Legion Sword" level="62">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3928,7 +3928,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Vaal Blade" level="64">
+  <ItemBase group="Sword" class="MainHand" type="Vaal Blade" level="64">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3938,7 +3938,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Eternal Sword" level="66">
+  <ItemBase group="Sword" class="MainHand" type="Eternal Sword" level="66">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3948,7 +3948,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Midnight Blade" level="68">
+  <ItemBase group="Sword" class="MainHand" type="Midnight Blade" level="68">
     <implicitmods>
       <stat name="Local Accuracy Rating +%" from="18" to="18" />
     </implicitmods>
@@ -3958,7 +3958,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Driftwood Sceptre" level="1">
+  <ItemBase group="Sceptre" class="MainHand" type="Driftwood Sceptre" level="1">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -3968,7 +3968,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Darkwood Sceptre" level="5">
+  <ItemBase group="Sceptre" class="MainHand" type="Darkwood Sceptre" level="5">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -3978,7 +3978,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Bronze Sceptre" level="10">
+  <ItemBase group="Sceptre" class="MainHand" type="Bronze Sceptre" level="10">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -3988,7 +3988,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Quartz Sceptre" level="15">
+  <ItemBase group="Sceptre" class="MainHand" type="Quartz Sceptre" level="15">
     <implicitmods>
       <stat name="Elemental Damage +%" from="20" to="20" />
     </implicitmods>
@@ -3998,7 +3998,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Iron Sceptre" level="20">
+  <ItemBase group="Sceptre" class="MainHand" type="Iron Sceptre" level="20">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4008,7 +4008,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Ochre Sceptre" level="24">
+  <ItemBase group="Sceptre" class="MainHand" type="Ochre Sceptre" level="24">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4018,7 +4018,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Ritual Sceptre" level="28">
+  <ItemBase group="Sceptre" class="MainHand" type="Ritual Sceptre" level="28">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4028,7 +4028,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Shadow Sceptre" level="32">
+  <ItemBase group="Sceptre" class="MainHand" type="Shadow Sceptre" level="32">
     <implicitmods>
       <stat name="Elemental Damage +%" from="15" to="15" />
     </implicitmods>
@@ -4038,7 +4038,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Grinning Fetish" level="35">
+  <ItemBase group="Sceptre" class="MainHand" type="Grinning Fetish" level="35">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4048,7 +4048,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Sekhem" level="38">
+  <ItemBase group="Sceptre" class="MainHand" type="Sekhem" level="38">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4058,7 +4058,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Crystal Sceptre" level="41">
+  <ItemBase group="Sceptre" class="MainHand" type="Crystal Sceptre" level="41">
     <implicitmods>
       <stat name="Elemental Damage +%" from="20" to="20" />
     </implicitmods>
@@ -4068,7 +4068,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Lead Sceptre" level="44">
+  <ItemBase group="Sceptre" class="MainHand" type="Lead Sceptre" level="44">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4078,7 +4078,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Blood Sceptre" level="47">
+  <ItemBase group="Sceptre" class="MainHand" type="Blood Sceptre" level="47">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4088,7 +4088,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Royal Sceptre" level="50">
+  <ItemBase group="Sceptre" class="MainHand" type="Royal Sceptre" level="50">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4098,7 +4098,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Abyssal Sceptre" level="53">
+  <ItemBase group="Sceptre" class="MainHand" type="Abyssal Sceptre" level="53">
     <implicitmods>
       <stat name="Elemental Damage +%" from="15" to="15" />
     </implicitmods>
@@ -4108,7 +4108,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Karui Sceptre" level="56">
+  <ItemBase group="Sceptre" class="MainHand" type="Karui Sceptre" level="56">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4118,7 +4118,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Tyrant's Sekhem" level="58">
+  <ItemBase group="Sceptre" class="MainHand" type="Tyrant's Sekhem" level="58">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4128,7 +4128,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Opal Sceptre" level="60">
+  <ItemBase group="Sceptre" class="MainHand" type="Opal Sceptre" level="60">
     <implicitmods>
       <stat name="Elemental Damage +%" from="20" to="20" />
     </implicitmods>
@@ -4138,7 +4138,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Platinum Sceptre" level="62">
+  <ItemBase group="Sceptre" class="MainHand" type="Platinum Sceptre" level="62">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4148,7 +4148,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Vaal Sceptre" level="64">
+  <ItemBase group="Sceptre" class="MainHand" type="Vaal Sceptre" level="64">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4158,7 +4158,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Carnal Sceptre" level="66">
+  <ItemBase group="Sceptre" class="MainHand" type="Carnal Sceptre" level="66">
     <implicitmods>
       <stat name="Elemental Damage +%" from="10" to="10" />
     </implicitmods>
@@ -4168,7 +4168,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sceptre" class="OneHand" type="Void Sceptre" level="68">
+  <ItemBase group="Sceptre" class="MainHand" type="Void Sceptre" level="68">
     <implicitmods>
       <stat name="Elemental Damage +%" from="15" to="15" />
     </implicitmods>
@@ -4368,7 +4368,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Rusted Spike" level="3">
+  <ItemBase group="Sword" class="MainHand" type="Rusted Spike" level="3">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4378,7 +4378,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Whalebone Rapier" level="7">
+  <ItemBase group="Sword" class="MainHand" type="Whalebone Rapier" level="7">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4388,7 +4388,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Battered Foil" level="12">
+  <ItemBase group="Sword" class="MainHand" type="Battered Foil" level="12">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4398,7 +4398,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Basket Rapier" level="17">
+  <ItemBase group="Sword" class="MainHand" type="Basket Rapier" level="17">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4408,7 +4408,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Jagged Foil" level="22">
+  <ItemBase group="Sword" class="MainHand" type="Jagged Foil" level="22">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4418,7 +4418,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Antique Rapier" level="26">
+  <ItemBase group="Sword" class="MainHand" type="Antique Rapier" level="26">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4428,7 +4428,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Elegant Foil" level="30">
+  <ItemBase group="Sword" class="MainHand" type="Elegant Foil" level="30">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4438,7 +4438,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Thorn Rapier" level="34">
+  <ItemBase group="Sword" class="MainHand" type="Thorn Rapier" level="34">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="35" to="35" />
     </implicitmods>
@@ -4448,7 +4448,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Wyrmbone Rapier" level="37">
+  <ItemBase group="Sword" class="MainHand" type="Wyrmbone Rapier" level="37">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4458,7 +4458,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Burnished Foil" level="40">
+  <ItemBase group="Sword" class="MainHand" type="Burnished Foil" level="40">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4468,7 +4468,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Estoc" level="43">
+  <ItemBase group="Sword" class="MainHand" type="Estoc" level="43">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4478,7 +4478,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Serrated Foil" level="46">
+  <ItemBase group="Sword" class="MainHand" type="Serrated Foil" level="46">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4488,7 +4488,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Primeval Rapier" level="49">
+  <ItemBase group="Sword" class="MainHand" type="Primeval Rapier" level="49">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4498,7 +4498,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Fancy Foil" level="52">
+  <ItemBase group="Sword" class="MainHand" type="Fancy Foil" level="52">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4508,7 +4508,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Apex Rapier" level="55">
+  <ItemBase group="Sword" class="MainHand" type="Apex Rapier" level="55">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="35" to="35" />
     </implicitmods>
@@ -4518,7 +4518,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Dragonbone Rapier" level="58">
+  <ItemBase group="Sword" class="MainHand" type="Dragonbone Rapier" level="58">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4528,7 +4528,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Tempered Foil" level="60">
+  <ItemBase group="Sword" class="MainHand" type="Tempered Foil" level="60">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4538,7 +4538,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Pecoraro" level="62">
+  <ItemBase group="Sword" class="MainHand" type="Pecoraro" level="62">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4548,7 +4548,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Spiraled Foil" level="64">
+  <ItemBase group="Sword" class="MainHand" type="Spiraled Foil" level="64">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4558,7 +4558,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Vaal Rapier" level="66">
+  <ItemBase group="Sword" class="MainHand" type="Vaal Rapier" level="66">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4568,7 +4568,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Jewelled Foil" level="68">
+  <ItemBase group="Sword" class="MainHand" type="Jewelled Foil" level="68">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="20" to="20" />
     </implicitmods>
@@ -4578,7 +4578,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Sword" class="OneHand" type="Harpy Rapier" level="70">
+  <ItemBase group="Sword" class="MainHand" type="Harpy Rapier" level="70">
     <implicitmods>
       <stat name="Base Critical Strike Multiplier +%" from="35" to="35" />
     </implicitmods>
@@ -5101,7 +5101,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Driftwood Wand" level="1">
+  <ItemBase group="Wand" class="MainHand" type="Driftwood Wand" level="1">
     <implicitmods>
       <stat name="Spell Damage +%" from="8" to="12" />
     </implicitmods>
@@ -5111,7 +5111,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Goat's Horn" level="6">
+  <ItemBase group="Wand" class="MainHand" type="Goat's Horn" level="6">
     <implicitmods>
       <stat name="Spell Damage +%" from="9" to="12" />
     </implicitmods>
@@ -5121,7 +5121,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Carved Wand" level="12">
+  <ItemBase group="Wand" class="MainHand" type="Carved Wand" level="12">
     <implicitmods>
       <stat name="Spell Damage +%" from="9" to="13" />
     </implicitmods>
@@ -5131,7 +5131,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Quartz Wand" level="18">
+  <ItemBase group="Wand" class="MainHand" type="Quartz Wand" level="18">
     <implicitmods>
       <stat name="Spell Damage +%" from="11" to="15" />
     </implicitmods>
@@ -5141,7 +5141,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Spiraled Wand" level="24">
+  <ItemBase group="Wand" class="MainHand" type="Spiraled Wand" level="24">
     <implicitmods>
       <stat name="Spell Damage +%" from="10" to="14" />
     </implicitmods>
@@ -5151,7 +5151,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Sage Wand" level="30">
+  <ItemBase group="Wand" class="MainHand" type="Sage Wand" level="30">
     <implicitmods>
       <stat name="Spell Damage +%" from="11" to="14" />
     </implicitmods>
@@ -5161,7 +5161,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Faun's Horn" level="35">
+  <ItemBase group="Wand" class="MainHand" type="Faun's Horn" level="35">
     <implicitmods>
       <stat name="Spell Damage +%" from="12" to="15" />
     </implicitmods>
@@ -5171,7 +5171,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Engraved Wand" level="40">
+  <ItemBase group="Wand" class="MainHand" type="Engraved Wand" level="40">
     <implicitmods>
       <stat name="Spell Damage +%" from="12" to="16" />
     </implicitmods>
@@ -5181,7 +5181,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Crystal Wand" level="45">
+  <ItemBase group="Wand" class="MainHand" type="Crystal Wand" level="45">
     <implicitmods>
       <stat name="Spell Damage +%" from="14" to="18" />
     </implicitmods>
@@ -5191,7 +5191,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Serpent Wand" level="49">
+  <ItemBase group="Wand" class="MainHand" type="Serpent Wand" level="49">
     <implicitmods>
       <stat name="Spell Damage +%" from="13" to="17" />
     </implicitmods>
@@ -5201,7 +5201,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Omen Wand" level="53">
+  <ItemBase group="Wand" class="MainHand" type="Omen Wand" level="53">
     <implicitmods>
       <stat name="Spell Damage +%" from="14" to="17" />
     </implicitmods>
@@ -5211,7 +5211,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Demon's Horn" level="56">
+  <ItemBase group="Wand" class="MainHand" type="Demon's Horn" level="56">
     <implicitmods>
       <stat name="Spell Damage +%" from="15" to="18" />
     </implicitmods>
@@ -5221,7 +5221,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Imbued Wand" level="59">
+  <ItemBase group="Wand" class="MainHand" type="Imbued Wand" level="59">
     <implicitmods>
       <stat name="Spell Damage +%" from="15" to="19" />
     </implicitmods>
@@ -5231,7 +5231,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Opal Wand" level="62">
+  <ItemBase group="Wand" class="MainHand" type="Opal Wand" level="62">
     <implicitmods>
       <stat name="Spell Damage +%" from="17" to="20" />
     </implicitmods>
@@ -5241,7 +5241,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Tornado Wand" level="65">
+  <ItemBase group="Wand" class="MainHand" type="Tornado Wand" level="65">
     <implicitmods>
       <stat name="Spell Damage +%" from="16" to="19" />
     </implicitmods>
@@ -5251,7 +5251,7 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
-  <ItemBase group="Wand" class="OneHand" type="Prophecy Wand" level="68">
+  <ItemBase group="Wand" class="MainHand" type="Prophecy Wand" level="68">
     <implicitmods>
       <stat name="Spell Damage +%" from="16" to="20" />
     </implicitmods>

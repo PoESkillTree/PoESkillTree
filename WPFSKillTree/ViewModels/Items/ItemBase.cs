@@ -225,22 +225,40 @@ namespace POESKillTree.ViewModels.Items
             item.GearGroup = this.GearGroup;
 
             item.Properties = GetRawProperties();
-
+            item.Keywords = GetKeywords();
             return item;
+        }
+
+
+        public List<string> GetKeywords()
+        {
+            if ((ItemClass.MainHand & this.Class) != 0 || this.Class == ItemClass.TwoHand)
+            {
+                List<string> props = new List<string>();
+
+                if (this.Class == ItemClass.TwoHand && this.GearGroup != Items.GearGroup.Bow)
+                    props.Add("Two Handed");
+
+                props.Add("" + this.GearGroup);
+                return props;
+            }
+
+            return null;
         }
 
         public List<ItemMod> GetRawProperties()
         {
             List<ItemMod> props = new List<ItemMod>();
-            if ((ItemClass.MainHand & this.Class) != 0 || this.Class == ItemClass.TwoHand)
-                props.Add(new ItemMod() { Attribute = ((this.Class == ItemClass.TwoHand && this.GearGroup != Items.GearGroup.Bow) ? "Two Handed " : "") + this.GearGroup });
+
+            var kw = GetKeywords();
+            if (kw != null && kw.Count > 0)
+                props.Add(new ItemMod() { Attribute = string.Join(" ", kw) });
 
             if (Properties != null)
                 foreach (var prop in Properties)
                 {
                     props.Add(prop.ToItemMod());
                 }
-
             return props;
         }
 
@@ -249,7 +267,7 @@ namespace POESKillTree.ViewModels.Items
         {
             var cls = BaseList.FirstOrDefault(b => b.ItemType == type);
 
-            if(cls!=null)
+            if (cls != null)
                 return cls.GearGroup;
 
             return GearGroup.Unknown;

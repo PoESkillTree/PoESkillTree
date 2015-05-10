@@ -226,9 +226,11 @@ namespace POESKillTree.Views
 
             var localmods = allmods.Where(m => m.DetermineLocalFor(Item)).ToList();
 
-            var r = new Regex(@"(?<!\B)(?:to |increased |decreased |more |less )(?!\B)|(?:#|%|:|\s\s)\s*|^\s+|\s+$", RegexOptions.IgnoreCase);
+            var r = new Regex(@"(?<!\B)(?:to |increased |decreased |more |less |Adds #-# )(?!\B)|(?:#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$", RegexOptions.IgnoreCase);
 
-            var localnames = localmods.Select(m => r.Replace(m.Attribute, "")).ToList();
+            var localnames = localmods.Select(m => r.Replace(m.Attribute, "")
+                .Trim().Replace("Attack Speed", "Atacks Per Second"))
+                .ToList();
             if (localmods.Count > 0)
             {
                 for (int j = 0; j < plist.Count; j++)
@@ -238,24 +240,90 @@ namespace POESKillTree.Views
                     var percm = applymods.Where(m => m.Attribute.Contains('%')).ToList();
                     var valuem = applymods.Except(percm).ToList();
 
-                    if(valuem.Count >0)
+                    if (valuem.Count > 0)
                     {
-                        var val = valuem.Select(m=>m.Value).Aggregate((l1,l2)=>l1.Zip(l2,(f1,f2)=>f1+f2).ToList());
-                        var nval = plist[j].Value.Zip(val,(f1,f2)=>f1+f2).ToList();
-                        plist[j].ValueColor = plist[j].ValueColor.Select((c,i)=>((val[i] == nval[i])?plist[j].ValueColor[i]:ItemMod.ValueColoring.LocallyAffected)).ToList();
+                        var val = valuem.Select(m => m.Value).Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2).ToList());
+                        var nval = plist[j].Value.Zip(val, (f1, f2) => f1 + f2).ToList();
+                        plist[j].ValueColor = plist[j].ValueColor.Select((c, i) => ((val[i] == nval[i]) ? plist[j].ValueColor[i] : ItemMod.ValueColoring.LocallyAffected)).ToList();
                         plist[j].Value = nval;
 
                     }
 
-                    if(percm.Count >0)
+                    Func<float,float> roundf = (float val) => (float)Math.Round(val);
+
+                    if (plist[j].Attribute.Contains("Critical"))
+                    {
+                        roundf = (f) => (float)(Math.Round(f * 10) / 10);
+                    }
+                    else if (plist[j].Attribute.Contains("Per Second"))
+                    {
+                        roundf = (f) => (float)(Math.Round(f * 100) / 100);
+                    }
+
+
+                    if (percm.Count > 0)
                     {
                         var perc = 1f + percm.Select(m => m.Value[0]).Sum() / 100f;
-                        plist[j].ValueColor = plist[j].ValueColor.Select(c=>ItemMod.ValueColoring.LocallyAffected).ToList();
-                        plist[j].Value = plist[j].Value.Select(v => (float)Math.Round(v * perc)).ToList();
+                        plist[j].ValueColor = plist[j].ValueColor.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
+                        plist[j].Value = plist[j].Value.Select(v => roundf(v * perc)).ToList();
                     }
                 }
 
             }
+
+            if (Item.IsWeapon)
+            {
+                var elementalmods = allmods.Where(m => m.Attribute.StartsWith("Adds") && (m.Attribute.Contains("Fire") || m.Attribute.Contains("Cold") || m.Attribute.Contains("Lightning"))).ToList();
+                if (elementalmods.Count > 0)
+                {
+                    List<float> values = new List<float>();
+
+                    var fmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Fire"));
+                    var cmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
+                    var lmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
+
+                    List<string> mods = new List<string>();
+                    List<ItemMod.ValueColoring> cols = new List<ItemMod.ValueColoring>();
+
+                    if (fmod != null)
+                    {
+                        values.AddRange(fmod.Value);
+                        mods.Add("#-#");
+                        cols.Add(ItemMod.ValueColoring.Fire);
+                        cols.Add(ItemMod.ValueColoring.Fire);
+                    }
+
+                    if (cmod != null)
+                    {
+                        values.AddRange(cmod.Value);
+                        mods.Add("#-#");
+                        cols.Add(ItemMod.ValueColoring.Cold);
+                        cols.Add(ItemMod.ValueColoring.Cold);
+                    }
+
+                    if (lmod != null)
+                    {
+                        values.AddRange(lmod.Value);
+                        mods.Add("#-#");
+                        cols.Add(ItemMod.ValueColoring.Lightning);
+                        cols.Add(ItemMod.ValueColoring.Lightning);
+                    }
+
+                    string mname = "Elemental Damage: ";
+                    ItemMod mod = new ItemMod()
+                    {
+                        Attribute = mname + string.Join(", ", mods),
+                        Value = values,
+                        ValueColor = cols,
+                    };
+
+                    plist.Add(mod);
+                }
+            }
+
+
+
+
 
             Item.Properties = plist;
         }

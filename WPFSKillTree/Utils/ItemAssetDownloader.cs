@@ -32,18 +32,18 @@ namespace POESKillTree.Utils
         static Dictionary<string, ItemClass> WeaponClassMap = new Dictionary<string, ItemClass>()
         {
             {"Bow",ItemClass.TwoHand},
-            {"Claw",ItemClass.OneHand},
-            {"Dagger",ItemClass.OneHand},
-            {"One Hand Axe",ItemClass.OneHand},
-            {"One Hand Mace",ItemClass.OneHand},
-            {"One Hand Sword",ItemClass.OneHand},
-            {"Sceptre",ItemClass.OneHand},
+            {"Claw",ItemClass.MainHand},
+            {"Dagger",ItemClass.MainHand},
+            {"One Hand Axe",ItemClass.MainHand},
+            {"One Hand Mace",ItemClass.MainHand},
+            {"One Hand Sword",ItemClass.MainHand},
+            {"Sceptre",ItemClass.MainHand},
             {"Staff",ItemClass.TwoHand},
-            {"Thrusting One Hand Sword",ItemClass.OneHand},
+            {"Thrusting One Hand Sword",ItemClass.MainHand},
             {"Two Hand Axe",ItemClass.TwoHand},
             {"Two Hand Mace",ItemClass.TwoHand},
             {"Two Hand Sword",ItemClass.TwoHand},
-            {"Wand",ItemClass.OneHand},
+            {"Wand",ItemClass.MainHand},
         };
 
         static Dictionary<string, GearGroup> WeaponGroupMap = new Dictionary<string, GearGroup>()

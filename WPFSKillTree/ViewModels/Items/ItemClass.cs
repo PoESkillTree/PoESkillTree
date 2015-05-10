@@ -15,7 +15,6 @@ namespace POESKillTree.ViewModels.Items
         Armor = 0x1,
         MainHand = 0x2,
         OffHand = 0x4,
-        OneHand = MainHand | OffHand,
         Ring = 0x8,
         Amulet = 0x20,
         Helm = 0x40,
@@ -23,7 +22,7 @@ namespace POESKillTree.ViewModels.Items
         Boots = 0x100,
         Gem = 0x200,
         Belt = 0x400,
-        TwoHand = 0x800 | OneHand,
+        TwoHand = 0x800,
         Unequipable = 0x800000,
     }
 }
