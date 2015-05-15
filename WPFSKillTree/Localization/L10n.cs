@@ -8,10 +8,7 @@ using POESKillTree.Model;
 
 /* TODO:
  * - Catalog.Unload() to unload previously used Catalog (clear messages, etc.), only one catalog should be loaded at a time (two during switch).
- * - SetLanguage must return bool to indicate successul language change.
- * - MakrdownSharp NuGet package for displaying md documents with XAML (for localized Help).
  * - Some tool to remove potential BOM header from translation catalogs before msgmerge, in case someone is editing them in VS/Notepad/etc.
- * - en/en-US locale folder must exists containing Help.md, must be excluded from BuildLocaleCatalog target.
  * - BuildLocale target should be called after regular Build of project (due to possible generated content/source)
  * - Locale folder should be copied in release.xml, to avoid forgetting to flag files in project as Copy always.
  * - Menu Theme/Accent cannot be localized due to use of MenuItem Content directly.
@@ -32,6 +29,10 @@ namespace POESKillTree.Localization
         private static CultureInfo _Culture;
         // The exposed current CultureInfo.
         public static CultureInfo Culture { get { return _Culture; } }
+        // The default catalog.
+        private static Catalog DefaultCatalog;
+        // The default catalog path.
+        public static readonly string DefaultCatalogDir = "en";
         // The default language of non-translated messages.
         public static readonly string DefaultLanguage = "en-US";
         // The default language name of non-translated messages.
@@ -46,14 +47,14 @@ namespace POESKillTree.Localization
         private static string _LanguageName;
         // The exposed current display language name.
         public static string LanguageName { get { return _LanguageName; } }
-        // The file name of language catalog.
-        private static readonly string LanguageCatalogFilename = "Messages.txt";
         // The directory name of locale directory in application root folder.
-        private static readonly string LocaleDirectoryName = "Locale";
+        private static readonly string LocaleDir = "Locale";
 
+        // Initialize everything needed for localization to work with defalult language in case Initialize wasn't invoked.
         static L10n()
         {
             // Initial language is default language.
+            Catalog = DefaultCatalog = Catalog.CreateDefault(Path.Combine(LocaleDir, DefaultCatalogDir), DefaultLanguage, DefaultLanguageName);
             IsDefault = true;
             _Language = DefaultLanguage;
             _LanguageName = DefaultLanguageName;
@@ -68,14 +69,11 @@ namespace POESKillTree.Localization
         }
 
         // Returns available languages.
-        // Key: language (e.g. en-US)
-        // Value: display language name (e.g. English)
+        // Key: language (e.g. "en-US")
+        // Value: display language name (e.g. "English")
         public static Dictionary<string, string> GetLanguages()
         {
-            Dictionary<string, string> languages = new Dictionary<string, string>()
-            {
-                { DefaultLanguage, DefaultLanguageName }
-            };
+            Dictionary<string, string> languages = new Dictionary<string, string>();
 
             // All available catalogs.
             foreach (string language in Catalogs.Keys)
@@ -89,8 +87,8 @@ namespace POESKillTree.Localization
         {
             ScanLocaleDirectory();
 
-            string language = null;
             // TODO: Get UI language from persistent data.
+            string language = null;
 
             // No language in options, try to match OS language.
             if (language == null)
@@ -100,13 +98,18 @@ namespace POESKillTree.Localization
             if (language == null)
                 Apply();
             else
-                SetLanguage(language);
+            {
+                // Apply default language, if language change fails.
+                if (!SetLanguage(language))
+                    Apply();
+            }
         }
 
-        // Find most suitable translation catalog for specified culture.
-        private static string MatchLanguage(CultureInfo culture)
+        // Find most suitable translation catalog for specified language.
+        private static string MatchLanguage(string match)
         {
-            string match = culture.Name;
+            // Null or empty, no match.
+            if (string.IsNullOrEmpty(match)) return null;
 
             // Do exact match first.
             if (Catalogs.ContainsKey(match))
@@ -125,66 +128,10 @@ namespace POESKillTree.Localization
             return null;
         }
 
-        // Scans locale directory for available catalogs.
-        private static void ScanLocaleDirectory()
+        // Find most suitable translation catalog for specified culture.
+        private static string MatchLanguage(CultureInfo culture)
         {
-            if (Directory.Exists(LocaleDirectoryName))
-            {
-                DirectoryInfo dirLocale = new DirectoryInfo(LocaleDirectoryName);
-
-                foreach (DirectoryInfo dirLanguage in dirLocale.GetDirectories())
-                {
-                    // Check whether directory name corresponds to supported culture name.
-                    CultureInfo culture = null;
-                    try
-                    {
-                        culture = CultureInfo.GetCultureInfo(dirLanguage.Name.Replace('_', '-'));
-                    }
-                    catch { }
-                    if (culture == null) continue; // Not supported language.
-
-                    string path = Path.Combine(dirLanguage.FullName, LanguageCatalogFilename);
-                    if (File.Exists(path))
-                    {
-                        Catalog catalog = Catalog.Create(path, culture);
-                        if (catalog != null)
-                            Catalogs.Add(catalog.Name, catalog);
-                    }
-                }
-            }
-        }
-
-        // Sets current language.
-        public static void SetLanguage(string language)
-        {
-            // No change.
-            if (language == _Language) return;
-
-            // Set current catalog.
-            if (language == DefaultLanguage)
-            {
-                // No catalog for default language.
-                Catalog = null;
-                IsDefault = true;
-                _LanguageName = DefaultLanguageName;
-            }
-            else if (Catalogs.ContainsKey(language))
-            {
-                // Failed to load translations.
-                if (!Catalogs[language].Load()) return;
-
-                Catalog = Catalogs[language];
-                IsDefault = false;
-                _LanguageName = Catalog.LanguageName;
-            }
-            else return; // No such language.
-
-            // Set current language & culture.
-            _Language = language;
-            _Culture = CultureInfo.CreateSpecificCulture(language);
-
-            // Apply changes.
-            Apply();
+            return MatchLanguage(culture.Name);
         }
 
         // Translates message.
@@ -204,6 +151,86 @@ namespace POESKillTree.Localization
                 return n == 1 || message == null ? message : plural;
 
             return message == null ? null : (Catalog.Plural(message, n, context) ?? (n == 1 ? message : plural));
+        }
+
+        // Reads all text from localized file.
+        public static string ReadAllText(string filename)
+        {
+            string text = Catalog.ReadAllText(filename);
+            if (text == null)
+            {
+                // Try to fallback to default language.
+                if (!IsDefault)
+                    text = DefaultCatalog.ReadAllText(filename);
+            }
+
+            return text;
+        }
+
+        // Scans locale directory for available catalogs.
+        private static void ScanLocaleDirectory()
+        {
+            Catalogs = new Dictionary<string, Catalog>();
+
+            // Add default catalog.
+            Catalogs.Add(DefaultLanguage, DefaultCatalog);
+
+            if (Directory.Exists(LocaleDir))
+            {
+                DirectoryInfo dirLocale = new DirectoryInfo(LocaleDir);
+
+                foreach (DirectoryInfo dirLanguage in dirLocale.GetDirectories())
+                {
+                    // Skip default catalog path (it contains only resources).
+                    if (dirLanguage.Name == DefaultCatalogDir) continue;
+
+                    // Check whether directory name corresponds to supported culture name.
+                    CultureInfo culture = null;
+                    try
+                    {
+                        culture = CultureInfo.GetCultureInfo(dirLanguage.Name.Replace('_', '-'));
+                    }
+                    catch { }
+                    if (culture == null) continue; // Not supported language.
+
+                    Catalog catalog = Catalog.Create(dirLanguage.FullName, culture);
+                    if (catalog != null)
+                        Catalogs.Add(catalog.Name, catalog);
+                }
+            }
+        }
+
+        // Sets current language.
+        public static bool SetLanguage(string language)
+        {
+            // No change.
+            if (language == _Language) return true;
+
+            // Set current catalog.
+            if (language == DefaultLanguage)
+            {
+                Catalog = DefaultCatalog;
+                IsDefault = true;
+            }
+            else if (Catalogs.ContainsKey(language))
+            {
+                // Failed to load translations.
+                if (!Catalogs[language].Load()) return false;
+
+                Catalog = Catalogs[language];
+                IsDefault = false;
+            }
+            else return false; // No such language.
+
+            // Set current language, name & culture.
+            _Language = Catalog.Name;
+            _LanguageName = Catalog.LanguageName;
+            _Culture = CultureInfo.CreateSpecificCulture(language);
+
+            // Apply changes.
+            Apply();
+
+            return true;
         }
     }
 }

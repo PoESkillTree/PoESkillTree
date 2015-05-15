@@ -395,6 +395,8 @@ namespace POESKillTree.Localization
         public string LanguageName;
         // The translated strings.
         private Dictionary<string, string[]> Messages;
+        // The file name of language catalog messages.
+        public static readonly string MessagesFilename = "Messages.txt";
         // The language (culture name).
         public string Name;
         // The number of plural forms.
@@ -420,10 +422,11 @@ namespace POESKillTree.Localization
         {
             Catalog catalog = null;
 
-            // Check if file is readable.
+            // Check if file exists and is readable.
             try
             {
-                using (FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read))
+                string file = System.IO.Path.Combine(path, MessagesFilename);
+                using (FileStream stream = File.Open(file, FileMode.Open, FileAccess.Read))
                 {
                     catalog = new Catalog(path);
 
@@ -432,6 +435,17 @@ namespace POESKillTree.Localization
                 }
             }
             catch { }
+
+            return catalog;
+        }
+
+        // Creates default catalog.
+        public static Catalog CreateDefault(string path, string defaultLanguage, string defaultLanguageName)
+        {
+            Catalog catalog = new Catalog(path);
+
+            catalog.LanguageName = defaultLanguageName;
+            catalog.Name = defaultLanguage;
 
             return catalog;
         }
@@ -447,7 +461,8 @@ namespace POESKillTree.Localization
             {
                 Parser parser = new Parser();
 
-                using (StreamReader reader = new StreamReader(Path))
+                string file = System.IO.Path.Combine(Path, MessagesFilename);
+                using (StreamReader reader = new StreamReader(file))
                 {
                     Messages = new Dictionary<string, string[]>();
 
@@ -499,6 +514,20 @@ namespace POESKillTree.Localization
             if (index >= translations.Length) index = 0;
 
             return translations[index];
+        }
+
+        // Reads all text from localized file.
+        // Returns null if error occurs.
+        public string ReadAllText(string filename)
+        {
+            try
+            {
+                return File.ReadAllText(System.IO.Path.Combine(Path, filename), Encoding.UTF8);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

@@ -150,6 +150,8 @@
     <Compile Include="Controls\MenuItemExtensions.cs" />
     <Compile Include="Localization\Catalog.cs" />
     <Compile Include="Localization\L10n.cs" />
+    <Compile Include="Localization\Markdown\Markdown.cs" />
+    <Compile Include="Localization\Markdown\TextToFlowDocumentConverter.cs" />
     <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Notifier.cs" />
@@ -304,6 +306,13 @@
     <None Include="dist-clean.bat" />
     <None Include="dist-update.bat" />
     <None Include="dist-release.bat" />
+    <None Include="Locale\en\Help.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Locale\sk\Help.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\Markdown\Readme.md" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -366,6 +375,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Localization\Markdown\License.txt" />
     <Content Include="Newtonsoft.Json.dll" />
     <Content Include="Raven.Json.dll" />
     <None Include="Tools\Ionic.Zip.dll" />
