@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
 using POESKillTree.ViewModels.ItemAttribute;
@@ -2227,8 +2228,8 @@ namespace POESKillTree.SkillTreeFiles
                 def["Shock Avoidance: #%"] = new List<float>() { shockAvoidance };
 
             List<ListGroup> groups = new List<ListGroup>();
-            groups.Add(new ListGroup("Character", ch));
-            groups.Add(new ListGroup("Defence", def));
+            groups.Add(new ListGroup(L10n.Message("Character"), ch));
+            groups.Add(new ListGroup(L10n.Message("Defense"), def));
 
             return groups;
         }

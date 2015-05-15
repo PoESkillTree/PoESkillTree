@@ -505,7 +505,7 @@ msgstr ""
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:690
+#: Views\MainWindow.xaml:690 SkillTreeFiles\Compute.cs:2232
 msgid "Defense"
 msgstr ""
 
@@ -535,6 +535,10 @@ msgstr ""
 
 #: Views\OptimizerControllerWindow.xaml:30
 msgid "Initializing..."
+msgstr ""
+
+#: SkillTreeFiles\Compute.cs:2231
+msgid "Character"
 msgstr ""
 
 #: SkillTreeFiles\SkillTree.cs:936
@@ -580,6 +584,13 @@ msgstr ""
 msgid "Download completed or still in progress"
 msgstr ""
 
+#: ViewModels\PoEBuild.cs:30
+#, csharp-format
+msgid "{0}, {1} point used"
+msgid_plural "{0}, {1} points used"
+msgstr[0] ""
+msgstr[1] ""
+
 #: Views\DownloadItemsWindow.xaml.cs:25 Views\DownloadItemsWindow.xaml.cs:31
 msgid "CharacterName"
 msgstr ""
@@ -597,52 +608,52 @@ msgstr ""
 msgid "Last updated: {0}"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:463
+#: Views\MainWindow.xaml.cs:462
 msgid "You have the lastest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:463
+#: Views\MainWindow.xaml.cs:462
 msgid "No update"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:467
+#: Views\MainWindow.xaml.cs:466
 #, csharp-format
 msgid "Do you want to install version {0}?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:471
+#: Views\MainWindow.xaml.cs:470
 #, csharp-format
 msgid ""
 "{0}\n"
 "This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:471
+#: Views\MainWindow.xaml.cs:470
 msgid "New pre-release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:474
+#: Views\MainWindow.xaml.cs:473
 msgid "New release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:486
+#: Views\MainWindow.xaml.cs:485
 msgid "Error occured"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:503 Views\MainWindow.xaml.cs:530
-#: Views\MainWindow.xaml.cs:543
+#: Views\MainWindow.xaml.cs:502 Views\MainWindow.xaml.cs:529
+#: Views\MainWindow.xaml.cs:542
 msgid "Update failed"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1071
+#: Views\MainWindow.xaml.cs:1070
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1142
+#: Views\MainWindow.xaml.cs:1141
 msgid "Please select a saved build!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1142
+#: Views\MainWindow.xaml.cs:1141
 msgid "Error"
 msgstr ""
 
