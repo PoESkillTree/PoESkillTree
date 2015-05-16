@@ -482,7 +482,10 @@ namespace POESKillTree.Localization
                     return true;
                 }
             }
-            catch { }
+            catch
+            {
+                Messages = null;
+            }
 
             return false;
         }
@@ -527,6 +530,19 @@ namespace POESKillTree.Localization
             catch
             {
                 return null;
+            }
+        }
+
+        // Unloads translations.
+        public void Unload()
+        {
+            if (Messages != null)
+            {
+                Expr = null;
+                Messages.Clear();
+                NPlurals = 0;
+
+                Messages = null;
             }
         }
     }

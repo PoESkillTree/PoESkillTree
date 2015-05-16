@@ -52,7 +52,7 @@ msgid "Data used in character calculations are from"
 msgstr ""
 
 #: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
-#: Views\HelpWindow.xaml:67 Views\HotkeysWindow.xaml:140
+#: Views\HelpWindow.xaml:52 Views\HotkeysWindow.xaml:140
 #: Views\OptimizerControllerWindow.xaml.cs:126
 msgid "Close"
 msgstr ""

@@ -1,6 +1,6 @@
 # Slovak translations for PoESkillTree.
 # This file is distributed under the same license as the PoESkillTree.
-msgid ""
+msgid "" 
 msgstr ""
 "Project-Id-Version: PoESkillTree 2.1.3\n"
 "Report-Msgid-Bugs-To: translation.bugs@example.com\n"
@@ -51,7 +51,7 @@ msgid "Data used in character calculations are from"
 msgstr "Údaje použité vo výpočtoch postavy pochádzajú z"
 
 #: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
-#: Views\HelpWindow.xaml:67 Views\HotkeysWindow.xaml:140
+#: Views\HelpWindow.xaml:52 Views\HotkeysWindow.xaml:140
 #: Views\OptimizerControllerWindow.xaml.cs:126
 msgid "Close"
 msgstr "Zavrieť"
@@ -610,7 +610,7 @@ msgstr "Posledná zmena: {0}"
 
 #: Views\HelpWindow.xaml.cs:18
 msgid "Help file not found"
-msgstr ""
+msgstr "Súbor pomocníka nebol nájdený"
 
 #: Views\MainWindow.xaml.cs:462
 msgid "You have the lastest version!"

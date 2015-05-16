@@ -120,16 +120,21 @@
         <!-- Extract messages from source C# files -->
         <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -j -o $(LocaleWorkTemplateFile) @(CSFile, ' ')" />
 
-        <!-- Merge extracted messages into template catalog -->
+        <!-- Remove BOM from template messages -->
+        <Exec Command="Tools\DeBOM $(LocaleWorkTemplateFile)" />
+        <!-- Merge extracted messages into template messages -->
         <Exec Command="Tools\gettext\msgmerge -U --backup=none --no-wrap $(LocaleTemplateFile) $(LocaleWorkTemplateFile)" />
     </Target>
 
     <Target Name="BuildLocaleCatalog" DependsOnTargets="BuildLocaleTemplate">
-                <!-- Merge template catalog into translation catalog -->
+        <!-- Remove BOM from catalog messages -->
+        <Exec Command="Tools\DeBOM %(LocaleLanguageDir.MessageFile)"
+              Condition="Exists('%(LocaleLanguageDir.MessageFile)')" />
+        <!-- Merge template messages into catalog messages -->
         <Exec Command="Tools\gettext\msgmerge -U --backup=none --no-wrap %(LocaleLanguageDir.MessageFile) $(LocaleTemplateFile)"
               Condition="Exists('%(LocaleLanguageDir.MessageFile)')" />
 
-        <!-- Create translation catalog -->
+        <!-- Create catalog messages -->
         <Exec Command="Tools\gettext\msginit -i $(LocaleTemplateFile) -o %(LocaleLanguageDir.MessageFile) -l @(LocaleLanguageDir->'%(Filename)'->Replace('-', '_')) --no-wrap --no-translator"
               Condition="!Exists('%(LocaleLanguageDir.MessageFile)')" />
     </Target>

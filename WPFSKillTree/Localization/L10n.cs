@@ -2,19 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using POESKillTree.Model;
 
-/* TODO:
- * - Catalog.Unload() to unload previously used Catalog (clear messages, etc.), only one catalog should be loaded at a time (two during switch).
- * - Some tool to remove potential BOM header from translation catalogs before msgmerge, in case someone is editing them in VS/Notepad/etc.
- * - BuildLocale target should be called after regular Build of project (due to possible generated content/source)
- * - Locale folder should be copied in release.xml, to avoid forgetting to flag files in project as Copy always.
- * - Menu Theme/Accent cannot be localized due to use of MenuItem Content directly.
- * - Filter ComboBox cannot be localized due to use of ComboBoxItem Content directly.
- * - Level/Used top-middle bar doesn't have enough space for localization.
- */
+// TODO: BuildLocale target should be called as post-buid project event (including copying of Locale folder).
 
 namespace POESKillTree.Localization
 {
@@ -209,13 +200,18 @@ namespace POESKillTree.Localization
             // Set current catalog.
             if (language == DefaultLanguage)
             {
+                // Unload current catalog.
+                Catalog.Unload();
+
                 Catalog = DefaultCatalog;
                 IsDefault = true;
             }
             else if (Catalogs.ContainsKey(language))
             {
-                // Failed to load translations.
+                // Load new catalog.
                 if (!Catalogs[language].Load()) return false;
+                // Unload current catalog, if it's not default one.
+                if (!IsDefault) Catalog.Unload();
 
                 Catalog = Catalogs[language];
                 IsDefault = false;
