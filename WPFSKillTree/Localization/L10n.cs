@@ -22,12 +22,8 @@ namespace POESKillTree.Localization
         public static CultureInfo Culture { get { return _Culture; } }
         // The default catalog.
         private static Catalog DefaultCatalog;
-        // The default catalog path.
-        public static readonly string DefaultCatalogDir = "en";
         // The default language of non-translated messages.
         public static readonly string DefaultLanguage = "en-US";
-        // The default language name of non-translated messages.
-        public static readonly string DefaultLanguageName = "English";
         // The flag whether default language is being used (i.e. no translation occurs).
         private static bool IsDefault;
         // The current language.
@@ -45,11 +41,12 @@ namespace POESKillTree.Localization
         static L10n()
         {
             // Initial language is default language.
-            Catalog = DefaultCatalog = Catalog.CreateDefault(Path.Combine(LocaleDir, DefaultCatalogDir), DefaultLanguage, DefaultLanguageName);
             IsDefault = true;
             _Language = DefaultLanguage;
-            _LanguageName = DefaultLanguageName;
             _Culture = CultureInfo.CreateSpecificCulture(_Language);
+            _LanguageName = _Culture.NativeName;
+            // The default catalog is current one.
+            Catalog = DefaultCatalog = Catalog.CreateDefault(Path.Combine(LocaleDir, DefaultLanguage), DefaultLanguage, _LanguageName);
         }
 
         // Applies current language to application resources.
@@ -61,7 +58,7 @@ namespace POESKillTree.Localization
 
         // Returns available languages.
         // Key: language (e.g. "en-US")
-        // Value: display language name (e.g. "English")
+        // Value: display language name (e.g. "English (United States)")
         public static Dictionary<string, string> GetLanguages()
         {
             Dictionary<string, string> languages = new Dictionary<string, string>();
@@ -106,17 +103,57 @@ namespace POESKillTree.Localization
             if (Catalogs.ContainsKey(match))
                 return match;
 
-            // Match primary subtag.
-            string[] matchSubtags = match.Split('-');
-            foreach (string language in Catalogs.Keys)
-            {
-                string[] subtags = language.Split('-');
+            // Match subtags.
+            string[] subtags = match.Split('-');
+            // language | language-* | language-*-*
+            string matchLanguage = subtags[0];
+            // *-variant | *-variant-*
+            string matchVariant = subtags.Length > 1 && subtags[1].Length >= 3 ? subtags[1] : null;
+            // *-region | *-*-region
+            string matchRegion = subtags.Length > 2 && subtags[2].Length == 2 ? subtags[2] : (subtags.Length > 1 && subtags[1].Length == 2 ? subtags[1] : null);
 
-                if (subtags[0] == matchSubtags[0])
-                    return language;
+            List<string> matches = new List<string>();
+
+            // Match language first.
+            foreach (string tag in Catalogs.Keys)
+            {
+                subtags = tag.Split('-');
+                if (subtags[0] == matchLanguage)
+                    matches.Add(tag);
+            }
+            if (matches.Count == 0) return null; // No match.
+
+            // Match variant.
+            // The variant specifies alphabet used, so it's more important to be able to read anything, than to not know some words.
+            if (matchVariant != null)
+            {
+                foreach (string tag in matches.ToArray())
+                {
+                    subtags = tag.Split('-');
+                    string variant = subtags.Length > 1 && subtags[1].Length >= 3 ? subtags[1] : null;
+                    // Catalog language has variant and it doesn't match, remove it.
+                    if (variant != null && variant != matchVariant)
+                        matches.Remove(tag);
+                }
+                if (matches.Count == 0) return null; // No match.
             }
 
-            return null;
+            // Match region.
+            // This is least significant match.
+            if (matchRegion != null)
+            {
+                foreach (string tag in matches)
+                {
+                    subtags = tag.Split('-');
+                    string region = subtags.Length > 2 && subtags[2].Length == 2 ? subtags[2] : (subtags.Length > 1 && subtags[1].Length == 2 ? subtags[1] : null);
+                    // Catalog language has region and it matches, return it.
+                    if (region != null && region == matchRegion)
+                        return tag;
+                }
+            }
+
+            // Return first match.
+            return matches[0];
         }
 
         // Find most suitable translation catalog for specified culture.
@@ -173,13 +210,13 @@ namespace POESKillTree.Localization
                 foreach (DirectoryInfo dirLanguage in dirLocale.GetDirectories())
                 {
                     // Skip default catalog path (it contains only resources).
-                    if (dirLanguage.Name == DefaultCatalogDir) continue;
+                    if (dirLanguage.Name == DefaultLanguage) continue;
 
                     // Check whether directory name corresponds to supported culture name.
                     CultureInfo culture = null;
                     try
                     {
-                        culture = CultureInfo.GetCultureInfo(dirLanguage.Name.Replace('_', '-'));
+                        culture = CultureInfo.GetCultureInfo(dirLanguage.Name);
                     }
                     catch { }
                     if (culture == null) continue; // Not supported language.

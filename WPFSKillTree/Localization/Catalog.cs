@@ -7,7 +7,7 @@ using ExpressionEvaluator;
 
 namespace POESKillTree.Localization
 {
-    // @see https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html#PO-Files
+    // @see http://www.gnu.org/software/gettext/manual/html_node/PO-Files.html#PO-Files
     public class Catalog
     {
         // Plural 'n' expression.
@@ -396,7 +396,7 @@ namespace POESKillTree.Localization
         // The translated strings.
         private Dictionary<string, string[]> Messages;
         // The file name of language catalog messages.
-        public static readonly string MessagesFilename = "Messages.txt";
+        public static readonly string MessagesFilename = "Messages.po";
         // The language (culture name).
         public string Name;
         // The number of plural forms.

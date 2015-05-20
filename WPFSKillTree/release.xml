@@ -3,6 +3,41 @@
     <!-- MSBuild file used by dist-*.bat scripts -->
     <Import Project="$(MSBuildProjectDirectory)\Tools\MSBuild.ExtensionPack.tasks" />
 
+    <!-- Takes LocaleLanguageDir items and outputs same items with "Locale" metadata set to correct PO locale -->
+    <UsingTask TaskName="PupulateLocale" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+        <ParameterGroup>
+            <Dirs ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+            <Locales ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+        </ParameterGroup>
+        <Task>
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+      if (Dirs.Length > 0)
+      {
+        Locales = new TaskItem[Dirs.Length];
+        for (int i = 0; i < Dirs.Length; i++)
+        {
+          ITaskItem item = Dirs[i];
+
+          string[] subtags = item.GetMetadata("Filename").Split('-');
+          string language = subtags[0];
+          string variant = subtags.Length > 1 && subtags[1].Length >= 3 ? subtags[1] : null;
+          string region = subtags.Length > 2 && subtags[2].Length == 2 ? subtags[2] : (subtags.Length > 1 && subtags[1].Length == 2 ? subtags[1] : null);
+
+          string locale = language.ToLowerInvariant();
+          if (region != null) locale += "_" + region.ToUpperInvariant();
+          if (variant != null) locale += "@" + variant.ToLowerInvariant();
+
+          Locales[i] = new TaskItem(item.ItemSpec);
+          item.CopyMetadataTo(Locales[i]);
+          Locales[i].SetMetadata("Locale", locale);
+        }
+      }
+]]>
+            </Code>
+        </Task>
+    </UsingTask>
+
     <PropertyGroup>
         <InstallDir>PoESkillTree</InstallDir>
         <Platform>x86</Platform>
@@ -18,11 +53,11 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <DefaultCatalogDir>en</DefaultCatalogDir>
+        <DefaultCatalogDir>en-US</DefaultCatalogDir>
         <LocaleXGettextKeywords>-kL10n.Message -kL10n.Message:1,2c -kL10n.Plural:1,2 -kL10n.Plural:1,2,4c</LocaleXGettextKeywords>
         <LocaleDir>Locale</LocaleDir>
-        <LocaleMessageFilename>Messages.txt</LocaleMessageFilename>
-        <LocaleTemplateFilename>Messages.template.txt</LocaleTemplateFilename>
+        <LocaleMessageFilename>Messages.po</LocaleMessageFilename>
+        <LocaleTemplateFilename>Messages.pot</LocaleTemplateFilename>
         <LocaleTemplateFile>$(LocaleDir)\$(LocaleTemplateFilename)</LocaleTemplateFile>
         <LocaleWorkDir>$(ObjDir)\$(LocaleDir)</LocaleWorkDir>
         <LocaleWorkTemplateFile>$(ObjDir)\$(LocaleDir)\$(LocaleTemplateFilename)</LocaleWorkTemplateFile>
@@ -126,17 +161,24 @@
         <Exec Command="Tools\gettext\msgmerge -U --backup=none --no-wrap $(LocaleTemplateFile) $(LocaleWorkTemplateFile)" />
     </Target>
 
-    <Target Name="BuildLocaleCatalog" DependsOnTargets="BuildLocaleTemplate">
+    <Target Name="BuildLocalePopulateLocales" DependsOnTargets="BuildLocaleTemplate">
+        <PupulateLocale Dirs="@(LocaleLanguageDir)">
+            <Output ItemName="LocaleLocales" TaskParameter="Locales" />
+        </PupulateLocale>
+    </Target>
+    
+    <Target Name="BuildLocaleCatalog" DependsOnTargets="BuildLocalePopulateLocales">
         <!-- Remove BOM from catalog messages -->
-        <Exec Command="Tools\DeBOM %(LocaleLanguageDir.MessageFile)"
-              Condition="Exists('%(LocaleLanguageDir.MessageFile)')" />
+        <Exec Command="Tools\DeBOM %(LocaleLocales.MessageFile)"
+              Condition="Exists('%(LocaleLocales.MessageFile)')" />
+
         <!-- Merge template messages into catalog messages -->
-        <Exec Command="Tools\gettext\msgmerge -U --backup=none --no-wrap %(LocaleLanguageDir.MessageFile) $(LocaleTemplateFile)"
-              Condition="Exists('%(LocaleLanguageDir.MessageFile)')" />
+        <Exec Command="Tools\gettext\msgmerge -U --backup=none --no-wrap %(LocaleLocales.MessageFile) $(LocaleTemplateFile)"
+              Condition="Exists('%(LocaleLocales.MessageFile)')" />
 
         <!-- Create catalog messages -->
-        <Exec Command="Tools\gettext\msginit -i $(LocaleTemplateFile) -o %(LocaleLanguageDir.MessageFile) -l @(LocaleLanguageDir->'%(Filename)'->Replace('-', '_')) --no-wrap --no-translator"
-              Condition="!Exists('%(LocaleLanguageDir.MessageFile)')" />
+        <Exec Command="Tools\gettext\msginit -i $(LocaleTemplateFile) -o %(LocaleLocales.MessageFile) -l %(LocaleLocales.Locale) --no-wrap --no-translator"
+              Condition="!Exists('%(LocaleLocales.MessageFile)')" />
     </Target>
 
     <Target Name="Clean">

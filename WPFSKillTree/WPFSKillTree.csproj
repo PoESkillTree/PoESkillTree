@@ -306,10 +306,10 @@
     <None Include="dist-clean.bat" />
     <None Include="dist-update.bat" />
     <None Include="dist-release.bat" />
-    <None Include="Locale\en\Help.md">
+    <None Include="Locale\en-US\Help.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Locale\sk\Help.md">
+    <None Include="Locale\sk-SK\Help.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Localization\Markdown\Readme.md" />
@@ -378,21 +378,19 @@
     <None Include="Tools\DeBOM.exe" />
     <None Include="Tools\DeBOM.pdb" />
     <None Include="Localization\Markdown\License.txt" />
+    <None Include="Locale\README.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Newtonsoft.Json.dll" />
     <Content Include="Raven.Json.dll" />
     <None Include="Tools\Ionic.Zip.dll" />
     <None Include="Tools\MSBuild.ExtensionPack.dll" />
     <None Include="Tools\XAMLText.exe" />
     <None Include="Tools\XAMLText.pdb" />
-    <None Include="Tools\gettext\intl.dll" />
-    <None Include="Tools\gettext\libgcc_s_dw2-1.dll" />
-    <None Include="Tools\gettext\libgettextlib-0-18-1.dll" />
-    <None Include="Tools\gettext\libgettextsrc-0-18-1.dll" />
-    <None Include="Tools\gettext\libstdc++-6.dll" />
     <None Include="Tools\gettext\msginit.exe" />
     <None Include="Tools\gettext\msgmerge.exe" />
     <None Include="Tools\gettext\xgettext.exe" />
-    <None Include="Locale\sk\Messages.txt">
+    <None Include="Locale\sk-SK\Messages.po">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Resource Include="release.xml">
@@ -400,7 +398,7 @@
     </Resource>
     <Resource Include="logo.ico" />
     <None Include="Properties\app.manifest.i" />
-    <None Include="Locale\Messages.template.txt">
+    <None Include="Locale\Messages.pot">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Tools\7z.dll" />
