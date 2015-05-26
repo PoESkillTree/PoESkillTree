@@ -623,6 +623,7 @@ namespace POESKillTree.Views
         public void UpdateUI()
         {
             UpdateAttributeList();
+            UpdateAllAttributeList();
             UpdateStatistics();
             UpdateClass();
         }
