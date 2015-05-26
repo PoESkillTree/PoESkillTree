@@ -309,7 +309,7 @@
     <None Include="Locale\en-US\Help.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Locale\sk-SK\Help.md">
+    <None Include="Locale\sk\Help.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Localization\Markdown\Readme.md" />
@@ -387,10 +387,10 @@
     <None Include="Tools\MSBuild.ExtensionPack.dll" />
     <None Include="Tools\XAMLText.exe" />
     <None Include="Tools\XAMLText.pdb" />
-    <None Include="Tools\gettext\msginit.exe" />
+    <None Include="Locale\msginit.exe" />
     <None Include="Tools\gettext\msgmerge.exe" />
     <None Include="Tools\gettext\xgettext.exe" />
-    <None Include="Locale\sk-SK\Messages.po">
+    <None Include="Locale\sk\Messages.po">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Resource Include="release.xml">

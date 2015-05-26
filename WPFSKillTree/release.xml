@@ -177,7 +177,7 @@
               Condition="Exists('%(LocaleLocales.MessageFile)')" />
 
         <!-- Create catalog messages -->
-        <Exec Command="Tools\gettext\msginit -i $(LocaleTemplateFile) -o %(LocaleLocales.MessageFile) -l %(LocaleLocales.Locale) --no-wrap --no-translator"
+        <Exec Command="Locale\msginit -i $(LocaleTemplateFile) -o %(LocaleLocales.MessageFile) -l %(LocaleLocales.Locale) --no-wrap --no-translator"
               Condition="!Exists('%(LocaleLocales.MessageFile)')" />
     </Target>
 

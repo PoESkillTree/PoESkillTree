@@ -459,7 +459,7 @@ namespace POESKillTree.Views
                 Updater.Release release = Updater.CheckForUpdates();
                 if (release == null)
                 {
-                    MessageBox.Show(this, L10n.Message("You have the lastest version!"), L10n.Message("No update"));
+                    MessageBox.Show(this, L10n.Message("You have the latest version!"), L10n.Message("No update"));
                 }
                 else
                 {
@@ -467,7 +467,8 @@ namespace POESKillTree.Views
                     MessageBoxResult download = new MessageBoxResult();
                     if (release.Version.ToLower().Contains("pre"))
                     {
-                        download = MessageBox.Show(this, String.Format(L10n.Message("{0}\nThis is a pre-release, meaning there could be some bugs!"), message), L10n.Message("New pre-release"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        message += "\n" + L10n.Message("This is a pre-release, meaning there could be some bugs!");
+                        download = MessageBox.Show(this, message, L10n.Message("New pre-release"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     }
                     else
                         download = MessageBox.Show(this, message, L10n.Message("New release"), MessageBoxButton.YesNo, MessageBoxImage.None);
