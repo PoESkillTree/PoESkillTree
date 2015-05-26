@@ -467,59 +467,63 @@ msgstr ""
 msgid "Saved Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:594
+#: Views\MainWindow.xaml:553
+msgid "Filter:"
+msgstr ""
+
+#: Views\MainWindow.xaml:596
 msgid "Skill tree comparison"
 msgstr ""
 
-#: Views\MainWindow.xaml:603
+#: Views\MainWindow.xaml:605
 msgid "Save"
 msgstr ""
 
-#: Views\MainWindow.xaml:606
+#: Views\MainWindow.xaml:608
 msgid "Save As"
 msgstr ""
 
-#: Views\MainWindow.xaml:609
+#: Views\MainWindow.xaml:611
 msgid "Delete"
 msgstr ""
 
-#: Views\MainWindow.xaml:618
+#: Views\MainWindow.xaml:620
 msgid "Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:625
+#: Views\MainWindow.xaml:627
 msgid "Passive Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:642
+#: Views\MainWindow.xaml:644
 msgid "Item Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:661
+#: Views\MainWindow.xaml:663
 msgid "Total Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:683
+#: Views\MainWindow.xaml:685
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:690 SkillTreeFiles\Compute.cs:2232
+#: Views\MainWindow.xaml:692 SkillTreeFiles\Compute.cs:2232
 msgid "Defense"
 msgstr ""
 
-#: Views\MainWindow.xaml:707
+#: Views\MainWindow.xaml:709
 msgid "Offense"
 msgstr ""
 
-#: Views\MainWindow.xaml:732
+#: Views\MainWindow.xaml:734
 msgid "Search:"
 msgstr ""
 
-#: Views\MainWindow.xaml:738
+#: Views\MainWindow.xaml:740
 msgid "Skill tree link:"
 msgstr ""
 
-#: Views\MainWindow.xaml:744
+#: Views\MainWindow.xaml:746
 msgid "Load Tree"
 msgstr ""
 

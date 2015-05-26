@@ -75,8 +75,9 @@ namespace POESKillTree.Localization
         {
             ScanLocaleDirectory();
 
-            // TODO: Get UI language from persistent data.
             string language = null;
+            if (!string.IsNullOrEmpty(data.Options.Language))
+                language = data.Options.Language;
 
             // No language in options, try to match OS language.
             if (language == null)

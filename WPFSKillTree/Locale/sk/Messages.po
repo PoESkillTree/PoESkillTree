@@ -467,59 +467,63 @@ msgstr "Reset"
 msgid "Saved Builds"
 msgstr "Uložené zostavy"
 
-#: Views\MainWindow.xaml:594
+#: Views\MainWindow.xaml:553
+msgid "Filter:"
+msgstr "Filter:"
+
+#: Views\MainWindow.xaml:596
 msgid "Skill tree comparison"
 msgstr "Porovnávanie stromov zručností"
 
-#: Views\MainWindow.xaml:603
+#: Views\MainWindow.xaml:605
 msgid "Save"
 msgstr "Uložiť"
 
-#: Views\MainWindow.xaml:606
+#: Views\MainWindow.xaml:608
 msgid "Save As"
 msgstr "Uložiť ako"
 
-#: Views\MainWindow.xaml:609
+#: Views\MainWindow.xaml:611
 msgid "Delete"
 msgstr "Zmazať"
 
-#: Views\MainWindow.xaml:618
+#: Views\MainWindow.xaml:620
 msgid "Attributes"
 msgstr "Atribúty"
 
-#: Views\MainWindow.xaml:625
+#: Views\MainWindow.xaml:627
 msgid "Passive Attributes"
 msgstr "Pasívne atribúty"
 
-#: Views\MainWindow.xaml:642
+#: Views\MainWindow.xaml:644
 msgid "Item Attributes"
 msgstr "Atribúty predmetov"
 
-#: Views\MainWindow.xaml:661
+#: Views\MainWindow.xaml:663
 msgid "Total Attributes"
 msgstr "Atribúty celkovo"
 
-#: Views\MainWindow.xaml:683
+#: Views\MainWindow.xaml:685
 msgid "Character Sheet"
 msgstr "Postava"
 
-#: Views\MainWindow.xaml:690 SkillTreeFiles\Compute.cs:2232
+#: Views\MainWindow.xaml:692 SkillTreeFiles\Compute.cs:2232
 msgid "Defense"
 msgstr "Obrana"
 
-#: Views\MainWindow.xaml:707
+#: Views\MainWindow.xaml:709
 msgid "Offense"
 msgstr "Útok"
 
-#: Views\MainWindow.xaml:732
+#: Views\MainWindow.xaml:734
 msgid "Search:"
 msgstr "Hľadať:"
 
-#: Views\MainWindow.xaml:738
+#: Views\MainWindow.xaml:740
 msgid "Skill tree link:"
 msgstr "Odkaz stromu:"
 
-#: Views\MainWindow.xaml:744
+#: Views\MainWindow.xaml:746
 msgid "Load Tree"
 msgstr "Načítať strom"
 
