@@ -648,15 +648,15 @@ msgstr ""
 msgid "Update failed"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1071
+#: Views\MainWindow.xaml.cs:1072
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1142
+#: Views\MainWindow.xaml.cs:1143
 msgid "Please select a saved build!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1142
+#: Views\MainWindow.xaml.cs:1143
 msgid "Error"
 msgstr ""
 

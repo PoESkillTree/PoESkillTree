@@ -649,15 +649,15 @@ msgstr "Nastala chyba"
 msgid "Update failed"
 msgstr "Aktualizácia zlyhala"
 
-#: Views\MainWindow.xaml.cs:1071
+#: Views\MainWindow.xaml.cs:1072
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
-#: Views\MainWindow.xaml.cs:1142
+#: Views\MainWindow.xaml.cs:1143
 msgid "Please select a saved build!"
 msgstr "Prosím zvoľte uloženú zostavu!"
 
-#: Views\MainWindow.xaml.cs:1142
+#: Views\MainWindow.xaml.cs:1143
 msgid "Error"
 msgstr "Chyba"
 

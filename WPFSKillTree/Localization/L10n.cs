@@ -5,8 +5,6 @@ using System.IO;
 using System.Text;
 using POESKillTree.Model;
 
-// TODO: BuildLocale target should be called as post-buid project event (including copying of Locale folder).
-
 namespace POESKillTree.Localization
 {
     // Localization API.
