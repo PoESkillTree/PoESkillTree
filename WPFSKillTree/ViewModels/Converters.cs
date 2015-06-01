@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 using System.IO;
 using POESKillTree.ViewModels.Items;
+using System.Diagnostics;
 
 namespace POESKillTree.ViewModels
 {
@@ -232,7 +233,6 @@ namespace POESKillTree.ViewModels
     class ItemToImageConverter : ItemTypeToImageConverter, IValueConverter
     {
         protected static Dictionary<ItemClass, BitmapImage> DefaultCache = new Dictionary<ItemClass, BitmapImage>();
-
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var itm = value as Item;
@@ -252,7 +252,14 @@ namespace POESKillTree.ViewModels
                         //default
 
                         img.BeginInit();
-                        img.UriSource = new Uri("/images/EquipmentUI/ItemDefaults/" + itm.Class + ".png", UriKind.Relative);
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+
+
+                        Uri u = new Uri("/images/EquipmentUI/ItemDefaults/" + itm.Class + ".png", UriKind.Relative);
+                        if (!File.Exists(u.ToString()))
+                            return null;
+
+                        img.UriSource = u;
                         img.EndInit();
 
                         DefaultCache.Add(itm.Class, img);
