@@ -1,49 +1,60 @@
-﻿<UserControl x:Class="POESKillTree.Controls.Stash"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cont="clr-namespace:POESKillTree.Controls"
              xmlns:items ="clr-namespace:POESKillTree.ViewModels.Items"
+             xmlns:WpfRangeControls="clr-namespace:WpfRangeControls;assembly=WpfRangeControls" x:Class="POESKillTree.Controls.Stash"
              mc:Ignorable="d" 
-             d:DesignHeight="351" d:DesignWidth="339"
-             Name="control"
+             d:DesignHeight="351"
+             x:Name="control"
              >
     <UserControl.Resources>
 
     </UserControl.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0">
-            <Grid Name="gcontent">
-                <Grid.Background>
-                    <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
-                        <DrawingBrush.Drawing>
-                            <DrawingGroup>
-                                <GeometryDrawing>
-                                    <GeometryDrawing.Pen>
-                                        <Pen Thickness="1" Brush="Gray"/>
-                                    </GeometryDrawing.Pen>
-                                    <GeometryDrawing.Geometry>
-                                        <RectangleGeometry Rect="0,0,47,47" />
-                                    </GeometryDrawing.Geometry>
-                                </GeometryDrawing>
-                            </DrawingGroup>
-                        </DrawingBrush.Drawing>
-                    </DrawingBrush>
-                </Grid.Background>
-            </Grid>
-        </ScrollViewer>
-        <Grid Grid.Row="1">
+        <Grid x:Name="gcontent" Width="564" Grid.Column="0">
+            <Grid.Background>
+                <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <GeometryDrawing>
+                                <GeometryDrawing.Pen>
+                                    <Pen Thickness="1" Brush="Gray"/>
+                                </GeometryDrawing.Pen>
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry Rect="0,0,47,47" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Grid.Background>
+        </Grid>
+
+
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Click="Button_Click">load</Button>
-            <TextBox Name="tbload" Grid.Column="1"></TextBox>
+            <Button Grid.Column="0" Click="Button_Click" Content="load"/>
+            <TextBox x:Name="tbload" Grid.Column="1"/>
         </Grid>
+
+        <WpfRangeControls:RangeScrollbar Grid.Column="1" x:Name="rangeScrollbar" Maximum="100" HorizontalAlignment="Center" Margin="0">
+            <Rectangle Fill="Red" WpfRangeControls:RangePanel.Position="30" Width="5" Height="5"></Rectangle>
+        </WpfRangeControls:RangeScrollbar>
+
     </Grid>
 </UserControl>
