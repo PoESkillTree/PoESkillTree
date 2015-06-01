@@ -1,3 +1,6 @@
 [submodule "RangeTree"]
 	path = RangeTree
 	url = https://github.com/Ttxman/RangeTree.git
+[submodule "WpfRangeControls"]
+	path = WpfRangeControls
+	url = https://github.com/Ttxman/WpfRangeControls.git

@@ -468,6 +468,10 @@
       <Project>{9cc3eb9d-32d2-41e6-96ee-c01dc32a5aed}</Project>
       <Name>RangeTree</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WpfRangeControls\WpfRangeControls\WpfRangeControls.csproj">
+      <Project>{8bd896f3-4860-4797-9fe5-78e2980b4f75}</Project>
+      <Name>WpfRangeControls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
