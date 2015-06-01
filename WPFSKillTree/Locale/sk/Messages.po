@@ -271,259 +271,159 @@ msgstr "_Zobraziť"
 msgid "_Theme"
 msgstr "_Téma"
 
-#: Views\MainWindow.xaml:233
-msgid "Light"
-msgstr "Light"
-
-#: Views\MainWindow.xaml:238
-msgid "Dark"
-msgstr "Dark"
-
-#: Views\MainWindow.xaml:244
+#: Views\MainWindow.xaml:236
 msgid "Acce_nt"
 msgstr "Akce_nt"
 
-#: Views\MainWindow.xaml:251
-msgid "Amber"
-msgstr "Amber"
-
-#: Views\MainWindow.xaml:256
-msgid "Blue"
-msgstr "Blue"
-
-#: Views\MainWindow.xaml:261
-msgid "Brown"
-msgstr "Brown"
-
-#: Views\MainWindow.xaml:266
-msgid "Cobalt"
-msgstr "Cobalt"
-
-#: Views\MainWindow.xaml:271
-msgid "Crimson"
-msgstr "Crimson"
-
-#: Views\MainWindow.xaml:276
-msgid "Cyan"
-msgstr "Cyan"
-
-#: Views\MainWindow.xaml:281
-msgid "Emerald"
-msgstr "Emerald"
-
-#: Views\MainWindow.xaml:286
-msgid "Green"
-msgstr "Green"
-
-#: Views\MainWindow.xaml:291
-msgid "Indigo"
-msgstr "Indigo"
-
-#: Views\MainWindow.xaml:296
-msgid "Lime"
-msgstr "Lime"
-
-#: Views\MainWindow.xaml:301
-msgid "Magenta"
-msgstr "Magenta"
-
-#: Views\MainWindow.xaml:306
-msgid "Mauve"
-msgstr "Mauve"
-
-#: Views\MainWindow.xaml:311
-msgid "Olive"
-msgstr "Olive"
-
-#: Views\MainWindow.xaml:316
-msgid "Orange"
-msgstr "Orange"
-
-#: Views\MainWindow.xaml:321
-msgid "Pink"
-msgstr "Pink"
-
-#: Views\MainWindow.xaml:326
-msgid "Purple"
-msgstr "Purple"
-
-#: Views\MainWindow.xaml:331
-msgid "Red"
-msgstr "Red"
-
-#: Views\MainWindow.xaml:336
-msgid "Sienna"
-msgstr "Sienna"
-
-#: Views\MainWindow.xaml:341
-msgid "Steel"
-msgstr "Steel"
-
-#: Views\MainWindow.xaml:346
-msgid "Taupe"
-msgstr "Taupe"
-
-#: Views\MainWindow.xaml:351
-msgid "Teal"
-msgstr "Teal"
-
-#: Views\MainWindow.xaml:356
-msgid "Violet"
-msgstr "Violet"
-
-#: Views\MainWindow.xaml:361
-msgid "Yellow"
-msgstr "Yellow"
-
-#: Views\MainWindow.xaml:368
+#: Views\MainWindow.xaml:268
 msgid "Saved _Builds"
 msgstr "Uložené _zostavy"
 
-#: Views\MainWindow.xaml:373
+#: Views\MainWindow.xaml:273
 msgid "_Attributes"
 msgstr "_Atribúty"
 
-#: Views\MainWindow.xaml:378
+#: Views\MainWindow.xaml:278
 msgid "_Character Sheet"
 msgstr "_Postava"
 
-#: Views\MainWindow.xaml:383
+#: Views\MainWindow.xaml:283
 msgid "Skill _Tree Comparison"
 msgstr "Porovnávanie _stromov zručností"
 
-#: Views\MainWindow.xaml:389
+#: Views\MainWindow.xaml:289
 msgid "_Tools"
 msgstr "_Nástroje"
 
-#: Views\MainWindow.xaml:393
+#: Views\MainWindow.xaml:293
 msgid "Take _Screenshot of Skilled Nodes"
 msgstr "Zaznamenanie _snímky vycvičených uzlov"
 
-#: Views\MainWindow.xaml:401
+#: Views\MainWindow.xaml:301
 msgid "_Download & Import Items"
 msgstr "Stiahnutie a _import predmetov"
 
-#: Views\MainWindow.xaml:409
+#: Views\MainWindow.xaml:309
 msgid "Skill _Highlighted Nodes"
 msgstr "_Vycvičiť zvýraznené uzly"
 
-#: Views\MainWindow.xaml:417
+#: Views\MainWindow.xaml:317
 msgid "_Unhighlight All Nodes"
 msgstr "_Zrušiť zvýraznenie uzlov"
 
-#: Views\MainWindow.xaml:425
+#: Views\MainWindow.xaml:325
 msgid "Copy _Passive Attributes to Clipboard"
 msgstr "Skopírovať _pasívne atribúty do Schránky"
 
-#: Views\MainWindow.xaml:433
+#: Views\MainWindow.xaml:333
 msgid "Copy Po_EUrl of Skill tree to Clipboard"
 msgstr "Skopírovať Po_EUrl odkaz do Schránky"
 
-#: Views\MainWindow.xaml:441
+#: Views\MainWindow.xaml:341
 msgid "_Redownload Skill Tree Assets"
 msgstr "_Opätovne stiahnuť údaje stromu zručností"
 
-#: Views\MainWindow.xaml:450
+#: Views\MainWindow.xaml:350
 msgid "_Help"
 msgstr "_Pomocník"
 
-#: Views\MainWindow.xaml:454
+#: Views\MainWindow.xaml:354
 msgid "_Links"
 msgstr "O_dkazy"
 
-#: Views\MainWindow.xaml:461
+#: Views\MainWindow.xaml:361
 msgid "_Path of Exile Website"
 msgstr "_Path of Exile stránka"
 
-#: Views\MainWindow.xaml:468
+#: Views\MainWindow.xaml:368
 msgid "View _Help"
 msgstr "Zobraziť _pomocníka"
 
-#: Views\MainWindow.xaml:476
+#: Views\MainWindow.xaml:376
 msgid "Hot_keys"
 msgstr "_Klávesové skratky"
 
-#: Views\MainWindow.xaml:484
+#: Views\MainWindow.xaml:384
 msgid "Check for _Updates"
 msgstr "Skontrolovať _aktualizácie"
 
-#: Views\MainWindow.xaml:492
+#: Views\MainWindow.xaml:392
 msgid "_About PoESkillTree"
 msgstr "_O PoESkillTree"
 
-#: Views\MainWindow.xaml:504
+#: Views\MainWindow.xaml:404
 msgid "Level:"
 msgstr "Úroveň:"
 
-#: Views\MainWindow.xaml:517
+#: Views\MainWindow.xaml:417
 msgid "Used:"
 msgstr "Použité:"
 
-#: Views\MainWindow.xaml:522
+#: Views\MainWindow.xaml:422
 msgid "Reset"
 msgstr "Reset"
 
-#: Views\MainWindow.xaml:535
+#: Views\MainWindow.xaml:435
 msgid "Saved Builds"
 msgstr "Uložené zostavy"
 
-#: Views\MainWindow.xaml:553
+#: Views\MainWindow.xaml:453
 msgid "Filter:"
 msgstr "Filter:"
 
-#: Views\MainWindow.xaml:596
+#: Views\MainWindow.xaml:496
 msgid "Skill tree comparison"
 msgstr "Porovnávanie stromov zručností"
 
-#: Views\MainWindow.xaml:605
+#: Views\MainWindow.xaml:505
 msgid "Save"
 msgstr "Uložiť"
 
-#: Views\MainWindow.xaml:608
+#: Views\MainWindow.xaml:508
 msgid "Save As"
 msgstr "Uložiť ako"
 
-#: Views\MainWindow.xaml:611
+#: Views\MainWindow.xaml:511
 msgid "Delete"
 msgstr "Zmazať"
 
-#: Views\MainWindow.xaml:620
+#: Views\MainWindow.xaml:520
 msgid "Attributes"
 msgstr "Atribúty"
 
-#: Views\MainWindow.xaml:627
+#: Views\MainWindow.xaml:527
 msgid "Passive Attributes"
 msgstr "Pasívne atribúty"
 
-#: Views\MainWindow.xaml:644
+#: Views\MainWindow.xaml:544
 msgid "Item Attributes"
 msgstr "Atribúty predmetov"
 
-#: Views\MainWindow.xaml:663
+#: Views\MainWindow.xaml:563
 msgid "Total Attributes"
 msgstr "Atribúty celkovo"
 
-#: Views\MainWindow.xaml:685
+#: Views\MainWindow.xaml:585
 msgid "Character Sheet"
 msgstr "Postava"
 
-#: Views\MainWindow.xaml:692 SkillTreeFiles\Compute.cs:2232
+#: Views\MainWindow.xaml:592 SkillTreeFiles\Compute.cs:2232
 msgid "Defense"
 msgstr "Obrana"
 
-#: Views\MainWindow.xaml:709
+#: Views\MainWindow.xaml:609
 msgid "Offense"
 msgstr "Útok"
 
-#: Views\MainWindow.xaml:734
+#: Views\MainWindow.xaml:634
 msgid "Search:"
 msgstr "Hľadať:"
 
-#: Views\MainWindow.xaml:740
+#: Views\MainWindow.xaml:640
 msgid "Skill tree link:"
 msgstr "Odkaz stromu:"
 
-#: Views\MainWindow.xaml:746
+#: Views\MainWindow.xaml:646
 msgid "Load Tree"
 msgstr "Načítať strom"
 
@@ -685,3 +585,78 @@ msgstr "Dokončené!"
 #: Views\OptimizerControllerWindow.xaml.cs:158
 msgid "Continue"
 msgstr "Pokračovať"
+
+#~ msgid "Light"
+#~ msgstr "Light"
+
+#~ msgid "Dark"
+#~ msgstr "Dark"
+
+#~ msgid "Amber"
+#~ msgstr "Amber"
+
+#~ msgid "Blue"
+#~ msgstr "Blue"
+
+#~ msgid "Brown"
+#~ msgstr "Brown"
+
+#~ msgid "Cobalt"
+#~ msgstr "Cobalt"
+
+#~ msgid "Crimson"
+#~ msgstr "Crimson"
+
+#~ msgid "Cyan"
+#~ msgstr "Cyan"
+
+#~ msgid "Emerald"
+#~ msgstr "Emerald"
+
+#~ msgid "Green"
+#~ msgstr "Green"
+
+#~ msgid "Indigo"
+#~ msgstr "Indigo"
+
+#~ msgid "Lime"
+#~ msgstr "Lime"
+
+#~ msgid "Magenta"
+#~ msgstr "Magenta"
+
+#~ msgid "Mauve"
+#~ msgstr "Mauve"
+
+#~ msgid "Olive"
+#~ msgstr "Olive"
+
+#~ msgid "Orange"
+#~ msgstr "Orange"
+
+#~ msgid "Pink"
+#~ msgstr "Pink"
+
+#~ msgid "Purple"
+#~ msgstr "Purple"
+
+#~ msgid "Red"
+#~ msgstr "Red"
+
+#~ msgid "Sienna"
+#~ msgstr "Sienna"
+
+#~ msgid "Steel"
+#~ msgstr "Steel"
+
+#~ msgid "Taupe"
+#~ msgstr "Taupe"
+
+#~ msgid "Teal"
+#~ msgstr "Teal"
+
+#~ msgid "Violet"
+#~ msgstr "Violet"
+
+#~ msgid "Yellow"
+#~ msgstr "Yellow"
