@@ -164,6 +164,103 @@ namespace POESKillTree.ViewModels.Items
             return ItemClass.Invalid;
         }
 
+        public static int GetWidthForItem(ItemClass ics, GearGroup group, string type)
+        {
+            switch (group)
+            {
+                case GearGroup.Helmet:
+                case GearGroup.Chest:
+                case GearGroup.Belt:
+                case GearGroup.Gloves:
+                case GearGroup.Boots:
+                case GearGroup.Axe:
+                case GearGroup.Claw:
+                case GearGroup.Bow:
+                case GearGroup.Quiver:
+                case GearGroup.Sceptre:
+                case GearGroup.Staff:
+                case GearGroup.Shield:
+                    return 2;
+
+                case GearGroup.Mace:
+                    if (type.EndsWith("Club") || type == "Tenderizer")
+                        return 1;
+                    else return 2;
+
+                case GearGroup.Sword:
+                    if (ics == ItemClass.TwoHand)
+                        if (type == "Corroded Blade")
+                            return 1;
+                        else
+                            return 2;
+                    else
+                    {
+                        if (type.EndsWith("Foil") || type.EndsWith("Rapier"))
+                            return 1;
+
+                        switch (type)
+                        {
+                            case "Pecoraro":
+                            case "Foil":
+                            case "Spike":
+                            case "Gemstone Sword":
+                            case "Corsair Sword":
+                            case "Cutlass":
+                            case "Variscite Blade":
+                            case "Sabre":
+                            case "Copper Sword":
+                                return 1;
+                        }
+
+                        return 2;
+                    }
+            }
+
+            return 1;
+        }
+
+
+        public static int GetHeightForItem(ItemClass ics, GearGroup group, string type)
+        {
+
+            switch (group)
+            {
+                case GearGroup.Staff:
+                case GearGroup.Bow:
+                case GearGroup.Chest:
+                    return 4;
+                case GearGroup.Helmet:
+                case GearGroup.Gloves:
+                case GearGroup.Boots:
+                case GearGroup.Claw:
+                    return 2;
+
+                case GearGroup.Axe:
+                case GearGroup.Mace:
+                case GearGroup.Sceptre:
+                case GearGroup.Sword:
+                    return (ics == ItemClass.TwoHand || type.EndsWith("Foil") || type.EndsWith("Rapier") || type == "Pecoraro" || type == "Foil" || type == "Spike" ) ? 4 : 3;
+
+                case GearGroup.Shield:
+                    if (type.EndsWith("Kite Shield") || type.EndsWith("Round Shield"))
+                        return 3;
+                    else if (type.EndsWith("Tower Shield"))
+                        return 4;
+                    else
+                        return 2;
+
+                case GearGroup.Quiver:
+                case GearGroup.Dagger:
+                case GearGroup.Wand:
+                    return 3;
+                case GearGroup.Flask:
+                    return 2;
+            }
+
+            return 1;
+
+        }
+
 
         public GearGroup GearGroup { get; set; }
         public int Level { get; set; }
@@ -223,6 +320,9 @@ namespace POESKillTree.ViewModels.Items
             item.Class = this.Class;
             item.BaseType = this.ItemType;
             item.GearGroup = this.GearGroup;
+
+            item.W = GetWidthForItem(this.Class, this.GearGroup, this.ItemType);
+            item.H = GetHeightForItem(this.Class, this.GearGroup, this.ItemType);
 
             item.Properties = GetRawProperties();
             item.Keywords = GetKeywords();

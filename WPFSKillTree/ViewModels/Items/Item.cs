@@ -232,6 +232,54 @@ namespace POESKillTree.ViewModels.Items
 
         }
 
+        public JObject GenerateJson()
+        {
+            var j = new JObject(
+                new JProperty("w", W),
+                new JProperty("h", H),
+                new JProperty("x", X),
+                new JProperty("y", Y),
+                new JProperty("name", NameLine),
+                new JProperty("typeLine", TypeLine),
+                new JProperty("frameType", Frame)
+                );
+
+            if (Properties.Count > 0)
+            {
+                j.Add(new JProperty("properties",
+                    new JArray(Properties.Select(p => p.ToJobject()).ToArray())));
+            }
+
+            if (Requirements.Count > 0)
+            {
+                j.Add(new JProperty("requirements",
+                        new JArray(Requirements.Select(p => p.ToJobject()).ToArray())));
+            }
+
+            if (ImplicitMods.Count > 0)
+            {
+                j.Add(new JProperty("implicitMods",
+                            new JArray(ImplicitMods.Select(p => p.ToJobject(true)).ToArray())));
+            }
+
+            if (ExplicitMods.Count > 0)
+            {
+                j.Add(new JProperty("explicitMods",
+                            new JArray(ExplicitMods.Select(p => p.ToJobject(true)).ToArray())));
+            }
+
+            if (CraftedMods.Count > 0)
+            {
+                j.Add(new JProperty("craftedMods",
+                            new JArray(CraftedMods.Select(p => p.ToJobject(true)).ToArray())));
+            }
+
+            if (HaveFlavourText)
+                j.Add("flavourText",new JArray(FlavourText));
+
+            return j;
+        }
+
         private void Init(ItemClass iClass, JObject val)
         {
             JSONBase = val;

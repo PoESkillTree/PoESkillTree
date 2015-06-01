@@ -1927,7 +1927,7 @@ namespace POESKillTree.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            new CraftWindow() {Owner=this}.ShowDialog();
+            new CraftWindow() { Owner = this, PersistentData = PersistentData }.ShowDialog();
         }
 
     }

@@ -63,15 +63,6 @@ namespace POESKillTree.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void cbClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SkipRedraw = true;
-            var val = (ItemClass)Enum.Parse(typeof(ItemClass), (string)cbClassSelection.SelectedItem);
-            BaseList = ItemBase.BaseList.Where(b => (b.Class & val) == val).ToArray();
-            cbBaseSelection.SelectedIndex = 0;
-            SkipRedraw = false;
-        }
-
         List<Affix> _prefixes = new List<Affix>();
         List<Affix> _suffixes = new List<Affix>();
 
@@ -90,6 +81,15 @@ namespace POESKillTree.Views
                 if (_SkipRedraw == 0)
                     RecalculateItem();
             }
+        }
+
+        private void cbClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SkipRedraw = true;
+            var val = (ItemClass)Enum.Parse(typeof(ItemClass), (string)cbClassSelection.SelectedItem);
+            BaseList = ItemBase.BaseList.Where(b => (b.Class & val) == val).ToArray();
+            cbBaseSelection.SelectedIndex = 0;
+            SkipRedraw = false;
         }
 
         private void cbBaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -144,8 +144,6 @@ namespace POESKillTree.Views
 
             msp1.Affixes = msp2.Affixes = msp3.Affixes = _prefixes;
             mss1.Affixes = mss2.Affixes = mss3.Affixes = _suffixes;
-            _selectedSuff = new[] { mss1, mss2, mss3 }.Where(s => s.SelectedAffix != null).ToArray();
-
 
             SkipRedraw = false;
 
@@ -228,15 +226,20 @@ namespace POESKillTree.Views
 
             var r = new Regex(@"(?<!\B)(?:to |increased |decreased |more |less |Adds #-# )(?!\B)|(?:#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$", RegexOptions.IgnoreCase);
 
-            var localnames = localmods.Select(m => r.Replace(m.Attribute, "")
-                .Trim().Replace("Attack Speed", "Atacks Per Second"))
+            var localnames = localmods.Select(m => 
+                r.Replace(m.Attribute, "")
+                    .Split(new []{"and",","},StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s=>
+                        s.Trim().Replace("Attack Speed", "Atacks Per Second"))
+                        .ToList())
                 .ToList();
+
             if (localmods.Count > 0)
             {
                 for (int j = 0; j < plist.Count; j++)
                 {
 
-                    var applymods = localmods.Where((m, i) => plist[j].Attribute.Contains(localnames[i])).ToList();
+                    var applymods = localmods.Where((m, i) => localnames[i].Any(n=>plist[j].Attribute.Contains(n))).ToList();
                     var percm = applymods.Where(m => m.Attribute.Contains('%')).ToList();
                     var valuem = applymods.Except(percm).ToList();
 
@@ -321,11 +324,9 @@ namespace POESKillTree.Views
                 }
             }
 
-
-
-
-
             Item.Properties = plist;
+
+            Item.FlavourText = "Crafted by Power - PoeSkillTree";
         }
 
         ModSelector[] _selectedSuff = new ModSelector[0];
@@ -351,5 +352,21 @@ namespace POESKillTree.Views
         {
             RecalculateItem();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Item.JSONBase = Item.GenerateJson();
+
+            Item.X = 0;
+            Item.Y = 0;
+            if (PersistentData.Stash.Count >0)
+                Item.Y = PersistentData.Stash.Max(i => i.Y + i.H);
+
+
+            PersistentData.Stash.Add(Item);
+            Close();
+        }
+
+        public Model.PersistentData PersistentData { get; set; }
     }
 }

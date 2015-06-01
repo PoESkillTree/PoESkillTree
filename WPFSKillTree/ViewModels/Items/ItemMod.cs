@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace POESKillTree.ViewModels.Items
 {
@@ -39,7 +40,7 @@ namespace POESKillTree.ViewModels.Items
             ItemClass ic = item.Class;
             var mod = new ItemMod();
 
-            int dmode = (obj["displayMode"]!=null) ? obj["displayMode"].Value<int>() : 0;
+            int dmode = (obj["displayMode"] != null) ? obj["displayMode"].Value<int>() : 0;
             string at = obj["name"].Value<string>();
             at = numberfilter.Replace(at, "#");
 
@@ -199,8 +200,8 @@ namespace POESKillTree.ViewModels.Items
 
         public ItemMod Sum(ItemMod m)
         {
-            var mod = new ItemMod() 
-            { 
+            var mod = new ItemMod()
+            {
                 Attribute = this.Attribute,
                 itemclass = this.itemclass,
                 isLocal = this.isLocal,
@@ -213,9 +214,93 @@ namespace POESKillTree.ViewModels.Items
             return mod;
         }
 
-        internal void IncreaseBy(double p)
+        public void IncreaseBy(double p)
         {
             throw new System.NotImplementedException();
         }
+
+        public JToken ToJobject(bool asMod = false)
+        {
+            string defaultFormat = "###0.##";
+            if (asMod)
+            {
+                int index = 0;
+                return new JValue(ItemAttributes.Attribute.Backreplace.Replace(this.Attribute, m => Value[index++].ToString(defaultFormat)));
+            }
+            else
+            {
+                var j = new JObject();
+
+                if (Value != null && Value.Count > 2)
+                    j.Add("displayMode", 3);
+                else
+                    j.Add("displayMode", 0);
+
+
+
+                if (Value == null || Value.Count == 0)
+                {
+                    j.Add("name", _Attribute);
+                    j.Add("values", new JArray());
+                }
+                else if (Value.Count == 1)
+                {
+                    if (_Attribute.EndsWith(": #"))
+                    {
+                        j.Add("name", _Attribute.Substring(0, _Attribute.Length - 3));
+                        j.Add("values", new JArray((object)new JArray(Value[0], ValueColor[0])));
+                    }
+                    else if (_Attribute.EndsWith(" #%"))
+                    {
+                        j.Add("name", _Attribute.Substring(0, _Attribute.Length - 3));
+                        j.Add("values", new JArray((object)new JArray(Value[0] + "%", ValueColor[0])));
+                    }
+                    else if (_Attribute.StartsWith("# "))
+                    {
+                        j.Add("name", _Attribute.Substring(2));
+                        j.Add("values", new JArray((object)new JArray(Value[0].ToString(defaultFormat), ValueColor[0])));
+                    }
+                    else
+                        throw new NotImplementedException();
+
+                }
+                else if (Value.Count == 2)
+                {
+                    if (_Attribute.EndsWith(": #-#") && ValueColor.All(v => v == ValueColor[0]))
+                    {
+                        j.Add("name", _Attribute.Substring(0, _Attribute.Length - 5));
+                        j.Add("values", new JArray((object)new JArray(string.Join("-", Value), ValueColor[0])));
+                    }
+                    else
+                        throw new NotImplementedException();
+                }
+                else
+                {
+                    var str = _Attribute;
+                    while (str.EndsWith(" #-#"))
+                    {
+                        str = str.Substring(0, str.Length - 4);
+                        str = str.Trim(',', ':', ' ');
+                    }
+                    j.Add("name", str);
+
+                    JArray vals = new JArray();
+                    for (int i = 0; i < Value.Count; i += 2)
+                    {
+                        var val = string.Format("{0}-{1}", Value[i], Value[i + 1]);
+
+                        if (ValueColor[i] != ValueColor[i + 1])
+                            throw new NotImplementedException();
+                        vals.Add(new JArray(val, ValueColor[i]));
+                    }
+
+                    j.Add("values", vals);
+
+                }
+
+                return j;
+            }
+        }
+
     }
 }
