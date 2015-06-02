@@ -517,7 +517,7 @@ namespace POESKillTree.ViewModels.Items
         {
             get
             {
-                return new Range<int>(Y, Y + H);
+                return new Range<int>(Y, Y + H-1);
             }
         }
     }

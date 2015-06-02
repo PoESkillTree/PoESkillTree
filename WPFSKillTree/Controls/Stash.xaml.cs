@@ -112,6 +112,8 @@ namespace POESKillTree.Controls
                         Item = item
                     };
 
+                    iv.MouseLeftButtonDown += Iv_MouseLeftButtonDown;
+
                     _usedVisualizers.Add(item, iv);
                     gcontent.Children.Add(iv);
                 }
@@ -236,5 +238,142 @@ namespace POESKillTree.Controls
             asBar.LargeChange = (int)(gcontent.ActualHeight / GridSize);
             RedrawItems();
         }
+
+        private void control_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+                asBar.Value -= 1;
+            else
+                asBar.Value += 1;
+        }
+
+        ItemVisualizer _dndVis = null;
+        Rectangle _dnd_overlay = null;
+        Point _dnd_startDrag;
+        Thickness _dnd_original_Margin;
+        private void Iv_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            var siv = sender as ItemVisualizer;
+            if (siv != null)
+            {
+                _dnd_startDrag = Mouse.GetPosition(gcontent);// e.GetPosition(gcontent);
+                _dnd_overlay = new Rectangle()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Width = siv.ActualWidth,
+                    Height = siv.ActualHeight,
+                    Fill = Brushes.DarkGreen,
+                    Margin = siv.Margin,
+                    Opacity = 0.3,
+                };
+                _dnd_original_Margin = siv.Margin;
+                gcontent.Children.Add(_dnd_overlay);
+                Grid.SetZIndex(_dnd_overlay, 52635);
+
+                _dndVis = new ItemVisualizer()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Width = siv.ActualWidth,
+                    Height = siv.ActualHeight,
+                    Item = siv.Item,
+                    Margin = siv.Margin,
+                    Opacity = 0.5,
+                    Background = null,
+                };
+                gcontent.Children.Add(_dndVis);
+                Grid.SetZIndex(_dndVis, 52636);
+
+
+                siv.Opacity = 0.3;
+                DragDrop.DoDragDrop(this, sender, DragDropEffects.Link | DragDropEffects.Move);
+                siv.Opacity = 1;
+                gcontent.Children.Remove(_dnd_overlay);
+                gcontent.Children.Remove(_dndVis);
+
+            }
+        }
+
+
+        private void control_DragOver(object sender, DragEventArgs e)
+        {
+            if ((e.AllowedEffects & DragDropEffects.Move) != 0 && e.Data.GetDataPresent(typeof(ItemVisualizer)))
+            {
+                e.Handled = true;
+                e.Effects = DragDropEffects.Move;
+
+                var newpos = e.GetPosition(gcontent);
+
+                var dx = newpos.X - _dnd_startDrag.X;
+                var dy = newpos.Y - _dnd_startDrag.Y;
+
+                var newx = _dnd_original_Margin.Left + dx;
+                var newy = _dnd_original_Margin.Top + dy;
+
+                var x = (int)Math.Round((newx / GridSize));
+                var y = (int)Math.Round((newy / GridSize));
+
+                _dnd_overlay.Margin = new Thickness(x * GridSize, y * GridSize, 0, 0);
+
+                y += (int)asBar.Value;
+
+                var itm = _dndVis.Item;
+                var overlapedy = _StashRange.Query(new Range<int>(y, y + itm.H - 1));
+
+                var newposr = new Range<int>(x, x + itm.W - 1);
+
+                if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.W - 1).Intersects(newposr)) || newposr.To >= 12 || y < 0)
+                    _dnd_overlay.Fill = Brushes.DarkRed;
+                else
+                    _dnd_overlay.Fill = Brushes.DarkGreen;
+
+                _dndVis.Margin = new Thickness(newx, newy, 0, 0);
+
+            }
+        }
+
+        private void gcontent_Drop(object sender, DragEventArgs e)
+        {
+            if ((e.AllowedEffects & DragDropEffects.Move) != 0 && e.Data.GetDataPresent(typeof(ItemVisualizer)) && _dnd_overlay.Fill == Brushes.DarkGreen)
+            {
+                e.Handled = true;
+                e.Effects = DragDropEffects.Move;
+
+                var newpos = e.GetPosition(gcontent);
+
+                var dx = newpos.X - _dnd_startDrag.X;
+                var dy = newpos.Y - _dnd_startDrag.Y;
+
+                var newx = _dnd_original_Margin.Left + dx;
+                var newy = _dnd_original_Margin.Top + dy;
+
+                var x = (int)Math.Round((newx / GridSize));
+                var y = (int)Math.Round((newy / GridSize));
+
+                y += (int)asBar.Value;
+
+                var itm = _dndVis.Item;
+
+                itm.X = x;
+                itm.Y = y;
+
+                Items.Remove(itm);
+                Items.Add(itm);
+            }
+        }
+        //public Int32Rect GetFreeSpace(int width, int heighh, int startY = 0, int startX = 0)
+        //{
+        //    for (int y = 0; y < _StashRange.Max; y++)
+        //    {
+        //        var itemline = _StashRange.Query(y).OrderBy(i=>i.X).ToArray();
+
+        //        for (int i = 0; i < itemline.Length; i++)
+        //        {
+
+        //        }
+        //    }
+        //}
     }
 }

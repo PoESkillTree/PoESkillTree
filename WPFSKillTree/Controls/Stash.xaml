@@ -8,7 +8,7 @@
              xmlns:WpfRangeControls="clr-namespace:WpfRangeControls;assembly=WpfRangeControls" x:Class="POESKillTree.Controls.Stash"
              mc:Ignorable="d" 
              d:DesignHeight="351"
-             x:Name="control"
+             x:Name="control" MouseWheel="control_MouseWheel"
              >
     <UserControl.Resources>
 
@@ -23,7 +23,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True" SizeChanged="gcontent_SizeChanged">
+        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True" SizeChanged="gcontent_SizeChanged" DragOver="control_DragOver" AllowDrop="True" Drop="gcontent_Drop">
             <Grid.Background>
                 <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
                     <DrawingBrush.Drawing>
