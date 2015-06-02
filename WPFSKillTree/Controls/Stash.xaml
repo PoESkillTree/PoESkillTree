@@ -15,14 +15,15 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="gcontent" Width="564" Grid.Column="0">
+        <Grid x:Name="gcontent" Grid.Column="1" Width="564">
             <Grid.Background>
                 <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
                     <DrawingBrush.Drawing>
@@ -41,18 +42,45 @@
             </Grid.Background>
         </Grid>
 
+        <WrapPanel Grid.Column="0" Orientation="Vertical">
+            <WrapPanel.Resources>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                    <Style.Setters>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+                        <Setter Property="LayoutTransform">
+                            <Setter.Value>
+                                <TransformGroup>
+                                    <RotateTransform Angle="-90"/>
+                                </TransformGroup>
+                            </Setter.Value>
+                        </Setter>
+                    </Style.Setters>
+                </Style>
+            </WrapPanel.Resources>
+            <Button>10000000</Button>
+            <Button>1000000</Button>
+            <Button>1000000</Button>
+            <Button>1000000</Button>
+            <Button>1000000</Button>
+            <Button>1000000</Button>
+            <Button>1000000</Button>
+            <Button>1000000</Button>
+            <Button>1000000</Button>
+            <Button>1000000</Button>
+            <Button>1000000</Button>
+        </WrapPanel>
 
-
-        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="1" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Click="Button_Click" Content="load"/>
+            <Button Grid.Column="0" Click="Button_Click" Content="load" RenderTransformOrigin="0.5,0.5">
+            </Button>
             <TextBox x:Name="tbload" Grid.Column="1"/>
         </Grid>
 
-        <WpfRangeControls:RangeScrollbar Grid.Column="1" x:Name="rangeScrollbar" Maximum="100" HorizontalAlignment="Center" Margin="0">
+        <WpfRangeControls:RangeScrollbar Grid.Column="2" x:Name="rangeScrollbar" Maximum="{Binding LastLine,ElementName=control}">
             <Rectangle Fill="Red" WpfRangeControls:RangePanel.Position="30" Width="5" Height="5"></Rectangle>
         </WpfRangeControls:RangeScrollbar>
 

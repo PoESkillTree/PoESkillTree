@@ -7,10 +7,11 @@ using System;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
+using MB.Algodat;
 
 namespace POESKillTree.ViewModels.Items
 {
-    public class Item : INotifyPropertyChanged
+    public class Item : INotifyPropertyChanged, IRangeProvider<int>
     {
         /// <summary>
         /// itemclass and itemslot values with same name must have same value
@@ -506,6 +507,18 @@ namespace POESKillTree.ViewModels.Items
         public bool IsTwoHanded
         {
             get { return this.Class == ItemClass.TwoHand; }
+        }
+
+
+        /// <summary>
+        /// vertical range of item
+        /// </summary>
+        Range<int> IRangeProvider<int>.Range
+        {
+            get
+            {
+                return new Range<int>(Y, Y + H);
+            }
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿using Microsoft.Win32;
+﻿using MB.Algodat;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using POESKillTree.ViewModels.Items;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,7 +25,7 @@ namespace POESKillTree.Controls
     /// <summary>
     /// Interaction logic for Stash.xaml
     /// </summary>
-    public partial class Stash : UserControl
+    public partial class Stash : UserControl, INotifyPropertyChanged
     {
 
         public ObservableCollection<Item> Items
@@ -59,22 +61,42 @@ namespace POESKillTree.Controls
 
         void items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+
+            if (e.OldItems != null)
+            {
+                foreach (Item i in e.OldItems)
+                    _StashRange.Remove(i);
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (Item i in e.NewItems)
+                    _StashRange.Add(i);
+
+            }
+
+            if (!_supressrebuild)
+            {
+                _StashRange.Rebuild();
+                OnPropertyChanged("LastLine");
+            }
+
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 foreach (Item it in e.NewItems)
                 {
-                    var iv = new ItemVisualizer() 
-                    { 
+                    var iv = new ItemVisualizer()
+                    {
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
                     };
 
                     iv.Item = it;
 
-                    
-                    _usedVisualizers.Add(it,iv);
 
-                    Thickness m = new Thickness(it.X*GridSize,it.Y*GridSize,0,0);
+                    _usedVisualizers.Add(it, iv);
+
+                    Thickness m = new Thickness(it.X * GridSize, it.Y * GridSize, 0, 0);
                     iv.Margin = m;
                     iv.Width = it.W * GridSize;
                     iv.Height = it.H * GridSize;
@@ -94,13 +116,25 @@ namespace POESKillTree.Controls
                     }
                 }
             }
-            else
+            else if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+
+            }else
                 throw new NotImplementedException();
         }
 
         private void ReloadItem()
         {
-            //throw new NotImplementedException();
+            _supressrebuild = true;
+            foreach (var i in Items)
+            {
+                _StashRange.Add(i);
+            }
+            _supressrebuild = false;
+
+            _StashRange.Rebuild();
+            OnPropertyChanged("LastLine");
+
         }
 
 
@@ -165,5 +199,31 @@ namespace POESKillTree.Controls
 
             }
         }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string prop)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
+
+        private class ItemModComparer : IComparer<Item>
+        {
+            public int Compare(Item x, Item y)
+            {
+                return ((IRangeProvider<int>)x).Range.CompareTo(((IRangeProvider<int>)y).Range);
+            }
+        }
+
+        private RangeTree<int, Item> _StashRange = new RangeTree<int, Item>(new ItemModComparer());
+
+
+        public int LastLine
+        {
+            get { return _StashRange.Max; }
+        }
+        bool _supressrebuild = false;
     }
 }

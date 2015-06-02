@@ -359,11 +359,11 @@ namespace POESKillTree.Views
 
             Item.X = 0;
             Item.Y = 0;
-            if (PersistentData.Stash.Count >0)
-                Item.Y = PersistentData.Stash.Max(i => i.Y + i.H);
+            if (PersistentData.StashItems.Count >0)
+                Item.Y = PersistentData.StashItems.Max(i => i.Y + i.H);
 
 
-            PersistentData.Stash.Add(Item);
+            PersistentData.StashItems.Add(Item);
             Close();
         }
 

@@ -358,7 +358,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
-                        <local:Stash Grid.Column="1" HorizontalAlignment="Left" Items="{Binding PersistentData.Stash, ElementName=window}"></local:Stash>
+                        <local:Stash Grid.Column="1" HorizontalAlignment="Left" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
                     </Grid>
                 </TabItem>
             </TabControl>

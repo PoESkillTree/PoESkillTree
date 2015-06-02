@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
+using MB.Algodat;
 
 namespace POESKillTree.Model
 {
@@ -19,20 +20,17 @@ namespace POESKillTree.Model
 
 
         [XmlIgnore]
-        private ObservableCollection<Item> _stash;
+        private ObservableCollection<Item> _stash = new ObservableCollection<Item>();
+
         [XmlIgnore]
-        public ObservableCollection<Item> Stash
+        public ObservableCollection<Item> StashItems
         {
             get { return _stash; }
-            set
-            { 
-                _stash = value;
-                OnPropertyChanged("Stash");
-            }
         }
 
         public PersistentData()
         {
+
             Options = new Options();
             CurrentBuild = new PoEBuild
             {
@@ -75,7 +73,7 @@ namespace POESKillTree.Model
             {
 
                 JArray arr = new JArray();
-                foreach (var item in Stash)
+                foreach (var item in StashItems)
                 {
                     arr.Add(item.JSONBase);
                 }
@@ -90,14 +88,14 @@ namespace POESKillTree.Model
         {
             try
             {
-                Stash = new ObservableCollection<Item>();
+                StashItems.Clear();
                 if (!File.Exists("stash.json"))
                     return;
                 var arr = JArray.Parse(File.ReadAllText("stash.json"));
                 foreach (var item in arr)
                 {
                     var itm = new Item((JObject)item);
-                    Stash.Add(itm);
+                    StashItems.Add(itm);
                 }
             }
             catch
