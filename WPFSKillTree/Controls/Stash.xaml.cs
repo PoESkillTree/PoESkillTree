@@ -81,46 +81,46 @@ namespace POESKillTree.Controls
                 OnPropertyChanged("LastLine");
             }
 
-            if (e.Action == NotifyCollectionChangedAction.Add)
+            RedrawItems();
+        }
+
+        private void RedrawItems()
+        {
+
+            int pos = (int)asBar.Value;
+            var items = new HashSet<Item>(_StashRange.Query(new Range<int>(pos, (int)Math.Ceiling(pos + asBar.LargeChange))));
+
+
+
+            var toremove = _usedVisualizers.Where(p => !items.Contains(p.Key)).ToArray();
+            foreach (var item in toremove)
             {
-                foreach (Item it in e.NewItems)
+                gcontent.Children.Remove(item.Value);
+                _usedVisualizers.Remove(item.Key);
+            }
+
+            foreach (var item in items)
+            {
+                ItemVisualizer iv = null;
+
+                if (!_usedVisualizers.TryGetValue(item, out iv))
                 {
-                    var iv = new ItemVisualizer()
+                    iv = new ItemVisualizer()
                     {
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
+                        Item = item
                     };
 
-                    iv.Item = it;
-
-
-                    _usedVisualizers.Add(it, iv);
-
-                    Thickness m = new Thickness(it.X * GridSize, it.Y * GridSize, 0, 0);
-                    iv.Margin = m;
-                    iv.Width = it.W * GridSize;
-                    iv.Height = it.H * GridSize;
+                    _usedVisualizers.Add(item, iv);
                     gcontent.Children.Add(iv);
                 }
 
+                Thickness m = new Thickness(item.X * GridSize, (item.Y - pos) * GridSize, 0, 0);
+                iv.Margin = m;
+                iv.Width = item.W * GridSize;
+                iv.Height = item.H * GridSize;
             }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                foreach (Item it in e.OldItems)
-                {
-                    ItemVisualizer iv;
-                    if (_usedVisualizers.TryGetValue(it, out iv))
-                    {
-                        iv.Item = null;
-                        _usedVisualizers.Remove(it);
-                    }
-                }
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-
-            }else
-                throw new NotImplementedException();
         }
 
         private void ReloadItem()
@@ -171,7 +171,7 @@ namespace POESKillTree.Controls
                     var items = (json["items"] as JArray).Select(i => new Item((JObject)i));
 
                     //get free line
-                    var y = (Items.Count >0)?Items.Max(i => i.Y + i.H) + 3:0;
+                    var y = (Items.Count > 0) ? Items.Max(i => i.Y + i.H) + 3 : 0;
                     int x = 0;
                     int maxh = 0;
                     foreach (var item in items)
@@ -225,5 +225,16 @@ namespace POESKillTree.Controls
             get { return _StashRange.Max; }
         }
         bool _supressrebuild = false;
+
+        private void asBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            RedrawItems();
+        }
+
+        private void gcontent_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            asBar.LargeChange = (int)(gcontent.ActualHeight / GridSize);
+            RedrawItems();
+        }
     }
 }

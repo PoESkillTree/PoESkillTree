@@ -23,7 +23,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="gcontent" Grid.Column="1" Width="564">
+        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True" SizeChanged="gcontent_SizeChanged">
             <Grid.Background>
                 <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
                     <DrawingBrush.Drawing>
@@ -80,7 +80,7 @@
             <TextBox x:Name="tbload" Grid.Column="1"/>
         </Grid>
 
-        <WpfRangeControls:RangeScrollbar Grid.Column="2" x:Name="rangeScrollbar" Maximum="{Binding LastLine,ElementName=control}">
+        <WpfRangeControls:RangeScrollbar Name="asBar" Grid.Column="2" Maximum="{Binding LastLine,ElementName=control}" ValueChanged="asBar_ValueChanged" SmallChange="1" LargeChange="12">
             <Rectangle Fill="Red" WpfRangeControls:RangePanel.Position="30" Width="5" Height="5"></Rectangle>
         </WpfRangeControls:RangeScrollbar>
 
