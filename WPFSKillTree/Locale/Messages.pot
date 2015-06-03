@@ -351,79 +351,71 @@ msgstr ""
 msgid "_About PoESkillTree"
 msgstr ""
 
-#: Views\MainWindow.xaml:404
-msgid "Level:"
-msgstr ""
-
-#: Views\MainWindow.xaml:417
-msgid "Used:"
-msgstr ""
-
-#: Views\MainWindow.xaml:422
+#: Views\MainWindow.xaml:418
 msgid "Reset"
 msgstr ""
 
-#: Views\MainWindow.xaml:435
+#: Views\MainWindow.xaml:431
 msgid "Saved Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:453
+#: Views\MainWindow.xaml:449
 msgid "Filter:"
 msgstr ""
 
-#: Views\MainWindow.xaml:496
+#: Views\MainWindow.xaml:492
 msgid "Skill tree comparison"
 msgstr ""
 
-#: Views\MainWindow.xaml:505
+#: Views\MainWindow.xaml:501
 msgid "Save"
 msgstr ""
 
-#: Views\MainWindow.xaml:508
+#: Views\MainWindow.xaml:504
 msgid "Save As"
 msgstr ""
 
-#: Views\MainWindow.xaml:511
+#: Views\MainWindow.xaml:507
 msgid "Delete"
 msgstr ""
 
-#: Views\MainWindow.xaml:520
+#: Views\MainWindow.xaml:516
 msgid "Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:527
+#: Views\MainWindow.xaml:523
 msgid "Passive Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:544
+#: Views\MainWindow.xaml:540
 msgid "Item Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:563
+#: Views\MainWindow.xaml:559
 msgid "Total Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:585
+#: Views\MainWindow.xaml:581
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:592 SkillTreeFiles\Compute.cs:2232
+#: Views\MainWindow.xaml:588 SkillTreeFiles\Compute.cs:2232
 msgid "Defense"
 msgstr ""
 
-#: Views\MainWindow.xaml:609
+#: Views\MainWindow.xaml:605
 msgid "Offense"
 msgstr ""
 
-#: Views\MainWindow.xaml:634
+#: Views\MainWindow.xaml:630
 msgid "Search:"
 msgstr ""
 
-#: Views\MainWindow.xaml:640
+#: Views\MainWindow.xaml:636
 msgid "Skill tree link:"
 msgstr ""
 
-#: Views\MainWindow.xaml:646
+#: Views\MainWindow.xaml:642
 msgid "Load Tree"
 msgstr ""
 

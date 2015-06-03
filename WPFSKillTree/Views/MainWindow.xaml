@@ -400,9 +400,7 @@
 
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
         <Grid x:Name="BtnGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Width="314" Panel.ZIndex="99" >
-            <Label Height="28" HorizontalAlignment="Left" Margin="0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center">
-                <l:Catalog Message="Level:"/>
-            </Label>
+            <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
             <TextBox HorizontalAlignment="Left" Margin="40,0,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="tbLevel_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
             <ComboBox Height="26" HorizontalAlignment="Left" Margin="80,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="cbCharType_SelectionChanged" VerticalContentAlignment="Center">
                 <ComboBoxItem Content="Scion" Name="Scion"/>
@@ -413,9 +411,7 @@
                 <ComboBoxItem Content="Templar" Name="Templar" />
                 <ComboBoxItem Content="Shadow" Name="Shadow"/>
             </ComboBox>
-            <Label Height="26" HorizontalAlignment="Left" Margin="182,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center">
-                <l:Catalog Message="Used:"/>
-            </Label>
+            <Label Content="Used:" Height="26" HorizontalAlignment="Left" Margin="182,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center" />
             <TextBox Height="26" Margin="218,0,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="32"/>
 
             <Button Height="26" HorizontalAlignment="Right" x:Name="btnReset" VerticalAlignment="Top" Width="60" Click="btnReset_Click" VerticalContentAlignment="Center" Margin="0,0,0,0">
