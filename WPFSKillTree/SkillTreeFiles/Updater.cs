@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Raven.Json.Linq;
 using Ionic.Zip;
+using POESKillTree.Localization;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -63,7 +64,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Dispose();
                 }
-                catch (Exception e) {}
+                catch {}
             }
 
             // Cancels download.
@@ -112,9 +113,9 @@ namespace POESKillTree.SkillTreeFiles
             public void Download(AsyncCompletedEventHandler completedHandler, DownloadProgressChangedEventHandler progressHandler)
             {
                 if (Client != null)
-                    throw new UpdaterException("Download already in progress");
+                    throw new UpdaterException(L10n.Message("Download already in progress"));
                 if (TemporaryFile != null)
-                    throw new UpdaterException("Download already completed");
+                    throw new UpdaterException(L10n.Message("Download already completed"));
 
                 try
                 {
@@ -165,10 +166,10 @@ namespace POESKillTree.SkillTreeFiles
             public void Install()
             {
                 if (Client != null)
-                    throw new UpdaterException("Download still in progress");
+                    throw new UpdaterException(L10n.Message("Download still in progress"));
 
                 if (TemporaryFile == null)
-                    throw new UpdaterException("No package downloaded");
+                    throw new UpdaterException(L10n.Message("No package downloaded"));
 
                 try
                 {
@@ -182,7 +183,7 @@ namespace POESKillTree.SkillTreeFiles
                     // Copy content of first directory found in work directory to installation root.
                     string sourceDir = GetSourceDir();
                     if (sourceDir == null)
-                        throw new UpdaterException("Invalid package content");
+                        throw new UpdaterException(L10n.Message("Invalid package content"));
                     CopyTo(sourceDir, ".");
 
                     Dispose();
@@ -232,7 +233,7 @@ namespace POESKillTree.SkillTreeFiles
             if (Latest != null)
             {
                 if (Latest.IsDownloading)
-                    throw new UpdaterException("Download already in progress");
+                    throw new UpdaterException(L10n.Message("Download already in progress"));
                 Latest.Dispose();
             }
             Latest = null;
@@ -247,7 +248,7 @@ namespace POESKillTree.SkillTreeFiles
 
                 RavenJArray releases = RavenJArray.Parse(json);
                 if (releases.Length < 1)
-                    throw new UpdaterException("No release found");
+                    throw new UpdaterException(L10n.Message("No release found"));
 
                 string current = GetCurrentVersion(); // Current version (tag).
 
@@ -329,7 +330,7 @@ namespace POESKillTree.SkillTreeFiles
         public static void CopyTo(string sourcePath, string targetPath)
         {
             if (!Directory.Exists(targetPath))
-                throw new DirectoryNotFoundException("No such directory: " + targetPath);
+                throw new DirectoryNotFoundException(String.Format(L10n.Message("No such directory: {0}"), targetPath));
 
             if (File.Exists(sourcePath))
             {
@@ -353,7 +354,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
             else
-                throw new FileNotFoundException("No such file or directory: " + sourcePath);
+                throw new FileNotFoundException(String.Format(L10n.Message("No such file or directory: {0}"), sourcePath));
         }
 
         // Dispose of current update process.
@@ -362,7 +363,7 @@ namespace POESKillTree.SkillTreeFiles
             if (Latest != null)
             {
                 if (Latest.IsDownloading)
-                    throw new UpdaterException("Download still in progress");
+                    throw new UpdaterException(L10n.Message("Download still in progress"));
                 Latest.Dispose();
                 Latest = null;
             }
@@ -378,7 +379,7 @@ namespace POESKillTree.SkillTreeFiles
             if (Latest != null)
             {
                 if (Latest.IsDownloaded || Latest.IsDownloading)
-                    throw new UpdaterException("Download completed or still in progress");
+                    throw new UpdaterException(L10n.Message("Download completed or still in progress"));
 
                 Latest.Download(completedHandler, progressHandler);
             }
@@ -404,9 +405,9 @@ namespace POESKillTree.SkillTreeFiles
             if (Latest != null)
             {
                 if (Latest.IsDownloading)
-                    throw new UpdaterException("Download still in progress");
+                    throw new UpdaterException(L10n.Message("Download still in progress"));
                 if (!Latest.IsDownloaded)
-                    throw new UpdaterException("No package downloaded");
+                    throw new UpdaterException(L10n.Message("No package downloaded"));
 
                 // If installation fails (exception will be thrown), latest release will be in ready to re-download state.
                 Latest.Install();

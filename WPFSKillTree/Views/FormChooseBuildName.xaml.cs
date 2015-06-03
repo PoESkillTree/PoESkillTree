@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using MahApps.Metro.Controls;
+using POESKillTree.Localization;
 using POESKillTree.ViewModels;
 
 namespace POESKillTree.Views
@@ -29,8 +30,8 @@ namespace POESKillTree.Views
             txtCharacterName.Text = selectedBuild.CharacterName;
             txtAccountName.Text = selectedBuild.AccountName;
             txtItemData.Text = selectedBuild.ItemData;
-            lblLastUpdated.Content = "Last updated: " +
-                                     (selectedBuild.LastUpdated == DateTime.MinValue ? "Not Available" : selectedBuild.LastUpdated.ToString());
+            string date = selectedBuild.LastUpdated == DateTime.MinValue ? L10n.Message("Not Available") : selectedBuild.LastUpdated.ToString();
+            lblLastUpdated.Content = string.Format(L10n.Message("Last updated: {0}"), date);
             txtName.Select(txtName.Text.Length, 0);
         }
 

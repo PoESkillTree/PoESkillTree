@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel;
+using POESKillTree.Localization;
+
 namespace POESKillTree.Model
 {
     public class Options : INotifyPropertyChanged
     {
+        public string Language { get; set; }
         public string Theme { get; set; }
         public string Accent { get; set; } //Controlled by Menu Accent Headers
 
@@ -63,6 +66,7 @@ namespace POESKillTree.Model
 
         public Options()
         {
+            // Don't set Language property! When not set, L10n.Initialize will try to use OS settings.
             Theme = "Dark";
             Accent = "Steel";
         }

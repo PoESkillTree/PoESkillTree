@@ -21,6 +21,7 @@ using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using POESKillTree.Controls;
+using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
@@ -46,7 +47,7 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private readonly PersistentData _persistentData = new PersistentData();
+        private readonly PersistentData _persistentData = App.PersistentData;
 
         public PersistentData PersistentData
         {
@@ -95,9 +96,6 @@ namespace POESKillTree.Views
 
         public MainWindow()
         {
-            Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
             InitializeComponent();
         }
 
@@ -132,8 +130,7 @@ namespace POESKillTree.Views
             _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
             listBoxOffence.ItemsSource = _offenceCollection;
 
-            //Load Persistent Data and set theme
-            _persistentData.LoadPersistentDataFromFile();
+            // Set theme & accent.
             SetTheme(_persistentData.Options.Theme);
             SetAccent(_persistentData.Options.Accent);
 
@@ -462,18 +459,19 @@ namespace POESKillTree.Views
                 Updater.Release release = Updater.CheckForUpdates();
                 if (release == null)
                 {
-                    MessageBox.Show(this, "You have the lastest version!", "No update found.");
+                    MessageBox.Show(this, L10n.Message("You have the latest version!"), L10n.Message("No update"));
                 }
                 else
                 {
-                    var message = "Would you like to install " + release.Version + "?";
+                    var message = String.Format(L10n.Message("Do you want to install version {0}?"), release.Version);
                     MessageBoxResult download = new MessageBoxResult();
                     if (release.Version.ToLower().Contains("pre"))
                     {
-                        download = MessageBox.Show(this, message + "\nThis is a pre-release, meaning there could be some bugs!", "Pre-release Found!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        message += "\n" + L10n.Message("This is a pre-release, meaning there could be some bugs!");
+                        download = MessageBox.Show(this, message, L10n.Message("New pre-release"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     }
                     else
-                        download = MessageBox.Show(this, message, "Release Found!", MessageBoxButton.YesNo, MessageBoxImage.None);
+                        download = MessageBox.Show(this, message, L10n.Message("New release"), MessageBoxButton.YesNo, MessageBoxImage.None);
 
                     if (download == MessageBoxResult.Yes)
                         btnUpdateInstall(sender, e);
@@ -485,7 +483,7 @@ namespace POESKillTree.Views
             catch (UpdaterException ex)
             {
                 // Display error message: ex.Message.
-                MessageBox.Show(this, ex.Message.ToString(), "Error while checking for updates", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, ex.Message.ToString(), L10n.Message("Error occured"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -502,7 +500,7 @@ namespace POESKillTree.Views
             catch (UpdaterException ex)
             {
                 // Display error message: ex.Message.
-                MessageBox.Show(this, ex.Message.ToString(), "Failed to install update!");
+                MessageBox.Show(this, ex.Message.ToString(), L10n.Message("Update failed"));
             }
         }
 
@@ -529,7 +527,7 @@ namespace POESKillTree.Views
             else if (e.Error != null) // Check whether error occured.
             {
                 // Display error message: e.Error.Message.
-                MessageBox.Show(this, e.Error.Message.ToString(), "Failed to install update!");
+                MessageBox.Show(this, e.Error.Message.ToString(), L10n.Message("Update failed"));
             }
             else // Download completed.
             {
@@ -542,7 +540,7 @@ namespace POESKillTree.Views
                 {
                     Updater.Dispose();
                     // Display error message: ex.Message.
-                    MessageBox.Show(this, ex.Message.ToString(), "Failed to install update!");
+                    MessageBox.Show(this, ex.Message.ToString(), L10n.Message("Update failed"));
                 }
             }
             CloseLoadingWindow();
@@ -625,6 +623,7 @@ namespace POESKillTree.Views
         public void UpdateUI()
         {
             UpdateAttributeList();
+            UpdateAllAttributeList();
             UpdateStatistics();
             UpdateClass();
         }
@@ -1070,7 +1069,7 @@ namespace POESKillTree.Views
             if (highlightedItem != null)
             {
                 var build = (PoEBuild)highlightedItem.Content;
-                _noteTip.Content = build.Note == @"" ? @"Right Click To Edit" : build.Note;
+                _noteTip.Content = build.Note == @"" ? L10n.Message("Right click to edit") : build.Note;
                 _noteTip.IsOpen = true;
             }
         }
@@ -1141,7 +1140,7 @@ namespace POESKillTree.Views
             }
             else
             {
-                MessageBox.Show(this, "Please select an existing build first.", "Error", MessageBoxButton.OK,
+                MessageBox.Show(this, L10n.Message("Please select a saved build!"), L10n.Message("Error"), MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }

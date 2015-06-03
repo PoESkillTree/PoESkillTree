@@ -1,135 +1,55 @@
 ﻿<controls:MetroWindow
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     x:Class="POESKillTree.Views.HelpWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Help"  WindowStartupLocation="CenterOwner" Width="500" Height="600"
-        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
-        Icon="/POESKillTree;component/logo.ico">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+    xmlns:md="clr-namespace:Markdown.Xaml"
+    x:Name="Window"
+    WindowStartupLocation="CenterOwner" Width="500" Height="600"
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
+    Icon="/POESKillTree;component/logo.ico">
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="Help"/>
+    </controls:MetroWindow.Title>
+    <Window.Resources>
+        <Style x:Key="DocumentStyle" TargetType="FlowDocument">
+            <Setter Property="TextAlignment" Value="Left" />
+        </Style>
+
+        <Style x:Key="Heading1Style" TargetType="Paragraph">
+            <Setter Property="FontSize" Value="36" />
+            <Setter Property="Foreground" Value="#ffcc8888" />
+            <Setter Property="FontWeight" Value="Light" />
+        </Style>
+
+        <Style x:Key="Heading2Style" TargetType="Paragraph">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="#ff88cc88" />
+            <Setter Property="FontWeight" Value="Light" />
+        </Style>
+
+        <Style x:Key="Heading3Style" TargetType="Paragraph">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="#ff8888cc" />
+            <Setter Property="FontWeight" Value="Light" />
+        </Style>
+
+        <md:Markdown x:Key="Markdown"
+                     DocumentStyle="{StaticResource DocumentStyle}"
+                     Heading1Style="{StaticResource Heading1Style}"
+                     Heading2Style="{StaticResource Heading2Style}"
+                     Heading3Style="{StaticResource Heading3Style}"/>
+        <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter" Markdown="{StaticResource Markdown}"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="550"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <FlowDocumentScrollViewer Grid.Row="0" Width="500" Height="550">
-            <FlowDocument>
-                <Section BreakPageBefore="True">
-                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="40">Basics</Run>
-                    </Paragraph>
-                    <Paragraph>
-                        Welcome to the help section of PoESkillTree. We will start by going over how to use the basic functions.
-                    </Paragraph>
-
-                    <!-- Load Builds from URL -->
-                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="20">Load Builds from URL</Run>
-                    </Paragraph>
-                    <Paragraph>
-                        You want to load a cool build some one else have done? Or maybe your own from somewhere else? This is how you do it:
-                    </Paragraph>
-                    <List>
-                        <ListItem>
-                            <Paragraph>
-                                Paste the URL in the
-                                <Run FontWeight="Bold">Build Link</Run> box and press enter or click the
-                                <Run FontWeight="Bold">Load Build</Run> button, and that's it.
-                            </Paragraph>
-                        </ListItem>
-                    </List>
-
-                    <!-- Create Build -->
-                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="20">Create Build</Run>
-                    </Paragraph>
-                    <Paragraph>
-                        Lets create a build from scratch!
-                    </Paragraph>
-                    <List MarkerStyle="Decimal">
-                        <ListItem>
-                            <Paragraph>
-                                Choose class from dropdown.
-                            </Paragraph>
-                        </ListItem>
-                        <ListItem>
-                            <Paragraph>
-                                Set level (this will affect your attributes).
-                            </Paragraph>
-                        </ListItem>
-                        <ListItem>
-                            <Paragraph>
-                                Start adding nodes you want.
-                            </Paragraph>
-                        </ListItem>
-                        <ListItem>
-                            <Paragraph>
-                                When happy, save your build.
-                            </Paragraph>
-                            <List Margin="0" MarkerStyle="LowerLatin">
-                                <ListItem>
-                                    <Paragraph>
-                                        CTRL+S
-                                    </Paragraph>
-                                </ListItem>
-                                <ListItem>
-                                    <Paragraph>
-                                        From Menu: File -> Save As
-                                    </Paragraph>
-                                </ListItem>
-                                <ListItem>
-                                    <Paragraph>
-                                        Open the <Run FontWeight="Bold">Saved builds</Run> panel and click Save New
-                                    </Paragraph>
-                                </ListItem>
-                            </List>
-                        </ListItem>
-                    </List>
-
-                    <!-- Load Saved Build -->
-                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="20">Load Saved Build</Run>
-                    </Paragraph>
-                    <Paragraph>
-                        To load a saved build open the <Run FontWeight="Bold">Saved builds</Run> panel and 
-                        dubble click on the build you want to load.
-                    </Paragraph>
-                    
-                    <!-- Overwrite Build -->
-                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="20">Overwrite Build</Run>
-                    </Paragraph>
-                    <Paragraph>
-                        If you do changes to an already saved build or just want to replace one, 
-                        select the desired build and click <Run FontWeight="Bold">Overwrite Build</Run>. 
-                        You can also change the name/note on a build by right clicking it. 
-                        <Run FontWeight="Bold">(Advanced)</Run> In this window you can also inspect, 
-                        change and remove item data, keep in mind that it is raw data so only change if
-                        you know what you are doing.
-                    </Paragraph>
-                </Section>
-                <Section BreakPageBefore="True">
-                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="40">Items and Gems</Run>
-                    </Paragraph>
-                    <Paragraph>
-                        Now that you have a nice skilltree it is time to add some items and gems to calculate your DPS and defences.
-                    </Paragraph>
-                    <Paragraph>
-                        <Run FontStyle="Italic">This feature require you to download data from pathofexile.com!</Run>
-                    </Paragraph>
-
-                    <!-- Load Builds from URL -->
-                    <Paragraph BorderThickness="0,0,0,1" BorderBrush="{StaticResource AccentColorBrush}">
-                        <Run FontSize="20">Setup character</Run>
-                    </Paragraph>
-                    <Paragraph>
-                        To get item and gem data we are going to access one of your characters from pathofexile.com.
-                        This character needs be equiped with the items and gems that you want for your build, so head over
-                        to the client and fix that.
-                    </Paragraph>
-                </Section>
-            </FlowDocument>
-        </FlowDocumentScrollViewer>
-        <Button Content="Close" Grid.Row="1" x:Name="btnPopupClose" Click="btnPopupClose_Click" Height="20" Width="200" Margin="0,20,0,0" />
+        <FlowDocumentScrollViewer Grid.Row="0" Width="500" Height="550" Document="{Binding Document, ElementName=Window, Converter={StaticResource TextToFlowDocumentConverter}}"/>
+        <Button Grid.Row="1" x:Name="btnPopupClose" Click="btnPopupClose_Click" Height="20" Width="200" Margin="0,20,0,0">
+            <l:Catalog Message="Close"/>
+        </Button>
     </Grid>
 </controls:MetroWindow>

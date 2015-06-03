@@ -1,0 +1,660 @@
+# Slovak translations for PoESkillTree.
+# This file is distributed under the same license as the PoESkillTree.
+msgid ""
+msgstr ""
+"Project-Id-Version: PoESkillTree 2.1.3\n"
+"POT-Creation-Date: 2015-01-01 00:00+0000\n"
+"PO-Revision-Date: 2015-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: Views\AboutWindow.xaml:12
+msgid "About PoESkillTree"
+msgstr "O PoESkillTree"
+
+#: Views\AboutWindow.xaml:27
+msgid "Version"
+msgstr "Verzia"
+
+#: Views\AboutWindow.xaml:30
+msgid "Updates"
+msgstr "Aktualizácie"
+
+#: Views\AboutWindow.xaml:32
+msgid "See the GitHub page for new versions and source code:"
+msgstr "Nové verzie a zdrojový kód nájdete na GitHub stánke:"
+
+#: Views\AboutWindow.xaml:40
+msgid "Authors"
+msgstr "Autori"
+
+#: Views\AboutWindow.xaml:43
+msgid "original author"
+msgstr "pôvodný autor"
+
+#: Views\AboutWindow.xaml:58
+msgid "Legal"
+msgstr "Právne"
+
+#: Views\AboutWindow.xaml:61
+msgid "Skill tree assets and images belong to"
+msgstr "Údaje a obrázky stromu zručností vlastní"
+
+#: Views\AboutWindow.xaml:62
+msgid "Data used in character calculations are from"
+msgstr "Údaje použité vo výpočtoch postavy pochádzajú z"
+
+#: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
+#: Views\HelpWindow.xaml:52 Views\HotkeysWindow.xaml:140
+#: Views\OptimizerControllerWindow.xaml.cs:126
+msgid "Close"
+msgstr "Zavrieť"
+
+#: Views\DownloadItemsWindow.xaml:10
+msgid "Download & Import Items"
+msgstr "Stiahnutie a import predmetov"
+
+#: Views\DownloadItemsWindow.xaml:14
+msgid "Please enter Your Character and Account Name below and click on 'Open in Browser'."
+msgstr "Prosím zadajte Meno Postavy a Názov Účtu nižšie a stlačte 'Otvoriť v prehliadači'."
+
+#: Views\DownloadItemsWindow.xaml:15
+msgid "This will open a page in your default Web-browser containing the item data."
+msgstr "Týmto sa otvorí stránka vo Vašom prehliadači obsahujúca údaje predmetov."
+
+#: Views\DownloadItemsWindow.xaml:16
+msgid "Save the page anywhere, then click on 'Load File' and select the saved file."
+msgstr "Uložte stránku kdekoľvek, potom stlačte 'Načítať súbor' a zvoľte uložený súbor."
+
+#: Views\DownloadItemsWindow.xaml:23
+msgid "Open in Browser"
+msgstr "Otvoriť v prehliadači"
+
+#: Views\DownloadItemsWindow.xaml:26
+msgid "Load File"
+msgstr "Načítať súbor"
+
+#: Views\FormChooseBuildName.xaml:10
+msgid "Build Information"
+msgstr "Informácie o zostave"
+
+#: Views\FormChooseBuildName.xaml:14
+msgid "Build name"
+msgstr "Názov zostavy"
+
+#: Views\FormChooseBuildName.xaml:18
+msgid "Build note"
+msgstr "Poznámka zostavy"
+
+#: Views\FormChooseBuildName.xaml:23
+msgid "Character Information"
+msgstr "Informácie o postave"
+
+#: Views\FormChooseBuildName.xaml:27
+msgid "Character name"
+msgstr "Meno postavy"
+
+#: Views\FormChooseBuildName.xaml:31
+msgid "Account name"
+msgstr "Názov účtu"
+
+#: Views\FormChooseBuildName.xaml:35
+msgid "Items data"
+msgstr "Údaje predmetov"
+
+#: Views\FormChooseBuildName.xaml:42
+msgid "OK"
+msgstr "OK"
+
+#: Views\HelpWindow.xaml:13
+msgid "Help"
+msgstr "Pomocník"
+
+#: Views\HotkeysWindow.xaml:11
+msgid "Hotkeys"
+msgstr "Klávesové skratky"
+
+#: Views\HotkeysWindow.xaml:45
+msgid "Key combination"
+msgstr "Kombinácia kláves"
+
+#: Views\HotkeysWindow.xaml:48
+msgid "Function"
+msgstr "Funkcia"
+
+#: Views\HotkeysWindow.xaml:51
+msgid "Shift + Left Click"
+msgstr "Shift + Ľavé kliknutie"
+
+#: Views\HotkeysWindow.xaml:54
+msgid "Zoom In"
+msgstr "Zväčšiť"
+
+#: Views\HotkeysWindow.xaml:57
+msgid "Ctrl + Left Click"
+msgstr "Ctrl + Ľavé kliknutie"
+
+#: Views\HotkeysWindow.xaml:60
+msgid "Zoom Out"
+msgstr "Zmenšiť"
+
+#: Views\HotkeysWindow.xaml:64
+msgid "Scion"
+msgstr "Scion"
+
+#: Views\HotkeysWindow.xaml:68
+msgid "Marauder"
+msgstr "Marauder"
+
+#: Views\HotkeysWindow.xaml:72
+msgid "Ranger"
+msgstr "Ranger"
+
+#: Views\HotkeysWindow.xaml:76
+msgid "Witch"
+msgstr "Witch"
+
+#: Views\HotkeysWindow.xaml:80
+msgid "Duelist"
+msgstr "Duelist"
+
+#: Views\HotkeysWindow.xaml:84
+msgid "Templar"
+msgstr "Templar"
+
+#: Views\HotkeysWindow.xaml:88
+msgid "Shadow"
+msgstr "Shadow"
+
+#: Views\HotkeysWindow.xaml:92
+msgid "Toggle Attributes sidebar"
+msgstr "Prepnutie panela Atribúty"
+
+#: Views\HotkeysWindow.xaml:96
+msgid "Toggle Character Sheet sidebar"
+msgstr "Prepnutie panela Postava"
+
+#: Views\HotkeysWindow.xaml:100
+msgid "Toggle Saved Builds sidebar"
+msgstr "Prepnutie panela Uložené zostavy"
+
+#: Views\HotkeysWindow.xaml:104
+msgid "Copy PoEUrl link to Clipboard"
+msgstr "Skopírovať PoEUrl odkaz do Schránky"
+
+#: Views\HotkeysWindow.xaml:108
+msgid "Reset Skill tree"
+msgstr "Resetovať strom zručností"
+
+#: Views\HotkeysWindow.xaml:111
+msgid "Ctrl + Up/Down"
+msgstr "Ctrl + Hore/Dole"
+
+#: Views\HotkeysWindow.xaml:114
+msgid "(Saved builds) Move build up and down"
+msgstr "(Uložené zostavy) Presunúť zostavu hore/dole"
+
+#: Views\HotkeysWindow.xaml:118
+msgid "Undo last Skill tree change"
+msgstr "Vrátiť poslednú zmenu v strome zručností"
+
+#: Views\HotkeysWindow.xaml:122
+msgid "Redo last Skill tree change"
+msgstr "Obnoviť poslednú zmenu v strome zručností"
+
+#: Views\HotkeysWindow.xaml:126
+msgid "Save build as"
+msgstr "Uložiť zostavu ako"
+
+#: Views\HotkeysWindow.xaml:129 Views\HotkeysWindow.xaml:134
+msgid "Right Click"
+msgstr "Pravé kliknutie"
+
+#: Views\HotkeysWindow.xaml:132
+msgid "(Skill tree) Center Skill tree and reset zoom"
+msgstr "(Strom zručností) Vystrediť strom zručností a resetovať priblíženie"
+
+#: Views\HotkeysWindow.xaml:137
+msgid "(Attributes) Highlight corresponding nodes in Skill tree"
+msgstr "(Atribúty) Zvýrazniť zodpovedajúce uzly v strome zručností"
+
+#: Views\LoadingWindow.xaml:10
+msgid "Download"
+msgstr "Sťahovanie"
+
+#: Views\LoadingWindow.xaml:16
+msgid "Downloading Skill tree assets"
+msgstr "Sťahujem údaje stromu zručností"
+
+#: Views\MainWindow.xaml:163
+msgid "_File"
+msgstr "_Súbor"
+
+#: Views\MainWindow.xaml:167
+msgid "Save _As"
+msgstr "Uložiť _ako"
+
+#: Views\MainWindow.xaml:175
+msgid "E_xit"
+msgstr "U_končiť"
+
+#: Views\MainWindow.xaml:185
+msgid "_Edit"
+msgstr "_Upraviť"
+
+#: Views\MainWindow.xaml:189
+msgid "_Undo"
+msgstr "_Späť"
+
+#: Views\MainWindow.xaml:197
+msgid "_Redo"
+msgstr "Z_novu"
+
+#: Views\MainWindow.xaml:205
+msgid "Reset Skill _Tree"
+msgstr "_Resetovať strom zručností"
+
+#: Views\MainWindow.xaml:213
+msgid "_Clear Items"
+msgstr "_Vymazať predmety"
+
+#: Views\MainWindow.xaml:222
+msgid "_View"
+msgstr "_Zobraziť"
+
+#: Views\MainWindow.xaml:226
+msgid "_Theme"
+msgstr "_Téma"
+
+#: Views\MainWindow.xaml:236
+msgid "Acce_nt"
+msgstr "Akce_nt"
+
+#: Views\MainWindow.xaml:268
+msgid "Saved _Builds"
+msgstr "Uložené _zostavy"
+
+#: Views\MainWindow.xaml:273
+msgid "_Attributes"
+msgstr "_Atribúty"
+
+#: Views\MainWindow.xaml:278
+msgid "_Character Sheet"
+msgstr "_Postava"
+
+#: Views\MainWindow.xaml:283
+msgid "Skill _Tree Comparison"
+msgstr "Porovnávanie _stromov zručností"
+
+#: Views\MainWindow.xaml:289
+msgid "_Tools"
+msgstr "_Nástroje"
+
+#: Views\MainWindow.xaml:293
+msgid "Take _Screenshot of Skilled Nodes"
+msgstr "Zaznamenanie _snímky vycvičených uzlov"
+
+#: Views\MainWindow.xaml:301
+msgid "_Download & Import Items"
+msgstr "Stiahnutie a _import predmetov"
+
+#: Views\MainWindow.xaml:309
+msgid "Skill _Highlighted Nodes"
+msgstr "_Vycvičiť zvýraznené uzly"
+
+#: Views\MainWindow.xaml:317
+msgid "_Unhighlight All Nodes"
+msgstr "_Zrušiť zvýraznenie uzlov"
+
+#: Views\MainWindow.xaml:325
+msgid "Copy _Passive Attributes to Clipboard"
+msgstr "Skopírovať _pasívne atribúty do Schránky"
+
+#: Views\MainWindow.xaml:333
+msgid "Copy Po_EUrl of Skill tree to Clipboard"
+msgstr "Skopírovať Po_EUrl odkaz do Schránky"
+
+#: Views\MainWindow.xaml:341
+msgid "_Redownload Skill Tree Assets"
+msgstr "_Opätovne stiahnuť údaje stromu zručností"
+
+#: Views\MainWindow.xaml:350
+msgid "_Help"
+msgstr "_Pomocník"
+
+#: Views\MainWindow.xaml:354
+msgid "_Links"
+msgstr "O_dkazy"
+
+#: Views\MainWindow.xaml:361
+msgid "_Path of Exile Website"
+msgstr "_Path of Exile stránka"
+
+#: Views\MainWindow.xaml:368
+msgid "View _Help"
+msgstr "Zobraziť _pomocníka"
+
+#: Views\MainWindow.xaml:376
+msgid "Hot_keys"
+msgstr "_Klávesové skratky"
+
+#: Views\MainWindow.xaml:384
+msgid "Check for _Updates"
+msgstr "Skontrolovať _aktualizácie"
+
+#: Views\MainWindow.xaml:392
+msgid "_About PoESkillTree"
+msgstr "_O PoESkillTree"
+
+#: Views\MainWindow.xaml:418
+msgid "Reset"
+msgstr "Reset"
+
+#: Views\MainWindow.xaml:431
+msgid "Saved Builds"
+msgstr "Uložené zostavy"
+
+#: Views\MainWindow.xaml:449
+msgid "Filter:"
+msgstr "Filter:"
+
+#: Views\MainWindow.xaml:492
+msgid "Skill tree comparison"
+msgstr "Porovnávanie stromov zručností"
+
+#: Views\MainWindow.xaml:501
+msgid "Save"
+msgstr "Uložiť"
+
+#: Views\MainWindow.xaml:504
+msgid "Save As"
+msgstr "Uložiť ako"
+
+#: Views\MainWindow.xaml:507
+msgid "Delete"
+msgstr "Zmazať"
+
+#: Views\MainWindow.xaml:516
+msgid "Attributes"
+msgstr "Atribúty"
+
+#: Views\MainWindow.xaml:523
+msgid "Passive Attributes"
+msgstr "Pasívne atribúty"
+
+#: Views\MainWindow.xaml:540
+msgid "Item Attributes"
+msgstr "Atribúty predmetov"
+
+#: Views\MainWindow.xaml:559
+msgid "Total Attributes"
+msgstr "Atribúty celkovo"
+
+#: Views\MainWindow.xaml:581
+msgid "Character Sheet"
+msgstr "Postava"
+
+#: Views\MainWindow.xaml:588 SkillTreeFiles\Compute.cs:2232
+msgid "Defense"
+msgstr "Obrana"
+
+#: Views\MainWindow.xaml:605
+msgid "Offense"
+msgstr "Útok"
+
+#: Views\MainWindow.xaml:630
+msgid "Search:"
+msgstr "Hľadať:"
+
+#: Views\MainWindow.xaml:636
+msgid "Skill tree link:"
+msgstr "Odkaz stromu:"
+
+#: Views\MainWindow.xaml:642
+msgid "Load Tree"
+msgstr "Načítať strom"
+
+#: Views\OptimizerControllerWindow.xaml:10
+msgid "Skill Tree Optimizer"
+msgstr "Optimalizátor stromu zručností"
+
+#: Views\OptimizerControllerWindow.xaml:25
+msgid "Finding optimal Skill tree..."
+msgstr "Hľadanie optimálneho stromu zručností..."
+
+#: Views\OptimizerControllerWindow.xaml:30
+msgid "Initializing..."
+msgstr "Inicializácia..."
+
+#: SkillTreeFiles\Compute.cs:2231
+msgid "Character"
+msgstr "Postava"
+
+#: SkillTreeFiles\SkillTree.cs:936
+msgid "Please highlight non-skilled nodes by right-clicking them!"
+msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom!"
+
+#: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:236
+msgid "Download already in progress"
+msgstr "Sťahovanie už prebieha"
+
+#: SkillTreeFiles\Updater.cs:118
+msgid "Download already completed"
+msgstr "Sťahovanie už bolo dokončené"
+
+#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:366
+#: SkillTreeFiles\Updater.cs:408
+msgid "Download still in progress"
+msgstr "Sťahovanie stále prebieha"
+
+#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:410
+msgid "No package downloaded"
+msgstr "Balík nebol stiahnutý"
+
+#: SkillTreeFiles\Updater.cs:186
+msgid "Invalid package content"
+msgstr "Chybný obsah balíka"
+
+#: SkillTreeFiles\Updater.cs:251
+msgid "No release found"
+msgstr "Žiadna verzia nebola nájdená"
+
+#: SkillTreeFiles\Updater.cs:333
+#, csharp-format
+msgid "No such directory: {0}"
+msgstr "Priečinok nebol nájdený: {0}"
+
+#: SkillTreeFiles\Updater.cs:357
+#, csharp-format
+msgid "No such file or directory: {0}"
+msgstr "Súbor alebo priečinok nebol nájdený: {0}"
+
+#: SkillTreeFiles\Updater.cs:382
+msgid "Download completed or still in progress"
+msgstr "Sťahovanie bolo donočené, alebo stále prebieha"
+
+#: ViewModels\PoEBuild.cs:30
+#, csharp-format
+msgid "{0}, {1} point used"
+msgid_plural "{0}, {1} points used"
+msgstr[0] "{0}, {1} bod použitý"
+msgstr[1] "{0}, {1} body použité"
+msgstr[2] "{0}, {1} bodov použitých"
+
+#: Views\DownloadItemsWindow.xaml.cs:25 Views\DownloadItemsWindow.xaml.cs:31
+msgid "CharacterName"
+msgstr "MenoPostavy"
+
+#: Views\DownloadItemsWindow.xaml.cs:26 Views\DownloadItemsWindow.xaml.cs:35
+msgid "AccountName"
+msgstr "NázovÚčtu"
+
+#: Views\FormChooseBuildName.xaml.cs:33
+msgid "Not Available"
+msgstr "Nedostupné"
+
+#: Views\FormChooseBuildName.xaml.cs:34
+#, csharp-format
+msgid "Last updated: {0}"
+msgstr "Posledná zmena: {0}"
+
+#: Views\HelpWindow.xaml.cs:18
+msgid "Help file not found"
+msgstr "Súbor pomocníka nebol nájdený"
+
+#: Views\MainWindow.xaml.cs:462
+msgid "You have the latest version!"
+msgstr "Máte najnovšiu verziu!"
+
+#: Views\MainWindow.xaml.cs:462
+msgid "No update"
+msgstr "Žiadna aktualizácia"
+
+#: Views\MainWindow.xaml.cs:466
+#, csharp-format
+msgid "Do you want to install version {0}?"
+msgstr "Chcete nainštalovať verziu {0}?"
+
+#: Views\MainWindow.xaml.cs:470
+msgid "This is a pre-release, meaning there could be some bugs!"
+msgstr "Toto je predbežná verzia, ktorá môže obsahovať chyby!"
+
+#: Views\MainWindow.xaml.cs:471
+msgid "New pre-release"
+msgstr "Nová predbežná verzia"
+
+#: Views\MainWindow.xaml.cs:474
+msgid "New release"
+msgstr "Nová verzia"
+
+#: Views\MainWindow.xaml.cs:486
+msgid "Error occured"
+msgstr "Nastala chyba"
+
+#: Views\MainWindow.xaml.cs:503 Views\MainWindow.xaml.cs:530
+#: Views\MainWindow.xaml.cs:543
+msgid "Update failed"
+msgstr "Aktualizácia zlyhala"
+
+#: Views\MainWindow.xaml.cs:1072
+msgid "Right click to edit"
+msgstr "Upraviť kliknutím pravého tlačidla"
+
+#: Views\MainWindow.xaml.cs:1143
+msgid "Please select a saved build!"
+msgstr "Prosím zvoľte uloženú zostavu!"
+
+#: Views\MainWindow.xaml.cs:1143
+msgid "Error"
+msgstr "Chyba"
+
+#: Views\OptimizerControllerWindow.xaml.cs:62
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: Views\OptimizerControllerWindow.xaml.cs:63
+#: Views\OptimizerControllerWindow.xaml.cs:151
+msgid "Pause"
+msgstr "Pozastaviť"
+
+#: Views\OptimizerControllerWindow.xaml.cs:111
+#, csharp-format
+msgid "Best result so far: {0} additional point spent"
+msgid_plural "Best result so far: {0} additional points spent"
+msgstr[0] "Najlepší doterajší výsledok: {0} dodatočný bod použitý"
+msgstr[1] "Najlepší doterajší výsledok: {0} dodatočné body použité"
+msgstr[2] "Najlepší doterajší výsledok: {0} dodatočných bodov použitých"
+
+#: Views\OptimizerControllerWindow.xaml.cs:125
+msgid "Finished!"
+msgstr "Dokončené!"
+
+#: Views\OptimizerControllerWindow.xaml.cs:158
+msgid "Continue"
+msgstr "Pokračovať"
+
+#~ msgid "Level:"
+#~ msgstr "Level:"
+
+#~ msgid "Used:"
+#~ msgstr "Used:"
+
+#~ msgid "Light"
+#~ msgstr "Light"
+
+#~ msgid "Dark"
+#~ msgstr "Dark"
+
+#~ msgid "Amber"
+#~ msgstr "Amber"
+
+#~ msgid "Blue"
+#~ msgstr "Blue"
+
+#~ msgid "Brown"
+#~ msgstr "Brown"
+
+#~ msgid "Cobalt"
+#~ msgstr "Cobalt"
+
+#~ msgid "Crimson"
+#~ msgstr "Crimson"
+
+#~ msgid "Cyan"
+#~ msgstr "Cyan"
+
+#~ msgid "Emerald"
+#~ msgstr "Emerald"
+
+#~ msgid "Green"
+#~ msgstr "Green"
+
+#~ msgid "Indigo"
+#~ msgstr "Indigo"
+
+#~ msgid "Lime"
+#~ msgstr "Lime"
+
+#~ msgid "Magenta"
+#~ msgstr "Magenta"
+
+#~ msgid "Mauve"
+#~ msgstr "Mauve"
+
+#~ msgid "Olive"
+#~ msgstr "Olive"
+
+#~ msgid "Orange"
+#~ msgstr "Orange"
+
+#~ msgid "Pink"
+#~ msgstr "Pink"
+
+#~ msgid "Purple"
+#~ msgstr "Purple"
+
+#~ msgid "Red"
+#~ msgstr "Red"
+
+#~ msgid "Sienna"
+#~ msgstr "Sienna"
+
+#~ msgid "Steel"
+#~ msgstr "Steel"
+
+#~ msgid "Taupe"
+#~ msgstr "Taupe"
+
+#~ msgid "Teal"
+#~ msgstr "Teal"
+
+#~ msgid "Violet"
+#~ msgstr "Violet"
+
+#~ msgid "Yellow"
+#~ msgstr "Yellow"
