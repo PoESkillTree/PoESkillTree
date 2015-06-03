@@ -993,7 +993,6 @@ namespace POESKillTree.Views
                 {
                     _persistentData.CurrentBuild.ItemData = itemData;
                     ItemAttributes = new ItemAttributes(itemData);
-                    lbItemAttr.ItemsSource = _itemAttributes.Attributes;
                     mnuClearItems.IsEnabled = true;
                 }
                 catch (Exception ex)
@@ -1001,7 +1000,6 @@ namespace POESKillTree.Views
                     MessageBox.Show(this, "Item data currupted!");
                     _persistentData.CurrentBuild.ItemData = "";
                     ItemAttributes = null;
-                    lbItemAttr.ItemsSource = null;
                     ClearCurrentItemData();
                 }
             }

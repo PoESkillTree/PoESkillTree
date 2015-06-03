@@ -18,6 +18,7 @@ namespace POESKillTree.Controls
 {
     public partial class ItemVisualizer : UserControl
     {
+
         public Item Item
         {
             get { return (Item)GetValue(ItemProperty); }
@@ -36,7 +37,7 @@ namespace POESKillTree.Controls
         {
             var pos = e.GetPosition(this);
 
-            tooltip.VerticalOffset = pos.Y+2;
+            tooltip.VerticalOffset = pos.Y + 2;
             tooltip.HorizontalOffset = pos.X;
         }
     }

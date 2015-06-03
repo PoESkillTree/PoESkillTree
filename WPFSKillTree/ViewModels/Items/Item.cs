@@ -13,26 +13,7 @@ namespace POESKillTree.ViewModels.Items
 {
     public class Item : INotifyPropertyChanged, IRangeProvider<int>
     {
-        /// <summary>
-        /// itemclass and itemslot values with same name must have same value
-        /// </summary>
-        [Flags]
-        public enum ItemSlot
-        {
-            Unequipable = 0x0,
-            Armor = 0x1,
-            MainHand = 0x2,
-            OffHand = 0x4,
-            Ring = 0x8,
-            Ring2 = 0x10,
-            Amulet = 0x20,
-            Helm = 0x40,
-            Gloves = 0x80,
-            Boots = 0x100,
-            Gem = 0x200,
-            Belt = 0x400,
-            TwoHand = 0x800,
-        }
+
 
         private static Regex colorcleaner = new Regex("\\<.+?\\>");
         private static readonly Regex numberfilter = new Regex(@"[0-9]*\.?[0-9]+");
@@ -276,7 +257,7 @@ namespace POESKillTree.ViewModels.Items
             }
 
             if (HaveFlavourText)
-                j.Add("flavourText",new JArray(FlavourText));
+                j.Add("flavourText", new JArray(FlavourText));
 
             return j;
         }
@@ -517,7 +498,7 @@ namespace POESKillTree.ViewModels.Items
         {
             get
             {
-                return new Range<int>(Y, Y + H-1);
+                return new Range<int>(Y, Y + H - 1);
             }
         }
     }

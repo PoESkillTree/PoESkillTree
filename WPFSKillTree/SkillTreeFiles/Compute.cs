@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
 using POESKillTree.ViewModels.Items;
+using System.Linq;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -2250,7 +2251,7 @@ namespace POESKillTree.SkillTreeFiles
         // Initializes structures.
         public static void Initialize(SkillTree skillTree, ItemAttributes itemAttrs)
         {
-            Items = itemAttrs.Equip;
+            Items = itemAttrs.Equip.ToList();
 
             MainHand = new Weapon(Items.Find(i => i.Class == ItemClass.MainHand));
             OffHand = new Weapon(Items.Find(i => i.Class == ItemClass.OffHand));

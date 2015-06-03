@@ -111,7 +111,8 @@ namespace POESKillTree.Controls
                         VerticalAlignment = VerticalAlignment.Top,
                         Item = item
                     };
-
+                    if (item == _dnd_item)
+                        iv.Opacity = 0.3;
                     iv.MouseLeftButtonDown += Iv_MouseLeftButtonDown;
 
                     _usedVisualizers.Add(item, iv);
@@ -173,7 +174,7 @@ namespace POESKillTree.Controls
                     var items = (json["items"] as JArray).Select(i => new Item((JObject)i));
 
                     //get free line
-                    var y = (Items.Count > 0) ? Items.Max(i => i.Y + i.H) + 3 : 0;
+                    var y = LastLine + 1;
                     int x = 0;
                     int maxh = 0;
                     foreach (var item in items)
@@ -251,6 +252,7 @@ namespace POESKillTree.Controls
         Rectangle _dnd_overlay = null;
         Point _dnd_startDrag;
         Thickness _dnd_original_Margin;
+        Item _dnd_item = null;
         private void Iv_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
@@ -288,11 +290,14 @@ namespace POESKillTree.Controls
 
 
                 siv.Opacity = 0.3;
+                _dnd_item = siv.Item;
                 DragDrop.DoDragDrop(this, sender, DragDropEffects.Link | DragDropEffects.Move);
                 siv.Opacity = 1;
                 gcontent.Children.Remove(_dnd_overlay);
                 gcontent.Children.Remove(_dndVis);
-
+                _dndVis = null;
+                _dnd_overlay = null;
+                _dnd_item = null;
             }
         }
 
@@ -324,7 +329,7 @@ namespace POESKillTree.Controls
 
                 var newposr = new Range<int>(x, x + itm.W - 1);
 
-                if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.W - 1).Intersects(newposr)) || newposr.To >= 12 || y < 0)
+                if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.W - 1).Intersects(newposr)) || newposr.To >= 12 || y < 0 || x < 0 )
                     _dnd_overlay.Fill = Brushes.DarkRed;
                 else
                     _dnd_overlay.Fill = Brushes.DarkGreen;
@@ -354,14 +359,32 @@ namespace POESKillTree.Controls
 
                 y += (int)asBar.Value;
 
-                var itm = _dndVis.Item;
-
+                var itm = _dnd_item;
+                _dnd_item = null;
                 itm.X = x;
                 itm.Y = y;
 
                 Items.Remove(itm);
                 Items.Add(itm);
             }
+        }
+
+        private void gcontent_DragLeave(object sender, DragEventArgs e)
+        {
+            if (_dndVis != null)
+                _dndVis.Visibility = Visibility.Collapsed;
+
+            if (_dnd_overlay != null)
+                _dnd_overlay.Visibility = Visibility.Collapsed;
+        }
+
+        private void gcontent_DragEnter(object sender, DragEventArgs e)
+        {
+            if (_dndVis != null)
+                _dndVis.Visibility = Visibility.Visible;
+
+            if (_dnd_overlay != null)
+                _dnd_overlay.Visibility = Visibility.Visible;
         }
         //public Int32Rect GetFreeSpace(int width, int heighh, int startY = 0, int startX = 0)
         //{

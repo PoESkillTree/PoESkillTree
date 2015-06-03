@@ -30,7 +30,7 @@
         </Style>
     </UserControl.Style>
     <Grid>
-        <Popup AllowsTransparency="True" Name="tooltip" IsOpen="{Binding IsMouseOver,ElementName=control, Mode=OneWay}" Placement="RelativePoint" PlacementTarget="{Binding ElementName=control}" >
+        <Popup AllowsTransparency="True" Name="tooltip" IsOpen="{Binding IsMouseOver,ElementName=control, Mode=OneWay}" Placement="RelativePoint" PlacementTarget="{Binding ElementName=control}" IsHitTestVisible="False" >
             <cont:ItemTooltip Item="{Binding Item, ElementName=control}"/>
         </Popup>
         <Image Source="{Binding Item, ElementName=control, Converter={StaticResource itemToImageConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None"/>

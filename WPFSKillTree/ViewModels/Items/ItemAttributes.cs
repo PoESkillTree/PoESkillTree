@@ -7,6 +7,8 @@ using System.Linq;
 using System;
 using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 
 namespace POESKillTree.ViewModels.Items
 {
@@ -17,126 +19,126 @@ namespace POESKillTree.ViewModels.Items
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.Armor);
+                return GetItemInSlot(ItemSlot.Armor);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.Armor);
+                SetItemInSlot(value, ItemSlot.Armor);
             }
         }
         public Item MainHand
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.MainHand);
+                return GetItemInSlot(ItemSlot.MainHand);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.MainHand);
+                SetItemInSlot(value, ItemSlot.MainHand);
             }
         }
         public Item OffHand
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.OffHand);
+                return GetItemInSlot(ItemSlot.OffHand);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.OffHand);
+                SetItemInSlot(value, ItemSlot.OffHand);
             }
         }
         public Item Ring
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.Ring);
+                return GetItemInSlot(ItemSlot.Ring);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.Ring);
+                SetItemInSlot(value, ItemSlot.Ring);
             }
         }
         public Item Ring2
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.Ring2);
+                return GetItemInSlot(ItemSlot.Ring2);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.Ring2);
+                SetItemInSlot(value, ItemSlot.Ring2);
             }
         }
         public Item Amulet
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.Amulet);
+                return GetItemInSlot(ItemSlot.Amulet);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.Amulet);
+                SetItemInSlot(value, ItemSlot.Amulet);
             }
         }
         public Item Helm
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.Helm);
+                return GetItemInSlot(ItemSlot.Helm);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.Helm);
+                SetItemInSlot(value, ItemSlot.Helm);
             }
         }
         public Item Gloves
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.Gloves);
+                return GetItemInSlot(ItemSlot.Gloves);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.Gloves);
+                SetItemInSlot(value, ItemSlot.Gloves);
             }
         }
         public Item Boots
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.Boots);
+                return GetItemInSlot(ItemSlot.Boots);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.Boots);
+                SetItemInSlot(value, ItemSlot.Boots);
             }
         }
         public Item Gem
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.Gem);
+                return GetItemInSlot(ItemSlot.Gem);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.Gem);
+                SetItemInSlot(value, ItemSlot.Gem);
             }
         }
         public Item Belt
         {
             get
             {
-                return GetItemInSlot(Item.ItemSlot.Belt);
+                return GetItemInSlot(ItemSlot.Belt);
             }
             set
             {
-                SetItemInSlot(value, Item.ItemSlot.Belt);
+                SetItemInSlot(value, ItemSlot.Belt);
             }
         }
 
 
-        public Item GetItemInSlot(Item.ItemSlot slot)
+        public Item GetItemInSlot(ItemSlot slot)
         {
             return _Equip.FirstOrDefault(i => i.Slot == slot);
         }
@@ -147,30 +149,32 @@ namespace POESKillTree.ViewModels.Items
         /// <param name="value"></param>
         /// <param name="slot"></param>
         /// <returns>true if item was set</returns>
-        public bool SetItemInSlot(Item value, Item.ItemSlot slot)
+        public bool SetItemInSlot(Item value, ItemSlot slot)
         {
-            //TODO: this is broken
-            if (value == null)
-                return false;
+            if (value != null)
+            {
+                if (value.Class == ItemClass.Unequipable)
+                    return false;
 
-            if (value.Class == ItemClass.Unequipable)
-                return false;
+                if ((int)value.Class != (int)slot && (slot == ItemSlot.Ring2 && value.Class != ItemClass.Ring))
+                    return false;
 
-            if (slot == Item.ItemSlot.Unequipable)
+            }
+            if (slot == ItemSlot.Unequipable)
                 return false;
-
-            if ((int)value.Class != (int)slot && (slot == Item.ItemSlot.Ring2 && value.Class != ItemClass.Ring))
-                return false;
-
             RemoveItemFromSlot(slot);
 
-            value.Slot = slot;
-            _Equip.Add(value);
+            if (value != null)
+            {
+                value.Slot = slot;
+                _Equip.Add(value);
+            }
             OnPropertyChanged(slot.ToString());
+            RefreshItemAttributes();
             return true;
         }
 
-        public Item RemoveItemFromSlot(Item.ItemSlot slot)
+        public Item RemoveItemFromSlot(ItemSlot slot)
         {
             var itm = _Equip.FirstOrDefault(i => i.Slot == slot);
             if (itm != null)
@@ -179,23 +183,40 @@ namespace POESKillTree.ViewModels.Items
             OnPropertyChanged("Equip");
             OnPropertyChanged(slot.ToString());
 
-            itm.Slot = Item.ItemSlot.Unequipable;
+            if (itm != null)
+                itm.Slot = ItemSlot.Unequipable;
             return itm;
         }
         #endregion
 
         private readonly List<Attribute> aList = new List<Attribute>();
         private Dictionary<string, List<float>> AgregatedAttributes;
-        public ListCollectionView Attributes;
-        private List<Item> _Equip = new List<Item>();
 
-        public List<Item> Equip
+        private ListCollectionView _Attributes;
+
+        private ObservableCollection<Item> _Equip = new ObservableCollection<Item>();
+
+        public ObservableCollection<Item> Equip
         {
             get { return _Equip; }
             set
             {
                 _Equip = value;
                 OnPropertyChanged("Equip");
+            }
+        }
+
+        public ListCollectionView Attributes
+        {
+            get
+            {
+                return _Attributes;
+            }
+
+            set
+            {
+                _Attributes = value;
+                OnPropertyChanged("Attributes");
             }
         }
 
@@ -215,48 +236,53 @@ namespace POESKillTree.ViewModels.Items
                 var id = jobj["inventoryId"].Value<string>();
                 if (id == "BodyArmour")
                 {
-                    AddItem(jobj, ItemClass.Armor, Item.ItemSlot.Armor);
+                    AddItem(jobj, ItemClass.Armor, ItemSlot.Armor);
                 }
                 if (id == "Ring")
                 {
-                    AddItem(jobj, ItemClass.Ring, Item.ItemSlot.Ring);
+                    AddItem(jobj, ItemClass.Ring, ItemSlot.Ring);
                 }
                 if (id == "Ring2")
                 {
-                    AddItem(jobj, ItemClass.Ring, Item.ItemSlot.Ring2);
+                    AddItem(jobj, ItemClass.Ring, ItemSlot.Ring2);
                 }
                 if (id == "Gloves")
                 {
-                    AddItem(jobj, ItemClass.Gloves, Item.ItemSlot.Gloves);
+                    AddItem(jobj, ItemClass.Gloves, ItemSlot.Gloves);
                 }
                 if (id == "Weapon")
                 {
-                    AddItem(jobj, ItemClass.MainHand, Item.ItemSlot.MainHand);
+                    AddItem(jobj, ItemClass.MainHand, ItemSlot.MainHand);
                 }
                 if (id == "Offhand")
                 {
-                    AddItem(jobj, ItemClass.OffHand, Item.ItemSlot.OffHand);
+                    AddItem(jobj, ItemClass.OffHand, ItemSlot.OffHand);
                 }
                 if (id == "Helm")
                 {
-                    AddItem(jobj, ItemClass.Helm, Item.ItemSlot.Helm);
+                    AddItem(jobj, ItemClass.Helm, ItemSlot.Helm);
                 }
                 if (id == "Boots")
                 {
-                    AddItem(jobj, ItemClass.Boots, Item.ItemSlot.Boots);
+                    AddItem(jobj, ItemClass.Boots, ItemSlot.Boots);
                 }
                 if (id == "Amulet")
                 {
-                    AddItem(jobj, ItemClass.Amulet, Item.ItemSlot.Amulet);
+                    AddItem(jobj, ItemClass.Amulet, ItemSlot.Amulet);
                 }
                 if (id == "Belt")
                 {
-                    AddItem(jobj, ItemClass.Belt, Item.ItemSlot.Belt);
+                    AddItem(jobj, ItemClass.Belt, ItemSlot.Belt);
                 }
             }
 
             #endregion
 
+            RefreshItemAttributes();
+        }
+
+        private void RefreshItemAttributes()
+        {
             aList.Clear();
             NonLocalMods.Clear();
             Attributes = new ListCollectionView(aList);
@@ -330,18 +356,18 @@ namespace POESKillTree.ViewModels.Items
             Attributes.GroupDescriptions.Add(pgd);
             Attributes.CustomSort = new NumberLessStringComparer();
 
-
-            var itemsBinding = new Binding();
-
             Attributes.Refresh();
         }
 
-        private void AddItem(JObject val, ItemClass iclass, Item.ItemSlot islot)
+        private void AddItem(JObject val, ItemClass iclass, ItemSlot islot)
         {
             Item item = null;
             item = new Item(iclass, val);
             item.Slot = islot;
             Equip.Add(item);
+            OnPropertyChanged("Equip");
+
+            RefreshItemAttributes();
         }
 
         public class Attribute : INotifyPropertyChanged
