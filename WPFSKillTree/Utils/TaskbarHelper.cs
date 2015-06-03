@@ -60,7 +60,7 @@ namespace POESKillTree.Utils
             // No pinning when debugging.
             if (Debugger.IsAttached) return;
 
-            if (!IsPinned)
+            if (IsPinningSupported && !IsPinned)
             {
                 // Prevent window from getting pinned by OS.
                 WindowProperties.SetWindowProperty(window, SystemProperties.System.AppUserModel.PreventPinning, "true");
