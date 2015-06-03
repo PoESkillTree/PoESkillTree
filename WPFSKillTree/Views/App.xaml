@@ -17,4 +17,8 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
+    <JumpList.JumpList>
+        <JumpList ShowFrequentCategory="False" ShowRecentCategory="False">
+        </JumpList>
+    </JumpList.JumpList>
 </Application>

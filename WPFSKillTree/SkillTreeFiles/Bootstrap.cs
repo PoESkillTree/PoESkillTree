@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using POESKillTree.Utils;
 using POESKillTree.Views;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -76,6 +77,10 @@ namespace POESKillTree.SkillTreeFiles
         [STAThread]
         public static void Main(string[] arguments)
         {
+            // If executed from JumpTask, do nothing.
+            if (TaskbarHelper.IsJumpTask(arguments))
+                return;
+
             // Don't do shadow copying when being debugged in VS.
             if (Debugger.IsAttached)
             {
