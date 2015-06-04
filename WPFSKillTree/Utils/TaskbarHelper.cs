@@ -154,9 +154,7 @@ namespace POESKillTree.Utils
         {
             get
             {
-                if (HasVerbsLoaded) return HasVerbsLoaded;
-
-                LoadVerbs();
+                if (!HasVerbsLoaded) LoadVerbs();
 
                 return HasPinningVerbs;
             }
