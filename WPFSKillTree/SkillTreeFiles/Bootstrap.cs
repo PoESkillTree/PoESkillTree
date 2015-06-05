@@ -48,7 +48,7 @@ namespace POESKillTree.SkillTreeFiles
 
                     // If location is inside of known folder, replace its path with GUID.
                     if (path.StartsWith(knownFolder.ParsingName))
-                        return Path.Combine("{" + knownFolder.FolderId.ToString().ToUpperInvariant() + "}", Path.GetFileName(location));
+                        return Path.Combine("{" + knownFolder.FolderId.ToString().ToUpperInvariant() + "}", location.Substring(knownFolder.ParsingName.Length + 1));
                 }
             }
 
