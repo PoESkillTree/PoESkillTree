@@ -478,6 +478,10 @@ msgstr ""
 msgid "Download completed or still in progress"
 msgstr ""
 
+#: Utils\TaskbarHelper.cs:79
+msgid "Pin this program to taskbar"
+msgstr ""
+
 #: ViewModels\PoEBuild.cs:30
 #, csharp-format
 msgid "{0}, {1} point used"
@@ -506,49 +510,49 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:462
+#: Views\MainWindow.xaml.cs:464
 msgid "You have the latest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:462
+#: Views\MainWindow.xaml.cs:464
 msgid "No update"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:466
+#: Views\MainWindow.xaml.cs:468
 #, csharp-format
 msgid "Do you want to install version {0}?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:470
+#: Views\MainWindow.xaml.cs:472
 msgid "This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:471
+#: Views\MainWindow.xaml.cs:473
 msgid "New pre-release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:474
+#: Views\MainWindow.xaml.cs:476
 msgid "New release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:486
+#: Views\MainWindow.xaml.cs:488
 msgid "Error occured"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:503 Views\MainWindow.xaml.cs:530
-#: Views\MainWindow.xaml.cs:543
+#: Views\MainWindow.xaml.cs:505 Views\MainWindow.xaml.cs:532
+#: Views\MainWindow.xaml.cs:545
 msgid "Update failed"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1072
+#: Views\MainWindow.xaml.cs:1074
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1143
+#: Views\MainWindow.xaml.cs:1145
 msgid "Please select a saved build!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1143
+#: Views\MainWindow.xaml.cs:1145
 msgid "Error"
 msgstr ""
 
