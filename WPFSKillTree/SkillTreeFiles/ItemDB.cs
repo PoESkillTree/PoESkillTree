@@ -492,6 +492,11 @@ namespace POESKillTree.SkillTreeFiles
             public bool StrikesWithBothWeapons = false;
             [XmlIgnore]
             public bool StrikesWithBothWeaponsSpecified { get { return StrikesWithBothWeapons; } }
+            // Defines whether skill can be used unarmed.
+            [XmlAttribute]
+            public bool Unarmed = false;
+            [XmlIgnore]
+            public bool UnarmedSpecified { get { return Unarmed; } }
 
             // Returns all attributes of gem with defined values for specified level.
             internal AttributeSet AttributesAtLevel(int level)
@@ -1437,6 +1442,10 @@ namespace POESKillTree.SkillTreeFiles
                 // Include form.
                 if (entry.IncludeForm != DamageForm.Any)
                     nature.Form |= entry.IncludeForm;
+
+                // Unarmed.
+                if (entry.Unarmed)
+                    nature.WeaponType |= WeaponType.Unarmed;
             }
 
             return nature;
