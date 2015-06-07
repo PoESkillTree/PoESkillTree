@@ -840,7 +840,8 @@ namespace POESKillTree.SkillTreeFiles
                 { "Projectile", DamageForm.Projectile },
                 { "AoE",        DamageForm.AoE },
                 { "Area",       DamageForm.AoE },
-                { "Burning",    DamageForm.DoT }
+                { "Burning",    DamageForm.DoT },
+                { "Trigger",    DamageForm.OnUse }
             };
             static Dictionary<string, DamageSource> Sources = new Dictionary<string, DamageSource>()
             {
