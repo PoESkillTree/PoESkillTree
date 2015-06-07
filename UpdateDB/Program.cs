@@ -102,7 +102,7 @@ namespace UpdateDB
                 {
                     try
                     {
-                        Info("Downloading skill tree assests...");
+                        Info("Downloading skill tree assets...");
                         SkillTree.CreateSkillTree();
                         Info("Done.");
                     }

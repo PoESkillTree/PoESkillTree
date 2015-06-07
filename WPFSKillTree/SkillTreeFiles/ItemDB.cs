@@ -172,7 +172,7 @@ namespace POESKillTree.SkillTreeFiles
                         }
                         else if (merge.QualitySpecified)
                         {
-                            // No need to add ValueAt, if there is ValueForQualityRange covering specified Level with same Text.
+                            // No need to add ValueAt, if there is ValueForQualityRange covering specified Quality with same Text.
                             ValueForQualityRange covers = (ValueForQualityRange)Values.Find(v => v is ValueForQualityRange && ((ValueForQualityRange)v).From <= merge.Quality && ((ValueForQualityRange)v).To >= merge.Quality && v.Text == merge.Text);
                             if (covers == null)
                                 Values.Add(merge);
