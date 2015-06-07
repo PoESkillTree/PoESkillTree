@@ -399,7 +399,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>call $(ProjectDir)build-locale.bat $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
