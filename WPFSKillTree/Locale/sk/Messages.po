@@ -399,7 +399,7 @@ msgstr "Atribúty celkovo"
 msgid "Character Sheet"
 msgstr "Postava"
 
-#: Views\MainWindow.xaml:588 SkillTreeFiles\Compute.cs:2232
+#: Views\MainWindow.xaml:588 SkillTreeFiles\Compute.cs:2273
 msgid "Defense"
 msgstr "Obrana"
 
@@ -431,7 +431,7 @@ msgstr "Hľadanie optimálneho stromu zručností..."
 msgid "Initializing..."
 msgstr "Inicializácia..."
 
-#: SkillTreeFiles\Compute.cs:2231
+#: SkillTreeFiles\Compute.cs:2272
 msgid "Character"
 msgstr "Postava"
 
