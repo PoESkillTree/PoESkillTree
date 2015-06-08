@@ -18,7 +18,7 @@ namespace POESKillTree.Controls
 {
     public partial class ItemVisualizer : UserControl
     {
-
+        public static Brush FoundItemBrush = new SolidColorBrush(Color.FromArgb(0x80,0x43,0xD9,0xE8));
         public Item Item
         {
             get { return (Item)GetValue(ItemProperty); }

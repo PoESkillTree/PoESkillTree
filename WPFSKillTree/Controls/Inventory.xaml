@@ -7,7 +7,7 @@
              xmlns:item="clr-namespace:POESKillTree.ViewModels.Items"
              mc:Ignorable="d" 
              x:Name="control"
-             Width="600" Height="521">
+             Width="600" Height="521" Loaded="control_Loaded">
     <Control.Resources>
         <Style x:Key="itemVisualizerStyle" TargetType="{x:Type cont:ItemVisualizer}">
             <Style.Setters>

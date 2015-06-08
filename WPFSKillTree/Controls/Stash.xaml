@@ -5,13 +5,52 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cont="clr-namespace:POESKillTree.Controls"
              xmlns:items ="clr-namespace:POESKillTree.ViewModels.Items"
-             xmlns:WpfRangeControls="clr-namespace:WpfRangeControls;assembly=WpfRangeControls" x:Class="POESKillTree.Controls.Stash"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:WpfRangeControls="clr-namespace:WpfRangeControls;assembly=WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="POESKillTree.Controls.Stash"
              mc:Ignorable="d" 
              d:DesignHeight="351"
-             x:Name="control" MouseWheel="control_MouseWheel"
+             x:Name="control" MouseWheel="control_MouseWheel" Loaded="control_Loaded"
              >
     <UserControl.Resources>
+        <CompositeCollection x:Key="scrollbarOverlayCollection">
+            <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>
+            <CollectionContainer Collection="{Binding SearchMatches, Source={x:Reference Name=control}}"/>
+        </CompositeCollection>
 
+        <CompositeCollection x:Key="stashTabsCollection">
+            <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>
+            <Button Width="16" MinWidth="16" MinHeight="16" Height="16" Padding="3" Click="Button_AddBookmark">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border x:Name="Background" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="8"/>
+                            <Rectangle x:Name="DisabledVisualElement" Fill="{DynamicResource ControlsDisabledBrush}" IsHitTestVisible="False" Opacity="0" RadiusY="8" RadiusX="8"/>
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content, Converter={Custom:ToUpperConverter}}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush8}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush7}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="BorderThickness" TargetName="Background" Value="2"/>
+                                <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource ButtonMouseOverBorderBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="0.7"/>
+                                <Setter Property="Opacity" TargetName="contentPresenter" Value="0.3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+                <Grid>
+                    <Rectangle Fill="Gray" Height="3" />
+                    <Rectangle Fill="Gray" Width="3" />
+                </Grid>
+            </Button>
+        </CompositeCollection>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,6 +62,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
+
         <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True" SizeChanged="gcontent_SizeChanged" DragOver="control_DragOver" AllowDrop="True" Drop="gcontent_Drop" DragLeave="gcontent_DragLeave" DragEnter="gcontent_DragEnter">
             <Grid.Background>
                 <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
@@ -42,46 +82,82 @@
             </Grid.Background>
         </Grid>
 
-        <WrapPanel Grid.Column="0" Orientation="Vertical">
-            <WrapPanel.Resources>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                    <Style.Setters>
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
-                        <Setter Property="LayoutTransform">
-                            <Setter.Value>
-                                <TransformGroup>
-                                    <RotateTransform Angle="-90"/>
-                                </TransformGroup>
-                            </Setter.Value>
-                        </Setter>
-                    </Style.Setters>
-                </Style>
-            </WrapPanel.Resources>
-            <Button>10000000</Button>
-            <Button>1000000</Button>
-            <Button>1000000</Button>
-            <Button>1000000</Button>
-            <Button>1000000</Button>
-            <Button>1000000</Button>
-            <Button>1000000</Button>
-            <Button>1000000</Button>
-            <Button>1000000</Button>
-            <Button>1000000</Button>
-            <Button>1000000</Button>
-        </WrapPanel>
+        <ItemsControl Grid.Column="0" ItemsSource="{StaticResource stashTabsCollection}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button RenderTransformOrigin="0.5,0.5" MinWidth="25" Height="20" MinHeight="16" Content="{Binding Name}" Click="Button_StashTab_Click" MouseDown="ButtonStashTabMouseDown">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type ButtonBase}">
+                                <Border CornerRadius="3,3,0,0" x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Padding="3,0">
+                                    <ContentPresenter  x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="Button.IsDefaulted" Value="True">
+                                        <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                                        <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                                        <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                                    </Trigger>
+                                    <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                        <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
+                                        <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                                        <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                                        <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.Background>
+                            <SolidColorBrush Color="{Binding Color}" />
+                        </Button.Background>
+                        <Button.LayoutTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="-90"/>
+                            </TransformGroup>
+                        </Button.LayoutTransform>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
         <Grid Grid.Row="1" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Click="Button_Click" Content="load" RenderTransformOrigin="0.5,0.5">
-            </Button>
-            <TextBox x:Name="tbload" Grid.Column="1"/>
+            <Button Grid.Column="0" Click="Button_Click" Content="load" RenderTransformOrigin="0.5,0.5"/>
+            <TextBox x:Name="tbSearch" Grid.Column="1" TextChanged="tbSearch_TextChanged"/>
         </Grid>
 
-        <WpfRangeControls:RangeScrollbar Name="asBar" Grid.Column="2" Maximum="{Binding LastLine,ElementName=control}" ValueChanged="asBar_ValueChanged" SmallChange="1" LargeChange="12">
-            <Rectangle Fill="Red" WpfRangeControls:RangePanel.Position="30" Width="5" Height="5"></Rectangle>
+        <WpfRangeControls:RangeScrollbar x:Name="asBar" Grid.Column="2" Maximum="{Binding LastLine, ElementName=control}" ValueChanged="asBar_ValueChanged" SmallChange="1" LargeChange="12">
+            <WpfRangeControls:RangeScrollbar.Resources>
+                <DataTemplate DataType="{x:Type cont:StashBookmark}" >
+                    <Rectangle Height="2" HorizontalAlignment="Stretch" WpfRangeControls:RangePanel.Position="{Binding Position}">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{Binding Color}" x:Name="_not_working_without_name_1234" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type sys:Int32}">
+                    <Rectangle Height="4" Width="4" WpfRangeControls:RangePanel.Position="{Binding}" Fill="#8043D9E8"/>
+                </DataTemplate>
+            </WpfRangeControls:RangeScrollbar.Resources>
+            <WpfRangeControls:RangeScrollbar.ItemsSource>
+                <StaticResource ResourceKey="scrollbarOverlayCollection"/>
+            </WpfRangeControls:RangeScrollbar.ItemsSource>
         </WpfRangeControls:RangeScrollbar>
 
     </Grid>

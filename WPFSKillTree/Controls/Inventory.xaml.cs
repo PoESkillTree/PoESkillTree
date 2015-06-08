@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Controls
 {
@@ -32,7 +33,6 @@ namespace POESKillTree.Controls
         public Inventory()
         {
             InitializeComponent();
-            Keyboard.AddKeyDownHandler(Application.Current.MainWindow, KeyDown);
         }
 
         private void ItemVisualizer_DragOver(object sender, DragEventArgs e)
@@ -93,6 +93,12 @@ namespace POESKillTree.Controls
 
 
             }
+        }
+
+        private void control_Loaded(object sender, RoutedEventArgs e)
+        {
+            var w = Window.GetWindow(this);
+            Keyboard.AddKeyDownHandler(w, KeyDown);
         }
     }
 }

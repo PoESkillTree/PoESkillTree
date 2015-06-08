@@ -162,6 +162,7 @@
     <Compile Include="Controls\Stash.xaml.cs">
       <DependentUpon>Stash.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\StashBookmark.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Notifier.cs" />
     <Compile Include="Model\Options.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
+    <Compile Include="Utils\Helpers.cs" />
     <Compile Include="Utils\ItemAssetDownloader.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\Items\Affix.cs" />
@@ -251,6 +253,9 @@
     <Compile Include="Views\OptimizerControllerWindow.xaml.cs">
       <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\TabPicker.xaml.cs">
+      <DependentUpon>TabPicker.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\Inventory.xaml">
       <SubType>Designer</SubType>
@@ -325,6 +330,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\OptimizerControllerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

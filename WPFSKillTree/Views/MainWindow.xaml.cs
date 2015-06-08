@@ -38,6 +38,7 @@ using MessageBox = POESKillTree.Views.MetroMessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using ToolTip = System.Windows.Controls.ToolTip;
 using POESKillTree.ViewModels.Items;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Views
 {
@@ -1319,7 +1320,7 @@ namespace POESKillTree.Views
         private void BeginDrag(MouseEventArgs e)
         {
             var listView = lvSavedBuilds;
-            var listViewItem = FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
+            var listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
 
             if (listViewItem == null)
                 return;
@@ -1367,7 +1368,7 @@ namespace POESKillTree.Views
             {
                 var name = e.Data.GetData("myFormat");
                 ListView listView = lvSavedBuilds;
-                ListViewItem listViewItem = FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
+                ListViewItem listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
 
                 if (listViewItem != null)
                 {
@@ -1416,22 +1417,6 @@ namespace POESKillTree.Views
                 _adorner.OffsetLeft = args.GetPosition(lvSavedBuilds).X - _dragAndDropStartPoint.X;
                 _adorner.OffsetTop = args.GetPosition(lvSavedBuilds).Y - _dragAndDropStartPoint.Y;
             }
-        }
-
-        // Helper to search up the VisualTree
-        private static T FindAnchestor<T>(DependencyObject current)
-            where T : DependencyObject
-        {
-            do
-            {
-                if (current is T)
-                {
-                    return (T)current;
-                }
-                current = VisualTreeHelper.GetParent(current);
-            }
-            while (current != null);
-            return null;
         }
 
         #endregion
@@ -1927,6 +1912,5 @@ namespace POESKillTree.Views
         {
             new CraftWindow() { Owner = this, PersistentData = PersistentData }.ShowDialog();
         }
-
     }
 }
