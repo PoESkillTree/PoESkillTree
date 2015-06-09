@@ -288,66 +288,7 @@ namespace POESKillTree.ViewModels.Items
             Attributes = new ListCollectionView(aList);
             foreach (Item item in Equip)
             {
-                foreach (var attr in item.Attributes)
-                {
-                    if (attr.Key == "Quality: #") continue;
-                    aList.Add(new Attribute(attr.Key, attr.Value, item.Class.ToString()));
-                }
-
-                foreach (ItemMod mod in item.Mods)
-                {
-                    Attribute attTo = null;
-                    attTo =
-                        aList.Find(
-                            ad =>
-                                ad.TextAttribute == mod.Attribute &&
-                                ad.Group == (mod.isLocal ? item.Class.ToString() : "Independent"));
-                    if (attTo == null)
-                    {
-                        aList.Add(new Attribute(mod.Attribute, mod.Value,
-                            (mod.isLocal ? item.Class.ToString() : "Independent")));
-                    }
-                    else
-                    {
-                        attTo.Add(mod.Attribute, mod.Value);
-                    }
-                }
-
-
-                foreach (var attr in item.Attributes)
-                {
-                    if (attr.Key == "Quality: +#%") continue;
-                    if (attr.Key == "Attacks per Second: #") continue;
-                    if (attr.Key == "Critical Strike Chance: #%") continue;
-                    if (attr.Key.ToLower().Contains("damage")) continue;
-                    if (attr.Key.Contains("Weapon Class")) continue;
-                    if (attr.Key.Contains("Elemental Damage")) continue;
-                    Attribute attTo = null;
-                    attTo = NonLocalMods.Find(ad => ad.TextAttribute == attr.Key);
-                    if (attTo == null)
-                    {
-                        NonLocalMods.Add(new Attribute(attr.Key, attr.Value, ""));
-                    }
-                    else
-                    {
-                        attTo.Add(attr.Key, attr.Value);
-                    }
-                }
-
-                foreach (ItemMod mod in item.Mods)
-                {
-                    if (mod.isLocal) continue;
-                    Attribute attTo = null;
-                    attTo = NonLocalMods.Find(ad => ad.TextAttribute == mod.Attribute);
-                    if (attTo == null)
-                    {
-                        NonLocalMods.Add(new Attribute(mod.Attribute, mod.Value, ""));
-                    }
-                    else
-                    {
-                        attTo.Add(mod.Attribute, mod.Value);
-                    }
-                }
+                LoadItem(item, aList, NonLocalMods);
             }
 
 
@@ -357,6 +298,70 @@ namespace POESKillTree.ViewModels.Items
             Attributes.CustomSort = new NumberLessStringComparer();
 
             Attributes.Refresh();
+        }
+
+        public static void LoadItem(Item item, List<Attribute> attributes,List<Attribute> nonlocal)
+        {
+            foreach (var attr in item.Attributes)
+            {
+                if (attr.Key == "Quality: #") continue;
+                attributes.Add(new Attribute(attr.Key, attr.Value, item.Class.ToString()));
+            }
+
+            foreach (ItemMod mod in item.Mods)
+            {
+                Attribute attTo = null;
+                attTo =
+                    attributes.Find(
+                        ad =>
+                            ad.TextAttribute == mod.Attribute &&
+                            ad.Group == (mod.isLocal ? item.Class.ToString() : "Independent"));
+                if (attTo == null)
+                {
+                    attributes.Add(new Attribute(mod.Attribute, mod.Value,
+                        (mod.isLocal ? item.Class.ToString() : "Independent")));
+                }
+                else
+                {
+                    attTo.Add(mod.Attribute, mod.Value);
+                }
+            }
+
+
+            foreach (var attr in item.Attributes)
+            {
+                if (attr.Key == "Quality: +#%") continue;
+                if (attr.Key == "Attacks per Second: #") continue;
+                if (attr.Key == "Critical Strike Chance: #%") continue;
+                if (attr.Key.ToLower().Contains("damage")) continue;
+                if (attr.Key.Contains("Weapon Class")) continue;
+                if (attr.Key.Contains("Elemental Damage")) continue;
+                Attribute attTo = null;
+                attTo = nonlocal.Find(ad => ad.TextAttribute == attr.Key);
+                if (attTo == null)
+                {
+                    nonlocal.Add(new Attribute(attr.Key, attr.Value, ""));
+                }
+                else
+                {
+                    attTo.Add(attr.Key, attr.Value);
+                }
+            }
+
+            foreach (ItemMod mod in item.Mods)
+            {
+                if (mod.isLocal) continue;
+                Attribute attTo = null;
+                attTo = nonlocal.Find(ad => ad.TextAttribute == mod.Attribute);
+                if (attTo == null)
+                {
+                    nonlocal.Add(new Attribute(mod.Attribute, mod.Value, ""));
+                }
+                else
+                {
+                    attTo.Add(mod.Attribute, mod.Value);
+                }
+            }
         }
 
         private void AddItem(JObject val, ItemClass iclass, ItemSlot islot)

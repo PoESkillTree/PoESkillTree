@@ -389,7 +389,7 @@ namespace POESKillTree.Controls
 
                     NewlyAddedRanges.Clear();
                     AddHighlightRange(new IntRange() { From = y, Range = y3 - y });
-                    
+
                     _supressrebuild = false;
                     _StashRange.Rebuild();
 
@@ -868,6 +868,9 @@ namespace POESKillTree.Controls
                 return;
             }
 
+            if (txt.Length < 3)
+                return;
+
             _FoundItems = new HashSet<Item>(Items.Where(i => IsSearchMatch(i, txt)));
 
             foreach (var item in _usedVisualizers)
@@ -886,7 +889,24 @@ namespace POESKillTree.Controls
 
         private bool IsSearchMatch(Item i, string txt)
         {
-            return i.BaseType.ToLower().Contains(txt);
+            var local = new List<ItemAttributes.Attribute>();
+            var nonlocal = new List<ItemAttributes.Attribute>();
+
+            ItemAttributes.LoadItem(i, local, nonlocal);
+
+            List<string> modstrings = new List<string>()
+            {
+                i.BaseType,
+                i.FlavourText,
+                i.Name,
+            };
+
+            modstrings.AddRange( local.Select(a => a.ValuedAttribute));
+            modstrings.AddRange(nonlocal.Select(a => a.ValuedAttribute));
+
+            modstrings = modstrings.Distinct().ToList();
+
+            return modstrings.Any(s =>s!=null && s.ToLower().Contains(txt));
         }
 
         private void Button_DragEnter(object sender, DragEventArgs e)
