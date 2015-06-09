@@ -73,6 +73,7 @@ namespace POESKillTree.Controls
 
 
         Dictionary<Item, ItemVisualizer> _usedVisualizers = new Dictionary<Item, ItemVisualizer>();
+        Dictionary<StashBookmark, Rectangle> _usedBMarks = new Dictionary<StashBookmark, Rectangle>();
 
         void items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -101,7 +102,6 @@ namespace POESKillTree.Controls
 
         private void RedrawItems()
         {
-            gcontent.Children.Clear();
             int pos = (int)asBar.Value;
 
             int from = pos;
@@ -112,19 +112,41 @@ namespace POESKillTree.Controls
                 if (tab.Position >= from && tab.Position <= to)
                 {
                     var y = (tab.Position - pos) * GridSize;
-                    Rectangle r = new Rectangle();
-                    r.Fill = new SolidColorBrush(tab.Color);
-                    r.Height = 2;
+
+                    Rectangle r;
+
+                    if (!_usedBMarks.TryGetValue(tab, out r))
+                    {
+                        r = new Rectangle();
+                        r.Fill = new SolidColorBrush(tab.Color);
+                        r.Height = 2;
+                        r.Tag = tab;
+                        r.Cursor = Cursors.SizeNS;
+                        r.MouseDown += R_MouseDown;
+
+                        gcontent.Children.Add(r);
+                        _usedBMarks.Add(tab, r);
+                    }
                     r.Margin = new Thickness(0, y - 1, 0, gcontent.ActualHeight - y - 1);
-                    r.Tag = tab;
-                    r.Cursor = Cursors.SizeNS;
-                    r.MouseDown += R_MouseDown;
-                    gcontent.Children.Add(r);
+                    continue;
                 }
+
+                if (_usedBMarks.ContainsKey(tab))
+                {
+                    gcontent.Children.Remove(_usedBMarks[tab]);
+                    _usedBMarks.Remove(tab);
+                }
+
             }
 
 
             var items = new HashSet<Item>(_StashRange.Query(new Range<int>(from, to)));
+            var toremove = _usedVisualizers.Where(p => !items.Contains(p.Key)).ToArray();
+            foreach (var item in toremove)
+            {
+                gcontent.Children.Remove(item.Value);
+                _usedVisualizers.Remove(item.Key);
+            }
 
             foreach (var item in items)
             {
@@ -148,13 +170,12 @@ namespace POESKillTree.Controls
                     iv.MouseLeftButtonDown += Iv_MouseLeftButtonDown;
 
                     _usedVisualizers.Add(item, iv);
-
+                    gcontent.Children.Add(iv);
                 }
                 Thickness m = new Thickness(item.X * GridSize, (item.Y - pos) * GridSize, 0, 0);
                 iv.Margin = m;
                 iv.Width = item.W * GridSize;
                 iv.Height = item.H * GridSize;
-                gcontent.Children.Add(iv);
             }
         }
 
@@ -578,7 +599,7 @@ namespace POESKillTree.Controls
             var middle = from + (limit - from) / 2;
 
             if (middle == from)
-                return (Bookmarks[middle].Position > position)?middle:middle+1;
+                return (Bookmarks[middle].Position > position) ? middle : middle + 1;
 
             if (middle == limit)
                 return limit + 1;
@@ -676,6 +697,12 @@ namespace POESKillTree.Controls
         private bool IsSearchMatch(Item i, string txt)
         {
             return i.BaseType.ToLower().Contains(txt);
+        }
+
+        private void Button_DragEnter(object sender, DragEventArgs e)
+        {
+            var sb = (sender as Button).DataContext as StashBookmark;
+            asBar.Value = sb.Position;
         }
     }
 }

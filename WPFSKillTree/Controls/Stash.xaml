@@ -90,7 +90,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button RenderTransformOrigin="0.5,0.5" MinWidth="25" Height="20" MinHeight="16" Content="{Binding Name}" Click="Button_StashTab_Click" MouseDown="ButtonStashTabMouseDown">
+                    <Button RenderTransformOrigin="0.5,0.5" MinWidth="25" Height="20" MinHeight="16" Content="{Binding Name}" Click="Button_StashTab_Click" MouseDown="ButtonStashTabMouseDown" DragEnter="Button_DragEnter" AllowDrop="True">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type ButtonBase}">
                                 <Border CornerRadius="3,3,0,0" x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Padding="3,0">
