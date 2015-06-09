@@ -599,6 +599,7 @@ namespace POESKillTree.Controls
                     Items.Remove(itm);
                     Items.Add(itm);
                 }
+                gcontent_SizeChanged(null,null);
             }
         }
 
@@ -677,6 +678,12 @@ namespace POESKillTree.Controls
                     {
                         Bookmarks.Remove(bm);
                         RedrawItems();
+                        if (_usedBMarks.ContainsKey(bm))
+                        {
+                            gcontent.Children.Remove(_usedBMarks[bm]);
+                            _usedBMarks.Remove(bm);
+                        }
+                        gcontent_SizeChanged(null, null);
                     }
                     else
                     {
