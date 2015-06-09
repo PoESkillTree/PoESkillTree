@@ -100,18 +100,43 @@ namespace POESKillTree.Controls
             RedrawItems();
         }
 
+        private double getValueForTop(double top)
+        {
+            var d = (asBar.Maximum - asBar.Minimum);
+            return top * d / (d - StashGridHeight);
+        }
+
+        private double getTopForValue(double value)
+        {
+            return value - value / (asBar.Maximum - asBar.Minimum) * StashGridHeight;
+        }
+
+        public int PageTop
+        { 
+            get
+            {
+                return (int)Math.Round(getTopForValue(asBar.Value));
+            }
+        }
+
+        public int PageBottom
+        { 
+            get
+            {
+                return PageTop + StashGridHeight + 1;
+            }
+        }
+
         private void RedrawItems()
         {
-            int pos = (int)asBar.Value;
-
-            int from = pos;
-            int to = (int)Math.Ceiling(pos + asBar.LargeChange);
+            int from = PageTop;
+            int to = PageBottom;
 
             foreach (var tab in Bookmarks)//TODO bisection method?
             {
                 if (tab.Position >= from && tab.Position <= to)
                 {
-                    var y = (tab.Position - pos) * GridSize;
+                    var y = (tab.Position - from) * GridSize;
 
                     Rectangle r;
 
@@ -125,6 +150,7 @@ namespace POESKillTree.Controls
                         r.MouseDown += R_MouseDown;
 
                         gcontent.Children.Add(r);
+                        Grid.SetZIndex(r, -1000000);
                         _usedBMarks.Add(tab, r);
                     }
                     r.Margin = new Thickness(0, y - 1, 0, gcontent.ActualHeight - y - 1);
@@ -172,7 +198,7 @@ namespace POESKillTree.Controls
                     _usedVisualizers.Add(item, iv);
                     gcontent.Children.Add(iv);
                 }
-                Thickness m = new Thickness(item.X * GridSize, (item.Y - pos) * GridSize, 0, 0);
+                Thickness m = new Thickness(item.X * GridSize, (item.Y - from) * GridSize, 0, 0);
                 iv.Margin = m;
                 iv.Width = item.W * GridSize;
                 iv.Height = item.H * GridSize;
@@ -345,11 +371,17 @@ namespace POESKillTree.Controls
         private RangeTree<int, Item> _StashRange = new RangeTree<int, Item>(new ItemModComparer());
 
 
+
+        public int StashGridHeight
+        {
+            get { return (int)(gcontent.ActualHeight / GridSize); }
+        }
+
         public int LastLine
         {
             get
             {
-                return Math.Max(_StashRange.Max, Bookmarks.Count > 0 ? Bookmarks.Max(b => b.Position) : 0);
+                return Math.Max(_StashRange.Max, Bookmarks.Count > 0 ? Bookmarks.Max(b => b.Position) : 0) + StashGridHeight;
             }
         }
 
@@ -362,11 +394,13 @@ namespace POESKillTree.Controls
 
         private void gcontent_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            asBar.LargeChange = (int)(gcontent.ActualHeight / GridSize);
+            asBar.LargeChange = StashGridHeight;
 
             var p = asBar.LargeChange / (asBar.Maximum - asBar.Minimum);
 
             asBar.ViewportSize = (asBar.Maximum - asBar.Minimum) * p / (1 - p);
+
+            OnPropertyChanged("LastLine");
 
             RedrawItems();
         }
@@ -579,8 +613,10 @@ namespace POESKillTree.Controls
         private void Button_StashTab_Click(object sender, RoutedEventArgs e)
         {
             var bm = (sender as Button).DataContext as StashBookmark;
-            asBar.Value = bm.Position;
+            asBar.Value = getValueForTop(bm.Position);
         }
+
+        
 
         private void Button_AddBookmark(object sender, RoutedEventArgs e)
         {
