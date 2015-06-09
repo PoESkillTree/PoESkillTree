@@ -23,6 +23,13 @@ using System.Windows.Shapes;
 
 namespace POESKillTree.Controls
 {
+
+    internal class IntRange
+    {
+        public int From { get; set; }
+        public int Range { get; set; }
+    }
+
     /// <summary>
     /// Interaction logic for Stash.xaml
     /// </summary>
@@ -67,7 +74,19 @@ namespace POESKillTree.Controls
 
         // Using a DependencyProperty as the backing store for SearchMatches.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SearchMatchesProperty =
-            DependencyProperty.Register("SearchMatches", typeof(ObservableCollection<int>), typeof(Stash), new PropertyMetadata(new ObservableCollection<int>()));
+            DependencyProperty.Register("SearchMatches", typeof(ObservableCollection<int>), typeof(Stash), new PropertyMetadata(null));
+
+
+
+        internal ObservableCollection<IntRange> NewlyAddedRanges
+        {
+            get { return (ObservableCollection<IntRange>)GetValue(NewlyAddedRangesProperty); }
+            set { SetValue(NewlyAddedRangesProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for NewlyAddedRanges.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NewlyAddedRangesProperty =
+            DependencyProperty.Register("NewlyAddedRanges", typeof(ObservableCollection<IntRange>), typeof(Stash), new PropertyMetadata(null));
 
 
 
@@ -112,7 +131,7 @@ namespace POESKillTree.Controls
         }
 
         public int PageTop
-        { 
+        {
             get
             {
                 return (int)Math.Round(getTopForValue(asBar.Value));
@@ -120,7 +139,7 @@ namespace POESKillTree.Controls
         }
 
         public int PageBottom
-        { 
+        {
             get
             {
                 return PageTop + StashGridHeight + 1;
@@ -256,6 +275,9 @@ namespace POESKillTree.Controls
 
         public Stash()
         {
+            NewlyAddedRanges = new ObservableCollection<IntRange>();
+            SearchMatches = new ObservableCollection<int>();
+
             if (DesignerProperties.GetIsInDesignMode(this))
             {
                 this.SetValue(BookmarksProperty, new ObservableCollection<StashBookmark>()
@@ -309,28 +331,46 @@ namespace POESKillTree.Controls
             OnPropertyChanged("LastLine");
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_load_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 OpenFileDialog of = new OpenFileDialog();
                 if (of.ShowDialog() == true)
                 {
+                    _supressrebuild = true;
                     var data = File.ReadAllText(of.FileName);
 
                     var json = JObject.Parse(data);
                     var items = (json["items"] as JArray).Select(i => new Item((JObject)i));
 
                     //get free line
-                    var y = LastLine + 1;
+                    var y = LastOccupiedLine + 3;
+                    var fittingitems = items.Where(i => i.X >= 0 && i.X + i.W <= 12).ToList();
+
+                    StashBookmark sb = new StashBookmark("imported", y);
+                    AddBookmark(sb);
+                    var my = fittingitems.Min(i => i.Y);
+                    var y2 = y;
+                    var unfittingitems = items.Where(i => i.X < 0 || i.X + i.W > 12);
+                    foreach (var item in items)
+                    {
+                        item.Y += y - my;
+                        Items.Add(item);
+                        if (y2 < item.Y + item.H)
+                            y2 = item.Y + item.H;
+                    }
+
+
                     int x = 0;
                     int maxh = 0;
-                    foreach (var item in items)
+                    var y3 = y2;
+                    foreach (var item in unfittingitems)
                     {
                         if (x + item.W > 12) //next line
                         {
                             x = 0;
-                            y += maxh;
+                            y2 += maxh;
                             maxh = 0;
                         }
 
@@ -340,14 +380,30 @@ namespace POESKillTree.Controls
                         if (maxh < item.H)
                             maxh = item.H;
 
-                        item.Y = y;
+                        item.Y = y2;
                         Items.Add(item);
+
+                        if (y3 < item.Y + item.H)
+                            y3 = item.Y + item.H;
                     }
+
+
+                    NewlyAddedRanges.Clear();
+                    NewlyAddedRanges.Add(new IntRange() { From = y, Range = y3 - y });
+                    _supressrebuild = false;
+                    _StashRange.Rebuild();
+
+                    ResizeScrollbarThumb();
                 }
+
             }
             catch
             {
 
+            }
+            finally
+            {
+                _supressrebuild = false;
             }
         }
 
@@ -381,7 +437,16 @@ namespace POESKillTree.Controls
         {
             get
             {
-                return Math.Max(_StashRange.Max, Bookmarks.Count > 0 ? Bookmarks.Max(b => b.Position) : 0) + StashGridHeight;
+                return LastOccupiedLine + StashGridHeight;
+            }
+        }
+
+
+        public int LastOccupiedLine
+        {
+            get
+            {
+                return Math.Max(_StashRange.Max, Bookmarks.Count > 0 ? Bookmarks.Max(b => b.Position) : 0);
             }
         }
 
@@ -392,17 +457,22 @@ namespace POESKillTree.Controls
             RedrawItems();
         }
 
-        private void gcontent_SizeChanged(object sender, SizeChangedEventArgs e)
+        void ResizeScrollbarThumb()
         {
+            OnPropertyChanged("LastLine");
             asBar.LargeChange = StashGridHeight;
             var length = asBar.Maximum - asBar.Minimum;
             var p = Math.Round(gcontent.ActualHeight / GridSize) / length;
 
             asBar.ViewportSize = length * p / (1 - p);
 
-            OnPropertyChanged("LastLine");
-
             RedrawItems();
+        }
+
+
+        private void gcontent_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ResizeScrollbarThumb();
         }
 
         private void control_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -599,7 +669,7 @@ namespace POESKillTree.Controls
                     Items.Remove(itm);
                     Items.Add(itm);
                 }
-                gcontent_SizeChanged(null,null);
+                ResizeScrollbarThumb();
             }
         }
 
@@ -627,7 +697,7 @@ namespace POESKillTree.Controls
             asBar.Value = getValueForTop(bm.Position);
         }
 
-        
+
 
         private void Button_AddBookmark(object sender, RoutedEventArgs e)
         {
@@ -683,7 +753,7 @@ namespace POESKillTree.Controls
                             gcontent.Children.Remove(_usedBMarks[bm]);
                             _usedBMarks.Remove(bm);
                         }
-                        gcontent_SizeChanged(null, null);
+                        ResizeScrollbarThumb();
                     }
                     else
                     {
@@ -698,7 +768,7 @@ namespace POESKillTree.Controls
         {
             var w = Window.GetWindow(this);
             Keyboard.AddKeyDownHandler(w, KeyDown);
-            gcontent_SizeChanged(null, null);
+            ResizeScrollbarThumb();
         }
 
         private void KeyDown(object sender, KeyEventArgs e)
@@ -719,6 +789,7 @@ namespace POESKillTree.Controls
                 if (hh != null)
                     Items.Remove(((ItemVisualizer)hh).Item);
 
+                ResizeScrollbarThumb();
             }
         }
 

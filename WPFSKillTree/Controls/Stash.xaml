@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cont="clr-namespace:POESKillTree.Controls"
              xmlns:items ="clr-namespace:POESKillTree.ViewModels.Items"
-            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:WpfRangeControls="clr-namespace:WpfRangeControls;assembly=WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="POESKillTree.Controls.Stash"
              mc:Ignorable="d" 
              d:DesignHeight="351"
@@ -15,6 +15,7 @@
         <CompositeCollection x:Key="scrollbarOverlayCollection">
             <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>
             <CollectionContainer Collection="{Binding SearchMatches, Source={x:Reference Name=control}}"/>
+            <CollectionContainer Collection="{Binding NewlyAddedRanges, Source={x:Reference Name=control}}"/>
         </CompositeCollection>
 
         <CompositeCollection x:Key="stashTabsCollection">
@@ -138,7 +139,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Click="Button_Click" Content="load" RenderTransformOrigin="0.5,0.5"/>
+            <Button Grid.Column="0" Click="Button_load_Click" Content="load" RenderTransformOrigin="0.5,0.5"/>
             <TextBox x:Name="tbSearch" Grid.Column="1" TextChanged="tbSearch_TextChanged"/>
         </Grid>
 
@@ -154,6 +155,11 @@
                 <DataTemplate DataType="{x:Type sys:Int32}">
                     <Rectangle Height="4" Width="4" WpfRangeControls:RangePanel.Position="{Binding}" Fill="#8043D9E8"/>
                 </DataTemplate>
+
+                <DataTemplate DataType="{x:Type cont:IntRange}" >
+                    <Rectangle Width="3"  HorizontalAlignment="Left" WpfRangeControls:RangePanel.Position="{Binding From}" WpfRangeControls:RangePanel.Range="{Binding Range}" WpfRangeControls:RangePanel.Alignment="Begin" Fill="YellowGreen"/>
+                </DataTemplate>
+
             </WpfRangeControls:RangeScrollbar.Resources>
             <WpfRangeControls:RangeScrollbar.ItemsSource>
                 <StaticResource ResourceKey="scrollbarOverlayCollection"/>
