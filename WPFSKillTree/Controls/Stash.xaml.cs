@@ -395,10 +395,10 @@ namespace POESKillTree.Controls
         private void gcontent_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             asBar.LargeChange = StashGridHeight;
+            var length = asBar.Maximum - asBar.Minimum;
+            var p = Math.Round(gcontent.ActualHeight / GridSize) / length;
 
-            var p = asBar.LargeChange / (asBar.Maximum - asBar.Minimum);
-
-            asBar.ViewportSize = (asBar.Maximum - asBar.Minimum) * p / (1 - p);
+            asBar.ViewportSize = length * p / (1 - p);
 
             OnPropertyChanged("LastLine");
 
@@ -698,6 +698,7 @@ namespace POESKillTree.Controls
         {
             var w = Window.GetWindow(this);
             Keyboard.AddKeyDownHandler(w, KeyDown);
+            gcontent_SizeChanged(null, null);
         }
 
         private void KeyDown(object sender, KeyEventArgs e)
