@@ -625,7 +625,7 @@ namespace POESKillTree.Controls
             var ret = picker.ShowDialog();
             if (ret == true)
             {
-                AddBookmark(new StashBookmark(picker.Text, (int)asBar.Value + 1, picker.SelectedColor));
+                AddBookmark(new StashBookmark(picker.Text, (int) Math.Round(getTopForValue(asBar.Value)) + 1, picker.SelectedColor));
                 RedrawItems();
             }
         }
