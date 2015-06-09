@@ -469,6 +469,16 @@ namespace POESKillTree.Controls
 
         private void control_DragOver(object sender, DragEventArgs e)
         {
+            var pos = e.GetPosition(gcontent).Y;
+            if (pos > gcontent.ActualHeight - GridSize / 3)
+            {
+                asBar.Value++;
+            }
+            else if (pos < GridSize / 3)
+            {
+                asBar.Value--;
+            }
+
             if ((e.AllowedEffects & DragDropEffects.Move) != 0)
             {
 
