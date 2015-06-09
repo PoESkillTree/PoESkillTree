@@ -4,6 +4,7 @@ using System.Threading;
 using System.Windows;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Views
 {
@@ -41,7 +42,7 @@ namespace POESKillTree.Views
             {
             
             Exception theException = e.Exception;
-            string theErrorPath = "debug.txt";
+            string theErrorPath = AppData.GetFolder(true) + "debug.txt";
             using (System.IO.TextWriter theTextWriter = new System.IO.StreamWriter(theErrorPath, true))
             {
                 DateTime theNow = DateTime.Now;

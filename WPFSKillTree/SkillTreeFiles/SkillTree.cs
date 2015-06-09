@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using POESKillTree.Localization;
+using POESKillTree.Utils;
 using POESKillTree.Views;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,10 @@ namespace POESKillTree.SkillTreeFiles
         public static readonly float DexPerEvas = 5; //%
         private const string TreeAddress = "http://www.pathofexile.com/passive-skill-tree/";
 
+        // The absolute path of Assets folder (contains trailing directory separator).
+        public static string AssetsFolderPath;
+        // The absolute path of Data folder (contains trailing directory separator).
+        public static string DataFolderPath;
 
         public static readonly Dictionary<string, float> BaseAttributes = new Dictionary<string, float>
         {
@@ -578,22 +583,14 @@ namespace POESKillTree.SkillTreeFiles
         public static SkillTree CreateSkillTree(StartLoadingWindow start = null, UpdateLoadingWindow update = null,
             CloseLoadingWindow finish = null)
         {
+            AssetsFolderPath = AppData.GetFolder(Path.Combine("Data", "Assets"), true);
+            DataFolderPath = AppData.GetFolder("Data", true);
+
+            string skillTreeFile = DataFolderPath + "Skilltree.txt";
             string skilltreeobj = "";
-            if (Directory.Exists("Data"))
+            if (File.Exists(skillTreeFile))
             {
-                if (File.Exists("Data\\Skilltree.txt"))
-                {
-                    skilltreeobj = File.ReadAllText("Data\\Skilltree.txt");
-                }
-                if (!File.Exists("Data\\Assets"))
-                {
-                    Directory.CreateDirectory("Data\\Assets");
-                }
-            }
-            else
-            {
-                Directory.CreateDirectory("Data");
-                Directory.CreateDirectory("Data\\Assets");
+                skilltreeobj = File.ReadAllText(skillTreeFile);
             }
 
             bool displayProgress = false;
@@ -609,7 +606,7 @@ namespace POESKillTree.SkillTreeFiles
                 var regex = new Regex("var passiveSkillTreeData.*");
                 skilltreeobj = regex.Match(code).Value.Replace("root", "main").Replace("\\/", "/");
                 skilltreeobj = skilltreeobj.Substring(27, skilltreeobj.Length - 27 - 2) + "";
-                File.WriteAllText("Data\\Skilltree.txt", skilltreeobj);
+                File.WriteAllText(skillTreeFile, skilltreeobj);
             }
 
             if (displayProgress)

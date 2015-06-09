@@ -3,8 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Serialization;
-using POESKillTree.ViewModels;
 using System.ComponentModel;
+using POESKillTree.ViewModels;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
@@ -28,16 +29,18 @@ namespace POESKillTree.Model
         public void SavePersistentDataToFile()
         {
             var writer = new XmlSerializer(typeof (PersistentData));
-            var file = new StreamWriter(@"PersistentData.xml");
+            var file = new StreamWriter(AppData.GetFolder(true) + "PersistentData.xml");
             writer.Serialize(file, this);
             file.Close();
         }
 
         public void LoadPersistentDataFromFile()
         {
-            if (File.Exists("PersistentData.xml"))
+            string filePath = AppData.GetFolder(true) + "PersistentData.xml";
+
+            if (File.Exists(filePath))
             {
-                var reader = new StreamReader(@"PersistentData.xml");
+                var reader = new StreamReader(filePath);
                 var ser = new XmlSerializer(typeof (PersistentData));
                 var obj = (PersistentData)ser.Deserialize(reader);
                 Options = obj.Options;

@@ -43,6 +43,7 @@
         <Platform>x86</Platform>
         <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
         <ZipTool>Tools\7z.exe a -tzip</ZipTool>
+        <ISCCTool>Tools\isetup\ISCC.exe</ISCCTool>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -197,6 +198,9 @@
     <Target Name="Release" DependsOnTargets="Test">
         <!-- Download skill tree assets -->
         <Exec Command="$(DistDir)\UpdateDB.exe /A" WorkingDirectory="$(DistDir)" />
+
+        <!-- Create release installer -->
+        <Exec Command="..\$(ISCCTool) ..\release.iss" WorkingDirectory="$(WorkDir)" />
 
         <!-- Create release package -->
         <Exec Command="..\$(ZipTool) $(InstallDir)-$(ProductVersion).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />

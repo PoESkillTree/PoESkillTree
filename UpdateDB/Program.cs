@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using POESKillTree.SkillTreeFiles;
 using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
+using POESKillTree.Utils;
 
 namespace UpdateDB
 {
@@ -48,7 +49,7 @@ namespace UpdateDB
                                 Console.WriteLine("Updates item database.\r\n");
                                 Console.WriteLine("UPDATEDB [/F file] [[/G string] | [/M file]] [/N] [/Q | /V]\r\n");
                                 Console.WriteLine("UPDATEDB /A\r\n");
-                                Console.WriteLine("/A\tDownloads skill tree assets.");
+                                Console.WriteLine("/A\tDownloads skill tree assets into current directory.");
                                 Console.WriteLine("/F\tUpdate specified file instead of default file \"Items.xml\".");
                                 Console.WriteLine("/G\tUpdate single gem specified by string.");
                                 Console.WriteLine("/M\tMerge data of specified file instead of update.");
@@ -102,6 +103,9 @@ namespace UpdateDB
                 {
                     try
                     {
+                        // Download Skill tree assets into current directory.
+                        AppData.SetApplicationData(Environment.CurrentDirectory);
+
                         Info("Downloading skill tree assets...");
                         SkillTree.CreateSkillTree();
                         Info("Done.");
@@ -150,16 +154,17 @@ namespace UpdateDB
             }
             if (exit) return 1;
 
+            string appDataPath = AppData.GetFolder(true);
             string updateFileName = optFileName == null ? "Items.xml" : optFileName;
-            if (!File.Exists(updateFileName))
+            if (!File.Exists(appDataPath + updateFileName))
             {
-                Console.WriteLine("File not found: " + updateFileName);
+                Console.WriteLine("File not found: " + appDataPath + updateFileName);
 
                 return 1;
             }
-            if (optMergeName != null & !File.Exists(optMergeName))
+            if (optMergeName != null && !File.Exists(appDataPath + optMergeName))
             {
-                Console.WriteLine("File not found: " + optMergeName);
+                Console.WriteLine("File not found: " + appDataPath + optMergeName);
 
                 return 1;
             }
@@ -205,7 +210,7 @@ namespace UpdateDB
             if (modified)
             {
                 if (!noBackup)
-                    File.Copy(updateFileName, updateFileName + ".bak", true);
+                    File.Copy(appDataPath + updateFileName, appDataPath + updateFileName + ".bak", true);
                 ItemDB.WriteTo(updateFileName);
             }
 

@@ -106,8 +106,7 @@ namespace POESKillTree.Views
             TaskbarHelper.EnablePinning(this);
 
             ItemDB.Load("Items.xml");
-            if (File.Exists("ItemsLocal.xml"))
-                ItemDB.Merge("ItemsLocal.xml");
+            ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();
 
             _attibuteCollection = new ListCollectionView(_attiblist);
@@ -374,43 +373,46 @@ namespace POESKillTree.Views
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    if (Directory.Exists("Data"))
+                    string appDataPath = AppData.GetFolder(true);
+
+                    try
                     {
+                        if (Directory.Exists(appDataPath + "Data"))
+                        {
+                            if (Directory.Exists(appDataPath + "DataBackup"))
+                                Directory.Delete(appDataPath + "DataBackup", true);
+
+                            Directory.Move(appDataPath + "Data", appDataPath + "DataBackup");
+                        }
+
+                        Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+                        recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+
+
+                        SkillTree.ClearAssets();//enable recaching of assets
+                        SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
+
+
+                        btnLoadBuild_Click(this, new RoutedEventArgs());
+                        _justLoaded = false;
+
+                        if (Directory.Exists(appDataPath + "DataBackup"))
+                            Directory.Delete(appDataPath + "DataBackup", true);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (Directory.Exists(appDataPath + "Data"))
+                            Directory.Delete(appDataPath + "Data", true);
                         try
                         {
-                            if (Directory.Exists("DataBackup"))
-                                Directory.Delete("DataBackup", true);
-                            Directory.Move("Data", "DataBackup");
-
-                            Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
-                            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
-
-
-                            SkillTree.ClearAssets();//enable recaching of assets
-                            SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
-
-
-                            btnLoadBuild_Click(this, new RoutedEventArgs());
-                            _justLoaded = false;
-
-                            if (Directory.Exists("DataBackup"))
-                                Directory.Delete("DataBackup", true);
+                            CloseLoadingWindow();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
-                            if (Directory.Exists("Data"))
-                                Directory.Delete("Data", true);
-                            try
-                            {
-                                CloseLoadingWindow();
-                            }
-                            catch (Exception)
-                            {
-                                //Nothing
-                            }
-                            Directory.Move("DataBackup", "Data");
-                            MessageBox.Show(this, ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
+                            //Nothing
                         }
+                        Directory.Move(appDataPath + "DataBackup", appDataPath + "Data");
+                        MessageBox.Show(this, ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     break;
 
