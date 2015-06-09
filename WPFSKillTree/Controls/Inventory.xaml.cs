@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using POESKillTree.Utils;
+using System.ComponentModel;
 
 namespace POESKillTree.Controls
 {
@@ -97,8 +98,11 @@ namespace POESKillTree.Controls
 
         private void control_Loaded(object sender, RoutedEventArgs e)
         {
-            var w = Window.GetWindow(this);
-            Keyboard.AddKeyDownHandler(w, KeyDown);
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
+                var w = Window.GetWindow(this);
+                Keyboard.AddKeyDownHandler(w, KeyDown);
+            }
         }
     }
 }

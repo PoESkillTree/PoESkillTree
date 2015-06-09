@@ -387,9 +387,9 @@ namespace POESKillTree.Controls
                             y3 = item.Y + item.H;
                     }
 
-
                     NewlyAddedRanges.Clear();
-                    NewlyAddedRanges.Add(new IntRange() { From = y, Range = y3 - y });
+                    AddHighlightRange(new IntRange() { From = y, Range = y3 - y });
+                    
                     _supressrebuild = false;
                     _StashRange.Rebuild();
 
@@ -405,6 +405,14 @@ namespace POESKillTree.Controls
             {
                 _supressrebuild = false;
             }
+        }
+
+        internal void AddHighlightRange(IntRange range)
+        {
+            while (NewlyAddedRanges.Count > 5)
+                NewlyAddedRanges.RemoveAt(0);
+
+            NewlyAddedRanges.Add(range);
         }
 
 
@@ -766,8 +774,11 @@ namespace POESKillTree.Controls
 
         private void control_Loaded(object sender, RoutedEventArgs e)
         {
-            var w = Window.GetWindow(this);
-            Keyboard.AddKeyDownHandler(w, KeyDown);
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
+                var w = Window.GetWindow(this);
+                Keyboard.AddKeyDownHandler(w, KeyDown);
+            }
             ResizeScrollbarThumb();
         }
 
@@ -789,6 +800,7 @@ namespace POESKillTree.Controls
                 if (hh != null)
                     Items.Remove(((ItemVisualizer)hh).Item);
 
+                NewlyAddedRanges.Clear();
                 ResizeScrollbarThumb();
             }
         }

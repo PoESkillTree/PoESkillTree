@@ -67,7 +67,7 @@
             <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=window}" Width="94" Height="188" Grid.Row="0" Margin="5"/>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button Click="Button_Click" Content="Ok"/>
+            <Button Click="Button_OK_Click" Content="Ok"/>
         </StackPanel>
         <local:ItemTooltip Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Item="{Binding Item, ElementName=window}" />
     </Grid>

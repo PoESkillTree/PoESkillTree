@@ -270,7 +270,7 @@ namespace POESKillTree.Views
 
         private void StartLoadingWindow()
         {
-            _loadingWindow = new LoadingWindow(){ Owner = this };
+            _loadingWindow = new LoadingWindow() { Owner = this };
             _loadingWindow.Show();
             Thread.Sleep(400);
             _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
@@ -1856,7 +1856,8 @@ namespace POESKillTree.Views
                                         encoder.Frames.Add(BitmapFrame.Create(cropped));
 
                                         using (var m = new MemoryStream())
-                                        {   encoder.Save(m);
+                                        {
+                                            encoder.Save(m);
 
                                             foreach (var item in imgroups[i])
                                             {
@@ -1865,7 +1866,7 @@ namespace POESKillTree.Views
                                                     m.Seek(0, SeekOrigin.Begin);
                                                     m.CopyTo(f);
                                                 }
-                                                
+
                                             }
                                         }
 
@@ -1878,7 +1879,7 @@ namespace POESKillTree.Views
                             Directory.Move(@"DataBackup\Assets", @"Data\Assets");
 
                             foreach (var file in new DirectoryInfo(@"DataBackup").GetFiles())
-                                file.CopyTo(System.IO.Path.Combine(@"Data",file.Name));
+                                file.CopyTo(System.IO.Path.Combine(@"Data", file.Name));
 
                             File.Copy(@"DataBackup\Equipment\Affixlist.xml", @"Data\Equipment\Affixlist.xml");
 
@@ -1911,9 +1912,20 @@ namespace POESKillTree.Views
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Craft_Click(object sender, RoutedEventArgs e)
         {
-            new CraftWindow() { Owner = this, PersistentData = PersistentData }.ShowDialog();
+            var w = new CraftWindow() { Owner = this };
+            if (w.ShowDialog() == true)
+            {
+                var item = w.Item;
+                if (PersistentData.StashItems.Count > 0)
+                    item.Y = PersistentData.StashItems.Max(i => i.Y + i.H);
+
+                Stash.Items.Add(item);
+
+                Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.H });
+                Stash.asBar.Value = item.Y;
+            }
         }
     }
 }

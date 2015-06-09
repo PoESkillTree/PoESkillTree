@@ -353,20 +353,14 @@ namespace POESKillTree.Views
             RecalculateItem();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
             Item.JSONBase = Item.GenerateJson();
 
             Item.X = 0;
             Item.Y = 0;
-            if (PersistentData.StashItems.Count >0)
-                Item.Y = PersistentData.StashItems.Max(i => i.Y + i.H);
-
-
-            PersistentData.StashItems.Add(Item);
+            DialogResult = true;
             Close();
         }
-
-        public Model.PersistentData PersistentData { get; set; }
     }
 }
