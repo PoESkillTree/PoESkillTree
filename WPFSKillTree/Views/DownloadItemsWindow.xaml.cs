@@ -5,6 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
+using System.Linq;
+using POESKillTree.ViewModels.Items;
 
 namespace POESKillTree.Views
 {
@@ -47,7 +50,13 @@ namespace POESKillTree.Views
             if (ftoload.Value)
             {
                 var itemData = File.ReadAllText(fileDialog.FileName);
-                (Owner as MainWindow).LoadItemData(itemData);
+                var mw = (Owner as MainWindow);
+                mw.LoadItemData(itemData);
+
+                var items = ((JArray)JObject.Parse(itemData).Property("items").Value);
+                mw.Stash.AddItems(items.Select(i => new Item((JObject)i)), "EquipImport");
+
+
                 DialogResult = true;
             }
         }

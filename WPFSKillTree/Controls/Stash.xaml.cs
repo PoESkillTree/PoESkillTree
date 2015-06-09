@@ -407,6 +407,46 @@ namespace POESKillTree.Controls
             }
         }
 
+        public void AddItems(IEnumerable<Item> items, string tabname = null)
+        {
+
+            int y = LastOccupiedLine + 2;
+            if (tabname != null)
+            {
+                StashBookmark sb = new StashBookmark(tabname, y);
+                AddBookmark(sb);
+            }
+
+            int x = 0;
+            int maxh = 0;
+            var y2 = y;
+            var y3 = y;
+            foreach (var item in items)
+            {
+                if (x + item.W > 12) //next line
+                {
+                    x = 0;
+                    y += maxh;
+                    maxh = 0;
+                }
+
+                item.X = x;
+                x += item.W;
+
+                if (maxh < item.H)
+                    maxh = item.H;
+
+                item.Y = y;
+                Items.Add(item);
+
+                if (y3 < item.Y + item.H)
+                    y3 = item.Y + item.H;
+            }
+
+            AddHighlightRange(new IntRange() { From = y2, Range = y3 - y2 });
+            ResizeScrollbarThumb();
+        }
+
         internal void AddHighlightRange(IntRange range)
         {
             while (NewlyAddedRanges.Count > 5)
@@ -842,6 +882,7 @@ namespace POESKillTree.Controls
         }
 
         HashSet<Item> _FoundItems = new HashSet<Item>();
+        private object y;
 
         private bool IsSearchMatch(Item i, string txt)
         {
@@ -853,5 +894,7 @@ namespace POESKillTree.Controls
             var sb = (sender as Button).DataContext as StashBookmark;
             asBar.Value = getValueForTop(sb.Position);
         }
+
+
     }
 }
