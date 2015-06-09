@@ -363,6 +363,11 @@ namespace POESKillTree.Controls
         private void gcontent_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             asBar.LargeChange = (int)(gcontent.ActualHeight / GridSize);
+
+            var p = asBar.LargeChange / (asBar.Maximum - asBar.Minimum);
+
+            asBar.ViewportSize = (asBar.Maximum - asBar.Minimum) * p / (1 - p);
+
             RedrawItems();
         }
 
