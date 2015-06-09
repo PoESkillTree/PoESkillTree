@@ -767,6 +767,10 @@ namespace POESKillTree.Controls
                     {
                         bm.Name = picker.Text;
                         bm.Color = picker.SelectedColor;
+                        if (_usedBMarks.ContainsKey(bm))
+                        {
+                            _usedBMarks[bm].Fill = new SolidColorBrush(bm.Color);
+                        }
                     }
                 }
             }
