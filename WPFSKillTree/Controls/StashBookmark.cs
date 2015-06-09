@@ -1,10 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Media;
 
 namespace POESKillTree.Controls
 {
     public class StashBookmark : INotifyPropertyChanged
     {
+        [Obsolete("only for serialization")]
+        public StashBookmark()
+        {
+
+        }
         static Color DefaultColor = Color.FromRgb(98, 128, 0);
         public StashBookmark(string name, int positon) : this(name, positon, DefaultColor)
         { }

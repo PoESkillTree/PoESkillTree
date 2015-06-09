@@ -230,9 +230,7 @@ namespace POESKillTree.Controls
 
         public Stash()
         {
-            InitializeComponent();
-
-            //  if (DesignerProperties.GetIsInDesignMode(this))
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
                 this.SetValue(BookmarksProperty, new ObservableCollection<StashBookmark>()
                 {
@@ -247,6 +245,8 @@ namespace POESKillTree.Controls
                     new StashBookmark("0",96),
                 });
             }
+
+            InitializeComponent();
         }
 
 
@@ -601,6 +601,9 @@ namespace POESKillTree.Controls
 
         private int findbpos(int position, int from, int limit)
         {
+            if (Bookmarks.Count == 0)
+                return 0;
+
             var middle = from + (limit - from) / 2;
 
             if (middle == from)

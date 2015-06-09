@@ -9,11 +9,14 @@ using System.Collections.ObjectModel;
 using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
 using MB.Algodat;
+using POESKillTree.Controls;
 
 namespace POESKillTree.Model
 {
     public class PersistentData : INotifyPropertyChanged
     {
+
+        public List<StashBookmark> StashBookmarks { get; set; }
         public Options Options { get; set; }
         public PoEBuild CurrentBuild { get; set; }
         public List<PoEBuild> Builds { get; set; }
@@ -61,6 +64,7 @@ namespace POESKillTree.Model
                     Options = obj.Options;
                     Builds = obj.Builds;
                     CurrentBuild = obj.CurrentBuild;
+                    StashBookmarks = obj.StashBookmarks;
                 }
                 OnPropertyChanged(null);
             }
