@@ -505,7 +505,7 @@ namespace POESKillTree.Controls
 
                 if (line)
                 {
-                    y = (int)Math.Round((newpos.Y / GridSize));
+                    y = (int)Math.Round(newpos.Y / GridSize);
 
                     _dnd_overlay.Margin = new Thickness(0, y * GridSize - 1, 0, gcontent.ActualHeight - y * GridSize - 1);
                 }
@@ -513,7 +513,7 @@ namespace POESKillTree.Controls
                 {
                     _dnd_overlay.Margin = new Thickness(x * GridSize, y * GridSize, 0, 0);
 
-                    y += (int)asBar.Value;
+                    y += (int)PageTop;
 
                     var itm = _dndVis.Item;
                     var overlapedy = _StashRange.Query(new Range<int>(y, y + itm.H - 1));
@@ -566,11 +566,11 @@ namespace POESKillTree.Controls
                 var x = (int)Math.Round((newx / GridSize));
                 var y = (int)Math.Round((newy / GridSize));
 
-                y += (int)asBar.Value;
+                y += (int)PageTop;
 
                 if (line)
                 {
-                    y = (int)Math.Round((newpos.Y / GridSize)) + (int)asBar.Value;
+                    y = (int)Math.Round(newpos.Y / GridSize + PageTop);
                     Rectangle r = e.Data.GetData(typeof(Rectangle)) as Rectangle;
                     StashBookmark sb = r.Tag as StashBookmark;
                     sb.Position = y;
@@ -625,7 +625,7 @@ namespace POESKillTree.Controls
             var ret = picker.ShowDialog();
             if (ret == true)
             {
-                AddBookmark(new StashBookmark(picker.Text, (int) Math.Round(getTopForValue(asBar.Value)) + 1, picker.SelectedColor));
+                AddBookmark(new StashBookmark(picker.Text, PageTop + 1, picker.SelectedColor));
                 RedrawItems();
             }
         }
@@ -746,7 +746,7 @@ namespace POESKillTree.Controls
         private void Button_DragEnter(object sender, DragEventArgs e)
         {
             var sb = (sender as Button).DataContext as StashBookmark;
-            asBar.Value = sb.Position;
+            asBar.Value = getValueForTop(sb.Position);
         }
     }
 }
