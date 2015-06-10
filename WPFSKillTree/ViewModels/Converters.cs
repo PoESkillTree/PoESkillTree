@@ -11,6 +11,8 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using POESKillTree.ViewModels.Items;
 using System.Diagnostics;
+using System.Reflection;
+using System.Resources;
 
 namespace POESKillTree.ViewModels
 {
@@ -253,10 +255,13 @@ namespace POESKillTree.ViewModels
 
                         img.BeginInit();
                         img.CacheOption = BitmapCacheOption.OnLoad;
+                        var bu = System.Windows.Navigation.BaseUriHelper.GetBaseUri(Application.Current.MainWindow);
+                        var bus = bu.ToString();
+                        bus = bus.Substring(0, bus.IndexOf(";component/") + 11);
+                        string image = "Images/EquipmentUI/ItemDefaults/" + itm.Class + ".png";
+                        Uri u = new Uri(bus + image);
 
-
-                        Uri u = new Uri("/images/EquipmentUI/ItemDefaults/" + itm.Class + ".png", UriKind.Relative);
-                        if (!File.Exists(u.ToString()))
+                        if (!ResourceExists(image))
                             return null;
 
                         img.UriSource = u;
@@ -268,6 +273,45 @@ namespace POESKillTree.ViewModels
 
             }
             return img;
+        }
+
+
+        public static bool ResourceExists(string resourcePath)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            return ResourceExists(assembly, resourcePath);
+        }
+
+        public static bool ResourceExists(Assembly assembly, string resourcePath)
+        {
+            if (_resourceKeyCache == null)
+                _resourceKeyCache = GetResourcePaths(assembly).Select(o=>o as string).Where(s=>s!=null).ToList();
+
+                return _resourceKeyCache.Contains(resourcePath.ToLower());
+
+        }
+
+        static List<string> _resourceKeyCache;
+        public static IEnumerable<object> GetResourcePaths(Assembly assembly)
+        {
+            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var resourceName = assembly.GetName().Name + ".g";
+            var resourceManager = new ResourceManager(resourceName, assembly);
+
+            try
+            {
+                var resourceSet = resourceManager.GetResourceSet(culture, true, true);
+
+                foreach (System.Collections.DictionaryEntry resource in resourceSet)
+                {
+                    yield return resource.Key;
+                }
+            }
+            finally
+            {
+                resourceManager.ReleaseAllResources();
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
