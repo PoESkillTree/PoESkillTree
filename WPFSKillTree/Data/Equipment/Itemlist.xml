@@ -184,7 +184,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="21" to="21" />
+      <stat name="Evasion Rating" from="21" to="21" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Simple Robe" level="3">
@@ -192,7 +192,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="11" to="11" />
+      <stat name="Energy Shield" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Scale Vest" level="4">
@@ -201,7 +201,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="19" to="19" />
-      <stat name="Energy Shield" from="19" to="19" />
+      <stat name="Evasion Rating" from="19" to="19" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Padded Vest" level="4">
@@ -209,8 +209,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="19" to="19" />
-      <stat name="Evasion Rating" from="7" to="7" />
+      <stat name="Energy Shield" from="7" to="7" />
+      <stat name="Evasion Rating" from="19" to="19" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Chainmail Vest" level="4">
@@ -219,7 +219,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="19" to="19" />
-      <stat name="Evasion Rating" from="7" to="7" />
+      <stat name="Energy Shield" from="7" to="7" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Chestplate" level="6">
@@ -236,7 +236,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="35" to="35" />
-      <stat name="Evasion Rating" from="11" to="11" />
+      <stat name="Energy Shield" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Light Brigandine" level="8">
@@ -245,7 +245,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="35" to="35" />
-      <stat name="Energy Shield" from="35" to="35" />
+      <stat name="Evasion Rating" from="35" to="35" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Strapped Leather" level="9">
@@ -253,7 +253,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="70" to="70" />
+      <stat name="Evasion Rating" from="70" to="70" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Oiled Vest" level="9">
@@ -261,8 +261,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="38" to="38" />
-      <stat name="Evasion Rating" from="13" to="13" />
+      <stat name="Energy Shield" from="13" to="13" />
+      <stat name="Evasion Rating" from="38" to="38" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Silken Vest" level="11">
@@ -270,7 +270,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="27" to="27" />
+      <stat name="Energy Shield" from="27" to="27" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Buckskin Tunic" level="17">
@@ -278,7 +278,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="126" to="126" />
+      <stat name="Evasion Rating" from="126" to="126" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Copper Plate" level="17">
@@ -295,7 +295,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="69" to="69" />
-      <stat name="Evasion Rating" from="21" to="21" />
+      <stat name="Energy Shield" from="21" to="21" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Scale Doublet" level="17">
@@ -304,7 +304,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="69" to="69" />
-      <stat name="Energy Shield" from="69" to="69" />
+      <stat name="Evasion Rating" from="69" to="69" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Scholar's Robe" level="18">
@@ -312,7 +312,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="41" to="41" />
+      <stat name="Energy Shield" from="41" to="41" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Padded Jacket" level="18">
@@ -320,8 +320,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="73" to="73" />
-      <stat name="Evasion Rating" from="22" to="22" />
+      <stat name="Energy Shield" from="22" to="22" />
+      <stat name="Evasion Rating" from="73" to="73" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Chainmail Doublet" level="21">
@@ -330,7 +330,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="85" to="85" />
-      <stat name="Evasion Rating" from="26" to="26" />
+      <stat name="Energy Shield" from="26" to="26" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="War Plate" level="21">
@@ -347,7 +347,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="85" to="85" />
-      <stat name="Energy Shield" from="85" to="85" />
+      <stat name="Evasion Rating" from="85" to="85" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Oiled Coat" level="22">
@@ -355,8 +355,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="88" to="88" />
-      <stat name="Evasion Rating" from="27" to="27" />
+      <stat name="Energy Shield" from="27" to="27" />
+      <stat name="Evasion Rating" from="88" to="88" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Wild Leather" level="25">
@@ -364,7 +364,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="182" to="182" />
+      <stat name="Evasion Rating" from="182" to="182" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Silken Garb" level="25">
@@ -372,7 +372,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="55" to="55" />
+      <stat name="Energy Shield" from="55" to="55" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Scarlet Raiment" level="28">
@@ -380,8 +380,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="112" to="112" />
-      <stat name="Evasion Rating" from="33" to="33" />
+      <stat name="Energy Shield" from="33" to="33" />
+      <stat name="Evasion Rating" from="112" to="112" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Ringmail" level="28">
@@ -390,7 +390,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="112" to="112" />
-      <stat name="Evasion Rating" from="33" to="33" />
+      <stat name="Energy Shield" from="33" to="33" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Scale Armour" level="28">
@@ -399,7 +399,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="112" to="112" />
-      <stat name="Energy Shield" from="112" to="112" />
+      <stat name="Evasion Rating" from="112" to="112" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Mage's Vestment" level="28">
@@ -407,7 +407,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="61" to="61" />
+      <stat name="Energy Shield" from="61" to="61" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Leather" level="28">
@@ -415,7 +415,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="203" to="203" />
+      <stat name="Evasion Rating" from="203" to="203" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Plate" level="28">
@@ -431,8 +431,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="127" to="127" />
-      <stat name="Evasion Rating" from="38" to="38" />
+      <stat name="Energy Shield" from="38" to="38" />
+      <stat name="Evasion Rating" from="127" to="127" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Soldier's Brigandine" level="32">
@@ -441,7 +441,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="127" to="127" />
-      <stat name="Energy Shield" from="127" to="127" />
+      <stat name="Evasion Rating" from="127" to="127" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Silk Robe" level="32">
@@ -449,7 +449,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="69" to="69" />
+      <stat name="Energy Shield" from="69" to="69" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Arena Plate" level="32">
@@ -466,7 +466,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="127" to="127" />
-      <stat name="Evasion Rating" from="38" to="38" />
+      <stat name="Energy Shield" from="38" to="38" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sun Leather" level="32">
@@ -474,7 +474,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="231" to="231" />
+      <stat name="Evasion Rating" from="231" to="231" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Field Lamellar" level="35">
@@ -483,7 +483,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="138" to="138" />
-      <stat name="Energy Shield" from="138" to="138" />
+      <stat name="Evasion Rating" from="138" to="138" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Cabalist Regalia" level="35">
@@ -491,7 +491,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="75" to="75" />
+      <stat name="Energy Shield" from="75" to="75" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Thief's Garb" level="35">
@@ -499,7 +499,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="252" to="252" />
+      <stat name="Evasion Rating" from="252" to="252" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Holy Chainmail" level="35">
@@ -508,7 +508,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="138" to="138" />
-      <stat name="Evasion Rating" from="41" to="41" />
+      <stat name="Energy Shield" from="41" to="41" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Bone Armour" level="35">
@@ -516,8 +516,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="138" to="138" />
-      <stat name="Evasion Rating" from="41" to="41" />
+      <stat name="Energy Shield" from="41" to="41" />
+      <stat name="Evasion Rating" from="138" to="138" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Lordly Plate" level="35">
@@ -541,7 +541,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="266" to="266" />
+      <stat name="Evasion Rating" from="266" to="266" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sage's Robe" level="37">
@@ -549,7 +549,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="79" to="79" />
+      <stat name="Energy Shield" from="79" to="79" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Wyrmscale Doublet" level="38">
@@ -558,7 +558,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="150" to="150" />
-      <stat name="Energy Shield" from="150" to="150" />
+      <stat name="Evasion Rating" from="150" to="150" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Latticed Ringmail" level="39">
@@ -567,7 +567,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="154" to="154" />
-      <stat name="Evasion Rating" from="46" to="46" />
+      <stat name="Energy Shield" from="46" to="46" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Quilted Jacket" level="40">
@@ -575,8 +575,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="158" to="158" />
-      <stat name="Evasion Rating" from="47" to="47" />
+      <stat name="Energy Shield" from="47" to="47" />
+      <stat name="Evasion Rating" from="158" to="158" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Frontier Leather" level="41">
@@ -584,7 +584,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="294" to="294" />
+      <stat name="Evasion Rating" from="294" to="294" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Battle Plate" level="41">
@@ -600,7 +600,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="87" to="87" />
+      <stat name="Energy Shield" from="87" to="87" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Hussar Brigandine" level="42">
@@ -609,7 +609,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="165" to="165" />
-      <stat name="Energy Shield" from="165" to="165" />
+      <stat name="Evasion Rating" from="165" to="165" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Crusader Chainmail" level="43">
@@ -618,7 +618,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="169" to="169" />
-      <stat name="Evasion Rating" from="50" to="50" />
+      <stat name="Energy Shield" from="50" to="50" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sleek Coat" level="44">
@@ -626,8 +626,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="173" to="173" />
-      <stat name="Evasion Rating" from="51" to="51" />
+      <stat name="Energy Shield" from="51" to="51" />
+      <stat name="Evasion Rating" from="173" to="173" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sun Plate" level="45">
@@ -643,7 +643,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="322" to="322" />
+      <stat name="Evasion Rating" from="322" to="322" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Conjurer's Vestment" level="45">
@@ -651,7 +651,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="95" to="95" />
+      <stat name="Energy Shield" from="95" to="95" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Full Wyrmscale" level="46">
@@ -660,7 +660,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="181" to="181" />
-      <stat name="Energy Shield" from="181" to="181" />
+      <stat name="Evasion Rating" from="181" to="181" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Ornate Ringmail" level="47">
@@ -669,7 +669,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="185" to="185" />
-      <stat name="Evasion Rating" from="54" to="54" />
+      <stat name="Energy Shield" from="54" to="54" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Crimson Raiment" level="48">
@@ -677,8 +677,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="189" to="189" />
-      <stat name="Evasion Rating" from="55" to="55" />
+      <stat name="Energy Shield" from="55" to="55" />
+      <stat name="Evasion Rating" from="189" to="189" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Coronal Leather" level="49">
@@ -686,7 +686,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="350" to="350" />
+      <stat name="Evasion Rating" from="350" to="350" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Spidersilk Robe" level="49">
@@ -694,7 +694,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="103" to="103" />
+      <stat name="Energy Shield" from="103" to="103" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Colosseum Plate" level="49">
@@ -711,7 +711,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="196" to="196" />
-      <stat name="Energy Shield" from="196" to="196" />
+      <stat name="Evasion Rating" from="196" to="196" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Chain Hauberk" level="51">
@@ -720,7 +720,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="200" to="200" />
-      <stat name="Evasion Rating" from="59" to="59" />
+      <stat name="Energy Shield" from="59" to="59" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Lacquered Garb" level="52">
@@ -728,8 +728,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="204" to="204" />
-      <stat name="Evasion Rating" from="60" to="60" />
+      <stat name="Energy Shield" from="60" to="60" />
+      <stat name="Evasion Rating" from="204" to="204" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Destroyer Regalia" level="53">
@@ -737,7 +737,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="111" to="111" />
+      <stat name="Energy Shield" from="111" to="111" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Majestic Plate" level="53">
@@ -753,7 +753,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="378" to="378" />
+      <stat name="Evasion Rating" from="378" to="378" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Battle Lamellar" level="54">
@@ -762,7 +762,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="212" to="212" />
-      <stat name="Energy Shield" from="212" to="212" />
+      <stat name="Evasion Rating" from="212" to="212" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Devout Chainmail" level="55">
@@ -771,7 +771,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="215" to="215" />
-      <stat name="Evasion Rating" from="63" to="63" />
+      <stat name="Energy Shield" from="63" to="63" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Crypt Armour" level="56">
@@ -779,8 +779,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="219" to="219" />
-      <stat name="Evasion Rating" from="64" to="64" />
+      <stat name="Energy Shield" from="64" to="64" />
+      <stat name="Evasion Rating" from="219" to="219" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Golden Plate" level="56">
@@ -796,7 +796,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="117" to="117" />
+      <stat name="Energy Shield" from="117" to="117" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sharkskin Tunic" level="56">
@@ -804,7 +804,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="399" to="399" />
+      <stat name="Evasion Rating" from="399" to="399" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Dragonscale Doublet" level="57">
@@ -813,7 +813,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="223" to="223" />
-      <stat name="Energy Shield" from="223" to="223" />
+      <stat name="Evasion Rating" from="223" to="223" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Loricated Ringmail" level="58">
@@ -822,7 +822,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="232" to="232" />
-      <stat name="Evasion Rating" from="68" to="68" />
+      <stat name="Energy Shield" from="68" to="68" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Destiny Leather" level="59">
@@ -830,7 +830,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="428" to="428" />
+      <stat name="Evasion Rating" from="428" to="428" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Crusader Plate" level="59">
@@ -846,7 +846,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="125" to="125" />
+      <stat name="Energy Shield" from="125" to="125" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sentinel Jacket" level="59">
@@ -854,8 +854,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="235" to="235" />
-      <stat name="Evasion Rating" from="69" to="69" />
+      <stat name="Energy Shield" from="69" to="69" />
+      <stat name="Evasion Rating" from="235" to="235" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Desert Brigandine" level="60">
@@ -864,7 +864,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="268" to="268" />
-      <stat name="Energy Shield" from="268" to="268" />
+      <stat name="Evasion Rating" from="268" to="268" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Conquest Chainmail" level="61">
@@ -873,7 +873,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="276" to="276" />
-      <stat name="Evasion Rating" from="81" to="81" />
+      <stat name="Energy Shield" from="81" to="81" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Exquisite Leather" level="62">
@@ -881,7 +881,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="502" to="502" />
+      <stat name="Evasion Rating" from="502" to="502" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Varnished Coat" level="62">
@@ -889,8 +889,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="276" to="276" />
-      <stat name="Evasion Rating" from="81" to="81" />
+      <stat name="Energy Shield" from="81" to="81" />
+      <stat name="Evasion Rating" from="276" to="276" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Occultist's Vestment" level="62">
@@ -899,7 +899,7 @@
       <stat name="Spell Damage %" from="3" to="10" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="140" to="140" />
+      <stat name="Energy Shield" from="140" to="140" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Astral Plate" level="62">
@@ -917,7 +917,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="335" to="335" />
-      <stat name="Energy Shield" from="266" to="266" />
+      <stat name="Evasion Rating" from="266" to="266" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Elegant Ringmail" level="64">
@@ -926,7 +926,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="269" to="269" />
-      <stat name="Evasion Rating" from="94" to="94" />
+      <stat name="Energy Shield" from="94" to="94" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Blood Raiment" level="65">
@@ -934,8 +934,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="311" to="311" />
-      <stat name="Evasion Rating" from="75" to="75" />
+      <stat name="Energy Shield" from="75" to="75" />
+      <stat name="Evasion Rating" from="311" to="311" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Widowsilk Robe" level="65">
@@ -943,7 +943,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="161" to="161" />
+      <stat name="Energy Shield" from="161" to="161" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Zodiac Leather" level="65">
@@ -951,7 +951,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="609" to="609" />
+      <stat name="Evasion Rating" from="609" to="609" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Gladiator Plate" level="65">
@@ -968,7 +968,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="296" to="296" />
-      <stat name="Energy Shield" from="296" to="296" />
+      <stat name="Evasion Rating" from="296" to="296" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Saint's Hauberk" level="67">
@@ -977,7 +977,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="315" to="315" />
-      <stat name="Evasion Rating" from="78" to="78" />
+      <stat name="Energy Shield" from="78" to="78" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Vaal Regalia" level="68">
@@ -985,7 +985,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="175" to="175" />
+      <stat name="Energy Shield" from="175" to="175" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Glorious Plate" level="68">
@@ -998,7 +998,7 @@
       <stat name="Base Movement Velocity %" from="3" to="3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="525" to="525" />
+      <stat name="Evasion Rating" from="525" to="525" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sadist Garb" level="68">
@@ -1006,8 +1006,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="304" to="304" />
-      <stat name="Evasion Rating" from="95" to="95" />
+      <stat name="Energy Shield" from="95" to="95" />
+      <stat name="Evasion Rating" from="304" to="304" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Triumphant Lamellar" level="69">
@@ -1016,7 +1016,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="271" to="271" />
-      <stat name="Energy Shield" from="340" to="340" />
+      <stat name="Evasion Rating" from="340" to="340" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Saintly Chainmail" level="70">
@@ -1025,7 +1025,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="286" to="286" />
-      <stat name="Evasion Rating" from="98" to="98" />
+      <stat name="Energy Shield" from="98" to="98" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Carnal Armour" level="71">
@@ -1034,8 +1034,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="251" to="251" />
-      <stat name="Evasion Rating" from="105" to="105" />
+      <stat name="Energy Shield" from="105" to="105" />
+      <stat name="Evasion Rating" from="251" to="251" />
     </properties>
   </ItemBase>
   <ItemBase group="Chest" class="Armor" type="Sacrificial Garb" level="72">
@@ -1044,8 +1044,8 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="234" to="234" />
-      <stat name="Energy Shield" from="234" to="234" />
-      <stat name="Evasion Rating" from="69" to="69" />
+      <stat name="Energy Shield" from="69" to="69" />
+      <stat name="Evasion Rating" from="234" to="234" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Iron Greaves" level="1">
@@ -1055,30 +1055,30 @@
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Wool Shoes" level="3">
     <properties>
-      <stat name="Evasion Rating" from="4" to="4" />
+      <stat name="Energy Shield" from="4" to="4" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Rawhide Boots" level="3">
     <properties>
-      <stat name="Energy Shield" from="11" to="11" />
+      <stat name="Evasion Rating" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Chain Boots" level="5">
     <properties>
       <stat name="Armour" from="9" to="9" />
-      <stat name="Evasion Rating" from="3" to="3" />
+      <stat name="Energy Shield" from="3" to="3" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Wrapped Boots" level="6">
     <properties>
-      <stat name="Energy Shield" from="11" to="11" />
-      <stat name="Evasion Rating" from="4" to="4" />
+      <stat name="Energy Shield" from="4" to="4" />
+      <stat name="Evasion Rating" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Leatherscale Boots" level="6">
     <properties>
       <stat name="Armour" from="11" to="11" />
-      <stat name="Energy Shield" from="11" to="11" />
+      <stat name="Evasion Rating" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Steel Greaves" level="9">
@@ -1088,40 +1088,40 @@
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Velvet Slippers" level="9">
     <properties>
-      <stat name="Evasion Rating" from="9" to="9" />
+      <stat name="Energy Shield" from="9" to="9" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Goathide Boots" level="12">
     <properties>
-      <stat name="Energy Shield" from="36" to="36" />
+      <stat name="Evasion Rating" from="36" to="36" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Ringmail Boots" level="13">
     <properties>
       <stat name="Armour" from="22" to="22" />
-      <stat name="Evasion Rating" from="7" to="7" />
+      <stat name="Energy Shield" from="7" to="7" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Strapped Boots" level="16">
     <properties>
-      <stat name="Energy Shield" from="26" to="26" />
-      <stat name="Evasion Rating" from="8" to="8" />
+      <stat name="Energy Shield" from="8" to="8" />
+      <stat name="Evasion Rating" from="26" to="26" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Ironscale Boots" level="18">
     <properties>
       <stat name="Armour" from="29" to="29" />
-      <stat name="Energy Shield" from="29" to="29" />
+      <stat name="Evasion Rating" from="29" to="29" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Deerskin Boots" level="22">
     <properties>
-      <stat name="Energy Shield" from="64" to="64" />
+      <stat name="Evasion Rating" from="64" to="64" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Silk Slippers" level="22">
     <properties>
-      <stat name="Evasion Rating" from="20" to="20" />
+      <stat name="Energy Shield" from="20" to="20" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Plated Greaves" level="23">
@@ -1131,25 +1131,25 @@
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Clasped Boots" level="27">
     <properties>
-      <stat name="Energy Shield" from="43" to="43" />
-      <stat name="Evasion Rating" from="13" to="13" />
+      <stat name="Energy Shield" from="13" to="13" />
+      <stat name="Evasion Rating" from="43" to="43" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Mesh Boots" level="28">
     <properties>
       <stat name="Armour" from="45" to="45" />
-      <stat name="Evasion Rating" from="13" to="13" />
+      <stat name="Energy Shield" from="13" to="13" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Bronzescale Boots" level="30">
     <properties>
       <stat name="Armour" from="48" to="48" />
-      <stat name="Energy Shield" from="48" to="48" />
+      <stat name="Evasion Rating" from="48" to="48" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Scholar Boots" level="32">
     <properties>
-      <stat name="Evasion Rating" from="28" to="28" />
+      <stat name="Energy Shield" from="28" to="28" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Reinforced Greaves" level="33">
@@ -1159,25 +1159,25 @@
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Shackled Boots" level="34">
     <properties>
-      <stat name="Energy Shield" from="54" to="54" />
-      <stat name="Evasion Rating" from="16" to="16" />
+      <stat name="Energy Shield" from="16" to="16" />
+      <stat name="Evasion Rating" from="54" to="54" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Nubuck Boots" level="34">
     <properties>
-      <stat name="Energy Shield" from="98" to="98" />
+      <stat name="Evasion Rating" from="98" to="98" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Steelscale Boots" level="36">
     <properties>
       <stat name="Armour" from="57" to="57" />
-      <stat name="Energy Shield" from="57" to="57" />
+      <stat name="Evasion Rating" from="57" to="57" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Riveted Boots" level="36">
     <properties>
       <stat name="Armour" from="57" to="57" />
-      <stat name="Evasion Rating" from="17" to="17" />
+      <stat name="Energy Shield" from="17" to="17" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Antique Greaves" level="37">
@@ -1187,40 +1187,40 @@
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Satin Slippers" level="38">
     <properties>
-      <stat name="Evasion Rating" from="32" to="32" />
+      <stat name="Energy Shield" from="32" to="32" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Eelskin Boots" level="39">
     <properties>
-      <stat name="Energy Shield" from="112" to="112" />
+      <stat name="Evasion Rating" from="112" to="112" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Zealot Boots" level="40">
     <properties>
       <stat name="Armour" from="63" to="63" />
-      <stat name="Evasion Rating" from="19" to="19" />
+      <stat name="Energy Shield" from="19" to="19" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Trapper Boots" level="41">
     <properties>
-      <stat name="Energy Shield" from="65" to="65" />
-      <stat name="Evasion Rating" from="19" to="19" />
+      <stat name="Energy Shield" from="19" to="19" />
+      <stat name="Evasion Rating" from="65" to="65" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Serpentscale Boots" level="42">
     <properties>
       <stat name="Armour" from="66" to="66" />
-      <stat name="Energy Shield" from="66" to="66" />
+      <stat name="Evasion Rating" from="66" to="66" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Sharkskin Boots" level="44">
     <properties>
-      <stat name="Energy Shield" from="126" to="126" />
+      <stat name="Evasion Rating" from="126" to="126" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Samite Slippers" level="44">
     <properties>
-      <stat name="Evasion Rating" from="37" to="37" />
+      <stat name="Energy Shield" from="37" to="37" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Ancient Greaves" level="46">
@@ -1230,25 +1230,25 @@
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Ambush Boots" level="47">
     <properties>
-      <stat name="Energy Shield" from="74" to="74" />
-      <stat name="Evasion Rating" from="22" to="22" />
+      <stat name="Energy Shield" from="22" to="22" />
+      <stat name="Evasion Rating" from="74" to="74" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Soldier Boots" level="49">
     <properties>
       <stat name="Armour" from="77" to="77" />
-      <stat name="Evasion Rating" from="23" to="23" />
+      <stat name="Energy Shield" from="23" to="23" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Wyrmscale Boots" level="51">
     <properties>
       <stat name="Armour" from="80" to="80" />
-      <stat name="Energy Shield" from="80" to="80" />
+      <stat name="Evasion Rating" from="80" to="80" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Conjurer Boots" level="53">
     <properties>
-      <stat name="Evasion Rating" from="44" to="44" />
+      <stat name="Energy Shield" from="44" to="44" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Goliath Greaves" level="54">
@@ -1258,35 +1258,35 @@
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Shagreen Boots" level="55">
     <properties>
-      <stat name="Energy Shield" from="157" to="157" />
+      <stat name="Evasion Rating" from="157" to="157" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Carnal Boots" level="55">
     <properties>
-      <stat name="Energy Shield" from="86" to="86" />
-      <stat name="Evasion Rating" from="25" to="25" />
+      <stat name="Energy Shield" from="25" to="25" />
+      <stat name="Evasion Rating" from="86" to="86" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Legion Boots" level="58">
     <properties>
       <stat name="Armour" from="91" to="91" />
-      <stat name="Evasion Rating" from="27" to="27" />
+      <stat name="Energy Shield" from="27" to="27" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Hydrascale Boots" level="59">
     <properties>
       <stat name="Armour" from="92" to="92" />
-      <stat name="Energy Shield" from="92" to="92" />
+      <stat name="Evasion Rating" from="92" to="92" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Arcanist Slippers" level="61">
     <properties>
-      <stat name="Evasion Rating" from="59" to="59" />
+      <stat name="Energy Shield" from="59" to="59" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Stealth Boots" level="62">
     <properties>
-      <stat name="Energy Shield" from="191" to="191" />
+      <stat name="Evasion Rating" from="191" to="191" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Vaal Greaves" level="62">
@@ -1296,25 +1296,25 @@
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Assassin's Boots" level="63">
     <properties>
-      <stat name="Energy Shield" from="105" to="105" />
-      <stat name="Evasion Rating" from="31" to="31" />
+      <stat name="Energy Shield" from="31" to="31" />
+      <stat name="Evasion Rating" from="105" to="105" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Crusader Boots" level="64">
     <properties>
       <stat name="Armour" from="105" to="105" />
-      <stat name="Evasion Rating" from="31" to="31" />
+      <stat name="Energy Shield" from="31" to="31" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Dragonscale Boots" level="65">
     <properties>
       <stat name="Armour" from="105" to="105" />
-      <stat name="Energy Shield" from="105" to="105" />
+      <stat name="Evasion Rating" from="105" to="105" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Sorcerer Boots" level="67">
     <properties>
-      <stat name="Evasion Rating" from="64" to="64" />
+      <stat name="Energy Shield" from="64" to="64" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Titan Greaves" level="68">
@@ -1324,13 +1324,13 @@
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Murder Boots" level="69">
     <properties>
-      <stat name="Energy Shield" from="161" to="161" />
-      <stat name="Evasion Rating" from="22" to="22" />
+      <stat name="Energy Shield" from="22" to="22" />
+      <stat name="Evasion Rating" from="161" to="161" />
     </properties>
   </ItemBase>
   <ItemBase group="Boots" class="Boots" type="Slink Boots" level="69">
     <properties>
-      <stat name="Energy Shield" from="214" to="214" />
+      <stat name="Evasion Rating" from="214" to="214" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Iron Gauntlets" level="1">
@@ -1340,35 +1340,35 @@
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Rawhide Gloves" level="3">
     <properties>
-      <stat name="Energy Shield" from="11" to="11" />
+      <stat name="Evasion Rating" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Wool Gloves" level="3">
     <properties>
-      <stat name="Evasion Rating" from="4" to="4" />
+      <stat name="Energy Shield" from="4" to="4" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Fishscale Gauntlets" level="4">
     <properties>
       <stat name="Armour" from="8" to="8" />
-      <stat name="Energy Shield" from="8" to="8" />
+      <stat name="Evasion Rating" from="8" to="8" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Wrapped Mitts" level="5">
     <properties>
-      <stat name="Energy Shield" from="9" to="9" />
-      <stat name="Evasion Rating" from="3" to="3" />
+      <stat name="Energy Shield" from="3" to="3" />
+      <stat name="Evasion Rating" from="9" to="9" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Chain Gloves" level="7">
     <properties>
       <stat name="Armour" from="12" to="12" />
-      <stat name="Evasion Rating" from="4" to="4" />
+      <stat name="Energy Shield" from="4" to="4" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Goathide Gloves" level="9">
     <properties>
-      <stat name="Energy Shield" from="28" to="28" />
+      <stat name="Evasion Rating" from="28" to="28" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Plated Gauntlets" level="11">
@@ -1378,7 +1378,7 @@
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Velvet Gloves" level="12">
     <properties>
-      <stat name="Evasion Rating" from="12" to="12" />
+      <stat name="Energy Shield" from="12" to="12" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Golden Bracers" level="12">
@@ -1389,24 +1389,24 @@
   <ItemBase group="Gloves" class="Gloves" type="Ironscale Gauntlets" level="15">
     <properties>
       <stat name="Armour" from="25" to="25" />
-      <stat name="Energy Shield" from="25" to="25" />
+      <stat name="Evasion Rating" from="25" to="25" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Strapped Mitts" level="16">
     <properties>
-      <stat name="Energy Shield" from="26" to="26" />
-      <stat name="Evasion Rating" from="8" to="8" />
+      <stat name="Energy Shield" from="8" to="8" />
+      <stat name="Evasion Rating" from="26" to="26" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Ringmail Gloves" level="19">
     <properties>
       <stat name="Armour" from="31" to="31" />
-      <stat name="Evasion Rating" from="9" to="9" />
+      <stat name="Energy Shield" from="9" to="9" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Deerskin Gloves" level="21">
     <properties>
-      <stat name="Energy Shield" from="62" to="62" />
+      <stat name="Evasion Rating" from="62" to="62" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Bronze Gauntlets" level="23">
@@ -1416,30 +1416,30 @@
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Silk Gloves" level="25">
     <properties>
-      <stat name="Evasion Rating" from="22" to="22" />
+      <stat name="Energy Shield" from="22" to="22" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Bronzescale Gauntlets" level="27">
     <properties>
       <stat name="Armour" from="43" to="43" />
-      <stat name="Energy Shield" from="43" to="43" />
+      <stat name="Evasion Rating" from="43" to="43" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Clasped Mitts" level="31">
     <properties>
-      <stat name="Energy Shield" from="49" to="49" />
-      <stat name="Evasion Rating" from="15" to="15" />
+      <stat name="Energy Shield" from="15" to="15" />
+      <stat name="Evasion Rating" from="49" to="49" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Mesh Gloves" level="32">
     <properties>
       <stat name="Armour" from="51" to="51" />
-      <stat name="Evasion Rating" from="15" to="15" />
+      <stat name="Energy Shield" from="15" to="15" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Nubuck Gloves" level="33">
     <properties>
-      <stat name="Energy Shield" from="95" to="95" />
+      <stat name="Evasion Rating" from="95" to="95" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Steel Gauntlets" level="35">
@@ -1449,30 +1449,30 @@
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Trapper Mitts" level="36">
     <properties>
-      <stat name="Energy Shield" from="57" to="57" />
-      <stat name="Evasion Rating" from="17" to="17" />
+      <stat name="Energy Shield" from="17" to="17" />
+      <stat name="Evasion Rating" from="57" to="57" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Embroidered Gloves" level="36">
     <properties>
-      <stat name="Evasion Rating" from="31" to="31" />
+      <stat name="Energy Shield" from="31" to="31" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Steelscale Gauntlets" level="36">
     <properties>
       <stat name="Armour" from="57" to="57" />
-      <stat name="Energy Shield" from="57" to="57" />
+      <stat name="Evasion Rating" from="57" to="57" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Riveted Gloves" level="37">
     <properties>
       <stat name="Armour" from="58" to="58" />
-      <stat name="Evasion Rating" from="17" to="17" />
+      <stat name="Energy Shield" from="17" to="17" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Eelskin Gloves" level="38">
     <properties>
-      <stat name="Energy Shield" from="109" to="109" />
+      <stat name="Evasion Rating" from="109" to="109" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Antique Gauntlets" level="39">
@@ -1482,35 +1482,35 @@
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Satin Gloves" level="41">
     <properties>
-      <stat name="Evasion Rating" from="35" to="35" />
+      <stat name="Energy Shield" from="35" to="35" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Zealot Gloves" level="43">
     <properties>
       <stat name="Armour" from="68" to="68" />
-      <stat name="Evasion Rating" from="20" to="20" />
+      <stat name="Energy Shield" from="20" to="20" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Serpentscale Gauntlets" level="43">
     <properties>
       <stat name="Armour" from="68" to="68" />
-      <stat name="Energy Shield" from="68" to="68" />
+      <stat name="Evasion Rating" from="68" to="68" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Sharkskin Gloves" level="45">
     <properties>
-      <stat name="Energy Shield" from="129" to="129" />
+      <stat name="Evasion Rating" from="129" to="129" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Ambush Mitts" level="45">
     <properties>
-      <stat name="Energy Shield" from="71" to="71" />
-      <stat name="Evasion Rating" from="21" to="21" />
+      <stat name="Energy Shield" from="21" to="21" />
+      <stat name="Evasion Rating" from="71" to="71" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Samite Gloves" level="47">
     <properties>
-      <stat name="Evasion Rating" from="40" to="40" />
+      <stat name="Energy Shield" from="40" to="40" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Ancient Gauntlets" level="47">
@@ -1521,19 +1521,19 @@
   <ItemBase group="Gloves" class="Gloves" type="Wyrmscale Gauntlets" level="49">
     <properties>
       <stat name="Armour" from="77" to="77" />
-      <stat name="Energy Shield" from="77" to="77" />
+      <stat name="Evasion Rating" from="77" to="77" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Carnal Mitts" level="50">
     <properties>
-      <stat name="Energy Shield" from="78" to="78" />
-      <stat name="Evasion Rating" from="23" to="23" />
+      <stat name="Energy Shield" from="23" to="23" />
+      <stat name="Evasion Rating" from="78" to="78" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Soldier Gloves" level="51">
     <properties>
       <stat name="Armour" from="80" to="80" />
-      <stat name="Evasion Rating" from="24" to="24" />
+      <stat name="Energy Shield" from="24" to="24" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Goliath Gauntlets" level="53">
@@ -1543,40 +1543,40 @@
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Shagreen Gloves" level="54">
     <properties>
-      <stat name="Energy Shield" from="154" to="154" />
+      <stat name="Evasion Rating" from="154" to="154" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Conjurer Gloves" level="55">
     <properties>
-      <stat name="Evasion Rating" from="46" to="46" />
+      <stat name="Energy Shield" from="46" to="46" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Legion Gloves" level="57">
     <properties>
       <stat name="Armour" from="89" to="89" />
-      <stat name="Evasion Rating" from="26" to="26" />
+      <stat name="Energy Shield" from="26" to="26" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Assassin's Mitts" level="58">
     <properties>
-      <stat name="Energy Shield" from="91" to="91" />
-      <stat name="Evasion Rating" from="27" to="27" />
+      <stat name="Energy Shield" from="27" to="27" />
+      <stat name="Evasion Rating" from="91" to="91" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Hydrascale Gauntlets" level="59">
     <properties>
       <stat name="Armour" from="92" to="92" />
-      <stat name="Energy Shield" from="92" to="92" />
+      <stat name="Evasion Rating" from="92" to="92" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Arcanist Gloves" level="60">
     <properties>
-      <stat name="Evasion Rating" from="56" to="56" />
+      <stat name="Energy Shield" from="56" to="56" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Stealth Gloves" level="62">
     <properties>
-      <stat name="Energy Shield" from="200" to="200" />
+      <stat name="Evasion Rating" from="200" to="200" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Vaal Gauntlets" level="63">
@@ -1587,24 +1587,24 @@
   <ItemBase group="Gloves" class="Gloves" type="Crusader Gloves" level="66">
     <properties>
       <stat name="Armour" from="105" to="105" />
-      <stat name="Evasion Rating" from="31" to="31" />
+      <stat name="Energy Shield" from="31" to="31" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Murder Mitts" level="67">
     <properties>
-      <stat name="Energy Shield" from="105" to="105" />
-      <stat name="Evasion Rating" from="31" to="31" />
+      <stat name="Energy Shield" from="31" to="31" />
+      <stat name="Evasion Rating" from="105" to="105" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Dragonscale Gauntlets" level="67">
     <properties>
       <stat name="Armour" from="105" to="105" />
-      <stat name="Energy Shield" from="105" to="105" />
+      <stat name="Evasion Rating" from="105" to="105" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Sorcerer Gloves" level="69">
     <properties>
-      <stat name="Evasion Rating" from="61" to="61" />
+      <stat name="Energy Shield" from="61" to="61" />
     </properties>
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Titan Gauntlets" level="69">
@@ -1614,7 +1614,7 @@
   </ItemBase>
   <ItemBase group="Gloves" class="Gloves" type="Slink Gloves" level="70">
     <properties>
-      <stat name="Energy Shield" from="210" to="210" />
+      <stat name="Evasion Rating" from="210" to="210" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Iron Hat" level="1">
@@ -1624,30 +1624,30 @@
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Vine Circlet" level="3">
     <properties>
-      <stat name="Evasion Rating" from="7" to="7" />
+      <stat name="Energy Shield" from="7" to="7" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Leather Cap" level="3">
     <properties>
-      <stat name="Energy Shield" from="17" to="17" />
+      <stat name="Evasion Rating" from="17" to="17" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Battered Helm" level="4">
     <properties>
       <stat name="Armour" from="11" to="11" />
-      <stat name="Energy Shield" from="11" to="11" />
+      <stat name="Evasion Rating" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Scare Mask" level="4">
     <properties>
-      <stat name="Energy Shield" from="11" to="11" />
-      <stat name="Evasion Rating" from="4" to="4" />
+      <stat name="Energy Shield" from="4" to="4" />
+      <stat name="Evasion Rating" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Rusted Coif" level="5">
     <properties>
       <stat name="Armour" from="14" to="14" />
-      <stat name="Evasion Rating" from="5" to="5" />
+      <stat name="Energy Shield" from="5" to="5" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Cone Helmet" level="7">
@@ -1657,41 +1657,41 @@
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Iron Circlet" level="8">
     <properties>
-      <stat name="Evasion Rating" from="13" to="13" />
+      <stat name="Energy Shield" from="13" to="13" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Tricorne" level="10">
     <properties>
-      <stat name="Energy Shield" from="46" to="46" />
+      <stat name="Evasion Rating" from="46" to="46" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Plague Mask" level="10">
     <properties>
-      <stat name="Energy Shield" from="25" to="25" />
-      <stat name="Evasion Rating" from="8" to="8" />
+      <stat name="Energy Shield" from="8" to="8" />
+      <stat name="Evasion Rating" from="25" to="25" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Soldier Helmet" level="12">
     <properties>
       <stat name="Armour" from="30" to="30" />
-      <stat name="Evasion Rating" from="10" to="10" />
+      <stat name="Energy Shield" from="10" to="10" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Sallet" level="13">
     <properties>
       <stat name="Armour" from="32" to="32" />
-      <stat name="Energy Shield" from="32" to="32" />
+      <stat name="Evasion Rating" from="32" to="32" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Torture Cage" level="17">
     <properties>
-      <stat name="Evasion Rating" from="23" to="23" />
+      <stat name="Energy Shield" from="23" to="23" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Iron Mask" level="17">
     <properties>
-      <stat name="Energy Shield" from="41" to="41" />
-      <stat name="Evasion Rating" from="13" to="13" />
+      <stat name="Energy Shield" from="13" to="13" />
+      <stat name="Evasion Rating" from="41" to="41" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Barbute Helmet" level="18">
@@ -1701,19 +1701,19 @@
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Leather Hood" level="20">
     <properties>
-      <stat name="Energy Shield" from="88" to="88" />
+      <stat name="Evasion Rating" from="88" to="88" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Great Helmet" level="22">
     <properties>
       <stat name="Armour" from="53" to="53" />
-      <stat name="Evasion Rating" from="16" to="16" />
+      <stat name="Energy Shield" from="16" to="16" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Visored Sallet" level="23">
     <properties>
       <stat name="Armour" from="55" to="55" />
-      <stat name="Energy Shield" from="55" to="55" />
+      <stat name="Evasion Rating" from="55" to="55" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Close Helmet" level="26">
@@ -1723,41 +1723,41 @@
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Tribal Circlet" level="26">
     <properties>
-      <stat name="Evasion Rating" from="34" to="34" />
+      <stat name="Energy Shield" from="34" to="34" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Festival Mask" level="28">
     <properties>
-      <stat name="Energy Shield" from="67" to="67" />
-      <stat name="Evasion Rating" from="20" to="20" />
+      <stat name="Energy Shield" from="20" to="20" />
+      <stat name="Evasion Rating" from="67" to="67" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Wolf Pelt" level="30">
     <properties>
-      <stat name="Energy Shield" from="130" to="130" />
+      <stat name="Evasion Rating" from="130" to="130" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Crusader Helmet" level="31">
     <properties>
       <stat name="Armour" from="74" to="74" />
-      <stat name="Evasion Rating" from="22" to="22" />
+      <stat name="Energy Shield" from="22" to="22" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Gilded Sallet" level="33">
     <properties>
       <stat name="Armour" from="78" to="78" />
-      <stat name="Energy Shield" from="78" to="78" />
+      <stat name="Evasion Rating" from="78" to="78" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Bone Circlet" level="34">
     <properties>
-      <stat name="Evasion Rating" from="44" to="44" />
+      <stat name="Energy Shield" from="44" to="44" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Golden Mask" level="35">
     <properties>
-      <stat name="Energy Shield" from="83" to="83" />
-      <stat name="Evasion Rating" from="25" to="25" />
+      <stat name="Energy Shield" from="25" to="25" />
+      <stat name="Evasion Rating" from="83" to="83" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Gladiator Helmet" level="35">
@@ -1768,24 +1768,24 @@
   <ItemBase group="Helmet" class="Helm" type="Secutor Helm" level="36">
     <properties>
       <stat name="Armour" from="85" to="85" />
-      <stat name="Energy Shield" from="85" to="85" />
+      <stat name="Evasion Rating" from="85" to="85" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Aventail Helmet" level="37">
     <properties>
       <stat name="Armour" from="88" to="88" />
-      <stat name="Evasion Rating" from="26" to="26" />
+      <stat name="Energy Shield" from="26" to="26" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Raven Mask" level="38">
     <properties>
-      <stat name="Energy Shield" from="90" to="90" />
-      <stat name="Evasion Rating" from="27" to="27" />
+      <stat name="Energy Shield" from="27" to="27" />
+      <stat name="Evasion Rating" from="90" to="90" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Lunaris Circlet" level="39">
     <properties>
-      <stat name="Evasion Rating" from="50" to="50" />
+      <stat name="Energy Shield" from="50" to="50" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Reaver Helmet" level="40">
@@ -1795,35 +1795,35 @@
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Hunter Hood" level="41">
     <properties>
-      <stat name="Energy Shield" from="176" to="176" />
+      <stat name="Evasion Rating" from="176" to="176" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Fencer Helm" level="43">
     <properties>
       <stat name="Armour" from="102" to="102" />
-      <stat name="Energy Shield" from="102" to="102" />
+      <stat name="Evasion Rating" from="102" to="102" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Zealot Helmet" level="44">
     <properties>
       <stat name="Armour" from="104" to="104" />
-      <stat name="Evasion Rating" from="31" to="31" />
+      <stat name="Energy Shield" from="31" to="31" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Callous Mask" level="45">
     <properties>
-      <stat name="Energy Shield" from="106" to="106" />
-      <stat name="Evasion Rating" from="31" to="31" />
+      <stat name="Energy Shield" from="31" to="31" />
+      <stat name="Evasion Rating" from="106" to="106" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Noble Tricorne" level="47">
     <properties>
-      <stat name="Energy Shield" from="201" to="201" />
+      <stat name="Evasion Rating" from="201" to="201" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Steel Circlet" level="48">
     <properties>
-      <stat name="Evasion Rating" from="61" to="61" />
+      <stat name="Energy Shield" from="61" to="61" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Siege Helmet" level="48">
@@ -1834,29 +1834,29 @@
   <ItemBase group="Helmet" class="Helm" type="Lacquered Helmet" level="51">
     <properties>
       <stat name="Armour" from="120" to="120" />
-      <stat name="Energy Shield" from="120" to="120" />
+      <stat name="Evasion Rating" from="120" to="120" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Regicide Mask" level="52">
     <properties>
-      <stat name="Energy Shield" from="122" to="122" />
-      <stat name="Evasion Rating" from="36" to="36" />
+      <stat name="Energy Shield" from="36" to="36" />
+      <stat name="Evasion Rating" from="122" to="122" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Great Crown" level="53">
     <properties>
       <stat name="Armour" from="125" to="125" />
-      <stat name="Evasion Rating" from="37" to="37" />
+      <stat name="Energy Shield" from="37" to="37" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Necromancer Circlet" level="54">
     <properties>
-      <stat name="Evasion Rating" from="68" to="68" />
+      <stat name="Energy Shield" from="68" to="68" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Ursine Pelt" level="55">
     <properties>
-      <stat name="Energy Shield" from="240" to="240" />
+      <stat name="Evasion Rating" from="240" to="240" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Samite Helmet" level="55">
@@ -1866,30 +1866,30 @@
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Harlequin Mask" level="57">
     <properties>
-      <stat name="Energy Shield" from="137" to="137" />
-      <stat name="Evasion Rating" from="40" to="40" />
+      <stat name="Energy Shield" from="40" to="40" />
+      <stat name="Evasion Rating" from="137" to="137" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Fluted Bascinet" level="58">
     <properties>
       <stat name="Armour" from="139" to="139" />
-      <stat name="Energy Shield" from="139" to="139" />
+      <stat name="Evasion Rating" from="139" to="139" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Magistrate Crown" level="58">
     <properties>
       <stat name="Armour" from="139" to="139" />
-      <stat name="Evasion Rating" from="41" to="41" />
+      <stat name="Energy Shield" from="41" to="41" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Solaris Circlet" level="59">
     <properties>
-      <stat name="Evasion Rating" from="75" to="75" />
+      <stat name="Energy Shield" from="75" to="75" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Silken Hood" level="60">
     <properties>
-      <stat name="Energy Shield" from="301" to="301" />
+      <stat name="Evasion Rating" from="301" to="301" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Ezomyte Burgonet" level="60">
@@ -1899,30 +1899,30 @@
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Vaal Mask" level="62">
     <properties>
-      <stat name="Energy Shield" from="180" to="180" />
-      <stat name="Evasion Rating" from="47" to="47" />
+      <stat name="Energy Shield" from="47" to="47" />
+      <stat name="Evasion Rating" from="180" to="180" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Prophet Crown" level="63">
     <properties>
       <stat name="Armour" from="195" to="195" />
-      <stat name="Evasion Rating" from="40" to="40" />
+      <stat name="Energy Shield" from="40" to="40" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Pig-Faced Bascinet" level="63">
     <properties>
       <stat name="Armour" from="199" to="199" />
-      <stat name="Energy Shield" from="139" to="139" />
+      <stat name="Evasion Rating" from="139" to="139" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Sinner Tricorne" level="64">
     <properties>
-      <stat name="Energy Shield" from="321" to="321" />
+      <stat name="Evasion Rating" from="321" to="321" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Mind Cage" level="65">
     <properties>
-      <stat name="Evasion Rating" from="91" to="91" />
+      <stat name="Energy Shield" from="91" to="91" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Royal Burgonet" level="65">
@@ -1933,19 +1933,19 @@
   <ItemBase group="Helmet" class="Helm" type="Nightmare Bascinet" level="67">
     <properties>
       <stat name="Armour" from="141" to="141" />
-      <stat name="Energy Shield" from="203" to="203" />
+      <stat name="Evasion Rating" from="203" to="203" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Deicide Mask" level="67">
     <properties>
-      <stat name="Energy Shield" from="166" to="166" />
-      <stat name="Evasion Rating" from="59" to="59" />
+      <stat name="Energy Shield" from="59" to="59" />
+      <stat name="Evasion Rating" from="166" to="166" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Praetor Crown" level="68">
     <properties>
       <stat name="Armour" from="140" to="140" />
-      <stat name="Evasion Rating" from="63" to="63" />
+      <stat name="Energy Shield" from="63" to="63" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Eternal Burgonet" level="69">
@@ -1955,12 +1955,12 @@
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Hubris Circlet" level="69">
     <properties>
-      <stat name="Evasion Rating" from="100" to="100" />
+      <stat name="Energy Shield" from="100" to="100" />
     </properties>
   </ItemBase>
   <ItemBase group="Helmet" class="Helm" type="Lion Pelt" level="70">
     <properties>
-      <stat name="Energy Shield" from="331" to="331" />
+      <stat name="Evasion Rating" from="331" to="331" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Splintered Tower Shield" level="1">
@@ -1976,7 +1976,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="10" to="10" />
+      <stat name="Evasion Rating" from="10" to="10" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Twig Spirit Shield" level="3">
@@ -1985,7 +1985,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="5" to="5" />
+      <stat name="Energy Shield" from="5" to="5" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Rotted Round Shield" level="5">
@@ -1995,7 +1995,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="11" to="11" />
-      <stat name="Energy Shield" from="11" to="11" />
+      <stat name="Evasion Rating" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Spiked Bundle" level="5">
@@ -2004,8 +2004,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="2" to="5" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="11" to="11" />
-      <stat name="Evasion Rating" from="4" to="4" />
+      <stat name="Energy Shield" from="4" to="4" />
+      <stat name="Evasion Rating" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Corroded Tower Shield" level="5">
@@ -2023,7 +2023,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="15" to="15" />
-      <stat name="Evasion Rating" from="5" to="5" />
+      <stat name="Energy Shield" from="5" to="5" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Pine Buckler" level="8">
@@ -2031,7 +2031,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="38" to="38" />
+      <stat name="Evasion Rating" from="38" to="38" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Yew Spirit Shield" level="9">
@@ -2040,7 +2040,7 @@
       <stat name="Spell Damage %" from="5" to="5" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="11" to="11" />
+      <stat name="Energy Shield" from="11" to="11" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Rawhide Tower Shield" level="11">
@@ -2058,7 +2058,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="25" to="25" />
-      <stat name="Energy Shield" from="25" to="25" />
+      <stat name="Evasion Rating" from="25" to="25" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Driftwood Spiked Shield" level="12">
@@ -2067,8 +2067,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="2" to="5" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="40" to="40" />
-      <stat name="Evasion Rating" from="13" to="13" />
+      <stat name="Energy Shield" from="13" to="13" />
+      <stat name="Evasion Rating" from="40" to="40" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Linden Kite Shield" level="13">
@@ -2078,7 +2078,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="38" to="38" />
-      <stat name="Evasion Rating" from="12" to="12" />
+      <stat name="Energy Shield" from="12" to="12" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Bone Spirit Shield" level="15">
@@ -2087,7 +2087,7 @@
       <stat name="Spell Damage %" from="15" to="15" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="17" to="17" />
+      <stat name="Energy Shield" from="17" to="17" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Painted Buckler" level="16">
@@ -2095,7 +2095,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="95" to="95" />
+      <stat name="Evasion Rating" from="95" to="95" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Cedar Tower Shield" level="17">
@@ -2113,7 +2113,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="40" to="40" />
-      <stat name="Energy Shield" from="40" to="40" />
+      <stat name="Evasion Rating" from="40" to="40" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Alloyed Spike Shield" level="20">
@@ -2122,8 +2122,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="48" to="48" />
-      <stat name="Evasion Rating" from="15" to="15" />
+      <stat name="Energy Shield" from="15" to="15" />
+      <stat name="Evasion Rating" from="48" to="48" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Reinforced Kite Shield" level="20">
@@ -2132,7 +2132,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="56" to="56" />
-      <stat name="Evasion Rating" from="17" to="17" />
+      <stat name="Energy Shield" from="17" to="17" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Hammered Buckler" level="23">
@@ -2140,7 +2140,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="84" to="84" />
+      <stat name="Evasion Rating" from="84" to="84" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Tarnished Spirit Shield" level="23">
@@ -2149,7 +2149,7 @@
       <stat name="Spell Damage %" from="5" to="5" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="25" to="25" />
+      <stat name="Energy Shield" from="25" to="25" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Copper Tower Shield" level="24">
@@ -2167,7 +2167,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="54" to="54" />
-      <stat name="Evasion Rating" from="16" to="16" />
+      <stat name="Energy Shield" from="16" to="16" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Burnished Spike Shield" level="27">
@@ -2176,8 +2176,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="10" to="23" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="54" to="54" />
-      <stat name="Evasion Rating" from="16" to="16" />
+      <stat name="Energy Shield" from="16" to="16" />
+      <stat name="Evasion Rating" from="54" to="54" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Scarlet Round Shield" level="27">
@@ -2186,7 +2186,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="75" to="75" />
-      <stat name="Energy Shield" from="75" to="75" />
+      <stat name="Evasion Rating" from="75" to="75" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Jingling Spirit Shield" level="28">
@@ -2195,7 +2195,7 @@
       <stat name="Spell Damage %" from="10" to="10" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="30" to="30" />
+      <stat name="Energy Shield" from="30" to="30" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="War Buckler" level="29">
@@ -2203,7 +2203,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="126" to="126" />
+      <stat name="Evasion Rating" from="126" to="126" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Reinforced Tower Shield" level="30">
@@ -2220,8 +2220,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="24" to="35" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="105" to="105" />
-      <stat name="Evasion Rating" from="31" to="31" />
+      <stat name="Energy Shield" from="31" to="31" />
+      <stat name="Evasion Rating" from="105" to="105" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Splendid Round Shield" level="33">
@@ -2231,7 +2231,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="65" to="65" />
-      <stat name="Energy Shield" from="65" to="65" />
+      <stat name="Evasion Rating" from="65" to="65" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Brass Spirit Shield" level="33">
@@ -2239,7 +2239,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="43" to="43" />
+      <stat name="Energy Shield" from="43" to="43" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ceremonial Kite Shield" level="34">
@@ -2249,7 +2249,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="67" to="67" />
-      <stat name="Evasion Rating" from="20" to="20" />
+      <stat name="Energy Shield" from="20" to="20" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Gilded Buckler" level="34">
@@ -2257,7 +2257,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="171" to="171" />
+      <stat name="Evasion Rating" from="171" to="171" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Painted Tower Shield" level="35">
@@ -2274,7 +2274,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="39" to="39" />
+      <stat name="Energy Shield" from="39" to="39" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Oak Buckler" level="38">
@@ -2282,7 +2282,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="164" to="164" />
+      <stat name="Evasion Rating" from="164" to="164" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Redwood Spiked Shield" level="39">
@@ -2291,8 +2291,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="36" to="50" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="123" to="123" />
-      <stat name="Evasion Rating" from="36" to="36" />
+      <stat name="Energy Shield" from="36" to="36" />
+      <stat name="Evasion Rating" from="123" to="123" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Maple Round Shield" level="39">
@@ -2302,7 +2302,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="77" to="77" />
-      <stat name="Energy Shield" from="77" to="77" />
+      <stat name="Evasion Rating" from="77" to="77" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Buckskin Tower Shield" level="39">
@@ -2320,7 +2320,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="110" to="110" />
-      <stat name="Evasion Rating" from="33" to="33" />
+      <stat name="Energy Shield" from="33" to="33" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ivory Spirit Shield" level="41">
@@ -2329,7 +2329,7 @@
       <stat name="Spell Damage %" from="15" to="15" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="43" to="43" />
+      <stat name="Energy Shield" from="43" to="43" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Enameled Buckler" level="42">
@@ -2337,7 +2337,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="241" to="241" />
+      <stat name="Evasion Rating" from="241" to="241" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Mahogany Tower Shield" level="43">
@@ -2354,8 +2354,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="51" to="70" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="106" to="106" />
-      <stat name="Evasion Rating" from="31" to="31" />
+      <stat name="Energy Shield" from="31" to="31" />
+      <stat name="Evasion Rating" from="106" to="106" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Spiked Round Shield" level="45">
@@ -2365,7 +2365,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="88" to="88" />
-      <stat name="Energy Shield" from="88" to="88" />
+      <stat name="Evasion Rating" from="88" to="88" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ancient Spirit Shield" level="45">
@@ -2374,7 +2374,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="47" to="47" />
+      <stat name="Energy Shield" from="47" to="47" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Corrugated Buckler" level="46">
@@ -2382,7 +2382,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="164" to="164" />
+      <stat name="Evasion Rating" from="164" to="164" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Steel Kite Shield" level="46">
@@ -2391,7 +2391,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="127" to="127" />
-      <stat name="Evasion Rating" from="37" to="37" />
+      <stat name="Energy Shield" from="37" to="37" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Bronze Tower Shield" level="47">
@@ -2408,7 +2408,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="135" to="135" />
-      <stat name="Energy Shield" from="135" to="135" />
+      <stat name="Evasion Rating" from="135" to="135" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Chiming Spirit Shield" level="49">
@@ -2417,7 +2417,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="51" to="51" />
+      <stat name="Energy Shield" from="51" to="51" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Polished Spiked Shield" level="49">
@@ -2426,8 +2426,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="71" to="90" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="96" to="96" />
-      <stat name="Evasion Rating" from="28" to="28" />
+      <stat name="Energy Shield" from="28" to="28" />
+      <stat name="Evasion Rating" from="96" to="96" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Laminated Kite Shield" level="50">
@@ -2437,7 +2437,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="98" to="98" />
-      <stat name="Evasion Rating" from="29" to="29" />
+      <stat name="Energy Shield" from="29" to="29" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Battle Buckler" level="50">
@@ -2445,7 +2445,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="214" to="214" />
+      <stat name="Evasion Rating" from="214" to="214" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Girded Tower Shield" level="51">
@@ -2461,7 +2461,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="67" to="67" />
+      <stat name="Energy Shield" from="67" to="67" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Golden Buckler" level="54">
@@ -2469,7 +2469,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="269" to="269" />
+      <stat name="Evasion Rating" from="269" to="269" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Sovereign Spiked Shield" level="54">
@@ -2478,8 +2478,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="91" to="120" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="169" to="169" />
-      <stat name="Evasion Rating" from="50" to="50" />
+      <stat name="Energy Shield" from="50" to="50" />
+      <stat name="Evasion Rating" from="169" to="169" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Baroque Round Shield" level="54">
@@ -2489,7 +2489,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="106" to="106" />
-      <stat name="Energy Shield" from="106" to="106" />
+      <stat name="Evasion Rating" from="106" to="106" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Angelic Kite Shield" level="55">
@@ -2499,7 +2499,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="108" to="108" />
-      <stat name="Evasion Rating" from="32" to="32" />
+      <stat name="Energy Shield" from="32" to="32" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Crested Tower Shield" level="55">
@@ -2516,7 +2516,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="58" to="58" />
+      <stat name="Energy Shield" from="58" to="58" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ironwood Buckler" level="57">
@@ -2524,7 +2524,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="243" to="243" />
+      <stat name="Evasion Rating" from="243" to="243" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Alder Spike Shield" level="58">
@@ -2533,8 +2533,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="182" to="182" />
-      <stat name="Evasion Rating" from="53" to="53" />
+      <stat name="Energy Shield" from="53" to="53" />
+      <stat name="Evasion Rating" from="182" to="182" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Shagreen Tower Shield" level="58">
@@ -2552,7 +2552,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="114" to="114" />
-      <stat name="Energy Shield" from="114" to="114" />
+      <stat name="Evasion Rating" from="114" to="114" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Branded Kite Shield" level="59">
@@ -2562,7 +2562,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="162" to="162" />
-      <stat name="Evasion Rating" from="47" to="47" />
+      <stat name="Energy Shield" from="47" to="47" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Fossilized Spirit Shield" level="59">
@@ -2571,7 +2571,7 @@
       <stat name="Spell Damage %" from="15" to="15" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="61" to="61" />
+      <stat name="Energy Shield" from="61" to="61" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Lacquered Buckler" level="60">
@@ -2579,7 +2579,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="382" to="382" />
+      <stat name="Evasion Rating" from="382" to="382" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ebony Tower Shield" level="61">
@@ -2597,7 +2597,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="134" to="134" />
-      <stat name="Energy Shield" from="134" to="134" />
+      <stat name="Evasion Rating" from="134" to="134" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ezomyte Spiked Shield" level="62">
@@ -2606,8 +2606,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="151" to="180" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="158" to="158" />
-      <stat name="Evasion Rating" from="46" to="46" />
+      <stat name="Energy Shield" from="46" to="46" />
+      <stat name="Evasion Rating" from="158" to="158" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Vaal Spirit Shield" level="62">
@@ -2616,7 +2616,7 @@
       <stat name="Spell Damage %" from="5" to="5" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="70" to="70" />
+      <stat name="Energy Shield" from="70" to="70" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Champion Kite Shield" level="62">
@@ -2625,7 +2625,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="187" to="187" />
-      <stat name="Evasion Rating" from="55" to="55" />
+      <stat name="Energy Shield" from="55" to="55" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Vaal Buckler" level="63">
@@ -2633,7 +2633,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="239" to="239" />
+      <stat name="Evasion Rating" from="239" to="239" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Ezomyte Tower Shield" level="64">
@@ -2650,7 +2650,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="72" to="72" />
+      <stat name="Energy Shield" from="72" to="72" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Mosaic Kite Shield" level="65">
@@ -2660,7 +2660,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="127" to="127" />
-      <stat name="Evasion Rating" from="37" to="37" />
+      <stat name="Energy Shield" from="37" to="37" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Mirrored Spiked Shield" level="66">
@@ -2669,8 +2669,8 @@
       <stat name="Physical Damage To Return To Melee Attacker" from="181" to="220" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="131" to="131" />
-      <stat name="Evasion Rating" from="38" to="38" />
+      <stat name="Energy Shield" from="38" to="38" />
+      <stat name="Evasion Rating" from="131" to="131" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Crusader Buckler" level="66">
@@ -2678,7 +2678,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="287" to="287" />
+      <stat name="Evasion Rating" from="287" to="287" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Cardinal Round Shield" level="66">
@@ -2687,7 +2687,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="181" to="181" />
-      <stat name="Energy Shield" from="181" to="181" />
+      <stat name="Evasion Rating" from="181" to="181" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Colossal Tower Shield" level="67">
@@ -2705,7 +2705,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="135" to="135" />
-      <stat name="Evasion Rating" from="40" to="40" />
+      <stat name="Energy Shield" from="40" to="40" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Titanium Spirit Shield" level="68">
@@ -2713,7 +2713,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Evasion Rating" from="84" to="84" />
+      <stat name="Energy Shield" from="84" to="84" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Imperial Buckler" level="69">
@@ -2721,7 +2721,7 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="335" to="335" />
+      <stat name="Evasion Rating" from="335" to="335" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Elegant Round Shield" level="70">
@@ -2731,7 +2731,7 @@
     </implicitmods>
     <properties>
       <stat name="Armour" from="129" to="129" />
-      <stat name="Energy Shield" from="129" to="129" />
+      <stat name="Evasion Rating" from="129" to="129" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Supreme Spiked Shield" level="70">
@@ -2740,8 +2740,8 @@
       <stat name="From Armour Movement Speed %" from="-3" to="-3" />
     </implicitmods>
     <properties>
-      <stat name="Energy Shield" from="210" to="210" />
-      <stat name="Evasion Rating" from="62" to="62" />
+      <stat name="Energy Shield" from="62" to="62" />
+      <stat name="Evasion Rating" from="210" to="210" />
     </properties>
   </ItemBase>
   <ItemBase group="Shield" class="OffHand" type="Pinnacle Tower Shield" level="70">

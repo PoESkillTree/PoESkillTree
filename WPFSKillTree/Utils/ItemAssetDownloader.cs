@@ -191,10 +191,10 @@ namespace POESKillTree.Utils
 
                     if (armour != "0")
                         xe.Properties.Add(new Stat("Armour", armour ));
-                    if (evasionrating != "0")
-                        xe.Properties.Add(new Stat( "Energy Shield", evasionrating ));
                     if (energyshield != "0")
-                        xe.Properties.Add(new Stat( "Evasion Rating", energyshield ));
+                        xe.Properties.Add(new Stat( "Energy Shield", energyshield));
+                    if (evasionrating != "0")
+                        xe.Properties.Add(new Stat( "Evasion Rating", evasionrating));
 
 
                     var implModnodes = lines[i + 1].SelectNodes("td")
