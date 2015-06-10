@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
@@ -159,49 +160,83 @@
 
         <!-- grid row 0 - upper part-->
         <Menu IsMainMenu="True" x:Name="menu1" Grid.Row="0" Margin="0,0,0,2">
-            <MenuItem Header="_File ">
-                <MenuItem Header="_Save As" InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click">
+            <MenuItem>
+                <MenuItem.Header>
+                    <l:Catalog Message="_File" />
+                </MenuItem.Header>
+                <MenuItem InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Save _As" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource SaveIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Exit" Click="Menu_Exit">
+                <MenuItem Click="Menu_Exit">
+                    <MenuItem.Header>
+                        <l:Catalog Message="E_xit" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ExitIcon}" />
                     </MenuItem.Icon>
+
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="_Edit ">
-                <MenuItem x:Name="mnuUndo" Header="_Undo" InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click">
+            <MenuItem>
+                <MenuItem.Header>
+                    <l:Catalog Message="_Edit" />
+                </MenuItem.Header>
+                <MenuItem x:Name="mnuUndo" InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Undo" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource UndoIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="mnuRedo" Header="_Redo" InputGestureText="Ctrl+Y" Click="tbSkillURL_Redo_Click">
+                <MenuItem x:Name="mnuRedo" InputGestureText="Ctrl+Y" Click="tbSkillURL_Redo_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Redo" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource RedoIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Reset Tree" InputGestureText="Ctrl+R" Click="btnReset_Click">
+                <MenuItem InputGestureText="Ctrl+R" Click="btnReset_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Reset Skill _Tree" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ResetIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="mnuClearItems" Header="_Clear Items" Click="Menu_ClearItems" IsEnabled="False">
+                <MenuItem x:Name="mnuClearItems" Click="Menu_ClearItems" IsEnabled="False">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Clear Items" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ClearIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="_View ">
-                <MenuItem Header="_Theme ">
+            <MenuItem>
+                <MenuItem.Header>
+                    <l:Catalog Message="_View" />
+                </MenuItem.Header>
+                <MenuItem>
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Theme" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ThemeIcon}" />
                     </MenuItem.Icon>
                     <MenuItem x:Name="mnuViewThemeLight" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Light" Click="mnuSetTheme_Click" />
                     <MenuItem x:Name="mnuViewThemeDark" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Header="Dark" Click="mnuSetTheme_Click"/>
                 </MenuItem>
-                <MenuItem Header="_Accent ">
+                <MenuItem>
+                    <MenuItem.Header>
+                        <l:Catalog Message="Acce_nt" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ThemeIcon}" />
                     </MenuItem.Icon>
@@ -230,38 +265,83 @@
                     <MenuItem x:Name="mnuViewAccentYellow" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Header="Yellow" Click="mnuSetAccent_Click" />
                 </MenuItem>
                 <Separator />
-                <MenuItem x:Name="mnuViewBuilds" Header="_Builds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="{Binding PersistentData.Options.BuildsBarOpened,ElementName=window, Mode=TwoWay}"/>
-                <MenuItem x:Name="mnuViewAttributes" Header="_Attributes" InputGestureText="Ctrl+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.AttributesBarOpened,ElementName=window, Mode=TwoWay}"/>
-                <MenuItem x:Name="mnuViewCharacterSheet" Header="_Character Sheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}"/>
-                <MenuItem x:Name="mnuViewComparison" Header="_Tree comparison" IsCheckable="true" IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click"  />
+                <MenuItem x:Name="mnuViewBuilds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="{Binding PersistentData.Options.BuildsBarOpened,ElementName=window, Mode=TwoWay}">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Saved _Builds" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem x:Name="mnuViewAttributes" InputGestureText="Ctrl+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.AttributesBarOpened,ElementName=window, Mode=TwoWay}">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Attributes" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem x:Name="mnuViewCharacterSheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Character Sheet" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem x:Name="mnuViewComparison" IsCheckable="true" IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Skill _Tree Comparison" />
+                    </MenuItem.Header>
+                </MenuItem>
             </MenuItem>
-            <MenuItem Header="_Tools ">
-                <MenuItem Header="_ScreenShot of Skilled Nodes" Click="Menu_ScreenShot">
+            <MenuItem>
+                <MenuItem.Header>
+                    <l:Catalog Message="_Tools" />
+                </MenuItem.Header>
+                <MenuItem Click="Menu_ScreenShot">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Take _Screenshot of Skilled Nodes" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ScreenShotIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Download/Import Items" Click="Menu_ImportItems">
+                <MenuItem Click="Menu_ImportItems">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Download &amp; Import Items"/>
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource DownloadIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Skill highlighted nodes" Click="Menu_SkillHighlightedNodes">
+                <MenuItem Click="Menu_SkillHighlightedNodes">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Skill _Highlighted Nodes" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource SkillIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Unhighlight All Nodes" Click="Menu_UnhighlightAllNodes">
+                <MenuItem Click="Menu_UnhighlightAllNodes">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Unhighlight All Nodes" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CircelIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Copy Passive Attributes to Clipboard" Click="Menu_CopyStats">
+                <MenuItem Click="Menu_CopyStats">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Copy _Passive Attributes to Clipboard" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Redownload Tree Assets" Click="Menu_RedownloadTreeAssets">
+                <MenuItem Click="btnPoeUrl_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Copy Po_EUrl of Skill tree to Clipboard" />
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Click="Menu_RedownloadTreeAssets">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Redownload Skill Tree Assets" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource RedownloadIcon}" />
                     </MenuItem.Icon>
@@ -273,32 +353,54 @@
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="_Help ">
-                <MenuItem Header="_Links ">
+            <MenuItem>
+                <MenuItem.Header>
+                    <l:Catalog Message="_Help" />
+                </MenuItem.Header>
+                <MenuItem>
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Links" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource GlobeIcon}" />
                     </MenuItem.Icon>
-                    <MenuItem Header="_Path of Exile Website" Click="Menu_OpenPoEWebsite"/>
-                    <MenuItem Header="_Path of Exile Wiki" Click="Menu_OpenWiki"/>
+                    <MenuItem Click="Menu_OpenPoEWebsite">
+                        <MenuItem.Header>
+                            <l:Catalog Message="_Path of Exile Website" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Header="Path of Exile _Wiki" Click="Menu_OpenWiki"/>
                 </MenuItem>
-                <MenuItem Header="_View Help" Click="Menu_OpenHelp">
+                <MenuItem Click="Menu_OpenHelp">
+                    <MenuItem.Header>
+                        <l:Catalog Message="View _Help" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource HelpIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Hotkeys" Click="Menu_OpenHotkeys">
+                <MenuItem Click="Menu_OpenHotkeys">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Hot_keys" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource KeyboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_About" Click="Menu_OpenAbout">
-                    <MenuItem.Icon>
-                        <ContentControl Template="{StaticResource AboutIcon}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="_Check for Updates" Click="Menu_CheckForUpdates">
+                <MenuItem Click="Menu_CheckForUpdates">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Check for _Updates" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource UpdateIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Click="Menu_OpenAbout">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_About PoESkillTree" />
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource AboutIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -326,7 +428,9 @@
                     </ComboBox>
                     <Label Content="Used:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
                     <TextBox Margin="5,0,0,0" x:Name="tbUsedPoints" IsReadOnly="True" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                    <Button Content="Reset" x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0"/>
+                    <Button x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0">
+                        <l:Catalog Message="Reset"/>
+                    </Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Left" Margin="70,0,0,0">
                     <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" />
@@ -365,7 +469,9 @@
 
             <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Saved builds</TextBlock>
+                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">
+                        <l:Catalog Message="Saved Builds"/>
+                    </TextBlock>
                 </Expander.Header>
 
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left"  FlowDirection="LeftToRight" Background="{DynamicResource WhiteColorBrush}">
@@ -381,7 +487,9 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="110"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Filter:"></Label>
+                        <Label Grid.Column="0">
+                            <l:Catalog Message="Filter:"/>
+                        </Label>
                         <ComboBox Grid.Column="1" Height="26" x:Name="cbCharTypeSavedBuildFilter" VerticalAlignment="Top" Width="100" SelectionChanged="SavedBuildFilter_SelectionChanged">
                             <ComboBoxItem Content="All" IsSelected="True" />
                             <ComboBoxItem Content="Scion"/>
@@ -422,27 +530,40 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListView>
-                    <CheckBox Grid.Row="2" Margin="2" IsChecked="{Binding IsChecked,ElementName=mnuViewComparison}">Tree comparison</CheckBox>
+                    <CheckBox Grid.Row="2" Margin="2" IsChecked="{Binding IsChecked,ElementName=mnuViewComparison}">
+                        <l:Catalog Message="Skill tree comparison"/>
+                    </CheckBox>
                     <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="85"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="85"/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="btnSaveNewBuild" Content="Save new" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="80" Click="btnSaveNewBuild_Click"/>
-                        <Button x:Name="btnOverwriteBuild" Content="Overwrite" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="84" Grid.Column="1"/>
-                        <Button x:Name="btnDelete" Content="Delete" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Right" Width="60" Grid.Column="2"/>
+                        <Button x:Name="btnOverwriteBuild" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="82">
+                            <l:Catalog Message="Save"/>
+                        </Button>
+                        <Button x:Name="btnSaveNewBuild" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnSaveNewBuild_Click" Width="82" Grid.Column="1">
+                            <l:Catalog Message="Save As"/>
+                        </Button>
+                        <Button x:Name="btnDelete" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Right" Width="82" Grid.Column="2">
+                            <l:Catalog Message="Delete"/>
+                        </Button>
                     </Grid>
                 </Grid>
             </Expander>
 
             <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewAttributes}" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}" MouseLeave="expAttributes_MouseLeave">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" FontSize="16">Attributes</TextBlock>
+                    <TextBlock Margin="6,0" TextAlignment="Left" FontSize="16">
+                        <l:Catalog Message="Attributes"/>
+                    </TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
                     <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
-                        <TabItem Header="Passive Attributes" Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
+                        <TabItem Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
+                            <TabItem.Header>
+                                <l:Catalog Message="Passive Attributes"/>
+                            </TabItem.Header>
                             <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                                 <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
                                     <ListBox.ItemTemplate>
@@ -456,7 +577,10 @@
                                 </ListBox>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Item Attributes" Margin="0" controls:ControlsHelper.HeaderFontSize="15">
+                        <TabItem Margin="0" controls:ControlsHelper.HeaderFontSize="15">
+                            <TabItem.Header>
+                                <l:Catalog Message="Item Attributes"/>
+                            </TabItem.Header>
                             <Grid>
                                 <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Attributes, ElementName=window, Mode=OneWay}"  Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                     <ListBox.ItemTemplate>
@@ -472,7 +596,10 @@
                                 </ListBox>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Total Attributes" Margin="0" controls:ControlsHelper.HeaderFontSize="15">
+                        <TabItem Margin="0" controls:ControlsHelper.HeaderFontSize="15">
+                            <TabItem.Header>
+                                <l:Catalog Message="Total Attributes"/>
+                            </TabItem.Header>
                             <Grid>
                                 <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbAllAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                     <ListBox.ItemTemplate>
@@ -506,11 +633,16 @@
 
             <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}" Expanded="expCharacterSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">Character Sheet</TextBlock>
+                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">
+                        <l:Catalog Message="Character Sheet"/>
+                    </TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-109,0,0,-1">
                     <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
-                        <TabItem Header="Defence" Margin="0" x:Name="tabItemDefence" controls:ControlsHelper.HeaderFontSize="15">
+                        <TabItem Margin="0" x:Name="tabItemDefence" controls:ControlsHelper.HeaderFontSize="15">
+                            <TabItem.Header>
+                                <l:Catalog Message="Defense"/>
+                            </TabItem.Header>
                             <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                                 <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="listBoxDefence" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                     <ListBox.ItemTemplate>
@@ -524,7 +656,10 @@
                                 </ListBox>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Offence" Margin="0" x:Name="tabItemOffence" controls:ControlsHelper.HeaderFontSize="15">
+                        <TabItem Margin="0" x:Name="tabItemOffence" controls:ControlsHelper.HeaderFontSize="15">
+                            <TabItem.Header>
+                                <l:Catalog Message="Offense"/>
+                            </TabItem.Header>
                             <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                                 <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="listBoxOffence" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                     <ListBox.ItemTemplate>
@@ -556,16 +691,22 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="1" Content="Search:" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" />
+            <Label Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" >
+                <l:Catalog Message="Search:"/>
+            </Label>
+
             <TextBox Grid.Column="2" Height="24" HorizontalAlignment="Left" Margin="1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" />
             <CheckBox Grid.Column="3" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="cbRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbRegEx_Click" />
 
-            <Label Grid.Column="4" x:Name="lblSkillURL" Content="Build link:" HorizontalAlignment="Left" Margin="1,1,4,1" Height="28" VerticalAlignment="Bottom" VerticalContentAlignment="Center" />
+            <Label Grid.Column="4" x:Name="lblSkillURL" HorizontalAlignment="Left" Margin="1,1,4,1" Height="28" VerticalAlignment="Bottom" VerticalContentAlignment="Center" >
+                <l:Catalog Message="Skill tree link:"/>
+            </Label>
             <TextBox Grid.Column="5" Height="24" Margin="1,0,2.854,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  
                      VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" />
 
-            <Button Grid.Column="6" Content="Load build" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2"/>
-            <Button Grid.Column="7" Content="Poeurl it!" Height="24" HorizontalAlignment="Right" x:Name="btnPoeUrl" VerticalAlignment="Bottom" MinWidth="75" Click="btnPoeUrl_Click" Margin="0,0,2,2"/>
+            <Button Grid.Column="6" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2">
+                <l:Catalog Message="Load Tree"/>
+            </Button>
         </Grid>
     </Grid>
 </controls:MetroWindow>

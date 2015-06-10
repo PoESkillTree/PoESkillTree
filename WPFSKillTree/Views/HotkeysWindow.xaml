@@ -3,9 +3,13 @@
     x:Class="POESKillTree.Views.HotkeysWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Hotkeys" Width="500" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+    Width="500" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"
     ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
     Icon="/POESKillTree;component/logo.ico">
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="Hotkeys"/>
+    </controls:MetroWindow.Title>
     <Grid Background="{DynamicResource WhiteColorBrush}" Margin="2">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -32,53 +36,108 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="140"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition Width="110"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" FontWeight="Bold">Key combination</Label>
-        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontWeight="Bold">Function</Label>
-        <TextBlock Grid.Row="1" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Shift + Left Click</TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Zoom In</TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="0" >Ctrl + Left Click</TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3">Zoom Out</TextBlock>
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" FontWeight="Bold">
+            <l:Catalog Message="Key combination"/>
+        </Label>
+        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontWeight="Bold">
+            <l:Catalog Message="Function"/>
+        </Label>
+        <TextBlock Grid.Row="1" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Shift + Left Click"/>
+        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Zoom In"/>
+        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0" >
+            <l:Catalog Message="Ctrl + Left Click"/>
+        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Zoom Out"/>
+        </TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + 1</TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Scion</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Scion"/>
+        </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="0">Ctrl + 2</TextBlock>
-        <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">Marauder</TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Marauder"/>
+        </TextBlock>
         <TextBlock Grid.Row="5" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + 3</TextBlock>
-        <TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Ranger</TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Ranger"/>
+        </TextBlock>
         <TextBlock Grid.Row="6" Grid.Column="0">Ctrl + 4</TextBlock>
-        <TextBlock Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3">Witch</TextBlock>
+        <TextBlock Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Witch"/>
+        </TextBlock>
         <TextBlock Grid.Row="7" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + 5</TextBlock>
-        <TextBlock Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Duelist</TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Duelist"/>
+        </TextBlock>
         <TextBlock Grid.Row="8" Grid.Column="0">Ctrl + 6</TextBlock>
-        <TextBlock Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3">Templar</TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Templar"/>
+        </TextBlock>
         <TextBlock Grid.Row="9" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + 7</TextBlock>
-        <TextBlock Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Shadow</TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Shadow"/>
+        </TextBlock>
         <TextBlock Grid.Row="10" Grid.Column="0">Ctrl + Q</TextBlock>
-        <TextBlock Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3">Toggles Attribute Sidebar</TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Toggle Attributes sidebar"/>
+        </TextBlock>
         <TextBlock Grid.Row="11" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + Shift + Q</TextBlock>
-        <TextBlock Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Toggles Character Sheet Sidebar</TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Toggle Character Sheet sidebar"/>
+        </TextBlock>
         <TextBlock Grid.Row="12" Grid.Column="0">Ctrl + B</TextBlock>
-        <TextBlock Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="3">Toggles Saved Builds</TextBlock>
+        <TextBlock Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Toggle Saved Builds sidebar"/>
+        </TextBlock>
         <TextBlock Grid.Row="13" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + E</TextBlock>
-        <TextBlock Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Creates a PoEUrl link and copies to clipboard</TextBlock>
+        <TextBlock Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Copy PoEUrl link to Clipboard"/>
+        </TextBlock>
         <TextBlock Grid.Row="14" Grid.Column="0">Ctrl + R</TextBlock>
-        <TextBlock Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3">Resets tree</TextBlock>
-        <TextBlock Grid.Row="15" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + Up/Down</TextBlock>
-        <TextBlock Grid.Row="15" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Move build up and down (within 'Saved builds' menu)</TextBlock>
+        <TextBlock Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Reset Skill tree"/>
+        </TextBlock>
+        <TextBlock Grid.Row="15" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Ctrl + Up/Down"/>
+        </TextBlock>
+        <TextBlock Grid.Row="15" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="(Saved builds) Move build up and down"/>
+        </TextBlock>
         <TextBlock Grid.Row="16" Grid.Column="0">Ctrl + Z</TextBlock>
-        <TextBlock Grid.Row="16" Grid.Column="1" Grid.ColumnSpan="3">Undo last skill tree change</TextBlock>
+        <TextBlock Grid.Row="16" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Undo last Skill tree change"/>
+        </TextBlock>
         <TextBlock Grid.Row="17" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + Y</TextBlock>
-        <TextBlock Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">Redo last skill tree change</TextBlock>
+        <TextBlock Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Redo last Skill tree change"/>
+        </TextBlock>
         <TextBlock Grid.Row="18" Grid.Column="0">Ctrl + S</TextBlock>
-        <TextBlock Grid.Row="18" Grid.Column="1" Grid.ColumnSpan="3">Save build as</TextBlock>
-        <TextBlock Grid.Row="19" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Right Click</TextBlock>
-        <TextBlock Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">(Skill Tree) Center tree and reset zoom</TextBlock>
-        <TextBlock Grid.Row="20" Grid.Column="0">Right Click</TextBlock>
-        <TextBlock Grid.Row="20" Grid.Column="1" Grid.ColumnSpan="3">(Attributes) Highlight corresponding nodes in tree</TextBlock>
-        <Button Grid.Row="21" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0" Content="Close" x:Name="btnPopupClose" Click="btnPopupClose_Click" />
+        <TextBlock Grid.Row="18" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Save build as"/>
+        </TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Right Click"/>
+        </TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="(Skill tree) Center Skill tree and reset zoom"/></TextBlock>
+        <TextBlock Grid.Row="20" Grid.Column="0">
+            <l:Catalog Message="Right Click"/>
+        </TextBlock>
+        <TextBlock Grid.Row="20" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="(Attributes) Highlight corresponding nodes in Skill tree"/>
+        </TextBlock>
+        <Button Grid.Row="21" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0" x:Name="btnPopupClose" Click="btnPopupClose_Click">
+            <l:Catalog Message="Close"/>
+        </Button>
     </Grid>
 </controls:MetroWindow>

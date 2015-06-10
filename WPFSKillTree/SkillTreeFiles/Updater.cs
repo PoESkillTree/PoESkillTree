@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using Ionic.Zip;
+using POESKillTree.Localization;
 using Newtonsoft.Json.Linq;
 
 namespace POESKillTree.SkillTreeFiles
@@ -27,6 +29,8 @@ namespace POESKillTree.SkillTreeFiles
         public static bool IsInstalled = false;
         // Latest release.
         private static Release Latest;
+        // Regular expression for a released ZIP package file name.
+        private static readonly Regex ReZipPackage = new Regex(@"PoESkillTree.*\.zip$", RegexOptions.IgnoreCase);
         // HTTP request timeout for release checks and downloads (in seconds).
         private const int REQUEST_TIMEOUT = 15;
         // Work directory of update process (relative to installation root).
@@ -45,6 +49,8 @@ namespace POESKillTree.SkillTreeFiles
             public bool IsDownloaded { get { return Client == null && TemporaryFile != null; } }
             // The flag whether download is still in progress.
             public bool IsDownloading { get { return Client != null; } }
+            // The flag whether release is a pre-release.
+            public bool Prerelease;
             // The temporary file for package download.
             private string TemporaryFile;
             // The URI of release package.
@@ -58,7 +64,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Dispose();
                 }
-                catch (Exception e) {}
+                catch {}
             }
 
             // Cancels download.
@@ -107,9 +113,9 @@ namespace POESKillTree.SkillTreeFiles
             public void Download(AsyncCompletedEventHandler completedHandler, DownloadProgressChangedEventHandler progressHandler)
             {
                 if (Client != null)
-                    throw new UpdaterException("Download already in progress");
+                    throw new UpdaterException(L10n.Message("Download already in progress"));
                 if (TemporaryFile != null)
-                    throw new UpdaterException("Download already completed");
+                    throw new UpdaterException(L10n.Message("Download already completed"));
 
                 try
                 {
@@ -160,10 +166,10 @@ namespace POESKillTree.SkillTreeFiles
             public void Install()
             {
                 if (Client != null)
-                    throw new UpdaterException("Download still in progress");
+                    throw new UpdaterException(L10n.Message("Download still in progress"));
 
                 if (TemporaryFile == null)
-                    throw new UpdaterException("No package downloaded");
+                    throw new UpdaterException(L10n.Message("No package downloaded"));
 
                 try
                 {
@@ -177,7 +183,7 @@ namespace POESKillTree.SkillTreeFiles
                     // Copy content of first directory found in work directory to installation root.
                     string sourceDir = GetSourceDir();
                     if (sourceDir == null)
-                        throw new UpdaterException("Invalid package content");
+                        throw new UpdaterException(L10n.Message("Invalid package content"));
                     CopyTo(sourceDir, ".");
 
                     Dispose();
@@ -218,15 +224,16 @@ namespace POESKillTree.SkillTreeFiles
 
         /* Checks for updates and returns release informations when there is newer one.
          * Returns null if there is no newer release.
+         * If Prerelease argument is true, it will return also Pre-release, otherwise Pre-releases are ignored.
          * An existing last checked release will be discarded.
          * Throws UpdaterException if error occurs.
          */
-        public static Release CheckForUpdates()
+        public static Release CheckForUpdates(bool Prerelease = true)
         {
             if (Latest != null)
             {
                 if (Latest.IsDownloading)
-                    throw new UpdaterException("Download already in progress");
+                    throw new UpdaterException(L10n.Message("Download already in progress"));
                 Latest.Dispose();
             }
             Latest = null;
@@ -241,32 +248,68 @@ namespace POESKillTree.SkillTreeFiles
 
                 JArray releases = JArray.Parse(json);
                 if (releases.Count < 1)
-                    throw new UpdaterException("No release found");
+                    throw new UpdaterException(L10n.Message("No release found"));
 
-                JObject latest = (JObject)releases[0];
-                JArray assets = (JArray)latest["assets"];
-                if (assets.Count < 1)
-                    throw new UpdaterException("Package for release is missing");
+                string current = GetCurrentVersion(); // Current version (tag).
 
-                string current = GetCurrentVersion();
-                string tag = latest["tag_name"].Value<string>();
-                if (tag == current)
+                // Iterate thru avialable releases.
+                foreach (JObject release in (JArray)releases)
                 {
+                    // Drafts are not returned by API, but just in case...
+                    bool draft = release["draft"].Value<bool>();
+                    if (draft) continue; // Ignore drafts.
+
+                    // Check if there are assets attached.
+                    JArray assets = (JArray)release["assets"];
+                    if (assets.Count < 1) continue; // No assets, ignore it.
+
+                    // Compare release tag with our version (tag).
+                    // Assumption is that no one will make realease with older version tag.
+                    // So, any different version should be newer.
+                    string tag = release["tag_name"].Value<string>();
+                    if (tag == current) // If we didn't find different tag till now, then there is no newer version.
+                    {
+                        IsChecked = true;
+
+                        return null;
+                    }
+
+                    // Check if it is pre-release and we want to update to it.
+                    bool prerelease = release["prerelease"].Value<bool>();
+                    if (prerelease && !Prerelease) continue; // Found unwanted pre-release, ignore it.
+
+                    // Find PoESkillTree ZIP package.
+                    JObject zipAsset = null;
+                    foreach (JObject asset in assets)
+                    {
+                        string content_type = asset["content_type"].Value<string>();
+                        if (content_type != "application/zip") continue; // Not a ZIP, ignore it.
+
+                        string name = asset["name"].Value<string>();
+                        Match m = ReZipPackage.Match(name);
+                        if (m.Success)
+                        {
+                            // Found ZIP package.
+                            zipAsset = asset;
+                            break;
+                        }
+                    }
+                    if (zipAsset == null) continue; // No ZIP package found.
+
+                    // This is newer release (probably).
                     IsChecked = true;
+                    Latest = new Release
+                    {
+                        Name = release["name"].Value<string>(),
+                        Description = release["body"].Value<string>(),
+                        Prerelease = prerelease,
+                        Version = tag,
+                        URI = new Uri(zipAsset["browser_download_url"].Value<string>())
+                    };
 
-                    return null;
+                    // We are done, exit loop.
+                    break;
                 }
-
-                string url = ((JObject)assets[0])["browser_download_url"].Value<string>();
-
-                IsChecked = true;
-                Latest = new Release
-                {
-                    Name = latest["name"].Value<string>(),
-                    Description = latest["body"].Value<string>(),
-                    Version = tag,
-                    URI = new Uri(url)
-                };
             }
             catch (WebException e)
             {
@@ -287,7 +330,7 @@ namespace POESKillTree.SkillTreeFiles
         public static void CopyTo(string sourcePath, string targetPath)
         {
             if (!Directory.Exists(targetPath))
-                throw new DirectoryNotFoundException("No such directory: " + targetPath);
+                throw new DirectoryNotFoundException(String.Format(L10n.Message("No such directory: {0}"), targetPath));
 
             if (File.Exists(sourcePath))
             {
@@ -311,7 +354,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
             else
-                throw new FileNotFoundException("No such file or directory: " + sourcePath);
+                throw new FileNotFoundException(String.Format(L10n.Message("No such file or directory: {0}"), sourcePath));
         }
 
         // Dispose of current update process.
@@ -320,7 +363,7 @@ namespace POESKillTree.SkillTreeFiles
             if (Latest != null)
             {
                 if (Latest.IsDownloading)
-                    throw new UpdaterException("Download still in progress");
+                    throw new UpdaterException(L10n.Message("Download still in progress"));
                 Latest.Dispose();
                 Latest = null;
             }
@@ -336,7 +379,7 @@ namespace POESKillTree.SkillTreeFiles
             if (Latest != null)
             {
                 if (Latest.IsDownloaded || Latest.IsDownloading)
-                    throw new UpdaterException("Download completed or still in progress");
+                    throw new UpdaterException(L10n.Message("Download completed or still in progress"));
 
                 Latest.Download(completedHandler, progressHandler);
             }
@@ -362,9 +405,9 @@ namespace POESKillTree.SkillTreeFiles
             if (Latest != null)
             {
                 if (Latest.IsDownloading)
-                    throw new UpdaterException("Download still in progress");
+                    throw new UpdaterException(L10n.Message("Download still in progress"));
                 if (!Latest.IsDownloaded)
-                    throw new UpdaterException("No package downloaded");
+                    throw new UpdaterException(L10n.Message("No package downloaded"));
 
                 // If installation fails (exception will be thrown), latest release will be in ready to re-download state.
                 Latest.Install();

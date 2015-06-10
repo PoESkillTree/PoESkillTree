@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using POESKillTree.Utils;
 using POESKillTree.Views;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -47,7 +48,7 @@ namespace POESKillTree.SkillTreeFiles
 
                     // If location is inside of known folder, replace its path with GUID.
                     if (path.StartsWith(knownFolder.ParsingName))
-                        return Path.Combine("{" + knownFolder.FolderId.ToString().ToUpperInvariant() + "}", Path.GetFileName(location));
+                        return Path.Combine("{" + knownFolder.FolderId.ToString().ToUpperInvariant() + "}", location.Substring(knownFolder.ParsingName.Length + 1));
                 }
             }
 
@@ -76,6 +77,10 @@ namespace POESKillTree.SkillTreeFiles
         [STAThread]
         public static void Main(string[] arguments)
         {
+            // If executed from JumpTask, do nothing.
+            if (TaskbarHelper.IsJumpTask(arguments))
+                return;
+
             // Don't do shadow copying when being debugged in VS.
             if (Debugger.IsAttached)
             {

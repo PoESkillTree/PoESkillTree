@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows;
+using POESKillTree.Localization;
+using POESKillTree.Model;
 
 namespace POESKillTree.Views
 {
@@ -9,6 +12,28 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class App : Application
     {
+        // Single instance of persistent data.
+        private static readonly PersistentData PrivatePersistentData = new PersistentData();
+
+        // Expose persistent data.
+        public static PersistentData PersistentData
+        {
+            get { return PrivatePersistentData; }
+        } 
+
+        // Invoked when application is being started up (before MainWindow creation).
+        private void App_Startup(object sender, StartupEventArgs e)
+        {
+            // Set main thread apartment state.
+            Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
+
+            // Load persistent data.
+            PrivatePersistentData.LoadPersistentDataFromFile();
+
+            // Initialize localization.
+            L10n.Initialize(PrivatePersistentData);
+        }
+        
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
 

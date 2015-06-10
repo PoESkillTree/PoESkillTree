@@ -5,9 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
-using System.Linq;
-using POESKillTree.ViewModels.Items;
+using POESKillTree.Localization;
 
 namespace POESKillTree.Views
 {
@@ -21,21 +19,26 @@ namespace POESKillTree.Views
             InitializeComponent();
         }
 
-        public DownloadItemsWindow(string characterName)
+        public DownloadItemsWindow(string characterName, string accountName)
         {
             InitializeComponent();
-            tbCharName.Text = string.IsNullOrEmpty(characterName) ? "YourCharacterName" : characterName;
+            tbCharName.Text = string.IsNullOrEmpty(characterName) ? L10n.Message("CharacterName") : characterName;
+            tbAccName.Text = string.IsNullOrEmpty(accountName) ? L10n.Message("AccountName") : accountName;
         }
 
         public string GetCharacterName()
         {
-            return tbCharName.Text;
+            return tbCharName.Text == L10n.Message("CharacterName") ? null : tbCharName.Text;
+        }
+        public string GetAccountName()
+        {
+            return tbAccName.Text == L10n.Message("AccountName") ? null : tbAccName.Text;
         }
 
         private void tbCharName_TextChanged(object sender, TextChangedEventArgs e)
         {
-                tbCharLink.Text = "https://www.pathofexile.com/character-window/get-items?character=" + tbCharName.Text;
-                tbTreeLink.Text = "http://www.pathofexile.com/character-window/get-passive-skills?reqData=0&character=" + tbCharName.Text;
+                tbCharLink.Text = "https://www.pathofexile.com/character-window/get-items?character=" + tbCharName.Text + "&accountName=" + tbAccName.Text;
+                tbTreeLink.Text = "http://www.pathofexile.com/character-window/get-passive-skills?reqData=0&character=" + tbCharName.Text + "&accountName=" + tbAccName.Text;
         }
 
         private void btnPopupOpenBrowser_Click(object sender, RoutedEventArgs e)
@@ -50,13 +53,7 @@ namespace POESKillTree.Views
             if (ftoload.Value)
             {
                 var itemData = File.ReadAllText(fileDialog.FileName);
-                var mw = (Owner as MainWindow);
-                mw.LoadItemData(itemData);
-
-                var items = ((JArray)JObject.Parse(itemData).Property("items").Value);
-                mw.Stash.AddItems(items.Select(i => new Item((JObject)i)), "EquipImport");
-
-
+                (Owner as MainWindow).LoadItemData(itemData);
                 DialogResult = true;
             }
         }

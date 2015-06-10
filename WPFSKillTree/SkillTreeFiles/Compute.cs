@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
 using POESKillTree.ViewModels.Items;
@@ -9,7 +10,6 @@ using System.Linq;
 namespace POESKillTree.SkillTreeFiles
 {
     /* Known issues:
-     * - No support for unarmed combat.
      * - No support for minions, traps, mines and totems.
      * - No support for Vaal gems.
      * - Mana regeneration shows sometimes incorrect value (0.1 difference from in-game value).
@@ -216,7 +216,7 @@ namespace POESKillTree.SkillTreeFiles
             // Returns true if skill can be used with weapon.
             public bool CanUse(Weapon weapon)
             {
-                return weapon.IsWeapon() && Nature.Is(weapon.Nature.WeaponType) && ItemDB.CanUse(Gem, weapon);
+                return (weapon.IsWeapon() || weapon.IsUnarmed()) && Nature.Is(weapon.Nature.WeaponType) && ItemDB.CanUse(Gem, weapon);
             }
 
             // Returns chance to hit.
@@ -319,7 +319,7 @@ namespace POESKillTree.SkillTreeFiles
 
                 if (Nature.Is(DamageSource.Attack))
                 {
-                    if (MainHand.IsWeapon())
+                    if (MainHand.IsWeapon() || MainHand.IsUnarmed())
                         Sources.Add(new AttackSource("Main Hand", this, MainHand));
                         
                     if (OffHand.IsWeapon())
@@ -461,7 +461,7 @@ namespace POESKillTree.SkillTreeFiles
             // The increased/reduced accuracy rating with weapon type pattern.
             static Regex ReIncreasedAccuracyRatingWithWeaponType = new Regex("#% (increased|reduced) Accuracy Rating with (.+)$");
             // The increased/reduced attack speed patterns.
-            static Regex ReIncreasedAttackSpeedWeaponType = new Regex("#% (increased|reduced) (.+) Attack Speed$");
+            static Regex ReIncreasedAttackSpeedType = new Regex("#% (increased|reduced) (.+) Attack Speed$");
             static Regex ReIncreasedAttackSpeedWithWeaponHandOrType = new Regex("#% (increased|reduced) Attack Speed with (.+)$");
             // The more/less attack speed patterns.
             static Regex ReMoreAttackSpeedType = new Regex("#% (more|less) (.+) Attack Speed$");
@@ -590,7 +590,7 @@ namespace POESKillTree.SkillTreeFiles
                         incAS += attrs["#% increased Attack and Cast Speed"][0];
                     if (attrs.ContainsKey("#% reduced Attack and Cast Speed"))
                         incAS -= attrs["#% reduced Attack and Cast Speed"][0];
-                    foreach (var attr in attrs.MatchesAny(new Regex[] { ReIncreasedAttackSpeedWithWeaponHandOrType, ReIncreasedAttackSpeedWeaponType }))
+                    foreach (var attr in attrs.MatchesAny(new Regex[] { ReIncreasedAttackSpeedWithWeaponHandOrType, ReIncreasedAttackSpeedType }))
                     {
                         Match m = ReIncreasedAttackSpeedWithWeaponHandOrType.Match(attr.Key);
                         if (m.Success)
@@ -602,9 +602,16 @@ namespace POESKillTree.SkillTreeFiles
                         }
                         else
                         {
-                            m = ReIncreasedAttackSpeedWeaponType.Match(attr.Key);
-                            if (m.Success && Weapon.Types.ContainsKey(m.Groups[2].Value) && Nature.Is(Weapon.Types[m.Groups[2].Value]))
-                                incAS += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                            m = ReIncreasedAttackSpeedType.Match(attr.Key);
+                            if (m.Success)
+                            {
+                                // XXX: Not sure there are any mods with WeaponType here (Melee string in mod is DamageForm now, maybe Unarmed should be form as well).
+                                if (Weapon.Types.ContainsKey(m.Groups[2].Value) && Nature.Is(Weapon.Types[m.Groups[2].Value]))
+                                    incAS += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                                else
+                                    if (DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
+                                        incAS += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                            }
                         }
                     }
                     if (IsDualWielding && attrs.ContainsKey("#% increased Attack Speed while Dual Wielding"))
@@ -622,6 +629,7 @@ namespace POESKillTree.SkillTreeFiles
                         Match m = ReMoreAttackSpeedType.Match(attr.Key);
                         if (m.Success)
                         {
+                            // XXX: Not sure there are any mods with WeaponType here (Melee string in mod is DamageForm now, maybe Unarmed should be form as well).
                             if (Weapon.Types.ContainsKey(m.Groups[2].Value) && Nature.Is(Weapon.Types[m.Groups[2].Value]))
                                 moreAS += m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0];
                             else if (DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
@@ -833,7 +841,8 @@ namespace POESKillTree.SkillTreeFiles
                 { "Projectile", DamageForm.Projectile },
                 { "AoE",        DamageForm.AoE },
                 { "Area",       DamageForm.AoE },
-                { "Burning",    DamageForm.DoT }
+                { "Burning",    DamageForm.DoT },
+                { "Trigger",    DamageForm.OnUse }
             };
             static Dictionary<string, DamageSource> Sources = new Dictionary<string, DamageSource>()
             {
@@ -1278,6 +1287,10 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
+            // Default unarmed damage range.
+            const float UnarmedDamageRangeMin = 2;
+            const float UnarmedDamageRangeMax = 8;
+
             // The nature from which this damage originated (due to conversion).
             DamageNature Origin;
             // The damage range minimum.
@@ -1346,6 +1359,12 @@ namespace POESKillTree.SkillTreeFiles
             public float AverageHit()
             {
                 return (Min + Max) / 2;
+            }
+
+            // Creates unarmed damage.
+            public static Damage Create(DamageNature nature)
+            {
+                return new Damage(nature, UnarmedDamageRangeMin, UnarmedDamageRangeMax) { Type = DamageType.Physical };
             }
 
             // Creates damage from attribute.
@@ -1427,6 +1446,9 @@ namespace POESKillTree.SkillTreeFiles
 
         public class Weapon
         {
+            // Default attack speed of unarmed weapon.
+            const float UnarmedAttacksPerSecond = 1.2f;
+
             // List of all damage dealt by weapon.
             public List<Damage> Deals = new List<Damage>();
             // List of all non-physical damage added.
@@ -1452,7 +1474,8 @@ namespace POESKillTree.SkillTreeFiles
                 { "Two Handed Axe",     WeaponType.TwoHandedAxe },
                 { "Two Handed Mace",    WeaponType.TwoHandedMace },
                 { "Two Handed Sword",   WeaponType.TwoHandedSword },
-                { "Wand",               WeaponType.Wand }
+                { "Wand",               WeaponType.Wand },
+                { "Unarmed",            WeaponType.Unarmed }
             };
 
             // Copy constructor.
@@ -1467,11 +1490,12 @@ namespace POESKillTree.SkillTreeFiles
                 Added = weapon.Added;
             }
 
-            public Weapon(Item item)
+            public Weapon(WeaponHand hand, Item item)
             {
+                Hand = hand;
+
                 if (item != null)
                 {
-                    Hand = item.Class == ItemClass.MainHand ? WeaponHand.Main : WeaponHand.Off;
                     Item = item;
 
                     // Get weapon type (damage nature).
@@ -1523,6 +1547,18 @@ namespace POESKillTree.SkillTreeFiles
                         Attributes.Add(mod);
                     }
                 }
+                else // No item.
+                    if (hand == WeaponHand.Main) // Only Main Hand can be Unarmed.
+                    {
+                        Nature = new DamageNature() { WeaponType = WeaponType.Unarmed };
+
+                        // Implicit Unarmed attributes.
+                        Attributes.Add("Attacks per Second: #", new List<float>() { UnarmedAttacksPerSecond });
+
+                        // Unarmed damage.
+                        Damage damage = Damage.Create(Nature);
+                        Deals.Add(damage);
+                    }
             }
 
             // Returns clone of weapon for specified hand.
@@ -1561,6 +1597,12 @@ namespace POESKillTree.SkillTreeFiles
                 return Nature != null && Nature.WeaponType == WeaponType.Shield;
             }
 
+            // Returns true if weapon counts as Unarmed, false otherwise.
+            public bool IsUnarmed()
+            {
+                return Nature != null && (Nature.WeaponType & WeaponType.Unarmed) != 0;
+            }
+
             // Returns true if weapon is a regular weapon, false otherwise.
             public bool IsWeapon()
             {
@@ -1583,6 +1625,7 @@ namespace POESKillTree.SkillTreeFiles
             Staff = 64, TwoHandedAxe = 128, TwoHandedMace = 256, TwoHandedSword = 512, Wand = 1024,
             Quiver = 2048,
             Shield = 4096,
+            Unarmed = 8192,
             Melee = Claw | Dagger | OneHandedAxe | OneHandedMace | OneHandedSword | Staff | TwoHandedAxe | TwoHandedMace | TwoHandedSword,
             OneHandedMelee = Claw | Dagger | OneHandedAxe | OneHandedMace | OneHandedSword,
             TwoHandedMelee = Staff | TwoHandedAxe | TwoHandedMace | TwoHandedSword,
@@ -2228,8 +2271,8 @@ namespace POESKillTree.SkillTreeFiles
                 def["Shock Avoidance: #%"] = new List<float>() { shockAvoidance };
 
             List<ListGroup> groups = new List<ListGroup>();
-            groups.Add(new ListGroup("Character", ch));
-            groups.Add(new ListGroup("Defence", def));
+            groups.Add(new ListGroup(L10n.Message("Character"), ch));
+            groups.Add(new ListGroup(L10n.Message("Defense"), def));
 
             return groups;
         }
@@ -2253,8 +2296,8 @@ namespace POESKillTree.SkillTreeFiles
         {
             Items = itemAttrs.Equip.ToList();
 
-            MainHand = new Weapon(Items.Find(i => i.Class == ItemClass.MainHand));
-            OffHand = new Weapon(Items.Find(i => i.Class == ItemClass.OffHand));
+            MainHand = new Weapon(WeaponHand.Main, Items.Find(i => i.Class == ItemClass.MainHand));
+            OffHand = new Weapon(WeaponHand.Off, Items.Find(i => i.Class == ItemClass.OffHand));
 
             // If main hand weapon has Counts as Dual Wielding modifier, then clone weapon to off hand.
             // @see http://pathofexile.gamepedia.com/Wings_of_Entropy

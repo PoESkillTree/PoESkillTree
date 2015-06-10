@@ -94,6 +94,14 @@
     <StartupObject>POESKillTree.SkillTreeFiles.Bootstrap</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="ExpressionEvaluator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=90d9f15d622e2348, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\ExpressionEvaluator.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net40-client\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -163,6 +171,11 @@
       <DependentUpon>Stash.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\StashBookmark.cs" />
+    <Compile Include="Localization\Catalog.cs" />
+    <Compile Include="Localization\L10n.cs" />
+    <Compile Include="Localization\Markdown\Markdown.cs" />
+    <Compile Include="Localization\Markdown\TextToFlowDocumentConverter.cs" />
+    <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Notifier.cs" />
     <Compile Include="Model\Options.cs" />
@@ -197,6 +210,7 @@
     <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="Utils\Helpers.cs" />
     <Compile Include="Utils\ItemAssetDownloader.cs" />
+    <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\Items\Affix.cs" />
     <Compile Include="ViewModels\Items\GearType.cs" />
@@ -361,9 +375,15 @@
       <LastGenOutput>Version.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="build-locale.bat" />
     <None Include="dist-clean.bat" />
     <None Include="dist-update.bat" />
     <None Include="dist-release.bat" />
+    <None Include="Locale\en-US\Help.md" />
+    <None Include="Locale\Messages.pot" />
+    <None Include="Locale\sk\Help.md" />
+    <None Include="Locale\sk\Messages.po" />
+    <None Include="Localization\Markdown\Readme.md" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -417,6 +437,8 @@
     <Resource Include="Images\Witch.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Tools\gettext\msgmerge.exe" />
+    <Content Include="Tools\gettext\xgettext.exe" />
     <Resource Include="Images\EquipmentUI\ItemHeaderGemLeft.png" />
     <Resource Include="Images\EquipmentUI\ItemHeaderGemMiddle.png" />
     <Resource Include="Images\EquipmentUI\ItemHeaderGemRight.png" />
@@ -466,6 +488,9 @@
     <None Include="Data\Equipment\Itemlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Antlr3.Runtime.dll" />
+    <Content Include="ExpressionEvaluator.dll" />
+    <Content Include="ExpressionEvaluator.pdb" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -473,6 +498,9 @@
     <Resource Include="release.xml" />
     <Resource Include="logo.ico" />
     <None Include="Properties\app.manifest.i" />
+    <Content Include="Locale\msginit.exe" />
+    <Resource Include="Locale\README.txt" />
+    <Resource Include="Localization\Markdown\License.txt" />
     <Content Include="Tools\7z.dll" />
     <Content Include="Tools\7z.exe" />
     <Resource Include="Tools\7z.LICENSE.txt" />

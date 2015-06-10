@@ -532,9 +532,21 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 var bi2 = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\PSStartNodeBackgroundInactive.png", UriKind.Relative));
-                _StartBackgrounds.Add(false,
-                    (new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight),
-                        new ImageBrush(bi2))));
+                if (_StartBackgrounds.ContainsKey(false))
+                {
+                    if (!_StartBackgrounds[false].Key.Equals(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight)))
+                    {
+                        _StartBackgrounds.Add(false,
+                            (new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight),
+                                new ImageBrush(bi2))));
+                    }
+                }
+                else
+                {
+                    _StartBackgrounds.Add(false,
+                            (new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight),
+                                new ImageBrush(bi2))));
+                }
             }
 
         }

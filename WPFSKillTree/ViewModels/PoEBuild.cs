@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using POESKillTree.Localization;
 
 namespace POESKillTree.ViewModels
 {
@@ -7,6 +8,7 @@ namespace POESKillTree.ViewModels
     {
         public string Name { get; set; }
         public string CharacterName { get; set; }
+        public string AccountName { get; set; }
         public string Level { get; set; }
         public string Class { get; set; }
         public string PointsUsed { get; set; }
@@ -18,7 +20,16 @@ namespace POESKillTree.ViewModels
         [XmlIgnoreAttribute]
         public string Image { get { return "/POESKillTree;component/Images/" + Class + ".jpg"; } }
         [XmlIgnoreAttribute]
-        public string Description {get { return Class + ", " + PointsUsed + " points used"; }}
+        public string Description
+        {
+            get
+            {
+                uint used = 0;
+                if (!string.IsNullOrEmpty(PointsUsed)) uint.TryParse(PointsUsed, out used);
+
+                return string.Format(L10n.Plural("{0}, {1} point used", "{0}, {1} points used", used), Class, used);
+            }
+        }
         [XmlIgnoreAttribute]
         public bool Visible { get; set; }
 
@@ -47,6 +58,7 @@ namespace POESKillTree.ViewModels
             {
                 Name = build.Name,
                 CharacterName = build.CharacterName,
+                AccountName = build.AccountName,
                 Level = build.Level,
                 Class = build.Class,
                 PointsUsed = build.PointsUsed,

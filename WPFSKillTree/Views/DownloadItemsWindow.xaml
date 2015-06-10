@@ -1,21 +1,32 @@
 ﻿<controls:MetroWindow
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     x:Class="POESKillTree.Views.DownloadItemsWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Get Item Data" Width="500" WindowStartupLocation="CenterOwner"
-        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" Loaded="MetroWindow_Loaded">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+    Width="500" WindowStartupLocation="CenterOwner"
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" Loaded="MetroWindow_Loaded">
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="Download &amp; Import Items"/>
+    </controls:MetroWindow.Title>
     <StackPanel Background="{DynamicResource WhiteColorBrush}">
         <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Margin="15">
-            Please enter Your Character itemGroupName Below and click on 'Open Browser'.<LineBreak/>
-            This Will open your default Web-browser and download the Item data.<LineBreak/>
-            Save it anywhere you like, then click on 'Load File' and select it.
+            <l:Catalog Message="Please enter Your Character and Account Name below and click on 'Open in Browser'."/><LineBreak/>
+            <l:Catalog Message="This will open a page in your default Web-browser containing the item data."/><LineBreak/>
+            <l:Catalog Message="Save the page anywhere, then click on 'Load File' and select the saved file."/>
         </TextBlock>
         <TextBox Text="" x:Name="tbCharName" Margin="188,4,187,4" TextChanged="tbCharName_TextChanged" HorizontalContentAlignment="Center" HorizontalAlignment="Center" MinWidth="100" MaxLength="24"/>
+        <TextBox Text="" x:Name="tbAccName" Margin="188,4,187,4" TextChanged="tbCharName_TextChanged" HorizontalContentAlignment="Center" HorizontalAlignment="Center" MinWidth="100" MaxLength="24"/>
         <TextBox x:Name="tbCharLink" Margin="4" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
         <TextBox x:Name="tbTreeLink" Margin="4" HorizontalContentAlignment="Center" Visibility="Collapsed"/>
-        <Button Content="Open In Browser" x:Name="btnPopupOpenBrowser" Width="auto" Height="auto" Click="btnPopupOpenBrowser_Click" Margin="4,25,4,2"/>
-        <Button Content="Load File" x:Name="btnPopupLoadFile" Width="auto" Height="auto" Click="btnPopupLoadFile_Click" Margin="4,2,4,2"/>
-        <Button Content="Close" x:Name="btnPopupClose" Click="btnPopupClose_Click" Width="auto" Height="auto" Margin="4,8,4,2"/>
+        <Button x:Name="btnPopupOpenBrowser" Width="auto" Height="auto" Click="btnPopupOpenBrowser_Click" Margin="4,25,4,2">
+            <l:Catalog Message="Open in Browser"/>
+        </Button>
+        <Button x:Name="btnPopupLoadFile" Width="auto" Height="auto" Click="btnPopupLoadFile_Click" Margin="4,2,4,2">
+            <l:Catalog Message="Load File"/>
+        </Button>
+        <Button x:Name="btnPopupClose" Click="btnPopupClose_Click" Width="auto" Height="auto" Margin="4,8,4,2">
+            <l:Catalog Message="Close"/>
+        </Button>
     </StackPanel>
 </controls:MetroWindow>

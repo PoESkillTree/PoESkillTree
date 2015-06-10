@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using POESKillTree.Localization;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.SkillTreeFiles.SteinerTrees;
 using System.ComponentModel;
@@ -58,8 +59,8 @@ namespace POESKillTree.Views
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            btnPopupCancelClose.Content = "Cancel";
-            btnPopupPauseResume.Content = "Pause";
+            btnPopupCancelClose.Content = L10n.Message("Cancel");
+            btnPopupPauseResume.Content = L10n.Message("Pause");
 
             initializationWorker.RunWorkerAsync();
         }
@@ -107,8 +108,7 @@ namespace POESKillTree.Views
             progressBar.Value = e.ProgressPercentage;
             lblProgressText.Content = e.ProgressPercentage.ToString() + "/" + maxSteps;
             bestSoFar = (HashSet<ushort>)(e.UserState);
-            lblBestResult.Content = "Best result so far: " + bestSoFar.Count +
-                " additional points spent.";
+            lblBestResult.Content = string.Format(L10n.Plural("Best result so far: {0} additional point spent", "Best result so far: {0} additional points spent", (uint)bestSoFar.Count), bestSoFar.Count);
             tree.HighlightedNodes = new HashSet<ushort>(bestSoFar.Concat(tree.SkilledNodes));
             tree.DrawNodeBaseSurroundHighlight();
         }
@@ -122,8 +122,8 @@ namespace POESKillTree.Views
                 return;
             }
             
-            lblProgressText.Content = "Finished!";
-            btnPopupCancelClose.Content = "Close";
+            lblProgressText.Content = L10n.Message("Finished!");
+            btnPopupCancelClose.Content = L10n.Message("Close");
             btnPopupPauseResume.IsEnabled = false;
             bestSoFar = (HashSet<ushort>)e.Result;
             isPaused = true;
@@ -148,14 +148,14 @@ namespace POESKillTree.Views
             // Pause the optimizer
             if (isPaused)
             {
-                btnPopupPauseResume.Content = "Pause";
+                btnPopupPauseResume.Content = L10n.Message("Pause");
                 progressBar.IsEnabled = true;
                 solutionWorker.RunWorkerAsync();
                 isPaused = false;
             }
             else
             {
-                btnPopupPauseResume.Content = "Continue";
+                btnPopupPauseResume.Content = L10n.Message("Continue");
                 // Disable the button until the worker has actually finished.
                 btnPopupPauseResume.IsEnabled = false;
                 progressBar.IsEnabled = false;

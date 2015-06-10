@@ -1,9 +1,14 @@
-﻿<controls:MetroWindow xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      x:Class="POESKillTree.Views.OptimizerControllerWindow"
-                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Tree Optimizer" Width="400" WindowStartupLocation="CenterOwner"
-        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" Loaded="MetroWindow_Loaded">
+﻿<controls:MetroWindow
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    x:Class="POESKillTree.Views.OptimizerControllerWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+    Width="400" WindowStartupLocation="CenterOwner"
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" Loaded="MetroWindow_Loaded">
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="Skill Tree Optimizer"/>
+    </controls:MetroWindow.Title>
     <Grid Background="{DynamicResource WhiteColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -17,15 +22,16 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5">
-            Finding optimal skill tree...
+            <l:Catalog Message="Finding optimal Skill tree..."/>
         </Label>
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <ProgressBar x:Name="progressBar"  Value="0" Height="20" HorizontalAlignment="Stretch" BorderThickness="0"  Margin="5" Background="{DynamicResource WhiteColorBrush}"/>
-            <Label x:Name="lblProgressText" HorizontalAlignment="Center" VerticalAlignment="Center">Initializing...</Label>
+            <Label x:Name="lblProgressText" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <l:Catalog Message="Initializing..."/></Label>
         </Grid>
 
         <Label x:Name="lblBestResult" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5">
-            Best result so far: -
+            <!-- No translation, label and buttons content is managed by class itself -->
         </Label>
         <Button Grid.Row="3" Grid.Column="0" Content="Pause/Resume" IsEnabled="False" x:Name="btnPopupPauseResume" Click="btnPopupPauseResume_Click" Width="auto" Height="auto" Margin="5"/>
         <Button Grid.Row="3" Grid.Column="1" Content="Cancel/Close" IsEnabled="False" x:Name="btnPopupCancelClose" Click="btnPopupCancelClose_Click" Width="auto" Height="auto" Margin="5"/>
