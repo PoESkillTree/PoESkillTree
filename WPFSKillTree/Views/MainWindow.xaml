@@ -329,8 +329,8 @@
                     <Button Content="Reset" x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Left" Margin="70,0,0,0">
-                    <ToggleButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" />
-                    <ToggleButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Margin="5,0,0,0"/>
+                    <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" />
+                    <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Margin="5,0,0,0" Style="{StaticResource {x:Type ToggleButton}}"/>
                     <Button Click="Button_Craft_Click">CRAFT</Button>
                 </StackPanel>
             </Grid>
