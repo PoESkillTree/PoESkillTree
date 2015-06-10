@@ -136,6 +136,9 @@ namespace POESKillTree.Controls
                 SelectedAffixChanged(this, aff);
 
             _changingaffix = false;
+
+            if (sliders.Count > 0)
+                slValue_ValueChanged(sliders[0], new RoutedPropertyChangedEventArgs<double>(sliders[0].Value, sliders[0].Value));
         }
 
         bool _updatingSliders = false;
