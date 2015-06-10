@@ -7,12 +7,8 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WPFSKillTree")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("PoESkillTree")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WPFSKillTree")]
-[assembly: AssemblyCopyright("Copyright © 2012-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -41,6 +37,10 @@ using System.Windows;
 )]
 
 // Updated by release.xml. DO NOT MODIFY!
+[assembly: AssemblyDescription("An unofficial offline Skill tree planner")]
+[assembly: AssemblyCompany("PoESkillTree Team")]
+[assembly: AssemblyProduct("PoESkillTree")]
+[assembly: AssemblyCopyright("Copyright © 2012-2015 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.1.3.367")]
+[assembly: AssemblyFileVersion("2.1.3.418")]
 [assembly: AssemblyInformationalVersion("2.1.3")]
