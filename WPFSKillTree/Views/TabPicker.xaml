@@ -7,6 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POESKillTree.Views"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="Stash Bookmark" Height="197" Width="410" Name="window" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>

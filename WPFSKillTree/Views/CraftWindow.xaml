@@ -9,6 +9,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         x:Class="POESKillTree.Views.CraftWindow"
     
+        WindowStartupLocation="CenterOwner"
         Title="CraftWindow" HorizontalAlignment="Stretch"
         x:Name="window" Width="600"
         >
