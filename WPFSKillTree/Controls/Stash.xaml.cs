@@ -759,7 +759,7 @@ namespace POESKillTree.Controls
             int bfr;
             var picker = new TabPicker() { Owner = Window.GetWindow(this) };
             var ret = picker.ShowDialog();
-            if (ret == true)
+            if (ret == true && !picker.Delete)
             {
                 AddBookmark(new StashBookmark(picker.Text, PageTop + 1, picker.SelectedColor));
                 RedrawItems();
