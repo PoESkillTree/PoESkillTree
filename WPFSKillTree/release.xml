@@ -226,18 +226,19 @@
         </PropertyGroup>
     </Target>
 
-    <!-- <Target Name="Release" DependsOnTargets="Test"> -->
-    <Target Name="Release" DependsOnTargets="Build">
+    <Target Name="Release" DependsOnTargets="Test">
         <!-- Download skill tree assets -->
-        <!-- <Exec Command="$(DistDir)\UpdateDB.exe /A" WorkingDirectory="$(DistDir)" /> -->
+        <Exec Command="$(DistDir)\UpdateDB.exe /A" WorkingDirectory="$(DistDir)" />
+        <!--
         <MakeDir Directories="$(DistDir)\Data" />
         <Touch Files="$(DistDir)\Data\dummy.txt" AlwaysCreate="true" />
+        -->
 
         <!-- Create release installer -->
         <Exec Command="..\$(ISCCTool) /dAppId=$(AppId) /dAssemblyCompany=&quot;$(AssemblyCompany)&quot; /dAssemblyCopyright=&quot;$(AssemblyCopyright)&quot; /dAssemblyName=&quot;$(AssemblyName)&quot; /dFileVersion=&quot;$(FileVersion)&quot; /dPackageName=&quot;$(PackageName)&quot; /dProductName=&quot;$(ProductName)&quot; /dProductURL=&quot;$(ProductURL)&quot; /dProductVersion=$(ProductVersion) /dProjectDir=&quot;$(MSBuildProjectDirectory)&quot; ..\release.iss" WorkingDirectory="$(WorkDir)" />
 
         <!-- Create release package -->
-        <!-- <Exec Command="..\$(ZipTool) $(InstallDir)-$(ProductVersion).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" /> -->
+        <Exec Command="..\$(ZipTool) $(InstallDir)-$(ProductVersion).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
     </Target>
 
     <Target Name="Test" DependsOnTargets="Build">
