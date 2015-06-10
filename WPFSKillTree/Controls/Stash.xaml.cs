@@ -122,6 +122,9 @@ namespace POESKillTree.Controls
         private double getValueForTop(double top)
         {
             var d = (asBar.Maximum - asBar.Minimum);
+            if (d == StashGridHeight)
+                return 0;
+
             return top * d / (d - StashGridHeight);
         }
 
@@ -513,7 +516,7 @@ namespace POESKillTree.Controls
             var p = Math.Round(gcontent.ActualHeight / GridSize) / length;
 
             var newsize = length * p / (1 - p);
-            if (newsize <= 0 || double.IsNaN(newsize))
+            if (newsize <= 0 || double.IsNaN(newsize) || double.IsInfinity(newsize))
                 asBar.ViewportSize = double.MaxValue;
             else
                 asBar.ViewportSize = newsize;
