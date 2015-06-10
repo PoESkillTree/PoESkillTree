@@ -11,7 +11,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     ///  Calculates and caches distances between nodes. Only relies on adjacency
     ///  information stored in the nodes.
     /// </summary>
-    [assembly: InternalsVisibleTo("UnitTests")]
+    //[assembly: InternalsVisibleTo("UnitTests")]
     class DistanceLookup
     {
         // The uint compounds both ushort indices.

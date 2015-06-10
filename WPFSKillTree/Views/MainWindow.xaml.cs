@@ -150,7 +150,9 @@ namespace POESKillTree.Views
 
             //Load Persistent Data and set theme
             _persistentData.LoadPersistentDataFromFile();
-            Stash.Bookmarks = new System.Collections.ObjectModel.ObservableCollection<StashBookmark>(_persistentData.StashBookmarks);
+            if(_persistentData.StashBookmarks!=null)
+                Stash.Bookmarks = new System.Collections.ObjectModel.ObservableCollection<StashBookmark>(_persistentData.StashBookmarks);
+
             SetTheme(_persistentData.Options.Theme);
             SetAccent(_persistentData.Options.Accent);
 

@@ -512,7 +512,11 @@ namespace POESKillTree.Controls
             var length = asBar.Maximum - asBar.Minimum;
             var p = Math.Round(gcontent.ActualHeight / GridSize) / length;
 
-            asBar.ViewportSize = length * p / (1 - p);
+            var newsize = length * p / (1 - p);
+            if (newsize <= 0 || double.IsNaN(newsize))
+                asBar.ViewportSize = double.MaxValue;
+            else
+                asBar.ViewportSize = newsize;
 
             RedrawItems();
         }
