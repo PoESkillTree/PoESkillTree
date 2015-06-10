@@ -226,10 +226,10 @@ namespace POESKillTree.Views
 
             var r = new Regex(@"(?<!\B)(?:to |increased |decreased |more |less |Adds #-# )(?!\B)|(?:#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$", RegexOptions.IgnoreCase);
 
-            var localnames = localmods.Select(m => 
+            var localnames = localmods.Select(m =>
                 r.Replace(m.Attribute, "")
-                    .Split(new []{"and",","},StringSplitOptions.RemoveEmptyEntries)
-                    .Select(s=>
+                    .Split(new[] { "and", "," }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s =>
                         s.Trim().Replace("Attack Speed", "Atacks Per Second"))
                         .ToList())
                 .ToList();
@@ -239,7 +239,7 @@ namespace POESKillTree.Views
                 for (int j = 0; j < plist.Count; j++)
                 {
 
-                    var applymods = localmods.Where((m, i) => localnames[i].Any(n=>plist[j].Attribute.Contains(n))).ToList();
+                    var applymods = localmods.Where((m, i) => localnames[i].Any(n => plist[j].Attribute.Contains(n))).ToList();
                     var percm = applymods.Where(m => m.Attribute.Contains('%')).ToList();
                     var valuem = applymods.Except(percm).ToList();
 
@@ -252,7 +252,7 @@ namespace POESKillTree.Views
 
                     }
 
-                    Func<float,float> roundf = (float val) => (float)Math.Round(val);
+                    Func<float, float> roundf = (float val) => (float)Math.Round(val);
 
                     if (plist[j].Attribute.Contains("Critical"))
                     {
@@ -356,6 +356,20 @@ namespace POESKillTree.Views
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
             Item.JSONBase = Item.GenerateJson();
+
+            Item.Attributes = Item.Properties.ToDictionary(k => k.Attribute, v => v.Value);
+
+            Item.Mods = new List<ItemMod>();
+
+            if (Item.HaveImplicitMods)
+                Item.Mods.AddRange(Item.ImplicitMods);
+
+            if (Item.HaveCraftedMods)
+                Item.Mods.AddRange(Item.CraftedMods);
+
+            if (Item.HaveExplicitMods)
+                Item.Mods.AddRange(Item.ExplicitMods);
+
 
             Item.X = 0;
             Item.Y = 0;
