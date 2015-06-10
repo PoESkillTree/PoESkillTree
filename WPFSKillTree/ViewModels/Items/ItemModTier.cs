@@ -1,6 +1,7 @@
 ﻿using MB.Algodat;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -58,7 +59,7 @@ namespace POESKillTree.ViewModels.Items
         public Stat(string name, string value)
         {
             Name = name;
-            Range = Range<float>.Parse(value);
+            Range = Range<float>.Parse(value, CultureInfo.InvariantCulture);
         }
 
         public XElement Serialize()
