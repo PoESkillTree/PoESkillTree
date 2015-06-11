@@ -119,7 +119,7 @@
   </resheader>
   <data name="AppId" xml:space="preserve">
     <value>PoESkillTree</value>
-    <comment>The application identifier also used as AppUserModelId and application data folder name. Change only when release is not an update of previous release, but should be installed alongside it.</comment>
+    <comment>The application identifier also used as AppUserModelId and running application instance Mutex. Change only when release is not an update of previous release, but should be installed alongside it.</comment>
   </data>
   <data name="AssemblyCompany" xml:space="preserve">
     <value>PoESkillTree Team</value>
@@ -130,7 +130,7 @@
     <comment>The assymbly copyright also used as setup package copyright.</comment>
   </data>
   <data name="AssemblyDescription" xml:space="preserve">
-    <value>An unofficial offline Skill tree planner</value>
+    <value>Passive skill tree planner for Path of Exile®</value>
     <comment>The assembly description also used as product description.</comment>
   </data>
   <data name="AssemblyVersion" xml:space="preserve">
@@ -143,7 +143,7 @@
   </data>
   <data name="ProductName" xml:space="preserve">
     <value>PoESkillTree</value>
-    <comment>The product name also used as name of Program Files group, Start Menu group and Desktop shortcut.</comment>
+    <comment>The product name also used as name of Program Files group, Application Data folder, Start Menu group and Desktop shortcut. Change only when AppId is changed.</comment>
   </data>
   <data name="ProductURL" xml:space="preserve">
     <value>https://github.com/EmmittJ/PoESkillTree</value>

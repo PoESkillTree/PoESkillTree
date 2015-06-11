@@ -447,12 +447,12 @@ msgstr ""
 msgid "Download already completed"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:366
-#: SkillTreeFiles\Updater.cs:408
+#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:370
+#: SkillTreeFiles\Updater.cs:412
 msgid "Download still in progress"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:410
+#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:414
 msgid "No package downloaded"
 msgstr ""
 
@@ -460,26 +460,22 @@ msgstr ""
 msgid "Invalid package content"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:251
+#: SkillTreeFiles\Updater.cs:255
 msgid "No release found"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:333
+#: SkillTreeFiles\Updater.cs:337
 #, csharp-format
 msgid "No such directory: {0}"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:357
+#: SkillTreeFiles\Updater.cs:361
 #, csharp-format
 msgid "No such file or directory: {0}"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:382
+#: SkillTreeFiles\Updater.cs:386
 msgid "Download completed or still in progress"
-msgstr ""
-
-#: Utils\TaskbarHelper.cs:79
-msgid "Pin this program to taskbar"
 msgstr ""
 
 #: ViewModels\PoEBuild.cs:30
@@ -510,49 +506,49 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:466
+#: Views\MainWindow.xaml.cs:464
 msgid "You have the latest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:466
+#: Views\MainWindow.xaml.cs:464
 msgid "No update"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:470
+#: Views\MainWindow.xaml.cs:468
 #, csharp-format
 msgid "Do you want to install version {0}?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:474
+#: Views\MainWindow.xaml.cs:472
 msgid "This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:475
+#: Views\MainWindow.xaml.cs:473
 msgid "New pre-release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:478
+#: Views\MainWindow.xaml.cs:476
 msgid "New release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:490
+#: Views\MainWindow.xaml.cs:488
 msgid "Error occured"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:507 Views\MainWindow.xaml.cs:534
+#: Views\MainWindow.xaml.cs:505 Views\MainWindow.xaml.cs:534
 #: Views\MainWindow.xaml.cs:547
 msgid "Update failed"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1076
+#: Views\MainWindow.xaml.cs:1075
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1147
+#: Views\MainWindow.xaml.cs:1146
 msgid "Please select a saved build!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1147
+#: Views\MainWindow.xaml.cs:1146
 msgid "Error"
 msgstr ""
 

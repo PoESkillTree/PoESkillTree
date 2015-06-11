@@ -88,7 +88,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An unofficial offline Skill tree planner.
+        ///   Looks up a localized string similar to Passive skill tree planner for Path of Exile®.
         /// </summary>
         public static string AssemblyDescription {
             get {

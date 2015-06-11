@@ -2,14 +2,16 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define AppExeName AssemblyName + ".exe"
+#define AppDataFolderName ProductName
 #define DistDir ProjectDir + "\dist"
-#define TargetDir DistDir + "\PoESkillTree"
+#define BuildOutputDir DistDir + "\PoESkillTree"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={#AppId}
+AppMutex={#AppId}
 AppName={#ProductName}
 AppVersion={#ProductVersion}
 AppVerName={#ProductName} {#ProductVersion}
@@ -23,7 +25,7 @@ DefaultGroupName={#ProductName}
 UninstallDisplayName={#ProductName}
 UninstallDisplayIcon={app}\{#AppExeName},0
 ;InfoBeforeFile="Release-Notes.txt"
-LicenseFile={#TargetDir}\LICENSE.txt
+LicenseFile={#BuildOutputDir}\LICENSE.txt
 OutputDir={#DistDir}
 OutputBaseFilename={#PackageName}-{#ProductVersion}
 VersionInfoVersion={#FileVersion}
@@ -44,15 +46,15 @@ Name: "{userappdata}\{#AppId}"
 
 [Files]
 ; Program Files
-Source: "{#TargetDir}\*.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#TargetDir}\*.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#TargetDir}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#TargetDir}\*.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#TargetDir}\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BuildOutputDir}\*.exe"; DestDir: "{app}"
+Source: "{#BuildOutputDir}\*.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BuildOutputDir}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BuildOutputDir}\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BuildOutputDir}\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; Application Data
-Source: "{#TargetDir}\Data\*"; DestDir: "{userappdata}\{#AppId}\Data"; Flags: ignoreversion recursesubdirs
-Source: "{#TargetDir}\Locale\*"; DestDir: "{userappdata}\{#AppId}\Locale"; Flags: ignoreversion recursesubdirs
-Source: "{#TargetDir}\Items.xml"; DestDir: "{userappdata}\{#AppId}"; Flags: ignoreversion
+Source: "{#BuildOutputDir}\Data\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Data"; Flags: ignoreversion recursesubdirs
+Source: "{#BuildOutputDir}\Locale\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Locale"; Flags: ignoreversion recursesubdirs
+Source: "{#BuildOutputDir}\Items.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#ProductName}"; Filename: "{app}\{#AppExeName}"

@@ -103,8 +103,6 @@ namespace POESKillTree.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            TaskbarHelper.EnablePinning(this);
-
             ItemDB.Load("Items.xml");
             ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();

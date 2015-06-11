@@ -447,12 +447,12 @@ msgstr "Sťahovanie už prebieha"
 msgid "Download already completed"
 msgstr "Sťahovanie už bolo dokončené"
 
-#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:366
-#: SkillTreeFiles\Updater.cs:408
+#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:370
+#: SkillTreeFiles\Updater.cs:412
 msgid "Download still in progress"
 msgstr "Sťahovanie stále prebieha"
 
-#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:410
+#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:414
 msgid "No package downloaded"
 msgstr "Balík nebol stiahnutý"
 
@@ -460,27 +460,23 @@ msgstr "Balík nebol stiahnutý"
 msgid "Invalid package content"
 msgstr "Chybný obsah balíka"
 
-#: SkillTreeFiles\Updater.cs:251
+#: SkillTreeFiles\Updater.cs:255
 msgid "No release found"
 msgstr "Žiadna verzia nebola nájdená"
 
-#: SkillTreeFiles\Updater.cs:333
+#: SkillTreeFiles\Updater.cs:337
 #, csharp-format
 msgid "No such directory: {0}"
 msgstr "Priečinok nebol nájdený: {0}"
 
-#: SkillTreeFiles\Updater.cs:357
+#: SkillTreeFiles\Updater.cs:361
 #, csharp-format
 msgid "No such file or directory: {0}"
 msgstr "Súbor alebo priečinok nebol nájdený: {0}"
 
-#: SkillTreeFiles\Updater.cs:382
+#: SkillTreeFiles\Updater.cs:386
 msgid "Download completed or still in progress"
 msgstr "Sťahovanie bolo donočené, alebo stále prebieha"
-
-#: Utils\TaskbarHelper.cs:79
-msgid "Pin this program to taskbar"
-msgstr "Pripnúť tento program na panel úloh"
 
 #: ViewModels\PoEBuild.cs:30
 #, csharp-format
@@ -511,49 +507,49 @@ msgstr "Posledná zmena: {0}"
 msgid "Help file not found"
 msgstr "Súbor pomocníka nebol nájdený"
 
-#: Views\MainWindow.xaml.cs:466
+#: Views\MainWindow.xaml.cs:464
 msgid "You have the latest version!"
 msgstr "Máte najnovšiu verziu!"
 
-#: Views\MainWindow.xaml.cs:466
+#: Views\MainWindow.xaml.cs:464
 msgid "No update"
 msgstr "Žiadna aktualizácia"
 
-#: Views\MainWindow.xaml.cs:470
+#: Views\MainWindow.xaml.cs:468
 #, csharp-format
 msgid "Do you want to install version {0}?"
 msgstr "Chcete nainštalovať verziu {0}?"
 
-#: Views\MainWindow.xaml.cs:474
+#: Views\MainWindow.xaml.cs:472
 msgid "This is a pre-release, meaning there could be some bugs!"
 msgstr "Toto je predbežná verzia, ktorá môže obsahovať chyby!"
 
-#: Views\MainWindow.xaml.cs:475
+#: Views\MainWindow.xaml.cs:473
 msgid "New pre-release"
 msgstr "Nová predbežná verzia"
 
-#: Views\MainWindow.xaml.cs:478
+#: Views\MainWindow.xaml.cs:476
 msgid "New release"
 msgstr "Nová verzia"
 
-#: Views\MainWindow.xaml.cs:490
+#: Views\MainWindow.xaml.cs:488
 msgid "Error occured"
 msgstr "Nastala chyba"
 
-#: Views\MainWindow.xaml.cs:507 Views\MainWindow.xaml.cs:534
+#: Views\MainWindow.xaml.cs:505 Views\MainWindow.xaml.cs:534
 #: Views\MainWindow.xaml.cs:547
 msgid "Update failed"
 msgstr "Aktualizácia zlyhala"
 
-#: Views\MainWindow.xaml.cs:1076
+#: Views\MainWindow.xaml.cs:1075
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
-#: Views\MainWindow.xaml.cs:1147
+#: Views\MainWindow.xaml.cs:1146
 msgid "Please select a saved build!"
 msgstr "Prosím zvoľte uloženú zostavu!"
 
-#: Views\MainWindow.xaml.cs:1147
+#: Views\MainWindow.xaml.cs:1146
 msgid "Error"
 msgstr "Chyba"
 
@@ -581,6 +577,9 @@ msgstr "Dokončené!"
 #: Views\OptimizerControllerWindow.xaml.cs:158
 msgid "Continue"
 msgstr "Pokračovať"
+
+#~ msgid "Pin this program to taskbar"
+#~ msgstr "Pripnúť tento program na panel úloh"
 
 #~ msgid "Level:"
 #~ msgstr "Level:"

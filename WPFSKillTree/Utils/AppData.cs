@@ -8,8 +8,7 @@ namespace POESKillTree.Utils
     public class AppData
     {
         // The folder name in system folders containing application data.
-        // TODO: This could be same as AppId.
-        const string AppDataFolderName = "PoESkillTree";
+        static readonly string AppDataFolderName = Properties.Version.ProductName;
         // The absolute path of application data folder.
         static string ApplicationData;
 
