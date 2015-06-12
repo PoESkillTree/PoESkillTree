@@ -61,7 +61,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PoESkillTree.
+        ///   Looks up a localized string similar to {8B7A6A22-B6BB-40BB-856E-E0D1BB66DFB2}.
         /// </summary>
         public static string AppId {
             get {

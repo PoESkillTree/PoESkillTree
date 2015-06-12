@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppId" xml:space="preserve">
-    <value>PoESkillTree</value>
+    <value>{8B7A6A22-B6BB-40BB-856E-E0D1BB66DFB2}</value>
     <comment>The application identifier also used as AppUserModelId and running application instance Mutex. Change only when release is not an update of previous release, but should be installed alongside it.</comment>
   </data>
   <data name="AssemblyCompany" xml:space="preserve">

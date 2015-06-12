@@ -10,6 +10,7 @@
 #define AppDataFolderName ProductName
 #define DistDir ProjectDir + "\dist"
 #define BuildOutputDir DistDir + "\PoESkillTree"
+#define AppId "{" + AppId
 
 [Setup]
 AppId={#AppId}
