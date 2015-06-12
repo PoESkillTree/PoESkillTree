@@ -26,10 +26,23 @@ namespace POESKillTree.Model
             Builds = new List<PoEBuild>();
         }
 
+        // Creates empty file with language option set.
+        public static void CreateSetupTemplate(string path, string language)
+        {
+            PersistentData data = new PersistentData();
+            data.Options.Language = language;
+            data.SavePersistentDataToFileEx(Path.Combine(path, "PersistentData.xml"));
+        }
+
         public void SavePersistentDataToFile()
         {
+            SavePersistentDataToFileEx(AppData.GetFolder(true) + "PersistentData.xml");
+        }
+
+        public void SavePersistentDataToFileEx(string path)
+        {
             var writer = new XmlSerializer(typeof (PersistentData));
-            var file = new StreamWriter(AppData.GetFolder(true) + "PersistentData.xml");
+            var file = new StreamWriter(path, false, System.Text.Encoding.UTF8);
             writer.Serialize(file, this);
             file.Close();
         }

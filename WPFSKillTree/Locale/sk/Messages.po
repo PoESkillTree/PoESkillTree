@@ -447,12 +447,12 @@ msgstr "Sťahovanie už prebieha"
 msgid "Download already completed"
 msgstr "Sťahovanie už bolo dokončené"
 
-#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:370
-#: SkillTreeFiles\Updater.cs:412
+#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:366
+#: SkillTreeFiles\Updater.cs:408
 msgid "Download still in progress"
 msgstr "Sťahovanie stále prebieha"
 
-#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:414
+#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:410
 msgid "No package downloaded"
 msgstr "Balík nebol stiahnutý"
 
@@ -460,21 +460,21 @@ msgstr "Balík nebol stiahnutý"
 msgid "Invalid package content"
 msgstr "Chybný obsah balíka"
 
-#: SkillTreeFiles\Updater.cs:255
+#: SkillTreeFiles\Updater.cs:251
 msgid "No release found"
 msgstr "Žiadna verzia nebola nájdená"
 
-#: SkillTreeFiles\Updater.cs:337
+#: SkillTreeFiles\Updater.cs:333
 #, csharp-format
 msgid "No such directory: {0}"
 msgstr "Priečinok nebol nájdený: {0}"
 
-#: SkillTreeFiles\Updater.cs:361
+#: SkillTreeFiles\Updater.cs:357
 #, csharp-format
 msgid "No such file or directory: {0}"
 msgstr "Súbor alebo priečinok nebol nájdený: {0}"
 
-#: SkillTreeFiles\Updater.cs:386
+#: SkillTreeFiles\Updater.cs:382
 msgid "Download completed or still in progress"
 msgstr "Sťahovanie bolo donočené, alebo stále prebieha"
 
@@ -536,20 +536,20 @@ msgstr "Nová verzia"
 msgid "Error occured"
 msgstr "Nastala chyba"
 
-#: Views\MainWindow.xaml.cs:505 Views\MainWindow.xaml.cs:534
-#: Views\MainWindow.xaml.cs:547
+#: Views\MainWindow.xaml.cs:505 Views\MainWindow.xaml.cs:532
+#: Views\MainWindow.xaml.cs:545
 msgid "Update failed"
 msgstr "Aktualizácia zlyhala"
 
-#: Views\MainWindow.xaml.cs:1075
+#: Views\MainWindow.xaml.cs:1074
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
-#: Views\MainWindow.xaml.cs:1146
+#: Views\MainWindow.xaml.cs:1145
 msgid "Please select a saved build!"
 msgstr "Prosím zvoľte uloženú zostavu!"
 
-#: Views\MainWindow.xaml.cs:1146
+#: Views\MainWindow.xaml.cs:1145
 msgid "Error"
 msgstr "Chyba"
 

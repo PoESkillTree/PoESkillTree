@@ -447,12 +447,12 @@ msgstr ""
 msgid "Download already completed"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:370
-#: SkillTreeFiles\Updater.cs:412
+#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:366
+#: SkillTreeFiles\Updater.cs:408
 msgid "Download still in progress"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:414
+#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:410
 msgid "No package downloaded"
 msgstr ""
 
@@ -460,21 +460,21 @@ msgstr ""
 msgid "Invalid package content"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:255
+#: SkillTreeFiles\Updater.cs:251
 msgid "No release found"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:337
+#: SkillTreeFiles\Updater.cs:333
 #, csharp-format
 msgid "No such directory: {0}"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:361
+#: SkillTreeFiles\Updater.cs:357
 #, csharp-format
 msgid "No such file or directory: {0}"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:386
+#: SkillTreeFiles\Updater.cs:382
 msgid "Download completed or still in progress"
 msgstr ""
 
@@ -535,20 +535,20 @@ msgstr ""
 msgid "Error occured"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:505 Views\MainWindow.xaml.cs:534
-#: Views\MainWindow.xaml.cs:547
+#: Views\MainWindow.xaml.cs:505 Views\MainWindow.xaml.cs:532
+#: Views\MainWindow.xaml.cs:545
 msgid "Update failed"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1075
+#: Views\MainWindow.xaml.cs:1074
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1146
+#: Views\MainWindow.xaml.cs:1145
 msgid "Please select a saved build!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1146
+#: Views\MainWindow.xaml.cs:1145
 msgid "Error"
 msgstr ""
 

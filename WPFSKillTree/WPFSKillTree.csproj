@@ -341,6 +341,7 @@
     <None Include="Tools\isetup\Languages\ScottishGaelic.isl" />
     <None Include="Tools\isetup\Languages\SerbianCyrillic.isl" />
     <None Include="Tools\isetup\Languages\SerbianLatin.isl" />
+    <None Include="Tools\isetup\Languages\Slovak.isl" />
     <None Include="Tools\isetup\Languages\Slovenian.isl" />
     <None Include="Tools\isetup\Languages\Spanish.isl" />
     <None Include="Tools\isetup\Languages\Turkish.isl" />
