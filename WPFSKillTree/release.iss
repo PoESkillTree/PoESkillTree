@@ -1,5 +1,10 @@
 ; Inno Setup (5.5.3+) Script
 ; See http://www.jrsoftware.org/ishelp/
+;
+; Add languages for setup wizard to [Languages] section.
+; The Inno Setup language (ISL) files can be found in Tools\isetup\Languages folder.
+; If certain language cannot be found there, try looking on Internet for its ISL file. Probably someone already made one.
+; Note that, ISL files with ".isl" extension use ANSI encoding in LanguageCodePage specified in file. ISL files with ".islu" extension use UTF-8 encoding.
 
 #define AppExeName AssemblyName + ".exe"
 #define AppDataFolderName ProductName
