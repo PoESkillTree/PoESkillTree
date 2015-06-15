@@ -6,9 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using Raven.Json.Linq;
 using Ionic.Zip;
 using POESKillTree.Localization;
-using Newtonsoft.Json.Linq;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -246,22 +246,22 @@ namespace POESKillTree.SkillTreeFiles
             {
                 string json = webClient.DownloadString(GitAPILatestReleaseURL);
 
-                JArray releases = JArray.Parse(json);
-                if (releases.Count < 1)
+                RavenJArray releases = RavenJArray.Parse(json);
+                if (releases.Length < 1)
                     throw new UpdaterException(L10n.Message("No release found"));
 
                 string current = GetCurrentVersion(); // Current version (tag).
 
                 // Iterate thru avialable releases.
-                foreach (JObject release in (JArray)releases)
+                foreach (RavenJObject release in (RavenJArray)releases)
                 {
                     // Drafts are not returned by API, but just in case...
                     bool draft = release["draft"].Value<bool>();
                     if (draft) continue; // Ignore drafts.
 
                     // Check if there are assets attached.
-                    JArray assets = (JArray)release["assets"];
-                    if (assets.Count < 1) continue; // No assets, ignore it.
+                    RavenJArray assets = (RavenJArray)release["assets"];
+                    if (assets.Length < 1) continue; // No assets, ignore it.
 
                     // Compare release tag with our version (tag).
                     // Assumption is that no one will make realease with older version tag.
@@ -279,8 +279,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (prerelease && !Prerelease) continue; // Found unwanted pre-release, ignore it.
 
                     // Find PoESkillTree ZIP package.
-                    JObject zipAsset = null;
-                    foreach (JObject asset in assets)
+                    RavenJObject zipAsset = null;
+                    foreach (RavenJObject asset in assets)
                     {
                         string content_type = asset["content_type"].Value<string>();
                         if (content_type != "application/zip") continue; // Not a ZIP, ignore it.
