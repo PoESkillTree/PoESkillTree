@@ -143,7 +143,7 @@ namespace POESKillTree.Views
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
             Tree.Chartype =
-                SkillTree.CharName.IndexOf(((string)((ComboBoxItem)cbCharType.SelectedItem).Content).ToUpper());
+                SkillTree.CharName.IndexOf(((string)((ComboBoxItem)cbCharType.SelectedItem).Name).ToUpper());
             Tree.UpdateAvailNodes();
             UpdateUI();
 
@@ -1039,7 +1039,7 @@ namespace POESKillTree.Views
             if (lvSavedBuilds == null) return;
 
             var selectedItem = (ComboBoxItem)cbCharTypeSavedBuildFilter.SelectedItem;
-            var className = selectedItem.Content.ToString();
+            var className = selectedItem.Name.ToString();
             var filterText = tbSavedBuildFilter.Text.ToLower();
 
             foreach (PoEBuild item in lvSavedBuilds.Items)
@@ -1595,7 +1595,7 @@ namespace POESKillTree.Views
             var menuItem = sender as MenuItem;
             if (menuItem == null) return;
 
-            SetTheme(menuItem.Header as string);
+            SetTheme(menuItem.Tag as string);
         }
 
         private void SetTheme(string sTheme)
@@ -1612,7 +1612,7 @@ namespace POESKillTree.Views
             var menuItem = sender as MenuItem;
             if (menuItem == null) return;
 
-            SetAccent(menuItem.Header as string);
+            SetAccent(menuItem.Tag as string);
         }
 
         private void SetAccent(string sAccent)
