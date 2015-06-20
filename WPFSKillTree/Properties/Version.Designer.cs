@@ -108,15 +108,6 @@ namespace POESKillTree.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PoESkillTree.
         /// </summary>
-        public static string PackageName {
-            get {
-                return ResourceManager.GetString("PackageName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PoESkillTree.
-        /// </summary>
         public static string ProductName {
             get {
                 return ResourceManager.GetString("ProductName", resourceCulture);

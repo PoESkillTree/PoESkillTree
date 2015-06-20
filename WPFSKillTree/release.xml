@@ -43,8 +43,9 @@
             <AssemblyFile ParameterType="System.String" Required="true" />
             <ClassFullName ParameterType="System.String" Required="true" />
             <Method ParameterType="System.String" Required="true" />
-            <Input1 ParameterType="System.String" Required="true" />
-            <Input2 ParameterType="System.String" Required="true" />
+            <Input1 ParameterType="System.String" Required="false" />
+            <Input2 ParameterType="System.String" Required="false" />
+            <ReturnValue ParameterType="System.String" Output="true" />
         </ParameterGroup>
         <Task>
             <Using Namespace="System.IO" />
@@ -54,7 +55,22 @@
                 Assembly assembly = System.Reflection.Assembly.LoadFrom(AssemblyFile);
                 Type classType = assembly.GetType(ClassFullName);
                 MethodInfo method = classType.GetMethod(Method, BindingFlags.Public|BindingFlags.Static);
-                method.Invoke(null, new object[] { Input1, Input2 });
+
+                object[] parameters;
+                if (Input2 != null)
+                {
+                    parameters = new object[] { Input1, Input2 };
+                }
+                else if (Input1 != null)
+                {
+                    parameters = new object[] { Input1 };
+                }
+                else
+                    parameters = null;
+
+                object retVal = method.Invoke(null, parameters);
+
+                ReturnValue = retVal is string ? retVal as string : null;
 ]]>
             </Code>
         </Task>
@@ -202,9 +218,6 @@
         <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AssemblyVersion']/value/text()">
             <Output PropertyName="AssemblyVersion" TaskParameter="Result" />
         </XmlPeek>
-        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='PackageName']/value/text()">
-            <Output PropertyName="PackageName" TaskParameter="Result" />
-        </XmlPeek>
         <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='ProductName']/value/text()">
             <Output PropertyName="ProductName" TaskParameter="Result" />
         </XmlPeek>
@@ -259,11 +272,19 @@
                               Input1="$(DistDir)"
                               Input2="%LANGUAGE%" />
 
+        <!-- Create PackageName from ProductName -->
+        <AssemblyInvokeStatic AssemblyFile="$(DistDir)\$(AssemblyName).exe"
+                              ClassFullName="POESKillTree.SkillTreeFiles.Updater"
+                              Method="GetPackageName"
+                              Input1="$(ProductName)">
+            <Output PropertyName="PackageName" TaskParameter="ReturnValue" />
+        </AssemblyInvokeStatic>
+
         <!-- Create release installer -->
         <Exec Command="..\$(ISCCTool) /dAppId=$(AppId) /dAssemblyCompany=&quot;$(AssemblyCompany)&quot; /dAssemblyCopyright=&quot;$(AssemblyCopyright)&quot; /dAssemblyName=&quot;$(AssemblyName)&quot; /dFileVersion=&quot;$(FileVersion)&quot; /dPackageName=&quot;$(PackageName)&quot; /dProductName=&quot;$(ProductName)&quot; /dProductURL=&quot;$(ProductURL)&quot; /dProductVersion=$(ProductVersion) /dProjectDir=&quot;$(MSBuildProjectDirectory)&quot; ..\release.iss" WorkingDirectory="$(WorkDir)" />
 
         <!-- Create release package -->
-        <Exec Command="..\$(ZipTool) $(InstallDir)-$(ProductVersion).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
+        <Exec Command="..\$(ZipTool) $(PackageName)-$(ProductVersion).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
     </Target>
 
     <Target Name="Test" DependsOnTargets="Build">

@@ -137,10 +137,6 @@
     <value>2.0.0.0</value>
     <comment>The assembly version used by CLR to resolve dependencies. Change only when public API has changed and all client assemblies has to be recompiled.</comment>
   </data>
-  <data name="PackageName" xml:space="preserve">
-    <value>PoESkillTree</value>
-    <comment>The package(s) generated during release will use this name.</comment>
-  </data>
   <data name="ProductName" xml:space="preserve">
     <value>PoESkillTree</value>
     <comment>The product name also used as name of Program Files group, Application Data folder, Start Menu group and Desktop shortcut. Change only when AppId is changed.</comment>

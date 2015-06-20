@@ -6,18 +6,17 @@
 ; If certain language cannot be found there, try looking on Internet for its ISL file. Probably someone already made one.
 ; Note that, ISL files with ".isl" extension use ANSI encoding in LanguageCodePage specified in file. ISL files with ".islu" extension use UTF-8 encoding.
 
+#define AppId "{" + AppId
 #define AppExeName AssemblyName + ".exe"
 #define AppDataFolderName ProductName
 #define DistDir ProjectDir + "\dist"
 #define BuildOutputDir DistDir + "\PoESkillTree"
-#define AppId "{" + AppId
 
 [Setup]
 AppId={#AppId}
 AppMutex={#AppId}
 AppName={#ProductName}
 AppVersion={#ProductVersion}
-AppVerName={#ProductName} {#ProductVersion}
 AppPublisher={#AssemblyCompany}
 AppPublisherURL={#ProductURL}
 AppSupportURL={#ProductURL}
@@ -60,7 +59,7 @@ Source: "{#BuildOutputDir}\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildOutputDir}\Data\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Data"; Flags: ignoreversion recursesubdirs
 Source: "{#BuildOutputDir}\Locale\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Locale"; Flags: ignoreversion recursesubdirs
 Source: "{#BuildOutputDir}\Items.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; Flags: ignoreversion
-Source: "{#BuildOutputDir}\PersistentData.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; AfterInstall: SetLanguage; Flags: ignoreversion
+Source: "{#BuildOutputDir}\PersistentData.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; AfterInstall: SetLanguage; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
 
 [Icons]
 Name: "{group}\{#ProductName}"; Filename: "{app}\{#AppExeName}"

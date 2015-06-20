@@ -439,42 +439,28 @@ msgstr "Postava"
 msgid "Please highlight non-skilled nodes by right-clicking them!"
 msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom!"
 
-#: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:236
+#: SkillTreeFiles\Updater.cs:115 SkillTreeFiles\Updater.cs:228
 msgid "Download already in progress"
 msgstr "Sťahovanie už prebieha"
 
-#: SkillTreeFiles\Updater.cs:118
+#: SkillTreeFiles\Updater.cs:117
 msgid "Download already completed"
 msgstr "Sťahovanie už bolo dokončené"
 
-#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:366
-#: SkillTreeFiles\Updater.cs:408
+#: SkillTreeFiles\Updater.cs:159 SkillTreeFiles\Updater.cs:345
+#: SkillTreeFiles\Updater.cs:411
 msgid "Download still in progress"
 msgstr "Sťahovanie stále prebieha"
 
-#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:410
+#: SkillTreeFiles\Updater.cs:162 SkillTreeFiles\Updater.cs:413
 msgid "No package downloaded"
 msgstr "Balík nebol stiahnutý"
 
-#: SkillTreeFiles\Updater.cs:186
-msgid "Invalid package content"
-msgstr "Chybný obsah balíka"
-
-#: SkillTreeFiles\Updater.cs:251
+#: SkillTreeFiles\Updater.cs:253
 msgid "No release found"
 msgstr "Žiadna verzia nebola nájdená"
 
-#: SkillTreeFiles\Updater.cs:333
-#, csharp-format
-msgid "No such directory: {0}"
-msgstr "Priečinok nebol nájdený: {0}"
-
-#: SkillTreeFiles\Updater.cs:357
-#, csharp-format
-msgid "No such file or directory: {0}"
-msgstr "Súbor alebo priečinok nebol nájdený: {0}"
-
-#: SkillTreeFiles\Updater.cs:382
+#: SkillTreeFiles\Updater.cs:361
 msgid "Download completed or still in progress"
 msgstr "Sťahovanie bolo donočené, alebo stále prebieha"
 
@@ -532,12 +518,12 @@ msgstr "Nová predbežná verzia"
 msgid "New release"
 msgstr "Nová verzia"
 
-#: Views\MainWindow.xaml.cs:488
+#: Views\MainWindow.xaml.cs:487
 msgid "Error occured"
 msgstr "Nastala chyba"
 
-#: Views\MainWindow.xaml.cs:505 Views\MainWindow.xaml.cs:532
-#: Views\MainWindow.xaml.cs:545
+#: Views\MainWindow.xaml.cs:504 Views\MainWindow.xaml.cs:532
+#: Views\MainWindow.xaml.cs:546
 msgid "Update failed"
 msgstr "Aktualizácia zlyhala"
 
@@ -577,6 +563,15 @@ msgstr "Dokončené!"
 #: Views\OptimizerControllerWindow.xaml.cs:158
 msgid "Continue"
 msgstr "Pokračovať"
+
+#~ msgid "Invalid package content"
+#~ msgstr "Chybný obsah balíka"
+
+#~ msgid "No such directory: {0}"
+#~ msgstr "Priečinok nebol nájdený: {0}"
+
+#~ msgid "No such file or directory: {0}"
+#~ msgstr "Súbor alebo priečinok nebol nájdený: {0}"
 
 #~ msgid "Pin this program to taskbar"
 #~ msgstr "Pripnúť tento program na panel úloh"
