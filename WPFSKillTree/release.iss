@@ -68,7 +68,10 @@ Name: "{commondesktop}\{#ProductName}"; Filename: "{app}\{#AppExeName}"; Tasks: 
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#ProductName}"; Filename: "{app}\{#AppExeName}"; Tasks: quicklaunchicon
 
 [Run]
+; Launch program checkbox
 Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(ProductName, '&', '&&')}}"; Flags: unchecked nowait postinstall skipifsilent
+; Run application once silent update finished
+Filename: "{app}\{#AppExeName}"; Flags: nowait skipifnotsilent
 
 [Code]
 procedure SetLanguage();

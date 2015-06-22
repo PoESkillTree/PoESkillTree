@@ -19,7 +19,7 @@ namespace POESKillTree.SkillTreeFiles
     public class Updater
     {
         // Git API URL to fetch releases (the first one is latest one).
-        private static readonly string GitAPILatestReleaseURL = "https://api.github.com/repos/l0g0sys/PoESkillTree/releases"; //"https://api.github.com/repos/EmmittJ/PoESkillTree/releases";
+        private static readonly string GitAPILatestReleaseURL = "https://api.github.com/repos/EmmittJ/PoESkillTree/releases";
         // The language value name of Uninstall registry key.
         private const string InnoSetupUninstallLanguageValue = "Inno Setup: Language";
         // The suffix added to AppId to form Uninstall registry key for an application.
