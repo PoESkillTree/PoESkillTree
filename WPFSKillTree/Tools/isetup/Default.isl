@@ -334,3 +334,10 @@ AssocingFileExtension=Associating %1 with the %2 file extension...
 AutoStartProgramGroupDescription=Startup:
 AutoStartProgram=Automatically start %1
 AddonHostProgramNotFound=%1 could not be located in the folder you selected.%n%nDo you want to continue anyway?
+
+; *** "Installation Type" dialog messages
+InstallationTypeTitle=Installation Type
+InstallationTypeDesc=Select Installation Type
+InstallationTypeLabel=Choose portable installation only if you want to carry this program and its settings on removable device (for example USB drive). No shortcuts will be created and uninstall option will not be available.
+InstallationTypeStandardLabel=Standard - Install on this computer (recommended)
+InstallationTypePortableLabel=Portable - Install on removable device

@@ -439,30 +439,34 @@ msgstr "Postava"
 msgid "Please highlight non-skilled nodes by right-clicking them!"
 msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom!"
 
-#: SkillTreeFiles\Updater.cs:115 SkillTreeFiles\Updater.cs:228
+#: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:237
 msgid "Download already in progress"
 msgstr "Sťahovanie už prebieha"
 
-#: SkillTreeFiles\Updater.cs:117
+#: SkillTreeFiles\Updater.cs:118
 msgid "Download already completed"
 msgstr "Sťahovanie už bolo dokončené"
 
-#: SkillTreeFiles\Updater.cs:159 SkillTreeFiles\Updater.cs:345
-#: SkillTreeFiles\Updater.cs:411
+#: SkillTreeFiles\Updater.cs:160 SkillTreeFiles\Updater.cs:354
+#: SkillTreeFiles\Updater.cs:428
 msgid "Download still in progress"
 msgstr "Sťahovanie stále prebieha"
 
-#: SkillTreeFiles\Updater.cs:162 SkillTreeFiles\Updater.cs:413
+#: SkillTreeFiles\Updater.cs:163 SkillTreeFiles\Updater.cs:430
 msgid "No package downloaded"
 msgstr "Balík nebol stiahnutý"
 
-#: SkillTreeFiles\Updater.cs:253
+#: SkillTreeFiles\Updater.cs:262
 msgid "No release found"
 msgstr "Žiadna verzia nebola nájdená"
 
-#: SkillTreeFiles\Updater.cs:361
+#: SkillTreeFiles\Updater.cs:370
 msgid "Download completed or still in progress"
 msgstr "Sťahovanie bolo donočené, alebo stále prebieha"
+
+#: SkillTreeFiles\Updater.cs:410
+msgid "The application is not correctly installed"
+msgstr "Aplikácie nie je korektne nainštalovaná"
 
 #: ViewModels\PoEBuild.cs:30
 #, csharp-format

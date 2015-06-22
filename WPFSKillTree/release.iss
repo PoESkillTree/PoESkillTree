@@ -11,6 +11,7 @@
 #define AppDataFolderName ProductName
 #define DistDir ProjectDir + "\dist"
 #define BuildOutputDir DistDir + "\PoESkillTree"
+#define PortableIniFileName "Portable.ini"
 
 [Setup]
 AppId={#AppId}
@@ -24,6 +25,7 @@ AppUpdatesURL={#ProductURL}
 AppCopyright={#AssemblyCopyright}
 DefaultDirName={pf}\{#ProductName}
 DefaultGroupName={#ProductName}
+Uninstallable=not CheckPortableMode
 UninstallDisplayName={#ProductName}
 UninstallDisplayIcon={app}\{#AppExeName},0
 ;InfoBeforeFile="Release-Notes.txt"
@@ -42,11 +44,11 @@ Name: "en_US"; MessagesFile: "compiler:Default.isl"
 Name: "sk"; MessagesFile: "compiler:Languages\Slovak.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: CheckStandardMode; Flags: unchecked
+Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: CheckStandardMode; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Dirs]
-Name: "{userappdata}\{#AppId}"
+Name: "{userappdata}\{#AppId}"; Check: CheckStandardMode
 
 [Files]
 ; Program Files
@@ -55,15 +57,23 @@ Source: "{#BuildOutputDir}\*.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildOutputDir}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildOutputDir}\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildOutputDir}\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
-; Application Data
-Source: "{#BuildOutputDir}\Data\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Data"; Flags: ignoreversion recursesubdirs
-Source: "{#BuildOutputDir}\Locale\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Locale"; Flags: ignoreversion recursesubdirs
-Source: "{#BuildOutputDir}\Items.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; Flags: ignoreversion
-Source: "{#BuildOutputDir}\PersistentData.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; AfterInstall: SetLanguage; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
+; Application Data (Standard mode)
+Source: "{#BuildOutputDir}\Data\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Data"; Check: CheckStandardMode; Flags: ignoreversion recursesubdirs
+Source: "{#BuildOutputDir}\Locale\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Locale"; Check: CheckStandardMode; Flags: ignoreversion recursesubdirs
+Source: "{#BuildOutputDir}\Items.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; Check: CheckStandardMode; Flags: ignoreversion
+Source: "{#BuildOutputDir}\PersistentData.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; Check: CheckStandardMode; AfterInstall: SetLanguage; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
+; Application Data (Portable mode)
+Source: "{#BuildOutputDir}\Data\*"; DestDir: "{app}\Data"; Check: CheckPortableMode; Flags: ignoreversion recursesubdirs
+Source: "{#BuildOutputDir}\Locale\*"; DestDir: "{app}\Locale"; Check: CheckPortableMode; Flags: ignoreversion recursesubdirs
+Source: "{#BuildOutputDir}\Items.xml"; DestDir: "{app}"; Check: CheckPortableMode; Flags: ignoreversion
+Source: "{#BuildOutputDir}\PersistentData.xml"; DestDir: "{app}"; Check: CheckPortableMode; AfterInstall: SetLanguage; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
+
+[INI]
+Filename: "{app}\{#PortableIniFileName}"; Section: "Setup"; Key: "Language"; String: "{language}"; Check: CheckPortableMode
 
 [Icons]
-Name: "{group}\{#ProductName}"; Filename: "{app}\{#AppExeName}"
-Name: "{group}\{cm:UninstallProgram,{#ProductName}}"; Filename: "{uninstallexe}"
+Name: "{group}\{#ProductName}"; Filename: "{app}\{#AppExeName}"; Check: CheckStandardMode
+Name: "{group}\{cm:UninstallProgram,{#ProductName}}"; Filename: "{uninstallexe}"; Check: CheckStandardMode
 Name: "{commondesktop}\{#ProductName}"; Filename: "{app}\{#AppExeName}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#ProductName}"; Filename: "{app}\{#AppExeName}"; Tasks: quicklaunchicon
 
@@ -74,7 +84,52 @@ Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(
 Filename: "{app}\{#AppExeName}"; Flags: nowait skipifnotsilent
 
 [Code]
-procedure SetLanguage();
+var
+	PortabilityPage: TInputOptionWizardPage;
+	IsPortable: Boolean;
+
+function CheckPortableMode: Boolean;
+begin
+	Result := IsPortable;
+end;
+
+function CheckStandardMode: Boolean;
+begin
+	Result := not IsPortable;
+end;
+
+procedure InitializeWizard;
+begin
+	{ Create custom page }
+	PortabilityPage := CreateInputOptionPage(wpLicense, CustomMessage('InstallationTypeTitle'), CustomMessage('InstallationTypeDesc'),
+											 CustomMessage('InstallationTypeLabel'), True, False);
+	PortabilityPage.Add(CustomMessage('InstallationTypeStandardLabel'));
+	PortabilityPage.Add(CustomMessage('InstallationTypePortableLabel'));
+
+	{ Select standard mode, unless launched with /PORTABLE=1 argument }
+	if (ExpandConstant('{param:portable|0}') = '1') then
+		PortabilityPage.SelectedValueIndex := 1
+	else
+		PortabilityPage.SelectedValueIndex := 0
+end;
+
+function NextButtonClick(CurPageID: Integer): Boolean;
+begin
+	{ Determine portable mode }
+	if (CurPageID = PortabilityPage.ID) then
+	begin
+		IsPortable := not (PortabilityPage.SelectedValueIndex = 0);
+		{ Change DefaultDirName in wizard form }
+		if IsPortable then
+			WizardForm.DirEdit.Text := 'C:\' + ExpandConstant('{#ProductName}')
+		else
+			WizardForm.DirEdit.Text := ExpandConstant('{pf}\{#ProductName}')
+	end;
+	{ Return True to continue with setup }
+	Result := True; 
+end;
+
+procedure SetLanguage;
 var
     AnsiFileData: AnsiString;
 	ExpandedFile: String;
@@ -88,4 +143,15 @@ begin
 	FileData := String(AnsiFileData);
     StringChangeEx(FileData, '%LANGUAGE%', Language, True);
     SaveStringToFile(ExpandedFile, AnsiString(FileData), False);
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+	Result := False;
+
+	{ Don't ask Start Menu group name if in portable mode }
+	if PageID = wpSelectProgramGroup then
+	begin
+		Result := IsPortable;
+	end;
 end;

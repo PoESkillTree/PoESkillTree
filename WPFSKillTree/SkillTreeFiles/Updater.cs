@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using Raven.Json.Linq;
 using POESKillTree.Localization;
+using POESKillTree.Utils;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -171,7 +172,15 @@ namespace POESKillTree.SkillTreeFiles
 
                     // Perform silent setup if release is an update.
                     if (IsUpdate)
-                        setup.StartInfo.Arguments = "/SP- /SILENT /NOICONS /LANG=" + GetSetupLanguage();
+                    {
+                        string arguments = "/SP- /SILENT /NOICONS /LANG=" + GetSetupLanguage();
+
+                        // If running in portable mode, use our program directory as destination folder.
+                        if (AppData.IsPortable)
+                            arguments += " /PORTABLE=1 \"/DIR=" + AppData.ProgramDirectory + "\"";
+
+                        setup.StartInfo.Arguments = arguments;
+                    }
 
                     setup.Start();
 
@@ -390,12 +399,20 @@ namespace POESKillTree.SkillTreeFiles
         // Returns language chosen at last setup.
         public static string GetSetupLanguage()
         {
-            using (RegistryKey uninstallKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\" + Properties.Version.AppId + InnoSetupUninstallAppIdSuffix))
+            if (AppData.IsPortable)
             {
-                string language = uninstallKey.GetValue(InnoSetupUninstallLanguageValue) as string;
-                if (!string.IsNullOrEmpty(language))
-                    return language;
+                return AppData.GetIniValue("Setup", "Language");
             }
+            else
+                using (RegistryKey uninstallKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\" + Properties.Version.AppId + InnoSetupUninstallAppIdSuffix))
+                {
+                    if (uninstallKey == null)
+                        throw new Exception(L10n.Message("The application is not correctly installed"));
+
+                    string language = uninstallKey.GetValue(InnoSetupUninstallLanguageValue) as string;
+                    if (!string.IsNullOrEmpty(language))
+                        return language;
+                }
 
             return null;
         }

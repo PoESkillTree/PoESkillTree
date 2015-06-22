@@ -261,3 +261,10 @@ AssocingFileExtension=Vytvára sa asociácia medzi súbormi typu %2 a aplikáciou %1
 AutoStartProgramGroupDescription=Po spustení:
 AutoStartProgram=Automaticky spusti %1
 AddonHostProgramNotFound=Nepodarilo sa nájs %1 v prieèinku, ktorı ste zvolili.%n%nChcete napriek tomu pokraèova?
+
+; *** "Installation Type" dialog messages
+InstallationTypeTitle=Typ inštalácie
+InstallationTypeDesc=Vyberte typ inštalácie
+InstallationTypeLabel=Vyberte prenosnú inštaláciu len ak chcete prenáša tento program aj s jeho nastaveniami na prenosnom zariadení (napríklad USB disku). iadne skratky nebudú vytvorené a monos odinštalovania nebude k dispozícii.
+InstallationTypeStandardLabel=Štandardná - Inštalova na tento poèítaè (odporúèané)
+InstallationTypePortableLabel=Prenosná - Inštalova na prenosné zariadenie

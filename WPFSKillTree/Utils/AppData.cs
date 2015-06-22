@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 
 namespace POESKillTree.Utils
 {
@@ -8,9 +9,21 @@ namespace POESKillTree.Utils
     public class AppData
     {
         // The folder name in system folders containing application data.
-        static readonly string AppDataFolderName = Properties.Version.ProductName;
+        private static readonly string AppDataFolderName = Properties.Version.ProductName;
         // The absolute path of application data folder.
-        static string ApplicationData;
+        private static string ApplicationData;
+        // The flag indicating whether application data are stored in folder with application binaries.
+        private static bool HasPortableData;
+        // The flag indicating whether application data are portable.
+        public static bool IsPortable { get { return HasPortableData; } }
+        // The name of INI file whose existance indicates that application is running in portable mode (must be same as defined in release.iss script).
+        private const string PortableIniFileName = "Portable.ini";
+
+        // Static constructor.
+        static AppData()
+        {
+            HasPortableData = File.Exists(Path.Combine(ProgramDirectory, PortableIniFileName));
+        }
 
         // Returns abolute path to appliation data folder (i.e. system folder + AppDataFolderName).
         // If folder doesn't exist, it will be created.
@@ -20,10 +33,10 @@ namespace POESKillTree.Utils
             // Resolve path just once, it doesn't change during process lifetime.
             if (ApplicationData == null)
             {
-                if (Debugger.IsAttached)
+                if (Debugger.IsAttached || HasPortableData)
                 {
                     // When debugging, use current directory (i.e. application root path).
-                    ApplicationData = Environment.CurrentDirectory;
+                    ApplicationData = ProgramDirectory;
                 }
                 else
                 {
@@ -47,6 +60,44 @@ namespace POESKillTree.Utils
                 Directory.CreateDirectory(path);
 
             return trailingSlash ? path + Path.DirectorySeparatorChar : path;
+        }
+
+
+        // Returns value of PortableIniFileName INI file.
+        // Returns null if not running in portable mode or key was not found.
+        public static string GetIniValue(string section, string key)
+        {
+            if (!HasPortableData) return null;
+
+            string[] lines = File.ReadAllLines(Path.Combine(ProgramDirectory, PortableIniFileName));
+
+            bool foundSection = false;
+            foreach (string line in lines)
+            {
+                if (foundSection)
+                {
+                    if (line.StartsWith("[")) return null; // Next section means key was not found.
+
+                    if (line.StartsWith(key + "="))
+                        return line.Substring(key.Length + 1);
+                }
+                else
+                {
+                    if (line == "[" + section + "]")
+                        foundSection = true;
+                }
+            }
+
+            return null;
+        }
+
+        // Returns directory of running executable.
+        public static string ProgramDirectory
+        {
+            get
+            {
+                return Path.GetDirectoryName(Uri.UnescapeDataString((new UriBuilder(Assembly.GetExecutingAssembly().CodeBase)).Path));
+            }
         }
 
         // Sets ApplicationData path.
