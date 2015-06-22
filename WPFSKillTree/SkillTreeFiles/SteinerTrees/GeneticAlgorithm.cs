@@ -299,15 +299,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 minFitness = minCurrentFitness;*/
 
             stopwatch.Stop();
-            Console.Write("Evaluation time for " + generationCount + " : ");
-            Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
-            Console.WriteLine("Temperature: " + temperature);
-            Console.WriteLine("Average health: " + averageHealth / populationSize);
-            Console.WriteLine("Average bits set: " + averageBitsSet / populationSize);
-            Console.WriteLine("Average age: " + averageAge / populationSize);
-            Console.WriteLine("Accepted new states (all/worse): " + acceptedTotal + "/" + acceptedWorse);
+            //Console.Write("Evaluation time for " + generationCount + " : ");
+            //Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
+            //Console.WriteLine("Temperature: " + temperature);
+            //Console.WriteLine("Average health: " + averageHealth / populationSize);
+            //Console.WriteLine("Average bits set: " + averageBitsSet / populationSize);
+            //Console.WriteLine("Average age: " + averageAge / populationSize);
+            //Console.WriteLine("Accepted new states (all/worse): " + acceptedTotal + "/" + acceptedWorse);
             //Console.WriteLine("Purged individuals: " + purgedIndividuals + "/" + populationSize);
-            Console.WriteLine("Sampler entries: " + sampler.EntryCount);
+            //Console.WriteLine("Sampler entries: " + sampler.EntryCount);
             
             stopwatch.Restart();
 
@@ -340,9 +340,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             temperature *= annealingFactor;
 
             stopwatch.Stop();
-            Console.WriteLine("Best value so far: " + (1500 - bestSolution.Fitness));
-            Console.WriteLine("------------------");
-            Console.Out.Flush();
+            //Console.WriteLine("Best value so far: " + (1500 - bestSolution.Fitness));
+            //Console.WriteLine("------------------");
+            //Console.Out.Flush();
 
             return generationCount;
         }

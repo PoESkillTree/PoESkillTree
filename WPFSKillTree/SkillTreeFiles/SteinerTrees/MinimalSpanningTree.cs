@@ -28,8 +28,22 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 if (_usedNodeCount == null)
                 {
                     _usedNodeCount = 0;
-                    foreach (GraphEdge edge in SpanningEdges)
-                        _usedNodeCount += distances.GetDistance(edge);
+                    //foreach (GraphEdge edge in SpanningEdges)
+                    //    _usedNodeCount += distances.GetDistance(edge);
+                    // Shortest paths are saved in DistanceLookup, so we can use those instead of distances.
+                    // This way each node only gets counted once, even if it is contained in more than
+                    // one spanning edge. With this the fitness function is always accurate.
+                    var pathNodes = new HashSet<ushort>();
+                    foreach (var edge in SpanningEdges)
+                    {
+                        // distance = |nodes between edge nodes| + 1
+                        _usedNodeCount++;
+                        var path = distances.GetShortestPath(edge);
+                        // Save nodes into the HashSet, the set only saves each node once.
+                        pathNodes.UnionWith(path);
+                    }
+                    // Add distinct pathing nodes.
+                    _usedNodeCount += pathNodes.Count;
                 }
                 return _usedNodeCount.Value;
             }

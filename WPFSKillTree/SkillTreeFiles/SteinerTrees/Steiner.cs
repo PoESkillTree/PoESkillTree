@@ -469,15 +469,18 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             {
                 ushort target = edge.outside.Id;
 
-                HashSet<ushort> start;
-                if (edge.inside is Supernode)
-                    start = tree.SkilledNodes;
-                else
-                    start = new HashSet<ushort>() { edge.inside.Id };
+                //HashSet<ushort> start;
+                //if (edge.inside is Supernode)
+                //    start = tree.SkilledNodes;
+                //else
+                //    start = new HashSet<ushort>() { edge.inside.Id };
 
-                var path = tree.GetShortestPathTo(target, start);
+                //var path = tree.GetShortestPathTo(target, start);
 
-                newSkilledNodes = new HashSet<ushort>(newSkilledNodes.Concat(path));
+                //newSkilledNodes = new HashSet<ushort>(newSkilledNodes.Concat(path));
+                // The paths are calculated anyway, so use them here too.
+                newSkilledNodes.UnionWith(distances.GetShortestPath(edge));
+                newSkilledNodes.Add(target);
             }
 
             if (visualize)
@@ -518,6 +521,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // This is the bottleneck, quite obviously.
             mst.Span(startFrom: startNodes);
 
+            // Now accurate, not counting nodes more than once.
             int usedNodes = mst.UsedNodeCount;
 
             // TODO: Investigate fitness function

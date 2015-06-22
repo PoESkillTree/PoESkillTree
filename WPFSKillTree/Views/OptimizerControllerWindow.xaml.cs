@@ -16,6 +16,7 @@ using POESKillTree.SkillTreeFiles;
 using POESKillTree.SkillTreeFiles.SteinerTrees;
 using System.ComponentModel;
 using MessageBox = POESKillTree.Views.MetroMessageBox;
+using System.Diagnostics;
 
 namespace POESKillTree.Views
 {
@@ -69,7 +70,11 @@ namespace POESKillTree.Views
         void initializationWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             // This is also deferred to a background task as it might take a while.
-            steinerSolver.InitializeSolver(targetNodes);
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            steinerSolver.InitializeSolver(targetNodes, 0.6, 0.3);
+            stopwatch.Stop();
+            Console.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
         }
 
         void initializationWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -90,6 +95,8 @@ namespace POESKillTree.Views
         void solutionWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = (BackgroundWorker)sender;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             while (!steinerSolver.IsConsideredDone)
             {
                 steinerSolver.EvolutionStep();
@@ -99,6 +106,8 @@ namespace POESKillTree.Views
                 if (worker.CancellationPending)
                     break;
             }
+            stopwatch.Stop();
+            Console.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
             e.Result = steinerSolver.BestSolution;
         }
 

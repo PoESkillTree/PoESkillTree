@@ -17,9 +17,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         // The uint compounds both ushort indices.
         Dictionary<uint, int> _distances;
 
+        Dictionary<uint, ushort[]> _paths;
+
         public DistanceLookup()
         {
             _distances = new Dictionary<uint, int>();
+            _paths = new Dictionary<uint, ushort[]>();
         }
 
         /// <summary>
@@ -50,12 +53,13 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (_distances.ContainsKey(index))
                 return _distances[index];
 
-            // Otherwise, use pathfinding to find it...
-            int pathLength = Dijkstra(a, b);
-            //... and save it...
-            _distances.Add(index, pathLength);
-            // ...and return it.
-            return pathLength;
+            //// Otherwise, use pathfinding to find it...
+            //int pathLength = Dijkstra(a, b);
+            ////... and save it...
+            //_distances.Add(index, pathLength);
+            //// ...and return it.
+            //return pathLength;
+            return runAndSaveDijkstra(a, b).Item1;
         }
 
         private void setDistance(GraphNode a, GraphNode b, int distance)
@@ -63,6 +67,53 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             uint index = getIndex(a, b);
             if (!_distances.ContainsKey(index))
                 _distances.Add(index, distance);
+        }
+
+        /// <summary>
+        ///  Retrieves the shortest path from one node pf a graph edge to the other,
+        ///  or calculates it if it has not yet been found.
+        /// </summary>
+        /// <param name="edge">The graph edge.</param>
+        /// <returns>The shortest path from outside to inside, not containing either and ordered from inside to outside.</returns>
+        public ushort[] GetShortestPath(GraphEdge edge)
+        {
+            return GetShortestPath(edge.outside, edge.inside);
+        }
+
+        /// <summary>
+        ///  Retrieves the shortest path from one node to another, or calculates
+        ///  it if it has not yet been found.
+        /// </summary>
+        /// <param name="a">The first graph node.</param>
+        /// <param name="b">The second graph node</param>
+        /// <returns>The shortest path from a to b, not containing either and ordered from b to a.</returns>
+        public ushort[] GetShortestPath(GraphNode a, GraphNode b)
+        {
+            uint index = getIndex(a, b);
+
+            if (_paths.ContainsKey(index))
+            {
+                return _paths[index];
+            }
+
+            return runAndSaveDijkstra(a, b).Item2;
+        }
+
+        /// <summary>
+        /// Runs Dijkstra on the parameters, saves the result tuple and returns it.
+        /// </summary>
+        /// <param name="start">The starting node.</param>
+        /// <param name="target">The target node.</param>
+        /// <returns>A tuple containing the distance from the start node to the target node and the shortest path.</returns>
+        private Tuple<int, ushort[]> runAndSaveDijkstra(GraphNode start, GraphNode target)
+        {
+            var result = Dijkstra(start, target);
+
+            var index = getIndex(start, target);
+            _distances.Add(index, result.Item1);
+            _paths.Add(index, result.Item2);
+
+            return result;
         }
 
         /// <summary>
@@ -86,12 +137,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// </summary>
         /// <param name="start">The starting node.</param>
         /// <param name="target">The target node.</param>
-        /// <returns>The distance from the start node to the target node.</returns>
-        public int Dijkstra(GraphNode start, GraphNode target)
+        /// <returns>A tuple containing the distance from the start node to the target node and the shortest path.</returns>
+        public Tuple<int, ushort[]> Dijkstra(GraphNode start, GraphNode target)
         {
-            if (start == target) return 0;
+            //if (start == target) return 0;
+            //return dijkstraStep(start, target, new HashSet<GraphNode>() { start },
+            //    new HashSet<GraphNode>(), 0);
+            if (start == target) return new Tuple<int, ushort[]>(0, new ushort[0]);
             return dijkstraStep(start, target, new HashSet<GraphNode>() { start },
-                new HashSet<GraphNode>(), 0);
+                new HashSet<GraphNode>(), new Dictionary<ushort, ushort>(), 0);
         }
 
 
@@ -104,37 +158,76 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="target">The target node.</param>
         /// <param name="front">The last newly found nodes.</param>
         /// <param name="visited">The already visited nodes.</param>
+        /// <param name="predecessors">The dictionary of the predecessors of the visited nodes.</param>
         /// <param name="distFromStart">The traversed distance from the
         /// starting node in edges.</param>
-        /// <returns>The distance from the start node to the target node.</returns>
+        /// <returns>A tuple containing the distance from the start node to the target node and the shortest path.</returns>
         /// <remarks> - Currently the target node is never found if contained
         /// in front or visited.
         ///  - If front = { start }, then distFromStart should be 0.</remarks>
-        public int dijkstraStep(GraphNode start, GraphNode target,
-            HashSet<GraphNode> front, HashSet<GraphNode> visited, int distFromStart)
+        public Tuple<int, ushort[]> dijkstraStep(GraphNode start, GraphNode target,
+            HashSet<GraphNode> front, HashSet<GraphNode> visited, Dictionary<ushort, ushort> predecessors, int distFromStart)
         {
             HashSet<GraphNode> newFront = new HashSet<GraphNode>();
-            HashSet<GraphNode> newVisited = new HashSet<GraphNode>(visited);
-            newVisited.Concat(front);
+            // Copying takes time, we don't need the old visited.
+            //HashSet<GraphNode> newVisited = new HashSet<GraphNode>(visited);
+            // Concat returns the Union-Set, but doesn't modify
+            //newVisited.Concat(front);
+            visited.UnionWith(front);
 
             foreach (GraphNode node in front)
             {
-                newVisited.Add(node);
+                // already added with UnionWith
+                //newVisited.Add(node);
                 foreach (GraphNode adjacentNode in node.Adjacent)
                 {
-                    if (adjacentNode == target) return distFromStart + 1;
+                    //if (adjacentNode == target) return distFromStart + 1;
+                    if (adjacentNode == target)
+                    {
+                        uint index = getIndex(start, target);
+                        int length = distFromStart + 1;
+                        predecessors.Add(adjacentNode.Id, node.Id);
+                        ushort[] path = generateShortestPath(start.Id, target.Id, predecessors, length);
+
+                        return new Tuple<int, ushort[]>(length, path);
+                    }
 
                     // Could be combined in newVisited...
-                    if (visited.Contains(adjacentNode)) continue;
-                    if (front.Contains(adjacentNode)) continue;
+                    //if (visited.Contains(adjacentNode)) continue;
+                    //if (front.Contains(adjacentNode)) continue;
+                    // newFront check is necessary because the dictionary complains about duplicates
+                    if (visited.Contains(adjacentNode) || newFront.Contains(adjacentNode))
+                        continue;
 
                     newFront.Add(adjacentNode);
+
+                    predecessors.Add(adjacentNode.Id, node.Id);
                 }
             }
             // This wouldn't need recursion, but it's more convenient this way.
             if (newFront.Count > 0)
-                return dijkstraStep(start, target, newFront, newVisited, distFromStart + 1);
+                return dijkstraStep(start, target, newFront, visited, predecessors, distFromStart + 1);
             throw new GraphNotConnectedException();
+        }
+
+        /// <summary>
+        /// Generates the shortest path from target to start by reading it out of the predecessors-dictionary.
+        /// The dictionary must have a path from target to start stored.
+        /// </summary>
+        /// <param name="start">The starting node</param>
+        /// <param name="target">The target node</param>
+        /// <param name="predecessors">Dictonary with the predecessor of every node</param>
+        /// <param name="length">Length of the shortest path</param>
+        /// <returns>The shortest path from start to target, not including either. The Array is ordered from target to start</returns>
+        private ushort[] generateShortestPath(ushort start, ushort target, Dictionary<ushort, ushort> predecessors, int length)
+        {
+            var path = new ushort[length - 1];
+            var i = 0;
+            for (var node = predecessors[target]; node != start; node = predecessors[node], i++)
+            {
+                path[i] = node;
+            }
+            return path;
         }
 
         internal class GraphNotConnectedException : Exception
