@@ -32,7 +32,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     //    _usedNodeCount += distances.GetDistance(edge);
                     // Shortest paths are saved in DistanceLookup, so we can use those instead of distances.
                     // This way each node only gets counted once, even if it is contained in more than
-                    // one spanning edge. With this the fitness function is always accurate.
+                    // one spanning edge. With this the UsedNodeCount is always accurate.
                     var pathNodes = new HashSet<ushort>();
                     foreach (var edge in SpanningEdges)
                     {
