@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.Utils;
 using POESKillTree.ViewModels;
 using POESKillTree.ViewModels.ItemAttribute;
 
@@ -27,8 +28,10 @@ namespace UnitTests
         [ClassInitialize]
         public static void Initalize(TestContext testContext)
         {
+            AppData.SetApplicationData(Environment.CurrentDirectory);
+
             if (ItemDB.IsEmpty())
-                ItemDB.Load(@"..\..\..\WPFSkillTree\Items.xml", true);
+                ItemDB.Load("Items.xml", true);
             Tree = SkillTree.CreateSkillTree(() => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
         }
 

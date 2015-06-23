@@ -103,11 +103,8 @@ namespace POESKillTree.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            TaskbarHelper.EnablePinning(this);
-
             ItemDB.Load("Items.xml");
-            if (File.Exists("ItemsLocal.xml"))
-                ItemDB.Merge("ItemsLocal.xml");
+            ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();
 
             _attibuteCollection = new ListCollectionView(_attiblist);
@@ -374,43 +371,46 @@ namespace POESKillTree.Views
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    if (Directory.Exists("Data"))
+                    string appDataPath = AppData.GetFolder(true);
+
+                    try
                     {
+                        if (Directory.Exists(appDataPath + "Data"))
+                        {
+                            if (Directory.Exists(appDataPath + "DataBackup"))
+                                Directory.Delete(appDataPath + "DataBackup", true);
+
+                            Directory.Move(appDataPath + "Data", appDataPath + "DataBackup");
+                        }
+
+                        Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+                        recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+
+
+                        SkillTree.ClearAssets();//enable recaching of assets
+                        SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
+
+
+                        btnLoadBuild_Click(this, new RoutedEventArgs());
+                        _justLoaded = false;
+
+                        if (Directory.Exists(appDataPath + "DataBackup"))
+                            Directory.Delete(appDataPath + "DataBackup", true);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (Directory.Exists(appDataPath + "Data"))
+                            Directory.Delete(appDataPath + "Data", true);
                         try
                         {
-                            if (Directory.Exists("DataBackup"))
-                                Directory.Delete("DataBackup", true);
-                            Directory.Move("Data", "DataBackup");
-
-                            Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
-                            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
-
-
-                            SkillTree.ClearAssets();//enable recaching of assets
-                            SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
-
-
-                            btnLoadBuild_Click(this, new RoutedEventArgs());
-                            _justLoaded = false;
-
-                            if (Directory.Exists("DataBackup"))
-                                Directory.Delete("DataBackup", true);
+                            CloseLoadingWindow();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
-                            if (Directory.Exists("Data"))
-                                Directory.Delete("Data", true);
-                            try
-                            {
-                                CloseLoadingWindow();
-                            }
-                            catch (Exception)
-                            {
-                                //Nothing
-                            }
-                            Directory.Move("DataBackup", "Data");
-                            MessageBox.Show(this, ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
+                            //Nothing
                         }
+                        Directory.Move(appDataPath + "DataBackup", appDataPath + "Data");
+                        MessageBox.Show(this, ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     break;
 
@@ -465,9 +465,9 @@ namespace POESKillTree.Views
                 }
                 else
                 {
-                    var message = String.Format(L10n.Message("Do you want to install version {0}?"), release.Version);
+                    var message = string.Format(L10n.Message("Do you want to install version {0}?"), release.Version);
                     MessageBoxResult download = new MessageBoxResult();
-                    if (release.Version.ToLower().Contains("pre"))
+                    if (release.IsPrerelease)
                     {
                         message += "\n" + L10n.Message("This is a pre-release, meaning there could be some bugs!");
                         download = MessageBox.Show(this, message, L10n.Message("New pre-release"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -479,7 +479,6 @@ namespace POESKillTree.Views
                         btnUpdateInstall(sender, e);
                     else
                         btnUpdateCancel(sender, e);
-                    // Show dialog with release informations and "Install & Restart" button.
                 }
             }
             catch (UpdaterException ex)
@@ -521,6 +520,7 @@ namespace POESKillTree.Views
         // Invoked when update download completes, aborts or fails.
         private void UpdateDownloadCompleted(Object sender, AsyncCompletedEventArgs e)
         {
+            CloseLoadingWindow();
             if (e.Cancelled) // Check whether download was cancelled.
             {
                 Updater.Dispose();
@@ -536,7 +536,8 @@ namespace POESKillTree.Views
                 try
                 {
                     Updater.Install();
-                    Updater.RestartApplication();
+                    // Release being installed is an update, we have to exit application.
+                    if (Updater.GetLatestRelease().IsUpdate) App.Current.Shutdown();
                 }
                 catch (UpdaterException ex)
                 {
@@ -545,7 +546,6 @@ namespace POESKillTree.Views
                     MessageBox.Show(this, ex.Message.ToString(), L10n.Message("Update failed"));
                 }
             }
-            CloseLoadingWindow();
         }
 
         // Invoked when update download progress changes.
