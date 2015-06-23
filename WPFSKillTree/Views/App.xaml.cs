@@ -44,7 +44,14 @@ namespace POESKillTree.Views
             }
 
             // Load persistent data.
-            PrivatePersistentData.LoadPersistentDataFromFile();
+            try
+            {
+                PrivatePersistentData.LoadPersistentDataFromFile();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error has occurred during a load operation:\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             // Initialize localization.
             L10n.Initialize(PrivatePersistentData);
@@ -69,10 +76,25 @@ namespace POESKillTree.Views
                         theException = theException.InnerException;
                     }
                 }
-                MessageBox.Show("The program crashed.  A stack trace can be found at:\n" + theErrorPath);
+                MessageBox.Show("The program crashed. A stack trace can be found at:\n" + theErrorPath);
                 e.Handled = true;
                 Application.Current.Shutdown();
             }
+        }
+
+        // Overrides OnExit method to save persistent data.
+        protected override void OnExit(ExitEventArgs e)
+        {
+            try
+            {
+                PrivatePersistentData.SavePersistentDataToFile();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(L10n.Message("An error has occurred during a save operation:") + "\n\n" + ex.Message, L10n.Message("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            base.OnExit(e);
         }
     }
 }

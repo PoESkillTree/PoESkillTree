@@ -233,12 +233,7 @@ namespace POESKillTree.Views
         {
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
             _persistentData.CurrentBuild.Level = tbLevel.Text;
-            _persistentData.SavePersistentDataToFile();
-
-            if (lvSavedBuilds.Items.Count > 0)
-            {
-                SaveBuildsToFile();
-            }
+            _persistentData.SetBuilds(lvSavedBuilds.Items);
         }
 
         #endregion
@@ -1228,7 +1223,15 @@ namespace POESKillTree.Views
 
         private void SaveBuildsToFile()
         {
-            _persistentData.SaveBuilds(lvSavedBuilds.Items);
+            try
+            {
+                _persistentData.SetBuilds(lvSavedBuilds.Items);
+                _persistentData.SavePersistentDataToFile();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(L10n.Message("An error has occurred during a save operation:") + "\n\n" + e.Message, L10n.Message("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void LoadBuildFromUrl()

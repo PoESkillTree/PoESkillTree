@@ -600,6 +600,15 @@ msgid_plural "{0}, {1} points used"
 msgstr[0] ""
 msgstr[1] ""
 
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1233
+msgid "An error has occurred during a save operation:"
+msgstr ""
+
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1140
+#: Views\MainWindow.xaml.cs:1233
+msgid "Error"
+msgstr ""
+
 #: Views\DownloadItemsWindow.xaml.cs:25 Views\DownloadItemsWindow.xaml.cs:31
 msgid "CharacterName"
 msgstr ""
@@ -621,50 +630,46 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:464
+#: Views\MainWindow.xaml.cs:459
 msgid "You have the latest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:464
+#: Views\MainWindow.xaml.cs:459
 msgid "No update"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:468
+#: Views\MainWindow.xaml.cs:463
 #, csharp-format
 msgid "Do you want to install version {0}?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:472
+#: Views\MainWindow.xaml.cs:467
 msgid "This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:473
+#: Views\MainWindow.xaml.cs:468
 msgid "New pre-release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:476
+#: Views\MainWindow.xaml.cs:471
 msgid "New release"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:487
+#: Views\MainWindow.xaml.cs:482
 msgid "Error occured"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:504 Views\MainWindow.xaml.cs:532
-#: Views\MainWindow.xaml.cs:546
+#: Views\MainWindow.xaml.cs:499 Views\MainWindow.xaml.cs:527
+#: Views\MainWindow.xaml.cs:541
 msgid "Update failed"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1074
+#: Views\MainWindow.xaml.cs:1069
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1145
+#: Views\MainWindow.xaml.cs:1140
 msgid "Please select a saved build!"
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:1145
-msgid "Error"
 msgstr ""
 
 #: Views\OptimizerControllerWindow.xaml.cs:62
