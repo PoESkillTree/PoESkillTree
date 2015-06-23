@@ -64,10 +64,9 @@ namespace POESKillTree.Model
             }
         }
 
-        public void SaveBuilds(ItemCollection items)
+        public void SetBuilds(ItemCollection items)
         {
             Builds = (from PoEBuild item in items select item).ToList();
-            SavePersistentDataToFile();
         }
 
         private void OnPropertyChanged(string caller)

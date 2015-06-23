@@ -601,6 +601,15 @@ msgstr[0] "{0}, {1} bod použitý"
 msgstr[1] "{0}, {1} body použité"
 msgstr[2] "{0}, {1} bodov použitých"
 
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1233
+msgid "An error has occurred during a save operation:"
+msgstr "Nastala chyba počas ukladania:"
+
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1140
+#: Views\MainWindow.xaml.cs:1233
+msgid "Error"
+msgstr "Chyba"
+
 #: Views\DownloadItemsWindow.xaml.cs:25 Views\DownloadItemsWindow.xaml.cs:31
 msgid "CharacterName"
 msgstr "MenoPostavy"
@@ -622,51 +631,47 @@ msgstr "Posledná zmena: {0}"
 msgid "Help file not found"
 msgstr "Súbor pomocníka nebol nájdený"
 
-#: Views\MainWindow.xaml.cs:464
+#: Views\MainWindow.xaml.cs:459
 msgid "You have the latest version!"
 msgstr "Máte najnovšiu verziu!"
 
-#: Views\MainWindow.xaml.cs:464
+#: Views\MainWindow.xaml.cs:459
 msgid "No update"
 msgstr "Žiadna aktualizácia"
 
-#: Views\MainWindow.xaml.cs:468
+#: Views\MainWindow.xaml.cs:463
 #, csharp-format
 msgid "Do you want to install version {0}?"
 msgstr "Chcete nainštalovať verziu {0}?"
 
-#: Views\MainWindow.xaml.cs:472
+#: Views\MainWindow.xaml.cs:467
 msgid "This is a pre-release, meaning there could be some bugs!"
 msgstr "Toto je predbežná verzia, ktorá môže obsahovať chyby!"
 
-#: Views\MainWindow.xaml.cs:473
+#: Views\MainWindow.xaml.cs:468
 msgid "New pre-release"
 msgstr "Nová predbežná verzia"
 
-#: Views\MainWindow.xaml.cs:476
+#: Views\MainWindow.xaml.cs:471
 msgid "New release"
 msgstr "Nová verzia"
 
-#: Views\MainWindow.xaml.cs:487
+#: Views\MainWindow.xaml.cs:482
 msgid "Error occured"
 msgstr "Nastala chyba"
 
-#: Views\MainWindow.xaml.cs:504 Views\MainWindow.xaml.cs:532
-#: Views\MainWindow.xaml.cs:546
+#: Views\MainWindow.xaml.cs:499 Views\MainWindow.xaml.cs:527
+#: Views\MainWindow.xaml.cs:541
 msgid "Update failed"
 msgstr "Aktualizácia zlyhala"
 
-#: Views\MainWindow.xaml.cs:1074
+#: Views\MainWindow.xaml.cs:1069
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
-#: Views\MainWindow.xaml.cs:1145
+#: Views\MainWindow.xaml.cs:1140
 msgid "Please select a saved build!"
 msgstr "Prosím zvoľte uloženú zostavu!"
-
-#: Views\MainWindow.xaml.cs:1145
-msgid "Error"
-msgstr "Chyba"
 
 #: Views\OptimizerControllerWindow.xaml.cs:62
 msgid "Cancel"
