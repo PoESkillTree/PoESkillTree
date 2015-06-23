@@ -114,6 +114,11 @@ namespace POESKillTree.Views
 
         void solutionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            if (isCanceling)
+            {
+                return;
+            }
+
             progressBar.Value = e.ProgressPercentage;
             lblProgressText.Content = e.ProgressPercentage.ToString() + "/" + maxSteps;
             bestSoFar = (HashSet<ushort>)(e.UserState);

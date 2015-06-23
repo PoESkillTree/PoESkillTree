@@ -221,7 +221,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 throw new InvalidOperationException("Cannot generate a next" +
                     " generation without prior call to StartEvolution!");
 
-            List<Individual> newPopulation = new List<Individual>();
+            List<Individual> newPopulation = new List<Individual>(populationSize);
             generationCount++;
 
             WeightedSampler<Individual> sampler = new WeightedSampler<Individual>();
@@ -262,7 +262,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 /// normalize the fitnesses again.
                 individual.normalizedFitness = normalizeFitness(individual.Fitness);
 
-                averageHealth += individual.normalizedFitness;
+                averageHealth += 1500 - individual.Fitness;// individual.normalizedFitness;
                 averageBitsSet += SetBits(individual.DNA);
 
                 // Survival of the fittest (population was ordered by fitness above)
@@ -285,7 +285,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 // Simulated annealing
                 Individual temp = individual;
                 Individual mutation = spawnIndividual(mutateDNA(individual.DNA));
-                mutation.Age = individual.Age - 1; // TODO: Investigate.
+                // -1 makes the average age converge to 0 way faster, so most individuals
+                // get thrown out after only a few generations. Leads to infertile
+                // populations. Not 100% sure that this is better, but it seems to be
+                // more robust in exchange for more time needed on average for getting
+                // the best solution. (which we have enough time for anyway)
+                mutation.Age = individual.Age;// -1; // TODO: Investigate.
                 if (acceptNewState(individual, mutation))
                 {
                     acceptedTotal++;
@@ -384,6 +389,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             int index = random.Next(newDNA.Length);
             newDNA[index] = !newDNA[index];
             return newDNA;
+            //BitArray newDNA = new BitArray(dna);
+            //for (int i = 0; i < dna.Count; i++)
+            //{
+            //    if (random.NextDouble() < 2.0 / dna.Count)
+            //    {
+            //        newDNA[i] = !newDNA[i];
+            //    }
+            //}
+            //return newDNA;
         }
 
         /// <summary>
