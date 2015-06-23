@@ -271,151 +271,276 @@ msgstr "_Zobraziť"
 msgid "_Theme"
 msgstr "_Téma"
 
-#: Views\MainWindow.xaml:236
+#: Views\MainWindow.xaml:233
+msgctxt "color"
+msgid "Light"
+msgstr "Svetlá"
+
+#: Views\MainWindow.xaml:238
+msgctxt "color"
+msgid "Dark"
+msgstr "Tmavá"
+
+#: Views\MainWindow.xaml:244
 msgid "Acce_nt"
 msgstr "Akce_nt"
 
-#: Views\MainWindow.xaml:268
+#: Views\MainWindow.xaml:251
+msgctxt "color"
+msgid "Amber"
+msgstr "Jantárová"
+
+#: Views\MainWindow.xaml:256
+msgctxt "color"
+msgid "Blue"
+msgstr "Modrá"
+
+#: Views\MainWindow.xaml:261
+msgctxt "color"
+msgid "Brown"
+msgstr "Hnedá"
+
+#: Views\MainWindow.xaml:266
+msgctxt "color"
+msgid "Cobalt"
+msgstr "Kobaltová"
+
+#: Views\MainWindow.xaml:271
+msgctxt "color"
+msgid "Crimson"
+msgstr "Karmínová"
+
+#: Views\MainWindow.xaml:276
+msgctxt "color"
+msgid "Cyan"
+msgstr "Azúrová"
+
+#: Views\MainWindow.xaml:281
+msgctxt "color"
+msgid "Emerald"
+msgstr "Smaragdová"
+
+#: Views\MainWindow.xaml:286
+msgctxt "color"
+msgid "Green"
+msgstr "Zelená"
+
+#: Views\MainWindow.xaml:291
+msgctxt "color"
+msgid "Indigo"
+msgstr "Indigová"
+
+#: Views\MainWindow.xaml:296
+msgctxt "color"
+msgid "Lime"
+msgstr "Limetková"
+
+#: Views\MainWindow.xaml:301
+msgctxt "color"
+msgid "Magenta"
+msgstr "Purpurová"
+
+#: Views\MainWindow.xaml:306
+msgctxt "color"
+msgid "Mauve"
+msgstr "Mauve"
+
+#: Views\MainWindow.xaml:311
+msgctxt "color"
+msgid "Olive"
+msgstr "Olivová"
+
+#: Views\MainWindow.xaml:316
+msgctxt "color"
+msgid "Orange"
+msgstr "Oranžová"
+
+#: Views\MainWindow.xaml:321
+msgctxt "color"
+msgid "Pink"
+msgstr "Ružová"
+
+#: Views\MainWindow.xaml:326
+msgctxt "color"
+msgid "Purple"
+msgstr "Fialová"
+
+#: Views\MainWindow.xaml:331
+msgctxt "color"
+msgid "Red"
+msgstr "Červená"
+
+#: Views\MainWindow.xaml:336
+msgctxt "color"
+msgid "Sienna"
+msgstr "Siena"
+
+#: Views\MainWindow.xaml:341
+msgctxt "color"
+msgid "Steel"
+msgstr "Oceľová"
+
+#: Views\MainWindow.xaml:346
+msgctxt "color"
+msgid "Taupe"
+msgstr "Šedohnedá"
+
+#: Views\MainWindow.xaml:351
+msgctxt "color"
+msgid "Teal"
+msgstr "Petrolejová"
+
+#: Views\MainWindow.xaml:356
+msgctxt "color"
+msgid "Violet"
+msgstr "Fialová"
+
+#: Views\MainWindow.xaml:361
+msgctxt "color"
+msgid "Yellow"
+msgstr "Žltá"
+
+#: Views\MainWindow.xaml:368
 msgid "Saved _Builds"
 msgstr "Uložené _zostavy"
 
-#: Views\MainWindow.xaml:273
+#: Views\MainWindow.xaml:373
 msgid "_Attributes"
 msgstr "_Atribúty"
 
-#: Views\MainWindow.xaml:278
+#: Views\MainWindow.xaml:378
 msgid "_Character Sheet"
 msgstr "_Postava"
 
-#: Views\MainWindow.xaml:283
+#: Views\MainWindow.xaml:383
 msgid "Skill _Tree Comparison"
 msgstr "Porovnávanie _stromov zručností"
 
-#: Views\MainWindow.xaml:289
+#: Views\MainWindow.xaml:389
 msgid "_Tools"
 msgstr "_Nástroje"
 
-#: Views\MainWindow.xaml:293
+#: Views\MainWindow.xaml:393
 msgid "Take _Screenshot of Skilled Nodes"
 msgstr "Zaznamenanie _snímky vycvičených uzlov"
 
-#: Views\MainWindow.xaml:301
+#: Views\MainWindow.xaml:401
 msgid "_Download & Import Items"
 msgstr "Stiahnutie a _import predmetov"
 
-#: Views\MainWindow.xaml:309
+#: Views\MainWindow.xaml:409
 msgid "Skill _Highlighted Nodes"
 msgstr "_Vycvičiť zvýraznené uzly"
 
-#: Views\MainWindow.xaml:317
+#: Views\MainWindow.xaml:417
 msgid "_Unhighlight All Nodes"
 msgstr "_Zrušiť zvýraznenie uzlov"
 
-#: Views\MainWindow.xaml:325
+#: Views\MainWindow.xaml:425
 msgid "Copy _Passive Attributes to Clipboard"
 msgstr "Skopírovať _pasívne atribúty do Schránky"
 
-#: Views\MainWindow.xaml:333
+#: Views\MainWindow.xaml:433
 msgid "Copy Po_EUrl of Skill tree to Clipboard"
 msgstr "Skopírovať Po_EUrl odkaz do Schránky"
 
-#: Views\MainWindow.xaml:341
+#: Views\MainWindow.xaml:441
 msgid "_Redownload Skill Tree Assets"
 msgstr "_Opätovne stiahnuť údaje stromu zručností"
 
-#: Views\MainWindow.xaml:350
+#: Views\MainWindow.xaml:450
 msgid "_Help"
 msgstr "_Pomocník"
 
-#: Views\MainWindow.xaml:354
+#: Views\MainWindow.xaml:454
 msgid "_Links"
 msgstr "O_dkazy"
 
-#: Views\MainWindow.xaml:361
+#: Views\MainWindow.xaml:461
 msgid "_Path of Exile Website"
 msgstr "_Path of Exile stránka"
 
-#: Views\MainWindow.xaml:368
+#: Views\MainWindow.xaml:468
 msgid "View _Help"
 msgstr "Zobraziť _pomocníka"
 
-#: Views\MainWindow.xaml:376
+#: Views\MainWindow.xaml:476
 msgid "Hot_keys"
 msgstr "_Klávesové skratky"
 
-#: Views\MainWindow.xaml:384
+#: Views\MainWindow.xaml:484
 msgid "Check for _Updates"
 msgstr "Skontrolovať _aktualizácie"
 
-#: Views\MainWindow.xaml:392
+#: Views\MainWindow.xaml:492
 msgid "_About PoESkillTree"
 msgstr "_O PoESkillTree"
 
-#: Views\MainWindow.xaml:418
+#: Views\MainWindow.xaml:518
 msgid "Reset"
 msgstr "Reset"
 
-#: Views\MainWindow.xaml:431
+#: Views\MainWindow.xaml:531
 msgid "Saved Builds"
 msgstr "Uložené zostavy"
 
-#: Views\MainWindow.xaml:449
+#: Views\MainWindow.xaml:549
 msgid "Filter:"
 msgstr "Filter:"
 
-#: Views\MainWindow.xaml:492
+#: Views\MainWindow.xaml:592
 msgid "Skill tree comparison"
 msgstr "Porovnávanie stromov zručností"
 
-#: Views\MainWindow.xaml:501
+#: Views\MainWindow.xaml:601
 msgid "Save"
 msgstr "Uložiť"
 
-#: Views\MainWindow.xaml:504
+#: Views\MainWindow.xaml:604
 msgid "Save As"
 msgstr "Uložiť ako"
 
-#: Views\MainWindow.xaml:507
+#: Views\MainWindow.xaml:607
 msgid "Delete"
 msgstr "Zmazať"
 
-#: Views\MainWindow.xaml:516
+#: Views\MainWindow.xaml:616
 msgid "Attributes"
 msgstr "Atribúty"
 
-#: Views\MainWindow.xaml:523
+#: Views\MainWindow.xaml:623
 msgid "Passive Attributes"
 msgstr "Pasívne atribúty"
 
-#: Views\MainWindow.xaml:540
+#: Views\MainWindow.xaml:640
 msgid "Item Attributes"
 msgstr "Atribúty predmetov"
 
-#: Views\MainWindow.xaml:559
+#: Views\MainWindow.xaml:659
 msgid "Total Attributes"
 msgstr "Atribúty celkovo"
 
-#: Views\MainWindow.xaml:581
+#: Views\MainWindow.xaml:681
 msgid "Character Sheet"
 msgstr "Postava"
 
-#: Views\MainWindow.xaml:588 SkillTreeFiles\Compute.cs:2274
+#: Views\MainWindow.xaml:688 SkillTreeFiles\Compute.cs:2274
 msgid "Defense"
 msgstr "Obrana"
 
-#: Views\MainWindow.xaml:605
+#: Views\MainWindow.xaml:705
 msgid "Offense"
 msgstr "Útok"
 
-#: Views\MainWindow.xaml:630
+#: Views\MainWindow.xaml:730
 msgid "Search:"
 msgstr "Hľadať:"
 
-#: Views\MainWindow.xaml:636
+#: Views\MainWindow.xaml:736
 msgid "Skill tree link:"
 msgstr "Odkaz stromu:"
 
-#: Views\MainWindow.xaml:642
+#: Views\MainWindow.xaml:742
 msgid "Load Tree"
 msgstr "Načítať strom"
 
@@ -568,95 +693,8 @@ msgstr "Dokončené!"
 msgid "Continue"
 msgstr "Pokračovať"
 
-#~ msgid "Invalid package content"
-#~ msgstr "Chybný obsah balíka"
-
-#~ msgid "No such directory: {0}"
-#~ msgstr "Priečinok nebol nájdený: {0}"
-
-#~ msgid "No such file or directory: {0}"
-#~ msgstr "Súbor alebo priečinok nebol nájdený: {0}"
-
-#~ msgid "Pin this program to taskbar"
-#~ msgstr "Pripnúť tento program na panel úloh"
-
 #~ msgid "Level:"
 #~ msgstr "Level:"
 
 #~ msgid "Used:"
 #~ msgstr "Used:"
-
-#~ msgid "Light"
-#~ msgstr "Light"
-
-#~ msgid "Dark"
-#~ msgstr "Dark"
-
-#~ msgid "Amber"
-#~ msgstr "Amber"
-
-#~ msgid "Blue"
-#~ msgstr "Blue"
-
-#~ msgid "Brown"
-#~ msgstr "Brown"
-
-#~ msgid "Cobalt"
-#~ msgstr "Cobalt"
-
-#~ msgid "Crimson"
-#~ msgstr "Crimson"
-
-#~ msgid "Cyan"
-#~ msgstr "Cyan"
-
-#~ msgid "Emerald"
-#~ msgstr "Emerald"
-
-#~ msgid "Green"
-#~ msgstr "Green"
-
-#~ msgid "Indigo"
-#~ msgstr "Indigo"
-
-#~ msgid "Lime"
-#~ msgstr "Lime"
-
-#~ msgid "Magenta"
-#~ msgstr "Magenta"
-
-#~ msgid "Mauve"
-#~ msgstr "Mauve"
-
-#~ msgid "Olive"
-#~ msgstr "Olive"
-
-#~ msgid "Orange"
-#~ msgstr "Orange"
-
-#~ msgid "Pink"
-#~ msgstr "Pink"
-
-#~ msgid "Purple"
-#~ msgstr "Purple"
-
-#~ msgid "Red"
-#~ msgstr "Red"
-
-#~ msgid "Sienna"
-#~ msgstr "Sienna"
-
-#~ msgid "Steel"
-#~ msgstr "Steel"
-
-#~ msgid "Taupe"
-#~ msgstr "Taupe"
-
-#~ msgid "Teal"
-#~ msgstr "Teal"
-
-#~ msgid "Violet"
-#~ msgstr "Violet"
-
-#~ msgid "Yellow"
-#~ msgstr "Yellow"
