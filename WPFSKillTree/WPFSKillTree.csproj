@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>POESKillTree</RootNamespace>
-    <AssemblyName>POESKillTree</AssemblyName>
+    <AssemblyName>PoESkillTree</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -182,6 +182,7 @@
     <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
+    <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\ItemAttribute\Item.cs" />
@@ -317,6 +318,36 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Tools\isetup\Default.isl" />
+    <None Include="Tools\isetup\Languages\BrazilianPortuguese.isl" />
+    <None Include="Tools\isetup\Languages\Catalan.isl" />
+    <None Include="Tools\isetup\Languages\Corsican.isl" />
+    <None Include="Tools\isetup\Languages\Czech.isl" />
+    <None Include="Tools\isetup\Languages\Danish.isl" />
+    <None Include="Tools\isetup\Languages\Dutch.isl" />
+    <None Include="Tools\isetup\Languages\Finnish.isl" />
+    <None Include="Tools\isetup\Languages\French.isl" />
+    <None Include="Tools\isetup\Languages\German.isl" />
+    <None Include="Tools\isetup\Languages\Greek.isl" />
+    <None Include="Tools\isetup\Languages\Hebrew.isl" />
+    <None Include="Tools\isetup\Languages\Hungarian.isl" />
+    <None Include="Tools\isetup\Languages\Italian.isl" />
+    <None Include="Tools\isetup\Languages\Japanese.isl" />
+    <None Include="Tools\isetup\Languages\Nepali.islu" />
+    <None Include="Tools\isetup\Languages\Norwegian.isl" />
+    <None Include="Tools\isetup\Languages\Polish.isl" />
+    <None Include="Tools\isetup\Languages\Portuguese.isl" />
+    <None Include="Tools\isetup\Languages\Russian.isl" />
+    <None Include="Tools\isetup\Languages\ScottishGaelic.isl" />
+    <None Include="Tools\isetup\Languages\SerbianCyrillic.isl" />
+    <None Include="Tools\isetup\Languages\SerbianLatin.isl" />
+    <None Include="Tools\isetup\Languages\Slovak.isl" />
+    <None Include="Tools\isetup\Languages\Slovenian.isl" />
+    <None Include="Tools\isetup\Languages\Spanish.isl" />
+    <None Include="Tools\isetup\Languages\Turkish.isl" />
+    <None Include="Tools\isetup\Languages\Ukrainian.isl" />
+    <None Include="Tools\isetup\Setup.e32" />
+    <None Include="Tools\isetup\SetupLdr.e32" />
     <None Include="Tools\MSBuild.ExtensionPack.License.rtf" />
     <None Include="Tools\MSBuild.ExtensionPack.README.md" />
     <None Include="Tools\MSBuild.ExtensionPack.tasks" />
@@ -368,14 +399,28 @@
     <Content Include="Antlr3.Runtime.dll" />
     <Content Include="ExpressionEvaluator.dll" />
     <Content Include="ExpressionEvaluator.pdb" />
+    <Content Include="release.iss" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Tools\isetup\ISCC.exe" />
+    <None Include="Tools\isetup\ISCmplr.dll" />
+    <None Include="Tools\isetup\islzma.dll" />
+    <None Include="Tools\isetup\ISPP.dll" />
+    <None Include="Tools\isetup\ISPPBuiltins.iss" />
+    <None Include="Tools\isetup\license.txt" />
+    <None Include="Tools\isetup\WizModernImage-IS.bmp" />
+    <None Include="Tools\isetup\WizModernImage.bmp" />
+    <None Include="Tools\isetup\WizModernSmallImage-IS.bmp" />
+    <None Include="Tools\isetup\WizModernSmallImage.bmp" />
     <None Include="Tools\DeBOM.exe" />
     <None Include="Tools\DeBOM.pdb" />
     <None Include="Localization\Markdown\License.txt" />
     <None Include="Locale\README.txt" />
+    <None Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Newtonsoft.Json.dll" />
     <Content Include="Raven.Json.dll" />
     <None Include="Tools\Ionic.Zip.dll" />

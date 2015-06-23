@@ -65,6 +65,8 @@
 ###############################################################################
 # Project specific line ending normalization.
 ###############################################################################
+*.isl text eol=crlf
+*.islu text eol=crlf
 *.po text eol=lf
 *.pot text eol=lf
 Items.xml text eol=lf
