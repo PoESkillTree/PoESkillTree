@@ -104,8 +104,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return new BitArray(bestSolution.DNA);
         }
 
-        private double maxFitness;
-        private double minFitness;
+        // Normalizing is not used in a any useful way. (the WeightedSampler doesn't care)
+        //private double maxFitness;
+        //private double minFitness;
 
         private Random random;
 
@@ -129,7 +130,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             // The relative health (between 0 and 1) of this individual with
             // respect to the overall population.
-            public double normalizedFitness;
+            //public double normalizedFitness;
 
             // The amount of generations this individual has lived.
             public int Age;
@@ -175,13 +176,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             //BitArray initialSolution = null)
         {
             this.populationSize = populationSize;
-            annealingFactor = 1.0 - (1.0 / maxGeneration);
 
             /// These assignments (based on the defaults) look paradoxical here,
             /// but they'll be adjusted by evaluating individuals before ever being
             /// used.
-            this.maxFitness = estimatedMaxFitness;
-            this.minFitness = estimatedMinFitness;
+            //this.maxFitness = estimatedMaxFitness;
+            //this.minFitness = estimatedMinFitness;
 
             this.dnaLength = dnaLength;
 
@@ -189,7 +189,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             population = createPopulation();
             generationCount = 0;
-            
+            updateBestSolution();
+
+            annealingFactor = 1.0 - (1.0 / maxGeneration);
             /// TODO: Investigate the influence of this, as well as possible
             /// (automatic) parametrizations.
             temperature = 6.0;
@@ -230,19 +232,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             stopwatch.Start();
 
             // Check the fitness values of the current generation.
-            foreach (Individual individual in population)
-            {
-                if (individual.Fitness < 0)
-                    throw new ArgumentOutOfRangeException("solutionFitness function",
-                        "Negative fitness values are not allowed! Use 0 fitness " +
-                        "for solutions that should not reproduce.");
-
-                if (individual.Fitness > bestSolution.Fitness)
-                    bestSolution = new Individual(individual.DNA, individual.Fitness);
-
-                maxFitness = Math.Max(individual.Fitness, maxFitness);
-                minFitness = Math.Min(individual.Fitness, minFitness);
-            }
+            //foreach (Individual individual in population)
+            //{
+            //    maxFitness = Math.Max(individual.Fitness, maxFitness);
+            //    minFitness = Math.Min(individual.Fitness, minFitness);
+            //}
 
             double averageHealth = 0;
             double averageBitsSet = 0;
@@ -260,7 +254,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 index++;
                 /// Max and min fitness might have changed, so we need to
                 /// normalize the fitnesses again.
-                individual.normalizedFitness = normalizeFitness(individual.Fitness);
+                //individual.normalizedFitness = normalizeFitness(individual.Fitness);
 
                 averageHealth += 1500 - individual.Fitness;// individual.normalizedFitness;
                 averageBitsSet += SetBits(individual.DNA);
@@ -277,7 +271,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 /// By only allowing solutions that survived a round of culling
                 /// to procreate, the solution quality is kept high.
                 if (individual.Age >= 1)
-                    sampler.AddEntry(individual, individual.normalizedFitness);
+                    sampler.AddEntry(individual, individual./*normalized*/Fitness);
                 averageAge += individual.Age;
 
                 individual.Age++;
@@ -327,7 +321,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
 
             // Breed population and apply random mutations.
-            int dnaResets = 0;
+            //int dnaResets = 0;
             // Replace purged individuals
             for (int i = 0; i < purgedIndividuals; i++)
             {
@@ -341,6 +335,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             population = newPopulation.ToArray();
 
+            // Doing this at the end so the last generation has a use.
+            updateBestSolution();
+
             // Yeah, I know, out of thin air.
             temperature *= annealingFactor;
 
@@ -350,6 +347,26 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             //Console.Out.Flush();
 
             return generationCount;
+        }
+
+        /// <summary>
+        ///  Checks the current population for a better solution than bestSolution
+        ///  and changes bestSolution if there is a better individual.
+        ///  Also checks each fitness for being negative and throws an Exception
+        ///  in that case.
+        /// </summary>
+        private void updateBestSolution()
+        {
+            foreach (Individual individual in population)
+            {
+                if (individual.Fitness < 0)
+                    throw new ArgumentOutOfRangeException("solutionFitness function",
+                        "Negative fitness values are not allowed! Use 0 fitness " +
+                        "for solutions that should not reproduce.");
+
+                if (individual.Fitness > bestSolution.Fitness)
+                    bestSolution = new Individual(individual.DNA, individual.Fitness);
+            }
         }
 
         /// <summary>
@@ -371,11 +388,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// </summary>
         /// <param name="fitness">The fitness to be normalized.</param>
         /// <returns>A value between 0 and 1 (inclusive).</returns>
-        private double normalizeFitness(double fitness)
-        {
-            if (maxFitness - minFitness <= 0) return 0.5; // What can you say...
-            return (fitness - minFitness) / (maxFitness - minFitness);
-        }
+        //private double normalizeFitness(double fitness)
+        //{
+        //    if (maxFitness - minFitness <= 0) return 0.5; // What can you say...
+        //    return (fitness - minFitness) / (maxFitness - minFitness);
+        //}
 
         #region DNA mutation
         /// <summary>
@@ -389,15 +406,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             int index = random.Next(newDNA.Length);
             newDNA[index] = !newDNA[index];
             return newDNA;
-            //BitArray newDNA = new BitArray(dna);
-            //for (int i = 0; i < dna.Count; i++)
-            //{
-            //    if (random.NextDouble() < 2.0 / dna.Count)
-            //    {
-            //        newDNA[i] = !newDNA[i];
-            //    }
-            //}
-            //return newDNA;
         }
 
         /// <summary>

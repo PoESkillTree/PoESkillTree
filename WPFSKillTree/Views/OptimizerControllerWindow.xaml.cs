@@ -72,7 +72,7 @@ namespace POESKillTree.Views
             // This is also deferred to a background task as it might take a while.
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            steinerSolver.InitializeSolver(targetNodes, 0.6, 0.5);
+            steinerSolver.InitializeSolver(targetNodes);
             stopwatch.Stop();
             Console.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
         }
