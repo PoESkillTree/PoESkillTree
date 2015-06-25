@@ -208,7 +208,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  Returns the modifier for the maxGeneration in initializeGA depending on
         ///  the searchSpace size. Returns 0.2 times the result of a polynomial function
         ///  if searchSpace &lt; 150 or just 0.2 otherwise.
-        ///  The polynomial function is fitted to f(0)=40, f(100)=10 and f(150)=1.
+        ///  The polynomial function is fitted to f(0)=40, f(100)=5 and f(150)=1.
         /// </summary>
         private Func<int, double> durationModifierFct = (searchSpace) =>
             (0.2 * (searchSpace < 150 ? 0.0018 * searchSpace * searchSpace - 0.53 * searchSpace + 40 : 1.0));

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
@@ -204,12 +205,13 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         private Individual[] createPopulation()
         {
             Individual[] newPopulation = new Individual[populationSize];
-            for (int i = 0; i < populationSize; i++)
+            //for (int i = 0; i < populationSize; i++)
+            Parallel.For(0, populationSize, i =>
             {
                 newPopulation[i] = spawnIndividual(randomBitarray(dnaLength));
                 // Without this, nothing would be allowed to breed in the first step.
                 newPopulation[i].Age++;
-            }
+            });
             return newPopulation;
         }
 
@@ -223,7 +225,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 throw new InvalidOperationException("Cannot generate a next" +
                     " generation without prior call to StartEvolution!");
 
-            List<Individual> newPopulation = new List<Individual>(populationSize);
+            //List<Individual> newPopulation = new List<Individual>(populationSize);
+            Individual[] newPopulation = new Individual[populationSize];
+            int newPopIndex = 0;
             generationCount++;
 
             WeightedSampler<Individual> sampler = new WeightedSampler<Individual>();
@@ -243,7 +247,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             double averageAge = 0;
             int acceptedTotal = 0;
             int acceptedWorse = 0;
-            int purgedIndividuals = 0;
+            //int purgedIndividuals = 0;
 
             // Sort the population by fitness.
             population = population.OrderBy(ind => ind.Fitness).ToArray();
@@ -263,7 +267,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 if (index < 0.5 * populationSize)
                 {
                     // Could be slightly more concise, I know.
-                    purgedIndividuals++;
+                    //purgedIndividuals++;
                     continue;
                 }
 
@@ -276,26 +280,31 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
                 individual.Age++;
 
-                // Simulated annealing
-                Individual temp = individual;
-                Individual mutation = spawnIndividual(mutateDNA(individual.DNA));
+                newPopulation[newPopIndex] = individual;
+                newPopIndex++;
+            }
+            /*if (purgedIndividuals == 0)
+                minFitness = minCurrentFitness;*/
+            //for (int i = 0; i < newPopIndex; i++)
+            Parallel.For(0, newPopIndex, i =>
+            {
+                Individual temp = newPopulation[i];
+                Individual mutation = spawnIndividual(mutateDNA(temp.DNA));
                 // -1 makes the average age converge to 0 way faster, so most individuals
                 // get thrown out after only a few generations. Leads to infertile
                 // populations. Not 100% sure that this is better, but it seems to be
                 // more robust in exchange for more time needed on average for getting
                 // the best solution. (which we have enough time for anyway)
-                mutation.Age = individual.Age;// -1; // TODO: Investigate.
-                if (acceptNewState(individual, mutation))
+                mutation.Age = temp.Age;// -1; // TODO: Investigate.
+                if (acceptNewState(temp, mutation))
                 {
-                    acceptedTotal++;
-                    if (mutation.Fitness < individual.Fitness)
-                        acceptedWorse++;
+                    //acceptedTotal++;
+                    //if (mutation.Fitness < temp.Fitness)
+                    //    acceptedWorse++;
                     temp = mutation;
                 }
-                newPopulation.Add(temp);
-            }
-            /*if (purgedIndividuals == 0)
-                minFitness = minCurrentFitness;*/
+                newPopulation[i] = temp;
+            });
 
             stopwatch.Stop();
             //Console.Write("Evaluation time for " + generationCount + " : ");
@@ -323,17 +332,19 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // Breed population and apply random mutations.
             //int dnaResets = 0;
             // Replace purged individuals
-            for (int i = 0; i < purgedIndividuals; i++)
+            //for (int i = newPopIndex; i < populationSize; i++)
+            Parallel.For(newPopIndex, populationSize, i =>
             {
                 BitArray parent1 = sampler.RandomSample().DNA;
                 BitArray parent2 = sampler.RandomSample().DNA;
 
                 BitArray newDNA = combineIndividualsDNA(parent1, parent2);
 
-                newPopulation.Add(spawnIndividual(newDNA));
-            }
+                //newPopulation.Add(spawnIndividual(newDNA));
+                newPopulation[i] = spawnIndividual(newDNA);
+            });
 
-            population = newPopulation.ToArray();
+            population = newPopulation;//.ToArray();
 
             // Doing this at the end so the last generation has a use.
             updateBestSolution();

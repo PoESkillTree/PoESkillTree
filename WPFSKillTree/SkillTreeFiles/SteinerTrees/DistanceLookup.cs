@@ -105,11 +105,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="start">The starting node.</param>
         /// <param name="target">The target node.</param>
         /// <returns>A tuple containing the distance from the start node to the target node and the shortest path.</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]// Most simple thread-safety approach, but seems to work.
         private Tuple<int, ushort[]> runAndSaveDijkstra(GraphNode start, GraphNode target)
         {
+            var index = getIndex(start, target);
+            if (_distances.ContainsKey(index))
+                return new Tuple<int, ushort[]>(_distances[index], _paths[index]);
+
             var result = Dijkstra(start, target);
 
-            var index = getIndex(start, target);
             _distances.Add(index, result.Item1);
             _paths.Add(index, result.Item2);
 
