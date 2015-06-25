@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.Model;
 using System.Text.RegularExpressions;
 using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using POESKillTree.Model;
+using POESKillTree.SkillTreeFiles;
+using POESKillTree.Utils;
 
 namespace UnitTests
 {
@@ -14,9 +15,10 @@ namespace UnitTests
         [ClassInitialize]
         public static void Initalize(TestContext testContext)
         {
-            System.Diagnostics.Debug.WriteLine("TestItemDB.ClassInitialize");
+            AppData.SetApplicationData(Environment.CurrentDirectory);
+
             if (ItemDB.IsEmpty())
-                ItemDB.Load(@"..\..\..\WPFSkillTree\Items.xml", true);
+                ItemDB.Load("Items.xml", true);
         }
 
         [TestMethod]

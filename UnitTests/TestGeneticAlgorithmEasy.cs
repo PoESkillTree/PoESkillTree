@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.SkillTreeFiles.SteinerTrees;
+using POESKillTree.Utils;
 
 namespace UnitTests
 {
@@ -19,6 +20,8 @@ namespace UnitTests
         [ClassInitialize]
         public static void Initalize(TestContext testContext)
         {
+            AppData.SetApplicationData(Environment.CurrentDirectory);
+
             Tree = SkillTree.CreateSkillTree(() => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
         }
 

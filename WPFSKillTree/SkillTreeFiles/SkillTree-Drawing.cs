@@ -526,12 +526,12 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (string faceName in FaceNames)
                 {
-                    var bi = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\" + faceName + ".png", UriKind.Relative));
+                    var bi = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree.AssetsFolderPath + faceName + ".png", UriKind.Absolute));
                     _FacesBrush.Add(new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi.PixelWidth, bi.PixelHeight),
                         new ImageBrush(bi)));
                 }
 
-                var bi2 = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\PSStartNodeBackgroundInactive.png", UriKind.Relative));
+                var bi2 = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree.AssetsFolderPath + "PSStartNodeBackgroundInactive.png", UriKind.Absolute));
                 if (_StartBackgrounds.ContainsKey(false))
                 {
                     if (!_StartBackgrounds[false].Key.Equals(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight)))
