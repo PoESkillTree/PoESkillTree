@@ -54,7 +54,6 @@ namespace POESKillTree.Views
             get { return _persistentData; }
         }
 
-
         private static readonly Action EmptyDelegate = delegate { };
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
@@ -351,18 +350,18 @@ namespace POESKillTree.Views
             {
                 System.Windows.Forms.Clipboard.SetText(sb.ToString());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show(this, "Clipboard could not be copied to. Please try again.", "Failed Copy!", MessageBoxButton.OK, MessageBoxImage.Error);
+                Popup.Error(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
             }
         }
 
         private void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
         {
-            const string sMessageBoxText = "This will delete your data folder and Redownload all the SkillTree assets.\nThis requires an internet connection!\n\nDo you want to proced?";
-            const string sCaption = "Redownload SkillTree Assets - Warning";
+            string sMessageBoxText = L10n.Message("The existing Skill tree assets will be deleted and new assets will be downloaded.")
+                                     + "\n\n" + L10n.Message("Do you want to continue?");
 
-            var rsltMessageBox = MessageBox.Show(this, sMessageBoxText, sCaption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            var rsltMessageBox = Popup.Ask(sMessageBoxText, MessageBoxImage.Warning);
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
@@ -405,7 +404,8 @@ namespace POESKillTree.Views
                             //Nothing
                         }
                         Directory.Move(appDataPath + "DataBackup", appDataPath + "Data");
-                        MessageBox.Show(this, ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                        Popup.Error(L10n.Message("An error occurred while downloading assets."), ex.Message);
                     }
                     break;
 
@@ -456,20 +456,22 @@ namespace POESKillTree.Views
                 Updater.Release release = Updater.CheckForUpdates();
                 if (release == null)
                 {
-                    MessageBox.Show(this, L10n.Message("You have the latest version!"), L10n.Message("No update"));
+                    Popup.Info(L10n.Message("You have the latest version!"));
                 }
                 else
                 {
-                    var message = string.Format(L10n.Message("Do you want to install version {0}?"), release.Version);
-                    MessageBoxResult download = new MessageBoxResult();
-                    if (release.IsPrerelease)
-                    {
-                        message += "\n" + L10n.Message("This is a pre-release, meaning there could be some bugs!");
-                        download = MessageBox.Show(this, message, L10n.Message("New pre-release"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    }
-                    else
-                        download = MessageBox.Show(this, message, L10n.Message("New release"), MessageBoxButton.YesNo, MessageBoxImage.None);
+                    string message = release.IsUpdate
+                                     ? string.Format(L10n.Message("An update for {0} ({1}) is available!"), Properties.Version.ProductName, release.Version)
+                                       + "\n\n" + L10n.Message("The application will be closed when download completes to proceed with the update.")
+                                     : string.Format(L10n.Message("A new version {0} is available!"), release.Version)
+                                       + "\n\n" + L10n.Message("The new version of application will be installed side-by-side with earlier versions.");
 
+                    if (release.IsPrerelease)
+                        message += "\n\n" + L10n.Message("Warning: This is a pre-release, meaning there could be some bugs!");
+
+                    message += "\n\n" + (release.IsUpdate ? L10n.Message("Do you want to download and install the update?") : L10n.Message("Do you want to download and install the new version?"));
+
+                    MessageBoxResult download = Popup.Ask(message, release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
                     if (download == MessageBoxResult.Yes)
                         btnUpdateInstall(sender, e);
                     else
@@ -478,8 +480,7 @@ namespace POESKillTree.Views
             }
             catch (UpdaterException ex)
             {
-                // Display error message: ex.Message.
-                MessageBox.Show(this, ex.Message.ToString(), L10n.Message("Error occured"), MessageBoxButton.OK, MessageBoxImage.Error);
+                Popup.Error(L10n.Message("An error occurred while attempting to contact the update location."), ex.Message);
             }
         }
 
@@ -488,15 +489,12 @@ namespace POESKillTree.Views
         {
             try
             {
-                // Show download progress bar and Cancel button.
-                // Start downloading.
                 StartLoadingWindow();
                 Updater.Download(UpdateDownloadCompleted, UpdateDownloadProgressChanged);
             }
             catch (UpdaterException ex)
             {
-                // Display error message: ex.Message.
-                MessageBox.Show(this, ex.Message.ToString(), L10n.Message("Update failed"));
+                Popup.Error(L10n.Message("An error occurred during the download operation."), ex.Message);
             }
         }
 
@@ -508,7 +506,6 @@ namespace POESKillTree.Views
             else
             {
                 Updater.Dispose();
-                // Close dialog.
             }
         }
 
@@ -519,12 +516,10 @@ namespace POESKillTree.Views
             if (e.Cancelled) // Check whether download was cancelled.
             {
                 Updater.Dispose();
-                // Close dialog.
             }
-            else if (e.Error != null) // Check whether error occured.
+            else if (e.Error != null) // Check whether error occurred.
             {
-                // Display error message: e.Error.Message.
-                MessageBox.Show(this, e.Error.Message.ToString(), L10n.Message("Update failed"));
+                Popup.Error(L10n.Message("An error occurred during the download operation."), e.Error.Message);
             }
             else // Download completed.
             {
@@ -537,8 +532,7 @@ namespace POESKillTree.Views
                 catch (UpdaterException ex)
                 {
                     Updater.Dispose();
-                    // Display error message: ex.Message.
-                    MessageBox.Show(this, ex.Message.ToString(), L10n.Message("Update failed"));
+                    Popup.Error(L10n.Message("An error occurred while attempting to start the installation."), ex.Message);
                 }
             }
         }
@@ -991,11 +985,11 @@ namespace POESKillTree.Views
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, "Item data currupted!");
                     _persistentData.CurrentBuild.ItemData = "";
                     _itemAttributes = null;
                     lbItemAttr.ItemsSource = null;
                     ClearCurrentItemData();
+                    Popup.Error(L10n.Message("An error occurred while attempting to load item data."), ex.Message);
                 }
             }
             else
@@ -1137,8 +1131,7 @@ namespace POESKillTree.Views
             }
             else
             {
-                MessageBox.Show(this, L10n.Message("Please select a saved build!"), L10n.Message("Error"), MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                Popup.Info(L10n.Message("Please select a saved build."));
             }
         }
 
@@ -1230,7 +1223,7 @@ namespace POESKillTree.Views
             }
             catch (Exception e)
             {
-                MessageBox.Show(L10n.Message("An error has occurred during a save operation:") + "\n\n" + e.Message, L10n.Message("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                Popup.Error(L10n.Message("An error occurred during a save operation."), e.Message);
             }
         }
 
@@ -1299,9 +1292,9 @@ namespace POESKillTree.Views
                 UpdateUI();
                 _justLoaded = false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show(this, "The Build you tried to load, is invalid");
+                Popup.Error(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }
         #endregion
@@ -1565,9 +1558,9 @@ namespace POESKillTree.Views
                     client.DownloadStringCompleted += DownloadCompletedPoeUrl;
                     client.DownloadStringAsync(new Uri("http://poeurl.com/shrink.php?url=" + url));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    MessageBox.Show(this, "Failed to create PoEURL", "poeurl error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Popup.Error(L10n.Message("An error occurred while attempting to conntact the PoEUrl location."), ex.Message);
                 }
             }
         }
@@ -1576,7 +1569,7 @@ namespace POESKillTree.Views
         {
             if (e.Error != null)
             {
-                MessageBox.Show(this, "Failed to create PoEURL", "poeurl error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Popup.Error(L10n.Message("An error occurred while attempting to conntact the PoEUrl location."), e.Error.Message);
                 return;
             }
             ShowPoeUrlMessageAndAddToClipboard("http://poeurl.com/" + e.Result.Trim());
@@ -1584,9 +1577,15 @@ namespace POESKillTree.Views
 
         private void ShowPoeUrlMessageAndAddToClipboard(string poeurl)
         {
-            System.Windows.Forms.Clipboard.SetDataObject(poeurl, true);
-            MessageBox.Show(this, "The URL below has been copied to you clipboard: \n" + poeurl, "poeurl Link",
-                MessageBoxButton.OK);
+            try
+            {
+                System.Windows.Forms.Clipboard.SetDataObject(poeurl, true);
+                Popup.Info(L10n.Message("The PoEUrl link has been copied to Clipboard.") + "\n\n" + poeurl);
+            }
+            catch (Exception ex)
+            {
+                Popup.Error(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
+            }
         }
 
         #endregion
@@ -1775,7 +1774,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "Unable to load the saved builds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Popup.Error(L10n.Message("An error occurred while attempting to load saved builds."), ex.Message);
             }
         }
 

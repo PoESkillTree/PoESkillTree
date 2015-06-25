@@ -561,8 +561,13 @@ msgid "Character"
 msgstr "Postava"
 
 #: SkillTreeFiles\SkillTree.cs:933
-msgid "Please highlight non-skilled nodes by right-clicking them!"
-msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom!"
+msgid "Please highlight non-skilled nodes by right-clicking them."
+msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom."
+
+#: SkillTreeFiles\SkillTreeImporter.cs:74
+#, csharp-format
+msgid "An error occured while attempting to load Skill tree from {0} location."
+msgstr "Nastala chyba pri pokuse načítať strom zručností z {0} lokácie."
 
 #: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:237
 msgid "Download already in progress"
@@ -593,6 +598,26 @@ msgstr "Sťahovanie bolo donočené, alebo stále prebieha"
 msgid "The application is not correctly installed"
 msgstr "Aplikácie nie je korektne nainštalovaná"
 
+#: Utils\Popup.cs:14
+msgid "Question"
+msgstr "Otázka"
+
+#: Utils\Popup.cs:20 Views\App.xaml.cs:94
+msgid "Error"
+msgstr "Chyba"
+
+#: Utils\Popup.cs:27
+msgid "Details:"
+msgstr "Podrobnosti:"
+
+#: Utils\Popup.cs:49
+msgid "Information"
+msgstr "Informácia"
+
+#: Utils\Popup.cs:55
+msgid "Warning"
+msgstr "Upozornenie"
+
 #: ViewModels\PoEBuild.cs:30
 #, csharp-format
 msgid "{0}, {1} point used"
@@ -601,14 +626,9 @@ msgstr[0] "{0}, {1} bod použitý"
 msgstr[1] "{0}, {1} body použité"
 msgstr[2] "{0}, {1} bodov použitých"
 
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1233
-msgid "An error has occurred during a save operation:"
-msgstr "Nastala chyba počas ukladania:"
-
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1140
-#: Views\MainWindow.xaml.cs:1233
-msgid "Error"
-msgstr "Chyba"
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1226
+msgid "An error occurred during a save operation."
+msgstr "Nastala chyba počas ukladania."
 
 #: Views\DownloadItemsWindow.xaml.cs:25 Views\DownloadItemsWindow.xaml.cs:31
 msgid "CharacterName"
@@ -631,47 +651,95 @@ msgstr "Posledná zmena: {0}"
 msgid "Help file not found"
 msgstr "Súbor pomocníka nebol nájdený"
 
+#: Views\MainWindow.xaml.cs:355 Views\MainWindow.xaml.cs:1587
+msgid "An error occurred while copying to Clipboard."
+msgstr "Nastala chyba počas kopírovania do Schránky."
+
+#: Views\MainWindow.xaml.cs:361
+msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
+msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
+
+#: Views\MainWindow.xaml.cs:362
+msgid "Do you want to continue?"
+msgstr "Chcete pokračovať?"
+
+#: Views\MainWindow.xaml.cs:408
+msgid "An error occurred while downloading assets."
+msgstr "Nastala chyba počas sťahovania údajov."
+
 #: Views\MainWindow.xaml.cs:459
 msgid "You have the latest version!"
 msgstr "Máte najnovšiu verziu!"
 
-#: Views\MainWindow.xaml.cs:459
-msgid "No update"
-msgstr "Žiadna aktualizácia"
-
-#: Views\MainWindow.xaml.cs:463
+#: Views\MainWindow.xaml.cs:464
 #, csharp-format
-msgid "Do you want to install version {0}?"
-msgstr "Chcete nainštalovať verziu {0}?"
+msgid "An update for {0} ({1}) is available!"
+msgstr "Aktualizácia pre {0} ({1}) je k dispozícii!"
+
+#: Views\MainWindow.xaml.cs:465
+msgid "The application will be closed when download completes to proceed with the update."
+msgstr "Po dokončení sťahovania bude aplikácia zatvorená, aby mohla aktualizácia prebehnúť."
+
+#: Views\MainWindow.xaml.cs:466
+#, csharp-format
+msgid "A new version {0} is available!"
+msgstr "Nová verzia {0} je k dispozícii!"
 
 #: Views\MainWindow.xaml.cs:467
-msgid "This is a pre-release, meaning there could be some bugs!"
-msgstr "Toto je predbežná verzia, ktorá môže obsahovať chyby!"
+msgid "The new version of application will be installed side-by-side with earlier versions."
+msgstr "Nová verzia aplikácie bude nainštalovaná súbežne s predchádzajúcimi verziami."
 
-#: Views\MainWindow.xaml.cs:468
-msgid "New pre-release"
-msgstr "Nová predbežná verzia"
+#: Views\MainWindow.xaml.cs:470
+msgid "Warning: This is a pre-release, meaning there could be some bugs!"
+msgstr "Upozornenie: Toto je predbežná verzia, ktorá môže obsahovať chyby!"
 
-#: Views\MainWindow.xaml.cs:471
-msgid "New release"
-msgstr "Nová verzia"
+#: Views\MainWindow.xaml.cs:472
+msgid "Do you want to download and install the update?"
+msgstr "Chcete stiahnuť a nainštalovať aktualizáciu?"
 
-#: Views\MainWindow.xaml.cs:482
-msgid "Error occured"
-msgstr "Nastala chyba"
+#: Views\MainWindow.xaml.cs:472
+msgid "Do you want to download and install the new version?"
+msgstr "Chcete stiahnuť a nainštalovať novú verziu?"
 
-#: Views\MainWindow.xaml.cs:499 Views\MainWindow.xaml.cs:527
-#: Views\MainWindow.xaml.cs:541
-msgid "Update failed"
-msgstr "Aktualizácia zlyhala"
+#: Views\MainWindow.xaml.cs:483
+msgid "An error occurred while attempting to contact the update location."
+msgstr "Nastala chyba pri pokuse kontaktovať lokáciu pre aktualizácie."
 
-#: Views\MainWindow.xaml.cs:1069
+#: Views\MainWindow.xaml.cs:497 Views\MainWindow.xaml.cs:522
+msgid "An error occurred during the download operation."
+msgstr "Nastala chyba počas sťahovania."
+
+#: Views\MainWindow.xaml.cs:535
+msgid "An error occurred while attempting to start the installation."
+msgstr "Nastala chyba pri pokuse spustiť inštaláciu."
+
+#: Views\MainWindow.xaml.cs:992
+msgid "An error occurred while attempting to load item data."
+msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
+
+#: Views\MainWindow.xaml.cs:1063
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
-#: Views\MainWindow.xaml.cs:1140
-msgid "Please select a saved build!"
-msgstr "Prosím zvoľte uloženú zostavu!"
+#: Views\MainWindow.xaml.cs:1134
+msgid "Please select a saved build."
+msgstr "Prosím zvoľte uloženú zostavu."
+
+#: Views\MainWindow.xaml.cs:1297
+msgid "An error occurred while attempting to load Skill tree from URL."
+msgstr "Nastala chyba pri pokuse načítať strom zručností z URL."
+
+#: Views\MainWindow.xaml.cs:1563 Views\MainWindow.xaml.cs:1572
+msgid "An error occurred while attempting to conntact the PoEUrl location."
+msgstr "Nastala chyba pri pokuse kontaktovať PoEUrl lokáciu."
+
+#: Views\MainWindow.xaml.cs:1583
+msgid "The PoEUrl link has been copied to Clipboard."
+msgstr "PoEUrl odkaz bol skopírovaný do Schránky."
+
+#: Views\MainWindow.xaml.cs:1777
+msgid "An error occurred while attempting to load saved builds."
+msgstr "Nastala chyba pri pokuse načítať uložené zostavy."
 
 #: Views\OptimizerControllerWindow.xaml.cs:62
 msgid "Cancel"

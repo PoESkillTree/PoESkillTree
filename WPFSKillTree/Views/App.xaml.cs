@@ -50,7 +50,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error has occurred during a load operation:\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("An error occurred during a load operation.\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             // Initialize localization.
@@ -91,7 +91,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show(L10n.Message("An error has occurred during a save operation:") + "\n\n" + ex.Message, L10n.Message("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(L10n.Message("An error occurred during a save operation.") + "\n\n" + ex.Message, L10n.Message("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             base.OnExit(e);
