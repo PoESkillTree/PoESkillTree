@@ -197,27 +197,22 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         //  The base modifier for population is higher than generation because a far higher
         // population than maxGeneration gives much better results from the testing I've done.
-        //  Also the duration got another modifier that leads to higher values for dimensions
-        // < 150. Low dimensions run fast enough anyway, so it doesn't feel too long.
-        // Fixes the Witch-triangle-case most of the time.
-        //  Might look odd, but this is a accessible space where you can easily modify
-        // these without crawling through the code. So as long as these are not set in
-        // stone I like declaring it this way. Also parametrizing the SteinerSolver
-        // does not feel to me like it should belong into GUI-related code.
+        //  Also the duration is higher for lower dimensions so duration * population is
+        // the same for each searchSpace < 150. From testing lower dimension need more duration
+        // to produce good results, so this acomplishes it.
         /// <summary>
-        ///  Returns the modifier for the maxGeneration in initializeGA depending on
-        ///  the searchSpace size. Returns 0.2 times the result of a polynomial function
-        ///  if searchSpace &lt; 150 or just 0.2 otherwise.
-        ///  The polynomial function is fitted to f(0)=40, f(100)=5 and f(150)=1.
+        ///  Returns the maxGeneration for initializeGA depending on the searchSpace size.
+        ///  Returns 0.3 * 20000/searchSpace if searchSpace is < 150 and 0.3 * searchSpace
+        ///  otherwise. This means duration * population is constant for searchSpace < 150.
         /// </summary>
-        private Func<int, double> durationModifierFct = (searchSpace) =>
-            (0.2 * (searchSpace < 150 ? 0.0018 * searchSpace * searchSpace - 0.53 * searchSpace + 40 : 1.0));
+        private Func<int, double> durationFct = (searchSpace) =>
+            (0.3 * (searchSpace < 150 ? 20000.0 / searchSpace : searchSpace));
         /// <summary>
-        ///  Returns the modifier for the populationSize in initializeGA depending on
-        ///  the searchSpace size. Returns simply 1.5 at the moment.
+        ///  Returns the populationSize for initializeGA depending on
+        ///  the searchSpace size. Returns 1.5 * searchSpace at the moment.
         /// </summary>
-        private Func<int, double> populationModifierFct = (searchSpace) =>
-            1.5;
+        private Func<int, double> populationFct = (searchSpace) =>
+            1.5 * searchSpace;
 
         double durationModifier;
         double populationModifier;
@@ -445,8 +440,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             Console.WriteLine("Search space dimension: " + searchSpaceBase.Count);
 
-            int populationSize = (int)(populationModifier * searchSpaceBase.Count * populationModifierFct(searchSpaceBase.Count));
-            maxGeneration = (int)(durationModifier * searchSpaceBase.Count * durationModifierFct(searchSpaceBase.Count));
+            int populationSize = (int)(populationModifier * populationFct(searchSpaceBase.Count));
+            maxGeneration = (int)(durationModifier * durationFct(searchSpaceBase.Count));
             int dnaLength = searchSpaceBase.Count; // Just being verbose.
 
             ga.InitializeEvolution(populationSize, maxGeneration, dnaLength);

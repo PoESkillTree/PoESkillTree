@@ -192,7 +192,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             generationCount = 0;
             updateBestSolution();
 
-            annealingFactor = 1.0 - (1.0 / maxGeneration);
+            // From testing annealing does more bad than good. My explaination is that
+            // in most cases the optimal result is found early and if it is not, annealing
+            // make the algorithm less likely to find it.
+            //annealingFactor = 1.0 - (1.0 / maxGeneration);
             /// TODO: Investigate the influence of this, as well as possible
             /// (automatic) parametrizations.
             temperature = 6.0;
@@ -350,7 +353,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             updateBestSolution();
 
             // Yeah, I know, out of thin air.
-            temperature *= annealingFactor;
+            //temperature *= annealingFactor;
 
             stopwatch.Stop();
             //Console.WriteLine("Best value so far: " + (1500 - bestSolution.Fitness));
