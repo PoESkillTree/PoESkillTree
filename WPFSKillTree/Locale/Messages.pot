@@ -561,7 +561,12 @@ msgid "Character"
 msgstr ""
 
 #: SkillTreeFiles\SkillTree.cs:933
-msgid "Please highlight non-skilled nodes by right-clicking them!"
+msgid "Please highlight non-skilled nodes by right-clicking them."
+msgstr ""
+
+#: SkillTreeFiles\SkillTreeImporter.cs:74
+#, csharp-format
+msgid "An error occured while attempting to load Skill tree from {0} location."
 msgstr ""
 
 #: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:237
@@ -593,6 +598,26 @@ msgstr ""
 msgid "The application is not correctly installed"
 msgstr ""
 
+#: Utils\Popup.cs:14
+msgid "Question"
+msgstr ""
+
+#: Utils\Popup.cs:20 Views\App.xaml.cs:94
+msgid "Error"
+msgstr ""
+
+#: Utils\Popup.cs:27
+msgid "Details:"
+msgstr ""
+
+#: Utils\Popup.cs:49
+msgid "Information"
+msgstr ""
+
+#: Utils\Popup.cs:55
+msgid "Warning"
+msgstr ""
+
 #: ViewModels\PoEBuild.cs:30
 #, csharp-format
 msgid "{0}, {1} point used"
@@ -600,13 +625,8 @@ msgid_plural "{0}, {1} points used"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1233
-msgid "An error has occurred during a save operation:"
-msgstr ""
-
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1140
-#: Views\MainWindow.xaml.cs:1233
-msgid "Error"
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1226
+msgid "An error occurred during a save operation."
 msgstr ""
 
 #: Views\DownloadItemsWindow.xaml.cs:25 Views\DownloadItemsWindow.xaml.cs:31
@@ -630,46 +650,94 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
+#: Views\MainWindow.xaml.cs:355 Views\MainWindow.xaml.cs:1587
+msgid "An error occurred while copying to Clipboard."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:361
+msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:362
+msgid "Do you want to continue?"
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:408
+msgid "An error occurred while downloading assets."
+msgstr ""
+
 #: Views\MainWindow.xaml.cs:459
 msgid "You have the latest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:459
-msgid "No update"
+#: Views\MainWindow.xaml.cs:464
+#, csharp-format
+msgid "An update for {0} ({1}) is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:463
+#: Views\MainWindow.xaml.cs:465
+msgid "The application will be closed when download completes to proceed with the update."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:466
 #, csharp-format
-msgid "Do you want to install version {0}?"
+msgid "A new version {0} is available!"
 msgstr ""
 
 #: Views\MainWindow.xaml.cs:467
-msgid "This is a pre-release, meaning there could be some bugs!"
+msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:468
-msgid "New pre-release"
+#: Views\MainWindow.xaml.cs:470
+msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:471
-msgid "New release"
+#: Views\MainWindow.xaml.cs:472
+msgid "Do you want to download and install the update?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:482
-msgid "Error occured"
+#: Views\MainWindow.xaml.cs:472
+msgid "Do you want to download and install the new version?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:499 Views\MainWindow.xaml.cs:527
-#: Views\MainWindow.xaml.cs:541
-msgid "Update failed"
+#: Views\MainWindow.xaml.cs:483
+msgid "An error occurred while attempting to contact the update location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1069
+#: Views\MainWindow.xaml.cs:497 Views\MainWindow.xaml.cs:522
+msgid "An error occurred during the download operation."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:535
+msgid "An error occurred while attempting to start the installation."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:992
+msgid "An error occurred while attempting to load item data."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:1063
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1140
-msgid "Please select a saved build!"
+#: Views\MainWindow.xaml.cs:1134
+msgid "Please select a saved build."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:1297
+msgid "An error occurred while attempting to load Skill tree from URL."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:1563 Views\MainWindow.xaml.cs:1572
+msgid "An error occurred while attempting to conntact the PoEUrl location."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:1583
+msgid "The PoEUrl link has been copied to Clipboard."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:1777
+msgid "An error occurred while attempting to load saved builds."
 msgstr ""
 
 #: Views\OptimizerControllerWindow.xaml.cs:62

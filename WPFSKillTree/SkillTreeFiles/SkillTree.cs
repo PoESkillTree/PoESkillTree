@@ -930,7 +930,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (targetNodeIds.Count == 0)
             {
-                MessageBox.Show(L10n.Message("Please highlight non-skilled nodes by right-clicking them!"));
+                Popup.Info(L10n.Message("Please highlight non-skilled nodes by right-clicking them."));
                 return;
             }
 
