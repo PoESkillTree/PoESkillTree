@@ -97,20 +97,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///     that the GA requests to be evaluated is converted back to an actual
         ///     skill tree. Instead, an MST on the steiner node set represented by
         ///     the DNA is built, based on the steiner node - steiner node distance
-        ///     values (which are cached and thus inexpensive to access).
-        ///     This introduces considerable ambiguity, to the point where DNAs
-        ///     that would map to the same output skill tree can have substantially
-        ///     different fitnesses, as well as (consequently) a DNA with a better
-        ///     skill tree having worse fitness than a DNA with a worse skill tree.
-        ///     A more detailed explanation is found in Example 1 below.
+        ///     values and shortest paths (which are cached and thus inexpensive to
+        ///     access).
         ///     
-        ///     However, the DNA with the global maximum fitness value will always
-        ///     map to the best possible skill tree (as do many other DNAs with
-        ///     near-optimal fitness). It is therefore imperative that the GA is
-        ///     granted enough computational budget (and is robust enough) to find
-        ///     the optimum, as the DNA with the best encountered fitness value
-        ///     might not even correspond to the best skill tree when far away from
-        ///     the optimum.
         ///     Since the claim of this solver is to actually provide optimal solu-
         ///     tions in as many cases as possible (anything that is "only close"
         ///     could easily be done by the user himself), while the fitness func-
@@ -128,8 +117,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///     Since the result of the MST algorithm is a set of edges between
         ///     (graph) nodes, what is left is finding shortest paths for those
         ///     edges between the equivalent skill nodes of the graph nodes. These
-        ///     paths are not cached and have to be computed anew for every conver-
-        ///     sion from DNA -> graph MST -> skill tree.
+        ///     paths are also cached in DistanceLookup.
         ///     
         /// Step 4 is performed after every generation of the GA (for giving the
         /// user visual feedback about the optimization progress), as well as after
@@ -146,43 +134,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// ferent lengths, and start - void barrier is the longest one. Taking the
         /// shortest path from start to Coldhearted Calculation and then taking the
         /// shortest path to Void Barrier results in a tree with 1 more point spent.
-        /// 
-        /// Example 2: Ambiguity/inaccuracy of the fitness function
-        /// You start as Scion (no nodes skilled) and highlight Inner Force as well
-        /// as Elemental Equilibrium and let the optimizer run. (All subsequently
-        /// mentioned skill nodes will have a 1:1 equivalent as graph nodes, so no
-        /// distinction will be made).
-        /// Assume that a DNA (DNA1) corresponds to only using the Shaper node as
-        /// steiner node. When building the MST, first the scion start will be con-
-        /// nected to Shaper, then Shaper to EE, then Shaper to IF. These distances
-        /// are then summed up for the weight of the MST, which counts the int node
-        /// above Shaper twice (and thus overestimates the cost by 1 point).
-        /// A different DNA (DNA2) that would correspond to the only steiner node
-        /// being the middle mana node at scion start would similarly have its cost
-        /// overestimated by three points, despite mapping to the very same (optimal)
-        /// skill tree in the end.
-        /// 
-        /// It should be obvious from this that a non-optimal DNA can thus beat the
-        /// fitness of an optimal, but "badly" represented tree/DNA: An otherwise
-        /// optimal-fitness DNA (see below) could also include (for the sake of the
-        /// example) the strength node below Shaper as a steiner node. It would thus
-        /// have a fitness of 1 below optimal and, for the GA, would be considered
-        /// superior to DNA2 which has a fitness of 2 points worse.
-        /// 
-        /// An optimal DNA would have the above-mentioned int node as steiner node.
-        /// It can potentially have more steiner nodes on the path (which won't be
-        /// real steiner nodes - it doesn't matter though since they don't affect
-        /// the cost in the end), so more than one optimal DNA exists. Note how the
-        /// sum of the MST edge lengths of this ideal DNA will always equal the
-        /// amount of points that the corresponding skill tree actually needs, so
-        /// it will always be a minimum cost (maximum fitness) solution, which the
-        /// GA can eventually find.
-        /// 
-        /// In short: The fitness function will never overestimate the fitness of
-        /// a given DNA. There exists a DNA that represents the optimal skill tree
-        /// and is not overestimated (by virtue of having selected the steiner nodes
-        /// that the optimal skill tree involves), so any DNA representing a non-
-        /// optimal tree will necessarily have worse fitness values.
 
         SkillTree tree;
 
@@ -488,15 +439,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             {
                 ushort target = edge.outside.Id;
 
-                //HashSet<ushort> start;
-                //if (edge.inside is Supernode)
-                //    start = tree.SkilledNodes;
-                //else
-                //    start = new HashSet<ushort>() { edge.inside.Id };
-
-                //var path = tree.GetShortestPathTo(target, start);
-
-                //newSkilledNodes = new HashSet<ushort>(newSkilledNodes.Concat(path));
                 // The paths are calculated anyway, so use them here too.
                 newSkilledNodes.UnionWith(distances.GetShortestPath(edge));
                 newSkilledNodes.Add(target);
@@ -540,7 +482,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // This is the bottleneck, quite obviously.
             mst.Span(startFrom: startNodes);
 
-            // Now accurate, not counting nodes more than once.
             int usedNodes = mst.UsedNodeCount;
 
             // TODO: Investigate fitness function

@@ -53,12 +53,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (_distances.ContainsKey(index))
                 return _distances[index];
 
-            //// Otherwise, use pathfinding to find it...
-            //int pathLength = Dijkstra(a, b);
-            ////... and save it...
-            //_distances.Add(index, pathLength);
-            //// ...and return it.
-            //return pathLength;
             return runAndSaveDijkstra(a, b).Item1;
         }
 
@@ -137,16 +131,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <summary>
         ///  Uses a djikstra-like algorithm to flood the graph from the start
         ///  node until the target node is found.
-        ///  All visited nodes have their distance from the start node updated.
         /// </summary>
         /// <param name="start">The starting node.</param>
         /// <param name="target">The target node.</param>
         /// <returns>A tuple containing the distance from the start node to the target node and the shortest path.</returns>
         public Tuple<int, ushort[]> Dijkstra(GraphNode start, GraphNode target)
         {
-            //if (start == target) return 0;
-            //return dijkstraStep(start, target, new HashSet<GraphNode>() { start },
-            //    new HashSet<GraphNode>(), 0);
             if (start == target) return new Tuple<int, ushort[]>(0, new ushort[0]);
             return dijkstraStep(start, target, new HashSet<GraphNode>() { start },
                 new HashSet<GraphNode>(), new Dictionary<ushort, ushort>(), 0);
@@ -156,7 +146,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <summary>
         ///  Uses a djikstra-like algorithm to flood the graph from the start
         ///  node until the target node is found.
-        ///  All visited nodes have their distance from the start node updated.
         /// </summary>
         /// <param name="start">The starting node.</param>
         /// <param name="target">The target node.</param>
@@ -173,19 +162,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             HashSet<GraphNode> front, HashSet<GraphNode> visited, Dictionary<ushort, ushort> predecessors, int distFromStart)
         {
             HashSet<GraphNode> newFront = new HashSet<GraphNode>();
-            // Copying takes time, we don't need the old visited.
-            //HashSet<GraphNode> newVisited = new HashSet<GraphNode>(visited);
-            // Concat returns the Union-Set, but doesn't modify
-            //newVisited.Concat(front);
             visited.UnionWith(front);
 
             foreach (GraphNode node in front)
             {
-                // already added with UnionWith
-                //newVisited.Add(node);
                 foreach (GraphNode adjacentNode in node.Adjacent)
                 {
-                    //if (adjacentNode == target) return distFromStart + 1;
                     if (adjacentNode == target)
                     {
                         uint index = getIndex(start, target);
@@ -196,9 +178,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                         return new Tuple<int, ushort[]>(length, path);
                     }
 
-                    // Could be combined in newVisited...
-                    //if (visited.Contains(adjacentNode)) continue;
-                    //if (front.Contains(adjacentNode)) continue;
                     // newFront check is necessary because the dictionary complains about duplicates
                     if (visited.Contains(adjacentNode) || newFront.Contains(adjacentNode))
                         continue;

@@ -28,9 +28,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 if (_usedNodeCount == null)
                 {
                     _usedNodeCount = 0;
-                    //foreach (GraphEdge edge in SpanningEdges)
-                    //    _usedNodeCount += distances.GetDistance(edge);
-                    // Shortest paths are saved in DistanceLookup, so we can use those instead of distances.
+                    // Shortest paths are saved in DistanceLookup, so we can use those.
                     // This way each node only gets counted once, even if it is contained in more than
                     // one spanning edge. With this the UsedNodeCount is always accurate.
                     var pathNodes = new HashSet<ushort>();
