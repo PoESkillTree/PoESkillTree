@@ -41,8 +41,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  3. Mutations:
         ///     The DNA is mutated (a single bit is flipped) and always accepted
         ///     if it results in a higher fitness value, otherwise the mutation is
-        ///     discarded if a random roll (hardened by a higher fitness difference
-        ///     and a lower temperature) fails.
+        ///     discarded if a random roll (hardened by a higher fitness difference)
+        ///     fails.
         ///     
         /// The first alteration ensures that the evolutionary pressure is kept on,
         /// in order to ensure a good pace of search progress.
@@ -104,9 +104,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         }
 
         private Random random;
-
-        // Used for mutation.
-        private double temperature;
 
         /// <summary>
         ///  An individual, comprised of a DNA and a fitness value, for use in
@@ -170,10 +167,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             population = createPopulation();
             generationCount = 0;
             updateBestSolution();
-
-            /// TODO: Investigate the influence of this, as well as possible
-            /// (automatic) parametrizations.
-            temperature = 6.0;
         }
 
         /// <summary>
@@ -445,15 +438,13 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         }
         #endregion
 
-        #region Simulated Annealing
         private bool acceptNewState(Individual oldState, Individual newState)
         {
             double df = newState.Fitness - oldState.Fitness;
             if (df >= 0) return true;
-            double acceptanceProbability = Math.Exp(df / temperature);
+            double acceptanceProbability = Math.Exp(df / 6.0);
             if (random.NextDouble() < acceptanceProbability) return true;
             return false;
         }
-        #endregion
     }
 }
