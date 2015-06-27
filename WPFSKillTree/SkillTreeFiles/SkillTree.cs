@@ -761,12 +761,14 @@ namespace POESKillTree.SkillTreeFiles
         public void ToggleNodeHighlight(SkillNode node)
         {
             _nodeHighlighter.ToggleHighlightNode(node, HighlightState.FromNode);
+            _nodeHighlighter.UnhighlightNode(node, HighlightState.Crossed);
             DrawHighlights(_nodeHighlighter);
         }
 
         public void ToggleNodeCross(SkillNode node)
         {
             _nodeHighlighter.ToggleHighlightNode(node, HighlightState.Crossed);
+            _nodeHighlighter.UnhighlightNode(node, HighlightState.FromNode);
             DrawHighlights(_nodeHighlighter);
         }
 
