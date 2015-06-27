@@ -235,18 +235,32 @@ namespace POESKillTree.SkillTreeFiles
         public void DrawHighlights(NodeHighlighter nh)
         {
             var hpen = new Pen(Brushes.White, 20);
+            var crossPen = new Pen(Brushes.Red, 20);
             using (DrawingContext dc = picHighlights.RenderOpen())
             {
                 foreach (var pair in nh.nodeHighlights)
                 {
                     // TODO: Make more elegant? Needs profiling.
                     HighlightState hs = pair.Value;
-                    byte red = (byte)(hs.HasFlag(HighlightState.FromSearch) ? 255 : 0);
-                    byte green = (byte)(hs.HasFlag(HighlightState.FromAttrib) ? 255 : 0);
-                    byte blue = (byte)(hs.HasFlag(HighlightState.FromNode) ? 255 : 0);
-                    hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, blue)), 20);
 
-                    dc.DrawEllipse(null, hpen, pair.Key.Position, 80, 80);
+                    if (hs != HighlightState.Crossed)
+                    {
+                        byte red = (byte)(hs.HasFlag(HighlightState.FromSearch) ? 255 : 0);
+                        byte green = (byte)(hs.HasFlag(HighlightState.FromAttrib) ? 255 : 0);
+                        byte blue = (byte)(hs.HasFlag(HighlightState.FromNode) ? 255 : 0);
+                        hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, blue)), 20);
+
+                        dc.DrawEllipse(null, hpen, pair.Key.Position, 80, 80);
+                    }
+
+                    if (hs.HasFlag(HighlightState.Crossed))
+                    {
+                        // Crossed nodes get highlighted with two crossing lines.
+                        var x = pair.Key.Position.X;
+                        var y = pair.Key.Position.Y;
+                        dc.DrawLine(crossPen, new Point(x + 50, y + 70), new Point(x - 50, y - 70));
+                        dc.DrawLine(crossPen, new Point(x + 50, y - 70), new Point(x - 50, y + 70));
+                    }
                 }
             }
         }

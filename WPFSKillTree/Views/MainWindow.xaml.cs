@@ -855,6 +855,12 @@ namespace POESKillTree.Views
                         Tree.ToggleNodeHighlight(node);
                         e.Handled = true;
                     }
+                    else if (_lastMouseButton == MouseButton.Middle)
+                    {
+                        // Cross on middle-click
+                        Tree.ToggleNodeCross(node);
+                        e.Handled = true;
+                    }
                     else
                     {
                         // Toggle whether the node is included in the tree
