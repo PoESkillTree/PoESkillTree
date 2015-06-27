@@ -38,7 +38,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///     procreate via crossover. This seems to significantly improve the
         ///     quality of the crossover'd solutions without affecting genetic
         ///     diversity.
-        ///  3. Mutations:
+        ///  3. Mutations can be rejected:
         ///     The DNA is mutated (a single bit is flipped) and always accepted
         ///     if it results in a higher fitness value, otherwise the mutation is
         ///     discarded if a random roll (hardened by a higher fitness difference)
@@ -49,8 +49,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// 
         /// The second one, as mentioned above, significantly reduces the amount of
         /// low fitness (therefore immediately discarded) DNA introduced from cross-
-        /// overs. At the moment, a mutation will postpone this "maturity" by one
-        /// generation, the effect of this (and alternatives) could be investigated.
+        /// overs.
+        /// 
+        /// The chance to reject inferior mutations is borrowed from the concept
+        /// of simulated annealing. Generally a lot of potential steiner nodes
+        /// are just far off and will never contribute to a better solution, so
+        /// doing this "sanity" check helps keeping the dna quality in the pool high.
         /// 
         /// 
         /// For the actual crossover, two DNA "parents" are chosen at random (each
@@ -250,6 +254,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 // Lowering the age here would lead to faster convergence but would
                 // make the population go extinct several times.
                 mutation.Age = temp.Age;
+                // Mutations have a chance to be rejected based on the fitness loss
+                // relative to the non-mutated individual. See explanation above.
                 if (acceptNewState(temp, mutation))
                 {
                     // If you want to measure these for debugging purposes, remove the
@@ -438,6 +444,17 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         }
         #endregion
 
+        /// <summary>
+        ///  Takes a non-mutated individual and a mutated form of it and and decides
+        ///  wether it should be replaced by the mutated individual in the population.
+        ///  The mutated one always gets accepted if its fitness value is greater or
+        ///  equal. If it is inferior it has a chance of e^(difference / 6) to be
+        ///  accepted.
+        /// </summary>
+        /// <param name="oldState">Non-mutated individual</param>
+        /// <param name="newState">Mutated individual</param>
+        /// <returns>True if the non-mutated individual should be replaced by
+        /// the mutated individual in the population.</returns>
         private bool acceptNewState(Individual oldState, Individual newState)
         {
             double df = newState.Fitness - oldState.Fitness;
