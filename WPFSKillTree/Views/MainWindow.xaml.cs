@@ -852,13 +852,16 @@ namespace POESKillTree.Views
                 {
                     if (_lastMouseButton == MouseButton.Right)
                     {
-                        Tree.ToggleNodeHighlight(node);
-                        e.Handled = true;
-                    }
-                    else if (_lastMouseButton == MouseButton.Middle)
-                    {
-                        // Cross on middle-click
-                        Tree.ToggleNodeCross(node);
+                        // Can't use using because Control is also in System.Windows and that is used elsewhere.
+                        if (System.Windows.Forms.Control.ModifierKeys.HasFlag(System.Windows.Forms.Keys.Shift))
+                        {
+                            // Cross on shift+right-click
+                            Tree.ToggleNodeCross(node);
+                        }
+                        else
+                        {
+                            Tree.ToggleNodeHighlight(node);
+                        }
                         e.Handled = true;
                     }
                     else
