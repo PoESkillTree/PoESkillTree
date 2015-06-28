@@ -144,7 +144,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         Supernode startNodes;
         HashSet<GraphNode> targetNodes;
 
-        GeneticAnnealingAlgorithm ga;
+        GeneticAlgorithm ga;
 
         //  The base modifier for population is higher than generation because a far higher
         // population than maxGeneration gives much better results from the testing I've done.
@@ -387,7 +387,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         void initializeGA(int? randomSeed = null)
         {
             if (randomSeed == null) randomSeed = DateTime.Now.GetHashCode();
-            ga = new GeneticAnnealingAlgorithm(fitnessFunction, new Random(randomSeed.Value));
+            ga = new GeneticAlgorithm(fitnessFunction, new Random(randomSeed.Value));
 
             Console.WriteLine("Search space dimension: " + searchSpaceBase.Count);
 
@@ -409,7 +409,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             ga.NewGeneration();
 
-            if ((_bestDNA == null) || (GeneticAnnealingAlgorithm.SetBits(ga.GetBestDNA().Xor(_bestDNA)) != 0))
+            if ((_bestDNA == null) || (GeneticAlgorithm.SetBits(ga.GetBestDNA().Xor(_bestDNA)) != 0))
             {
                 _bestDNA = ga.GetBestDNA();
                 MinimalSpanningTree bestMst = dnaToMst(_bestDNA);

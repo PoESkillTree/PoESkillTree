@@ -21,7 +21,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     /// 
     /// Also see the NFL-theorem.
     /// </remarks>
-    class GeneticAnnealingAlgorithm
+    class GeneticAlgorithm
     {
         ///////////////////////////////////////////////////////////////////////////
         /// This genetic algorithm involves the standard two operations (mutation
@@ -141,7 +141,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// Because of parallelization the fitness function must be thread safe</param>
         /// <param name="random">An optional Random instance to allow for seeding.
         /// If none is provided, a newly created one is used.</param>
-        public GeneticAnnealingAlgorithm(SolutionFitnessFunction solutionFitness, Random random = null)
+        public GeneticAlgorithm(SolutionFitnessFunction solutionFitness, Random random = null)
         {
             // Save the fitness function
             this.solutionFitness = solutionFitness;
@@ -206,6 +206,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             WeightedSampler<Individual> sampler = new WeightedSampler<Individual>();
 
+#if DEBUG
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
@@ -214,6 +215,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             double averageAge = 0;
             int acceptedTotal = 0;
             int acceptedWorse = 0;
+#endif
 
             // Sort the population by fitness.
             population = population.OrderBy(ind => ind.Fitness).ToArray();
@@ -223,8 +225,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             {
                 index++;
 
+#if DEBUG
                 averageHealth += 1500 - individual.Fitness;
                 averageBitsSet += SetBits(individual.DNA);
+#endif
 
                 // Survival of the fittest (population was ordered by fitness above)
                 if (index < 0.5 * populationSize)
@@ -237,7 +241,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 /// to procreate, the solution quality is kept high.
                 if (individual.Age >= 1)
                     sampler.AddEntry(individual, individual.Fitness);
+#if DEBUG
                 averageAge += individual.Age;
+#endif
 
                 individual.Age++;
 
@@ -258,28 +264,30 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 // relative to the non-mutated individual. See explanation above.
                 if (acceptNewState(temp, mutation))
                 {
+#if DEBUG
                     // If you want to measure these for debugging purposes, remove the
                     // parallelization of this loop.
                     //acceptedTotal++;
                     //if (mutation.Fitness < temp.Fitness)
                     //    acceptedWorse++;
+#endif
                     temp = mutation;
                 }
                 newPopulation[i] = temp;
             });
 
+#if DEBUG
             stopwatch.Stop();
             //Console.Write("Evaluation time for " + generationCount + " : ");
             //Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
-            //Console.WriteLine("Temperature: " + temperature);
             //Console.WriteLine("Average health: " + averageHealth / populationSize);
             //Console.WriteLine("Average bits set: " + averageBitsSet / populationSize);
             //Console.WriteLine("Average age: " + averageAge / populationSize);
             //Console.WriteLine("Accepted new states (all/worse): " + acceptedTotal + "/" + acceptedWorse);
-            //Console.WriteLine("Purged individuals: " + purgedIndividuals + "/" + populationSize);
             //Console.WriteLine("Sampler entries: " + sampler.EntryCount);
             
             stopwatch.Restart();
+#endif
 
             if (!sampler.CanSample)
             {
@@ -308,10 +316,12 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // Doing this at the end so the last generation has a use.
             updateBestSolution();
 
+#if DEBUG
             stopwatch.Stop();
             //Console.WriteLine("Best value so far: " + (1500 - bestSolution.Fitness));
             //Console.WriteLine("------------------");
             //Console.Out.Flush();
+#endif
 
             return generationCount;
         }
