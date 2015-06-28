@@ -855,12 +855,13 @@ namespace POESKillTree.Views
                         // Can't use using because Control is also in System.Windows and that is used elsewhere.
                         if (System.Windows.Forms.Control.ModifierKeys.HasFlag(System.Windows.Forms.Keys.Shift))
                         {
-                            // Cross on shift+right-click
-                            Tree.ToggleNodeCross(node);
+                            // Backward on shift+RMB
+                            Tree.CycleNodeHighlightBackward(node);
                         }
                         else
                         {
-                            Tree.ToggleNodeHighlight(node);
+                            // Forward on RMB
+                            Tree.CycleNodeHighlightForward(node);
                         }
                         e.Handled = true;
                     }

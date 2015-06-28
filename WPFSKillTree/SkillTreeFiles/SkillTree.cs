@@ -758,17 +758,51 @@ namespace POESKillTree.SkillTreeFiles
             return result;
         }
 
-        public void ToggleNodeHighlight(SkillNode node)
+        /// <summary>
+        /// Changes the HighlightState of the node:
+        /// None -> FromNode -> Crossed -> None -> ...
+        /// (preserves other HighlightStates than FromNode and Crossed)
+        /// </summary>
+        /// <param name="node">Node to change the HighlightState for</param>
+        public void CycleNodeHighlightForward(SkillNode node)
         {
-            _nodeHighlighter.ToggleHighlightNode(node, HighlightState.FromNode);
-            _nodeHighlighter.UnhighlightNode(node, HighlightState.Crossed);
+            if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.FromNode))
+            {
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.FromNode);
+                _nodeHighlighter.HighlightNode(node, HighlightState.Crossed);
+            } 
+            else if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Crossed))
+            {
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.Crossed);
+            }
+            else
+            {
+                _nodeHighlighter.HighlightNode(node, HighlightState.FromNode);
+            }
             DrawHighlights(_nodeHighlighter);
         }
 
-        public void ToggleNodeCross(SkillNode node)
+        /// <summary>
+        /// Changes the HighlightState of the node:
+        /// ... <- None <- FromNode <- Crossed <- None
+        /// (preserves other HighlightStates than FromNode and Crossed)
+        /// </summary>
+        /// <param name="node">Node to change the HighlightState for</param>
+        public void CycleNodeHighlightBackward(SkillNode node)
         {
-            _nodeHighlighter.ToggleHighlightNode(node, HighlightState.Crossed);
-            _nodeHighlighter.UnhighlightNode(node, HighlightState.FromNode);
+            if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Crossed))
+            {
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.Crossed);
+                _nodeHighlighter.HighlightNode(node, HighlightState.FromNode);
+            }
+            else if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.FromNode))
+            {
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.FromNode);
+            }
+            else
+            {
+                _nodeHighlighter.HighlightNode(node, HighlightState.Crossed);
+            }
             DrawHighlights(_nodeHighlighter);
         }
 

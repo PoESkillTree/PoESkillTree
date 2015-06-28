@@ -16,6 +16,15 @@ namespace POESKillTree.SkillTreeFiles
 
         public Dictionary<SkillNode, HighlightState> nodeHighlights = new Dictionary<SkillNode, HighlightState>();
 
+        public bool NodeHasHighlights(SkillNode node, HighlightState flags)
+        {
+            if (nodeHighlights.ContainsKey(node))
+            {
+                return nodeHighlights[node].HasFlag(flags);
+            }
+            return false;
+        }
+
         public void ToggleHighlightNode(SkillNode node, HighlightState toggleFlags)
         {
             if (toggleFlags == 0) return;
