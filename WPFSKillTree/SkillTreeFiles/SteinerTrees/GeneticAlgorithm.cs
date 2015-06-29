@@ -198,7 +198,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             if (population == null)
                 throw new InvalidOperationException("Cannot generate a next" +
-                    " generation without prior call to StartEvolution!");
+                    " generation without prior call to InitializeEvolution!");
 
             Individual[] newPopulation = new Individual[populationSize];
             int newPopIndex = 0;

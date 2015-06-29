@@ -56,13 +56,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             return runAndSaveDijkstra(a, b).Item1;
         }
 
-        private void setDistance(GraphNode a, GraphNode b, int distance)
-        {
-            uint index = getIndex(a, b);
-            if (!_distances.ContainsKey(index))
-                _distances.Add(index, distance);
-        }
-
         /// <summary>
         ///  Retrieves the shortest path from one node pf a graph edge to the other,
         ///  or calculates it if it has not yet been found.
@@ -121,7 +114,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="a">The first index.</param>
         /// <param name="b">The second index.</param>
         /// <returns>The compounded index.</returns>
-        private uint getIndex(GraphNode a, GraphNode b)
+        private static uint getIndex(GraphNode a, GraphNode b)
         {
             ushort aI = a.Id;
             ushort bI = b.Id;
@@ -170,7 +163,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 {
                     if (adjacentNode == target)
                     {
-                        uint index = getIndex(start, target);
                         int length = distFromStart + 1;
                         predecessors.Add(adjacentNode.Id, node.Id);
                         ushort[] path = generateShortestPath(start.Id, target.Id, predecessors, length);
@@ -202,7 +194,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="predecessors">Dictonary with the predecessor of every node</param>
         /// <param name="length">Length of the shortest path</param>
         /// <returns>The shortest path from start to target, not including either. The Array is ordered from target to start</returns>
-        private ushort[] generateShortestPath(ushort start, ushort target, Dictionary<ushort, ushort> predecessors, int length)
+        private static ushort[] generateShortestPath(ushort start, ushort target, Dictionary<ushort, ushort> predecessors, int length)
         {
             var path = new ushort[length - 1];
             var i = 0;
