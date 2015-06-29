@@ -80,8 +80,7 @@ namespace POESKillTree.Views
             if (e.Error is InvalidOperationException)
             {
                 // Show a dialog and close this if the omitted nodes disconnect the tree.
-                // TODO: wording might need to be improved
-                Popup.Warning(L10n.Message("You cannot omit nodes disconnecting the tree!"));
+                Popup.Warning(L10n.Message("You cannot cross out nodes so the tree gets disconnected!"));
                 Close();
                 return;
             }
