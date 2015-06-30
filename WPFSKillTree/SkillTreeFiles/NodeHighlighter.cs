@@ -10,11 +10,20 @@ namespace POESKillTree.SkillTreeFiles
         [Flags]
         public enum HighlightState
         {
-            FromSearch = 1, FromAttrib = 2, FromNode = 4,
-            All = FromSearch | FromAttrib | FromNode
+            FromSearch = 1, FromAttrib = 2, FromNode = 4, Crossed = 8,
+            All = FromSearch | FromAttrib | FromNode | Crossed
         }
 
         public Dictionary<SkillNode, HighlightState> nodeHighlights = new Dictionary<SkillNode, HighlightState>();
+
+        public bool NodeHasHighlights(SkillNode node, HighlightState flags)
+        {
+            if (nodeHighlights.ContainsKey(node))
+            {
+                return nodeHighlights[node].HasFlag(flags);
+            }
+            return false;
+        }
 
         public void ToggleHighlightNode(SkillNode node, HighlightState toggleFlags)
         {

@@ -852,7 +852,17 @@ namespace POESKillTree.Views
                 {
                     if (_lastMouseButton == MouseButton.Right)
                     {
-                        Tree.ToggleNodeHighlight(node);
+                        // Can't use using because Control is also in System.Windows and that is used elsewhere.
+                        if (System.Windows.Forms.Control.ModifierKeys.HasFlag(System.Windows.Forms.Keys.Shift))
+                        {
+                            // Backward on shift+RMB
+                            Tree.CycleNodeHighlightBackward(node);
+                        }
+                        else
+                        {
+                            // Forward on RMB
+                            Tree.CycleNodeHighlightForward(node);
+                        }
                         e.Handled = true;
                     }
                     else

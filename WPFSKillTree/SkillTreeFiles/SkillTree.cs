@@ -699,9 +699,17 @@ namespace POESKillTree.SkillTreeFiles
             var distance = new Dictionary<int, int>();
             var parent = new Dictionary<ushort, ushort>();
             var newOnes = new Queue<ushort>();
+            var toOmit = new HashSet<ushort>(
+                         from entry in _nodeHighlighter.nodeHighlights
+                         where entry.Value.HasFlag(HighlightState.Crossed)
+                         select entry.Key.Id);
 
             foreach (var node in adjacent)
             {
+                if (toOmit.Contains(node))
+                {
+                    continue;
+                }
                 newOnes.Enqueue(node);
                 distance.Add(node, 1);
             }
@@ -713,6 +721,8 @@ namespace POESKillTree.SkillTreeFiles
                 visited.Add(newNode);
                 foreach (var connection in Skillnodes[newNode].Neighbor.Select(x => x.Id))
                 {
+                    if (toOmit.Contains(connection))
+                        continue;
                     if (visited.Contains(connection))
                         continue;
                     if (distance.ContainsKey(connection))
@@ -748,9 +758,51 @@ namespace POESKillTree.SkillTreeFiles
             return result;
         }
 
-        public void ToggleNodeHighlight(SkillNode node)
+        /// <summary>
+        /// Changes the HighlightState of the node:
+        /// None -> FromNode -> Crossed -> None -> ...
+        /// (preserves other HighlightStates than FromNode and Crossed)
+        /// </summary>
+        /// <param name="node">Node to change the HighlightState for</param>
+        public void CycleNodeHighlightForward(SkillNode node)
         {
-            _nodeHighlighter.ToggleHighlightNode(node, HighlightState.FromNode);
+            if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.FromNode))
+            {
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.FromNode);
+                _nodeHighlighter.HighlightNode(node, HighlightState.Crossed);
+            } 
+            else if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Crossed))
+            {
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.Crossed);
+            }
+            else
+            {
+                _nodeHighlighter.HighlightNode(node, HighlightState.FromNode);
+            }
+            DrawHighlights(_nodeHighlighter);
+        }
+
+        /// <summary>
+        /// Changes the HighlightState of the node:
+        /// ... <- None <- FromNode <- Crossed <- None
+        /// (preserves other HighlightStates than FromNode and Crossed)
+        /// </summary>
+        /// <param name="node">Node to change the HighlightState for</param>
+        public void CycleNodeHighlightBackward(SkillNode node)
+        {
+            if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Crossed))
+            {
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.Crossed);
+                _nodeHighlighter.HighlightNode(node, HighlightState.FromNode);
+            }
+            else if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.FromNode))
+            {
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.FromNode);
+            }
+            else
+            {
+                _nodeHighlighter.HighlightNode(node, HighlightState.Crossed);
+            }
             DrawHighlights(_nodeHighlighter);
         }
 
@@ -918,15 +970,26 @@ namespace POESKillTree.SkillTreeFiles
             if (_nodeHighlighter == null)
                 return;
             var nodes = new HashSet<ushort>();
-            foreach (SkillNode nd in _nodeHighlighter.nodeHighlights.Keys)
+            var toOmit = new HashSet<ushort>();
+            foreach (var entry in _nodeHighlighter.nodeHighlights)
             {
-                if (!(rootNodeList.Contains(nd.Id) | SkilledNodes.Contains(nd.Id)))
-                    nodes.Add(nd.Id);
+                if (!(rootNodeList.Contains(entry.Key.Id) || SkilledNodes.Contains(entry.Key.Id)))
+                {
+                    // Crossed has precedence.
+                    if (entry.Value.HasFlag(HighlightState.Crossed))
+                    {
+                        toOmit.Add(entry.Key.Id);
+                    }
+                    else
+                    {
+                        nodes.Add(entry.Key.Id);
+                    }
+                }
             }
-            SkillNodeList(nodes);
+            SkillNodeList(nodes, toOmit);
         }
 
-        private void SkillNodeList(HashSet<ushort> targetNodeIds)
+        private void SkillNodeList(HashSet<ushort> targetNodeIds, HashSet<ushort> omitNodeIds)
         {
             if (targetNodeIds.Count == 0)
             {
@@ -938,7 +1001,7 @@ namespace POESKillTree.SkillTreeFiles
             /// they're saved for restoring them afterwards.
             var savedHighlights = HighlightedNodes;
 
-            OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds);
+            OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds, omitNodeIds);
             optimizerDialog.Owner = MainWindow;
             optimizerDialog.ShowDialog();
             if (optimizerDialog.DialogResult == true)

@@ -230,20 +230,36 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  Initializes the solver so that the optimization can be run.
         /// </summary>
         /// <param name="targets">The set of target nodes that shall be connected.</param>
+        /// <param name="toOmit">A set of node IDs representing the nodes that should not
+        /// be skilled.</param>
         /// <param name="durationModifier">A multiplier to the amount of iterations
         /// to go through (default: 1.0).</param>
         /// <param name="populationModifier">A multiplier to the size of the
         /// algorithm's solution pool (default: 1.0).</param>
-        public void InitializeSolver(HashSet<ushort> targets,
+        /// <exception cref="InvalidOperationException">If the nodes to be omitted
+        /// disconnect the skill tree.</exception>
+        public void InitializeSolver(HashSet<ushort> targets, HashSet<ushort> toOmit = null,
             double durationModifier = 1.0, double populationModifier = 1.0)
         {
             // (This is not in the constructor since it might take a moment.)
             this.durationModifier = durationModifier;
             this.populationModifier = populationModifier;
 
-            buildSearchGraph(targets);
+            if (toOmit == null)
+            {
+                toOmit = new HashSet<ushort>();
+            }
 
-            buildSearchSpaceBase();
+            buildSearchGraph(targets, toOmit);
+
+            try
+            {
+                buildSearchSpaceBase();
+            }
+            catch (DistanceLookup.GraphNotConnectedException e)
+            {
+                throw new InvalidOperationException("The graph is disconnected, probably because of the nodes to be omitted.", e);
+            }
 
             initializeGA();
 
@@ -256,8 +272,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  into a single node.
         /// </summary>
         /// <param name="targets">A set of node IDs representing the target nodes.</param>
+        /// <param name="toOmit">A set of node IDs representing the nodes that should not
+        /// be skilled.</param>
         /// <returns>A SearchGraph representing the simplified SkillTree</returns>
-        private void buildSearchGraph(HashSet<ushort> targets)
+        private void buildSearchGraph(HashSet<ushort> targets, HashSet<ushort> toOmit)
         {
             searchGraph = new SearchGraph();
 
@@ -324,7 +342,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                         /// target or start nodes).
                         if (searchGraph.nodeDict.ContainsKey(node))
                             continue;
-
+                        // Don't add nodes that should not be skilled.
+                        if (toOmit.Contains(node.Id))
+                            continue;
+                        
                         searchGraph.AddNode(node);
                     }
                 }
