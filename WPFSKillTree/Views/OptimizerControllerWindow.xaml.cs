@@ -16,6 +16,7 @@ using POESKillTree.SkillTreeFiles;
 using POESKillTree.SkillTreeFiles.SteinerTrees;
 using System.ComponentModel;
 using MessageBox = POESKillTree.Views.MetroMessageBox;
+using System.Diagnostics;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Views
@@ -72,7 +73,15 @@ namespace POESKillTree.Views
         void initializationWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             // This is also deferred to a background task as it might take a while.
+#if DEBUG
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+#endif
             steinerSolver.InitializeSolver(targetNodes, nodesToOmit);
+#if DEBUG
+            stopwatch.Stop();
+            Console.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
+#endif
         }
 
         void initializationWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -101,6 +110,10 @@ namespace POESKillTree.Views
         void solutionWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = (BackgroundWorker)sender;
+#if DEBUG
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+#endif
             while (!steinerSolver.IsConsideredDone)
             {
                 steinerSolver.EvolutionStep();
@@ -110,12 +123,21 @@ namespace POESKillTree.Views
                 if (worker.CancellationPending)
                     break;
             }
+#if DEBUG
+            stopwatch.Stop();
+            Console.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
+#endif
             e.Result = steinerSolver.BestSolution;
         }
 
 
         void solutionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            if (isCanceling)
+            {
+                return;
+            }
+
             progressBar.Value = e.ProgressPercentage;
             lblProgressText.Content = e.ProgressPercentage.ToString() + "/" + maxSteps;
             bestSoFar = (HashSet<ushort>)(e.UserState);
