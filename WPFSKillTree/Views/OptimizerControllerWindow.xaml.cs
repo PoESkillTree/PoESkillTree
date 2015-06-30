@@ -17,6 +17,7 @@ using POESKillTree.SkillTreeFiles.SteinerTrees;
 using System.ComponentModel;
 using MessageBox = POESKillTree.Views.MetroMessageBox;
 using System.Diagnostics;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Views
 {
@@ -28,6 +29,7 @@ namespace POESKillTree.Views
         private SteinerSolver steinerSolver;
         private SkillTree tree;
         private HashSet<ushort> targetNodes;
+        private HashSet<ushort> nodesToOmit;
 
         private readonly BackgroundWorker solutionWorker = new BackgroundWorker();
         private readonly BackgroundWorker initializationWorker = new BackgroundWorker();
@@ -41,12 +43,13 @@ namespace POESKillTree.Views
         private bool isPaused;
         private bool isCanceling;
 
-        public OptimizerControllerWindow(SkillTree tree, HashSet<ushort> targetNodes)
+        public OptimizerControllerWindow(SkillTree tree, HashSet<ushort> targetNodes, HashSet<ushort> nodesToOmit = null)
         {
             InitializeComponent();
             this.tree = tree;
             steinerSolver = new SteinerSolver(tree);
             this.targetNodes = targetNodes;
+            this.nodesToOmit = nodesToOmit;
             
             initializationWorker.DoWork += initializationWorker_DoWork;
             initializationWorker.RunWorkerCompleted += initializationWorker_RunWorkerCompleted;
@@ -74,7 +77,7 @@ namespace POESKillTree.Views
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 #endif
-            steinerSolver.InitializeSolver(targetNodes);
+            steinerSolver.InitializeSolver(targetNodes, nodesToOmit);
 #if DEBUG
             stopwatch.Stop();
             Console.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
@@ -83,6 +86,14 @@ namespace POESKillTree.Views
 
         void initializationWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (e.Error is InvalidOperationException)
+            {
+                // Show a dialog and close this if the omitted nodes disconnect the tree.
+                Popup.Warning(L10n.Message("You cannot cross out nodes so the tree gets disconnected!"));
+                Close();
+                return;
+            }
+
             maxSteps = steinerSolver.MaxGeneration;
             progressBar.Maximum = maxSteps;
             lblProgressText.Content = "0/" + maxSteps;
