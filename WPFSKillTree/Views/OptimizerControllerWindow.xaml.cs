@@ -89,7 +89,7 @@ namespace POESKillTree.Views
             if (e.Error is InvalidOperationException)
             {
                 // Show a dialog and close this if the omitted nodes disconnect the tree.
-                Popup.Warning(L10n.Message("You cannot cross out nodes so the tree gets disconnected!"));
+                Popup.Warning(L10n.Message("The optimizer was unable to find a conforming tree.\nPlease change skill node highlighting and try again."));
                 Close();
                 return;
             }
