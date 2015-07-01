@@ -50,8 +50,8 @@ msgid "Data used in character calculations are from"
 msgstr ""
 
 #: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
-#: Views\HelpWindow.xaml:52 Views\HotkeysWindow.xaml:140
-#: Views\OptimizerControllerWindow.xaml.cs:126
+#: Views\HelpWindow.xaml:52 Views\HotkeysWindow.xaml:154
+#: Views\OptimizerControllerWindow.xaml.cs:159
 msgid "Close"
 msgstr ""
 
@@ -119,108 +119,121 @@ msgstr ""
 msgid "Hotkeys"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:45
+#: Views\HotkeysWindow.xaml:47
 msgid "Key combination"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:48
+#: Views\HotkeysWindow.xaml:50
 msgid "Function"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:51
+#: Views\HotkeysWindow.xaml:53
 msgid "Shift + Left Click"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:54
+#: Views\HotkeysWindow.xaml:56
 msgid "Zoom In"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:57
+#: Views\HotkeysWindow.xaml:59
 msgid "Ctrl + Left Click"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:60
+#: Views\HotkeysWindow.xaml:62
 msgid "Zoom Out"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:64
+#: Views\HotkeysWindow.xaml:66
 msgid "Scion"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:68
+#: Views\HotkeysWindow.xaml:70
 msgid "Marauder"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:72
+#: Views\HotkeysWindow.xaml:74
 msgid "Ranger"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:76
+#: Views\HotkeysWindow.xaml:78
 msgid "Witch"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:80
+#: Views\HotkeysWindow.xaml:82
 msgid "Duelist"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:84
+#: Views\HotkeysWindow.xaml:86
 msgid "Templar"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:88
+#: Views\HotkeysWindow.xaml:90
 msgid "Shadow"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:92
+#: Views\HotkeysWindow.xaml:94
 msgid "Toggle Attributes sidebar"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:96
+#: Views\HotkeysWindow.xaml:98
 msgid "Toggle Character Sheet sidebar"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:100
+#: Views\HotkeysWindow.xaml:102
 msgid "Toggle Saved Builds sidebar"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:104
+#: Views\HotkeysWindow.xaml:106
 msgid "Copy PoEUrl link to Clipboard"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:108
+#: Views\HotkeysWindow.xaml:110
 msgid "Reset Skill tree"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:111
+#: Views\HotkeysWindow.xaml:113
 msgid "Ctrl + Up/Down"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:114
-msgid "(Saved builds) Move build up and down"
+#: Views\HotkeysWindow.xaml:116
+msgid "(Saved Builds) Move build up and down"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:118
+#: Views\HotkeysWindow.xaml:120
 msgid "Undo last Skill tree change"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:122
+#: Views\HotkeysWindow.xaml:124
 msgid "Redo last Skill tree change"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:126
+#: Views\HotkeysWindow.xaml:128
 msgid "Save build as"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:129 Views\HotkeysWindow.xaml:134
+#: Views\HotkeysWindow.xaml:131 Views\HotkeysWindow.xaml:136
+#: Views\HotkeysWindow.xaml:142
 msgid "Right Click"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:132
+#: Views\HotkeysWindow.xaml:134
 msgid "(Skill tree) Center Skill tree and reset zoom"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:137
+#: Views\HotkeysWindow.xaml:139
 msgid "(Attributes) Highlight corresponding nodes in Skill tree"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:145
+msgid "(Skill node) Toggle skill node highlighting"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:148
+msgid "Shift + Right Click"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:151
+msgid "(Skill node) Toggle skill node highlighting (reversed)"
 msgstr ""
 
 #: Views\LoadingWindow.xaml:10
@@ -560,7 +573,7 @@ msgstr ""
 msgid "Character"
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:933
+#: SkillTreeFiles\SkillTree.cs:996
 msgid "Please highlight non-skilled nodes by right-clicking them."
 msgstr ""
 
@@ -625,7 +638,7 @@ msgid_plural "{0}, {1} points used"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1226
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1236
 msgid "An error occurred during a save operation."
 msgstr ""
 
@@ -650,7 +663,7 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:355 Views\MainWindow.xaml.cs:1587
+#: Views\MainWindow.xaml.cs:355 Views\MainWindow.xaml.cs:1597
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
@@ -712,54 +725,60 @@ msgstr ""
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:992
+#: Views\MainWindow.xaml.cs:1002
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1063
+#: Views\MainWindow.xaml.cs:1073
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1134
+#: Views\MainWindow.xaml.cs:1144
 msgid "Please select a saved build."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1297
+#: Views\MainWindow.xaml.cs:1307
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1563 Views\MainWindow.xaml.cs:1572
+#: Views\MainWindow.xaml.cs:1573 Views\MainWindow.xaml.cs:1582
 msgid "An error occurred while attempting to conntact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1583
+#: Views\MainWindow.xaml.cs:1593
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1777
+#: Views\MainWindow.xaml.cs:1787
 msgid "An error occurred while attempting to load saved builds."
 msgstr ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:62
+#: Views\OptimizerControllerWindow.xaml.cs:66
 msgid "Cancel"
 msgstr ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:63
-#: Views\OptimizerControllerWindow.xaml.cs:151
+#: Views\OptimizerControllerWindow.xaml.cs:67
+#: Views\OptimizerControllerWindow.xaml.cs:184
 msgid "Pause"
 msgstr ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:111
+#: Views\OptimizerControllerWindow.xaml.cs:92
+msgid ""
+"The optimizer was unable to find a conforming tree.\n"
+"Please change skill node highlighting and try again."
+msgstr ""
+
+#: Views\OptimizerControllerWindow.xaml.cs:144
 #, csharp-format
 msgid "Best result so far: {0} additional point spent"
 msgid_plural "Best result so far: {0} additional points spent"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:125
+#: Views\OptimizerControllerWindow.xaml.cs:158
 msgid "Finished!"
 msgstr ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:158
+#: Views\OptimizerControllerWindow.xaml.cs:191
 msgid "Continue"
 msgstr ""

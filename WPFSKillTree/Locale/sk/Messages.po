@@ -50,8 +50,8 @@ msgid "Data used in character calculations are from"
 msgstr "Údaje použité vo výpočtoch postavy pochádzajú z"
 
 #: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
-#: Views\HelpWindow.xaml:52 Views\HotkeysWindow.xaml:140
-#: Views\OptimizerControllerWindow.xaml.cs:126
+#: Views\HelpWindow.xaml:52 Views\HotkeysWindow.xaml:154
+#: Views\OptimizerControllerWindow.xaml.cs:159
 msgid "Close"
 msgstr "Zavrieť"
 
@@ -119,109 +119,122 @@ msgstr "Pomocník"
 msgid "Hotkeys"
 msgstr "Klávesové skratky"
 
-#: Views\HotkeysWindow.xaml:45
+#: Views\HotkeysWindow.xaml:47
 msgid "Key combination"
 msgstr "Kombinácia kláves"
 
-#: Views\HotkeysWindow.xaml:48
+#: Views\HotkeysWindow.xaml:50
 msgid "Function"
 msgstr "Funkcia"
 
-#: Views\HotkeysWindow.xaml:51
+#: Views\HotkeysWindow.xaml:53
 msgid "Shift + Left Click"
 msgstr "Shift + Ľavé kliknutie"
 
-#: Views\HotkeysWindow.xaml:54
+#: Views\HotkeysWindow.xaml:56
 msgid "Zoom In"
 msgstr "Zväčšiť"
 
-#: Views\HotkeysWindow.xaml:57
+#: Views\HotkeysWindow.xaml:59
 msgid "Ctrl + Left Click"
 msgstr "Ctrl + Ľavé kliknutie"
 
-#: Views\HotkeysWindow.xaml:60
+#: Views\HotkeysWindow.xaml:62
 msgid "Zoom Out"
 msgstr "Zmenšiť"
 
-#: Views\HotkeysWindow.xaml:64
+#: Views\HotkeysWindow.xaml:66
 msgid "Scion"
 msgstr "Scion"
 
-#: Views\HotkeysWindow.xaml:68
+#: Views\HotkeysWindow.xaml:70
 msgid "Marauder"
 msgstr "Marauder"
 
-#: Views\HotkeysWindow.xaml:72
+#: Views\HotkeysWindow.xaml:74
 msgid "Ranger"
 msgstr "Ranger"
 
-#: Views\HotkeysWindow.xaml:76
+#: Views\HotkeysWindow.xaml:78
 msgid "Witch"
 msgstr "Witch"
 
-#: Views\HotkeysWindow.xaml:80
+#: Views\HotkeysWindow.xaml:82
 msgid "Duelist"
 msgstr "Duelist"
 
-#: Views\HotkeysWindow.xaml:84
+#: Views\HotkeysWindow.xaml:86
 msgid "Templar"
 msgstr "Templar"
 
-#: Views\HotkeysWindow.xaml:88
+#: Views\HotkeysWindow.xaml:90
 msgid "Shadow"
 msgstr "Shadow"
 
-#: Views\HotkeysWindow.xaml:92
+#: Views\HotkeysWindow.xaml:94
 msgid "Toggle Attributes sidebar"
 msgstr "Prepnutie panela Atribúty"
 
-#: Views\HotkeysWindow.xaml:96
+#: Views\HotkeysWindow.xaml:98
 msgid "Toggle Character Sheet sidebar"
 msgstr "Prepnutie panela Postava"
 
-#: Views\HotkeysWindow.xaml:100
+#: Views\HotkeysWindow.xaml:102
 msgid "Toggle Saved Builds sidebar"
 msgstr "Prepnutie panela Uložené zostavy"
 
-#: Views\HotkeysWindow.xaml:104
+#: Views\HotkeysWindow.xaml:106
 msgid "Copy PoEUrl link to Clipboard"
 msgstr "Skopírovať PoEUrl odkaz do Schránky"
 
-#: Views\HotkeysWindow.xaml:108
+#: Views\HotkeysWindow.xaml:110
 msgid "Reset Skill tree"
 msgstr "Resetovať strom zručností"
 
-#: Views\HotkeysWindow.xaml:111
+#: Views\HotkeysWindow.xaml:113
 msgid "Ctrl + Up/Down"
 msgstr "Ctrl + Hore/Dole"
 
-#: Views\HotkeysWindow.xaml:114
-msgid "(Saved builds) Move build up and down"
+#: Views\HotkeysWindow.xaml:116
+msgid "(Saved Builds) Move build up and down"
 msgstr "(Uložené zostavy) Presunúť zostavu hore/dole"
 
-#: Views\HotkeysWindow.xaml:118
+#: Views\HotkeysWindow.xaml:120
 msgid "Undo last Skill tree change"
 msgstr "Vrátiť poslednú zmenu v strome zručností"
 
-#: Views\HotkeysWindow.xaml:122
+#: Views\HotkeysWindow.xaml:124
 msgid "Redo last Skill tree change"
 msgstr "Obnoviť poslednú zmenu v strome zručností"
 
-#: Views\HotkeysWindow.xaml:126
+#: Views\HotkeysWindow.xaml:128
 msgid "Save build as"
 msgstr "Uložiť zostavu ako"
 
-#: Views\HotkeysWindow.xaml:129 Views\HotkeysWindow.xaml:134
+#: Views\HotkeysWindow.xaml:131 Views\HotkeysWindow.xaml:136
+#: Views\HotkeysWindow.xaml:142
 msgid "Right Click"
 msgstr "Pravé kliknutie"
 
-#: Views\HotkeysWindow.xaml:132
+#: Views\HotkeysWindow.xaml:134
 msgid "(Skill tree) Center Skill tree and reset zoom"
 msgstr "(Strom zručností) Vystrediť strom zručností a resetovať priblíženie"
 
-#: Views\HotkeysWindow.xaml:137
+#: Views\HotkeysWindow.xaml:139
 msgid "(Attributes) Highlight corresponding nodes in Skill tree"
 msgstr "(Atribúty) Zvýrazniť zodpovedajúce uzly v strome zručností"
+
+#: Views\HotkeysWindow.xaml:145
+msgid "(Skill node) Toggle skill node highlighting"
+msgstr "(Uzol zručnosti) Prepnúť zvýraznenie uzla zručnosti"
+
+#: Views\HotkeysWindow.xaml:148
+msgid "Shift + Right Click"
+msgstr "Shift + Pravé kliknutie"
+
+#: Views\HotkeysWindow.xaml:151
+msgid "(Skill node) Toggle skill node highlighting (reversed)"
+msgstr "(Uzol zručnosti) Prepnúť zvýraznenie uzla zručnosti (obrátene)"
 
 #: Views\LoadingWindow.xaml:10
 msgid "Download"
@@ -560,7 +573,7 @@ msgstr "Inicializácia..."
 msgid "Character"
 msgstr "Postava"
 
-#: SkillTreeFiles\SkillTree.cs:933
+#: SkillTreeFiles\SkillTree.cs:996
 msgid "Please highlight non-skilled nodes by right-clicking them."
 msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom."
 
@@ -626,7 +639,7 @@ msgstr[0] "{0}, {1} bod použitý"
 msgstr[1] "{0}, {1} body použité"
 msgstr[2] "{0}, {1} bodov použitých"
 
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1226
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1236
 msgid "An error occurred during a save operation."
 msgstr "Nastala chyba počas ukladania."
 
@@ -651,7 +664,7 @@ msgstr "Posledná zmena: {0}"
 msgid "Help file not found"
 msgstr "Súbor pomocníka nebol nájdený"
 
-#: Views\MainWindow.xaml.cs:355 Views\MainWindow.xaml.cs:1587
+#: Views\MainWindow.xaml.cs:355 Views\MainWindow.xaml.cs:1597
 msgid "An error occurred while copying to Clipboard."
 msgstr "Nastala chyba počas kopírovania do Schránky."
 
@@ -713,44 +726,52 @@ msgstr "Nastala chyba počas sťahovania."
 msgid "An error occurred while attempting to start the installation."
 msgstr "Nastala chyba pri pokuse spustiť inštaláciu."
 
-#: Views\MainWindow.xaml.cs:992
+#: Views\MainWindow.xaml.cs:1002
 msgid "An error occurred while attempting to load item data."
 msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
 
-#: Views\MainWindow.xaml.cs:1063
+#: Views\MainWindow.xaml.cs:1073
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
-#: Views\MainWindow.xaml.cs:1134
+#: Views\MainWindow.xaml.cs:1144
 msgid "Please select a saved build."
 msgstr "Prosím zvoľte uloženú zostavu."
 
-#: Views\MainWindow.xaml.cs:1297
+#: Views\MainWindow.xaml.cs:1307
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Nastala chyba pri pokuse načítať strom zručností z URL."
 
-#: Views\MainWindow.xaml.cs:1563 Views\MainWindow.xaml.cs:1572
+#: Views\MainWindow.xaml.cs:1573 Views\MainWindow.xaml.cs:1582
 msgid "An error occurred while attempting to conntact the PoEUrl location."
 msgstr "Nastala chyba pri pokuse kontaktovať PoEUrl lokáciu."
 
-#: Views\MainWindow.xaml.cs:1583
+#: Views\MainWindow.xaml.cs:1593
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "PoEUrl odkaz bol skopírovaný do Schránky."
 
-#: Views\MainWindow.xaml.cs:1777
+#: Views\MainWindow.xaml.cs:1787
 msgid "An error occurred while attempting to load saved builds."
 msgstr "Nastala chyba pri pokuse načítať uložené zostavy."
 
-#: Views\OptimizerControllerWindow.xaml.cs:62
+#: Views\OptimizerControllerWindow.xaml.cs:66
 msgid "Cancel"
 msgstr "Zrušiť"
 
-#: Views\OptimizerControllerWindow.xaml.cs:63
-#: Views\OptimizerControllerWindow.xaml.cs:151
+#: Views\OptimizerControllerWindow.xaml.cs:67
+#: Views\OptimizerControllerWindow.xaml.cs:184
 msgid "Pause"
 msgstr "Pozastaviť"
 
-#: Views\OptimizerControllerWindow.xaml.cs:111
+#: Views\OptimizerControllerWindow.xaml.cs:92
+msgid ""
+"The optimizer was unable to find a conforming tree.\n"
+"Please change skill node highlighting and try again."
+msgstr ""
+"Optimalizátoru sa nepodarilo nájsť vyhovujúci strom.\n"
+"Prosím zmeňte zvýraznenie uzlov zručností a skúste to znova."
+
+#: Views\OptimizerControllerWindow.xaml.cs:144
 #, csharp-format
 msgid "Best result so far: {0} additional point spent"
 msgid_plural "Best result so far: {0} additional points spent"
@@ -758,11 +779,11 @@ msgstr[0] "Najlepší doterajší výsledok: {0} dodatočný bod použitý"
 msgstr[1] "Najlepší doterajší výsledok: {0} dodatočné body použité"
 msgstr[2] "Najlepší doterajší výsledok: {0} dodatočných bodov použitých"
 
-#: Views\OptimizerControllerWindow.xaml.cs:125
+#: Views\OptimizerControllerWindow.xaml.cs:158
 msgid "Finished!"
 msgstr "Dokončené!"
 
-#: Views\OptimizerControllerWindow.xaml.cs:158
+#: Views\OptimizerControllerWindow.xaml.cs:191
 msgid "Continue"
 msgstr "Pokračovať"
 

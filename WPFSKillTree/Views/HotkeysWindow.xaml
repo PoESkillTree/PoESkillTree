@@ -35,6 +35,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="140"/>
@@ -112,7 +113,7 @@
             <l:Catalog Message="Ctrl + Up/Down"/>
         </TextBlock>
         <TextBlock Grid.Row="15" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="(Saved builds) Move build up and down"/>
+            <l:Catalog Message="(Saved Builds) Move build up and down"/>
         </TextBlock>
         <TextBlock Grid.Row="16" Grid.Column="0">Ctrl + Z</TextBlock>
         <TextBlock Grid.Row="16" Grid.Column="1" Grid.ColumnSpan="3">
@@ -138,12 +139,18 @@
             <l:Catalog Message="(Attributes) Highlight corresponding nodes in Skill tree"/>
         </TextBlock>
         <TextBlock Grid.Row="21" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="Shift + Right Click"/>
+            <l:Catalog Message="Right Click"/>
         </TextBlock>
         <TextBlock Grid.Row="21" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="(Attributes) Cross corresponding nodes out in Skill tree"/>
+            <l:Catalog Message="(Skill node) Toggle skill node highlighting"/>
         </TextBlock>
-        <Button Grid.Row="22" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0" x:Name="btnPopupClose" Click="btnPopupClose_Click">
+        <TextBlock Grid.Row="22" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Shift + Right Click"/>
+        </TextBlock>
+        <TextBlock Grid.Row="22" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="(Skill node) Toggle skill node highlighting (reversed)"/>
+        </TextBlock>
+        <Button Grid.Row="23" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0" x:Name="btnPopupClose" Click="btnPopupClose_Click">
             <l:Catalog Message="Close"/>
         </Button>
     </Grid>
