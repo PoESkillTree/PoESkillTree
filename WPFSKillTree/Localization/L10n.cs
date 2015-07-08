@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using POESKillTree.Model;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Localization
 {
@@ -33,7 +34,9 @@ namespace POESKillTree.Localization
         // The exposed current display language name.
         public static string LanguageName { get { return _LanguageName; } }
         // The directory name of locale directory in application root folder.
-        private static readonly string LocaleDir = "Locale";
+        private static readonly string LocaleDirName = "Locale";
+        // The absolute path to locale directory.
+        static readonly string LocalePath;
 
         // Initialize everything needed for localization to work with defalult language in case Initialize wasn't invoked.
         static L10n()
@@ -44,7 +47,8 @@ namespace POESKillTree.Localization
             _Culture = CultureInfo.CreateSpecificCulture(_Language);
             _LanguageName = _Culture.NativeName;
             // The default catalog is current one.
-            Catalog = DefaultCatalog = Catalog.CreateDefault(Path.Combine(LocaleDir, DefaultLanguage), DefaultLanguage, _LanguageName);
+            LocalePath = AppData.GetFolder(LocaleDirName);
+            Catalog = DefaultCatalog = Catalog.CreateDefault(Path.Combine(LocalePath, DefaultLanguage), DefaultLanguage, _LanguageName);
         }
 
         // Applies current language to application resources.
@@ -202,9 +206,9 @@ namespace POESKillTree.Localization
             // Add default catalog.
             Catalogs.Add(DefaultLanguage, DefaultCatalog);
 
-            if (Directory.Exists(LocaleDir))
+            if (Directory.Exists(LocalePath))
             {
-                DirectoryInfo dirLocale = new DirectoryInfo(LocaleDir);
+                DirectoryInfo dirLocale = new DirectoryInfo(LocalePath);
 
                 foreach (DirectoryInfo dirLanguage in dirLocale.GetDirectories())
                 {

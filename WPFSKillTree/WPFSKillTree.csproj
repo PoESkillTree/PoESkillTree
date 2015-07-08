@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>POESKillTree</RootNamespace>
-    <AssemblyName>POESKillTree</AssemblyName>
+    <AssemblyName>PoESkillTree</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -40,7 +40,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>WPFSKillTree.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -51,7 +50,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowedReferenceRelatedFileExtensions>.none</AllowedReferenceRelatedFileExtensions>
-    <CodeAnalysisRuleSet>WPFSKillTree.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -73,7 +71,6 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
     <WarningLevel>0</WarningLevel>
-    <CodeAnalysisRuleSet>WPFSKillTree.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -85,7 +82,6 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <CodeAnalysisRuleSet>WPFSKillTree.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>logo.ico</ApplicationIcon>
@@ -94,16 +90,11 @@
     <StartupObject>POESKillTree.SkillTreeFiles.Bootstrap</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Antlr3.Runtime">
       <HintPath>.\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="ExpressionEvaluator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=90d9f15d622e2348, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ExpressionEvaluator">
       <HintPath>.\ExpressionEvaluator.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net40-client\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
@@ -123,9 +114,13 @@
     <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>.\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Json, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Raven.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -152,25 +147,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controls\Inventory.xaml.cs">
-      <DependentUpon>Inventory.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controls\ItemTooltip.xaml.cs">
-      <DependentUpon>ItemTooltip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ItemVisualizer.xaml.cs">
-      <DependentUpon>ItemVisualizer.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Controls\MenuItemExtensions.cs" />
-    <Compile Include="Controls\ModSelector.xaml.cs">
-      <DependentUpon>ModSelector.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Stash.xaml.cs">
-      <DependentUpon>Stash.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\StashBookmark.cs" />
     <Compile Include="Localization\Catalog.cs" />
     <Compile Include="Localization\L10n.cs" />
     <Compile Include="Localization\Markdown\Markdown.cs" />
@@ -182,9 +159,6 @@
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
     <Compile Include="Model\RelayCommand.cs" />
-    <Compile Include="Controls\OverlayedSlider.xaml.cs">
-      <DependentUpon>OverlayedSlider.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Version.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -208,31 +182,22 @@
     <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
-    <Compile Include="Utils\Helpers.cs" />
-    <Compile Include="Utils\ItemAssetDownloader.cs" />
+    <Compile Include="Utils\AppData.cs" />
+    <Compile Include="Utils\Popup.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
-    <Compile Include="ViewModels\Items\Affix.cs" />
-    <Compile Include="ViewModels\Items\GearType.cs" />
-    <Compile Include="ViewModels\Items\Item.cs" />
-    <Compile Include="ViewModels\Items\FrameType.cs" />
-    <Compile Include="ViewModels\Items\ItemBase.cs" />
-    <Compile Include="ViewModels\Items\ItemClass.cs" />
-    <Compile Include="ViewModels\Items\ItemModTier.cs" />
+    <Compile Include="ViewModels\ItemAttribute\Item.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
     <Compile Include="SkillTreeFiles\ImageHelper.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
     <Compile Include="Controls\DragAdorner.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
     <Compile Include="Utils\GroupStringConverter.cs" />
-    <Compile Include="ViewModels\Items\ItemAttributes.cs" />
+    <Compile Include="ViewModels\ItemAttribute\ItemAttributes.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
-    <Compile Include="ViewModels\Items\ItemMod.cs" />
+    <Compile Include="ViewModels\ItemAttribute\ItemMod.cs" />
     <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\Converters.cs" />
-    <Compile Include="Views\CraftWindow.xaml.cs">
-      <DependentUpon>CraftWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
@@ -268,41 +233,6 @@
       <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\TabPicker.xaml.cs">
-      <DependentUpon>TabPicker.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Controls\Inventory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ItemTooltip.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ItemVisualizer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ModSelector.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Stash.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\OverlayedSlider.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DefaultTemplates.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CraftWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -347,7 +277,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TabPicker.xaml">
+    <Page Include="Views\WindowsRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -380,9 +310,7 @@
     <None Include="dist-update.bat" />
     <None Include="dist-release.bat" />
     <None Include="Locale\en-US\Help.md" />
-    <None Include="Locale\Messages.pot" />
     <None Include="Locale\sk\Help.md" />
-    <None Include="Locale\sk\Messages.po" />
     <None Include="Localization\Markdown\Readme.md" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -391,7 +319,39 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="WPFSKillTree.ruleset" />
+    <None Include="Tools\isetup\Default.isl" />
+    <None Include="Tools\isetup\Languages\BrazilianPortuguese.isl" />
+    <None Include="Tools\isetup\Languages\Catalan.isl" />
+    <None Include="Tools\isetup\Languages\Corsican.isl" />
+    <None Include="Tools\isetup\Languages\Czech.isl" />
+    <None Include="Tools\isetup\Languages\Danish.isl" />
+    <None Include="Tools\isetup\Languages\Dutch.isl" />
+    <None Include="Tools\isetup\Languages\Finnish.isl" />
+    <None Include="Tools\isetup\Languages\French.isl" />
+    <None Include="Tools\isetup\Languages\German.isl" />
+    <None Include="Tools\isetup\Languages\Greek.isl" />
+    <None Include="Tools\isetup\Languages\Hebrew.isl" />
+    <None Include="Tools\isetup\Languages\Hungarian.isl" />
+    <None Include="Tools\isetup\Languages\Italian.isl" />
+    <None Include="Tools\isetup\Languages\Japanese.isl" />
+    <None Include="Tools\isetup\Languages\Nepali.islu" />
+    <None Include="Tools\isetup\Languages\Norwegian.isl" />
+    <None Include="Tools\isetup\Languages\Polish.isl" />
+    <None Include="Tools\isetup\Languages\Portuguese.isl" />
+    <None Include="Tools\isetup\Languages\Russian.isl" />
+    <None Include="Tools\isetup\Languages\ScottishGaelic.isl" />
+    <None Include="Tools\isetup\Languages\SerbianCyrillic.isl" />
+    <None Include="Tools\isetup\Languages\SerbianLatin.isl" />
+    <None Include="Tools\isetup\Languages\Slovak.isl" />
+    <None Include="Tools\isetup\Languages\Slovenian.isl" />
+    <None Include="Tools\isetup\Languages\Spanish.isl" />
+    <None Include="Tools\isetup\Languages\Turkish.isl" />
+    <None Include="Tools\isetup\Languages\Ukrainian.isl" />
+    <None Include="Tools\isetup\Setup.e32" />
+    <None Include="Tools\isetup\SetupLdr.e32" />
+    <None Include="Tools\MSBuild.ExtensionPack.License.rtf" />
+    <None Include="Tools\MSBuild.ExtensionPack.README.md" />
+    <None Include="Tools\MSBuild.ExtensionPack.tasks" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -437,85 +397,56 @@
     <Resource Include="Images\Witch.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Tools\gettext\msgmerge.exe" />
-    <Content Include="Tools\gettext\xgettext.exe" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderGemLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderGemMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderGemRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderMagicLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderMagicMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderMagicRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderRareLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderRareMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderRareRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderUniqueLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderUniqueMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderUniqueRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderWhiteLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderWhiteMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderWhiteRight.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorGem.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorMagic.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorRare.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorUnique.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorWhite.png" />
-    <Resource Include="Images\EquipmentUI\SocketSkillBlue.png" />
-    <Resource Include="Images\EquipmentUI\SocketSkillGreen.png" />
-    <Resource Include="Images\EquipmentUI\SocketSkillRed.png" />
-    <Resource Include="Images\EquipmentUI\SocketSupportBlue.png" />
-    <Resource Include="Images\EquipmentUI\SocketSupportGreen.png" />
-    <Resource Include="Images\EquipmentUI\SocketSupportRed.png" />
-    <Resource Include="Images\EquipmentUI\Socket_Link_Horizontal.png" />
-    <Resource Include="Images\EquipmentUI\Socket_Link_Vertical.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyRight.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorCurrency.png" />
-    <Resource Include="Images\EquipmentUI\Inventory.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\2HWeapon.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Amulet.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Armor.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Belt.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Boots.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Gloves.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Helm.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\MainHand.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\OffHand.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Ring.png" />
-    <None Include="Data\Equipment\Affixlist.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Equipment\Itemlist.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="Antlr3.Runtime.dll" />
     <Content Include="ExpressionEvaluator.dll" />
     <Content Include="ExpressionEvaluator.pdb" />
+    <Content Include="release.iss" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Resource Include="release.xml" />
+    <None Include="Tools\isetup\ISCC.exe" />
+    <None Include="Tools\isetup\ISCmplr.dll" />
+    <None Include="Tools\isetup\islzma.dll" />
+    <None Include="Tools\isetup\ISPP.dll" />
+    <None Include="Tools\isetup\ISPPBuiltins.iss" />
+    <None Include="Tools\isetup\license.txt" />
+    <None Include="Tools\isetup\WizModernImage-IS.bmp" />
+    <None Include="Tools\isetup\WizModernImage.bmp" />
+    <None Include="Tools\isetup\WizModernSmallImage-IS.bmp" />
+    <None Include="Tools\isetup\WizModernSmallImage.bmp" />
+    <None Include="Tools\DeBOM.exe" />
+    <None Include="Tools\DeBOM.pdb" />
+    <None Include="Localization\Markdown\License.txt" />
+    <None Include="Locale\README.txt" />
+    <None Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Newtonsoft.Json.dll" />
+    <Content Include="Raven.Json.dll" />
+    <None Include="Tools\Ionic.Zip.dll" />
+    <None Include="Tools\MSBuild.ExtensionPack.dll" />
+    <None Include="Tools\XAMLText.exe" />
+    <None Include="Tools\XAMLText.pdb" />
+    <None Include="Locale\msginit.exe" />
+    <None Include="Tools\gettext\msgmerge.exe" />
+    <None Include="Tools\gettext\xgettext.exe" />
+    <None Include="Locale\sk\Messages.po" />
+    <Resource Include="release.xml">
+      <SubType>Designer</SubType>
+    </Resource>
     <Resource Include="logo.ico" />
     <None Include="Properties\app.manifest.i" />
-    <Content Include="Locale\msginit.exe" />
-    <Resource Include="Locale\README.txt" />
-    <Resource Include="Localization\Markdown\License.txt" />
-    <Content Include="Tools\7z.dll" />
-    <Content Include="Tools\7z.exe" />
-    <Resource Include="Tools\7z.LICENSE.txt" />
+    <None Include="Locale\Messages.pot" />
+    <None Include="Tools\7z.dll" />
+    <None Include="Tools\7z.exe" />
+    <None Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RangeTree\RangeTree\RangeTree.csproj">
-      <Project>{9cc3eb9d-32d2-41e6-96ee-c01dc32a5aed}</Project>
-      <Name>RangeTree</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WpfRangeControls\WpfRangeControls\WpfRangeControls.csproj">
-      <Project>{8bd896f3-4860-4797-9fe5-78e2980b4f75}</Project>
-      <Name>WpfRangeControls</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

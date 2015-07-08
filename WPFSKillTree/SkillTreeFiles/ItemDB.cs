@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using POESKillTree.Model;
+using POESKillTree.Utils;
 using POESKillTree.ViewModels;
 using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
 using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;
@@ -1343,7 +1344,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             GemIndex.Clear();
 
-            if (DB.Gems != null)
+            if (DB != null && DB.Gems != null)
             {
                 foreach (Gem gem in DB.Gems)
                 {
@@ -1376,10 +1377,12 @@ namespace POESKillTree.SkillTreeFiles
         // Loads items from XML file.
         public static void Load(string file, bool index = false)
         {
-            if (File.Exists(file))
+            string filePath = AppData.GetFolder(true) + file;
+
+            if (File.Exists(filePath))
             {
                 var serializer = new XmlSerializer(typeof(ItemDB));
-                var reader = new StreamReader(file);
+                var reader = new StreamReader(filePath);
                 DB = (ItemDB)serializer.Deserialize(reader);
                 reader.Close();
 
@@ -1390,10 +1393,12 @@ namespace POESKillTree.SkillTreeFiles
         // Merges items from XML file.
         public static void Merge(string file)
         {
-            if (File.Exists(file))
+            string filePath = AppData.GetFolder(true) + file;
+
+            if (File.Exists(filePath))
             {
                 var serializer = new XmlSerializer(typeof(ItemDB));
-                var reader = new StreamReader(file);
+                var reader = new StreamReader(filePath);
                 ItemDB merge = (ItemDB)serializer.Deserialize(reader);
                 reader.Close();
 
@@ -1485,7 +1490,7 @@ namespace POESKillTree.SkillTreeFiles
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.NewLineChars = "\n";
-            XmlWriter writer = XmlTextWriter.Create(file, settings);
+            XmlWriter writer = XmlTextWriter.Create(AppData.GetFolder(true) + file, settings);
             serializer.Serialize(writer, DB);
             writer.Close();
         }

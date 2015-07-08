@@ -27,12 +27,12 @@ namespace POESKillTree.SkillTreeFiles
             //Application
             foreach (string image in Images.Keys.ToArray())
             {
-                if (!File.Exists("Data\\Assets\\" + image))
+                if (!File.Exists(SkillTree.AssetsFolderPath + image))
                 {
                     var _WebClient = new WebClient();
-                    _WebClient.DownloadFile(urlpath + image, "Data\\Assets\\" + image);
+                    _WebClient.DownloadFile(urlpath + image, SkillTree.AssetsFolderPath + image);
                 }
-                Images[image] = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\" + image, UriKind.Relative));
+                Images[image] = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree.AssetsFolderPath + image, UriKind.Absolute));
             }
         }
     }

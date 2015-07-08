@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows;
+using POESKillTree.Localization;
+using POESKillTree.Utils;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -69,7 +71,7 @@ namespace POESKillTree.SkillTreeFiles
 
             if (!buildFile.Contains("["))
             {
-                MessageBox.Show("Build does not exist and/or is corrupt!");
+                Popup.Error(string.Format(L10n.Message("An error occured while attempting to load Skill tree from {0} location."), "poezone.ru"));
                 return;
             }
 
