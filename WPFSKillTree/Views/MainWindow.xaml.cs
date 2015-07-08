@@ -1988,7 +1988,23 @@ namespace POESKillTree.Views
                 {
                     d.Item = null;
                 }
-               
+                deleteRect.Opacity = 0.0;
+            }
+        }
+
+        private void deleteRect_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            {
+                deleteRect.Opacity = 0.3;
+            }
+        }
+
+        private void deleteRect_DragLeave(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            {
+                deleteRect.Opacity = 0.0;
             }
         }
     }

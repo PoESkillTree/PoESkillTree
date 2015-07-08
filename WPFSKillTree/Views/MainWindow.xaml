@@ -562,9 +562,8 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
-                        <Rectangle Name="deleteRect" Fill="Transparent" Grid.Column="0" Grid.Row="0" Margin="438,328,0,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop">
-                            
-                        </Rectangle>
+                        <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
+
                         <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
                     </Grid>
                 </TabItem>
