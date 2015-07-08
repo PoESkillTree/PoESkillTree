@@ -236,7 +236,7 @@ namespace POESKillTree.ViewModels
     class ItemToImageConverter : ItemTypeToImageConverter, IValueConverter
     {
         protected static Dictionary<ItemClass, BitmapImage> DefaultCache = new Dictionary<ItemClass, BitmapImage>();
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        new public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var itm = value as Item;
             BitmapImage img = null;
@@ -315,7 +315,7 @@ namespace POESKillTree.ViewModels
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        new public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }
