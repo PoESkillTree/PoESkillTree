@@ -88,9 +88,9 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition MinWidth="50" Width="auto" SharedSizeGroup="bw"/>
+                    <ColumnDefinition MinWidth="80" Width="auto" SharedSizeGroup="bw"/>
                     <ColumnDefinition Width="4"/>
-                    <ColumnDefinition MinWidth="50" Width="auto" SharedSizeGroup="bw"/>
+                    <ColumnDefinition MinWidth="80" Width="auto" SharedSizeGroup="bw"/>
                 </Grid.ColumnDefinitions>
                 <Button IsDefault="True" Grid.Column="1" Click="Button_Delete_Click">Delete</Button>
                 <Button Grid.Column="3" Click="Button_OK_Click">OK</Button>
