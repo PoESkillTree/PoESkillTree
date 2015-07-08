@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POESKillTree.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,11 +18,14 @@ namespace POESKillTree.ViewModels.Items
             {
                 if (_baseList == null)
                 {
-                    if (File.Exists(@"Data\Equipment\Itemlist.xml"))
+                    var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"Itemlist.xml");
+                    if (File.Exists(filename))
                     {
-                        XElement xelm = XElement.Load(@"Data\Equipment\Itemlist.xml");
+                        XElement xelm = XElement.Load(filename);
                         _baseList = xelm.Elements().Select(x => new ItemBase(x)).ToList();
                     }
+                    else
+                        _baseList = new List<ItemBase>();
                 }
                 return ItemBase._baseList;
             }

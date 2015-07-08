@@ -256,7 +256,6 @@ namespace POESKillTree.SkillTreeFiles
             try
             {
                 string json = webClient.DownloadString(GitAPILatestReleaseURL);
-
                 JArray releases = JArray.Parse(json);
                 if (releases.Count < 1)
                     throw new UpdaterException(L10n.Message("No release found"));
@@ -290,6 +289,7 @@ namespace POESKillTree.SkillTreeFiles
                     if (prerelease && !Prerelease) continue; // Found unwanted pre-release, ignore it.
 
                     // Find release package.
+                    string fileName = null;
                     JObject pkgAsset = null;
                     foreach (JObject asset in assets)
                     {

@@ -892,7 +892,6 @@ namespace POESKillTree.Controls
         }
 
         HashSet<Item> _FoundItems = new HashSet<Item>();
-        private object y;
 
         private bool IsSearchMatch(Item i, string txt)
         {

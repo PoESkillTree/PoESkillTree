@@ -10,6 +10,7 @@ using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
 using MB.Algodat;
 using POESKillTree.Controls;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {

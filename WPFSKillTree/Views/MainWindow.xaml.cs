@@ -41,6 +41,8 @@ using ToolTip = System.Windows.Controls.ToolTip;
 using POESKillTree.ViewModels.Items;
 using POESKillTree.Utils;
 
+using Path = System.IO.Path;
+
 namespace POESKillTree.Views
 {
     /// <summary>
@@ -144,7 +146,7 @@ namespace POESKillTree.Views
             _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
             listBoxOffence.ItemsSource = _offenceCollection;
 
-            if(_persistentData.StashBookmarks!=null)
+            if (_persistentData.StashBookmarks != null)
                 Stash.Bookmarks = new System.Collections.ObjectModel.ObservableCollection<StashBookmark>(_persistentData.StashBookmarks);
 
             // Set theme & accent.
@@ -1838,26 +1840,26 @@ namespace POESKillTree.Views
 
         private void Menu_RedownloadItemAssets(object sender, RoutedEventArgs e)
         {
-            const string sMessageBoxText = "This will delete your data folder and Redownload all the Item assets.\nThis requires an internet connection!\n\nDo you want to proced?";
-            const string sCaption = "Redownload Item Assets - Warning";
+            string sMessageBoxText = L10n.Message("The existing Skill Item assets will be deleted and new assets will be downloaded.")
+                       + "\n\n" + L10n.Message("Do you want to continue?");
 
-            var rsltMessageBox = MessageBox.Show(this, sMessageBoxText, sCaption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            var rsltMessageBox = Popup.Ask(sMessageBoxText, MessageBoxImage.Warning);
+
+            string appDataPath = AppData.GetFolder(true);
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    if (Directory.Exists("Data"))
+                    if (Directory.Exists(Path.Combine(appDataPath, "Data")))
                     {
                         try
                         {
-                            if (Directory.Exists("DataBackup"))
+                            if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
                                 Directory.Delete("DataBackup", true);
-                            Directory.Move("Data", "DataBackup");
+                            Directory.Move(Path.Combine(appDataPath, "Data"), Path.Combine(appDataPath, "DataBackup"));
 
 
                             var bases = new List<ItemBase>();
                             var images = new List<Tuple<string, string>>();
-
-                            Directory.CreateDirectory(@"Data\Equipment");
 
                             StartLoadingWindow();
                             UpdateLoadingWindow(0, 3);
@@ -1868,13 +1870,13 @@ namespace POESKillTree.Views
                             ItemAssetDownloader.ExtractWeapons(bases, images);
                             UpdateLoadingWindow(3, 3);
 
-                            new System.Xml.Linq.XElement("ItemBaseList", bases.Select(b => b.Serialize())).Save(System.IO.Path.Combine(@"Data\Equipment", "Itemlist.xml"));
+                            new System.Xml.Linq.XElement("ItemBaseList", bases.Select(b => b.Serialize())).Save(Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Itemlist.xml"));
 
                             var imgroups = images.GroupBy(t => t.Item2).ToArray();
 
                             UpdateLoadingWindow(0, imgroups.Length);
 
-                            Directory.CreateDirectory(@"Data\Equipment\Assets");
+                            var dir = AppData.GetFolder(@"Data\Equipment\Assets");
                             using (var client = new WebClient())
                             {
                                 for (int i = 0; i < imgroups.Length; i++)
@@ -1894,7 +1896,7 @@ namespace POESKillTree.Views
 
                                             foreach (var item in imgroups[i])
                                             {
-                                                using (var f = File.Create(System.IO.Path.Combine(@"Data\Equipment\Assets", item.Item1 + ".png")))
+                                                using (var f = File.Create(Path.Combine(dir, item.Item1 + ".png")))
                                                 {
                                                     m.Seek(0, SeekOrigin.Begin);
                                                     m.CopyTo(f);
@@ -1909,22 +1911,22 @@ namespace POESKillTree.Views
                             }
 
 
-                            Directory.Move(@"DataBackup\Assets", @"Data\Assets");
+                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
 
-                            foreach (var file in new DirectoryInfo(@"DataBackup").GetFiles())
-                                file.CopyTo(System.IO.Path.Combine(@"Data", file.Name));
+                            foreach (var file in new DirectoryInfo(Path.Combine(appDataPath, @"DataBackup")).GetFiles())
+                                file.CopyTo(Path.Combine(Path.Combine(appDataPath, @"Data"), file.Name));
 
-                            File.Copy(@"DataBackup\Equipment\Affixlist.xml", @"Data\Equipment\Affixlist.xml");
+                            File.Copy(Path.Combine(AppData.GetFolder(@"DataBackup\Equipment"), "Affixlist.xml"), Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Affixlist.xml"));
 
-                            if (Directory.Exists("DataBackup"))
-                                Directory.Delete("DataBackup", true);
+                            if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
+                                Directory.Delete(Path.Combine(appDataPath, "DataBackup"), true);
 
                             CloseLoadingWindow();
                         }
                         catch (Exception ex)
                         {
-                            if (Directory.Exists("Data"))
-                                Directory.Delete("Data", true);
+                            if (Directory.Exists(Path.Combine(appDataPath, "Data")))
+                                Directory.Delete(Path.Combine(appDataPath, "Data"), true);
                             try
                             {
                                 CloseLoadingWindow();
@@ -1933,8 +1935,8 @@ namespace POESKillTree.Views
                             {
                                 //Nothing
                             }
-                            Directory.Move("DataBackup", "Data");
-                            MessageBox.Show(this, ex.Message.ToString(), "Error while downloading assets", MessageBoxButton.OK, MessageBoxImage.Error);
+                            Directory.Move(Path.Combine(appDataPath, "DataBackup"), Path.Combine(appDataPath, "Data"));
+                            Popup.Error(L10n.Message("Error while downloading assets"));
                         }
                     }
                     break;
