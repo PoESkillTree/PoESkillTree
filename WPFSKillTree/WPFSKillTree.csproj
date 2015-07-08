@@ -143,7 +143,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\Inventory.xaml.cs">
+      <DependentUpon>Inventory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemTooltip.xaml.cs">
+      <DependentUpon>ItemTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemVisualizer.xaml.cs">
+      <DependentUpon>ItemVisualizer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MenuItemExtensions.cs" />
+    <Compile Include="Controls\ModSelector.xaml.cs">
+      <DependentUpon>ModSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OverlayedSlider.xaml.cs">
+      <DependentUpon>OverlayedSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Stash.xaml.cs">
+      <DependentUpon>Stash.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StashBookmark.cs" />
     <Compile Include="Localization\Catalog.cs" />
     <Compile Include="Localization\L10n.cs" />
     <Compile Include="Localization\Markdown\Markdown.cs" />
@@ -182,18 +201,27 @@
     <Compile Include="Utils\Popup.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
-    <Compile Include="ViewModels\ItemAttribute\Item.cs" />
+    <Compile Include="ViewModels\Items\Affix.cs" />
+    <Compile Include="ViewModels\Items\FrameType.cs" />
+    <Compile Include="ViewModels\Items\GearType.cs" />
+    <Compile Include="ViewModels\Items\Item.cs" />
+    <Compile Include="ViewModels\Items\ItemAttributes.cs" />
+    <Compile Include="ViewModels\Items\ItemBase.cs" />
+    <Compile Include="ViewModels\Items\ItemClass.cs" />
+    <Compile Include="ViewModels\Items\ItemMod.cs" />
+    <Compile Include="ViewModels\Items\ItemModTier.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
     <Compile Include="SkillTreeFiles\ImageHelper.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
     <Compile Include="Controls\DragAdorner.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
     <Compile Include="Utils\GroupStringConverter.cs" />
-    <Compile Include="ViewModels\ItemAttribute\ItemAttributes.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
-    <Compile Include="ViewModels\ItemAttribute\ItemMod.cs" />
     <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\Converters.cs" />
+    <Compile Include="Views\CraftWindow.xaml.cs">
+      <DependentUpon>CraftWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
@@ -229,6 +257,37 @@
       <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\TabPicker.xaml.cs">
+      <DependentUpon>TabPicker.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\Inventory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ItemTooltip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ItemVisualizer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ModSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\OverlayedSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Stash.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CraftWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -272,6 +331,10 @@
     <Page Include="Views\OptimizerControllerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\WindowsRes.xaml">
       <SubType>Designer</SubType>
@@ -394,8 +457,53 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Antlr3.Runtime.dll" />
+    <Resource Include="Data\Equipment\Affixlist.xml" />
+    <Resource Include="Data\Equipment\Itemlist.xml" />
     <Content Include="ExpressionEvaluator.dll" />
     <Content Include="ExpressionEvaluator.pdb" />
+    <Resource Include="Images\EquipmentUI\Inventory.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\2HWeapon.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Amulet.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Armor.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Belt.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Boots.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Gloves.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Helm.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\MainHand.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OffHand.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Ring.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderGemLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderGemMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderGemRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderMagicLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderMagicMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderMagicRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderRareLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderRareMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderRareRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderUniqueLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderUniqueMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderUniqueRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderWhiteLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderWhiteMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemHeaderWhiteRight.png" />
+    <Resource Include="Images\EquipmentUI\SeparatorCurrency.png" />
+    <Resource Include="Images\EquipmentUI\SeparatorGem.png" />
+    <Resource Include="Images\EquipmentUI\SeparatorMagic.png" />
+    <Resource Include="Images\EquipmentUI\SeparatorRare.png" />
+    <Resource Include="Images\EquipmentUI\SeparatorUnique.png" />
+    <Resource Include="Images\EquipmentUI\SeparatorWhite.png" />
+    <Resource Include="Images\EquipmentUI\SocketSkillBlue.png" />
+    <Resource Include="Images\EquipmentUI\SocketSkillGreen.png" />
+    <Resource Include="Images\EquipmentUI\SocketSkillRed.png" />
+    <Resource Include="Images\EquipmentUI\SocketSupportBlue.png" />
+    <Resource Include="Images\EquipmentUI\SocketSupportGreen.png" />
+    <Resource Include="Images\EquipmentUI\SocketSupportRed.png" />
+    <Resource Include="Images\EquipmentUI\Socket_Link_Horizontal.png" />
+    <Resource Include="Images\EquipmentUI\Socket_Link_Vertical.png" />
     <Content Include="release.iss" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -436,7 +544,16 @@
     <None Include="Tools\7z.exe" />
     <None Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RangeTree\RangeTree\RangeTree.csproj">
+      <Project>{9cc3eb9d-32d2-41e6-96ee-c01dc32a5aed}</Project>
+      <Name>RangeTree</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WpfRangeControls\WpfRangeControls\WpfRangeControls.csproj">
+      <Project>{8bd896f3-4860-4797-9fe5-78e2980b4f75}</Project>
+      <Name>WpfRangeControls</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)</PostBuildEvent>
