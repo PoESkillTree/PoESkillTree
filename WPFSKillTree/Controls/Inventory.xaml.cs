@@ -74,7 +74,7 @@ namespace POESKillTree.Controls
             }
         }
 
-        private void KeyDown(object sender, KeyEventArgs e)
+        private void KeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
             {
@@ -101,7 +101,22 @@ namespace POESKillTree.Controls
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 var w = Window.GetWindow(this);
-                Keyboard.AddKeyDownHandler(w, KeyDown);
+                Keyboard.AddKeyDownHandler(w, KeyDownHandler);
+            }
+        }
+
+        private void MenuItem_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            var mi = sender as MenuItem;
+            if (mi != null)
+            {
+                var menu = mi.FindParent<ContextMenu>();
+                var vis = menu.PlacementTarget as ItemVisualizer;
+                if (vis != null)
+                {
+                    vis.Item = null;
+                   
+                }
             }
         }
     }

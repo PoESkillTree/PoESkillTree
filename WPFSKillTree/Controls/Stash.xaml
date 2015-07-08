@@ -17,7 +17,9 @@
             <CollectionContainer Collection="{Binding SearchMatches, Source={x:Reference Name=control}}"/>
             <CollectionContainer Collection="{Binding NewlyAddedRanges, Source={x:Reference Name=control}}"/>
         </CompositeCollection>
-
+        <ContextMenu x:Key="itemContextMenu">
+            <MenuItem Header="Delete" Click="MenuItem_Delete_Click" />
+        </ContextMenu>
         <CompositeCollection x:Key="stashTabsCollection">
             <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>
             <Button Width="16" MinWidth="16" MinHeight="16" Height="16" Padding="3" Click="Button_AddBookmark">

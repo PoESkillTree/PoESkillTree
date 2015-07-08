@@ -23,5 +23,20 @@ namespace POESKillTree.Utils
             while (current != null);
             return null;
         }
+
+        public static T FindParent<T>(this FrameworkElement current)
+            where T : FrameworkElement
+        {
+            do
+            {
+                if (current is T)
+                {
+                    return (T)current;
+                }
+                current = current.Parent as FrameworkElement;
+            }
+            while (current != null);
+            return null;
+        }
     }
 }

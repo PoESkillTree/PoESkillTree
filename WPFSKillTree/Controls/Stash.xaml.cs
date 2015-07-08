@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Controls
 {
@@ -206,8 +207,17 @@ namespace POESKillTree.Controls
                     {
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
-                        Item = item
+                        Item = item,
                     };
+
+                    Binding b = new Binding();
+                    var menu = this.Resources["itemContextMenu"] as ContextMenu;
+
+                    b.Source = menu;
+                    b.Mode = BindingMode.OneWay;
+
+                    iv.SetBinding(ItemVisualizer.ContextMenuProperty, b);
+                    
 
                     if (item == _dnd_item)
                         iv.Opacity = 0.3;
@@ -828,12 +838,12 @@ namespace POESKillTree.Controls
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 var w = Window.GetWindow(this);
-                Keyboard.AddKeyDownHandler(w, KeyDown);
+                Keyboard.AddKeyDownHandler(w, KeyDownHandler);
             }
             ResizeScrollbarThumb();
         }
 
-        private void KeyDown(object sender, KeyEventArgs e)
+        private void KeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
             {
@@ -921,6 +931,22 @@ namespace POESKillTree.Controls
             asBar.Value = getValueForTop(sb.Position);
         }
 
+        private void MenuItem_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            var mi = sender as MenuItem;
 
+            if (mi != null)
+            {
+                var menu = mi.FindParent<ContextMenu>();
+                var vis = menu.PlacementTarget as ItemVisualizer;
+                if (vis != null)
+                {
+                    Items.Remove(vis.Item);
+
+                    NewlyAddedRanges.Clear();
+                    ResizeScrollbarThumb();
+                }
+            }
+        }
     }
 }
