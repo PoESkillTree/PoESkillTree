@@ -604,6 +604,14 @@ namespace POESKillTree.Controls
 
         private void control_DragOver(object sender, DragEventArgs e)
         {
+            if (e.Source != this)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+
+
             var pos = e.GetPosition(gcontent).Y;
             if (pos > gcontent.ActualHeight - GridSize / 3)
             {
@@ -677,6 +685,13 @@ namespace POESKillTree.Controls
 
         private void gcontent_Drop(object sender, DragEventArgs e)
         {
+            if (e.Source != this)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+
             if ((e.AllowedEffects & DragDropEffects.Move) != 0)
             {
 
@@ -740,6 +755,13 @@ namespace POESKillTree.Controls
 
         private void gcontent_DragLeave(object sender, DragEventArgs e)
         {
+            if (e.Source != this)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+
             if (_dndVis != null)
                 _dndVis.Visibility = Visibility.Collapsed;
 
@@ -749,6 +771,15 @@ namespace POESKillTree.Controls
 
         private void gcontent_DragEnter(object sender, DragEventArgs e)
         {
+
+            if (e.Source != this)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+
+
             if (_dndVis != null)
                 _dndVis.Visibility = Visibility.Visible;
 
@@ -766,7 +797,6 @@ namespace POESKillTree.Controls
 
         private void Button_AddBookmark(object sender, RoutedEventArgs e)
         {
-            int bfr;
             var picker = new TabPicker() { Owner = Window.GetWindow(this) };
             var ret = picker.ShowDialog();
             if (ret == true && !picker.Delete)
@@ -941,12 +971,16 @@ namespace POESKillTree.Controls
                 var vis = menu.PlacementTarget as ItemVisualizer;
                 if (vis != null)
                 {
-                    Items.Remove(vis.Item);
-
-                    NewlyAddedRanges.Clear();
-                    ResizeScrollbarThumb();
+                    RemoveItem(vis.Item);
                 }
             }
+        }
+
+        internal void RemoveItem(Item item)
+        {
+            Items.Remove(item);
+            NewlyAddedRanges.Clear();
+            ResizeScrollbarThumb();
         }
     }
 }

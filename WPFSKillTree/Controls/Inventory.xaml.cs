@@ -119,5 +119,10 @@ namespace POESKillTree.Controls
                 }
             }
         }
+
+        private void iv_mouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragDrop.DoDragDrop(this, sender, DragDropEffects.Link | DragDropEffects.Move);
+        }
     }
 }

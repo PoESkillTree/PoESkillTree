@@ -39,7 +39,6 @@ using MessageBox = POESKillTree.Views.MetroMessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using ToolTip = System.Windows.Controls.ToolTip;
 using POESKillTree.ViewModels.Items;
-using POESKillTree.Utils;
 
 using Path = System.IO.Path;
 
@@ -1960,6 +1959,36 @@ namespace POESKillTree.Views
 
                 Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.H });
                 Stash.asBar.Value = item.Y;
+            }
+        }
+
+        private void deleteRect_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            {
+                e.Effects = DragDropEffects.Move;
+                e.Handled = true;
+            }
+        }
+
+        private void deleteRect_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            {
+                e.Effects = DragDropEffects.Move;
+
+                var d = e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer;
+
+                var st = d.FindAnchestor<Stash>();
+                if (st != null)
+                {
+                    st.RemoveItem(d.Item);
+                }
+                else
+                {
+                    d.Item = null;
+                }
+               
             }
         }
     }
