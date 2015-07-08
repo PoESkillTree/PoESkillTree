@@ -543,7 +543,7 @@ namespace POESKillTree.Controls
 
         private void control_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Source != this)
+            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this)
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
@@ -624,7 +624,7 @@ namespace POESKillTree.Controls
 
         private void gcontent_Drop(object sender, DragEventArgs e)
         {
-            if (e.Source != this)
+            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this)
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
