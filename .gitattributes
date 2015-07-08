@@ -65,6 +65,17 @@
 ###############################################################################
 # Project specific line ending normalization.
 ###############################################################################
+*.isl text eol=crlf
+*.islu text eol=crlf
 *.po text eol=lf
 *.pot text eol=lf
 Items.xml text eol=lf
+# VS editors and generators create files with CR/LF
+*.cs text eol=crlf
+*.csproj text eol=crlf
+*.manifest text eol=crlf
+*.manifest.i text eol=crlf
+*.resx text eol=crlf
+*.settings text eol=crlf
+*.sln text eol=crlf
+*.xaml text eol=crlf
