@@ -1,7 +1,7 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-* text=auto
+* text=unset
 
 ###############################################################################
 # Set default behavior for command prompt diff.
@@ -79,3 +79,4 @@ Items.xml text eol=lf
 *.settings text eol=crlf
 *.sln text eol=crlf
 *.xaml text eol=crlf
+.gitattributes text eol=lf
