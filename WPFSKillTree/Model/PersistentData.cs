@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
-using MB.Algodat;
 using POESKillTree.Controls;
 using POESKillTree.Utils;
 
@@ -96,7 +95,7 @@ namespace POESKillTree.Model
                     arr.Add(item.JSONBase);
                 }
 
-                File.WriteAllText("stash.json", arr.ToString());
+                File.WriteAllText(Path.Combine(AppData.GetFolder(), "stash.json"), arr.ToString());
             }
             catch
             { }
@@ -107,9 +106,10 @@ namespace POESKillTree.Model
             try
             {
                 StashItems.Clear();
-                if (!File.Exists("stash.json"))
+                var file = Path.Combine(AppData.GetFolder(), "stash.json");
+                if (!File.Exists(file))
                     return;
-                var arr = JArray.Parse(File.ReadAllText("stash.json"));
+                var arr = JArray.Parse(File.ReadAllText(file));
                 foreach (var item in arr)
                 {
                     var itm = new Item((JObject)item);
