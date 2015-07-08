@@ -228,6 +228,9 @@
     <Compile Include="Views\CraftWindow.xaml.cs">
       <DependentUpon>CraftWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DownloadStashWindow.xaml.cs">
+      <DependentUpon>DownloadStashWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
@@ -295,6 +298,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CraftWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DownloadStashWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

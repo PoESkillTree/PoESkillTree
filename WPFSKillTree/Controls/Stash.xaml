@@ -141,7 +141,6 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Click="Button_load_Click" Content="load" RenderTransformOrigin="0.5,0.5"/>
             <TextBox x:Name="tbSearch" Grid.Column="1" TextChanged="tbSearch_TextChanged"/>
         </Grid>
 

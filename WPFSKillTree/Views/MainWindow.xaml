@@ -406,6 +406,14 @@
                         <ContentControl Template="{StaticResource DownloadIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Click="Menu_ImportStash">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Download &amp; Import Stash"/>
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource DownloadIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Click="Menu_SkillHighlightedNodes">
                     <MenuItem.Header>
                         <l:Catalog Message="Skill _Highlighted Nodes" />

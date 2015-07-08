@@ -237,6 +237,21 @@ namespace POESKillTree.Controls
             }
         }
 
+        internal void BeginUpdate()
+        {
+            _supressrebuild = true;
+        }
+
+
+        internal void EndUpdate()
+        {
+            NewlyAddedRanges.Clear();
+            _supressrebuild = false;
+            _StashRange.Rebuild();
+            ResizeScrollbarThumb();
+        }
+
+
         private void R_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Rectangle r = sender as Rectangle;
@@ -342,82 +357,6 @@ namespace POESKillTree.Controls
         private void bookmarks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged("LastLine");
-        }
-
-        private void Button_load_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                OpenFileDialog of = new OpenFileDialog();
-                if (of.ShowDialog() == true)
-                {
-                    _supressrebuild = true;
-                    var data = File.ReadAllText(of.FileName);
-
-                    var json = JObject.Parse(data);
-                    var items = (json["items"] as JArray).Select(i => new Item((JObject)i));
-
-                    //get free line
-                    var y = LastOccupiedLine + 3;
-                    var fittingitems = items.Where(i => i.X >= 0 && i.X + i.W <= 12).ToList();
-
-                    StashBookmark sb = new StashBookmark("imported", y);
-                    AddBookmark(sb);
-                    var my = fittingitems.Min(i => i.Y);
-                    var y2 = y;
-                    var unfittingitems = items.Where(i => i.X < 0 || i.X + i.W > 12);
-                    foreach (var item in items)
-                    {
-                        item.Y += y - my;
-                        Items.Add(item);
-                        if (y2 < item.Y + item.H)
-                            y2 = item.Y + item.H;
-                    }
-
-
-                    int x = 0;
-                    int maxh = 0;
-                    var y3 = y2;
-                    foreach (var item in unfittingitems)
-                    {
-                        if (x + item.W > 12) //next line
-                        {
-                            x = 0;
-                            y2 += maxh;
-                            maxh = 0;
-                        }
-
-                        item.X = x;
-                        x += item.W;
-
-                        if (maxh < item.H)
-                            maxh = item.H;
-
-                        item.Y = y2;
-                        Items.Add(item);
-
-                        if (y3 < item.Y + item.H)
-                            y3 = item.Y + item.H;
-                    }
-
-                    NewlyAddedRanges.Clear();
-                    AddHighlightRange(new IntRange() { From = y, Range = y3 - y });
-
-                    _supressrebuild = false;
-                    _StashRange.Rebuild();
-
-                    ResizeScrollbarThumb();
-                }
-
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                _supressrebuild = false;
-            }
         }
 
         public void AddItems(IEnumerable<Item> items, string tabname = null)
@@ -806,7 +745,7 @@ namespace POESKillTree.Controls
             }
         }
 
-        private void AddBookmark(StashBookmark stashBookmark)
+        public void AddBookmark(StashBookmark stashBookmark)
         {
             Bookmarks.Insert(findbpos(stashBookmark.Position, 0, Bookmarks.Count), stashBookmark);
         }

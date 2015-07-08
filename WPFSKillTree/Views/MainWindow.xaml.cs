@@ -2007,5 +2007,13 @@ namespace POESKillTree.Views
                 deleteRect.Opacity = 0.0;
             }
         }
+
+        private void Menu_ImportStash(object sender, RoutedEventArgs e)
+        {
+            var diw = new DownloadStashWindow(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.League) { Owner = this };
+            diw.ShowDialog();
+            _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
+            _persistentData.CurrentBuild.League = diw.GetAccountName();
+        }
     }
 }
