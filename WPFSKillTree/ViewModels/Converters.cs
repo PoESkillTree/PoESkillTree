@@ -13,6 +13,7 @@ using POESKillTree.ViewModels.Items;
 using System.Diagnostics;
 using System.Reflection;
 using System.Resources;
+using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels
 {
@@ -190,7 +191,7 @@ namespace POESKillTree.ViewModels
                 if (!TypeCache.TryGetValue(ibase, out img))
                 {
                     //default
-                    var imgfile = new FileInfo(Path.Combine("./Data/Equipment/Assets/", ibase + ".png"));
+                    var imgfile = new FileInfo(Path.Combine(AppData.GetFolder(@"Data\Equipment\Assets"), ibase + ".png"));
 
                     if (imgfile.Exists)
                     {
