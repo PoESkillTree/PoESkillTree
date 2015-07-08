@@ -15,13 +15,13 @@ namespace POESKillTree.SkillTreeFiles
         {
             Name = name;
             URL = url;
-            if (!File.Exists("Data\\Assets\\" + Name + ".png"))
+            if (!File.Exists(SkillTree.AssetsFolderPath + Name + ".png"))
             {
                 var webClient = new WebClient();
-                webClient.DownloadFile(URL, "Data\\Assets\\" + Name + ".png");
+                webClient.DownloadFile(URL, SkillTree.AssetsFolderPath + Name + ".png");
             }
 
-            PImage = ImageHelper.OnLoadBitmapImage(new Uri("Data\\Assets\\" + Name + ".png", UriKind.Relative));
+            PImage = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree.AssetsFolderPath + Name + ".png", UriKind.Absolute));
         }
     }
 }

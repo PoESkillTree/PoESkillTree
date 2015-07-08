@@ -3,8 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Serialization;
-using POESKillTree.ViewModels;
 using System.ComponentModel;
+using POESKillTree.ViewModels;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
@@ -25,19 +26,34 @@ namespace POESKillTree.Model
             Builds = new List<PoEBuild>();
         }
 
+        // Creates empty file with language option set.
+        public static void CreateSetupTemplate(string path, string language)
+        {
+            PersistentData data = new PersistentData();
+            data.Options.Language = language;
+            data.SavePersistentDataToFileEx(Path.Combine(path, "PersistentData.xml"));
+        }
+
         public void SavePersistentDataToFile()
         {
+            SavePersistentDataToFileEx(AppData.GetFolder(true) + "PersistentData.xml");
+        }
+
+        public void SavePersistentDataToFileEx(string path)
+        {
             var writer = new XmlSerializer(typeof (PersistentData));
-            var file = new StreamWriter(@"PersistentData.xml");
+            var file = new StreamWriter(path, false, System.Text.Encoding.UTF8);
             writer.Serialize(file, this);
             file.Close();
         }
 
         public void LoadPersistentDataFromFile()
         {
-            if (File.Exists("PersistentData.xml"))
+            string filePath = AppData.GetFolder(true) + "PersistentData.xml";
+
+            if (File.Exists(filePath))
             {
-                var reader = new StreamReader(@"PersistentData.xml");
+                var reader = new StreamReader(filePath);
                 var ser = new XmlSerializer(typeof (PersistentData));
                 var obj = (PersistentData)ser.Deserialize(reader);
                 Options = obj.Options;
@@ -48,10 +64,9 @@ namespace POESKillTree.Model
             }
         }
 
-        public void SaveBuilds(ItemCollection items)
+        public void SetBuilds(ItemCollection items)
         {
             Builds = (from PoEBuild item in items select item).ToList();
-            SavePersistentDataToFile();
         }
 
         private void OnPropertyChanged(string caller)

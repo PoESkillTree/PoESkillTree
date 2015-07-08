@@ -117,12 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppId" xml:space="preserve">
+    <value>{8B7A6A22-B6BB-40BB-856E-E0D1BB66DFB2}</value>
+    <comment>The application identifier also used as AppUserModelId and running application instance Mutex. Change only when release is not an update of previous release, but should be installed alongside it.</comment>
+  </data>
+  <data name="AssemblyCompany" xml:space="preserve">
+    <value>PoESkillTree Team</value>
+    <comment>The name of company or community group providing this product.</comment>
+  </data>
+  <data name="AssemblyCopyright" xml:space="preserve">
+    <value>Copyright © 2012-2015 PoESkillTree Team</value>
+    <comment>The assymbly copyright also used as setup package copyright.</comment>
+  </data>
+  <data name="AssemblyDescription" xml:space="preserve">
+    <value>Passive skill tree planner for Path of Exile®</value>
+    <comment>The assembly description also used as product description.</comment>
+  </data>
   <data name="AssemblyVersion" xml:space="preserve">
     <value>2.0.0.0</value>
-    <comment>Assembly version used by CLR to resolve dependencies. Change only when public API has changed and all client assemblies has to be recompiled.</comment>
+    <comment>The assembly version used by CLR to resolve dependencies. Change only when public API has changed and all client assemblies has to be recompiled.</comment>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>PoESkillTree</value>
+    <comment>The product name also used as name of Program Files group, Application Data folder, Start Menu group and Desktop shortcut. Change only when AppId is changed.</comment>
+  </data>
+  <data name="ProductURL" xml:space="preserve">
+    <value>https://github.com/EmmittJ/PoESkillTree</value>
+    <comment>The URL of product website.</comment>
   </data>
   <data name="ProductVersion" xml:space="preserve">
     <value>2.1.3</value>
-    <comment>Application version identical to Git release tag. Change each release.</comment>
+    <comment>The application version identical to Git release tag. Change each release.</comment>
   </data>
 </root>
