@@ -543,7 +543,6 @@
                 <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Left" Margin="70,0,0,0">
                     <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" />
                     <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Margin="5,0,0,0" Style="{StaticResource {x:Type ToggleButton}}"/>
-                    <Button Click="Button_Craft_Click">CRAFT</Button>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -570,6 +569,9 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
+                        <Button  Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">Craft new Item</Button>
+
+
                         <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
 
                         <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
