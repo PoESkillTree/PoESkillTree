@@ -25,8 +25,23 @@ namespace POESKillTree.Localization.XAML
      *        ...
      *    </MenuItem>
      */
+    [ContentProperty("Message")]
+    [MarkupExtensionReturnType(typeof(string))]
     public class Catalog : MarkupExtension
     {
+        /// <summary>
+        /// empty contructor is required for specifying all properties manually
+        /// </summary>
+        public Catalog()
+        {
+
+        }
+
+        public Catalog(string message)
+        {
+            this.Message = message;
+        }
+
         // The translation context.
         public string Context { get; set; }
         // The message to translate.
