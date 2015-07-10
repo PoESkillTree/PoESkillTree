@@ -5,10 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     Width="500" WindowStartupLocation="CenterOwner"
-    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" Loaded="MetroWindow_Loaded" Name="window">
-    <controls:MetroWindow.Title>
-        <l:Catalog Message="Download &amp; Import Stash"/>
-    </controls:MetroWindow.Title>
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" Loaded="MetroWindow_Loaded" Name="window"
+    Title="{l:Catalog 'Download &amp; Import Stash'}">
     <StackPanel Background="{DynamicResource WhiteColorBrush}">
         <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Margin="15">
             <l:Catalog Message="Please enter Account Name and league below and click on 'Open in Browser'."/><LineBreak/>

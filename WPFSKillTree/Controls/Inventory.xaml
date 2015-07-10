@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cont="clr-namespace:POESKillTree.Controls"
              xmlns:item="clr-namespace:POESKillTree.ViewModels.Items"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              mc:Ignorable="d" 
              x:Name="control"
              Width="600" Height="521" Loaded="control_Loaded">
@@ -24,7 +25,7 @@
             </Style.Triggers>
         </Style>
         <ContextMenu x:Key="itemContextMenu">
-            <MenuItem Header="Delete" Click="MenuItem_Delete_Click" />
+            <MenuItem Header="{l:Catalog 'Delete'}" Click="MenuItem_Delete_Click" />
         </ContextMenu>
     </Control.Resources>
     <Grid>
@@ -33,7 +34,7 @@
                 <Grid.Background>
                     <ImageBrush ImageSource="/POESKillTree;component/Images/EquipmentUI/Inventory.png" Stretch="Uniform"/>
                 </Grid.Background>
-                <TextBlock HorizontalAlignment="Center" FontSize="48" FontWeight="Bold" VerticalAlignment="Top" Foreground="Gray">Inventory</TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="48" FontWeight="Bold" VerticalAlignment="Top" Foreground="Gray" Text="{l:Catalog 'Inventory'}" />
                 <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="252,206,254,175" x:Name="Armor" Tag="{x:Static item:ItemSlot.Armor}" Item="{Binding ItemAttributes.Armor,ElementName=control,Mode=TwoWay}"/>
                 <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="66,111,441,222" x:Name="MainHand" Tag="{x:Static item:ItemSlot.MainHand}" Item="{Binding ItemAttributes.MainHand,ElementName=control,Mode=TwoWay}"/>
                 <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="438,111,69,222" x:Name="OffHand" Tag="{x:Static item:ItemSlot.OffHand}" Item="{Binding ItemAttributes.OffHand,ElementName=control,Mode=TwoWay}" />

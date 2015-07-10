@@ -6,6 +6,7 @@
              xmlns:cont="clr-namespace:POESKillTree.Controls"
              xmlns:items ="clr-namespace:POESKillTree.ViewModels.Items"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:WpfRangeControls="clr-namespace:WpfRangeControls;assembly=WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="POESKillTree.Controls.Stash"
              mc:Ignorable="d" 
              d:DesignHeight="351"
@@ -18,7 +19,7 @@
             <CollectionContainer Collection="{Binding NewlyAddedRanges, Source={x:Reference Name=control}}"/>
         </CompositeCollection>
         <ContextMenu x:Key="itemContextMenu">
-            <MenuItem Header="Delete" Click="MenuItem_Delete_Click" />
+            <MenuItem Header="{l:Catalog 'Delete'}" Click="MenuItem_Delete_Click" />
         </ContextMenu>
         <CompositeCollection x:Key="stashTabsCollection">
             <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>

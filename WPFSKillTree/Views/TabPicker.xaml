@@ -9,7 +9,7 @@
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Title="Stash Bookmark" Name="window" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        Title="{l:Catalog 'Stash Bookmark'}" Name="window" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -20,7 +20,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Label Margin="0,0,4,0">Name</Label>
+        <Label Margin="0,0,4,0" Content="{l:Catalog 'Name'}"/>
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Text,ElementName=window}"/>
         <Border Padding="2" Background="#383838" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal">
@@ -93,8 +93,8 @@
                     <ColumnDefinition Width="4"/>
                     <ColumnDefinition MinWidth="80" Width="auto" SharedSizeGroup="bw"/>
                 </Grid.ColumnDefinitions>
-                <Button IsDefault="True" Grid.Column="1" Click="Button_Delete_Click">Delete</Button>
-                <Button Grid.Column="3" Click="Button_OK_Click">OK</Button>
+                <Button IsDefault="True" Grid.Column="1" Click="Button_Delete_Click" Content="{l:Catalog 'Delete'}"/>
+                <Button Grid.Column="3" Click="Button_OK_Click" Content="{l:Catalog 'OK'}"/>
             </Grid>
         </Border>
 

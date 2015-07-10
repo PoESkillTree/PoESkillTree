@@ -604,19 +604,19 @@
                         </Style.Setters>
                     </Style>
                 </TabControl.ItemContainerStyle>
-                <TabItem IsSelected="True" Header="PASSIVE TREE" Name="tyPAssiveTree">
+                <TabItem IsSelected="True" Header="{l:Catalog 'PASSIVE TREE'}" Name="tyPAssiveTree">
                     <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
                         <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </local:ZoomBorder>
                 </TabItem>
-                <TabItem Header="EQUIPMENT" Name="tyEquipment">
+                <TabItem Header="{l:Catalog 'EQUIPMENT'}" Name="tyEquipment">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
-                        <Button  Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">Craft new Item</Button>
+                        <Button  Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40" Content="{l:Catalog 'Craft new item'}" />
 
 
                         <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
