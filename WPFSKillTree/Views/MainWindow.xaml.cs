@@ -929,6 +929,10 @@ namespace POESKillTree.Views
 
             if (node != null && node.Attributes.Count != 0)
             {
+                if (node.IsJewelSocket)
+                {
+                    Tree.DrawJewelHighlight(node);
+                }
                 if (Tree.SkilledNodes.Contains(node.Id))
                 {
                     _toRemove = Tree.ForceRefundNodePreview(node.Id);
@@ -969,6 +973,7 @@ namespace POESKillTree.Views
                 if (Tree != null)
                 {
                     Tree.ClearPath();
+                    Tree.ClearJewelHighlight();
                 }
             }
         }

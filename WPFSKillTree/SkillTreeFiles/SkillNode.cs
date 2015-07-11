@@ -21,6 +21,7 @@ namespace POESKillTree.SkillTreeFiles
         public bool IsKeyStone; //"ks": false,
         public bool IsNotable; // not": false,
         public bool IsMastery; // m: false,
+        public bool IsJewelSocket; //comes from name
         public List<int> LinkId = new List<int>(); // "out": []
         public string Name; //"dn": "Block Recovery",
         public int Orbit; //  "o": 1,
