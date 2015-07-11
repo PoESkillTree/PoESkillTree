@@ -216,3 +216,12 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+*.suo
+
+# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+bin
+obj
+
+# mstest test results
+TestResults

@@ -714,10 +714,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public void DrawJewelHighlight(SkillNode node)
         {
-            var smallRadiusPen = new Pen(Brushes.Lime, 5);
-            var mediumRadiusPen = new Pen(Brushes.Yellow, 5);
-            var largeRadiusPen = new Pen(Brushes.Cyan, 5);
-            var radiusPen = new Pen(Brushes.Cyan, 5);
+            var radiusPen = new Pen(Brushes.Cyan, 10);
             
             using (DrawingContext dc = picJewelHighlight.RenderOpen())
             {
