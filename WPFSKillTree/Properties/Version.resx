@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppId" xml:space="preserve">
-    <value>{8B7A6A22-B6BB-40BB-856E-E0D1BB66DFB2}</value>
+    <value>{B5012C21-ECA4-41AF-ABD1-F549D019B7A9}</value>
     <comment>The application identifier also used as AppUserModelId and running application instance Mutex. Change only when release is not an update of previous release, but should be installed alongside it.</comment>
   </data>
   <data name="AssemblyCompany" xml:space="preserve">
@@ -146,7 +146,7 @@
     <comment>The URL of product website.</comment>
   </data>
   <data name="ProductVersion" xml:space="preserve">
-    <value>2.1.3</value>
+    <value>2.2.0</value>
     <comment>The application version identical to Git release tag. Change each release.</comment>
   </data>
 </root>
