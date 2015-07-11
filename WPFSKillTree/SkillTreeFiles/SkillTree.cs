@@ -763,11 +763,11 @@ namespace POESKillTree.SkillTreeFiles
 
         /// <summary>
         /// Changes the HighlightState of the node:
-        /// None -> FromNode -> Crossed -> None -> ...
-        /// (preserves other HighlightStates than FromNode and Crossed)
+        /// None -> Checked -> Crossed -> None -> ...
+        /// (preserves other HighlightStates than Checked and Crossed)
         /// </summary>
         /// <param name="node">Node to change the HighlightState for</param>
-        public void CycleNodeHighlightForward(SkillNode node)
+        public void CycleNodeTagForward(SkillNode node)
         {
             if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Checked))
             {
@@ -787,11 +787,11 @@ namespace POESKillTree.SkillTreeFiles
 
         /// <summary>
         /// Changes the HighlightState of the node:
-        /// ... <- None <- FromNode <- Crossed <- None
-        /// (preserves other HighlightStates than FromNode and Crossed)
+        /// ... <- None <- Checked <- Crossed <- None
+        /// (preserves other HighlightStates than Checked and Crossed)
         /// </summary>
         /// <param name="node">Node to change the HighlightState for</param>
-        public void CycleNodeHighlightBackward(SkillNode node)
+        public void CycleNodeTagBackward(SkillNode node)
         {
             if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Crossed))
             {

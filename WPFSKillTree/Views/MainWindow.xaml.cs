@@ -893,12 +893,12 @@ namespace POESKillTree.Views
                         if (System.Windows.Forms.Control.ModifierKeys.HasFlag(System.Windows.Forms.Keys.Shift))
                         {
                             // Backward on shift+RMB
-                            Tree.CycleNodeHighlightBackward(node);
+                            Tree.CycleNodeTagBackward(node);
                         }
                         else
                         {
                             // Forward on RMB
-                            Tree.CycleNodeHighlightForward(node);
+                            Tree.CycleNodeTagForward(node);
                         }
                         e.Handled = true;
                     }
