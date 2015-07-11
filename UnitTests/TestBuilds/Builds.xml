@@ -7,10 +7,10 @@
     <BuildFile>init\Arc-Barrage-45p.json</BuildFile>
     <ExpectDefence>
       Character
-      Life: 1300
+      Life: 1294
       Mana: 847
       Maximum Energy Shield: 1487
-      Strength: 83
+      Strength: 73
       Dexterity: 98
       Intelligence: 242
 

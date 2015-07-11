@@ -37,10 +37,10 @@ using System.Windows;
 )]
 
 // Updated by release.xml. DO NOT MODIFY!
-[assembly: AssemblyDescription("An unofficial offline Skill tree planner")]
+[assembly: AssemblyDescription("Passive skill tree planner for Path of Exile®")]
 [assembly: AssemblyCompany("PoESkillTree Team")]
-[assembly: AssemblyProduct("PoESkillTree")]
+[assembly: AssemblyProduct("PoESkillTree - The Awakening")]
 [assembly: AssemblyCopyright("Copyright © 2012-2015 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.1.3.418")]
-[assembly: AssemblyInformationalVersion("2.1.3")]
+[assembly: AssemblyFileVersion("2.2.0.601")]
+[assembly: AssemblyInformationalVersion("2.2.0")]
