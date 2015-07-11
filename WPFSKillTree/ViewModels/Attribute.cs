@@ -1,6 +1,6 @@
 namespace POESKillTree.ViewModels
 {
-    internal class Attribute
+    public class Attribute
     {
         public string Text { get; set; }
         public float[] Deltas { get; set; }

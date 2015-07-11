@@ -7,6 +7,8 @@
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
+        xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
+    
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
@@ -146,6 +148,46 @@
                 <Path Width="11.3333" Height="15.3333" Canvas.Left="3.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
                       Data="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z "/>
             </Canvas>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="TabHeaderControlTemplate" TargetType="{x:Type RadioButton}">
+            <Grid>
+                <Border x:Name="Background" BorderThickness="2,2,2,0" CornerRadius="3,3,0,0" Background="{DynamicResource WhiteBrush}" BorderBrush="{TemplateBinding BorderBrush}"/>
+                <Rectangle x:Name="DisabledVisualElement" Fill="{DynamicResource WhiteBrush}" IsHitTestVisible="False" Opacity="0" RadiusY="3" RadiusX="3"/>
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="BorderThickness" TargetName="Background" Value="2,2,2,0"/>
+                    <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush2}"/>
+                    <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource GrayBrush5}"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="IsChecked" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush8}"/>
+                </MultiTrigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="IsChecked" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush3}"/>
+                </MultiTrigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush7}"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderThickness" TargetName="Background" Value="2,2,2,0"/>
+                    <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource ButtonMouseOverBorderBrush}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="0.7"/>
+                    <Setter Property="Opacity" TargetName="contentPresenter" Value="0.3"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
     <Grid Margin="0">
@@ -404,6 +446,14 @@
                         <ContentControl Template="{StaticResource DownloadIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Click="Menu_ImportStash">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Download &amp; Import Stash"/>
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource DownloadIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Click="Menu_SkillHighlightedNodes">
                     <MenuItem.Header>
                         <l:Catalog Message="Skill _Highlighted Nodes" />
@@ -445,6 +495,12 @@
                     <MenuItem.Header>
                         <l:Catalog Message="_Redownload Skill Tree Assets" />
                     </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource RedownloadIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="_Redownload Item Assets" Click="Menu_RedownloadItemAssets">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource RedownloadIcon}" />
                     </MenuItem.Icon>
@@ -504,31 +560,76 @@
         </Menu>
 
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
-        <Grid x:Name="BtnGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Width="314" Panel.ZIndex="99" >
-            <Label Content="Level:" Height="28" HorizontalAlignment="Left" Margin="0" x:Name="lblLevel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
-            <TextBox HorizontalAlignment="Left" Margin="40,0,0,0" x:Name="tbLevel" VerticalAlignment="Top" Width="32" TextChanged="tbLevel_TextChanged" MaxLength="3" VerticalContentAlignment="Center" />
-            <ComboBox Height="26" HorizontalAlignment="Left" Margin="80,0,0,0" x:Name="cbCharType" VerticalAlignment="Top" Width="100" SelectionChanged="cbCharType_SelectionChanged" VerticalContentAlignment="Center">
-                <ComboBoxItem Content="Scion" Name="Scion"/>
-                <ComboBoxItem Content="Marauder" Name="Marauder"/>
-                <ComboBoxItem Content="Ranger" Name="Ranger"/>
-                <ComboBoxItem Content="Witch" Name="Witch" IsSelected="True" />
-                <ComboBoxItem Content="Duelist" Name="Duelist"/>
-                <ComboBoxItem Content="Templar" Name="Templar" />
-                <ComboBoxItem Content="Shadow" Name="Shadow"/>
-            </ComboBox>
-            <Label Content="Used:" Height="26" HorizontalAlignment="Left" Margin="182,0,0,0" x:Name="lblUsedPoints" VerticalAlignment="Top" VerticalContentAlignment="Center" />
-            <TextBox Height="26" Margin="218,0,0,0" x:Name="tbUsedPoints" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="32"/>
+        <Grid x:Name="BtnGrid" Grid.Row="1" HorizontalAlignment="Stretch" Panel.ZIndex="99" VerticalAlignment="Center">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <Label Content="Level:" x:Name="lblLevel" />
+                    <TextBox Margin="5,0,0,0" x:Name="tbLevel" TextChanged="tbLevel_TextChanged" MaxLength="3" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                    <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged">
+                        <ComboBoxItem Content="Scion" Name="Scion"/>
+                        <ComboBoxItem Content="Marauder" Name="Marauder"/>
+                        <ComboBoxItem Content="Ranger" Name="Ranger"/>
+                        <ComboBoxItem Content="Witch" Name="Witch" IsSelected="True" />
+                        <ComboBoxItem Content="Duelist" Name="Duelist"/>
+                        <ComboBoxItem Content="Templar" Name="Templar" />
+                        <ComboBoxItem Content="Shadow" Name="Shadow"/>
+                    </ComboBox>
+                    <Label Content="Used:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
+                    <TextBox Margin="5,0,0,0" x:Name="tbUsedPoints" IsReadOnly="True" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0">
+                        <l:Catalog Message="Reset"/>
+                    </Button>
+                </StackPanel>
 
-            <Button Height="26" HorizontalAlignment="Right" x:Name="btnReset" VerticalAlignment="Top" Width="60" Click="btnReset_Click" VerticalContentAlignment="Center" Margin="0,0,0,0">
-                <l:Catalog Message="Reset"/>
-            </Button>
+                <Grid Grid.Column="2" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="{Binding ActualWidth,ElementName=expSavedBuilds}"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0">
+                        <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}"/>
+                        <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
         </Grid>
-        <!-- grid row 1 - center part, tree and shit -->
-        <Grid Grid.Row="2" Margin="0,0,0,0">
-            <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
-                <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </local:ZoomBorder>
+        <!-- grid row 1 - center part, tree and editors -->
 
+        <Grid Grid.Row="2">
+            <TabControl Background="Transparent" Name="tcMainArea">
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="TabItem">
+                        <Style.Setters>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Style.Setters>
+                    </Style>
+                </TabControl.ItemContainerStyle>
+                <TabItem IsSelected="True" Header="{l:Catalog 'PASSIVE TREE'}" Name="tyPAssiveTree">
+                    <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
+                        <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </local:ZoomBorder>
+                </TabItem>
+                <TabItem Header="{l:Catalog 'EQUIPMENT'}" Name="tyEquipment">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
+                        <Button  Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40" Content="{l:Catalog 'Craft new item'}" />
+
+
+                        <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
+
+                        <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
+                    </Grid>
+                </TabItem>
+            </TabControl>
 
             <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
@@ -645,7 +746,7 @@
                                 <l:Catalog Message="Item Attributes"/>
                             </TabItem.Header>
                             <Grid>
-                                <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Attributes, ElementName=window, Mode=OneWay}"  Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel>
@@ -668,6 +769,20 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.GroupStyle>
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
+                                    </ListBox.GroupStyle>
+                                </ListBox>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="ItemList" Margin="0" controls:ControlsHelper.HeaderFontSize="15">
+                            <Grid>
+                                <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Equip, ElementName=window, Mode=OneWay}" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemList" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="items:Item">
+                                            <local:ItemTooltip Item="{Binding}"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
@@ -727,25 +842,35 @@
             </Expander>
 
         </Grid>
+
         <!-- grid row 2 - bottom part, search and tree -->
-        <TextBox Height="24" HorizontalAlignment="Right" x:Name="textBox1" VerticalAlignment="Bottom" Width="120" Grid.Row="2" Margin="0,0,0,66" Visibility="Hidden"/>
-        <TextBox Height="24" HorizontalAlignment="Right" x:Name="textBox2" VerticalAlignment="Bottom" Width="120" Grid.Row="2" Margin="0,0,0,36" Visibility="Hidden"/>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" >
+                <l:Catalog Message="Search:"/>
+            </Label>
 
-        <Label Height="28" HorizontalAlignment="Left" Margin="1,1,1,1" x:Name="label3" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="50" Grid.Row="3">
-            <l:Catalog Message="Search:"/>
-        </Label>
-        <TextBox Height="24" HorizontalAlignment="Left" Margin="60,2,2,2" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" Grid.Row="3" />
-        <CheckBox Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="352,1,1,1" x:Name="cbRegEx" VerticalAlignment="Bottom" Grid.Row="3" VerticalContentAlignment="Center" Click="cbRegEx_Click"/>
+            <TextBox Grid.Column="2" Height="24" HorizontalAlignment="Left" Margin="1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" />
+            <CheckBox Grid.Column="3" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="cbRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbRegEx_Click" />
 
-        <Label x:Name="lblSkillURL" HorizontalAlignment="Left" Margin="415,0,0,1" Height="28" VerticalAlignment="Bottom" Grid.Row="3" VerticalContentAlignment="Center">
-            <l:Catalog Message="Skill tree link:"/>
-        </Label>
-        <TextBox Height="24" Margin="500,0,100,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  
-                 VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" Grid.Row="3" />
+            <Label Grid.Column="4" x:Name="lblSkillURL" HorizontalAlignment="Left" Margin="1,1,4,1" Height="28" VerticalAlignment="Bottom" VerticalContentAlignment="Center" >
+                <l:Catalog Message="Skill tree link:"/>
+            </Label>
+            <TextBox Grid.Column="5" Height="24" Margin="1,0,2.854,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  
+                     VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" />
 
-        <Button Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" Width="95" Click="btnLoadBuild_Click" Margin="2,2,1,2" Grid.Row="3">
-            <l:Catalog Message="Load Tree"/>
-        </Button>
-
+            <Button Grid.Column="6" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2">
+                <l:Catalog Message="Load Tree"/>
+            </Button>
+        </Grid>
     </Grid>
 </controls:MetroWindow>

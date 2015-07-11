@@ -28,7 +28,6 @@ using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.ItemAttribute;
 using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
 using Clipboard = System.Windows.Clipboard;
@@ -41,15 +40,20 @@ using ListViewItem = System.Windows.Controls.ListViewItem;
 using MessageBox = POESKillTree.Views.MetroMessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using ToolTip = System.Windows.Controls.ToolTip;
+using POESKillTree.ViewModels.Items;
+
+using Path = System.IO.Path;
 
 namespace POESKillTree.Views
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
         private readonly PersistentData _persistentData = App.PersistentData;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public PersistentData PersistentData
         {
@@ -73,6 +77,19 @@ namespace POESKillTree.Views
         private RenderTargetBitmap _clipboardBmp;
 
         private ItemAttributes _itemAttributes;
+
+        public ItemAttributes ItemAttributes
+        {
+            get { return _itemAttributes; }
+            private set
+            {
+                _itemAttributes = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("ItemAttributes"));
+            }
+        }
+
+
         protected SkillTree Tree;
         private const string TreeAddress = "http://www.pathofexile.com/passive-skill-tree/";
         private Vector2D _addtransform;
@@ -129,6 +146,9 @@ namespace POESKillTree.Views
             _offenceCollection = new ListCollectionView(_offenceList);
             _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
             listBoxOffence.ItemsSource = _offenceCollection;
+
+            if (_persistentData.StashBookmarks != null)
+                Stash.Bookmarks = new System.Collections.ObjectModel.ObservableCollection<StashBookmark>(_persistentData.StashBookmarks);
 
             // Set theme & accent.
             SetTheme(_persistentData.Options.Theme);
@@ -235,6 +255,7 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
             _persistentData.CurrentBuild.Level = tbLevel.Text;
             _persistentData.SetBuilds(lvSavedBuilds.Items);
+            _persistentData.StashBookmarks = Stash.Bookmarks.ToList();
         }
 
         #endregion
@@ -243,15 +264,16 @@ namespace POESKillTree.Views
 
         private void StartLoadingWindow()
         {
-            _loadingWindow = new LoadingWindow();
+            _loadingWindow = new LoadingWindow() { Owner = this };
             _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
             _loadingWindow.Show();
         }
 
         private void UpdateLoadingWindow(double c, double max)
         {
-            _loadingWindow.progressBar1.Maximum = max;
-            _loadingWindow.progressBar1.Value = c;
+            _loadingWindow.MaxProgress = max;
+            _loadingWindow.Progress = c;
+            _loadingWindow.UpdateLayout();
             _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
             if (Equals(c, max))
                 Thread.Sleep(100);
@@ -932,8 +954,6 @@ namespace POESKillTree.Views
             Point p = e.GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
             v = v * _multransform + _addtransform;
-            textBox1.Text = "" + v.X;
-            textBox2.Text = "" + v.Y;
             SkillNode node = null;
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
@@ -1003,15 +1023,13 @@ namespace POESKillTree.Views
                 try
                 {
                     _persistentData.CurrentBuild.ItemData = itemData;
-                    _itemAttributes = new ItemAttributes(itemData);
-                    lbItemAttr.ItemsSource = _itemAttributes.Attributes;
+                    ItemAttributes = new ItemAttributes(itemData);
                     mnuClearItems.IsEnabled = true;
                 }
                 catch (Exception ex)
                 {
                     _persistentData.CurrentBuild.ItemData = "";
-                    _itemAttributes = null;
-                    lbItemAttr.ItemsSource = null;
+                    ItemAttributes = null;
                     ClearCurrentItemData();
                     Popup.Error(L10n.Message("An error occurred while attempting to load item data."), ex.Message);
                 }
@@ -1027,7 +1045,7 @@ namespace POESKillTree.Views
         public void ClearCurrentItemData()
         {
             _persistentData.CurrentBuild.ItemData = "";
-            _itemAttributes = null;
+            ItemAttributes = null;
             lbItemAttr.ItemsSource = null;
             UpdateUI();
             mnuClearItems.IsEnabled = false;
@@ -1347,7 +1365,7 @@ namespace POESKillTree.Views
         private void BeginDrag(MouseEventArgs e)
         {
             var listView = lvSavedBuilds;
-            var listViewItem = FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
+            var listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
 
             if (listViewItem == null)
                 return;
@@ -1395,7 +1413,7 @@ namespace POESKillTree.Views
             {
                 var name = e.Data.GetData("myFormat");
                 ListView listView = lvSavedBuilds;
-                ListViewItem listViewItem = FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
+                ListViewItem listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
 
                 if (listViewItem != null)
                 {
@@ -1444,22 +1462,6 @@ namespace POESKillTree.Views
                 _adorner.OffsetLeft = args.GetPosition(lvSavedBuilds).X - _dragAndDropStartPoint.X;
                 _adorner.OffsetTop = args.GetPosition(lvSavedBuilds).Y - _dragAndDropStartPoint.Y;
             }
-        }
-
-        // Helper to search up the VisualTree
-        private static T FindAnchestor<T>(DependencyObject current)
-            where T : DependencyObject
-        {
-            do
-            {
-                if (current is T)
-                {
-                    return (T)current;
-                }
-                current = VisualTreeHelper.GetParent(current);
-            }
-            while (current != null);
-            return null;
         }
 
         #endregion
@@ -1847,6 +1849,185 @@ namespace POESKillTree.Views
         private void ToggleTreeComparison_Click(object sender, RoutedEventArgs e)
         {
             lvSavedBuilds_SelectionChanged(null, null);
+        }
+
+        private void Menu_RedownloadItemAssets(object sender, RoutedEventArgs e)
+        {
+            string sMessageBoxText = L10n.Message("The existing Skill Item assets will be deleted and new assets will be downloaded.")
+                       + "\n\n" + L10n.Message("Do you want to continue?");
+
+            var rsltMessageBox = Popup.Ask(sMessageBoxText, MessageBoxImage.Warning);
+
+            string appDataPath = AppData.GetFolder(true);
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    if (Directory.Exists(Path.Combine(appDataPath, "Data")))
+                    {
+                        try
+                        {
+                            if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
+                                Directory.Delete("DataBackup", true);
+                            Directory.Move(Path.Combine(appDataPath, "Data"), Path.Combine(appDataPath, "DataBackup"));
+
+
+                            var bases = new List<ItemBase>();
+                            var images = new List<Tuple<string, string>>();
+
+                            StartLoadingWindow();
+                            UpdateLoadingWindow(0, 3);
+                            ItemAssetDownloader.ExtractJewelry(bases, images);
+                            UpdateLoadingWindow(1, 3);
+                            ItemAssetDownloader.ExtractArmors(bases, images);
+                            UpdateLoadingWindow(2, 3);
+                            ItemAssetDownloader.ExtractWeapons(bases, images);
+                            UpdateLoadingWindow(3, 3);
+
+                            new System.Xml.Linq.XElement("ItemBaseList", bases.Select(b => b.Serialize())).Save(Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Itemlist.xml"));
+
+                            var imgroups = images.GroupBy(t => t.Item2).ToArray();
+
+                            UpdateLoadingWindow(0, imgroups.Length);
+
+                            var dir = AppData.GetFolder(@"Data\Equipment\Assets");
+                            using (var client = new WebClient())
+                            {
+                                for (int i = 0; i < imgroups.Length; i++)
+                                {
+                                    using (var ms = new MemoryStream(client.DownloadData(imgroups[i].Key)))
+                                    {
+                                        PngBitmapDecoder dec = new PngBitmapDecoder(ms, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+
+                                        var image = dec.Frames[0];
+                                        var cropped = new CroppedBitmap(image, new Int32Rect(4, 4, image.PixelWidth - 8, image.PixelHeight - 8));
+                                        PngBitmapEncoder encoder = new PngBitmapEncoder();
+                                        encoder.Frames.Add(BitmapFrame.Create(cropped));
+
+                                        using (var m = new MemoryStream())
+                                        {
+                                            encoder.Save(m);
+
+                                            foreach (var item in imgroups[i])
+                                            {
+                                                using (var f = File.Create(Path.Combine(dir, item.Item1 + ".png")))
+                                                {
+                                                    m.Seek(0, SeekOrigin.Begin);
+                                                    m.CopyTo(f);
+                                                }
+
+                                            }
+                                        }
+
+                                        UpdateLoadingWindow(i + 1, imgroups.Length);
+                                    }
+                                }
+                            }
+
+
+                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
+
+                            foreach (var file in new DirectoryInfo(Path.Combine(appDataPath, @"DataBackup")).GetFiles())
+                                file.CopyTo(Path.Combine(Path.Combine(appDataPath, @"Data"), file.Name));
+
+                            File.Copy(Path.Combine(AppData.GetFolder(@"DataBackup\Equipment"), "Affixlist.xml"), Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Affixlist.xml"));
+
+                            if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
+                                Directory.Delete(Path.Combine(appDataPath, "DataBackup"), true);
+
+                            CloseLoadingWindow();
+                        }
+                        catch (Exception ex)
+                        {
+                            if (Directory.Exists(Path.Combine(appDataPath, "Data")))
+                                Directory.Delete(Path.Combine(appDataPath, "Data"), true);
+                            try
+                            {
+                                CloseLoadingWindow();
+                            }
+                            catch (Exception)
+                            {
+                                //Nothing
+                            }
+                            Directory.Move(Path.Combine(appDataPath, "DataBackup"), Path.Combine(appDataPath, "Data"));
+                            Popup.Error(L10n.Message("Error while downloading assets"));
+                        }
+                    }
+                    break;
+
+                case MessageBoxResult.No:
+                    //Do nothing
+                    break;
+            }
+        }
+
+        private void Button_Craft_Click(object sender, RoutedEventArgs e)
+        {
+            var w = new CraftWindow() { Owner = this };
+            if (w.ShowDialog() == true)
+            {
+                var item = w.Item;
+                if (PersistentData.StashItems.Count > 0)
+                    item.Y = PersistentData.StashItems.Max(i => i.Y + i.H);
+
+                Stash.Items.Add(item);
+
+                Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.H });
+                Stash.asBar.Value = item.Y;
+            }
+        }
+
+        private void deleteRect_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            {
+                e.Effects = DragDropEffects.Move;
+                e.Handled = true;
+            }
+        }
+
+        private void deleteRect_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            {
+                e.Effects = DragDropEffects.Move;
+
+                var d = e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer;
+
+                var st = d.FindAnchestor<Stash>();
+                if (st != null)
+                {
+                    st.RemoveItem(d.Item);
+                }
+                else
+                {
+                    d.Item = null;
+                }
+                deleteRect.Opacity = 0.0;
+            }
+        }
+
+        private void deleteRect_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            {
+                deleteRect.Opacity = 0.3;
+            }
+        }
+
+        private void deleteRect_DragLeave(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            {
+                deleteRect.Opacity = 0.0;
+            }
+        }
+
+        private void Menu_ImportStash(object sender, RoutedEventArgs e)
+        {
+            var diw = new DownloadStashWindow(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.League) { Owner = this };
+            diw.ShowDialog();
+            _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
+            _persistentData.CurrentBuild.League = diw.GetAccountName();
         }
     }
 }

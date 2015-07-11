@@ -8,8 +8,8 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
-using Raven.Json.Linq;
 using POESKillTree.Localization;
+using Newtonsoft.Json.Linq;
 using POESKillTree.Utils;
 
 namespace POESKillTree.SkillTreeFiles
@@ -256,23 +256,22 @@ namespace POESKillTree.SkillTreeFiles
             try
             {
                 string json = webClient.DownloadString(GitAPILatestReleaseURL);
-
-                RavenJArray releases = RavenJArray.Parse(json);
-                if (releases.Length < 1)
+                JArray releases = JArray.Parse(json);
+                if (releases.Count < 1)
                     throw new UpdaterException(L10n.Message("No release found"));
 
                 Version current = GetCurrentVersion(); // Current version (tag).
 
                 // Iterate thru avialable releases.
-                foreach (RavenJObject release in (RavenJArray)releases)
+                foreach (JObject release in (JArray)releases)
                 {
                     // Drafts are not returned by API, but just in case...
                     bool draft = release["draft"].Value<bool>();
                     if (draft) continue; // Ignore drafts.
 
                     // Check if there are assets attached.
-                    RavenJArray assets = (RavenJArray)release["assets"];
-                    if (assets.Length < 1) continue; // No assets, ignore it.
+                    JArray assets = (JArray)release["assets"];
+                    if (assets.Count < 1) continue; // No assets, ignore it.
 
                     // Compare release tag with our version (tag).
                     string tag = release["tag_name"].Value<string>();
@@ -291,8 +290,8 @@ namespace POESKillTree.SkillTreeFiles
 
                     // Find release package.
                     string fileName = null;
-                    RavenJObject pkgAsset = null;
-                    foreach (RavenJObject asset in assets)
+                    JObject pkgAsset = null;
+                    foreach (JObject asset in assets)
                     {
                         // Check if asset upload completed.
                         if (asset["state"].Value<string>() != "uploaded")
