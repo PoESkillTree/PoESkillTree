@@ -763,15 +763,15 @@ namespace POESKillTree.SkillTreeFiles
 
         /// <summary>
         /// Changes the HighlightState of the node:
-        /// None -> FromNode -> Crossed -> None -> ...
-        /// (preserves other HighlightStates than FromNode and Crossed)
+        /// None -> Checked -> Crossed -> None -> ...
+        /// (preserves other HighlightStates than Checked and Crossed)
         /// </summary>
         /// <param name="node">Node to change the HighlightState for</param>
-        public void CycleNodeHighlightForward(SkillNode node)
+        public void CycleNodeTagForward(SkillNode node)
         {
-            if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.FromNode))
+            if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Checked))
             {
-                _nodeHighlighter.UnhighlightNode(node, HighlightState.FromNode);
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.Checked);
                 _nodeHighlighter.HighlightNode(node, HighlightState.Crossed);
             } 
             else if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Crossed))
@@ -780,27 +780,27 @@ namespace POESKillTree.SkillTreeFiles
             }
             else
             {
-                _nodeHighlighter.HighlightNode(node, HighlightState.FromNode);
+                _nodeHighlighter.HighlightNode(node, HighlightState.Checked);
             }
             DrawHighlights(_nodeHighlighter);
         }
 
         /// <summary>
         /// Changes the HighlightState of the node:
-        /// ... <- None <- FromNode <- Crossed <- None
-        /// (preserves other HighlightStates than FromNode and Crossed)
+        /// ... <- None <- Checked <- Crossed <- None
+        /// (preserves other HighlightStates than Checked and Crossed)
         /// </summary>
         /// <param name="node">Node to change the HighlightState for</param>
-        public void CycleNodeHighlightBackward(SkillNode node)
+        public void CycleNodeTagBackward(SkillNode node)
         {
             if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Crossed))
             {
                 _nodeHighlighter.UnhighlightNode(node, HighlightState.Crossed);
-                _nodeHighlighter.HighlightNode(node, HighlightState.FromNode);
+                _nodeHighlighter.HighlightNode(node, HighlightState.Checked);
             }
-            else if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.FromNode))
+            else if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Checked))
             {
-                _nodeHighlighter.UnhighlightNode(node, HighlightState.FromNode);
+                _nodeHighlighter.UnhighlightNode(node, HighlightState.Checked);
             }
             else
             {
@@ -851,7 +851,25 @@ namespace POESKillTree.SkillTreeFiles
 
         public void UnhighlightAllNodes()
         {
-            _nodeHighlighter.UnhighlightAllNodes(HighlightState.All);
+            _nodeHighlighter.UnhighlightAllNodes(HighlightState.Highlights);
+        }
+
+        public void UntagAllNodes()
+        {
+            _nodeHighlighter.UnhighlightAllNodes(HighlightState.Tags);
+            DrawHighlights(_nodeHighlighter);
+        }
+
+        public void CheckAllHighlightedNodes()
+        {
+            _nodeHighlighter.HighlightNodesIf(HighlightState.Checked, HighlightState.Highlights);
+            DrawHighlights(_nodeHighlighter);
+        }
+
+        public void CrossAllHighlightedNodes()
+        {
+            _nodeHighlighter.HighlightNodesIf(HighlightState.Crossed, HighlightState.Highlights);
+            DrawHighlights(_nodeHighlighter);
         }
 
         public static Dictionary<string, List<float>> ImplicitAttributes(Dictionary<string, List<float>> attribs, int level)
@@ -968,7 +986,7 @@ namespace POESKillTree.SkillTreeFiles
             return TreeAddress + Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
-        public void SkillAllHighlightedNodes()
+        public void SkillAllTaggedNodes()
         {
             if (_nodeHighlighter == null)
                 return;
@@ -983,7 +1001,7 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         toOmit.Add(entry.Key.Id);
                     }
-                    else
+                    else if (entry.Value.HasFlag(HighlightState.Checked))
                     {
                         nodes.Add(entry.Key.Id);
                     }
@@ -996,7 +1014,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (targetNodeIds.Count == 0)
             {
-                Popup.Info(L10n.Message("Please highlight non-skilled nodes by right-clicking them."));
+                Popup.Info(L10n.Message("Please tag non-skilled nodes by right-clicking them."));
                 return;
             }
 

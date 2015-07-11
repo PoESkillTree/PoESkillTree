@@ -32,11 +32,11 @@ namespace UnitTests
             SkillNode coldhearted = SkillTree.Skillnodes.Values.Where(n => n.Name == "Coldhearted Calculation").First();
             SkillNode voidBarrier = SkillTree.Skillnodes.Values.Where(n => n.Name == "Void Barrier").First();
 
-            Tree._nodeHighlighter.ToggleHighlightNode(coldhearted, NodeHighlighter.HighlightState.FromNode);
-            Tree._nodeHighlighter.ToggleHighlightNode(voidBarrier, NodeHighlighter.HighlightState.FromNode);
+            Tree._nodeHighlighter.ToggleHighlightNode(coldhearted, NodeHighlighter.HighlightState.Checked);
+            Tree._nodeHighlighter.ToggleHighlightNode(voidBarrier, NodeHighlighter.HighlightState.Checked);
             Tree.Chartype = 6; // Shadow
 
-            Tree.SkillAllHighlightedNodes();
+            Tree.SkillAllTaggedNodes();
             /// Obviously possible to break when tree changes, like most other tests.
             /// The correct value would be whatever is shown in the app + 1.
             Assert.IsTrue(Tree.SkilledNodes.Count == 15);
