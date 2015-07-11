@@ -106,14 +106,16 @@ namespace POESKillTree.SkillTreeFiles
         {
             {"normal", "PSSkillFrame"},
             {"notable", "NotableFrameUnallocated"},
-            {"keystone", "KeystoneFrameUnallocated"}
+            {"keystone", "KeystoneFrameUnallocated"},
+            {"jewel", "JewelFrameUnallocated"}
         };
 
         public static readonly Dictionary<string, string> NodeBackgroundsActive = new Dictionary<string, string>
         {
             {"normal", "PSSkillFrameActive"},
             {"notable", "NotableFrameAllocated"},
-            {"keystone", "KeystoneFrameAllocated"}
+            {"keystone", "KeystoneFrameAllocated"},
+            {"jewel", "JewelFrameAllocated"}
         };
 
         private static SkillIcons _IconActiveSkills;
@@ -217,8 +219,8 @@ namespace POESKillTree.SkillTreeFiles
                         args.ErrorContext.Handled = true;
                     }
                 };
-
-                inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring.Replace("Additional ", ""), jss);
+                
+                inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, jss);
             }
             int qindex = 0;
 
@@ -326,7 +328,7 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         Id = nd.id,
                         Name = nd.dn,
-                        attributes = nd.sd,
+                        attributes = nd.dn.Contains("Jewel Socket") ? new string[1] {"+1 Jewel Socket"} : nd.sd,
                         Orbit = nd.o,
                         OrbitIndex = nd.oidx,
                         Icon = nd.icon,
@@ -336,6 +338,7 @@ namespace POESKillTree.SkillTreeFiles
                         Ia = nd.ia,
                         IsKeyStone = nd.ks,
                         IsNotable = nd.not,
+                        IsJewelSocket = nd.dn.Contains("Jewel Socket"),
                         Sa = nd.sa,
                         IsMastery = nd.m,
                         Spc = nd.spc.Count() > 0 ? (int?)nd.spc[0] : null
@@ -604,8 +607,8 @@ namespace POESKillTree.SkillTreeFiles
                 var resp = (HttpWebResponse)req.GetResponse();
                 string code = new StreamReader(resp.GetResponseStream()).ReadToEnd();
                 var regex = new Regex("var passiveSkillTreeData.*");
-                skilltreeobj = regex.Match(code).Value.Replace("root", "main").Replace("\\/", "/");
-                skilltreeobj = skilltreeobj.Substring(27, skilltreeobj.Length - 27 - 2) + "";
+                skilltreeobj = regex.Match(code).Value.Replace("\\/", "/");
+                skilltreeobj = skilltreeobj.Substring(27, skilltreeobj.Length - 27 - 1) + "";
                 File.WriteAllText(skillTreeFile, skilltreeobj);
             }
 

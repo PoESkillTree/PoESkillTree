@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
+using POESKillTree.Views;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -57,6 +58,7 @@ namespace POESKillTree.SkillTreeFiles
         public DrawingVisual picSkillIconLayer;
         public DrawingVisual picActiveSkillIconLayer;
         public DrawingVisual picSkillSurround;
+        public DrawingVisual picJewelHighlight;
 
 
         public DrawingVisual picSkillSurroundHighlight;
@@ -77,6 +79,7 @@ namespace POESKillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(picSkillSurround);
             SkillTreeVisual.Children.Add(picFaces);
             SkillTreeVisual.Children.Add(picHighlights);
+            SkillTreeVisual.Children.Add(picJewelHighlight);
         }
 
         #endregion
@@ -84,6 +87,10 @@ namespace POESKillTree.SkillTreeFiles
         public void ClearPath()
         {
             picPathOverlay.RenderOpen().Close();
+        }
+        public void ClearJewelHighlight()
+        {
+            picJewelHighlight.RenderOpen().Close();
         }
 
         private void DrawBackgroundLayer()
@@ -331,6 +338,14 @@ namespace POESKillTree.SkillTreeFiles
                         {
                             //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
                         }
+                        else if (Skillnodes[skillNode].IsJewelSocket)
+                        {
+                            dc.DrawRectangle(NodeSurroundHighlightBrush[6].Value, null,
+                                new Rect((int)pos.X - NodeSurroundBrush[6].Key.Width * factor,
+                                    (int)pos.Y - NodeSurroundBrush[6].Key.Height * factor,
+                                    NodeSurroundBrush[6].Key.Width * 2 * factor,
+                                    NodeSurroundBrush[6].Key.Height * 2 * factor));
+                        }
                         else
                             dc.DrawRectangle(NodeSurroundHighlightBrush[0].Value, null,
                                 new Rect((int)pos.X - NodeSurroundBrush[0].Key.Width * factor,
@@ -389,6 +404,14 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
                     }
+                    else if (Skillnodes[skillNode].IsJewelSocket)
+                    {
+                        dc.DrawRectangle(NodeSurroundBrush[6].Value, null,
+                            new Rect((int)pos.X - NodeSurroundBrush[6].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[6].Key.Height,
+                                NodeSurroundBrush[6].Key.Width * 2,
+                                NodeSurroundBrush[6].Key.Height * 2));
+                    }
                     else
                         dc.DrawRectangle(NodeSurroundBrush[0].Value, null,
                             new Rect((int)pos.X - NodeSurroundBrush[0].Key.Width,
@@ -426,6 +449,14 @@ namespace POESKillTree.SkillTreeFiles
                     else if (Skillnodes[skillNode].IsMastery)
                     {
                         //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
+                    }
+                    else if (Skillnodes[skillNode].IsJewelSocket)
+                    {
+                        dc.DrawRectangle(NodeSurroundBrush[7].Value, null,
+                            new Rect((int)pos.X - NodeSurroundBrush[7].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[7].Key.Height,
+                                NodeSurroundBrush[7].Key.Width * 2,
+                                NodeSurroundBrush[7].Key.Height * 2));
                     }
                     else
                         dc.DrawRectangle(NodeSurroundBrush[1].Value, null,
@@ -579,19 +610,18 @@ namespace POESKillTree.SkillTreeFiles
                 brNot.ImageSource = PImageNot;
                 sizeNot = new Size(PImageNot.PixelWidth, PImageNot.PixelHeight);
 
-
-                var brKS = new ImageBrush();
-                brKS.Stretch = Stretch.Uniform;
-                BitmapImage PImageKr = _assets[NodeBackgrounds["keystone"]].PImage;
-                brKS.ImageSource = PImageKr;
-                Size sizeKs = new Size(PImageKr.PixelWidth, PImageKr.PixelHeight);
-
                 var brNotH = new ImageBrush();
                 brNotH.Stretch = Stretch.Uniform;
                 BitmapImage PImageNotH = _assets[NodeBackgroundsActive["notable"]].PImage;
                 brNotH.ImageSource = PImageNotH;
                 Size sizeNotH = new Size(PImageNotH.PixelWidth, PImageNotH.PixelHeight);
 
+
+                var brKS = new ImageBrush();
+                brKS.Stretch = Stretch.Uniform;
+                BitmapImage PImageKr = _assets[NodeBackgrounds["keystone"]].PImage;
+                brKS.ImageSource = PImageKr;
+                Size sizeKs = new Size(PImageKr.PixelWidth, PImageKr.PixelHeight);
 
                 var brKSH = new ImageBrush();
                 brKSH.Stretch = Stretch.Uniform;
@@ -611,12 +641,26 @@ namespace POESKillTree.SkillTreeFiles
                 brNormA.ImageSource = PImageNormA;
                 Size isizeNormA = new Size(PImageNormA.PixelWidth, PImageNormA.PixelHeight);
 
+                var brJewel = new ImageBrush();
+                brJewel.Stretch = Stretch.Uniform;
+                BitmapImage PImageJewel = _assets[NodeBackgrounds["jewel"]].PImage;
+                brJewel.ImageSource = PImageJewel;
+                Size isSizeJewel = new Size(PImageJewel.PixelWidth, PImageJewel.PixelHeight);
+
+                var brJewelA = new ImageBrush();
+                brJewelA.Stretch = Stretch.Uniform;
+                BitmapImage PImageJewelA = _assets[NodeBackgroundsActive["jewel"]].PImage;
+                brJewelA.ImageSource = PImageJewelA;
+                Size isSizeJewelA = new Size(PImageJewelA.PixelWidth, PImageJewelA.PixelHeight);
+
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isizeNorm, brNorm));
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isizeNormA, brNormA));
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeKs, brKS));
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeNot, brNot));
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeKsH, brKSH));
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeNotH, brNotH));
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isSizeJewel, brJewel));
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isSizeJewelA, brJewelA));
 
 
 
@@ -660,11 +704,27 @@ namespace POESKillTree.SkillTreeFiles
             picHighlights = new DrawingVisual();
             picSkillSurroundHighlight = new DrawingVisual();
             picPathHighlight = new DrawingVisual();
+            picJewelHighlight = new DrawingVisual();
         }
 
         public static void ClearAssets()
         {
             _Initialized = false;
+        }
+
+        public void DrawJewelHighlight(SkillNode node)
+        {
+            var smallRadiusPen = new Pen(Brushes.Lime, 5);
+            var mediumRadiusPen = new Pen(Brushes.Yellow, 5);
+            var largeRadiusPen = new Pen(Brushes.Cyan, 5);
+            var radiusPen = new Pen(Brushes.Cyan, 5);
+            
+            using (DrawingContext dc = picJewelHighlight.RenderOpen())
+            {
+                dc.DrawEllipse(null, radiusPen, node.Position, 800, 800);
+                dc.DrawEllipse(null, radiusPen, node.Position, 1200, 1200);
+                dc.DrawEllipse(null, radiusPen, node.Position, 1500, 1500);
+            }
         }
     }
 }
