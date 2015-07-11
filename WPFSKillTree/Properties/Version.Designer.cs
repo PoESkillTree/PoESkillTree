@@ -106,7 +106,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PoESkillTree.
+        ///   Looks up a localized string similar to PoESkillTree - The Awakening.
         /// </summary>
         public static string ProductName {
             get {
