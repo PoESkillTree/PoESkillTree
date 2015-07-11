@@ -857,19 +857,19 @@ namespace POESKillTree.SkillTreeFiles
         public void UntagAllNodes()
         {
             _nodeHighlighter.UnhighlightAllNodes(HighlightState.Tags);
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         public void CheckAllHighlightedNodes()
         {
             _nodeHighlighter.HighlightNodesIf(HighlightState.Checked, HighlightState.Highlights);
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         public void CrossAllHighlightedNodes()
         {
             _nodeHighlighter.HighlightNodesIf(HighlightState.Crossed, HighlightState.Highlights);
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         public static Dictionary<string, List<float>> ImplicitAttributes(Dictionary<string, List<float>> attribs, int level)

@@ -248,19 +248,17 @@
     <Compile Include="ViewModels\ListGroupItem.cs" />
     <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\Converters.cs" />
-<<<<<<< HEAD
     <Compile Include="TreeGenerator\Views\ControllerWindow.xaml.cs">
       <DependentUpon>ControllerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TreeGenerator\Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
-=======
+    </Compile>
     <Compile Include="Views\CraftWindow.xaml.cs">
       <DependentUpon>CraftWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DownloadStashWindow.xaml.cs">
       <DependentUpon>DownloadStashWindow.xaml</DependentUpon>
->>>>>>> upstream/master
     </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
@@ -297,7 +295,6 @@
       <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-<<<<<<< HEAD
     <Page Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -317,7 +314,7 @@
     <Page Include="TreeGenerator\Views\SteinerGeneratorTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-=======
+    </Page>
     <Compile Include="Views\TabPicker.xaml.cs">
       <DependentUpon>TabPicker.xaml</DependentUpon>
     </Compile>
@@ -356,7 +353,6 @@
     <Page Include="Views\DownloadStashWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
->>>>>>> upstream/master
     </Page>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
