@@ -286,13 +286,13 @@ namespace POESKillTree.Views
 
         #region Menu
 
-        private void Menu_SkillHighlightedNodes(object sender, RoutedEventArgs e)
+        private void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
         {
             var currentCursor = Cursor;
             try
             {
                 Cursor = Cursors.Wait;
-                Tree.SkillAllHighlightedNodes();
+                Tree.SkillAllTaggedNodes();
                 UpdateUI();
                 tbSkillURL.Text = Tree.SaveToURL();
             }
@@ -302,10 +302,25 @@ namespace POESKillTree.Views
             }
         }
 
+        private void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
+        {
+            Tree.UntagAllNodes();
+        }
+
         private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
         {
             Tree.UnhighlightAllNodes();
             ClearSearch();
+        }
+
+        private void Menu_CheckAllHighlightedNodes(object sender, RoutedEventArgs e)
+        {
+            Tree.CheckAllHighlightedNodes();
+        }
+
+        private void Menu_CrossAllHighlightedNodes(object sender, RoutedEventArgs e)
+        {
+            Tree.CrossAllHighlightedNodes();
         }
 
         private void Menu_ScreenShot(object sender, RoutedEventArgs e)

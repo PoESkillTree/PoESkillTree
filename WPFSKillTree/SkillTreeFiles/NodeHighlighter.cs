@@ -10,8 +10,10 @@ namespace POESKillTree.SkillTreeFiles
         [Flags]
         public enum HighlightState
         {
-            FromSearch = 1, FromAttrib = 2, FromNode = 4, Crossed = 8,
-            All = FromSearch | FromAttrib | FromNode | Crossed
+            FromSearch = 1, FromAttrib = 2, Checked = 4, Crossed = 8,
+            Highlights = FromSearch | FromAttrib,
+            Tags = Checked | Crossed,
+            All = FromSearch | FromAttrib | Checked | Crossed
         }
 
         public Dictionary<SkillNode, HighlightState> nodeHighlights = new Dictionary<SkillNode, HighlightState>();
@@ -74,6 +76,20 @@ namespace POESKillTree.SkillTreeFiles
         {
             UnhighlightAllNodes(replaceFlags);
             HighlightNodes(newNodes, replaceFlags);
+        }
+
+        /// <summary>
+        /// For all nodes that have at least one of the ifFlags:
+        /// Removes flags not in ifFlags, adds newFlags.
+        /// </summary>
+        public void HighlightNodesIf(HighlightState newFlags, HighlightState ifFlags)
+        {
+            var pairs = nodeHighlights.Where(pair => (pair.Value & ifFlags) > 0).ToArray();
+            foreach (var pair in pairs)
+            {
+                nodeHighlights[pair.Key] &= ifFlags;
+                nodeHighlights[pair.Key] |= newFlags;
+            }
         }
     }
 }
