@@ -70,7 +70,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <WarningLevel>0</WarningLevel>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -182,7 +182,30 @@
     <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
+    <Compile Include="TreeGenerator\Settings\AdvancedSolverSettings.cs" />
+    <Compile Include="TreeGenerator\Settings\AutomatedSolverSettings.cs" />
+    <Compile Include="TreeGenerator\Settings\SolverSettings.cs" />
+    <Compile Include="TreeGenerator\Solver\AbstractSolver.cs" />
+    <Compile Include="TreeGenerator\Solver\SteinerSolver.cs" />
+    <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\CloseableViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\ViewModelBase.cs" />
+    <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
+      <DependentUpon>AdvancedGeneratorTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml.cs">
+      <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TreeGenerator\Views\SteinerGeneratorTab.xaml.cs">
+      <DependentUpon>SteinerGeneratorTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\AppData.cs" />
+    <Compile Include="Utils\DialogCloser.cs" />
     <Compile Include="Utils\Popup.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
@@ -198,6 +221,12 @@
     <Compile Include="ViewModels\ItemAttribute\ItemMod.cs" />
     <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\Converters.cs" />
+    <Compile Include="TreeGenerator\Views\ControllerWindow.xaml.cs">
+      <DependentUpon>ControllerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TreeGenerator\Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
@@ -233,6 +262,26 @@
       <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeGenerator\Views\ControllerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeGenerator\Views\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeGenerator\Views\SteinerGeneratorTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using POESKillTree.Localization;
 using POESKillTree.Utils;
-using POESKillTree.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +11,8 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
+using POESKillTree.TreeGenerator.ViewModels;
+using POESKillTree.TreeGenerator.Views;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using MessageBox = POESKillTree.Views.MetroMessageBox;
@@ -198,7 +199,6 @@ namespace POESKillTree.SkillTreeFiles
         public HashSet<ushort> HighlightedNodes = new HashSet<ushort>();
 
         private int _chartype;
-        private List<SkillNode> _highlightnodes;
 
         private int _level = 1;
 
@@ -779,7 +779,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 _nodeHighlighter.HighlightNode(node, HighlightState.FromNode);
             }
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         /// <summary>
@@ -803,7 +803,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 _nodeHighlighter.HighlightNode(node, HighlightState.Crossed);
             }
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         public void HighlightNodesBySearch(string search, bool useregex, bool fromSearchBox)
@@ -812,7 +812,7 @@ namespace POESKillTree.SkillTreeFiles
             if (search == "")
             {
                 _nodeHighlighter.UnhighlightAllNodes(flag);
-                DrawHighlights(_nodeHighlighter);
+                DrawHighlights();
                 return;
             }
 
@@ -827,7 +827,7 @@ namespace POESKillTree.SkillTreeFiles
                                     new Regex(search, RegexOptions.IgnoreCase).IsMatch(nd.Name) && !nd.IsMastery)
                                 .ToList();
                     _nodeHighlighter.ReplaceHighlights(nodes, flag);
-                    DrawHighlights(_nodeHighlighter);
+                    DrawHighlights();
                 }
                 catch (Exception)
                 {
@@ -842,7 +842,7 @@ namespace POESKillTree.SkillTreeFiles
                             nd.attributes.Count(att => att.ToLower().Contains(search.ToLower())) != 0 ||
                             nd.Name.ToLower().Contains(search.ToLower()) && !nd.IsMastery).ToList();
                 _nodeHighlighter.ReplaceHighlights(nodes, flag);
-                DrawHighlights(_nodeHighlighter);
+                DrawHighlights();
             }
         }
 
@@ -965,55 +965,51 @@ namespace POESKillTree.SkillTreeFiles
             return TreeAddress + Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
-        public void SkillAllHighlightedNodes()
+        public HashSet<ushort> GetCheckedNodes()
         {
-            if (_nodeHighlighter == null)
-                return;
             var nodes = new HashSet<ushort>();
-            var toOmit = new HashSet<ushort>();
             foreach (var entry in _nodeHighlighter.nodeHighlights)
             {
-                if (!(rootNodeList.Contains(entry.Key.Id) || SkilledNodes.Contains(entry.Key.Id)))
+                if (!(rootNodeList.Contains(entry.Key.Id) || SkilledNodes.Contains(entry.Key.Id))
+                    && !entry.Value.HasFlag(HighlightState.Crossed))
                 {
-                    // Crossed has precedence.
-                    if (entry.Value.HasFlag(HighlightState.Crossed))
-                    {
-                        toOmit.Add(entry.Key.Id);
-                    }
-                    else
-                    {
-                        nodes.Add(entry.Key.Id);
-                    }
+                    nodes.Add(entry.Key.Id);
                 }
             }
-            SkillNodeList(nodes, toOmit);
+            return nodes;
         }
 
-        private void SkillNodeList(HashSet<ushort> targetNodeIds, HashSet<ushort> omitNodeIds)
+        public HashSet<ushort> GetCrossedNodes()
         {
-            if (targetNodeIds.Count == 0)
+            var nodes = new HashSet<ushort>();
+            foreach (var entry in _nodeHighlighter.nodeHighlights)
+            {
+                if (!(rootNodeList.Contains(entry.Key.Id) || SkilledNodes.Contains(entry.Key.Id))
+                    && entry.Value.HasFlag(HighlightState.Crossed))
+                {
+                    nodes.Add(entry.Key.Id);
+                }
+            }
+            return nodes;
+        }
+
+        public void SkillAllHighlightedNodes()
+        {
+            if (GetCheckedNodes().Count == 0)
             {
                 Popup.Info(L10n.Message("Please highlight non-skilled nodes by right-clicking them."));
                 return;
             }
 
-            /// These are used for visualization of the simulation progress, so
-            /// they're saved for restoring them afterwards.
-            var savedHighlights = HighlightedNodes;
-
-            OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds, omitNodeIds);
-            optimizerDialog.Owner = MainWindow;
-            optimizerDialog.ShowDialog();
-            if (optimizerDialog.DialogResult == true)
-                foreach (ushort node in optimizerDialog.bestSoFar)
-                    SkilledNodes.Add(node);
-
-            HighlightedNodes = savedHighlights;
-            DrawNodeBaseSurroundHighlight();
-
-            this.DrawHighlights(_nodeHighlighter);
-
-            UpdateAvailNodes();
+            // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
+            // Set ImportItems to false to save some runtime since it won't be used anyway.
+            var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this)) { ImportItems = false };
+            settingsVm.StartController += (sender, args) =>
+            {
+                var dialog = new ControllerWindow(args.ViewModel) { Owner = MainWindow };
+                dialog.ShowDialog();
+            };
+            settingsVm.RunCommand.Execute(null);
         }
 
         public void UpdateAvailNodes(bool draw = true)

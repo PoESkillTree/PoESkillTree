@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Priority_Queue;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
-    class GraphEdge : PriorityQueueNode
+    public class GraphEdge : PriorityQueueNode
     {
         public GraphNode inside, outside;
 
@@ -22,7 +20,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     ///  Abstract class representing a node (or a collection thereof) in the
     ///  simplified skill tree.
     /// </summary>
-    abstract class GraphNode
+    public abstract class GraphNode
     {
         protected ushort id;
         public ushort Id { get { return id; } }
@@ -34,9 +32,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     /// <summary>
     ///  A graph node representing an actual node in the skill tree.
     /// </summary>
-    class SingleNode : GraphNode
+    public class SingleNode : GraphNode
     {
-        SkillNode baseNode;
+        public SkillNode baseNode;
 
         public SingleNode(SkillNode baseNode)
         {
@@ -49,7 +47,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     ///  A graph node representing a collection of nodes of the skill tree.
     ///  This is used to group up the already skilled nodes.
     /// </summary>
-    class Supernode : GraphNode
+    public class Supernode : GraphNode
     {
         public HashSet<SkillNode> nodes = new HashSet<SkillNode>();
 
@@ -67,7 +65,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     /// <summary>
     /// A graph representing a simplified skill tree. 
     /// </summary>
-    class SearchGraph
+    public class SearchGraph
     {
         public Dictionary<SkillNode, GraphNode> nodeDict;
 
@@ -81,8 +79,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  connected to existing adjacent nodes.
         /// </summary>
         /// <param name="node">The skill node to be added.</param>
-        /// <param name="isTarget">Whether or not this node is a target
-        /// node.</param>
         /// <returns>The graph node that is added to the graph.</returns>
         public GraphNode AddNode(SkillNode node)
         {

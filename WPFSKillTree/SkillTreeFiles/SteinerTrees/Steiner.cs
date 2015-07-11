@@ -18,6 +18,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     /// </summary>
     public class SteinerSolver
     {
+        // TODO remove and move comments to AbstractSolver and SteinerSolver in TreeGenerator.Solver
         ///////////////////////////////////////////////////////////////////////////
         /// This code is a heuristic solution to the Steiner tree problem (STP).
         /// (The reader's knowledge of the STP and commonly associated terms is
@@ -135,10 +136,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// shortest path from start to Coldhearted Calculation and then taking the
         /// shortest path to Void Barrier results in a tree with 1 more point spent.
 
-        SkillTree tree;
+        readonly SkillTree tree;
 
         SearchGraph searchGraph;
-        DistanceLookup distances = new DistanceLookup();
+        readonly DistanceLookup distances = new DistanceLookup();
         List<GraphNode> searchSpaceBase;
 
         Supernode startNodes;
@@ -156,35 +157,33 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  Returns 0.3 * 20000/searchSpace if searchSpace is < 150 and 0.3 * searchSpace
         ///  otherwise. This means duration * population is constant for searchSpace < 150.
         /// </summary>
-        private Func<int, double> durationFct = (searchSpace) =>
+        private readonly Func<int, double> durationFct = (searchSpace) =>
             (0.3 * (searchSpace < 150 ? 20000.0 / searchSpace : searchSpace));
         /// <summary>
         ///  Returns the populationSize for initializeGA depending on
         ///  the searchSpace size. Returns 1.5 * searchSpace at the moment.
         /// </summary>
-        private Func<int, double> populationFct = (searchSpace) =>
+        private readonly Func<int, double> populationFct = (searchSpace) =>
             1.5 * searchSpace;
 
         double durationModifier;
         double populationModifier;
 
-        private bool _initialized = false;
-        public bool IsInitialized
-        { get { return _initialized; } }
+        public bool IsInitialized { get; private set; }
 
         private BitArray _bestDNA;
         public HashSet<ushort> BestSolution;
 
         // This is kinda crude but should work...
         public bool IsConsideredDone
-        { get { return (_initialized ? CurrentGeneration >= MaxGeneration : false); } }
+        { get { return (IsInitialized && CurrentGeneration >= MaxGeneration); } }
 
         private int maxGeneration;
         public int MaxGeneration
-        { get { return (_initialized ? maxGeneration : 0); } }
+        { get { return (IsInitialized ? maxGeneration : 0); } }
 
         public int CurrentGeneration
-        { get { return (_initialized ? ga.GenerationCount : 0); } }
+        { get { return (IsInitialized ? ga.GenerationCount : 0); } }
 
         /// <summary>
         ///  A new instance of the SteinerSolver optimizer that still needs to be
@@ -193,6 +192,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="tree">The skill tree in which to optimize.</param>
         public SteinerSolver(SkillTree tree)
         {
+            IsInitialized = false;
             this.tree = tree;
         }
 
@@ -233,7 +233,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             initializeGA();
 
-            _initialized = true;
+            IsInitialized = true;
         }
 
         /// <summary>
@@ -416,7 +416,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             maxGeneration = (int)(durationModifier * durationFct(searchSpaceBase.Count));
             int dnaLength = searchSpaceBase.Count; // Just being verbose.
 
-            ga.InitializeEvolution(populationSize, maxGeneration, dnaLength);
+            var parameters = new GeneticAlgorithmParameters(maxGeneration, populationSize, dnaLength, 6, 1);
+            ga.InitializeEvolution(parameters);
         }
 
         /// <summary>
@@ -425,7 +426,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// </summary>
         public void EvolutionStep()
         {
-            if (!_initialized)
+            if (!IsInitialized)
                 throw new InvalidOperationException("Solver not initialized!");
 
             ga.NewGeneration();

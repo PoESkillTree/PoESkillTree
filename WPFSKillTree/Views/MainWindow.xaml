@@ -420,6 +420,11 @@
                         <ContentControl Template="{StaticResource CircelIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Click="Menu_OpenTreeGenerator">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Open Skill Tree Generator" />
+                    </MenuItem.Header>
+                </MenuItem>
                 <MenuItem Click="Menu_CopyStats">
                     <MenuItem.Header>
                         <l:Catalog Message="Copy _Passive Attributes to Clipboard" />

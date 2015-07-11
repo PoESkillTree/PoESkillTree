@@ -232,8 +232,9 @@ namespace POESKillTree.SkillTreeFiles
                 30, colorBrush);
         }
 
-        public void DrawHighlights(NodeHighlighter nh)
+        public void DrawHighlights()
         {
+            var nh = _nodeHighlighter;
             var hpen = new Pen(Brushes.White, 20);
             var crossPen = new Pen(Brushes.Red, 20);
             using (DrawingContext dc = picHighlights.RenderOpen())

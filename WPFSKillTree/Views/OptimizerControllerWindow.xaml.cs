@@ -26,6 +26,7 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class OptimizerControllerWindow : MetroWindow
     {
+        // TODO remove -- replaced by TreeGenerator.Views.ControllerWindow and TreeGenerator.ViewModels.ControllerViewModel
         private SteinerSolver steinerSolver;
         private SkillTree tree;
         private HashSet<ushort> targetNodes;
@@ -35,11 +36,9 @@ namespace POESKillTree.Views
         private readonly BackgroundWorker initializationWorker = new BackgroundWorker();
 
         int maxSteps;
-        int step;
 
         public HashSet<ushort> bestSoFar;
 
-        private bool isInitializing;
         private bool isPaused;
         private bool isCanceling;
 
@@ -97,13 +96,11 @@ namespace POESKillTree.Views
             maxSteps = steinerSolver.MaxGeneration;
             progressBar.Maximum = maxSteps;
             lblProgressText.Content = "0/" + maxSteps;
-            isInitializing = false;
 
             isPaused = false;
             isCanceling = false;
             btnPopupCancelClose.IsEnabled = true;
             btnPopupPauseResume.IsEnabled = true;
-            step = 0;
             solutionWorker.RunWorkerAsync();
         }
 

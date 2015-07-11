@@ -24,6 +24,8 @@ using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.TreeGenerator.ViewModels;
+using POESKillTree.TreeGenerator.Views;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
 using POESKillTree.ViewModels.ItemAttribute;
@@ -284,6 +286,18 @@ namespace POESKillTree.Views
         {
             Tree.UnhighlightAllNodes();
             ClearSearch();
+        }
+
+        private void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
+        {
+            var vm = new SettingsViewModel(Tree);
+            vm.RequestClose += (o, args) =>
+            {
+                UpdateUI();
+                tbSkillURL.Text = Tree.SaveToURL();
+            };
+            var dialog = new SettingsWindow(vm) { Owner = this };
+            dialog.Show();
         }
 
         private void Menu_ScreenShot(object sender, RoutedEventArgs e)

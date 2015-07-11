@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
-    class MinimalSpanningTree
+    public class MinimalSpanningTree
     {
         public HashSet<GraphNode> mstNodes;
 
