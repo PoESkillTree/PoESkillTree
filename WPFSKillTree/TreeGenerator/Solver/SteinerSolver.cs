@@ -111,13 +111,7 @@ namespace POESKillTree.TreeGenerator.Solver
             MinimalSpanningTree leastSolution = new MinimalSpanningTree(TargetNodes, Distances);
             leastSolution.Span(StartNodes);
 
-            int maxEdgeDistance = 0;
-            foreach (GraphEdge edge in leastSolution.SpanningEdges)
-            {
-                int edgeDistance = Distances.GetDistance(edge);
-                if (edgeDistance > maxEdgeDistance)
-                    maxEdgeDistance = edgeDistance;
-            }
+            int maxEdgeDistance = leastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
 
             // Find potential steiner points that are in reasonable vicinity.
             foreach (GraphNode node in SearchGraph.nodeDict.Values)
