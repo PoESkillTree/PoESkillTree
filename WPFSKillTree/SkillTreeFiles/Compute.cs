@@ -4,7 +4,8 @@ using System.Text.RegularExpressions;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.ItemAttribute;
+using POESKillTree.ViewModels.Items;
+using System.Linq;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -1500,13 +1501,13 @@ namespace POESKillTree.SkillTreeFiles
                     // Get weapon type (damage nature).
                     if (item.Keywords == null) // Quiver or shield.
                     {
-                        if (item.Type.Contains("Quiver"))
+                        if (item.BaseType.Contains("Quiver"))
                             Nature = new DamageNature() { WeaponType = WeaponType.Quiver };
                         else
-                            if (item.Type.Contains("Shield") || item.Type.Contains("Buckler") || item.Type == "Spiked Bundle")
+                            if (item.BaseType.Contains("Shield") || item.BaseType.Contains("Buckler") || item.BaseType == "Spiked Bundle")
                                 Nature = new DamageNature() { WeaponType = WeaponType.Shield };
                             else
-                                throw new Exception("Unknown weapon type: " + item.Type);
+                                throw new Exception("Unknown weapon type: " + item.BaseType);
                     }
                     else // Regular weapon.
                         foreach (string keyword in item.Keywords)
@@ -2293,10 +2294,10 @@ namespace POESKillTree.SkillTreeFiles
         // Initializes structures.
         public static void Initialize(SkillTree skillTree, ItemAttributes itemAttrs)
         {
-            Items = itemAttrs.Equip;
+            Items = itemAttrs.Equip.ToList();
 
-            MainHand = new Weapon(WeaponHand.Main, Items.Find(i => i.Class == Item.ItemClass.MainHand));
-            OffHand = new Weapon(WeaponHand.Off, Items.Find(i => i.Class == Item.ItemClass.OffHand));
+            MainHand = new Weapon(WeaponHand.Main, Items.Find(i => i.Class == ItemClass.MainHand));
+            OffHand = new Weapon(WeaponHand.Off, Items.Find(i => i.Class == ItemClass.OffHand));
 
             // If main hand weapon has Counts as Dual Wielding modifier, then clone weapon to off hand.
             // @see http://pathofexile.gamepedia.com/Wings_of_Entropy
