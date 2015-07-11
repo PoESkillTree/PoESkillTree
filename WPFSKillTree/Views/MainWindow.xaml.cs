@@ -1914,14 +1914,12 @@ namespace POESKillTree.Views
                                 }
                             }
 
-
-                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
-
                             foreach (var file in new DirectoryInfo(Path.Combine(appDataPath, @"DataBackup")).GetFiles())
                                 file.CopyTo(Path.Combine(Path.Combine(appDataPath, @"Data"), file.Name));
-
+                            
                             File.Copy(Path.Combine(AppData.GetFolder(@"DataBackup\Equipment"), "Affixlist.xml"), Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Affixlist.xml"));
-
+                            
+                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
                             if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
                                 Directory.Delete(Path.Combine(appDataPath, "DataBackup"), true);
 
@@ -1940,7 +1938,7 @@ namespace POESKillTree.Views
                                 //Nothing
                             }
                             Directory.Move(Path.Combine(appDataPath, "DataBackup"), Path.Combine(appDataPath, "Data"));
-                            Popup.Error(L10n.Message("Error while downloading assets"));
+                            Popup.Error(L10n.Message("Error while downloading assets."));
                         }
                     }
                     break;
