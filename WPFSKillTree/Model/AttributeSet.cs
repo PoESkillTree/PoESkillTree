@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.ItemAttribute;
+using POESKillTree.ViewModels.Items;
 
 namespace POESKillTree.Model
 {

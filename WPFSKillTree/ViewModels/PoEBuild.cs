@@ -8,7 +8,8 @@ namespace POESKillTree.ViewModels
     {
         public string Name { get; set; }
         public string CharacterName { get; set; }
-        public string AccountName { get; set; }
+        public string AccountName { get; set;}
+        public string League { get; set; }
         public string Level { get; set; }
         public string Class { get; set; }
         public string PointsUsed { get; set; }

@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 using POESKillTree.Model;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.ItemAttribute;
 using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
 using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;
 using DamageNature = POESKillTree.SkillTreeFiles.Compute.DamageNature;
@@ -17,6 +16,7 @@ using DamageSource = POESKillTree.SkillTreeFiles.Compute.DamageSource;
 using WeaponHand = POESKillTree.SkillTreeFiles.Compute.WeaponHand;
 using WeaponType = POESKillTree.SkillTreeFiles.Compute.WeaponType;
 using Weapon = POESKillTree.SkillTreeFiles.Compute.Weapon;
+using POESKillTree.ViewModels.Items;
 
 namespace POESKillTree.SkillTreeFiles
 {
