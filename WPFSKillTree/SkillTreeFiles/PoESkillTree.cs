@@ -26,6 +26,22 @@ namespace POESKillTree.SkillTreeFiles
 
     internal class Main
     {
+        public ushort id { get; set; }
+
+        public string icon { get; set; }
+
+        public bool ks { get; set; }
+
+        public bool not { get; set; }
+
+        public string dn { get; set; }
+
+        public bool m { get; set; }
+
+        public int[] spc { get; set; }
+
+        public string[] sd { get; set; }
+
         public int g { get; set; }
 
         public int o { get; set; }
@@ -38,8 +54,9 @@ namespace POESKillTree.SkillTreeFiles
 
         public int ia { get; set; }
 
+
         [JsonProperty("out")]
-        public int[] ot { get; set; }
+        public List<int> ot { get; set; }
     }
 
     internal class Node

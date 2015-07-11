@@ -543,7 +543,7 @@ namespace POESKillTree.Controls
 
         private void control_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this)
+            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this || _dnd_overlay == null)
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
@@ -598,7 +598,6 @@ namespace POESKillTree.Controls
                 if (line)
                 {
                     y = (int)Math.Round(newpos.Y / GridSize);
-
                     _dnd_overlay.Margin = new Thickness(0, y * GridSize - 1, 0, gcontent.ActualHeight - y * GridSize - 1);
                 }
                 else
