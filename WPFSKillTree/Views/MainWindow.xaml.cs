@@ -288,13 +288,13 @@ namespace POESKillTree.Views
 
         #region Menu
 
-        private void Menu_SkillHighlightedNodes(object sender, RoutedEventArgs e)
+        private void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
         {
             var currentCursor = Cursor;
             try
             {
                 Cursor = Cursors.Wait;
-                Tree.SkillAllHighlightedNodes();
+                Tree.SkillAllTaggedNodes();
                 UpdateUI();
                 tbSkillURL.Text = Tree.SaveToURL();
             }
@@ -304,10 +304,25 @@ namespace POESKillTree.Views
             }
         }
 
+        private void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
+        {
+            Tree.UntagAllNodes();
+        }
+
         private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
         {
             Tree.UnhighlightAllNodes();
             ClearSearch();
+        }
+
+        private void Menu_CheckAllHighlightedNodes(object sender, RoutedEventArgs e)
+        {
+            Tree.CheckAllHighlightedNodes();
+        }
+
+        private void Menu_CrossAllHighlightedNodes(object sender, RoutedEventArgs e)
+        {
+            Tree.CrossAllHighlightedNodes();
         }
 
         private void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
@@ -892,12 +907,12 @@ namespace POESKillTree.Views
                         if (System.Windows.Forms.Control.ModifierKeys.HasFlag(System.Windows.Forms.Keys.Shift))
                         {
                             // Backward on shift+RMB
-                            Tree.CycleNodeHighlightBackward(node);
+                            Tree.CycleNodeTagBackward(node);
                         }
                         else
                         {
                             // Forward on RMB
-                            Tree.CycleNodeHighlightForward(node);
+                            Tree.CycleNodeTagForward(node);
                         }
                         e.Handled = true;
                     }
@@ -1928,14 +1943,12 @@ namespace POESKillTree.Views
                                 }
                             }
 
-
-                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
-
                             foreach (var file in new DirectoryInfo(Path.Combine(appDataPath, @"DataBackup")).GetFiles())
                                 file.CopyTo(Path.Combine(Path.Combine(appDataPath, @"Data"), file.Name));
-
+                            
                             File.Copy(Path.Combine(AppData.GetFolder(@"DataBackup\Equipment"), "Affixlist.xml"), Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Affixlist.xml"));
-
+                            
+                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
                             if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
                                 Directory.Delete(Path.Combine(appDataPath, "DataBackup"), true);
 
@@ -1954,7 +1967,7 @@ namespace POESKillTree.Views
                                 //Nothing
                             }
                             Directory.Move(Path.Combine(appDataPath, "DataBackup"), Path.Combine(appDataPath, "Data"));
-                            Popup.Error(L10n.Message("Error while downloading assets"));
+                            Popup.Error(L10n.Message("Error while downloading assets."));
                         }
                     }
                     break;

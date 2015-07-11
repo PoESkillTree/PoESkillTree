@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Items
 {
@@ -26,9 +27,10 @@ namespace POESKillTree.ViewModels.Items
             {
                 if (_AllAffixes == null)
                 {
-                    if (File.Exists(@"Data\Equipment\Affixlist.xml"))
+                    var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"Affixlist.xml");
+                    if (File.Exists(filename))
                     {
-                        XElement xelm = XElement.Load(@"Data\Equipment\Affixlist.xml");
+                        XElement xelm = XElement.Load(filename);
                         _AllAffixes = xelm.Elements().Select(x => new Affix(x)).ToList();
                     }
                 }

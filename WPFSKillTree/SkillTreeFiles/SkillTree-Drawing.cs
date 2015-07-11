@@ -244,6 +244,7 @@ namespace POESKillTree.SkillTreeFiles
             var nh = _nodeHighlighter;
             var hpen = new Pen(Brushes.White, 20);
             var crossPen = new Pen(Brushes.Red, 20);
+            var checkPen = new Pen(Brushes.Lime, 20);
             using (DrawingContext dc = picHighlights.RenderOpen())
             {
                 foreach (var pair in nh.nodeHighlights)
@@ -251,21 +252,30 @@ namespace POESKillTree.SkillTreeFiles
                     // TODO: Make more elegant? Needs profiling.
                     HighlightState hs = pair.Value;
 
-                    if (hs != HighlightState.Crossed)
+                    // These should not appear together, so not checking for their conjunction.
+                    if (hs != HighlightState.Crossed && hs != HighlightState.Checked)
                     {
                         byte red = (byte)(hs.HasFlag(HighlightState.FromSearch) ? 255 : 0);
                         byte green = (byte)(hs.HasFlag(HighlightState.FromAttrib) ? 255 : 0);
-                        byte blue = (byte)(hs.HasFlag(HighlightState.FromNode) ? 255 : 0);
-                        hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, blue)), 20);
+                        hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, 0)), 20);
 
                         dc.DrawEllipse(null, hpen, pair.Key.Position, 80, 80);
                     }
 
+                    var x = pair.Key.Position.X;
+                    var y = pair.Key.Position.Y;
+
+                    if (hs.HasFlag(HighlightState.Checked))
+                    {
+                        // Checked nodes get highlighted with two green lines resembling a check mark.
+                        // TODO a better looking check mark
+                        dc.DrawLine(checkPen, new Point(x - 10, y + 50), new Point(x - 50, y + 20));
+                        dc.DrawLine(checkPen, new Point(x + 50, y - 50), new Point(x - 22, y + 52));
+                    }
+
                     if (hs.HasFlag(HighlightState.Crossed))
                     {
-                        // Crossed nodes get highlighted with two crossing lines.
-                        var x = pair.Key.Position.X;
-                        var y = pair.Key.Position.Y;
+                        // Crossed nodes get highlighted with two crossing red lines.
                         dc.DrawLine(crossPen, new Point(x + 50, y + 70), new Point(x - 50, y - 70));
                         dc.DrawLine(crossPen, new Point(x + 50, y - 70), new Point(x - 50, y + 70));
                     }
