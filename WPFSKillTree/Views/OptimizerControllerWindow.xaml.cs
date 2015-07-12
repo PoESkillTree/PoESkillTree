@@ -80,7 +80,7 @@ namespace POESKillTree.Views
             steinerSolver.InitializeSolver(targetNodes, nodesToOmit);
 #if DEBUG
             stopwatch.Stop();
-            Console.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
+            Debug.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
 #endif
         }
 
@@ -125,7 +125,7 @@ namespace POESKillTree.Views
             }
 #if DEBUG
             stopwatch.Stop();
-            Console.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
+            Debug.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
 #endif
             e.Result = steinerSolver.BestSolution;
         }

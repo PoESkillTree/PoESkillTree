@@ -155,9 +155,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  Returns the maxGeneration for initializeGA depending on the searchSpace size.
         ///  Returns 0.3 * 20000/searchSpace if searchSpace is < 150 and 0.3 * searchSpace
         ///  otherwise. This means duration * population is constant for searchSpace < 150.
+        ///  If searchSpace is < 10 it is treated as being 10. This stops the value from
+        ///  becoming to high for very low searchSpaces.
         /// </summary>
         private Func<int, double> durationFct = (searchSpace) =>
-            (0.3 * (searchSpace < 150 ? 20000.0 / searchSpace : searchSpace));
+            (0.3 * (searchSpace < 150 ? 20000.0 / Math.Max(searchSpace, 10) : searchSpace));
         /// <summary>
         ///  Returns the populationSize for initializeGA depending on
         ///  the searchSpace size. Returns 1.5 * searchSpace at the moment.
@@ -332,6 +334,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             MinimalSpanningTree leastSolution = new MinimalSpanningTree(targetNodes, distances);
             leastSolution.Span(startFrom: startNodes);
+            // Saving the leastSolution as initial solution. Makes sure there is always a
+            // solution even if the search space is empty.
+            BestSolution = SpannedMstToSkillnodes(leastSolution, false);
 
             int maxEdgeDistance = 0;
             foreach (GraphEdge edge in leastSolution.SpanningEdges)
@@ -410,7 +415,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (randomSeed == null) randomSeed = DateTime.Now.GetHashCode();
             ga = new GeneticAlgorithm(fitnessFunction, new Random(randomSeed.Value));
 
-            Console.WriteLine("Search space dimension: " + searchSpaceBase.Count);
+            Debug.WriteLine("Search space dimension: " + searchSpaceBase.Count);
 
             int populationSize = (int)(populationModifier * populationFct(searchSpaceBase.Count));
             maxGeneration = (int)(durationModifier * durationFct(searchSpaceBase.Count));
