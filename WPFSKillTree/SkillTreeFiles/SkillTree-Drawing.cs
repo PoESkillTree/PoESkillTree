@@ -115,7 +115,7 @@ namespace POESKillTree.SkillTreeFiles
                 backgroundBrush.TileMode = TileMode.Tile;
                 backgroundBrush.Viewport = new Rect(0, 0,
                     6 * backgroundBrush.ImageSource.Width / TRect.Width,
-                    6 * backgroundBrush.ImageSource.Height / TRect.Width);
+                    6 * backgroundBrush.ImageSource.Height / TRect.Height);
                 drawingContext.DrawRectangle(backgroundBrush, null, TRect);
 
                 var topGradient = new LinearGradientBrush();
@@ -328,7 +328,7 @@ namespace POESKillTree.SkillTreeFiles
                     foreach (ushort skillNode in HighlightedNodes)
                     {
                         Vector2D pos = (Skillnodes[skillNode].Position);
-
+                        
                         if (Skillnodes[skillNode].IsNotable)
                         {
                             dc.DrawRectangle(NodeSurroundHighlightBrush[3].Value, null,
@@ -725,13 +725,18 @@ namespace POESKillTree.SkillTreeFiles
 
         public void DrawJewelHighlight(SkillNode node)
         {
-            var radiusPen = new Pen(Brushes.Cyan, 10);
-            
+            const int thickness = 10;
+            var radiusPen = new Pen(Brushes.Cyan, thickness);
+
+            const int smallRadius = 800 - thickness / 2;
+            const int mediumRadius = 1200 - thickness / 2;
+            const int largeRadius = 1500 - thickness / 2;
+
             using (DrawingContext dc = picJewelHighlight.RenderOpen())
             {
-                dc.DrawEllipse(null, radiusPen, node.Position, 800, 800);
-                dc.DrawEllipse(null, radiusPen, node.Position, 1200, 1200);
-                dc.DrawEllipse(null, radiusPen, node.Position, 1500, 1500);
+                dc.DrawEllipse(null, radiusPen, node.Position, smallRadius, smallRadius);
+                dc.DrawEllipse(null, radiusPen, node.Position, mediumRadius, mediumRadius);
+                dc.DrawEllipse(null, radiusPen, node.Position, largeRadius, largeRadius);
             }
         }
     }

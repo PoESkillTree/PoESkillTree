@@ -54,8 +54,9 @@ namespace POESKillTree.SkillTreeFiles
             {"+# Maximum Power Charge", 3},
             {"#% Additional Elemental Resistance per Endurance Charge", 4},
             {"#% Physical Damage Reduction per Endurance Charge", 4},
-            {"#% Attack Speed Increase per Frenzy Charge", 5},
-            {"#% Cast Speed Increase per Frenzy Charge", 5},
+            {"#% Attack Speed Increase per Frenzy Charge", 4},
+            {"#% Cast Speed Increase per Frenzy Charge", 4},
+            {"#% More Damage per Frenzy Charge", 4},
             {"#% Critical Strike Chance Increase per Power Charge", 50},
         };
 
@@ -419,8 +420,9 @@ namespace POESKillTree.SkillTreeFiles
 
             if (!_Initialized)
             {
-                _TRect = new Rect2D(new Vector2D(inTree.min_x * 1.1, inTree.min_y * 1.1),
-                    new Vector2D(inTree.max_x * 1.1, inTree.max_y * 1.1));
+                const int padding = 500; //This is to account for jewel range circles. Might need to find a better way to do it.
+                _TRect = new Rect2D(new Vector2D(inTree.min_x * 1.1 - padding, inTree.min_y * 1.1 - padding),
+                    new Vector2D(inTree.max_x * 1.1 + padding, inTree.max_y * 1.1 + padding));
             }
 
 
@@ -967,11 +969,11 @@ namespace POESKillTree.SkillTreeFiles
         public string SaveToURL()
         {
             var b = new byte[(SkilledNodes.Count - 1) * 2 + 6];
-            byte[] b2 = BitConverter.GetBytes(2);
+            byte[] b2 = BitConverter.GetBytes(3); //skilltree version
             b[0] = b2[3];
             b[1] = b2[2];
             b[2] = b2[1];
-            b[3] = b2[0];
+            b[3] = b2[0]; 
             b[4] = (byte)(Chartype);
             b[5] = 0;
             int pos = 6;

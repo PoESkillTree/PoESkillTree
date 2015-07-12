@@ -298,13 +298,13 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
 #if DEBUG
             stopwatch.Stop();
-            //Console.Write("Evaluation time for " + generationCount + " : ");
-            //Console.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
-            //Console.WriteLine("Average health: " + averageHealth / populationSize);
-            //Console.WriteLine("Average bits set: " + averageBitsSet / populationSize);
-            //Console.WriteLine("Average age: " + averageAge / populationSize);
-            //Console.WriteLine("Accepted new states (all/worse): " + acceptedTotal + "/" + acceptedWorse);
-            //Console.WriteLine("Sampler entries: " + sampler.EntryCount);
+            //Debug.Write("Evaluation time for " + generationCount + " : ");
+            //Debug.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
+            //Debug.WriteLine("Average health: " + averageHealth / populationSize);
+            //Debug.WriteLine("Average bits set: " + averageBitsSet / populationSize);
+            //Debug.WriteLine("Average age: " + averageAge / populationSize);
+            //Debug.WriteLine("Accepted new states (all/worse): " + acceptedTotal + "/" + acceptedWorse);
+            //Debug.WriteLine("Sampler entries: " + sampler.EntryCount);
             
             stopwatch.Restart();
 #endif
@@ -313,7 +313,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             {
                 // This is actually a pretty serious problem.
                 population = createPopulation();
-                Console.WriteLine("Entire population was infertile (Generation " +
+                Debug.WriteLine("Entire population was infertile (Generation " +
                                    GenerationCount + ").");
                 //Debug.Fail("Population went extinct, not good...");
                 return GenerationCount;
@@ -340,9 +340,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
 #if DEBUG
             stopwatch.Stop();
-            //Console.WriteLine("Best value so far: " + (1500 - bestSolution.Fitness));
-            //Console.WriteLine("------------------");
-            //Console.Out.Flush();
+            //Debug.WriteLine("Best value so far: " + (1500 - bestSolution.Fitness));
+            //Debug.WriteLine("------------------");
+            //Debug.Out.Flush();
 #endif
 
             return GenerationCount;

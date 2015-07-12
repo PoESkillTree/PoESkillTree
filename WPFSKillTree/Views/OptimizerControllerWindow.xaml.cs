@@ -42,6 +42,12 @@ namespace POESKillTree.Views
         private bool isPaused;
         private bool isCanceling;
 
+        // Once solutionWorker_DoWork is done working in the background, all eventually
+        // queued up solutionWorker_ProgressChanged calls return without doing anything.
+        // This is mainly noticeable for very small searchSpaces (and therefore a high
+        // maxGeneration).
+        private bool _stopReporting;
+
         public OptimizerControllerWindow(SkillTree tree, HashSet<ushort> targetNodes, HashSet<ushort> nodesToOmit = null)
         {
             InitializeComponent();
@@ -79,7 +85,7 @@ namespace POESKillTree.Views
             steinerSolver.InitializeSolver(targetNodes, nodesToOmit);
 #if DEBUG
             stopwatch.Stop();
-            Console.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
+            Debug.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
 #endif
         }
 
@@ -122,15 +128,15 @@ namespace POESKillTree.Views
             }
 #if DEBUG
             stopwatch.Stop();
-            Console.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
+            Debug.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
 #endif
             e.Result = steinerSolver.BestSolution;
+            _stopReporting = true;
         }
-
 
         void solutionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (isCanceling)
+            if (isCanceling || _stopReporting)
             {
                 return;
             }
@@ -157,6 +163,12 @@ namespace POESKillTree.Views
             btnPopupPauseResume.IsEnabled = false;
             bestSoFar = (HashSet<ushort>)e.Result;
             isPaused = true;
+
+            // Draw the final solution in case not all ProgressChangeds get executed.
+            progressBar.Value = maxSteps;
+            lblBestResult.Content = string.Format(L10n.Plural("Best result so far: {0} additional point spent", "Best result so far: {0} additional points spent", (uint)bestSoFar.Count), bestSoFar.Count);
+            tree.HighlightedNodes = new HashSet<ushort>(bestSoFar.Concat(tree.SkilledNodes));
+            tree.DrawNodeBaseSurroundHighlight();
         }
 
         #region UI interaction

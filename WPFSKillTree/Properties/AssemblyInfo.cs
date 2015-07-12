@@ -42,5 +42,5 @@ using System.Windows;
 [assembly: AssemblyProduct("PoESkillTree - The Awakening")]
 [assembly: AssemblyCopyright("Copyright © 2012-2015 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.2.0.602")]
+[assembly: AssemblyFileVersion("2.2.0.608")]
 [assembly: AssemblyInformationalVersion("2.2.0")]

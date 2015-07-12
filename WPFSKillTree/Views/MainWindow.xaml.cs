@@ -20,6 +20,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
+using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
@@ -156,7 +157,7 @@ namespace POESKillTree.Views
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
             Tree.MainWindow = this;
-            recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * 500;
+            recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
@@ -614,7 +615,7 @@ namespace POESKillTree.Views
 
             if (Tree.CanSwitchClass(className))
             {
-                var currentClassArray = getCurrentClass();
+                var currentClassArray = GetCurrentClass();
                 var changeClassArray = getAnyClass(className);
 
                 if (currentClassArray[0] == "ERROR")
@@ -1318,6 +1319,11 @@ namespace POESKillTree.Views
                     tbSkillURL.Text = redirUrl;
                     LoadBuildFromUrl();
                 }
+                else if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accoutnName"))
+                {
+                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
+                    Tree.LoadFromURL(tbSkillURL.Text);
+                }
                 else
                 {
                     string[] urls = new string[] {
@@ -1675,46 +1681,34 @@ namespace POESKillTree.Views
 
         #region Change Class - No Reset
 
+        private readonly Dictionary<string, string> _classNameToLink = new Dictionary<string, string>
+        {
+            {"Scion", "AAAAAwAA"},
+            {"Marauder", "AAAAAwEA"},
+            {"Ranger", "AAAAAwIA"},
+            {"Witch", "AAAAAwMA"},
+            {"Duelist", "AAAAAwQA"},
+            {"Templar", "AAAAAwUA"},
+            {"Shadow", "AAAAAwYA"},
+        };  
+
         /**
          * Will get the current class name and start string from the tree url
          * return: array[]
          *         index 0 containing the Class Name
          *         index 1 containing the Class Start String
          **/
-        private string[] getCurrentClass()
+
+        private string[] GetCurrentClass()
         {
-            if (tbSkillURL.Text.IndexOf("AAAAAgAA") != -1)
+            foreach (var item in _classNameToLink)
             {
-                return getAnyClass("Scion");
+                if (tbSkillURL.Text.IndexOf(item.Value) != -1)
+                {
+                    return getAnyClass(item.Key);
+                }
             }
-            else if (tbSkillURL.Text.IndexOf("AAAAAgEA") != -1)
-            {
-                return getAnyClass("Marauder");
-            }
-            else if (tbSkillURL.Text.IndexOf("AAAAAgIA") != -1)
-            {
-                return getAnyClass("Ranger");
-            }
-            else if (tbSkillURL.Text.IndexOf("AAAAAgMA") != -1)
-            {
-                return getAnyClass("Witch");
-            }
-            else if (tbSkillURL.Text.IndexOf("AAAAAgQA") != -1)
-            {
-                return getAnyClass("Duelist");
-            }
-            else if (tbSkillURL.Text.IndexOf("AAAAAgUA") != -1)
-            {
-                return getAnyClass("Templar");
-            }
-            else if (tbSkillURL.Text.IndexOf("AAAAAgYA") != -1)
-            {
-                return getAnyClass("Shadow");
-            }
-            else
-            {
-                return getAnyClass("ERROR");
-            }
+            return getAnyClass("ERROR");
         }
 
         /**
@@ -1726,54 +1720,19 @@ namespace POESKillTree.Views
         private string[] getAnyClass(string className)
         {
             string[] array = new string[2];
-            if (className == "Scion")
+            string classStartString;
+            if (_classNameToLink.TryGetValue(className, out classStartString))
             {
-                array[0] = "Scion";
-                array[1] = "AAAAAgAA";
-                return array;
-            }
-            else if (className == "Marauder")
-            {
-                array[0] = "Marauder";
-                array[1] = "AAAAAgEA";
-                return array;
-            }
-            else if (className == "Ranger")
-            {
-                array[0] = "Ranger";
-                array[1] = "AAAAAgIA";
-                return array;
-            }
-            else if (className == "Witch")
-            {
-                array[0] = "Witch";
-                array[1] = "AAAAAgMA";
-                return array;
-            }
-            else if (className == "Duelist")
-            {
-                array[0] = "Duelist";
-                array[1] = "AAAAAgQA";
-                return array;
-            }
-            else if (className == "Templar")
-            {
-                array[0] = "Templar";
-                array[1] = "AAAAAgUA";
-                return array;
-            }
-            else if (className == "Shadow")
-            {
-                array[0] = "Shadow";
-                array[1] = "AAAAAgYA";
-                return array;
+                array[0] = className;
+                array[1] = classStartString;
             }
             else
             {
                 array[0] = "ERROR";
                 array[1] = "ERROR";
-                return array;
             }
+
+            return array;
         }
         #endregion
 
