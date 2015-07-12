@@ -53,8 +53,9 @@ namespace POESKillTree.SkillTreeFiles
             {"+# Maximum Power Charge", 3},
             {"#% Additional Elemental Resistance per Endurance Charge", 4},
             {"#% Physical Damage Reduction per Endurance Charge", 4},
-            {"#% Attack Speed Increase per Frenzy Charge", 5},
-            {"#% Cast Speed Increase per Frenzy Charge", 5},
+            {"#% Attack Speed Increase per Frenzy Charge", 4},
+            {"#% Cast Speed Increase per Frenzy Charge", 4},
+            {"#% More Damage per Frenzy Charge", 4},
             {"#% Critical Strike Chance Increase per Power Charge", 50},
         };
 
