@@ -115,7 +115,7 @@ namespace POESKillTree.SkillTreeFiles
                 backgroundBrush.TileMode = TileMode.Tile;
                 backgroundBrush.Viewport = new Rect(0, 0,
                     6 * backgroundBrush.ImageSource.Width / TRect.Width,
-                    6 * backgroundBrush.ImageSource.Height / TRect.Width);
+                    6 * backgroundBrush.ImageSource.Height / TRect.Height);
                 drawingContext.DrawRectangle(backgroundBrush, null, TRect);
 
                 var topGradient = new LinearGradientBrush();
@@ -327,7 +327,7 @@ namespace POESKillTree.SkillTreeFiles
                     foreach (ushort skillNode in HighlightedNodes)
                     {
                         Vector2D pos = (Skillnodes[skillNode].Position);
-
+                        
                         if (Skillnodes[skillNode].IsNotable)
                         {
                             dc.DrawRectangle(NodeSurroundHighlightBrush[3].Value, null,

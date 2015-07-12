@@ -419,8 +419,9 @@ namespace POESKillTree.SkillTreeFiles
 
             if (!_Initialized)
             {
-                _TRect = new Rect2D(new Vector2D(inTree.min_x * 1.1, inTree.min_y * 1.1),
-                    new Vector2D(inTree.max_x * 1.1, inTree.max_y * 1.1));
+                const int padding = 500; //This is to account for jewel range circles. Might need to find a better way to do it.
+                _TRect = new Rect2D(new Vector2D(inTree.min_x * 1.1 - padding, inTree.min_y * 1.1 - padding),
+                    new Vector2D(inTree.max_x * 1.1 + padding, inTree.max_y * 1.1 + padding));
             }
 
 

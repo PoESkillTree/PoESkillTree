@@ -154,7 +154,7 @@ namespace POESKillTree.Views
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
             Tree.MainWindow = this;
-            recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * 500;
+            recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
