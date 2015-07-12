@@ -968,11 +968,11 @@ namespace POESKillTree.SkillTreeFiles
         public string SaveToURL()
         {
             var b = new byte[(SkilledNodes.Count - 1) * 2 + 6];
-            byte[] b2 = BitConverter.GetBytes(2);
+            byte[] b2 = BitConverter.GetBytes(3); //skilltree version
             b[0] = b2[3];
             b[1] = b2[2];
             b[2] = b2[1];
-            b[3] = 3; //This is w
+            b[3] = b2[0]; 
             b[4] = (byte)(Chartype);
             b[5] = 0;
             int pos = 6;
