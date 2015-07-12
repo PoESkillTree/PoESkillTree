@@ -104,12 +104,17 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
-        protected override void BuildSearchSpace()
+        protected override MinimalSpanningTree BuildSearchSpace()
         {
             SearchSpace = new List<GraphNode>();
 
             MinimalSpanningTree leastSolution = new MinimalSpanningTree(TargetNodes, Distances);
             leastSolution.Span(StartNodes);
+
+            if (TargetNodes.Count == 0)
+            {
+                return leastSolution;
+            }
 
             int maxEdgeDistance = leastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
 
@@ -130,6 +135,8 @@ namespace POESKillTree.TreeGenerator.Solver
 
                 }
             }
+
+            return leastSolution;
         }
 
         protected override double FitnessFunction(MinimalSpanningTree tree)

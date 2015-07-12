@@ -24,10 +24,30 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private int _maxSteps;
 
-        public HashSet<ushort> BestSoFar { get; private set; }
+        private HashSet<ushort> _bestSoFar;
+
+        public HashSet<ushort> BestSoFar
+        {
+            get { return _bestSoFar; }
+            private set
+            {
+                _bestSoFar = value;
+                // BestSoFar.Count - 1 because of the hidden character class start node.
+                BestResultText = string.Format(L10n.Plural("Best result so far: {0} point spent",
+                    "Best result so far: {0} points spent", (uint)_bestSoFar.Count - 1), _bestSoFar.Count - 1);
+                _tree.HighlightedNodes = new HashSet<ushort>(_bestSoFar.Concat(_tree.SkilledNodes));
+                _tree.DrawNodeBaseSurroundHighlight();
+            }
+        }
 
         private bool _isPaused;
         private bool _isCanceling;
+
+        // Once solutionWorker_DoWork is done working in the background, all eventually
+        // queued up solutionWorker_ProgressChanged calls return without doing anything.
+        // This is mainly noticeable for very small searchSpaces (and therefore a high
+        // maxGeneration).
+        private bool _stopReporting;
 
 #region Presentation
 
@@ -203,7 +223,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             _solver.Initialize();
 #if DEBUG
             stopwatch.Stop();
-            Console.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
+            Debug.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
 #endif
         }
 
@@ -246,14 +266,15 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
 #if DEBUG
             stopwatch.Stop();
-            Console.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
+            Debug.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
 #endif
             doWorkEventArgs.Result = _solver.BestSolution;
+            _stopReporting = true;
         }
 
         private void SolutionWorkerOnProgressChanged(object sender, ProgressChangedEventArgs progressChangedEventArgs)
         {
-            if (_isCanceling)
+            if (_isCanceling || _stopReporting)
             {
                 return;
             }
@@ -261,11 +282,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
             ProgressbarCurrent = progressChangedEventArgs.ProgressPercentage;
             ProgressbarText = progressChangedEventArgs.ProgressPercentage + "/" + _maxSteps;
             BestSoFar = (HashSet<ushort>)(progressChangedEventArgs.UserState);
-            // BestSoFar.Count - 1 because of the hidden character class start node.
-            BestResultText = string.Format(L10n.Plural("Best result so far: {0} point spent",
-                "Best result so far: {0} points spent", (uint)BestSoFar.Count - 1), BestSoFar.Count - 1);
-            _tree.HighlightedNodes = new HashSet<ushort>(BestSoFar.Concat(_tree.SkilledNodes));
-            _tree.DrawNodeBaseSurroundHighlight();
         }
 
         private void SolutionWorkerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
@@ -280,8 +296,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
             ProgressbarText = L10n.Message("Finished!");
             CancelCloseText = L10n.Message("Close");
             PauseResumeEnabled = false;
-            BestSoFar = (HashSet<ushort>)runWorkerCompletedEventArgs.Result;
             _isPaused = true;
+
+            // Draw the final solution in case not all ProgressChangeds get executed.
+            ProgressbarCurrent = _maxSteps;
+            BestSoFar = (HashSet<ushort>)runWorkerCompletedEventArgs.Result;
         }
 
         private void CancelClose()

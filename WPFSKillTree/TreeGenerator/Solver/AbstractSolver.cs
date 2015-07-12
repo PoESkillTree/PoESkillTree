@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.SkillTreeFiles.SteinerTrees;
@@ -52,13 +53,14 @@ namespace POESKillTree.TreeGenerator.Solver
         public void Initialize()
         {
             BuildSearchGraph();
-            // Build a tree only containing the start nodes. Makes sure BestSolution
-            // is not null or empty if MaxGeneration is 0.
-            BestSolution = new HashSet<ushort>(StartNodes.nodes.Select(node => node.Id));
 
             try
             {
-                BuildSearchSpace();
+                var leastSolution = BuildSearchSpace();
+
+                // Saving the leastSolution as initial solution. Makes sure there is always a
+                // solution even if the search space is empty or MaxGeneration is 0.
+                BestSolution = SpannedMstToSkillnodes(leastSolution);
             }
             catch (DistanceLookup.GraphNotConnectedException e)
             {
@@ -72,13 +74,12 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected abstract void BuildSearchGraph();
 
-        protected abstract void BuildSearchSpace();
+        protected abstract MinimalSpanningTree BuildSearchSpace();
 
         private void InitializeGa()
         {
-#if DEBUG
-            Console.WriteLine(@"Search space dimension: " + SearchSpace.Count);
-#endif
+            Debug.WriteLine("Search space dimension: " + SearchSpace.Count);
+
             _ga = new GeneticAlgorithm(FitnessFunction);
             _ga.InitializeEvolution(GaParameters);
         }
