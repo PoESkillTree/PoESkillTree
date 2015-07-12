@@ -3,26 +3,26 @@ PoESkillTree
 ![](https://cloud.githubusercontent.com/assets/381657/5123351/e9985f18-70aa-11e4-9cc7-250bade5f481.png)
 ###Features
 ---
-* Url Improvments
-  * PoEBuilder, PoEUrl and Tinyurl parsing
-  * Button to change current tree link to poeurl link
-  * Enter in url to load build
+* URL Improvements
+  * PoEBuilder, PoEUrl and TinyURL parsing
+  * Button to change current tree link to PoEUrl link
+  * Enter in URL to load build
 * Hotkeys
-* GUI Improvments
+* GUI Improvements
   * Hide sidebars
   * Drag&Drop in builds list
   * New Look and the ability to choose color theme
   * And lots of other changes and updates
 * Character Sheet: DPS and Defensive calculations
 * Tree comparison: Compare current tree with a saved one
-* Performace improvements
+* Performance improvements
 
 ###Install/Update
 ---
 ####Install
-1. Got to the [release page](https://github.com/EmmittJ/PoESkillTree/releases) and select the version you would like, most likly the latest.
+1. Got to the [release page](https://github.com/EmmittJ/PoESkillTree/releases) and select the version you would like, most likely the latest.
 2. Download the zip file
-3. Unzip it to a loction of you choice
+3. Unzip it to a location of you choice
 4. Start POESKillTree.exe
 
 ####Update
@@ -41,7 +41,7 @@ If you have settings and/or saved builds you want to keep when updating do this:
 If you are using a version that still uses the savedBuilds file, just copy that over to the new version and the program will migrate all saves to PersistentData.xml, after this the savedBuilds file is no longer needed.
 
 ####Skilltree version
-The program always ships with the latest skilltree data available when the release is done. If you know there is a new version of the tree on the offical website but no new version of this program is available you can do this:
+The program always ships with the latest skilltree data available when the release is done. If you know there is a new version of the tree on the official website but no new version of this program is available you can do this:
 
 1. Delete the Data folder and then just start the program, it will download the latest version.
 2. If you have the program running just go to: ```Tools -> Redownload Tree Assets```
@@ -73,8 +73,8 @@ Note: Both these options require that you can access the official Path of Exile 
 
 ###Help/Issues
 ---
-* For help please check out the thread in the offical forum: https://www.pathofexile.com/forum/view-thread/996805/
-* If you find any bugs/faults please report it here on Github
+* For help please check out the thread in the official forum: https://www.pathofexile.com/forum/view-thread/996805/
+* If you find any bugs/faults please report it here on GitHub
 * Miss any features? Create an issue here or post in the forum thread
 
 ###Credits
@@ -89,6 +89,6 @@ Note: Both these options require that you can access the official Path of Exile 
 * yazilliclick
 * MauranKilom
 
-###Screenshoots
+###Screenshots
 ---
 ![](https://cloud.githubusercontent.com/assets/381657/5124182/64ca624a-70b4-11e4-9a8e-f63323c8dea3.png)
