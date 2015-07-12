@@ -1304,6 +1304,12 @@ namespace POESKillTree.Views
                     tbSkillURL.Text = redirUrl;
                     LoadBuildFromUrl();
                 }
+                else if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accoutnName"))
+                {
+                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
+                    MessageBox.Show(tbSkillURL.Text);
+                    Tree.LoadFromURL(tbSkillURL.Text);
+                }
                 else
                 {
                     string[] urls = new string[] {
