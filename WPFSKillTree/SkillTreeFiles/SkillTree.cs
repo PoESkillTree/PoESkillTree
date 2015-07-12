@@ -972,7 +972,7 @@ namespace POESKillTree.SkillTreeFiles
             b[0] = b2[3];
             b[1] = b2[2];
             b[2] = b2[1];
-            b[3] = b2[0];
+            b[3] = 3; //This is w
             b[4] = (byte)(Chartype);
             b[5] = 0;
             int pos = 6;
