@@ -155,11 +155,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         ///  Returns the maxGeneration for initializeGA depending on the searchSpace size.
         ///  Returns 0.3 * 20000/searchSpace if searchSpace is < 150 and 0.3 * searchSpace
         ///  otherwise. This means duration * population is constant for searchSpace < 150.
-        ///  If searchSpace is < 10 (and not 0) it is treated as being 10. This stops the value from
-        ///  becoming to high for very low searchSpaces.
         /// </summary>
         private Func<int, double> durationFct = (searchSpace) =>
-            (0.3 * (searchSpace < 150 && searchSpace > 0 ? 20000.0 / Math.Max(searchSpace, 10) : searchSpace));
+            (0.3 * (searchSpace < 150 ? 20000.0 / searchSpace : searchSpace));
         /// <summary>
         ///  Returns the populationSize for initializeGA depending on
         ///  the searchSpace size. Returns 1.5 * searchSpace at the moment.
