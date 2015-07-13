@@ -1754,7 +1754,6 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         // Chance to Evade = 1 - Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
-        // Chance to hit can never be lower than 5%, nor higher than 95%.
         // @see http://pathofexile.gamepedia.com/Evasion
         public static float ChanceToEvade(int level, float evasionRating)
         {
@@ -1762,11 +1761,7 @@ namespace POESKillTree.SkillTreeFiles
 
             int maa = MonsterAverageAccuracy[level];
 
-            float chance = RoundValue((float)(1 - maa / (maa + Math.Pow(evasionRating / 4, 0.8))) * 100, 0);
-            if (chance < 5f) chance = 5f;
-            else if (chance > 95f) chance = 95f;
-
-            return chance;
+            return RoundValue((float)(1 - maa / (maa + Math.Pow(evasionRating / 4, 0.8))) * 100, 0);
         }
 
         // Chance to Hit = Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
@@ -2027,7 +2022,34 @@ namespace POESKillTree.SkillTreeFiles
             }
             if (evasion > 0)
                 def["Evasion Rating: #"] = new List<float>() { RoundValue(evasion, 0) };
-            def["Estimated chance to Evade Attacks: #%"] = new List<float>() { ChanceToEvade(Level, RoundValue(evasion, 0)) };
+            float chanceToEvade = ChanceToEvade(Level, RoundValue(evasion, 0));
+            if (chanceToEvade > 0)
+            {
+                // Arrow Dancing keystone.
+                float chanceToEvadeMelee = chanceToEvade, chanceToEvadeProjectile = chanceToEvade;
+
+                if (Global.ContainsKey("#% less chance to Evade Melee Attacks"))
+                    chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, -Global["#% less chance to Evade Melee Attacks"][0]);
+                if (Global.ContainsKey("#% more chance to Evade Melee Attacks"))
+                    chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, Global["#% more chance to Evade Melee Attacks"][0]);
+                if (Global.ContainsKey("#% less chance to Evade Projectile Attacks"))
+                    chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, -Global["#% less chance to Evade Projectile Attacks"][0]);
+                if (Global.ContainsKey("#% more chance to Evade Projectile Attacks"))
+                    chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, Global["#% more chance to Evade Projectile Attacks"][0]);
+                // Chance cannot be less than 5% and more than 95%.
+                if (chanceToEvadeMelee < 5f) chanceToEvadeMelee = 5f;
+                else if (chanceToEvadeMelee > 95f) chanceToEvadeMelee = 95f;
+                if (chanceToEvadeProjectile < 5f) chanceToEvadeProjectile = 5f;
+                else if (chanceToEvadeProjectile > 95f) chanceToEvadeProjectile = 95f;
+
+                if (chanceToEvadeMelee == chanceToEvadeProjectile)
+                    def["Estimated chance to Evade Attacks: #%"] = new List<float>() { RoundValue(chanceToEvadeMelee, 0) };
+                else
+                {
+                    def["Estimated chance to Evade Melee Attacks: #%"] = new List<float>() { RoundValue(chanceToEvadeMelee, 0) };
+                    def["Estimated chance to Evade Projectile Attacks: #%"] = new List<float>() { RoundValue(chanceToEvadeProjectile, 0) };
+                }
+            }
 
             // Dodge Attacks and Spells.
             float chanceToDodgeAttacks = 0;
