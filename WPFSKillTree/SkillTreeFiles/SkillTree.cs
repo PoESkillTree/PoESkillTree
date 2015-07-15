@@ -329,7 +329,7 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         Id = nd.id,
                         Name = nd.dn,
-                        attributes = nd.dn.Contains("Jewel Socket") ? new string[1] {"+1 Jewel Socket"} : nd.sd,
+                        attributes = nd.dn.Contains("Jewel Socket") ? new string[1] { "+1 Jewel Socket" } : SplitMultilineAttributes(nd.sd),
                         Orbit = nd.o,
                         OrbitIndex = nd.oidx,
                         Icon = nd.icon,
@@ -1037,6 +1037,23 @@ namespace POESKillTree.SkillTreeFiles
             this.DrawHighlights(_nodeHighlighter);
 
             UpdateAvailNodes();
+        }
+
+        /// <summary>
+        /// Splits multiline attribute strings (i.e. strings containing "\n" characters) into multiple attribute strings.
+        /// </summary>
+        /// <param name="attrs">An array of attribute strings to split.</param>
+        /// <returns>An array of attributes strings.</returns>
+        private static string[] SplitMultilineAttributes(string[] attrs)
+        {
+            if (attrs == null || attrs.Length == 0)
+                return attrs;
+
+            List<string> split = new List<string>();
+            for (int i = 0; i < attrs.Length; ++i)
+                split.AddRange(attrs[i].Split('\n'));
+
+            return split.ToArray();
         }
 
         public void UpdateAvailNodes(bool draw = true)
