@@ -1069,7 +1069,7 @@ namespace POESKillTree.SkillTreeFiles
                 // The damage type to convert to.
                 DamageType To;
 
-                static Regex ReConvertMod = new Regex("#% of ([^ ]+) Damage Converted to ([^ ]+) Damage");
+                static Regex ReConvertMod = new Regex("^#% of ([^ ]+) Damage converted to ([^ ]+) Damage$");
 
                 public Converted(DamageConversionSource source, float percent, DamageType from, DamageType to)
                 {
@@ -1664,7 +1664,6 @@ namespace POESKillTree.SkillTreeFiles
         public static bool AvatarOfFire;
         public static bool BloodMagic;
         public static bool ChaosInoculation;
-        public static bool EldritchBattery;
         public static bool IronGrip;
         public static bool IronReflexes;
         public static bool NecromanticAegis;
@@ -1923,8 +1922,8 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // ( Mana * %mana increases ) + ( ES * ( %ES increases + %mana increases ) * ( %ES more ) )
-            // @see http://pathofexile.gamepedia.com/Eldritch_Battery
-            if (EldritchBattery)
+            // ES to Mana conversion mod (old Eldritch Battery).
+            if (Global.ContainsKey("Converts all Energy Shield to Mana"))
             {
                 es = IncreaseValueByPercentage(es, incES + incMana);
                 es += shieldES;
@@ -2350,7 +2349,6 @@ namespace POESKillTree.SkillTreeFiles
             AvatarOfFire = Tree.ContainsKey("Deal no Non-Fire Damage");
             BloodMagic = Tree.ContainsKey("Removes all mana. Spend Life instead of Mana for Skills");
             ChaosInoculation = Tree.ContainsKey("Maximum Life becomes #, Immune to Chaos Damage");
-            EldritchBattery = Tree.ContainsKey("Converts all Energy Shield to Mana");
             IronGrip = Tree.ContainsKey("The increase to Physical Damage from Strength applies to Projectile Attacks as well as Melee Attacks");
             IronReflexes = Tree.ContainsKey("Converts all Evasion Rating to Armour. Dexterity provides no bonus to Evasion Rating");
             NecromanticAegis = Tree.ContainsKey("All bonuses from an equipped Shield apply to your Minions instead of you");
