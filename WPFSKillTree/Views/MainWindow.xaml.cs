@@ -838,7 +838,7 @@ namespace POESKillTree.Views
                 "^" + Regex.Replace(listBox1.SelectedItem.ToString()
                         .Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
-                        .Replace(@"%", @"\%"), @"\d+", @"\d+") + "$";
+                        .Replace(@"%", @"\%"), @"[0-9]*\.?[0-9]+", @"[0-9]*\.?[0-9]+") + "$";
             _highlightedAttribute = newHighlightedAttribute == _highlightedAttribute ? "" : newHighlightedAttribute;
             Tree.HighlightNodesBySearch(_highlightedAttribute, true, false);
         }
