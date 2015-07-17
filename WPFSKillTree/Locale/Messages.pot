@@ -582,7 +582,7 @@ msgstr ""
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:821 SkillTreeFiles\Compute.cs:2275
+#: Views\MainWindow.xaml:821 SkillTreeFiles\Compute.cs:2296
 msgid "Defense"
 msgstr ""
 
@@ -614,7 +614,7 @@ msgstr ""
 msgid "Initializing..."
 msgstr ""
 
-#: SkillTreeFiles\Compute.cs:2274
+#: SkillTreeFiles\Compute.cs:2295
 msgid "Character"
 msgstr ""
 

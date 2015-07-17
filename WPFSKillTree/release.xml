@@ -111,6 +111,15 @@
         <LocaleCopyFiles Include="$(LocaleDir)\**" />
     </ItemGroup>
 
+    <ItemGroup>
+        <PortableIniLines Include="line1">
+            <Line>[Setup]</Line>
+        </PortableIniLines>
+        <PortableIniLines Include="line2">
+            <Line>Language=en_US</Line>
+        </PortableIniLines>
+    </ItemGroup>
+
     <Target Name="Build" DependsOnTargets="Clean;Identity">
         <!-- Files updated by this target -->
         <ItemGroup>
@@ -282,6 +291,11 @@
 
         <!-- Create release installer -->
         <Exec Command="..\$(ISCCTool) /dAppId=$(AppId) /dAssemblyCompany=&quot;$(AssemblyCompany)&quot; /dAssemblyCopyright=&quot;$(AssemblyCopyright)&quot; /dAssemblyName=&quot;$(AssemblyName)&quot; /dFileVersion=&quot;$(FileVersion)&quot; /dPackageName=&quot;$(PackageName)&quot; /dProductName=&quot;$(ProductName)&quot; /dProductURL=&quot;$(ProductURL)&quot; /dProductVersion=$(ProductVersion) /dProjectDir=&quot;$(MSBuildProjectDirectory)&quot; ..\release.iss" WorkingDirectory="$(WorkDir)" />
+
+        <!-- Create Portable.ini file to include it into Zip package -->
+        <WriteLinesToFile File="$(DistDir)\Portable.ini" Lines="@(PortableIniLines->'%(Line)')" Overwrite="true" />
+        <!-- Delete PersistenData.xml file to exclude it from Zip package -->
+        <Delete Files="$(DistDir)\PersistentData.xml" />
 
         <!-- Create release package -->
         <Exec Command="..\$(ZipTool) $(PackageName)-$(ProductVersion).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />

@@ -114,6 +114,8 @@ begin
 end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
+var
+	InstallLocation: String;
 begin
 	{ Determine portable mode }
 	if (CurPageID = PortabilityPage.ID) then
@@ -121,9 +123,15 @@ begin
 		IsPortable := not (PortabilityPage.SelectedValueIndex = 0);
 		{ Change DefaultDirName in wizard form }
 		if IsPortable then
-			WizardForm.DirEdit.Text := 'C:\' + ExpandConstant('{#ProductName}')
+			WizardForm.DirEdit.Text := ExpandConstant('{sd}\{#ProductName}')
 		else
-			WizardForm.DirEdit.Text := ExpandConstant('{pf}\{#ProductName}')
+			begin
+				{ Use InstallLocation from registry if possible }
+				if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\' + ExpandConstant('{#AppId}') + '_is1', 'InstallLocation', InstallLocation) then
+					WizardForm.DirEdit.Text := RemoveBackslashUnlessRoot(InstallLocation)
+				else
+					WizardForm.DirEdit.Text := ExpandConstant('{pf}\{#ProductName}')
+			end;
 	end;
 	{ Return True to continue with setup }
 	Result := True; 
