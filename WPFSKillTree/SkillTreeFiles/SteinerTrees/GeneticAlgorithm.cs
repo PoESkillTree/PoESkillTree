@@ -123,6 +123,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         public int GenerationCount { get; private set; }
 
+        private BitArray _initialSolution;
+
         private Individual bestSolution;
 
         /// <summary>
@@ -178,8 +180,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// Initializes a new optimization run.
         /// </summary>
         /// <param name="parameters">The parameters to initialize the algorithm with</param>
-        public void InitializeEvolution(GeneticAlgorithmParameters parameters)
-            //BitArray initialSolution = null)
+        /// <param name="initialSolution">The solution to initialize the population with</param>
+        public void InitializeEvolution(GeneticAlgorithmParameters parameters, BitArray initialSolution = null)
         {
             PopulationSize = parameters.PopulationSize;
             dnaLength = parameters.DnaLength;
@@ -188,6 +190,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             bestSolution = new Individual(null, 0);
 
+            _initialSolution = initialSolution ?? new BitArray(dnaLength);
             population = createPopulation();
             GenerationCount = 0;
             updateBestSolution();
@@ -199,11 +202,18 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <returns>The random individuals.</returns>
         private Individual[] createPopulation()
         {
-            Individual[] newPopulation = new Individual[PopulationSize];
-            //for (int i = 0; i < populationSize; i++)
-            Parallel.For(0, PopulationSize, i =>
+            if (PopulationSize == 0)
             {
-                newPopulation[i] = spawnIndividual(randomBitarray(dnaLength));
+                return new Individual[0];
+            }
+
+            Individual[] newPopulation = new Individual[PopulationSize];
+            // The initial solution is included in the initial population.
+            newPopulation[0] = spawnIndividual(_initialSolution);
+            //for (int i = 1; i < populationSize; i++)
+            Parallel.For(1, PopulationSize, i =>
+            {
+                newPopulation[i] = spawnIndividual(randomBitarray());
                 // Without this, nothing would be allowed to breed in the first step.
                 newPopulation[i].Age++;
             });
@@ -439,26 +449,14 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         /// <summary>
         ///  Generates a random BitArray. Currently this means that exactly one of
-        ///  the bits is set.
+        ///  the bits is inverted from the initial solution.
         /// </summary>
-        /// <param name="length">The desired length of the BitArray.</param>
         /// <returns>The random BitArray.</returns>
-        private BitArray randomBitarray(int length)
+        private BitArray randomBitarray()
         {
-            // Each byte provides 8 bits.
-            /*byte[] buffer = new byte[(int)Math.Ceiling(length/8.0)];
-            random.NextBytes(buffer);
-
-            BitArray bitArray = new BitArray(buffer); //(buffer);
-            bitArray.Length = length;
-            return bitArray;*/
-
-            if (length == 0)
-                return new BitArray(0);
-
-            BitArray bitArray = new BitArray(length);
-            int i0 = random.Next(length);
-            bitArray[i0] = true;
+            BitArray bitArray = new BitArray(_initialSolution);
+            int i0 = random.Next(dnaLength);
+            bitArray[i0] = !bitArray[i0];
             return bitArray;
         }
 

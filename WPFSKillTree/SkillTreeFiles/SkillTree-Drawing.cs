@@ -44,8 +44,8 @@ namespace POESKillTree.SkillTreeFiles
         {
             get { return SkillTree._StartBackgrounds; }
         }
-        // FIXME: private
-        public NodeHighlighter _nodeHighlighter = new NodeHighlighter();
+        
+        private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
 
         public DrawingVisual SkillTreeVisual;
         public DrawingVisual picActiveLinks;
@@ -242,7 +242,6 @@ namespace POESKillTree.SkillTreeFiles
         public void DrawHighlights()
         {
             var nh = _nodeHighlighter;
-            var hpen = new Pen(Brushes.White, 20);
             var crossPen = new Pen(Brushes.Red, 20);
             var checkPen = new Pen(Brushes.Lime, 20);
             using (DrawingContext dc = picHighlights.RenderOpen())
@@ -257,7 +256,7 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         byte red = (byte)(hs.HasFlag(HighlightState.FromSearch) ? 255 : 0);
                         byte green = (byte)(hs.HasFlag(HighlightState.FromAttrib) ? 255 : 0);
-                        hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, 0)), 20);
+                        var hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, 0)), 20);
 
                         dc.DrawEllipse(null, hpen, pair.Key.Position, 80, 80);
                     }

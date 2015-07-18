@@ -205,6 +205,7 @@
     <Compile Include="TreeGenerator\Settings\AutomatedSolverSettings.cs" />
     <Compile Include="TreeGenerator\Settings\SolverSettings.cs" />
     <Compile Include="TreeGenerator\Solver\AbstractSolver.cs" />
+    <Compile Include="TreeGenerator\Solver\AdvancedSolver.cs" />
     <Compile Include="TreeGenerator\Solver\SteinerSolver.cs" />
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />

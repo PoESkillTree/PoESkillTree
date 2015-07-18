@@ -11,10 +11,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public SteinerTabViewModel(SkillTree tree)
             : base(tree)
         {
-            DisplayName = L10n.Message("Highlighted Nodes");
+            DisplayName = L10n.Message("Tagged Nodes");
         }
 
-        public override AbstractSolver<SolverSettings> CreateSolver(SolverSettings settings)
+        public override ISolver CreateSolver(SolverSettings settings)
         {
             return new SteinerSolver(Tree, settings);
         }

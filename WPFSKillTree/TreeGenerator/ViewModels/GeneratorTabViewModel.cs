@@ -13,6 +13,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
             Tree = tree;
         }
 
-        public abstract AbstractSolver<SolverSettings> CreateSolver(SolverSettings settings);
+        public abstract ISolver CreateSolver(SolverSettings settings);
     }
 }

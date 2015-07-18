@@ -1035,6 +1035,11 @@ namespace POESKillTree.SkillTreeFiles
             settingsVm.RunCommand.Execute(null);
         }
 
+        public SkillNode GetCharNode()
+        {
+            return Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[_chartype].ToUpper()).Value;
+        }
+
         public void UpdateAvailNodes(bool draw = true)
         {
             AvailNodes = GetAvailableNodes(SkilledNodes);

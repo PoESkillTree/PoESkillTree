@@ -172,15 +172,13 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
-        // TODO RelayCommand.CanExecuteChanged callen
-
 #endregion
 
 #region Validation
 
         public string Error
         {
-            get { return null; }
+            get { return ValidatedProperties.Select(GetValidationError).FirstOrDefault(error => error != null); }
         }
 
         public string this[string columnName]
@@ -333,9 +331,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
             return new SolverSettings(level, totalPoints, @checked, crossed, initialStats, subsetTree, initialTree);
         }
 
-        private Dictionary<string, List<float>> ItemsToInitialStats()
+        private Dictionary<string, float> ItemsToInitialStats()
         {
-            // TODO
+            // TODO ItemsToInitialStats
             // generate stats just from level
             if (_importItems)
             {

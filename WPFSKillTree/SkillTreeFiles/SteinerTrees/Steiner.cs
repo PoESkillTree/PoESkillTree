@@ -471,9 +471,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             if (visualize)
             {
-                tree._nodeHighlighter.UnhighlightAllNodes(NodeHighlighter.HighlightState.FromAttrib);
-                foreach (GraphNode steinerNode in mst.mstNodes)
-                    tree._nodeHighlighter.HighlightNode(SkillTree.Skillnodes[steinerNode.Id], NodeHighlighter.HighlightState.FromAttrib);
+                //tree._nodeHighlighter.UnhighlightAllNodes(NodeHighlighter.HighlightState.FromAttrib);
+                //foreach (GraphNode steinerNode in mst.mstNodes)
+                //    tree._nodeHighlighter.HighlightNode(SkillTree.Skillnodes[steinerNode.Id], NodeHighlighter.HighlightState.FromAttrib);
             }
 
             //tree.DrawHighlights(tree._nodeHighlighter);

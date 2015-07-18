@@ -20,6 +20,28 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         public List<GraphEdge> SpanningEdges;
 
+        private HashSet<ushort> _usedNodes;
+        public HashSet<ushort> UsedNodes
+        {
+            get
+            {
+                if (_usedNodes == null)
+                {
+                    _usedNodes = new HashSet<ushort>();
+                    foreach (var edge in SpanningEdges)
+                    {
+                        // Shortest paths are saved in DistanceLookup, so we can use those.
+                        var path = distances.GetShortestPath(edge);
+                        // Save nodes into the HashSet, the set only saves each node once.
+                        _usedNodes.Add(edge.inside.Id);
+                        _usedNodes.Add(edge.outside.Id);
+                        _usedNodes.UnionWith(path);
+                    }
+                }
+                return _usedNodes;
+            }
+        }
+
         private int? _usedNodeCount;
         public int UsedNodeCount
         {
@@ -27,21 +49,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             {
                 if (_usedNodeCount == null)
                 {
-                    _usedNodeCount = 0;
-                    // Shortest paths are saved in DistanceLookup, so we can use those.
-                    // This way each node only gets counted once, even if it is contained in more than
-                    // one spanning edge. With this the UsedNodeCount is always accurate.
-                    var pathNodes = new HashSet<ushort>();
-                    foreach (var edge in SpanningEdges)
-                    {
-                        // distance = |nodes between edge nodes| + 1
-                        _usedNodeCount++;
-                        var path = distances.GetShortestPath(edge);
-                        // Save nodes into the HashSet, the set only saves each node once.
-                        pathNodes.UnionWith(path);
-                    }
-                    // Add distinct pathing nodes.
-                    _usedNodeCount += pathNodes.Count;
+                    _usedNodeCount = UsedNodes.Count;
                 }
                 return _usedNodeCount.Value;
             }

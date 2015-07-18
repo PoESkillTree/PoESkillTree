@@ -45,7 +45,6 @@ namespace POESKillTree.TreeGenerator.Solver
                 TargetNodes.Add(node);
             }
 
-
             foreach (SkillNodeGroup ng in SkillTree.NodeGroups)
             {
                 bool mustInclude = false;

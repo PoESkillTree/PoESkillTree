@@ -12,6 +12,7 @@ namespace UnitTests
     [TestClass]
     public class TestGeneticAlgorithmEasy
     {
+        // TODO rework for new TreeGenerator namespace
 
         static SkillTree Tree;
 
@@ -32,8 +33,8 @@ namespace UnitTests
             SkillNode coldhearted = SkillTree.Skillnodes.Values.Where(n => n.Name == "Coldhearted Calculation").First();
             SkillNode voidBarrier = SkillTree.Skillnodes.Values.Where(n => n.Name == "Void Barrier").First();
 
-            Tree._nodeHighlighter.ToggleHighlightNode(coldhearted, NodeHighlighter.HighlightState.Checked);
-            Tree._nodeHighlighter.ToggleHighlightNode(voidBarrier, NodeHighlighter.HighlightState.Checked);
+            //Tree._nodeHighlighter.ToggleHighlightNode(coldhearted, NodeHighlighter.HighlightState.Checked);
+            //Tree._nodeHighlighter.ToggleHighlightNode(voidBarrier, NodeHighlighter.HighlightState.Checked);
             Tree.Chartype = 6; // Shadow
 
             Tree.SkillAllTaggedNodes();
@@ -43,7 +44,7 @@ namespace UnitTests
 
 
             Tree.Reset();
-            Tree._nodeHighlighter.UnhighlightAllNodes(NodeHighlighter.HighlightState.All);
+            //Tree._nodeHighlighter.UnhighlightAllNodes(NodeHighlighter.HighlightState.All);
 
             // Test if the optimal tree for this also uses all steiner nodes.
             SkillNode dynamo = SkillTree.Skillnodes.Values.Where(n => n.Name == "Dynamo").First();

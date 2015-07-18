@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            <!-- Exists only for testing purposes. Should be deleted once there are other working GeneratorTabs. -->
+            <!-- TODO Exists only for testing purposes. Should be deleted once there are other working GeneratorTabs. -->
     </Grid>
 </UserControl>

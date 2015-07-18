@@ -7,7 +7,6 @@ using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;
 using POESKillTree.Utils;
 
@@ -15,7 +14,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 {
     public sealed class ControllerViewModel : CloseableViewModel
     {
-        private readonly AbstractSolver<SolverSettings> _solver;
+        private readonly ISolver _solver;
 
         private readonly BackgroundWorker _solutionWorker = new BackgroundWorker();
         private readonly BackgroundWorker _initializationWorker = new BackgroundWorker();
@@ -32,6 +31,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _bestSoFar = value;
+                // TODO get best result text from Solver or somewhere else since it is somewhat solver dependant
                 // BestSoFar.Count - 1 because of the hidden character class start node.
                 BestResultText = string.Format(L10n.Plural("Best result so far: {0} point spent",
                     "Best result so far: {0} points spent", (uint)_bestSoFar.Count - 1), _bestSoFar.Count - 1);
@@ -193,7 +193,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
 #endregion
 
-        public ControllerViewModel(AbstractSolver<SolverSettings> solver, string generatorName)
+        public ControllerViewModel(ISolver solver, string generatorName)
         {
             _solver = solver;
             DisplayName = L10n.Message("Skill tree generator") + " - " + generatorName;

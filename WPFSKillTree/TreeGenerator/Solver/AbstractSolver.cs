@@ -9,7 +9,25 @@ using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
-    public abstract class AbstractSolver<TS> where TS : SolverSettings
+    // Non-generic interface for usage without specifying the generic parameter.
+    public interface ISolver
+    {
+        bool IsConsideredDone { get; }
+
+        int MaxGeneration { get; }
+
+        int CurrentGeneration { get; }
+
+        HashSet<ushort> BestSolution { get; }
+
+        SkillTree Tree { get; }
+
+        void Initialize();
+
+        void Step();
+    }
+
+    public abstract class AbstractSolver<TS> : ISolver where TS : SolverSettings
     {
         public bool IsInitialized { get; private set; }
 
@@ -23,9 +41,10 @@ namespace POESKillTree.TreeGenerator.Solver
 
         public HashSet<ushort> BestSolution { get; private set; }
 
+        // TODO include alternative solutions
         //public IEnumerable<HashSet<ushort>> AlternativeSolutions { get; private set; }
 
-        public readonly SkillTree Tree;
+        public SkillTree Tree { get; private set; }
 
         protected readonly TS Settings;
 
