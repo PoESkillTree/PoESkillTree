@@ -4,8 +4,8 @@ PoESkillTree
 ###Features
 ---
 * URL Improvements
-  * PoEBuilder, PoEUrl and TinyURL parsing
-  * Button to change current tree link to PoEUrl link
+  * PoEBuilder, PoEURL and TinyURL parsing
+  * Button to change current tree link to PoEURL link
   * Enter in URL to load build
 * Hotkeys
 * GUI Improvements
@@ -22,7 +22,7 @@ PoESkillTree
 ####Install
 1. Got to the [release page](https://github.com/EmmittJ/PoESkillTree/releases) and select the version you would like, most likely the latest.
 2. Download the zip file
-3. Unzip it to a location of you choice
+3. Unzip it to a location of your choice
 4. Start POESKillTree.exe
 
 ####Update
@@ -63,7 +63,7 @@ Note: Both these options require that you can access the official Path of Exile 
 * Ctrl + Q: Toggles Attribute Sidebar
 * Ctrl + Shift + Q: Toggles Character Sheet Sidebar
 * Ctrl + B: Toggles Saved Build Sidebar
-* Ctrl + E: Creates a PoEUrl link and copies to clipboard
+* Ctrl + E: Creates a PoEURL link and copies to clipboard
 * Ctrl + R: Resets tree
 * Ctrl + Up/Down (within 'Saved builds' menu): Will move the build up/down respectively
 * Ctrl + Z: Undo last skill tree change

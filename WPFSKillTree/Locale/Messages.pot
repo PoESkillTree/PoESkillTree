@@ -51,7 +51,7 @@ msgstr ""
 
 #: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
 #: Views\DownloadStashWindow.xaml:58 Views\HelpWindow.xaml:52
-#: Views\HotkeysWindow.xaml:154 Views\OptimizerControllerWindow.xaml.cs:159
+#: Views\HotkeysWindow.xaml:154 Views\OptimizerControllerWindow.xaml.cs:165
 msgid "Close"
 msgstr ""
 
@@ -582,7 +582,7 @@ msgstr ""
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:821 SkillTreeFiles\Compute.cs:2275
+#: Views\MainWindow.xaml:821 SkillTreeFiles\Compute.cs:2296
 msgid "Defense"
 msgstr ""
 
@@ -614,11 +614,11 @@ msgstr ""
 msgid "Initializing..."
 msgstr ""
 
-#: SkillTreeFiles\Compute.cs:2274
+#: SkillTreeFiles\Compute.cs:2295
 msgid "Character"
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:1017
+#: SkillTreeFiles\SkillTree.cs:1019
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr ""
 
@@ -683,7 +683,7 @@ msgid_plural "{0}, {1} points used"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1274
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1275
 msgid "An error occurred during a save operation."
 msgstr ""
 
@@ -722,130 +722,131 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:392 Views\MainWindow.xaml.cs:1619
+#: Views\MainWindow.xaml.cs:393 Views\MainWindow.xaml.cs:1625
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:398
+#: Views\MainWindow.xaml.cs:399
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:399 Views\MainWindow.xaml.cs:1863
+#: Views\MainWindow.xaml.cs:400 Views\MainWindow.xaml.cs:1822
 msgid "Do you want to continue?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:445
+#: Views\MainWindow.xaml.cs:446
 msgid "An error occurred while downloading assets."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:496
+#: Views\MainWindow.xaml.cs:497
 msgid "You have the latest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:501
+#: Views\MainWindow.xaml.cs:502
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:502
+#: Views\MainWindow.xaml.cs:503
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:503
+#: Views\MainWindow.xaml.cs:504
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:504
+#: Views\MainWindow.xaml.cs:505
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:507
+#: Views\MainWindow.xaml.cs:508
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:509
+#: Views\MainWindow.xaml.cs:510
 msgid "Do you want to download and install the update?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:509
+#: Views\MainWindow.xaml.cs:510
 msgid "Do you want to download and install the new version?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:520
+#: Views\MainWindow.xaml.cs:521
 msgid "An error occurred while attempting to contact the update location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:534 Views\MainWindow.xaml.cs:559
+#: Views\MainWindow.xaml.cs:535 Views\MainWindow.xaml.cs:560
 msgid "An error occurred during the download operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:572
+#: Views\MainWindow.xaml.cs:573
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1040
+#: Views\MainWindow.xaml.cs:1041
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1111
+#: Views\MainWindow.xaml.cs:1112
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1182
+#: Views\MainWindow.xaml.cs:1183
 msgid "Please select a saved build."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1345
+#: Views\MainWindow.xaml.cs:1351
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1595 Views\MainWindow.xaml.cs:1604
+#: Views\MainWindow.xaml.cs:1601 Views\MainWindow.xaml.cs:1610
 msgid "An error occurred while attempting to conntact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1615
+#: Views\MainWindow.xaml.cs:1621
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1809
+#: Views\MainWindow.xaml.cs:1768
 msgid "An error occurred while attempting to load saved builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1862
+#: Views\MainWindow.xaml.cs:1821
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1956
+#: Views\MainWindow.xaml.cs:1915
 msgid "Error while downloading assets."
 msgstr ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:66
+#: Views\OptimizerControllerWindow.xaml.cs:72
 msgid "Cancel"
 msgstr ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:67
-#: Views\OptimizerControllerWindow.xaml.cs:184
+#: Views\OptimizerControllerWindow.xaml.cs:73
+#: Views\OptimizerControllerWindow.xaml.cs:196
 msgid "Pause"
 msgstr ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:92
+#: Views\OptimizerControllerWindow.xaml.cs:98
 msgid ""
 "The optimizer was unable to find a conforming tree.\n"
 "Please change skill node tagging and try again."
 msgstr ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:144
+#: Views\OptimizerControllerWindow.xaml.cs:150
+#: Views\OptimizerControllerWindow.xaml.cs:172
 #, csharp-format
 msgid "Best result so far: {0} additional point spent"
 msgid_plural "Best result so far: {0} additional points spent"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:158
+#: Views\OptimizerControllerWindow.xaml.cs:164
 msgid "Finished!"
 msgstr ""
 
-#: Views\OptimizerControllerWindow.xaml.cs:191
+#: Views\OptimizerControllerWindow.xaml.cs:203
 msgid "Continue"
 msgstr ""

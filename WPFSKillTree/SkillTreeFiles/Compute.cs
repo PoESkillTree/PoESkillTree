@@ -1069,7 +1069,7 @@ namespace POESKillTree.SkillTreeFiles
                 // The damage type to convert to.
                 DamageType To;
 
-                static Regex ReConvertMod = new Regex("#% of ([^ ]+) Damage Converted to ([^ ]+) Damage");
+                static Regex ReConvertMod = new Regex("^#% of ([^ ]+) Damage converted to ([^ ]+) Damage$");
 
                 public Converted(DamageConversionSource source, float percent, DamageType from, DamageType to)
                 {
@@ -1664,7 +1664,6 @@ namespace POESKillTree.SkillTreeFiles
         public static bool AvatarOfFire;
         public static bool BloodMagic;
         public static bool ChaosInoculation;
-        public static bool EldritchBattery;
         public static bool IronGrip;
         public static bool IronReflexes;
         public static bool NecromanticAegis;
@@ -1754,7 +1753,6 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         // Chance to Evade = 1 - Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
-        // Chance to hit can never be lower than 5%, nor higher than 95%.
         // @see http://pathofexile.gamepedia.com/Evasion
         public static float ChanceToEvade(int level, float evasionRating)
         {
@@ -1762,11 +1760,7 @@ namespace POESKillTree.SkillTreeFiles
 
             int maa = MonsterAverageAccuracy[level];
 
-            float chance = RoundValue((float)(1 - maa / (maa + Math.Pow(evasionRating / 4, 0.8))) * 100, 0);
-            if (chance < 5f) chance = 5f;
-            else if (chance > 95f) chance = 95f;
-
-            return chance;
+            return RoundValue((float)(1 - maa / (maa + Math.Pow(evasionRating / 4, 0.8))) * 100, 0);
         }
 
         // Chance to Hit = Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
@@ -1928,8 +1922,8 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // ( Mana * %mana increases ) + ( ES * ( %ES increases + %mana increases ) * ( %ES more ) )
-            // @see http://pathofexile.gamepedia.com/Eldritch_Battery
-            if (EldritchBattery)
+            // ES to Mana conversion mod (old Eldritch Battery).
+            if (Global.ContainsKey("Converts all Energy Shield to Mana"))
             {
                 es = IncreaseValueByPercentage(es, incES + incMana);
                 es += shieldES;
@@ -2027,7 +2021,34 @@ namespace POESKillTree.SkillTreeFiles
             }
             if (evasion > 0)
                 def["Evasion Rating: #"] = new List<float>() { RoundValue(evasion, 0) };
-            def["Estimated chance to Evade Attacks: #%"] = new List<float>() { ChanceToEvade(Level, RoundValue(evasion, 0)) };
+            float chanceToEvade = ChanceToEvade(Level, RoundValue(evasion, 0));
+            if (chanceToEvade > 0)
+            {
+                // Arrow Dancing keystone.
+                float chanceToEvadeMelee = chanceToEvade, chanceToEvadeProjectile = chanceToEvade;
+
+                if (Global.ContainsKey("#% less chance to Evade Melee Attacks"))
+                    chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, -Global["#% less chance to Evade Melee Attacks"][0]);
+                if (Global.ContainsKey("#% more chance to Evade Melee Attacks"))
+                    chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, Global["#% more chance to Evade Melee Attacks"][0]);
+                if (Global.ContainsKey("#% less chance to Evade Projectile Attacks"))
+                    chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, -Global["#% less chance to Evade Projectile Attacks"][0]);
+                if (Global.ContainsKey("#% more chance to Evade Projectile Attacks"))
+                    chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, Global["#% more chance to Evade Projectile Attacks"][0]);
+                // Chance cannot be less than 5% and more than 95%.
+                if (chanceToEvadeMelee < 5f) chanceToEvadeMelee = 5f;
+                else if (chanceToEvadeMelee > 95f) chanceToEvadeMelee = 95f;
+                if (chanceToEvadeProjectile < 5f) chanceToEvadeProjectile = 5f;
+                else if (chanceToEvadeProjectile > 95f) chanceToEvadeProjectile = 95f;
+
+                if (chanceToEvadeMelee == chanceToEvadeProjectile)
+                    def["Estimated chance to Evade Attacks: #%"] = new List<float>() { RoundValue(chanceToEvadeMelee, 0) };
+                else
+                {
+                    def["Estimated chance to Evade Melee Attacks: #%"] = new List<float>() { RoundValue(chanceToEvadeMelee, 0) };
+                    def["Estimated chance to Evade Projectile Attacks: #%"] = new List<float>() { RoundValue(chanceToEvadeProjectile, 0) };
+                }
+            }
 
             // Dodge Attacks and Spells.
             float chanceToDodgeAttacks = 0;
@@ -2328,7 +2349,6 @@ namespace POESKillTree.SkillTreeFiles
             AvatarOfFire = Tree.ContainsKey("Deal no Non-Fire Damage");
             BloodMagic = Tree.ContainsKey("Removes all mana. Spend Life instead of Mana for Skills");
             ChaosInoculation = Tree.ContainsKey("Maximum Life becomes #, Immune to Chaos Damage");
-            EldritchBattery = Tree.ContainsKey("Converts all Energy Shield to Mana");
             IronGrip = Tree.ContainsKey("The increase to Physical Damage from Strength applies to Projectile Attacks as well as Melee Attacks");
             IronReflexes = Tree.ContainsKey("Converts all Evasion Rating to Armour. Dexterity provides no bonus to Evasion Rating");
             NecromanticAegis = Tree.ContainsKey("All bonuses from an equipped Shield apply to your Minions instead of you");

@@ -37,7 +37,7 @@ namespace POESKillTree.Model
             Options = new Options();
             CurrentBuild = new PoEBuild
             {
-                Url = "http://www.pathofexile.com/passive-skill-tree/AAAAAgMA",
+                Url = "https://www.pathofexile.com/passive-skill-tree/AAAAAwMA",
                 Level = "1"
             };
             Builds = new List<PoEBuild>();

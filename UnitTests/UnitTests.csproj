@@ -107,13 +107,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TestBuilds\gems\KineticBlast.json" />
-    <None Include="TestBuilds\gems\StaticStrike.json" />
-    <None Include="TestBuilds\init\Arc-Barrage-45p.json" />
-    <None Include="TestBuilds\init\FP-Templar-14p.json" />
+    <Folder Include="TestBuilds\gems\" />
+    <Folder Include="TestGraphs\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="TestGraphs\" />
+    <None Include="TestBuilds\init\Marauder-IceCrash-51.json" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

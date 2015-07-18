@@ -2,189 +2,49 @@
 <TestData>
   <!-- Initial test builds -->
   <TestBuild>
-    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgMA37DfioIQ6QKPpkSrVa4snP6zVyu9gm0ZIvRsCw2NHNwtR1BCjDaiLg5IY0Py4UcG2-dfal3y0NCP-uwYcLuTJ7QMRnHhiB2qgwlvnspKwzqbtRmK-wn22hqP</TreeURL>
-    <Level>86</Level>
-    <BuildFile>init\Arc-Barrage-45p.json</BuildFile>
+    <TreeURL>https://www.pathofexile.com/passive-skill-tree/AAAAAwEABLMLYQ3NFm8aOBo-HM4dFCSqKS4rUDH7Si5QR1cNWfNfP2aeaPJyD3Kpdn92rHuMfEt8uH31fuB_44TEj0aQVZZ0m1ieV6IAp6Wsqq2Nr2yvp8BmxPbGrs9-1YvZYeNq5FHqGO1E7w7wH_Gs8i_3MvrS_lQ=</TreeURL>
+    <Level>51</Level>
+    <BuildFile>init\Marauder-IceCrash-51.json</BuildFile>
     <ExpectDefence>
-      Character
-      Life: 1294
-      Mana: 847
-      Maximum Energy Shield: 1487
-      Strength: 73
-      Dexterity: 98
-      Intelligence: 242
+        Character
+        Life: 1986
+        Mana: 394
+        Maximum Energy Shield: 12
+        Strength: 284
+        Dexterity: 107
+        Intelligence: 104
 
-      Defense
-      Armour: 346
-      #FIXME Estimated Physical Damage reduction: 3%
-      Evasion Rating: 1222
-      #FIXME Estimated chance to Evade Attacks: 14%
-      Energy Shield Recharge per Second: 495.7
-      Mana Regeneration per Second: 41.5
-      Fire Resistance: 75% (111%)
-      Cold Resistance: 75% (113%)
-      Lightning Resistance: 75% (83%)
-      Chaos Resistance: 48% (48%)
-      Chance to Block Attacks: 25%
-      Chance to Block Spells: 20%
+        Defense
+        Armour: 2272
+        #FIXME Estimated Physical Damage reduction: 49%
+        Evasion Rating: 431
+        Estimated chance to Evade Attacks: 18%
+        #FIXME Energy Shield Recharge per Second: 2.4
+        #FIXME Life Regeneration per Second: 69.3
+        Mana Regeneration per Second: 11.9
+        # Bandits: +10 to all Elemental resistences
+        #Fire Resistance: 76% (112%)
+        #Cold Resistance: 75% (107%)
+        #Lightning Resistance: 75% (106%)
+        Fire Resistance: 76% (102%)
+        Cold Resistance: 75% (97%)
+        Lightning Resistance: 75% (96%)
+        Chaos Resistance: 16% (16%)
+        #FIXME Chance to Block Attacks: 22%
     </ExpectDefence>
     <ExpectOffence>
-      Arc
-      #Damage per Second: 3254.5
-      Casts per Second: 2.3
-      #TODO Cast Speed modifier: +85%
-      Spell Lightning Damage: 109-2091
-      Spell Critical Strike Chance: 13%
-      #FIXME Spell Critical Strike Multiplier: 316%
-
-      Barrage
-      #Damage per Second: 8.4
-      #FIXME Chance to Hit: 57%
-      Attacks per Second: 1.2
-      Main Hand Physical Damage: 8-14
-      Main Hand Accuracy Rating: 366
-      #TODO Main Hand Attack Speed Modifier: +10%
-      Main Hand Critical Strike Chance: 10.3%
-      Main Hand Critical Strike Multiplier: 200%
-
-      Lightning Warp
-      Damage per Use: 930
-      Casts per Second: 1.4
-      #TODO Cast Speed modifier: +40%
-      Spell Lightning Damage: 84-1562
-      Spell Critical Strike Chance: 13%
-      Spell Critical Strike Multiplier: 200%
-
-      Herald of Ice
-      #FIXME Damage per Use: 464.5
-      Damage per Use: 517.5
-      Casts per Second: 1.1
-      #TODO Cast Speed modifier: +10%
-      #FIXME Cold Damage: 415-620
-      Cold Damage: 415-620
-
-      Herald of Thunder
-      #FIXME Damage per Use: 809.5
-      Damage per Use: 890
-      Casts per Second: 1.1
-      #TODO Cast Speed modifier: +10%
-      #FIXME Lightning Damage: 33-1586
-      Lightning Damage: 36-1744
-
-      Molten Shell
-      Damage per Use: 148.6
-      Casts per Second: 1.1
-      #TODO Cast Speed modifier: +10%
-      Spell Fire Damage: 105-158
-      Spell Critical Strike Chance: 13%
-      Spell Critical Strike Multiplier: 200%
-
-      Tempest Shield
-      #FIXME Damage per Use: 742.1
-      Damage per Use: 742.2
-      Casts per Second: 1.1
-      #TODO Cast Speed modifier: +10%
-      Spell Lightning Damage: 514-770
-      Spell Critical Strike Chance: 15.6%
-      Spell Critical Strike Multiplier: 200%
-    </ExpectOffence>
-  </TestBuild>
-  <TestBuild>
-    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUATwRDyPndi4zAmgmq2fzAZgSzogDhc5o77TzVpg==</TreeURL>
-    <Level>20</Level>
-    <BuildFile>init\FP-Templar-14p.json</BuildFile>
-    <ExpectDefence>
-      Character
-      Life: 535
-      Mana: 236
-      Maximum Energy Shield: 92
-      Strength: 70
-      Dexterity: 33
-      Intelligence: 80
-
-      Defense
-      Armour: 22
-      Estimated Physical Damage reduction: 5%
-      Evasion Rating: 242
-      Estimated chance to Evade Attacks: 35%
-      Energy Shield Recharge per Second: 30.7
-      #FIXME Mana Regeneration per Second: 6.7
-      Fire Resistance: 19% (19%)
-      Cold Resistance: 38% (38%)
-      Lightning Resistance: 26% (26%)
-      Chaos Resistance: 0% (0%)
-      Chance to Block Attacks: 24%
-    </ExpectDefence>
-    <ExpectOffence>
-      Freezing Pulse
-      Damage per Second: 136.4
-      Casts per Second: 1.7
-      #TODO Cast Speed modifier: +12%
-      Spell Total Combined Damage: 51-103
-      Spell Cold Damage: 49-74
-      Spell Lightning Damage: 2-29
-      Spell Critical Strike Chance: 6%
-      Spell Critical Strike Multiplier: 150%
-
-      Storm Call
-      Damage per Use: 61
-      Casts per Second: 2.2
-      #TODO Cast Speed modifier: +12%
-      Spell Lightning Damage: 7-112
-      Spell Critical Strike Chance: 5%
-      Spell Critical Strike Multiplier: 150%
-
-      Molten Shell
-      Damage per Use: 168.6
-      Casts per Second: 1.1
-      #TODO Cast Speed modifier: +12%
-      Spell Fire Damage: 132-197
-      Spell Critical Strike Chance: 5%
-      Spell Critical Strike Multiplier: 150%
-    </ExpectOffence>
-  </TestBuild>
-  <!-- 1.3 gems -->
-  <TestBuild>
-    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUA-d1PBIuMQ8jAmgmq2fzAZgSzogDhc-0gmjuCm-081aZXlClPhX0WQGaewBpZ8_rSFy9k51XWgKRFRzLRuJPr7ij6V8kNfOq6tAxGcYMJb57KSsM6m7UZii2DlwbEovsJ9toaj-GIHaq2hpZ0</TreeURL>
-    <Level>55</Level>
-    <BuildFile>gems\KineticBlast.json</BuildFile>
-    <ExpectOffence>
-      Kinetic Blast
-      #FIXME Damage per Second: 86.3
-      Damage per Second: 86.8
-      Chance to Hit: 79%
-      #NOTE Attack Time: 0.67
-      Attacks per Second: 1.5
-      Main Hand Total Combined Damage: 20-117
-      Main Hand Physical Damage: 12-22
-      Main Hand Lightning Damage: 8-95
-      Main Hand Accuracy Rating: 434
-      #TODO Main Hand Attack Speed Modifier: +15%
-      Main Hand Critical Strike Chance: 10.4%
-      Main Hand Critical Strike Multiplier: 167%
-    </ExpectOffence>
-  </TestBuild>
-  <TestBuild>
-    <TreeURL>http://www.pathofexile.com/passive-skill-tree/AAAAAgUA-d1PBIuMQ8jAmgmq2fzAZgSzogDhc-0gmjuCm-081aZXlClPhX0WQGaewBpZ8_rSFy9k51XWgKRFRzLRuJPr7ij6V8kNfOq6tAxGcYMJb57KSsM6m7UZii2DlwbEovsJ9toaj-GIHaq2hpZ0</TreeURL>
-    <Level>55</Level>
-    <BuildFile>gems\StaticStrike.json</BuildFile>
-    <ExpectOffence>
-      Static Strike
-      #FIXME Damage per Second: 123.1
-      Damage per Second: 124.3
-      Chance to Hit: 79%
-      #NOTE Attack Time: 0.65
-      Attacks per Second: 1.5
-      #FIXME Main Hand Total Combined Damage: 45-147
-      Main Hand Total Combined Damage: 45-149
-      #FIXME Main Hand Physical Damage: 12-19
-      Main Hand Physical Damage: 12-20
-      #FIXME Main Hand Lightning Damage: 33-128
-      Main Hand Lightning Damage: 33-129
-      Main Hand Accuracy Rating: 434
-      #TODO Main Hand Attack Speed Modifier: +24%
-      Main Hand Critical Strike Chance: 9.4%
-      Main Hand Critical Strike Multiplier: 150%
+        Ice Crash
+        # Bandits: +16% increased Physical Damage
+        #Damage per Second: 1432.99
+        #FIXME Chance to Hit: 88%
+        #FIXME Attacks per Second: 1.55
+        #Main Hand Total Combined Damage: 565-1445
+        #Main Hand Physical Damage: 226-578
+        #Main Hand Cold Damage: 339-867
+        Main Hand Accuracy Rating: 757
+        #TODO Main Hand Attack Speed Modifier: +35%
+        #FIXME Main Hand Critical Strike Chance: 9.07%
+        Main Hand Critical Strike Multiplier: 150%
     </ExpectOffence>
   </TestBuild>
 </TestData>
