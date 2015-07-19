@@ -90,7 +90,6 @@ namespace POESKillTree.Views
 
 
         protected SkillTree Tree;
-        private const string TreeAddress = "http://www.pathofexile.com/passive-skill-tree/";
         private Vector2D _addtransform;
         private bool _justLoaded;
         private string _lasttooltip;
@@ -1317,15 +1316,19 @@ namespace POESKillTree.Views
                         "http://poebuilder.com/character/",
                         "https://www.poebuilder.com/character/",
                         "http://www.poebuilder.com/character/",
+                        "http://pathofexile.com/passive-skill-tree",
+                        "http://www.pathofexile.com/passive-skill-tree",
                         "https://www.pathofexile.com/fullscreen-passive-skill-tree/",
                         "http://www.pathofexile.com/fullscreen-passive-skill-tree/",
                         "https://pathofexile.com/fullscreen-passive-skill-tree/",
-                        "http://pathofexile.com/fullscreen-passive-skill-tree/"
+                        "http://pathofexile.com/fullscreen-passive-skill-tree/",
+                        "http://cb.poedb.tw/us/passive-skill-tree/",
+                        "http://poedb.tw/us/passive-skill-tree/"
                     };
                     var urlString = tbSkillURL.Text;
                     foreach (string link in urls)
                     {
-                        urlString = urlString.Replace(link, MainWindow.TreeAddress);
+                        urlString = urlString.Replace(link, SkillTree.TreeAddress);
                     }
                     tbSkillURL.Text = urlString;
                     Tree.LoadFromURL(urlString);
@@ -1669,13 +1672,13 @@ namespace POESKillTree.Views
 
         private readonly Dictionary<string, string> _classNameToLink = new Dictionary<string, string>
         {
-            {"Scion", "AAAAAwAA"},
-            {"Marauder", "AAAAAwEA"},
-            {"Ranger", "AAAAAwIA"},
-            {"Witch", "AAAAAwMA"},
-            {"Duelist", "AAAAAwQA"},
-            {"Templar", "AAAAAwUA"},
-            {"Shadow", "AAAAAwYA"},
+            {"Scion", SkillTree.GetCharacterURL(0)},
+            {"Marauder", SkillTree.GetCharacterURL(1)},
+            {"Ranger", SkillTree.GetCharacterURL(2)},
+            {"Witch", SkillTree.GetCharacterURL(3)},
+            {"Duelist", SkillTree.GetCharacterURL(4)},
+            {"Templar", SkillTree.GetCharacterURL(5)},
+            {"Shadow", SkillTree.GetCharacterURL(6)},
         };  
 
         /**

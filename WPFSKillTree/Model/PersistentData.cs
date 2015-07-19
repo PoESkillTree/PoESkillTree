@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Controls;
+using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Model
@@ -37,7 +38,7 @@ namespace POESKillTree.Model
             Options = new Options();
             CurrentBuild = new PoEBuild
             {
-                Url = "https://www.pathofexile.com/passive-skill-tree/AAAAAwMA",
+                Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(),
                 Level = "1"
             };
             Builds = new List<PoEBuild>();

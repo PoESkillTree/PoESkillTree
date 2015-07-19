@@ -878,7 +878,7 @@
             <Label Grid.Column="4" x:Name="lblSkillURL" HorizontalAlignment="Left" Margin="1,1,4,1" Height="28" VerticalAlignment="Bottom" VerticalContentAlignment="Center" >
                 <l:Catalog Message="Skill tree link:"/>
             </Label>
-            <TextBox Grid.Column="5" Height="24" Margin="1,0,2.854,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="http://www.pathofexile.com/passive-skill-tree/AAAAAgMA"  
+            <TextBox Grid.Column="5" Height="24" Margin="1,0,2.854,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="https://www.pathofexile.com/passive-skill-tree/AAAAAgMA"
                      VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" />
 
             <Button Grid.Column="6" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2">
