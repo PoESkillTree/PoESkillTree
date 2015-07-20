@@ -231,8 +231,7 @@ namespace POESKillTree.ViewModels.Items
             {
                 case GearGroup.Staff:
                 case GearGroup.Bow:
-                case GearGroup.Chest:
-                    return 4;
+                    return (type.EndsWith("Crude Bow") || type.EndsWith("Short Bow") || type.EndsWith("Grove Bow") || type.EndsWith("Thicket Bow")) ? 3 : 4;
                 case GearGroup.Helmet:
                 case GearGroup.Gloves:
                 case GearGroup.Boots:
@@ -256,6 +255,7 @@ namespace POESKillTree.ViewModels.Items
                 case GearGroup.Quiver:
                 case GearGroup.Dagger:
                 case GearGroup.Wand:
+                case GearGroup.Chest:
                     return 3;
                 case GearGroup.Flask:
                     return 2;
