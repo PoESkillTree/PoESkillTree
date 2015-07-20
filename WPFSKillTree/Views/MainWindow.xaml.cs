@@ -834,11 +834,10 @@ namespace POESKillTree.Views
         private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var newHighlightedAttribute =
-                Regex.Replace(
-                    Regex.Match(listBox1.SelectedItem.ToString(), @"(?!\d)\w.*\w")
-                        .Value.Replace(@"+", @"\+")
+                "^" + Regex.Replace(listBox1.SelectedItem.ToString()
+                        .Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
-                        .Replace(@"%", @"\%"), @"\d+", @"\d+");
+                        .Replace(@"%", @"\%"), @"[0-9]*\.?[0-9]+", @"[0-9]*\.?[0-9]+") + "$";
             _highlightedAttribute = newHighlightedAttribute == _highlightedAttribute ? "" : newHighlightedAttribute;
             Tree.HighlightNodesBySearch(_highlightedAttribute, true, false);
         }
