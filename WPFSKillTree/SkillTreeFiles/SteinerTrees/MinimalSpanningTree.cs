@@ -33,6 +33,16 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                         // Shortest paths are saved in DistanceLookup, so we can use those.
                         var path = distances.GetShortestPath(edge);
                         // Save nodes into the HashSet, the set only saves each node once.
+                        var inside = edge.inside as Supernode;
+                        if (inside != null)
+                        {
+                            _usedNodes.UnionWith(inside.nodes.Select(node => node.Id));
+                        }
+                        var outside = edge.outside as Supernode;
+                        if (outside != null)
+                        {
+                            _usedNodes.UnionWith(outside.nodes.Select(node => node.Id));
+                        }
                         _usedNodes.Add(edge.inside.Id);
                         _usedNodes.Add(edge.outside.Id);
                         _usedNodes.UnionWith(path);

@@ -38,7 +38,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
-        private int _additionalPoints = 18;
+        private int _additionalPoints = 21;
 
         public int AdditionalPoints
         {
@@ -61,25 +61,25 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public int TotalPoints
         {
             get { return _totalPoints; }
-            set
-            {
-                if (value == _totalPoints) return;
+            //set
+            //{
+            //    if (value == _totalPoints) return;
 
-                var diff = value - _totalPoints;
-                _totalPoints = value;
+            //    var diff = value - _totalPoints;
+            //    _totalPoints = value;
 
-                if (_level + diff < 1)
-                {
-                    _additionalPoints += diff;
-                    OnPropertyChanged("AdditionalPoints");
-                }
-                else
-                {
-                    _level += diff;
-                    OnPropertyChanged("Level");
-                }
-                OnPropertyChanged("TotalPoints");
-            }
+            //    if (_level + diff < 1)
+            //    {
+            //        _additionalPoints += diff;
+            //        OnPropertyChanged("AdditionalPoints");
+            //    }
+            //    else
+            //    {
+            //        _level += diff;
+            //        OnPropertyChanged("Level");
+            //    }
+            //    OnPropertyChanged("TotalPoints");
+            //}
         }
 
         private bool _includeChecked = true;
@@ -198,7 +198,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private static readonly string[] ValidatedProperties =
         {
-            "Level", "AdditionalPoints", "TotalPoints"
+            "Level", "AdditionalPoints"//, "TotalPoints"
         
         };
 
@@ -214,8 +214,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
                     return ValidateLevel();
                 case "AdditionalPoints":
                     return ValideAdditionalPoints();
-                case "TotalPoints":
-                    return ValidateTotalPoints();
+                //case "TotalPoints":
+                    //return ValidateTotalPoints();
                 default:
                     return null;
             }
@@ -232,25 +232,25 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private string ValideAdditionalPoints()
         {
-            if (AdditionalPoints < 0)
+            if (AdditionalPoints < 0 || AdditionalPoints > 24)
             {
-                return L10n.Message("Additional points must not be negative.");
+                return L10n.Message("Additional points must not be between 0 and 24.");
             }
             return null;
         }
 
-        private string ValidateTotalPoints()
-        {
-            if (TotalPoints < 0)
-            {
-                return L10n.Message("Total points must not be negative.");
-            }
-            if (Level - 1 + AdditionalPoints != TotalPoints)
-            {
-                return L10n.Message("Total points must be equal to level plus additional points.");
-            }
-            return null;
-        }
+        //private string ValidateTotalPoints()
+        //{
+        //    if (TotalPoints < 0)
+        //    {
+        //        return L10n.Message("Total points must not be negative.");
+        //    }
+        //    if (Level - 1 + AdditionalPoints != TotalPoints)
+        //    {
+        //        return L10n.Message("Total points must be equal to level plus additional points.");
+        //    }
+        //    return null;
+        //}
 
 #endregion
 
@@ -264,8 +264,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Use this constructor if you don't want to use this ViewModel in a View and
         /// only want to run it.
         /// </summary>
-        /// <param name="tree"></param>
-        /// <param name="generator"></param>
         public SettingsViewModel(SkillTree tree, GeneratorTabViewModel generator)
         {
             DisplayName = "Skill tree Generator";
@@ -334,12 +332,18 @@ namespace POESKillTree.TreeGenerator.ViewModels
         private Dictionary<string, float> ItemsToInitialStats()
         {
             // TODO ItemsToInitialStats
-            // generate stats just from level
+            // generate base stats and stats from level
+            var stats = new Dictionary<string, float>
+            {
+                {"+# Maximum Endurance Charge", 3},
+                {"+# Maximum Frenzy Charge", 3},
+                {"+# Maximum Power Charge", 3}
+            };
             if (_importItems)
             {
                 // add stats from items
             }
-            return null;
+            return stats;
         }
 
         public event EventHandler<StartControllerEventArgs> StartController;

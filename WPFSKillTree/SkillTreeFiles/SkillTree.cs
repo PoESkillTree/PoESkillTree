@@ -1000,8 +1000,7 @@ namespace POESKillTree.SkillTreeFiles
             var nodes = new HashSet<ushort>();
             foreach (var entry in _nodeHighlighter.nodeHighlights)
             {
-                if (!(rootNodeList.Contains(entry.Key.Id) || SkilledNodes.Contains(entry.Key.Id))
-                    && entry.Value.HasFlag(HighlightState.Checked))
+                if (!rootNodeList.Contains(entry.Key.Id) && entry.Value.HasFlag(HighlightState.Checked))
                 {
                     nodes.Add(entry.Key.Id);
                 }
@@ -1014,8 +1013,7 @@ namespace POESKillTree.SkillTreeFiles
             var nodes = new HashSet<ushort>();
             foreach (var entry in _nodeHighlighter.nodeHighlights)
             {
-                if (!(rootNodeList.Contains(entry.Key.Id) || SkilledNodes.Contains(entry.Key.Id))
-                    && entry.Value.HasFlag(HighlightState.Crossed))
+                if (!rootNodeList.Contains(entry.Key.Id) && entry.Value.HasFlag(HighlightState.Crossed))
                 {
                     nodes.Add(entry.Key.Id);
                 }
@@ -1025,7 +1023,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public void SkillAllTaggedNodes()
         {
-            if (GetCheckedNodes().Count == 0)
+            if (!GetCheckedNodes().Except(SkilledNodes).Any())
             {
                 Popup.Info(L10n.Message("Please tag non-skilled nodes by right-clicking them."));
                 return;
@@ -1042,9 +1040,9 @@ namespace POESKillTree.SkillTreeFiles
             settingsVm.RunCommand.Execute(null);
         }
 
-        public SkillNode GetCharNode()
+        public ushort GetCharNodeId()
         {
-            return Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[_chartype].ToUpper()).Value;
+            return (ushort)rootNodeClassDictionary[CharName[_chartype]];
         }
 
         /// <summary>

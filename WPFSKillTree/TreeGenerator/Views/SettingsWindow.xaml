@@ -46,8 +46,10 @@
                                 Value="{Binding AdditionalPoints, ValidatesOnDataErrors=True}"/>
 
         <Label Grid.Row="2" Grid.Column="0" Content="_Total points:" Margin="5" Target="{Binding ElementName=TotalPoints}"/>
-        <controls:NumericUpDown Grid.Row="2" Grid.Column="1" x:Name="TotalPoints" Minimum="0" Maximum="123"
-                                Value="{Binding TotalPoints, ValidatesOnDataErrors=True}"/>
+        <!--<controls:NumericUpDown Grid.Row="2" Grid.Column="1" x:Name="TotalPoints" Minimum="0" Maximum="123"
+                                Value="{Binding TotalPoints, ValidatesOnDataErrors=True}"/>-->
+        <TextBox Grid.Row="2" Grid.Column="1" x:Name="TotalPoints" Text="{Binding TotalPoints, Mode=OneWay}" IsReadOnly="True"
+                 Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,40,0"/>
 
         <CheckBox Grid.Row="0" Grid.Column="2" Margin="20,5,10,5" Content="include Check-tagged nodes" IsChecked="{Binding IncludeChecked}"/>
         <CheckBox Grid.Row="1" Grid.Column="2" Margin="20,5,10,5" Content="exclude Cross-tagged nodes" IsChecked="{Binding ExcludeCrossed}"/>

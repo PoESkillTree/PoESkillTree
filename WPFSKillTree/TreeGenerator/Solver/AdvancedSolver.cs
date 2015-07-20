@@ -30,7 +30,7 @@ namespace POESKillTree.TreeGenerator.Solver
             {   // TODO adjust
                 return new GeneticAlgorithmParameters(
                     (int)(0.3 * (SearchSpace.Count < 150 ? 20000.0 / SearchSpace.Count : SearchSpace.Count)),
-                    (int)(1.5 * SearchSpace.Count),
+                    (int)(2.5 * SearchSpace.Count),
                     SearchSpace.Count, 6, 1);
             }
         }
@@ -116,7 +116,7 @@ namespace POESKillTree.TreeGenerator.Solver
             if (Settings.SubsetTree.Count > 0 || Settings.InitialTree.Count > 0)
             {
                 // if the current tree does not need to be part of the result, only skill the character node
-                StartNodes = SearchGraph.SetStartNodes(new HashSet<ushort> {Tree.GetCharNode().Id});
+                StartNodes = SearchGraph.SetStartNodes(new HashSet<ushort> { Tree.GetCharNodeId() });
             }
             else
             {
@@ -164,7 +164,7 @@ namespace POESKillTree.TreeGenerator.Solver
                     // If the node has stats and is not a travel node and is part of the subtree,
                     // the group is included.
                     if ((Settings.SubsetTree.Count == 0 || Settings.SubsetTree.Contains(node.Id))
-                        &&_nodeStats[node.Id].Count > 0 && !_areTravelNodes[node.Id])
+                        && _nodeStats[node.Id].Count > 0 && !_areTravelNodes[node.Id])
                     {
                         mustInclude = true;
                         break;
@@ -202,11 +202,13 @@ namespace POESKillTree.TreeGenerator.Solver
                         if (SearchGraph.nodeDict.ContainsKey(node))
                             continue;
                         // Don't add nodes that should not be skilled.
-                        // TODO crossed nodes may disconnect from stat nodes, those should also not be included (e.g. nodes behind Blood Magic)
                         if (Settings.Crossed.Contains(node.Id))
                             continue;
                         // Only add nodes in the subsettree if one is given.
                         if (Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(node.Id))
+                            continue;
+                        // Mastery nodes are obviously not useful.
+                        if (node.IsMastery)
                             continue;
 
                         SearchGraph.AddNode(node);
@@ -219,8 +221,9 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             // Add potential steiner nodes. TODO some kind of vicinity related selection
             // Add all non-travel nodes with stats. TODO exclude nodes with stats that are "too far away" to be useful
+            // Don't add nodes that are not connected to the start node (through cross-tagging)
             SearchSpace = new List<GraphNode>(SearchGraph.nodeDict.Values.Where(
-                node => node.Adjacent.Count > 2 || (_nodeStats[node.Id].Count > 0 && !_areTravelNodes[node.Id])));
+                node => IsConnected(node) && (node.Adjacent.Count > 2 || (_nodeStats[node.Id].Count > 0 && !_areTravelNodes[node.Id]))));
 
             // LeastSolution: MST between start and check-tagged nodes.
             var leastSolution = new MinimalSpanningTree(TargetNodes, Distances);
@@ -231,8 +234,11 @@ namespace POESKillTree.TreeGenerator.Solver
             // Add the initial stats from the settings.
             foreach (var initialStat in Settings.InitialStats)
             {
-                var tuple = new Tuple<int, float>(_statNameLookup[initialStat.Key], initialStat.Value);
-                AddStat(tuple, _fixedStats);
+                if (_statNameLookup.ContainsKey(initialStat.Key))
+                {
+                    var tuple = new Tuple<int, float>(_statNameLookup[initialStat.Key], initialStat.Value);
+                    AddStat(tuple, _fixedStats);
+                }
             }
 
 #if DEBUG
@@ -278,12 +284,29 @@ namespace POESKillTree.TreeGenerator.Solver
             to[stat.Item1] += stat.Item2;
         }
 
+        private bool IsConnected(GraphNode node)
+        {
+            // Going with try-catch is probably not the best approach, but it
+            // doesn't require refactoring DistanceLookup and the exception
+            // case should not appear often enough to influence performance.
+            try
+            {
+                Distances.GetDistance(node, StartNodes);
+                return true;
+            }
+            catch (DistanceLookup.GraphNotConnectedException)
+            {
+                return false;
+            }
+        }
+
         protected override double FitnessFunction(MinimalSpanningTree tree)
         {
             // Add stats of the MST-nodes and start stats.
             var totalStats = (float[])_fixedStats.Clone();
             var usedNodes = tree.UsedNodes;
-            var usedNodeCount = tree.UsedNodeCount;
+            // Don't count the character start node.
+            var usedNodeCount = tree.UsedNodeCount - 1;
             usedNodes.ExceptWith(_fixedNodes);
             AddStats(usedNodes, totalStats);
 
@@ -300,8 +323,8 @@ namespace POESKillTree.TreeGenerator.Solver
             if (usedNodeCount > Settings.TotalPoints)
             {
                 // If UsedNodeCount is higher than Settings.TotalPoints, it is 
-                // calculated as a csv with a weight of 1. (and lower = better)
-                csvs *= CalcCsv(2 * Settings.TotalPoints - usedNodeCount, 1, Settings.TotalPoints);
+                // calculated as a csv with a weight of 5. (and lower = better)
+                csvs *= CalcCsv(2 * Settings.TotalPoints - usedNodeCount, 5, Settings.TotalPoints);
             }
             else
             {
@@ -319,7 +342,7 @@ namespace POESKillTree.TreeGenerator.Solver
         private static double CalcCsv(float x, double weight, float target)
         {
             // Don't go higher than the target value.
-            // TODO Different scaling for values exceeding target value.
+            // TODO Different scaling for values exceeding target value?
             x = Math.Min(x, target);
             return Math.Exp(weight*10 * x/target) / Math.Exp(weight*10);
         }

@@ -350,7 +350,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
 #if DEBUG
             stopwatch.Stop();
-            //Debug.WriteLine("Best value so far: " + (1500 - bestSolution.Fitness));
+            Debug.WriteLine("Best value so far: " + bestSolution.Fitness);
             //Debug.WriteLine("------------------");
             //Debug.Out.Flush();
 #endif

@@ -35,7 +35,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 // BestSoFar.Count - 1 because of the hidden character class start node.
                 BestResultText = string.Format(L10n.Plural("Best result so far: {0} point spent",
                     "Best result so far: {0} points spent", (uint)_bestSoFar.Count - 1), _bestSoFar.Count - 1);
-                _tree.HighlightedNodes = new HashSet<ushort>(_bestSoFar.Concat(_tree.SkilledNodes));
+                _tree.HighlightedNodes = new HashSet<ushort>(_bestSoFar);
                 _tree.DrawNodeBaseSurroundHighlight();
             }
         }

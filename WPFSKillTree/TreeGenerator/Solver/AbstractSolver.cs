@@ -100,7 +100,21 @@ namespace POESKillTree.TreeGenerator.Solver
             Debug.WriteLine("Search space dimension: " + SearchSpace.Count);
 
             _ga = new GeneticAlgorithm(FitnessFunction);
-            _ga.InitializeEvolution(GaParameters);
+            _ga.InitializeEvolution(GaParameters, TreeToDna(Settings.InitialTree));
+        }
+
+        private BitArray TreeToDna(HashSet<ushort> nodes)
+        {
+            var dna = new BitArray(SearchSpace.Count);
+            for (var i = 0; i < SearchSpace.Count; i++)
+            {
+                if (nodes.Contains(SearchSpace[i].Id))
+                {
+                    dna[i] = true;
+                }
+            }
+
+            return dna;
         }
 
         public void Step()
