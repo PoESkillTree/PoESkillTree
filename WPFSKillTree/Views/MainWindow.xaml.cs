@@ -145,6 +145,10 @@ namespace POESKillTree.Views
             _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
             listBoxOffence.ItemsSource = _offenceCollection;
 
+            cbCharType.ItemsSource =
+                CharacterNames.NameToContent.Select(
+                    x => new ComboBoxItem {Name = x.Key, Content = x.Value});
+
             if (_persistentData.StashBookmarks != null)
                 Stash.Bookmarks = new System.Collections.ObjectModel.ObservableCollection<StashBookmark>(_persistentData.StashBookmarks);
 
@@ -157,12 +161,11 @@ namespace POESKillTree.Views
             recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
-            Tree.Chartype =
-                SkillTree.CharName.IndexOf(((string)((ComboBoxItem)cbCharType.SelectedItem).Name).ToUpperInvariant());
-            Tree.UpdateAvailNodes();
-            UpdateUI();
+
             _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
             _addtransform = SkillTree.TRect.TopLeft;
+
+            _justLoaded = true;
 
             // loading last build
             if (_persistentData.CurrentBuild != null)
@@ -605,20 +608,17 @@ namespace POESKillTree.Views
                     return;
                 if (changeClassArray[0] == "ERROR")
                     return;
-                var usedPoints = tbUsedPoints.Text;
-                cbCharType.Text = changeClassArray[0];
 
                 Tree.LoadFromURL(tbSkillURL.Text.Replace(currentClassArray[1], changeClassArray[1]));
-                tbUsedPoints.Text = usedPoints;
             }
             else
             {
                 var startnode =
                     SkillTree.Skillnodes.First(
-                        nd => nd.Value.Name.ToUpperInvariant() == (SkillTree.CharName[cbCharType.SelectedIndex]).ToUpperInvariant()).Value;
+                        nd => nd.Value.Name.ToUpperInvariant() == (SkillTree.CharName[cbCharType.SelectedIndex])).Value;
                 Tree.SkilledNodes.Clear();
                 Tree.SkilledNodes.Add(startnode.Id);
-                Tree.Chartype = SkillTree.CharName.IndexOf((SkillTree.CharName[cbCharType.SelectedIndex]).ToUpperInvariant());
+                Tree.Chartype = cbCharType.SelectedIndex;
             }
             Tree.UpdateAvailNodes();
             UpdateUI();
@@ -704,10 +704,12 @@ namespace POESKillTree.Views
 
             _allAttributeCollection.Refresh();
         }
+
         public void UpdateClass()
         {
             cbCharType.SelectedIndex = Tree.Chartype;
         }
+
         public void UpdateAttributeList()
         {
             _attiblist.Clear();
@@ -1668,17 +1670,6 @@ namespace POESKillTree.Views
 
         #region Change Class - No Reset
 
-        private readonly Dictionary<string, string> _classNameToLink = new Dictionary<string, string>
-        {
-            {"Scion", SkillTree.GetCharacterURL(0)},
-            {"Marauder", SkillTree.GetCharacterURL(1)},
-            {"Ranger", SkillTree.GetCharacterURL(2)},
-            {"Witch", SkillTree.GetCharacterURL(3)},
-            {"Duelist", SkillTree.GetCharacterURL(4)},
-            {"Templar", SkillTree.GetCharacterURL(5)},
-            {"Shadow", SkillTree.GetCharacterURL(6)},
-        };  
-
         /**
          * Will get the current class name and start string from the tree url
          * return: array[]
@@ -1688,9 +1679,9 @@ namespace POESKillTree.Views
 
         private string[] GetCurrentClass()
         {
-            foreach (var item in _classNameToLink)
+            foreach (var item in CharacterNames.NameToLink)
             {
-                if (tbSkillURL.Text.IndexOf(item.Value) != -1)
+                if (tbSkillURL.Text.IndexOf(item.Value, StringComparison.InvariantCulture) != -1)
                 {
                     return getAnyClass(item.Key);
                 }
@@ -1708,7 +1699,7 @@ namespace POESKillTree.Views
         {
             string[] array = new string[2];
             string classStartString;
-            if (_classNameToLink.TryGetValue(className, out classStartString))
+            if (CharacterNames.NameToLink.TryGetValue(className, out classStartString))
             {
                 array[0] = className;
                 array[1] = classStartString;

@@ -83,13 +83,13 @@ namespace POESKillTree.SkillTreeFiles
 
         public static readonly List<string> CharName = new List<string>
         {
-            "SEVEN",
-            "MARAUDER",
-            "RANGER",
-            "WITCH",
-            "DUELIST",
-            "TEMPLAR",
-            "SIX"
+            CharacterNames.Scion,
+            CharacterNames.Marauder,
+            CharacterNames.Ranger,
+            CharacterNames.Witch,
+            CharacterNames.Duelist,
+            CharacterNames.Templar,
+            CharacterNames.Shadow
         };
 
         public static readonly List<string> FaceNames = new List<string>
@@ -1132,14 +1132,6 @@ namespace POESKillTree.SkillTreeFiles
             int rootNodeValue;
             var temp = new List<ushort>();
 
-            if (className.ToUpperInvariant() == "SHADOW")
-            {
-                className = "SIX";
-            }
-            if (className.ToUpperInvariant() == "SCION")
-            {
-                className = "SEVEN";
-            }
             _rootNodeClassDictionary.TryGetValue(className.ToUpperInvariant(), out rootNodeValue);
             var classSpecificStartNodes = _startNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key);
 

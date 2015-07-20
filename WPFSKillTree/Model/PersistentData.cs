@@ -38,7 +38,7 @@ namespace POESKillTree.Model
             Options = new Options();
             CurrentBuild = new PoEBuild
             {
-                Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(),
+                Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3),
                 Level = "1"
             };
             Builds = new List<PoEBuild>();
