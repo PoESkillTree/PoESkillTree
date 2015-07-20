@@ -534,71 +534,71 @@ msgstr ""
 msgid "_About PoESkillTree"
 msgstr ""
 
-#: Views\MainWindow.xaml:598
+#: Views\MainWindow.xaml:590
 msgid "Reset"
 msgstr ""
 
-#: Views\MainWindow.xaml:650
+#: Views\MainWindow.xaml:642
 msgid "Saved Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:668
+#: Views\MainWindow.xaml:660
 msgid "Filter:"
 msgstr ""
 
-#: Views\MainWindow.xaml:711
+#: Views\MainWindow.xaml:703
 msgid "Skill tree comparison"
 msgstr ""
 
-#: Views\MainWindow.xaml:720
+#: Views\MainWindow.xaml:712
 msgid "Save"
 msgstr ""
 
-#: Views\MainWindow.xaml:723
+#: Views\MainWindow.xaml:715
 msgid "Save As"
 msgstr ""
 
-#: Views\MainWindow.xaml:726
+#: Views\MainWindow.xaml:718
 msgid "Delete"
 msgstr ""
 
-#: Views\MainWindow.xaml:735
+#: Views\MainWindow.xaml:727
 msgid "Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:742
+#: Views\MainWindow.xaml:734
 msgid "Passive Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:759
+#: Views\MainWindow.xaml:751
 msgid "Item Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:778
+#: Views\MainWindow.xaml:770
 msgid "Total Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:814
+#: Views\MainWindow.xaml:806
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:821 SkillTreeFiles\Compute.cs:2296
+#: Views\MainWindow.xaml:813 SkillTreeFiles\Compute.cs:2296
 msgid "Defense"
 msgstr ""
 
-#: Views\MainWindow.xaml:838
+#: Views\MainWindow.xaml:830
 msgid "Offense"
 msgstr ""
 
-#: Views\MainWindow.xaml:872
+#: Views\MainWindow.xaml:864
 msgid "Search:"
 msgstr ""
 
-#: Views\MainWindow.xaml:879
+#: Views\MainWindow.xaml:871
 msgid "Skill tree link:"
 msgstr ""
 
-#: Views\MainWindow.xaml:885
+#: Views\MainWindow.xaml:877
 msgid "Load Tree"
 msgstr ""
 
@@ -618,7 +618,7 @@ msgstr ""
 msgid "Character"
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:1019
+#: SkillTreeFiles\SkillTree.cs:1026
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr ""
 
@@ -683,7 +683,7 @@ msgid_plural "{0}, {1} points used"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1275
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1273
 msgid "An error occurred during a save operation."
 msgstr ""
 
@@ -722,7 +722,7 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:393 Views\MainWindow.xaml.cs:1625
+#: Views\MainWindow.xaml.cs:393 Views\MainWindow.xaml.cs:1627
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
@@ -730,7 +730,7 @@ msgstr ""
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:400 Views\MainWindow.xaml.cs:1822
+#: Views\MainWindow.xaml.cs:400 Views\MainWindow.xaml.cs:1813
 msgid "Do you want to continue?"
 msgstr ""
 
@@ -784,39 +784,39 @@ msgstr ""
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1041
+#: Views\MainWindow.xaml.cs:1039
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1112
+#: Views\MainWindow.xaml.cs:1110
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1183
+#: Views\MainWindow.xaml.cs:1181
 msgid "Please select a saved build."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1351
+#: Views\MainWindow.xaml.cs:1353
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1601 Views\MainWindow.xaml.cs:1610
+#: Views\MainWindow.xaml.cs:1603 Views\MainWindow.xaml.cs:1612
 msgid "An error occurred while attempting to conntact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1621
+#: Views\MainWindow.xaml.cs:1623
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1768
+#: Views\MainWindow.xaml.cs:1759
 msgid "An error occurred while attempting to load saved builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1821
+#: Views\MainWindow.xaml.cs:1812
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1915
+#: Views\MainWindow.xaml.cs:1906
 msgid "Error while downloading assets."
 msgstr ""
 
