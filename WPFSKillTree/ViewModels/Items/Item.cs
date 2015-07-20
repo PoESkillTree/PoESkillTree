@@ -215,6 +215,8 @@ namespace POESKillTree.ViewModels.Items
 
         private void FixOldItems()
         {
+            if ((BaseType.EndsWith("Crude Bow") || BaseType.EndsWith("Short Bow") || BaseType.EndsWith("Grove Bow") || BaseType.EndsWith("Thicket Bow")) && Height == 4)
+                Height = 3;
             if (GearGroup == GearGroup.Chest && Height == 4)
                 Height = 3;
         }
