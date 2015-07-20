@@ -3,9 +3,6 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Linq;
-using System;
-using POESKillTree.Utils;
-using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
 using MB.Algodat;
 
@@ -202,6 +199,8 @@ namespace POESKillTree.ViewModels.Items
 
             this.GearGroup = ItemBase.GroupTypeForItemType(this.BaseType);
 
+            FixOldItems();
+
         }
 
         public Item(ItemClass iClass, JObject val)
@@ -214,11 +213,19 @@ namespace POESKillTree.ViewModels.Items
 
         }
 
+        private void FixOldItems()
+        {
+            if ((BaseType.EndsWith("Crude Bow") || BaseType.EndsWith("Short Bow") || BaseType.EndsWith("Grove Bow") || BaseType.EndsWith("Thicket Bow")) && Height == 4)
+                Height = 3;
+            if (GearGroup == GearGroup.Chest && Height == 4)
+                Height = 3;
+        }
+
         public JObject GenerateJson()
         {
             var j = new JObject(
-                new JProperty("w", W),
-                new JProperty("h", H),
+                new JProperty("w", Width),
+                new JProperty("h", Height),
                 new JProperty("x", X),
                 new JProperty("y", Y),
                 new JProperty("name", NameLine),
@@ -270,8 +277,8 @@ namespace POESKillTree.ViewModels.Items
             Mods = new List<ItemMod>();
             Class = iClass;
 
-            W = val["w"].Value<int>();
-            H = val["h"].Value<int>();
+            Width = val["w"].Value<int>();
+            Height = val["h"].Value<int>();
             if (val["x"] != null)
                 X = val["x"].Value<int>();
             if (val["y"] != null)
@@ -477,8 +484,8 @@ namespace POESKillTree.ViewModels.Items
         }
 
 
-        public int W { get; set; }
-        public int H { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public bool IsWeapon
         {
@@ -498,7 +505,7 @@ namespace POESKillTree.ViewModels.Items
         {
             get
             {
-                return new Range<int>(Y, Y + H - 1);
+                return new Range<int>(Y, Y + Height - 1);
             }
         }
     }

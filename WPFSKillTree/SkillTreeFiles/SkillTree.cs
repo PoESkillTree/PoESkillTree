@@ -37,7 +37,7 @@ namespace POESKillTree.SkillTreeFiles
         public static readonly float StrPerED = 5; //%
         public static readonly float DexPerAcc = 0.5f;
         public static readonly float DexPerEvas = 5; //%
-        private const string TreeAddress = "http://www.pathofexile.com/passive-skill-tree/";
+        public static readonly string TreeAddress = "https://www.pathofexile.com/passive-skill-tree/";
 
         // The absolute path of Assets folder (contains trailing directory separator).
         public static string AssetsFolderPath;
@@ -84,13 +84,13 @@ namespace POESKillTree.SkillTreeFiles
 
         public static readonly List<string> CharName = new List<string>
         {
-            "SEVEN",
-            "MARAUDER",
-            "RANGER",
-            "WITCH",
-            "DUELIST",
-            "TEMPLAR",
-            "SIX"
+            CharacterNames.Scion,
+            CharacterNames.Marauder,
+            CharacterNames.Ranger,
+            CharacterNames.Witch,
+            CharacterNames.Duelist,
+            CharacterNames.Templar,
+            CharacterNames.Shadow
         };
 
         public static readonly List<string> FaceNames = new List<string>
@@ -346,9 +346,9 @@ namespace POESKillTree.SkillTreeFiles
                     });
                     if (_rootNodeList.Contains(nd.id))
                     {
-                        if (!_rootNodeClassDictionary.ContainsKey(nd.dn.ToString().ToUpper()))
+                        if (!_rootNodeClassDictionary.ContainsKey(nd.dn.ToString().ToUpperInvariant()))
                         {
-                            _rootNodeClassDictionary.Add(nd.dn.ToString().ToUpper(), nd.id);
+                            _rootNodeClassDictionary.Add(nd.dn.ToString().ToUpperInvariant(), nd.id);
                         }
                         foreach (int linkedNode in nd.ot)
                         {
@@ -483,7 +483,7 @@ namespace POESKillTree.SkillTreeFiles
                 _chartype = value;
                 SkilledNodes.Clear();
                 KeyValuePair<ushort, SkillNode> node =
-                    Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[_chartype]);
+                    Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
                 SkilledNodes.Add(node.Value.Id);
                 UpdateAvailNodes();
                 DrawFaces();
@@ -604,7 +604,7 @@ namespace POESKillTree.SkillTreeFiles
                 displayProgress = (start != null && update != null && finish != null);
                 if (displayProgress)
                     start();
-                string uriString = "http://www.pathofexile.com/passive-skill-tree/";
+                string uriString = SkillTree.TreeAddress;
                 var req = (HttpWebRequest)WebRequest.Create(uriString);
                 var resp = (HttpWebResponse)req.GetResponse();
                 string code = new StreamReader(resp.GetResponseStream()).ReadToEnd();
@@ -918,7 +918,7 @@ namespace POESKillTree.SkillTreeFiles
             skillednodes = new HashSet<ushort>();
             url = Regex.Replace(url, @"\t| |\n|\r", "");
             string s =
-                url.Substring(TreeAddress.Length + (url.StartsWith("https") ? 1 : 0))
+                url.Substring(TreeAddress.Length + (url.StartsWith("https") ? 0 : -1))
                     .Replace("-", "+")
                     .Replace("_", "/");
             byte[] decbuff = Convert.FromBase64String(s);
@@ -937,7 +937,7 @@ namespace POESKillTree.SkillTreeFiles
             chartype = b;
 
 
-            SkillNode startnode = Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[b].ToUpper()).Value;
+            SkillNode startnode = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[b]).Value;
             skillednodes.Add(startnode.Id);
             foreach (ushort node in nodes)
             {
@@ -961,31 +961,38 @@ namespace POESKillTree.SkillTreeFiles
         public void Reset()
         {
             SkilledNodes.Clear();
-            KeyValuePair<ushort, SkillNode> node = Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[_chartype]);
+            KeyValuePair<ushort, SkillNode> node = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
             SkilledNodes.Add(node.Value.Id);
             UpdateAvailNodes();
         }
 
         public string SaveToURL()
         {
-            var b = new byte[(SkilledNodes.Count - 1) * 2 + 6];
-            byte[] b2 = BitConverter.GetBytes(3); //skilltree version
-            b[0] = b2[3];
-            b[1] = b2[2];
-            b[2] = b2[1];
-            b[3] = b2[0]; 
-            b[4] = (byte)(Chartype);
-            b[5] = 0;
-            int pos = 6;
+            var b = new byte[(SkilledNodes.Count - 1) * 2];
+            var CharacterURL = GetCharacterURL((byte) Chartype);
+            int pos = 0;
             foreach (ushort inn in SkilledNodes)
             {
-                if (CharName.Contains(Skillnodes[inn].Name.ToUpper()))
+                if (CharName.Contains(Skillnodes[inn].Name.ToUpperInvariant()))
                     continue;
                 byte[] dbff = BitConverter.GetBytes((Int16)inn);
                 b[pos++] = dbff[1];
                 b[pos++] = dbff[0];
             }
-            return TreeAddress + Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
+            return TreeAddress + CharacterURL + Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
+        }
+
+        public static string GetCharacterURL(byte CharTypeByte = 0)
+        {
+            var b = new byte[6];
+            byte[] b2 = BitConverter.GetBytes(3); //skilltree version
+            for (var i = 0; i < b2.Length; i++)
+            {
+                b[i] = b2[(b2.Length - 1) - i];
+            }
+            b[4] = (byte)(CharTypeByte);
+            b[5] = 0;
+            return Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
         public HashSet<ushort> GetCheckedNodes()
@@ -1074,7 +1081,7 @@ namespace POESKillTree.SkillTreeFiles
                 SkillNode node = Skillnodes[inode];
                 foreach (SkillNode skillNode in node.Neighbor)
                 {
-                    if (!CharName.Contains(skillNode.Name) && !SkilledNodes.Contains(skillNode.Id))
+                    if (!CharName.Contains(skillNode.Name.ToUpperInvariant()) && !SkilledNodes.Contains(skillNode.Id))
                         availNodes.Add(skillNode.Id);
                 }
             }
@@ -1126,15 +1133,7 @@ namespace POESKillTree.SkillTreeFiles
             int rootNodeValue;
             var temp = new List<ushort>();
 
-            if (className.ToUpper() == "SHADOW")
-            {
-                className = "SIX";
-            }
-            if (className.ToUpper() == "SCION")
-            {
-                className = "SEVEN";
-            }
-            _rootNodeClassDictionary.TryGetValue(className.ToUpper(), out rootNodeValue);
+            _rootNodeClassDictionary.TryGetValue(className.ToUpperInvariant(), out rootNodeValue);
             var classSpecificStartNodes = _startNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key);
 
             foreach (int node in classSpecificStartNodes)

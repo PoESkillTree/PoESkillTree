@@ -202,7 +202,7 @@ namespace POESKillTree.SkillTreeFiles
                 for (int i = 0; i < CharName.Count; i++)
                 {
                     string s = CharName[i];
-                    Vector2D pos = Skillnodes.First(nd => nd.Value.Name.ToUpper() == s.ToUpper()).Value.Position;
+                    Vector2D pos = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == s).Value.Position;
                     dc.DrawRectangle(StartBackgrounds[false].Value, null,
                         new Rect(
                             pos - new Vector2D(StartBackgrounds[false].Key.Width, StartBackgrounds[false].Key.Height),

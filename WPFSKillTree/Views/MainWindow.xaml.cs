@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,11 +15,9 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
-using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
@@ -72,7 +69,7 @@ namespace POESKillTree.Views
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly ToolTip _noteTip = new ToolTip();
         private ListCollectionView _allAttributeCollection;
-        private ListCollectionView _attibuteCollection;
+        private ListCollectionView _attributeCollection;
         private ListCollectionView _defenceCollection;
         private ListCollectionView _offenceCollection;
         private RenderTargetBitmap _clipboardBmp;
@@ -92,7 +89,6 @@ namespace POESKillTree.Views
 
 
         protected SkillTree Tree;
-        private const string TreeAddress = "http://www.pathofexile.com/passive-skill-tree/";
         private Vector2D _addtransform;
         private bool _justLoaded;
         private string _lasttooltip;
@@ -126,9 +122,9 @@ namespace POESKillTree.Views
             ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();
 
-            _attibuteCollection = new ListCollectionView(_attiblist);
-            listBox1.ItemsSource = _attibuteCollection;
-            _attibuteCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text")
+            _attributeCollection = new ListCollectionView(_attiblist);
+            listBox1.ItemsSource = _attributeCollection;
+            _attributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text")
             {
                 Converter = new GroupStringConverter()
             });
@@ -148,6 +144,10 @@ namespace POESKillTree.Views
             _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
             listBoxOffence.ItemsSource = _offenceCollection;
 
+            cbCharType.ItemsSource =
+                CharacterNames.NameToContent.Select(
+                    x => new ComboBoxItem {Name = x.Key, Content = x.Value});
+
             if (_persistentData.StashBookmarks != null)
                 Stash.Bookmarks = new System.Collections.ObjectModel.ObservableCollection<StashBookmark>(_persistentData.StashBookmarks);
 
@@ -161,13 +161,10 @@ namespace POESKillTree.Views
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
-            Tree.Chartype =
-                SkillTree.CharName.IndexOf(((string)((ComboBoxItem)cbCharType.SelectedItem).Name).ToUpper());
-            Tree.UpdateAvailNodes();
-            UpdateUI();
-
             _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
             _addtransform = SkillTree.TRect.TopLeft;
+
+            _justLoaded = true;
 
             // loading last build
             if (_persistentData.CurrentBuild != null)
@@ -622,20 +619,17 @@ namespace POESKillTree.Views
                     return;
                 if (changeClassArray[0] == "ERROR")
                     return;
-                var usedPoints = tbUsedPoints.Text;
-                cbCharType.Text = changeClassArray[0];
 
                 Tree.LoadFromURL(tbSkillURL.Text.Replace(currentClassArray[1], changeClassArray[1]));
-                tbUsedPoints.Text = usedPoints;
             }
             else
             {
                 var startnode =
                     SkillTree.Skillnodes.First(
-                        nd => nd.Value.Name.ToUpper() == (SkillTree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
+                        nd => nd.Value.Name.ToUpperInvariant() == (SkillTree.CharName[cbCharType.SelectedIndex])).Value;
                 Tree.SkilledNodes.Clear();
                 Tree.SkilledNodes.Add(startnode.Id);
-                Tree.Chartype = SkillTree.CharName.IndexOf((SkillTree.CharName[cbCharType.SelectedIndex]).ToUpper());
+                Tree.Chartype = cbCharType.SelectedIndex;
             }
             Tree.UpdateAvailNodes();
             UpdateUI();
@@ -721,10 +715,12 @@ namespace POESKillTree.Views
 
             _allAttributeCollection.Refresh();
         }
+
         public void UpdateClass()
         {
             cbCharType.SelectedIndex = Tree.Chartype;
         }
+
         public void UpdateAttributeList()
         {
             _attiblist.Clear();
@@ -758,7 +754,7 @@ namespace POESKillTree.Views
                 }
             }
 
-            _attibuteCollection.Refresh();
+            _attributeCollection.Refresh();
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
         }
 
@@ -849,11 +845,10 @@ namespace POESKillTree.Views
         private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var newHighlightedAttribute =
-                Regex.Replace(
-                    Regex.Match(listBox1.SelectedItem.ToString(), @"(?!\d)\w.*\w")
-                        .Value.Replace(@"+", @"\+")
+                "^" + Regex.Replace(listBox1.SelectedItem.ToString()
+                        .Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
-                        .Replace(@"%", @"\%"), @"\d+", @"\d+");
+                        .Replace(@"%", @"\%"), @"[0-9]*\.?[0-9]+", @"[0-9]*\.?[0-9]+") + "$";
             _highlightedAttribute = newHighlightedAttribute == _highlightedAttribute ? "" : newHighlightedAttribute;
             Tree.HighlightNodesBySearch(_highlightedAttribute, true, false);
         }
@@ -1331,15 +1326,19 @@ namespace POESKillTree.Views
                         "http://poebuilder.com/character/",
                         "https://www.poebuilder.com/character/",
                         "http://www.poebuilder.com/character/",
+                        "http://pathofexile.com/passive-skill-tree/",
+                        "http://www.pathofexile.com/passive-skill-tree/",
                         "https://www.pathofexile.com/fullscreen-passive-skill-tree/",
                         "http://www.pathofexile.com/fullscreen-passive-skill-tree/",
                         "https://pathofexile.com/fullscreen-passive-skill-tree/",
-                        "http://pathofexile.com/fullscreen-passive-skill-tree/"
+                        "http://pathofexile.com/fullscreen-passive-skill-tree/",
+                        "http://cb.poedb.tw/us/passive-skill-tree/",
+                        "http://poedb.tw/us/passive-skill-tree/"
                     };
                     var urlString = tbSkillURL.Text;
                     foreach (string link in urls)
                     {
-                        urlString = urlString.Replace(link, MainWindow.TreeAddress);
+                        urlString = urlString.Replace(link, SkillTree.TreeAddress);
                     }
                     tbSkillURL.Text = urlString;
                     Tree.LoadFromURL(urlString);
@@ -1681,17 +1680,6 @@ namespace POESKillTree.Views
 
         #region Change Class - No Reset
 
-        private readonly Dictionary<string, string> _classNameToLink = new Dictionary<string, string>
-        {
-            {"Scion", "AAAAAwAA"},
-            {"Marauder", "AAAAAwEA"},
-            {"Ranger", "AAAAAwIA"},
-            {"Witch", "AAAAAwMA"},
-            {"Duelist", "AAAAAwQA"},
-            {"Templar", "AAAAAwUA"},
-            {"Shadow", "AAAAAwYA"},
-        };  
-
         /**
          * Will get the current class name and start string from the tree url
          * return: array[]
@@ -1701,9 +1689,9 @@ namespace POESKillTree.Views
 
         private string[] GetCurrentClass()
         {
-            foreach (var item in _classNameToLink)
+            foreach (var item in CharacterNames.NameToLink)
             {
-                if (tbSkillURL.Text.IndexOf(item.Value) != -1)
+                if (tbSkillURL.Text.IndexOf(item.Value, StringComparison.InvariantCulture) != -1)
                 {
                     return getAnyClass(item.Key);
                 }
@@ -1721,7 +1709,7 @@ namespace POESKillTree.Views
         {
             string[] array = new string[2];
             string classStartString;
-            if (_classNameToLink.TryGetValue(className, out classStartString))
+            if (CharacterNames.NameToLink.TryGetValue(className, out classStartString))
             {
                 array[0] = className;
                 array[1] = classStartString;
@@ -1944,11 +1932,11 @@ namespace POESKillTree.Views
             {
                 var item = w.Item;
                 if (PersistentData.StashItems.Count > 0)
-                    item.Y = PersistentData.StashItems.Max(i => i.Y + i.H);
+                    item.Y = PersistentData.StashItems.Max(i => i.Y + i.Height);
 
                 Stash.Items.Add(item);
 
-                Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.H });
+                Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.Height });
                 Stash.asBar.Value = item.Y;
             }
         }

@@ -543,71 +543,71 @@ msgstr "Skontrolovať _aktualizácie"
 msgid "_About PoESkillTree"
 msgstr "_O PoESkillTree"
 
-#: Views\MainWindow.xaml:598
+#: Views\MainWindow.xaml:590
 msgid "Reset"
 msgstr "Reset"
 
-#: Views\MainWindow.xaml:650
+#: Views\MainWindow.xaml:642
 msgid "Saved Builds"
 msgstr "Uložené zostavy"
 
-#: Views\MainWindow.xaml:668
+#: Views\MainWindow.xaml:660
 msgid "Filter:"
 msgstr "Filter:"
 
-#: Views\MainWindow.xaml:711
+#: Views\MainWindow.xaml:703
 msgid "Skill tree comparison"
 msgstr "Porovnávanie stromov zručností"
 
-#: Views\MainWindow.xaml:720
+#: Views\MainWindow.xaml:712
 msgid "Save"
 msgstr "Uložiť"
 
-#: Views\MainWindow.xaml:723
+#: Views\MainWindow.xaml:715
 msgid "Save As"
 msgstr "Uložiť ako"
 
-#: Views\MainWindow.xaml:726
+#: Views\MainWindow.xaml:718
 msgid "Delete"
 msgstr "Zmazať"
 
-#: Views\MainWindow.xaml:735
+#: Views\MainWindow.xaml:727
 msgid "Attributes"
 msgstr "Atribúty"
 
-#: Views\MainWindow.xaml:742
+#: Views\MainWindow.xaml:734
 msgid "Passive Attributes"
 msgstr "Pasívne atribúty"
 
-#: Views\MainWindow.xaml:759
+#: Views\MainWindow.xaml:751
 msgid "Item Attributes"
 msgstr "Atribúty predmetov"
 
-#: Views\MainWindow.xaml:778
+#: Views\MainWindow.xaml:770
 msgid "Total Attributes"
 msgstr "Atribúty celkovo"
 
-#: Views\MainWindow.xaml:814
+#: Views\MainWindow.xaml:806
 msgid "Character Sheet"
 msgstr "Postava"
 
-#: Views\MainWindow.xaml:821 SkillTreeFiles\Compute.cs:2296
+#: Views\MainWindow.xaml:813 SkillTreeFiles\Compute.cs:2296
 msgid "Defense"
 msgstr "Obrana"
 
-#: Views\MainWindow.xaml:838
+#: Views\MainWindow.xaml:830
 msgid "Offense"
 msgstr "Útok"
 
-#: Views\MainWindow.xaml:872
+#: Views\MainWindow.xaml:864
 msgid "Search:"
 msgstr "Hľadať:"
 
-#: Views\MainWindow.xaml:879
+#: Views\MainWindow.xaml:871
 msgid "Skill tree link:"
 msgstr "Odkaz stromu:"
 
-#: Views\MainWindow.xaml:885
+#: Views\MainWindow.xaml:877
 msgid "Load Tree"
 msgstr "Načítať strom"
 
@@ -627,7 +627,7 @@ msgstr "Inicializácia..."
 msgid "Character"
 msgstr "Postava"
 
-#: SkillTreeFiles\SkillTree.cs:1019
+#: SkillTreeFiles\SkillTree.cs:1026
 #, fuzzy
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom."
@@ -694,7 +694,7 @@ msgstr[0] "{0}, {1} bod použitý"
 msgstr[1] "{0}, {1} body použité"
 msgstr[2] "{0}, {1} bodov použitých"
 
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1275
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1273
 msgid "An error occurred during a save operation."
 msgstr "Nastala chyba počas ukladania."
 
@@ -734,7 +734,7 @@ msgstr "Posledná zmena: {0}"
 msgid "Help file not found"
 msgstr "Súbor pomocníka nebol nájdený"
 
-#: Views\MainWindow.xaml.cs:393 Views\MainWindow.xaml.cs:1625
+#: Views\MainWindow.xaml.cs:393 Views\MainWindow.xaml.cs:1627
 msgid "An error occurred while copying to Clipboard."
 msgstr "Nastala chyba počas kopírovania do Schránky."
 
@@ -742,7 +742,7 @@ msgstr "Nastala chyba počas kopírovania do Schránky."
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
 
-#: Views\MainWindow.xaml.cs:400 Views\MainWindow.xaml.cs:1822
+#: Views\MainWindow.xaml.cs:400 Views\MainWindow.xaml.cs:1813
 msgid "Do you want to continue?"
 msgstr "Chcete pokračovať?"
 
@@ -796,40 +796,40 @@ msgstr "Nastala chyba počas sťahovania."
 msgid "An error occurred while attempting to start the installation."
 msgstr "Nastala chyba pri pokuse spustiť inštaláciu."
 
-#: Views\MainWindow.xaml.cs:1041
+#: Views\MainWindow.xaml.cs:1039
 msgid "An error occurred while attempting to load item data."
 msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
 
-#: Views\MainWindow.xaml.cs:1112
+#: Views\MainWindow.xaml.cs:1110
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
-#: Views\MainWindow.xaml.cs:1183
+#: Views\MainWindow.xaml.cs:1181
 msgid "Please select a saved build."
 msgstr "Prosím zvoľte uloženú zostavu."
 
-#: Views\MainWindow.xaml.cs:1351
+#: Views\MainWindow.xaml.cs:1353
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Nastala chyba pri pokuse načítať strom zručností z URL."
 
-#: Views\MainWindow.xaml.cs:1601 Views\MainWindow.xaml.cs:1610
+#: Views\MainWindow.xaml.cs:1603 Views\MainWindow.xaml.cs:1612
 msgid "An error occurred while attempting to conntact the PoEUrl location."
 msgstr "Nastala chyba pri pokuse kontaktovať PoEUrl lokáciu."
 
-#: Views\MainWindow.xaml.cs:1621
+#: Views\MainWindow.xaml.cs:1623
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "PoEUrl odkaz bol skopírovaný do Schránky."
 
-#: Views\MainWindow.xaml.cs:1768
+#: Views\MainWindow.xaml.cs:1759
 msgid "An error occurred while attempting to load saved builds."
 msgstr "Nastala chyba pri pokuse načítať uložené zostavy."
 
-#: Views\MainWindow.xaml.cs:1821
+#: Views\MainWindow.xaml.cs:1812
 #, fuzzy
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
 
-#: Views\MainWindow.xaml.cs:1915
+#: Views\MainWindow.xaml.cs:1906
 #, fuzzy
 msgid "Error while downloading assets."
 msgstr "Nastala chyba počas sťahovania údajov."

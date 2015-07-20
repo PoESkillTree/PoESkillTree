@@ -161,7 +161,7 @@ namespace POESKillTree.Views
 
                     //get free line
                     var y = stash.LastOccupiedLine + 3;
-                    var fittingitems = items.Where(i => i.X >= 0 && i.X + i.W <= 12).ToList();
+                    var fittingitems = items.Where(i => i.X >= 0 && i.X + i.Width <= 12).ToList();
 
 
                     StashBookmark sb = new StashBookmark("imported", y);
@@ -176,13 +176,13 @@ namespace POESKillTree.Views
                     stash.AddBookmark(sb);
                     var my = fittingitems.Min(i => i.Y);
                     var y2 = y;
-                    var unfittingitems = items.Where(i => i.X < 0 || i.X + i.W > 12);
+                    var unfittingitems = items.Where(i => i.X < 0 || i.X + i.Width > 12);
                     foreach (var item in items)
                     {
                         item.Y += y - my;
                         stash.Items.Add(item);
-                        if (y2 < item.Y + item.H)
-                            y2 = item.Y + item.H;
+                        if (y2 < item.Y + item.Height)
+                            y2 = item.Y + item.Height;
                     }
 
 
@@ -191,7 +191,7 @@ namespace POESKillTree.Views
                     var y3 = y2;
                     foreach (var item in unfittingitems)
                     {
-                        if (x + item.W > 12) //next line
+                        if (x + item.Width > 12) //next line
                         {
                             x = 0;
                             y2 += maxh;
@@ -199,16 +199,16 @@ namespace POESKillTree.Views
                         }
 
                         item.X = x;
-                        x += item.W;
+                        x += item.Width;
 
-                        if (maxh < item.H)
-                            maxh = item.H;
+                        if (maxh < item.Height)
+                            maxh = item.Height;
 
                         item.Y = y2;
                         stash.Items.Add(item);
 
-                        if (y3 < item.Y + item.H)
-                            y3 = item.Y + item.H;
+                        if (y3 < item.Y + item.Height)
+                            y3 = item.Y + item.Height;
                     }
                     Popup.Info(string.Format(L10n.Message("New tab with {0} items was added to stash"),items.Length));
                     highlightrange = new IntRange() { From = y, Range = y3 - y };
