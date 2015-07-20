@@ -584,13 +584,13 @@
                     <Label Content="Level:" x:Name="lblLevel" />
                     <TextBox Margin="5,0,0,0" x:Name="tbLevel" TextChanged="tbLevel_TextChanged" MaxLength="3" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
                     <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged">
-                        <ComboBoxItem Content="Scion" Name="Scion"/>
+                        <ComboBoxItem Content="Scion" Name="Seven"/>
                         <ComboBoxItem Content="Marauder" Name="Marauder"/>
                         <ComboBoxItem Content="Ranger" Name="Ranger"/>
                         <ComboBoxItem Content="Witch" Name="Witch" IsSelected="True" />
                         <ComboBoxItem Content="Duelist" Name="Duelist"/>
                         <ComboBoxItem Content="Templar" Name="Templar" />
-                        <ComboBoxItem Content="Shadow" Name="Shadow"/>
+                        <ComboBoxItem Content="Shadow" Name="Six"/>
                     </ComboBox>
                     <Label Content="Used:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
                     <TextBox Margin="5,0,0,0" x:Name="tbUsedPoints" IsReadOnly="True" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
