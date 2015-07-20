@@ -232,8 +232,8 @@ namespace POESKillTree.Controls
                 }
                 Thickness m = new Thickness(item.X * GridSize, (item.Y - from) * GridSize, 0, 0);
                 iv.Margin = m;
-                iv.Width = item.W * GridSize;
-                iv.Height = item.H * GridSize;
+                iv.Width = item.Width * GridSize;
+                iv.Height = item.Height * GridSize;
             }
         }
 
@@ -375,7 +375,7 @@ namespace POESKillTree.Controls
             var y3 = y;
             foreach (var item in items)
             {
-                if (x + item.W > 12) //next line
+                if (x + item.Width > 12) //next line
                 {
                     x = 0;
                     y += maxh;
@@ -383,16 +383,16 @@ namespace POESKillTree.Controls
                 }
 
                 item.X = x;
-                x += item.W;
+                x += item.Width;
 
-                if (maxh < item.H)
-                    maxh = item.H;
+                if (maxh < item.Height)
+                    maxh = item.Height;
 
                 item.Y = y;
                 Items.Add(item);
 
-                if (y3 < item.Y + item.H)
-                    y3 = item.Y + item.H;
+                if (y3 < item.Y + item.Height)
+                    y3 = item.Y + item.Height;
             }
 
             AddHighlightRange(new IntRange() { From = y2, Range = y3 - y2 });
@@ -607,11 +607,11 @@ namespace POESKillTree.Controls
                     y += (int)PageTop;
 
                     var itm = _dndVis.Item;
-                    var overlapedy = _StashRange.Query(new Range<int>(y, y + itm.H - 1));
+                    var overlapedy = _StashRange.Query(new Range<int>(y, y + itm.Height - 1));
 
-                    var newposr = new Range<int>(x, x + itm.W - 1);
+                    var newposr = new Range<int>(x, x + itm.Width - 1);
 
-                    if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.W - 1).Intersects(newposr)) || newposr.To >= 12 || y < 0 || x < 0)
+                    if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.Width - 1).Intersects(newposr)) || newposr.To >= 12 || y < 0 || x < 0)
                         _dnd_overlay.Fill = Brushes.DarkRed;
                     else
                         _dnd_overlay.Fill = Brushes.DarkGreen;

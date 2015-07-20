@@ -226,13 +226,13 @@ namespace POESKillTree.ViewModels.Items
 
         public static int GetHeightForItem(ItemClass ics, GearGroup group, string type)
         {
-
             switch (group)
             {
                 case GearGroup.Staff:
                 case GearGroup.Bow:
-                case GearGroup.Chest:
                     return 4;
+                case GearGroup.Chest:
+                    return 3;
                 case GearGroup.Helmet:
                 case GearGroup.Gloves:
                 case GearGroup.Boots:
@@ -262,7 +262,6 @@ namespace POESKillTree.ViewModels.Items
             }
 
             return 1;
-
         }
 
 
@@ -325,8 +324,8 @@ namespace POESKillTree.ViewModels.Items
             item.BaseType = this.ItemType;
             item.GearGroup = this.GearGroup;
 
-            item.W = GetWidthForItem(this.Class, this.GearGroup, this.ItemType);
-            item.H = GetHeightForItem(this.Class, this.GearGroup, this.ItemType);
+            item.Width = GetWidthForItem(this.Class, this.GearGroup, this.ItemType);
+            item.Height = GetHeightForItem(this.Class, this.GearGroup, this.ItemType);
 
             item.Properties = GetRawProperties();
             item.Keywords = GetKeywords();

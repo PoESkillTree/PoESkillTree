@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,11 +15,9 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
-using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
@@ -70,7 +67,7 @@ namespace POESKillTree.Views
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly ToolTip _noteTip = new ToolTip();
         private ListCollectionView _allAttributeCollection;
-        private ListCollectionView _attibuteCollection;
+        private ListCollectionView _attributeCollection;
         private ListCollectionView _defenceCollection;
         private ListCollectionView _offenceCollection;
         private RenderTargetBitmap _clipboardBmp;
@@ -123,9 +120,9 @@ namespace POESKillTree.Views
             ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();
 
-            _attibuteCollection = new ListCollectionView(_attiblist);
-            listBox1.ItemsSource = _attibuteCollection;
-            _attibuteCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text")
+            _attributeCollection = new ListCollectionView(_attiblist);
+            listBox1.ItemsSource = _attributeCollection;
+            _attributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text")
             {
                 Converter = new GroupStringConverter()
             });
@@ -743,7 +740,7 @@ namespace POESKillTree.Views
                 }
             }
 
-            _attibuteCollection.Refresh();
+            _attributeCollection.Refresh();
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
         }
 
@@ -1921,11 +1918,11 @@ namespace POESKillTree.Views
             {
                 var item = w.Item;
                 if (PersistentData.StashItems.Count > 0)
-                    item.Y = PersistentData.StashItems.Max(i => i.Y + i.H);
+                    item.Y = PersistentData.StashItems.Max(i => i.Y + i.Height);
 
                 Stash.Items.Add(item);
 
-                Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.H });
+                Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.Height });
                 Stash.asBar.Value = item.Y;
             }
         }
