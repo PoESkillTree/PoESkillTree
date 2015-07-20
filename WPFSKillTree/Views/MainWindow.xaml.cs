@@ -158,11 +158,6 @@ namespace POESKillTree.Views
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
-            Tree.Chartype =
-                SkillTree.CharName.IndexOf(((string)((ComboBoxItem)cbCharType.SelectedItem).Name).ToUpper());
-            Tree.UpdateAvailNodes();
-            UpdateUI();
-
             _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
             _addtransform = SkillTree.TRect.TopLeft;
 
@@ -617,10 +612,10 @@ namespace POESKillTree.Views
             {
                 var startnode =
                     SkillTree.Skillnodes.First(
-                        nd => nd.Value.Name.ToUpper() == (SkillTree.CharName[cbCharType.SelectedIndex]).ToUpper()).Value;
+                        nd => nd.Value.Name.ToUpperInvariant() == SkillTree.CharName[cbCharType.SelectedIndex]).Value;
                 Tree.SkilledNodes.Clear();
                 Tree.SkilledNodes.Add(startnode.Id);
-                Tree.Chartype = SkillTree.CharName.IndexOf((SkillTree.CharName[cbCharType.SelectedIndex]).ToUpper());
+                Tree.Chartype = cbCharType.SelectedIndex;
             }
             Tree.UpdateAvailNodes();
             UpdateUI();

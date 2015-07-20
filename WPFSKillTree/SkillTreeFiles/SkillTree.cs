@@ -346,9 +346,9 @@ namespace POESKillTree.SkillTreeFiles
                     });
                     if (_rootNodeList.Contains(nd.id))
                     {
-                        if (!_rootNodeClassDictionary.ContainsKey(nd.dn.ToString().ToUpper()))
+                        if (!_rootNodeClassDictionary.ContainsKey(nd.dn.ToString().ToUpperInvariant()))
                         {
-                            _rootNodeClassDictionary.Add(nd.dn.ToString().ToUpper(), nd.id);
+                            _rootNodeClassDictionary.Add(nd.dn.ToString().ToUpperInvariant(), nd.id);
                         }
                         foreach (int linkedNode in nd.ot)
                         {
@@ -483,7 +483,7 @@ namespace POESKillTree.SkillTreeFiles
                 _chartype = value;
                 SkilledNodes.Clear();
                 KeyValuePair<ushort, SkillNode> node =
-                    Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[_chartype]);
+                    Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
                 SkilledNodes.Add(node.Value.Id);
                 UpdateAvailNodes();
                 DrawFaces();
@@ -937,7 +937,7 @@ namespace POESKillTree.SkillTreeFiles
             chartype = b;
 
 
-            SkillNode startnode = Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[b].ToUpper()).Value;
+            SkillNode startnode = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[b]).Value;
             skillednodes.Add(startnode.Id);
             foreach (ushort node in nodes)
             {
@@ -961,7 +961,7 @@ namespace POESKillTree.SkillTreeFiles
         public void Reset()
         {
             SkilledNodes.Clear();
-            KeyValuePair<ushort, SkillNode> node = Skillnodes.First(nd => nd.Value.Name.ToUpper() == CharName[_chartype]);
+            KeyValuePair<ushort, SkillNode> node = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
             SkilledNodes.Add(node.Value.Id);
             UpdateAvailNodes();
         }
@@ -973,7 +973,7 @@ namespace POESKillTree.SkillTreeFiles
             int pos = 0;
             foreach (ushort inn in SkilledNodes)
             {
-                if (CharName.Contains(Skillnodes[inn].Name.ToUpper()))
+                if (CharName.Contains(Skillnodes[inn].Name.ToUpperInvariant()))
                     continue;
                 byte[] dbff = BitConverter.GetBytes((Int16)inn);
                 b[pos++] = dbff[1];
@@ -1080,7 +1080,7 @@ namespace POESKillTree.SkillTreeFiles
                 SkillNode node = Skillnodes[inode];
                 foreach (SkillNode skillNode in node.Neighbor)
                 {
-                    if (!CharName.Contains(skillNode.Name) && !SkilledNodes.Contains(skillNode.Id))
+                    if (!CharName.Contains(skillNode.Name.ToUpperInvariant()) && !SkilledNodes.Contains(skillNode.Id))
                         availNodes.Add(skillNode.Id);
                 }
             }
@@ -1132,15 +1132,15 @@ namespace POESKillTree.SkillTreeFiles
             int rootNodeValue;
             var temp = new List<ushort>();
 
-            if (className.ToUpper() == "SHADOW")
+            if (className.ToUpperInvariant() == "SHADOW")
             {
                 className = "SIX";
             }
-            if (className.ToUpper() == "SCION")
+            if (className.ToUpperInvariant() == "SCION")
             {
                 className = "SEVEN";
             }
-            _rootNodeClassDictionary.TryGetValue(className.ToUpper(), out rootNodeValue);
+            _rootNodeClassDictionary.TryGetValue(className.ToUpperInvariant(), out rootNodeValue);
             var classSpecificStartNodes = _startNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key);
 
             foreach (int node in classSpecificStartNodes)
