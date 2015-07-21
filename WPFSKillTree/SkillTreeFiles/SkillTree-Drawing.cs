@@ -254,9 +254,17 @@ namespace POESKillTree.SkillTreeFiles
                     // These should not appear together, so not checking for their conjunction.
                     if (hs != HighlightState.Crossed && hs != HighlightState.Checked)
                     {
-                        byte red = (byte)(hs.HasFlag(HighlightState.FromSearch) ? 255 : 0);
-                        byte green = (byte)(hs.HasFlag(HighlightState.FromAttrib) ? 255 : 0);
-                        hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, 0)), 20);
+                        // If it has FromHover, don't mix it with the other highlights.
+                        if (hs.HasFlag(HighlightState.FromHover))
+                        {
+                            hpen = new Pen(Brushes.DodgerBlue, 20);
+                        }
+                        else
+                        {
+                            byte red = (byte)(hs.HasFlag(HighlightState.FromSearch) ? 255 : 0);
+                            byte green = (byte)(hs.HasFlag(HighlightState.FromAttrib) ? 255 : 0);
+                            hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, 0)), 20);
+                        }
 
                         dc.DrawEllipse(null, hpen, pair.Key.Position, 80, 80);
                     }
