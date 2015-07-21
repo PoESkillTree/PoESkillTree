@@ -694,7 +694,7 @@ msgstr[0] "{0}, {1} bod použitý"
 msgstr[1] "{0}, {1} body použité"
 msgstr[2] "{0}, {1} bodov použitých"
 
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1273
+#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1270
 msgid "An error occurred during a save operation."
 msgstr "Nastala chyba počas ukladania."
 
@@ -734,102 +734,102 @@ msgstr "Posledná zmena: {0}"
 msgid "Help file not found"
 msgstr "Súbor pomocníka nebol nájdený"
 
-#: Views\MainWindow.xaml.cs:393 Views\MainWindow.xaml.cs:1627
+#: Views\MainWindow.xaml.cs:390 Views\MainWindow.xaml.cs:1624
 msgid "An error occurred while copying to Clipboard."
 msgstr "Nastala chyba počas kopírovania do Schránky."
 
-#: Views\MainWindow.xaml.cs:399
+#: Views\MainWindow.xaml.cs:396
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
 
-#: Views\MainWindow.xaml.cs:400 Views\MainWindow.xaml.cs:1813
+#: Views\MainWindow.xaml.cs:397 Views\MainWindow.xaml.cs:1810
 msgid "Do you want to continue?"
 msgstr "Chcete pokračovať?"
 
-#: Views\MainWindow.xaml.cs:446
+#: Views\MainWindow.xaml.cs:443
 msgid "An error occurred while downloading assets."
 msgstr "Nastala chyba počas sťahovania údajov."
 
-#: Views\MainWindow.xaml.cs:497
+#: Views\MainWindow.xaml.cs:494
 msgid "You have the latest version!"
 msgstr "Máte najnovšiu verziu!"
 
-#: Views\MainWindow.xaml.cs:502
+#: Views\MainWindow.xaml.cs:499
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr "Aktualizácia pre {0} ({1}) je k dispozícii!"
 
-#: Views\MainWindow.xaml.cs:503
+#: Views\MainWindow.xaml.cs:500
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr "Po dokončení sťahovania bude aplikácia zatvorená, aby mohla aktualizácia prebehnúť."
 
-#: Views\MainWindow.xaml.cs:504
+#: Views\MainWindow.xaml.cs:501
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "Nová verzia {0} je k dispozícii!"
 
-#: Views\MainWindow.xaml.cs:505
+#: Views\MainWindow.xaml.cs:502
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr "Nová verzia aplikácie bude nainštalovaná súbežne s predchádzajúcimi verziami."
 
-#: Views\MainWindow.xaml.cs:508
+#: Views\MainWindow.xaml.cs:505
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr "Upozornenie: Toto je predbežná verzia, ktorá môže obsahovať chyby!"
 
-#: Views\MainWindow.xaml.cs:510
+#: Views\MainWindow.xaml.cs:507
 msgid "Do you want to download and install the update?"
 msgstr "Chcete stiahnuť a nainštalovať aktualizáciu?"
 
-#: Views\MainWindow.xaml.cs:510
+#: Views\MainWindow.xaml.cs:507
 msgid "Do you want to download and install the new version?"
 msgstr "Chcete stiahnuť a nainštalovať novú verziu?"
 
-#: Views\MainWindow.xaml.cs:521
+#: Views\MainWindow.xaml.cs:518
 msgid "An error occurred while attempting to contact the update location."
 msgstr "Nastala chyba pri pokuse kontaktovať lokáciu pre aktualizácie."
 
-#: Views\MainWindow.xaml.cs:535 Views\MainWindow.xaml.cs:560
+#: Views\MainWindow.xaml.cs:532 Views\MainWindow.xaml.cs:557
 msgid "An error occurred during the download operation."
 msgstr "Nastala chyba počas sťahovania."
 
-#: Views\MainWindow.xaml.cs:573
+#: Views\MainWindow.xaml.cs:570
 msgid "An error occurred while attempting to start the installation."
 msgstr "Nastala chyba pri pokuse spustiť inštaláciu."
 
-#: Views\MainWindow.xaml.cs:1039
+#: Views\MainWindow.xaml.cs:1036
 msgid "An error occurred while attempting to load item data."
 msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
 
-#: Views\MainWindow.xaml.cs:1110
+#: Views\MainWindow.xaml.cs:1107
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
-#: Views\MainWindow.xaml.cs:1181
+#: Views\MainWindow.xaml.cs:1178
 msgid "Please select a saved build."
 msgstr "Prosím zvoľte uloženú zostavu."
 
-#: Views\MainWindow.xaml.cs:1353
+#: Views\MainWindow.xaml.cs:1350
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Nastala chyba pri pokuse načítať strom zručností z URL."
 
-#: Views\MainWindow.xaml.cs:1603 Views\MainWindow.xaml.cs:1612
+#: Views\MainWindow.xaml.cs:1600 Views\MainWindow.xaml.cs:1609
 msgid "An error occurred while attempting to conntact the PoEUrl location."
 msgstr "Nastala chyba pri pokuse kontaktovať PoEUrl lokáciu."
 
-#: Views\MainWindow.xaml.cs:1623
+#: Views\MainWindow.xaml.cs:1620
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "PoEUrl odkaz bol skopírovaný do Schránky."
 
-#: Views\MainWindow.xaml.cs:1759
+#: Views\MainWindow.xaml.cs:1756
 msgid "An error occurred while attempting to load saved builds."
 msgstr "Nastala chyba pri pokuse načítať uložené zostavy."
 
-#: Views\MainWindow.xaml.cs:1812
+#: Views\MainWindow.xaml.cs:1809
 #, fuzzy
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
 
-#: Views\MainWindow.xaml.cs:1906
+#: Views\MainWindow.xaml.cs:1903
 #, fuzzy
 msgid "Error while downloading assets."
 msgstr "Nastala chyba počas sťahovania údajov."

@@ -21,5 +21,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("PoESkillTree - The Awakening")]
 [assembly: AssemblyCopyright("Copyright © 2012-2015 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.2.1.627")]
-[assembly: AssemblyInformationalVersion("2.2.1")]
+[assembly: AssemblyFileVersion("2.2.2.648")]
+[assembly: AssemblyInformationalVersion("2.2.2")]
