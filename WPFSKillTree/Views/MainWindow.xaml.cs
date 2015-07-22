@@ -47,6 +47,11 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
+        /// <summary>
+        /// The set of keys of which one needs to be pressed to highlight similar nodes on hover.
+        /// </summary>
+        private static readonly Key[] HighlightByHoverKeys = { Key.LeftShift, Key.RightShift };
+
         private readonly PersistentData _persistentData = App.PersistentData;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -239,7 +244,7 @@ namespace POESKillTree.Views
                 }
             }
 
-            if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
+            if (HighlightByHoverKeys.Any(key => key == e.Key))
             {
                 HighlightNodesByHover();
             }
@@ -257,7 +262,7 @@ namespace POESKillTree.Views
 
         private void Window_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
+            if (HighlightByHoverKeys.Any(key => key == e.Key))
             {
                 HighlightNodesByHover();
             }
@@ -1013,7 +1018,10 @@ namespace POESKillTree.Views
                     }
 
                     _sToolTip.Content = sp;
-                    _sToolTip.IsOpen = true;
+                    if (!HighlightByHoverKeys.Any(Keyboard.IsKeyDown))
+                    {
+                        _sToolTip.IsOpen = true;
+                    }
                     _lasttooltip = tooltip;
                 }
             }
@@ -1044,14 +1052,21 @@ namespace POESKillTree.Views
             }
 
             if (_hoveredNode == null || _hoveredNode.Attributes.Count == 0 ||
-                !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+                !HighlightByHoverKeys.Any(Keyboard.IsKeyDown))
             {
+                if (_hoveredNode != null && _hoveredNode.Attributes.Count > 0)
+                {
+                    _sToolTip.IsOpen = true;
+                }
+
                 Tree.HighlightNodesBySearch("", true, NodeHighlighter.HighlightState.FromHover);
 
                 _lastHoveredNode = null;
             }
             else
             {
+                _sToolTip.IsOpen = false;
+
                 if (_lastHoveredNode == _hoveredNode)
                 {
                     // Not necessary, but stops it from continuously searching when holding down shift.
