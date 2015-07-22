@@ -1080,7 +1080,7 @@ namespace POESKillTree.Views
                 item.Visible = (className.Equals("All", StringComparison.InvariantCultureIgnoreCase) ||
                                 item.Class.Equals(className, StringComparison.InvariantCultureIgnoreCase)) &&
                                (item.Name.Contains(filterText, StringComparison.InvariantCultureIgnoreCase) ||
-                                item.Note.ToLower().Contains(filterText, StringComparison.InvariantCultureIgnoreCase));
+                                item.Note.Contains(filterText, StringComparison.InvariantCultureIgnoreCase));
             }
 
             lvSavedBuilds.Items.Refresh();
