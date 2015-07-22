@@ -1072,13 +1072,15 @@ namespace POESKillTree.Views
             if (lvSavedBuilds == null) return;
 
             var selectedItem = (ComboBoxItem)cbCharTypeSavedBuildFilter.SelectedItem;
-            var className = selectedItem.Name.ToString();
-            var filterText = tbSavedBuildFilter.Text.ToLower();
+            var className = selectedItem.Content.ToString();
+            var filterText = tbSavedBuildFilter.Text;
 
             foreach (PoEBuild item in lvSavedBuilds.Items)
             {
-                item.Visible = (className.Equals("All") || item.Class.Equals(className)) &&
-                    (item.Name.ToLower().Contains(filterText) || item.Note.ToLower().Contains(filterText));
+                item.Visible = (className.Equals("All", StringComparison.InvariantCultureIgnoreCase) ||
+                                item.Class.Equals(className, StringComparison.InvariantCultureIgnoreCase)) &&
+                               (item.Name.Contains(filterText, StringComparison.InvariantCultureIgnoreCase) ||
+                                item.Note.ToLower().Contains(filterText, StringComparison.InvariantCultureIgnoreCase));
             }
 
             lvSavedBuilds.Items.Refresh();
