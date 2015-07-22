@@ -273,332 +273,213 @@ msgstr ""
 msgid "Downloading Skill tree assets"
 msgstr ""
 
-#: Views\MainWindow.xaml:205
+#: Views\MainWindow.xaml:217
 msgid "_File"
 msgstr ""
 
-#: Views\MainWindow.xaml:209
+#: Views\MainWindow.xaml:221
 msgid "Save _As"
 msgstr ""
 
-#: Views\MainWindow.xaml:217
+#: Views\MainWindow.xaml:229
 msgid "E_xit"
 msgstr ""
 
-#: Views\MainWindow.xaml:227
+#: Views\MainWindow.xaml:239
 msgid "_Edit"
 msgstr ""
 
-#: Views\MainWindow.xaml:231
+#: Views\MainWindow.xaml:243
 msgid "_Undo"
 msgstr ""
 
-#: Views\MainWindow.xaml:239
+#: Views\MainWindow.xaml:251
 msgid "_Redo"
 msgstr ""
 
-#: Views\MainWindow.xaml:247
+#: Views\MainWindow.xaml:259
 msgid "Reset Skill _Tree"
 msgstr ""
 
-#: Views\MainWindow.xaml:255
-msgid "_Clear Items"
-msgstr ""
-
-#: Views\MainWindow.xaml:264
+#: Views\MainWindow.xaml:279
 msgid "_View"
 msgstr ""
 
-#: Views\MainWindow.xaml:268
+#: Views\MainWindow.xaml:283
 msgid "_Theme"
 msgstr ""
 
-#: Views\MainWindow.xaml:275
+#: Views\MainWindow.xaml:290
 msgctxt "color"
 msgid "Light"
 msgstr ""
 
-#: Views\MainWindow.xaml:280
+#: Views\MainWindow.xaml:295
 msgctxt "color"
 msgid "Dark"
 msgstr ""
 
-#: Views\MainWindow.xaml:286
-msgid "Acce_nt"
-msgstr ""
-
-#: Views\MainWindow.xaml:293
-msgctxt "color"
-msgid "Amber"
-msgstr ""
-
-#: Views\MainWindow.xaml:298
-msgctxt "color"
-msgid "Blue"
-msgstr ""
-
-#: Views\MainWindow.xaml:303
-msgctxt "color"
-msgid "Brown"
-msgstr ""
-
-#: Views\MainWindow.xaml:308
-msgctxt "color"
-msgid "Cobalt"
-msgstr ""
-
-#: Views\MainWindow.xaml:313
-msgctxt "color"
-msgid "Crimson"
-msgstr ""
-
-#: Views\MainWindow.xaml:318
-msgctxt "color"
-msgid "Cyan"
-msgstr ""
-
-#: Views\MainWindow.xaml:323
-msgctxt "color"
-msgid "Emerald"
-msgstr ""
-
-#: Views\MainWindow.xaml:328
-msgctxt "color"
-msgid "Green"
-msgstr ""
-
-#: Views\MainWindow.xaml:333
-msgctxt "color"
-msgid "Indigo"
-msgstr ""
-
-#: Views\MainWindow.xaml:338
-msgctxt "color"
-msgid "Lime"
-msgstr ""
-
-#: Views\MainWindow.xaml:343
-msgctxt "color"
-msgid "Magenta"
-msgstr ""
-
-#: Views\MainWindow.xaml:348
-msgctxt "color"
-msgid "Mauve"
-msgstr ""
-
-#: Views\MainWindow.xaml:353
-msgctxt "color"
-msgid "Olive"
-msgstr ""
-
-#: Views\MainWindow.xaml:358
-msgctxt "color"
-msgid "Orange"
-msgstr ""
-
-#: Views\MainWindow.xaml:363
-msgctxt "color"
-msgid "Pink"
-msgstr ""
-
-#: Views\MainWindow.xaml:368
-msgctxt "color"
-msgid "Purple"
-msgstr ""
-
-#: Views\MainWindow.xaml:373
-msgctxt "color"
-msgid "Red"
-msgstr ""
-
-#: Views\MainWindow.xaml:378
-msgctxt "color"
-msgid "Sienna"
-msgstr ""
-
-#: Views\MainWindow.xaml:383
-msgctxt "color"
-msgid "Steel"
-msgstr ""
-
-#: Views\MainWindow.xaml:388
-msgctxt "color"
-msgid "Taupe"
-msgstr ""
-
-#: Views\MainWindow.xaml:393
-msgctxt "color"
-msgid "Teal"
-msgstr ""
-
-#: Views\MainWindow.xaml:398
-msgctxt "color"
-msgid "Violet"
-msgstr ""
-
-#: Views\MainWindow.xaml:403
-msgctxt "color"
-msgid "Yellow"
-msgstr ""
-
-#: Views\MainWindow.xaml:410
+#: Views\MainWindow.xaml:330
 msgid "Saved _Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:415
+#: Views\MainWindow.xaml:335
 msgid "_Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:420
+#: Views\MainWindow.xaml:340
 msgid "_Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:425
+#: Views\MainWindow.xaml:345
 msgid "Skill _Tree Comparison"
 msgstr ""
 
-#: Views\MainWindow.xaml:431
+#: Views\MainWindow.xaml:351
 msgid "_Tools"
 msgstr ""
 
-#: Views\MainWindow.xaml:435
+#: Views\MainWindow.xaml:355
 msgid "Take _Screenshot of Skilled Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:443
+#: Views\MainWindow.xaml:364
+msgid "_Equipment"
+msgstr ""
+
+#: Views\MainWindow.xaml:371
 msgid "_Download & Import Items"
 msgstr ""
 
-#: Views\MainWindow.xaml:451
+#: Views\MainWindow.xaml:379
 msgid "_Download & Import Stash"
 msgstr ""
 
-#: Views\MainWindow.xaml:459
+#: Views\MainWindow.xaml:393
+msgid "_Nodes"
+msgstr ""
+
+#: Views\MainWindow.xaml:400
 msgid "Skill _Tagged Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:467
+#: Views\MainWindow.xaml:405
 msgid "Un_tag All Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:475
+#: Views\MainWindow.xaml:410
 msgid "_Unhighlight All Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:483
+#: Views\MainWindow.xaml:415
 msgid "_Check-tag highlighted Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:488
+#: Views\MainWindow.xaml:420
 msgid "C_ross-tag highlighted Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:493
-msgid "Copy _Passive Attributes to Clipboard"
+#: Views\MainWindow.xaml:426
+msgid "_Program Assets"
 msgstr ""
 
-#: Views\MainWindow.xaml:501
-msgid "Copy Po_EUrl of Skill tree to Clipboard"
-msgstr ""
-
-#: Views\MainWindow.xaml:509
+#: Views\MainWindow.xaml:433
 msgid "_Redownload Skill Tree Assets"
 msgstr ""
 
-#: Views\MainWindow.xaml:524
+#: Views\MainWindow.xaml:448
 msgid "_Help"
 msgstr ""
 
-#: Views\MainWindow.xaml:528
+#: Views\MainWindow.xaml:452
 msgid "_Links"
 msgstr ""
 
-#: Views\MainWindow.xaml:535
+#: Views\MainWindow.xaml:459
 msgid "_Path of Exile Website"
 msgstr ""
 
-#: Views\MainWindow.xaml:542
+#: Views\MainWindow.xaml:466
 msgid "View _Help"
 msgstr ""
 
-#: Views\MainWindow.xaml:550
+#: Views\MainWindow.xaml:474
 msgid "Hot_keys"
 msgstr ""
 
-#: Views\MainWindow.xaml:558
+#: Views\MainWindow.xaml:482
 msgid "Check for _Updates"
 msgstr ""
 
-#: Views\MainWindow.xaml:566
+#: Views\MainWindow.xaml:490
 msgid "_About PoESkillTree"
 msgstr ""
 
-#: Views\MainWindow.xaml:590
+#: Views\MainWindow.xaml:514
 msgid "Reset"
 msgstr ""
 
-#: Views\MainWindow.xaml:642
+#: Views\MainWindow.xaml:566
 msgid "Saved Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:660
+#: Views\MainWindow.xaml:584
 msgid "Filter:"
 msgstr ""
 
-#: Views\MainWindow.xaml:703
+#: Views\MainWindow.xaml:627
 msgid "Skill tree comparison"
 msgstr ""
 
-#: Views\MainWindow.xaml:712
+#: Views\MainWindow.xaml:636
 msgid "Save"
 msgstr ""
 
-#: Views\MainWindow.xaml:715
+#: Views\MainWindow.xaml:639
 msgid "Save As"
 msgstr ""
 
-#: Views\MainWindow.xaml:718
+#: Views\MainWindow.xaml:642
 msgid "Delete"
 msgstr ""
 
-#: Views\MainWindow.xaml:727
+#: Views\MainWindow.xaml:651
 msgid "Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:734
+#: Views\MainWindow.xaml:658
 msgid "Passive Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:751
+#: Views\MainWindow.xaml:675
 msgid "Item Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:770
+#: Views\MainWindow.xaml:694
 msgid "Total Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:806
+#: Views\MainWindow.xaml:730
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:813 SkillTreeFiles\Compute.cs:2296
+#: Views\MainWindow.xaml:737 SkillTreeFiles\Compute.cs:2296
 msgid "Defense"
 msgstr ""
 
-#: Views\MainWindow.xaml:830
+#: Views\MainWindow.xaml:754
 msgid "Offense"
 msgstr ""
 
-#: Views\MainWindow.xaml:864
+#: Views\MainWindow.xaml:788
 msgid "Search:"
 msgstr ""
 
-#: Views\MainWindow.xaml:871
+#: Views\MainWindow.xaml:795
 msgid "Skill tree link:"
 msgstr ""
 
-#: Views\MainWindow.xaml:877
+#: Views\MainWindow.xaml:801
 msgid "Load Tree"
 msgstr ""
 
