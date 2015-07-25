@@ -107,7 +107,8 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             SearchSpace = new List<GraphNode>();
 
-            MinimalSpanningTree leastSolution = new MinimalSpanningTree(TargetNodes, Distances);
+            var nodes = new HashSet<GraphNode>(TargetNodes) { StartNodes };
+            MinimalSpanningTree leastSolution = new MinimalSpanningTree(nodes, Distances);
             leastSolution.Span(StartNodes);
 
             if (TargetNodes.Count == 0)
@@ -121,17 +122,11 @@ namespace POESKillTree.TreeGenerator.Solver
             foreach (GraphNode node in SearchGraph.nodeDict.Values)
             {
                 // This can be a steiner node only if it has more than 2 neighbors.
-                if (node.Adjacent.Count > 2)
+                if (node.Adjacent.Count > 2 && node != StartNodes && !TargetNodes.Contains(node))
                 {
-
                     // This should be a reasonable approach.
-                    bool add = false;
-                    foreach (GraphNode targetNode in TargetNodes)
-                        if (Distances.GetDistance(targetNode, node) < maxEdgeDistance)
-                            add = true;
-                    if (add)
+                    if (TargetNodes.Any(targetNode => Distances.GetDistance(targetNode, node) < maxEdgeDistance))
                         SearchSpace.Add(node);
-
                 }
             }
 

@@ -33,7 +33,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         public bool IsConsideredDone { get { return IsInitialized && CurrentGeneration >= MaxGeneration; } }
 
-        public int MaxGeneration { get { return GaParameters.MaxGeneration; } }
+        public int MaxGeneration { get { return IsInitialized ? GaParameters.MaxGeneration : 0; } }
 
         public int CurrentGeneration { get { return IsInitialized ? _ga.GenerationCount : 0; } }
 
@@ -85,6 +85,13 @@ namespace POESKillTree.TreeGenerator.Solver
             {
                 throw new InvalidOperationException("The graph is disconnected.", e);
             }
+
+            var consideredNodes = SearchSpace.Concat(TargetNodes).Concat(new[] {StartNodes}).ToArray();
+            foreach (var node in consideredNodes)
+            {
+                node.Marked = true;
+            }
+            Distances.CalculateFully(consideredNodes);
 
             InitializeGa();
 
@@ -139,32 +146,22 @@ namespace POESKillTree.TreeGenerator.Solver
             if (!mst.IsSpanned)
                 throw new Exception("The passed MST is not spanned!");
 
-            var newSkilledNodes = new HashSet<ushort>();
+            var newSkilledNodes = new HashSet<ushort>(mst.UsedNodes);
             newSkilledNodes.UnionWith(StartNodes.nodes.Select(node => node.Id));
-            foreach (var edge in mst.SpanningEdges)
-            {
-                newSkilledNodes.UnionWith(Distances.GetShortestPath(edge));
-                newSkilledNodes.Add(edge.outside.Id);
-                newSkilledNodes.Add(edge.inside.Id);
-            }
             return newSkilledNodes;
         }
 
         private MinimalSpanningTree DnaToMst(BitArray dna)
         {
-            var usedSteinerPoints = new List<GraphNode>();
+            var mstNodes = new HashSet<GraphNode>();
             for (var i = 0; i < dna.Length; i++)
             {
                 if (dna[i])
-                    usedSteinerPoints.Add(SearchSpace[i]);
+                    mstNodes.Add(SearchSpace[i]);
             }
 
-            var mstNodes = new HashSet<GraphNode>(usedSteinerPoints) {StartNodes};
-
-            foreach (var targetNode in TargetNodes)
-            {
-                mstNodes.Add(targetNode);
-            }
+            mstNodes.Add(StartNodes);
+            mstNodes.UnionWith(TargetNodes);
 
             return new MinimalSpanningTree(mstNodes, Distances);
         }

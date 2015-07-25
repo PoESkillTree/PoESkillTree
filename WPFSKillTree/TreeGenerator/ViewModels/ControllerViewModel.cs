@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;

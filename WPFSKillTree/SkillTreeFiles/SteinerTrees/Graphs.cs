@@ -6,7 +6,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
     public class GraphEdge : PriorityQueueNode
     {
-        public GraphNode inside, outside;
+        public readonly GraphNode inside, outside;
 
         public GraphEdge(GraphNode inside, GraphNode outside)
         {
@@ -25,6 +25,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         protected ushort id;
         public ushort Id { get { return id; } }
         public string Name { get { return SkillTree.Skillnodes[id].Name; } }
+
+        public bool Marked { get; set; }
 
         public HashSet<GraphNode> Adjacent = new HashSet<GraphNode>();
     }

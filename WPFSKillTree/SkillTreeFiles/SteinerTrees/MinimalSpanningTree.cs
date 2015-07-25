@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Priority_Queue;
-using System.Diagnostics;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
@@ -11,7 +8,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     {
         public HashSet<GraphNode> mstNodes;
 
-        private DistanceLookup distances;
+        private readonly DistanceLookup distances;
 
         // I'd like to control at what point the spanning actually happens.
         private bool _isSpanned;
@@ -75,7 +72,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             // Copy might be preferable, doesn't really matter atm though.
             this.mstNodes = mstNodes;
-            this.distances = (distances == null ? new DistanceLookup() : distances);
+            this.distances = distances ?? new DistanceLookup();
             _isSpanned = false;
         }
 
@@ -86,17 +83,17 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <returns>A list of GraphEdges forming the MST.</returns>
         public List<GraphEdge> Span(GraphNode startFrom)
         {
-            /// With n nodes, we can have up to n (actually n-1) edges adjacent to each node.
+            // With n nodes, we can have up to n (actually n-1) edges adjacent to each node.
             HeapPriorityQueue<GraphEdge> adjacentEdgeQueue = new HeapPriorityQueue<GraphEdge>(mstNodes.Count * mstNodes.Count);
-            /// Removing all edges that satisfy a property (here a certain "outside"
-            /// node) from the queue is not actually trivial, since you could only
-            /// iterate over all entries (and you want to avoid that) if you don't
-            /// have the references to the edges at hand.
-            /// I guess this is the easiest way to do it...
+            // Removing all edges that satisfy a property (here a certain "outside"
+            // node) from the queue is not actually trivial, since you could only
+            // iterate over all entries (and you want to avoid that) if you don't
+            // have the references to the edges at hand.
+            // I guess this is the easiest way to do it...
             Dictionary<GraphNode, List<GraphEdge>> edgesLeadingToNode =
-                new Dictionary<GraphNode, List<GraphEdge>>();
+                new Dictionary<GraphNode, List<GraphEdge>>(mstNodes.Count);
             foreach (GraphNode node in mstNodes)
-                edgesLeadingToNode[node] = new List<GraphEdge>();
+                edgesLeadingToNode[node] = new List<GraphEdge>(mstNodes.Count);
 
             // All nodes that are already included.
             HashSet<GraphNode> inMst = new HashSet<GraphNode>();
@@ -108,7 +105,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // Initialize the MST with the start nodes.
             inMst.Add(startFrom);
             toAdd.Remove(startFrom);
-            edgesLeadingToNode[startFrom] = new List<GraphEdge>();
             foreach (GraphNode otherNode in toAdd)
             {
                 GraphEdge adjacentEdge = new GraphEdge(startFrom, otherNode);
@@ -148,7 +144,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (toAdd.Count > 0)
                 throw new DistanceLookup.GraphNotConnectedException();
 
-            this.SpanningEdges = mstEdges;
+            SpanningEdges = mstEdges;
             _isSpanned = true;
             return mstEdges;
         }

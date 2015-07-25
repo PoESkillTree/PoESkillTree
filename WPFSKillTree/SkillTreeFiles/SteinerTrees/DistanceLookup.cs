@@ -12,19 +12,23 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     public class DistanceLookup
     {
         // The uint compounds both ushort indices.
-        readonly Dictionary<uint, int> _distances;
+        private readonly Dictionary<uint, int> _distances = new Dictionary<uint, int>();
 
-        readonly Dictionary<uint, ushort[]> _paths;
+        private readonly Dictionary<uint, ushort[]> _paths = new Dictionary<uint, ushort[]>();
 
-        public DistanceLookup()
-        {
-            _distances = new Dictionary<uint, int>();
-            _paths = new Dictionary<uint, ushort[]>();
-        }
+        /// <summary>
+        /// Whether CalculateFully got called.
+        /// </summary>
+        private bool _gotFullyCached;
+
+        /// <summary>
+        /// Number ob marked nodes given to CalculateFully.
+        /// </summary>
+        private int _markedNodeCount = int.MaxValue;
 
         /// <summary>
         ///  Retrieves the path distance from one node pf a graph edge to the other,
-        ///  or calculates it if it has not yet been found.
+        ///  or calculates it if it has not yet been found and CalculateFully has not been called.
         /// </summary>
         /// <param name="edge">The graph edge.</param>
         /// <returns>The length of the graph edge (equals the amount of edges
@@ -36,7 +40,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         /// <summary>
         ///  Retrieves the path distance from one node to another, or calculates
-        ///  it if it has not yet been found.
+        ///  it if it has not yet been found and CalculateFully has not been called.
         /// </summary>
         /// <param name="a">The first graph node.</param>
         /// <param name="b">The second graph node</param>
@@ -46,35 +50,25 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             var index = GetIndex(a, b);
 
-            // If we already calculated the shortest path, use that.
-            if (_distances.ContainsKey(index))
+            if (_gotFullyCached)
             {
-                try
-                {
-                    return _distances[index];
-                }
-                catch (KeyNotFoundException)
-                {
-                    // In really rare cases this exception happens.
-                    // Most likely because of resizing in the locked RunAndSaveDijkstra-method, so locking
-                    // here too makes sure it doesn't happen again.
-                    lock (this)
-                    {
-                        return _distances[index];
-                    }
-                }
-                
+                return _distances[index];
             }
 
-            return RunAndSaveDijkstra(a, b).Item1;
+            if (!_distances.ContainsKey(index))
+            {
+                Dijkstra(a, b);
+            }
+            return _distances[index];
         }
 
         /// <summary>
         ///  Retrieves the shortest path from one node of a graph edge to the other,
-        ///  or calculates it if it has not yet been found.
+        ///  or calculates it if it has not yet been found and CalculateFully has not been called.
         /// </summary>
         /// <param name="edge">The graph edge.</param>
-        /// <returns>The shortest path from outside to inside, not containing either and ordered from inside to outside.</returns>
+        /// <returns>The shortest path from outside to inside, not containing either and
+        /// ordered from inside to outside or outside to inside.</returns>
         public ushort[] GetShortestPath(GraphEdge edge)
         {
             return GetShortestPath(edge.outside, edge.inside);
@@ -82,53 +76,25 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         /// <summary>
         ///  Retrieves the shortest path from one node to another, or calculates
-        ///  it if it has not yet been found.
+        ///  it if it has not yet been found and CalculateFully has not been called.
         /// </summary>
         /// <param name="a">The first graph node.</param>
         /// <param name="b">The second graph node</param>
-        /// <returns>The shortest path from a to b, not containing either and ordered from b to a.</returns>
+        /// <returns>The shortest path from a to b, not containing either and ordered from a to b or b to a.</returns>
         public ushort[] GetShortestPath(GraphNode a, GraphNode b)
         {
             var index = GetIndex(a, b);
 
-            if (_paths.ContainsKey(index))
+            if (_gotFullyCached)
             {
-                try
-                {
-                    return _paths[index];
-                }
-                catch (KeyNotFoundException)
-                {
-                    // See comment in GetDistance()
-                    lock (this)
-                    {
-                        return _paths[index];
-                    }
-                }
+                return _paths[index];
             }
 
-            return RunAndSaveDijkstra(a, b).Item2;
-        }
-
-        /// <summary>
-        /// Runs Dijkstra on the parameters, saves the result tuple and returns it.
-        /// </summary>
-        /// <param name="start">The starting node.</param>
-        /// <param name="target">The target node.</param>
-        /// <returns>A tuple containing the distance from the start node to the target node and the shortest path.</returns>
-        [MethodImpl(MethodImplOptions.Synchronized)]// Most simple thread-safety approach, but seems to work.
-        private Tuple<int, ushort[]> RunAndSaveDijkstra(GraphNode start, GraphNode target)
-        {
-            var index = GetIndex(start, target);
-            if (_distances.ContainsKey(index))
-                return new Tuple<int, ushort[]>(_distances[index], _paths[index]);
-
-            var result = Dijkstra(start, target);
-
-            _distances.Add(index, result.Item1);
-            _paths.Add(index, result.Item2);
-
-            return result;
+            if (!_distances.ContainsKey(index))
+            {
+                Dijkstra(a, b);
+            }
+            return _paths[index];
         }
 
         /// <summary>
@@ -146,61 +112,108 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         }
 
         /// <summary>
+        /// Calculates and caches all distances between the given nodes.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <remarks>Calls to GetDistance and GetShortestPath after this method
+        /// has been called must already be cached or exceptions will be thrown.</remarks>
+        public void CalculateFully(GraphNode[] nodes)
+        {
+            _markedNodeCount = nodes.Length;
+
+            foreach (var node in nodes)
+            {
+                Dijkstra(node);
+            }
+
+            _gotFullyCached = true;
+        }
+
+        /// <summary>
         ///  Uses a djikstra-like algorithm to flood the graph from the start
-        ///  node until the target node is found.
+        ///  node until the target node is found (if specified) or until all marked nodes got checked.
         /// </summary>
         /// <param name="start">The starting node.</param>
-        /// <param name="target">The target node.</param>
-        /// <returns>A tuple containing the distance from the start node to the target node and the shortest path.</returns>
-        public Tuple<int, ushort[]> Dijkstra(GraphNode start, GraphNode target)
+        /// <param name="target">The (optional) target node.</param>
+        private void Dijkstra(GraphNode start, GraphNode target = null)
         {
-            if (start == target) return new Tuple<int, ushort[]>(0, new ushort[0]);
+            if (start == target) return;
 
             // The last newly found nodes.
             var front = new HashSet<GraphNode>() { start };
             // The already visited nodes.
-            var visited = new HashSet<GraphNode>();
+            var visited = new HashSet<GraphNode>() { start };
             // The dictionary of the predecessors of the visited nodes.
             var predecessors = new Dictionary<ushort, ushort>();
             // The traversed distance from the starting node in edges.
             var distFromStart = 0;
 
-            // Doing this iterative because it's (theoretically) faster.
-            while (true)
+            var nodesLeft = _markedNodeCount;
+            if (start.Marked)
+            {
+                // Don't count the start node.
+                nodesLeft--;
+            }
+
+            while (front.Count > 0)
             {
                 var newFront = new HashSet<GraphNode>();
-                visited.UnionWith(front);
 
                 foreach (var node in front)
                 {
                     foreach (var adjacentNode in node.Adjacent)
                     {
-                        if (adjacentNode == target)
-                        {
-                            var length = distFromStart + 1;
-                            predecessors.Add(adjacentNode.Id, node.Id);
-                            var path = GenerateShortestPath(start.Id, target.Id, predecessors, length);
-
-                            return new Tuple<int, ushort[]>(length, path);
-                        }
-
-                        // newFront check is necessary because the dictionary complains about duplicates
-                        if (visited.Contains(adjacentNode) || newFront.Contains(adjacentNode))
+                        if (visited.Contains(adjacentNode))
                             continue;
 
-                        newFront.Add(adjacentNode);
+                        predecessors[adjacentNode.Id] = node.Id;
 
-                        predecessors.Add(adjacentNode.Id, node.Id);
+                        if (adjacentNode == target)
+                        {
+                            AddEdge(start, adjacentNode, distFromStart, predecessors);
+                            return;
+                        }
+                        if (adjacentNode.Marked)
+                        {
+                            AddEdge(start, adjacentNode, distFromStart, predecessors);
+                            nodesLeft--;
+                            if (nodesLeft == 0) return;
+                        }
+
+                        newFront.Add(adjacentNode);
+                        visited.Add(adjacentNode);
                     }
                 }
 
-                if (newFront.Count <= 0) throw new GraphNotConnectedException();
-
                 front = newFront;
-                distFromStart = distFromStart + 1;
+                distFromStart++;
+            }
+
+            if (target != null || nodesLeft > 0)
+            {
+                throw new GraphNotConnectedException();
             }
         }
 
+        /// <summary>
+        /// Adds the distance and shortest path between from and to to the respectives
+        /// dictionarys if not already present.
+        /// </summary>
+        private void AddEdge(GraphNode from, GraphNode to, int distFromStart, IDictionary<ushort, ushort> predecessors)
+        {
+            var index = GetIndex(from, to);
+            if (_distances.ContainsKey(index))
+            {
+                return;
+            }
+
+            var length = distFromStart + 1;
+            var path = GenerateShortestPath(from.Id, to.Id, predecessors, length);
+
+            _distances[index] = length;
+            _paths[index] = path;
+        }
+        
         /// <summary>
         /// Generates the shortest path from target to start by reading it out of the predecessors-dictionary.
         /// The dictionary must have a path from target to start stored.

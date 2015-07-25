@@ -223,10 +223,12 @@ namespace POESKillTree.TreeGenerator.Solver
             // Add all non-travel nodes with stats. TODO exclude nodes with stats that are "too far away" to be useful
             // Don't add nodes that are not connected to the start node (through cross-tagging)
             SearchSpace = new List<GraphNode>(SearchGraph.nodeDict.Values.Where(
-                node => IsConnected(node) && (node.Adjacent.Count > 2 || (_nodeStats[node.Id].Count > 0 && !_areTravelNodes[node.Id]))));
+                node => IsConnected(node) && node != StartNodes && !TargetNodes.Contains(node)
+                    && (node.Adjacent.Count > 2 || (_nodeStats[node.Id].Count > 0 && !_areTravelNodes[node.Id]))));
 
             // LeastSolution: MST between start and check-tagged nodes.
-            var leastSolution = new MinimalSpanningTree(TargetNodes, Distances);
+            var nodes = new HashSet<GraphNode>(TargetNodes) { StartNodes };
+            var leastSolution = new MinimalSpanningTree(nodes, Distances);
             leastSolution.Span(StartNodes);
 
             // Set start stats from start and target nodes.
