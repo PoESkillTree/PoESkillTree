@@ -230,6 +230,7 @@
     <Compile Include="Utils\Helpers.cs" />
     <Compile Include="Utils\ItemAssetDownloader.cs" />
     <Compile Include="Utils\Popup.cs" />
+    <Compile Include="Utils\StringExtension.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\Items\Affix.cs" />

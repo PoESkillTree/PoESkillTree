@@ -49,6 +49,11 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
+        /// <summary>
+        /// The set of keys of which one needs to be pressed to highlight similar nodes on hover.
+        /// </summary>
+        private static readonly Key[] HighlightByHoverKeys = { Key.LeftShift, Key.RightShift };
+
         private readonly PersistentData _persistentData = App.PersistentData;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -108,6 +113,14 @@ namespace POESKillTree.Views
 
         private MouseButton _lastMouseButton;
         private String _highlightedAttribute = "";
+
+        /// <summary>
+        /// The node of the SkillTree that currently has the mouse over it.
+        /// Null if no node is under the mouse.
+        /// </summary>
+        private SkillNode _hoveredNode;
+
+        private SkillNode _lastHoveredNode;
 
         public MainWindow()
         {
@@ -233,6 +246,11 @@ namespace POESKillTree.Views
                 }
             }
 
+            if (HighlightByHoverKeys.Any(key => key == e.Key))
+            {
+                HighlightNodesByHover();
+            }
+
             if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
             {
                 switch (e.Key)
@@ -241,6 +259,14 @@ namespace POESKillTree.Views
                         ToggleCharacterSheet();
                         break;
                 }
+            }
+        }
+
+        private void Window_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (HighlightByHoverKeys.Any(key => key == e.Key))
+            {
+                HighlightNodesByHover();
             }
         }
 
@@ -850,7 +876,7 @@ namespace POESKillTree.Views
                         .Replace(@"-", @"\-")
                         .Replace(@"%", @"\%"), @"[0-9]*\.?[0-9]+", @"[0-9]*\.?[0-9]+") + "$";
             _highlightedAttribute = newHighlightedAttribute == _highlightedAttribute ? "" : newHighlightedAttribute;
-            Tree.HighlightNodesBySearch(_highlightedAttribute, true, false);
+            Tree.HighlightNodesBySearch(_highlightedAttribute, true, NodeHighlighter.HighlightState.FromAttrib);
         }
 
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
@@ -899,8 +925,7 @@ namespace POESKillTree.Views
                 {
                     if (_lastMouseButton == MouseButton.Right)
                     {
-                        // Can't use using because Control is also in System.Windows and that is used elsewhere.
-                        if (System.Windows.Forms.Control.ModifierKeys.HasFlag(System.Windows.Forms.Keys.Shift))
+                        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
                         {
                             // Backward on shift+RMB
                             Tree.CycleNodeTagBackward(node);
@@ -972,6 +997,8 @@ namespace POESKillTree.Views
             if (nodes.Count() != 0)
                 node = nodes.First().Value;
 
+            _hoveredNode = node;
+
             if (node != null && node.Attributes.Count != 0)
             {
                 if (node.IsJewelSocket)
@@ -1005,7 +1032,10 @@ namespace POESKillTree.Views
                     }
 
                     _sToolTip.Content = sp;
-                    _sToolTip.IsOpen = true;
+                    if (!HighlightByHoverKeys.Any(Keyboard.IsKeyDown))
+                    {
+                        _sToolTip.IsOpen = true;
+                    }
                     _lasttooltip = tooltip;
                 }
             }
@@ -1026,6 +1056,48 @@ namespace POESKillTree.Views
         private void zbSkillTreeBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //zbSkillTreeBackground.Child.RaiseEvent(e);
+        }
+
+        private void HighlightNodesByHover()
+        {
+            if (Tree == null)
+            {
+                return;
+            }
+
+            if (_hoveredNode == null || _hoveredNode.Attributes.Count == 0 ||
+                !HighlightByHoverKeys.Any(Keyboard.IsKeyDown))
+            {
+                if (_hoveredNode != null && _hoveredNode.Attributes.Count > 0)
+                {
+                    _sToolTip.IsOpen = true;
+                }
+
+                Tree.HighlightNodesBySearch("", true, NodeHighlighter.HighlightState.FromHover);
+
+                _lastHoveredNode = null;
+            }
+            else
+            {
+                _sToolTip.IsOpen = false;
+
+                if (_lastHoveredNode == _hoveredNode)
+                {
+                    // Not necessary, but stops it from continuously searching when holding down shift.
+                    return;
+                }
+
+                var search = _hoveredNode.Attributes.Aggregate("^(", (current, attr) => current + (attr.Key + "|"));
+                search = search.Substring(0, search.Length - 1);
+                search += ")$";
+                search = Regex.Replace(search, @"(\+|\-|\%)", @"\$1");
+                search = Regex.Replace(search, @"\#", @"[0-9]*\.?[0-9]+");
+
+                Tree.HighlightNodesBySearch(search, true, NodeHighlighter.HighlightState.FromHover,
+                    _hoveredNode.Attributes.Count); // Remove last parameter to highlight nodes with any of the attributes.
+
+                _lastHoveredNode = _hoveredNode;
+            }
         }
 
         #endregion
@@ -1086,13 +1158,15 @@ namespace POESKillTree.Views
             if (lvSavedBuilds == null) return;
 
             var selectedItem = (ComboBoxItem)cbCharTypeSavedBuildFilter.SelectedItem;
-            var className = selectedItem.Name.ToString();
-            var filterText = tbSavedBuildFilter.Text.ToLower();
+            var className = selectedItem.Content.ToString();
+            var filterText = tbSavedBuildFilter.Text;
 
             foreach (PoEBuild item in lvSavedBuilds.Items)
             {
-                item.Visible = (className.Equals("All") || item.Class.Equals(className)) &&
-                    (item.Name.ToLower().Contains(filterText) || item.Note.ToLower().Contains(filterText));
+                item.Visible = (className.Equals("All", StringComparison.InvariantCultureIgnoreCase) ||
+                                item.Class.Equals(className, StringComparison.InvariantCultureIgnoreCase)) &&
+                               (item.Name.Contains(filterText, StringComparison.InvariantCultureIgnoreCase) ||
+                                item.Note.Contains(filterText, StringComparison.InvariantCultureIgnoreCase));
             }
 
             lvSavedBuilds.Items.Refresh();
@@ -1505,7 +1579,7 @@ namespace POESKillTree.Views
 
         private void SearchUpdate()
         {
-            Tree.HighlightNodesBySearch(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value, true);
+            Tree.HighlightNodesBySearch(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value, NodeHighlighter.HighlightState.FromSearch);
         }
 
         private void ClearSearch()
