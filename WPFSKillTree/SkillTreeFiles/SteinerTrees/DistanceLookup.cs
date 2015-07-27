@@ -189,7 +189,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 distFromStart++;
             }
 
-            if (target != null || nodesLeft > 0)
+            if (target != null)
             {
                 throw new GraphNotConnectedException();
             }

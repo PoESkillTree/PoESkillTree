@@ -101,12 +101,14 @@ namespace POESKillTree.TreeGenerator.Solver
                     }
                 }
             }
+
+            // Steiner nodes need to have at least 2 neighbors.
+            SearchSpace = new List<GraphNode>(SearchGraph.nodeDict.Values.Where(
+                node => node.Adjacent.Count > 2 && node != StartNodes && !TargetNodes.Contains(node)));
         }
 
-        protected override MinimalSpanningTree BuildSearchSpace()
+        protected override MinimalSpanningTree FilterSearchSpace()
         {
-            SearchSpace = new List<GraphNode>();
-
             var nodes = new HashSet<GraphNode>(TargetNodes) { StartNodes };
             MinimalSpanningTree leastSolution = new MinimalSpanningTree(nodes, Distances);
             leastSolution.Span(StartNodes);
@@ -119,16 +121,8 @@ namespace POESKillTree.TreeGenerator.Solver
             int maxEdgeDistance = leastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
 
             // Find potential steiner points that are in reasonable vicinity.
-            foreach (GraphNode node in SearchGraph.nodeDict.Values)
-            {
-                // This can be a steiner node only if it has more than 2 neighbors.
-                if (node.Adjacent.Count > 2 && node != StartNodes && !TargetNodes.Contains(node))
-                {
-                    // This should be a reasonable approach.
-                    if (TargetNodes.Any(targetNode => Distances.GetDistance(targetNode, node) < maxEdgeDistance))
-                        SearchSpace.Add(node);
-                }
-            }
+            SearchSpace = SearchSpace.Where(
+                node => TargetNodes.Any(targetNode => Distances.GetDistance(targetNode, node) < maxEdgeDistance)).ToList();
 
             return leastSolution;
         }

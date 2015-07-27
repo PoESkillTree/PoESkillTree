@@ -215,16 +215,18 @@ namespace POESKillTree.TreeGenerator.Solver
                     }
                 }
             }
-        }
 
-        protected override MinimalSpanningTree BuildSearchSpace()
-        {
             // Add potential steiner nodes. TODO some kind of vicinity related selection
             // Add all non-travel nodes with stats. TODO exclude nodes with stats that are "too far away" to be useful
-            // Don't add nodes that are not connected to the start node (through cross-tagging)
             SearchSpace = new List<GraphNode>(SearchGraph.nodeDict.Values.Where(
-                node => IsConnected(node) && node != StartNodes && !TargetNodes.Contains(node)
+                node => node != StartNodes && !TargetNodes.Contains(node)
                     && (node.Adjacent.Count > 2 || (_nodeStats[node.Id].Count > 0 && !_areTravelNodes[node.Id]))));
+        }
+
+        protected override MinimalSpanningTree FilterSearchSpace()
+        {
+            // Don't add nodes that are not connected to the start node (through cross-tagging)
+            SearchSpace = SearchSpace.Where(IsConnected).ToList();
 
             // LeastSolution: MST between start and check-tagged nodes.
             var nodes = new HashSet<GraphNode>(TargetNodes) { StartNodes };
@@ -296,7 +298,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 Distances.GetDistance(node, StartNodes);
                 return true;
             }
-            catch (DistanceLookup.GraphNotConnectedException)
+            catch (KeyNotFoundException)
             {
                 return false;
             }

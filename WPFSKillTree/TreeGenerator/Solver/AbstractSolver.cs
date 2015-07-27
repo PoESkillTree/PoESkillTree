@@ -73,25 +73,25 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             BuildSearchGraph();
 
-            try
-            {
-                var leastSolution = BuildSearchSpace();
-
-                // Saving the leastSolution as initial solution. Makes sure there is always a
-                // solution even if the search space is empty or MaxGeneration is 0.
-                BestSolution = SpannedMstToSkillnodes(leastSolution);
-            }
-            catch (DistanceLookup.GraphNotConnectedException e)
-            {
-                throw new InvalidOperationException("The graph is disconnected.", e);
-            }
-
-            var consideredNodes = SearchSpace.Concat(TargetNodes).Concat(new[] {StartNodes}).ToArray();
+            var consideredNodes = SearchSpace.Concat(TargetNodes).Concat(new[] { StartNodes }).ToArray();
             foreach (var node in consideredNodes)
             {
                 node.Marked = true;
             }
             Distances.CalculateFully(consideredNodes);
+
+            try
+            {
+                var leastSolution = FilterSearchSpace();
+
+                // Saving the leastSolution as initial solution. Makes sure there is always a
+                // solution even if the search space is empty or MaxGeneration is 0.
+                BestSolution = SpannedMstToSkillnodes(leastSolution);
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new InvalidOperationException("The graph is disconnected.", e);
+            }
 
             InitializeGa();
 
@@ -100,7 +100,8 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected abstract void BuildSearchGraph();
 
-        protected abstract MinimalSpanningTree BuildSearchSpace();
+        // Filtering that needs the distances calculated.
+        protected abstract MinimalSpanningTree FilterSearchSpace();
 
         private void InitializeGa()
         {
