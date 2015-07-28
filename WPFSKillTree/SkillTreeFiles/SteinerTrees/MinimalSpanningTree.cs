@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
@@ -30,16 +28,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                         // Shortest paths are saved in DistanceLookup, so we can use those.
                         var path = _distances.GetShortestPath(edge);
                         // Save nodes into the HashSet, the set only saves each node once.
-                        var inside = edge.inside as Supernode;
-                        if (inside != null)
-                        {
-                            _usedNodes.UnionWith(inside.nodes.Select(node => node.Id));
-                        }
-                        var outside = edge.outside as Supernode;
-                        if (outside != null)
-                        {
-                            _usedNodes.UnionWith(outside.nodes.Select(node => node.Id));
-                        }
                         _usedNodes.Add(edge.inside.Id);
                         _usedNodes.Add(edge.outside.Id);
                         _usedNodes.UnionWith(path);
@@ -90,17 +78,17 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // iterate over all entries (and you want to avoid that) if you don't
             // have the references to the edges at hand.
             // I guess this is the easiest way to do it...
-            Dictionary<GraphNode, List<GraphEdge>> edgesLeadingToNode =
+            var edgesLeadingToNode =
                 new Dictionary<GraphNode, List<GraphEdge>>(_mstNodes.Count);
-            foreach (GraphNode node in _mstNodes)
+            foreach (var node in _mstNodes)
                 edgesLeadingToNode[node] = new List<GraphEdge>(_mstNodes.Count);
 
             // All nodes that are already included.
-            HashSet<GraphNode> inMst = new HashSet<GraphNode>();
+            var inMst = new HashSet<GraphNode>();
             // All nodes that are not yet included.
-            HashSet<GraphNode> toAdd = new HashSet<GraphNode>(_mstNodes);
+            var toAdd = new HashSet<GraphNode>(_mstNodes);
 
-            List<GraphEdge> mstEdges = new List<GraphEdge>();
+            var mstEdges = new List<GraphEdge>();
 
             // Initialize the MST with the start nodes.
             inMst.Add(startFrom);
@@ -114,9 +102,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             while (toAdd.Count > 0 && adjacentEdgeQueue.Count > 0)
             {
-                GraphEdge shortestEdge = adjacentEdgeQueue.Dequeue();
+                var shortestEdge = adjacentEdgeQueue.Dequeue();
                 mstEdges.Add(shortestEdge);
-                GraphNode newIn = shortestEdge.outside;
+                var newIn = shortestEdge.outside;
 
                 inMst.Add(newIn);
                 toAdd.Remove(newIn);

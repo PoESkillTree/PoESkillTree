@@ -459,15 +459,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (!mst.IsSpanned)
                 throw new Exception("The passed MST is not spanned!");
 
-            HashSet<ushort> newSkilledNodes = new HashSet<ushort>();
-            foreach (GraphEdge edge in mst.SpanningEdges)
-            {
-                ushort target = edge.outside.Id;
-
-                // The paths are calculated anyway, so use them here too.
-                newSkilledNodes.UnionWith(distances.GetShortestPath(edge));
-                newSkilledNodes.Add(target);
-            }
+            var newSkilledNodes = new HashSet<ushort>(mst.UsedNodes);
+            newSkilledNodes.UnionWith(startNodes.nodes.Select(node => node.Id));
 
             if (visualize)
             {
