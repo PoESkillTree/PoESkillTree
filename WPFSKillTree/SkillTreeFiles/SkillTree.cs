@@ -24,7 +24,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public delegate void CloseLoadingWindow();
 
-        public delegate void StartLoadingWindow();
+        public delegate void StartLoadingWindow(string infoText);
 
         public static readonly float LifePerLevel = 12;
         public static readonly float AccPerLevel = 2;
@@ -603,7 +603,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 displayProgress = (start != null && update != null && finish != null);
                 if (displayProgress)
-                    start();
+                    start(L10n.Message("Downloading Skill tree assets"));
                 string uriString = SkillTree.TreeAddress;
                 var req = (HttpWebRequest)WebRequest.Create(uriString);
                 var resp = (HttpWebResponse)req.GetResponse();

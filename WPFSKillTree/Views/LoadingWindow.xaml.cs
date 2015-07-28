@@ -36,7 +36,19 @@ namespace POESKillTree.Views
 
         }
 
-        public LoadingWindow( )
+        private string _infoText;
+
+        public string InfoText
+        {
+            get { return _infoText; }
+            set
+            {
+                _infoText = value;
+                OnPropertyChanged("InfoText");
+            }
+        }
+
+        public LoadingWindow()
         {
             InitializeComponent( );
         }

@@ -284,9 +284,9 @@ namespace POESKillTree.Views
 
         #region LoadingWindow
 
-        private void StartLoadingWindow()
+        private void StartLoadingWindow(string infoText)
         {
-            _loadingWindow = new LoadingWindow() { Owner = this };
+            _loadingWindow = new LoadingWindow() { Owner = this, InfoText = infoText};
             _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
             _loadingWindow.Show();
         }
@@ -550,7 +550,7 @@ namespace POESKillTree.Views
         {
             try
             {
-                StartLoadingWindow();
+                StartLoadingWindow(L10n.Message("Downloading latest version"));
                 Updater.Download(UpdateDownloadCompleted, UpdateDownloadProgressChanged);
             }
             catch (UpdaterException ex)
@@ -1901,7 +1901,7 @@ namespace POESKillTree.Views
                             var bases = new List<ItemBase>();
                             var images = new List<Tuple<string, string>>();
 
-                            StartLoadingWindow();
+                            StartLoadingWindow(L10n.Message("Downloading Item assets"));
                             UpdateLoadingWindow(0, 3);
                             ItemAssetDownloader.ExtractJewelry(bases, images);
                             UpdateLoadingWindow(1, 3);
