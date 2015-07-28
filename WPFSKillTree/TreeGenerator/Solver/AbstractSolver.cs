@@ -73,7 +73,8 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             BuildSearchGraph();
 
-            var consideredNodes = SearchSpace.Concat(TargetNodes).Concat(new[] { StartNodes }).ToArray();
+            var consideredNodes = SearchSpace.Concat(TargetNodes).ToList();
+            consideredNodes.Add(StartNodes);
             foreach (var node in consideredNodes)
             {
                 node.Marked = true;

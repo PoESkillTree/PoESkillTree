@@ -117,9 +117,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="nodes"></param>
         /// <remarks>Calls to GetDistance and GetShortestPath after this method
         /// has been called must already be cached or exceptions will be thrown.</remarks>
-        public void CalculateFully(GraphNode[] nodes)
+        public void CalculateFully(List<GraphNode> nodes)
         {
-            _markedNodeCount = nodes.Length;
+            _markedNodeCount = nodes.Count;
 
             foreach (var node in nodes)
             {

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Priority_Queue;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
-    public class GraphEdge : PriorityQueueNode
+    public class GraphEdge : LinkedListPriorityQueueNode<GraphEdge>
     {
         public readonly GraphNode inside, outside;
 

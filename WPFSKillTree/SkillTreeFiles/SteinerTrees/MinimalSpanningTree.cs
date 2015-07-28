@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Priority_Queue;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
     public class MinimalSpanningTree
     {
-        public HashSet<GraphNode> mstNodes;
+        private readonly HashSet<GraphNode> _mstNodes;
 
-        private readonly DistanceLookup distances;
+        private readonly DistanceLookup _distances;
 
         // I'd like to control at what point the spanning actually happens.
         private bool _isSpanned;
@@ -28,7 +28,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     foreach (var edge in SpanningEdges)
                     {
                         // Shortest paths are saved in DistanceLookup, so we can use those.
-                        var path = distances.GetShortestPath(edge);
+                        var path = _distances.GetShortestPath(edge);
                         // Save nodes into the HashSet, the set only saves each node once.
                         var inside = edge.inside as Supernode;
                         if (inside != null)
@@ -71,8 +71,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         public MinimalSpanningTree(HashSet<GraphNode> mstNodes, DistanceLookup distances = null)
         {
             // Copy might be preferable, doesn't really matter atm though.
-            this.mstNodes = mstNodes;
-            this.distances = distances ?? new DistanceLookup();
+            _mstNodes = mstNodes;
+            _distances = distances ?? new DistanceLookup();
             _isSpanned = false;
         }
 
@@ -84,31 +84,31 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         public List<GraphEdge> Span(GraphNode startFrom)
         {
             // With n nodes, we can have up to n (actually n-1) edges adjacent to each node.
-            HeapPriorityQueue<GraphEdge> adjacentEdgeQueue = new HeapPriorityQueue<GraphEdge>(mstNodes.Count * mstNodes.Count);
+            var adjacentEdgeQueue = new LinkedListPriorityQueue<GraphEdge>(100);
             // Removing all edges that satisfy a property (here a certain "outside"
             // node) from the queue is not actually trivial, since you could only
             // iterate over all entries (and you want to avoid that) if you don't
             // have the references to the edges at hand.
             // I guess this is the easiest way to do it...
             Dictionary<GraphNode, List<GraphEdge>> edgesLeadingToNode =
-                new Dictionary<GraphNode, List<GraphEdge>>(mstNodes.Count);
-            foreach (GraphNode node in mstNodes)
-                edgesLeadingToNode[node] = new List<GraphEdge>(mstNodes.Count);
+                new Dictionary<GraphNode, List<GraphEdge>>(_mstNodes.Count);
+            foreach (GraphNode node in _mstNodes)
+                edgesLeadingToNode[node] = new List<GraphEdge>(_mstNodes.Count);
 
             // All nodes that are already included.
             HashSet<GraphNode> inMst = new HashSet<GraphNode>();
             // All nodes that are not yet included.
-            HashSet<GraphNode> toAdd = new HashSet<GraphNode>(mstNodes);
+            HashSet<GraphNode> toAdd = new HashSet<GraphNode>(_mstNodes);
 
             List<GraphEdge> mstEdges = new List<GraphEdge>();
 
             // Initialize the MST with the start nodes.
             inMst.Add(startFrom);
             toAdd.Remove(startFrom);
-            foreach (GraphNode otherNode in toAdd)
+            foreach (var otherNode in toAdd)
             {
-                GraphEdge adjacentEdge = new GraphEdge(startFrom, otherNode);
-                adjacentEdgeQueue.Enqueue(adjacentEdge, distances.GetDistance(adjacentEdge));
+                var adjacentEdge = new GraphEdge(startFrom, otherNode);
+                adjacentEdgeQueue.Enqueue(adjacentEdge, _distances.GetDistance(startFrom, otherNode));
                 edgesLeadingToNode[otherNode].Add(adjacentEdge);
             }
 
@@ -118,27 +118,22 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 mstEdges.Add(shortestEdge);
                 GraphNode newIn = shortestEdge.outside;
 
-                
-                //if (inMst.Contains(newIn)) throw new Exception();
-                //if (!toAdd.Contains(newIn)) throw new Exception("No edge to this node should remain!");
-
                 inMst.Add(newIn);
                 toAdd.Remove(newIn);
 
                 // Remove all edges that are entirely inside the MST now.
-                foreach (GraphEdge obsoleteEdge in edgesLeadingToNode[newIn])
+                foreach (var obsoleteEdge in edgesLeadingToNode[newIn])
                 {
-                    //if (!inMst.Contains(obsoleteEdge.inside)) throw new Exception("This edge's inside node is not inside");
                     adjacentEdgeQueue.Remove(obsoleteEdge);
                 }
                 edgesLeadingToNode.Remove(newIn);
 
                 // Find all newly adjacent edges and enqueue them.
-                foreach (GraphNode otherNode in toAdd)
+                foreach (var otherNode in toAdd)
                 {
-                    GraphEdge adjacentEdge = new GraphEdge(newIn, otherNode);
-                    adjacentEdgeQueue.Enqueue(adjacentEdge, distances.GetDistance(adjacentEdge));
-                    edgesLeadingToNode[otherNode].Add(adjacentEdge);
+                    var edge = new GraphEdge(newIn, otherNode);
+                    adjacentEdgeQueue.Enqueue(edge, _distances.GetDistance(newIn, otherNode));
+                    edgesLeadingToNode[otherNode].Add(edge);
                 }
             }
             if (toAdd.Count > 0)
