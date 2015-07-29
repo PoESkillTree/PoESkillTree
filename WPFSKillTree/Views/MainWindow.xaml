@@ -14,7 +14,7 @@
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp"
         TextOptions.TextFormattingMode="Display"
-        x:Name="window"
+        x:Name="window" SaveWindowPosition="True"
         >
     <Window.Resources>
         <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
@@ -788,7 +788,7 @@
                 <l:Catalog Message="Search:"/>
             </Label>
 
-            <TextBox Grid.Column="2" Height="24" HorizontalAlignment="Left" Margin="1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" />
+            <TextBox Grid.Column="2" controls:TextboxHelper.ClearTextButton="True" Height="24" HorizontalAlignment="Left" Margin="1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" />
             <CheckBox Grid.Column="3" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="cbRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbRegEx_Click" />
 
             <Label Grid.Column="4" x:Name="lblSkillURL" HorizontalAlignment="Left" Margin="1,1,4,1" Height="28" VerticalAlignment="Bottom" VerticalContentAlignment="Center" >
