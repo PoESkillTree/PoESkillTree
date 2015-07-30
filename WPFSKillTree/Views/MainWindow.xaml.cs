@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -119,6 +120,24 @@ namespace POESKillTree.Views
         private SkillNode _hoveredNode;
 
         private SkillNode _lastHoveredNode;
+
+        private bool _noAsyncTaskRunning = true;
+        /// <summary>
+        /// Specifies if there is a task running asynchronously in the background.
+        /// Used to disable UI buttons that might interfere with the result of the task.
+        /// </summary>
+        public bool NoAsyncTaskRunning
+        {
+            get { return _noAsyncTaskRunning; }
+            private set
+            {
+                _noAsyncTaskRunning = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("NoAsyncTaskRunning"));
+                }
+            }
+        }
 
         public MainWindow()
         {
@@ -286,7 +305,7 @@ namespace POESKillTree.Views
 
         private void StartLoadingWindow(string infoText)
         {
-            _loadingWindow = new LoadingWindow() { Owner = this, InfoText = infoText};
+            _loadingWindow = new LoadingWindow() {Owner = this, InfoText = infoText};
             _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
             _loadingWindow.Show();
         }
@@ -512,41 +531,71 @@ namespace POESKillTree.Views
         // Checks for updates.
         private void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
         {
-            try
+            AsyncTaskStarted(L10n.Message("Checking for updates"));
+            var checkTask = Task.Factory.StartNew(() => Updater.CheckForUpdates());
+            checkTask.ContinueWith(task => Dispatcher.Invoke(new Action(() =>
             {
-                Updater.Release release = Updater.CheckForUpdates();
-                if (release == null)
+                AsyncTaskCompleted();
+                try
                 {
-                    Popup.Info(L10n.Message("You have the latest version!"));
+                    // Exceptions from checkTask are rethrown once task.Result is called.
+                    CheckForUpdatesCompleted(task.Result);
                 }
-                else
+                catch (AggregateException ex)
                 {
-                    string message = release.IsUpdate
-                                     ? string.Format(L10n.Message("An update for {0} ({1}) is available!"), Properties.Version.ProductName, release.Version)
-                                       + "\n\n" + L10n.Message("The application will be closed when download completes to proceed with the update.")
-                                     : string.Format(L10n.Message("A new version {0} is available!"), release.Version)
-                                       + "\n\n" + L10n.Message("The new version of application will be installed side-by-side with earlier versions.");
-
-                    if (release.IsPrerelease)
-                        message += "\n\n" + L10n.Message("Warning: This is a pre-release, meaning there could be some bugs!");
-
-                    message += "\n\n" + (release.IsUpdate ? L10n.Message("Do you want to download and install the update?") : L10n.Message("Do you want to download and install the new version?"));
-
-                    MessageBoxResult download = Popup.Ask(message, release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
-                    if (download == MessageBoxResult.Yes)
-                        btnUpdateInstall(sender, e);
-                    else
-                        btnUpdateCancel(sender, e);
+                    foreach (var exception in ex.InnerExceptions)
+                    {
+                        if (exception is UpdaterException)
+                        {
+                            Popup.Error(
+                                L10n.Message("An error occurred while attempting to contact the update location."),
+                                exception.Message);
+                            return;
+                        }
+                        throw exception;
+                    }
                 }
+            })));
+        }
+
+        private void CheckForUpdatesCompleted(Updater.Release release)
+        {
+            if (release == null)
+            {
+                Popup.Info(L10n.Message("You have the latest version!"));
             }
-            catch (UpdaterException ex)
+            else
             {
-                Popup.Error(L10n.Message("An error occurred while attempting to contact the update location."), ex.Message);
+                string message = release.IsUpdate
+                    ? string.Format(L10n.Message("An update for {0} ({1}) is available!"),
+                        Properties.Version.ProductName, release.Version)
+                      + "\n\n" +
+                      L10n.Message("The application will be closed when download completes to proceed with the update.")
+                    : string.Format(L10n.Message("A new version {0} is available!"), release.Version)
+                      + "\n\n" +
+                      L10n.Message(
+                          "The new version of application will be installed side-by-side with earlier versions.");
+
+                if (release.IsPrerelease)
+                    message += "\n\n" +
+                               L10n.Message("Warning: This is a pre-release, meaning there could be some bugs!");
+
+                message += "\n\n" +
+                           (release.IsUpdate
+                               ? L10n.Message("Do you want to download and install the update?")
+                               : L10n.Message("Do you want to download and install the new version?"));
+
+                MessageBoxResult download = Popup.Ask(message,
+                    release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
+                if (download == MessageBoxResult.Yes)
+                    btnUpdateInstall();
+                else
+                    btnUpdateCancel();
             }
         }
 
         // Starts update process.
-        private void btnUpdateInstall(object sender, RoutedEventArgs e)
+        private void btnUpdateInstall()
         {
             try
             {
@@ -560,7 +609,7 @@ namespace POESKillTree.Views
         }
 
         // Cancels update download (also invoked when download progress dialog is closed).
-        private void btnUpdateCancel(object sender, RoutedEventArgs e)
+        private void btnUpdateCancel()
         {
             if (Updater.IsDownloading)
                 Updater.Cancel();
@@ -1354,25 +1403,43 @@ namespace POESKillTree.Views
                     SkillTreeImporter.LoadBuildFromPoezone(Tree, tbSkillURL.Text);
                     tbSkillURL.Text = Tree.SaveToURL();
                 }
-                else if (tbSkillURL.Text.Contains("tinyurl.com"))
+                else if (tbSkillURL.Text.Contains("tinyurl.com") || tbSkillURL.Text.Contains("poeurl.com"))
                 {
-                    var request = (HttpWebRequest)WebRequest.Create(tbSkillURL.Text);
-                    request.AllowAutoRedirect = false;
-                    var response = (HttpWebResponse)request.GetResponse();
-                    var redirUrl = response.Headers["Location"];
-                    tbSkillURL.Text = redirUrl;
-                    LoadBuildFromUrl();
-                }
-                else if (tbSkillURL.Text.Contains("poeurl.com"))
-                {
-                    tbSkillURL.Text = tbSkillURL.Text.Replace("http://poeurl.com/",
-                        "http://poeurl.com/redirect.php?url=");
-                    var request = (HttpWebRequest)WebRequest.Create(tbSkillURL.Text);
-                    request.AllowAutoRedirect = false;
-                    var response = (HttpWebResponse)request.GetResponse();
-                    var redirUrl = response.Headers["Location"];
-                    tbSkillURL.Text = redirUrl;
-                    LoadBuildFromUrl();
+                    var skillUrl = tbSkillURL.Text;
+                    if (skillUrl.Contains("poeurl.com"))
+                    {
+                        skillUrl = skillUrl.Replace("http://poeurl.com/",
+                            "http://poeurl.com/redirect.php?url=");
+                    }
+
+                    AsyncTaskStarted(L10n.Message("Resolving shortened tree address"));
+                    var httpTask = Task.Factory.StartNew(() =>
+                    {
+                        var request = (HttpWebRequest)WebRequest.Create(skillUrl);
+                        request.AllowAutoRedirect = false;
+                        var response = (HttpWebResponse)request.GetResponse();
+                        return response.Headers["Location"];
+                    });
+                    httpTask.ContinueWith(task => Dispatcher.Invoke(new Action(() =>
+                    {
+                        AsyncTaskCompleted();
+                        try
+                        {
+                            tbSkillURL.Text = task.Result;
+                            LoadBuildFromUrl();
+                        }
+                        catch (AggregateException ex)
+                        {
+                            foreach (var exception in ex.InnerExceptions)
+                            {
+                                Popup.Error(
+                                    L10n.Message("An error occurred while attempting to load Skill tree from URL."),
+                                    exception.Message);
+                                return;
+                            }
+                        }
+                    })));
+                    return;
                 }
                 else if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accoutnName"))
                 {
@@ -1576,7 +1643,7 @@ namespace POESKillTree.Views
 
         private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && NoAsyncTaskRunning)
                 LoadBuildFromUrl();
         }
 
@@ -2053,6 +2120,20 @@ namespace POESKillTree.Views
             diw.ShowDialog();
             _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
             _persistentData.CurrentBuild.League = diw.GetAccountName();
+        }
+
+        private void AsyncTaskStarted(string infoText)
+        {
+            NoAsyncTaskRunning = false;
+            TitleStatusTextBlock.Text = infoText;
+            TitleStatusButton.Visibility = Visibility.Visible;
+        }
+
+        private void AsyncTaskCompleted()
+        {
+            TitleStatusButton.Visibility = Visibility.Hidden;
+
+            NoAsyncTaskRunning = true;
         }
     }
 }
