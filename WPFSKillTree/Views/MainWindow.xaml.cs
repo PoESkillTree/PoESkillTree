@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -529,33 +531,23 @@ namespace POESKillTree.Views
         }
 
         // Checks for updates.
-        private void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
+        private async void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
         {
             AsyncTaskStarted(L10n.Message("Checking for updates"));
-            var checkTask = Task.Factory.StartNew(() => Updater.CheckForUpdates());
-            checkTask.ContinueWith(task => Dispatcher.Invoke(new Action(() =>
+            try
+            {
+                // No non-Task way without rewriting Updater to support/use await directly it.
+                var release = await Task.Run(() => Updater.CheckForUpdates());
+                AsyncTaskCompleted();
+                CheckForUpdatesCompleted(release);
+            }
+            catch (UpdaterException ex)
             {
                 AsyncTaskCompleted();
-                try
-                {
-                    // Exceptions from checkTask are rethrown once task.Result is called.
-                    CheckForUpdatesCompleted(task.Result);
-                }
-                catch (AggregateException ex)
-                {
-                    foreach (var exception in ex.InnerExceptions)
-                    {
-                        if (exception is UpdaterException)
-                        {
-                            Popup.Error(
-                                L10n.Message("An error occurred while attempting to contact the update location."),
-                                exception.Message);
-                            return;
-                        }
-                        throw exception;
-                    }
-                }
-            })));
+                Popup.Error(
+                    L10n.Message("An error occurred while attempting to contact the update location."),
+                    ex.Message);
+            }
         }
 
         private void CheckForUpdatesCompleted(Updater.Release release)
@@ -1412,33 +1404,7 @@ namespace POESKillTree.Views
                             "http://poeurl.com/redirect.php?url=");
                     }
 
-                    AsyncTaskStarted(L10n.Message("Resolving shortened tree address"));
-                    var httpTask = Task.Factory.StartNew(() =>
-                    {
-                        var request = (HttpWebRequest)WebRequest.Create(skillUrl);
-                        request.AllowAutoRedirect = false;
-                        var response = (HttpWebResponse)request.GetResponse();
-                        return response.Headers["Location"];
-                    });
-                    httpTask.ContinueWith(task => Dispatcher.Invoke(new Action(() =>
-                    {
-                        AsyncTaskCompleted();
-                        try
-                        {
-                            tbSkillURL.Text = task.Result;
-                            LoadBuildFromUrl();
-                        }
-                        catch (AggregateException ex)
-                        {
-                            foreach (var exception in ex.InnerExceptions)
-                            {
-                                Popup.Error(
-                                    L10n.Message("An error occurred while attempting to load Skill tree from URL."),
-                                    exception.Message);
-                                return;
-                            }
-                        }
-                    })));
+                    ResolveShortenedSkillTree(skillUrl);
                     return;
                 }
                 else if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accoutnName"))
@@ -1491,6 +1457,33 @@ namespace POESKillTree.Views
                 Popup.Error(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }
+
+        private async void ResolveShortenedSkillTree(string skillUrl)
+        {
+            AsyncTaskStarted(L10n.Message("Resolving shortened tree address"));
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead);
+                    response.EnsureSuccessStatusCode();
+                    tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Popup.Error(
+                    L10n.Message("An error occurred while attempting to load Skill tree from URL."),
+                    ex.Message);
+                return;
+            }
+            finally
+            {
+                AsyncTaskCompleted();
+            }
+            LoadBuildFromUrl();
+        }
+
         #endregion
 
         #region Builds - DragAndDrop
@@ -2134,6 +2127,33 @@ namespace POESKillTree.Views
             TitleStatusButton.Visibility = Visibility.Hidden;
 
             NoAsyncTaskRunning = true;
+        }
+
+        public override IWindowPlacementSettings GetWindowPlacementSettings()
+        {
+            var settings = base.GetWindowPlacementSettings();
+            if (WindowPlacementSettings == null)
+            {
+                // Settings just got created, give them a proper SettingsProvider.
+                var appSettings = settings as ApplicationSettingsBase;
+                if (appSettings == null)
+                {
+                    // Nothing we can do here.
+                    return settings;
+                }
+                var provider = new CustomSettingsProvider(appSettings.SettingsKey);
+                // This may look ugly, but it is needed and nulls are the only parameter
+                // Initialize is ever called with by anything.
+                provider.Initialize(null, null);
+                appSettings.Providers.Add(provider);
+                // Change the provider for each SettingsProperty.
+                foreach (var property in appSettings.Properties)
+                {
+                    ((SettingsProperty) property).Provider = provider;
+                }
+                appSettings.Reload();
+            }
+            return settings;
         }
     }
 }

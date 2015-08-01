@@ -665,7 +665,7 @@
                     </TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
-                    <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
+                    <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                             <TabItem.Header>
                                 <l:Catalog Message="Passive Attributes"/>
@@ -744,7 +744,7 @@
                     </TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-109,0,0,-1">
-                    <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
+                    <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Margin="0" x:Name="tabItemDefence" controls:ControlsHelper.HeaderFontSize="15">
                             <TabItem.Header>
                                 <l:Catalog Message="Defense"/>
@@ -801,7 +801,7 @@
                 <l:Catalog Message="Search:"/>
             </Label>
 
-            <TextBox Grid.Column="2" controls:TextboxHelper.ClearTextButton="True" Height="24" HorizontalAlignment="Left" Margin="1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" />
+            <TextBox Grid.Column="2" controls:TextBoxHelper.ClearTextButton="True" Height="24" HorizontalAlignment="Left" Margin="1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" />
             <CheckBox Grid.Column="3" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="cbRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbRegEx_Click" />
 
             <Label Grid.Column="4" x:Name="lblSkillURL" HorizontalAlignment="Left" Margin="1,1,4,1" Height="28" VerticalAlignment="Bottom" VerticalContentAlignment="Center" >
