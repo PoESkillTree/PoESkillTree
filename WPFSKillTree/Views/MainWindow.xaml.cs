@@ -533,56 +533,51 @@ namespace POESKillTree.Views
         // Checks for updates.
         private async void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
         {
-            AsyncTaskStarted(L10n.Message("Checking for updates"));
             try
             {
-                // No non-Task way without rewriting Updater to support/use await directly it.
-                var release = await Task.Run(() => Updater.CheckForUpdates());
-                AsyncTaskCompleted();
-                CheckForUpdatesCompleted(release);
+                // No non-Task way without rewriting Updater to support/use await directly.
+                var release =
+                    await AwaitAsyncTask(L10n.Message("Checking for updates"),
+                        Task.Run(() => Updater.CheckForUpdates()));
+
+                if (release == null)
+                {
+                    Popup.Info(L10n.Message("You have the latest version!"));
+                }
+                else
+                {
+                    string message = release.IsUpdate
+                        ? string.Format(L10n.Message("An update for {0} ({1}) is available!"),
+                            Properties.Version.ProductName, release.Version)
+                          + "\n\n" +
+                          L10n.Message("The application will be closed when download completes to proceed with the update.")
+                        : string.Format(L10n.Message("A new version {0} is available!"), release.Version)
+                          + "\n\n" +
+                          L10n.Message(
+                              "The new version of application will be installed side-by-side with earlier versions.");
+
+                    if (release.IsPrerelease)
+                        message += "\n\n" +
+                                   L10n.Message("Warning: This is a pre-release, meaning there could be some bugs!");
+
+                    message += "\n\n" +
+                               (release.IsUpdate
+                                   ? L10n.Message("Do you want to download and install the update?")
+                                   : L10n.Message("Do you want to download and install the new version?"));
+
+                    MessageBoxResult download = Popup.Ask(message,
+                        release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
+                    if (download == MessageBoxResult.Yes)
+                        btnUpdateInstall();
+                    else
+                        btnUpdateCancel();
+                }
             }
             catch (UpdaterException ex)
             {
-                AsyncTaskCompleted();
                 Popup.Error(
                     L10n.Message("An error occurred while attempting to contact the update location."),
                     ex.Message);
-            }
-        }
-
-        private void CheckForUpdatesCompleted(Updater.Release release)
-        {
-            if (release == null)
-            {
-                Popup.Info(L10n.Message("You have the latest version!"));
-            }
-            else
-            {
-                string message = release.IsUpdate
-                    ? string.Format(L10n.Message("An update for {0} ({1}) is available!"),
-                        Properties.Version.ProductName, release.Version)
-                      + "\n\n" +
-                      L10n.Message("The application will be closed when download completes to proceed with the update.")
-                    : string.Format(L10n.Message("A new version {0} is available!"), release.Version)
-                      + "\n\n" +
-                      L10n.Message(
-                          "The new version of application will be installed side-by-side with earlier versions.");
-
-                if (release.IsPrerelease)
-                    message += "\n\n" +
-                               L10n.Message("Warning: This is a pre-release, meaning there could be some bugs!");
-
-                message += "\n\n" +
-                           (release.IsUpdate
-                               ? L10n.Message("Do you want to download and install the update?")
-                               : L10n.Message("Do you want to download and install the new version?"));
-
-                MessageBoxResult download = Popup.Ask(message,
-                    release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
-                if (download == MessageBoxResult.Yes)
-                    btnUpdateInstall();
-                else
-                    btnUpdateCancel();
             }
         }
 
@@ -1386,7 +1381,7 @@ namespace POESKillTree.Views
             }
         }
 
-        private void LoadBuildFromUrl()
+        private async void LoadBuildFromUrl()
         {
             try
             {
@@ -1404,8 +1399,13 @@ namespace POESKillTree.Views
                             "http://poeurl.com/redirect.php?url=");
                     }
 
-                    ResolveShortenedSkillTree(skillUrl);
-                    return;
+                    var response =
+                        await AwaitAsyncTask(L10n.Message("Resolving shortened tree address"),
+                            new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead));
+                    response.EnsureSuccessStatusCode();
+                    tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
+
+                    LoadBuildFromUrl();
                 }
                 else if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accoutnName"))
                 {
@@ -1456,32 +1456,6 @@ namespace POESKillTree.Views
             {
                 Popup.Error(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
-        }
-
-        private async void ResolveShortenedSkillTree(string skillUrl)
-        {
-            AsyncTaskStarted(L10n.Message("Resolving shortened tree address"));
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    var response = await client.GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead);
-                    response.EnsureSuccessStatusCode();
-                    tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
-                }
-            }
-            catch (Exception ex)
-            {
-                Popup.Error(
-                    L10n.Message("An error occurred while attempting to load Skill tree from URL."),
-                    ex.Message);
-                return;
-            }
-            finally
-            {
-                AsyncTaskCompleted();
-            }
-            LoadBuildFromUrl();
         }
 
         #endregion
@@ -1703,11 +1677,11 @@ namespace POESKillTree.Views
             StartDownloadPoeUrl();
         }
 
-        private void StartDownloadPoeUrl()
+        private async void StartDownloadPoeUrl()
         {
             var regx =
                 new Regex(
-                    "http://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*)?",
+                    "https?://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*)?",
                     RegexOptions.IgnoreCase);
 
             var matches = regx.Matches(tbSkillURL.Text);
@@ -1717,33 +1691,23 @@ namespace POESKillTree.Views
                 try
                 {
                     var url = matches[0].ToString();
-                    if (url.Length <= 12)
+                    if (!url.ToLower().StartsWith(SkillTree.TreeAddress))
                     {
-                        ShowPoeUrlMessageAndAddToClipboard(url);
+                        return;
                     }
-                    if (!url.ToLower().StartsWith("http") && !url.ToLower().StartsWith("ftp"))
-                    {
-                        url = "http://" + url;
-                    }
-                    var client = new WebClient();
-                    client.DownloadStringCompleted += DownloadCompletedPoeUrl;
-                    client.DownloadStringAsync(new Uri("http://poeurl.com/shrink.php?url=" + url));
+                    // PoEUrl can't handle https atm.
+                    url = url.Replace("https://", "http://");
+
+                    var result =
+                        await AwaitAsyncTask(L10n.Message("Generating PoEUrl of Skill tree"),
+                            new HttpClient().GetStringAsync("http://poeurl.com/shrink.php?url=" + url));
+                    ShowPoeUrlMessageAndAddToClipboard("http://poeurl.com/" + result.Trim());
                 }
                 catch (Exception ex)
                 {
-                    Popup.Error(L10n.Message("An error occurred while attempting to conntact the PoEUrl location."), ex.Message);
+                    Popup.Error(L10n.Message("An error occurred while attempting to contact the PoEUrl location."), ex.Message);
                 }
             }
-        }
-
-        private void DownloadCompletedPoeUrl(Object sender, DownloadStringCompletedEventArgs e)
-        {
-            if (e.Error != null)
-            {
-                Popup.Error(L10n.Message("An error occurred while attempting to conntact the PoEUrl location."), e.Error.Message);
-                return;
-            }
-            ShowPoeUrlMessageAndAddToClipboard("http://poeurl.com/" + e.Result.Trim());
         }
 
         private void ShowPoeUrlMessageAndAddToClipboard(string poeurl)
@@ -2115,6 +2079,8 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild.League = diw.GetAccountName();
         }
 
+        #region Async task helpers
+
         private void AsyncTaskStarted(string infoText)
         {
             NoAsyncTaskRunning = false;
@@ -2128,6 +2094,34 @@ namespace POESKillTree.Views
 
             NoAsyncTaskRunning = true;
         }
+
+        private async Task<TResult> AwaitAsyncTask<TResult>(string infoText, Task<TResult> task)
+        {
+            AsyncTaskStarted(infoText);
+            try
+            {
+                return await task;
+            }
+            finally
+            {
+                AsyncTaskCompleted();
+            }
+        }
+
+        private async Task AwaitAsyncTask(string infoText, Task task)
+        {
+            AsyncTaskStarted(infoText);
+            try
+            {
+                await task;
+            }
+            finally
+            {
+                AsyncTaskCompleted();
+            }
+        }
+
+        #endregion
 
         public override IWindowPlacementSettings GetWindowPlacementSettings()
         {
