@@ -14,7 +14,7 @@
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp"
         TextOptions.TextFormattingMode="Display"
-        x:Name="window"
+        x:Name="window" SaveWindowPosition="True"
         >
     <Window.Resources>
         <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
@@ -202,6 +202,19 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
+    
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <!-- Making it a disabled button is a lazy way for not having to style it manually. -->
+            <Button x:Name="TitleStatusButton" IsEnabled="False" Visibility="Hidden">
+                <StackPanel Orientation="Horizontal">
+                    <controls:ProgressRing Width="10" IsActive="True" Foreground="{Binding Foreground, ElementName=TitleStatusTextBlock}" />
+                    <TextBlock x:Name="TitleStatusTextBlock" Margin="4 0 0 0" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+    
     <Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="31"/>
@@ -268,7 +281,7 @@
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Click="btnPoeUrl_Click" Header="{l:Catalog Message=Copy Po_EUrl of Skill tree to Clipboard}">
+                <MenuItem Click="btnPoeUrl_Click" Header="{l:Catalog Message=Copy Po_EUrl of Skill tree to Clipboard}" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
@@ -395,7 +408,7 @@
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource SkillIcon}" />
                     </MenuItem.Icon>
-                    <MenuItem Click="Menu_SkillTaggedNodes">
+                    <MenuItem Click="Menu_SkillTaggedNodes" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
                         <MenuItem.Header>
                             <l:Catalog Message="Skill _Tagged Nodes" />
                         </MenuItem.Header>
@@ -482,7 +495,7 @@
                         <ContentControl Template="{StaticResource KeyboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Click="Menu_CheckForUpdates">
+                <MenuItem Click="Menu_CheckForUpdates" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
                     <MenuItem.Header>
                         <l:Catalog Message="Check for _Updates" />
                     </MenuItem.Header>
@@ -657,7 +670,7 @@
                     </TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
-                    <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
+                    <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                             <TabItem.Header>
                                 <l:Catalog Message="Passive Attributes"/>
@@ -736,7 +749,7 @@
                     </TextBlock>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-109,0,0,-1">
-                    <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:ControlsHelper.IsUnderlined="True" Focusable="True">
+                    <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Margin="0" x:Name="tabItemDefence" controls:ControlsHelper.HeaderFontSize="15">
                             <TabItem.Header>
                                 <l:Catalog Message="Defense"/>
@@ -793,7 +806,7 @@
                 <l:Catalog Message="Search:"/>
             </Label>
 
-            <TextBox Grid.Column="2" Height="24" HorizontalAlignment="Left" Margin="1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" />
+            <TextBox Grid.Column="2" controls:TextBoxHelper.ClearTextButton="True" Height="24" HorizontalAlignment="Left" Margin="1" x:Name="tbSearch" VerticalAlignment="Bottom" Width="284" TextChanged="tbSearch_TextChanged" />
             <CheckBox Grid.Column="3" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="cbRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbRegEx_Click" />
 
             <Label Grid.Column="4" x:Name="lblSkillURL" HorizontalAlignment="Left" Margin="1,1,4,1" Height="28" VerticalAlignment="Bottom" VerticalContentAlignment="Center" >
@@ -802,7 +815,7 @@
             <TextBox Grid.Column="5" Height="24" Margin="1,0,2.854,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="https://www.pathofexile.com/passive-skill-tree/AAAAAgMA"
                      VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" />
 
-            <Button Grid.Column="6" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2">
+            <Button Grid.Column="6" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2">
                 <l:Catalog Message="Load Tree"/>
             </Button>
         </Grid>
