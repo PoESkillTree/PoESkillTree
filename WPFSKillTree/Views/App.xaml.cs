@@ -13,6 +13,10 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class App : Application
     {
+        // The flag whether application exit is in progress.
+        bool IsExiting = false;
+        // The flag whether it is safe to exit application.
+        bool IsSafeToExit = false;
         // Single instance of persistent data.
         private static readonly PersistentData PrivatePersistentData = new PersistentData();
         // Expose persistent data.
@@ -21,6 +25,30 @@ namespace POESKillTree.Views
         private Mutex RunningInstanceMutex;
         // The name of RunningInstanceMutex.
         private static string RunningInstanceMutexName { get { return POESKillTree.Properties.Version.AppId; } }
+
+        // Invoked when application is about to exit.
+        private void App_Exit(object sender, ExitEventArgs e)
+        {
+            if (IsExiting) return;
+            IsExiting = true;
+
+            try
+            {
+                // Try to aquire mutex.
+                if (RunningInstanceMutex.WaitOne(0))
+                {
+                    PrivatePersistentData.SavePersistentDataToFile();
+
+                    IsSafeToExit = true;
+
+                    RunningInstanceMutex.ReleaseMutex();
+                }
+            }
+            catch
+            {
+                // Too late to report anything.
+            }
+        }
 
         // Invoked when application is being started up (before MainWindow creation).
         private void App_Startup(object sender, StartupEventArgs e)
@@ -39,7 +67,7 @@ namespace POESKillTree.Views
             catch (WaitHandleCannotBeOpenedException)
             {
                 bool created = false;
-                RunningInstanceMutex = new Mutex(true, RunningInstanceMutexName, out created);
+                RunningInstanceMutex = new Mutex(false, RunningInstanceMutexName, out created);
                 if (!created) throw new Exception("Unable to create application mutex");
             }
 
@@ -82,19 +110,16 @@ namespace POESKillTree.Views
             }
         }
 
-        // Overrides OnExit method to save persistent data.
-        protected override void OnExit(ExitEventArgs e)
+        // Invoked when Windows is being shutdown or user is being logged off.
+        protected override void OnSessionEnding(SessionEndingCancelEventArgs e)
         {
-            try
-            {
-                PrivatePersistentData.SavePersistentDataToFile();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(L10n.Message("An error occurred during a save operation.") + "\n\n" + ex.Message, L10n.Message("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            base.OnSessionEnding(e);
 
-            base.OnExit(e);
+            // Cancel session ending unless it's safe to exit.
+            e.Cancel = !IsSafeToExit;
+
+            // If Exit event wasn't raised yet, perform explicit shutdown (Windows 7 bug workaround).
+            if (!IsExiting) Shutdown();
         }
     }
 }
