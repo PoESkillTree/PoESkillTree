@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;
@@ -14,9 +15,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
     public sealed class ControllerViewModel : CloseableViewModel
     {
         private readonly ISolver _solver;
-
-        private readonly BackgroundWorker _solutionWorker = new BackgroundWorker();
-        private readonly BackgroundWorker _initializationWorker = new BackgroundWorker();
 
         private readonly SkillTree _tree;
 
@@ -40,13 +38,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private bool _isPaused;
-        private bool _isCanceling;
 
         // Once solutionWorker_DoWork is done working in the background, all eventually
         // queued up solutionWorker_ProgressChanged calls return without doing anything.
         // This is mainly noticeable for very small searchSpaces (and therefore a high
         // maxGeneration).
         private bool _stopReporting;
+
+        private CancellationTokenSource _cts;
+
+        private readonly IProgress<Tuple<int, HashSet<ushort>>> _progress;
 
 #region Presentation
 
@@ -166,28 +167,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         public ICommand CancelCloseCommand
         {
-            get
-            {
-                if (_cancelCloseCommand == null)
-                {
-                    _cancelCloseCommand = new RelayCommand(param => CancelClose());
-                }
-                return _cancelCloseCommand;
-            }
+            get { return _cancelCloseCommand ?? (_cancelCloseCommand = new RelayCommand(param => CancelClose())); }
         }
 
         private RelayCommand _pauseResumeCommand;
 
         public ICommand PauseResumeCommand
         {
-            get
-            {
-                if (_pauseResumeCommand == null)
-                {
-                    _pauseResumeCommand = new RelayCommand(param => PauseResume());
-                }
-                return _pauseResumeCommand;
-            }
+            get { return _pauseResumeCommand ?? (_pauseResumeCommand = new RelayCommand(param => PauseResume())); }
         }
 
 #endregion
@@ -198,37 +185,35 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = L10n.Message("Skill tree generator") + " - " + generatorName;
             _tree = _solver.Tree;
 
-            _initializationWorker.DoWork += InitializationWorkerOnDoWork;
-            _initializationWorker.RunWorkerCompleted += InitializationWorkerOnRunWorkerCompleted;
-
-            _solutionWorker.DoWork += SolutionWorkerOnDoWork;
-            _solutionWorker.ProgressChanged += SolutionWorkerOnProgressChanged;
-            _solutionWorker.RunWorkerCompleted += SolutionWorkerOnRunWorkerCompleted;
-            _solutionWorker.WorkerReportsProgress = true;
-            _solutionWorker.WorkerSupportsCancellation = true;
+            _progress = new Progress<Tuple<int, HashSet<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2));
         }
 
-        public void WindowLoaded()
+        public async void WindowLoaded()
         {
-            _initializationWorker.RunWorkerAsync();
+            await InitializeAsync();
+            await SolveAsync();
         }
 
-        private void InitializationWorkerOnDoWork(object sender, DoWorkEventArgs doWorkEventArgs)
+        private async Task InitializeAsync()
         {
+            try
+            {
+                _maxSteps = await Task.Run(() =>
+                {
 #if DEBUG
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+                    var stopwatch = new Stopwatch();
+                    stopwatch.Start();
 #endif
-            _solver.Initialize();
+                    _solver.Initialize();
 #if DEBUG
-            stopwatch.Stop();
-            Debug.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
+                    stopwatch.Stop();
+                    Debug.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
 #endif
-        }
+                    return _solver.MaxGeneration;
+                });
 
-        private void InitializationWorkerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
-        {
-            if (runWorkerCompletedEventArgs.Error is InvalidOperationException)
+            }
+            catch (InvalidOperationException)
             {
                 // Show a dialog and close this if the omitted nodes disconnect the tree.
                 Popup.Warning(L10n.Message("The optimizer was unable to find a conforming tree.\nPlease change skill node highlighting and try again."));
@@ -236,61 +221,52 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 return;
             }
 
-            _maxSteps = _solver.MaxGeneration;
             ProgressbarMax = _maxSteps;
             ProgressbarText = "0/" + _maxSteps;
 
-            _isPaused = false;
-            _isCanceling = false;
             CancelCloseEnabled = true;
             PauseResumeEnabled = true;
-            _solutionWorker.RunWorkerAsync();
         }
 
-        private void SolutionWorkerOnDoWork(object sender, DoWorkEventArgs doWorkEventArgs)
+        private async Task SolveAsync()
         {
-            var worker = (BackgroundWorker)sender;
-#if DEBUG
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-#endif
-            while (!_solver.IsConsideredDone)
+            _cts = new CancellationTokenSource();
+            var token = _cts.Token;
+
+            _stopReporting = false;
+
+            HashSet<ushort> result;
+            try
             {
-                _solver.Step();
-
-                worker.ReportProgress(_solver.CurrentGeneration, _solver.BestSolution);
-
-                if (worker.CancellationPending)
-                    break;
-            }
+                result = await Task.Run(() =>
+                {
 #if DEBUG
-            stopwatch.Stop();
-            Debug.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
+                    var stopwatch = new Stopwatch();
+                    stopwatch.Start();
 #endif
-            doWorkEventArgs.Result = _solver.BestSolution;
-            _stopReporting = true;
-        }
+                    while (!_solver.IsConsideredDone)
+                    {
+                        _solver.Step();
 
-        private void SolutionWorkerOnProgressChanged(object sender, ProgressChangedEventArgs progressChangedEventArgs)
-        {
-            if (_isCanceling || _stopReporting)
-            {
-                return;
+                        _progress.Report(new Tuple<int, HashSet<ushort>>(_solver.CurrentGeneration, _solver.BestSolution));
+
+                        token.ThrowIfCancellationRequested();
+                    }
+#if DEBUG
+                    stopwatch.Stop();
+                    Debug.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");
+#endif
+                    return _solver.BestSolution;
+                }, token);
             }
-
-            ProgressbarCurrent = progressChangedEventArgs.ProgressPercentage;
-            ProgressbarText = progressChangedEventArgs.ProgressPercentage + "/" + _maxSteps;
-            BestSoFar = (HashSet<ushort>)(progressChangedEventArgs.UserState);
-        }
-
-        private void SolutionWorkerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
-        {
-            if (_isCanceling)
+            catch (OperationCanceledException)
             {
                 PauseResumeEnabled = true;
-                _isCanceling = false;
+                _stopReporting = true;
                 return;
             }
+
+            _stopReporting = true;
 
             ProgressbarText = L10n.Message("Finished!");
             CancelCloseText = L10n.Message("Close");
@@ -299,7 +275,19 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             // Draw the final solution in case not all ProgressChangeds get executed.
             ProgressbarCurrent = _maxSteps;
-            BestSoFar = (HashSet<ushort>)runWorkerCompletedEventArgs.Result;
+            BestSoFar = result;
+        }
+
+        private void ReportProgress(int step, HashSet<ushort> bestSoFar)
+        {
+            if (_stopReporting)
+            {
+                return;
+            }
+
+            ProgressbarCurrent = step;
+            ProgressbarText = step + "/" + _maxSteps;
+            BestSoFar = bestSoFar;
         }
 
         private void CancelClose()
@@ -311,13 +299,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
             else
             {
-                _solutionWorker.CancelAsync();
-                _isCanceling = true;
+                _cts.Cancel();
                 Close(false);
             }
         }
 
-        private void PauseResume()
+        private async void PauseResume()
         {
             // Pause the optimizer
             if (_isPaused)
@@ -325,8 +312,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 PauseResumeText = L10n.Message("Pause");
                 CancelCloseText = L10n.Message("Cancel");
                 ProgressbarEnabled = true;
-                _solutionWorker.RunWorkerAsync();
                 _isPaused = false;
+                await SolveAsync();
             }
             else
             {
@@ -335,8 +322,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 // Disable the button until the worker has actually finished.
                 PauseResumeEnabled = false;
                 ProgressbarEnabled = false;
-                _solutionWorker.CancelAsync();
-                _isCanceling = true;
+                _cts.Cancel();
                 _isPaused = true;
             }
         }
