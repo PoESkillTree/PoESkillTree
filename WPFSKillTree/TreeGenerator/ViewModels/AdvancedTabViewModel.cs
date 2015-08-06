@@ -1,27 +1,99 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 using POESKillTree.Localization;
+using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
+
+    public class StatConstraint
+    {
+        public string Stat { get; set; }
+
+        public float TargetValue { get; set; }
+
+        public double Weight { get; set; }
+
+        public StatConstraint()
+        {
+            TargetValue = 0;
+            Weight = 100;
+        }
+
+        public StatConstraint(string stat)
+            : this()
+        {
+            Stat = stat;
+        }
+    }
+
     public sealed class AdvancedTabViewModel : GeneratorTabViewModel
     {
         // TODO UI for stat constraints
+        // - weight slider
+        // - auto generated stat names (from Skill tree)
+        // - use for CreateSolver()
 
         // TODO better way of calculating weighting in csvs
         // TODO GeneticAlgorithm.randomBitArray() flipped bits dependent upon Total points (larger tree -> more bits set)?
-        // TODO try to implement some kind of heuristic that notables (or full clusters) are generally better
+        // TODO some kind of heuristic that notables (or full clusters) are generally better?
         // TODO exclude keystones not explicitly included (check-tagged)
         // TODO option to load stat constraints from current tree
 
         // TODO extend advanced generator with combined stats
+        // - tab in the normal UI to switch between stats imported from gear and manually typed stats
+        // - bandit support
+        // - some way to display different skill gems, support gems (maybe), weapon types
+
         // TODO automatically generate constraints -> automated generator
+
+        public string[] Stats { get; private set; }
+
+        public ObservableCollection<StatConstraint> StatConstraints { get; private set; }
+
+        private RelayCommand _removeStatConstraintCommand;
+
+        public ICommand RemoveStatConstraintCommand
+        {
+            get
+            {
+                return _removeStatConstraintCommand ??
+                       (_removeStatConstraintCommand =
+                           new RelayCommand(
+                               param =>
+                               {
+                                   var constraint = param as StatConstraint;
+                                   if (constraint != null)
+                                       StatConstraints.Remove(constraint);
+                               },
+                               param =>
+                               {
+                                   var constraint = param as StatConstraint;
+                                   return constraint != null && constraint.Stat != null;
+                               }));
+            }
+        }
 
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
         {
+            Stats = new[]
+            {
+                "#% increased maximum life",
+                "+# to maximum frenzy charges",
+                "#% increased physical damage",
+                "#% increased attack speed"
+            };
+            StatConstraints = new ObservableCollection<StatConstraint>(new[]
+            {
+                new StatConstraint(Stats[2]),
+                new StatConstraint(Stats[3]),
+                new StatConstraint(Stats[0])
+            });
             DisplayName = L10n.Message("Advanced");
         }
 

@@ -435,7 +435,7 @@
                     </MenuItem>
                     <MenuItem Click="Menu_OpenTreeGenerator">
                         <MenuItem.Header>
-                            <l:Catalog Message="_Open Skill Tree Generator" />
+                            <l:Catalog Message="_Skill Tree Generator" />
                         </MenuItem.Header>
                     </MenuItem>
                 </MenuItem>

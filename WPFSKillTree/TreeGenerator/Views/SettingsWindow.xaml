@@ -53,7 +53,7 @@
 
         <CheckBox Grid.Row="0" Grid.Column="2" Margin="20,5,10,5" Content="include Check-tagged nodes" IsChecked="{Binding IncludeChecked}"/>
         <CheckBox Grid.Row="1" Grid.Column="2" Margin="20,5,10,5" Content="exclude Cross-tagged nodes" IsChecked="{Binding ExcludeCrossed}"/>
-        <CheckBox Grid.Row="2" Grid.Column="2" Margin="20,5,10,5" Content="include imported items" IsChecked="{Binding ImportItems}"/>
+        <CheckBox Grid.Row="2" Grid.Column="2" Margin="20,5,10,5" Content="include imported stats" IsChecked="{Binding ImportItems}"/>
         <CheckBox Grid.Row="0" Grid.Column="3" Margin="10,5" Content="only search in current tree" IsChecked="{Binding TreeAsSubset}"/>
         <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" Content="current tree as start point" IsChecked="{Binding TreeAsStart}"/>
 
