@@ -1156,7 +1156,6 @@ namespace POESKillTree.Views
         {
             _persistentData.CurrentBuild.ItemData = "";
             ItemAttributes = null;
-            lbItemAttr.ItemsSource = null;
             UpdateUI();
             mnuClearItems.IsEnabled = false;
         }

@@ -1,14 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
 using System.Linq;
-using System;
-using POESKillTree.ViewModels.Items;
+using MahApps.Metro.Converters;
 using Newtonsoft.Json.Linq;
-using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Items
 {
@@ -291,9 +292,8 @@ namespace POESKillTree.ViewModels.Items
                 LoadItem(item, aList, NonLocalMods);
             }
 
-
-            var pgd = new PropertyGroupDescription("");
-            pgd.PropertyName = "Group";
+            var pgd = new PropertyGroupDescription("Group");
+            pgd.Converter = new HeaderConverter();
             Attributes.GroupDescriptions.Add(pgd);
             Attributes.CustomSort = new NumberLessStringComparer();
 
@@ -373,6 +373,13 @@ namespace POESKillTree.ViewModels.Items
             OnPropertyChanged("Equip");
 
             RefreshItemAttributes();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
 
         public class Attribute : INotifyPropertyChanged
@@ -471,11 +478,33 @@ namespace POESKillTree.ViewModels.Items
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string property)
+
+        public class HeaderConverter : IValueConverter
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            public Dictionary<string, AttributeGroup> ItemGroups = new Dictionary<string, AttributeGroup>();
+
+            public HeaderConverter()
+            {
+                foreach (var itemClass in Enum.GetValues(typeof(ItemClass)))
+                {
+                    if (!ItemGroups.ContainsKey(itemClass.ToString()))
+                    {
+                        ItemGroups.Add(itemClass.ToString(), new AttributeGroup(itemClass.ToString()));
+                    }
+                }
+
+                ItemGroups.Add("Independent", new AttributeGroup("Independent"));
+            }
+
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                return ItemGroups[value.ToString()];
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
