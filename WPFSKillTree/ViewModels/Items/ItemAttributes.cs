@@ -223,6 +223,11 @@ namespace POESKillTree.ViewModels.Items
 
         public List<Attribute> NonLocalMods = new List<Attribute>();
 
+        public ItemAttributes()
+        {
+            RefreshItemAttributes();
+        }
+
         public ItemAttributes(string itemData)
         {
             #region Readin

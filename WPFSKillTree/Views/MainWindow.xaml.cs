@@ -201,6 +201,8 @@ namespace POESKillTree.Views
             // loading last build
             if (_persistentData.CurrentBuild != null)
                 SetCurrentBuild(_persistentData.CurrentBuild);
+            else
+                LoadItemData(null);
 
             btnLoadBuild_Click(this, new RoutedEventArgs());
             _justLoaded = false;
@@ -1139,7 +1141,7 @@ namespace POESKillTree.Views
                 catch (Exception ex)
                 {
                     _persistentData.CurrentBuild.ItemData = "";
-                    ItemAttributes = null;
+                    ItemAttributes = new ItemAttributes();
                     ClearCurrentItemData();
                     Popup.Error(L10n.Message("An error occurred while attempting to load item data."), ex.Message);
                 }
@@ -1155,7 +1157,7 @@ namespace POESKillTree.Views
         public void ClearCurrentItemData()
         {
             _persistentData.CurrentBuild.ItemData = "";
-            ItemAttributes = null;
+            ItemAttributes = new ItemAttributes();
             UpdateUI();
             mnuClearItems.IsEnabled = false;
         }

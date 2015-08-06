@@ -664,125 +664,125 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:437 Views\MainWindow.xaml.cs:1721
+#: Views\MainWindow.xaml.cs:439 Views\MainWindow.xaml.cs:1723
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:443
+#: Views\MainWindow.xaml.cs:445
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:444 Views\MainWindow.xaml.cs:1907
+#: Views\MainWindow.xaml.cs:446 Views\MainWindow.xaml.cs:1909
 msgid "Do you want to continue?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:490
+#: Views\MainWindow.xaml.cs:492
 msgid "An error occurred while downloading assets."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:540
+#: Views\MainWindow.xaml.cs:542
 msgid "Checking for updates"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:545
+#: Views\MainWindow.xaml.cs:547
 msgid "You have the latest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:550
+#: Views\MainWindow.xaml.cs:552
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:553
+#: Views\MainWindow.xaml.cs:555
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:554
+#: Views\MainWindow.xaml.cs:556
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:557
+#: Views\MainWindow.xaml.cs:559
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:561
+#: Views\MainWindow.xaml.cs:563
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:565
+#: Views\MainWindow.xaml.cs:567
 msgid "Do you want to download and install the update?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:566
+#: Views\MainWindow.xaml.cs:568
 msgid "Do you want to download and install the new version?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:579
+#: Views\MainWindow.xaml.cs:581
 msgid "An error occurred while attempting to contact the update location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:589
+#: Views\MainWindow.xaml.cs:591
 msgid "Downloading latest version"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:594 Views\MainWindow.xaml.cs:619
+#: Views\MainWindow.xaml.cs:596 Views\MainWindow.xaml.cs:621
 msgid "An error occurred during the download operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:632
+#: Views\MainWindow.xaml.cs:634
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1144
+#: Views\MainWindow.xaml.cs:1146
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1216
+#: Views\MainWindow.xaml.cs:1218
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1287
+#: Views\MainWindow.xaml.cs:1289
 msgid "Please select a saved build."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1379
+#: Views\MainWindow.xaml.cs:1381
 msgid "An error occurred during a save operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1402
+#: Views\MainWindow.xaml.cs:1404
 msgid "Resolving shortened tree address"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1456
+#: Views\MainWindow.xaml.cs:1458
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1701
+#: Views\MainWindow.xaml.cs:1703
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1707
+#: Views\MainWindow.xaml.cs:1709
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1717
+#: Views\MainWindow.xaml.cs:1719
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1853
+#: Views\MainWindow.xaml.cs:1855
 msgid "An error occurred while attempting to load saved builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1906
+#: Views\MainWindow.xaml.cs:1908
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1927
+#: Views\MainWindow.xaml.cs:1929
 msgid "Downloading Item assets"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2000
+#: Views\MainWindow.xaml.cs:2002
 msgid "Error while downloading assets."
 msgstr ""
 
