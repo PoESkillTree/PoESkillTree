@@ -1300,10 +1300,10 @@ namespace POESKillTree.Views
                     tbSkillURL.Text = redirUrl;
                     LoadBuildFromUrl();
                 }
-                else if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accoutnName"))
+                else if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accountName"))
                 {
                     tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
-                    Tree.LoadFromURL(tbSkillURL.Text);
+                    LoadBuildFromUrl();
                 }
                 else
                 {
@@ -1326,6 +1326,8 @@ namespace POESKillTree.Views
                     {
                         urlString = urlString.Replace(link, SkillTree.TreeAddress);
                     }
+                    if (!urlString.Contains("https://"))
+                        urlString = "https://" + urlString;
                     tbSkillURL.Text = urlString;
                     Tree.LoadFromURL(urlString);
                 }
