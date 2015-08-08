@@ -664,7 +664,7 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:439 Views\MainWindow.xaml.cs:1723
+#: Views\MainWindow.xaml.cs:439 Views\MainWindow.xaml.cs:1725
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
@@ -672,7 +672,7 @@ msgstr ""
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:446 Views\MainWindow.xaml.cs:1909
+#: Views\MainWindow.xaml.cs:446 Views\MainWindow.xaml.cs:1911
 msgid "Do you want to continue?"
 msgstr ""
 
@@ -754,35 +754,35 @@ msgstr ""
 msgid "Resolving shortened tree address"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1458
+#: Views\MainWindow.xaml.cs:1460
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1703
+#: Views\MainWindow.xaml.cs:1705
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1709
+#: Views\MainWindow.xaml.cs:1711
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1719
+#: Views\MainWindow.xaml.cs:1721
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1855
+#: Views\MainWindow.xaml.cs:1857
 msgid "An error occurred while attempting to load saved builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1908
+#: Views\MainWindow.xaml.cs:1910
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1929
+#: Views\MainWindow.xaml.cs:1931
 msgid "Downloading Item assets"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2002
+#: Views\MainWindow.xaml.cs:2004
 msgid "Error while downloading assets."
 msgstr ""
 
