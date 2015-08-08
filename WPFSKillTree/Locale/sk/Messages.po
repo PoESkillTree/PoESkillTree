@@ -51,7 +51,7 @@ msgstr "Údaje použité vo výpočtoch postavy pochádzajú z"
 
 #: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
 #: Views\DownloadStashWindow.xaml:58 Views\HelpWindow.xaml:52
-#: Views\HotkeysWindow.xaml:154 Views\OptimizerControllerWindow.xaml.cs:165
+#: Views\HotkeysWindow.xaml:161 Views\OptimizerControllerWindow.xaml.cs:165
 msgid "Close"
 msgstr "Zavrieť"
 
@@ -152,462 +152,349 @@ msgstr "Pomocník"
 msgid "Hotkeys"
 msgstr "Klávesové skratky"
 
-#: Views\HotkeysWindow.xaml:47
+#: Views\HotkeysWindow.xaml:48
 msgid "Key combination"
 msgstr "Kombinácia kláves"
 
-#: Views\HotkeysWindow.xaml:50
+#: Views\HotkeysWindow.xaml:51
 msgid "Function"
 msgstr "Funkcia"
 
-#: Views\HotkeysWindow.xaml:53
+#: Views\HotkeysWindow.xaml:54
 msgid "Shift + Left Click"
 msgstr "Shift + Ľavé kliknutie"
 
-#: Views\HotkeysWindow.xaml:56
+#: Views\HotkeysWindow.xaml:57
 msgid "Zoom In"
 msgstr "Zväčšiť"
 
-#: Views\HotkeysWindow.xaml:59
+#: Views\HotkeysWindow.xaml:60
 msgid "Ctrl + Left Click"
 msgstr "Ctrl + Ľavé kliknutie"
 
-#: Views\HotkeysWindow.xaml:62
+#: Views\HotkeysWindow.xaml:63
 msgid "Zoom Out"
 msgstr "Zmenšiť"
 
-#: Views\HotkeysWindow.xaml:66
+#: Views\HotkeysWindow.xaml:67
 msgid "Scion"
 msgstr "Scion"
 
-#: Views\HotkeysWindow.xaml:70
+#: Views\HotkeysWindow.xaml:71
 msgid "Marauder"
 msgstr "Marauder"
 
-#: Views\HotkeysWindow.xaml:74
+#: Views\HotkeysWindow.xaml:75
 msgid "Ranger"
 msgstr "Ranger"
 
-#: Views\HotkeysWindow.xaml:78
+#: Views\HotkeysWindow.xaml:79
 msgid "Witch"
 msgstr "Witch"
 
-#: Views\HotkeysWindow.xaml:82
+#: Views\HotkeysWindow.xaml:83
 msgid "Duelist"
 msgstr "Duelist"
 
-#: Views\HotkeysWindow.xaml:86
+#: Views\HotkeysWindow.xaml:87
 msgid "Templar"
 msgstr "Templar"
 
-#: Views\HotkeysWindow.xaml:90
+#: Views\HotkeysWindow.xaml:91
 msgid "Shadow"
 msgstr "Shadow"
 
-#: Views\HotkeysWindow.xaml:94
+#: Views\HotkeysWindow.xaml:95
 msgid "Toggle Attributes sidebar"
 msgstr "Prepnutie panela Atribúty"
 
-#: Views\HotkeysWindow.xaml:98
+#: Views\HotkeysWindow.xaml:99
 msgid "Toggle Character Sheet sidebar"
 msgstr "Prepnutie panela Postava"
 
-#: Views\HotkeysWindow.xaml:102
+#: Views\HotkeysWindow.xaml:103
 msgid "Toggle Saved Builds sidebar"
 msgstr "Prepnutie panela Uložené zostavy"
 
-#: Views\HotkeysWindow.xaml:106
+#: Views\HotkeysWindow.xaml:107
 msgid "Copy PoEUrl link to Clipboard"
 msgstr "Skopírovať PoEUrl odkaz do Schránky"
 
-#: Views\HotkeysWindow.xaml:110
+#: Views\HotkeysWindow.xaml:111
 msgid "Reset Skill tree"
 msgstr "Resetovať strom zručností"
 
-#: Views\HotkeysWindow.xaml:113
+#: Views\HotkeysWindow.xaml:114
 msgid "Ctrl + Up/Down"
 msgstr "Ctrl + Hore/Dole"
 
-#: Views\HotkeysWindow.xaml:116
+#: Views\HotkeysWindow.xaml:117
 msgid "(Saved Builds) Move build up and down"
 msgstr "(Uložené zostavy) Presunúť zostavu hore/dole"
 
-#: Views\HotkeysWindow.xaml:120
+#: Views\HotkeysWindow.xaml:121
 msgid "Undo last Skill tree change"
 msgstr "Vrátiť poslednú zmenu v strome zručností"
 
-#: Views\HotkeysWindow.xaml:124
+#: Views\HotkeysWindow.xaml:125
 msgid "Redo last Skill tree change"
 msgstr "Obnoviť poslednú zmenu v strome zručností"
 
-#: Views\HotkeysWindow.xaml:128
+#: Views\HotkeysWindow.xaml:129
 msgid "Save build as"
 msgstr "Uložiť zostavu ako"
 
-#: Views\HotkeysWindow.xaml:131 Views\HotkeysWindow.xaml:136
-#: Views\HotkeysWindow.xaml:142
+#: Views\HotkeysWindow.xaml:132 Views\HotkeysWindow.xaml:137
+#: Views\HotkeysWindow.xaml:143
 msgid "Right Click"
 msgstr "Pravé kliknutie"
 
-#: Views\HotkeysWindow.xaml:134
+#: Views\HotkeysWindow.xaml:135
 msgid "(Skill tree) Center Skill tree and reset zoom"
 msgstr "(Strom zručností) Vystrediť strom zručností a resetovať priblíženie"
 
-#: Views\HotkeysWindow.xaml:139
+#: Views\HotkeysWindow.xaml:140
 msgid "(Attributes) Highlight corresponding nodes in Skill tree"
 msgstr "(Atribúty) Zvýrazniť zodpovedajúce uzly v strome zručností"
 
-#: Views\HotkeysWindow.xaml:145
+#: Views\HotkeysWindow.xaml:146
 msgid "(Skill node) Toggle skill node highlighting"
 msgstr "(Uzol zručnosti) Prepnúť zvýraznenie uzla zručnosti"
 
-#: Views\HotkeysWindow.xaml:148
+#: Views\HotkeysWindow.xaml:149
 msgid "Shift + Right Click"
 msgstr "Shift + Pravé kliknutie"
 
-#: Views\HotkeysWindow.xaml:151
+#: Views\HotkeysWindow.xaml:152
 msgid "(Skill node) Toggle skill node highlighting (reversed)"
 msgstr "(Uzol zručnosti) Prepnúť zvýraznenie uzla zručnosti (obrátene)"
+
+#: Views\HotkeysWindow.xaml:155
+msgid "Shift + Hover"
+msgstr ""
+
+#: Views\HotkeysWindow.xaml:158
+#, fuzzy
+msgid "(Skill node) Highlight similar skill nodes"
+msgstr "(Uzol zručnosti) Prepnúť zvýraznenie uzla zručnosti"
 
 #: Views\LoadingWindow.xaml:12
 msgid "Download"
 msgstr "Sťahovanie"
 
-#: Views\LoadingWindow.xaml:18
-msgid "Downloading Skill tree assets"
-msgstr "Sťahujem údaje stromu zručností"
-
-#: Views\MainWindow.xaml:205
+#: Views\MainWindow.xaml:230
 msgid "_File"
 msgstr "_Súbor"
 
-#: Views\MainWindow.xaml:209
+#: Views\MainWindow.xaml:234
 msgid "Save _As"
 msgstr "Uložiť _ako"
 
-#: Views\MainWindow.xaml:217
+#: Views\MainWindow.xaml:242
 msgid "E_xit"
 msgstr "U_končiť"
 
-#: Views\MainWindow.xaml:227
+#: Views\MainWindow.xaml:252
 msgid "_Edit"
 msgstr "_Upraviť"
 
-#: Views\MainWindow.xaml:231
+#: Views\MainWindow.xaml:256
 msgid "_Undo"
 msgstr "_Späť"
 
-#: Views\MainWindow.xaml:239
+#: Views\MainWindow.xaml:264
 msgid "_Redo"
 msgstr "Z_novu"
 
-#: Views\MainWindow.xaml:247
+#: Views\MainWindow.xaml:272
 msgid "Reset Skill _Tree"
 msgstr "_Resetovať strom zručností"
 
-#: Views\MainWindow.xaml:255
-msgid "_Clear Items"
-msgstr "_Vymazať predmety"
-
-#: Views\MainWindow.xaml:264
+#: Views\MainWindow.xaml:292
 msgid "_View"
 msgstr "_Zobraziť"
 
-#: Views\MainWindow.xaml:268
+#: Views\MainWindow.xaml:296
 msgid "_Theme"
 msgstr "_Téma"
 
-#: Views\MainWindow.xaml:275
+#: Views\MainWindow.xaml:303
 msgctxt "color"
 msgid "Light"
 msgstr "Svetlá"
 
-#: Views\MainWindow.xaml:280
+#: Views\MainWindow.xaml:308
 msgctxt "color"
 msgid "Dark"
 msgstr "Tmavá"
 
-#: Views\MainWindow.xaml:286
-msgid "Acce_nt"
-msgstr "Akce_nt"
-
-#: Views\MainWindow.xaml:293
-msgctxt "color"
-msgid "Amber"
-msgstr "Jantárová"
-
-#: Views\MainWindow.xaml:298
-msgctxt "color"
-msgid "Blue"
-msgstr "Modrá"
-
-#: Views\MainWindow.xaml:303
-msgctxt "color"
-msgid "Brown"
-msgstr "Hnedá"
-
-#: Views\MainWindow.xaml:308
-msgctxt "color"
-msgid "Cobalt"
-msgstr "Kobaltová"
-
-#: Views\MainWindow.xaml:313
-msgctxt "color"
-msgid "Crimson"
-msgstr "Karmínová"
-
-#: Views\MainWindow.xaml:318
-msgctxt "color"
-msgid "Cyan"
-msgstr "Azúrová"
-
-#: Views\MainWindow.xaml:323
-msgctxt "color"
-msgid "Emerald"
-msgstr "Smaragdová"
-
-#: Views\MainWindow.xaml:328
-msgctxt "color"
-msgid "Green"
-msgstr "Zelená"
-
-#: Views\MainWindow.xaml:333
-msgctxt "color"
-msgid "Indigo"
-msgstr "Indigová"
-
-#: Views\MainWindow.xaml:338
-msgctxt "color"
-msgid "Lime"
-msgstr "Limetková"
-
 #: Views\MainWindow.xaml:343
-msgctxt "color"
-msgid "Magenta"
-msgstr "Purpurová"
-
-#: Views\MainWindow.xaml:348
-msgctxt "color"
-msgid "Mauve"
-msgstr "Mauve"
-
-#: Views\MainWindow.xaml:353
-msgctxt "color"
-msgid "Olive"
-msgstr "Olivová"
-
-#: Views\MainWindow.xaml:358
-msgctxt "color"
-msgid "Orange"
-msgstr "Oranžová"
-
-#: Views\MainWindow.xaml:363
-msgctxt "color"
-msgid "Pink"
-msgstr "Ružová"
-
-#: Views\MainWindow.xaml:368
-msgctxt "color"
-msgid "Purple"
-msgstr "Fialová"
-
-#: Views\MainWindow.xaml:373
-msgctxt "color"
-msgid "Red"
-msgstr "Červená"
-
-#: Views\MainWindow.xaml:378
-msgctxt "color"
-msgid "Sienna"
-msgstr "Siena"
-
-#: Views\MainWindow.xaml:383
-msgctxt "color"
-msgid "Steel"
-msgstr "Oceľová"
-
-#: Views\MainWindow.xaml:388
-msgctxt "color"
-msgid "Taupe"
-msgstr "Šedohnedá"
-
-#: Views\MainWindow.xaml:393
-msgctxt "color"
-msgid "Teal"
-msgstr "Petrolejová"
-
-#: Views\MainWindow.xaml:398
-msgctxt "color"
-msgid "Violet"
-msgstr "Fialová"
-
-#: Views\MainWindow.xaml:403
-msgctxt "color"
-msgid "Yellow"
-msgstr "Žltá"
-
-#: Views\MainWindow.xaml:410
 msgid "Saved _Builds"
 msgstr "Uložené _zostavy"
 
-#: Views\MainWindow.xaml:415
+#: Views\MainWindow.xaml:348
 msgid "_Attributes"
 msgstr "_Atribúty"
 
-#: Views\MainWindow.xaml:420
+#: Views\MainWindow.xaml:353
 msgid "_Character Sheet"
 msgstr "_Postava"
 
-#: Views\MainWindow.xaml:425
+#: Views\MainWindow.xaml:358
 msgid "Skill _Tree Comparison"
 msgstr "Porovnávanie _stromov zručností"
 
-#: Views\MainWindow.xaml:431
+#: Views\MainWindow.xaml:364
 msgid "_Tools"
 msgstr "_Nástroje"
 
-#: Views\MainWindow.xaml:435
+#: Views\MainWindow.xaml:368
 msgid "Take _Screenshot of Skilled Nodes"
 msgstr "Zaznamenanie _snímky vycvičených uzlov"
 
-#: Views\MainWindow.xaml:443
+#: Views\MainWindow.xaml:377
+msgid "_Equipment"
+msgstr ""
+
+#: Views\MainWindow.xaml:384
 msgid "_Download & Import Items"
 msgstr "Stiahnutie a _import predmetov"
 
-#: Views\MainWindow.xaml:451
+#: Views\MainWindow.xaml:392
 #, fuzzy
 msgid "_Download & Import Stash"
 msgstr "Stiahnutie a _import predmetov"
 
-#: Views\MainWindow.xaml:459
+#: Views\MainWindow.xaml:406
+msgid "_Nodes"
+msgstr ""
+
+#: Views\MainWindow.xaml:413
 #, fuzzy
 msgid "Skill _Tagged Nodes"
 msgstr "_Vycvičiť zvýraznené uzly"
 
-#: Views\MainWindow.xaml:467
+#: Views\MainWindow.xaml:418
 #, fuzzy
 msgid "Un_tag All Nodes"
 msgstr "_Zrušiť zvýraznenie uzlov"
 
-#: Views\MainWindow.xaml:475
+#: Views\MainWindow.xaml:423
 msgid "_Unhighlight All Nodes"
 msgstr "_Zrušiť zvýraznenie uzlov"
 
-#: Views\MainWindow.xaml:483
+#: Views\MainWindow.xaml:428
 #, fuzzy
 msgid "_Check-tag highlighted Nodes"
 msgstr "_Vycvičiť zvýraznené uzly"
 
-#: Views\MainWindow.xaml:488
+#: Views\MainWindow.xaml:433
 #, fuzzy
 msgid "C_ross-tag highlighted Nodes"
 msgstr "_Vycvičiť zvýraznené uzly"
 
-#: Views\MainWindow.xaml:493
-msgid "Copy _Passive Attributes to Clipboard"
-msgstr "Skopírovať _pasívne atribúty do Schránky"
+#: Views\MainWindow.xaml:439
+msgid "_Program Assets"
+msgstr ""
 
-#: Views\MainWindow.xaml:501
-msgid "Copy Po_EUrl of Skill tree to Clipboard"
-msgstr "Skopírovať Po_EUrl odkaz do Schránky"
-
-#: Views\MainWindow.xaml:509
+#: Views\MainWindow.xaml:446
 msgid "_Redownload Skill Tree Assets"
 msgstr "_Opätovne stiahnuť údaje stromu zručností"
 
-#: Views\MainWindow.xaml:524
+#: Views\MainWindow.xaml:461
 msgid "_Help"
 msgstr "_Pomocník"
 
-#: Views\MainWindow.xaml:528
+#: Views\MainWindow.xaml:465
 msgid "_Links"
 msgstr "O_dkazy"
 
-#: Views\MainWindow.xaml:535
+#: Views\MainWindow.xaml:472
 msgid "_Path of Exile Website"
 msgstr "_Path of Exile stránka"
 
-#: Views\MainWindow.xaml:542
+#: Views\MainWindow.xaml:479
 msgid "View _Help"
 msgstr "Zobraziť _pomocníka"
 
-#: Views\MainWindow.xaml:550
+#: Views\MainWindow.xaml:487
 msgid "Hot_keys"
 msgstr "_Klávesové skratky"
 
-#: Views\MainWindow.xaml:558
+#: Views\MainWindow.xaml:495
 msgid "Check for _Updates"
 msgstr "Skontrolovať _aktualizácie"
 
-#: Views\MainWindow.xaml:566
+#: Views\MainWindow.xaml:503
 msgid "_About PoESkillTree"
 msgstr "_O PoESkillTree"
 
-#: Views\MainWindow.xaml:590
+#: Views\MainWindow.xaml:527
 msgid "Reset"
 msgstr "Reset"
 
-#: Views\MainWindow.xaml:642
+#: Views\MainWindow.xaml:579
 msgid "Saved Builds"
 msgstr "Uložené zostavy"
 
-#: Views\MainWindow.xaml:660
+#: Views\MainWindow.xaml:597
 msgid "Filter:"
 msgstr "Filter:"
 
-#: Views\MainWindow.xaml:703
+#: Views\MainWindow.xaml:640
 msgid "Skill tree comparison"
 msgstr "Porovnávanie stromov zručností"
 
-#: Views\MainWindow.xaml:712
+#: Views\MainWindow.xaml:649
 msgid "Save"
 msgstr "Uložiť"
 
-#: Views\MainWindow.xaml:715
+#: Views\MainWindow.xaml:652
 msgid "Save As"
 msgstr "Uložiť ako"
 
-#: Views\MainWindow.xaml:718
+#: Views\MainWindow.xaml:655
 msgid "Delete"
 msgstr "Zmazať"
 
-#: Views\MainWindow.xaml:727
+#: Views\MainWindow.xaml:664
 msgid "Attributes"
 msgstr "Atribúty"
 
-#: Views\MainWindow.xaml:734
+#: Views\MainWindow.xaml:671
 msgid "Passive Attributes"
 msgstr "Pasívne atribúty"
 
-#: Views\MainWindow.xaml:751
+#: Views\MainWindow.xaml:688
 msgid "Item Attributes"
 msgstr "Atribúty predmetov"
 
-#: Views\MainWindow.xaml:770
+#: Views\MainWindow.xaml:707
 msgid "Total Attributes"
 msgstr "Atribúty celkovo"
 
-#: Views\MainWindow.xaml:806
+#: Views\MainWindow.xaml:743
 msgid "Character Sheet"
 msgstr "Postava"
 
-#: Views\MainWindow.xaml:813 SkillTreeFiles\Compute.cs:2296
+#: Views\MainWindow.xaml:750 SkillTreeFiles\Compute.cs:2296
+#: Utils\GroupStringConverter.cs:28
 msgid "Defense"
 msgstr "Obrana"
 
-#: Views\MainWindow.xaml:830
+#: Views\MainWindow.xaml:767
 msgid "Offense"
 msgstr "Útok"
 
-#: Views\MainWindow.xaml:864
+#: Views\MainWindow.xaml:801
 msgid "Search:"
 msgstr "Hľadať:"
 
-#: Views\MainWindow.xaml:871
+#: Views\MainWindow.xaml:808
 msgid "Skill tree link:"
 msgstr "Odkaz stromu:"
 
-#: Views\MainWindow.xaml:877
+#: Views\MainWindow.xaml:814
 msgid "Load Tree"
 msgstr "Načítať strom"
 
@@ -627,7 +514,11 @@ msgstr "Inicializácia..."
 msgid "Character"
 msgstr "Postava"
 
-#: SkillTreeFiles\SkillTree.cs:1026
+#: SkillTreeFiles\SkillTree.cs:606
+msgid "Downloading Skill tree assets"
+msgstr "Sťahujem údaje stromu zručností"
+
+#: SkillTreeFiles\SkillTree.cs:1031
 #, fuzzy
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom."
@@ -666,11 +557,69 @@ msgstr "Sťahovanie bolo donočené, alebo stále prebieha"
 msgid "The application is not correctly installed"
 msgstr "Aplikácie nie je korektne nainštalovaná"
 
+#: Utils\GroupStringConverter.cs:16
+msgid "Keystone"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:17
+msgid "Weapon"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:18
+#, fuzzy
+msgid "Charges"
+msgstr "Postava"
+
+#: Utils\GroupStringConverter.cs:19
+msgid "Minion"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:20
+msgid "Trap"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:21
+msgid "Totem"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:22
+msgid "Curse"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:23
+msgid "Aura"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:24
+msgid "Critical Strike"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:25
+msgid "Shield"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:26
+msgid "Block"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:27
+msgid "General"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:29
+msgid "Spell"
+msgstr ""
+
+#: Utils\GroupStringConverter.cs:30
+#, fuzzy
+msgid "Core Attributes"
+msgstr "Atribúty predmetov"
+
 #: Utils\Popup.cs:14
 msgid "Question"
 msgstr "Otázka"
 
-#: Utils\Popup.cs:20 Views\App.xaml.cs:94
+#: Utils\Popup.cs:20
 msgid "Error"
 msgstr "Chyba"
 
@@ -693,10 +642,6 @@ msgid_plural "{0}, {1} points used"
 msgstr[0] "{0}, {1} bod použitý"
 msgstr[1] "{0}, {1} body použité"
 msgstr[2] "{0}, {1} bodov použitých"
-
-#: Views\App.xaml.cs:94 Views\MainWindow.xaml.cs:1270
-msgid "An error occurred during a save operation."
-msgstr "Nastala chyba počas ukladania."
 
 #: Views\DownloadItemsWindow.xaml.cs:25 Views\DownloadItemsWindow.xaml.cs:31
 msgid "CharacterName"
@@ -734,102 +679,131 @@ msgstr "Posledná zmena: {0}"
 msgid "Help file not found"
 msgstr "Súbor pomocníka nebol nájdený"
 
-#: Views\MainWindow.xaml.cs:390 Views\MainWindow.xaml.cs:1624
+#: Views\MainWindow.xaml.cs:439 Views\MainWindow.xaml.cs:1723
 msgid "An error occurred while copying to Clipboard."
 msgstr "Nastala chyba počas kopírovania do Schránky."
 
-#: Views\MainWindow.xaml.cs:396
+#: Views\MainWindow.xaml.cs:445
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
 
-#: Views\MainWindow.xaml.cs:397 Views\MainWindow.xaml.cs:1810
+#: Views\MainWindow.xaml.cs:446 Views\MainWindow.xaml.cs:1909
 msgid "Do you want to continue?"
 msgstr "Chcete pokračovať?"
 
-#: Views\MainWindow.xaml.cs:443
+#: Views\MainWindow.xaml.cs:492
 msgid "An error occurred while downloading assets."
 msgstr "Nastala chyba počas sťahovania údajov."
 
-#: Views\MainWindow.xaml.cs:494
+#: Views\MainWindow.xaml.cs:542
+#, fuzzy
+msgid "Checking for updates"
+msgstr "Skontrolovať _aktualizácie"
+
+#: Views\MainWindow.xaml.cs:547
 msgid "You have the latest version!"
 msgstr "Máte najnovšiu verziu!"
 
-#: Views\MainWindow.xaml.cs:499
+#: Views\MainWindow.xaml.cs:552
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr "Aktualizácia pre {0} ({1}) je k dispozícii!"
 
-#: Views\MainWindow.xaml.cs:500
+#: Views\MainWindow.xaml.cs:555
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr "Po dokončení sťahovania bude aplikácia zatvorená, aby mohla aktualizácia prebehnúť."
 
-#: Views\MainWindow.xaml.cs:501
+#: Views\MainWindow.xaml.cs:556
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "Nová verzia {0} je k dispozícii!"
 
-#: Views\MainWindow.xaml.cs:502
+#: Views\MainWindow.xaml.cs:559
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr "Nová verzia aplikácie bude nainštalovaná súbežne s predchádzajúcimi verziami."
 
-#: Views\MainWindow.xaml.cs:505
+#: Views\MainWindow.xaml.cs:563
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr "Upozornenie: Toto je predbežná verzia, ktorá môže obsahovať chyby!"
 
-#: Views\MainWindow.xaml.cs:507
+#: Views\MainWindow.xaml.cs:567
 msgid "Do you want to download and install the update?"
 msgstr "Chcete stiahnuť a nainštalovať aktualizáciu?"
 
-#: Views\MainWindow.xaml.cs:507
+#: Views\MainWindow.xaml.cs:568
 msgid "Do you want to download and install the new version?"
 msgstr "Chcete stiahnuť a nainštalovať novú verziu?"
 
-#: Views\MainWindow.xaml.cs:518
+#: Views\MainWindow.xaml.cs:581
 msgid "An error occurred while attempting to contact the update location."
 msgstr "Nastala chyba pri pokuse kontaktovať lokáciu pre aktualizácie."
 
-#: Views\MainWindow.xaml.cs:532 Views\MainWindow.xaml.cs:557
+#: Views\MainWindow.xaml.cs:591
+#, fuzzy
+msgid "Downloading latest version"
+msgstr "Sťahujem údaje stromu zručností"
+
+#: Views\MainWindow.xaml.cs:596 Views\MainWindow.xaml.cs:621
 msgid "An error occurred during the download operation."
 msgstr "Nastala chyba počas sťahovania."
 
-#: Views\MainWindow.xaml.cs:570
+#: Views\MainWindow.xaml.cs:634
 msgid "An error occurred while attempting to start the installation."
 msgstr "Nastala chyba pri pokuse spustiť inštaláciu."
 
-#: Views\MainWindow.xaml.cs:1036
+#: Views\MainWindow.xaml.cs:1146
 msgid "An error occurred while attempting to load item data."
 msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
 
-#: Views\MainWindow.xaml.cs:1107
+#: Views\MainWindow.xaml.cs:1218
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
-#: Views\MainWindow.xaml.cs:1178
+#: Views\MainWindow.xaml.cs:1289
 msgid "Please select a saved build."
 msgstr "Prosím zvoľte uloženú zostavu."
 
-#: Views\MainWindow.xaml.cs:1350
+#: Views\MainWindow.xaml.cs:1381
+msgid "An error occurred during a save operation."
+msgstr "Nastala chyba počas ukladania."
+
+#: Views\MainWindow.xaml.cs:1404
+msgid "Resolving shortened tree address"
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:1458
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Nastala chyba pri pokuse načítať strom zručností z URL."
 
-#: Views\MainWindow.xaml.cs:1600 Views\MainWindow.xaml.cs:1609
-msgid "An error occurred while attempting to conntact the PoEUrl location."
+#: Views\MainWindow.xaml.cs:1703
+#, fuzzy
+msgid "Generating PoEUrl of Skill tree"
+msgstr "Skopírovať Po_EUrl odkaz do Schránky"
+
+#: Views\MainWindow.xaml.cs:1709
+#, fuzzy
+msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Nastala chyba pri pokuse kontaktovať PoEUrl lokáciu."
 
-#: Views\MainWindow.xaml.cs:1620
+#: Views\MainWindow.xaml.cs:1719
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "PoEUrl odkaz bol skopírovaný do Schránky."
 
-#: Views\MainWindow.xaml.cs:1756
+#: Views\MainWindow.xaml.cs:1855
 msgid "An error occurred while attempting to load saved builds."
 msgstr "Nastala chyba pri pokuse načítať uložené zostavy."
 
-#: Views\MainWindow.xaml.cs:1809
+#: Views\MainWindow.xaml.cs:1908
 #, fuzzy
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
 
-#: Views\MainWindow.xaml.cs:1903
+#: Views\MainWindow.xaml.cs:1929
+#, fuzzy
+msgid "Downloading Item assets"
+msgstr "Sťahujem údaje stromu zručností"
+
+#: Views\MainWindow.xaml.cs:2002
 #, fuzzy
 msgid "Error while downloading assets."
 msgstr "Nastala chyba počas sťahovania údajov."
@@ -868,6 +842,107 @@ msgstr "Dokončené!"
 #: Views\OptimizerControllerWindow.xaml.cs:203
 msgid "Continue"
 msgstr "Pokračovať"
+
+#~ msgid "_Clear Items"
+#~ msgstr "_Vymazať predmety"
+
+#~ msgid "Acce_nt"
+#~ msgstr "Akce_nt"
+
+#~ msgctxt "color"
+#~ msgid "Amber"
+#~ msgstr "Jantárová"
+
+#~ msgctxt "color"
+#~ msgid "Blue"
+#~ msgstr "Modrá"
+
+#~ msgctxt "color"
+#~ msgid "Brown"
+#~ msgstr "Hnedá"
+
+#~ msgctxt "color"
+#~ msgid "Cobalt"
+#~ msgstr "Kobaltová"
+
+#~ msgctxt "color"
+#~ msgid "Crimson"
+#~ msgstr "Karmínová"
+
+#~ msgctxt "color"
+#~ msgid "Cyan"
+#~ msgstr "Azúrová"
+
+#~ msgctxt "color"
+#~ msgid "Emerald"
+#~ msgstr "Smaragdová"
+
+#~ msgctxt "color"
+#~ msgid "Green"
+#~ msgstr "Zelená"
+
+#~ msgctxt "color"
+#~ msgid "Indigo"
+#~ msgstr "Indigová"
+
+#~ msgctxt "color"
+#~ msgid "Lime"
+#~ msgstr "Limetková"
+
+#~ msgctxt "color"
+#~ msgid "Magenta"
+#~ msgstr "Purpurová"
+
+#~ msgctxt "color"
+#~ msgid "Mauve"
+#~ msgstr "Mauve"
+
+#~ msgctxt "color"
+#~ msgid "Olive"
+#~ msgstr "Olivová"
+
+#~ msgctxt "color"
+#~ msgid "Orange"
+#~ msgstr "Oranžová"
+
+#~ msgctxt "color"
+#~ msgid "Pink"
+#~ msgstr "Ružová"
+
+#~ msgctxt "color"
+#~ msgid "Purple"
+#~ msgstr "Fialová"
+
+#~ msgctxt "color"
+#~ msgid "Red"
+#~ msgstr "Červená"
+
+#~ msgctxt "color"
+#~ msgid "Sienna"
+#~ msgstr "Siena"
+
+#~ msgctxt "color"
+#~ msgid "Steel"
+#~ msgstr "Oceľová"
+
+#~ msgctxt "color"
+#~ msgid "Taupe"
+#~ msgstr "Šedohnedá"
+
+#~ msgctxt "color"
+#~ msgid "Teal"
+#~ msgstr "Petrolejová"
+
+#~ msgctxt "color"
+#~ msgid "Violet"
+#~ msgstr "Fialová"
+
+#~ msgctxt "color"
+#~ msgid "Yellow"
+#~ msgstr "Žltá"
+
+#~ msgid "Copy _Passive Attributes to Clipboard"
+#~ msgstr "Skopírovať _pasívne atribúty do Schránky"
 
 #~ msgid "Level:"
 #~ msgstr "Level:"

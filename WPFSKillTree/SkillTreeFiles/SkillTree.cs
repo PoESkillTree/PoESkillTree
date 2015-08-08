@@ -24,7 +24,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public delegate void CloseLoadingWindow();
 
-        public delegate void StartLoadingWindow();
+        public delegate void StartLoadingWindow(string infoText);
 
         public static readonly float LifePerLevel = 12;
         public static readonly float AccPerLevel = 2;
@@ -603,7 +603,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 displayProgress = (start != null && update != null && finish != null);
                 if (displayProgress)
-                    start();
+                    start(L10n.Message("Downloading Skill tree assets"));
                 string uriString = SkillTree.TreeAddress;
                 var req = (HttpWebRequest)WebRequest.Create(uriString);
                 var resp = (HttpWebResponse)req.GetResponse();
@@ -811,9 +811,12 @@ namespace POESKillTree.SkillTreeFiles
             DrawHighlights(_nodeHighlighter);
         }
 
-        public void HighlightNodesBySearch(string search, bool useregex, bool fromSearchBox)
+        /// <param name="search">The string to search each node name and attribute for.</param>
+        /// <param name="useregex">If the string should be interpreted as a regex.</param>
+        /// <param name="flag">The flag to highlight found nodes with.</param>
+        /// <param name="matchCount">The number of attributes of a node that must match the search to get highlighted, -1 if the count doesn't matter.</param>
+        public void HighlightNodesBySearch(string search, bool useregex, HighlightState flag, int matchCount = -1)
         {
-            HighlightState flag = fromSearchBox ? HighlightState.FromSearch : HighlightState.FromAttrib;
             if (search == "")
             {
                 _nodeHighlighter.UnhighlightAllNodes(flag);
@@ -821,16 +824,18 @@ namespace POESKillTree.SkillTreeFiles
                 return;
             }
 
+            var matchFct = matchCount >= 0 ? (Func<string[], Func<string, bool>, bool>)
+                 ((attributes, predicate) => attributes.Count(predicate) == matchCount)
+                : (attributes, predicate) => attributes.Any(predicate);
             if (useregex)
             {
                 try
                 {
-                    List<SkillNode> nodes =
-                            Skillnodes.Values.Where(
-                                nd =>
-                                    nd.attributes.Any(att => new Regex(search, RegexOptions.IgnoreCase).IsMatch(att)) ||
-                                    new Regex(search, RegexOptions.IgnoreCase).IsMatch(nd.Name) && !nd.IsMastery)
-                                .ToList();
+                    var regex = new Regex(search, RegexOptions.IgnoreCase);
+                    var nodes =
+                        Skillnodes.Values.Where(
+                            nd => matchFct(nd.attributes, att => regex.IsMatch(att)) ||
+                                  regex.IsMatch(nd.Name) && !nd.IsMastery);
                     _nodeHighlighter.ReplaceHighlights(nodes, flag);
                     DrawHighlights(_nodeHighlighter);
                 }
@@ -841,11 +846,11 @@ namespace POESKillTree.SkillTreeFiles
             }
             else
             {
-                List<SkillNode> nodes =
+                search = search.ToLowerInvariant();
+                var nodes =
                     Skillnodes.Values.Where(
-                        nd =>
-                            nd.attributes.Count(att => att.ToLower().Contains(search.ToLower())) != 0 ||
-                            nd.Name.ToLower().Contains(search.ToLower()) && !nd.IsMastery).ToList();
+                        nd => matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
+                              nd.Name.ToLowerInvariant().Contains(search) && !nd.IsMastery);
                 _nodeHighlighter.ReplaceHighlights(nodes, flag);
                 DrawHighlights(_nodeHighlighter);
             }

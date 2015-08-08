@@ -10,10 +10,10 @@ namespace POESKillTree.SkillTreeFiles
         [Flags]
         public enum HighlightState
         {
-            FromSearch = 1, FromAttrib = 2, Checked = 4, Crossed = 8,
-            Highlights = FromSearch | FromAttrib,
+            FromSearch = 1, FromAttrib = 2, Checked = 4, Crossed = 8, FromHover = 16,
+            Highlights = FromSearch | FromAttrib | FromHover,
             Tags = Checked | Crossed,
-            All = FromSearch | FromAttrib | Checked | Crossed
+            All = FromSearch | FromAttrib | Checked | Crossed | FromHover
         }
 
         public Dictionary<SkillNode, HighlightState> nodeHighlights = new Dictionary<SkillNode, HighlightState>();
@@ -57,7 +57,7 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        public void HighlightNodes(List<SkillNode> nodes, HighlightState newFlags)
+        public void HighlightNodes(IEnumerable<SkillNode> nodes, HighlightState newFlags)
         {
             foreach (SkillNode node in nodes)
                 HighlightNode(node, newFlags);
@@ -72,7 +72,7 @@ namespace POESKillTree.SkillTreeFiles
                 UnhighlightNode(node, removeFlags);
         }
 
-        public void ReplaceHighlights(List<SkillNode> newNodes, HighlightState replaceFlags)
+        public void ReplaceHighlights(IEnumerable<SkillNode> newNodes, HighlightState replaceFlags)
         {
             UnhighlightAllNodes(replaceFlags);
             HighlightNodes(newNodes, replaceFlags);
