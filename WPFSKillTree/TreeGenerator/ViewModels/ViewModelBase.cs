@@ -1,6 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.ComponentModel;
+using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
@@ -24,28 +23,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         #endregion // DisplayName
 
-        #region Debugging Aides
-
-        /// <summary>
-        /// Warns the developer if this object does not have
-        /// a public property with the specified name. This 
-        /// method does not exist in a Release build.
-        /// </summary>
-        [Conditional("DEBUG")]
-        [DebuggerStepThrough]
-        public void VerifyPropertyName(string propertyName)
-        {
-            // Verify that the property name matches a real,  
-            // public, instance property on this object.
-            if (TypeDescriptor.GetProperties(this)[propertyName] != null) return;
-
-            var msg = "Invalid property name: " + propertyName;
-
-            throw new Exception(msg);
-        }
-
-        #endregion // Debugging Aides
-
         #region INotifyPropertyChanged Members
 
         /// <summary>
@@ -59,12 +36,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <param name="propertyName">The property that has a new value.</param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            VerifyPropertyName(propertyName);
-
-            var handler = PropertyChanged;
-            if (handler == null) return;
-            var e = new PropertyChangedEventArgs(propertyName);
-            handler(this, e);
+            PropertyChanged.Raise(this, propertyName);
         }
 
         #endregion // INotifyPropertyChanged Members

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using POESKillTree.Model;
+using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
@@ -14,14 +15,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         public ICommand CloseCommand
         {
-            get
-            {
-                if (_closeCommand == null)
-                {
-                    _closeCommand = new RelayCommand(param => OnRequestClose());
-                }
-                return _closeCommand;
-            }
+            get { return _closeCommand ?? (_closeCommand = new RelayCommand(param => RequestClose.Raise(this))); }
         }
 
         private bool? _result;
@@ -37,15 +31,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         public event EventHandler RequestClose;
-
-        private void OnRequestClose()
-        {
-            var handler = RequestClose;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
-        }
 
         protected void Close(bool? result)
         {

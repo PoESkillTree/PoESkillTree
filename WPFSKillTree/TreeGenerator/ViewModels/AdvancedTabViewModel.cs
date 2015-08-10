@@ -1,49 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.TreeGenerator.Model;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
-
-    public class StatConstraint
-    {
-        public string Stat { get; set; }
-
-        public float TargetValue { get; set; }
-
-        public double Weight { get; set; }
-
-        public StatConstraint()
-        {
-            TargetValue = 0;
-            Weight = 100;
-        }
-
-        public StatConstraint(string stat)
-            : this()
-        {
-            Stat = stat;
-        }
-    }
-
     public sealed class AdvancedTabViewModel : GeneratorTabViewModel
     {
-        // TODO UI for stat constraints
-        // - weight slider
-        // - auto generated stat names (from Skill tree)
+        // TODO UI for attribute constraints
+        // - substring match searchable ComboBox (something like the poe.trade comboboxes)
+        // - grouped attributes (Utils.GroupStringConverter, http://stackoverflow.com/questions/3585017/grouping-items-in-a-combobox)
         // - use for CreateSolver()
 
+        // TODO exclude keystones not check-tagged
         // TODO better way of calculating weighting in csvs
         // TODO GeneticAlgorithm.randomBitArray() flipped bits dependent upon Total points (larger tree -> more bits set)?
         // TODO some kind of heuristic that notables (or full clusters) are generally better?
-        // TODO exclude keystones not explicitly included (check-tagged)
         // TODO option to load stat constraints from current tree
+        // TODO proper delete-row-button-icon
 
         // TODO extend advanced generator with combined stats
         // - tab in the normal UI to switch between stats imported from gear and manually typed stats
@@ -52,49 +33,73 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         // TODO automatically generate constraints -> automated generator
 
-        public string[] Stats { get; private set; }
+        public ObservableCollection<string> Attributes { get; }
 
-        public ObservableCollection<StatConstraint> StatConstraints { get; private set; }
+        public ObservableCollection<AttributeConstraint> AttributeConstraints { get; }
 
-        private RelayCommand _removeStatConstraintCommand;
+        private bool _canAddAttrConstraints = true;
 
-        public ICommand RemoveStatConstraintCommand
+        public bool CanAddAttrConstraints
+        {
+            get { return _canAddAttrConstraints; }
+            set
+            {
+                if (value == _canAddAttrConstraints) return;
+                _canAddAttrConstraints = value;
+                OnPropertyChanged("CanAddAttrConstraints");
+            }
+        }
+
+        private RelayCommand _removeAttributeConstraintCommand;
+
+        public ICommand RemoveAttributeConstraintCommand
         {
             get
             {
-                return _removeStatConstraintCommand ??
-                       (_removeStatConstraintCommand =
+                return _removeAttributeConstraintCommand ??
+                       (_removeAttributeConstraintCommand =
                            new RelayCommand(
                                param =>
                                {
-                                   var constraint = param as StatConstraint;
-                                   if (constraint != null)
-                                       StatConstraints.Remove(constraint);
+                                   AttributeConstraints.Remove((AttributeConstraint) param);
+                                   // The whole property is needed because the DataGrid doesn't add a new NewItemPlaceholder if
+                                   // you delete a new row while adding it. Resetting CanUserAddRows seems to be the only workaround for it.
+                                   CanAddAttrConstraints = !CanAddAttrConstraints;
+                                   CanAddAttrConstraints = !CanAddAttrConstraints;
                                },
-                               param =>
-                               {
-                                   var constraint = param as StatConstraint;
-                                   return constraint != null && constraint.Stat != null;
-                               }));
+                               param => param is AttributeConstraint));
             }
         }
 
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
         {
-            Stats = new[]
+            var attrList = CreatePossibleAttributes();
+            attrList.Sort();
+            Attributes = new ObservableCollection<string>(attrList);
+
+            AttributeConstraints = new ObservableCollection<AttributeConstraint>
             {
-                "#% increased maximum life",
-                "+# to maximum frenzy charges",
-                "#% increased physical damage",
-                "#% increased attack speed"
+                new AttributeConstraint(Attributes[100]),
+                new AttributeConstraint(Attributes[200]),
+                new AttributeConstraint(Attributes[0])
             };
-            StatConstraints = new ObservableCollection<StatConstraint>(new[]
-            {
-                new StatConstraint(Stats[2]),
-                new StatConstraint(Stats[3]),
-                new StatConstraint(Stats[0])
-            });
+
             DisplayName = L10n.Message("Advanced");
+        }
+
+        private static List<string> CreatePossibleAttributes()
+        {
+            var attrs = new HashSet<string>();
+            foreach (var node in SkillTree.Skillnodes)
+            {
+                if (node.Value.IsKeyStone)
+                    continue;
+                foreach (var attribute in node.Value.Attributes)
+                {
+                    attrs.Add(attribute.Key);
+                }
+            }
+            return attrs.ToList();
         }
 
         public override ISolver CreateSolver(SolverSettings settings)

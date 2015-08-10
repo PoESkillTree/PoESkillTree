@@ -13,14 +13,14 @@ namespace POESKillTree.TreeGenerator.Solver
     {
         private static readonly Regex TravelNodeRegex = new Regex(@"\+# to (Strength|Intelligence|Dexterity)");
 
-        private Tuple<float, double>[] _statConstraints;
-        private string[] _statConstraintNames;
-        private Dictionary<string, int> _statNameLookup;
+        private Tuple<float, double>[] _attrConstraints;
+        private string[] _attrConstraintNames;
+        private Dictionary<string, int> _attrNameLookup;
 
-        private Dictionary<int, List<Tuple<int, float>>> _nodeStats;
+        private Dictionary<int, List<Tuple<int, float>>> _nodeAttributes;
         private Dictionary<int, bool> _areTravelNodes;
 
-        private float[] _fixedStats;
+        private float[] _fixedAttributes;
 
         private HashSet<ushort> _fixedNodes;
 
@@ -42,13 +42,13 @@ namespace POESKillTree.TreeGenerator.Solver
         protected override void BuildSearchGraph()
         {
             // Assign a number to each StatConstraint.
-            FormalizeConstraints(Settings.StatConstraints);
+            FormalizeConstraints(Settings.AttributeConstraints);
             
             // Extract stats from nodes and set travel nodes.
             var skillNodes = Settings.SubsetTree.Count > 0
                 ? Settings.SubsetTree.ToDictionary(id => id, id => SkillTree.Skillnodes[id])
                 : SkillTree.Skillnodes;
-            _nodeStats = new Dictionary<int, List<Tuple<int, float>>>(skillNodes.Count);
+            _nodeAttributes = new Dictionary<int, List<Tuple<int, float>>>(skillNodes.Count);
             _areTravelNodes = new Dictionary<int, bool>(skillNodes.Count);
             foreach (var node in skillNodes)
             {
@@ -63,14 +63,10 @@ namespace POESKillTree.TreeGenerator.Solver
                 // through, it will break.
                 var nodeAttributes = 
                     (from attr in skillNode.Attributes
-                    where _statNameLookup.ContainsKey(attr.Key)
-                    select new Tuple<int, float>(_statNameLookup[attr.Key], attr.Value[0]))
+                    where _attrNameLookup.ContainsKey(attr.Key)
+                    select new Tuple<int, float>(_attrNameLookup[attr.Key], attr.Value[0]))
                     .ToList();
-                _nodeStats[id] = nodeAttributes;
-
-                if (nodeAttributes.Count > 0)
-                {
-                }
+                _nodeAttributes[id] = nodeAttributes;
 
                 // Set if the node is a travel node.
                 if (skillNode.Attributes.Count == 1 && TravelNodeRegex.IsMatch(skillNode.Attributes.Keys.First())
@@ -97,16 +93,16 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> statConstraints)
         {
-            _statConstraints = new Tuple<float, double>[statConstraints.Count];
-            _statConstraintNames = new string[statConstraints.Count];
-            _statNameLookup = new Dictionary<string, int>(statConstraints.Count);
-            _fixedStats = new float[statConstraints.Count];
+            _attrConstraints = new Tuple<float, double>[statConstraints.Count];
+            _attrConstraintNames = new string[statConstraints.Count];
+            _attrNameLookup = new Dictionary<string, int>(statConstraints.Count);
+            _fixedAttributes = new float[statConstraints.Count];
             var i = 0;
             foreach (var kvPair in statConstraints)
             {
-                _statConstraints[i] = kvPair.Value;
-                _statConstraintNames[i] = kvPair.Key.Replace("#", @"[0-9]*\.?[0-9]+").Replace("+", @"+").Replace(".", @".");
-                _statNameLookup.Add(kvPair.Key, i);
+                _attrConstraints[i] = kvPair.Value;
+                _attrConstraintNames[i] = kvPair.Key.Replace("#", @"[0-9]*\.?[0-9]+").Replace("+", @"+").Replace(".", @".");
+                _attrNameLookup.Add(kvPair.Key, i);
                 i++;
             }
         }
@@ -164,7 +160,7 @@ namespace POESKillTree.TreeGenerator.Solver
                     // If the node has stats and is not a travel node and is part of the subtree,
                     // the group is included.
                     if ((Settings.SubsetTree.Count == 0 || Settings.SubsetTree.Contains(node.Id))
-                        && _nodeStats[node.Id].Count > 0 && !_areTravelNodes[node.Id])
+                        && _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id])
                     {
                         mustInclude = true;
                         break;
@@ -220,7 +216,7 @@ namespace POESKillTree.TreeGenerator.Solver
             // Add all non-travel nodes with stats. TODO exclude nodes with stats that are "too far away" to be useful
             SearchSpace = new List<GraphNode>(SearchGraph.nodeDict.Values.Where(
                 node => node != StartNodes && !TargetNodes.Contains(node)
-                    && (node.Adjacent.Count > 2 || (_nodeStats[node.Id].Count > 0 && !_areTravelNodes[node.Id]))));
+                    && (node.Adjacent.Count > 2 || (_nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id]))));
         }
 
         protected override MinimalSpanningTree FilterSearchSpace()
@@ -234,14 +230,14 @@ namespace POESKillTree.TreeGenerator.Solver
             leastSolution.Span(StartNodes);
 
             // Set start stats from start and target nodes.
-            AddStats(_fixedNodes, _fixedStats);
+            AddAttributes(_fixedNodes, _fixedAttributes);
             // Add the initial stats from the settings.
-            foreach (var initialStat in Settings.InitialStats)
+            foreach (var initialStat in Settings.InitialAttributes)
             {
-                if (_statNameLookup.ContainsKey(initialStat.Key))
+                if (_attrNameLookup.ContainsKey(initialStat.Key))
                 {
-                    var tuple = new Tuple<int, float>(_statNameLookup[initialStat.Key], initialStat.Value);
-                    AddStat(tuple, _fixedStats);
+                    var tuple = new Tuple<int, float>(_attrNameLookup[initialStat.Key], initialStat.Value);
+                    AddAttribute(tuple, _fixedAttributes);
                 }
             }
 
@@ -255,7 +251,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 {
                     selectedTravelNodes++;
                 }
-                else if (_nodeStats[node.Id].Count > 0)
+                else if (_nodeAttributes[node.Id].Count > 0)
                 {
                     selectedStatNodes++;
                 }
@@ -272,20 +268,20 @@ namespace POESKillTree.TreeGenerator.Solver
             return leastSolution;
         }
 
-        private void AddStats(IEnumerable<ushort> ids, IList<float> to)
+        private void AddAttributes(IEnumerable<ushort> ids, IList<float> to)
         {
             foreach (var id in ids)
             {
-                foreach (var tuple in _nodeStats[id])
+                foreach (var tuple in _nodeAttributes[id])
                 {
-                    AddStat(tuple, to);
+                    AddAttribute(tuple, to);
                 }
             }
         }
 
-        private static void AddStat(Tuple<int, float> stat, IList<float> to)
+        private static void AddAttribute(Tuple<int, float> attrTuple, IList<float> to)
         {
-            to[stat.Item1] += stat.Item2;
+            to[attrTuple.Item1] += attrTuple.Item2;
         }
 
         private bool IsConnected(GraphNode node)
@@ -307,17 +303,17 @@ namespace POESKillTree.TreeGenerator.Solver
         protected override double FitnessFunction(MinimalSpanningTree tree)
         {
             // Add stats of the MST-nodes and start stats.
-            var totalStats = (float[])_fixedStats.Clone();
+            var totalStats = (float[])_fixedAttributes.Clone();
             var usedNodes = tree.UsedNodes;
             // Don't count the character start node.
             var usedNodeCount = tree.UsedNodeCount - 1;
             usedNodes.ExceptWith(_fixedNodes);
-            AddStats(usedNodes, totalStats);
+            AddAttributes(usedNodes, totalStats);
 
             // Calculate constraint value for each stat and multiply them.
             var csvs = 1.0;
             var i = 0;
-            foreach (var stat in _statConstraints)
+            foreach (var stat in _attrConstraints)
             {
                 csvs *= CalcCsv(totalStats[i], stat.Item2, stat.Item1);
                 i++;

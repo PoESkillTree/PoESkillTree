@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Windows.Input;
-using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
+using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
-    public sealed class SettingsViewModel : CloseableViewModel, IDataErrorInfo
+    public sealed class SettingsViewModel : CloseableViewModel
     {
 
         private readonly SkillTree _tree;
@@ -31,10 +29,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
                 var diff = value - _level;
                 _level = value;
-                _totalPoints += diff;
+                TotalPoints += diff;
 
                 OnPropertyChanged("Level");
-                OnPropertyChanged("TotalPoints");
             }
         }
 
@@ -49,10 +46,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
                 var diff = value - _additionalPoints;
                 _additionalPoints = value;
-                _totalPoints += diff;
+                TotalPoints += diff;
 
                 OnPropertyChanged("AdditionalPoints");
-                OnPropertyChanged("TotalPoints");
             }
         }
 
@@ -61,25 +57,13 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public int TotalPoints
         {
             get { return _totalPoints; }
-            //set
-            //{
-            //    if (value == _totalPoints) return;
+            private set
+            {
+                if (value == _totalPoints) return;
+                _totalPoints = value;
 
-            //    var diff = value - _totalPoints;
-            //    _totalPoints = value;
-
-            //    if (_level + diff < 1)
-            //    {
-            //        _additionalPoints += diff;
-            //        OnPropertyChanged("AdditionalPoints");
-            //    }
-            //    else
-            //    {
-            //        _level += diff;
-            //        OnPropertyChanged("Level");
-            //    }
-            //    OnPropertyChanged("TotalPoints");
-            //}
+                OnPropertyChanged("TotalPoints");
+            }
         }
 
         private bool _includeChecked = true;
@@ -162,95 +146,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         public ICommand RunCommand
         {
-            get
-            {
-                if (_runCommand == null)
-                {
-                    _runCommand = new RelayCommand(o => Run(), o => IsValid);
-                }
-                return _runCommand;
-            }
+            get { return _runCommand ?? (_runCommand = new RelayCommand(o => Run())); }
         }
-
-#endregion
-
-#region Validation
-
-        public string Error
-        {
-            get { return ValidatedProperties.Select(GetValidationError).FirstOrDefault(error => error != null); }
-        }
-
-        public string this[string columnName]
-        {
-            get { return GetValidationError(columnName); }
-        }
-
-        // see https://msdn.microsoft.com/en-us/magazine/dd419663.aspx
-
-        /// <summary>
-        /// Returns true if this object has no validation errors.
-        /// </summary>
-        public bool IsValid
-        {
-            get { return ValidatedProperties.All(property => GetValidationError(property) == null); }
-        }
-
-        private static readonly string[] ValidatedProperties =
-        {
-            "Level", "AdditionalPoints"//, "TotalPoints"
-        
-        };
-
-        /// <summary>
-        /// Returns the result of the appropriate ValidateProperty method,
-        /// if it is a validated property and null otherwise.
-        /// </summary>
-        private string GetValidationError(string propertyName)
-        {
-            switch (propertyName)
-            {
-                case "Level":
-                    return ValidateLevel();
-                case "AdditionalPoints":
-                    return ValideAdditionalPoints();
-                //case "TotalPoints":
-                    //return ValidateTotalPoints();
-                default:
-                    return null;
-            }
-        }
-
-        private string ValidateLevel()
-        {
-            if (Level < 1 || Level > 100)
-            {
-                return L10n.Message("Level must be between 1 and 100.");
-            }
-            return null;
-        }
-
-        private string ValideAdditionalPoints()
-        {
-            if (AdditionalPoints < 0 || AdditionalPoints > 24)
-            {
-                return L10n.Message("Additional points must not be between 0 and 24.");
-            }
-            return null;
-        }
-
-        //private string ValidateTotalPoints()
-        //{
-        //    if (TotalPoints < 0)
-        //    {
-        //        return L10n.Message("Total points must not be negative.");
-        //    }
-        //    if (Level - 1 + AdditionalPoints != TotalPoints)
-        //    {
-        //        return L10n.Message("Total points must be equal to level plus additional points.");
-        //    }
-        //    return null;
-        //}
 
 #endregion
 
@@ -303,7 +200,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var controllerVm = new ControllerViewModel(solver, Tabs[_selectedTabIndex].DisplayName);
 
             // Kinda crude, but I'm not going to write a framework for a few popups.
-            StartController(this, new StartControllerEventArgs(controllerVm));
+            StartController.Raise(this, new StartControllerEventArgs(controllerVm));
 
             if (controllerVm.Result == true)
             {
@@ -323,16 +220,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var totalPoints = _totalPoints;
             var @checked = _includeChecked ? _tree.GetCheckedNodes() : null;
             var crossed = _excludeCrossed ? _tree.GetCrossedNodes() : null;
-            var initialStats = ItemsToInitialStats();
+            var initialAttributes = ItemsToInitialAttributes();
             var subsetTree = _treeAsSubset ? _tree.SkilledNodes : null;
             var initialTree = _treeAsStart ? _tree.SkilledNodes : null;
-            return new SolverSettings(level, totalPoints, @checked, crossed, initialStats, subsetTree, initialTree);
+            return new SolverSettings(level, totalPoints, @checked, crossed, initialAttributes, subsetTree, initialTree);
         }
 
-        private Dictionary<string, float> ItemsToInitialStats()
+        private Dictionary<string, float> ItemsToInitialAttributes()
         {
-            // TODO ItemsToInitialStats
-            // generate base stats and stats from level
+            // TODO ItemsToInitialAttributes
+            // generate base attributes and attributes from level
             var stats = new Dictionary<string, float>
             {
                 {"+# Maximum Endurance Charge", 3},
@@ -341,7 +238,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             };
             if (_importItems)
             {
-                // add stats from items
+                // add attributes from items
             }
             return stats;
         }

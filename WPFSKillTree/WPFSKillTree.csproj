@@ -214,6 +214,7 @@
     <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
+    <Compile Include="TreeGenerator\Model\AttributeConstraint.cs" />
     <Compile Include="TreeGenerator\Settings\AdvancedSolverSettings.cs" />
     <Compile Include="TreeGenerator\Settings\AutomatedSolverSettings.cs" />
     <Compile Include="TreeGenerator\Settings\SolverSettings.cs" />
@@ -237,10 +238,13 @@
     <Compile Include="TreeGenerator\Views\SteinerGeneratorTab.xaml.cs">
       <DependentUpon>SteinerGeneratorTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TreeGenerator\Views\ValidationRules.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
     <Compile Include="Utils\DialogCloser.cs" />
+    <Compile Include="Utils\EventHandlerExtensions.cs" />
     <Compile Include="Utils\Helpers.cs" />
+    <Compile Include="Utils\IsNamedObjectVisibilityConverter.cs" />
     <Compile Include="Utils\ItemAssetDownloader.cs" />
     <Compile Include="Utils\Popup.cs" />
     <Compile Include="Utils\StringExtension.cs" />
