@@ -702,7 +702,7 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyle}" />
+                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
                                     </ListBox.GroupStyle>
                                 </ListBox>
                             </Grid>

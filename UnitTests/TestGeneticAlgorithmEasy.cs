@@ -23,7 +23,7 @@ namespace UnitTests
         {
             AppData.SetApplicationData(Environment.CurrentDirectory);
 
-            Tree = SkillTree.CreateSkillTree(() => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
+            Tree = SkillTree.CreateSkillTree((string dummy) => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
         }
 
         [TestMethod]
