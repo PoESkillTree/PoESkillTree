@@ -7,13 +7,13 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:utils="clr-namespace:POESKillTree.Utils"
              xmlns:model="clr-namespace:POESKillTree.TreeGenerator.Model"
-             xmlns:views="clr-namespace:POESKillTree.TreeGenerator.Views"
              mc:Ignorable="d" 
              x:Name="Control"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
     <Grid>
         <Grid.Resources>
             <utils:IsNamedObjectVisibilityConverter x:Key="IsNamedObjectVisibilityConverter"/>
+            <utils:DataResource x:Key="AttributeConstraints" BindingTarget="{Binding AttributeConstraints}" />
         </Grid.Resources>
 
         <DataGrid x:Name="AttrConstraintGrid"
@@ -26,10 +26,18 @@
                         <DataTemplate>
                             <ComboBox IsEditable="True" IsTextSearchEnabled="True"
                                       ItemsSource="{Binding DataContext.Attributes, ElementName=Control}">
+                                <ComboBox.Resources>
+                                    <utils:DataResource x:Key="SelectedValue" BindingTarget="{Binding}" />
+                                    <utils:DataResource x:Key="AttributeSelectorFunc" BindingTarget="{Binding AttributeSelectorFunc}"/>
+                                </ComboBox.Resources>
                                 <ComboBox.SelectedValue>
-                                    <Binding Path="Attribute">
+                                    <Binding Path="Attribute" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
-                                            <views:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
+                                            <utils:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
+                                            <utils:DuplicateValidationRule Message="Duplicate Attribute" ValidatesOnTargetUpdated="True"
+                                                                           SelectorFunc="{utils:DataResourceBinding DataResource={StaticResource AttributeSelectorFunc}}"
+                                                                           ValidationSet="{utils:DataResourceBinding DataResource={StaticResource AttributeConstraints}}"
+                                                                           SelectedValue="{utils:DataResourceBinding DataResource={StaticResource SelectedValue}}"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </ComboBox.SelectedValue>
@@ -42,7 +50,7 @@
                                 <TextBlock.Text>
                                     <Binding Path="Attribute">
                                         <Binding.ValidationRules>
-                                            <views:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
+                                            <utils:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBlock.Text>

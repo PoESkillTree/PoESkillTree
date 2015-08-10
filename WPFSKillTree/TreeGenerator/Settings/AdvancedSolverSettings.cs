@@ -29,12 +29,12 @@ namespace POESKillTree.TreeGenerator.Settings
 
             if (AttributeConstraints.Values.Any(tuple => tuple.Item2 < 0 || tuple.Item2 > 1))
             {
-                throw new ArgumentException("Weights need to be between 0 and 1", "statConstraints");
+                throw new ArgumentException("Weights need to be between 0 and 1", nameof(attributeConstraints));
             }
 
             if (CombinedConstraints.Values.Any(tuple => tuple.Item2 < 0 || tuple.Item2 > 1))
             {
-                throw new ArgumentException("Weights need to be between 0 and 1", "combinedConstraints");
+                throw new ArgumentException("Weights need to be between 0 and 1", nameof(combinedConstraints));
             }
         }
 

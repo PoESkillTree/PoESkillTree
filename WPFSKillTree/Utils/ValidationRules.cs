@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Controls;
 
-namespace POESKillTree.TreeGenerator.Views
+namespace POESKillTree.Utils
 {
     public class NotNullValidationRule : ValidationRule
     {
@@ -20,13 +22,17 @@ namespace POESKillTree.TreeGenerator.Views
     {
         public string Message { get; set; }
 
-        public ObservableCollection<string> ValidationSet { get; set; }
+        public IEnumerable ValidationSet { get; set; }
 
-        // TODO find a way to bind AdvancedTabViewModel.SelectedAttributeConstraint.Attribute or anything else here
+        public object SelectedValue { get; set; }
+
+        public Func<object, string> SelectorFunc { get; set; }
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            return value == null
+            if (value == null || ValidationSet == null) return ValidationResult.ValidResult;
+
+            return ValidationSet.Cast<object>().Any(obj => obj != SelectedValue && SelectorFunc(obj) == (string) value)
                 ? new ValidationResult(false, Message)
                 : ValidationResult.ValidResult;
         }

@@ -238,7 +238,8 @@
     <Compile Include="TreeGenerator\Views\SteinerGeneratorTab.xaml.cs">
       <DependentUpon>SteinerGeneratorTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TreeGenerator\Views\ValidationRules.cs" />
+    <Compile Include="Utils\DataResource.cs" />
+    <Compile Include="Utils\ValidationRules.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
     <Compile Include="Utils\DialogCloser.cs" />

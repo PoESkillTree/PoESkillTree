@@ -1,4 +1,6 @@
-﻿namespace POESKillTree.TreeGenerator.Model
+﻿using System;
+
+namespace POESKillTree.TreeGenerator.Model
 {
     public class AttributeConstraint
     {
@@ -14,21 +16,13 @@
             Attribute = attribute;
         }
 
-        public static int MinWeight
-        {
-            get { return 1; }
-        }
+        public static int MinWeight => 1;
 
-        public static int MaxWeight
-        {
-            get { return 100; }
-        }
+        public static int MaxWeight => 100;
 
-        public static int DefaultWeight
-        {
-            get { return 100; }
-        }
+        public static int DefaultWeight => 100;
 
+        public static Func<object, string> AttributeSelectorFunc => o => (o as AttributeConstraint)?.Attribute;
 
         public string Attribute { get; set; }
 
