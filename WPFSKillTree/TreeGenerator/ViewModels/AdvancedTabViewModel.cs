@@ -9,6 +9,7 @@ using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Model;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;
+using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
@@ -16,14 +17,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
     {
         // TODO UI for attribute constraints
         // - substring match searchable ComboBox (something like the poe.trade comboboxes)
-        // - grouped attributes (Utils.GroupStringConverter, http://stackoverflow.com/questions/3585017/grouping-items-in-a-combobox)
         // - use for CreateSolver()
 
         // TODO exclude keystones not check-tagged
+        // TODO option to load stat constraints from current tree
+
         // TODO better way of calculating weighting in csvs
         // TODO GeneticAlgorithm.randomBitArray() flipped bits dependent upon Total points (larger tree -> more bits set)?
         // TODO some kind of heuristic that notables (or full clusters) are generally better?
-        // TODO option to load stat constraints from current tree
         // TODO proper delete-row-button-icon
 
         // TODO extend advanced generator with combined stats
@@ -32,6 +33,32 @@ namespace POESKillTree.TreeGenerator.ViewModels
         // - some way to display different skill gems, support gems (maybe), weapon types
 
         // TODO automatically generate constraints -> automated generator
+
+        private static readonly GroupStringConverter AttrGroupConverter = new GroupStringConverter();
+
+        private static readonly Dictionary<string, int> AttrGroupOrder = new Dictionary<string, int>()
+        {
+            // General
+            {L10n.Message("Core Attributes"), 0},
+            {L10n.Message("General"), 1},
+            {L10n.Message("Keystone"), 2},
+            {L10n.Message("Charges"), 3},
+            // Defense
+            {L10n.Message("Defense"), 4},
+            {L10n.Message("Block"), 5},
+            {L10n.Message("Shield"), 6},
+            // Offense
+            {L10n.Message("Weapon"), 7},
+            {L10n.Message("Spell"), 8},
+            {L10n.Message("Critical Strike"), 9},
+            // Alternate Spell groups
+            {L10n.Message("Aura"), 10},
+            {L10n.Message("Curse"), 11},
+            {L10n.Message("Minion"), 12},
+            {L10n.Message("Trap"), 13},
+            {L10n.Message("Totem"), 14},
+            {"Everything else", 15}
+        };
 
         public ObservableCollection<string> Attributes { get; }
 
@@ -74,7 +101,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
         {
             var attrList = CreatePossibleAttributes();
-            attrList.Sort();
+            attrList.Sort((s1, s2) => AttrGroupOrder[AttrGroupConverter.Convert(s1).GroupName] - AttrGroupOrder[AttrGroupConverter.Convert(s2).GroupName]);
             Attributes = new ObservableCollection<string>(attrList);
 
             AttributeConstraints = new ObservableCollection<AttributeConstraint>
@@ -89,17 +116,23 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private static List<string> CreatePossibleAttributes()
         {
-            var attrs = new HashSet<string>();
+            var all = new HashSet<string>();
+            var nonUnique = new HashSet<string>();
             foreach (var node in SkillTree.Skillnodes)
             {
-                if (node.Value.IsKeyStone)
-                    continue;
                 foreach (var attribute in node.Value.Attributes)
                 {
-                    attrs.Add(attribute.Key);
+                    if (all.Contains(attribute.Key))
+                    {
+                        nonUnique.Add(attribute.Key);
+                    }
+                    else
+                    {
+                        all.Add(attribute.Key);
+                    }
                 }
             }
-            return attrs.ToList();
+            return nonUnique.ToList();
         }
 
         public override ISolver CreateSolver(SolverSettings settings)

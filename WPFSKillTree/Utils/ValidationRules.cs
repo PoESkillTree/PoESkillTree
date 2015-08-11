@@ -26,13 +26,13 @@ namespace POESKillTree.Utils
 
         public object SelectedValue { get; set; }
 
-        public Func<object, string> SelectorFunc { get; set; }
+        public Func<object, object> SelectorFunc { get; set; }
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             if (value == null || ValidationSet == null) return ValidationResult.ValidResult;
 
-            return ValidationSet.Cast<object>().Any(obj => obj != SelectedValue && SelectorFunc(obj) == (string) value)
+            return ValidationSet.Cast<object>().Any(obj => obj != SelectedValue && SelectorFunc(obj) == value)
                 ? new ValidationResult(false, Message)
                 : ValidationResult.ValidResult;
         }

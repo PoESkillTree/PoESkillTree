@@ -13,7 +13,13 @@
     <Grid>
         <Grid.Resources>
             <utils:IsNamedObjectVisibilityConverter x:Key="IsNamedObjectVisibilityConverter"/>
+            <utils:GroupStringConverter x:Key="AttributeGroupConverter"/>
             <utils:DataResource x:Key="AttributeConstraints" BindingTarget="{Binding AttributeConstraints}" />
+            <CollectionViewSource x:Key="AttributeSource" Source="{Binding Attributes}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="." Converter="{StaticResource AttributeGroupConverter}" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
         </Grid.Resources>
 
         <DataGrid x:Name="AttrConstraintGrid"
@@ -25,11 +31,20 @@
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <ComboBox IsEditable="True" IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding DataContext.Attributes, ElementName=Control}">
+                                      ItemsSource="{Binding Source={StaticResource AttributeSource}}">
                                 <ComboBox.Resources>
                                     <utils:DataResource x:Key="SelectedValue" BindingTarget="{Binding}" />
                                     <utils:DataResource x:Key="AttributeSelectorFunc" BindingTarget="{Binding AttributeSelectorFunc}"/>
                                 </ComboBox.Resources>
+                                <ComboBox.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </GroupStyle.HeaderTemplate>
+                                    </GroupStyle>
+                                </ComboBox.GroupStyle>
                                 <ComboBox.SelectedValue>
                                     <Binding Path="Attribute" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>

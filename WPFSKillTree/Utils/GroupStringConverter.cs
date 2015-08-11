@@ -262,7 +262,11 @@ namespace POESKillTree.Utils
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var s = value.ToString();
+            return Convert(value.ToString());
+        }
+
+        public AttributeGroup Convert(string s)
+        {
             foreach (var gp in Groups)
             {
                 if (s.ToLower().Contains(gp[0].ToLower()))
