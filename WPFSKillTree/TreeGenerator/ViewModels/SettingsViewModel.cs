@@ -18,7 +18,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
 #region Presentation
 
-        private int _level;
+        private int _level = 80;
 
         public int Level
         {
@@ -166,7 +166,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = "Skill tree Generator";
 
             _tree = tree;
-            _level = _tree.Level;
+            if (_tree.Level < 2 && _tree.SkilledNodes.Count - _additionalPoints > 0)
+            {
+                _level = _tree.SkilledNodes.Count - _additionalPoints;
+            }
+            else if (_tree.Level >= 2)
+            {
+                _level = _tree.Level;
+            }
             _totalPoints = _level - 1 + _additionalPoints;
 
             if (generator == null)
@@ -230,12 +237,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             // TODO ItemsToInitialAttributes
             // generate base attributes and attributes from level
-            var stats = new Dictionary<string, float>
-            {
-                {"+# Maximum Endurance Charge", 3},
-                {"+# Maximum Frenzy Charge", 3},
-                {"+# Maximum Power Charge", 3}
-            };
+            var stats = new Dictionary<string, float>();
+            //{
+            //    {"+# Maximum Endurance Charge", 3},
+            //    {"+# Maximum Frenzy Charge", 3},
+            //    {"+# Maximum Power Charge", 3}
+            //};
             if (_importItems)
             {
                 // add attributes from items

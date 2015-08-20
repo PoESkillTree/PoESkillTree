@@ -21,8 +21,13 @@
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
         </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <DataGrid x:Name="AttrConstraintGrid"
+        <DataGrid x:Name="AttrConstraintGrid" Grid.Row="0"
                   ItemsSource="{Binding AttributeConstraints}" AutoGenerateColumns="False"
                   CanUserAddRows="{Binding CanAddAttrConstraints}">
             <DataGrid.Columns>
@@ -112,5 +117,7 @@
                 
             </DataGrid.Columns>
         </DataGrid>
+        
+        <Button Grid.Row="1" Content="Load from tree" HorizontalAlignment="Center" Command="{Binding LoadAttributesCommand}"/>
     </Grid>
 </UserControl>

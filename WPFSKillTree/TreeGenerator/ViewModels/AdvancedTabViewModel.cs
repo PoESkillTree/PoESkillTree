@@ -15,8 +15,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 {
     public sealed class AdvancedTabViewModel : GeneratorTabViewModel
     {
-        // TODO option to load stat constraints from current tree
-
+        // TODO initial stats (SettingsViewModel)
         // TODO substring match searchable ComboBox (something like the poe.trade comboboxes)
         // TODO better way of calculating weighting in csvs
         // TODO GeneticAlgorithm.randomBitArray() flipped bits dependent upon Total points (larger tree -> more bits set)?
@@ -97,6 +96,17 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
+        private RelayCommand _loadAttributesCommand;
+
+        public ICommand LoadAttributesCommand
+        {
+            get
+            {
+                return _loadAttributesCommand ??
+                       (_loadAttributesCommand = new RelayCommand(param => LoadAttributesFromTree()));
+            }
+        }
+
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
         {
             var attrList = CreatePossibleAttributes();
@@ -133,6 +143,52 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 }
             }
             return nonUnique.ToList();
+        }
+
+        private void LoadAttributesFromTree()
+        {
+            Tree.UntagAllNodes();
+
+            // TODO once initial stats generation is implemented in SettingsViewModel, they need to be added here too
+            var attributes = new Dictionary<string, float>();
+            foreach (var node in Tree.SkilledNodes)
+            {
+                var skillNode = SkillTree.Skillnodes[node];
+                var hasUniqueAttribute = false;
+                foreach (var attribute in skillNode.Attributes)
+                {
+                    var attr = attribute.Key;
+                    if (Attributes.Contains(attr))
+                    {
+                        if (attribute.Value.Count == 0)
+                        {
+                            continue;
+                        }
+                        if (attributes.ContainsKey(attr))
+                        {
+                            attributes[attr] += attribute.Value[0];
+                        }
+                        else
+                        {
+                            attributes[attr] = attribute.Value[0];
+                        }
+                    }
+                    else
+                    {
+                        hasUniqueAttribute = true;
+                    }
+                }
+                if (hasUniqueAttribute)
+                {
+                    Tree.CycleNodeTagForward(skillNode);
+                }
+            }
+
+            AttributeConstraints.Clear();
+            foreach (var attribute in attributes)
+            {
+                AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
+            }
         }
 
         public override ISolver CreateSolver(SolverSettings settings)
