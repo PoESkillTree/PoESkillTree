@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using POESKillTree.SkillTreeFiles;
@@ -87,6 +86,7 @@ namespace POESKillTree.TreeGenerator.Solver
             CreateTargetNodes();
             _fixedNodes = new HashSet<ushort>(StartNodes.nodes.Select(node => node.Id));
             _fixedNodes.UnionWith(TargetNodes.Select(node => node.Id));
+            CreateFixedAttributes();
 
             CreateSearchGraph();
         }
@@ -211,24 +211,10 @@ namespace POESKillTree.TreeGenerator.Solver
                     }
                 }
             }
-
-            // Add potential steiner nodes. TODO some kind of vicinity related selection
-            // Add all non-travel nodes with stats. TODO exclude nodes with stats that are "too far away" to be useful
-            SearchSpace = new List<GraphNode>(SearchGraph.nodeDict.Values.Where(
-                node => node != StartNodes && !TargetNodes.Contains(node)
-                    && (node.Adjacent.Count > 2 || (_nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id]))));
         }
 
-        protected override MinimalSpanningTree FilterSearchSpace()
+        private void CreateFixedAttributes()
         {
-            // Don't add nodes that are not connected to the start node (through cross-tagging)
-            SearchSpace = SearchSpace.Where(IsConnected).ToList();
-
-            // LeastSolution: MST between start and check-tagged nodes.
-            var nodes = new HashSet<GraphNode>(TargetNodes) { StartNodes };
-            var leastSolution = new MinimalSpanningTree(nodes, Distances);
-            leastSolution.Span(StartNodes);
-
             // Set start stats from start and target nodes.
             AddAttributes(_fixedNodes, _fixedAttributes);
             // Add the initial stats from the settings.
@@ -240,32 +226,29 @@ namespace POESKillTree.TreeGenerator.Solver
                     AddAttribute(tuple, _fixedAttributes);
                 }
             }
+        }
 
-#if DEBUG
-            var selectedTravelNodes = 0;
-            var selectedStatNodes = 0;
-            var selectedOtherNodes = 0;
-            foreach (var node in SearchSpace)
-            {
-                if (_areTravelNodes[node.Id])
-                {
-                    selectedTravelNodes++;
-                }
-                else if (_nodeAttributes[node.Id].Count > 0)
-                {
-                    selectedStatNodes++;
-                }
-                else
-                {
-                    selectedOtherNodes++;
-                }
-            }
-            Debug.WriteLine("Travel nodes: " + selectedTravelNodes);
-            Debug.WriteLine("Stat nodes: " + selectedStatNodes);
-            Debug.WriteLine("Other nodes: " + selectedOtherNodes);
-#endif
+        protected override bool IncludeNode(GraphNode node)
+        {
+            // Add potential steiner nodes. TODO some kind of vicinity related selection
+            // Add all non-travel nodes with stats. TODO exclude nodes with stats that are "too far away" to be useful
+            return node != StartNodes && !TargetNodes.Contains(node)
+                   && (node.Adjacent.Count > 2 || (_nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id]));
+        }
 
+        protected override MinimalSpanningTree CreateLeastSolution()
+        {
+            // LeastSolution: MST between start and check-tagged nodes.
+            var nodes = new HashSet<GraphNode>(TargetNodes) { StartNodes };
+            var leastSolution = new MinimalSpanningTree(nodes, Distances);
+            leastSolution.Span(StartNodes);
             return leastSolution;
+        }
+
+        protected override bool IncludeNodeUsingDistances(GraphNode node)
+        {
+            // Don't add nodes that are not connected to the start node (through cross-tagging)
+            return IsConnected(node);
         }
 
         private void AddAttributes(IEnumerable<ushort> ids, IList<float> to)

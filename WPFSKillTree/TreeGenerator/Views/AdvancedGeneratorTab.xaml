@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
-             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:metroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:utils="clr-namespace:POESKillTree.Utils"
              xmlns:model="clr-namespace:POESKillTree.TreeGenerator.Model"
              mc:Ignorable="d" 
@@ -74,7 +74,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <controls:DataGridNumericUpDownColumn Header="Target value" Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
+                <metroControls:DataGridNumericUpDownColumn Header="Target value" Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
                 
                 <DataGridTemplateColumn Header="Weight" d:DataContext="{d:DesignInstance model:AttributeConstraint}">
                     <DataGridTemplateColumn.CellEditingTemplate>

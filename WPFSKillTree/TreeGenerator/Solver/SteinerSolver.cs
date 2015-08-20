@@ -8,6 +8,8 @@ namespace POESKillTree.TreeGenerator.Solver
 {
     public class SteinerSolver : AbstractSolver<SolverSettings>
     {
+        private int MaxEdgeDistance;
+
         protected override GeneticAlgorithmParameters GaParameters
         {
             // to test: depth of tree as parameter for maxGeneration and populationSize (more depth => harder?)
@@ -101,13 +103,15 @@ namespace POESKillTree.TreeGenerator.Solver
                     }
                 }
             }
-
-            // Steiner nodes need to have at least 2 neighbors.
-            SearchSpace = new List<GraphNode>(SearchGraph.nodeDict.Values.Where(
-                node => node.Adjacent.Count > 2 && node != StartNodes && !TargetNodes.Contains(node)));
         }
 
-        protected override MinimalSpanningTree FilterSearchSpace()
+        protected override bool IncludeNode(GraphNode node)
+        {
+            // Steiner nodes need to have at least 2 neighbors.
+            return node.Adjacent.Count > 2 && node != StartNodes && !TargetNodes.Contains(node);
+        }
+
+        protected override MinimalSpanningTree CreateLeastSolution()
         {
             var nodes = new HashSet<GraphNode>(TargetNodes) { StartNodes };
             MinimalSpanningTree leastSolution = new MinimalSpanningTree(nodes, Distances);
@@ -115,16 +119,20 @@ namespace POESKillTree.TreeGenerator.Solver
 
             if (TargetNodes.Count == 0)
             {
-                return leastSolution;
+                MaxEdgeDistance = -1;
+            }
+            else
+            {
+                MaxEdgeDistance = LeastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
             }
 
-            int maxEdgeDistance = leastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
-
-            // Find potential steiner points that are in reasonable vicinity.
-            SearchSpace = SearchSpace.Where(
-                node => TargetNodes.Any(targetNode => Distances.GetDistance(targetNode, node) < maxEdgeDistance)).ToList();
-
             return leastSolution;
+        }
+
+        protected override bool IncludeNodeUsingDistances(GraphNode node)
+        {
+            // Find potential steiner points that are in reasonable vicinity.
+            return MaxEdgeDistance >= 0 && TargetNodes.Any(targetNode => Distances.GetDistance(targetNode, node) < MaxEdgeDistance);
         }
 
         protected override double FitnessFunction(MinimalSpanningTree tree)

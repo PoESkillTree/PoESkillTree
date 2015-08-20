@@ -31,20 +31,22 @@ namespace POESKillTree.TreeGenerator.Solver
     {
         public bool IsInitialized { get; private set; }
 
-        public bool IsConsideredDone { get { return IsInitialized && CurrentGeneration >= MaxGeneration; } }
+        public bool IsConsideredDone => IsInitialized && CurrentGeneration >= MaxGeneration;
 
-        public int MaxGeneration { get { return IsInitialized ? GaParameters.MaxGeneration : 0; } }
+        public int MaxGeneration => IsInitialized ? GaParameters.MaxGeneration : 0;
 
-        public int CurrentGeneration { get { return IsInitialized ? _ga.GenerationCount : 0; } }
+        public int CurrentGeneration => IsInitialized ? _ga.GenerationCount : 0;
 
         private BitArray _bestDna;
 
         public HashSet<ushort> BestSolution { get; private set; }
 
+        protected MinimalSpanningTree LeastSolution { get; private set; }
+
         // TODO include alternative solutions
         //public IEnumerable<HashSet<ushort>> AlternativeSolutions { get; private set; }
 
-        public SkillTree Tree { get; private set; }
+        public SkillTree Tree { get; }
 
         protected readonly TS Settings;
 
@@ -56,7 +58,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected SearchGraph SearchGraph;
 
-        protected List<GraphNode> SearchSpace;
+        protected List<GraphNode> SearchSpace { get; private set; }
 
         private GeneticAlgorithm _ga;
 
@@ -73,6 +75,8 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             BuildSearchGraph();
 
+            SearchSpace = SearchGraph.nodeDict.Values.Where(IncludeNode).ToList();
+
             var consideredNodes = SearchSpace.Concat(TargetNodes).ToList();
             consideredNodes.Add(StartNodes);
             foreach (var node in consideredNodes)
@@ -83,11 +87,11 @@ namespace POESKillTree.TreeGenerator.Solver
 
             try
             {
-                var leastSolution = FilterSearchSpace();
-
                 // Saving the leastSolution as initial solution. Makes sure there is always a
                 // solution even if the search space is empty or MaxGeneration is 0.
-                BestSolution = SpannedMstToSkillnodes(leastSolution);
+                LeastSolution = CreateLeastSolution();
+                BestSolution = SpannedMstToSkillnodes(LeastSolution);
+                SearchSpace = SearchSpace.Where(IncludeNodeUsingDistances).ToList();
             }
             catch (KeyNotFoundException e)
             {
@@ -99,10 +103,16 @@ namespace POESKillTree.TreeGenerator.Solver
             IsInitialized = true;
         }
 
+        // Needs to set SearchGraph, StartNodes and TargetNodes.
         protected abstract void BuildSearchGraph();
 
-        // Filtering that needs the distances calculated.
-        protected abstract MinimalSpanningTree FilterSearchSpace();
+        // Whether the node should be included in the initial SearchSpace
+        protected abstract bool IncludeNode(GraphNode node);
+
+        protected abstract MinimalSpanningTree CreateLeastSolution();
+
+        // Filtering that needs the distances calculated, called after CreateLeastSolution.
+        protected abstract bool IncludeNodeUsingDistances(GraphNode node);
 
         private void InitializeGa()
         {
