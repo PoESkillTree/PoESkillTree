@@ -206,6 +206,9 @@ namespace POESKillTree.TreeGenerator.Solver
                         // Mastery nodes are obviously not useful.
                         if (node.IsMastery)
                             continue;
+                        // Keystones can only be included if they are check-tagged.
+                        if (node.IsKeyStone)
+                            continue;
 
                         SearchGraph.AddNode(node);
                     }

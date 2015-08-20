@@ -190,11 +190,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         public async void WindowLoaded()
         {
-            await InitializeAsync();
-            await SolveAsync();
+            if (await InitializeAsync())
+            {
+                // only start Solver if initialization was successful.
+                await SolveAsync();
+            }
         }
 
-        private async Task InitializeAsync()
+        private async Task<bool> InitializeAsync()
         {
             try
             {
@@ -218,7 +221,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 // Show a dialog and close this if the omitted nodes disconnect the tree.
                 Popup.Warning(L10n.Message("The optimizer was unable to find a conforming tree.\nPlease change skill node highlighting and try again."));
                 Close(false);
-                return;
+                return false;
             }
 
             ProgressbarMax = _maxSteps;
@@ -226,6 +229,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             CancelCloseEnabled = true;
             PauseResumeEnabled = true;
+
+            return true;
         }
 
         private async Task SolveAsync()
