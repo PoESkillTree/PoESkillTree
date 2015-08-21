@@ -1,0 +1,45 @@
+﻿List of smaller ideas/todos
+===========================
+
+Basic AdvancedSolver completion:
+- % sign after weight in AdvancedGeneratorTab
+- initial stats (SettingsViewModel)
+
+Basic AdvancedSolver optimization:
+- better way of calculating weighting in csvs
+- GeneticAlgorithm.randomBitArray() flipped bits dependent upon Total points (larger tree -> more bits set)?
+- some kind of heuristic that notables (or full clusters) are generally better?
+- how to handle csvs exceeding the target value? (curently they are capped at the target value) (AdvancedSolver.CalcCsv())
+- optimize AdvancedSolver.FitnessFunction()
+- optimize included nodes (AdvancedSolver.IncludeNode()): vicinity related steiner node selection, exclude nodes with stats that are "too far away" to be useful
+- tweak AdvancedSolver.GaParameters
+
+AdvancedSolver UI improvements:
+- preserve Tree Generator window values
+- reset button for the Tree Generator window
+- more intuitive control instead of the DataGrid
+- substring match searchable ComboBox for Attributes (something like the poe.trade comboboxes)
+- proper delete-row-button-icon
+- inform the user that keystones must be checked if they should be included (can lead to unconnected trees if notables behind keystones are checked)
+
+Miscellaneous:
+- ControllerViewModel: get best result text from Solver or somewhere else since it is somewhat solver dependant
+
+Bigger things (best to discuss these in GitHub issues)
+=============
+
+Extend advanced generator with pseudo attributes (tree only)
+
+Extend advanced generator with stats like dps, life, ... (tree + gear):
+- Compute.cs refactoring
+Random ideas to support the UI:
+- tab in the normal UI to switch between stats imported from gear and manually typed stats
+- bandit support
+- some way to display different skill gems, support gems (maybe), weapon types
+
+Automatically generate constraints -> automated generator
+
+General ideas:
+- alternative solutions
+- base class optimized, not specified by the user
+- load base stat requirements from gear

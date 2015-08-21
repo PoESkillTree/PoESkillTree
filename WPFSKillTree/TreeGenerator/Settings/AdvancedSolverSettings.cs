@@ -6,7 +6,6 @@ namespace POESKillTree.TreeGenerator.Settings
 {
     public enum CombinedStat
     {
-        // TODO fill up
         TotalHealth,
         DpsMultiplier,
         MainSkillDps

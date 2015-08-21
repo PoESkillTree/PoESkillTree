@@ -26,7 +26,7 @@ namespace POESKillTree.TreeGenerator.Solver
         protected override GeneticAlgorithmParameters GaParameters
         {
             get
-            {   // TODO adjust
+            {
                 return new GeneticAlgorithmParameters(
                     (int)(0.3 * (SearchSpace.Count < 150 ? 20000.0 / SearchSpace.Count : SearchSpace.Count)),
                     (int)(2.5 * SearchSpace.Count),
@@ -328,7 +328,7 @@ namespace POESKillTree.TreeGenerator.Solver
         private static double CalcCsv(float x, double weight, float target)
         {
             // Don't go higher than the target value.
-            // TODO Different scaling for values exceeding target value?
+            // TODO how to handle csvs exceeding the target value? (curently they are capped at the target value)
             x = Math.Min(x, target);
             return Math.Exp(weight*10 * x/target) / Math.Exp(weight*10);
         }

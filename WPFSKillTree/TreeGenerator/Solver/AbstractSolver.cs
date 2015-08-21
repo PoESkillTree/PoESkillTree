@@ -50,7 +50,6 @@ namespace POESKillTree.TreeGenerator.Solver
 
         public HashSet<ushort> BestSolution { get; private set; }
 
-        // TODO include alternative solutions
         //public IEnumerable<HashSet<ushort>> AlternativeSolutions { get; private set; }
 
         public SkillTree Tree { get; private set; }

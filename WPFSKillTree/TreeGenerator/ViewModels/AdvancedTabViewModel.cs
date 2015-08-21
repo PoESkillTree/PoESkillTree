@@ -15,22 +15,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
 {
     public sealed class AdvancedTabViewModel : GeneratorTabViewModel
     {
-        // TODO initial stats (SettingsViewModel)
-        // TODO substring match searchable ComboBox (something like the poe.trade comboboxes)
-        // TODO better way of calculating weighting in csvs
-        // TODO GeneticAlgorithm.randomBitArray() flipped bits dependent upon Total points (larger tree -> more bits set)?
-        // TODO some kind of heuristic that notables (or full clusters) are generally better?
-        // TODO proper delete-row-button-icon
-        // TODO inform the user that keystones must be checked if they should be included
-        //      (can lead to unconnected trees if notables behind keystones are checked)
-
-        // TODO extend advanced generator with combined stats
-        // - tab in the normal UI to switch between stats imported from gear and manually typed stats
-        // - bandit support
-        // - some way to display different skill gems, support gems (maybe), weapon types
-        // - Compute.cs refactoring to be used in Fitness Function
-
-        // TODO automatically generate constraints -> automated generator
 
         private static readonly GroupStringConverter AttrGroupConverter = new GroupStringConverter();
 
