@@ -50,8 +50,6 @@ namespace POESKillTree.TreeGenerator.Solver
 
         public HashSet<ushort> BestSolution { get; private set; }
 
-        protected MinimalSpanningTree LeastSolution { get; private set; }
-
         // TODO include alternative solutions
         //public IEnumerable<HashSet<ushort>> AlternativeSolutions { get; private set; }
 
@@ -98,8 +96,7 @@ namespace POESKillTree.TreeGenerator.Solver
             {
                 // Saving the leastSolution as initial solution. Makes sure there is always a
                 // solution even if the search space is empty or MaxGeneration is 0.
-                LeastSolution = CreateLeastSolution();
-                BestSolution = SpannedMstToSkillnodes(LeastSolution);
+                BestSolution = SpannedMstToSkillnodes(CreateLeastSolution());
                 SearchSpace = SearchSpace.Where(IncludeNodeUsingDistances).ToList();
             }
             catch (KeyNotFoundException e)

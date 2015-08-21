@@ -123,7 +123,7 @@ namespace POESKillTree.TreeGenerator.Solver
             }
             else
             {
-                _maxEdgeDistance = LeastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
+                _maxEdgeDistance = leastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
             }
 
             return leastSolution;
