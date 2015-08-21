@@ -58,9 +58,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {"Everything else", 15}
         };
 
-        public ObservableCollection<string> Attributes { get; }
+        public ObservableCollection<string> Attributes { get; private set; }
 
-        public ObservableCollection<AttributeConstraint> AttributeConstraints { get; }
+        public ObservableCollection<AttributeConstraint> AttributeConstraints { get; private set; }
 
         private bool _canAddAttrConstraints = true;
 

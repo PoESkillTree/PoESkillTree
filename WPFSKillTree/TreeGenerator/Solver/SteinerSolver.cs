@@ -8,7 +8,7 @@ namespace POESKillTree.TreeGenerator.Solver
 {
     public class SteinerSolver : AbstractSolver<SolverSettings>
     {
-        private int MaxEdgeDistance;
+        private int _maxEdgeDistance;
 
         protected override GeneticAlgorithmParameters GaParameters
         {
@@ -119,11 +119,11 @@ namespace POESKillTree.TreeGenerator.Solver
 
             if (TargetNodes.Count == 0)
             {
-                MaxEdgeDistance = -1;
+                _maxEdgeDistance = -1;
             }
             else
             {
-                MaxEdgeDistance = LeastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
+                _maxEdgeDistance = LeastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
             }
 
             return leastSolution;
@@ -132,7 +132,7 @@ namespace POESKillTree.TreeGenerator.Solver
         protected override bool IncludeNodeUsingDistances(GraphNode node)
         {
             // Find potential steiner points that are in reasonable vicinity.
-            return MaxEdgeDistance >= 0 && TargetNodes.Any(targetNode => Distances.GetDistance(targetNode, node) < MaxEdgeDistance);
+            return _maxEdgeDistance >= 0 && TargetNodes.Any(targetNode => Distances.GetDistance(targetNode, node) < _maxEdgeDistance);
         }
 
         protected override double FitnessFunction(MinimalSpanningTree tree)
