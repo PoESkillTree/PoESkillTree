@@ -31,11 +31,20 @@ namespace POESKillTree.TreeGenerator.Solver
     {
         public bool IsInitialized { get; private set; }
 
-        public bool IsConsideredDone => IsInitialized && CurrentGeneration >= MaxGeneration;
+        public bool IsConsideredDone
+        {
+            get { return IsInitialized && CurrentGeneration >= MaxGeneration; }
+        }
 
-        public int MaxGeneration => IsInitialized ? GaParameters.MaxGeneration : 0;
+        public int MaxGeneration
+        {
+            get { return IsInitialized ? GaParameters.MaxGeneration : 0; }
+        }
 
-        public int CurrentGeneration => IsInitialized ? _ga.GenerationCount : 0;
+        public int CurrentGeneration
+        {
+            get { return IsInitialized ? _ga.GenerationCount : 0; }
+        }
 
         private BitArray _bestDna;
 
@@ -46,7 +55,7 @@ namespace POESKillTree.TreeGenerator.Solver
         // TODO include alternative solutions
         //public IEnumerable<HashSet<ushort>> AlternativeSolutions { get; private set; }
 
-        public SkillTree Tree { get; }
+        public SkillTree Tree { get; private set; }
 
         protected readonly TS Settings;
 

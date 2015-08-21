@@ -16,13 +16,32 @@ namespace POESKillTree.TreeGenerator.Model
             Attribute = attribute;
         }
 
-        public static int MinWeight => 1;
+        public static int MinWeight
+        {
+            get { return 1; }
+        }
 
-        public static int MaxWeight => 100;
+        public static int MaxWeight
+        {
+            get { return 100; }
+        }
 
-        public static int DefaultWeight => 100;
+        public static int DefaultWeight
+        {
+            get { return 100; }
+        }
 
-        public static Func<object, string> AttributeSelectorFunc => o => (o as AttributeConstraint)?.Attribute;
+        public static Func<object, string> AttributeSelectorFunc
+        {
+            get
+            {
+                return o =>
+                {
+                    var attributeConstraint = o as AttributeConstraint;
+                    return attributeConstraint != null ? attributeConstraint.Attribute : null;
+                };
+            }
+        } 
 
         public string Attribute { get; set; }
 
