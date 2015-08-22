@@ -143,6 +143,10 @@ namespace POESKillTree.Views
             }
         }
 
+        private SettingsWindow _settingsWindow;
+
+        private bool _isClosing;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -299,10 +303,17 @@ namespace POESKillTree.Views
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            _isClosing = true;
+
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
             _persistentData.CurrentBuild.Level = tbLevel.Text;
             _persistentData.SetBuilds(lvSavedBuilds.Items);
             _persistentData.StashBookmarks = Stash.Bookmarks.ToList();
+
+            if (_settingsWindow != null)
+            {
+                _settingsWindow.Close();
+            }
         }
 
         #endregion
@@ -374,14 +385,24 @@ namespace POESKillTree.Views
 
         private void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
         {
-            var vm = new SettingsViewModel(Tree);
-            vm.RequestClose += (o, args) =>
+            if (_settingsWindow == null)
             {
-                UpdateUI();
-                tbSkillURL.Text = Tree.SaveToURL();
-            };
-            var dialog = new SettingsWindow(vm) { Owner = this };
-            dialog.Show();
+                var vm = new SettingsViewModel(Tree);
+                vm.RequestClose += (o, args) =>
+                {
+                    UpdateUI();
+                    tbSkillURL.Text = Tree.SaveToURL();
+                };
+                _settingsWindow = new SettingsWindow(vm) {Owner = this};
+                _settingsWindow.Closing += (o, args) =>
+                {
+                    if (_isClosing) return;
+
+                    args.Cancel = true;
+                    _settingsWindow.Hide();
+                };
+            }
+            _settingsWindow.Show();
         }
 
         private void Menu_ScreenShot(object sender, RoutedEventArgs e)

@@ -2,7 +2,6 @@
 ===========================
 
 Basic AdvancedSolver completion:
-- % sign after weight in AdvancedGeneratorTab
 - initial stats (SettingsViewModel)
 
 Basic AdvancedSolver optimization:
@@ -15,7 +14,6 @@ Basic AdvancedSolver optimization:
 - tweak AdvancedSolver.GaParameters
 
 AdvancedSolver UI improvements:
-- preserve Tree Generator window values
 - reset button for the Tree Generator window
 - more intuitive control instead of the DataGrid
 - substring match searchable ComboBox for Attributes (something like the poe.trade comboboxes)

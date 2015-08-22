@@ -29,7 +29,8 @@
 
         <DataGrid x:Name="AttrConstraintGrid" Grid.Row="0"
                   ItemsSource="{Binding AttributeConstraints}" AutoGenerateColumns="False"
-                  CanUserAddRows="{Binding CanAddAttrConstraints}" SelectionUnit="Cell">
+                  CanUserAddRows="{Binding CanAddAttrConstraints}"
+                  SelectionUnit="Cell" SelectionMode="Single">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridCell}">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
@@ -93,7 +94,7 @@
                                 <Slider x:Name="WeightSlider" IsEnabled="True" Width="50"
                                         TickFrequency="1" IsSnapToTickEnabled="True"
                                         Value="{Binding Weight}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
-                                <Label Content="{Binding Value, ElementName=WeightSlider}"/>
+                                <Label Content="{Binding Value, ElementName=WeightSlider}" ContentStringFormat="{}{0}%"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
@@ -102,7 +103,7 @@
                             <StackPanel Orientation="Horizontal"
                                         Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource IsNamedObjectVisibilityConverter}}">
                                 <Slider x:Name="WeightSlider" IsEnabled="False" Width="50" Value="{Binding Weight}"/>
-                                <Label Content="{Binding Value, ElementName=WeightSlider}"/>
+                                <Label Content="{Binding Value, ElementName=WeightSlider}" ContentStringFormat="{}{0}%"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
