@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace POESKillTree.TreeGenerator.Views
@@ -30,6 +31,20 @@ namespace POESKillTree.TreeGenerator.Views
         private void DeleteRowButton_OnClick(object sender, RoutedEventArgs e)
         {
             _clicked = true;
+        }
+        
+        private void DataGridCell_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var cell = sender as DataGridCell;
+            if (cell != null && !cell.IsEditing && !cell.IsReadOnly)
+            {
+                if (!cell.IsFocused)
+                {
+                    cell.Focus();
+                }
+                // DataGrid.SelectionUnit must not be "FullRow"
+                cell.IsSelected = true;
+            }
         }
     }
 }

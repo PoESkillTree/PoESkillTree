@@ -541,6 +541,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Antlr3.Runtime.dll" />
+    <Resource Include="TreeGenerator\ideas_todos.txt" />
     <None Include="Data\Equipment\Affixlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

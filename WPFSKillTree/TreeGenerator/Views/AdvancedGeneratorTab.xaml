@@ -29,7 +29,12 @@
 
         <DataGrid x:Name="AttrConstraintGrid" Grid.Row="0"
                   ItemsSource="{Binding AttributeConstraints}" AutoGenerateColumns="False"
-                  CanUserAddRows="{Binding CanAddAttrConstraints}">
+                  CanUserAddRows="{Binding CanAddAttrConstraints}" SelectionUnit="Cell">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 
                 <DataGridTemplateColumn Header="Attributes" d:DataContext="{d:DesignInstance model:AttributeConstraint}">
