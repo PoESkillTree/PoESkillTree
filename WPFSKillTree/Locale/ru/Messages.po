@@ -1,4 +1,4 @@
-# Slovak translations for PoESkillTree.
+# Russian translations for PoESkillTree.
 # This file is distributed under the same license as the PoESkillTree.
 msgid ""
 msgstr ""
@@ -7,138 +7,134 @@ msgstr ""
 "PO-Revision-Date: 2015-01-01 00:00+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: sk\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: Views\AboutWindow.xaml:12
 msgid "About PoESkillTree"
-msgstr "O PoESkillTree"
+msgstr "О PoESkillTree"
 
 #: Views\AboutWindow.xaml:27
 msgid "Version"
-msgstr "Verzia"
+msgstr "Версия"
 
 #: Views\AboutWindow.xaml:30
 msgid "Updates"
-msgstr "Aktualizácie"
+msgstr "Обновления"
 
 #: Views\AboutWindow.xaml:32
 msgid "See the GitHub page for new versions and source code:"
-msgstr "Nové verzie a zdrojový kód nájdete na GitHub stánke:"
+msgstr "Посетить страницу на GitHub для последних версий и исходного кода"
 
 #: Views\AboutWindow.xaml:40
 msgid "Authors"
-msgstr "Autori"
+msgstr "Авторы"
 
 #: Views\AboutWindow.xaml:43
 msgid "original author"
-msgstr "pôvodný autor"
+msgstr "Оригинальный автор"
 
 #: Views\AboutWindow.xaml:58
 msgid "Legal"
-msgstr "Právne"
+msgstr "Права"
 
 #: Views\AboutWindow.xaml:61
 msgid "Skill tree assets and images belong to"
-msgstr "Údaje a obrázky stromu zručností vlastní"
+msgstr "PoESkillTree использует активы и изображения, принадлежащие"
 
 #: Views\AboutWindow.xaml:62
 msgid "Data used in character calculations are from"
-msgstr "Údaje použité vo výpočtoch postavy pochádzajú z"
+msgstr "Данные, используемые в расчетах взяты с"
 
 #: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
 #: Views\DownloadStashWindow.xaml:58 Views\HelpWindow.xaml:52
 #: Views\HotkeysWindow.xaml:161 Views\OptimizerControllerWindow.xaml.cs:165
 msgid "Close"
-msgstr "Zavrieť"
+msgstr "Закрыть"
 
 #: Views\DownloadItemsWindow.xaml:10
 msgid "Download & Import Items"
-msgstr "Stiahnutie a import predmetov"
+msgstr "Загрузить и импортировать предметы"
 
 #: Views\DownloadItemsWindow.xaml:14
 msgid "Please enter Your Character and Account Name below and click on 'Open in Browser'."
-msgstr "Prosím zadajte Meno Postavy a Názov Účtu nižšie a stlačte 'Otvoriť v prehliadači'."
+msgstr "Введите Имя Героя и Имя Аккаунта и нажмите 'Открыть в браузере'."
 
 #: Views\DownloadItemsWindow.xaml:15 Views\DownloadStashWindow.xaml:28
 msgid "This will open a page in your default Web-browser containing the item data."
-msgstr "Týmto sa otvorí stránka vo Vašom prehliadači obsahujúca údaje predmetov."
+msgstr "Откроется страница в браузере содержащая данные о предметах."
 
 #: Views\DownloadItemsWindow.xaml:16
 msgid "Save the page anywhere, then click on 'Load File' and select the saved file."
-msgstr "Uložte stránku kdekoľvek, potom stlačte 'Načítať súbor' a zvoľte uložený súbor."
+msgstr "Сохраните станицу где-либо (Ctrl + S), нажмите 'Загрузить файл' и выберите сохраненный файл"
 
 #: Views\DownloadItemsWindow.xaml:23 Views\DownloadStashWindow.xaml:20
 #: Views\DownloadStashWindow.xaml:51
 msgid "Open in Browser"
-msgstr "Otvoriť v prehliadači"
+msgstr "Открыть в браузере"
 
 #: Views\DownloadItemsWindow.xaml:26
 msgid "Load File"
-msgstr "Načítať súbor"
+msgstr "Загрузить файл"
 
 #: Views\DownloadStashWindow.xaml:12
-#, fuzzy
 msgid "Please enter Account Name and league below and click on 'Open in Browser'."
-msgstr "Prosím zadajte Meno Postavy a Názov Účtu nižšie a stlačte 'Otvoriť v prehliadači'."
+msgstr "Введите Имя Аккаунта, Лигу и на 'Открыть в браузере'."
 
 #: Views\DownloadStashWindow.xaml:13
-#, fuzzy
 msgid "This will open a page in your default Web-browser containing stash tab list"
-msgstr "Týmto sa otvorí stránka vo Vašom prehliadači obsahujúca údaje predmetov."
+msgstr "В Вашем браузере по умолчанию откроется страница, содержащая список секций личного сундука"
 
 #: Views\DownloadStashWindow.xaml:14
-#, fuzzy
 msgid "Save the page anywhere, then click on 'Load stash tab list' and select the saved file."
-msgstr "Uložte stránku kdekoľvek, potom stlačte 'Načítať súbor' a zvoľte uložený súbor."
+msgstr "Сохраните страницу где-либо, после чего нажмите 'Загрузить список секций личного сундука' и выберите сохраненный файл."
 
 #: Views\DownloadStashWindow.xaml:23
 msgid "Load stash tab list"
-msgstr ""
+msgstr "Загрузить список секций личного сундука"
 
 #: Views\DownloadStashWindow.xaml:27
 msgid "Select stash tab and click 'Open in browser' below"
-msgstr ""
+msgstr "Выбрать секцию и нажмите 'Открыть в браузере' "
 
 #: Views\DownloadStashWindow.xaml:29
-#, fuzzy
 msgid "Save the page anywhere, then click on 'Load stash tab' and select the saved file."
-msgstr "Uložte stránku kdekoľvek, potom stlačte 'Načítať súbor' a zvoľte uložený súbor."
+msgstr "Сохраните станицу где-либо, нажмите 'Загрузить секцию личного сундука' и выберите сохраненный файл"
 
 #: Views\DownloadStashWindow.xaml:54
 msgid "Load stash tab"
-msgstr ""
+msgstr "Загрузить секцию"
 
 #: Views\FormChooseBuildName.xaml:10
 msgid "Build Information"
-msgstr "Informácie o zostave"
+msgstr "Информация о билде"
 
 #: Views\FormChooseBuildName.xaml:14
 msgid "Build name"
-msgstr "Názov zostavy"
+msgstr "Название билда"
 
 #: Views\FormChooseBuildName.xaml:18
 msgid "Build note"
-msgstr "Poznámka zostavy"
+msgstr "Заметки"
 
 #: Views\FormChooseBuildName.xaml:23
 msgid "Character Information"
-msgstr "Informácie o postave"
+msgstr "Информация о герое"
 
 #: Views\FormChooseBuildName.xaml:27
 msgid "Character name"
-msgstr "Meno postavy"
+msgstr "Имя Героя"
 
 #: Views\FormChooseBuildName.xaml:31
 msgid "Account name"
-msgstr "Názov účtu"
+msgstr "Имя Аккаунта"
 
 #: Views\FormChooseBuildName.xaml:35
 msgid "Items data"
-msgstr "Údaje predmetov"
+msgstr "Данные о предметах"
 
 #: Views\FormChooseBuildName.xaml:42
 msgid "OK"
@@ -146,806 +142,677 @@ msgstr "OK"
 
 #: Views\HelpWindow.xaml:13
 msgid "Help"
-msgstr "Pomocník"
+msgstr "Помощь"
 
 #: Views\HotkeysWindow.xaml:11
 msgid "Hotkeys"
-msgstr "Klávesové skratky"
+msgstr "Горячие клавиши"
 
 #: Views\HotkeysWindow.xaml:48
 msgid "Key combination"
-msgstr "Kombinácia kláves"
+msgstr "Сочитания клавиш"
 
 #: Views\HotkeysWindow.xaml:51
 msgid "Function"
-msgstr "Funkcia"
+msgstr "Предназначение"
 
 #: Views\HotkeysWindow.xaml:54
 msgid "Shift + Left Click"
-msgstr "Shift + Ľavé kliknutie"
+msgstr "Shift"
 
 #: Views\HotkeysWindow.xaml:57
 msgid "Zoom In"
-msgstr "Zväčšiť"
+msgstr "Приблизить"
 
 #: Views\HotkeysWindow.xaml:60
 msgid "Ctrl + Left Click"
-msgstr "Ctrl + Ľavé kliknutie"
+msgstr "Ctrl +  Левая кнопка мыши"
 
 #: Views\HotkeysWindow.xaml:63
 msgid "Zoom Out"
-msgstr "Zmenšiť"
+msgstr "Отдалить"
 
 #: Views\HotkeysWindow.xaml:67
 msgid "Scion"
-msgstr "Scion"
+msgstr "Дворянка"
 
 #: Views\HotkeysWindow.xaml:71
 msgid "Marauder"
-msgstr "Marauder"
+msgstr "Дикарь"
 
 #: Views\HotkeysWindow.xaml:75
 msgid "Ranger"
-msgstr "Ranger"
+msgstr "Охотница"
 
 #: Views\HotkeysWindow.xaml:79
 msgid "Witch"
-msgstr "Witch"
+msgstr "Ведьма"
 
 #: Views\HotkeysWindow.xaml:83
 msgid "Duelist"
-msgstr "Duelist"
+msgstr "Гладиатор"
 
 #: Views\HotkeysWindow.xaml:87
 msgid "Templar"
-msgstr "Templar"
+msgstr "Жрец"
 
 #: Views\HotkeysWindow.xaml:91
 msgid "Shadow"
-msgstr "Shadow"
+msgstr "Бандит"
 
 #: Views\HotkeysWindow.xaml:95
 msgid "Toggle Attributes sidebar"
-msgstr "Prepnutie panela Atribúty"
+msgstr "Показать/спрятать список атрибутов"
 
 #: Views\HotkeysWindow.xaml:99
 msgid "Toggle Character Sheet sidebar"
-msgstr "Prepnutie panela Postava"
+msgstr "Показать/спрятать список характеристкик героя"
 
 #: Views\HotkeysWindow.xaml:103
 msgid "Toggle Saved Builds sidebar"
-msgstr "Prepnutie panela Uložené zostavy"
+msgstr "Показать/спрятать список сохраненных билдов"
 
 #: Views\HotkeysWindow.xaml:107
 msgid "Copy PoEUrl link to Clipboard"
-msgstr "Skopírovať PoEUrl odkaz do Schránky"
+msgstr "Скопировать ссылку PoEUrl"
 
 #: Views\HotkeysWindow.xaml:111
 msgid "Reset Skill tree"
-msgstr "Resetovať strom zručností"
+msgstr "Сбросить пассивные навыки"
 
 #: Views\HotkeysWindow.xaml:114
 msgid "Ctrl + Up/Down"
-msgstr "Ctrl + Hore/Dole"
+msgstr "Ctrl + Up/Down"
 
 #: Views\HotkeysWindow.xaml:117
 msgid "(Saved Builds) Move build up and down"
-msgstr "(Uložené zostavy) Presunúť zostavu hore/dole"
+msgstr "(Сохраненные билды) Сдвинуть билд вверх/вниз"
 
 #: Views\HotkeysWindow.xaml:121
 msgid "Undo last Skill tree change"
-msgstr "Vrátiť poslednú zmenu v strome zručností"
+msgstr "Исправить последние измеения"
 
 #: Views\HotkeysWindow.xaml:125
 msgid "Redo last Skill tree change"
-msgstr "Obnoviť poslednú zmenu v strome zručností"
+msgstr "Отменить исправление"
 
 #: Views\HotkeysWindow.xaml:129
 msgid "Save build as"
-msgstr "Uložiť zostavu ako"
+msgstr "Сохранить билд"
 
 #: Views\HotkeysWindow.xaml:132 Views\HotkeysWindow.xaml:137
 #: Views\HotkeysWindow.xaml:143
 msgid "Right Click"
-msgstr "Pravé kliknutie"
+msgstr "Правая кнопка мыши"
 
 #: Views\HotkeysWindow.xaml:135
 msgid "(Skill tree) Center Skill tree and reset zoom"
-msgstr "(Strom zručností) Vystrediť strom zručností a resetovať priblíženie"
+msgstr "Центрировать древо умений и сбросить зум"
 
 #: Views\HotkeysWindow.xaml:140
 msgid "(Attributes) Highlight corresponding nodes in Skill tree"
-msgstr "(Atribúty) Zvýrazniť zodpovedajúce uzly v strome zručností"
+msgstr "(Атрибуты) Выделить соответствующий пассивное умение"
 
 #: Views\HotkeysWindow.xaml:146
 msgid "(Skill node) Toggle skill node highlighting"
-msgstr "(Uzol zručnosti) Prepnúť zvýraznenie uzla zručnosti"
+msgstr "Пометить пассивное умение"
 
 #: Views\HotkeysWindow.xaml:149
 msgid "Shift + Right Click"
-msgstr "Shift + Pravé kliknutie"
+msgstr "Shift + Правая кнопка мыши"
 
 #: Views\HotkeysWindow.xaml:152
 msgid "(Skill node) Toggle skill node highlighting (reversed)"
-msgstr "(Uzol zručnosti) Prepnúť zvýraznenie uzla zručnosti (obrátene)"
+msgstr "Снять метку"
 
 #: Views\HotkeysWindow.xaml:155
 msgid "Shift + Hover"
-msgstr ""
+msgstr "Shift + Hover"
 
 #: Views\HotkeysWindow.xaml:158
-#, fuzzy
 msgid "(Skill node) Highlight similar skill nodes"
-msgstr "(Uzol zručnosti) Prepnúť zvýraznenie uzla zručnosti"
+msgstr "Выделить похожие умения"
 
 #: Views\LoadingWindow.xaml:12
 msgid "Download"
-msgstr "Sťahovanie"
+msgstr "Загрузить"
 
 #: Views\MainWindow.xaml:230
 msgid "_File"
-msgstr "_Súbor"
+msgstr "файл"
 
 #: Views\MainWindow.xaml:234
 msgid "Save _As"
-msgstr "Uložiť _ako"
+msgstr "Сохранить"
 
 #: Views\MainWindow.xaml:242
 msgid "E_xit"
-msgstr "U_končiť"
+msgstr "Выйти"
 
 #: Views\MainWindow.xaml:252
 msgid "_Edit"
-msgstr "_Upraviť"
+msgstr "Изменить"
 
 #: Views\MainWindow.xaml:256
 msgid "_Undo"
-msgstr "_Späť"
+msgstr "Исправить"
 
 #: Views\MainWindow.xaml:264
 msgid "_Redo"
-msgstr "Z_novu"
+msgstr "Отменить"
 
 #: Views\MainWindow.xaml:272
 msgid "Reset Skill _Tree"
-msgstr "_Resetovať strom zručností"
+msgstr "Сбросить пассивные умения"
 
 #: Views\MainWindow.xaml:292
 msgid "_View"
-msgstr "_Zobraziť"
+msgstr "Вид"
 
 #: Views\MainWindow.xaml:296
 msgid "_Theme"
-msgstr "_Téma"
+msgstr "Тема"
 
 #: Views\MainWindow.xaml:303
 msgctxt "color"
 msgid "Light"
-msgstr "Svetlá"
+msgstr "Светлая"
 
 #: Views\MainWindow.xaml:308
 msgctxt "color"
 msgid "Dark"
-msgstr "Tmavá"
+msgstr "Темная"
 
 #: Views\MainWindow.xaml:343
 msgid "Saved _Builds"
-msgstr "Uložené _zostavy"
+msgstr "Сохраненные билды"
 
 #: Views\MainWindow.xaml:348
 msgid "_Attributes"
-msgstr "_Atribúty"
+msgstr "Атрибуты"
 
 #: Views\MainWindow.xaml:353
 msgid "_Character Sheet"
-msgstr "_Postava"
+msgstr "Список характеристкик героя"
 
 #: Views\MainWindow.xaml:358
 msgid "Skill _Tree Comparison"
-msgstr "Porovnávanie _stromov zručností"
+msgstr "Сравнение пассивных веток"
 
 #: Views\MainWindow.xaml:364
 msgid "_Tools"
-msgstr "_Nástroje"
+msgstr "Инструменты"
 
 #: Views\MainWindow.xaml:368
 msgid "Take _Screenshot of Skilled Nodes"
-msgstr "Zaznamenanie _snímky vycvičených uzlov"
+msgstr "Сделать скриншот"
 
 #: Views\MainWindow.xaml:377
 msgid "_Equipment"
-msgstr ""
+msgstr "Снаряжение"
 
 #: Views\MainWindow.xaml:384
 msgid "_Download & Import Items"
-msgstr "Stiahnutie a _import predmetov"
+msgstr "Загрузить и импортировать предметы"
 
 #: Views\MainWindow.xaml:392
-#, fuzzy
 msgid "_Download & Import Stash"
-msgstr "Stiahnutie a _import predmetov"
+msgstr "Загрузить и импортировать личный сундук"
 
 #: Views\MainWindow.xaml:406
 msgid "_Nodes"
-msgstr ""
+msgstr "Пассивные навыки"
 
 #: Views\MainWindow.xaml:413
-#, fuzzy
 msgid "Skill _Tagged Nodes"
-msgstr "_Vycvičiť zvýraznené uzly"
+msgstr "Получить отмеченные навыки"
 
 #: Views\MainWindow.xaml:418
-#, fuzzy
 msgid "Un_tag All Nodes"
-msgstr "_Zrušiť zvýraznenie uzlov"
+msgstr "Убрать все отметки"
 
 #: Views\MainWindow.xaml:423
 msgid "_Unhighlight All Nodes"
-msgstr "_Zrušiť zvýraznenie uzlov"
+msgstr "Снять выделение"
 
 #: Views\MainWindow.xaml:428
-#, fuzzy
 msgid "_Check-tag highlighted Nodes"
-msgstr "_Vycvičiť zvýraznené uzly"
+msgstr "Проверить выделенные навыки"
 
 #: Views\MainWindow.xaml:433
-#, fuzzy
 msgid "C_ross-tag highlighted Nodes"
-msgstr "_Vycvičiť zvýraznené uzly"
+msgstr "Проверить выделенные навыки"
 
 #: Views\MainWindow.xaml:439
 msgid "_Program Assets"
-msgstr ""
+msgstr "Програмниые активы"
 
 #: Views\MainWindow.xaml:446
 msgid "_Redownload Skill Tree Assets"
-msgstr "_Opätovne stiahnuť údaje stromu zručností"
+msgstr "Перезагрузить активы"
 
 #: Views\MainWindow.xaml:461
 msgid "_Help"
-msgstr "_Pomocník"
+msgstr "Помощь"
 
 #: Views\MainWindow.xaml:465
 msgid "_Links"
-msgstr "O_dkazy"
+msgstr "Ссылки"
 
 #: Views\MainWindow.xaml:472
 msgid "_Path of Exile Website"
-msgstr "_Path of Exile stránka"
+msgstr "оффициальный вебсайт Path of Exile"
 
 #: Views\MainWindow.xaml:479
 msgid "View _Help"
-msgstr "Zobraziť _pomocníka"
+msgstr "Помощь"
 
 #: Views\MainWindow.xaml:487
 msgid "Hot_keys"
-msgstr "_Klávesové skratky"
+msgstr "Горячие клавиши"
 
 #: Views\MainWindow.xaml:495
 msgid "Check for _Updates"
-msgstr "Skontrolovať _aktualizácie"
+msgstr "Проверить наличие обновлений"
 
 #: Views\MainWindow.xaml:503
 msgid "_About PoESkillTree"
-msgstr "_O PoESkillTree"
+msgstr "О PoESkillTree"
 
 #: Views\MainWindow.xaml:527
 msgid "Reset"
-msgstr "Reset"
+msgstr "Сбросить"
 
 #: Views\MainWindow.xaml:579
 msgid "Saved Builds"
-msgstr "Uložené zostavy"
+msgstr "Сохраненные билды"
 
 #: Views\MainWindow.xaml:597
 msgid "Filter:"
-msgstr "Filter:"
+msgstr "Фильтр"
 
 #: Views\MainWindow.xaml:640
 msgid "Skill tree comparison"
-msgstr "Porovnávanie stromov zručností"
+msgstr "Сравнение пассивных веток"
 
 #: Views\MainWindow.xaml:649
 msgid "Save"
-msgstr "Uložiť"
+msgstr "Сохранить"
 
 #: Views\MainWindow.xaml:652
 msgid "Save As"
-msgstr "Uložiť ako"
+msgstr "Сохранить как"
 
 #: Views\MainWindow.xaml:655
 msgid "Delete"
-msgstr "Zmazať"
+msgstr "Удалить"
 
 #: Views\MainWindow.xaml:664
 msgid "Attributes"
-msgstr "Atribúty"
+msgstr "Атрибуты"
 
 #: Views\MainWindow.xaml:671
 msgid "Passive Attributes"
-msgstr "Pasívne atribúty"
+msgstr "Пассивные свойства"
 
 #: Views\MainWindow.xaml:688
 msgid "Item Attributes"
-msgstr "Atribúty predmetov"
+msgstr "Свойства предметов"
 
 #: Views\MainWindow.xaml:707
 msgid "Total Attributes"
-msgstr "Atribúty celkovo"
+msgstr "Общее"
 
 #: Views\MainWindow.xaml:743
 msgid "Character Sheet"
-msgstr "Postava"
+msgstr "Список характеристкик героя"
 
 #: Views\MainWindow.xaml:750 SkillTreeFiles\Compute.cs:2296
 #: Utils\GroupStringConverter.cs:28
 msgid "Defense"
-msgstr "Obrana"
+msgstr "Защита"
 
 #: Views\MainWindow.xaml:767
 msgid "Offense"
-msgstr "Útok"
+msgstr "Атака"
 
 #: Views\MainWindow.xaml:801
 msgid "Search:"
-msgstr "Hľadať:"
+msgstr "Поиск"
 
 #: Views\MainWindow.xaml:808
 msgid "Skill tree link:"
-msgstr "Odkaz stromu:"
+msgstr "Сссылка"
 
 #: Views\MainWindow.xaml:814
 msgid "Load Tree"
-msgstr "Načítať strom"
+msgstr "Загрузить"
 
 #: Views\OptimizerControllerWindow.xaml:10
 msgid "Skill Tree Optimizer"
-msgstr "Optimalizátor stromu zručností"
+msgstr "Оптимизатор"
 
 #: Views\OptimizerControllerWindow.xaml:25
 msgid "Finding optimal Skill tree..."
-msgstr "Hľadanie optimálneho stromu zručností..."
+msgstr "Ищутся оптмальные пути..."
 
 #: Views\OptimizerControllerWindow.xaml:30
 msgid "Initializing..."
-msgstr "Inicializácia..."
+msgstr "Подождите..."
 
 #: SkillTreeFiles\Compute.cs:2295
 msgid "Character"
-msgstr "Postava"
+msgstr "Герой"
 
 #: SkillTreeFiles\SkillTree.cs:606
 msgid "Downloading Skill tree assets"
-msgstr "Sťahujem údaje stromu zručností"
+msgstr "Загрузить активы"
 
 #: SkillTreeFiles\SkillTree.cs:1031
-#, fuzzy
 msgid "Please tag non-skilled nodes by right-clicking them."
-msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom."
+msgstr "Отмечайте не выбранние навики используя правую кнопку мыши."
 
 #: SkillTreeFiles\SkillTreeImporter.cs:74
 #, csharp-format
 msgid "An error occured while attempting to load Skill tree from {0} location."
-msgstr "Nastala chyba pri pokuse načítať strom zručností z {0} lokácie."
+msgstr "Произошла ошибка при попытке загрузить актив из {0}"
 
 #: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:237
 msgid "Download already in progress"
-msgstr "Sťahovanie už prebieha"
+msgstr "Идет агрузка"
 
 #: SkillTreeFiles\Updater.cs:118
 msgid "Download already completed"
-msgstr "Sťahovanie už bolo dokončené"
+msgstr "Загрузка завершена"
 
 #: SkillTreeFiles\Updater.cs:160 SkillTreeFiles\Updater.cs:353
 #: SkillTreeFiles\Updater.cs:427
 msgid "Download still in progress"
-msgstr "Sťahovanie stále prebieha"
+msgstr "Идет загрузка"
 
 #: SkillTreeFiles\Updater.cs:163 SkillTreeFiles\Updater.cs:429
 msgid "No package downloaded"
-msgstr "Balík nebol stiahnutý"
+msgstr "Загрузка не осуществлена"
 
 #: SkillTreeFiles\Updater.cs:261
 msgid "No release found"
-msgstr "Žiadna verzia nebola nájdená"
+msgstr "Обровления не найдены"
 
 #: SkillTreeFiles\Updater.cs:369
 msgid "Download completed or still in progress"
-msgstr "Sťahovanie bolo donočené, alebo stále prebieha"
+msgstr "Загрузка завершена"
 
 #: SkillTreeFiles\Updater.cs:409
 msgid "The application is not correctly installed"
-msgstr "Aplikácie nie je korektne nainštalovaná"
+msgstr "Приложение не установлено"
 
 #: Utils\GroupStringConverter.cs:16
 msgid "Keystone"
-msgstr ""
+msgstr "Ключевые пассивное навики"
 
 #: Utils\GroupStringConverter.cs:17
 msgid "Weapon"
-msgstr ""
+msgstr "Оружие"
 
 #: Utils\GroupStringConverter.cs:18
-#, fuzzy
 msgid "Charges"
-msgstr "Postava"
+msgstr "Заряды"
 
 #: Utils\GroupStringConverter.cs:19
 msgid "Minion"
-msgstr ""
+msgstr "Приспешник"
 
 #: Utils\GroupStringConverter.cs:20
 msgid "Trap"
-msgstr ""
+msgstr "Ловушки"
 
 #: Utils\GroupStringConverter.cs:21
 msgid "Totem"
-msgstr ""
+msgstr "Тотемы"
 
 #: Utils\GroupStringConverter.cs:22
 msgid "Curse"
-msgstr ""
+msgstr "Проклятья"
 
 #: Utils\GroupStringConverter.cs:23
 msgid "Aura"
-msgstr ""
+msgstr "Аура"
 
 #: Utils\GroupStringConverter.cs:24
 msgid "Critical Strike"
-msgstr ""
+msgstr "Критический удар"
 
 #: Utils\GroupStringConverter.cs:25
 msgid "Shield"
-msgstr ""
+msgstr "Щит"
 
 #: Utils\GroupStringConverter.cs:26
 msgid "Block"
-msgstr ""
+msgstr "Шанс заблокировать удар"
 
 #: Utils\GroupStringConverter.cs:27
 msgid "General"
-msgstr ""
+msgstr "Общее"
 
 #: Utils\GroupStringConverter.cs:29
 msgid "Spell"
-msgstr ""
+msgstr "Чары"
 
 #: Utils\GroupStringConverter.cs:30
-#, fuzzy
 msgid "Core Attributes"
-msgstr "Atribúty predmetov"
+msgstr "Главние атрибуты"
 
 #: Utils\Popup.cs:14
 msgid "Question"
-msgstr "Otázka"
+msgstr "Вопрос"
 
 #: Utils\Popup.cs:20
 msgid "Error"
-msgstr "Chyba"
+msgstr "Ошибка"
 
 #: Utils\Popup.cs:27
 msgid "Details:"
-msgstr "Podrobnosti:"
+msgstr "Подробности"
 
 #: Utils\Popup.cs:49
 msgid "Information"
-msgstr "Informácia"
+msgstr "Информация"
 
 #: Utils\Popup.cs:55
 msgid "Warning"
-msgstr "Upozornenie"
+msgstr "Предупреждение"
 
 #: ViewModels\PoEBuild.cs:31
 #, csharp-format
 msgid "{0}, {1} point used"
 msgid_plural "{0}, {1} points used"
-msgstr[0] "{0}, {1} bod použitý"
-msgstr[1] "{0}, {1} body použité"
-msgstr[2] "{0}, {1} bodov použitých"
+msgstr[0] "{0}, {1} умений использовано"
+msgstr[1] "{0}, {1} умений использовано"
 
 #: Views\DownloadItemsWindow.xaml.cs:25 Views\DownloadItemsWindow.xaml.cs:31
 msgid "CharacterName"
-msgstr "MenoPostavy"
+msgstr "ИмяГероя"
 
 #: Views\DownloadItemsWindow.xaml.cs:26 Views\DownloadItemsWindow.xaml.cs:35
 #: Views\DownloadStashWindow.xaml.cs:54 Views\DownloadStashWindow.xaml.cs:63
 msgid "AccountName"
-msgstr "NázovÚčtu"
+msgstr "ИмяАккаунта"
 
 #: Views\DownloadStashWindow.xaml.cs:53 Views\DownloadStashWindow.xaml.cs:59
 msgid "League"
-msgstr ""
+msgstr "Лига"
 
 #: Views\DownloadStashWindow.xaml.cs:105 Views\DownloadStashWindow.xaml.cs:218
-#, fuzzy
 msgid "An error occurred while attempting to load stash data."
-msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
+msgstr "Произошла ошибка при попытке загрузить данные личного сундука."
 
 #: Views\DownloadStashWindow.xaml.cs:213
 #, csharp-format
 msgid "New tab with {0} items was added to stash"
-msgstr ""
+msgstr "Была добавлена новая секция с {0} предметами"
 
 #: Views\FormChooseBuildName.xaml.cs:33
 msgid "Not Available"
-msgstr "Nedostupné"
+msgstr "Нет доступа"
 
 #: Views\FormChooseBuildName.xaml.cs:34
 #, csharp-format
 msgid "Last updated: {0}"
-msgstr "Posledná zmena: {0}"
+msgstr "Последнее обновление {0}"
 
 #: Views\HelpWindow.xaml.cs:18
 msgid "Help file not found"
-msgstr "Súbor pomocníka nebol nájdený"
+msgstr "Файл не найден"
 
 #: Views\MainWindow.xaml.cs:439 Views\MainWindow.xaml.cs:1725
 msgid "An error occurred while copying to Clipboard."
-msgstr "Nastala chyba počas kopírovania do Schránky."
+msgstr "Произошла ошибка при копировании."
 
 #: Views\MainWindow.xaml.cs:445
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
-msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
+msgstr "Существующие активы будут удалены и будут загружены новые."
 
 #: Views\MainWindow.xaml.cs:446 Views\MainWindow.xaml.cs:1912
 msgid "Do you want to continue?"
-msgstr "Chcete pokračovať?"
+msgstr "Хотите продолжить?"
 
 #: Views\MainWindow.xaml.cs:492
 msgid "An error occurred while downloading assets."
-msgstr "Nastala chyba počas sťahovania údajov."
+msgstr "Произошла ошибка при загрузке активов."
 
 #: Views\MainWindow.xaml.cs:542
-#, fuzzy
 msgid "Checking for updates"
-msgstr "Skontrolovať _aktualizácie"
+msgstr "Проверяется наличие обновлений"
 
 #: Views\MainWindow.xaml.cs:547
 msgid "You have the latest version!"
-msgstr "Máte najnovšiu verziu!"
+msgstr "Вы используете последнюю версию!"
 
 #: Views\MainWindow.xaml.cs:552
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
-msgstr "Aktualizácia pre {0} ({1}) je k dispozícii!"
+msgstr "Доступно обновление {0} ({1})"
 
 #: Views\MainWindow.xaml.cs:555
 msgid "The application will be closed when download completes to proceed with the update."
-msgstr "Po dokončení sťahovania bude aplikácia zatvorená, aby mohla aktualizácia prebehnúť."
+msgstr "Приложение будет закрыито по завершению загрузки для продолжения обновления."
 
 #: Views\MainWindow.xaml.cs:556
 #, csharp-format
 msgid "A new version {0} is available!"
-msgstr "Nová verzia {0} je k dispozícii!"
+msgstr "Длступна новая версия {0}!"
 
 #: Views\MainWindow.xaml.cs:559
 msgid "The new version of application will be installed side-by-side with earlier versions."
-msgstr "Nová verzia aplikácie bude nainštalovaná súbežne s predchádzajúcimi verziami."
+msgstr "Новая версия прилодения будет установлена поверх предидущей."
 
 #: Views\MainWindow.xaml.cs:563
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
-msgstr "Upozornenie: Toto je predbežná verzia, ktorá môže obsahovať chyby!"
+msgstr "Внимание! Это пре-релизная версия, что значит, что моут возникать баги."
 
 #: Views\MainWindow.xaml.cs:567
 msgid "Do you want to download and install the update?"
-msgstr "Chcete stiahnuť a nainštalovať aktualizáciu?"
+msgstr "Хотите загрузить и установить обновление?"
 
 #: Views\MainWindow.xaml.cs:568
 msgid "Do you want to download and install the new version?"
-msgstr "Chcete stiahnuť a nainštalovať novú verziu?"
+msgstr "Хотите загрузить и установить новую версию?"
 
 #: Views\MainWindow.xaml.cs:581
 msgid "An error occurred while attempting to contact the update location."
-msgstr "Nastala chyba pri pokuse kontaktovať lokáciu pre aktualizácie."
+msgstr "Произошла ошибка при попытке соединения."
 
 #: Views\MainWindow.xaml.cs:591
-#, fuzzy
 msgid "Downloading latest version"
-msgstr "Sťahujem údaje stromu zručností"
+msgstr "Загрузить последнюю версию"
 
 #: Views\MainWindow.xaml.cs:596 Views\MainWindow.xaml.cs:621
 msgid "An error occurred during the download operation."
-msgstr "Nastala chyba počas sťahovania."
+msgstr "Произошла ошибка при загрузке."
 
 #: Views\MainWindow.xaml.cs:634
 msgid "An error occurred while attempting to start the installation."
-msgstr "Nastala chyba pri pokuse spustiť inštaláciu."
+msgstr "Произошла ошибка при попытке начать установку."
 
 #: Views\MainWindow.xaml.cs:1146
 msgid "An error occurred while attempting to load item data."
-msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
+msgstr "Произошла ошибка при попытке загрузки базы данных предметов."
 
 #: Views\MainWindow.xaml.cs:1218
 msgid "Right click to edit"
-msgstr "Upraviť kliknutím pravého tlačidla"
+msgstr "Нажмите правую кнопку мыши для изменения"
 
 #: Views\MainWindow.xaml.cs:1289
 msgid "Please select a saved build."
-msgstr "Prosím zvoľte uloženú zostavu."
+msgstr "Выберите сохраненный билд"
 
 #: Views\MainWindow.xaml.cs:1381
 msgid "An error occurred during a save operation."
-msgstr "Nastala chyba počas ukladania."
+msgstr "Произошла ошибка при сохранении."
 
 #: Views\MainWindow.xaml.cs:1404
 msgid "Resolving shortened tree address"
-msgstr ""
+msgstr "Обрабатывается ссылка"
 
 #: Views\MainWindow.xaml.cs:1460
 msgid "An error occurred while attempting to load Skill tree from URL."
-msgstr "Nastala chyba pri pokuse načítať strom zručností z URL."
+msgstr "Произошла ошибка при попытке загрузить ссылку."
 
 #: Views\MainWindow.xaml.cs:1705
-#, fuzzy
 msgid "Generating PoEUrl of Skill tree"
-msgstr "Skopírovať Po_EUrl odkaz do Schránky"
+msgstr "Создается ссылка PoEUrl"
 
 #: Views\MainWindow.xaml.cs:1711
-#, fuzzy
 msgid "An error occurred while attempting to contact the PoEUrl location."
-msgstr "Nastala chyba pri pokuse kontaktovať PoEUrl lokáciu."
+msgstr "Произошла ошибка при попытке соединения с PoEUrl."
 
 #: Views\MainWindow.xaml.cs:1721
 msgid "The PoEUrl link has been copied to Clipboard."
-msgstr "PoEUrl odkaz bol skopírovaný do Schránky."
+msgstr "Сссылка PoEUrl была скопирована."
 
 #: Views\MainWindow.xaml.cs:1858
 msgid "An error occurred while attempting to load saved builds."
-msgstr "Nastala chyba pri pokuse načítať uložené zostavy."
+msgstr "Произошла ошибка при попытке загрузить сохраненные билды."
 
 #: Views\MainWindow.xaml.cs:1911
-#, fuzzy
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
-msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
+msgstr "Существующие активы будут удалены и будут загружены новые."
 
 #: Views\MainWindow.xaml.cs:1932
-#, fuzzy
 msgid "Downloading Item assets"
-msgstr "Sťahujem údaje stromu zručností"
+msgstr "Загрузка активов предметов"
 
 #: Views\MainWindow.xaml.cs:2005
-#, fuzzy
 msgid "Error while downloading assets."
-msgstr "Nastala chyba počas sťahovania údajov."
+msgstr "Произошла ошибка при загрузке активов"
 
 #: Views\OptimizerControllerWindow.xaml.cs:72
 msgid "Cancel"
-msgstr "Zrušiť"
+msgstr "Закрыть"
 
 #: Views\OptimizerControllerWindow.xaml.cs:73
 #: Views\OptimizerControllerWindow.xaml.cs:196
 msgid "Pause"
-msgstr "Pozastaviť"
+msgstr "Пауза"
 
 #: Views\OptimizerControllerWindow.xaml.cs:98
-#, fuzzy
 msgid ""
 "The optimizer was unable to find a conforming tree.\n"
 "Please change skill node tagging and try again."
-msgstr ""
-"Optimalizátoru sa nepodarilo nájsť vyhovujúci strom.\n"
-"Prosím zmeňte zvýraznenie uzlov zručností a skúste to znova."
+msgstr "Измените отмечание навыков и попробуйте снова."
 
 #: Views\OptimizerControllerWindow.xaml.cs:150
 #: Views\OptimizerControllerWindow.xaml.cs:172
 #, csharp-format
 msgid "Best result so far: {0} additional point spent"
 msgid_plural "Best result so far: {0} additional points spent"
-msgstr[0] "Najlepší doterajší výsledok: {0} dodatočný bod použitý"
-msgstr[1] "Najlepší doterajší výsledok: {0} dodatočné body použité"
-msgstr[2] "Najlepší doterajší výsledok: {0} dodatočných bodov použitých"
+msgstr[0] "Лучший результат: дополнительно потрачен {0} навык"
+msgstr[1] "дополнительно потрачено {0} навыков"
 
 #: Views\OptimizerControllerWindow.xaml.cs:164
 msgid "Finished!"
-msgstr "Dokončené!"
+msgstr "Завершено!"
 
 #: Views\OptimizerControllerWindow.xaml.cs:203
 msgid "Continue"
-msgstr "Pokračovať"
-
-#~ msgid "_Clear Items"
-#~ msgstr "_Vymazať predmety"
-
-#~ msgid "Acce_nt"
-#~ msgstr "Akce_nt"
-
-#~ msgctxt "color"
-#~ msgid "Amber"
-#~ msgstr "Jantárová"
-
-#~ msgctxt "color"
-#~ msgid "Blue"
-#~ msgstr "Modrá"
-
-#~ msgctxt "color"
-#~ msgid "Brown"
-#~ msgstr "Hnedá"
-
-#~ msgctxt "color"
-#~ msgid "Cobalt"
-#~ msgstr "Kobaltová"
-
-#~ msgctxt "color"
-#~ msgid "Crimson"
-#~ msgstr "Karmínová"
-
-#~ msgctxt "color"
-#~ msgid "Cyan"
-#~ msgstr "Azúrová"
-
-#~ msgctxt "color"
-#~ msgid "Emerald"
-#~ msgstr "Smaragdová"
-
-#~ msgctxt "color"
-#~ msgid "Green"
-#~ msgstr "Zelená"
-
-#~ msgctxt "color"
-#~ msgid "Indigo"
-#~ msgstr "Indigová"
-
-#~ msgctxt "color"
-#~ msgid "Lime"
-#~ msgstr "Limetková"
-
-#~ msgctxt "color"
-#~ msgid "Magenta"
-#~ msgstr "Purpurová"
-
-#~ msgctxt "color"
-#~ msgid "Mauve"
-#~ msgstr "Mauve"
-
-#~ msgctxt "color"
-#~ msgid "Olive"
-#~ msgstr "Olivová"
-
-#~ msgctxt "color"
-#~ msgid "Orange"
-#~ msgstr "Oranžová"
-
-#~ msgctxt "color"
-#~ msgid "Pink"
-#~ msgstr "Ružová"
-
-#~ msgctxt "color"
-#~ msgid "Purple"
-#~ msgstr "Fialová"
-
-#~ msgctxt "color"
-#~ msgid "Red"
-#~ msgstr "Červená"
-
-#~ msgctxt "color"
-#~ msgid "Sienna"
-#~ msgstr "Siena"
-
-#~ msgctxt "color"
-#~ msgid "Steel"
-#~ msgstr "Oceľová"
-
-#~ msgctxt "color"
-#~ msgid "Taupe"
-#~ msgstr "Šedohnedá"
-
-#~ msgctxt "color"
-#~ msgid "Teal"
-#~ msgstr "Petrolejová"
-
-#~ msgctxt "color"
-#~ msgid "Violet"
-#~ msgstr "Fialová"
-
-#~ msgctxt "color"
-#~ msgid "Yellow"
-#~ msgstr "Žltá"
-
-#~ msgid "Copy _Passive Attributes to Clipboard"
-#~ msgstr "Skopírovať _pasívne atribúty do Schránky"
-
-#~ msgid "Level:"
-#~ msgstr "Level:"
-
-#~ msgid "Used:"
-#~ msgstr "Used:"
+msgstr "продолжать"
