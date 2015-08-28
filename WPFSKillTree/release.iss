@@ -42,6 +42,7 @@ SolidCompression=yes
 ; Note: Name cannot contain '-' (minus) character.
 Name: "en_US"; MessagesFile: "compiler:Default.isl"
 Name: "sk"; MessagesFile: "compiler:Languages\Slovak.isl"
+Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: CheckStandardMode; Flags: unchecked

@@ -672,7 +672,7 @@ msgstr ""
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:446 Views\MainWindow.xaml.cs:1912
+#: Views\MainWindow.xaml.cs:446 Views\MainWindow.xaml.cs:1911
 msgid "Do you want to continue?"
 msgstr ""
 
@@ -770,19 +770,19 @@ msgstr ""
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1858
+#: Views\MainWindow.xaml.cs:1857
 msgid "An error occurred while attempting to load saved builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1911
+#: Views\MainWindow.xaml.cs:1910
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1932
+#: Views\MainWindow.xaml.cs:1931
 msgid "Downloading Item assets"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2005
+#: Views\MainWindow.xaml.cs:2004
 msgid "Error while downloading assets."
 msgstr ""
 
