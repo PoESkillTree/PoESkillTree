@@ -27,11 +27,12 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="_Level:" Margin="5" Target="{Binding ElementName=Level}"/>
-        <controls:NumericUpDown Grid.Row="0" Grid.Column="1" x:Name="Level" Minimum="1" Maximum="100"
-                                Value="{Binding Path=Level, ValidatesOnDataErrors=True}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="Level" IsReadOnly="True"
+                 Text="{Binding Tree.Level, Mode=OneWay}"
+                 Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,40,0"/>
 
         <Label Grid.Row="1" Grid.Column="0" Content="_Additional points:" Margin="5" Target="{Binding ElementName=AddPoints}"/>
-        <controls:NumericUpDown Grid.Row="1" Grid.Column="1" x:Name="AddPoints" Minimum="0" Maximum="24"
+        <controls:NumericUpDown Grid.Row="1" Grid.Column="1" x:Name="AddPoints" Minimum="0"
                                 Value="{Binding AdditionalPoints, ValidatesOnDataErrors=True}"/>
 
         <Label Grid.Row="2" Grid.Column="0" Content="_Total points:" Margin="5" Target="{Binding ElementName=TotalPoints}"/>

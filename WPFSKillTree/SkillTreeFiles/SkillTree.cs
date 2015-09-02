@@ -3,11 +3,13 @@ using POESKillTree.Localization;
 using POESKillTree.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
@@ -19,7 +21,7 @@ using MessageBox = POESKillTree.Views.MetroMessageBox;
 
 namespace POESKillTree.SkillTreeFiles
 {
-    public partial class SkillTree
+    public partial class SkillTree : INotifyPropertyChanged
     {
         public delegate void UpdateLoadingWindow(double current, double max);
 
@@ -202,8 +204,12 @@ namespace POESKillTree.SkillTreeFiles
         public HashSet<ushort> HighlightedNodes = new HashSet<ushort>();
 
         private int _chartype;
+        
+        public static int UndefinedLevel { get { return 0; } }
 
-        private int _level = 1;
+        public static int MaximumLevel { get { return 100; } }
+
+        private int _level = UndefinedLevel;
 
 
         private static bool _Initialized = false;
@@ -472,7 +478,12 @@ namespace POESKillTree.SkillTreeFiles
         public int Level
         {
             get { return _level; }
-            set { _level = value; }
+            set
+            {
+                if (_level == value) return;
+                _level = value;
+                PropertyChanged.Raise(this, "Level");
+            }
         }
 
         public int Chartype
@@ -497,7 +508,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             get
             {
-                return GetAttributes(SkilledNodes, Chartype, _level);
+                return GetAttributes(SkilledNodes, Chartype, Level);
             }
         }
 
@@ -1147,5 +1158,7 @@ namespace POESKillTree.SkillTreeFiles
             }
             return false;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

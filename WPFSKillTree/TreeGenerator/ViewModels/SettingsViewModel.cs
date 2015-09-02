@@ -14,26 +14,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private readonly SkillTree _tree;
 
+        public SkillTree Tree { get { return _tree; } }
+
         public ObservableCollection<GeneratorTabViewModel> Tabs { get; private set; }
 
 #region Presentation
-
-        private int _level = 80;
-
-        public int Level
-        {
-            get { return _level; }
-            set
-            {
-                if (value == _level)  return;
-
-                var diff = value - _level;
-                _level = value;
-                TotalPoints += diff;
-
-                OnPropertyChanged("Level");
-            }
-        }
 
         private int _additionalPoints = 21;
 
@@ -154,15 +139,19 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = "Skill tree Generator";
 
             _tree = tree;
-            if (_tree.Level < 2 && _tree.SkilledNodes.Count - _additionalPoints > 0)
+            if (_tree.Level != SkillTree.UndefinedLevel && _tree.SkilledNodes.Count > 1)
             {
-                _level = _tree.SkilledNodes.Count - _additionalPoints;
+                _additionalPoints = _tree.SkilledNodes.Count - _tree.Level;
             }
-            else if (_tree.Level >= 2)
+            _totalPoints = _tree.Level - 1 + _additionalPoints;
+
+            tree.PropertyChanged += (sender, args) =>
             {
-                _level = _tree.Level;
-            }
-            _totalPoints = _level - 1 + _additionalPoints;
+                if (args.PropertyName == "Level")
+                {
+                    TotalPoints = _tree.Level - 1 + _additionalPoints;
+                }
+            };
 
             if (generator == null)
             {
@@ -211,7 +200,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private SolverSettings CreateSettings()
         {
-            var level = _level;
+            var level = Tree.Level;
             var totalPoints = _totalPoints;
             var @checked = _includeChecked ? _tree.GetCheckedNodes() : null;
             var crossed = _excludeCrossed ? _tree.GetCrossedNodes() : null;

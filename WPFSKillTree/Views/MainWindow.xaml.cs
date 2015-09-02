@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -95,8 +96,19 @@ namespace POESKillTree.Views
             }
         }
 
+        private SkillTree _tree;
 
-        protected SkillTree Tree;
+        public SkillTree Tree
+        {
+            get { return _tree; }
+            private set
+            {
+                _tree = value;
+                value.MainWindow = this;
+                LevelUpDown.DataContext = _tree;
+            }
+        }
+
         private Vector2D _addtransform;
         private bool _justLoaded;
         private string _lasttooltip;
@@ -194,7 +206,6 @@ namespace POESKillTree.Views
             SetAccent(_persistentData.Options.Accent);
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
-            Tree.MainWindow = this;
             recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
@@ -306,7 +317,7 @@ namespace POESKillTree.Views
             _isClosing = true;
 
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
-            _persistentData.CurrentBuild.Level = tbLevel.Text;
+            _persistentData.CurrentBuild.Level = GetLevelAsString();
             _persistentData.SetBuilds(lvSavedBuilds.Items);
             _persistentData.StashBookmarks = Stash.Bookmarks.ToList();
 
@@ -721,11 +732,22 @@ namespace POESKillTree.Views
             tbSkillURL.Text = Tree.SaveToURL();
         }
 
-        private void tbLevel_TextChanged(object sender, TextChangedEventArgs e)
+        private string GetLevelAsString()
+        {
+            return Tree.Level.ToString(CultureInfo.CurrentCulture);
+        }
+
+        private void SetLevelFromString(string s)
         {
             int lvl;
-            if (!int.TryParse(tbLevel.Text, out lvl)) return;
-            Tree.Level = lvl;
+            if (int.TryParse(s, out lvl))
+            {
+                Tree.Level = lvl;
+            }
+        }
+
+        private void Level_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> args)
+        {
             UpdateUI();
         }
 
@@ -1311,7 +1333,7 @@ namespace POESKillTree.Views
                 selectedBuild.Class = cbCharType.Text;
                 selectedBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
                 selectedBuild.AccountName = _persistentData.CurrentBuild.AccountName;
-                selectedBuild.Level = tbLevel.Text;
+                selectedBuild.Level = GetLevelAsString();
                 selectedBuild.PointsUsed = tbUsedPoints.Text;
                 selectedBuild.Url = tbSkillURL.Text;
                 selectedBuild.ItemData = _persistentData.CurrentBuild.ItemData;
@@ -1370,7 +1392,7 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild = PoEBuild.Copy(build);
 
             tbSkillURL.Text = build.Url;
-            tbLevel.Text = build.Level;
+            SetLevelFromString(build.Level);
             LoadItemData(build.ItemData);
         }
 
@@ -1384,7 +1406,7 @@ namespace POESKillTree.Views
                 var newBuild = new PoEBuild
                 {
                     Name = formBuildName.GetBuildName(),
-                    Level = tbLevel.Text,
+                    Level = GetLevelAsString(),
                     Class = cbCharType.Text,
                     PointsUsed = tbUsedPoints.Text,
                     Url = tbSkillURL.Text,

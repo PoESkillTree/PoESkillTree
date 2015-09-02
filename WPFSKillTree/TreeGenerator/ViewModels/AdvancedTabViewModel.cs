@@ -42,6 +42,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {"Everything else", 15}
         };
 
+        private static readonly Dictionary<string, float> AttributesPerLevel = new Dictionary<string, float>()
+        {
+            {"+# to maximum Mana", SkillTree.ManaPerLevel},
+            {"+# to maximum Life", SkillTree.LifePerLevel},
+            {"+# Accuracy Rating", SkillTree.AccPerLevel},
+            {"Evasion Rating: #", SkillTree.EvasPerLevel}
+        };
+
         #region Presentation
 
         public ObservableCollection<string> Attributes { get; private set; }
@@ -220,8 +228,20 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 stats[attr.Key] = attr.Value;
             }
-
-            // TODO level attributes: SkillTree.ImplicitAttributes (needs updating, influenced by str, int, dex) ???
+            // Level attributes (flat mana, life, evasion and accuracy) are blacklisted, because they are also dependent
+            // on core attributes, which are dependent on the actual tree and are pretty pointless as basic attributes anyway.
+            // For the calculation of pseudo attributes, they need to be included however.
+            foreach (var attr in AttributesPerLevel)
+            {
+                if (stats.ContainsKey(attr.Key))
+                {
+                    stats[attr.Key] += Tree.Level*attr.Value;
+                }
+                else
+                {
+                    stats[attr.Key] = Tree.Level*attr.Value;
+                }
+            }
 
             if (_importItems)
             {
