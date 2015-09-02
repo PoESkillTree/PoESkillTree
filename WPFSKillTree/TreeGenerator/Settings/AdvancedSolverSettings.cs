@@ -18,13 +18,19 @@ namespace POESKillTree.TreeGenerator.Settings
 
         public readonly Dictionary<CombinedStat, Tuple<float, double>> CombinedConstraints;
 
+        /// <summary>
+        /// Starting attributes of stats that calculations are based on. (e.g. base attributes, attributes from items)
+        /// </summary>
+        public readonly Dictionary<string, float> InitialAttributes;
+
         public AdvancedSolverSettings(int level, int totalPoints, HashSet<ushort> @checked, HashSet<ushort> crossed,
-            Dictionary<string, float> initialAttributes, HashSet<ushort> subsetTree, HashSet<ushort> initialTree,
+            HashSet<ushort> subsetTree, HashSet<ushort> initialTree, Dictionary<string, float> initialAttributes,
             Dictionary<string, Tuple<float, double>> attributeConstraints, Dictionary<CombinedStat, Tuple<float, double>> combinedConstraints)
-            : base(level, totalPoints, @checked, crossed, initialAttributes, subsetTree, initialTree)
+            : base(level, totalPoints, @checked, crossed, subsetTree, initialTree)
         {
             AttributeConstraints = attributeConstraints ?? new Dictionary<string, Tuple<float, double>>();
             CombinedConstraints = combinedConstraints ?? new Dictionary<CombinedStat, Tuple<float, double>>();
+            InitialAttributes = initialAttributes ?? new Dictionary<string, float>();
 
             if (AttributeConstraints.Values.Any(tuple => tuple.Item2 < 0 || tuple.Item2 > 1))
             {
@@ -38,10 +44,11 @@ namespace POESKillTree.TreeGenerator.Settings
         }
 
         public AdvancedSolverSettings(SolverSettings baseSettings,
+            Dictionary<string, float> initialAttributes,
             Dictionary<string, Tuple<float, double>> attributeConstraints,
             Dictionary<CombinedStat, Tuple<float, double>> combinedConstraints)
             : this(baseSettings.Level, baseSettings.TotalPoints, baseSettings.Checked, baseSettings.Crossed,
-                baseSettings.InitialAttributes, baseSettings.SubsetTree, baseSettings.InitialTree,
+                baseSettings.SubsetTree, baseSettings.InitialTree, initialAttributes,
                 attributeConstraints, combinedConstraints)
         {
         }

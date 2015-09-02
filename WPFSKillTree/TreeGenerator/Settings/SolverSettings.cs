@@ -29,11 +29,6 @@ namespace POESKillTree.TreeGenerator.Settings
         public readonly HashSet<ushort> Crossed;
 
         /// <summary>
-        /// Starting attributes of stats that calculations are based on. (e.g. base attributes, attributes from items)
-        /// </summary>
-        public readonly Dictionary<string, float> InitialAttributes;
-
-        /// <summary>
         /// Nodes the result tree must be a subset of. (empty means no restriction)
         /// </summary>
         public readonly HashSet<ushort> SubsetTree;
@@ -44,13 +39,12 @@ namespace POESKillTree.TreeGenerator.Settings
         public readonly HashSet<ushort> InitialTree;
 
         public SolverSettings(int level, int totalPoints, HashSet<ushort> @checked, HashSet<ushort> crossed,
-            Dictionary<string, float> initialAttributes, HashSet<ushort> subsetTree, HashSet<ushort> initialTree)
+            HashSet<ushort> subsetTree, HashSet<ushort> initialTree)
         {
             Level = level;
             TotalPoints = totalPoints;
             Checked = @checked ?? new HashSet<ushort>();
             Crossed = crossed ?? new HashSet<ushort>();
-            InitialAttributes = initialAttributes ?? new Dictionary<string, float>();
             SubsetTree = subsetTree ?? new HashSet<ushort>();
             InitialTree = initialTree ?? new HashSet<ushort>();
         }

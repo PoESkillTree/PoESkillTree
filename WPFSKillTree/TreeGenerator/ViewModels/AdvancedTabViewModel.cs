@@ -42,6 +42,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {"Everything else", 15}
         };
 
+        #region Presentation
+
         public ObservableCollection<string> Attributes { get; private set; }
 
         public ObservableCollection<AttributeConstraint> AttributeConstraints { get; private set; }
@@ -58,6 +60,23 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 OnPropertyChanged("CanAddAttrConstraints");
             }
         }
+        
+        private bool _importItems;
+
+        public bool ImportItems
+        {
+            get { return _importItems; }
+            set
+            {
+                if (value == _importItems) return;
+                _importItems = value;
+                OnPropertyChanged("ImportItems");
+            }
+        }
+
+        #endregion
+
+        #region Commands
 
         private RelayCommand _removeAttributeConstraintCommand;
 
@@ -90,6 +109,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
                        (_loadAttributesCommand = new RelayCommand(param => LoadAttributesFromTree()));
             }
         }
+
+        #endregion
 
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
         {
@@ -132,8 +153,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         private void LoadAttributesFromTree()
         {
             Tree.UntagAllNodes();
-
-            // TODO once initial stats generation is implemented in SettingsViewModel, they need to be added here too
+            
+            // Character class changes after calling this method will not influence the attributes
+            // (which have the old character class calculated into them)
             var attributes = new Dictionary<string, float>();
             foreach (var node in Tree.SkilledNodes)
             {
@@ -168,6 +190,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 }
             }
 
+            foreach (var attr in CreateInitialAttributes())
+            {
+                if (attributes.ContainsKey(attr.Key))
+                {
+                    attributes[attr.Key] += attr.Value;
+                }
+            }
+
             AttributeConstraints.Clear();
             foreach (var attribute in attributes)
             {
@@ -179,7 +209,25 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             var attributeConstraints = AttributeConstraints.ToDictionary(constraint => constraint.Attribute,
                 constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
-            return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, attributeConstraints, null));
+            return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, CreateInitialAttributes(), attributeConstraints, null));
+        }
+        
+        private Dictionary<string, float> CreateInitialAttributes()
+        {
+            // base attributes: SkillTree.BaseAttributes, SkillTree.CharBaseAttributes
+            var stats = new Dictionary<string, float>(SkillTree.BaseAttributes);
+            foreach (var attr in SkillTree.CharBaseAttributes[Tree.Chartype])
+            {
+                stats[attr.Key] = attr.Value;
+            }
+
+            // TODO level attributes: SkillTree.ImplicitAttributes (needs updating, influenced by str, int, dex) ???
+
+            if (_importItems)
+            {
+                // TODO add attributes from items (tree+gear mode)
+            }
+            return stats;
         }
     }
 }

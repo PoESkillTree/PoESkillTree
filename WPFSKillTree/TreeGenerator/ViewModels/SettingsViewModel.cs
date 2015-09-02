@@ -90,18 +90,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
-        private bool _importItems = true;
-
-        public bool ImportItems
-        {
-            get { return _importItems; }
-            set
-            {
-                _importItems = value;
-                OnPropertyChanged("ImportItems");
-            }
-        }
-
         private bool _treeAsSubset;
 
         public bool TreeAsSubset
@@ -227,27 +215,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var totalPoints = _totalPoints;
             var @checked = _includeChecked ? _tree.GetCheckedNodes() : null;
             var crossed = _excludeCrossed ? _tree.GetCrossedNodes() : null;
-            var initialAttributes = ItemsToInitialAttributes();
             var subsetTree = _treeAsSubset ? _tree.SkilledNodes : null;
             var initialTree = _treeAsStart ? _tree.SkilledNodes : null;
-            return new SolverSettings(level, totalPoints, @checked, crossed, initialAttributes, subsetTree, initialTree);
-        }
-
-        private Dictionary<string, float> ItemsToInitialAttributes()
-        {
-            // TODO ItemsToInitialAttributes
-            // generate base attributes and attributes from level
-            var stats = new Dictionary<string, float>();
-            //{
-            //    {"+# Maximum Endurance Charge", 3},
-            //    {"+# Maximum Frenzy Charge", 3},
-            //    {"+# Maximum Power Charge", 3}
-            //};
-            if (_importItems)
-            {
-                // add attributes from items
-            }
-            return stats;
+            return new SolverSettings(level, totalPoints, @checked, crossed, subsetTree, initialTree);
         }
 
         public event EventHandler<StartControllerEventArgs> StartController;

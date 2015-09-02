@@ -1,8 +1,10 @@
-﻿List of smaller ideas/todos
+List of smaller ideas/todos
 ===========================
 
 Basic AdvancedSolver completion:
-- initial stats (SettingsViewModel)
+- use SkillTree._hybridAttributes for splitting hybrid attributes
+- link tree level with generator level, generator level readonly
+- AdvancedViewModel.CreateInitialAttributes: what about SkillTree.ImplicitAttributes
 
 Basic AdvancedSolver optimization:
 - better way of calculating weighting in csvs

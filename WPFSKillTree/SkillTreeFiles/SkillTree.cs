@@ -1035,8 +1035,7 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
-            // Set ImportItems to false to save some runtime since it won't be used anyway.
-            var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this)) { ImportItems = false };
+            var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this));
             settingsVm.StartController += (sender, args) =>
             {
                 var dialog = new ControllerWindow(args.ViewModel) { Owner = MainWindow };
