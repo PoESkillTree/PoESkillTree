@@ -139,7 +139,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = "Skill tree Generator";
 
             _tree = tree;
-            if (_tree.Level != SkillTree.UndefinedLevel && _tree.SkilledNodes.Count > 1)
+            if (_tree.Level != SkillTree.UndefinedLevel && _tree.SkilledNodes.Count > 1
+                && _tree.SkilledNodes.Count - _tree.Level >= 0)
             {
                 _additionalPoints = _tree.SkilledNodes.Count - _tree.Level;
             }

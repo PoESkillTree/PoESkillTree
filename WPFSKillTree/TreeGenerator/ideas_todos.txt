@@ -2,9 +2,7 @@ List of smaller ideas/todos
 ===========================
 
 Basic AdvancedSolver completion:
-- Attribute Blacklist
 - use SkillTree._hybridAttributes for splitting hybrid attributes
-- NumericUpDown allows decimal values as input
 
 Basic AdvancedSolver optimization:
 - better way of calculating weighting in csvs
@@ -16,6 +14,7 @@ Basic AdvancedSolver optimization:
 - tweak AdvancedSolver.GaParameters
 
 AdvancedSolver UI improvements:
+- NumericUpDown allows decimal values as input
 - reset button for the Tree Generator window
 - more intuitive control instead of the DataGrid
 - substring match searchable ComboBox for Attributes (something like the poe.trade comboboxes)
@@ -24,6 +23,7 @@ AdvancedSolver UI improvements:
 
 Miscellaneous:
 - ControllerViewModel: get best result text from Solver or somewhere else since it is somewhat solver dependant
+- Hardcoded lists/dictionaries in AdvancedSolverViewModel to extern files
 
 Bigger things (best to discuss these in GitHub issues)
 =============

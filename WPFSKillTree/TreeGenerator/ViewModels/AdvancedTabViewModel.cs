@@ -50,6 +50,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {"Evasion Rating: #", SkillTree.EvasPerLevel}
         };
 
+        private static readonly List<string> AttributeBlackList = new List<string>()
+        {
+            "+# to maximum Mana",
+            "+# to maximum Life",
+            "+# Accuracy Rating",
+            "+# to maximum Energy Shield"
+        };
+
         #region Presentation
 
         public ObservableCollection<string> Attributes { get; private set; }
@@ -145,13 +153,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 foreach (var attribute in node.Value.Attributes)
                 {
-                    if (all.Contains(attribute.Key))
+                    var key = attribute.Key;
+                    if (AttributeBlackList.Contains(key)) continue;
+
+                    if (all.Contains(key))
                     {
-                        nonUnique.Add(attribute.Key);
+                        nonUnique.Add(key);
                     }
                     else
                     {
-                        all.Add(attribute.Key);
+                        all.Add(key);
                     }
                 }
             }
