@@ -82,7 +82,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 // Attributes without value are not supported, if a constraint without value slips
                 // through, it will break.
                 var nodeAttributes = 
-                    (from attr in skillNode.Attributes
+                    (from attr in SkillTree.ExpandHybridAttributes(skillNode.Attributes)
                     where _attrNameLookup.ContainsKey(attr.Key)
                     select new Tuple<int, float>(_attrNameLookup[attr.Key], attr.Value[0]))
                     .ToList();

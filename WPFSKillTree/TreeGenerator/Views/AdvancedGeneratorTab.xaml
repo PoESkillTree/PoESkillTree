@@ -98,7 +98,7 @@
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Slider x:Name="WeightSlider" IsEnabled="True" Width="80"
+                                <Slider x:Name="WeightSlider" IsEnabled="True" Width="100"
                                         TickFrequency="1" IsSnapToTickEnabled="True"
                                         Value="{Binding Weight}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
                                 <Label Content="{Binding Value, ElementName=WeightSlider}" ContentStringFormat="{}{0}%"/>
@@ -109,7 +109,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal"
                                         Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource IsNamedObjectVisibilityConverter}}">
-                                <Slider x:Name="WeightSlider" IsEnabled="False" Width="80" Value="{Binding Weight}"/>
+                                <Slider x:Name="WeightSlider" IsEnabled="False" Width="100" Value="{Binding Weight}"/>
                                 <Label Content="{Binding Value, ElementName=WeightSlider}" ContentStringFormat="{}{0}%"/>
                             </StackPanel>
                         </DataTemplate>

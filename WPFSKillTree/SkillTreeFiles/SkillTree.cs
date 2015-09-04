@@ -62,7 +62,7 @@ namespace POESKillTree.SkillTreeFiles
             {"#% Critical Strike Chance Increase per Power Charge", 50},
         };
 
-        private static readonly Dictionary<string, List<string>> _hybridAttributes = new Dictionary<string, List<string>>
+        public static readonly Dictionary<string, List<string>> HybridAttributes = new Dictionary<string, List<string>>
         {
             {
                "+# to Strength and Intelligence", 
@@ -1122,12 +1122,12 @@ namespace POESKillTree.SkillTreeFiles
             DrawNodeSurround();
         }
 
-        private static Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
+        public static Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
         {
             foreach (var attribute in attributes.ToList())
             {
                 List<string> expandedAttributes;
-                if (_hybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
+                if (HybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
                 {
                     attributes.Remove(attribute.Key);
 

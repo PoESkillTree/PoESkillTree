@@ -151,7 +151,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var nonUnique = new HashSet<string>();
             foreach (var node in SkillTree.Skillnodes)
             {
-                foreach (var attribute in node.Value.Attributes)
+                foreach (var attribute in SkillTree.ExpandHybridAttributes(node.Value.Attributes))
                 {
                     var key = attribute.Key;
                     if (AttributeBlackList.Contains(key)) continue;
@@ -180,7 +180,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 var skillNode = SkillTree.Skillnodes[node];
                 var hasUniqueAttribute = false;
-                foreach (var attribute in skillNode.Attributes)
+                foreach (var attribute in SkillTree.ExpandHybridAttributes(skillNode.Attributes))
                 {
                     var attr = attribute.Key;
                     if (Attributes.Contains(attr))
