@@ -42,7 +42,7 @@
         <CheckBox Grid.Row="0" Grid.Column="2" Margin="20,5,10,5" Content="include Check-tagged nodes" IsChecked="{Binding IncludeChecked}"/>
         <CheckBox Grid.Row="1" Grid.Column="2" Margin="20,5,10,5" Content="exclude Cross-tagged nodes" IsChecked="{Binding ExcludeCrossed}"/>
         <CheckBox Grid.Row="0" Grid.Column="3" Margin="10,5" Content="only search in current tree" IsChecked="{Binding TreeAsSubset}"/>
-        <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" Content="current tree as start point" IsChecked="{Binding TreeAsStart}"/>
+        <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" Content="current tree as initial solution" IsChecked="{Binding TreeAsStart}"/>
 
         <Button Grid.Row="2" Grid.Column="3" Content="_Run" Margin="10,5" Command="{Binding RunCommand}" IsDefault="True"/>
         

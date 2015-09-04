@@ -10,6 +10,27 @@ namespace POESKillTree.TreeGenerator.Solver
 {
     public class AdvancedSolver : AbstractSolver<AdvancedSolverSettings>
     {
+        private const double GenMultiplier = 0.4;
+
+        private const double PopMultiplier = 5;
+
+        private const int ConstRuntimeEndpoint = 150;
+
+        /// <summary>
+        /// Weight of the CSV of the used node count if it is higher than the allowed node count.
+        /// </summary>
+        private const double UsedNodeCountWeight = 5;
+
+        /// <summary>
+        /// Factor for the value calculated from the node difference if used node count is lower than the allowed node coutn.
+        /// </summary>
+        private const double UsedNodeCountFactor = .01;
+
+        /// <summary>
+        /// Factor by which weights get multiplied in the CSV calculation.
+        /// </summary>
+        private const double CsvWeightMultiplier = 10;
+
         private static readonly Regex TravelNodeRegex = new Regex(@"\+# to (Strength|Intelligence|Dexterity)");
 
         private Tuple<float, double>[] _attrConstraints;
@@ -28,8 +49,8 @@ namespace POESKillTree.TreeGenerator.Solver
             get
             {
                 return new GeneticAlgorithmParameters(
-                    (int)(0.3 * (SearchSpace.Count < 150 ? 20000.0 / SearchSpace.Count : SearchSpace.Count)),
-                    (int)(2.5 * SearchSpace.Count),
+                    (int)(GenMultiplier * (SearchSpace.Count < ConstRuntimeEndpoint ? (ConstRuntimeEndpoint * ConstRuntimeEndpoint) / SearchSpace.Count : SearchSpace.Count)),
+                    (int)(PopMultiplier * SearchSpace.Count),
                     SearchSpace.Count, 6, 1);
             }
         }
@@ -293,6 +314,7 @@ namespace POESKillTree.TreeGenerator.Solver
             var usedNodes = tree.UsedNodes;
             // Don't count the character start node.
             var usedNodeCount = tree.UsedNodeCount - 1;
+            var totalPoints = Settings.TotalPoints;
             usedNodes.ExceptWith(_fixedNodes);
             AddAttributes(usedNodes, totalStats);
 
@@ -306,20 +328,20 @@ namespace POESKillTree.TreeGenerator.Solver
             }
 
             // Total points spent is another csv.
-            if (usedNodeCount > Settings.TotalPoints)
+            if (usedNodeCount > totalPoints)
             {
                 // If UsedNodeCount is higher than Settings.TotalPoints, it is 
                 // calculated as a csv with a weight of 5. (and lower = better)
-                csvs *= CalcCsv(2 * Settings.TotalPoints - usedNodeCount, 5, Settings.TotalPoints);
+                csvs *= CalcCsv(2 * totalPoints - usedNodeCount, UsedNodeCountWeight, totalPoints);
             }
-            else
+            else if (usedNodeCount < totalPoints)
             {
                 // TODO test this factor, might not be optimal
                 // optimal: least points spent with csv product = 1 (all constraints satisfied)
                 // That means: minimize UsedNodeCount until Settings.TotalPoints > maximize csvs > minimize UsedNodeCount
 
                 // If it is lower, apply it as a logarithmic factor.
-                csvs *= 1 + 0.5 * Math.Log(Settings.TotalPoints + 1 - usedNodeCount);
+                csvs *= 1 + UsedNodeCountFactor * Math.Log(totalPoints + 1 - usedNodeCount);
             }
 
             return csvs;
@@ -330,7 +352,7 @@ namespace POESKillTree.TreeGenerator.Solver
             // Don't go higher than the target value.
             // TODO how to handle csvs exceeding the target value? (curently they are capped at the target value)
             x = Math.Min(x, target);
-            return Math.Exp(weight*10 * x/target) / Math.Exp(weight*10);
+            return Math.Exp(weight * CsvWeightMultiplier * x/target) / Math.Exp(weight * CsvWeightMultiplier);
         }
     }
 }

@@ -8,17 +8,25 @@ namespace POESKillTree.TreeGenerator.Solver
 {
     public class SteinerSolver : AbstractSolver<SolverSettings>
     {
+        private const double GenMultiplier = 0.3;
+
+        private const double PopMultiplier = 1.5;
+
+        private const int ConstRuntimeEndpoint = 150;
+
         private int _maxEdgeDistance;
 
         protected override GeneticAlgorithmParameters GaParameters
         {
-            // to test: depth of tree as parameter for maxGeneration and populationSize (more depth => harder?)
+            // TODO to test: depth of tree as parameter for maxGeneration and populationSize (more depth => harder?)
             // something like average distance of target nodes to each other?
+            // up to ConstRuntimeEndpoint: maxGeneration * populationSize = GenMultiplier * PopMultiplier * ConstRuntimeEndpoint^2
+            // after that: maxGeneration * populationSize = GenMultiplier * PopMultiplier * SearchSpace.Count^2
             get
             {
                 return new GeneticAlgorithmParameters(
-                    (int)(0.3 * (SearchSpace.Count < 150 ? 20000.0 / SearchSpace.Count : SearchSpace.Count)),
-                    (int)(1.5 * SearchSpace.Count),
+                    (int)(GenMultiplier * (SearchSpace.Count < ConstRuntimeEndpoint ? (ConstRuntimeEndpoint*ConstRuntimeEndpoint) / SearchSpace.Count : SearchSpace.Count)),
+                    (int)(PopMultiplier * SearchSpace.Count),
                     SearchSpace.Count, 6, 1);
             }
         }
