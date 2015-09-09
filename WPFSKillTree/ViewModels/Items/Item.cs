@@ -285,9 +285,9 @@ namespace POESKillTree.ViewModels.Items
                 Y = val["y"].Value<int>();
 
             if (val["name"] != null)
-                NameLine = val["name"].Value<string>();
+                NameLine = FilterJSONString(val["name"].Value<string>());
 
-            TypeLine = BaseType = val["typeLine"].Value<string>();
+            TypeLine = BaseType = FilterJSONString(val["typeLine"].Value<string>());
 
             Frame = (FrameType)val["frameType"].Value<int>();
 
@@ -433,6 +433,16 @@ namespace POESKillTree.ViewModels.Items
                     Gems.Add(item);
                 }
             }
+        }
+
+        private string FilterJSONString(string json)
+        {
+            var items = json.Split(new string[] { ">>" }, System.StringSplitOptions.None);
+
+            if (items.Count() == 1)
+                return json;
+
+            return items[3];
         }
 
         // Returns gems linked to specified gem.
