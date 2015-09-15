@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -158,6 +159,62 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 this.DNA = DNA;
                 Fitness = fitness;
                 this.Age = 0;
+            }
+        }
+        
+        /// <summary>
+        /// Cache for the fitness values so they are only calculated once.
+        /// </summary>
+        private readonly ConcurrentDictionary<BitArrayKey, double> _fitnessCache = new ConcurrentDictionary<BitArrayKey, double>();
+
+        /// <summary>
+        /// Class for using BitArrays as keys in dictonaries.
+        /// Equality and HashCodes are based on the encapsulated bool[].
+        /// </summary>
+        private class BitArrayKey
+        {
+            private readonly int _hash;
+
+            public readonly BitArray Data;
+
+            public BitArrayKey(BitArray data)
+            {
+                Data = data;
+                _hash = GetHashCode(data);
+            }
+
+            public override bool Equals(object obj)
+            {
+                var other = obj as BitArrayKey;
+                return other != null && Equals(Data, other.Data);
+            }
+
+            public override int GetHashCode()
+            {
+                return _hash;
+            }
+
+            private static bool Equals(BitArray x, BitArray y)
+            {
+                for (var i = 0; i < x.Length; i++)
+                {
+                    if (x[i] != y[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            private static int GetHashCode(BitArray obj)
+            {
+                var result = 29;
+                foreach (bool b in obj)
+                {
+                    if (b) result++;
+                    result *= 23;
+                }
+                return result;
             }
         }
 
@@ -381,13 +438,14 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <summary>
         ///  Factory method for generating a new individual from a DNA. Passing the
         ///  fitness function to every individual is weird, so that gets done here.
+        ///  Fitness values are cached so they are only calculated once.
         /// </summary>
         /// <param name="dna">The DNA of the new individual.</param>
         /// <returns>The new individual.</returns>
         private Individual spawnIndividual(BitArray dna)
         {
-            Individual individual = new Individual(dna, solutionFitness(dna));
-            return individual;
+            var fitness = _fitnessCache.GetOrAdd(new BitArrayKey(dna), key => solutionFitness(key.Data));
+            return new Individual(dna, fitness);
         }
 
         #region DNA mutation
