@@ -209,9 +209,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             private static int GetHashCode(BitArray obj)
             {
                 var result = 29;
-                foreach (bool b in obj)
+                for (var i = 0; i < obj.Length; i++)
                 {
-                    if (b) result++;
+                    if (obj.Get(i)) result++;
                     result *= 23;
                 }
                 return result;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
@@ -25,6 +24,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         private Random random;
 
         /// <summary>
+        /// The entries SortedDictonary as Array. Enables index access and therefore binary search.
+        /// </summary>
+        private KeyValuePair<double, T>[] _indexedEntries;
+        /// <summary>
+        /// If RandomSample uses indexed entries. Gets disabled if AddEntry is called after RandomSample.
+        /// </summary>
+        private bool _indexingEnabled = true;
+
+        /// <summary>
         ///  Indicates whether any entries are present to sample from.
         /// </summary>
         public bool CanSample
@@ -46,8 +54,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             entries = new SortedDictionary<double, T>();
             totalWeight = 0;
 
-            if (random == null) this.random = new Random();
-            else this.random = random;
+            this.random = random ?? new Random();
         }
 
         /// <summary>
@@ -70,6 +77,14 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
             // This is where the CDF comes from.
             entries.Add(totalWeight, entry);
+
+            if (_indexedEntries != null && _indexingEnabled)
+            {
+                // If AddEntry() is called after RandomSample() is called, indexing is not
+                // better since it needs to be done more than once.
+                _indexingEnabled = false;
+                _indexedEntries = null;
+            }
         }
 
         /// <summary>
@@ -79,11 +94,50 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <returns>The randomly drawn element.</returns>
         public T RandomSample()
         {
+            if (_indexedEntries == null && _indexingEnabled)
+            {
+                _indexedEntries = entries.ToArray();
+            }
+
             // Randomly sample the CDF.
             double r = random.NextDouble() * totalWeight;
-            var entry = entries.First(kvp => kvp.Key >= r);
 
-            return entry.Value;
+            // We want to find the first entry with key >= r.
+            if (_indexedEntries != null)
+            {
+                // If the entries are accessible via index, binary search is fastest. O(log n)
+                // At least for entry counts where it matters.
+                var imin = 0;
+                var imax = _indexedEntries.Length - 1;
+                var i = 0;
+                var key = _indexedEntries[0].Key;
+
+                while (imin < imax)
+                {
+                    i = (imin + imax) / 2;
+                    key = _indexedEntries[i].Key;
+                    if (key < r)
+                    {
+                        imin = i + 1;
+                    }
+                    else
+                    {
+                        imax = i - 1;
+                    }
+                }
+                
+                // Above search either returns the correct index or is the correct index - 1.
+                if (key < r) i++;
+                return _indexedEntries[i].Value;
+            }
+            else
+            {
+                // If AddEntry() is called between RandomSample()-calls, indexing is slower than
+                // a simple linear search. (O(n))
+                var entry = entries.First(kvp => kvp.Key >= r);
+
+                return entry.Value;
+            }
         }
 
         /// <summary>
