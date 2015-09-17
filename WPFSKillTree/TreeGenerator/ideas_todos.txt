@@ -2,6 +2,8 @@ List of smaller ideas/todos
 ===========================
 
 Basic AdvancedSolver optimization:
+- crossover/mutation based on position instead of fitness (makes the algorithm independent of the fitness function implementation)
+- Span/DistanceLookup dictonaries as arrays for speedup
 - final simple hill climbing (switch single genes for a better fitness until no single gene can be switched for a better fitness)?
 - better way of calculating weighting in csvs
 - GeneticAlgorithm.randomBitArray() flipped bits dependent upon Total points (larger tree -> more bits set)?
@@ -20,6 +22,7 @@ AdvancedSolver UI improvements:
 - inform the user that keystones must be checked if they should be included (can lead to unconnected trees if notables behind keystones are checked)
 
 Miscellaneous:
+- more/updated Unit Tests (e.g. binary search in WeightedSampling)
 - ControllerViewModel: get best result text from Solver or somewhere else since it is somewhat solver dependant
 - Hardcoded lists/dictionaries in AdvancedSolverViewModel to extern files
 
