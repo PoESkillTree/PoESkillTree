@@ -221,12 +221,14 @@
     <Compile Include="TreeGenerator\Model\AttributeConstraint.cs" />
     <Compile Include="TreeGenerator\Model\Conditions\ICondition.cs" />
     <Compile Include="TreeGenerator\Model\Conditions\KeystoneCondition.cs" />
+    <Compile Include="TreeGenerator\Model\Conditions\NotCondition.cs" />
     <Compile Include="TreeGenerator\Model\Conditions\OffHandCondition.cs" />
     <Compile Include="TreeGenerator\Model\Conditions\OrComposition.cs" />
     <Compile Include="TreeGenerator\Model\Conditions\TagCondition.cs" />
     <Compile Include="TreeGenerator\Model\Conditions\WeaponClassCondition.cs" />
     <Compile Include="TreeGenerator\Model\OffHand.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttribute.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributeSerialization.cs" />
     <Compile Include="TreeGenerator\Model\Tags.cs" />
     <Compile Include="TreeGenerator\Model\WeaponClass.cs" />
     <Compile Include="TreeGenerator\Settings\AdvancedSolverSettings.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="TreeGenerator\Solver\AbstractSolver.cs" />
     <Compile Include="TreeGenerator\Solver\AdvancedSolver.cs" />
     <Compile Include="TreeGenerator\Solver\SteinerSolver.cs" />
+    <Compile Include="TreeGenerator\Utils\PseudoAttributeLoader.cs" />
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\CloseableViewModel.cs" />
@@ -561,6 +564,9 @@
     <None Include="Data\Equipment\Itemlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Data\PseudoAttributes\pseudoTest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ExpressionEvaluator.dll" />
     <Content Include="ExpressionEvaluator.pdb" />
     <Resource Include="Images\EquipmentUI\Inventory.png" />

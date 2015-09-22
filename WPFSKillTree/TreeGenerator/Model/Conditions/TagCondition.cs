@@ -2,11 +2,16 @@
 {
     public class TagCondition : ICondition
     {
-        public string TagAlias { get; set; }
+        public string Alias { get; private set; }
 
+        public TagCondition(string alias)
+        {
+            Alias = alias;
+        }
+        
         public bool Eval(ConditionSettings settings, params object[] placeholder)
         {
-            return settings.Tags.HasAlias(string.Format(TagAlias, placeholder));
+            return settings.Tags.HasAlias(string.Format(Alias, placeholder));
         }
     }
 }

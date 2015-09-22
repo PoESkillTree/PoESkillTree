@@ -4,7 +4,12 @@ namespace POESKillTree.TreeGenerator.Model.Conditions
 {
     public class KeystoneCondition : ICondition
     {
-        public string Keystone { get; set; }
+        public string Keystone { get; private set; }
+
+        public KeystoneCondition(string keystone)
+        {
+            Keystone = keystone;
+        }
 
         public bool Eval(ConditionSettings settings, params object[] placeholder)
         {

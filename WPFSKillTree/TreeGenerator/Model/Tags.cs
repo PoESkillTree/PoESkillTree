@@ -4,10 +4,14 @@ using System.Linq;
 
 namespace POESKillTree.TreeGenerator.Model
 {
+    /// <summary>
+    /// Tags that specify how damage is dealt/what improves the damage dealt.
+    /// </summary>
     [Flags]
     public enum Tags
     {
-        None = 0, Attack = 1, Melee = 2, DoT = 4
+        None = 0, Attack = 1, Melee = 2, Duration = 4, Projectile = 8,
+        Spell = 16, Trap = 32, Mine = 64, Totem = 128, Area = 256, Cast = 512
     }
 
     public static class TagsExtensions
@@ -16,7 +20,14 @@ namespace POESKillTree.TreeGenerator.Model
         {
             {Tags.Attack, new [] {"attack", "attacks"} },
             {Tags.Melee, new [] {"melee"} },
-            {Tags.DoT, new [] {"dot", "damage over time"} }
+            {Tags.Duration, new [] {"dot", "damage over time", "duration"} },
+            {Tags.Projectile, new [] {"projectile", "projectiles"} },
+            {Tags.Spell, new [] {"spell", "spells"} },
+            {Tags.Trap, new [] {"trap", "traps"} },
+            {Tags.Mine, new [] {"mine", "mines"} },
+            {Tags.Totem, new [] {"totem", "totems"} },
+            {Tags.Area, new [] {"area", "aoe", "area of effect"} },
+            {Tags.Cast, new [] {"cast", "casts"} }
         };
 
         public static bool HasAlias(this Tags tags, string alias)

@@ -7,7 +7,8 @@ namespace POESKillTree.TreeGenerator.Model
     {
         Bow, Wand,
         Claw, Dagger, OneHandedAxe, OneHandedMace, OneHandedSword, Sceptre,
-        Staff, TwoHandedAxe, TwoHandedMace, TwoHandedSword
+        Staff, TwoHandedAxe, TwoHandedMace, TwoHandedSword,
+        Unarmed
     }
 
     public static class WeapnClassExtensions
@@ -27,7 +28,9 @@ namespace POESKillTree.TreeGenerator.Model
             {WeaponClass.Staff, new [] {"staff", "staves", "two handed melee weapons"} },
             {WeaponClass.TwoHandedAxe, new [] {"axe", "axes", "two handed melee weapons" } },
             {WeaponClass.TwoHandedMace, new [] {"mace", "maces", "two handed melee weapons" } },
-            {WeaponClass.TwoHandedSword, new [] {"sword", "swords", "two handed melee weapons" } }
+            {WeaponClass.TwoHandedSword, new [] {"sword", "swords", "two handed melee weapons" } },
+
+            {WeaponClass.Unarmed, new [] {"unarmed"} }
         };
 
         public static bool HasAlias(this WeaponClass weaponClass, string alias)
