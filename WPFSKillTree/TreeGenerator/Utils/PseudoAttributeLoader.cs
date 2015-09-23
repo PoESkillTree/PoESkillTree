@@ -5,10 +5,9 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using POESKillTree.Localization;
-using POESKillTree.TreeGenerator.Model;
-using POESKillTree.TreeGenerator.Model.Conditions;
+using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 using POESKillTree.Utils;
-using Attribute = POESKillTree.TreeGenerator.Model.Attribute;
+using Attribute = POESKillTree.TreeGenerator.Model.PseudoAttributes.Attribute;
 
 namespace POESKillTree.TreeGenerator.Utils
 {
@@ -34,6 +33,10 @@ namespace POESKillTree.TreeGenerator.Utils
 
         private readonly bool _useCache;
 
+        private readonly Dictionary<string, PseudoAttribute> _pseudoNameDict = new Dictionary<string, PseudoAttribute>();
+
+        private readonly Dictionary<string, List<string>> _nestedPseudosDict = new Dictionary<string, List<string>>();
+
         public PseudoAttributeLoader(bool useCache = true)
         {
             _useCache = useCache;
@@ -56,8 +59,6 @@ namespace POESKillTree.TreeGenerator.Utils
             var pseudos = ConvertFromXml(xmlPseudos);
             // Replace nested pseudo attributes by proper object.
             ResolveNesting(pseudos);
-            // Assign ids to attributes.
-            AssignIds(pseudos);
             
             if (_useCache)
             {
@@ -89,20 +90,29 @@ namespace POESKillTree.TreeGenerator.Utils
             {
                 var pseudo = new PseudoAttribute(xmlPseudo.Name)
                 {
-                    Group = xmlPseudo.Group,
-                    Hidden = xmlPseudo.Hidden == "True"
+                    Group = xmlPseudo.Group
                 };
+                _pseudoNameDict[pseudo.Name] = pseudo;
+                if (xmlPseudo.Hidden != "True")
+                {
+                    pseudos.Add(pseudo);
+                }
+
+                _nestedPseudosDict[pseudo.Name] = new List<string>();
                 foreach (var xmlNestedPseudo in xmlPseudo.PseudoAttributes ?? new XmlNestedPseudoAttribute[0])
                 {
-                    pseudo.Attributes.Add(new PseudoAttribute(xmlNestedPseudo.Name));
+                    _nestedPseudosDict[pseudo.Name].Add(xmlNestedPseudo.Name);
                 }
+
                 foreach (var xmlAttr in xmlPseudo.Attributes ?? new XmlNestedAttribute[0])
                 {
                     var attr = new Attribute(xmlAttr.Name);
-                    if (xmlAttr.ConversionRateSpecified)
+                    if (xmlAttr.ConversionMultiplierSpecified)
                     {
-                        attr.ConversionRate = (double) xmlAttr.ConversionRate;
+                        attr.ConversionMultiplier = (float) xmlAttr.ConversionMultiplier;
                     }
+                    pseudo.Attributes.Add(attr);
+
                     var xmlConditions = xmlAttr.Conditions ?? new XmlAttributeConditions() {Items = new object[0]};
                     for (var i = 0; i < xmlConditions.Items.Length; i++)
                     {
@@ -129,6 +139,7 @@ namespace POESKillTree.TreeGenerator.Utils
                                 {
                                     andComp.Conditions.Add(new WeaponClassCondition(xmlAndComp.WeaponClass));
                                 }
+
                                 if (xmlAndComp.NotCondition != null)
                                 {
                                     var xmlNotCond = xmlAndComp.NotCondition;
@@ -178,42 +189,37 @@ namespace POESKillTree.TreeGenerator.Utils
                         }
                         attr.Conditions.Add(condition);
                     }
-                    pseudo.Attributes.Add(attr);
                 }
-                pseudos.Add(pseudo);
             }
             return pseudos;
         }
 
         private void ResolveNesting(List<PseudoAttribute> pseudos)
         {
-            var pseudoNameDict = pseudos.ToDictionary(p => p.Name);
-
             foreach (var pseudo in pseudos)
             {
-                try
+                var nestedNames = new Queue<string>(_nestedPseudosDict[pseudo.Name]);
+                var depth = 0;
+                while (nestedNames.Count != 0)
                 {
-                    pseudo.Attributes = (from attr in pseudo.Attributes
-                                         select attr is PseudoAttribute ? pseudoNameDict[attr.Name] : attr).ToList();
-                }
-                catch (KeyNotFoundException e)
-                {
-                    throw new PseudoAttributeDataInvalidException(L10n.Message("Nested PseudoAttribute does not exist as top level PseudoAttribute: ") + e.Message, e);
-                }
-            }
-        }
-
-        private void AssignIds(List<PseudoAttribute> pseudos)
-        {
-            var i = 0;
-            foreach (var pseudo in pseudos)
-            {
-                pseudo.Id = i++;
-                foreach (var attr in pseudo.Attributes)
-                {
-                    if (!(attr is PseudoAttribute))
+                    if (depth++ > 100)
                     {
-                        attr.Id = i++;
+                        throw new PseudoAttributeDataInvalidException(L10n.Message("A PseudoAttribute is nested in itself or nesting depth is too high"));
+                    }
+                    var name = nestedNames.Dequeue();
+                    // Add Attributes of current nested one to top level PseudoAttribute.
+                    try
+                    {
+                        pseudo.Attributes.AddRange(_pseudoNameDict[name].Attributes);
+                    }
+                    catch (KeyNotFoundException e)
+                    {
+                        throw new PseudoAttributeDataInvalidException(L10n.Message("Nested PseudoAttribute does not exist as top level PseudoAttribute: ") + name, e);
+                    }
+                    // Enqueue pseudo attributes nested in this one.
+                    foreach (var newName in _nestedPseudosDict[name])
+                    {
+                        nestedNames.Enqueue(newName);
                     }
                 }
             }

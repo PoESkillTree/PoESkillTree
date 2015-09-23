@@ -8,7 +8,7 @@
 		<Attribute Name="#% increased Damage over Time">
 			<Conditions><Tag>Duration</Tag></Conditions>
 		</Attribute>
-		<Attribute Name="#% increased Attack Damage with Main Hand" ConversionRate="0.5">
+		<Attribute Name="#% increased Attack Damage with Main Hand" ConversionMultiplier="0.5">
 			<Conditions>
 				<AndComposition>
 					<OffHand>Dual Wield</OffHand>
@@ -52,7 +52,7 @@
 				</AndComposition>
 			</Conditions>
 		</Attribute>
-		<Attribute Name="+# to Strength" ConversionRate=".2">
+		<Attribute Name="+# to Strength" ConversionMultiplier=".2">
 			<Conditions>
 				<Tag>Melee</Tag>
 				<AndComposition>

@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.TreeGenerator.Model.Conditions
+﻿namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     public class OffHandCondition : ICondition
     {
@@ -9,7 +9,7 @@
             Alias = alias;
         }
         
-        public bool Eval(ConditionSettings settings, params object[] placeholder)
+        public bool Eval(ConditionSettings settings, params string[] placeholder)
         {
             return settings.OffHand.HasAlias(string.Format(Alias, placeholder));
         }

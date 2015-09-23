@@ -142,6 +142,13 @@ namespace POESKillTree.SkillTreeFiles
             get { return SkillTree._Skillnodes; }
         }
 
+        private static string[] _allAttributes;
+
+        public static string[] AllAttributes
+        {
+            get { return _allAttributes ?? (_allAttributes = Skillnodes.Values.SelectMany(n => n.Attributes.Keys).Distinct().ToArray()); }
+        }
+
         private static Dictionary<string, float>[] _CharBaseAttributes;
 
         public static Dictionary<string, float>[] CharBaseAttributes

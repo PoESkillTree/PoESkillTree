@@ -7,6 +7,7 @@ using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Model;
+using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;
 using POESKillTree.Utils;
@@ -15,9 +16,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
 {
     public sealed class AdvancedTabViewModel : GeneratorTabViewModel
     {
-
+        /// <summary>
+        /// Converts attribute strings to their group names.
+        /// </summary>
         private static readonly GroupStringConverter AttrGroupConverter = new GroupStringConverter();
 
+        /// <summary>
+        /// Order in which the attribute groups are shown.
+        /// </summary>
         private static readonly Dictionary<string, int> AttrGroupOrder = new Dictionary<string, int>()
         {
             // General
@@ -42,6 +48,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {"Everything else", 15}
         };
 
+        /// <summary>
+        /// Dictionary of attributes influenced by character level with the ratio per level.
+        /// </summary>
         private static readonly Dictionary<string, float> AttributesPerLevel = new Dictionary<string, float>()
         {
             {"+# to maximum Mana", SkillTree.ManaPerLevel},
@@ -50,6 +59,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {"Evasion Rating: #", SkillTree.EvasPerLevel}
         };
 
+        /// <summary>
+        /// List of not selectable attributes.
+        /// </summary>
         private static readonly List<string> AttributeBlackList = new List<string>()
         {
             "+# to maximum Mana",
@@ -145,6 +157,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = L10n.Message("Advanced");
         }
 
+        /// <summary>
+        /// Creates possible attributes from the SkillTree nodes.
+        /// Only non unique and not blacklisted attributes are selected.
+        /// </summary>
         private static List<string> CreatePossibleAttributes()
         {
             var all = new HashSet<string>();
@@ -228,7 +244,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             var attributeConstraints = AttributeConstraints.ToDictionary(constraint => constraint.Attribute,
                 constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
-            return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, CreateInitialAttributes(), attributeConstraints, null));
+            return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, CreateInitialAttributes(), attributeConstraints,
+                null, WeaponClass.Bow, Tags.None, OffHand.Shield));
         }
         
         private Dictionary<string, float> CreateInitialAttributes()

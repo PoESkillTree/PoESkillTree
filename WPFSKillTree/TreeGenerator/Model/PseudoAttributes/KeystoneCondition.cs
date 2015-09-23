@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Model.Conditions
+namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     public class KeystoneCondition : ICondition
     {
@@ -11,7 +11,7 @@ namespace POESKillTree.TreeGenerator.Model.Conditions
             Keystone = keystone;
         }
 
-        public bool Eval(ConditionSettings settings, params object[] placeholder)
+        public bool Eval(ConditionSettings settings, params string[] placeholder)
         {
             return settings.Keystones.Any(k => k == Keystone);
         }

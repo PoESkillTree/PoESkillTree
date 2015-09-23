@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Model
+namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     public enum WeaponClass
     {

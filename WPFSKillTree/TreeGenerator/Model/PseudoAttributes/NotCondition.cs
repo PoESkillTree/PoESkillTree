@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.TreeGenerator.Model.Conditions
+﻿namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     public class NotCondition : ICondition
     {
@@ -9,7 +9,7 @@
             Condition = condition;
         }
         
-        public bool Eval(ConditionSettings settings, params object[] placeholder)
+        public bool Eval(ConditionSettings settings, params string[] placeholder)
         {
             return !Condition.Eval(settings, placeholder);
         }

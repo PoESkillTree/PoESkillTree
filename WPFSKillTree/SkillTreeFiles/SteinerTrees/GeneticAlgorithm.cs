@@ -171,7 +171,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// Class for using BitArrays as keys in dictonaries.
         /// Equality and HashCodes are based on the encapsulated bool[].
         /// </summary>
-        private class BitArrayKey
+        private class BitArrayKey : IEquatable<BitArrayKey>
         {
             private readonly int _hash;
 
@@ -181,6 +181,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             {
                 Data = data;
                 _hash = GetHashCode(data);
+            }
+
+            public bool Equals(BitArrayKey other)
+            {
+                return Equals(Data, other.Data);
             }
 
             public override bool Equals(object obj)

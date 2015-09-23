@@ -4,12 +4,28 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.SkillTreeFiles.SteinerTrees;
+using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
     public class AdvancedSolver : AbstractSolver<AdvancedSolverSettings>
     {
+        private class ConvertedPseudoAttribute
+        {
+            public List<Tuple<string, float>> Attributes { get; private set; }
+
+            public Tuple<float, double> TargetWeightTuple { get; private set; }
+
+            public ConvertedPseudoAttribute(List<Tuple<string, float>> attributes, Tuple<float, double> tuple)
+            {
+                Attributes = attributes;
+                TargetWeightTuple = tuple;
+            }
+        }
+
+        private static readonly Regex ContainsWildcardRegex = new Regex(@"{\d}");
+
         private const double GenMultiplier = 0.4;
 
         private const double PopMultiplier = 5;
@@ -33,9 +49,15 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private static readonly Regex TravelNodeRegex = new Regex(@"\+# to (Strength|Intelligence|Dexterity)");
 
+        /// <summary>
+        /// Maps indexes of constraints (both attribute and pseudo attribute constraints to their {Target, Weight}-Tuple.
+        /// </summary>
         private Tuple<float, double>[] _attrConstraints;
-        private string[] _attrConstraintNames;
-        private Dictionary<string, int> _attrNameLookup;
+        /// <summary>
+        /// Dictionary that maps attribute names to the constraint number they apply to (as indexes of _attrConstraints).
+        /// </summary>
+        private Dictionary<string, List<int>> _attrNameLookup;
+        private Dictionary<Tuple<string, int>, float> _attrConversionMultipliers;
 
         private Dictionary<int, List<Tuple<int, float>>> _nodeAttributes;
         private Dictionary<int, bool> _areTravelNodes;
@@ -55,75 +77,67 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
-        public AdvancedSolver(SkillTree tree, AdvancedSolverSettings settings) : base(tree, settings)
-        {
-        }
+        public AdvancedSolver(SkillTree tree, AdvancedSolverSettings settings)
+            : base(tree, settings)
+        { }
 
         protected override void BuildSearchGraph()
         {
-            // Assign a number to each StatConstraint.
-            FormalizeConstraints(Settings.AttributeConstraints);
-            
-            // Extract stats from nodes and set travel nodes.
-            var skillNodes = Settings.SubsetTree.Count > 0
-                ? Settings.SubsetTree.ToDictionary(id => id, id => SkillTree.Skillnodes[id])
-                : SkillTree.Skillnodes;
-            _nodeAttributes = new Dictionary<int, List<Tuple<int, float>>>(skillNodes.Count);
-            _areTravelNodes = new Dictionary<int, bool>(skillNodes.Count);
-            foreach (var node in skillNodes)
-            {
-                var id = node.Key;
-                var skillNode = node.Value;
-
-                // Remove stats that have no constraints.
-                // Replace stats that have constraints with a tuple of their number and the value.
-                // For attributes with more than one value, the first one is selected,
-                // that is reasonable for the attributes the skill tree currently has.
-                // Attributes without value are not supported, if a constraint without value slips
-                // through, it will break.
-                var nodeAttributes = 
-                    (from attr in SkillTree.ExpandHybridAttributes(skillNode.Attributes)
-                    where _attrNameLookup.ContainsKey(attr.Key)
-                    select new Tuple<int, float>(_attrNameLookup[attr.Key], attr.Value[0]))
-                    .ToList();
-                _nodeAttributes[id] = nodeAttributes;
-
-                // Set if the node is a travel node.
-                if (skillNode.Attributes.Count == 1 && TravelNodeRegex.IsMatch(skillNode.Attributes.Keys.First())
-                    && skillNode.Attributes.Values.First().Any(v => (int)v == 10))
-                {
-                    _areTravelNodes[id] = true;
-                }
-                else
-                {
-                    _areTravelNodes[id] = false;
-                }
-            }
-
-            SearchGraph = new SearchGraph();
-
             // Add start and check-tagged nodes as in SteinerSolver.
+            SearchGraph = new SearchGraph();
             CreateStartNodes();
             CreateTargetNodes();
+            // Set start and target nodes as the fixed nodes.
             _fixedNodes = new HashSet<ushort>(StartNodes.nodes.Select(node => node.Id));
             _fixedNodes.UnionWith(TargetNodes.Select(node => node.Id));
+            
+            var convertedPseudos = EvalPseudoAttrConstraints();
+
+            // Assign a number to each attribute and pseudo attribute constraint
+            // and link their names to these numbers.
+            FormalizeConstraints(Settings.AttributeConstraints, convertedPseudos);
+
+            // TODO Pseudo attributes:
+            // - calculate starting values for PseudoAttrConstraints like done for _fixedAttributes
+
+            // Extract attributes from nodes and set travel nodes.
+            ExtractNodeAttributes();
+
+            // Set fixed attributes from fixed nodes and Settings.InitialAttributes
             CreateFixedAttributes();
 
             CreateSearchGraph();
         }
 
-        private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> statConstraints)
+        private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> attrConstraints, List<ConvertedPseudoAttribute> pseudoConstraints)
         {
-            _attrConstraints = new Tuple<float, double>[statConstraints.Count];
-            _attrConstraintNames = new string[statConstraints.Count];
-            _attrNameLookup = new Dictionary<string, int>(statConstraints.Count);
-            _fixedAttributes = new float[statConstraints.Count];
+            _attrConstraints = new Tuple<float, double>[attrConstraints.Count + pseudoConstraints.Count];
+            _attrNameLookup = new Dictionary<string, List<int>>(attrConstraints.Count);
+            _attrConversionMultipliers = new Dictionary<Tuple<string, int>, float>(attrConstraints.Count);
+            _fixedAttributes = new float[attrConstraints.Count + pseudoConstraints.Count];
             var i = 0;
-            foreach (var kvPair in statConstraints)
+            foreach (var kvPair in attrConstraints)
             {
                 _attrConstraints[i] = kvPair.Value;
-                _attrConstraintNames[i] = kvPair.Key.Replace("#", @"[0-9]*\.?[0-9]+").Replace("+", @"+").Replace(".", @".");
-                _attrNameLookup.Add(kvPair.Key, i);
+                _attrNameLookup[kvPair.Key] = new List<int> { i };
+                _attrConversionMultipliers[Tuple.Create(kvPair.Key, i)] = 1;
+                i++;
+            }
+            foreach (var pseudo in pseudoConstraints)
+            {
+                _attrConstraints[i] = pseudo.TargetWeightTuple;
+                foreach (var tuple in pseudo.Attributes)
+                {
+                    if (_attrNameLookup.ContainsKey(tuple.Item1))
+                    {
+                        _attrNameLookup[tuple.Item1].Add(i);
+                    }
+                    else
+                    {
+                        _attrNameLookup[tuple.Item1] = new List<int> { i };
+                    }
+                    _attrConversionMultipliers[Tuple.Create(tuple.Item1, i)] = tuple.Item2;
+                }
                 i++;
             }
         }
@@ -244,12 +258,108 @@ namespace POESKillTree.TreeGenerator.Solver
             // Add the initial stats from the settings.
             foreach (var initialStat in Settings.InitialAttributes)
             {
-                if (_attrNameLookup.ContainsKey(initialStat.Key))
+                var name = initialStat.Key;
+                if (_attrNameLookup.ContainsKey(name))
                 {
-                    var tuple = new Tuple<int, float>(_attrNameLookup[initialStat.Key], initialStat.Value);
-                    AddAttribute(tuple, _fixedAttributes);
+                    foreach (var i in _attrNameLookup[name])
+                    {
+                        var value = initialStat.Value * _attrConversionMultipliers[Tuple.Create(name, i)];
+                        AddAttribute(Tuple.Create(i, value), _fixedAttributes);
+                    }
                 }
             }
+        }
+
+        private void ExtractNodeAttributes()
+        {
+            var skillNodes = Settings.SubsetTree.Count > 0
+                ? Settings.SubsetTree.ToDictionary(id => id, id => SkillTree.Skillnodes[id])
+                : SkillTree.Skillnodes;
+            _nodeAttributes = new Dictionary<int, List<Tuple<int, float>>>(skillNodes.Count);
+            _areTravelNodes = new Dictionary<int, bool>(skillNodes.Count);
+            foreach (var node in skillNodes)
+            {
+                var id = node.Key;
+                var skillNode = node.Value;
+
+                // Remove attributes that have no constraints.
+                // Replace attributes that have constraints with a tuple of their number and the value.
+                // For attributes with more than one value, the first one is selected,
+                // that is reasonable for the attributes the skill tree currently has.
+                // Attributes without value are not supported, if a constraint without value slips
+                // through, it will break.
+                _nodeAttributes[id] =
+                    (from attr in SkillTree.ExpandHybridAttributes(skillNode.Attributes)
+                     where _attrNameLookup.ContainsKey(attr.Key)
+                     from constraint in _attrNameLookup[attr.Key]
+                     let value = attr.Value[0] * _attrConversionMultipliers[Tuple.Create(attr.Key, constraint)]
+                     select Tuple.Create(constraint, value))
+                    .ToList();
+
+                // Set if the node is a travel node.
+                if (skillNode.Attributes.Count == 1 && TravelNodeRegex.IsMatch(skillNode.Attributes.Keys.First())
+                    && skillNode.Attributes.Values.First().Any(v => (int)v == 10))
+                {
+                    _areTravelNodes[id] = true;
+                }
+                else
+                {
+                    _areTravelNodes[id] = false;
+                }
+            }
+        }
+
+        private List<ConvertedPseudoAttribute> EvalPseudoAttrConstraints()
+        {
+            var keystones = from nodeId in _fixedNodes
+                            where SkillTree.Skillnodes[nodeId].IsKeyStone
+                            select SkillTree.Skillnodes[nodeId].Name;
+            var conditionSettings = new ConditionSettings(Settings.Tags, Settings.OffHand, keystones.ToArray(), Settings.WeaponClass);
+
+            var resolvedWildcardNames = new Dictionary<string, List<Tuple<string, string[]>>>();
+            var convertedPseudos = new List<ConvertedPseudoAttribute>(Settings.PseudoAttributeConstraints.Count);
+            
+            foreach (var pair in Settings.PseudoAttributeConstraints)
+            {
+                var convAttrs = new List<Tuple<string, float>>(pair.Key.Attributes.Count);
+                foreach (var attr in pair.Key.Attributes)
+                {
+                    var name = attr.Name;
+                    if (ContainsWildcardRegex.IsMatch(name))
+                    {
+                        if (!resolvedWildcardNames.ContainsKey(name))
+                        {
+                            var searchRegex = new Regex("^" + ContainsWildcardRegex.Replace(name, "(.*)") + "$");
+                            resolvedWildcardNames[name] = (from a in SkillTree.AllAttributes
+                                                           let match = searchRegex.Match(a)
+                                                           where match.Success
+                                                           select Tuple.Create(a, ExtractGroupValuesFromGroupCollection(match.Groups))).ToList();
+                        }
+                        convAttrs.AddRange(from replacement in resolvedWildcardNames[name]
+                                           where attr.Eval(conditionSettings, replacement.Item2)
+                                           select Tuple.Create(replacement.Item1, attr.ConversionMultiplier));
+                    }
+                    else if (attr.Eval(conditionSettings))
+                    {
+                        convAttrs.Add(Tuple.Create(name, attr.ConversionMultiplier));
+                    }
+                }
+
+                var convPseudo = new ConvertedPseudoAttribute(convAttrs, pair.Value);
+                convertedPseudos.Add(convPseudo);
+            }
+
+            return convertedPseudos;
+        }
+
+        private static string[] ExtractGroupValuesFromGroupCollection(GroupCollection groups)
+        {
+            var result = new string[groups.Count - 1];
+            for (var i = 1; i < groups.Count; i++)
+            {
+                result[i] = groups[i].Value;
+            }
+            return result;
         }
 
         protected override bool IncludeNode(GraphNode node)

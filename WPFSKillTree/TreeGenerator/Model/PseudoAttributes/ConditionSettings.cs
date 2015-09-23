@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.TreeGenerator.Model.Conditions
+﻿namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     public class ConditionSettings
     {

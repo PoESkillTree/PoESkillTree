@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Model.Conditions
+namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     public class AndComposition : ICondition
     {
@@ -12,7 +12,7 @@ namespace POESKillTree.TreeGenerator.Model.Conditions
             Conditions = new List<ICondition>();
         }
 
-        public bool Eval(ConditionSettings settings, params object[] placeholder)
+        public bool Eval(ConditionSettings settings, params string[] placeholder)
         {
             return Conditions.All(c => c.Eval(settings, placeholder));
         }
