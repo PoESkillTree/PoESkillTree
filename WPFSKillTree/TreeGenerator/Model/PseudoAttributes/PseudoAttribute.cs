@@ -7,7 +7,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
     {
         public string Name { get; private set; }
 
-        public List<Attribute> Attributes { get; set; }
+        public List<Attribute> Attributes { get; private set; }
 
         public string Group { get; set; }
 

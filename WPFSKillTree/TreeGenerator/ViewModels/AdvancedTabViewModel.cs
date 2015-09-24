@@ -10,6 +10,7 @@ using POESKillTree.TreeGenerator.Model;
 using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;
+using POESKillTree.TreeGenerator.Utils;
 using POESKillTree.Utils.Converter;
 
 namespace POESKillTree.TreeGenerator.ViewModels
@@ -90,25 +91,29 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public bool CanAddAttrConstraints
         {
             get { return _canAddAttrConstraints; }
-            set
-            {
-                if (value == _canAddAttrConstraints) return;
-                _canAddAttrConstraints = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _canAddAttrConstraints, value); }
         }
-        
+
+        private readonly HashSet<PseudoAttribute> _addedPseudoAttributes = new HashSet<PseudoAttribute>();
+
+        public ObservableCollection<PseudoAttribute> PseudoAttributes { get; private set; }
+
+        public ObservableCollection<PseudoAttributeConstraint> PseudoAttributeConstraints { get; private set; }
+
+        private PseudoAttributeConstraint _newPseudoAttributeConstraint;
+
+        public PseudoAttributeConstraint NewPseudoAttributeConstraint
+        {
+            get { return _newPseudoAttributeConstraint; }
+            private set { SetProperty(ref _newPseudoAttributeConstraint, value); }
+        }
+
         private bool _importItems;
 
         public bool ImportItems
         {
             get { return _importItems; }
-            set
-            {
-                if (value == _importItems) return;
-                _importItems = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _importItems, value); }
         }
 
         private WeaponClass _weaponClass = WeaponClass.Unarmed;
@@ -118,11 +123,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             get { return _weaponClass; }
             set
             {
-                if (value == _weaponClass) return;
-                _weaponClass = value;
-                OnPropertyChanged();
-
-                WeaponClassIsTwoHanded = _weaponClass.IsTwoHanded();
+                SetProperty(ref _weaponClass, value,
+                    () => WeaponClassIsTwoHanded = _weaponClass.IsTwoHanded());
             }
         }
 
@@ -133,11 +135,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             get { return _weaponClassIsTwoHanded; }
             private set
             {
-                if (value == _weaponClassIsTwoHanded) return;
-                _weaponClassIsTwoHanded = value;
-                OnPropertyChanged();
-
-                OffHand = value ? OffHand.TwoHanded : OffHand.Shield;
+                SetProperty(ref _weaponClassIsTwoHanded, value,
+                    () => OffHand = _weaponClassIsTwoHanded ? OffHand.TwoHanded : OffHand.Shield);
             }
         }
 
@@ -146,12 +145,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public OffHand OffHand
         {
             get { return _offHand; }
-            set
-            {
-                if (value == _offHand) return;
-                _offHand = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _offHand, value); }
         }
 
         private Tags _tags = Tags.None;
@@ -159,12 +153,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public Tags Tags
         {
             get { return _tags; }
-            set
-            {
-                if (value == _tags) return;
-                _tags = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _tags, value); }
         }
 
         #endregion
@@ -177,9 +166,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             get
             {
-                return _removeAttributeConstraintCommand ??
-                       (_removeAttributeConstraintCommand =
-                           new RelayCommand(
+                return _removeAttributeConstraintCommand ?? (_removeAttributeConstraintCommand = new RelayCommand(
                                param =>
                                {
                                    AttributeConstraints.Remove((AttributeConstraint) param);
@@ -203,6 +190,44 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
+        private RelayCommand _addPseudoConstraintCommand;
+
+        public ICommand AddPseudoConstraintCommand
+        {
+            get
+            {
+                return _addPseudoConstraintCommand ?? (_addPseudoConstraintCommand = new RelayCommand(
+                    param =>
+                    {
+                        var newConstraint = (PseudoAttributeConstraint) NewPseudoAttributeConstraint.Clone();
+                        NewPseudoAttributeConstraint.Data = PseudoAttributes.Count > 0 ? PseudoAttributes[0] : null;
+                        PseudoAttributeConstraints.Add(newConstraint);
+                        PseudoAttributes.Remove(newConstraint.Data);
+                        _addedPseudoAttributes.Add(newConstraint.Data);
+                    },
+                    param => PseudoAttributes.Count > 0));
+            }
+        }
+
+        private RelayCommand _removePseudoConstraintCommand;
+
+        public ICommand RemovePseudoConstraintCommand
+        {
+            get
+            {
+                return _removePseudoConstraintCommand ?? (_removePseudoConstraintCommand = new RelayCommand(
+                    param =>
+                    {
+                        var oldConstraint = (PseudoAttributeConstraint) param;
+                        NewPseudoAttributeConstraint = oldConstraint;
+                        PseudoAttributeConstraints.Remove(oldConstraint);
+                        PseudoAttributes.Add(oldConstraint.Data);
+                        _addedPseudoAttributes.Remove(oldConstraint.Data);
+                    },
+                    param => param is PseudoAttributeConstraint));
+            }
+        }
+
         #endregion
 
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
@@ -218,6 +243,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
             Attributes = new ObservableCollection<string>(attrList);
 
             AttributeConstraints = new ObservableCollection<AttributeConstraint>();
+
+            var pseudos = new PseudoAttributeLoader().LoadPseudoAttributes();
+            PseudoAttributes = new ObservableCollection<PseudoAttribute>(pseudos);
+            PseudoAttributeConstraints = new ObservableCollection<PseudoAttributeConstraint>();
+            NewPseudoAttributeConstraint = new PseudoAttributeConstraint(PseudoAttributes[0]);
 
             DisplayName = L10n.Message("Advanced");
         }
@@ -293,10 +323,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         public override ISolver CreateSolver(SolverSettings settings)
         {
-            var attributeConstraints = AttributeConstraints.ToDictionary(constraint => constraint.Attribute,
+            var attributeConstraints = AttributeConstraints.ToDictionary(
+                constraint => constraint.Data,
+                constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
+            var pseudoConstraints = PseudoAttributeConstraints.ToDictionary(
+                constraint => constraint.Data,
                 constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
             return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, CreateInitialAttributes(), attributeConstraints,
-                null, WeaponClass, Tags, OffHand));
+                pseudoConstraints, WeaponClass, Tags, OffHand));
         }
         
         private Dictionary<string, float> CreateInitialAttributes()

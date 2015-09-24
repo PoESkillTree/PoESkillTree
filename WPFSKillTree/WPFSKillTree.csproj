@@ -216,7 +216,7 @@
     <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\Attribute.cs" />
-    <Compile Include="TreeGenerator\Model\AttributeConstraint.cs" />
+    <Compile Include="TreeGenerator\Model\TargetWeightConstraint.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\AndComposition.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\ConditionSettings.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\ICondition.cs" />
@@ -262,6 +262,7 @@
     <Compile Include="Utils\Converter\NumberLessStringComparer.cs" />
     <Compile Include="Utils\DataResource.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
+    <Compile Include="Utils\Notifier.cs" />
     <Compile Include="Utils\ValidationRules.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />

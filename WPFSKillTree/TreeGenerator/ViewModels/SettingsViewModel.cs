@@ -27,13 +27,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             get { return _additionalPoints; }
             set
             {
-                if (value == _additionalPoints) return;
-
-                var diff = value - _additionalPoints;
-                _additionalPoints = value;
-                TotalPoints += diff;
-
-                OnPropertyChanged();
+                SetProperty(ref _additionalPoints, value, () => { },
+                    v => TotalPoints += v - _additionalPoints);
             }
         }
 
@@ -42,13 +37,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public int TotalPoints
         {
             get { return _totalPoints; }
-            private set
-            {
-                if (value == _totalPoints) return;
-                _totalPoints = value;
-
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _totalPoints, value); }
         }
 
         private bool _includeChecked = true;
@@ -56,11 +45,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public bool IncludeChecked
         {
             get { return _includeChecked; }
-            set
-            {
-                _includeChecked = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _includeChecked, value); }
         }
 
         private bool _excludeCrossed = true;
@@ -68,11 +53,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public bool ExcludeCrossed
         {
             get { return _excludeCrossed; }
-            set
-            {
-                _excludeCrossed = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _excludeCrossed, value); }
         }
 
         private bool _treeAsSubset;
@@ -80,11 +61,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public bool TreeAsSubset
         {
             get { return _treeAsSubset; }
-            set
-            {
-                _treeAsSubset = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _treeAsSubset, value); }
         }
 
         private bool _treeAsStart;
@@ -92,11 +69,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public bool TreeAsStart
         {
             get { return _treeAsStart; }
-            set
-            {
-                _treeAsStart = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _treeAsStart, value); }
         }
 
         private int _selectedTabIndex;
@@ -104,11 +77,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public int SelectedTabIndex
         {
             get { return _selectedTabIndex; }
-            set
-            {
-                _selectedTabIndex = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _selectedTabIndex, value); }
         }
 
         #endregion

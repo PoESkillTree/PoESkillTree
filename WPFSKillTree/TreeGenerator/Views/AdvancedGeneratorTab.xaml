@@ -9,6 +9,7 @@
              xmlns:model="clr-namespace:POESKillTree.TreeGenerator.Model"
              xmlns:pseudoAttributes="clr-namespace:POESKillTree.TreeGenerator.Model.PseudoAttributes"
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              x:Name="Control"
              d:DesignHeight="300" d:DesignWidth="550" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
@@ -21,6 +22,14 @@
                 <CollectionViewSource.GroupDescriptions>
                     <PropertyGroupDescription PropertyName="." Converter="{StaticResource AttributeGroupConverter}" />
                 </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="PseudoAttributeSource" Source="{Binding PseudoAttributes}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Group" />
+                </CollectionViewSource.GroupDescriptions>
+                <CollectionViewSource.SortDescriptions>
+                    <componentModel:SortDescription PropertyName="Name" />
+                </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
             <converter:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
             <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
@@ -51,7 +60,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <ComboBox IsEditable="True" IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding Source={StaticResource AttributeSource}}">
+                                                  ItemsSource="{Binding Source={StaticResource AttributeSource}}">
                                             <ComboBox.Resources>
                                                 <utils:DataResource x:Key="SelectedValue" BindingTarget="{Binding}" />
                                                 <utils:DataResource x:Key="AttributeSelectorFunc" BindingTarget="{Binding AttributeSelectorFunc}"/>
@@ -66,7 +75,7 @@
                                                 </GroupStyle>
                                             </ComboBox.GroupStyle>
                                             <ComboBox.SelectedValue>
-                                                <Binding Path="Attribute" UpdateSourceTrigger="PropertyChanged">
+                                                <Binding Path="Data" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
                                                         <utils:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
                                                         <utils:DuplicateValidationRule Message="Duplicate Attribute" ValidatesOnTargetUpdated="True"
@@ -83,7 +92,7 @@
                                     <DataTemplate>
                                         <TextBlock>
                                             <TextBlock.Text>
-                                                <Binding Path="Attribute">
+                                                <Binding Path="Data">
                                                     <Binding.ValidationRules>
                                                         <utils:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
                                                     </Binding.ValidationRules>
@@ -135,6 +144,78 @@
             </TabItem>
 
             <TabItem Header="Pseudo Attributes" metroControls:ControlsHelper.HeaderFontSize="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" Grid.Row="0" Margin="4,4,2,4"
+                              SelectedItem="{Binding NewPseudoAttributeConstraint.Data}"
+                              ItemsSource="{Binding Source={StaticResource PseudoAttributeSource}}">
+                        <ComboBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock d:DataContext="{d:DesignInstance CollectionViewGroup}" Foreground="{StaticResource AccentColorBrush}" Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ComboBox.GroupStyle>
+                    </ComboBox>
+                    <metroControls:NumericUpDown Grid.Column="1" Grid.Row="0" Minimum="0" Margin="2,4"
+                                                 Value="{Binding NewPseudoAttributeConstraint.TargetValue}"/>
+                    <Slider Grid.Column="2" Grid.Row="0" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2,4"
+                            Value="{Binding NewPseudoAttributeConstraint.Weight}"
+                            Minimum="{Binding NewPseudoAttributeConstraint.MinWeight}" Maximum="{Binding NewPseudoAttributeConstraint.MaxWeight}"/>
+                    <Label Grid.Column="3" Grid.Row="0" Content="{Binding NewPseudoAttributeConstraint.Weight}" Margin="2,4" ContentStringFormat="{}{0}%" />
+                    <Button Grid.Column="4" Grid.Row="0" Margin="2,4,4,4" Command="{Binding AddPseudoConstraintCommand}">Add</Button>
+                    
+                    <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="PseudoConstraintGrid"
+                              ItemsSource="{Binding PseudoAttributeConstraints}"
+                              CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pseudo attribute" Binding="{Binding Data}" />
+                            <metroControls:DataGridNumericUpDownColumn Header="Target" Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
+                            <DataGridTemplateColumn Header="Weight" d:DataContext="{d:DesignInstance model:PseudoAttributeConstraint}">
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider x:Name="WeightSlider" IsEnabled="True" Width="100"
+                                                    TickFrequency="1" IsSnapToTickEnabled="True"
+                                                    Value="{Binding Weight}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
+                                            <Label Content="{Binding Value, ElementName=WeightSlider}" ContentStringFormat="{}{0}%"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider IsEnabled="False" Width="100" Value="{Binding Weight}"/>
+                                            <Label Content="{Binding Weight}" ContentStringFormat="{}{0}%"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:AttributeConstraint}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="x"
+                                                Command="{Binding DataContext.RemovePseudoConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
 
             <TabItem Header="Combined Attributes" metroControls:ControlsHelper.HeaderFontSize="15" IsEnabled="False">

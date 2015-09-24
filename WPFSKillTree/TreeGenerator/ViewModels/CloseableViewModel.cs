@@ -23,11 +23,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public bool? Result
         {
             get { return _result; }
-            private set
-            {
-                _result = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _result, value); }
         }
 
         public event EventHandler RequestClose;

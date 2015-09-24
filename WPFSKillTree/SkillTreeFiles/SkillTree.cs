@@ -489,7 +489,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 if (_level == value) return;
                 _level = value;
-                PropertyChanged.Raise(this, "Level");
+                PropertyChanged.Raise(this);
             }
         }
 

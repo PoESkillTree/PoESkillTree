@@ -14,7 +14,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 
         public bool Eval(ConditionSettings settings, params string[] placeholder)
         {
-            return Conditions.Any(c => c.Eval(settings, placeholder));
+            return Conditions.Count <= 0 || Conditions.Any(c => c.Eval(settings, placeholder));
         }
     }
 }

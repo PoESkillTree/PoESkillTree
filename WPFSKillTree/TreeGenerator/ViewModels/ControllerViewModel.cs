@@ -56,11 +56,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public double ProgressbarMax
         {
             get { return _progressbarMax; }
-            private set
-            {
-                _progressbarMax = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _progressbarMax, value); }
         }
 
         private double _progressbarCurrent;
@@ -68,11 +64,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public double ProgressbarCurrent
         {
             get { return _progressbarCurrent; }
-            private set
-            {
-                _progressbarCurrent = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _progressbarCurrent, value); }
         }
 
         private string _progressbarText = L10n.Message("Initializing...");
@@ -80,11 +72,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public string ProgressbarText
         {
             get { return _progressbarText; }
-            private set
-            {
-                _progressbarText = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _progressbarText, value); }
         }
 
         private bool _progressbarEnabled = true;
@@ -92,11 +80,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public bool ProgressbarEnabled
         {
             get { return _progressbarEnabled; }
-            private set
-            {
-                _progressbarEnabled = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _progressbarEnabled, value); }
         }
 
         private bool _cancelCloseEnabled;
@@ -104,11 +88,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public bool CancelCloseEnabled
         {
             get { return _cancelCloseEnabled; }
-            private set
-            {
-                _cancelCloseEnabled = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _cancelCloseEnabled, value); }
         }
 
         private string _cancelCloseText = L10n.Message("Cancel");
@@ -116,11 +96,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public string CancelCloseText
         {
             get { return _cancelCloseText; }
-            private set
-            {
-                _cancelCloseText = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _cancelCloseText, value); }
         }
 
         private bool _pauseResumeEnabled;
@@ -128,11 +104,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public bool PauseResumeEnabled
         {
             get { return _pauseResumeEnabled; }
-            private set
-            {
-                _pauseResumeEnabled = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _pauseResumeEnabled, value); }
         }
 
         private string _pauseResumeText = L10n.Message("Pause");
@@ -140,11 +112,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public string PauseResumeText
         {
             get { return _pauseResumeText; }
-            private set
-            {
-                _pauseResumeText = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _pauseResumeText, value); }
         }
 
         private string _bestResultText;
@@ -152,11 +120,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public string BestResultText
         {
             get { return _bestResultText; }
-            private set
-            {
-                _bestResultText = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _bestResultText, value); }
         }
 
 #endregion

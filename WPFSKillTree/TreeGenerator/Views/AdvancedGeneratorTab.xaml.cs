@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -23,7 +24,15 @@ namespace POESKillTree.TreeGenerator.Views
         {
             if (_clicked)
             {
-                AttrConstraintGrid.Items.Refresh();
+                try
+                {
+                    AttrConstraintGrid.Items.Refresh();
+                }
+                catch (InvalidOperationException)
+                {
+                    // If the remove didn't cancel cell editing with validation errors, the Grid can't be refreshed.
+                    // Some stuff is probably not working properly after it, but better than crashing.
+                }
                 _clicked = false;
             }
         }

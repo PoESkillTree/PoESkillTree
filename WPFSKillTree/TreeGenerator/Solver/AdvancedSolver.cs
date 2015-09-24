@@ -352,9 +352,9 @@ namespace POESKillTree.TreeGenerator.Solver
         private static string[] ExtractGroupValuesFromGroupCollection(GroupCollection groups)
         {
             var result = new string[groups.Count - 1];
-            for (var i = 1; i < groups.Count; i++)
+            for (int i = 0, j = 1; j < groups.Count; i++, j++)
             {
-                result[i] = groups[i].Value;
+                result[i] = groups[j].Value;
             }
             return result;
         }
