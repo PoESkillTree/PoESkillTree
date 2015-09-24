@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     public enum OffHand
     {
-        DualWield, Shield, TwoHanded
+        [Description("Dual wield")]
+        DualWield,
+        [Description("Shield")]
+        Shield,
+        [Description("Two handed")]
+        TwoHanded
     }
 
     public static class OffHandExtensions

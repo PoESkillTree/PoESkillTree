@@ -29,6 +29,7 @@ using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Converter;
 using POESKillTree.ViewModels;
 using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;

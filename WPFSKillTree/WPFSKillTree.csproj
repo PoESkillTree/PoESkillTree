@@ -255,14 +255,19 @@
     <Compile Include="TreeGenerator\Views\SteinerGeneratorTab.xaml.cs">
       <DependentUpon>SteinerGeneratorTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Converter\BoolConverter.cs" />
+    <Compile Include="Utils\Converter\EnumConverter.cs" />
+    <Compile Include="Utils\Converter\GroupStringConverter.cs" />
+    <Compile Include="Utils\Converter\IsNamedObjectVisibilityConverter.cs" />
+    <Compile Include="Utils\Converter\NumberLessStringComparer.cs" />
     <Compile Include="Utils\DataResource.cs" />
+    <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Utils\ValidationRules.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
     <Compile Include="Utils\DialogCloser.cs" />
     <Compile Include="Utils\EventHandlerExtensions.cs" />
     <Compile Include="Utils\Helpers.cs" />
-    <Compile Include="Utils\IsNamedObjectVisibilityConverter.cs" />
     <Compile Include="Utils\ItemAssetDownloader.cs" />
     <Compile Include="Utils\Popup.cs" />
     <Compile Include="Utils\StringExtension.cs" />
@@ -282,7 +287,6 @@
     <Compile Include="ViewModels\Attribute.cs" />
     <Compile Include="Controls\DragAdorner.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
-    <Compile Include="Utils\GroupStringConverter.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
     <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\Converters.cs" />
@@ -310,7 +314,6 @@
     <Compile Include="Views\LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\NumberLessStringComparer.cs" />
     <Compile Include="ViewModels\PoEBuild.cs" />
     <Compile Include="SkillTreeFiles\PoESkillTree.cs" />
     <Compile Include="SkillTreeFiles\Point2D.cs" />

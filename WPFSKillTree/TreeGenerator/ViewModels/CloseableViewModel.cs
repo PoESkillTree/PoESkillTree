@@ -26,7 +26,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _result = value;
-                OnPropertyChanged("Result");
+                OnPropertyChanged();
             }
         }
 

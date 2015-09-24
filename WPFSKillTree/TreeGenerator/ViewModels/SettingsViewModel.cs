@@ -33,7 +33,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 _additionalPoints = value;
                 TotalPoints += diff;
 
-                OnPropertyChanged("AdditionalPoints");
+                OnPropertyChanged();
             }
         }
 
@@ -47,7 +47,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 if (value == _totalPoints) return;
                 _totalPoints = value;
 
-                OnPropertyChanged("TotalPoints");
+                OnPropertyChanged();
             }
         }
 
@@ -59,7 +59,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set
             {
                 _includeChecked = value;
-                OnPropertyChanged("IncludeChecked");
+                OnPropertyChanged();
             }
         }
 
@@ -71,7 +71,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set
             {
                 _excludeCrossed = value;
-                OnPropertyChanged("ExcludeCrossed");
+                OnPropertyChanged();
             }
         }
 
@@ -83,7 +83,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set
             {
                 _treeAsSubset = value;
-                OnPropertyChanged("TreeAsSubset");
+                OnPropertyChanged();
             }
         }
 
@@ -95,7 +95,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set
             {
                 _treeAsStart = value;
-                OnPropertyChanged("TreeAsStart");
+                OnPropertyChanged();
             }
         }
 
@@ -107,7 +107,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set
             {
                 _selectedTabIndex = value;
-                OnPropertyChanged("SelectedTabIndex");
+                OnPropertyChanged();
             }
         }
 
@@ -124,17 +124,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
 #endregion
 
-        public SettingsViewModel(SkillTree tree)
-            : this(tree, null)
-        {
-        }
-
         /// <summary>
         /// Constructs a new SettingsViewModel with a fixed GeneratorTabViewModel.
         /// Use this constructor if you don't want to use this ViewModel in a View and
         /// only want to run it.
         /// </summary>
-        public SettingsViewModel(SkillTree tree, GeneratorTabViewModel generator)
+        public SettingsViewModel(SkillTree tree, GeneratorTabViewModel generator = null)
         {
             DisplayName = "Skill tree Generator";
 

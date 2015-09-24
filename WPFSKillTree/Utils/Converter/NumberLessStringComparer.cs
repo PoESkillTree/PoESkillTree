@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace POESKillTree.Utils
+namespace POESKillTree.Utils.Converter
 {
     public class NumberLessStringComparer : IComparer<string>
     {

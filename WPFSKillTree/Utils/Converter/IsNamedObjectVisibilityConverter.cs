@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace POESKillTree.Utils
+namespace POESKillTree.Utils.Converter
 {
     /// <summary>
     /// Converter used to not show DataGridTemplateColumns in empty new row placeholders,

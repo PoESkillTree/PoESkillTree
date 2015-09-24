@@ -7,129 +7,208 @@
              xmlns:metroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:utils="clr-namespace:POESKillTree.Utils"
              xmlns:model="clr-namespace:POESKillTree.TreeGenerator.Model"
+             xmlns:pseudoAttributes="clr-namespace:POESKillTree.TreeGenerator.Model.PseudoAttributes"
+             xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              mc:Ignorable="d" 
              x:Name="Control"
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
+             d:DesignHeight="300" d:DesignWidth="550" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
     <Grid>
         <Grid.Resources>
-            <utils:IsNamedObjectVisibilityConverter x:Key="IsNamedObjectVisibilityConverter"/>
-            <utils:GroupStringConverter x:Key="AttributeGroupConverter"/>
+            <converter:IsNamedObjectVisibilityConverter x:Key="IsNamedObjectVisibilityConverter"/>
+            <converter:GroupStringConverter x:Key="AttributeGroupConverter"/>
             <utils:DataResource x:Key="AttributeConstraints" BindingTarget="{Binding AttributeConstraints}" />
             <CollectionViewSource x:Key="AttributeSource" Source="{Binding Attributes}">
                 <CollectionViewSource.GroupDescriptions>
                     <PropertyGroupDescription PropertyName="." Converter="{StaticResource AttributeGroupConverter}" />
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
+            <converter:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
+            <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+            <converter:InvertBoolConverter x:Key="InvertBoolConverter" />
+            <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
         </Grid.Resources>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+        <TabControl metroControls:TabControlHelper.IsUnderlined="True">
+            <TabItem Header="Attributes" metroControls:ControlsHelper.HeaderFontSize="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Margin="5" Content="Load from tree" HorizontalAlignment="Center" Command="{Binding LoadAttributesCommand}"/>
+                    <DataGrid Grid.Row="1" x:Name="AttrConstraintGrid"
+                            ItemsSource="{Binding AttributeConstraints}" AutoGenerateColumns="False"
+                            CanUserAddRows="{Binding CanAddAttrConstraints}"
+                            SelectionUnit="Cell" SelectionMode="Single">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
 
-        <CheckBox Grid.Row="0" Grid.Column="0" Margin="20,5,10,5" Content="include imported items" IsChecked="{Binding ImportItems}"/>
-        <Button Grid.Row="0" Grid.Column="1" Margin="5" Content="Load from tree" HorizontalAlignment="Center" Command="{Binding LoadAttributesCommand}"/>
-
-        <DataGrid x:Name="AttrConstraintGrid" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                  ItemsSource="{Binding AttributeConstraints}" AutoGenerateColumns="False"
-                  CanUserAddRows="{Binding CanAddAttrConstraints}"
-                  SelectionUnit="Cell" SelectionMode="Single">
-            <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
-                </Style>
-            </DataGrid.Resources>
-            <DataGrid.Columns>
-                
-                <DataGridTemplateColumn Header="Attributes" d:DataContext="{d:DesignInstance model:AttributeConstraint}">
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox IsEditable="True" IsTextSearchEnabled="True"
+                            <DataGridTemplateColumn Header="Attributes" d:DataContext="{d:DesignInstance model:AttributeConstraint}">
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox IsEditable="True" IsTextSearchEnabled="True"
                                       ItemsSource="{Binding Source={StaticResource AttributeSource}}">
-                                <ComboBox.Resources>
-                                    <utils:DataResource x:Key="SelectedValue" BindingTarget="{Binding}" />
-                                    <utils:DataResource x:Key="AttributeSelectorFunc" BindingTarget="{Binding AttributeSelectorFunc}"/>
-                                </ComboBox.Resources>
-                                <ComboBox.GroupStyle>
-                                    <GroupStyle>
-                                        <GroupStyle.HeaderTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding Name}"/>
-                                            </DataTemplate>
-                                        </GroupStyle.HeaderTemplate>
-                                    </GroupStyle>
-                                </ComboBox.GroupStyle>
-                                <ComboBox.SelectedValue>
-                                    <Binding Path="Attribute" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <utils:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
-                                            <utils:DuplicateValidationRule Message="Duplicate Attribute" ValidatesOnTargetUpdated="True"
+                                            <ComboBox.Resources>
+                                                <utils:DataResource x:Key="SelectedValue" BindingTarget="{Binding}" />
+                                                <utils:DataResource x:Key="AttributeSelectorFunc" BindingTarget="{Binding AttributeSelectorFunc}"/>
+                                            </ComboBox.Resources>
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock d:DataContext="{d:DesignInstance CollectionViewGroup}" Foreground="{StaticResource AccentColorBrush}" Text="{Binding Name}"/>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                            <ComboBox.SelectedValue>
+                                                <Binding Path="Attribute" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <utils:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
+                                                        <utils:DuplicateValidationRule Message="Duplicate Attribute" ValidatesOnTargetUpdated="True"
                                                                            SelectorFunc="{utils:DataResourceBinding DataResource={StaticResource AttributeSelectorFunc}}"
                                                                            ValidationSet="{utils:DataResourceBinding DataResource={StaticResource AttributeConstraints}}"
                                                                            SelectedValue="{utils:DataResourceBinding DataResource={StaticResource SelectedValue}}"/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </ComboBox.SelectedValue>
-                            </ComboBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <Binding Path="Attribute">
-                                        <Binding.ValidationRules>
-                                            <utils:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </ComboBox.SelectedValue>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <Binding Path="Attribute">
+                                                    <Binding.ValidationRules>
+                                                        <utils:NotNullValidationRule Message="No Attribute Selected" ValidatesOnTargetUpdated="True" />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
 
-                <metroControls:DataGridNumericUpDownColumn Header="Target" Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
-                
-                <DataGridTemplateColumn Header="Weight" d:DataContext="{d:DesignInstance model:AttributeConstraint}">
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Slider x:Name="WeightSlider" IsEnabled="True" Width="100"
-                                        TickFrequency="1" IsSnapToTickEnabled="True"
-                                        Value="{Binding Weight}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
-                                <Label Content="{Binding Value, ElementName=WeightSlider}" ContentStringFormat="{}{0}%"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal"
-                                        Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource IsNamedObjectVisibilityConverter}}">
-                                <Slider x:Name="WeightSlider" IsEnabled="False" Width="100" Value="{Binding Weight}"/>
-                                <Label Content="{Binding Value, ElementName=WeightSlider}" ContentStringFormat="{}{0}%"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:AttributeConstraint}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button x:Name="DeleteRowButton" Content="x"
-                                    Click="DeleteRowButton_OnClick" MouseLeave="DeleteRowButton_OnMouseLeave"
-                                    Command="{Binding DataContext.RemoveAttributeConstraintCommand, ElementName=Control}"
-                                    CommandParameter="{Binding}"
-                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource IsNamedObjectVisibilityConverter}}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-            </DataGrid.Columns>
-        </DataGrid>
+                            <metroControls:DataGridNumericUpDownColumn Header="Target" Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
+
+                            <DataGridTemplateColumn Header="Weight" d:DataContext="{d:DesignInstance model:AttributeConstraint}">
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider x:Name="WeightSlider" IsEnabled="True" Width="100"
+                                                    TickFrequency="1" IsSnapToTickEnabled="True"
+                                                    Value="{Binding Weight}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
+                                            <Label Content="{Binding Value, ElementName=WeightSlider}" ContentStringFormat="{}{0}%"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Visibility="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Converter={StaticResource IsNamedObjectVisibilityConverter}}">
+                                            <Slider IsEnabled="False" Width="100" Value="{Binding Weight}"/>
+                                            <Label Content="{Binding Weight}" ContentStringFormat="{}{0}%"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:AttributeConstraint}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="x" Click="DeleteRowButton_OnClick" MouseLeave="DeleteRowButton_OnMouseLeave"
+                                                Command="{Binding DataContext.RemoveAttributeConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Visibility="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Converter={StaticResource IsNamedObjectVisibilityConverter}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Pseudo Attributes" metroControls:ControlsHelper.HeaderFontSize="15">
+            </TabItem>
+
+            <TabItem Header="Combined Attributes" metroControls:ControlsHelper.HeaderFontSize="15" IsEnabled="False">
+            </TabItem>
+            
+            <TabItem Header="Settings" metroControls:ControlsHelper.HeaderFontSize="15">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <metroControls:ToggleSwitch Grid.Row="0" Grid.Column="1" Margin="5,0,0,5"
+                                                OnLabel="Tree + Items" OffLabel="Tree only"
+                                                IsChecked="{Binding ImportItems}" IsEnabled="False"/>
+                    
+                    <!-- WeaponClass -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="Weapon class:" VerticalAlignment="Center" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" MinWidth="130" Margin="5,0" VerticalAlignment="Center"
+                              SelectedValue="{Binding WeaponClass}" ItemsSource="{Binding WeaponClassValues}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    
+                    <!-- OffHand -->
+                    <Label Grid.Row="2" Grid.Column="0" Content="Off hand:" VerticalAlignment="Center" />
+                    <RadioButton Grid.Row="2" Grid.Column="1" Content="Shield" GroupName="OffHand" Margin="5,0"
+                                 IsEnabled="{Binding WeaponClassIsTwoHanded, Converter={StaticResource InvertBoolConverter}}"
+                                 IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.Shield}}" />
+                    <RadioButton Grid.Row="3" Grid.Column="1" Content="Dual wield" GroupName="OffHand" Margin="5,0"
+                                 IsEnabled="{Binding WeaponClassIsTwoHanded, Converter={StaticResource InvertBoolConverter}}"
+                                 IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.DualWield}}" />
+                    <RadioButton Grid.Row="4" Grid.Column="1" Content="Two handed" GroupName="OffHand" Margin="5,0"
+                                 IsEnabled="{Binding WeaponClassIsTwoHanded}"
+                                 IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.TwoHanded}}" />
+                    
+                    <!-- Tags -->
+                    <Label Grid.Row="1" Grid.Column="2" Content="Tags:" VerticalAlignment="Center"/>
+                    <CheckBox Grid.Row="1" Grid.Column="3" Content="Attack" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Attack}}"/>
+                    <CheckBox Grid.Row="2" Grid.Column="3" Content="Melee" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Melee}}"/>
+                    <CheckBox Grid.Row="3" Grid.Column="3" Content="Duration" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Duration}}"/>
+                    <CheckBox Grid.Row="4" Grid.Column="3" Content="Projectile" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Projectile}}"/>
+                    <CheckBox Grid.Row="1" Grid.Column="4" Content="Spell" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Spell}}"/>
+                    <CheckBox Grid.Row="2" Grid.Column="4" Content="Trap" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Trap}}"/>
+                    <CheckBox Grid.Row="3" Grid.Column="4" Content="Mine" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Mine}}"/>
+                    <CheckBox Grid.Row="4" Grid.Column="4" Content="Totem" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Totem}}"/>
+                    <CheckBox Grid.Row="1" Grid.Column="5" Content="Area" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Area}}"/>
+                    <CheckBox Grid.Row="2" Grid.Column="5" Content="Cast" Margin="5,0"
+                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Cast}}"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
         
     </Grid>
 </UserControl>

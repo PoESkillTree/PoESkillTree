@@ -6,7 +6,7 @@ using System.Windows.Data;
 using POESKillTree.Localization;
 using POESKillTree.ViewModels;
 
-namespace POESKillTree.Utils
+namespace POESKillTree.Utils.Converter
 {
     [ValueConversion(typeof (string), typeof (string))]
     //list view sorter here

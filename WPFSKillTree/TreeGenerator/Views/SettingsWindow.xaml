@@ -50,7 +50,7 @@
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
                 <local:SteinerGeneratorTab/>
             </TabItem>
-            <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}">
+            <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}" IsEnabled="False">
                 <local:AutomatedGeneratorTab/>
             </TabItem>
             <TabItem DataContext="{Binding Tabs[2]}" Header="{Binding DisplayName}">

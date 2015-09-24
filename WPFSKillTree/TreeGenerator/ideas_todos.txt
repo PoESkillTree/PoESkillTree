@@ -26,6 +26,7 @@ Miscellaneous:
 - more/updated Unit Tests (e.g. binary search in WeightedSampling)
 - ControllerViewModel: get best result text from Solver or somewhere else since it is somewhat solver dependant
 - Hardcoded lists/dictionaries in AdvancedSolverViewModel to extern files
+- UI texts localized
 
 Bigger things (best to discuss these in GitHub issues)
 =============

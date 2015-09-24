@@ -10,12 +10,14 @@ using POESKillTree.TreeGenerator.Model;
 using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;
-using POESKillTree.Utils;
+using POESKillTree.Utils.Converter;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
     public sealed class AdvancedTabViewModel : GeneratorTabViewModel
     {
+        #region Attribute constants
+
         /// <summary>
         /// Converts attribute strings to their group names.
         /// </summary>
@@ -70,6 +72,13 @@ namespace POESKillTree.TreeGenerator.ViewModels
             "+# to maximum Energy Shield"
         };
 
+        #endregion
+        
+        public static IEnumerable<WeaponClass> WeaponClassValues
+        {
+            get { return Enum.GetValues(typeof(WeaponClass)).Cast<WeaponClass>(); }
+        }
+
         #region Presentation
 
         public ObservableCollection<string> Attributes { get; private set; }
@@ -85,7 +94,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 if (value == _canAddAttrConstraints) return;
                 _canAddAttrConstraints = value;
-                OnPropertyChanged("CanAddAttrConstraints");
+                OnPropertyChanged();
             }
         }
         
@@ -98,7 +107,63 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 if (value == _importItems) return;
                 _importItems = value;
-                OnPropertyChanged("ImportItems");
+                OnPropertyChanged();
+            }
+        }
+
+        private WeaponClass _weaponClass = WeaponClass.Unarmed;
+
+        public WeaponClass WeaponClass
+        {
+            get { return _weaponClass; }
+            set
+            {
+                if (value == _weaponClass) return;
+                _weaponClass = value;
+                OnPropertyChanged();
+
+                WeaponClassIsTwoHanded = _weaponClass.IsTwoHanded();
+            }
+        }
+
+        private bool _weaponClassIsTwoHanded;
+
+        public bool WeaponClassIsTwoHanded
+        {
+            get { return _weaponClassIsTwoHanded; }
+            private set
+            {
+                if (value == _weaponClassIsTwoHanded) return;
+                _weaponClassIsTwoHanded = value;
+                OnPropertyChanged();
+
+                OffHand = value ? OffHand.TwoHanded : OffHand.Shield;
+            }
+        }
+
+        private OffHand _offHand = OffHand.Shield;
+
+        public OffHand OffHand
+        {
+            get { return _offHand; }
+            set
+            {
+                if (value == _offHand) return;
+                _offHand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Tags _tags = Tags.None;
+
+        public Tags Tags
+        {
+            get { return _tags; }
+            set
+            {
+                if (value == _tags) return;
+                _tags = value;
+                OnPropertyChanged();
             }
         }
 
@@ -142,7 +207,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
         {
-            var attrList = CreatePossibleAttributes();
+            var attrList = CreatePossibleAttributes().ToList();
             attrList.Sort((s1, s2) =>
             {
                 var attrSort = AttrGroupOrder[AttrGroupConverter.Convert(s1).GroupName] -
@@ -161,28 +226,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Creates possible attributes from the SkillTree nodes.
         /// Only non unique and not blacklisted attributes are selected.
         /// </summary>
-        private static List<string> CreatePossibleAttributes()
+        private static IEnumerable<string> CreatePossibleAttributes()
         {
-            var all = new HashSet<string>();
-            var nonUnique = new HashSet<string>();
-            foreach (var node in SkillTree.Skillnodes)
-            {
-                foreach (var attribute in SkillTree.ExpandHybridAttributes(node.Value.Attributes))
-                {
-                    var key = attribute.Key;
-                    if (AttributeBlackList.Contains(key)) continue;
-
-                    if (all.Contains(key))
-                    {
-                        nonUnique.Add(key);
-                    }
-                    else
-                    {
-                        all.Add(key);
-                    }
-                }
-            }
-            return nonUnique.ToList();
+            return from node in SkillTree.Skillnodes.Values
+                   from attr in SkillTree.ExpandHybridAttributes(node.Attributes)
+                   where !AttributeBlackList.Contains(attr.Key)
+                   group attr by attr.Key into attrGroup
+                   where attrGroup.Count() > 1
+                   select attrGroup.First().Key;
         }
 
         private void LoadAttributesFromTree()
@@ -245,7 +296,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var attributeConstraints = AttributeConstraints.ToDictionary(constraint => constraint.Attribute,
                 constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
             return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, CreateInitialAttributes(), attributeConstraints,
-                null, WeaponClass.Bow, Tags.None, OffHand.Shield));
+                null, WeaponClass, Tags, OffHand));
         }
         
         private Dictionary<string, float> CreateInitialAttributes()

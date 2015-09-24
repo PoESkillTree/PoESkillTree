@@ -59,7 +59,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _progressbarMax = value;
-                OnPropertyChanged("ProgressbarMax");
+                OnPropertyChanged();
             }
         }
 
@@ -71,7 +71,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _progressbarCurrent = value;
-                OnPropertyChanged("ProgressbarCurrent");
+                OnPropertyChanged();
             }
         }
 
@@ -83,7 +83,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _progressbarText = value;
-                OnPropertyChanged("ProgressbarText");
+                OnPropertyChanged();
             }
         }
 
@@ -95,7 +95,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _progressbarEnabled = value;
-                OnPropertyChanged("ProgressbarEnabled");
+                OnPropertyChanged();
             }
         }
 
@@ -107,7 +107,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _cancelCloseEnabled = value;
-                OnPropertyChanged("CancelCloseEnabled");
+                OnPropertyChanged();
             }
         }
 
@@ -119,7 +119,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _cancelCloseText = value;
-                OnPropertyChanged("CancelCloseText");
+                OnPropertyChanged();
             }
         }
 
@@ -131,7 +131,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _pauseResumeEnabled = value;
-                OnPropertyChanged("PauseResumeEnabled");
+                OnPropertyChanged();
             }
         }
 
@@ -143,7 +143,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _pauseResumeText = value;
-                OnPropertyChanged("PauseResumeText");
+                OnPropertyChanged();
             }
         }
 
@@ -155,7 +155,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _bestResultText = value;
-                OnPropertyChanged("BestResultText");
+                OnPropertyChanged();
             }
         }
 

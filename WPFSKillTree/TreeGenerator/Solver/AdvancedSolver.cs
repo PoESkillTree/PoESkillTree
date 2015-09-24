@@ -97,9 +97,6 @@ namespace POESKillTree.TreeGenerator.Solver
             // and link their names to these numbers.
             FormalizeConstraints(Settings.AttributeConstraints, convertedPseudos);
 
-            // TODO Pseudo attributes:
-            // - calculate starting values for PseudoAttrConstraints like done for _fixedAttributes
-
             // Extract attributes from nodes and set travel nodes.
             ExtractNodeAttributes();
 
