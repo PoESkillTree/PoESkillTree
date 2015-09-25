@@ -44,13 +44,14 @@
         <CheckBox Grid.Row="0" Grid.Column="3" Margin="10,5" Content="only search in current tree" IsChecked="{Binding TreeAsSubset}"/>
         <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" Content="current tree as initial solution" IsChecked="{Binding TreeAsStart}"/>
 
-        <Button Grid.Row="2" Grid.Column="3" Content="_Run" Margin="10,5" Command="{Binding RunCommand}" IsDefault="True"/>
+        <Button Grid.Row="2" Grid.Column="3" Content="_Run" Margin="10,5" Command="{Binding RunCommand}"/>
         
         <TabControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
                 <local:SteinerGeneratorTab/>
             </TabItem>
-            <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}" IsEnabled="False">
+            <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}"
+                     IsEnabled="False" ToolTip="'Automated' Solver is not yet implemented." ToolTipService.ShowOnDisabled="True">
                 <local:AutomatedGeneratorTab/>
             </TabItem>
             <TabItem DataContext="{Binding Tabs[2]}" Header="{Binding DisplayName}">

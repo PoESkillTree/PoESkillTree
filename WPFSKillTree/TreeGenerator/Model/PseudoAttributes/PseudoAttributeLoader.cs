@@ -24,19 +24,12 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
     {
         private static readonly string DataPath = AppData.GetFolder(Path.Combine("Data", "PseudoAttributes"));
 
-        private static List<PseudoAttribute> _cachedPseudoAttributes;
-
         private readonly Dictionary<string, PseudoAttribute> _pseudoNameDict = new Dictionary<string, PseudoAttribute>();
 
         private readonly Dictionary<string, List<string>> _nestedPseudosDict = new Dictionary<string, List<string>>();
         
-        public List<PseudoAttribute> LoadPseudoAttributes(bool useCache = true, XmlPseudoAttributes xmlPseudoAttributes = null)
+        public List<PseudoAttribute> LoadPseudoAttributes(XmlPseudoAttributes xmlPseudoAttributes = null)
         {
-            if (useCache && _cachedPseudoAttributes != null)
-            {
-                return _cachedPseudoAttributes;
-            }
-
             XmlPseudoAttribute[] xmlPseudos;
             if (xmlPseudoAttributes == null)
             {
@@ -57,15 +50,13 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                 throw new PseudoAttributeDataInvalidException(string.Format(L10n.Message("No Pseudo Attributes loaded. Make sure {0} is not empty."), DataPath));
             }
 
+            _pseudoNameDict.Clear();
+            _nestedPseudosDict.Clear();
             // Inductive converting.
             var pseudos = ConvertFromXml(xmlPseudos);
             // Replace nested pseudo attributes by proper object.
             ResolveNesting(pseudos);
             
-            if (useCache)
-            {
-                _cachedPseudoAttributes = pseudos;
-            }
             return pseudos;
         }
 

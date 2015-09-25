@@ -11,7 +11,7 @@ namespace UnitTests
         {
             var l = new PseudoAttributeLoader();
             var t = l.LoadPseudoAttributes();
-            Assert.IsTrue(t.Count == 7);
+            Assert.IsTrue(t.Count == 22);
         }
     }
 }

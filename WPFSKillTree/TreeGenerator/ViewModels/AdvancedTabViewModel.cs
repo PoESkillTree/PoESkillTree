@@ -32,6 +32,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         private static readonly Dictionary<string, int> AttrGroupOrder = new Dictionary<string, int>()
         {
+            {L10n.Message("Popular"), -1},
             // General
             {L10n.Message("Core Attributes"), 0},
             {L10n.Message("General"), 1},
@@ -52,6 +53,15 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {L10n.Message("Trap"), 13},
             {L10n.Message("Totem"), 14},
             {"Everything else", 15}
+        };
+
+        private static readonly HashSet<string> PopularAttributes = new HashSet<string>()
+        {
+            "+# to Dexterity", "+# to Intelligence", "+# to Strength",
+            "#% increased Movement Speed", "#% increased maximum Life", "#% of Life Regenerated per Second",
+            "#% of Physical Attack Damage Leeched as Mana",
+            "#% increased effect of Auras you Cast", "#% reduced Mana Reserved",
+            "+# to Jewel Socket"
         };
 
         /// <summary>
@@ -236,7 +246,20 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
+        private RelayCommand _reloadPseudoAttributesCommand;
+
+        public ICommand ReloadPseudoAttributesCommand
+        {
+            get
+            {
+                return _reloadPseudoAttributesCommand ?? (_reloadPseudoAttributesCommand = new RelayCommand(
+                    o => ReloadPseudoAttributes()));
+            }
+        }
+
         #endregion
+
+        private readonly PseudoAttributeLoader _pseudoAttributeLoader = new PseudoAttributeLoader();
 
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
         {
@@ -246,25 +269,24 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 var attrSort = AttrGroupOrder[AttrGroupConverter.Convert(s1).GroupName] -
                                AttrGroupOrder[AttrGroupConverter.Convert(s2).GroupName];
                 if (attrSort != 0) return attrSort;
+                if (PopularAttributes.Contains(s1) && !PopularAttributes.Contains(s2)) return -1;
+                if (PopularAttributes.Contains(s2) && !PopularAttributes.Contains(s1)) return 1;
                 return string.CompareOrdinal(s1, s2);
             });
             Attributes = new ObservableCollection<string>(attrList);
 
             AttributeConstraints = new ObservableCollection<AttributeConstraint>();
-
-            var pseudos = new PseudoAttributeLoader().LoadPseudoAttributes();
-
-            _pseudoAttributes = new ObservableCollection<PseudoAttribute>(pseudos);
+            
+            _pseudoAttributes = new ObservableCollection<PseudoAttribute>();
             PseudoAttributesView = CollectionViewSource.GetDefaultView(_pseudoAttributes);
             PseudoAttributesView.Filter = item => !_addedPseudoAttributes.Contains((PseudoAttribute) item);
             PseudoAttributesView.SortDescriptions.Add(new SortDescription("Group", ListSortDirection.Ascending));
             PseudoAttributesView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
             Debug.Assert(PseudoAttributesView.GroupDescriptions != null, "PseudoAttributesView.GroupDescriptions != null");
             PseudoAttributesView.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
-            PseudoAttributesView.MoveCurrentToFirst();
-            
             PseudoAttributeConstraints = new ObservableCollection<PseudoAttributeConstraint>();
-            NewPseudoAttributeConstraint = new PseudoAttributeConstraint(PseudoAttributesView.CurrentItem as PseudoAttribute);
+
+            ReloadPseudoAttributes();
 
             DisplayName = L10n.Message("Advanced");
         }
@@ -281,6 +303,19 @@ namespace POESKillTree.TreeGenerator.ViewModels
                    group attr by attr.Key into attrGroup
                    where attrGroup.Count() > 1
                    select attrGroup.First().Key;
+        }
+
+        private void ReloadPseudoAttributes()
+        {
+            _addedPseudoAttributes.Clear();
+            _pseudoAttributes.Clear();
+            foreach (var pseudo in _pseudoAttributeLoader.LoadPseudoAttributes())
+            {
+                _pseudoAttributes.Add(pseudo);
+            }
+            PseudoAttributeConstraints.Clear();
+            PseudoAttributesView.MoveCurrentToFirst();
+            NewPseudoAttributeConstraint = new PseudoAttributeConstraint(PseudoAttributesView.CurrentItem as PseudoAttribute);
         }
 
         private void LoadAttributesFromTree()
