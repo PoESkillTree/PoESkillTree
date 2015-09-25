@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Data;
 using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;
@@ -16,6 +19,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 {
     public sealed class AdvancedTabViewModel : GeneratorTabViewModel
     {
+
         #region Attribute constants
 
         /// <summary>
@@ -95,7 +99,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private readonly HashSet<PseudoAttribute> _addedPseudoAttributes = new HashSet<PseudoAttribute>();
 
-        public ObservableCollection<PseudoAttribute> PseudoAttributes { get; private set; }
+        private readonly ObservableCollection<PseudoAttribute> _pseudoAttributes;
+
+        public ListCollectionView PseudoAttributesView { get; private set; }
 
         public ObservableCollection<PseudoAttributeConstraint> PseudoAttributeConstraints { get; private set; }
 
@@ -199,12 +205,13 @@ namespace POESKillTree.TreeGenerator.ViewModels
                     param =>
                     {
                         var newConstraint = (PseudoAttributeConstraint) NewPseudoAttributeConstraint.Clone();
-                        NewPseudoAttributeConstraint.Data = PseudoAttributes.Count > 0 ? PseudoAttributes[0] : null;
-                        PseudoAttributeConstraints.Add(newConstraint);
-                        PseudoAttributes.Remove(newConstraint.Data);
                         _addedPseudoAttributes.Add(newConstraint.Data);
+                        PseudoAttributesView.Refresh();
+
+                        NewPseudoAttributeConstraint.Data = _addedPseudoAttributes.Count < _pseudoAttributes.Count ? (PseudoAttribute)PseudoAttributesView.GetItemAt(0) : null;
+                        PseudoAttributeConstraints.Add(newConstraint);
                     },
-                    param => PseudoAttributes.Count > 0));
+                    param => _addedPseudoAttributes.Count < _pseudoAttributes.Count));
             }
         }
 
@@ -218,10 +225,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
                     param =>
                     {
                         var oldConstraint = (PseudoAttributeConstraint) param;
+                        _addedPseudoAttributes.Remove(oldConstraint.Data);
+                        PseudoAttributesView.Refresh();
+
                         NewPseudoAttributeConstraint = oldConstraint;
                         PseudoAttributeConstraints.Remove(oldConstraint);
-                        PseudoAttributes.Add(oldConstraint.Data);
-                        _addedPseudoAttributes.Remove(oldConstraint.Data);
                     },
                     param => param is PseudoAttributeConstraint));
             }
@@ -237,16 +245,23 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 var attrSort = AttrGroupOrder[AttrGroupConverter.Convert(s1).GroupName] -
                                AttrGroupOrder[AttrGroupConverter.Convert(s2).GroupName];
                 if (attrSort != 0) return attrSort;
-                return string.Compare(s1, s2, StringComparison.Ordinal);
+                return string.CompareOrdinal(s1, s2);
             });
             Attributes = new ObservableCollection<string>(attrList);
 
             AttributeConstraints = new ObservableCollection<AttributeConstraint>();
 
             var pseudos = new PseudoAttributeLoader().LoadPseudoAttributes();
-            PseudoAttributes = new ObservableCollection<PseudoAttribute>(pseudos);
+            _pseudoAttributes = new ObservableCollection<PseudoAttribute>(pseudos);
+            PseudoAttributesView = (ListCollectionView) CollectionViewSource.GetDefaultView(_pseudoAttributes);
+            PseudoAttributesView.Filter = item => !_addedPseudoAttributes.Contains((PseudoAttribute) item);
+            PseudoAttributesView.SortDescriptions.Add(new SortDescription("Group", ListSortDirection.Ascending));
+            PseudoAttributesView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            Debug.Assert(PseudoAttributesView.GroupDescriptions != null, "PseudoAttributesView.GroupDescriptions != null");
+            PseudoAttributesView.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
+
             PseudoAttributeConstraints = new ObservableCollection<PseudoAttributeConstraint>();
-            NewPseudoAttributeConstraint = new PseudoAttributeConstraint(PseudoAttributes[0]);
+            NewPseudoAttributeConstraint = new PseudoAttributeConstraint((PseudoAttribute)PseudoAttributesView.GetItemAt(0));
 
             DisplayName = L10n.Message("Advanced");
         }

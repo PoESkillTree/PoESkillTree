@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Speed pseudo attributes -->
+<PseudoAttributes>
+	<PseudoAttribute Name="#% increased Attack Speed" Group="Speed">
+		<Attribute Name="#% increased Attack Speed" />
+		<Attribute Name="#% increased Attack and Cast Speed" />
+		<Attribute Name="#% increased Attack Speed with {0}">
+			<Conditions>
+				<WeaponClass>{0}</WeaponClass> <!-- Maces, Axes, Two Handed Melee Weapons, ... -->
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Attack Speed while Dual Wielding">
+			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Attack Speed while holding a Shield">
+			<Conditions><OffHand>Shield</OffHand></Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Melee Attack Speed">
+			<Conditions><Tag>Melee</Tag></Conditions>
+		</Attribute>
+		<Attribute Name="Attacks used by Totems have #% increased Attack Speed">
+			<Conditions><Tag>Totem</Tag></Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Attack Speed with Off Hand" ConversionMultiplier="0.5">
+			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
+		</Attribute>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Cast Speed" Group="Speed">
+		<Attribute Name="#% increased Cast Speed" />
+		<Attribute Name="#% increased Attack and Cast Speed" />
+		<Attribute Name="#% increased Cast Speed while Dual Wielding">
+			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
+		</Attribute>
+		<Attribute Name="Spells cast by Totems have #% increased Attack Speed">
+			<Conditions><Tag>Totem</Tag></Conditions>
+		</Attribute>
+	</PseudoAttribute>
+</PseudoAttributes>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Damage pseudo attributes -->
 <PseudoAttributes>
-	<PseudoAttribute Name="raw #% increased Damage" Hidden="True" Group="Damage">
+	<PseudoAttribute Name="#% increased Non-Specific Damage" Group="Damage">
 		<Attribute Name="#% increased {0} Damage">
 			<Conditions><Tag>{0}</Tag></Conditions>
 		</Attribute>
@@ -12,6 +12,14 @@
 			<Conditions>
 				<AndComposition>
 					<OffHand>Dual Wield</OffHand>
+					<Tag>Attack</Tag>
+				</AndComposition>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Damage with {0}">
+			<Conditions>
+				<AndComposition>
+					<WeaponClass>{0}</WeaponClass> <!-- Wands -->
 					<Tag>Attack</Tag>
 				</AndComposition>
 			</Conditions>
@@ -38,6 +46,14 @@
 				<OffHand>Shield</OffHand>
 			</Conditions>
 		</Attribute>
+		<Attribute Name="#% increased Melee Physical Damage while holding a Shield">
+			<Conditions>
+				<AndComposition>
+					<OffHand>Shield</OffHand>
+					<Tag>Melee</Tag>
+				</AndComposition>
+			</Conditions>
+		</Attribute>
 		<Attribute Name="#% increased Physical Damage while Dual Wielding or holding a Shield">
 			<Conditions>
 				<OffHand>Dual Wield</OffHand>
@@ -49,6 +65,7 @@
 				<AndComposition>
 					<OffHand>Dual Wield</OffHand>
 					<Tag>Attack</Tag>
+					<Not><WeaponClass>Unarmed</WeaponClass></Not>
 				</AndComposition>
 			</Conditions>
 		</Attribute>
@@ -70,7 +87,7 @@
 	</PseudoAttribute>
 	<PseudoAttribute Name="#% increased Physical Damage" Group="Damage">
 		<PseudoAttribute Name="raw #% increased Physical Damage" />
-		<PseudoAttribute Name="raw #% increased Damage" />
+		<PseudoAttribute Name="#% increased Non-Specific Damage" />
 	</PseudoAttribute>
 	<PseudoAttribute Name="raw #% increased Fire Damage" Hidden="True" Group="Damage">
 		<Attribute Name="#% increased Fire Damage" />
@@ -89,7 +106,7 @@
 	<PseudoAttribute Name="#% increased Fire Damage" Group="Damage">
 		<PseudoAttribute Name="raw #% increased Fire Damage" />
 		<PseudoAttribute Name="raw #% increased Elemental Damage" />
-		<PseudoAttribute Name="raw #% increased Damage" />
+		<PseudoAttribute Name="#% increased Non-Specific Damage" />
 	</PseudoAttribute>
 	<PseudoAttribute Name="raw #% increased Cold Damage" Hidden="True" Group="Damage">
 		<Attribute Name="#% increased Cold Damage" />
@@ -105,7 +122,7 @@
 	<PseudoAttribute Name="#% increased Cold Damage" Group="Damage">
 		<PseudoAttribute Name="raw #% increased Cold Damage" />
 		<PseudoAttribute Name="raw #% increased Elemental Damage" />
-		<PseudoAttribute Name="raw #% increased Damage" />
+		<PseudoAttribute Name="#% increased Non-Specific Damage" />
 	</PseudoAttribute>
 	<PseudoAttribute Name="raw #% increased Lightning Damage" Hidden="True" Group="Damage">
 		<Attribute Name="#% increased Lightning Damage" />
@@ -121,7 +138,7 @@
 	<PseudoAttribute Name="#% increased Lightning Damage" Group="Damage">
 		<PseudoAttribute Name="raw #% increased Lightning Damage" />
 		<PseudoAttribute Name="raw #% increased Elemental Damage" />
-		<PseudoAttribute Name="raw #% increased Damage" />
+		<PseudoAttribute Name="#% increased Non-Specific Damage" />
 	</PseudoAttribute>
 	<PseudoAttribute Name="raw #% increased Elemental Damage" Hidden="True" Group="Damage">
 		<Attribute Name="#% increased Elemental Damage" />
@@ -145,37 +162,13 @@
 	</PseudoAttribute>
 	<PseudoAttribute Name="#% increased Elemental Damage" Group="Damage">
 		<PseudoAttribute Name="raw #% increased Elemental Damage" />
-		<PseudoAttribute Name="raw #% increased Damage" />
+		<PseudoAttribute Name="#% increased Non-Specific Damage" />
 	</PseudoAttribute>
 	<PseudoAttribute Name="raw #% increased Chaos Damage" Hidden="True" Group="Damage">
 		<Attribute Name="#% increased Chaos Damage" />
 	</PseudoAttribute>
 	<PseudoAttribute Name="#% increased Chaos Damage" Group="Damage">
 		<PseudoAttribute Name="raw #% increased Chaos Damage" />
-		<PseudoAttribute Name="raw #% increased Damage" />
-	</PseudoAttribute>
-	<PseudoAttribute Name="#% increased Total Damage" Group="Damage">
-		<PseudoAttribute Name="raw #% increased Physical Damage" />
-		<PseudoAttribute Name="raw #% increased Fire Damage" />
-		<PseudoAttribute Name="raw #% increased Cold Damage" />
-		<PseudoAttribute Name="raw #% increased Lightning Damage" />
-		<PseudoAttribute Name="raw #% increased Elemental Damage" />
-		<PseudoAttribute Name="raw #% increased Chaos Damage" />
-		<PseudoAttribute Name="raw #% increased Damage" />
+		<PseudoAttribute Name="#% increased Non-Specific Damage" />
 	</PseudoAttribute>
 </PseudoAttributes>
-
-<!-- Other pseudo attributes:
-speed:
-- cast speed
-- attack speed
-- movement speed
-crit:
-- crit chance
-- crit multi
-- accuracy
-defense:
-- fire/cold/lightning res
-- armour/evasion/energy shield
-- block chance
- -->

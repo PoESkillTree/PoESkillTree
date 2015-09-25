@@ -9,7 +9,6 @@
              xmlns:model="clr-namespace:POESKillTree.TreeGenerator.Model"
              xmlns:pseudoAttributes="clr-namespace:POESKillTree.TreeGenerator.Model.PseudoAttributes"
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
-             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              x:Name="Control"
              d:DesignHeight="300" d:DesignWidth="550" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
@@ -22,14 +21,6 @@
                 <CollectionViewSource.GroupDescriptions>
                     <PropertyGroupDescription PropertyName="." Converter="{StaticResource AttributeGroupConverter}" />
                 </CollectionViewSource.GroupDescriptions>
-            </CollectionViewSource>
-            <CollectionViewSource x:Key="PseudoAttributeSource" Source="{Binding PseudoAttributes}">
-                <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Group" />
-                </CollectionViewSource.GroupDescriptions>
-                <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="Name" />
-                </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
             <converter:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
             <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
@@ -159,7 +150,7 @@
 
                     <ComboBox Grid.Column="0" Grid.Row="0" Margin="4,4,2,4"
                               SelectedItem="{Binding NewPseudoAttributeConstraint.Data}"
-                              ItemsSource="{Binding Source={StaticResource PseudoAttributeSource}}">
+                              ItemsSource="{Binding PseudoAttributesView}">
                         <ComboBox.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.HeaderTemplate>
@@ -178,7 +169,7 @@
                     <Label Grid.Column="3" Grid.Row="0" Content="{Binding NewPseudoAttributeConstraint.Weight}" Margin="2,4" ContentStringFormat="{}{0}%" />
                     <Button Grid.Column="4" Grid.Row="0" Margin="2,4,4,4" Command="{Binding AddPseudoConstraintCommand}">Add</Button>
                     
-                    <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="PseudoConstraintGrid"
+                    <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
                               ItemsSource="{Binding PseudoAttributeConstraints}"
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>

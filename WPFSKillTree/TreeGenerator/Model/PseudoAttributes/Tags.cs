@@ -11,7 +11,10 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
     public enum Tags
     {
         None = 0, Attack = 1, Melee = 2, Duration = 4, Projectile = 8,
-        Spell = 16, Trap = 32, Mine = 64, Totem = 128, Area = 256, Cast = 512
+        Spell = 16, Trap = 32, Mine = 64, Totem = 128, Area = 256, Cast = 512,
+        // Curse is unused. Curse nodes are so sparse that there won't be many choices.
+        // Also since Tags are set global one would need to specialize only for curses.
+        Curse = 1024
     }
 
     public static class TagsExtensions
@@ -25,9 +28,10 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
             {Tags.Spell, new [] {"spell", "spells"} },
             {Tags.Trap, new [] {"trap", "traps"} },
             {Tags.Mine, new [] {"mine", "mines"} },
-            {Tags.Totem, new [] {"totem", "totems"} },
+            {Tags.Totem, new [] {"totem", "totems", "totem skills"} },
             {Tags.Area, new [] {"area", "aoe", "area of effect"} },
-            {Tags.Cast, new [] {"cast", "casts"} }
+            {Tags.Cast, new [] {"cast", "casts"} },
+            {Tags.Curse, new [] {"curse", "curses"} }
         };
 
         public static bool HasAlias(this Tags tags, string alias)

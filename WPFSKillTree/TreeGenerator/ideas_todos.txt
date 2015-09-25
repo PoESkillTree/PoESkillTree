@@ -13,11 +13,11 @@ Basic AdvancedSolver optimization:
 - tweak AdvancedSolver.GaParameters
 
 PseudoAttributes related:
-- fill up xml files
 - catch PseudoAttributeDataInvalidException
 - make sure Data/PseudoAttributes is included in install packages
 
 AdvancedSolver UI improvements:
+- "Popular" group for attribute combobox
 - Tooltips for deactivated Tabs
 - pressing Enter when adding new PseudoAttributeConstraint should add it
 - more intuitive control instead of the DataGrid: AttrConstraintGrid like PseudoConstraintGrid is done

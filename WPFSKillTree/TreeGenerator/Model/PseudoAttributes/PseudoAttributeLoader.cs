@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,9 +11,6 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     public class PseudoAttributeDataInvalidException : Exception
     {
-        public PseudoAttributeDataInvalidException()
-        { }
-
         public PseudoAttributeDataInvalidException(string message)
             : base(message)
         { }
@@ -41,20 +37,26 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                 return _cachedPseudoAttributes;
             }
 
-            IEnumerable<XmlPseudoAttribute> xmlPseudos;
+            XmlPseudoAttribute[] xmlPseudos;
             if (xmlPseudoAttributes == null)
             {
                 // Deserialize all files in DataPath that end with .xml
                 // and select the XmlPseudoAttribute objects.
-                xmlPseudos = from file in Directory.GetFiles(DataPath)
+                xmlPseudos = (from file in Directory.GetFiles(DataPath)
                     where file.EndsWith(".xml")
                     from pseudo in DeserializeFile(file).PseudoAttributes
-                    select pseudo;
+                    select pseudo).ToArray();
             }
             else
             {
                 xmlPseudos = xmlPseudoAttributes.PseudoAttributes;
             }
+
+            if (xmlPseudos.Length == 0)
+            {
+                throw new PseudoAttributeDataInvalidException(string.Format(L10n.Message("No Pseudo Attributes loaded. Make sure {0} is not empty."), DataPath));
+            }
+
             // Inductive converting.
             var pseudos = ConvertFromXml(xmlPseudos);
             // Replace nested pseudo attributes by proper object.
@@ -74,7 +76,9 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
             {
                 try
                 {
-                    return (XmlPseudoAttributes)ser.Deserialize(reader);
+                    var ret = (XmlPseudoAttributes)ser.Deserialize(reader);
+                    if (ret.PseudoAttributes == null) ret.PseudoAttributes = new XmlPseudoAttribute[0];
+                    return ret;
                 }
                 catch (InvalidOperationException e)
                 {
@@ -159,8 +163,8 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                                     }
                                     else
                                     {
-                                        throw new PseudoAttributeDataInvalidException(L10n.Message("Empty not condition in attribute ") + attr.Name
-                                            + L10n.Message(" in pseudo attribute ") + pseudo.Name);
+                                        throw new PseudoAttributeDataInvalidException(
+                                            string.Format(L10n.Message("Empty not condition in attribute {0} in pseudo attribute {1}"), attr.Name, pseudo.Name));
                                     }
                                     andComp.Conditions.Add(new NotCondition(innerCond));
                                 }
@@ -181,8 +185,8 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                                 break;
 
                             default:
-                                throw new PseudoAttributeDataInvalidException(L10n.Message("Unsupported condition type in attribute ") + attr.Name
-                                    + L10n.Message(" in pseudo attribute ") + pseudo.Name);
+                                throw new PseudoAttributeDataInvalidException(
+                                    string.Format(L10n.Message("Unsupported condition type in attribute {0} in pseudo attribute {1}"), attr.Name, pseudo.Name));
                         }
                         attr.Conditions.Add(condition);
                     }
@@ -211,7 +215,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                     }
                     catch (KeyNotFoundException e)
                     {
-                        throw new PseudoAttributeDataInvalidException(L10n.Message("Nested PseudoAttribute does not exist as top level PseudoAttribute: ") + name, e);
+                        throw new PseudoAttributeDataInvalidException(string.Format(L10n.Message("Nested PseudoAttribute {0} does not exist as top level PseudoAttribute"), name), e);
                     }
                     // Enqueue pseudo attributes nested in this one.
                     foreach (var newName in _nestedPseudosDict[name])

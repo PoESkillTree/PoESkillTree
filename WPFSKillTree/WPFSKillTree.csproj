@@ -253,6 +253,7 @@
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />
     <Compile Include="Utils\Converter\IsNamedObjectVisibilityConverter.cs" />
     <Compile Include="Utils\Converter\NumberLessStringComparer.cs" />
+    <Compile Include="Utils\CustomComparer.cs" />
     <Compile Include="Utils\DataResource.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Utils\Notifier.cs" />
@@ -561,7 +562,19 @@
     <None Include="Data\Equipment\Itemlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Data\PseudoAttributes\pseudoTest.xml">
+    <Content Include="Data\PseudoAttributes\Crit.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PseudoAttributes\Custom.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PseudoAttributes\Damage.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PseudoAttributes\Defense.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PseudoAttributes\Speed.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ExpressionEvaluator.dll" />
