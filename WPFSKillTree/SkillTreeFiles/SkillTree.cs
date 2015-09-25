@@ -1052,14 +1052,23 @@ namespace POESKillTree.SkillTreeFiles
                 return;
             }
 
-            // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
-            var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this));
-            settingsVm.StartController += (sender, args) =>
+            try
             {
-                var dialog = new ControllerWindow(args.ViewModel) { Owner = MainWindow };
-                dialog.ShowDialog();
-            };
-            settingsVm.RunCommand.Execute(null);
+                // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
+                var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this));
+                settingsVm.StartController += (sender, args) =>
+                {
+                    var dialog = new ControllerWindow(args.ViewModel) {Owner = MainWindow};
+                    dialog.ShowDialog();
+                };
+                settingsVm.RunCommand.Execute(null);
+            }
+            catch (Exception e)
+            {
+                Popup.Error(L10n.Message("Error while trying to find solution"), e.Message);
+                Debug.WriteLine("Exception in 'Skill Tagged Nodes':");
+                Debug.WriteLine(e.Message);
+            }
         }
 
         public ushort GetCharNodeId()

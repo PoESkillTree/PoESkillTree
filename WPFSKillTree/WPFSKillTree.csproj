@@ -253,7 +253,6 @@
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />
     <Compile Include="Utils\Converter\IsNamedObjectVisibilityConverter.cs" />
     <Compile Include="Utils\Converter\NumberLessStringComparer.cs" />
-    <Compile Include="Utils\CustomComparer.cs" />
     <Compile Include="Utils\DataResource.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Utils\Notifier.cs" />

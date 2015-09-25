@@ -13,7 +13,6 @@ Basic AdvancedSolver optimization:
 - tweak AdvancedSolver.GaParameters
 
 PseudoAttributes related:
-- catch PseudoAttributeDataInvalidException
 - make sure Data/PseudoAttributes is included in install packages
 
 AdvancedSolver UI improvements:

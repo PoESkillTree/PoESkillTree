@@ -397,24 +397,33 @@ namespace POESKillTree.Views
 
         private void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
         {
-            if (_settingsWindow == null)
+            try
             {
-                var vm = new SettingsViewModel(Tree);
-                vm.RequestClose += (o, args) =>
+                if (_settingsWindow == null)
                 {
-                    UpdateUI();
-                    tbSkillURL.Text = Tree.SaveToURL();
-                };
-                _settingsWindow = new SettingsWindow(vm) {Owner = this};
-                _settingsWindow.Closing += (o, args) =>
-                {
-                    if (_isClosing) return;
+                    var vm = new SettingsViewModel(Tree);
+                    vm.RequestClose += (o, args) =>
+                    {
+                        UpdateUI();
+                        tbSkillURL.Text = Tree.SaveToURL();
+                    };
+                    _settingsWindow = new SettingsWindow(vm) {Owner = this};
+                    _settingsWindow.Closing += (o, args) =>
+                    {
+                        if (_isClosing) return;
 
-                    args.Cancel = true;
-                    _settingsWindow.Hide();
-                };
+                        args.Cancel = true;
+                        _settingsWindow.Hide();
+                    };
+                }
+                _settingsWindow.Show();
             }
-            _settingsWindow.Show();
+            catch (Exception ex)
+            {
+                Popup.Error(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
+                Debug.WriteLine("Exception in 'Skill Tree Generator':");
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         private void Menu_ScreenShot(object sender, RoutedEventArgs e)
