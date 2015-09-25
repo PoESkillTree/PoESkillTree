@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using POESKillTree.TreeGenerator.Utils;
+using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 
 namespace UnitTests
 {

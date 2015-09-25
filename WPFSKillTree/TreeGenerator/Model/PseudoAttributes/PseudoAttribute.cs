@@ -9,12 +9,13 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 
         public List<Attribute> Attributes { get; private set; }
 
-        public string Group { get; set; }
+        public string Group { get; private set; }
 
-        public PseudoAttribute(string name)
+        internal PseudoAttribute(string name, string group)
         {
             if (name == null) throw new ArgumentNullException("name");
             Name = name;
+            Group = group;
             Attributes = new List<Attribute>();
         }
 

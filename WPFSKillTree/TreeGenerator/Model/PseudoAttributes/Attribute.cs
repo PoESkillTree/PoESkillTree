@@ -6,9 +6,9 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
     {
         public string Name { get; private set; }
 
-        public float ConversionMultiplier { get; set; }
+        public float ConversionMultiplier { get; internal set; }
 
-        public Attribute(string name)
+        internal Attribute(string name)
         {
             if (name == null) throw new ArgumentNullException("name");
             Name = name;

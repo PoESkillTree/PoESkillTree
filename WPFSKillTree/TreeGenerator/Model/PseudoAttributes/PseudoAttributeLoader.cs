@@ -1,15 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using POESKillTree.Localization;
-using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 using POESKillTree.Utils;
-using Attribute = POESKillTree.TreeGenerator.Model.PseudoAttributes.Attribute;
 
-namespace POESKillTree.TreeGenerator.Utils
+namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     public class PseudoAttributeDataInvalidException : Exception
     {
@@ -31,36 +30,37 @@ namespace POESKillTree.TreeGenerator.Utils
 
         private static List<PseudoAttribute> _cachedPseudoAttributes;
 
-        private readonly bool _useCache;
-
         private readonly Dictionary<string, PseudoAttribute> _pseudoNameDict = new Dictionary<string, PseudoAttribute>();
 
         private readonly Dictionary<string, List<string>> _nestedPseudosDict = new Dictionary<string, List<string>>();
-
-        public PseudoAttributeLoader(bool useCache = true)
-        {
-            _useCache = useCache;
-        }
         
-        public List<PseudoAttribute> LoadPseudoAttributes()
+        public List<PseudoAttribute> LoadPseudoAttributes(bool useCache = true, XmlPseudoAttributes xmlPseudoAttributes = null)
         {
-            if (_useCache && _cachedPseudoAttributes != null)
+            if (useCache && _cachedPseudoAttributes != null)
             {
                 return _cachedPseudoAttributes;
             }
 
-            // Deserialize all files in DataPath that end with .xml
-            // and select the XmlPseudoAttribute objects.
-            var xmlPseudos = from file in Directory.GetFiles(DataPath)
-                             where file.EndsWith(".xml")
-                             from pseudo in DeserializeFile(file).PseudoAttributes
-                             select pseudo;
+            IEnumerable<XmlPseudoAttribute> xmlPseudos;
+            if (xmlPseudoAttributes == null)
+            {
+                // Deserialize all files in DataPath that end with .xml
+                // and select the XmlPseudoAttribute objects.
+                xmlPseudos = from file in Directory.GetFiles(DataPath)
+                    where file.EndsWith(".xml")
+                    from pseudo in DeserializeFile(file).PseudoAttributes
+                    select pseudo;
+            }
+            else
+            {
+                xmlPseudos = xmlPseudoAttributes.PseudoAttributes;
+            }
             // Inductive converting.
             var pseudos = ConvertFromXml(xmlPseudos);
             // Replace nested pseudo attributes by proper object.
             ResolveNesting(pseudos);
             
-            if (_useCache)
+            if (useCache)
             {
                 _cachedPseudoAttributes = pseudos;
             }
@@ -88,10 +88,7 @@ namespace POESKillTree.TreeGenerator.Utils
             var pseudos = new List<PseudoAttribute>();
             foreach (var xmlPseudo in xmlPseudoAttributes)
             {
-                var pseudo = new PseudoAttribute(xmlPseudo.Name)
-                {
-                    Group = xmlPseudo.Group
-                };
+                var pseudo = new PseudoAttribute(xmlPseudo.Name, xmlPseudo.Group);
                 _pseudoNameDict[pseudo.Name] = pseudo;
                 if (xmlPseudo.Hidden != "True")
                 {
