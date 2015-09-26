@@ -6,9 +6,7 @@ Basic AdvancedSolver optimization:
 - final simple hill climbing (switch single genes for a better fitness until no single gene can be switched for a better fitness)?
 - better way of calculating weighting in csvs
 - GeneticAlgorithm.randomBitArray() flipped bits dependent upon Total points (larger tree -> more bits set)?
-- how to handle csvs exceeding the target value? (curently they are capped at the target value) (AdvancedSolver.CalcCsv())
 - optimize AdvancedSolver.FitnessFunction()
-- optimize included nodes (AdvancedSolver.IncludeNode()): vicinity related steiner node selection, exclude nodes with stats that are "too far away" to be useful
 - tweak AdvancedSolver.GaParameters
 
 AdvancedSolver UI improvements:

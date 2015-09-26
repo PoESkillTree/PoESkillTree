@@ -40,7 +40,11 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// Factor for the value calculated from the node difference if used node count is lower than the allowed node coutn.
         /// </summary>
-        private const double UsedNodeCountFactor = .01;
+        /// <remarks>
+        /// A tree with less points spent should only better better if the csv satisfaction is not worse.
+        /// Because of that this factor is really small.
+        ///</remarks>
+        private const double UsedNodeCountFactor = .001;
 
         /// <summary>
         /// Factor by which weights get multiplied in the CSV calculation.
@@ -82,12 +86,8 @@ namespace POESKillTree.TreeGenerator.Solver
             : base(tree, settings)
         { }
 
-        protected override void BuildSearchGraph()
+        protected override void OnStartAndTargetNodesCreated()
         {
-            // Add start and check-tagged nodes as in SteinerSolver.
-            SearchGraph = new SearchGraph();
-            CreateStartNodes();
-            CreateTargetNodes();
             // Set start and target nodes as the fixed nodes.
             _fixedNodes = new HashSet<ushort>(StartNodes.Nodes.Select(node => node.Id));
             _fixedNodes.UnionWith(TargetNodes.Select(node => node.Id));
@@ -103,8 +103,6 @@ namespace POESKillTree.TreeGenerator.Solver
 
             // Set fixed attributes from fixed nodes and Settings.InitialAttributes
             CreateFixedAttributes();
-
-            CreateSearchGraph();
         }
 
         private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> attrConstraints, List<ConvertedPseudoAttribute> pseudoConstraints)
@@ -139,114 +137,19 @@ namespace POESKillTree.TreeGenerator.Solver
                 i++;
             }
         }
-
-        private void CreateStartNodes()
+        
+        protected override bool MustIncludeNodeGroup(SkillNode node)
         {
-            if (Settings.SubsetTree.Count > 0 || Settings.InitialTree.Count > 0)
-            {
-                // if the current tree does not need to be part of the result, only skill the character node
-                StartNodes = SearchGraph.SetStartNodes(new HashSet<ushort> { Tree.GetCharNodeId() });
-            }
-            else
-            {
-                StartNodes = SearchGraph.SetStartNodes(Tree.SkilledNodes);
-            }
+            // If the node has stats and is not a travel node and is part of the subtree,
+            // the group is included.
+            return (Settings.SubsetTree.Count == 0 || Settings.SubsetTree.Contains(node.Id))
+                   && _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id];
         }
 
-        private void CreateTargetNodes()
+        protected override bool IncludeNodeInSearchGraph(SkillNode node)
         {
-            TargetNodes = new HashSet<GraphNode>();
-            foreach (var nodeId in Settings.Checked)
-            {
-                // Don't add nodes that are already skilled.
-                if (SearchGraph.NodeDict.ContainsKey(SkillTree.Skillnodes[nodeId]))
-                    continue;
-                // Don't add nodes that should not be skilled.
-                if (Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(nodeId))
-                    continue;
-                // Add target node to the graph.
-                var node = SearchGraph.AddNodeId(nodeId);
-                TargetNodes.Add(node);
-            }
-        }
-
-        private void CreateSearchGraph()
-        {
-            // TODO somewhat merge with SteinerSolver to reduce redundancy
-            foreach (SkillNodeGroup ng in SkillTree.NodeGroups)
-            {
-                bool mustInclude = false;
-
-                SkillNode firstNeighbor = null;
-
-                // Find out if this node group can be omitted.
-                foreach (SkillNode node in ng.Nodes)
-                {
-                    // If the group contains a skilled node or a target node,
-                    // it can't be omitted.
-                    if (SearchGraph.NodeDict.ContainsKey(node))
-                    {
-                        mustInclude = true;
-                        break;
-                    }
-
-                    // If the node has stats and is not a travel node and is part of the subtree,
-                    // the group is included.
-                    if ((Settings.SubsetTree.Count == 0 || Settings.SubsetTree.Contains(node.Id))
-                        && _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id])
-                    {
-                        mustInclude = true;
-                        break;
-                    }
-
-                    // If the group is adjacent to more than one node, it must
-                    // also be fully included (since it's not isolated and could
-                    // be part of a path to other nodes).
-                    var ng1 = ng;
-                    foreach (SkillNode neighbor in node.Neighbor.Where(neighbor => neighbor.SkillNodeGroup != ng1))
-                    {
-                        if (firstNeighbor == null)
-                            firstNeighbor = neighbor;
-
-                        // Does the group have more than one neighbor?
-                        if (neighbor != firstNeighbor)
-                        {
-                            mustInclude = true;
-                            break;
-                        }
-                    }
-                    if (mustInclude) break;
-                }
-
-                if (mustInclude)
-                {
-                    // Add the group's nodes individually
-                    foreach (SkillNode node in ng.Nodes)
-                    {
-                        // Can't path through class starts.
-                        if (SkillTree.rootNodeList.Contains(node.Id))
-                            continue;
-                        // Don't add nodes that are already in the graph (as
-                        // target or start nodes).
-                        if (SearchGraph.NodeDict.ContainsKey(node))
-                            continue;
-                        // Don't add nodes that should not be skilled.
-                        if (Settings.Crossed.Contains(node.Id))
-                            continue;
-                        // Only add nodes in the subsettree if one is given.
-                        if (Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(node.Id))
-                            continue;
-                        // Mastery nodes are obviously not useful.
-                        if (node.IsMastery)
-                            continue;
-                        // Keystones can only be included if they are check-tagged.
-                        if (node.IsKeyStone)
-                            continue;
-
-                        SearchGraph.AddNode(node);
-                    }
-                }
-            }
+            // Keystones can only be included if they are check-tagged.
+            return !(node.IsKeyStone);
         }
 
         private void CreateFixedAttributes()
@@ -362,24 +265,16 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected override bool IncludeNode(GraphNode node)
         {
-            // Add potential steiner nodes. TODO some kind of vicinity related selection
-            // Add all non-travel nodes with stats. TODO exclude nodes with stats that are "too far away" to be useful
+            // Add potential steiner nodes.
+            // Add all non-travel nodes with stats.
             return node != StartNodes && !TargetNodes.Contains(node)
                    && (node.Adjacent.Count > 2 || (_nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id]));
-        }
-
-        protected override MinimalSpanningTree CreateLeastSolution()
-        {
-            // LeastSolution: MST between start and check-tagged nodes.
-            var nodes = new List<GraphNode>(TargetNodes) { StartNodes };
-            var leastSolution = new MinimalSpanningTree(nodes, Distances);
-            leastSolution.Span(StartNodes);
-            return leastSolution;
         }
 
         protected override bool IncludeNodeUsingDistances(GraphNode node)
         {
             // Don't add nodes that are not connected to the start node (through cross-tagging)
+            // Excluding "too far away" nodes isn't really applicable since on normal sized trees, every part could be reached.
             return Distances.AreConnected(node, StartNodes);
         }
 
@@ -428,10 +323,6 @@ namespace POESKillTree.TreeGenerator.Solver
             }
             else if (usedNodeCount < totalPoints)
             {
-                // TODO test this factor, might not be optimal
-                // optimal: least points spent with csv product = 1 (all constraints satisfied)
-                // That means: minimize UsedNodeCount until Settings.TotalPoints > maximize csvs > minimize UsedNodeCount
-
                 // If it is lower, apply it as a logarithmic factor.
                 csvs *= 1 + UsedNodeCountFactor * Math.Log(totalPoints + 1 - usedNodeCount);
             }
@@ -442,7 +333,6 @@ namespace POESKillTree.TreeGenerator.Solver
         private static double CalcCsv(float x, double weight, float target)
         {
             // Don't go higher than the target value.
-            // TODO how to handle csvs exceeding the target value? (curently they are capped at the target value)
             x = Math.Min(x, target);
             return Math.Exp(weight * CsvWeightMultiplier * x/target) / Math.Exp(weight * CsvWeightMultiplier);
         }
