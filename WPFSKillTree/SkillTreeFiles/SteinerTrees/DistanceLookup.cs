@@ -12,30 +12,32 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     public class DistanceLookup
     {
         // The uint compounds both ushort indices.
-        private readonly Dictionary<uint, int> _distances = new Dictionary<uint, int>();
+        private Dictionary<uint, int> _distances = new Dictionary<uint, int>();
 
-        private readonly Dictionary<uint, ushort[]> _paths = new Dictionary<uint, ushort[]>();
+        private Dictionary<uint, ushort[]> _paths = new Dictionary<uint, ushort[]>();
+
+        private int[,] _distancesFast;
+
+        private ushort[,][] _pathsFast;
+
+        private GraphNode[] _nodes;
 
         /// <summary>
         /// Whether CalculateFully got called.
         /// </summary>
-        private bool _gotFullyCached;
+        private bool _fullyCached;
 
         /// <summary>
-        /// Number ob marked nodes given to CalculateFully.
+        /// Number of cached nodes.
         /// </summary>
-        private int _markedNodeCount = int.MaxValue;
+        private int _cacheSize = int.MaxValue;
 
         /// <summary>
-        ///  Retrieves the path distance from one node pf a graph edge to the other,
-        ///  or calculates it if it has not yet been found and CalculateFully has not been called.
+        /// Number of cached nodes.
         /// </summary>
-        /// <param name="edge">The graph edge.</param>
-        /// <returns>The length of the graph edge (equals the amount of edges
-        /// traversed).</returns>
-        public int GetDistance(GraphEdge edge)
+        public int CacheSize
         {
-            return GetDistance(edge.outside, edge.inside);
+            get { return _cacheSize; }
         }
 
         /// <summary>
@@ -46,32 +48,31 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="b">The second graph node</param>
         /// <returns>The length of the path from a to b (equals the amount of edges
         /// traversed).</returns>
-        public int GetDistance(GraphNode a, GraphNode b)
+        /// <remarks>
+        ///  If CalculateFully has been called and the nodes are not connected, 0 will be returned.
+        ///  If CalculateFully has not been called and the nodes are not connected, a GraphNotConnectedException will be thrown.
+        /// </remarks>
+        public int this[GraphNode a, GraphNode b]
         {
-            var index = GetIndex(a, b);
-
-            if (_gotFullyCached)
+            get
             {
+                if (_fullyCached)
+                {
+                    return _distancesFast[a.DistancesIndex, b.DistancesIndex];
+                }
+
+                var index = GetIndex(a, b);
+                if (!_distances.ContainsKey(index))
+                {
+                    Dijkstra(a, b);
+                }
                 return _distances[index];
             }
-
-            if (!_distances.ContainsKey(index))
-            {
-                Dijkstra(a, b);
-            }
-            return _distances[index];
         }
 
-        /// <summary>
-        ///  Retrieves the shortest path from one node of a graph edge to the other,
-        ///  or calculates it if it has not yet been found and CalculateFully has not been called.
-        /// </summary>
-        /// <param name="edge">The graph edge.</param>
-        /// <returns>The shortest path from outside to inside, not containing either and
-        /// ordered from inside to outside or outside to inside.</returns>
-        public ushort[] GetShortestPath(GraphEdge edge)
+        public int this[int a, int b]
         {
-            return GetShortestPath(edge.outside, edge.inside);
+            get { return _distancesFast[a, b]; }
         }
 
         /// <summary>
@@ -81,20 +82,42 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <param name="a">The first graph node.</param>
         /// <param name="b">The second graph node</param>
         /// <returns>The shortest path from a to b, not containing either and ordered from a to b or b to a.</returns>
+        /// <remarks>
+        ///  If CalculateFully has been called and the nodes are not connected, null will be returned.
+        ///  If CalculateFully has not been called and the nodes are not connected, a GraphNotConnectedException will be thrown.
+        /// </remarks>
         public ushort[] GetShortestPath(GraphNode a, GraphNode b)
         {
-            var index = GetIndex(a, b);
-
-            if (_gotFullyCached)
+            if (_fullyCached)
             {
-                return _paths[index];
+                return _pathsFast[a.DistancesIndex, b.DistancesIndex];
             }
 
+            var index = GetIndex(a, b);
             if (!_distances.ContainsKey(index))
             {
                 Dijkstra(a, b);
             }
             return _paths[index];
+        }
+
+        public GraphNode IndexToNode(int index)
+        {
+            return _nodes[index];
+        }
+
+        public bool AreConnected(GraphNode a, GraphNode b)
+        {
+            try
+            {
+                // Null if not connected and _fullyCached
+                // Exception if not connected and not _fullyCached
+                return GetShortestPath(a, b) != null;
+            }
+            catch (GraphNotConnectedException)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -106,27 +129,76 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// <returns>The compounded index.</returns>
         private static uint GetIndex(GraphNode a, GraphNode b)
         {
-            var aI = a.Id;
-            var bI = b.Id;
-            return (uint)(Math.Min(aI, bI) << 16) + Math.Max(aI, bI);
+            var aId = a.Id;
+            var bId = b.Id;
+            return (uint)(Math.Min(aId, bId) << 16) + Math.Max(aId, bId);
         }
 
         /// <summary>
         /// Calculates and caches all distances between the given nodes.
+        /// Enables fast lookups.
+        /// Sets DistancesIndex of the nodes as incremental index in the cache starting from 0.
         /// </summary>
-        /// <param name="nodes"></param>
         /// <remarks>Calls to GetDistance and GetShortestPath after this method
         /// has been called must already be cached or exceptions will be thrown.</remarks>
         public void CalculateFully(List<GraphNode> nodes)
         {
-            _markedNodeCount = nodes.Count;
+            _cacheSize = nodes.Count;
+            _nodes = new GraphNode[_cacheSize];
+            for (var i = 0; i < _cacheSize; i++)
+            {
+                nodes[i].DistancesIndex = i;
+                _nodes[i] = nodes[i];
+            }
+            _distancesFast = new int[_cacheSize, _cacheSize];
+            _pathsFast = new ushort[_cacheSize, _cacheSize][];
 
+            _fullyCached = true;
             foreach (var node in nodes)
             {
                 Dijkstra(node);
             }
 
-            _gotFullyCached = true;
+            // No longer needed.
+            _distances = null;
+            _paths = null;
+        }
+
+        /// <summary>
+        /// Removes the given nodes from the cache.
+        /// Resets DistancesIndex of removedNodes to -1 and of remainingNodes to be
+        /// incremental without holes again.
+        /// </summary>
+        public void RemoveNodes(List<GraphNode> removedNodes, List<GraphNode> remainingNodes)
+        {
+            foreach (var node in removedNodes)
+            {
+                node.DistancesIndex = -1;
+            }
+
+            var oldDistances = _distancesFast;
+            var oldPaths = _pathsFast;
+            _cacheSize = remainingNodes.Count;
+            _distancesFast = new int[_cacheSize, _cacheSize];
+            _pathsFast = new ushort[_cacheSize, _cacheSize][];
+
+            for (var i = 0; i < _cacheSize; i++)
+            {
+                var oldi = remainingNodes[i].DistancesIndex;
+                for (var j = 0; j < _cacheSize; j++)
+                {
+                    var oldj = remainingNodes[j].DistancesIndex;
+                    _distancesFast[i, j] = oldDistances[oldi, oldj];
+                    _pathsFast[i, j] = oldPaths[oldi, oldj];
+                }
+            }
+
+            _nodes = new GraphNode[_cacheSize];
+            for (var i = 0; i < _cacheSize; i++)
+            {
+                remainingNodes[i].DistancesIndex = i;
+                _nodes[i] = remainingNodes[i];
+            }
         }
 
         /// <summary>
@@ -148,8 +220,8 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // The traversed distance from the starting node in edges.
             var distFromStart = 0;
 
-            var nodesLeft = _markedNodeCount;
-            if (start.Marked)
+            var nodesLeft = _cacheSize;
+            if (start.DistancesIndex >= 0)
             {
                 // Don't count the start node.
                 nodesLeft--;
@@ -173,7 +245,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                             AddEdge(start, adjacentNode, distFromStart, predecessors);
                             return;
                         }
-                        if (adjacentNode.Marked)
+                        if (adjacentNode.DistancesIndex >= 0)
                         {
                             AddEdge(start, adjacentNode, distFromStart, predecessors);
                             nodesLeft--;
@@ -210,8 +282,19 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             var length = distFromStart + 1;
             var path = GenerateShortestPath(from.Id, to.Id, predecessors, length);
 
+            if (_fullyCached)
+            {
+                var i1 = from.DistancesIndex;
+                var i2 = to.DistancesIndex;
+                _distancesFast[i1, i2] = _distancesFast[i2, i1] = length;
+                _pathsFast[i1, i2] = _pathsFast[i2, i1] = path;
+            }
+            else
+            {
+                _paths[index] = path;
+            }
+            // Distances is saved either way to be able to skip already added distances.
             _distances[index] = length;
-            _paths[index] = path;
         }
         
         /// <summary>

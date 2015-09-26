@@ -257,7 +257,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             foreach (ushort nodeId in targets)
             {
                 // Don't add nodes that are already skilled.
-                if (searchGraph.nodeDict.ContainsKey(SkillTree.Skillnodes[nodeId]))
+                if (searchGraph.NodeDict.ContainsKey(SkillTree.Skillnodes[nodeId]))
                     continue;
                 // Add target node to the graph.
                 GraphNode node = searchGraph.AddNodeId(nodeId);
@@ -276,7 +276,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 {
                     /// If the group contains a skilled node or a target node,
                     /// it can't be omitted.
-                    if (searchGraph.nodeDict.ContainsKey(node))
+                    if (searchGraph.NodeDict.ContainsKey(node))
                     {
                         mustInclude = true;
                         break;
@@ -310,7 +310,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                             continue;
                         /// Don't add nodes that are already in the graph (as
                         /// target or start nodes).
-                        if (searchGraph.nodeDict.ContainsKey(node))
+                        if (searchGraph.NodeDict.ContainsKey(node))
                             continue;
                         // Don't add nodes that should not be skilled.
                         if (toOmit.Contains(node.Id))
@@ -330,7 +330,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             searchSpaceBase = new List<GraphNode>();
 
-            MinimalSpanningTree leastSolution = new MinimalSpanningTree(targetNodes, distances);
+            MinimalSpanningTree leastSolution = new MinimalSpanningTree(targetNodes.ToList(), distances);
             leastSolution.Span(startFrom: startNodes);
             // Saving the leastSolution as initial solution. Makes sure there is always a
             // solution even if the search space is empty.
@@ -339,7 +339,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             int maxEdgeDistance = 0;
             foreach (GraphEdge edge in leastSolution.SpanningEdges)
             {
-                int edgeDistance = distances.GetDistance(edge);
+                int edgeDistance = distances[edge.Inside, edge.Outside];
                 if (edgeDistance > maxEdgeDistance)
                     maxEdgeDistance = edgeDistance;
             }
@@ -356,7 +356,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             /// TODO: This can surely be improved in some shape or form, but I
             /// can't figure it out right now. Since the GA also has to work well
             /// with larger input sizes, I won't investigate this right now.
-            foreach (GraphNode node in searchGraph.nodeDict.Values)
+            foreach (GraphNode node in searchGraph.NodeDict.Values)
             {
                 // This can be a steiner node only if it has more than 2 neighbors.
                 if (node.Adjacent.Count > 2)
@@ -388,7 +388,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     // This should be a reasonable approach.
                     bool add = false;
                     foreach (GraphNode targetNode in targetNodes)
-                        if (distances.GetDistance(targetNode, node) < maxEdgeDistance)
+                        if (distances[targetNode, node] < maxEdgeDistance)
                             add = true;
                     if (add)
                         searchSpaceBase.Add(node);
@@ -460,7 +460,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 throw new Exception("The passed MST is not spanned!");
 
             var newSkilledNodes = new HashSet<ushort>(mst.UsedNodes);
-            newSkilledNodes.UnionWith(startNodes.nodes.Select(node => node.Id));
+            newSkilledNodes.UnionWith(startNodes.Nodes.Select(node => node.Id));
 
             if (visualize)
             {
@@ -490,7 +490,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 mstNodes.Add(targetNode);
             }
 
-            return new MinimalSpanningTree(mstNodes, distances);
+            return new MinimalSpanningTree(mstNodes.ToList(), distances);
         }
 
         double fitnessFunction(BitArray representation)

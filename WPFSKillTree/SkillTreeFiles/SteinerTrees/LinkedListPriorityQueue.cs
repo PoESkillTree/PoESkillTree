@@ -9,33 +9,33 @@
         /// <summary>
         /// The Priority to insert this node at.
         /// </summary>
-        public int Priority { get; set; }
+        public int Priority { get; internal set; }
 
 #if DEBUG
         /// <summary>
         /// <b>Used by the priority queue - do not edit this value.</b>
         /// Represents the order the node was inserted in
         /// </summary>
-        public long InsertionIndex { get; set; }
+        public long InsertionIndex { get; internal set; }
 #endif
 
         /// <summary>
         /// <b>Used by the priority queue - do not edit this value.</b>
         /// True, if the node is currently stored in the queue.
         /// </summary>
-        public bool IsInQueue { get; set; }
+        public bool IsInQueue { get; internal set; }
 
         /// <summary>
         /// <b>Used by the priority queue - do not edit this value.</b>
         /// The node coming before this node in the queue.
         /// </summary>
-        public T Previous { get; set; }
+        public T Previous { get; internal set; }
 
         /// <summary>
         /// <b>Used by the priority queue - do not edit this value.</b>
         /// The node coming after this node in the queue.
         /// </summary>
-        public T Next { get; set; }
+        public T Next { get; internal set; }
     }
 
     /// <summary>

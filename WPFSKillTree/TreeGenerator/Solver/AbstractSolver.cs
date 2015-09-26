@@ -29,21 +29,21 @@ namespace POESKillTree.TreeGenerator.Solver
 
     public abstract class AbstractSolver<TS> : ISolver where TS : SolverSettings
     {
-        public bool IsInitialized { get; private set; }
+        private bool _isInitialized;
 
         public bool IsConsideredDone
         {
-            get { return IsInitialized && CurrentGeneration >= MaxGeneration; }
+            get { return _isInitialized && CurrentGeneration >= MaxGeneration; }
         }
 
         public int MaxGeneration
         {
-            get { return IsInitialized ? GaParameters.MaxGeneration : 0; }
+            get { return _isInitialized ? GaParameters.MaxGeneration : 0; }
         }
 
         public int CurrentGeneration
         {
-            get { return IsInitialized ? _ga.GenerationCount : 0; }
+            get { return _isInitialized ? _ga.GenerationCount : 0; }
         }
 
         private BitArray _bestDna;
@@ -72,7 +72,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected AbstractSolver(SkillTree tree, TS settings)
         {
-            IsInitialized = false;
+            _isInitialized = false;
             Tree = tree;
             Settings = settings;
         }
@@ -81,14 +81,10 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             BuildSearchGraph();
 
-            SearchSpace = SearchGraph.nodeDict.Values.Where(IncludeNode).ToList();
+            SearchSpace = SearchGraph.NodeDict.Values.Where(IncludeNode).ToList();
 
             var consideredNodes = SearchSpace.Concat(TargetNodes).ToList();
             consideredNodes.Add(StartNodes);
-            foreach (var node in consideredNodes)
-            {
-                node.Marked = true;
-            }
             Distances.CalculateFully(consideredNodes);
 
             try
@@ -96,7 +92,25 @@ namespace POESKillTree.TreeGenerator.Solver
                 // Saving the leastSolution as initial solution. Makes sure there is always a
                 // solution even if the search space is empty or MaxGeneration is 0.
                 BestSolution = SpannedMstToSkillnodes(CreateLeastSolution());
-                SearchSpace = SearchSpace.Where(IncludeNodeUsingDistances).ToList();
+
+                var removedNodes = new List<GraphNode>();
+                var newSearchSpace = new List<GraphNode>();
+                foreach (var node in SearchSpace)
+                {
+                    if (IncludeNodeUsingDistances(node))
+                    {
+                        newSearchSpace.Add(node);
+                    }
+                    else
+                    {
+                        removedNodes.Add(node);
+                    }
+                }
+                SearchSpace = newSearchSpace;
+
+                var remainingNodes = SearchSpace.Concat(TargetNodes).ToList();
+                remainingNodes.Add(StartNodes);
+                Distances.RemoveNodes(removedNodes, remainingNodes);
             }
             catch (KeyNotFoundException e)
             {
@@ -105,7 +119,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
             InitializeGa();
 
-            IsInitialized = true;
+            _isInitialized = true;
         }
 
         // Needs to set SearchGraph, StartNodes and TargetNodes.
@@ -143,7 +157,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         public void Step()
         {
-            if (!IsInitialized)
+            if (!_isInitialized)
                 throw new InvalidOperationException("Solver not initialized!");
 
             _ga.NewGeneration();
@@ -164,13 +178,13 @@ namespace POESKillTree.TreeGenerator.Solver
                 throw new Exception("The passed MST is not spanned!");
 
             var newSkilledNodes = new HashSet<ushort>(mst.UsedNodes);
-            newSkilledNodes.UnionWith(StartNodes.nodes.Select(node => node.Id));
+            newSkilledNodes.UnionWith(StartNodes.Nodes.Select(node => node.Id));
             return newSkilledNodes;
         }
 
         private MinimalSpanningTree DnaToMst(BitArray dna)
         {
-            var mstNodes = new HashSet<GraphNode>();
+            var mstNodes = new List<GraphNode>();
             for (var i = 0; i < dna.Length; i++)
             {
                 if (dna[i])
@@ -178,7 +192,7 @@ namespace POESKillTree.TreeGenerator.Solver
             }
 
             mstNodes.Add(StartNodes);
-            mstNodes.UnionWith(TargetNodes);
+            mstNodes.AddRange(TargetNodes);
 
             return new MinimalSpanningTree(mstNodes, Distances);
         }

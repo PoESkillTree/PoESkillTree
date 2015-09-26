@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace POESKillTree.SkillTreeFiles.SteinerTrees
 {
-    public class GraphEdge : LinkedListPriorityQueueNode<GraphEdge>
+    public class GraphEdge
     {
-        public readonly GraphNode inside, outside;
+        public readonly GraphNode Inside, Outside;
 
         public GraphEdge(GraphNode inside, GraphNode outside)
         {
-            this.inside = inside;
-            this.outside = outside;
+            Inside = inside;
+            Outside = outside;
         }
 
     }
@@ -21,12 +21,18 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     /// </summary>
     public abstract class GraphNode
     {
-        protected ushort id;
-        public ushort Id { get { return id; } }
+        private readonly ushort _id;
+        public ushort Id { get { return _id; } }
 
-        public bool Marked { get; set; }
+        public int DistancesIndex { get; set; }
 
-        public HashSet<GraphNode> Adjacent = new HashSet<GraphNode>();
+        public readonly HashSet<GraphNode> Adjacent = new HashSet<GraphNode>();
+
+        protected GraphNode(ushort id)
+        {
+            _id = id;
+            DistancesIndex = -1;
+        }
     }
 
     /// <summary>
@@ -34,13 +40,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     /// </summary>
     public class SingleNode : GraphNode
     {
-        public SkillNode baseNode;
-
         public SingleNode(SkillNode baseNode)
-        {
-            this.baseNode = baseNode;
-            this.id = baseNode.Id;
-        }
+            : base(baseNode.Id)
+        { }
     }
 
     /// <summary>
@@ -49,16 +51,15 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     /// </summary>
     public class Supernode : GraphNode
     {
-        public HashSet<SkillNode> nodes = new HashSet<SkillNode>();
+        public readonly HashSet<SkillNode> Nodes = new HashSet<SkillNode>();
 
         public Supernode(HashSet<ushort> nodes)
+            : base(nodes.First())
         {
             foreach (ushort nodeId in nodes)
             {
-                this.nodes.Add(SkillTree.Skillnodes[nodeId]);
+                Nodes.Add(SkillTree.Skillnodes[nodeId]);
             }
-            // For lack of a better way.
-            this.id = this.nodes.First().Id;
         }
     }
 
@@ -67,11 +68,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
     /// </summary>
     public class SearchGraph
     {
-        public Dictionary<SkillNode, GraphNode> nodeDict;
+        public readonly Dictionary<SkillNode, GraphNode> NodeDict;
 
         public SearchGraph()
         {
-            nodeDict = new Dictionary<SkillNode, GraphNode>();
+            NodeDict = new Dictionary<SkillNode, GraphNode>();
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         public GraphNode AddNode(SkillNode node)
         {
             SingleNode graphNode = new SingleNode(node);
-            nodeDict.Add(node, graphNode);
+            NodeDict.Add(node, graphNode);
             CheckLinks(node);
             return graphNode;
         }
@@ -99,7 +100,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             foreach (ushort nodeId in startNodes)
             {
                 SkillNode node = SkillTree.Skillnodes[nodeId];
-                nodeDict.Add(node, supernode);
+                NodeDict.Add(node, supernode);
                 CheckLinks(node);
             }
             return supernode;
@@ -107,14 +108,14 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
 
         private void CheckLinks(SkillNode node)
         {
-            if (!nodeDict.ContainsKey(node)) return;
-            GraphNode currentNode = nodeDict[node];
+            if (!NodeDict.ContainsKey(node)) return;
+            GraphNode currentNode = NodeDict[node];
 
             foreach (SkillNode neighbor in node.Neighbor)
             {
-                if (nodeDict.ContainsKey(neighbor))
+                if (NodeDict.ContainsKey(neighbor))
                 {
-                    GraphNode adjacentNode = nodeDict[neighbor];
+                    GraphNode adjacentNode = NodeDict[neighbor];
 
                     if (adjacentNode == currentNode) continue;
 

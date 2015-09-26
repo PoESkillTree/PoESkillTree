@@ -71,7 +71,8 @@ namespace POESKillTree.TreeGenerator.Solver
             get
             {
                 return new GeneticAlgorithmParameters(
-                    (int)(GenMultiplier * (SearchSpace.Count < ConstRuntimeEndpoint ? (ConstRuntimeEndpoint * ConstRuntimeEndpoint) / SearchSpace.Count : SearchSpace.Count)),
+                    SearchSpace.Count == 0 ? 0
+                        : (int)(GenMultiplier * (SearchSpace.Count < ConstRuntimeEndpoint ? (ConstRuntimeEndpoint * ConstRuntimeEndpoint) / SearchSpace.Count : SearchSpace.Count)),
                     (int)(PopMultiplier * SearchSpace.Count),
                     SearchSpace.Count, 6, 1);
             }
@@ -88,7 +89,7 @@ namespace POESKillTree.TreeGenerator.Solver
             CreateStartNodes();
             CreateTargetNodes();
             // Set start and target nodes as the fixed nodes.
-            _fixedNodes = new HashSet<ushort>(StartNodes.nodes.Select(node => node.Id));
+            _fixedNodes = new HashSet<ushort>(StartNodes.Nodes.Select(node => node.Id));
             _fixedNodes.UnionWith(TargetNodes.Select(node => node.Id));
             
             var convertedPseudos = EvalPseudoAttrConstraints();
@@ -158,7 +159,7 @@ namespace POESKillTree.TreeGenerator.Solver
             foreach (var nodeId in Settings.Checked)
             {
                 // Don't add nodes that are already skilled.
-                if (SearchGraph.nodeDict.ContainsKey(SkillTree.Skillnodes[nodeId]))
+                if (SearchGraph.NodeDict.ContainsKey(SkillTree.Skillnodes[nodeId]))
                     continue;
                 // Don't add nodes that should not be skilled.
                 if (Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(nodeId))
@@ -183,7 +184,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 {
                     // If the group contains a skilled node or a target node,
                     // it can't be omitted.
-                    if (SearchGraph.nodeDict.ContainsKey(node))
+                    if (SearchGraph.NodeDict.ContainsKey(node))
                     {
                         mustInclude = true;
                         break;
@@ -227,7 +228,7 @@ namespace POESKillTree.TreeGenerator.Solver
                             continue;
                         // Don't add nodes that are already in the graph (as
                         // target or start nodes).
-                        if (SearchGraph.nodeDict.ContainsKey(node))
+                        if (SearchGraph.NodeDict.ContainsKey(node))
                             continue;
                         // Don't add nodes that should not be skilled.
                         if (Settings.Crossed.Contains(node.Id))
@@ -370,7 +371,7 @@ namespace POESKillTree.TreeGenerator.Solver
         protected override MinimalSpanningTree CreateLeastSolution()
         {
             // LeastSolution: MST between start and check-tagged nodes.
-            var nodes = new HashSet<GraphNode>(TargetNodes) { StartNodes };
+            var nodes = new List<GraphNode>(TargetNodes) { StartNodes };
             var leastSolution = new MinimalSpanningTree(nodes, Distances);
             leastSolution.Span(StartNodes);
             return leastSolution;
@@ -379,7 +380,7 @@ namespace POESKillTree.TreeGenerator.Solver
         protected override bool IncludeNodeUsingDistances(GraphNode node)
         {
             // Don't add nodes that are not connected to the start node (through cross-tagging)
-            return IsConnected(node);
+            return Distances.AreConnected(node, StartNodes);
         }
 
         private void AddAttributes(IEnumerable<ushort> ids, IList<float> to)
@@ -396,22 +397,6 @@ namespace POESKillTree.TreeGenerator.Solver
         private static void AddAttribute(Tuple<int, float> attrTuple, IList<float> to)
         {
             to[attrTuple.Item1] += attrTuple.Item2;
-        }
-
-        private bool IsConnected(GraphNode node)
-        {
-            // Going with try-catch is probably not the best approach, but it
-            // doesn't require refactoring DistanceLookup and the exception
-            // case should not appear often enough to influence performance.
-            try
-            {
-                Distances.GetDistance(node, StartNodes);
-                return true;
-            }
-            catch (KeyNotFoundException)
-            {
-                return false;
-            }
         }
 
         protected override double FitnessFunction(MinimalSpanningTree tree)

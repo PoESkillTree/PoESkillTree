@@ -25,7 +25,8 @@ namespace POESKillTree.TreeGenerator.Solver
             get
             {
                 return new GeneticAlgorithmParameters(
-                    (int)(GenMultiplier * (SearchSpace.Count < ConstRuntimeEndpoint ? (ConstRuntimeEndpoint*ConstRuntimeEndpoint) / SearchSpace.Count : SearchSpace.Count)),
+                    SearchSpace.Count == 0 ? 0
+                        : (int)(GenMultiplier * (SearchSpace.Count < ConstRuntimeEndpoint ? (ConstRuntimeEndpoint*ConstRuntimeEndpoint) / SearchSpace.Count : SearchSpace.Count)),
                     (int)(PopMultiplier * SearchSpace.Count),
                     SearchSpace.Count, 6, 1);
             }
@@ -48,7 +49,7 @@ namespace POESKillTree.TreeGenerator.Solver
             foreach (ushort nodeId in Settings.Checked)
             {
                 // Don't add nodes that are already skilled.
-                if (SearchGraph.nodeDict.ContainsKey(SkillTree.Skillnodes[nodeId]))
+                if (SearchGraph.NodeDict.ContainsKey(SkillTree.Skillnodes[nodeId]))
                     continue;
                 // Add target node to the graph.
                 GraphNode node = SearchGraph.AddNodeId(nodeId);
@@ -66,7 +67,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 {
                     // If the group contains a skilled node or a target node,
                     // it can't be omitted.
-                    if (SearchGraph.nodeDict.ContainsKey(node))
+                    if (SearchGraph.NodeDict.ContainsKey(node))
                     {
                         mustInclude = true;
                         break;
@@ -101,7 +102,7 @@ namespace POESKillTree.TreeGenerator.Solver
                             continue;
                         // Don't add nodes that are already in the graph (as
                         // target or start nodes).
-                        if (SearchGraph.nodeDict.ContainsKey(node))
+                        if (SearchGraph.NodeDict.ContainsKey(node))
                             continue;
                         // Don't add nodes that should not be skilled.
                         if (Settings.Crossed.Contains(node.Id))
@@ -121,7 +122,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected override MinimalSpanningTree CreateLeastSolution()
         {
-            var nodes = new HashSet<GraphNode>(TargetNodes) { StartNodes };
+            var nodes = new List<GraphNode>(TargetNodes) { StartNodes };
             MinimalSpanningTree leastSolution = new MinimalSpanningTree(nodes, Distances);
             leastSolution.Span(StartNodes);
 
@@ -131,7 +132,7 @@ namespace POESKillTree.TreeGenerator.Solver
             }
             else
             {
-                _maxEdgeDistance = leastSolution.SpanningEdges.Max(edge => Distances.GetDistance(edge));
+                _maxEdgeDistance = leastSolution.SpanningEdges.Max(edge => Distances[edge.Inside, edge.Outside]);
             }
 
             return leastSolution;
@@ -140,7 +141,7 @@ namespace POESKillTree.TreeGenerator.Solver
         protected override bool IncludeNodeUsingDistances(GraphNode node)
         {
             // Find potential steiner points that are in reasonable vicinity.
-            return _maxEdgeDistance >= 0 && TargetNodes.Any(targetNode => Distances.GetDistance(targetNode, node) < _maxEdgeDistance);
+            return _maxEdgeDistance >= 0 && TargetNodes.Any(targetNode => Distances[targetNode, node] < _maxEdgeDistance);
         }
 
         protected override double FitnessFunction(MinimalSpanningTree tree)
