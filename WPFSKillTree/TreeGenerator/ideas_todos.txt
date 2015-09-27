@@ -2,12 +2,9 @@ List of smaller ideas/todos
 ===========================
 
 Basic AdvancedSolver optimization:
-- crossover/mutation based on position instead of fitness (makes the algorithm independent of the fitness function implementation)
+- tweak AdvancedSolver. parameters: GenMultiplier, PopMultiplier, CsvWeightMultiplier
 - final simple hill climbing (switch single genes for a better fitness until no single gene can be switched for a better fitness)?
 - better way of calculating weighting in csvs
-- GeneticAlgorithm.randomBitArray() flipped bits dependent upon Total points (larger tree -> more bits set)?
-- optimize AdvancedSolver.FitnessFunction()
-- tweak AdvancedSolver.GaParameters
 
 AdvancedSolver UI improvements:
 - more intuitive control instead of the DataGrid: AttrConstraintGrid like PseudoConstraintGrid is done

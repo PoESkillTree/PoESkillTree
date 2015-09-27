@@ -410,8 +410,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         /// current date and time.</param>
         void initializeGA(int? randomSeed = null)
         {
-            if (randomSeed == null) randomSeed = DateTime.Now.GetHashCode();
-            ga = new GeneticAlgorithm(fitnessFunction, new Random(randomSeed.Value));
+            ga = new GeneticAlgorithm(fitnessFunction);
 
             Debug.WriteLine("Search space dimension: " + searchSpaceBase.Count);
 

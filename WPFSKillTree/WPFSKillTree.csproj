@@ -256,6 +256,7 @@
     <Compile Include="Utils\DataResource.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Utils\Notifier.cs" />
+    <Compile Include="Utils\ThreadSafeRandom.cs" />
     <Compile Include="Utils\ValidationRules.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />

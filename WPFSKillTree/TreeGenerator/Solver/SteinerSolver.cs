@@ -42,14 +42,9 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected override void OnLeastSolutionCreated(MinimalSpanningTree leastSolution)
         {
-            if (TargetNodes.Count == 0)
-            {
-                _maxEdgeDistance = -1;
-            }
-            else
-            {
-                _maxEdgeDistance = leastSolution.SpanningEdges.Max(edge => Distances[edge.Inside, edge.Outside]);
-            }
+            _maxEdgeDistance = TargetNodes.Count == 0
+                ? -1
+                : leastSolution.SpanningEdges.Max(edge => Distances[edge.Inside, edge.Outside]);
         }
 
         protected override bool IncludeNodeUsingDistances(GraphNode node)

@@ -30,7 +30,13 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private const double PopMultiplier = 5;
 
-        private const int ConstRuntimeEndpoint = 150;
+        // 4 seems to be the optimal point. 3 and 5 were nearly the same in testing.
+        // Anything higher or lower is bad. This is assuming it is not problem specific.
+        /// <summary>
+        /// How many consecutive genes can be flipped at most by mutation.
+        /// Utilizes the fact that consecutive genes mostly are node clusters that are taken together.
+        /// </summary>
+        private const int MaxMutateClusterSize = 4;
 
         /// <summary>
         /// Weight of the CSV of the used node count if it is higher than the allowed node count.
@@ -44,7 +50,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// A tree with less points spent should only better better if the csv satisfaction is not worse.
         /// Because of that this factor is really small.
         ///</remarks>
-        private const double UsedNodeCountFactor = .001;
+        private const double UsedNodeCountFactor = .0005;
 
         /// <summary>
         /// Factor by which weights get multiplied in the CSV calculation.
@@ -75,10 +81,9 @@ namespace POESKillTree.TreeGenerator.Solver
             get
             {
                 return new GeneticAlgorithmParameters(
-                    SearchSpace.Count == 0 ? 0
-                        : (int)(GenMultiplier * (SearchSpace.Count < ConstRuntimeEndpoint ? (ConstRuntimeEndpoint * ConstRuntimeEndpoint) / SearchSpace.Count : SearchSpace.Count)),
+                    (int)(GenMultiplier * SearchSpace.Count),
                     (int)(PopMultiplier * SearchSpace.Count),
-                    SearchSpace.Count, 6, 1);
+                    SearchSpace.Count, 6, 1, MaxMutateClusterSize);
             }
         }
 
