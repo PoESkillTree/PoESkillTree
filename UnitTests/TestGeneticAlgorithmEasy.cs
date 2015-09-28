@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.SkillTreeFiles.SteinerTrees;
 using POESKillTree.Utils;
 
 namespace UnitTests

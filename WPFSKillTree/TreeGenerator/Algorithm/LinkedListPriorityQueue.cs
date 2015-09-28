@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.SkillTreeFiles.SteinerTrees
+﻿namespace POESKillTree.TreeGenerator.Algorithm
 {
     /// <summary>
     /// Priority queue nodes used for LinkedListPriorityQueue.

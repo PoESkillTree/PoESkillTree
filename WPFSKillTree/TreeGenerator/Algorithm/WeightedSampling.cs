@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.SkillTreeFiles.SteinerTrees
+namespace POESKillTree.TreeGenerator.Algorithm
 {
     /// <summary>
     ///  A generic class storing entries that can be randomly sampled from. The

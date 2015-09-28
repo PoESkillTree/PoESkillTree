@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.SkillTreeFiles.SteinerTrees;
 using System.Collections.Generic;
+using POESKillTree.TreeGenerator.Algorithm;
 
 //namespace UnitTests
 namespace UnitTests

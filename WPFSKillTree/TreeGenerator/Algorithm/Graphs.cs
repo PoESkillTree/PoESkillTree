@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using POESKillTree.SkillTreeFiles;
 
-namespace POESKillTree.SkillTreeFiles.SteinerTrees
+namespace POESKillTree.TreeGenerator.Algorithm
 {
     public class GraphEdge
     {

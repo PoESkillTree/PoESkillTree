@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace POESKillTree.SkillTreeFiles.SteinerTrees
+namespace POESKillTree.TreeGenerator.Algorithm
 {
     public class MinimalSpanningTree
     {

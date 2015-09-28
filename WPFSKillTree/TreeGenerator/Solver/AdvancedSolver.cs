@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.SkillTreeFiles.SteinerTrees;
+using POESKillTree.TreeGenerator.Algorithm;
 using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 using POESKillTree.TreeGenerator.Settings;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace POESKillTree.SkillTreeFiles.SteinerTrees
+namespace POESKillTree.TreeGenerator.Algorithm
 {
     /// <summary>
     /// Class for using BitArrays as keys in dictonaries.

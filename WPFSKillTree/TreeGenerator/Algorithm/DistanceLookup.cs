@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("UnitTests")]
-namespace POESKillTree.SkillTreeFiles.SteinerTrees
+namespace POESKillTree.TreeGenerator.Algorithm
 {
     /// <summary>
     ///  Calculates and caches distances between nodes. Only relies on adjacency

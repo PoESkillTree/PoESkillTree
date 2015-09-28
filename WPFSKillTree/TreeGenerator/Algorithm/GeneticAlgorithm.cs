@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using POESKillTree.Utils;
 
-namespace POESKillTree.SkillTreeFiles.SteinerTrees
+namespace POESKillTree.TreeGenerator.Algorithm
 {
     public struct GeneticAlgorithmParameters
     {

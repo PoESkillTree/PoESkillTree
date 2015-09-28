@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.SkillTreeFiles.SteinerTrees;
+using POESKillTree.TreeGenerator.Algorithm;
 using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
