@@ -28,7 +28,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set
             {
                 _bestSoFar = value;
-                // TODO get best result text from Solver or somewhere else since it is somewhat solver dependant
                 // BestSoFar.Count - 1 because of the hidden character class start node.
                 BestResultText = string.Format(L10n.Plural("Best result so far: {0} point spent",
                     "Best result so far: {0} points spent", (uint)_bestSoFar.Count - 1), _bestSoFar.Count - 1);
@@ -183,7 +182,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             catch (InvalidOperationException)
             {
                 // Show a dialog and close this if the omitted nodes disconnect the tree.
-                Popup.Warning(L10n.Message("The optimizer was unable to find a conforming tree.\nPlease change skill node highlighting and try again."));
+                Popup.Warning(L10n.Message("The optimizer was unable to find a conforming tree.\nPlease change skill node tagging and try again."));
                 Close(false);
                 return false;
             }
@@ -243,7 +242,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             PauseResumeEnabled = false;
             _isPaused = true;
 
-            // Draw the final solution in case not all ProgressChangeds get executed.
+            // Draw the final solution.
             ProgressbarCurrent = _maxSteps;
             BestSoFar = result;
         }
@@ -269,6 +268,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
             else
             {
+                // The close command executes before the exception in SolveAsync is thrown.
+                // Therefore remaining ReportProgress calls may come through before it is deactivated.
+                // So it must be deactivated here too.
+                _stopReporting = true;
                 _cts.Cancel();
                 Close(false);
             }
