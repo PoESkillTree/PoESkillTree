@@ -44,7 +44,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                         _usedNodes.UnionWith(path);
                     }
                 }
-                return new HashSet<ushort>(_usedNodes);
+                return _usedNodes;
             }
         }
 
@@ -73,43 +73,36 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             var startIndex = startFrom.DistancesIndex;
             // All nodes that are not yet included.
             var toAdd = new List<int>(_mstNodes.Count);
-            // Removing all edges that satisfy a property (here a certain "outside"
-            // node) from the queue is not actually trivial, since you could only
-            // iterate over all entries (and you want to avoid that) if you don't
-            // have the references to the edges at hand.
-            // I guess this is the easiest way to do it...
-            var edgesLeadingToNode = new List<QueueNode>[_distances.CacheSize];
+            // If the index node is already included.
+            var inMst = new bool[_distances.CacheSize];
             // The spanning edges.
-            var mstEdges = new List<QueueNode>();
-            
+            var mstEdges = new List<QueueNode>(_mstNodes.Count);
+
             for (var i = 0; i < _mstNodes.Count; i++)
             {
                 var index = _mstNodes[i].DistancesIndex;
-                edgesLeadingToNode[index] = new List<QueueNode>(_mstNodes.Count);
-
                 if (index != startIndex)
                 {
                     toAdd.Add(index);
-
                     var adjacentEdge = new QueueNode(startIndex, index);
                     adjacentEdgeQueue.Enqueue(adjacentEdge, _distances[startIndex, index]);
-                    edgesLeadingToNode[index].Add(adjacentEdge);
                 }
             }
-            
+            inMst[startIndex] = true;
+
             while (toAdd.Count > 0 && adjacentEdgeQueue.Count > 0)
             {
-                var shortestEdge = adjacentEdgeQueue.Dequeue();
-                mstEdges.Add(shortestEdge);
-                var newIn = shortestEdge.Outside;
-                
-                //toAdd.Remove(newIn);
-
-                // Remove all edges that are entirely inside the MST now.
-                for (var i = 0; i < edgesLeadingToNode[newIn].Count; i++)
+                int newIn;
+                QueueNode shortestEdge;
+                // Dequeue and ignore edges that are already inside the MST.
+                // Add the first one that is not.
+                do
                 {
-                    adjacentEdgeQueue.Remove(edgesLeadingToNode[newIn][i]);
-                }
+                    shortestEdge = adjacentEdgeQueue.Dequeue();
+                    newIn = shortestEdge.Outside;
+                } while (inMst[newIn]);
+                mstEdges.Add(shortestEdge);
+                inMst[newIn] = true;
 
                 // Find all newly adjacent edges and enqueue them.
                 for (var i = 0; i < toAdd.Count; i++)
@@ -123,7 +116,6 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     {
                         var edge = new QueueNode(newIn, otherNode);
                         adjacentEdgeQueue.Enqueue(edge, _distances[newIn, otherNode]);
-                        edgesLeadingToNode[otherNode].Add(edge);
                     }
                 }
             }

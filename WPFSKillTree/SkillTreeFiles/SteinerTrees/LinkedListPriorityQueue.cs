@@ -9,49 +9,43 @@
         /// <summary>
         /// The Priority to insert this node at.
         /// </summary>
-        public int Priority { get; internal set; }
+        internal int Priority;
 
 #if DEBUG
         /// <summary>
-        /// <b>Used by the priority queue - do not edit this value.</b>
         /// Represents the order the node was inserted in
         /// </summary>
-        public long InsertionIndex { get; internal set; }
+        internal long InsertionIndex;
 #endif
 
         /// <summary>
-        /// <b>Used by the priority queue - do not edit this value.</b>
-        /// True, if the node is currently stored in the queue.
-        /// </summary>
-        public bool IsInQueue { get; internal set; }
-
-        /// <summary>
-        /// <b>Used by the priority queue - do not edit this value.</b>
         /// The node coming before this node in the queue.
         /// </summary>
-        public T Previous { get; internal set; }
+        internal T Previous;
 
         /// <summary>
-        /// <b>Used by the priority queue - do not edit this value.</b>
         /// The node coming after this node in the queue.
         /// </summary>
-        public T Next { get; internal set; }
+        internal T Next;
     }
 
     /// <summary>
-    /// Priority Queue based on a doubly linked list and a lookup table for
-    /// priorities.
-    /// 
-    /// Has O(1) Enqueue, Dequeue and Remove. Enqueue only if the range of priorites is
+    /// Priority Queue based on a doubly linked list and a lookup table for priorities.
+    /// </summary>
+    /// <remarks>
+    /// Has O(1) Enqueue and Dequeue. Enqueue only if the range of priorites is
     /// not much bigger than the number of nodes stored at any point (best if the difference
     /// between the smallest and highest priority is the same or smaller than the number of
     /// nodes concurrently stored).
     /// 
-    /// If the priorites are not discret (no integer values) or have a range much bigger than
+    /// If the priorites are not discrete (no integer values) or have a range much bigger than
     /// the number of nodes being in the queue at one point, use HeapPriorityQueue.
     /// 
     /// No actual traversing through the linked list over more than 3 nodes happens.
-    /// </summary>
+    /// 
+    /// Nodes should not be reenqueued. Because of speed purposes no attributes are reset
+    /// on dequeue.
+    /// </remarks>
     /// <typeparam name="T">Type of the stored objects</typeparam>
     public class LinkedListPriorityQueue<T>
         where T : LinkedListPriorityQueueNode<T>
@@ -97,7 +91,7 @@
         public void Enqueue(T node, int priority)
         {
             node.Priority = priority;
-            if (Count == 0)
+            if (Count++ == 0)
             {
                 _first = _last = node;
             }
@@ -117,9 +111,7 @@
             {
                 var index = priority;
                 while (_prioritiyLookup[index] == null)
-                {
                     index--;
-                }
                 var previous = _prioritiyLookup[index];
                 var next = previous.Next;
                 node.Next = next;
@@ -127,10 +119,7 @@
                 node.Previous = previous;
                 next.Previous = node;
             }
-
             _prioritiyLookup[priority] = node;
-            node.IsInQueue = true;
-            Count++;
 #if DEBUG
             node.InsertionIndex = _numNodesEverEnqueued++;
 #endif
@@ -143,7 +132,7 @@
         public T Dequeue()
         {
             var node = _first;
-            if (Count == 1)
+            if (Count-- == 1)
             {
                 _first = null;
                 _last = null;
@@ -153,49 +142,8 @@
                 _first = node.Next;
                 _first.Previous = null;
             }
-
             RemoveFromPrioLookup(node, node.Priority, node.Previous);
-            Count--;
-            node.IsInQueue = false;
             return node;
-        }
-
-        /// <summary>
-        /// Removes the given node from the queue.
-        /// O(1)
-        /// </summary>
-        public void Remove(T node)
-        {
-            if (!node.IsInQueue)
-            {
-                return;
-            }
-            var previous = node.Previous;
-            var next = node.Next;
-            if (Count == 1)
-            {
-                _first = null;
-                _last = null;
-            }
-            else if (previous == null)
-            {
-                _first = next;
-                _first.Previous = null;
-            }
-            else if (next == null)
-            {
-                _last = previous;
-                _last.Next = null;
-            }
-            else
-            {
-                previous.Next = next;
-                next.Previous = previous;
-            }
-
-            RemoveFromPrioLookup(node, node.Priority, previous);
-            Count--;
-            node.IsInQueue = false;
         }
 
         private void RemoveFromPrioLookup(T node, int prio, T previous)
