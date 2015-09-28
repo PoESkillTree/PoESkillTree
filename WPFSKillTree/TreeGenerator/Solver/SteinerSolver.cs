@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.SkillTreeFiles.SteinerTrees;
 using POESKillTree.TreeGenerator.Settings;
@@ -29,6 +30,11 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
+        protected override bool FinalHillClimbEnabled
+        {
+            get { return false; }
+        }
+
         public SteinerSolver(SkillTree tree, SolverSettings settings)
             : base(tree, settings)
         {
@@ -53,9 +59,9 @@ namespace POESKillTree.TreeGenerator.Solver
             return _maxEdgeDistance >= 0 && TargetNodes.Any(targetNode => Distances[targetNode, node] < _maxEdgeDistance);
         }
 
-        protected override double FitnessFunction(MinimalSpanningTree tree)
+        protected override double FitnessFunction(HashSet<ushort> skilledNodes)
         {
-            return 1500 - tree.UsedNodeCount;
+            return 1500 - skilledNodes.Count;
         }
     }
 }

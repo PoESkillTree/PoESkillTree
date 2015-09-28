@@ -221,6 +221,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
                         token.ThrowIfCancellationRequested();
                     }
+                    _solver.FinalStep();
 #if DEBUG
                     stopwatch.Stop();
                     Debug.WriteLine("Finished in " + stopwatch.ElapsedMilliseconds + " ms\n==================");

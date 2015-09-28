@@ -26,12 +26,15 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private static readonly Regex ContainsWildcardRegex = new Regex(@"{\d}");
 
-        private const double GenMultiplier = 0.4;
+        // It doesn't gain anything from larger populations and more generations.
+        // Increasing GenMultiplier has the upside that it doesn't take much longer because
+        // the GA reaches a point where not many new DNAs are generated and it can use the cache nearly always.
+        private const double GenMultiplier = 0.6;
 
-        private const double PopMultiplier = 5;
+        private const double PopMultiplier = 7;
 
-        // 4 seems to be the optimal point. 3 and 5 were nearly the same in testing.
-        // Anything higher or lower is bad. This is assuming it is not problem specific.
+        // Between 3 and 5 seems to be the optimal point. Anything higher or lower is worse.
+        // This is assuming it is not problem specific.
         /// <summary>
         /// How many consecutive genes can be flipped at most by mutation.
         /// Utilizes the fact that consecutive genes mostly are node clusters that are taken together.
@@ -74,8 +77,6 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private float[] _fixedAttributes;
 
-        private HashSet<ushort> _fixedNodes;
-
         protected override GeneticAlgorithmParameters GaParameters
         {
             get
@@ -93,10 +94,6 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected override void OnStartAndTargetNodesCreated()
         {
-            // Set start and target nodes as the fixed nodes.
-            _fixedNodes = new HashSet<ushort>(StartNodes.Nodes.Select(node => node.Id));
-            _fixedNodes.UnionWith(TargetNodes.Select(node => node.Id));
-            
             var convertedPseudos = EvalPseudoAttrConstraints();
 
             // Assign a number to each attribute and pseudo attribute constraint
@@ -160,7 +157,7 @@ namespace POESKillTree.TreeGenerator.Solver
         private void CreateFixedAttributes()
         {
             // Set start stats from start and target nodes.
-            AddAttributes(_fixedNodes, _fixedAttributes);
+            AddAttributes(FixedNodes, _fixedAttributes);
             // Add the initial stats from the settings.
             foreach (var initialStat in Settings.InitialAttributes)
             {
@@ -217,7 +214,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private List<ConvertedPseudoAttribute> EvalPseudoAttrConstraints()
         {
-            var keystones = from nodeId in _fixedNodes
+            var keystones = from nodeId in FixedNodes
                             where SkillTree.Skillnodes[nodeId].IsKeyStone
                             select SkillTree.Skillnodes[nodeId].Name;
             var conditionSettings = new ConditionSettings(Settings.Tags, Settings.OffHand, keystones.ToArray(), Settings.WeaponClass);
@@ -299,16 +296,15 @@ namespace POESKillTree.TreeGenerator.Solver
             to[attrTuple.Item1] += attrTuple.Item2;
         }
 
-        protected override double FitnessFunction(MinimalSpanningTree tree)
+        protected override double FitnessFunction(HashSet<ushort> skilledNodes)
         {
             // Add stats of the MST-nodes and start stats.
             var totalStats = (float[])_fixedAttributes.Clone();
-            var usedNodes = tree.UsedNodes;
             // Don't count the character start node.
-            var usedNodeCount = tree.UsedNodeCount - 1;
+            var usedNodeCount = skilledNodes.Count - 1;
             var totalPoints = Settings.TotalPoints;
-            usedNodes.ExceptWith(_fixedNodes);
-            AddAttributes(usedNodes, totalStats);
+            skilledNodes.ExceptWith(FixedNodes);
+            AddAttributes(skilledNodes, totalStats);
 
             // Calculate constraint value for each stat and multiply them.
             var csvs = 1.0;

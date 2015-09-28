@@ -137,8 +137,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
         {
             return new BitArray(_bestSolution.DNA);
         }
-
-        //private readonly Random _random;
+        
         private readonly ThreadSafeRandom _random = new ThreadSafeRandom();
 
         /// <summary>
@@ -163,67 +162,11 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 Age = 0;
             }
         }
-        
+
         /// <summary>
         /// Cache for the fitness values so they are only calculated once.
         /// </summary>
         private readonly ConcurrentDictionary<BitArrayKey, double> _fitnessCache = new ConcurrentDictionary<BitArrayKey, double>();
-
-        /// <summary>
-        /// Class for using BitArrays as keys in dictonaries.
-        /// Equality and HashCodes are based on the encapsulated bool[].
-        /// </summary>
-        private class BitArrayKey : IEquatable<BitArrayKey>
-        {
-            private readonly int _hash;
-
-            public readonly BitArray Data;
-
-            public BitArrayKey(BitArray data)
-            {
-                Data = data;
-                _hash = GetHashCode(data);
-            }
-
-            public bool Equals(BitArrayKey other)
-            {
-                return Equals(Data, other.Data);
-            }
-
-            public override bool Equals(object obj)
-            {
-                var other = obj as BitArrayKey;
-                return other != null && Equals(Data, other.Data);
-            }
-
-            public override int GetHashCode()
-            {
-                return _hash;
-            }
-
-            private static bool Equals(BitArray x, BitArray y)
-            {
-                for (var i = 0; i < x.Length; i++)
-                {
-                    if (x[i] != y[i])
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            private static int GetHashCode(BitArray obj)
-            {
-                var result = 29;
-                for (var i = 0; i < obj.Length; i++)
-                {
-                    if (obj.Get(i)) result++;
-                    result *= 23;
-                }
-                return result;
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the genetic algorithm optimizer.
@@ -331,7 +274,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 // By only allowing solutions that survived a round of culling
                 // to procreate, the solution quality is kept high.
                 if (individual.Age >= 1)
-                    sampler.AddEntry(individual, index);//individual.Fitness);
+                    sampler.AddEntry(individual, index);
 #if DEBUG
                 averageAge += individual.Age;
 #endif

@@ -499,7 +499,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // This is the bottleneck, quite obviously.
             mst.Span(startFrom: startNodes);
 
-            int usedNodes = mst.UsedNodeCount;
+            int usedNodes = mst.UsedNodes.Count;
 
             // TODO: Investigate fitness function
             return 1500 - usedNodes;

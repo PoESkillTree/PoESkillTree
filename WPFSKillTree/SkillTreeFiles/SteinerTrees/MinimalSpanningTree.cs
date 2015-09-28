@@ -44,20 +44,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                         _usedNodes.UnionWith(path);
                     }
                 }
-                return _usedNodes;
-            }
-        }
-
-        private int? _usedNodeCount;
-        public int UsedNodeCount
-        {
-            get
-            {
-                if (_usedNodeCount == null)
-                {
-                    _usedNodeCount = UsedNodes.Count;
-                }
-                return _usedNodeCount.Value;
+                return new HashSet<ushort>(_usedNodes);
             }
         }
 

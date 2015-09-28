@@ -25,6 +25,8 @@ namespace POESKillTree.TreeGenerator.Solver
         void Initialize();
 
         void Step();
+
+        void FinalStep();
     }
 
     public abstract class AbstractSolver<TS> : ISolver where TS : SolverSettings
@@ -66,9 +68,16 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected List<GraphNode> SearchSpace { get; private set; }
 
+        protected HashSet<ushort> FixedNodes { get; private set; }
+
         private GeneticAlgorithm _ga;
 
         protected readonly DistanceLookup Distances = new DistanceLookup();
+
+        protected virtual bool FinalHillClimbEnabled
+        {
+            get { return true; }
+        }
 
         protected AbstractSolver(SkillTree tree, TS settings)
         {
@@ -127,6 +136,9 @@ namespace POESKillTree.TreeGenerator.Solver
             SearchGraph = new SearchGraph();
             CreateStartNodes();
             CreateTargetNodes();
+            // Set start and target nodes as the fixed nodes.
+            FixedNodes = new HashSet<ushort>(StartNodes.Nodes.Select(node => node.Id));
+            FixedNodes.UnionWith(TargetNodes.Select(node => node.Id));
             OnStartAndTargetNodesCreated();
             CreateSearchGraph();
         }
@@ -293,8 +305,16 @@ namespace POESKillTree.TreeGenerator.Solver
                 _bestDna = _ga.GetBestDNA();
                 var bestMst = DnaToMst(_bestDna);
                 bestMst.Span(StartNodes);
-
                 BestSolution = SpannedMstToSkillnodes(bestMst);
+            }
+        }
+
+        public void FinalStep()
+        {
+            if (FinalHillClimbEnabled)
+            {
+                var hillClimber = new HillClimber(FitnessFunction, FixedNodes, SearchGraph.NodeDict.Values);
+                BestSolution = hillClimber.Improve(BestSolution);
             }
         }
 
@@ -327,10 +347,9 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             var mst = DnaToMst(dna);
             mst.Span(StartNodes);
-
-            return FitnessFunction(mst);
+            return FitnessFunction(mst.UsedNodes);
         }
 
-        protected abstract double FitnessFunction(MinimalSpanningTree tree);
+        protected abstract double FitnessFunction(HashSet<ushort> skilledNodes);
     }
 }
