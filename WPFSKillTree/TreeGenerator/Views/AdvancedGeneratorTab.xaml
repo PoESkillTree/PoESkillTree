@@ -94,7 +94,8 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <metroControls:DataGridNumericUpDownColumn Header="Target" Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
+                            <metroControls:DataGridNumericUpDownColumn Header="Target" Minimum="0" StringFormat="{}{0:#0.##}"
+                                                                       Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" />
 
                             <DataGridTemplateColumn Header="Weight" d:DataContext="{d:DesignInstance model:AttributeConstraint}">
                                 <DataGridTemplateColumn.CellEditingTemplate>
@@ -174,7 +175,7 @@
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Pseudo attribute" Binding="{Binding Data}" />
-                            <metroControls:DataGridNumericUpDownColumn Header="Target" Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
+                            <metroControls:DataGridNumericUpDownColumn Header="Target" Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" StringFormat="{}{0:#0.##}" />
                             <DataGridTemplateColumn Header="Weight" d:DataContext="{d:DesignInstance model:PseudoAttributeConstraint}">
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>

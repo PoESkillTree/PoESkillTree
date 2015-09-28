@@ -76,7 +76,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             // If the index node is already included.
             var inMst = new bool[_distances.CacheSize];
             // The spanning edges.
-            var mstEdges = new List<QueueNode>(_mstNodes.Count);
+            var mstEdges = new List<GraphEdge>(_mstNodes.Count);
 
             for (var i = 0; i < _mstNodes.Count; i++)
             {
@@ -101,7 +101,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     shortestEdge = adjacentEdgeQueue.Dequeue();
                     newIn = shortestEdge.Outside;
                 } while (inMst[newIn]);
-                mstEdges.Add(shortestEdge);
+                mstEdges.Add(new GraphEdge(
+                    _distances.IndexToNode(shortestEdge.Inside),
+                    _distances.IndexToNode(shortestEdge.Outside)));
                 inMst[newIn] = true;
 
                 // Find all newly adjacent edges and enqueue them.
@@ -122,13 +124,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             if (toAdd.Count > 0)
                 throw new DistanceLookup.GraphNotConnectedException();
 
-            SpanningEdges = new List<GraphEdge>();
-            foreach (var queueNode in mstEdges)
-            {
-                SpanningEdges.Add(new GraphEdge(
-                    _distances.IndexToNode(queueNode.Inside),
-                    _distances.IndexToNode(queueNode.Outside)));
-            }
+            SpanningEdges = mstEdges;
             _isSpanned = true;
         }
     }
