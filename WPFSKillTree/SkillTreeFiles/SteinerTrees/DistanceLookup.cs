@@ -316,9 +316,9 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             }
             return path;
         }
+    }
 
-        internal class GraphNotConnectedException : Exception
-        {
-        }
+    internal class GraphNotConnectedException : Exception
+    {
     }
 }

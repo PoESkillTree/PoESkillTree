@@ -26,6 +26,12 @@
             <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
             <converter:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
+            <ControlTemplate x:Key="ExitIcon">
+                <Canvas Width="10" Height="10" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                    <Path Width="10" Height="10" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z "/>
+                </Canvas>
+            </ControlTemplate>
         </Grid.Resources>
 
         <TabControl metroControls:TabControlHelper.IsUnderlined="True">
@@ -122,10 +128,13 @@
                             <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:AttributeConstraint}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="x" Click="DeleteRowButton_OnClick" MouseLeave="DeleteRowButton_OnMouseLeave"
+                                        <Button Click="DeleteRowButton_OnClick" MouseLeave="DeleteRowButton_OnMouseLeave" Width="30" Height="30"
                                                 Command="{Binding DataContext.RemoveAttributeConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}"
-                                                Visibility="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Converter={StaticResource IsNamedObjectVisibilityConverter}}"/>
+                                                Style="{DynamicResource MetroCircleButtonStyle}"
+                                                Visibility="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Converter={StaticResource IsNamedObjectVisibilityConverter}}">
+                                            <ContentControl Template="{StaticResource ExitIcon}" />
+                                        </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -199,9 +208,11 @@
                             <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:AttributeConstraint}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="x"
-                                                Command="{Binding DataContext.RemovePseudoConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}"/>
+                                        <Button Command="{Binding DataContext.RemovePseudoConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" Width="30" Height="30"
+                                                Style="{DynamicResource MetroCircleButtonStyle}">
+                                            <ContentControl Template="{StaticResource ExitIcon}" />
+                                        </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

@@ -226,7 +226,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
             {
                 buildSearchSpaceBase();
             }
-            catch (DistanceLookup.GraphNotConnectedException e)
+            catch (GraphNotConnectedException e)
             {
                 throw new InvalidOperationException("The graph is disconnected, probably because of the nodes to be omitted.", e);
             }

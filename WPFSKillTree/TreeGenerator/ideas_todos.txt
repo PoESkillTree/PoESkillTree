@@ -5,8 +5,6 @@ AdvancedSolver UI improvements:
 - more intuitive control instead of the DataGrid: AttrConstraintGrid like PseudoConstraintGrid is done
 - "Popular" group for attribute combobox
 - substring match searchable ComboBox for Attributes (something like the poe.trade comboboxes)
-- proper delete-row-button-icon
-- inform the user that keystones must be checked if they should be included (can lead to unconnected trees if notables behind keystones are checked)
 
 Miscellaneous:
 - cancelling may leave blue outlines

@@ -121,7 +121,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 remainingNodes.Add(StartNodes);
                 Distances.RemoveNodes(removedNodes, remainingNodes);
             }
-            catch (KeyNotFoundException e)
+            catch (GraphNotConnectedException e)
             {
                 throw new InvalidOperationException("The graph is disconnected.", e);
             }

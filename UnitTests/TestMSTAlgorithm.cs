@@ -152,7 +152,7 @@ namespace UnitTests
                 MinimalSpanningTree mst = new MinimalSpanningTree(mstNodes2);
                 mst.Span(graphNodes2[3]);
             }
-            catch (DistanceLookup.GraphNotConnectedException)
+            catch (GraphNotConnectedException)
             {
                 pass = true;
             }

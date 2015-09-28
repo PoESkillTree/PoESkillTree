@@ -38,6 +38,10 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                     {
                         // Shortest paths are saved in DistanceLookup, so we can use those.
                         var path = _distances.GetShortestPath(edge.Inside, edge.Outside);
+                        if (path == null)
+                        {
+                            throw new GraphNotConnectedException();
+                        }
                         // Save nodes into the HashSet, the set only saves each node once.
                         _usedNodes.Add(edge.Inside.Id);
                         _usedNodes.Add(edge.Outside.Id);
@@ -122,7 +126,7 @@ namespace POESKillTree.SkillTreeFiles.SteinerTrees
                 }
             }
             if (toAdd.Count > 0)
-                throw new DistanceLookup.GraphNotConnectedException();
+                throw new GraphNotConnectedException();
 
             SpanningEdges = mstEdges;
             _isSpanned = true;
