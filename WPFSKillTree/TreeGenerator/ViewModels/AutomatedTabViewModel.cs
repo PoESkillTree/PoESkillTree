@@ -13,6 +13,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = L10n.Message("Automated");
         }
 
+        public override void Reset()
+        {
+
+        }
+
         public override ISolver CreateSolver(SolverSettings settings)
         {
             throw new System.NotImplementedException();

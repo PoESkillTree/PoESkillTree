@@ -123,15 +123,20 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set { SetProperty(ref _newPseudoAttributeConstraint, value); }
         }
 
-        private bool _importItems;
+        private const bool TreePlusItemsModeDefaultValue = false;
+        private const WeaponClass WeaponClassDefaultValue = WeaponClass.Unarmed;
+        private const OffHand OffHandDefaultValue = OffHand.Shield;
+        private const Tags TagsDefaultValue = Tags.None;
 
-        public bool ImportItems
+        private bool _treePlusItemsMode = TreePlusItemsModeDefaultValue;
+
+        public bool TreePlusItemsMode
         {
-            get { return _importItems; }
-            set { SetProperty(ref _importItems, value); }
+            get { return _treePlusItemsMode; }
+            set { SetProperty(ref _treePlusItemsMode, value); }
         }
 
-        private WeaponClass _weaponClass = WeaponClass.Unarmed;
+        private WeaponClass _weaponClass = WeaponClassDefaultValue;
 
         public WeaponClass WeaponClass
         {
@@ -155,7 +160,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
-        private OffHand _offHand = OffHand.Shield;
+        private OffHand _offHand = OffHandDefaultValue;
 
         public OffHand OffHand
         {
@@ -163,7 +168,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set { SetProperty(ref _offHand, value); }
         }
 
-        private Tags _tags = Tags.None;
+        private Tags _tags = TagsDefaultValue;
 
         public Tags Tags
         {
@@ -291,6 +296,17 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = L10n.Message("Advanced");
         }
 
+        public override void Reset()
+        {
+            AttributeConstraints.Clear();
+            _addedPseudoAttributes.Clear();
+            PseudoAttributeConstraints.Clear();
+            TreePlusItemsMode = TreePlusItemsModeDefaultValue;
+            WeaponClass = WeaponClassDefaultValue;
+            OffHand = OffHandDefaultValue;
+            Tags = TagsDefaultValue;
+        }
+
         /// <summary>
         /// Creates possible attributes from the SkillTree nodes.
         /// Only non unique and not blacklisted attributes are selected.
@@ -408,7 +424,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 }
             }
 
-            if (_importItems)
+            if (_treePlusItemsMode)
             {
                 // TODO add attributes from items (tree+gear mode)
             }

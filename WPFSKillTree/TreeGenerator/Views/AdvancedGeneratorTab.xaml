@@ -233,7 +233,7 @@
                     </Grid.RowDefinitions>
                     <metroControls:ToggleSwitch Grid.Row="0" Grid.Column="1" Margin="5,0,0,5"
                                                 OnLabel="Tree + Items" OffLabel="Tree only"
-                                                IsChecked="{Binding ImportItems}"
+                                                IsChecked="{Binding TreePlusItemsMode}"
                                                 IsEnabled="False" ToolTip="'Tree + Items' mode is not yet implemented." ToolTipService.ShowOnDisabled="True"/>
                     <Button Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="3" Margin="4,4,4,4"
                             Command="{Binding ReloadPseudoAttributesCommand}">

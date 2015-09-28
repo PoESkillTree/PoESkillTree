@@ -14,6 +14,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = L10n.Message("Tagged Nodes");
         }
 
+        public override void Reset()
+        {
+            // nothing to reset
+        }
+
         public override ISolver CreateSolver(SolverSettings settings)
         {
             return new SteinerSolver(Tree, settings);

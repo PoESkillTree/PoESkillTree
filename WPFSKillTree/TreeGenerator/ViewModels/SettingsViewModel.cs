@@ -20,7 +20,17 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
 #region Presentation
 
-        private int _additionalPoints = 21;
+        private const int AdditionalPointsDefaultValue = 21;
+
+        private const bool IncludeCheckedDefaultValue = true;
+
+        private const bool ExcludeCrossedDefaultValue = true;
+
+        private const bool TreeAsSubsetDefaultValue = false;
+
+        private const bool TreeAsInitialDefaultValue = false;
+
+        private int _additionalPoints = AdditionalPointsDefaultValue;
 
         public int AdditionalPoints
         {
@@ -40,7 +50,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set { SetProperty(ref _totalPoints, value); }
         }
 
-        private bool _includeChecked = true;
+        private bool _includeChecked = IncludeCheckedDefaultValue;
 
         public bool IncludeChecked
         {
@@ -48,7 +58,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set { SetProperty(ref _includeChecked, value); }
         }
 
-        private bool _excludeCrossed = true;
+        private bool _excludeCrossed = ExcludeCrossedDefaultValue;
 
         public bool ExcludeCrossed
         {
@@ -56,7 +66,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set { SetProperty(ref _excludeCrossed, value); }
         }
 
-        private bool _treeAsSubset;
+        private bool _treeAsSubset = TreeAsSubsetDefaultValue;
 
         public bool TreeAsSubset
         {
@@ -64,12 +74,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set { SetProperty(ref _treeAsSubset, value); }
         }
 
-        private bool _treeAsStart;
+        private bool _treeAsInitial = TreeAsInitialDefaultValue;
 
-        public bool TreeAsStart
+        public bool TreeAsInitial
         {
-            get { return _treeAsStart; }
-            set { SetProperty(ref _treeAsStart, value); }
+            get { return _treeAsInitial; }
+            set { SetProperty(ref _treeAsInitial, value); }
         }
 
         private int _selectedTabIndex;
@@ -89,6 +99,13 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public ICommand RunCommand
         {
             get { return _runCommand ?? (_runCommand = new RelayCommand(o => Run())); }
+        }
+
+        private RelayCommand _resetCommand;
+
+        public ICommand ResetCommand
+        {
+            get { return _resetCommand ?? (_resetCommand = new RelayCommand(o => Reset()));}
         }
 
 #endregion
@@ -163,6 +180,19 @@ namespace POESKillTree.TreeGenerator.ViewModels
             Close(controllerVm.Result);
         }
 
+        private void Reset()
+        {
+            AdditionalPoints = AdditionalPointsDefaultValue;
+            IncludeChecked = IncludeCheckedDefaultValue;
+            ExcludeCrossed = ExcludeCrossedDefaultValue;
+            TreeAsSubset = TreeAsSubsetDefaultValue;
+            TreeAsInitial = TreeAsInitialDefaultValue;
+            foreach (var tab in Tabs)
+            {
+                tab.Reset();
+            }
+        }
+
         private SolverSettings CreateSettings()
         {
             var level = Tree.Level;
@@ -170,7 +200,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var @checked = _includeChecked ? _tree.GetCheckedNodes() : null;
             var crossed = _excludeCrossed ? _tree.GetCrossedNodes() : null;
             var subsetTree = _treeAsSubset ? _tree.SkilledNodes : null;
-            var initialTree = _treeAsStart ? _tree.SkilledNodes : null;
+            var initialTree = _treeAsInitial ? _tree.SkilledNodes : null;
             return new SolverSettings(level, totalPoints, @checked, crossed, subsetTree, initialTree);
         }
 
