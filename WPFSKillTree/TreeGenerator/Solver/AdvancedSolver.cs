@@ -88,6 +88,11 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
+        /// <summary>
+        /// Creates a new, uninitialized instance.
+        /// </summary>
+        /// <param name="tree">The (not null) skill tree in which to optimize.</param>
+        /// <param name="settings">The (not null) settings that describe what the solver should do.</param>
         public AdvancedSolver(SkillTree tree, AdvancedSolverSettings settings)
             : base(tree, settings)
         { }

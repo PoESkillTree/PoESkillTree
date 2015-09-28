@@ -29,6 +29,10 @@ namespace POESKillTree.TreeGenerator.Solver
         void FinalStep();
     }
 
+    /// <summary>
+    ///  A class controlling the interaction between the skill tree data and the
+    ///  genetic algorithm used to find (hopefully) optimal solutions.
+    /// </summary>
     public abstract class AbstractSolver<TS> : ISolver where TS : SolverSettings
     {
         private bool _isInitialized;
@@ -79,13 +83,24 @@ namespace POESKillTree.TreeGenerator.Solver
             get { return true; }
         }
 
+        /// <summary>
+        /// Creates a new, uninitialized instance.
+        /// </summary>
+        /// <param name="tree">The (not null) skill tree in which to optimize.</param>
+        /// <param name="settings">The (not null) settings that describe what the solver should do.</param>
         protected AbstractSolver(SkillTree tree, TS settings)
         {
+            if (tree == null) throw new ArgumentNullException("tree");
+            if (settings == null) throw new ArgumentNullException("settings");
+
             _isInitialized = false;
             Tree = tree;
             Settings = settings;
         }
 
+        /// <summary>
+        ///  Initializes the solver so that the optimization can be run.
+        /// </summary>
         public void Initialize()
         {
             BuildSearchGraph();
@@ -130,7 +145,11 @@ namespace POESKillTree.TreeGenerator.Solver
 
             _isInitialized = true;
         }
-        
+
+        /// <summary>
+        ///  Preprocesses the SkillTree graph into a simplified graph that omits
+        ///  nodes (single pass) and contracts all skilled nodes into a single node.
+        /// </summary>
         private void BuildSearchGraph()
         {
             SearchGraph = new SearchGraph();
@@ -144,8 +163,7 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
         protected virtual void OnStartAndTargetNodesCreated()
-        {
-        }
+        { }
 
         private void CreateStartNodes()
         {
@@ -271,6 +289,9 @@ namespace POESKillTree.TreeGenerator.Solver
         // Filtering that needs the distances calculated, called after CreateLeastSolution.
         protected abstract bool IncludeNodeUsingDistances(GraphNode node);
 
+        /// <summary>
+        ///  Sets up the genetic algorithm to be ready for the evolutionary search.
+        /// </summary>
         private void InitializeGa()
         {
             Debug.WriteLine("Search space dimension: " + SearchSpace.Count);
@@ -293,6 +314,10 @@ namespace POESKillTree.TreeGenerator.Solver
             return dna;
         }
 
+        /// <summary>
+        ///  Tells the genetic algorithm to advance one generation and processes
+        ///  the resulting (possibly) improved solution.
+        /// </summary>
         public void Step()
         {
             if (!_isInitialized)
@@ -318,6 +343,13 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
+        /// <summary>
+        ///  Converts an MST spanning a set of GraphNodes back into its equivalent
+        ///  as a HashSet of SkillNode IDs.
+        /// </summary>
+        /// <param name="mst">The spanned MinimalSpanningTree.</param>
+        /// <returns>A HashSet containing the node IDs of all SkillNodes spanned
+        /// by the MST.</returns>
         private HashSet<ushort> SpannedMstToSkillnodes(MinimalSpanningTree mst)
         {
             if (!mst.IsSpanned)

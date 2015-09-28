@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.SkillTreeFiles.SteinerTrees;
 using System.Collections.Generic;
-using Priority_Queue;
 
 //namespace UnitTests
 namespace UnitTests
@@ -168,7 +167,7 @@ namespace UnitTests
             for (int i = 0; i < queueTestOrder.Length; i++)
                 nodeCount = Math.Max(queueTestOrder[i] + 1, nodeCount);
 
-            HeapPriorityQueue<TestNode> queue = new HeapPriorityQueue<TestNode>(nodeCount);
+            LinkedListPriorityQueue<TestNode> queue = new LinkedListPriorityQueue<TestNode>(30);
 
 
             TestNode[] testNodes = new TestNode[nodeCount];
@@ -186,7 +185,7 @@ namespace UnitTests
             }
         }
 
-        class TestNode : PriorityQueueNode
+        class TestNode : LinkedListPriorityQueueNode<TestNode>
         {
         }
     }

@@ -45,18 +45,17 @@
         <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" Content="current tree as initial solution" IsChecked="{Binding TreeAsInitial}"/>
 
         <Button Grid.Row="2" Grid.Column="3" Content="_Run" Margin="10,5" Command="{Binding RunCommand}"/>
-        <Button Grid.Row="2" Grid.Column="2" Content="Reset" Margin="10,5" Command="{Binding ResetCommand}" />
+        <Button Grid.Row="2" Grid.Column="2" Content="Reset" Margin="20,5,10,5" Command="{Binding ResetCommand}" />
         
         <TabControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
-                <local:SteinerGeneratorTab/>
+                <local:AdvancedGeneratorTab/>
             </TabItem>
             <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}"
                      IsEnabled="False" ToolTip="'Automated' Solver is not yet implemented." ToolTipService.ShowOnDisabled="True">
                 <local:AutomatedGeneratorTab/>
             </TabItem>
             <TabItem DataContext="{Binding Tabs[2]}" Header="{Binding DisplayName}">
-                <local:AdvancedGeneratorTab/>
             </TabItem>
         </TabControl>
 

@@ -208,13 +208,9 @@
     <Compile Include="SkillTreeFiles\SteinerTrees\DistanceLookup.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\GeneticAlgorithm.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\Graphs.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\HeapPriorityQueue.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\HillClimber.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\IPriorityQueue.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\LinkedListPriorityQueue.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\MinimalSpanningTree.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\PriorityQueueNode.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
     <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\Attribute.cs" />
@@ -246,9 +242,6 @@
     </Compile>
     <Compile Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml.cs">
       <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TreeGenerator\Views\SteinerGeneratorTab.xaml.cs">
-      <DependentUpon>SteinerGeneratorTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Converter\BoolConverter.cs" />
     <Compile Include="Utils\Converter\EnumConverter.cs" />
@@ -329,10 +322,6 @@
     <Compile Include="Views\MetroMessageBoxWindow.xaml.cs">
       <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\OptimizerControllerWindow.xaml.cs">
-      <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Page Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -346,10 +335,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TreeGenerator\Views\SettingsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TreeGenerator\Views\SteinerGeneratorTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -431,10 +416,6 @@
     <Page Include="Views\MetroMessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\OptimizerControllerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TabPicker.xaml">
       <Generator>MSBuild:Compile</Generator>

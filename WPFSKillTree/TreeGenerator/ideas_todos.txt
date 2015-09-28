@@ -7,7 +7,6 @@ AdvancedSolver UI improvements:
 - substring match searchable ComboBox for Attributes (something like the poe.trade comboboxes)
 
 Miscellaneous:
-- move Documentation from old Steiner files to new and delete old files
 - more/updated Unit Tests (e.g. binary search in WeightedSampling)
 - Hardcoded lists/dictionaries in AdvancedSolverViewModel to extern files
 - UI texts localized
