@@ -33,7 +33,7 @@
         </Grid>
 
         <Label Content="{Binding BestResultText}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5"/>
-        <Button Grid.Row="3" Grid.Column="0" Content="{Binding PauseResumeText}" IsEnabled="{Binding PauseResumeEnabled}" Width="auto" Height="auto" Margin="5" Command="{Binding PauseResumeCommand}"/>
-        <Button Grid.Row="3" Grid.Column="1" Content="{Binding CancelCloseText}" IsEnabled="{Binding CancelCloseEnabled}" Width="auto" Height="auto" Margin="5" Command="{Binding CancelCloseCommand}"/>
+        <Button Grid.Row="3" Grid.Column="0" Content="{Binding PauseResumeText}" IsEnabled="{Binding PauseResumeEnabled}" Margin="5" Command="{Binding PauseResumeCommand}"/>
+        <Button Grid.Row="3" Grid.Column="1" Content="{Binding CancelCloseText}" IsEnabled="{Binding CancelCloseEnabled}" Margin="5" Command="{Binding CancelCloseCommand}"/>
     </Grid>
 </controls:MetroWindow>

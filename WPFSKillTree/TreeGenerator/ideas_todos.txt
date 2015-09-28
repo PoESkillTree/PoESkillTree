@@ -8,10 +8,7 @@ AdvancedSolver UI improvements:
 
 Miscellaneous:
 - more/updated Unit Tests (e.g. binary search in WeightedSampling)
-- Hardcoded lists/dictionaries in AdvancedSolverViewModel to extern files
-- UI texts localized
-- Clean up / Commentation
-- fix memory leaks
+- Clean up / Documentation
 
 Bigger things (best to discuss these in GitHub issues)
 =============

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:viewModels="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
              xmlns:metroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:utils="clr-namespace:POESKillTree.Utils"
@@ -35,13 +36,18 @@
         </Grid.Resources>
 
         <TabControl metroControls:TabControlHelper.IsUnderlined="True">
-            <TabItem Header="Attributes" metroControls:ControlsHelper.HeaderFontSize="15">
+            <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
+                <TabItem.Header>
+                    <l:Catalog Message="Attributes"/>
+                </TabItem.Header>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Margin="5" Content="Load from tree" HorizontalAlignment="Center" Command="{Binding LoadAttributesCommand}"/>
+                    <Button Grid.Row="0" Margin="5" HorizontalAlignment="Center" Command="{Binding LoadAttributesCommand}">
+                        <l:Catalog Message="Load from tree"/>
+                    </Button>
                     <DataGrid Grid.Row="1" x:Name="AttrConstraintGrid"
                             ItemsSource="{Binding AttributeConstraints}" AutoGenerateColumns="False"
                             CanUserAddRows="{Binding CanAddAttrConstraints}"
@@ -53,7 +59,10 @@
                         </DataGrid.Resources>
                         <DataGrid.Columns>
 
-                            <DataGridTemplateColumn Header="Attributes" d:DataContext="{d:DesignInstance model:AttributeConstraint}">
+                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:AttributeConstraint}">
+                                <DataGridTemplateColumn.Header>
+                                    <l:Catalog Message="Attributes"/>
+                                </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <ComboBox IsEditable="True" IsTextSearchEnabled="True"
@@ -100,10 +109,17 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <metroControls:DataGridNumericUpDownColumn Header="Target" Minimum="0" StringFormat="{}{0:#0.##}"
-                                                                       Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" />
+                            <metroControls:DataGridNumericUpDownColumn Minimum="0" StringFormat="{}{0:#0.##}"
+                                                                       Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}">
+                                <metroControls:DataGridNumericUpDownColumn.Header>
+                                    <l:Catalog Message="Target"/>
+                                </metroControls:DataGridNumericUpDownColumn.Header>
+                            </metroControls:DataGridNumericUpDownColumn>
 
-                            <DataGridTemplateColumn Header="Weight" d:DataContext="{d:DesignInstance model:AttributeConstraint}">
+                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:AttributeConstraint}">
+                                <DataGridTemplateColumn.Header>
+                                    <l:Catalog Message="Weight"/>
+                                </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -144,7 +160,10 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Pseudo Attributes" metroControls:ControlsHelper.HeaderFontSize="15">
+            <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
+                <TabItem.Header>
+                    <l:Catalog Message="Pseudo Attributes"/>
+                </TabItem.Header>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -177,15 +196,28 @@
                             Value="{Binding NewPseudoAttributeConstraint.Weight}"
                             Minimum="{Binding NewPseudoAttributeConstraint.MinWeight}" Maximum="{Binding NewPseudoAttributeConstraint.MaxWeight}"/>
                     <Label Grid.Column="3" Grid.Row="0" Content="{Binding NewPseudoAttributeConstraint.Weight}" Margin="2,4" ContentStringFormat="{}{0}%" />
-                    <Button Grid.Column="4" Grid.Row="0" Margin="2,4" Command="{Binding AddPseudoConstraintCommand}" IsDefault="True">Add</Button>
+                    <Button Grid.Column="4" Grid.Row="0" Margin="2,4" Command="{Binding AddPseudoConstraintCommand}" IsDefault="True">
+                        <l:Catalog Message="Add"/>
+                    </Button>
                     
                     <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
                               ItemsSource="{Binding PseudoAttributeConstraints}"
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Pseudo attribute" Binding="{Binding Data}" />
-                            <metroControls:DataGridNumericUpDownColumn Header="Target" Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" StringFormat="{}{0:#0.##}" />
-                            <DataGridTemplateColumn Header="Weight" d:DataContext="{d:DesignInstance model:PseudoAttributeConstraint}">
+                            <DataGridTextColumn Binding="{Binding Data}">
+                                <DataGridTextColumn.Header>
+                                    <l:Catalog Message="Pseudo attribute"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <metroControls:DataGridNumericUpDownColumn Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" StringFormat="{}{0:#0.##}">
+                                <metroControls:DataGridNumericUpDownColumn.Header>
+                                    <l:Catalog Message="Target"/>
+                                </metroControls:DataGridNumericUpDownColumn.Header>
+                            </metroControls:DataGridNumericUpDownColumn>
+                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:PseudoAttributeConstraint}">
+                                <DataGridTemplateColumn.Header>
+                                    <l:Catalog Message="Weight"/>
+                                </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -221,11 +253,20 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Combined Attributes" metroControls:ControlsHelper.HeaderFontSize="15"
-                     IsEnabled="False" ToolTip="Not enabled in 'Tree only' mode." ToolTipService.ShowOnDisabled="True">
+            <TabItem metroControls:ControlsHelper.HeaderFontSize="15"
+                     IsEnabled="False" ToolTipService.ShowOnDisabled="True">
+                <TabItem.Header>
+                    <l:Catalog Message="Combined Attributes"/>
+                </TabItem.Header>
+                <TabItem.ToolTip>
+                    <l:Catalog Message="Not enabled in 'Tree only' mode."/>
+                </TabItem.ToolTip>
             </TabItem>
-            
-            <TabItem Header="Settings" metroControls:ControlsHelper.HeaderFontSize="15">
+
+            <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
+                <TabItem.Header>
+                    <l:Catalog Message="Settings"/>
+                </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -243,16 +284,27 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <metroControls:ToggleSwitch Grid.Row="0" Grid.Column="1" Margin="5,0,0,5"
-                                                OnLabel="Tree + Items" OffLabel="Tree only"
                                                 IsChecked="{Binding TreePlusItemsMode}"
-                                                IsEnabled="False" ToolTip="'Tree + Items' mode is not yet implemented." ToolTipService.ShowOnDisabled="True"/>
+                                                IsEnabled="False" ToolTipService.ShowOnDisabled="True">
+                        <metroControls:ToggleSwitch.OnLabel>
+                            <l:Catalog Message="Tree + Items"/>
+                        </metroControls:ToggleSwitch.OnLabel>
+                        <metroControls:ToggleSwitch.OffLabel>
+                            <l:Catalog Message="Tree only"/>
+                        </metroControls:ToggleSwitch.OffLabel>
+                        <metroControls:ToggleSwitch.ToolTip>
+                            <l:Catalog Message="'Tree + Items' mode is not yet implemented."/>
+                        </metroControls:ToggleSwitch.ToolTip>
+                    </metroControls:ToggleSwitch>
                     <Button Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="3" Margin="4,4,4,4"
                             Command="{Binding ReloadPseudoAttributesCommand}">
-                        Reload Pseudo Attributes from filesystem
+                        <l:Catalog Message="Reload Pseudo Attributes from filesystem"/>
                     </Button>
 
                     <!-- WeaponClass -->
-                    <Label Grid.Row="1" Grid.Column="0" Content="Weapon class:" VerticalAlignment="Center" />
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+                        <l:Catalog Message="Weapon class:"/>
+                    </Label>
                     <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" MinWidth="130" Margin="5,0" VerticalAlignment="Center"
                               SelectedValue="{Binding WeaponClass}" ItemsSource="{Binding WeaponClassValues}">
                         <ComboBox.ItemTemplate>
@@ -263,7 +315,9 @@
                     </ComboBox>
                     
                     <!-- OffHand -->
-                    <Label Grid.Row="2" Grid.Column="0" Content="Off hand:" VerticalAlignment="Center" />
+                    <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">
+                        <l:Catalog Message="Off hand:"/>
+                    </Label>
                     <RadioButton Grid.Row="2" Grid.Column="1" Content="Shield" GroupName="OffHand" Margin="5,0"
                                  IsEnabled="{Binding WeaponClassIsTwoHanded, Converter={StaticResource InvertBoolConverter}}"
                                  IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.Shield}}" />
@@ -275,7 +329,9 @@
                                  IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.TwoHanded}}" />
                     
                     <!-- Tags -->
-                    <Label Grid.Row="1" Grid.Column="2" Content="Tags:" VerticalAlignment="Center"/>
+                    <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Center">
+                        <l:Catalog Message="Tags:"/>
+                    </Label>
                     <CheckBox Grid.Row="1" Grid.Column="3" Content="Attack" Margin="5,0"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Attack}}"/>
                     <CheckBox Grid.Row="2" Grid.Column="3" Content="Melee" Margin="5,0"

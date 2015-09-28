@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
@@ -117,7 +118,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         public SettingsViewModel(SkillTree tree, GeneratorTabViewModel generator = null)
         {
-            DisplayName = "Skill tree Generator";
+            DisplayName = L10n.Message("Skill tree Generator");
 
             _tree = tree;
             if (_tree.Level != SkillTree.UndefinedLevel && _tree.SkilledNodes.Count > 1
@@ -127,9 +128,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
             _totalPoints = _tree.Level - 1 + _additionalPoints;
 
+            var levelString = L10n.Message("Level");
             tree.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "Level")
+                if (args.PropertyName == levelString)
                 {
                     TotalPoints = _tree.Level - 1 + _additionalPoints;
                 }

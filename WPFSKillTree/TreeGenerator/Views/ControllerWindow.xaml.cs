@@ -19,7 +19,7 @@ namespace POESKillTree.TreeGenerator.Views
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            _vm.WindowLoaded();
+            _vm.StartSolverAsync();
         }
     }
 }

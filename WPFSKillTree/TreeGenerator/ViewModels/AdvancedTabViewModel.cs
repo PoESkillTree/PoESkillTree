@@ -17,6 +17,10 @@ using POESKillTree.Utils.Converter;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
+    /// <summary>
+    /// GeneratorTabViewModel that uses user specified constraints based
+    /// on attributes to generate skill trees.
+    /// </summary>
     public sealed class AdvancedTabViewModel : GeneratorTabViewModel
     {
 
@@ -55,7 +59,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {"Everything else", 15}
         };
 
-        private static readonly HashSet<string> PopularAttributes = new HashSet<string>()
+        /// <summary>
+        /// List of attributes that should be displayed before others.
+        /// </summary>
+        private static readonly List<string> PopularAttributes = new List<string>()
         {
             "+# to Dexterity", "+# to Intelligence", "+# to Strength",
             "#% increased Movement Speed", "#% increased maximum Life", "#% of Life Regenerated per Second",
@@ -88,6 +95,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         #endregion
         
+        /// <summary>
+        /// Gets all values of the WeaponClass Enum.
+        /// </summary>
         public static IEnumerable<WeaponClass> WeaponClassValues
         {
             get { return Enum.GetValues(typeof(WeaponClass)).Cast<WeaponClass>(); }
@@ -95,28 +105,59 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         #region Presentation
 
+        /// <summary>
+        /// Gets the collection of attributes that can be used in AttributeConstraints.
+        /// </summary>
         public ObservableCollection<string> Attributes { get; private set; }
 
+        /// <summary>
+        /// Gets the collection of AttributeConstraints the user specified.
+        /// </summary>
         public ObservableCollection<AttributeConstraint> AttributeConstraints { get; private set; }
 
+        /// <summary>
+        /// Whether the user can add AttributeConstraints. Needed because it needs to be reset after
+        /// removing AttributeConstraints for the NewItemPlaceholder to appear.
+        /// </summary>
         private bool _canAddAttrConstraints = true;
 
+        /// <summary>
+        /// Gets or sets if the user can add AttributeConstraints.
+        /// </summary>
         public bool CanAddAttrConstraints
         {
             get { return _canAddAttrConstraints; }
             set { SetProperty(ref _canAddAttrConstraints, value); }
         }
 
+        /// <summary>
+        /// HashSet of PseudoAttributes already added as PseudoAttributeConstraint.
+        /// </summary>
         private readonly HashSet<PseudoAttribute> _addedPseudoAttributes = new HashSet<PseudoAttribute>();
 
+        /// <summary>
+        /// Collection of pseudo attributes that can be used in PseudoAttributeConstraints.
+        /// </summary>
         private readonly ObservableCollection<PseudoAttribute> _pseudoAttributes;
 
+        /// <summary>
+        /// Gets the CollectionView to the PseudoAttributes the user can use.
+        /// </summary>
         public ICollectionView PseudoAttributesView { get; private set; }
 
+        /// <summary>
+        /// Gets the collection of PseudoAttributeConstraints the user specified.
+        /// </summary>
         public ObservableCollection<PseudoAttributeConstraint> PseudoAttributeConstraints { get; private set; }
 
+        /// <summary>
+        /// Placeholder for the PseudoAttributeConstraint the user is editing that can be added.
+        /// </summary>
         private PseudoAttributeConstraint _newPseudoAttributeConstraint;
 
+        /// <summary>
+        /// Gets the PseudoAttributeConstraint used for creating new ones by the user.
+        /// </summary>
         public PseudoAttributeConstraint NewPseudoAttributeConstraint
         {
             get { return _newPseudoAttributeConstraint; }
@@ -124,20 +165,22 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private const bool TreePlusItemsModeDefaultValue = false;
-        private const WeaponClass WeaponClassDefaultValue = WeaponClass.Unarmed;
-        private const OffHand OffHandDefaultValue = OffHand.Shield;
-        private const Tags TagsDefaultValue = Tags.None;
-
         private bool _treePlusItemsMode = TreePlusItemsModeDefaultValue;
-
+        /// <summary>
+        /// Gets or sets if the Tab should use 'Tree + Items' or 'Tree only' mode
+        /// (has no effect at the moment)
+        /// </summary>
         public bool TreePlusItemsMode
         {
             get { return _treePlusItemsMode; }
             set { SetProperty(ref _treePlusItemsMode, value); }
         }
 
+        private const WeaponClass WeaponClassDefaultValue = WeaponClass.Unarmed;
         private WeaponClass _weaponClass = WeaponClassDefaultValue;
-
+        /// <summary>
+        /// Gets or sets the WeaponClass used for pseudo attribute calculations.
+        /// </summary>
         public WeaponClass WeaponClass
         {
             get { return _weaponClass; }
@@ -149,7 +192,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private bool _weaponClassIsTwoHanded;
-
+        /// <summary>
+        /// Gets whether the currently selected WeaponClass is a two handed class.
+        /// </summary>
         public bool WeaponClassIsTwoHanded
         {
             get { return _weaponClassIsTwoHanded; }
@@ -160,16 +205,22 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
+        private const OffHand OffHandDefaultValue = OffHand.Shield;
         private OffHand _offHand = OffHandDefaultValue;
-
+        /// <summary>
+        /// Gets or sets the OffHand used for pseudo attribute calculations.
+        /// </summary>
         public OffHand OffHand
         {
             get { return _offHand; }
             set { SetProperty(ref _offHand, value); }
         }
 
+        private const Tags TagsDefaultValue = Tags.None;
         private Tags _tags = TagsDefaultValue;
-
+        /// <summary>
+        /// Gets or sets the Tags used for pseudo attribute calculations.
+        /// </summary>
         public Tags Tags
         {
             get { return _tags; }
@@ -181,7 +232,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         #region Commands
 
         private RelayCommand _removeAttributeConstraintCommand;
-
+        /// <summary>
+        /// Gets the command to remove an AttributeConstraint from the collection.
+        /// </summary>
         public ICommand RemoveAttributeConstraintCommand
         {
             get
@@ -200,7 +253,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private RelayCommand _loadAttributesCommand;
-
+        /// <summary>
+        /// Gets the command to loat the attributes from the current tree as AttributeConstraints.
+        /// </summary>
         public ICommand LoadAttributesCommand
         {
             get
@@ -211,7 +266,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private RelayCommand _addPseudoConstraintCommand;
-
+        /// <summary>
+        /// Gets the command to add a PseudoAttributeConstraint to the collection.
+        /// </summary>
         public ICommand AddPseudoConstraintCommand
         {
             get
@@ -232,7 +289,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private RelayCommand _removePseudoConstraintCommand;
-
+        /// <summary>
+        /// Gets the command to remove a PseudoAttributeConstraint from the collection.
+        /// </summary>
         public ICommand RemovePseudoConstraintCommand
         {
             get
@@ -252,7 +311,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private RelayCommand _reloadPseudoAttributesCommand;
-
+        /// <summary>
+        /// Gets the command to reload the possible PseudoAttributes from the filesystem.
+        /// Removes all user specified PseudoAttributeConstraints.
+        /// </summary>
         public ICommand ReloadPseudoAttributesCommand
         {
             get
@@ -266,16 +328,21 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private readonly PseudoAttributeLoader _pseudoAttributeLoader = new PseudoAttributeLoader();
 
+        /// <summary>
+        /// Instantiates a new AdvancedTabViewModel.
+        /// </summary>
+        /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
         {
             var attrList = CreatePossibleAttributes().ToList();
+            var popular = new HashSet<string>(PopularAttributes);
             attrList.Sort((s1, s2) =>
             {
                 var attrSort = AttrGroupOrder[AttrGroupConverter.Convert(s1).GroupName] -
                                AttrGroupOrder[AttrGroupConverter.Convert(s2).GroupName];
                 if (attrSort != 0) return attrSort;
-                if (PopularAttributes.Contains(s1) && !PopularAttributes.Contains(s2)) return -1;
-                if (PopularAttributes.Contains(s2) && !PopularAttributes.Contains(s1)) return 1;
+                if (popular.Contains(s1) && !popular.Contains(s2)) return -1;
+                if (popular.Contains(s2) && !popular.Contains(s1)) return 1;
                 return string.CompareOrdinal(s1, s2);
             });
             Attributes = new ObservableCollection<string>(attrList);
@@ -295,7 +362,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             DisplayName = L10n.Message("Advanced");
         }
-
+        
         public override void Reset()
         {
             AttributeConstraints.Clear();
@@ -321,6 +388,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
                    select attrGroup.First().Key;
         }
 
+        /// <summary>
+        /// Reloads the possible PseudoAttributes from the filesystem.
+        /// Resets PseudoAttributeConstraints entered by the user.
+        /// </summary>
         private void ReloadPseudoAttributes()
         {
             _addedPseudoAttributes.Clear();
@@ -334,12 +405,18 @@ namespace POESKillTree.TreeGenerator.ViewModels
             NewPseudoAttributeConstraint = new PseudoAttributeConstraint(PseudoAttributesView.CurrentItem as PseudoAttribute);
         }
 
+        /// <summary>
+        /// Loads the attributes from the current tree as AttributeConstraints
+        /// and Check-tags nodes that have unique attributes.
+        /// </summary>
+        /// <remarks>
+        /// Character class changes after calling this method will not influence the attributes
+        /// (which have the old character class calculated into them)
+        /// </remarks>
         private void LoadAttributesFromTree()
         {
             Tree.UntagAllNodes();
             
-            // Character class changes after calling this method will not influence the attributes
-            // (which have the old character class calculated into them)
             var attributes = new Dictionary<string, float>();
             foreach (var node in Tree.SkilledNodes)
             {
@@ -401,6 +478,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 pseudoConstraints, WeaponClass, Tags, OffHand));
         }
         
+        /// <summary>
+        /// Creates the attributes the skill tree has with these settings initially
+        /// (without any tree generating done).
+        /// </summary>
         private Dictionary<string, float> CreateInitialAttributes()
         {
             // base attributes: SkillTree.BaseAttributes, SkillTree.CharBaseAttributes
