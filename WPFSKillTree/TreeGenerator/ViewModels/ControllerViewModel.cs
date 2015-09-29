@@ -56,14 +56,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         private bool _isPaused;
 
-        // Once solutionWorker_DoWork is done working in the background, all eventually
-        // queued up solutionWorker_ProgressChanged calls return without doing anything.
-        // This is mainly noticeable for very small searchSpaces (and therefore a high
-        // maxGeneration).
         /// <summary>
         /// Indicates whether the ViewModel should no longer report its progress.
         /// </summary>
         private bool _stopReporting;
+
+        /// <summary>
+        /// Used to skip calls to <see cref="ReportProgress"/> that got stacked up while
+        /// the method was processing the last call.
+        /// </summary>
+        private readonly Stopwatch _reportStopwatch = new Stopwatch();
 
         /// <summary>
         /// Token source for cancelling the solver.
@@ -207,6 +209,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             _tree = tree;
 
             _progress = new Progress<Tuple<int, IEnumerable<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2));
+            _reportStopwatch.Start();
 
             RequestClose += (sender, args) => CancelClose();
         }
@@ -325,7 +328,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <param name="bestSoFar">The best result generated to this point.</param>
         private void ReportProgress(int step, IEnumerable<ushort> bestSoFar)
         {
-            if (_stopReporting)
+            if (_stopReporting || _reportStopwatch.ElapsedMilliseconds < 10)
             {
                 return;
             }
@@ -333,6 +336,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             ProgressbarCurrent = step;
             ProgressbarText = step + "/" + _maxSteps;
             BestSoFar = new HashSet<ushort>(bestSoFar);
+            
+            _reportStopwatch.Restart();
         }
 
         /// <summary>
