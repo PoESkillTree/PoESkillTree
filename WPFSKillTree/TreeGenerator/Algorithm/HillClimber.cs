@@ -6,17 +6,61 @@ using System.Threading.Tasks;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
+    /// <summary>
+    ///     Simple hillclimbing algorithm that tries to improve a set of nodes by swapping
+    ///     single nodes in and out until no swap improves the score.
+    /// </summary>
     public class HillClimber
     {
+        /// <summary>
+        /// Maps nodes to arrays of adjacent nodes.
+        /// </summary>
+        private readonly Dictionary<ushort, ushort[]> _adjacencyMatrix = new Dictionary<ushort, ushort[]>();
+        /// <summary>
+        /// Function returning the fitness of a set of nodes.
+        /// </summary>
         private readonly Func<HashSet<ushort>, double> _fitnessFunc;
 
+        /// <summary>
+        /// All nodes of the graph.
+        /// </summary>
+        private readonly HashSet<ushort> _allNodes;
+        /// <summary>
+        /// Nodes that can not swapped out of the current set.
+        /// </summary>
         private readonly HashSet<ushort> _fixedNodes;
 
-        private readonly HashSet<ushort> _allNodes;
+        private readonly object _improvementLock = new object();
 
-        private readonly Dictionary<ushort, ushort[]> _adjacencyMatrix = new Dictionary<ushort, ushort[]>();
-        
-        public HillClimber(Func<HashSet<ushort>, double> fitnessFunc, IEnumerable<ushort> fixedNodes, IEnumerable<GraphNode> allNodes)
+        /// <summary>
+        /// Fitness value of the current node set.
+        /// </summary>
+        private double _curFitness;
+        /// <summary>
+        /// Current set of nodes that build the tree.
+        /// These can be swapped out (if not in <see cref="_fixedNodes"/>).
+        /// </summary>
+        private HashSet<ushort> _current;
+        /// <summary>
+        /// Set of nodes in <see cref="_allNodes"/> but not in <see cref="_current"/>.
+        /// These can be swapped in.
+        /// </summary>
+        private HashSet<ushort> _notCurrent;
+        /// <summary>
+        /// If the current iteration over all nodes improved the solution.
+        /// If not, there won't be another iteration as the solution did not change.
+        /// </summary>
+        private bool _improvement;
+
+        /// <summary>
+        /// Constructs a new HillClimber and initializes it with the given fitness function,
+        /// fixed nodes and collection of all nodes.
+        /// </summary>
+        /// <param name="fitnessFunc">Function returning the fitness of a set of nodes. (not null)</param>
+        /// <param name="fixedNodes">Nodes that can not swapped out of the current set. (not null)</param>
+        /// <param name="allNodes">All nodes of the graph. (not null)</param>
+        public HillClimber(Func<HashSet<ushort>, double> fitnessFunc, IEnumerable<ushort> fixedNodes,
+            IEnumerable<GraphNode> allNodes)
         {
             if (fitnessFunc == null) throw new ArgumentNullException("fitnessFunc");
             if (fixedNodes == null) throw new ArgumentNullException("fixedNodes");
@@ -32,16 +76,16 @@ namespace POESKillTree.TreeGenerator.Algorithm
             }
         }
 
-        private HashSet<ushort> _current;
-        private HashSet<ushort> _notCurrent;
-        private double _curFitness;
-        private bool _improvement;
-        private readonly object _improvementLock = new object();
-
-        public HashSet<ushort> Improve(IEnumerable<ushort> original)
+        /// <summary>
+        /// Applies a hill climbing algorithm to the given solution by trying to swap single nodes
+        /// in and out until no swap improves it and returns the resulting solutions.
+        /// </summary>
+        /// <param name="original">The solution to improve. (not null)</param>
+        /// <returns>The potentially improved solution.</returns>
+        public IEnumerable<ushort> Improve(IEnumerable<ushort> original)
         {
             if (original == null) throw new ArgumentNullException("original");
-            
+
             _current = new HashSet<ushort>(original);
             _notCurrent = new HashSet<ushort>(_allNodes);
             _notCurrent.ExceptWith(_current);
@@ -90,6 +134,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     if (newFitness <= _curFitness || state.IsStopped) return;
                     lock (_improvementLock)
                     {
+                        if (newFitness <= _curFitness || state.IsStopped) return;
                         Debug.WriteLine("Improved from " + _curFitness + " to " + newFitness);
                         _current = newCur;
                         newNot.Add(curNode);
@@ -100,7 +145,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     }
                 });
             }
-            
+
             return _current;
         }
 

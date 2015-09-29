@@ -231,7 +231,7 @@ namespace POESKillTree.TreeGenerator.Solver
             CreateStartNodes();
             CreateTargetNodes();
             // Set start and target nodes as the fixed nodes.
-            _fixedNodes = new HashSet<ushort>(StartNodes.Nodes.Select(node => node.Id));
+            _fixedNodes = new HashSet<ushort>(StartNodes.Nodes);
             _fixedNodes.UnionWith(_targetNodes.Select(node => node.Id));
             OnStartAndTargetNodesCreated();
             CreateSearchGraph();
@@ -473,8 +473,8 @@ namespace POESKillTree.TreeGenerator.Solver
             if (!mst.IsSpanned)
                 throw new Exception("The passed MST is not spanned!");
 
-            var newSkilledNodes = new HashSet<ushort>(mst.UsedNodes);
-            newSkilledNodes.UnionWith(StartNodes.Nodes.Select(node => node.Id));
+            var newSkilledNodes = mst.GetUsedNodes();
+            newSkilledNodes.UnionWith(StartNodes.Nodes);
             return newSkilledNodes;
         }
 
@@ -497,7 +497,7 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             var mst = DnaToMst(dna);
             mst.Span(StartNodes);
-            return FitnessFunction(mst.UsedNodes);
+            return FitnessFunction(mst.GetUsedNodes());
         }
 
         /// <summary>

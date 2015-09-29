@@ -124,7 +124,7 @@ namespace UnitTests
                 "Second edge is wrong");
             Assert.IsTrue(mst1.SpanningEdges[2].Inside.Id == 5 && mst1.SpanningEdges[2].Outside.Id == 7,
                 "Third edge is wrong");
-            Assert.IsTrue(mst1.UsedNodes.Count == 5, "Wrong MST length");
+            Assert.IsTrue(mst1.GetUsedNodes().Count == 5, "Wrong MST length");
 
 
             /// Test unconnected graph

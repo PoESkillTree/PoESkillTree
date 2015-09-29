@@ -15,11 +15,15 @@ namespace POESKillTree.TreeGenerator.Algorithm
         private Dictionary<uint, int> _distances = new Dictionary<uint, int>();
 
         private Dictionary<uint, ushort[]> _paths = new Dictionary<uint, ushort[]>();
-
+        
         private int[,] _distancesFast;
 
         private ushort[,][] _pathsFast;
 
+        /// <summary>
+        /// The GraphNodes of which distances and paths are cached.
+        /// The index in the Array equals their <see cref="GraphNode.DistancesIndex"/>.
+        /// </summary>
         private GraphNode[] _nodes;
 
         /// <summary>
@@ -33,7 +37,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         private int _cacheSize = int.MaxValue;
 
         /// <summary>
-        /// Number of cached nodes.
+        /// Gets the number of cached nodes.
         /// </summary>
         public int CacheSize
         {
@@ -45,7 +49,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         ///  it if it has not yet been found and CalculateFully has not been called.
         /// </summary>
         /// <param name="a">The first graph node.</param>
-        /// <param name="b">The second graph node</param>
+        /// <param name="b">The second graph node.</param>
         /// <returns>The length of the path from a to b (equals the amount of edges
         /// traversed).</returns>
         /// <remarks>
@@ -70,6 +74,12 @@ namespace POESKillTree.TreeGenerator.Algorithm
             }
         }
 
+        /// <summary>
+        /// Retrieves the path distance from one node to another.
+        /// CalculateFully must have been called or an exception will be thrown.
+        /// </summary>
+        /// <returns>The length of the path from a to b (equals the amount of edges
+        /// traversed).</returns>
         public int this[int a, int b]
         {
             get { return _distancesFast[a, b]; }
@@ -79,8 +89,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
         ///  Retrieves the shortest path from one node to another, or calculates
         ///  it if it has not yet been found and CalculateFully has not been called.
         /// </summary>
-        /// <param name="a">The first graph node.</param>
-        /// <param name="b">The second graph node</param>
+        /// <param name="a">The first graph node. (not null)</param>
+        /// <param name="b">The second graph node. (not null)</param>
         /// <returns>The shortest path from a to b, not containing either and ordered from a to b or b to a.</returns>
         /// <remarks>
         ///  If CalculateFully has been called and the nodes are not connected, null will be returned.
@@ -101,11 +111,17 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return _paths[index];
         }
 
+        /// <summary>
+        /// Returns the GraphNode with the specified <see cref="GraphNode.DistancesIndex"/>.
+        /// </summary>
         public GraphNode IndexToNode(int index)
         {
             return _nodes[index];
         }
 
+        /// <summary>
+        /// Returns whether the given nodes are connected.
+        /// </summary>
         public bool AreConnected(GraphNode a, GraphNode b)
         {
             try
@@ -143,6 +159,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// has been called must already be cached or exceptions will be thrown.</remarks>
         public void CalculateFully(List<GraphNode> nodes)
         {
+            if (nodes == null) throw new ArgumentNullException("nodes");
+
             _cacheSize = nodes.Count;
             _nodes = new GraphNode[_cacheSize];
             for (var i = 0; i < _cacheSize; i++)
@@ -171,6 +189,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         public void RemoveNodes(List<GraphNode> removedNodes, List<GraphNode> remainingNodes)
         {
+            if (removedNodes == null) throw new ArgumentNullException("removedNodes");
+            if (remainingNodes == null) throw new ArgumentNullException("remainingNodes");
+
             foreach (var node in removedNodes)
             {
                 node.DistancesIndex = -1;
@@ -205,10 +226,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
         ///  Uses a djikstra-like algorithm to flood the graph from the start
         ///  node until the target node is found (if specified) or until all marked nodes got checked.
         /// </summary>
-        /// <param name="start">The starting node.</param>
+        /// <param name="start">The starting node. (not null)</param>
         /// <param name="target">The (optional) target node.</param>
         private void Dijkstra(GraphNode start, GraphNode target = null)
         {
+            if (start == null) throw new ArgumentNullException("start");
             if (start == target) return;
 
             // The last newly found nodes.
@@ -317,7 +339,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return path;
         }
     }
-
+    
     internal class GraphNotConnectedException : Exception
     {
     }

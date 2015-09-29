@@ -8,7 +8,7 @@ AdvancedSolver UI improvements:
 
 Miscellaneous:
 - more/updated Unit Tests (e.g. binary search in WeightedSampling)
-- Clean up / Documentation (Algorithm)
+- minimum time span between ControllerViewModel report progresses
 
 Bigger things (best to discuss these in GitHub issues)
 =============

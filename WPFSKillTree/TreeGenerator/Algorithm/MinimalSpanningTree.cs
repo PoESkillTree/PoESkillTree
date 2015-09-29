@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
     public class MinimalSpanningTree
     {
+        /// <summary>
+        /// Type of nodes used for the Priority Queue in Span.
+        /// The nodes of this edge are represented by the value of <see cref="GraphNode.DistancesIndex"/>.
+        /// </summary>
         private class QueueNode : LinkedListPriorityQueueNode<QueueNode>
         {
             public readonly int Inside, Outside;
@@ -20,50 +25,48 @@ namespace POESKillTree.TreeGenerator.Algorithm
         private readonly DistanceLookup _distances;
 
         // I'd like to control at what point the spanning actually happens.
-        private bool _isSpanned;
-        public bool IsSpanned
-        { get { return _isSpanned; } }
+        public bool IsSpanned { get; private set; }
 
+        /// <summary>
+        /// Returns the edges which span this tree.
+        /// Only set after <see cref="Span"/> has been called.
+        /// </summary>
         public List<GraphEdge> SpanningEdges { get; private set; }
-
-        private HashSet<ushort> _usedNodes;
-        public HashSet<ushort> UsedNodes
-        {
-            get
-            {
-                if (_usedNodes == null)
-                {
-                    _usedNodes = new HashSet<ushort>();
-                    foreach (var edge in SpanningEdges)
-                    {
-                        // Shortest paths are saved in DistanceLookup, so we can use those.
-                        var path = _distances.GetShortestPath(edge.Inside, edge.Outside);
-                        if (path == null)
-                        {
-                            throw new GraphNotConnectedException();
-                        }
-                        // Save nodes into the HashSet, the set only saves each node once.
-                        _usedNodes.Add(edge.Inside.Id);
-                        _usedNodes.Add(edge.Outside.Id);
-                        _usedNodes.UnionWith(path);
-                    }
-                }
-                return _usedNodes;
-            }
-        }
 
         /// <summary>
         ///  Instantiates a new MinimalSpanningTree.
         /// </summary>
-        /// <param name="mstNodes">The GraphNodes that should be spanned.</param>
+        /// <param name="mstNodes">The GraphNodes that should be spanned. (not null)</param>
         /// <param name="distances">An optional DistanceLookup parameter which
         /// caches the found node-node distances.</param>
         public MinimalSpanningTree(List<GraphNode> mstNodes, DistanceLookup distances = null)
         {
+            if (mstNodes == null) throw new ArgumentNullException("mstNodes");
+
             // Copy might be preferable, doesn't really matter atm though.
             _mstNodes = mstNodes;
             _distances = distances ?? new DistanceLookup();
-            _isSpanned = false;
+            IsSpanned = false;
+        }
+
+        /// <summary>
+        /// Returns the nodes the spanning tree includes.
+        /// </summary>
+        public HashSet<ushort> GetUsedNodes()
+        {
+            var nodes = new HashSet<ushort>();
+            foreach (var edge in SpanningEdges)
+            {
+                // Shortest paths are saved in DistanceLookup, so we can use those.
+                var path = _distances.GetShortestPath(edge.Inside, edge.Outside);
+                if (path == null)
+                    throw new GraphNotConnectedException();
+                // Save nodes into the HashSet, the set only saves each node once.
+                nodes.Add(edge.Inside.Id);
+                nodes.Add(edge.Outside.Id);
+                nodes.UnionWith(path);
+            }
+            return nodes;
         }
 
         /// <summary>
@@ -129,7 +132,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 throw new GraphNotConnectedException();
 
             SpanningEdges = mstEdges;
-            _isSpanned = true;
+            IsSpanned = true;
         }
     }
 }

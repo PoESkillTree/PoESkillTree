@@ -3,20 +3,13 @@
     /// <summary>
     /// Priority queue nodes used for LinkedListPriorityQueue.
     /// </summary>
-    /// <typeparam name="T">Type of the stored objects. Probably the type of the parent class.</typeparam>
-    public class LinkedListPriorityQueueNode<T>
+    /// <typeparam name="T">Type of the parent class.</typeparam>
+    public abstract class LinkedListPriorityQueueNode<T>
     {
         /// <summary>
         /// The Priority to insert this node at.
         /// </summary>
         internal int Priority;
-
-#if DEBUG
-        /// <summary>
-        /// Represents the order the node was inserted in
-        /// </summary>
-        internal long InsertionIndex;
-#endif
 
         /// <summary>
         /// The node coming before this node in the queue.
@@ -53,10 +46,6 @@
         private T _first;
 
         private T _last;
-
-#if DEBUG
-        private long _numNodesEverEnqueued;
-#endif
 
         /// <summary>
         /// Number of nodes currently in the Queue.
@@ -120,9 +109,6 @@
                 next.Previous = node;
             }
             _prioritiyLookup[priority] = node;
-#if DEBUG
-            node.InsertionIndex = _numNodesEverEnqueued++;
-#endif
         }
 
         /// <summary>

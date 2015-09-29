@@ -27,6 +27,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         public int DistancesIndex { get; set; }
 
+        // Because HashSet does not implement IReadOnlyCollection, we can't easily
+        // make sure it doesn't get changed.
         public readonly HashSet<GraphNode> Adjacent = new HashSet<GraphNode>();
 
         protected GraphNode(ushort id)
@@ -52,15 +54,12 @@ namespace POESKillTree.TreeGenerator.Algorithm
     /// </summary>
     public class Supernode : GraphNode
     {
-        public readonly HashSet<SkillNode> Nodes = new HashSet<SkillNode>();
+        public readonly IReadOnlyCollection<ushort> Nodes;
 
         public Supernode(HashSet<ushort> nodes)
             : base(nodes.First())
         {
-            foreach (ushort nodeId in nodes)
-            {
-                Nodes.Add(SkillTree.Skillnodes[nodeId]);
-            }
+            Nodes = new List<ushort>(nodes);
         }
     }
 

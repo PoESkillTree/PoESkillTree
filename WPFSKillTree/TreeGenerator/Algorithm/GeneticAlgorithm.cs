@@ -8,23 +8,55 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
+    /// <summary>
+    /// Data struct to pass parameters to <see cref="GeneticAlgorithm"/>.
+    /// Most of these are up for experimentation to see what produces the best results.
+    /// </summary>
     public struct GeneticAlgorithmParameters
     {
+        /// <summary>
+        /// The number of generations the GA should calculate.
+        /// </summary>
         public readonly int MaxGeneration;
 
+        /// <summary>
+        /// The number of individuals kept in the population simultaneously.
+        /// </summary>
         public readonly int PopulationSize;
 
+        /// <summary>
+        /// The length of the dna of individuals (number of bools representing the dna).
+        /// </summary>
         public readonly int DnaLength;
 
+        /// <summary>
+        /// Factor describing how often worse mutated individuals will replace the original.
+        /// Higher equals more often.
+        /// </summary>
         public readonly double Temperature;
 
+        /// <summary>
+        /// Factor by which the the temperature should be multiplied after each generation.
+        /// </summary>
         public readonly double AnnealingFactor;
 
+        /// <summary>
+        /// Maximum length of sequences that are flipped at once by mutation.
+        /// </summary>
         public readonly int MaxMutateClusterSize;
-
+        
         public GeneticAlgorithmParameters(int maxGeneration, int populationSize, int dnaLength,
-            double temperature, double annealingFactor, int maxMutateClusterSize = 1)
+            double temperature = 6, double annealingFactor = 1, int maxMutateClusterSize = 1)
         {
+            if (maxGeneration < 0)
+                throw new ArgumentOutOfRangeException("maxGeneration", maxGeneration, "must be >= 0");
+            if (populationSize < 0)
+                throw new ArgumentOutOfRangeException("populationSize", populationSize, "must be <= 0");
+            if (dnaLength < 0)
+                throw new ArgumentOutOfRangeException("dnaLength", dnaLength, "must be >= 0");
+            if (maxMutateClusterSize < 1)
+                throw new ArgumentOutOfRangeException("maxMutateClusterSize", maxMutateClusterSize, "must be > 0");
+
             MaxGeneration = maxGeneration;
             PopulationSize = populationSize;
             DnaLength = dnaLength;
@@ -138,7 +170,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return new BitArray(_bestSolution.DNA);
         }
         
-        private readonly ThreadSafeRandom _random = new ThreadSafeRandom();
+        private readonly Random _random = new ThreadSafeRandom();
 
         /// <summary>
         ///  An individual, comprised of a DNA and a fitness value, for use in
@@ -238,7 +270,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             int newPopIndex = 0;
             GenerationCount++;
 
-            WeightedSampler<Individual> sampler = new WeightedSampler<Individual>();
+            WeightedSampler<Individual> sampler = new WeightedSampler<Individual>(_random);
 
 #if DEBUG
             Stopwatch stopwatch = new Stopwatch();

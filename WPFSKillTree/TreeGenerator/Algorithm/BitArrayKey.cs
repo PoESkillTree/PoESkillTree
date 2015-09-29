@@ -9,10 +9,20 @@ namespace POESKillTree.TreeGenerator.Algorithm
     /// </summary>
     public class BitArrayKey : IEquatable<BitArrayKey>
     {
+        /// <summary>
+        /// Hash is calculated on construction and saved here.
+        /// </summary>
         private readonly int _hash;
 
+        /// <summary>
+        /// The wrapped BitArray.
+        /// </summary>
         public readonly BitArray Data;
 
+        /// <summary>
+        /// Constructs a new BitArrayKey that wraps the given <see cref="BitArray"/>.
+        /// </summary>
+        /// <param name="data">BitArray to wrap. Should not be changed once stored. (not null)</param>
         public BitArrayKey(BitArray data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -22,8 +32,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         public bool Equals(BitArrayKey other)
         {
-            if (other == null) throw new ArgumentNullException("other");
-            return Equals(Data, other.Data);
+            return other != null && Equals(Data, other.Data);
         }
 
         public override bool Equals(object obj)

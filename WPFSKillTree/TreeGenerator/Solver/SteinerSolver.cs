@@ -154,7 +154,7 @@ namespace POESKillTree.TreeGenerator.Solver
                     SearchSpace.Count == 0 ? 0
                         : (int)(GenMultiplier * (SearchSpace.Count < ConstRuntimeEndpoint ? (ConstRuntimeEndpoint*ConstRuntimeEndpoint) / SearchSpace.Count : SearchSpace.Count)),
                     (int)(PopMultiplier * SearchSpace.Count),
-                    SearchSpace.Count, 6, 1);
+                    SearchSpace.Count);
             }
         }
 

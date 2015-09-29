@@ -109,7 +109,8 @@ namespace POESKillTree.TreeGenerator.Solver
                 return new GeneticAlgorithmParameters(
                     (int)(GenMultiplier * SearchSpace.Count),
                     (int)(PopMultiplier * SearchSpace.Count),
-                    SearchSpace.Count, 6, 1, MaxMutateClusterSize);
+                    SearchSpace.Count,
+                    maxMutateClusterSize: MaxMutateClusterSize);
             }
         }
 
