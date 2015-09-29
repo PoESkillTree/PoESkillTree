@@ -62,6 +62,10 @@ namespace POESKillTree.Utils
         }
     }
 
+    /// <summary>
+    /// Enables using Bindings in Xaml objects like ValidationRules.
+    /// Copied from http://www.wpfmentor.com/2009/01/how-to-add-binding-to-property-on.html
+    /// </summary>
     public class DataResourceBindingExtension : MarkupExtension
     {
         private object mTargetObject;

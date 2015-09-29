@@ -4,6 +4,9 @@ using System.Windows.Data;
 
 namespace POESKillTree.Utils.Converter
 {
+    /// <summary>
+    /// Converter that inverts boolean values.
+    /// </summary>
     [ValueConversion(typeof(bool), typeof(bool))]
     public class InvertBoolConverter : IValueConverter
     {

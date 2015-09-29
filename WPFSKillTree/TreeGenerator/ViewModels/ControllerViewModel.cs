@@ -171,16 +171,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
 #region Commands
 
-        private RelayCommand _cancelCloseCommand;
-        /// <summary>
-        /// Gets a command that cancels execution of the solver or closes the ViewModel
-        /// if execution is paused or finished.
-        /// </summary>
-        public ICommand CancelCloseCommand
-        {
-            get { return _cancelCloseCommand ?? (_cancelCloseCommand = new RelayCommand(param => CancelClose())); }
-        }
-
         private RelayCommand _pauseResumeCommand;
         /// <summary>
         /// Gets a command that pauses or resumes execution of the solver.
@@ -188,6 +178,15 @@ namespace POESKillTree.TreeGenerator.ViewModels
         public ICommand PauseResumeCommand
         {
             get { return _pauseResumeCommand ?? (_pauseResumeCommand = new RelayCommand(param => PauseResume())); }
+        }
+
+        private RelayCommand _startSolveRelayCommand;
+        /// <summary>
+        /// Gets a command that starts executing the solver asynchronously.
+        /// </summary>
+        public ICommand StartSolverCommand
+        {
+            get { return _startSolveRelayCommand ?? (_startSolveRelayCommand = new RelayCommand(param => StartSolverAsync())); }
         }
 
 #endregion
@@ -206,12 +205,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
             _tree = _solver.Tree;
 
             _progress = new Progress<Tuple<int, HashSet<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2));
+
+            RequestClose += (sender, args) => CancelClose();
         }
 
         /// <summary>
         /// Starts executing the solver asynchronously.
         /// </summary>
-        public async void StartSolverAsync()
+        private async void StartSolverAsync()
         {
             if (await InitializeAsync())
             {
@@ -247,7 +248,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 // Show a dialog and close this if the omitted nodes disconnect the tree.
                 Popup.Warning(L10n.Message("The optimizer was unable to find a conforming tree.\nPlease change skill node tagging and try again."));
-                Close(false);
+                // Closes the dialog.
+                Result = false;
                 return false;
             }
 
@@ -338,7 +340,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             if (_isPaused)
             {
-                Close(true);
+                Result = true;
             }
             else
             {
@@ -346,8 +348,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 // Therefore remaining ReportProgress calls may come through before it is deactivated.
                 // So it must be deactivated here too.
                 _stopReporting = true;
-                _cts.Cancel();
-                Close(false);
+                if (_cts != null) _cts.Cancel();
+                Result = false;
             }
         }
 

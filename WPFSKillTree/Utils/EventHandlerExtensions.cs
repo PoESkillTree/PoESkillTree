@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace POESKillTree.Utils
 {
+    /// <summary>
+    /// Provides extension methods for EventHandlers.
+    /// </summary>
     public static class EventHandlerExtensions
     {
         public static void Raise(this PropertyChangedEventHandler handler, object sender, [CallerMemberName] string propertyName = null)

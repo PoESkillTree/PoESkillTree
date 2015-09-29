@@ -42,6 +42,9 @@ namespace POESKillTree.TreeGenerator.Views
             _clicked = true;
         }
         
+        /// <summary>
+        /// Forces the DataGridCell into Edit mode with a single click instead of the normal double click.
+        /// </summary>
         private void DataGridCell_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var cell = sender as DataGridCell;

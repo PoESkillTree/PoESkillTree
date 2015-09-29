@@ -22,27 +22,18 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private bool? _result;
         /// <summary>
-        /// Gets the result of the ViewModel or null if it has none.
+        /// Gets or sets the result of the ViewModel (null if it has none).
         /// </summary>
         public bool? Result
         {
             get { return _result; }
-            private set { SetProperty(ref _result, value); }
+            protected set { SetProperty(ref _result, value); }
         }
 
         /// <summary>
         /// Raised when the close command is executed.
         /// </summary>
         public event EventHandler RequestClose;
-
-        /// <summary>
-        /// Executes the close command and sets the given value as result.
-        /// </summary>
-        protected void Close(bool? result)
-        {
-            Result = result;
-            CloseCommand.Execute(null);
-        }
 
     }
 }

@@ -6,7 +6,7 @@ using System.Windows.Data;
 namespace POESKillTree.Utils.Converter
 {
     /// <summary>
-    /// Converter used to not show DataGridTemplateColumns in empty new row placeholders,
+    /// Converter used to not hide DataGridTemplateColumn contents in empty new row placeholders
     /// that are added to the bottom of the DataGrid.
     /// </summary>
     public class IsNamedObjectVisibilityConverter : IValueConverter
@@ -14,15 +14,7 @@ namespace POESKillTree.Utils.Converter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value.GetType().Name == "NamedObject")
-            {
-                return Visibility.Hidden;
-            }
-            else
-            {
-                return Visibility.Visible;
-            }
-
+            return value.GetType().Name == "NamedObject" ? Visibility.Hidden : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

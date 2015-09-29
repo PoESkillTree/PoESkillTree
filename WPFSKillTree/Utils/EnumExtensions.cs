@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace POESKillTree.Utils
 {
+    /// <summary>
+    /// Provides extension methods for Enums.
+    /// </summary>
     public static class EnumExtensions
     {
         // source: http://stackoverflow.com/a/1415187

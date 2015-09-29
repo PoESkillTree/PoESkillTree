@@ -8,7 +8,7 @@ AdvancedSolver UI improvements:
 
 Miscellaneous:
 - more/updated Unit Tests (e.g. binary search in WeightedSampling)
-- Clean up / Documentation
+- Clean up / Documentation (Algorithm, Model, Solver)
 
 Bigger things (best to discuss these in GitHub issues)
 =============

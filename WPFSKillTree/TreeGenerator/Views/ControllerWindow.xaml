@@ -7,11 +7,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     Width="400" WindowStartupLocation="CenterOwner" Title="{Binding DisplayName}"
-    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" Loaded="WindowLoaded"
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
     xmlns:vm="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
     d:DataContext="{d:DesignInstance vm:ControllerViewModel}"
     xmlns:utils="clr-namespace:POESKillTree.Utils"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     utils:DialogCloser.DialogResult="{Binding Result}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding StartSolverCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CloseCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid Background="{DynamicResource WhiteColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -34,6 +43,6 @@
 
         <Label Content="{Binding BestResultText}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5"/>
         <Button Grid.Row="3" Grid.Column="0" Content="{Binding PauseResumeText}" IsEnabled="{Binding PauseResumeEnabled}" Margin="5" Command="{Binding PauseResumeCommand}"/>
-        <Button Grid.Row="3" Grid.Column="1" Content="{Binding CancelCloseText}" IsEnabled="{Binding CancelCloseEnabled}" Margin="5" Command="{Binding CancelCloseCommand}"/>
+        <Button Grid.Row="3" Grid.Column="1" Content="{Binding CancelCloseText}" IsEnabled="{Binding CancelCloseEnabled}" Margin="5" Command="{Binding CloseCommand}"/>
     </Grid>
 </controls:MetroWindow>

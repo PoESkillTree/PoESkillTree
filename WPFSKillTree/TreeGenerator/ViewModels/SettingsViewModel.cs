@@ -179,7 +179,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             _tree.DrawHighlights();
             _tree.UpdateAvailNodes();
 
-            Close(controllerVm.Result);
+            RunFinished.Raise(this);
         }
 
         private void Reset()
@@ -207,6 +207,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         public event EventHandler<StartControllerEventArgs> StartController;
+
+        public event EventHandler RunFinished;
     }
 
     public class StartControllerEventArgs : EventArgs

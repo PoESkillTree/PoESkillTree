@@ -402,16 +402,20 @@ namespace POESKillTree.Views
                 if (_settingsWindow == null)
                 {
                     var vm = new SettingsViewModel(Tree);
-                    vm.RequestClose += (o, args) =>
+                    vm.RunFinished += (o, args) =>
                     {
                         UpdateUI();
                         tbSkillURL.Text = Tree.SaveToURL();
                     };
-                    _settingsWindow = new SettingsWindow(vm) {Owner = this};
+                    vm.StartController += (o, args) =>
+                    {
+                        var dialog = new ControllerWindow() {Owner = this, DataContext = args.ViewModel};
+                        dialog.ShowDialog();
+                    };
+                    _settingsWindow = new SettingsWindow() {Owner = this, DataContext = vm};
                     _settingsWindow.Closing += (o, args) =>
                     {
                         if (_isClosing) return;
-
                         args.Cancel = true;
                         _settingsWindow.Hide();
                     };

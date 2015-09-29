@@ -3,13 +3,11 @@ using POESKillTree.Localization;
 using POESKillTree.Utils;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
@@ -17,11 +15,10 @@ using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
-using MessageBox = POESKillTree.Views.MetroMessageBox;
 
 namespace POESKillTree.SkillTreeFiles
 {
-    public partial class SkillTree : INotifyPropertyChanged
+    public partial class SkillTree : Notifier
     {
         public delegate void UpdateLoadingWindow(double current, double max);
 
@@ -143,7 +140,9 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         private static string[] _allAttributes;
-
+        /// <summary>
+        /// Gets an Array of all the attributes of SkillNodes.
+        /// </summary>
         public static string[] AllAttributes
         {
             get { return _allAttributes ?? (_allAttributes = Skillnodes.Values.SelectMany(n => n.Attributes.Keys).Distinct().ToArray()); }
@@ -203,9 +202,7 @@ namespace POESKillTree.SkillTreeFiles
         private static readonly List<ushort[]> _links = new List<ushort[]>();
 
         public Window MainWindow;
-
-        public HashSet<ushort> AvailNodes = new HashSet<ushort>();
-
+        
         public HashSet<ushort> SkilledNodes = new HashSet<ushort>();
 
         public HashSet<ushort> HighlightedNodes = new HashSet<ushort>();
@@ -485,12 +482,7 @@ namespace POESKillTree.SkillTreeFiles
         public int Level
         {
             get { return _level; }
-            set
-            {
-                if (_level == value) return;
-                _level = value;
-                PropertyChanged.Raise(this);
-            }
+            set { SetProperty(ref _level, value); }
         }
 
         public int Chartype
@@ -668,7 +660,6 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             SkilledNodes = skilled_reachable;
-            AvailNodes = new HashSet<ushort>();
             UpdateAvailNodes();
         }
 
@@ -1018,6 +1009,9 @@ namespace POESKillTree.SkillTreeFiles
             return Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
+        /// <summary>
+        /// Returns all currently Check-tagged nodes.
+        /// </summary>
         public HashSet<ushort> GetCheckedNodes()
         {
             var nodes = new HashSet<ushort>();
@@ -1031,6 +1025,9 @@ namespace POESKillTree.SkillTreeFiles
             return nodes;
         }
 
+        /// <summary>
+        /// Returns all currently Cross-tagged nodes.
+        /// </summary>
         public HashSet<ushort> GetCrossedNodes()
         {
             var nodes = new HashSet<ushort>();
@@ -1058,7 +1055,7 @@ namespace POESKillTree.SkillTreeFiles
                 var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this));
                 settingsVm.StartController += (sender, args) =>
                 {
-                    var dialog = new ControllerWindow(args.ViewModel) {Owner = MainWindow};
+                    var dialog = new ControllerWindow() {Owner = MainWindow, DataContext = args.ViewModel};
                     dialog.ShowDialog();
                 };
                 settingsVm.RunCommand.Execute(null);
@@ -1095,8 +1092,6 @@ namespace POESKillTree.SkillTreeFiles
 
         public void UpdateAvailNodes(bool draw = true)
         {
-            AvailNodes = GetAvailableNodes(SkilledNodes);
-            
             if (draw)
                 UpdateAvailNodesDraw();
         }
@@ -1174,7 +1169,5 @@ namespace POESKillTree.SkillTreeFiles
             }
             return false;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

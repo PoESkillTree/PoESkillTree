@@ -3,6 +3,9 @@
 namespace POESKillTree.Utils
 {
     // source: http://stackoverflow.com/a/3329467
+    /// <summary>
+    /// Attached property to bind DialogResult of a View to a ViewModel.
+    /// </summary>
     public static class DialogCloser
     {
         public static readonly DependencyProperty DialogResultProperty =
