@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
+    /// <summary>
+    /// Enumeration of weapon classes a character can have.
+    /// </summary>
     public enum WeaponClass
     {
         [Description("Bow")]
@@ -65,12 +68,22 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
             WeaponClass.Bow
         };
 
+        /// <summary>
+        /// Returns whether the given WeaponClass has the given string as an alias.
+        /// (case insensitive)
+        /// </summary>
         public static bool HasAlias(this WeaponClass weaponClass, string alias)
         {
+            if (alias == null) return false;
             alias = alias.ToLowerInvariant();
-            return Aliases.Any(pair => pair.Key == weaponClass && pair.Value.Any(s => s == alias));
+            return Aliases[weaponClass].Any(s => s == alias);
         }
 
+        /// <summary>
+        /// Returns whether the given WeaponClass describes a two handed weapon.
+        /// </summary>
+        /// <param name="weaponClass"></param>
+        /// <returns></returns>
         public static bool IsTwoHanded(this WeaponClass weaponClass)
         {
             return TwoHandedClasses.Contains(weaponClass);

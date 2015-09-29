@@ -136,6 +136,10 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private const double PopMultiplier = 1.5;
 
+        /// <summary>
+        /// The SearchSpace size to which maxGeneration gets scaled up so maxGeneration*population
+        /// stays the same. After this point GenMultiplier applies.
+        /// </summary>
         private const int ConstRuntimeEndpoint = 150;
 
         private int _maxEdgeDistance;
@@ -154,13 +158,6 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
-        protected override bool FinalHillClimbEnabled
-        {
-            // The implemented HillClimbing that swaps single nodes doesn't make much sense for
-            // the Steiner tree problem.
-            get { return false; }
-        }
-
         /// <summary>
         /// Creates a new, uninitialized instance.
         /// </summary>
@@ -168,20 +165,22 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <param name="settings">The (not null) settings that describe what the solver should do.</param>
         public SteinerSolver(SkillTree tree, SolverSettings settings)
             : base(tree, settings)
-        { }
+        {
+            // The implemented HillClimbing that swaps single nodes doesn't make much sense for
+            // the Steiner tree problem.
+            FinalHillClimbEnabled = false;
+        }
 
         protected override bool IncludeNode(GraphNode node)
         {
             // Steiner nodes need to have at least 2 neighbors.
-            return node.Adjacent.Count > 2 && node != StartNodes && !TargetNodes.Contains(node);
+            return node.Adjacent.Count > 2;
         }
 
-        protected override void OnLeastSolutionCreated(MinimalSpanningTree leastSolution)
+        protected override void OnLeastSolutionCreated(IEnumerable<GraphEdge> spanningEdges)
         {
             // Used for IncludeNodeUsingDistances.
-            _maxEdgeDistance = TargetNodes.Count == 0
-                ? -1
-                : leastSolution.SpanningEdges.Max(edge => Distances[edge.Inside, edge.Outside]);
+            _maxEdgeDistance = spanningEdges.Max(edge => Distances[edge.Inside, edge.Outside]);
         }
 
         protected override bool IncludeNodeUsingDistances(GraphNode node)
@@ -192,6 +191,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected override double FitnessFunction(HashSet<ushort> skilledNodes)
         {
+            // Fitness is higher for less points skilled.
             return 1500 - skilledNodes.Count;
         }
     }

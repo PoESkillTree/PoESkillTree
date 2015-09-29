@@ -34,8 +34,13 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
             {Tags.Curse, new [] {"curse", "curses"} }
         };
 
+        /// <summary>
+        /// Returns whether any of the given Tags has the given string as an alias.
+        /// (case insensitive)
+        /// </summary>
         public static bool HasAlias(this Tags tags, string alias)
         {
+            if (alias == null || tags == Tags.None) return false;
             alias = alias.ToLowerInvariant();
             return Aliases.Any(pair => tags.HasFlag(pair.Key) && pair.Value.Any(s => s == alias));
         }

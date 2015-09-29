@@ -165,7 +165,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             var settings = CreateSettings();
             var solver = Tabs[_selectedTabIndex].CreateSolver(settings);
-            var controllerVm = new ControllerViewModel(solver, Tabs[_selectedTabIndex].DisplayName);
+            var controllerVm = new ControllerViewModel(solver, Tabs[_selectedTabIndex].DisplayName, _tree);
 
             // Kinda crude, but I'm not going to write a framework for a few popups.
             StartController.Raise(this, new StartControllerEventArgs(controllerVm));

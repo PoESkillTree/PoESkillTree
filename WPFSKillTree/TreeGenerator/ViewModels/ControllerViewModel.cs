@@ -73,7 +73,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Used to report progress from the solver running thread to the UI thread.
         /// </summary>
-        private readonly IProgress<Tuple<int, HashSet<ushort>>> _progress;
+        private readonly IProgress<Tuple<int, IEnumerable<ushort>>> _progress;
 
 #region Presentation
 
@@ -196,15 +196,17 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         /// <param name="solver">The (not null) solver this object should run.</param>
         /// <param name="generatorName">The name suffix shown as DisplayName as 'Skill tree generator - {generatorName}'</param>
-        public ControllerViewModel(ISolver solver, string generatorName)
+        /// <param name="tree">SkillTree to operate on (not null)</param>
+        public ControllerViewModel(ISolver solver, string generatorName, SkillTree tree)
         {
             if (solver == null) throw new ArgumentNullException("solver");
+            if (tree == null) throw new ArgumentNullException("tree");
 
             _solver = solver;
             DisplayName = L10n.Message("Skill tree generator") + " - " + generatorName;
-            _tree = _solver.Tree;
+            _tree = tree;
 
-            _progress = new Progress<Tuple<int, HashSet<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2));
+            _progress = new Progress<Tuple<int, IEnumerable<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2));
 
             RequestClose += (sender, args) => CancelClose();
         }
@@ -240,7 +242,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                     stopwatch.Stop();
                     Debug.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
 #endif
-                    return _solver.MaxGeneration;
+                    return _solver.MaxSteps;
                 });
 
             }
@@ -272,7 +274,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             _stopReporting = false;
 
-            HashSet<ushort> result;
+            IEnumerable<ushort> result;
             try
             {
                 result = await Task.Run(() =>
@@ -285,7 +287,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                     {
                         _solver.Step();
 
-                        _progress.Report(new Tuple<int, HashSet<ushort>>(_solver.CurrentGeneration, _solver.BestSolution));
+                        _progress.Report(new Tuple<int, IEnumerable<ushort>>(_solver.CurrentStep, _solver.BestSolution));
 
                         token.ThrowIfCancellationRequested();
                     }
@@ -313,7 +315,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             // Draw the final solution.
             ProgressbarCurrent = _maxSteps;
-            BestSoFar = result;
+            BestSoFar = new HashSet<ushort>(result);
         }
 
         /// <summary>
@@ -321,7 +323,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         /// <param name="step">The number of executed steps.</param>
         /// <param name="bestSoFar">The best result generated to this point.</param>
-        private void ReportProgress(int step, HashSet<ushort> bestSoFar)
+        private void ReportProgress(int step, IEnumerable<ushort> bestSoFar)
         {
             if (_stopReporting)
             {
@@ -330,7 +332,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             ProgressbarCurrent = step;
             ProgressbarText = step + "/" + _maxSteps;
-            BestSoFar = bestSoFar;
+            BestSoFar = new HashSet<ushort>(bestSoFar);
         }
 
         /// <summary>

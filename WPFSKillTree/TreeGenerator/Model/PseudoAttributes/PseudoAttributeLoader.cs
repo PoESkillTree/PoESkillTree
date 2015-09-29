@@ -9,6 +9,10 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
+    /// <summary>
+    /// The exception that is thrown when the xml files describing pseudo
+    /// attributes are invalid.
+    /// </summary>
     public class PseudoAttributeDataInvalidException : Exception
     {
         public PseudoAttributeDataInvalidException(string message)
@@ -20,14 +24,34 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         { }
     }
 
+    /// <summary>
+    /// Loads pseudo attributes from xml files from the filesystem stored in
+    /// Data/PseudoAttributes/.
+    /// </summary>
     public class PseudoAttributeLoader
     {
+        /// <summary>
+        /// The folder path to load pseudo attributes from.
+        /// </summary>
         private static readonly string DataPath = AppData.GetFolder(Path.Combine("Data", "PseudoAttributes"));
 
+        /// <summary>
+        /// Maps names of PseudoAttributes to their instances.
+        /// </summary>
         private readonly Dictionary<string, PseudoAttribute> _pseudoNameDict = new Dictionary<string, PseudoAttribute>();
 
+        /// <summary>
+        /// Maps names of PseudoAttributes to the names of all PseudoAttributes nested inside.
+        /// </summary>
         private readonly Dictionary<string, List<string>> _nestedPseudosDict = new Dictionary<string, List<string>>();
         
+        /// <summary>
+        /// Loads XmlPseudoAttributes from the filesystem (if the parameter is null) and converts
+        /// them into a list of PseudoAttributes.
+        /// </summary>
+        /// <param name="xmlPseudoAttributes">The XmlPseudoAttributes to convert if they shouldn't be loaded from the filesystem.</param>
+        /// <returns>The converted PseudoAttributes (not null)</returns>
+        /// <exception cref="PseudoAttributeDataInvalidException">If the xml files or given XmlPseudoAttributes are invalid.</exception>
         public List<PseudoAttribute> LoadPseudoAttributes(XmlPseudoAttributes xmlPseudoAttributes = null)
         {
             XmlPseudoAttribute[] xmlPseudos;
@@ -50,16 +74,21 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                 throw new PseudoAttributeDataInvalidException(string.Format(L10n.Message("No Pseudo Attributes loaded. Make sure {0} is not empty."), DataPath));
             }
 
-            _pseudoNameDict.Clear();
-            _nestedPseudosDict.Clear();
             // Inductive converting.
-            var pseudos = ConvertFromXml(xmlPseudos);
+            var pseudos = ConvertFromXml(xmlPseudos).ToList();
             // Replace nested pseudo attributes by proper object.
             ResolveNesting(pseudos);
-            
+
+            // No longer needed.
+            _pseudoNameDict.Clear();
+            _nestedPseudosDict.Clear();
+
             return pseudos;
         }
 
+        /// <summary>
+        /// Deserializes the given file into XmlPseudoAttributes.
+        /// </summary>
         private XmlPseudoAttributes DeserializeFile(string filename)
         {
             var ser = new XmlSerializer(typeof(XmlPseudoAttributes));
@@ -78,17 +107,16 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
             }
         }
 
-        private List<PseudoAttribute> ConvertFromXml(IEnumerable<XmlPseudoAttribute> xmlPseudoAttributes)
+        /// <summary>
+        /// Convertes the given XmlPseudoAttributes into PseudoAttributes.
+        /// Does not resolve nesting so there may be duplicates.
+        /// </summary>
+        private IEnumerable<PseudoAttribute> ConvertFromXml(IEnumerable<XmlPseudoAttribute> xmlPseudoAttributes)
         {
-            var pseudos = new List<PseudoAttribute>();
             foreach (var xmlPseudo in xmlPseudoAttributes)
             {
                 var pseudo = new PseudoAttribute(xmlPseudo.Name, xmlPseudo.Group);
                 _pseudoNameDict[pseudo.Name] = pseudo;
-                if (xmlPseudo.Hidden != "True")
-                {
-                    pseudos.Add(pseudo);
-                }
 
                 _nestedPseudosDict[pseudo.Name] = new List<string>();
                 foreach (var xmlNestedPseudo in xmlPseudo.PseudoAttributes ?? new XmlNestedPseudoAttribute[0])
@@ -182,11 +210,19 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                         attr.Conditions.Add(condition);
                     }
                 }
+
+                if (xmlPseudo.Hidden != "True")
+                {
+                    // If hidden they are only added to _pseudoNameDict and _nestedPseudosDict but not returned.
+                    yield return pseudo;
+                }
             }
-            return pseudos;
         }
 
-        private void ResolveNesting(List<PseudoAttribute> pseudos)
+        /// <summary>
+        /// Replaces nested PseudoAttributes by their top level counterpart.
+        /// </summary>
+        private void ResolveNesting(IEnumerable<PseudoAttribute> pseudos)
         {
             foreach (var pseudo in pseudos)
             {

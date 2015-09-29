@@ -38,11 +38,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
         private bool _improvement;
         private readonly object _improvementLock = new object();
 
-        public HashSet<ushort> Improve(HashSet<ushort> original)
+        public HashSet<ushort> Improve(IEnumerable<ushort> original)
         {
             if (original == null) throw new ArgumentNullException("original");
             
-            _current = original;
+            _current = new HashSet<ushort>(original);
             _notCurrent = new HashSet<ushort>(_allNodes);
             _notCurrent.ExceptWith(_current);
             _curFitness = _fitnessFunc(new HashSet<ushort>(_current));

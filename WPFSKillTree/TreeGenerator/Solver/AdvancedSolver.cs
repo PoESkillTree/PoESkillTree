@@ -9,22 +9,37 @@ using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
+    /// <summary>
+    /// Implementation of AbstractSolver that tries to find optimal trees based on constraints.
+    /// </summary>
     public class AdvancedSolver : AbstractSolver<AdvancedSolverSettings>
     {
-        private class ConvertedPseudoAttribute
+        /// <summary>
+        /// PseudoAttributeConstraint data object where the PseudoAttribute is converted
+        /// into the applicable attributes and their conversion multiplier.
+        /// </summary>
+        private class ConvertedPseudoAttributeConstraint
         {
             public List<Tuple<string, float>> Attributes { get; private set; }
 
             public Tuple<float, double> TargetWeightTuple { get; private set; }
 
-            public ConvertedPseudoAttribute(List<Tuple<string, float>> attributes, Tuple<float, double> tuple)
+            public ConvertedPseudoAttributeConstraint(List<Tuple<string, float>> attributes, Tuple<float, double> tuple)
             {
                 Attributes = attributes;
                 TargetWeightTuple = tuple;
             }
         }
 
-        private static readonly Regex ContainsWildcardRegex = new Regex(@"{\d}");
+        /// <summary>
+        /// Regex to search for Wildcards of the form '{number}' in attribute names.
+        /// </summary>
+        private static readonly Regex ContainsWildcardRegex = new Regex(@"{\d+}");
+
+        /// <summary>
+        /// Regex to test if an attribute is +# to Str/Int/Dex and the node can be a travel node.
+        /// </summary>
+        private static readonly Regex TravelNodeRegex = new Regex(@"\+# to (Strength|Intelligence|Dexterity)");
 
         // It doesn't gain anything from larger populations and more generations.
         // Increasing GenMultiplier has the upside that it doesn't take much longer because
@@ -60,21 +75,31 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private const double CsvWeightMultiplier = 10;
 
-        private static readonly Regex TravelNodeRegex = new Regex(@"\+# to (Strength|Intelligence|Dexterity)");
-
         /// <summary>
-        /// Maps indexes of constraints (both attribute and pseudo attribute constraints to their {Target, Weight}-Tuple.
+        /// Maps indexes of constraints (both attribute and pseudo attribute constraints) to their {Target, Weight}-Tuple.
         /// </summary>
         private Tuple<float, double>[] _attrConstraints;
         /// <summary>
-        /// Dictionary that maps attribute names to the constraint number they apply to (as indexes of _attrConstraints).
+        /// Dictionary that maps attribute names to the constraint numbers they apply to (as indexes of _attrConstraints).
         /// </summary>
         private Dictionary<string, List<int>> _attrNameLookup;
+        /// <summary>
+        /// Dictionary that maps attribute names and numbers (as indexes of _attrConstraints) to the converions multiplier
+        /// that gets applied when they are calculated.
+        /// </summary>
         private Dictionary<Tuple<string, int>, float> _attrConversionMultipliers;
+        /// <summary>
+        /// Dictionary that maps node ids to a list of their attributes as a pair of the constraint number and the value.
+        /// </summary>
+        private Dictionary<ushort, List<Tuple<int, float>>> _nodeAttributes;
+        /// <summary>
+        /// Dictionary that saves which nodes (represented by their id) are travel nodes.
+        /// </summary>
+        private Dictionary<ushort, bool> _areTravelNodes;
 
-        private Dictionary<int, List<Tuple<int, float>>> _nodeAttributes;
-        private Dictionary<int, bool> _areTravelNodes;
-
+        /// <summary>
+        /// Array of the values for each attribute independent of the current calculated skill tree.
+        /// </summary>
         private float[] _fixedAttributes;
 
         protected override GeneticAlgorithmParameters GaParameters
@@ -95,24 +120,29 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <param name="settings">The (not null) settings that describe what the solver should do.</param>
         public AdvancedSolver(SkillTree tree, AdvancedSolverSettings settings)
             : base(tree, settings)
-        { }
+        {
+            FinalHillClimbEnabled = true;
+        }
 
         protected override void OnStartAndTargetNodesCreated()
         {
+            // Evaluate the pseudo constraints into attribute lists.
             var convertedPseudos = EvalPseudoAttrConstraints();
-
             // Assign a number to each attribute and pseudo attribute constraint
             // and link their names to these numbers.
             FormalizeConstraints(Settings.AttributeConstraints, convertedPseudos);
-
             // Extract attributes from nodes and set travel nodes.
             ExtractNodeAttributes();
-
             // Set fixed attributes from fixed nodes and Settings.InitialAttributes
             CreateFixedAttributes();
         }
 
-        private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> attrConstraints, List<ConvertedPseudoAttribute> pseudoConstraints)
+        /// <summary>
+        /// Assigns a number to each attribute and pseudo attribute constraint, saves
+        /// their weights and target values into _attrConstraints, saves the numbers for each
+        /// name into _attrNameLookup and saves the conversion multipliers into _attrConversionMultipliers.
+        /// </summary>
+        private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> attrConstraints, List<ConvertedPseudoAttributeConstraint> pseudoConstraints)
         {
             _attrConstraints = new Tuple<float, double>[attrConstraints.Count + pseudoConstraints.Count];
             _attrNameLookup = new Dictionary<string, List<int>>(attrConstraints.Count);
@@ -159,6 +189,10 @@ namespace POESKillTree.TreeGenerator.Solver
             return !(node.IsKeyStone);
         }
 
+        /// <summary>
+        /// Sets the fixed attribute values from <see cref="AbstractSolver{T}.FixedNodes"/> and
+        /// from <see cref="AdvancedSolverSettings.InitialAttributes"/>.
+        /// </summary>
         private void CreateFixedAttributes()
         {
             // Set start stats from start and target nodes.
@@ -178,13 +212,17 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
+        /// <summary>
+        /// Extracts attributes from the skill tree nodes and fills _nodeAttributes
+        /// and _areTravelNodes.
+        /// </summary>
         private void ExtractNodeAttributes()
         {
             var skillNodes = Settings.SubsetTree.Count > 0
                 ? Settings.SubsetTree.ToDictionary(id => id, id => SkillTree.Skillnodes[id])
                 : SkillTree.Skillnodes;
-            _nodeAttributes = new Dictionary<int, List<Tuple<int, float>>>(skillNodes.Count);
-            _areTravelNodes = new Dictionary<int, bool>(skillNodes.Count);
+            _nodeAttributes = new Dictionary<ushort, List<Tuple<int, float>>>(skillNodes.Count);
+            _areTravelNodes = new Dictionary<ushort, bool>(skillNodes.Count);
             foreach (var node in skillNodes)
             {
                 var id = node.Key;
@@ -194,8 +232,8 @@ namespace POESKillTree.TreeGenerator.Solver
                 // Replace attributes that have constraints with a tuple of their number and the value.
                 // For attributes with more than one value, the first one is selected,
                 // that is reasonable for the attributes the skill tree currently has.
-                // Attributes without value are not supported, if a constraint without value slips
-                // through, it will break.
+                // Attributes without value are not supported. If a constraint referencing an attribute
+                // without value slips through, it will break.
                 _nodeAttributes[id] =
                     (from attr in SkillTree.ExpandHybridAttributes(skillNode.Attributes)
                      where _attrNameLookup.ContainsKey(attr.Key)
@@ -217,7 +255,11 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
-        private List<ConvertedPseudoAttribute> EvalPseudoAttrConstraints()
+        /// <summary>
+        /// Evaluates <see cref="AdvancedSolverSettings.PseudoAttributeConstraints"/> and converts each
+        /// PseudoAttribute into a list of the attribute names that evaluated to true and their conversion multiplier.
+        /// </summary>
+        private List<ConvertedPseudoAttributeConstraint> EvalPseudoAttrConstraints()
         {
             var keystones = from nodeId in FixedNodes
                             where SkillTree.Skillnodes[nodeId].IsKeyStone
@@ -225,7 +267,7 @@ namespace POESKillTree.TreeGenerator.Solver
             var conditionSettings = new ConditionSettings(Settings.Tags, Settings.OffHand, keystones.ToArray(), Settings.WeaponClass);
 
             var resolvedWildcardNames = new Dictionary<string, List<Tuple<string, string[]>>>();
-            var convertedPseudos = new List<ConvertedPseudoAttribute>(Settings.PseudoAttributeConstraints.Count);
+            var convertedPseudos = new List<ConvertedPseudoAttributeConstraint>(Settings.PseudoAttributeConstraints.Count);
             
             foreach (var pair in Settings.PseudoAttributeConstraints)
             {
@@ -235,6 +277,9 @@ namespace POESKillTree.TreeGenerator.Solver
                     var name = attr.Name;
                     if (ContainsWildcardRegex.IsMatch(name))
                     {
+                        // Wildcards are resolverd by searching the skill tree attributes for each attribute
+                        // that matches the attribute name ('{number}' replaced by '(.*)' for matching) and
+                        // evaluating the attribute for each of those replacements.
                         if (!resolvedWildcardNames.ContainsKey(name))
                         {
                             var searchRegex = new Regex("^" + ContainsWildcardRegex.Replace(name, "(.*)") + "$");
@@ -253,13 +298,17 @@ namespace POESKillTree.TreeGenerator.Solver
                     }
                 }
 
-                var convPseudo = new ConvertedPseudoAttribute(convAttrs, pair.Value);
+                var convPseudo = new ConvertedPseudoAttributeConstraint(convAttrs, pair.Value);
                 convertedPseudos.Add(convPseudo);
             }
 
             return convertedPseudos;
         }
 
+        /// <summary>
+        /// Returns an Array of all captured substrings from the given GroupCollection except the first
+        /// (which is the whole matched string).
+        /// </summary>
         private static string[] ExtractGroupValuesFromGroupCollection(GroupCollection groups)
         {
             var result = new string[groups.Count - 1];
@@ -274,8 +323,7 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             // Add potential steiner nodes.
             // Add all non-travel nodes with stats.
-            return node != StartNodes && !TargetNodes.Contains(node)
-                   && (node.Adjacent.Count > 2 || (_nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id]));
+            return node.Adjacent.Count > 2 || (_nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id]);
         }
 
         protected override bool IncludeNodeUsingDistances(GraphNode node)
@@ -285,6 +333,9 @@ namespace POESKillTree.TreeGenerator.Solver
             return Distances.AreConnected(node, StartNodes);
         }
 
+        /// <summary>
+        /// Adds all attributes of the given node ids to the given list.
+        /// </summary>
         private void AddAttributes(IEnumerable<ushort> ids, IList<float> to)
         {
             foreach (var id in ids)
@@ -296,6 +347,9 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
+        /// <summary>
+        /// Adds Item2 of the given tuple to the entry at index represented by Item1.
+        /// </summary>
         private static void AddAttribute(Tuple<int, float> attrTuple, IList<float> to)
         {
             to[attrTuple.Item1] += attrTuple.Item2;

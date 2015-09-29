@@ -4,21 +4,29 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Model
 {
+    /// <summary>
+    /// Abstract data class for Constraints with a data object, a target value and a weight.
+    /// </summary>
+    /// <typeparam name="T">Type of the stored data object.</typeparam>
     public abstract class TargetWeightConstraint<T> : Notifier
-        where T : class
     {
-
+        /// <summary>
+        /// Minimum allowed weight (inclusive).
+        /// </summary>
         public static int MinWeight
         {
             get { return 1; }
         }
 
+        /// <summary>
+        /// Maximim allowed weight (inclusive).
+        /// </summary>
         public static int MaxWeight
         {
             get { return 100; }
         }
-
-        public static int DefaultWeight
+        
+        private static int DefaultWeight
         {
             get { return 100; }
         }
@@ -39,22 +47,29 @@ namespace POESKillTree.TreeGenerator.Model
             set { SetProperty(ref _targetValue, value); }
         }
 
-        private int _weight;
+        private int _weight = DefaultWeight;
 
         public int Weight
         {
             get { return _weight; }
-            set { SetProperty(ref _weight, value); }
+            set
+            {
+                if (value < MinWeight || value > MaxWeight)
+                    throw new ArgumentOutOfRangeException("value", value, "must be between MinWeight and MaxWeight");
+                SetProperty(ref _weight, value);
+            }
         }
         
-        protected TargetWeightConstraint(T data = null)
+        protected TargetWeightConstraint(T data = default(T))
         {
-            TargetValue = 0;
-            Weight = DefaultWeight;
             Data = data;
         }
     }
 
+    /// <summary>
+    /// Data class for Constraint that contain a string describing the constrained attribute,
+    /// a target value and a weight.
+    /// </summary>
     public class AttributeConstraint : TargetWeightConstraint<string>
     {
 
@@ -67,6 +82,9 @@ namespace POESKillTree.TreeGenerator.Model
             : base(attribute)
         { }
 
+        /// <summary>
+        /// Gets a function that returns the attribute property of the parameter if it is an AttributeConstraint.
+        /// </summary>
         public static Func<object, string> AttributeSelectorFunc
         {
             get
@@ -80,6 +98,10 @@ namespace POESKillTree.TreeGenerator.Model
         }
     }
 
+    /// <summary>
+    /// Data class for Constraint that contain the constrained PseudoAttribute,
+    /// a target value and a weight.
+    /// </summary>
     public class PseudoAttributeConstraint : TargetWeightConstraint<PseudoAttribute>, ICloneable
     {
         public PseudoAttributeConstraint(PseudoAttribute data)
