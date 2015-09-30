@@ -155,6 +155,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         public int GenerationCount { get; private set; }
 
+        public int MaxGeneration { get; private set; }
+
         private BitArray _initialSolution;
 
         private Individual _bestSolution;
@@ -219,6 +221,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         public void InitializeEvolution(GeneticAlgorithmParameters parameters, BitArray initialSolution = null)
         {
             _populationSize = parameters.PopulationSize;
+            MaxGeneration = parameters.MaxGeneration;
             _dnaLength = parameters.DnaLength;
             _temperature = parameters.Temperature;
             _annealingFactor = parameters.AnnealingFactor;

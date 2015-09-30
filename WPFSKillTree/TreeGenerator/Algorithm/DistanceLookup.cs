@@ -29,19 +29,24 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <summary>
         /// Whether CalculateFully got called.
         /// </summary>
-        private bool _fullyCached;
+        public bool FullyCached { get; private set; }
 
         /// <summary>
         /// Number of cached nodes.
         /// </summary>
-        private int _cacheSize = int.MaxValue;
+        private int _cacheSize;
 
         /// <summary>
         /// Gets the number of cached nodes.
         /// </summary>
         public int CacheSize
         {
-            get { return _cacheSize; }
+            get
+            {
+                if (!FullyCached)
+                    throw new InvalidOperationException("CacheSize is only accessible once CalculateFully() got called!");
+                return _cacheSize;
+            }
         }
 
         /// <summary>
@@ -60,7 +65,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         {
             get
             {
-                if (_fullyCached)
+                if (FullyCached)
                 {
                     return _distancesFast[a.DistancesIndex, b.DistancesIndex];
                 }
@@ -98,7 +103,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </remarks>
         public ushort[] GetShortestPath(GraphNode a, GraphNode b)
         {
-            if (_fullyCached)
+            if (FullyCached)
             {
                 return _pathsFast[a.DistancesIndex, b.DistancesIndex];
             }
@@ -171,7 +176,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             _distancesFast = new int[_cacheSize, _cacheSize];
             _pathsFast = new ushort[_cacheSize, _cacheSize][];
 
-            _fullyCached = true;
+            FullyCached = true;
             foreach (var node in nodes)
             {
                 Dijkstra(node);
@@ -231,6 +236,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
         private void Dijkstra(GraphNode start, GraphNode target = null)
         {
             if (start == null) throw new ArgumentNullException("start");
+
+            AddEdge(start, start, -1, null);
             if (start == target) return;
 
             // The last newly found nodes.
@@ -283,10 +290,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 distFromStart++;
             }
 
-            if (target != null)
-            {
-                throw new GraphNotConnectedException();
-            }
+            throw new GraphNotConnectedException();
         }
 
         /// <summary>
@@ -295,28 +299,27 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         private void AddEdge(GraphNode from, GraphNode to, int distFromStart, IDictionary<ushort, ushort> predecessors)
         {
-            var index = GetIndex(from, to);
-            if (_distances.ContainsKey(index))
-            {
-                return;
-            }
-
             var length = distFromStart + 1;
-            var path = GenerateShortestPath(from.Id, to.Id, predecessors, length);
 
-            if (_fullyCached)
+            if (FullyCached)
             {
                 var i1 = from.DistancesIndex;
                 var i2 = to.DistancesIndex;
+                if (_pathsFast[i1, i2] != null) return;
+
+                var path = length > 0 ? GenerateShortestPath(from.Id, to.Id, predecessors, length) : new ushort[0];
                 _distancesFast[i1, i2] = _distancesFast[i2, i1] = length;
                 _pathsFast[i1, i2] = _pathsFast[i2, i1] = path;
             }
             else
             {
+                var index = GetIndex(from, to);
+                if (_distances.ContainsKey(index)) return;
+
+                var path = length > 0 ? GenerateShortestPath(from.Id, to.Id, predecessors, length) : new ushort[0];
                 _paths[index] = path;
+                _distances[index] = length;
             }
-            // Distances is saved either way to be able to skip already added distances.
-            _distances[index] = length;
         }
         
         /// <summary>

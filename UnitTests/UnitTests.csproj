@@ -86,7 +86,6 @@
     <Compile Include="TestItemDB.cs" />
     <Compile Include="TestMSTAlgorithm.cs" />
     <Compile Include="TestGeneticAlgorithmEasy.cs" />
-    <Compile Include="TestPseudoAttributeLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UpdateDB\UpdateDB.csproj">

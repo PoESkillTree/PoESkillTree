@@ -182,15 +182,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
             get { return _pauseResumeCommand ?? (_pauseResumeCommand = new RelayCommand(param => PauseResume())); }
         }
 
-        private RelayCommand _startSolveRelayCommand;
-        /// <summary>
-        /// Gets a command that starts executing the solver asynchronously.
-        /// </summary>
-        public ICommand StartSolverCommand
-        {
-            get { return _startSolveRelayCommand ?? (_startSolveRelayCommand = new RelayCommand(param => StartSolverAsync())); }
-        }
-
 #endregion
 
         /// <summary>
@@ -217,7 +208,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Starts executing the solver asynchronously.
         /// </summary>
-        private async void StartSolverAsync()
+        public async void StartSolverAsync()
         {
             if (await InitializeAsync())
             {

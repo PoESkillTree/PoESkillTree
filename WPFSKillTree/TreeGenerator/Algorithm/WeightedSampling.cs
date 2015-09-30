@@ -145,6 +145,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         public void Clear()
         {
+            _indexedEntries = null;
             entries.Clear();
             totalWeight = 0;
         }

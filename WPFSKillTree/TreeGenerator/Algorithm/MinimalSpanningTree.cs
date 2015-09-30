@@ -37,15 +37,17 @@ namespace POESKillTree.TreeGenerator.Algorithm
         ///  Instantiates a new MinimalSpanningTree.
         /// </summary>
         /// <param name="mstNodes">The GraphNodes that should be spanned. (not null)</param>
-        /// <param name="distances">An optional DistanceLookup parameter which
-        /// caches the found node-node distances.</param>
-        public MinimalSpanningTree(List<GraphNode> mstNodes, DistanceLookup distances = null)
+        /// <param name="distances">The DistanceLookup used as cache.
+        /// <see cref="DistanceLookup.CalculateFully"/> must have been called. (not null</param>
+        public MinimalSpanningTree(List<GraphNode> mstNodes, DistanceLookup distances)
         {
             if (mstNodes == null) throw new ArgumentNullException("mstNodes");
+            if (distances == null) throw new ArgumentNullException("distances");
+            if (!distances.FullyCached) throw new ArgumentException("CalculateFully must have been called.", "distances");
 
             // Copy might be preferable, doesn't really matter atm though.
             _mstNodes = mstNodes;
-            _distances = distances ?? new DistanceLookup();
+            _distances = distances;
             IsSpanned = false;
         }
 
@@ -59,8 +61,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             {
                 // Shortest paths are saved in DistanceLookup, so we can use those.
                 var path = _distances.GetShortestPath(edge.Inside, edge.Outside);
-                if (path == null)
-                    throw new GraphNotConnectedException();
                 // Save nodes into the HashSet, the set only saves each node once.
                 nodes.Add(edge.Inside.Id);
                 nodes.Add(edge.Outside.Id);
@@ -128,8 +128,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     }
                 }
             }
-            if (toAdd.Count > 0)
-                throw new GraphNotConnectedException();
 
             SpanningEdges = mstEdges;
             IsSpanned = true;

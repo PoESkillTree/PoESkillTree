@@ -149,6 +149,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return _current;
         }
 
+        /// <summary>
+        /// Counting neigbors is not the optimal way to determine if nodes can be removed.
+        /// If it is a graph and no tree, there may very well be nodes that have more than
+        /// one neighbor and can be removed. Calculating that, however, would be far more complicated.
+        /// </summary>
         private int CountNeighborsIn(ushort node, HashSet<ushort> skilled)
         {
             return _adjacencyMatrix[node].Count(skilled.Contains);

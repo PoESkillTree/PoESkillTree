@@ -1,66 +1,50 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
-
+using POESKillTree.TreeGenerator.Algorithm;
 namespace UnitTests
 {
     [TestClass]
     public class TestGeneticAlgorithmEasy
     {
-        // TODO rework for new TreeGenerator namespace
-
-        static SkillTree Tree;
-
-
-
-        [ClassInitialize]
-        public static void Initalize(TestContext testContext)
-        {
-            AppData.SetApplicationData(Environment.CurrentDirectory);
-
-            Tree = SkillTree.CreateSkillTree((string dummy) => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
-        }
-
         [TestMethod]
-        [TestCategory("RequireGUI")]
         public void TestEasyCases()
         {
-            SkillNode coldhearted = SkillTree.Skillnodes.Values.Where(n => n.Name == "Coldhearted Calculation").First();
-            SkillNode voidBarrier = SkillTree.Skillnodes.Values.Where(n => n.Name == "Void Barrier").First();
+            // To test the interaction with the skill tree, just test it manually.
 
-            //Tree._nodeHighlighter.ToggleHighlightNode(coldhearted, NodeHighlighter.HighlightState.Checked);
-            //Tree._nodeHighlighter.ToggleHighlightNode(voidBarrier, NodeHighlighter.HighlightState.Checked);
-            Tree.Chartype = 6; // Shadow
+            var bitFitness = new[]
+            {
+                1, 0, 5, 2, 1, 3, 2, 4, 4, 1
+            };
+            const int perfectBitCount = 3;
+            var bestSolution = new BitArray(new []{false, false, true, false, false, false, false, true, true, false});
 
-            Tree.SkillAllTaggedNodes();
-            /// Obviously possible to break when tree changes, like most other tests.
-            /// The correct value would be whatever is shown in the app + 1.
-            Assert.IsTrue(Tree.SkilledNodes.Count == 15);
-
-
-            Tree.Reset();
-            //Tree._nodeHighlighter.UnhighlightAllNodes(NodeHighlighter.HighlightState.All);
-
-            // Test if the optimal tree for this also uses all steiner nodes.
-            SkillNode dynamo = SkillTree.Skillnodes.Values.Where(n => n.Name == "Dynamo").First();
-            SkillNode skittering = SkillTree.Skillnodes.Values.Where(n => n.Name == "Skittering Runes").First();
-            SkillNode equilibrium = SkillTree.Skillnodes.Values.Where(n => n.Name == "Elemental Equilibrium").First();
-
-            /*Tree._nodeHighlighter.ToggleHighlightNode(dynamo, NodeHighlighter.HighlightState.FromNode);
-            Tree._nodeHighlighter.ToggleHighlightNode(skittering, NodeHighlighter.HighlightState.FromNode);
-            Tree._nodeHighlighter.ToggleHighlightNode(innerForce, NodeHighlighter.HighlightState.FromNode);
-            Tree._nodeHighlighter.ToggleHighlightNode(equilibrium, NodeHighlighter.HighlightState.FromNode);*/
-            HashSet<ushort> targetNodes = new HashSet<ushort>{ dynamo.Id, skittering.Id, equilibrium.Id };
-            Tree.Chartype = 0; // Scion
-
-            //SteinerSolver steiner = new SteinerSolver(Tree);
-            // FIXME: Fix test.
-            //steiner.constructSearchSpace(steiner.buildSearchGraph(targetNodes));
-            //steiner.findBestMst();
+            var ga = new GeneticAlgorithm(dna =>
+            {
+                var multiplier = 1.0;
+                var bitsSet = 0;
+                for (int i = 0; i < dna.Length; i++)
+                {
+                    if (dna[i])
+                    {
+                        multiplier *= bitFitness[i];
+                        bitsSet++;
+                    }
+                }
+                for (int i = Math.Abs(bitsSet - perfectBitCount); i < 10; i++)
+                {
+                    multiplier *= 4;
+                }
+                return multiplier;
+            });
+            ga.InitializeEvolution(new GeneticAlgorithmParameters(100, 100, 10));
+            while (ga.GenerationCount < ga.MaxGeneration)
+                ga.NewGeneration();
+            var gaBest = ga.GetBestDNA();
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(bestSolution[i], gaBest[i]);
+            }
         }
     }
 }

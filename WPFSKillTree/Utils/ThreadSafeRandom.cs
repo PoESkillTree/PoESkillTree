@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace POESKillTree.Utils
 {
@@ -6,7 +7,6 @@ namespace POESKillTree.Utils
     /// <summary>
     /// Acts as a thread safe wrapper to <see cref="Random"/>.
     /// Each thread has its own <see cref="Random"/> instance.
-    /// Each instance uses the same <see cref="Random"/> instance for each thread.
     /// </summary>
     public class ThreadSafeRandom : Random
     {
@@ -18,47 +18,36 @@ namespace POESKillTree.Utils
         /// <summary>
         /// <see cref="Random"/> instance for each thread.
         /// </summary>
-        [ThreadStatic]
-        private static Random _local;
-        
-        private static Random Local
+        private readonly ThreadLocal<Random> _local = new ThreadLocal<Random>(() =>
         {
-            get
-            {
-                var inst = _local;
-                if (inst == null)
-                {
-                    int seed;
-                    lock (Global) seed = Global.Next();
-                    _local = inst = new Random(seed);
-                }
-                return inst;
-            }
-        }
+            int seed;
+            lock (Global) seed = Global.Next();
+            return new Random(seed);
+        });
 
         public override int Next()
         {
-            return Local.Next();
+            return _local.Value.Next();
         }
 
         public override int Next(int maxValue)
         {
-            return Local.Next(maxValue);
+            return _local.Value.Next(maxValue);
         }
 
         public override int Next(int minValue, int maxValue)
         {
-            return Local.Next(minValue, maxValue);
+            return _local.Value.Next(minValue, maxValue);
         }
 
         public override double NextDouble()
         {
-            return Local.NextDouble();
+            return _local.Value.NextDouble();
         }
 
         public override void NextBytes(byte[] buffer)
         {
-            Local.NextBytes(buffer);
+            _local.Value.NextBytes(buffer);
         }
     }
 }

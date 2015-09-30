@@ -21,17 +21,20 @@ namespace POESKillTree.TreeGenerator.Solver
 
         /// <summary>
         /// Gets the maximum number of steps the solver executes.
+        /// Return value is undefined until <see cref="Initialize"/> got called.
         /// </summary>
         int MaxSteps { get; }
 
         /// <summary>
         /// Gets the number of steps executed up to this point.
+        /// Return value is undefined until <see cref="Initialize"/> got called.
         /// </summary>
         int CurrentStep { get; }
 
         /// <summary>
         /// Gets the best solution generated up to this point as
         /// HashSet of <see cref="SkillNode"/> ids.
+        /// Return value is undefined until <see cref="Initialize"/> got called.
         /// </summary>
         IEnumerable<ushort> BestSolution { get; }
 
@@ -43,11 +46,13 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// Progresses execution of the solver by one step.
         /// Call this function in a loop until <see cref="IsConsideredDone"/> is true.
+        /// <see cref="Initialize"/> must be called before this.
         /// </summary>
         void Step();
 
         /// <summary>
         /// Optionally applies final algorithms after the last step to improve the solution.
+        /// <see cref="Initialize"/> and <see cref="Step"/> must be called before this.
         /// </summary>
         void FinalStep();
     }
@@ -72,7 +77,7 @@ namespace POESKillTree.TreeGenerator.Solver
         
         public int MaxSteps
         {
-            get { return _isInitialized ? GaParameters.MaxGeneration : 0; }
+            get { return _isInitialized ? _ga.MaxGeneration : 0; }
         }
         
         public int CurrentStep
@@ -181,40 +186,39 @@ namespace POESKillTree.TreeGenerator.Solver
             _searchSpace =
                 _searchGraph.NodeDict.Values.Where(n => IncludeNode(n) && n != StartNodes && !TargetNodes.Contains(n))
                     .ToList();
-
-            var consideredNodes = SearchSpace.Concat(TargetNodes).ToList();
-            consideredNodes.Add(StartNodes);
-            Distances.CalculateFully(consideredNodes);
-
+            
             try
             {
-                // Saving the leastSolution as initial solution. Makes sure there is always a
-                // solution even if the search space is empty or MaxGeneration is 0.
-                BestSolution = SpannedMstToSkillnodes(CreateLeastSolution());
-
-                var removedNodes = new List<GraphNode>();
-                var newSearchSpace = new List<GraphNode>();
-                foreach (var node in SearchSpace)
-                {
-                    if (IncludeNodeUsingDistances(node))
-                    {
-                        newSearchSpace.Add(node);
-                    }
-                    else
-                    {
-                        removedNodes.Add(node);
-                    }
-                }
-                _searchSpace = newSearchSpace;
-
-                var remainingNodes = SearchSpace.Concat(TargetNodes).ToList();
-                remainingNodes.Add(StartNodes);
-                Distances.RemoveNodes(removedNodes, remainingNodes);
+                var consideredNodes = SearchSpace.Concat(TargetNodes).ToList();
+                consideredNodes.Add(StartNodes);
+                Distances.CalculateFully(consideredNodes);
             }
             catch (GraphNotConnectedException e)
             {
                 throw new InvalidOperationException("The graph is disconnected.", e);
             }
+            // Saving the leastSolution as initial solution. Makes sure there is always a
+            // solution even if the search space is empty or MaxGeneration is 0.
+            BestSolution = SpannedMstToSkillnodes(CreateLeastSolution());
+
+            var removedNodes = new List<GraphNode>();
+            var newSearchSpace = new List<GraphNode>();
+            foreach (var node in SearchSpace)
+            {
+                if (IncludeNodeUsingDistances(node))
+                {
+                    newSearchSpace.Add(node);
+                }
+                else
+                {
+                    removedNodes.Add(node);
+                }
+            }
+            _searchSpace = newSearchSpace;
+
+            var remainingNodes = SearchSpace.Concat(TargetNodes).ToList();
+            remainingNodes.Add(StartNodes);
+            Distances.RemoveNodes(removedNodes, remainingNodes);
 
             InitializeGa();
 

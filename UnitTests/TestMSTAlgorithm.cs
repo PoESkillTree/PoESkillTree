@@ -2,9 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.SkillTreeFiles;
 using System.Collections.Generic;
+using System.Linq;
 using POESKillTree.TreeGenerator.Algorithm;
 
-//namespace UnitTests
 namespace UnitTests
 {
     [TestClass]
@@ -61,11 +61,10 @@ namespace UnitTests
         [TestMethod]
         public void TestDijkstra()
         {
-            // TODO: Maybe make the graphs class members.
-            /// 0 -- 1 -- 2 -- 3
-            ///  \        |   /
-            ///    \      | /
-            ///      4 -- 5
+            // 0 -- 1 -- 2 -- 3
+            //  \        |   /
+            //    \      | /
+            //      4 -- 5
             bool[,] graph1 = {
                                  { false, true,  false, false, true,  false },
                                  { true,  false, true,  false, false, false },
@@ -81,18 +80,51 @@ namespace UnitTests
 
 
             DistanceLookup distanceLookup = new DistanceLookup();
-            //Assert.IsTrue(distanceLookup.GetDistance(graphNodes[0], graphNodes[0]) == 0, "Failed 0 distance test");
-            //Assert.IsTrue(distanceLookup.GetDistance(graphNodes[0], graphNodes[5]) == 2, "Wrong distance");
-            //Assert.IsTrue(distanceLookup.GetDistance(graphNodes[0], graphNodes[3]) == 3, "Wrong distance");
+            Assert.AreEqual(0, distanceLookup[graphNodes[0], graphNodes[0]], "Failed 0 distance test");
+            Assert.AreEqual(2, distanceLookup[graphNodes[0], graphNodes[5]], "Wrong distance");
+            Assert.AreEqual(3, distanceLookup[graphNodes[0], graphNodes[3]], "Wrong distance");
+        }
+
+        [TestMethod]
+        public void DijkstraUnconnected()
+        {
+            // 0 -- 1    2 -- 3
+            //           |   /
+            //           | /
+            //      4 -- 5
+            bool[,] graph2 =
+            {
+                {false, true, false, false, false, false},
+                {true, false, false, false, false, false},
+                {false, false, false, true, false, true},
+                {false, false, true, false, false, true},
+                {false, false, false, false, false, true},
+                {false, false, true, true, true, false},
+            };
+            SearchGraph searchGraph2 = SearchGraphFromData(graph2);
+            Dictionary<int, GraphNode> graphNodes2 = GetGraphNodesIdIndex(searchGraph2);
+            var mstNodes2 = new List<GraphNode> {graphNodes2[0], graphNodes2[2], graphNodes2[4], graphNodes2[3]};
+
+            var distances = new DistanceLookup();
+            
+            try
+            {
+                distances.CalculateFully(mstNodes2);
+            }
+            catch (GraphNotConnectedException)
+            {
+                return;
+            }
+            Assert.Fail("No exception thrown for disconnected graph");
         }
 
         [TestMethod]
         public void TestMST()
         {
-            /// 0 -- 1 -- 2 -- 3
-            ///  \        |   /
-            ///    \      | /
-            ///      4 -- 5 -- 6 -- 7
+            // 0 -- 1 -- 2 -- 3
+            //  \        |   /
+            //    \      | /
+            //      4 -- 5 -- 6 -- 7
             bool[,] graph1 = {
                                  { false, true,  false, false, true,  false, false, false },
                                  { true,  false, true,  false, false, false, false, false },
@@ -107,55 +139,29 @@ namespace UnitTests
             SearchGraph searchGraph1 = SearchGraphFromData(graph1);
 
             Dictionary<int, GraphNode> graphNodes1 = GetGraphNodesIdIndex(searchGraph1);
-            DistanceLookup distanceLookup = new DistanceLookup();
+            var distances = new DistanceLookup();
 
             var mstNodes1 = new List<GraphNode>
-                { graphNodes1[3], graphNodes1[5], graphNodes1[7] };
-            MinimalSpanningTree mst1 = new MinimalSpanningTree(mstNodes1);
-            mst1.Span(startFrom: graphNodes1[0]);
+                { graphNodes1[3], graphNodes1[5], graphNodes1[7], graphNodes1[0] };
+            distances.CalculateFully(mstNodes1);
+            MinimalSpanningTree mst1 = new MinimalSpanningTree(mstNodes1, distances);
+            mst1.Span(graphNodes1[0]);
 
-            Assert.IsTrue(mst1.SpanningEdges.Count == 3, "Wrong amount of spanning edges");
-            /// This can fail even if the mst would be valid! The test only works for
-            /// the current implementation of the mst algorithm, but I can't find a
-            /// better way to do this with the current data structures...
-            Assert.IsTrue(mst1.SpanningEdges[0].Inside.Id == 0 && mst1.SpanningEdges[0].Outside.Id == 5,
-                "First edge is wrong");
-            Assert.IsTrue(mst1.SpanningEdges[1].Inside.Id == 5 && mst1.SpanningEdges[1].Outside.Id == 3,
-                "Second edge is wrong");
-            Assert.IsTrue(mst1.SpanningEdges[2].Inside.Id == 5 && mst1.SpanningEdges[2].Outside.Id == 7,
-                "Third edge is wrong");
-            Assert.IsTrue(mst1.GetUsedNodes().Count == 5, "Wrong MST length");
-
-
-            /// Test unconnected graph
-
-            /// 0 -- 1    2 -- 3
-            ///           |   /
-            ///           | /
-            ///      4 -- 5
-            bool[,] graph2 = {
-                                 { false, true,  false, false, false, false },
-                                 { true,  false, false, false, false, false },
-                                 { false, false, false, true,  false, true  },
-                                 { false, false, true,  false, false, true  },
-                                 { false, false, false, false, false, true  },
-                                 { false, false, true,  true,  true,  false },
-                             };
-            SearchGraph searchGraph2 = SearchGraphFromData(graph2);
-            Dictionary<int, GraphNode> graphNodes2 = GetGraphNodesIdIndex(searchGraph2);
-            var mstNodes2 = new List<GraphNode> { graphNodes2[0], graphNodes2[2], graphNodes2[4] };
-
-            bool pass = false;
-            try
+            Assert.AreEqual(3, mst1.SpanningEdges.Count, "Wrong amount of spanning edges");
+            var goalEdges = new []
             {
-                MinimalSpanningTree mst = new MinimalSpanningTree(mstNodes2);
-                mst.Span(graphNodes2[3]);
-            }
-            catch (GraphNotConnectedException)
+                new []{0, 5}, new []{5, 3}, new []{5, 7}
+            };
+            foreach (var edge in goalEdges)
             {
-                pass = true;
+                Assert.AreEqual(1,
+                    mst1.SpanningEdges.Count(
+                        e =>
+                            (e.Inside.Id == edge[0] && e.Outside.Id == edge[1]) ||
+                            (e.Inside.Id == edge[1] && e.Outside.Id == edge[0])),
+                    "Edge " + edge + " not contained exactly once.");
             }
-            Assert.IsTrue(pass, "No exception thrown for disconnected graph");
+            Assert.AreEqual(6, mst1.GetUsedNodes().Count, "Wrong MST length");
         }
 
         [TestMethod]

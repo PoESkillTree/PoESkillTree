@@ -12,18 +12,13 @@
         internal int Priority;
 
         /// <summary>
-        /// The node coming before this node in the queue.
-        /// </summary>
-        internal T Previous;
-
-        /// <summary>
         /// The node coming after this node in the queue.
         /// </summary>
         internal T Next;
     }
 
     /// <summary>
-    /// Priority Queue based on a doubly linked list and a lookup table for priorities.
+    /// Priority Queue based on a linked list and a lookup table for priorities.
     /// </summary>
     /// <remarks>
     /// Has O(1) Enqueue and Dequeue. Enqueue only if the range of priorites is
@@ -34,10 +29,7 @@
     /// If the priorites are not discrete (no integer values) or have a range much bigger than
     /// the number of nodes being in the queue at one point, use HeapPriorityQueue.
     /// 
-    /// No actual traversing through the linked list over more than 3 nodes happens.
-    /// 
-    /// Nodes should not be reenqueued. Because of speed purposes no attributes are reset
-    /// on dequeue.
+    /// No actual traversing through the linked list happens.
     /// </remarks>
     /// <typeparam name="T">Type of the stored objects</typeparam>
     public class LinkedListPriorityQueue<T>
@@ -87,12 +79,10 @@
             else if (priority < _first.Priority)
             {
                 node.Next = _first;
-                _first.Previous = node;
                 _first = node;
             }
             else if (priority >= _last.Priority)
             {
-                node.Previous = _last;
                 _last.Next = node;
                 _last = node;
             }
@@ -105,8 +95,6 @@
                 var next = previous.Next;
                 node.Next = next;
                 previous.Next = node;
-                node.Previous = previous;
-                next.Previous = node;
             }
             _prioritiyLookup[priority] = node;
         }
@@ -126,25 +114,14 @@
             else
             {
                 _first = node.Next;
-                _first.Previous = null;
             }
-            RemoveFromPrioLookup(node, node.Priority, node.Previous);
-            return node;
-        }
-
-        private void RemoveFromPrioLookup(T node, int prio, T previous)
-        {
+            node.Next = null;
+            var prio = node.Priority;
             if (_prioritiyLookup[prio] == node)
             {
-                if (previous == null || previous.Priority != prio)
-                {
-                    _prioritiyLookup[prio] = null;
-                }
-                else
-                {
-                    _prioritiyLookup[prio] = previous;
-                }
+                _prioritiyLookup[prio] = null;
             }
+            return node;
         }
     }
 }

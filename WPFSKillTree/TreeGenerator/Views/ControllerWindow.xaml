@@ -14,9 +14,6 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     utils:DialogCloser.DialogResult="{Binding Result}">
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding StartSolverCommand}"/>
-        </i:EventTrigger>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding CloseCommand}"/>
         </i:EventTrigger>
