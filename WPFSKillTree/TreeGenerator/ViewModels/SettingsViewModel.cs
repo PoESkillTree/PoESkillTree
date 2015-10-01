@@ -10,6 +10,10 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
+    /// <summary>
+    /// ViewModel that enables setting up and running <see cref="Solver.ISolver"/> through
+    /// contained <see cref="GeneratorTabViewModel"/>s.
+    /// </summary>
     public sealed class SettingsViewModel : CloseableViewModel
     {
 
@@ -17,34 +21,41 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         public SkillTree Tree { get { return _tree; } }
 
+        /// <summary>
+        /// Gets or sets the observable collection of <see cref="GeneratorTabViewModel"/> contained in
+        /// this ViewModel.
+        /// </summary>
         public ObservableCollection<GeneratorTabViewModel> Tabs { get; private set; }
 
 #region Presentation
 
+        // Default values for the properties to use on construction and on reset.
         private const int AdditionalPointsDefaultValue = 21;
-
         private const bool IncludeCheckedDefaultValue = true;
-
         private const bool ExcludeCrossedDefaultValue = true;
-
         private const bool TreeAsSubsetDefaultValue = false;
-
         private const bool TreeAsInitialDefaultValue = false;
 
         private int _additionalPoints = AdditionalPointsDefaultValue;
-
+        /// <summary>
+        /// Gets or sets the number of points on top of those provided by level that
+        /// the solver can use.
+        /// </summary>
         public int AdditionalPoints
         {
             get { return _additionalPoints; }
             set
             {
-                SetProperty(ref _additionalPoints, value, () => { },
-                    v => TotalPoints += v - _additionalPoints);
+                SetProperty(ref _additionalPoints, value,
+                    onChanging: v => TotalPoints += v - _additionalPoints);
             }
         }
 
         private int _totalPoints;
-
+        /// <summary>
+        /// Gets or sets total number of points the solver can use.
+        /// Equals <see cref="SkillTree.Level"/> - 1 + <see cref="AdditionalPoints"/>.
+        /// </summary>
         public int TotalPoints
         {
             get { return _totalPoints; }
@@ -52,7 +63,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private bool _includeChecked = IncludeCheckedDefaultValue;
-
+        /// <summary>
+        /// Gets or sets whether checked nodes need to be skilled by the solver.
+        /// </summary>
         public bool IncludeChecked
         {
             get { return _includeChecked; }
@@ -60,7 +73,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private bool _excludeCrossed = ExcludeCrossedDefaultValue;
-
+        /// <summary>
+        /// Gets or sets whether crossed nodes must not be skilled by the solver.
+        /// </summary>
         public bool ExcludeCrossed
         {
             get { return _excludeCrossed; }
@@ -68,7 +83,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private bool _treeAsSubset = TreeAsSubsetDefaultValue;
-
+        /// <summary>
+        /// Gets or set whether the nodes skilled by the solver need to be
+        /// a subset of the currently skilled nodes.
+        /// If <see cref="TreeAsSubset"/> and <see cref="TreeAsInitial"/> are false,
+        /// the nodes currently skilled will stay skilled in the solution given by the solver.
+        /// </summary>
         public bool TreeAsSubset
         {
             get { return _treeAsSubset; }
@@ -76,7 +96,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private bool _treeAsInitial = TreeAsInitialDefaultValue;
-
+        /// <summary>
+        /// Gets or sets whether the currently skilled nodes should be provided
+        /// to the solver as an initial solution.
+        /// If <see cref="TreeAsSubset"/> and <see cref="TreeAsInitial"/> are false,
+        /// the nodes currently skilled will stay skilled in the solution given by the solver.
+        /// </summary>
         public bool TreeAsInitial
         {
             get { return _treeAsInitial; }
@@ -84,7 +109,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         private int _selectedTabIndex;
-
+        /// <summary>
+        /// Gets or sets the currently selected <see cref="GeneratorTabViewModel"/> which will
+        /// be provide the solver once <see cref="RunCommand"/> is executed.
+        /// </summary>
         public int SelectedTabIndex
         {
             get { return _selectedTabIndex; }
@@ -96,28 +124,40 @@ namespace POESKillTree.TreeGenerator.ViewModels
 #region Commands
 
         private RelayCommand _runCommand;
-
+        /// <summary>
+        /// Starts a <see cref="ControllerViewModel"/> with the solver returned by the
+        /// <see cref="GeneratorTabViewModel"/> at the currently selected <see cref="Tabs"/> index
+        /// and sets its result in the skill tree.
+        /// </summary>
         public ICommand RunCommand
         {
             get { return _runCommand ?? (_runCommand = new RelayCommand(o => Run())); }
         }
 
         private RelayCommand _resetCommand;
-
+        /// <summary>
+        /// Resets all Properties to the values they had on construction.
+        /// Calls <see cref="GeneratorTabViewModel.Reset"/> on all tabs.
+        /// </summary>
         public ICommand ResetCommand
         {
             get { return _resetCommand ?? (_resetCommand = new RelayCommand(o => Reset()));}
         }
 
-#endregion
+        #endregion
 
         /// <summary>
-        /// Constructs a new SettingsViewModel with a fixed GeneratorTabViewModel.
-        /// Use this constructor if you don't want to use this ViewModel in a View and
-        /// only want to run it.
+        /// Constructs a new SettingsViewModel that operates on the given skill tree.
         /// </summary>
+        /// <param name="tree">The skill tree to operate on. (not null)</param>
+        /// <param name="generator">Optional <see cref="GeneratorTabViewModel"/> initialize
+        /// <see cref="Tabs"/> with. If non is provided, <see cref="AdvancedTabViewModel"/>,
+        /// <see cref="AutomatedTabViewModel"/> and <see cref="SteinerTabViewModel"/> will be
+        /// added to <see cref="Tabs"/>.</param>
         public SettingsViewModel(SkillTree tree, GeneratorTabViewModel generator = null)
         {
+            if (tree == null) throw new ArgumentNullException("tree");
+
             DisplayName = L10n.Message("Skill tree Generator");
 
             _tree = tree;
@@ -207,18 +247,31 @@ namespace POESKillTree.TreeGenerator.ViewModels
             return new SolverSettings(level, totalPoints, @checked, crossed, subsetTree, initialTree);
         }
 
+        /// <summary>
+        /// Event raised when <see cref="RunCommand"/> is executed and a
+        /// <see cref="ControllerViewModel"/> got created that may need to
+        /// be visualized to the user by connecting it to a View.
+        /// </summary>
         public event EventHandler<StartControllerEventArgs> StartController;
 
-        public event EventHandler RunFinished;
-    }
-
-    public class StartControllerEventArgs : EventArgs
-    {
-        public ControllerViewModel ViewModel { get; private set; }
-
-        public StartControllerEventArgs(ControllerViewModel viewModel)
+        /// <summary>
+        /// EventArgs belonging to <see cref="StartController"/> storing
+        /// the started <see cref="ControllerViewModel"/>
+        /// </summary>
+        public class StartControllerEventArgs : EventArgs
         {
-            ViewModel = viewModel;
+            public ControllerViewModel ViewModel { get; private set; }
+
+            public StartControllerEventArgs(ControllerViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
         }
+
+        /// <summary>
+        /// Event raised when <see cref="RunCommand"/> execution is finished
+        /// and the skill tree may have changed.
+        /// </summary>
+        public event EventHandler RunFinished;
     }
 }
