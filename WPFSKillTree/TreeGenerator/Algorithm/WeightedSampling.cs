@@ -10,7 +10,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
     ///  proportional to its weight.
     /// </summary>
     /// <typeparam name="T">The type of the stored objects.</typeparam>
-    class WeightedSampler<T>
+    public class WeightedSampler<T>
     {
         /// The basic idea is to generate the (discrete) cumulative distribution
         /// function (CDF) and then randomly sample from its value range (which
@@ -107,27 +107,17 @@ namespace POESKillTree.TreeGenerator.Algorithm
             {
                 // If the entries are accessible via index, binary search is fastest. O(log n)
                 // At least for entry counts where it matters.
-                var imin = 0;
-                var imax = _indexedEntries.Length - 1;
-                var i = 0;
-                var key = _indexedEntries[0].Key;
-
-                while (imin < imax)
+                int i, imin = 0, imax = _indexedEntries.Length - 1;
+                for (i = (imin + imax) / 2; i < imax; i = (imin + imax) / 2)
                 {
-                    i = (imin + imax) / 2;
-                    key = _indexedEntries[i].Key;
+                    var key = _indexedEntries[i].Key;
                     if (key < r)
-                    {
                         imin = i + 1;
-                    }
                     else
-                    {
                         imax = i - 1;
-                    }
                 }
-                
                 // Above search either returns the correct index or is the correct index - 1.
-                if (key < r) i++;
+                if (_indexedEntries[i].Key < r) i++;
                 return _indexedEntries[i].Value;
             }
             else

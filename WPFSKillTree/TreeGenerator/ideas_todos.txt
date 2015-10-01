@@ -7,7 +7,6 @@ AdvancedSolver UI improvements:
 - substring match searchable ComboBox for Attributes (something like the poe.trade comboboxes)
 
 Miscellaneous:
-- more Unit Tests (HillClimber maybe, WeightedSampler)
 - SettingsTabViewModel documentation
 
 Bigger things (best to discuss these in GitHub issues)

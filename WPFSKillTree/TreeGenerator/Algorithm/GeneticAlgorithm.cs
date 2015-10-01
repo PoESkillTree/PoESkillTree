@@ -535,25 +535,18 @@ namespace POESKillTree.TreeGenerator.Algorithm
             var curFitness = oldState.Fitness;
             var newFitness = newState.Fitness;
             if (newFitness >= curFitness) return true;
-
-            var imin = 0;
-            var imax = oldState.Rank - 1;
-            var i = 0;
-            while (imin < imax)
+            
+            int i, imin = 0, imax = oldState.Rank - 1;
+            for (i = (imin + imax) / 2; i < imax; i = (imin + imax) / 2)
             {
-                i = (imin + imax) / 2;
                 curFitness = _population[i].Fitness;
                 if (curFitness < newFitness)
-                {
                     imin = i + 1;
-                }
                 else
-                {
                     imax = i - 1;
-                }
             }
             // Above search either returns the correct index or is the correct index - 1.
-            if (curFitness < newFitness) i++;
+            if (_population[i].Fitness < newFitness) i++;
             var df = i - oldState.Rank;
             
             double acceptanceProbability = Math.Exp(df / _temperature);
