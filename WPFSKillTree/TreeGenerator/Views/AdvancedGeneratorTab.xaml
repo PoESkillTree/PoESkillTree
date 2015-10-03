@@ -11,10 +11,7 @@
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              mc:Ignorable="d" 
              x:Name="Control"
-             d:DesignHeight="300" d:DesignWidth="550" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
-    <UserControl.Resources>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.DataGrid.xaml" />
-    </UserControl.Resources>
+             d:DesignHeight="300" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
     <Grid>
         <Grid.Resources>
             <converter:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
@@ -67,7 +64,7 @@
                     </ComboBox>
                     <metroControls:NumericUpDown Grid.Column="1" Grid.Row="1" Minimum="0" Margin="2,4"
                                                  Value="{Binding NewAttributeConstraint.TargetValue}"/>
-                    <Slider Grid.Column="2" Grid.Row="1" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2,4"
+                    <Slider Grid.Column="2" Grid.Row="1" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2,6"
                             Value="{Binding NewAttributeConstraint.Weight}"
                             Minimum="{Binding NewAttributeConstraint.MinWeight}" Maximum="{Binding NewAttributeConstraint.MaxWeight}"/>
                     <Label Grid.Column="3" Grid.Row="1" Content="{Binding NewAttributeConstraint.Weight}" Margin="2,4" ContentStringFormat="{}{0}%" />
@@ -78,40 +75,34 @@
                     <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"
                             ItemsSource="{Binding AttributeConstraints}" AutoGenerateColumns="False"
                             CanUserAddRows="False" CanUserDeleteRows="False">
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MetroDataGridCell}">
-                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
-                            </Style>
-                        </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True">
+                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" MinWidth="300">
                                 <DataGridTextColumn.Header>
                                     <l:Catalog Message="Attribute"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <metroControls:DataGridNumericUpDownColumn Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" StringFormat="{}{0:#0.##}">
-                                <metroControls:DataGridNumericUpDownColumn.Header>
+                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}" MinWidth="80">
+                                <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Target"/>
-                                </metroControls:DataGridNumericUpDownColumn.Header>
-                            </metroControls:DataGridNumericUpDownColumn>
-                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}">
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <metroControls:NumericUpDown BorderThickness="0" Minimum="0" StringFormat="{}{0:#0.##}"
+                                                                     Value="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}"
+                                                                     Background="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridCell}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}" MinWidth="150">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Weight"/>
                                 </DataGridTemplateColumn.Header>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Slider IsEnabled="True" Width="100" TickFrequency="1" IsSnapToTickEnabled="True"
-                                                    Value="{Binding Weight, UpdateSourceTrigger=PropertyChanged}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
-                                            <Label Content="{Binding Weight}" ContentStringFormat="{}{0}%"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Slider IsEnabled="False" Width="100" Value="{Binding Weight}"/>
-                                            <Label Content="{Binding Weight}" ContentStringFormat="{}{0}%"/>
+                                            <Slider IsEnabled="True" Width="100" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,2"
+                                                    Value="{Binding Weight, UpdateSourceTrigger=PropertyChanged}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
+                                            <Label Content="{Binding Weight}" Width="50" ContentStringFormat="{}{0}%"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -164,7 +155,7 @@
                     </ComboBox>
                     <metroControls:NumericUpDown Grid.Column="1" Grid.Row="0" Minimum="0" Margin="2,4"
                                                  Value="{Binding NewPseudoAttributeConstraint.TargetValue}"/>
-                    <Slider Grid.Column="2" Grid.Row="0" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2,4"
+                    <Slider Grid.Column="2" Grid.Row="0" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2,6"
                             Value="{Binding NewPseudoAttributeConstraint.Weight}"
                             Minimum="{Binding NewPseudoAttributeConstraint.MinWeight}" Maximum="{Binding NewPseudoAttributeConstraint.MaxWeight}"/>
                     <Label Grid.Column="3" Grid.Row="0" Content="{Binding NewPseudoAttributeConstraint.Weight}" Margin="2,4" ContentStringFormat="{}{0}%" />
@@ -176,34 +167,33 @@
                               ItemsSource="{Binding PseudoAttributeConstraints}"
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True">
+                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" MinWidth="300">
                                 <DataGridTextColumn.Header>
                                     <l:Catalog Message="Pseudo attribute"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <metroControls:DataGridNumericUpDownColumn Binding="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" Minimum="0" StringFormat="{}{0:#0.##}">
-                                <metroControls:DataGridNumericUpDownColumn.Header>
+                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}" MinWidth="80">
+                                <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Target"/>
-                                </metroControls:DataGridNumericUpDownColumn.Header>
-                            </metroControls:DataGridNumericUpDownColumn>
-                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}">
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <metroControls:NumericUpDown BorderThickness="0" Minimum="0" StringFormat="{}{0:#0.##}"
+                                                                     Value="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}"
+                                                                     Background="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridCell}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}" MinWidth="150">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Weight"/>
                                 </DataGridTemplateColumn.Header>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Slider IsEnabled="True" Width="100" TickFrequency="1" IsSnapToTickEnabled="True"
-                                                    Value="{Binding Weight, UpdateSourceTrigger=PropertyChanged}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
-                                            <Label Content="{Binding Weight}" ContentStringFormat="{}{0}%"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Slider IsEnabled="False" Width="100" Value="{Binding Weight}"/>
-                                            <Label Content="{Binding Weight}" ContentStringFormat="{}{0}%"/>
+                                            <Slider IsEnabled="True" Width="100" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,2"
+                                                    Value="{Binding Weight, UpdateSourceTrigger=PropertyChanged}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
+                                            <Label Content="{Binding Weight}" Width="50" ContentStringFormat="{}{0}%"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

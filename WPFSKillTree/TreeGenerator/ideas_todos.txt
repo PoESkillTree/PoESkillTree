@@ -1,12 +1,6 @@
 List of smaller ideas/todos
 ===========================
 
-AdvancedSolver UI improvements:
-- decide on single vs double click cell editing
-
-Known bugs:
-- removing row while cell has validation error blocks editing
-
 Bigger things (best to discuss these in GitHub issues)
 =============
 
