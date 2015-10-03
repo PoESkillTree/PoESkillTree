@@ -2,9 +2,10 @@ List of smaller ideas/todos
 ===========================
 
 AdvancedSolver UI improvements:
-- more intuitive control instead of the DataGrid: AttrConstraintGrid like PseudoConstraintGrid is done
-- "Popular" group for attribute combobox
-- substring match searchable ComboBox for Attributes (something like the poe.trade comboboxes)
+- decide on single vs double click cell editing
+
+Known bugs:
+- removing row while cell has validation error blocks editing
 
 Bigger things (best to discuss these in GitHub issues)
 =============

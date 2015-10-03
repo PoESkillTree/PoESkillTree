@@ -10,7 +10,9 @@
     xmlns:vm="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
     d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
     Title="{Binding DisplayName}" Height="550"
-    WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Width">
+    WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Width"
+    BorderBrush="{DynamicResource AccentColorBrush}"
+    BorderThickness="1">
     <Grid Background="{DynamicResource WhiteColorBrush}">
         
         <Grid.ColumnDefinitions>

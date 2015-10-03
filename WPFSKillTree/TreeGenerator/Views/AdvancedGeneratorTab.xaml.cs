@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
+using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Views
 {
@@ -13,33 +12,6 @@ namespace POESKillTree.TreeGenerator.Views
         public AdvancedGeneratorTab()
         {
             InitializeComponent();
-        }
-
-        // If a row with validation errors that is currently edited gets removed,
-        // AttrConstraintGrid.Items.Refresh() needs to be called because the validation
-        // is not automatically updated on remove (Removing doesn't like to have a button for it, it seems).
-        private bool _clicked;
-
-        private void DeleteRowButton_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            if (_clicked)
-            {
-                try
-                {
-                    AttrConstraintGrid.Items.Refresh();
-                }
-                catch (InvalidOperationException)
-                {
-                    // If the remove didn't cancel cell editing with validation errors, the Grid can't be refreshed.
-                    // Some stuff is probably not working properly after it, but better than crashing.
-                }
-                _clicked = false;
-            }
-        }
-
-        private void DeleteRowButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            _clicked = true;
         }
         
         /// <summary>
@@ -54,8 +26,23 @@ namespace POESKillTree.TreeGenerator.Views
                 {
                     cell.Focus();
                 }
-                // DataGrid.SelectionUnit must not be "FullRow"
-                cell.IsSelected = true;
+                var dataGrid = cell.FindAnchestor<DataGrid>();
+                if (dataGrid != null)
+                {
+                    if (dataGrid.SelectionUnit != DataGridSelectionUnit.FullRow)
+                    {
+                        if (!cell.IsSelected)
+                            cell.IsSelected = true;
+                    }
+                    else
+                    {
+                        var row = cell.FindAnchestor<DataGridRow>();
+                        if (row != null && !row.IsSelected)
+                        {
+                            row.IsSelected = true;
+                        }
+                    }
+                }
             }
         }
     }

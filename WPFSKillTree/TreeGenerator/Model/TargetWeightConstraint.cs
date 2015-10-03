@@ -1,14 +1,13 @@
 ﻿using System;
-using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Model
 {
     /// <summary>
-    /// Abstract data class for Constraints with a data object, a target value and a weight.
+    /// Data class for Constraints with a data object, a target value and a weight.
     /// </summary>
     /// <typeparam name="T">Type of the stored data object.</typeparam>
-    public abstract class TargetWeightConstraint<T> : Notifier
+    public class TargetWeightConstraint<T> : Notifier, ICloneable
     {
         /// <summary>
         /// Minimum allowed weight (inclusive).
@@ -25,11 +24,8 @@ namespace POESKillTree.TreeGenerator.Model
         {
             get { return 100; }
         }
-        
-        private static int DefaultWeight
-        {
-            get { return 100; }
-        }
+
+        private const int DefaultWeight = 100;
 
         private T _data;
 
@@ -60,61 +56,27 @@ namespace POESKillTree.TreeGenerator.Model
             }
         }
         
-        protected TargetWeightConstraint(T data = default(T))
+        public TargetWeightConstraint(T data = default(T))
         {
             Data = data;
         }
-    }
 
-    /// <summary>
-    /// Data class for Constraint that contain a string describing the constrained attribute,
-    /// a target value and a weight.
-    /// </summary>
-    public class AttributeConstraint : TargetWeightConstraint<string>
-    {
-
-        // ReSharper disable once UnusedMember.Global
-        // No parameter constructor is necessary for DataGrid to enable user adding rows.
-        public AttributeConstraint()
-        { }
-
-        public AttributeConstraint(string attribute)
-            : base(attribute)
-        { }
-
-        /// <summary>
-        /// Gets a function that returns the attribute property of the parameter if it is an AttributeConstraint.
-        /// </summary>
-        public static Func<object, string> AttributeSelectorFunc
+        private TargetWeightConstraint(TargetWeightConstraint<T> toClone)
+            : this(toClone.Data)
         {
-            get
-            {
-                return o =>
-                {
-                    var attributeConstraint = o as AttributeConstraint;
-                    return attributeConstraint != null ? attributeConstraint.Data : null;
-                };
-            }
+            TargetValue = toClone.TargetValue;
+            Weight = toClone.Weight;
         }
-    }
-
-    /// <summary>
-    /// Data class for Constraint that contain the constrained PseudoAttribute,
-    /// a target value and a weight.
-    /// </summary>
-    public class PseudoAttributeConstraint : TargetWeightConstraint<PseudoAttribute>, ICloneable
-    {
-        public PseudoAttributeConstraint(PseudoAttribute data)
-            : base(data)
-        { }
 
         public object Clone()
         {
-            return new PseudoAttributeConstraint(Data)
-            {
-                TargetValue = TargetValue,
-                Weight = Weight
-            };
+            return new TargetWeightConstraint<T>(this);
         }
     }
+
+    // Just here to specify Constraints in Xaml as DataContext with
+    // d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}"
+    // because Xaml doesn't support generic classes for that.
+    public abstract class NonGenericTargetWeightConstraint : TargetWeightConstraint<object>
+    { }
 }

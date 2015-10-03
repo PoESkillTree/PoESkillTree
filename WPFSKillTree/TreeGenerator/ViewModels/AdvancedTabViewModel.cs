@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -17,26 +17,66 @@ using POESKillTree.Utils.Converter;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
+    // Some aliases to make things clearer without the need of extra classes.
+    using AttributeConstraint = TargetWeightConstraint<string>;
+    using PseudoAttributeConstraint = TargetWeightConstraint<PseudoAttribute>;
+
     /// <summary>
     /// GeneratorTabViewModel that uses user specified constraints based
     /// on attributes to generate skill trees.
     /// </summary>
     public sealed class AdvancedTabViewModel : GeneratorTabViewModel
     {
+        /// <summary>
+        /// Converts attributes to their groups. Similar to <see cref="GroupStringConverter"/>
+        /// except that it additionally groups attributes in <see cref="PopularAttributes"/> together
+        /// and caches the calculations to a dictionary.
+        /// </summary>
+        private class AttributeToGroupConverter : IValueConverter
+        {
+            private static readonly GroupStringConverter GroupStringConverter = new GroupStringConverter();
+
+            private readonly Dictionary<string, string> _attributeToGroupDictionary = new Dictionary<string, string>();
+
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                return Convert(value.ToString());
+            }
+
+            public string Convert(string attrName)
+            {
+                string groupName;
+                if (!_attributeToGroupDictionary.TryGetValue(attrName, out groupName))
+                {
+                    groupName = PopularAttributes.Contains(attrName)
+                        ? PopularGroupName
+                        : GroupStringConverter.Convert(attrName).GroupName;
+                    _attributeToGroupDictionary[attrName] = groupName;
+                }
+                return groupName;
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotSupportedException();
+            }
+        }
 
         #region Attribute constants
 
         /// <summary>
         /// Converts attribute strings to their group names.
         /// </summary>
-        private static readonly GroupStringConverter AttrGroupConverter = new GroupStringConverter();
+        private static readonly AttributeToGroupConverter AttrToGroupConverter = new AttributeToGroupConverter();
+
+        private static readonly string PopularGroupName = L10n.Message("Popular");
 
         /// <summary>
         /// Order in which the attribute groups are shown.
         /// </summary>
         private static readonly Dictionary<string, int> AttrGroupOrder = new Dictionary<string, int>()
         {
-            {L10n.Message("Popular"), -1},
+            {PopularGroupName, -1},
             // General
             {L10n.Message("Core Attributes"), 0},
             {L10n.Message("General"), 1},
@@ -62,7 +102,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <summary>
         /// List of attributes that should be displayed before others.
         /// </summary>
-        private static readonly List<string> PopularAttributes = new List<string>()
+        private static readonly HashSet<string> PopularAttributes = new HashSet<string>()
         {
             "+# to Dexterity", "+# to Intelligence", "+# to Strength",
             "#% increased Movement Speed", "#% increased maximum Life", "#% of Life Regenerated per Second",
@@ -105,29 +145,31 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         #region Presentation
 
+        private readonly HashSet<string> _addedAttributes = new HashSet<string>();
+
         /// <summary>
-        /// Gets the collection of attributes that can be used in AttributeConstraints.
+        /// The collection of attributes that can be used in AttributeConstraints.
         /// </summary>
-        public ObservableCollection<string> Attributes { get; private set; }
+        private readonly List<string> _attributes;
+
+        /// <summary>
+        /// Gets the CollectionView to the attribute names the user can use.
+        /// </summary>
+        public ICollectionView AttributesView { get; private set; }
 
         /// <summary>
         /// Gets the collection of AttributeConstraints the user specified.
         /// </summary>
         public ObservableCollection<AttributeConstraint> AttributeConstraints { get; private set; }
 
+        private AttributeConstraint _newAttributeConstraint;
         /// <summary>
-        /// Whether the user can add AttributeConstraints. Needed because it needs to be reset after
-        /// removing AttributeConstraints for the NewItemPlaceholder to appear.
+        /// Gets the AttributeConstraint used for creating new AttributeConstraints by the user.
         /// </summary>
-        private bool _canAddAttrConstraints = true;
-
-        /// <summary>
-        /// Gets or sets if the user can add AttributeConstraints.
-        /// </summary>
-        public bool CanAddAttrConstraints
+        public AttributeConstraint NewAttributeConstraint
         {
-            get { return _canAddAttrConstraints; }
-            set { SetProperty(ref _canAddAttrConstraints, value); }
+            get { return _newAttributeConstraint; }
+            private set { SetProperty(ref _newAttributeConstraint, value); }
         }
 
         /// <summary>
@@ -138,7 +180,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Collection of pseudo attributes that can be used in PseudoAttributeConstraints.
         /// </summary>
-        private readonly ObservableCollection<PseudoAttribute> _pseudoAttributes;
+        private readonly ObservableCollection<PseudoAttribute> _pseudoAttributes = new ObservableCollection<PseudoAttribute>();
 
         /// <summary>
         /// Gets the CollectionView to the PseudoAttributes the user can use.
@@ -167,7 +209,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         private const bool TreePlusItemsModeDefaultValue = false;
         private bool _treePlusItemsMode = TreePlusItemsModeDefaultValue;
         /// <summary>
-        /// Gets or sets if the Tab should use 'Tree + Items' or 'Tree only' mode
+        /// Gets or sets if the Tab should use 'Tree + Items' or 'Tree only' mode.
         /// (has no effect at the moment)
         /// </summary>
         public bool TreePlusItemsMode
@@ -231,6 +273,29 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         #region Commands
 
+        private RelayCommand _addAttributeConstraintCommand;
+        /// <summary>
+        /// Gets the command to add an AttributeConstraint to the collection.
+        /// </summary>
+        public ICommand AddAttributeConstraintCommand
+        {
+            get
+            {
+                return _addAttributeConstraintCommand ?? (_addAttributeConstraintCommand = new RelayCommand(
+                    param =>
+                    {
+                        var newConstraint = (AttributeConstraint)NewAttributeConstraint.Clone();
+                        _addedAttributes.Add(newConstraint.Data);
+                        AttributesView.Refresh();
+
+                        AttributesView.MoveCurrentToFirst();
+                        NewAttributeConstraint.Data = AttributesView.CurrentItem as string;
+                        AttributeConstraints.Add(newConstraint);
+                    },
+                    param => _addedAttributes.Count < _attributes.Count));
+            }
+        }
+
         private RelayCommand _removeAttributeConstraintCommand;
         /// <summary>
         /// Gets the command to remove an AttributeConstraint from the collection.
@@ -240,28 +305,30 @@ namespace POESKillTree.TreeGenerator.ViewModels
             get
             {
                 return _removeAttributeConstraintCommand ?? (_removeAttributeConstraintCommand = new RelayCommand(
-                               param =>
-                               {
-                                   AttributeConstraints.Remove((AttributeConstraint) param);
-                                   // The whole property is needed because the DataGrid doesn't add a new NewItemPlaceholder if
-                                   // you delete a new row while adding it. Resetting CanUserAddRows seems to be the only workaround for it.
-                                   CanAddAttrConstraints = !CanAddAttrConstraints;
-                                   CanAddAttrConstraints = !CanAddAttrConstraints;
-                               },
-                               param => param is AttributeConstraint));
+                    param =>
+                    {
+                        AttributeConstraints.Remove((AttributeConstraint) param);
+                        var oldConstraint = (AttributeConstraint) param;
+                        _addedAttributes.Remove(oldConstraint.Data);
+                        AttributesView.Refresh();
+                        
+                        NewAttributeConstraint = oldConstraint;
+                        AttributeConstraints.Remove(oldConstraint);
+                    },
+                    param => param is AttributeConstraint));
             }
         }
 
-        private RelayCommand _loadAttributesCommand;
+        private RelayCommand _loadAttributesFromTreeCommand;
         /// <summary>
-        /// Gets the command to loat the attributes from the current tree as AttributeConstraints.
+        /// Gets the command to load the attributes from the current tree as AttributeConstraints.
         /// </summary>
-        public ICommand LoadAttributesCommand
+        public ICommand LoadAttributesFromTreeCommand
         {
             get
             {
-                return _loadAttributesCommand ??
-                       (_loadAttributesCommand = new RelayCommand(param => LoadAttributesFromTree()));
+                return _loadAttributesFromTreeCommand ??
+                       (_loadAttributesFromTreeCommand = new RelayCommand(param => LoadAttributesFromTree()));
             }
         }
 
@@ -334,27 +401,29 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
         public AdvancedTabViewModel(SkillTree tree) : base(tree)
         {
-            var attrList = CreatePossibleAttributes().ToList();
-            var popular = new HashSet<string>(PopularAttributes);
-            attrList.Sort((s1, s2) =>
+            _attributes = CreatePossibleAttributes().ToList();
+            AttributesView = new ListCollectionView(_attributes)
             {
-                var attrSort = AttrGroupOrder[AttrGroupConverter.Convert(s1).GroupName] -
-                               AttrGroupOrder[AttrGroupConverter.Convert(s2).GroupName];
-                if (attrSort != 0) return attrSort;
-                if (popular.Contains(s1) && !popular.Contains(s2)) return -1;
-                if (popular.Contains(s2) && !popular.Contains(s1)) return 1;
-                return string.CompareOrdinal(s1, s2);
-            });
-            Attributes = new ObservableCollection<string>(attrList);
-
+                Filter = item => !_addedAttributes.Contains(item),
+                CustomSort = Comparer<string>.Create((s1, s2) =>
+                {
+                    // Sort by group as in AttrGroupOrder first and then by name.
+                    var groupCompare = AttrGroupOrder[AttrToGroupConverter.Convert(s1)].CompareTo(
+                        AttrGroupOrder[AttrToGroupConverter.Convert(s2)]);
+                    return groupCompare != 0 ? groupCompare : string.CompareOrdinal(s1, s2);
+                })
+            };
+            AttributesView.GroupDescriptions.Add(new PropertyGroupDescription(".", AttrToGroupConverter));
+            AttributesView.MoveCurrentToFirst();
             AttributeConstraints = new ObservableCollection<AttributeConstraint>();
-            
-            _pseudoAttributes = new ObservableCollection<PseudoAttribute>();
-            PseudoAttributesView = CollectionViewSource.GetDefaultView(_pseudoAttributes);
-            PseudoAttributesView.Filter = item => !_addedPseudoAttributes.Contains((PseudoAttribute) item);
+            NewAttributeConstraint = new AttributeConstraint(AttributesView.CurrentItem as string);
+
+            PseudoAttributesView = new ListCollectionView(_pseudoAttributes)
+            {
+                Filter = item => !_addedPseudoAttributes.Contains((PseudoAttribute) item)
+            };
             PseudoAttributesView.SortDescriptions.Add(new SortDescription("Group", ListSortDirection.Ascending));
             PseudoAttributesView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-            Debug.Assert(PseudoAttributesView.GroupDescriptions != null, "PseudoAttributesView.GroupDescriptions != null");
             PseudoAttributesView.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
             PseudoAttributeConstraints = new ObservableCollection<PseudoAttributeConstraint>();
 
@@ -425,7 +494,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 foreach (var attribute in SkillTree.ExpandHybridAttributes(skillNode.Attributes))
                 {
                     var attr = attribute.Key;
-                    if (Attributes.Contains(attr))
+                    if (_attributes.Contains(attr))
                     {
                         if (attribute.Value.Count == 0)
                         {
@@ -462,7 +531,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             AttributeConstraints.Clear();
             foreach (var attribute in attributes)
             {
-                AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
+                AttributeConstraints.Add(new AttributeConstraint(attribute.Key));
             }
         }
 

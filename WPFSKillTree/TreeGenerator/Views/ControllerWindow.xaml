@@ -12,7 +12,9 @@
     d:DataContext="{d:DesignInstance vm:ControllerViewModel}"
     xmlns:utils="clr-namespace:POESKillTree.Utils"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    utils:DialogCloser.DialogResult="{Binding Result}">
+    utils:DialogCloser.DialogResult="{Binding Result}"
+    BorderBrush="{DynamicResource AccentColorBrush}"
+    BorderThickness="1">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding CloseCommand}"/>
