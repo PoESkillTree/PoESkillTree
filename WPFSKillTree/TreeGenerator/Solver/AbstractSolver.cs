@@ -179,6 +179,9 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         ///  Initializes the solver so that the optimization can be run.
         /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// If not all target nodes are connected to the start node.
+        /// </exception>
         public void Initialize()
         {
             BuildSearchGraph();
@@ -186,17 +189,16 @@ namespace POESKillTree.TreeGenerator.Solver
             _searchSpace =
                 _searchGraph.NodeDict.Values.Where(n => IncludeNode(n) && n != StartNodes && !TargetNodes.Contains(n))
                     .ToList();
-            
-            try
+
+            var consideredNodes = SearchSpace.Concat(TargetNodes).ToList();
+            consideredNodes.Add(StartNodes);
+            Distances.CalculateFully(consideredNodes);
+
+            if (_targetNodes.Any(node => !Distances.AreConnected(StartNodes, node)))
             {
-                var consideredNodes = SearchSpace.Concat(TargetNodes).ToList();
-                consideredNodes.Add(StartNodes);
-                Distances.CalculateFully(consideredNodes);
+                throw new InvalidOperationException("The graph is disconnected.");
             }
-            catch (GraphNotConnectedException e)
-            {
-                throw new InvalidOperationException("The graph is disconnected.", e);
-            }
+
             // Saving the leastSolution as initial solution. Makes sure there is always a
             // solution even if the search space is empty or MaxGeneration is 0.
             BestSolution = SpannedMstToSkillnodes(CreateLeastSolution());

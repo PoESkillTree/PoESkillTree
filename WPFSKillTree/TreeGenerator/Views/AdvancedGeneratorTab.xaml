@@ -11,7 +11,64 @@
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              mc:Ignorable="d" 
              x:Name="Control"
-             d:DesignHeight="300" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
+             d:DesignHeight="400" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
+    <UserControl.Resources>
+        <Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="ColumnDefinition0"/>
+                                <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                                <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                            </Grid.RowDefinitions>
+                            <UniformGrid x:Name="HeaderPanel" Grid.Column="0" Rows="1" IsItemsHost="True" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                            <Border x:Name="ContentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentTemplate="{TemplateBinding SelectedContentTemplate}" Content="{TemplateBinding SelectedContent}" ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="TabStripPlacement" Value="Bottom">
+                                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="1"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
+                                <Setter Property="Margin" TargetName="HeaderPanel" Value="2,0,2,2"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Left">
+                                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                                <Setter Property="Margin" TargetName="HeaderPanel" Value="2,2,0,2"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Right">
+                                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="1"/>
+                                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                                <Setter Property="Margin" TargetName="HeaderPanel" Value="0,2,2,2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.Resources>
             <converter:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
@@ -26,7 +83,7 @@
             </ControlTemplate>
         </Grid.Resources>
 
-        <TabControl metroControls:TabControlHelper.IsUnderlined="True">
+        <TabControl metroControls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}">
             <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
                 <TabItem.Header>
                     <l:Catalog Message="Attributes"/>
@@ -62,7 +119,7 @@
                             </GroupStyle>
                         </ComboBox.GroupStyle>
                     </ComboBox>
-                    <metroControls:NumericUpDown Grid.Column="1" Grid.Row="1" Minimum="0" Margin="2,4"
+                    <metroControls:NumericUpDown Grid.Column="1" Grid.Row="1" Minimum="0" Margin="2,4" StringFormat="{}{0:#0.##}"
                                                  Value="{Binding NewAttributeConstraint.TargetValue}"/>
                     <Slider Grid.Column="2" Grid.Row="1" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2,6"
                             Value="{Binding NewAttributeConstraint.Weight}"
@@ -153,7 +210,7 @@
                             </GroupStyle>
                         </ComboBox.GroupStyle>
                     </ComboBox>
-                    <metroControls:NumericUpDown Grid.Column="1" Grid.Row="0" Minimum="0" Margin="2,4"
+                    <metroControls:NumericUpDown Grid.Column="1" Grid.Row="0" Minimum="0" Margin="2,4" StringFormat="{}{0:#0.##}"
                                                  Value="{Binding NewPseudoAttributeConstraint.TargetValue}"/>
                     <Slider Grid.Column="2" Grid.Row="0" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2,6"
                             Value="{Binding NewPseudoAttributeConstraint.Weight}"
@@ -162,7 +219,7 @@
                     <Button Grid.Column="4" Grid.Row="0" Margin="2,4" Command="{Binding AddPseudoConstraintCommand}" IsDefault="True">
                         <l:Catalog Message="Add"/>
                     </Button>
-                    
+
                     <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
                               ItemsSource="{Binding PseudoAttributeConstraints}"
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
@@ -228,23 +285,18 @@
                 <TabItem.Header>
                     <l:Catalog Message="Settings"/>
                 </TabItem.Header>
-                <Grid>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="200" />
                     </Grid.RowDefinitions>
-                    <metroControls:ToggleSwitch Grid.Row="0" Grid.Column="1" Margin="5,0,0,5"
+                    <metroControls:ToggleSwitch Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,0,5"
+                                                HorizontalAlignment="Center"
                                                 IsChecked="{Binding TreePlusItemsMode}"
                                                 IsEnabled="False" ToolTipService.ShowOnDisabled="True">
                         <metroControls:ToggleSwitch.OnLabel>
@@ -257,65 +309,93 @@
                             <l:Catalog Message="'Tree + Items' mode is not yet implemented."/>
                         </metroControls:ToggleSwitch.ToolTip>
                     </metroControls:ToggleSwitch>
-                    <Button Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="3" Margin="4,4,4,4"
+
+                    <Button Grid.Column="1" Grid.Row="1" Margin="4,4,4,4"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
                             Command="{Binding ReloadPseudoAttributesCommand}">
                         <l:Catalog Message="Reload Pseudo Attributes from filesystem"/>
                     </Button>
 
                     <!-- WeaponClass -->
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
-                        <l:Catalog Message="Weapon class:"/>
-                    </Label>
-                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" MinWidth="130" Margin="5,0" VerticalAlignment="Center"
+                    <GroupBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+                        <GroupBox.Header>
+                            <l:Catalog Message="Weapon class"/>
+                        </GroupBox.Header>
+                        <ComboBox HorizontalAlignment="Left" MinWidth="130" Margin="5,0" VerticalAlignment="Center"
                               SelectedValue="{Binding WeaponClass}" ItemsSource="{Binding WeaponClassValues}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </GroupBox>
+
                     <!-- OffHand -->
-                    <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">
-                        <l:Catalog Message="Off hand:"/>
-                    </Label>
-                    <RadioButton Grid.Row="2" Grid.Column="1" Content="Shield" GroupName="OffHand" Margin="5,0"
+                    <GroupBox Grid.Row="2" Grid.Column="0">
+                        <GroupBox.Header>
+                            <l:Catalog Message="Off hand"/>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <RadioButton Grid.Row="0" Content="Shield" GroupName="OffHand"
                                  IsEnabled="{Binding WeaponClassIsTwoHanded, Converter={StaticResource InvertBoolConverter}}"
                                  IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.Shield}}" />
-                    <RadioButton Grid.Row="3" Grid.Column="1" Content="Dual wield" GroupName="OffHand" Margin="5,0"
+                            <RadioButton Grid.Row="1" Content="Dual wield" GroupName="OffHand"
                                  IsEnabled="{Binding WeaponClassIsTwoHanded, Converter={StaticResource InvertBoolConverter}}"
                                  IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.DualWield}}" />
-                    <RadioButton Grid.Row="4" Grid.Column="1" Content="Two handed" GroupName="OffHand" Margin="5,0"
+                            <RadioButton Grid.Row="2" Content="Two handed" GroupName="OffHand"
                                  IsEnabled="{Binding WeaponClassIsTwoHanded}"
                                  IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.TwoHanded}}" />
-                    
+                        </Grid>
+                    </GroupBox>
+
                     <!-- Tags -->
-                    <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Center">
-                        <l:Catalog Message="Tags:"/>
-                    </Label>
-                    <CheckBox Grid.Row="1" Grid.Column="3" Content="Attack" Margin="5,0"
+                    <GroupBox Grid.Row="2" Grid.Column="1">
+                        <GroupBox.Header>
+                            <l:Catalog Message="Tags"/>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <CheckBox Grid.Row="0" Grid.Column="0" Content="Attack"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Attack}}"/>
-                    <CheckBox Grid.Row="2" Grid.Column="3" Content="Melee" Margin="5,0"
+                            <CheckBox Grid.Row="1" Grid.Column="0" Content="Melee"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Melee}}"/>
-                    <CheckBox Grid.Row="3" Grid.Column="3" Content="Duration" Margin="5,0"
+                            <CheckBox Grid.Row="2" Grid.Column="0" Content="Duration"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Duration}}"/>
-                    <CheckBox Grid.Row="4" Grid.Column="3" Content="Projectile" Margin="5,0"
+                            <CheckBox Grid.Row="3" Grid.Column="0" Content="Projectile"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Projectile}}"/>
-                    <CheckBox Grid.Row="1" Grid.Column="4" Content="Spell" Margin="5,0"
+                            <CheckBox Grid.Row="0" Grid.Column="1" Content="Spell" Margin="10,0"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Spell}}"/>
-                    <CheckBox Grid.Row="2" Grid.Column="4" Content="Trap" Margin="5,0"
+                            <CheckBox Grid.Row="1" Grid.Column="1" Content="Trap" Margin="10,0"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Trap}}"/>
-                    <CheckBox Grid.Row="3" Grid.Column="4" Content="Mine" Margin="5,0"
+                            <CheckBox Grid.Row="2" Grid.Column="1" Content="Mine" Margin="10,0"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Mine}}"/>
-                    <CheckBox Grid.Row="4" Grid.Column="4" Content="Totem" Margin="5,0"
+                            <CheckBox Grid.Row="3" Grid.Column="1" Content="Totem" Margin="10,0"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Totem}}"/>
-                    <CheckBox Grid.Row="1" Grid.Column="5" Content="Area" Margin="5,0"
+                            <CheckBox Grid.Row="0" Grid.Column="2" Content="Area"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Area}}"/>
-                    <CheckBox Grid.Row="2" Grid.Column="5" Content="Cast" Margin="5,0"
+                            <CheckBox Grid.Row="1" Grid.Column="2" Content="Cast"
                               IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Cast}}"/>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
             </TabItem>
         </TabControl>
-        
+
     </Grid>
 </UserControl>

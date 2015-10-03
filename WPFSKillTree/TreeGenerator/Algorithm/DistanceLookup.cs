@@ -233,6 +233,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         /// <param name="start">The starting node. (not null)</param>
         /// <param name="target">The (optional) target node.</param>
+        /// <exception cref="GraphNotConnectedException">
+        /// If target node is not null and it could not be found.
+        /// </exception>
         private void Dijkstra(GraphNode start, GraphNode target = null)
         {
             if (start == null) throw new ArgumentNullException("start");
@@ -248,13 +251,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             var predecessors = new Dictionary<ushort, ushort>();
             // The traversed distance from the starting node in edges.
             var distFromStart = 0;
-
-            var nodesLeft = _cacheSize;
-            if (start.DistancesIndex >= 0)
-            {
-                // Don't count the start node.
-                nodesLeft--;
-            }
 
             while (front.Count > 0)
             {
@@ -277,8 +273,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
                         if (adjacentNode.DistancesIndex >= 0)
                         {
                             AddEdge(start, adjacentNode, distFromStart, predecessors);
-                            nodesLeft--;
-                            if (nodesLeft == 0) return;
                         }
 
                         newFront.Add(adjacentNode);
@@ -290,7 +284,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 distFromStart++;
             }
 
-            throw new GraphNotConnectedException();
+            // Target node was not found because start and target are not connected.
+            if (target != null)
+                throw new GraphNotConnectedException();
         }
 
         /// <summary>

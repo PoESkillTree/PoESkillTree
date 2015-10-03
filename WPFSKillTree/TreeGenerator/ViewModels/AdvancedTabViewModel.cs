@@ -531,7 +531,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             AttributeConstraints.Clear();
             foreach (var attribute in attributes)
             {
-                AttributeConstraints.Add(new AttributeConstraint(attribute.Key));
+                AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
             }
         }
 
