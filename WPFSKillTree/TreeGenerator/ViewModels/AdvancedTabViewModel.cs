@@ -125,7 +125,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <summary>
         /// List of not selectable attributes.
         /// </summary>
-        private static readonly List<string> AttributeBlackList = new List<string>()
+        private static readonly HashSet<string> AttributeBlackList = new HashSet<string>()
         {
             "+# to maximum Mana",
             "+# to maximum Life",
@@ -509,7 +509,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                             attributes[attr] = attribute.Value[0];
                         }
                     }
-                    else
+                    else if (!AttributeBlackList.Contains(attr))
                     {
                         hasUniqueAttribute = true;
                     }

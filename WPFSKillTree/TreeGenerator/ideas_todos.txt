@@ -1,7 +1,6 @@
 List of smaller ideas/todos
 ===========================
 
-- don't check tag attribute when loading from tree because they are blacklisted
 - feature to convert attribute constraints to pseudo where possible
 
 Bigger things (best to discuss these in GitHub issues)

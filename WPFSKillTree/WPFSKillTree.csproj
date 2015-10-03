@@ -246,13 +246,10 @@
     <Compile Include="Utils\Converter\BoolConverter.cs" />
     <Compile Include="Utils\Converter\EnumConverter.cs" />
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />
-    <Compile Include="Utils\Converter\IsNamedObjectVisibilityConverter.cs" />
     <Compile Include="Utils\Converter\NumberLessStringComparer.cs" />
-    <Compile Include="Utils\DataResource.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Utils\Notifier.cs" />
     <Compile Include="Utils\ThreadSafeRandom.cs" />
-    <Compile Include="Utils\ValidationRules.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
     <Compile Include="Utils\DialogCloser.cs" />
