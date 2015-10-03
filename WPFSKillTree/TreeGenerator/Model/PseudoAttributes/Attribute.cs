@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
     /// <summary>
     /// Data class describing a conditioned Attribute.
     /// At least one condition must be true or there must not be
-    /// any conditions for <see cref="ICondition.Eval"/> to return true.
+    /// any conditions for <see cref="ICondition.Evaluate"/> to return true.
     /// (see <see cref="OrComposition"/>)
     /// </summary>
     public class Attribute : OrComposition
     {
+        private static readonly Regex WildcardRegex = new Regex(@"{\d+}");
+
         /// <summary>
         /// Gets the name this attribute. 
         /// Represents the name of an attribute of nodes in the skill tree
@@ -46,6 +49,41 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         public override string ToString()
         {
             return Name;
+        }
+
+        /// <summary>
+        /// Returns true if <paramref name="actualAttributeName"/> matches this attribute's name
+        /// (while taking wildcards into account) and evaluates to true given <paramref name="settings"/>
+        /// and the replacements if applicable.
+        /// </summary>
+        /// <param name="settings">The settings to evaluate under. (not null)</param>
+        /// <param name="actualAttributeName">The attribute name to compare <see cref="Name"/> against. (not null)</param>
+        /// <returns>
+        /// True if <paramref name="actualAttributeName"/> matches <see cref="Name"/> and <see cref="ICondition.Evaluate"/>
+        /// returns true.
+        /// </returns>
+        public bool MatchesAndEvaluates(ConditionSettings settings, string actualAttributeName)
+        {
+            if (settings == null) throw new ArgumentNullException("settings");
+            if (actualAttributeName == null) throw new ArgumentNullException("actualAttributeName");
+
+            // If the attribute name has no wildcards, check if it matches the actual name
+            // and evaluate without replacements.
+            if (!WildcardRegex.IsMatch(Name))
+                return Name == actualAttributeName && Evaluate(settings);
+
+            var searchRegex = new Regex("^" + WildcardRegex.Replace(Name, "(.*)") + "$");
+            var match = searchRegex.Match(actualAttributeName);
+            if (!match.Success) return false;
+
+            var groups = match.Groups;
+            var groupNames = new string[groups.Count - 1];
+            // The first group is the whole match, we don't want that one.
+            for (int i = 0, j = 1; j < groups.Count; i++, j++)
+            {
+                groupNames[i] = groups[j].Value;
+            }
+            return Evaluate(settings, groupNames);
         }
     }
 }

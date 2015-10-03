@@ -307,7 +307,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 return _removeAttributeConstraintCommand ?? (_removeAttributeConstraintCommand = new RelayCommand(
                     param =>
                     {
-                        AttributeConstraints.Remove((AttributeConstraint) param);
                         var oldConstraint = (AttributeConstraint) param;
                         _addedAttributes.Remove(oldConstraint.Data);
                         AttributesView.Refresh();
@@ -388,6 +387,21 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 return _reloadPseudoAttributesCommand ?? (_reloadPseudoAttributesCommand = new RelayCommand(
                     o => ReloadPseudoAttributes()));
+            }
+        }
+
+        private RelayCommand _convertAttributeToPseudoConstraintsCommand;
+        /// <summary>
+        /// Gets the command to converts attribute constraints to pseudo attribute constraints where possible.
+        /// </summary>
+        public ICommand ConvertAttributeToPseudoConstraintsCommand
+        {
+            get
+            {
+                return _convertAttributeToPseudoConstraintsCommand ??
+                       (_convertAttributeToPseudoConstraintsCommand = new RelayCommand(
+                           param => ConverteAttributeToPseudoAttributeConstraints(),
+                           param => AttributeConstraints.Count > 0));
             }
         }
 
@@ -532,6 +546,79 @@ namespace POESKillTree.TreeGenerator.ViewModels
             foreach (var attribute in attributes)
             {
                 AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
+            }
+        }
+
+        /// <summary>
+        /// Converts attribute constraints to pseudo attribute constraints with the set Tags, WeaponClass,
+        /// OffHand and check-tagged keystones where possible.
+        /// Str, Int and Dex are not removed from the attribute constraint list but still converted.
+        /// </summary>
+        private void ConverteAttributeToPseudoAttributeConstraints()
+        {
+            var keystones = from id in Tree.GetCheckedNodes()
+                where SkillTree.Skillnodes[id].IsKeyStone
+                select SkillTree.Skillnodes[id].Name;
+            var conditionSettings = new ConditionSettings(Tags, OffHand, keystones.ToArray(), WeaponClass);
+            var convertedConstraints = new List<AttributeConstraint>();
+            foreach (var attributeConstraint in AttributeConstraints)
+            {
+                var attrName = attributeConstraint.Data;
+                // Select the pseudo attributes and the multiplier for attributes which match the given one and evaluate to true.
+                var pseudos =
+                    from pseudo in _pseudoAttributes
+                    let matches = (from attr in pseudo.Attributes
+                                   where attr.MatchesAndEvaluates(conditionSettings, attrName)
+                                   select attr)
+                    where matches.Any()
+                    select new { PseudoAttribute = pseudo, Multiplier = matches.First().ConversionMultiplier };
+
+                // Add attribute target and weight to the pseudo attributes.
+                var converted = false;
+                foreach (var pseudo in pseudos)
+                {
+                    var pseudoAttribute = pseudo.PseudoAttribute;
+                    converted = true;
+                    if (_addedPseudoAttributes.Contains(pseudoAttribute))
+                    {
+                        foreach (var pseudoAttributeConstraint in PseudoAttributeConstraints)
+                        {
+                            if (pseudoAttributeConstraint.Data == pseudoAttribute)
+                            {
+                                pseudoAttributeConstraint.TargetValue += attributeConstraint.TargetValue * pseudo.Multiplier;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _addedPseudoAttributes.Add(pseudoAttribute);
+                        PseudoAttributeConstraints.Add(new PseudoAttributeConstraint(pseudoAttribute)
+                        {
+                            TargetValue = attributeConstraint.TargetValue * pseudo.Multiplier
+                        });
+                    }
+                }
+
+                if (converted &&
+                    attrName != "+# to Intelligence" && attrName != "+# to Dexterity" && attrName != "+# to Strength")
+                {
+                    convertedConstraints.Add(attributeConstraint);
+                }
+            }
+
+            // Update the attribute constraint related collections.
+            foreach (var convertedConstraint in convertedConstraints)
+            {
+                _addedAttributes.Remove(convertedConstraint.Data);
+                AttributeConstraints.Remove(convertedConstraint);
+            }
+            if (convertedConstraints.Count > 0)
+            {
+                AttributesView.Refresh();
+                NewAttributeConstraint = convertedConstraints[0];
+                PseudoAttributesView.Refresh();
+                PseudoAttributesView.MoveCurrentToFirst();
+                NewPseudoAttributeConstraint.Data = PseudoAttributesView.CurrentItem as PseudoAttribute;
             }
         }
 

@@ -290,10 +290,10 @@ namespace POESKillTree.TreeGenerator.Solver
                                                            select Tuple.Create(a, ExtractGroupValuesFromGroupCollection(match.Groups))).ToList();
                         }
                         convAttrs.AddRange(from replacement in resolvedWildcardNames[name]
-                                           where attr.Eval(conditionSettings, replacement.Item2)
+                                           where attr.Evaluate(conditionSettings, replacement.Item2)
                                            select Tuple.Create(replacement.Item1, attr.ConversionMultiplier));
                     }
-                    else if (attr.Eval(conditionSettings))
+                    else if (attr.Evaluate(conditionSettings))
                     {
                         convAttrs.Add(Tuple.Create(name, attr.ConversionMultiplier));
                     }

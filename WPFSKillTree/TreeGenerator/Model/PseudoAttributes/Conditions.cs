@@ -17,7 +17,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         /// <param name="settings">Settings to evaluate the condition (not null)</param>
         /// <param name="replacements">Strings to replace placeholders with (not null)</param>
         /// <returns></returns>
-        bool Eval(ConditionSettings settings, params string[] replacements);
+        bool Evaluate(ConditionSettings settings, params string[] replacements);
     }
 
     #region Logical composition conditions
@@ -34,9 +34,9 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
             Conditions = new List<ICondition>();
         }
 
-        public bool Eval(ConditionSettings settings, params string[] replacements)
+        public bool Evaluate(ConditionSettings settings, params string[] replacements)
         {
-            return Conditions.All(c => c.Eval(settings, replacements));
+            return Conditions.All(c => c.Evaluate(settings, replacements));
         }
     }
 
@@ -53,9 +53,9 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
             Conditions = new List<ICondition>();
         }
 
-        public bool Eval(ConditionSettings settings, params string[] replacements)
+        public bool Evaluate(ConditionSettings settings, params string[] replacements)
         {
-            return Conditions.Count <= 0 || Conditions.Any(c => c.Eval(settings, replacements));
+            return Conditions.Count <= 0 || Conditions.Any(c => c.Evaluate(settings, replacements));
         }
     }
 
@@ -71,9 +71,9 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
             _condition = condition;
         }
 
-        public bool Eval(ConditionSettings settings, params string[] replacements)
+        public bool Evaluate(ConditionSettings settings, params string[] replacements)
         {
-            return !_condition.Eval(settings, replacements);
+            return !_condition.Evaluate(settings, replacements);
         }
     }
 
@@ -96,7 +96,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         /// <summary>
         /// Returns true iff <see cref="ConditionSettings.Keystones"/> contains <see cref="_keystone"/>.
         /// </summary>
-        public bool Eval(ConditionSettings settings, params string[] replacements)
+        public bool Evaluate(ConditionSettings settings, params string[] replacements)
         {
             if (settings == null) throw new ArgumentNullException("settings");
             return settings.Keystones.Any(k => k == _keystone);
@@ -120,7 +120,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         /// Returns true iff <see cref="ConditionSettings.OffHand"/> has the specified
         /// alias with placeholders replaced by the given replacements.
         /// </summary>
-        public bool Eval(ConditionSettings settings, params string[] replacements)
+        public bool Evaluate(ConditionSettings settings, params string[] replacements)
         {
             if (settings == null) throw new ArgumentNullException("settings");
             // ReSharper disable once CoVariantArrayConversion
@@ -146,7 +146,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         /// Returns true iff <see cref="ConditionSettings.Tags"/> has the specified
         /// alias with placeholders replaced by the given replacements.
         /// </summary>
-        public bool Eval(ConditionSettings settings, params string[] replacements)
+        public bool Evaluate(ConditionSettings settings, params string[] replacements)
         {
             if (settings == null) throw new ArgumentNullException("settings");
             // ReSharper disable once CoVariantArrayConversion
@@ -172,7 +172,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         /// Returns true iff <see cref="ConditionSettings.WeaponClass"/> has the specified
         /// alias with placeholders replaced by the given replacements.
         /// </summary>
-        public bool Eval(ConditionSettings settings, params string[] replacements)
+        public bool Evaluate(ConditionSettings settings, params string[] replacements)
         {
             if (settings == null) throw new ArgumentNullException("settings");
             // ReSharper disable once CoVariantArrayConversion

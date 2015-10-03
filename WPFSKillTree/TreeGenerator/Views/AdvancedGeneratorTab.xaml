@@ -102,9 +102,17 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Margin="5" HorizontalAlignment="Center" Command="{Binding LoadAttributesFromTreeCommand}">
-                        <l:Catalog Message="Load from tree"/>
-                    </Button>
+                    <UniformGrid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Rows="1">
+                        <Button Margin="5" HorizontalAlignment="Center" Command="{Binding LoadAttributesFromTreeCommand}">
+                            <l:Catalog Message="Load from tree"/>
+                        </Button>
+                        <Button Margin="5" HorizontalAlignment="Center" Command="{Binding ConvertAttributeToPseudoConstraintsCommand}">
+                            <l:Catalog Message="Convert to Pseudo Attributes" />
+                            <Button.ToolTip>
+                                <l:Catalog Message="Converts the attributes to pseudo attributes where possible using the defined settings."/>
+                            </Button.ToolTip>
+                        </Button>
+                    </UniformGrid>
 
                     <ComboBox Grid.Column="0" Grid.Row="1" Margin="4,4,2,4"
                               SelectedItem="{Binding NewAttributeConstraint.Data}"

@@ -47,7 +47,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set
             {
                 SetProperty(ref _additionalPoints, value,
-                    onChanging: v => TotalPoints += v - _additionalPoints);
+                    () => TotalPoints = _tree.Level - 1 + _additionalPoints);
             }
         }
 
@@ -161,17 +161,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = L10n.Message("Skill tree Generator");
 
             _tree = tree;
-            if (_tree.Level != SkillTree.UndefinedLevel && _tree.SkilledNodes.Count > 1
-                && _tree.SkilledNodes.Count - _tree.Level >= 0)
-            {
-                _additionalPoints = _tree.SkilledNodes.Count - _tree.Level;
-            }
-            _totalPoints = _tree.Level - 1 + _additionalPoints;
-
-            var levelString = L10n.Message("Level");
+            AdditionalPoints = CalculateAdditionalPointsNeeded(tree);
+            
             tree.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == levelString)
+                if (args.PropertyName == "Level")
                 {
                     TotalPoints = _tree.Level - 1 + _additionalPoints;
                 }
@@ -185,6 +179,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 Tabs = new ObservableCollection<GeneratorTabViewModel> { generator };
             }
+        }
+
+        private static int CalculateAdditionalPointsNeeded(SkillTree tree)
+        {
+            if (tree.Level != SkillTree.UndefinedLevel && tree.SkilledNodes.Count > 1
+                && tree.SkilledNodes.Count - tree.Level >= 0)
+            {
+                return tree.SkilledNodes.Count - tree.Level;
+            }
+            return AdditionalPointsDefaultValue;
         }
 
         private void CreateTabs()
@@ -225,7 +229,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private void Reset()
         {
-            AdditionalPoints = AdditionalPointsDefaultValue;
+            AdditionalPoints = CalculateAdditionalPointsNeeded(_tree);
             IncludeChecked = IncludeCheckedDefaultValue;
             ExcludeCrossed = ExcludeCrossedDefaultValue;
             TreeAsSubset = TreeAsSubsetDefaultValue;
