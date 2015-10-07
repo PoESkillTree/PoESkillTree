@@ -21,10 +21,7 @@
     /// Priority Queue based on a linked list and a lookup table for priorities.
     /// </summary>
     /// <remarks>
-    /// Has O(1) Enqueue and Dequeue. Enqueue only if the range of priorites is
-    /// not much bigger than the number of nodes stored at any point (best if the difference
-    /// between the smallest and highest priority is the same or smaller than the number of
-    /// nodes concurrently stored).
+    /// Has O(1) Enqueue and Dequeue.
     /// 
     /// If the priorites are not discrete (no integer values) or have a range much bigger than
     /// the number of nodes being in the queue at one point, use HeapPriorityQueue.
@@ -62,9 +59,9 @@
         }
 
         /// <summary>
-        /// Enqueue the given node. O(1) if there is a node with the same
-        /// or slightly lower priority already stored. Else O(n) with n being the
-        /// difference between the given and the next lower priority already stored.
+        /// Enqueue the given node. Always O(1) with respect to the number of nodes stored
+        /// but gets slower when the difference between the given and the next lower priority
+        /// already stored gets larger.
         /// </summary>
         /// <param name="node">The node to be stored.</param>
         /// <param name="priority">The priority of the node. Older nodes with

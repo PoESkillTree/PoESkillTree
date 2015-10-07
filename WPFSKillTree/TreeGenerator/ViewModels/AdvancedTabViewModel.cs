@@ -448,9 +448,17 @@ namespace POESKillTree.TreeGenerator.ViewModels
         
         public override void Reset()
         {
+            _addedAttributes.Clear();
             AttributeConstraints.Clear();
+            AttributesView.Refresh();
+            AttributesView.MoveCurrentToFirst();
+            NewAttributeConstraint = new AttributeConstraint(AttributesView.CurrentItem as string);
             _addedPseudoAttributes.Clear();
             PseudoAttributeConstraints.Clear();
+            PseudoAttributesView.Refresh();
+            PseudoAttributesView.MoveCurrentToFirst();
+            NewPseudoAttributeConstraint =
+                new PseudoAttributeConstraint(PseudoAttributesView.CurrentItem as PseudoAttribute);
             TreePlusItemsMode = TreePlusItemsModeDefaultValue;
             WeaponClass = WeaponClassDefaultValue;
             OffHand = OffHandDefaultValue;
