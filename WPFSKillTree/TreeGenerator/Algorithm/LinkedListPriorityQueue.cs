@@ -21,9 +21,12 @@
     /// Priority Queue based on a linked list and a lookup table for priorities.
     /// </summary>
     /// <remarks>
-    /// Has O(1) Enqueue and Dequeue.
+    /// Has O(1) Enqueue and Dequeue with respect to the number of nodes enqueued.
     /// 
-    /// If the priorites are not discrete (no integer values) or have a range much bigger than
+    /// For enqueuing n nodes the runtime is linear in n and at most quadratic in the
+    /// difference between the minimum and maximum priority of those nodes.
+    /// 
+    /// If the priorites are not discrete (no integer values) or have a range significantly bigger than
     /// the number of nodes being in the queue at one point, use HeapPriorityQueue.
     /// 
     /// No actual traversing through the linked list happens.

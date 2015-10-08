@@ -36,7 +36,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         private const bool TreeAsSubsetDefaultValue = false;
         private const bool TreeAsInitialDefaultValue = false;
 
-        private int _additionalPoints = AdditionalPointsDefaultValue;
+        private int _additionalPoints = -1;
         /// <summary>
         /// Gets or sets the number of points on top of those provided by level that
         /// the solver can use.
