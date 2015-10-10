@@ -3,22 +3,23 @@ using System.Collections.Generic;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
+    /// <summary>
+    /// Type of nodes used for the Priority Queue.
+    /// The nodes of this edge are represented by the value of <see cref="GraphNode.DistancesIndex"/>.
+    /// </summary>
+    public class LinkedGraphEdge : LinkedListPriorityQueueNode<LinkedGraphEdge>
+    {
+        public readonly int Inside, Outside;
+
+        public LinkedGraphEdge(int inside, int outside)
+        {
+            Inside = inside;
+            Outside = outside;
+        }
+    }
+
     public class MinimalSpanningTree
     {
-        /// <summary>
-        /// Type of nodes used for the Priority Queue in Span.
-        /// The nodes of this edge are represented by the value of <see cref="GraphNode.DistancesIndex"/>.
-        /// </summary>
-        private class QueueNode : LinkedListPriorityQueueNode<QueueNode>
-        {
-            public readonly int Inside, Outside;
-
-            public QueueNode(int inside, int outside)
-            {
-                Inside = inside;
-                Outside = outside;
-            }
-        }
 
         private readonly List<GraphNode> _mstNodes;
 
@@ -29,7 +30,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         /// <summary>
         /// Returns the edges which span this tree.
-        /// Only set after <see cref="Span"/> has been called.
+        /// Only set after <see cref="Span(GraphNode)"/> or <see cref="Span(LinkedGraphEdge)"/> has been called.
         /// </summary>
         public List<GraphEdge> SpanningEdges { get; private set; }
 
@@ -71,11 +72,12 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         /// <summary>
         ///  Uses Prim's algorithm to build an MST spanning the mstNodes.
+        ///  O(|mstNodes|^2) runtime.
         /// </summary>
         /// <param name="startFrom">A GraphNode to start from.</param>
         public void Span(GraphNode startFrom)
         {
-            var adjacentEdgeQueue = new LinkedListPriorityQueue<QueueNode>(100);
+            var adjacentEdgeQueue = new LinkedListPriorityQueue<LinkedGraphEdge>(100);
 
             var startIndex = startFrom.DistancesIndex;
             // All nodes that are not yet included.
@@ -91,7 +93,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 if (index != startIndex)
                 {
                     toAdd.Add(index);
-                    var adjacentEdge = new QueueNode(startIndex, index);
+                    var adjacentEdge = new LinkedGraphEdge(startIndex, index);
                     adjacentEdgeQueue.Enqueue(adjacentEdge, _distances[startIndex, index]);
                 }
             }
@@ -100,7 +102,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             while (toAdd.Count > 0 && adjacentEdgeQueue.Count > 0)
             {
                 int newIn;
-                QueueNode shortestEdge;
+                LinkedGraphEdge shortestEdge;
                 // Dequeue and ignore edges that are already inside the MST.
                 // Add the first one that is not.
                 do
@@ -123,12 +125,53 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     }
                     else
                     {
-                        var edge = new QueueNode(newIn, otherNode);
+                        var edge = new LinkedGraphEdge(newIn, otherNode);
                         adjacentEdgeQueue.Enqueue(edge, _distances[newIn, otherNode]);
                     }
                 }
             }
 
+            SpanningEdges = mstEdges;
+            IsSpanned = true;
+        }
+        
+        /// <summary>
+        /// Uses Kruskal's algorithm to build an MST spanning the mstNodes
+        /// with the given edges as a linked list ordered by priority ascending.
+        /// The edges don't need to contain only nodes given to this instance
+        /// via constructor.
+        /// O(|edges|) runtime.
+        /// </summary>
+        /// <param name="first">First edge of the linked list.</param>
+        /// <remarks>
+        /// Both Span methods have quadratic runtime in the graph nodes. This one
+        /// has a lower constant factor but needs to filter out unneeded edges (quadratic
+        /// in all nodes), the other one doesn't need to do any filtering (quadratic in
+        /// considered nodes) so if the mst nodes are generally only a very small
+        /// portion of all nodes, use the other Span method, if not, use this one.
+        /// </remarks>
+        public void Span(LinkedGraphEdge first)
+        {
+            var mstEdges = new List<GraphEdge>(_mstNodes.Count);
+            var set = new DisjointSet(_distances.CacheSize);
+            var considered = new bool[_distances.CacheSize];
+            var toAddCount = _mstNodes.Count - 1;
+            foreach (var t in _mstNodes)
+            {
+                considered[t.DistancesIndex] = true;
+            }
+            for (var current = first; current != null; current = current.Next)
+            {
+                var inside = current.Inside;
+                var outside = current.Outside;
+                // This condition is by far the bottleneck of the method.
+                // (most likely because branch prediction can't predict the result)
+                if (!considered[inside] | !considered[outside]) continue;
+                if (set.Find(inside) == set.Find(outside)) continue;
+                mstEdges.Add(new GraphEdge(_distances.IndexToNode(inside), _distances.IndexToNode(outside)));
+                set.Union(inside, outside);
+                if (--toAddCount == 0) break;
+            }
             SpanningEdges = mstEdges;
             IsSpanned = true;
         }

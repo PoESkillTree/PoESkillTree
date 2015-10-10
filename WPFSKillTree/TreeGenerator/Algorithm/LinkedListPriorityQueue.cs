@@ -35,7 +35,7 @@
     public class LinkedListPriorityQueue<T>
         where T : LinkedListPriorityQueueNode<T>
     {
-        private T _first;
+        public T First { get; private set; }
 
         private T _last;
 
@@ -74,12 +74,12 @@
             node.Priority = priority;
             if (Count++ == 0)
             {
-                _first = _last = node;
+                First = _last = node;
             }
-            else if (priority < _first.Priority)
+            else if (priority < First.Priority)
             {
-                node.Next = _first;
-                _first = node;
+                node.Next = First;
+                First = node;
             }
             else if (priority >= _last.Priority)
             {
@@ -105,15 +105,15 @@
         /// </summary>
         public T Dequeue()
         {
-            var node = _first;
+            var node = First;
             if (Count-- == 1)
             {
-                _first = null;
+                First = null;
                 _last = null;
             }
             else
             {
-                _first = node.Next;
+                First = node.Next;
             }
             node.Next = null;
             var prio = node.Priority;

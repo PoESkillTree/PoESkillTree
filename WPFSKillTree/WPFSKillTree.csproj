@@ -206,6 +206,7 @@
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="TreeGenerator\Algorithm\BitArrayKey.cs" />
+    <Compile Include="TreeGenerator\Algorithm\DisjointSet.cs" />
     <Compile Include="TreeGenerator\Algorithm\DistanceLookup.cs" />
     <Compile Include="TreeGenerator\Algorithm\GeneticAlgorithm.cs" />
     <Compile Include="TreeGenerator\Algorithm\Graphs.cs" />

@@ -162,6 +162,17 @@ namespace POESKillTree.TreeGenerator.Solver
         protected bool FinalHillClimbEnabled { private get; set; }
 
         /// <summary>
+        /// Minimum ratio of number of target nodes to search space + target nodes
+        /// to use a pre filled edge queue (that contains all possible edges) for mst calculation.
+        /// </summary>
+        private const double PreFilledSpanThreshold = 1.0 / 10;
+
+        /// <summary>
+        /// First edge of the linked list of edges ordered by priority.
+        /// </summary>
+        private LinkedGraphEdge _firstEdge;
+
+        /// <summary>
         /// Creates a new, uninitialized instance.
         /// </summary>
         /// <param name="tree">The (not null) skill tree in which to optimize.</param>
@@ -221,6 +232,19 @@ namespace POESKillTree.TreeGenerator.Solver
             var remainingNodes = SearchSpace.Concat(TargetNodes).ToList();
             remainingNodes.Add(StartNodes);
             Distances.RemoveNodes(removedNodes, remainingNodes);
+
+            if (_targetNodes.Count/(double) remainingNodes.Count >= PreFilledSpanThreshold)
+            {
+                var prioQueue = new LinkedListPriorityQueue<LinkedGraphEdge>(100);
+                for (var i = 0; i < remainingNodes.Count; i++)
+                {
+                    for (var j = i + 1; j < remainingNodes.Count; j++)
+                    {
+                        prioQueue.Enqueue(new LinkedGraphEdge(i, j), Distances[i, j]);
+                    }
+                }
+                _firstEdge = prioQueue.First;
+            }
 
             InitializeGa();
 
@@ -452,9 +476,7 @@ namespace POESKillTree.TreeGenerator.Solver
             if ((_bestDna == null) || (GeneticAlgorithm.SetBits(_ga.GetBestDNA().Xor(_bestDna)) != 0))
             {
                 _bestDna = _ga.GetBestDNA();
-                var bestMst = DnaToMst(_bestDna);
-                bestMst.Span(StartNodes);
-                BestSolution = SpannedMstToSkillnodes(bestMst);
+                BestSolution = SpannedMstToSkillnodes(DnaToSpannedMst(_bestDna));
             }
         }
 
@@ -484,7 +506,7 @@ namespace POESKillTree.TreeGenerator.Solver
             return newSkilledNodes;
         }
 
-        private MinimalSpanningTree DnaToMst(BitArray dna)
+        private MinimalSpanningTree DnaToSpannedMst(BitArray dna)
         {
             var mstNodes = new List<GraphNode>();
             for (var i = 0; i < dna.Length; i++)
@@ -496,14 +518,17 @@ namespace POESKillTree.TreeGenerator.Solver
             mstNodes.Add(StartNodes);
             mstNodes.AddRange(_targetNodes);
 
-            return new MinimalSpanningTree(mstNodes, Distances);
+            var mst = new MinimalSpanningTree(mstNodes, Distances);
+            if (_firstEdge != null)
+                mst.Span(_firstEdge);
+            else
+                mst.Span(StartNodes);
+            return mst;
         }
 
         private double FitnessFunction(BitArray dna)
         {
-            var mst = DnaToMst(dna);
-            mst.Span(StartNodes);
-            return FitnessFunction(mst.GetUsedNodes());
+            return FitnessFunction(DnaToSpannedMst(dna).GetUsedNodes());
         }
 
         /// <summary>
