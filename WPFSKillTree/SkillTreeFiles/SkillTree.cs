@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using POESKillTree.Localization;
 using POESKillTree.Utils;
-using POESKillTree.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,13 +11,14 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
+using POESKillTree.TreeGenerator.ViewModels;
+using POESKillTree.TreeGenerator.Views;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
-using MessageBox = POESKillTree.Views.MetroMessageBox;
 
 namespace POESKillTree.SkillTreeFiles
 {
-    public partial class SkillTree
+    public partial class SkillTree : Notifier
     {
         public delegate void UpdateLoadingWindow(double current, double max);
 
@@ -59,7 +59,7 @@ namespace POESKillTree.SkillTreeFiles
             {"#% Critical Strike Chance Increase per Power Charge", 50},
         };
 
-        private static readonly Dictionary<string, List<string>> _hybridAttributes = new Dictionary<string, List<string>>
+        public static readonly Dictionary<string, List<string>> HybridAttributes = new Dictionary<string, List<string>>
         {
             {
                "+# to Strength and Intelligence", 
@@ -139,6 +139,15 @@ namespace POESKillTree.SkillTreeFiles
             get { return SkillTree._Skillnodes; }
         }
 
+        private static string[] _allAttributes;
+        /// <summary>
+        /// Gets an Array of all the attributes of SkillNodes.
+        /// </summary>
+        public static string[] AllAttributes
+        {
+            get { return _allAttributes ?? (_allAttributes = Skillnodes.Values.SelectMany(n => n.Attributes.Keys).Distinct().ToArray()); }
+        }
+
         private static Dictionary<string, float>[] _CharBaseAttributes;
 
         public static Dictionary<string, float>[] CharBaseAttributes
@@ -193,17 +202,18 @@ namespace POESKillTree.SkillTreeFiles
         private static readonly List<ushort[]> _links = new List<ushort[]>();
 
         public Window MainWindow;
-
-        public HashSet<ushort> AvailNodes = new HashSet<ushort>();
-
+        
         public HashSet<ushort> SkilledNodes = new HashSet<ushort>();
 
         public HashSet<ushort> HighlightedNodes = new HashSet<ushort>();
 
         private int _chartype;
-        private List<SkillNode> _highlightnodes;
+        
+        public static int UndefinedLevel { get { return 0; } }
 
-        private int _level = 1;
+        public static int MaximumLevel { get { return 100; } }
+
+        private int _level = UndefinedLevel;
 
 
         private static bool _Initialized = false;
@@ -472,7 +482,7 @@ namespace POESKillTree.SkillTreeFiles
         public int Level
         {
             get { return _level; }
-            set { _level = value; }
+            set { SetProperty(ref _level, value); }
         }
 
         public int Chartype
@@ -497,7 +507,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             get
             {
-                return GetAttributes(SkilledNodes, Chartype, _level);
+                return GetAttributes(SkilledNodes, Chartype, Level);
             }
         }
 
@@ -650,7 +660,6 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             SkilledNodes = skilled_reachable;
-            AvailNodes = new HashSet<ushort>();
             UpdateAvailNodes();
         }
 
@@ -784,7 +793,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 _nodeHighlighter.HighlightNode(node, HighlightState.Checked);
             }
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         /// <summary>
@@ -808,7 +817,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 _nodeHighlighter.HighlightNode(node, HighlightState.Crossed);
             }
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         /// <param name="search">The string to search each node name and attribute for.</param>
@@ -820,7 +829,7 @@ namespace POESKillTree.SkillTreeFiles
             if (search == "")
             {
                 _nodeHighlighter.UnhighlightAllNodes(flag);
-                DrawHighlights(_nodeHighlighter);
+                DrawHighlights();
                 return;
             }
 
@@ -837,7 +846,7 @@ namespace POESKillTree.SkillTreeFiles
                             nd => matchFct(nd.attributes, att => regex.IsMatch(att)) ||
                                   regex.IsMatch(nd.Name) && !nd.IsMastery);
                     _nodeHighlighter.ReplaceHighlights(nodes, flag);
-                    DrawHighlights(_nodeHighlighter);
+                    DrawHighlights();
                 }
                 catch (Exception)
                 {
@@ -852,7 +861,7 @@ namespace POESKillTree.SkillTreeFiles
                         nd => matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
                               nd.Name.ToLowerInvariant().Contains(search) && !nd.IsMastery);
                 _nodeHighlighter.ReplaceHighlights(nodes, flag);
-                DrawHighlights(_nodeHighlighter);
+                DrawHighlights();
             }
         }
 
@@ -864,19 +873,19 @@ namespace POESKillTree.SkillTreeFiles
         public void UntagAllNodes()
         {
             _nodeHighlighter.UnhighlightAllNodes(HighlightState.Tags);
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         public void CheckAllHighlightedNodes()
         {
             _nodeHighlighter.HighlightNodesIf(HighlightState.Checked, HighlightState.Highlights);
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         public void CrossAllHighlightedNodes()
         {
             _nodeHighlighter.HighlightNodesIf(HighlightState.Crossed, HighlightState.Highlights);
-            DrawHighlights(_nodeHighlighter);
+            DrawHighlights();
         }
 
         public static Dictionary<string, List<float>> ImplicitAttributes(Dictionary<string, List<float>> attribs, int level)
@@ -1000,55 +1009,68 @@ namespace POESKillTree.SkillTreeFiles
             return Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
-        public void SkillAllTaggedNodes()
+        /// <summary>
+        /// Returns all currently Check-tagged nodes.
+        /// </summary>
+        public HashSet<ushort> GetCheckedNodes()
         {
-            if (_nodeHighlighter == null)
-                return;
             var nodes = new HashSet<ushort>();
-            var toOmit = new HashSet<ushort>();
             foreach (var entry in _nodeHighlighter.nodeHighlights)
             {
-                if (!(rootNodeList.Contains(entry.Key.Id) || SkilledNodes.Contains(entry.Key.Id)))
+                if (!rootNodeList.Contains(entry.Key.Id) && entry.Value.HasFlag(HighlightState.Checked))
                 {
-                    // Crossed has precedence.
-                    if (entry.Value.HasFlag(HighlightState.Crossed))
-                    {
-                        toOmit.Add(entry.Key.Id);
-                    }
-                    else if (entry.Value.HasFlag(HighlightState.Checked))
-                    {
-                        nodes.Add(entry.Key.Id);
-                    }
+                    nodes.Add(entry.Key.Id);
                 }
             }
-            SkillNodeList(nodes, toOmit);
+            return nodes;
         }
 
-        private void SkillNodeList(HashSet<ushort> targetNodeIds, HashSet<ushort> omitNodeIds)
+        /// <summary>
+        /// Returns all currently Cross-tagged nodes.
+        /// </summary>
+        public HashSet<ushort> GetCrossedNodes()
         {
-            if (targetNodeIds.Count == 0)
+            var nodes = new HashSet<ushort>();
+            foreach (var entry in _nodeHighlighter.nodeHighlights)
+            {
+                if (!rootNodeList.Contains(entry.Key.Id) && entry.Value.HasFlag(HighlightState.Crossed))
+                {
+                    nodes.Add(entry.Key.Id);
+                }
+            }
+            return nodes;
+        }
+
+        public void SkillAllTaggedNodes()
+        {
+            if (!GetCheckedNodes().Except(SkilledNodes).Any())
             {
                 Popup.Info(L10n.Message("Please tag non-skilled nodes by right-clicking them."));
                 return;
             }
 
-            /// These are used for visualization of the simulation progress, so
-            /// they're saved for restoring them afterwards.
-            var savedHighlights = HighlightedNodes;
+            try
+            {
+                // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
+                var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this));
+                settingsVm.StartController += (sender, args) =>
+                {
+                    var dialog = new ControllerWindow() {Owner = MainWindow, DataContext = args.ViewModel};
+                    dialog.ShowDialog();
+                };
+                settingsVm.RunCommand.Execute(null);
+            }
+            catch (Exception e)
+            {
+                Popup.Error(L10n.Message("Error while trying to find solution"), e.Message);
+                Debug.WriteLine("Exception in 'Skill Tagged Nodes':");
+                Debug.WriteLine(e.Message);
+            }
+        }
 
-            OptimizerControllerWindow optimizerDialog = new OptimizerControllerWindow(this, targetNodeIds, omitNodeIds);
-            optimizerDialog.Owner = MainWindow;
-            optimizerDialog.ShowDialog();
-            if (optimizerDialog.DialogResult == true)
-                foreach (ushort node in optimizerDialog.bestSoFar)
-                    SkilledNodes.Add(node);
-
-            HighlightedNodes = savedHighlights;
-            DrawNodeBaseSurroundHighlight();
-
-            this.DrawHighlights(_nodeHighlighter);
-
-            UpdateAvailNodes();
+        public ushort GetCharNodeId()
+        {
+            return (ushort)rootNodeClassDictionary[CharName[_chartype]];
         }
 
         /// <summary>
@@ -1070,8 +1092,6 @@ namespace POESKillTree.SkillTreeFiles
 
         public void UpdateAvailNodes(bool draw = true)
         {
-            AvailNodes = GetAvailableNodes(SkilledNodes);
-            
             if (draw)
                 UpdateAvailNodesDraw();
         }
@@ -1113,12 +1133,12 @@ namespace POESKillTree.SkillTreeFiles
             DrawNodeSurround();
         }
 
-        private static Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
+        public static Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
         {
             foreach (var attribute in attributes.ToList())
             {
                 List<string> expandedAttributes;
-                if (_hybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
+                if (HybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
                 {
                     attributes.Remove(attribute.Key);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -25,7 +26,10 @@ using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.TreeGenerator.ViewModels;
+using POESKillTree.TreeGenerator.Views;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Converter;
 using POESKillTree.ViewModels;
 using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
@@ -93,8 +97,19 @@ namespace POESKillTree.Views
             }
         }
 
+        private SkillTree _tree;
 
-        protected SkillTree Tree;
+        public SkillTree Tree
+        {
+            get { return _tree; }
+            private set
+            {
+                _tree = value;
+                value.MainWindow = this;
+                LevelUpDown.DataContext = _tree;
+            }
+        }
+
         private Vector2D _addtransform;
         private bool _justLoaded;
         private string _lasttooltip;
@@ -140,6 +155,10 @@ namespace POESKillTree.Views
                 }
             }
         }
+
+        private SettingsWindow _settingsWindow;
+
+        private bool _isClosing;
 
         public MainWindow()
         {
@@ -188,7 +207,6 @@ namespace POESKillTree.Views
             SetAccent(_persistentData.Options.Accent);
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
-            Tree.MainWindow = this;
             recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
@@ -297,10 +315,17 @@ namespace POESKillTree.Views
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            _isClosing = true;
+
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
-            _persistentData.CurrentBuild.Level = tbLevel.Text;
+            _persistentData.CurrentBuild.Level = GetLevelAsString();
             _persistentData.SetBuilds(lvSavedBuilds.Items);
             _persistentData.StashBookmarks = Stash.Bookmarks.ToList();
+
+            if (_settingsWindow != null)
+            {
+                _settingsWindow.Close();
+            }
         }
 
         #endregion
@@ -368,6 +393,41 @@ namespace POESKillTree.Views
         private void Menu_CrossAllHighlightedNodes(object sender, RoutedEventArgs e)
         {
             Tree.CrossAllHighlightedNodes();
+        }
+
+        private void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (_settingsWindow == null)
+                {
+                    var vm = new SettingsViewModel(Tree);
+                    vm.RunFinished += (o, args) =>
+                    {
+                        UpdateUI();
+                        tbSkillURL.Text = Tree.SaveToURL();
+                    };
+                    vm.StartController += (o, args) =>
+                    {
+                        var dialog = new ControllerWindow() {Owner = this, DataContext = args.ViewModel};
+                        dialog.ShowDialog();
+                    };
+                    _settingsWindow = new SettingsWindow() {Owner = this, DataContext = vm};
+                    _settingsWindow.Closing += (o, args) =>
+                    {
+                        if (_isClosing) return;
+                        args.Cancel = true;
+                        _settingsWindow.Hide();
+                    };
+                }
+                _settingsWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                Popup.Error(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
+                Debug.WriteLine("Exception in 'Skill Tree Generator':");
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         private void Menu_ScreenShot(object sender, RoutedEventArgs e)
@@ -686,11 +746,22 @@ namespace POESKillTree.Views
             tbSkillURL.Text = Tree.SaveToURL();
         }
 
-        private void tbLevel_TextChanged(object sender, TextChangedEventArgs e)
+        private string GetLevelAsString()
+        {
+            return Tree.Level.ToString(CultureInfo.CurrentCulture);
+        }
+
+        private void SetLevelFromString(string s)
         {
             int lvl;
-            if (!int.TryParse(tbLevel.Text, out lvl)) return;
-            Tree.Level = lvl;
+            if (int.TryParse(s, out lvl))
+            {
+                Tree.Level = lvl;
+            }
+        }
+
+        private void Level_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> args)
+        {
             UpdateUI();
         }
 
@@ -1276,7 +1347,7 @@ namespace POESKillTree.Views
                 selectedBuild.Class = cbCharType.Text;
                 selectedBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
                 selectedBuild.AccountName = _persistentData.CurrentBuild.AccountName;
-                selectedBuild.Level = tbLevel.Text;
+                selectedBuild.Level = GetLevelAsString();
                 selectedBuild.PointsUsed = tbUsedPoints.Text;
                 selectedBuild.Url = tbSkillURL.Text;
                 selectedBuild.ItemData = _persistentData.CurrentBuild.ItemData;
@@ -1335,7 +1406,7 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild = PoEBuild.Copy(build);
 
             tbSkillURL.Text = build.Url;
-            tbLevel.Text = build.Level;
+            SetLevelFromString(build.Level);
             LoadItemData(build.ItemData);
         }
 
@@ -1349,7 +1420,7 @@ namespace POESKillTree.Views
                 var newBuild = new PoEBuild
                 {
                     Name = formBuildName.GetBuildName(),
-                    Level = tbLevel.Text,
+                    Level = GetLevelAsString(),
                     Class = cbCharType.Text,
                     PointsUsed = tbUsedPoints.Text,
                     Url = tbSkillURL.Text,

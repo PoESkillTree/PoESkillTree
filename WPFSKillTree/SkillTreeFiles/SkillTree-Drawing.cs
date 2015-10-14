@@ -44,8 +44,8 @@ namespace POESKillTree.SkillTreeFiles
         {
             get { return SkillTree._StartBackgrounds; }
         }
-        // FIXME: private
-        public NodeHighlighter _nodeHighlighter = new NodeHighlighter();
+        
+        private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
 
         public DrawingVisual SkillTreeVisual;
         public DrawingVisual picActiveLinks;
@@ -239,9 +239,9 @@ namespace POESKillTree.SkillTreeFiles
                 30, colorBrush);
         }
 
-        public void DrawHighlights(NodeHighlighter nh)
+        public void DrawHighlights()
         {
-            var hpen = new Pen(Brushes.White, 20);
+            var nh = _nodeHighlighter;
             var crossPen = new Pen(Brushes.Red, 20);
             var checkPen = new Pen(Brushes.Lime, 20);
             using (DrawingContext dc = picHighlights.RenderOpen())
@@ -254,6 +254,8 @@ namespace POESKillTree.SkillTreeFiles
                     // These should not appear together, so not checking for their conjunction.
                     if (hs != HighlightState.Crossed && hs != HighlightState.Checked)
                     {
+                        Pen hpen;
+                        
                         // If it has FromHover, don't mix it with the other highlights.
                         if (hs.HasFlag(HighlightState.FromHover))
                         {

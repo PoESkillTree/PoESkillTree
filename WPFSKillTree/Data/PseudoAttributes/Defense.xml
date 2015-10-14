@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Defense pseudo attributes -->
+<PseudoAttributes>
+	<PseudoAttribute Name="+#% to all Elemental Resistances" Group="Defense">
+		<Attribute Name="+#% to all Elemental Resistances" />
+		<Attribute Name="+#% Elemental Resistances while holding a Shield">
+			<Conditions><OffHand>Shield</OffHand></Conditions>
+		</Attribute>
+	</PseudoAttribute>
+	<PseudoAttribute Name="+#% to Fire Resistance" Group="Defense">
+		<Attribute Name="+#% to Fire Resistance" />
+		<PseudoAttribute Name="+#% to all Elemental Resistances" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="+#% to Cold Resistance" Group="Defense">
+		<Attribute Name="+#% to Cold Resistance" />
+		<PseudoAttribute Name="+#% to all Elemental Resistances" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="+#% to Lightning Resistance" Group="Defense">
+		<Attribute Name="+#% to Lightning Resistance" />
+		<PseudoAttribute Name="+#% to all Elemental Resistances" />
+	</PseudoAttribute>
+	
+	<PseudoAttribute Name="#% additional Chance to Block" Group="Defense">
+		<Attribute Name="#% additional Chance to Block with Shields">
+			<Conditions><OffHand>Shield</OffHand></Conditions>
+		</Attribute>
+		<Attribute Name="#% additional Block Chance while Dual Wielding">
+			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
+		</Attribute>
+		<Attribute Name="#% additional Block Chance while Dual Wielding or holding a Shield">
+			<Conditions>
+				<OffHand>Dual Wield</OffHand>
+				<OffHand>Shield</OffHand>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% additional Block Chance with Staves">
+			<Conditions><WeaponClass>Staff</WeaponClass></Conditions>
+		</Attribute>
+	</PseudoAttribute>
+	
+	<PseudoAttribute Name="#% increased maximum Energy Shield" Group="Defense">
+		<Attribute Name="#% increased maximum Energy Shield" />
+		<Attribute Name="+# to Intelligence" ConversionMultiplier="0.2" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Armour" Group="Defense">
+		<Attribute Name="#% increased Armour" />
+		<Attribute Name="#% increased Evasion Rating and Armour" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Evasion Rating" Group="Defense">
+		<Attribute Name="#% increased Evasion Rating" />
+		<Attribute Name="+# to Dexterity" ConversionMultiplier="0.2" />
+		<Attribute Name="#% increased Evasion Rating and Armour" />
+		<Attribute Name="#% increased Armour">
+			<Conditions><Keystone>Iron Reflexes</Keystone></Conditions>
+		</Attribute>
+	</PseudoAttribute>
+</PseudoAttributes>

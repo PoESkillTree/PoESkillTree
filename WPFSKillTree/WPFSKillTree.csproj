@@ -73,8 +73,9 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <WarningLevel>0</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -203,18 +204,57 @@
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\DistanceLookup.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\GeneticAlgorithm.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\Graphs.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\HeapPriorityQueue.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\IPriorityQueue.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\MinimalSpanningTree.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\PriorityQueueNode.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\Steiner.cs" />
-    <Compile Include="SkillTreeFiles\SteinerTrees\WeightedSampling.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
+    <Compile Include="TreeGenerator\Algorithm\BitArrayKey.cs" />
+    <Compile Include="TreeGenerator\Algorithm\DisjointSet.cs" />
+    <Compile Include="TreeGenerator\Algorithm\DistanceLookup.cs" />
+    <Compile Include="TreeGenerator\Algorithm\GeneticAlgorithm.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Graphs.cs" />
+    <Compile Include="TreeGenerator\Algorithm\HillClimber.cs" />
+    <Compile Include="TreeGenerator\Algorithm\LinkedListPriorityQueue.cs" />
+    <Compile Include="TreeGenerator\Algorithm\MinimalSpanningTree.cs" />
+    <Compile Include="TreeGenerator\Algorithm\WeightedSampling.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributes\Attribute.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributes\Conditions.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs" />
+    <Compile Include="TreeGenerator\Model\TargetWeightConstraint.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributes\ConditionSettings.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributes\OffHand.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributes\PseudoAttribute.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributes\PseudoAttributeSerialization.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributes\Tags.cs" />
+    <Compile Include="TreeGenerator\Model\PseudoAttributes\WeaponClass.cs" />
+    <Compile Include="TreeGenerator\Settings\AdvancedSolverSettings.cs" />
+    <Compile Include="TreeGenerator\Settings\AutomatedSolverSettings.cs" />
+    <Compile Include="TreeGenerator\Settings\SolverSettings.cs" />
+    <Compile Include="TreeGenerator\Solver\AbstractSolver.cs" />
+    <Compile Include="TreeGenerator\Solver\AdvancedSolver.cs" />
+    <Compile Include="TreeGenerator\Solver\SteinerSolver.cs" />
+    <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\CloseableViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
+    <Compile Include="TreeGenerator\ViewModels\ViewModelBase.cs" />
+    <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
+      <DependentUpon>AdvancedGeneratorTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml.cs">
+      <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\Converter\BoolConverter.cs" />
+    <Compile Include="Utils\Converter\EnumConverter.cs" />
+    <Compile Include="Utils\Converter\GroupStringConverter.cs" />
+    <Compile Include="Utils\Converter\NumberLessStringComparer.cs" />
+    <Compile Include="Utils\EnumExtensions.cs" />
+    <Compile Include="Utils\Notifier.cs" />
+    <Compile Include="Utils\ThreadSafeRandom.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
+    <Compile Include="Utils\DialogCloser.cs" />
+    <Compile Include="Utils\EventHandlerExtensions.cs" />
     <Compile Include="Utils\Helpers.cs" />
     <Compile Include="Utils\ItemAssetDownloader.cs" />
     <Compile Include="Utils\Popup.cs" />
@@ -235,10 +275,15 @@
     <Compile Include="ViewModels\Attribute.cs" />
     <Compile Include="Controls\DragAdorner.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
-    <Compile Include="Utils\GroupStringConverter.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
     <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\Converters.cs" />
+    <Compile Include="TreeGenerator\Views\ControllerWindow.xaml.cs">
+      <DependentUpon>ControllerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TreeGenerator\Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CraftWindow.xaml.cs">
       <DependentUpon>CraftWindow.xaml</DependentUpon>
     </Compile>
@@ -257,7 +302,6 @@
     <Compile Include="Views\LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\NumberLessStringComparer.cs" />
     <Compile Include="ViewModels\PoEBuild.cs" />
     <Compile Include="SkillTreeFiles\PoESkillTree.cs" />
     <Compile Include="SkillTreeFiles\Point2D.cs" />
@@ -276,10 +320,22 @@
     <Compile Include="Views\MetroMessageBoxWindow.xaml.cs">
       <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\OptimizerControllerWindow.xaml.cs">
-      <DependentUpon>OptimizerControllerWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeGenerator\Views\ControllerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeGenerator\Views\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="Views\TabPicker.xaml.cs">
       <DependentUpon>TabPicker.xaml</DependentUpon>
     </Compile>
@@ -358,10 +414,6 @@
     <Page Include="Views\MetroMessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\OptimizerControllerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TabPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -484,12 +536,31 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Antlr3.Runtime.dll" />
+    <Resource Include="TreeGenerator\ideas_todos.txt" />
     <None Include="Data\Equipment\Affixlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Data\Equipment\Itemlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Data\PseudoAttributes\Crit.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PseudoAttributes\Custom.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PseudoAttributes\Damage.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PseudoAttributes\Defense.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PseudoAttributes\Other.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PseudoAttributes\Speed.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ExpressionEvaluator.dll" />
     <Content Include="ExpressionEvaluator.pdb" />
     <Resource Include="Images\EquipmentUI\Inventory.png" />
@@ -585,6 +656,7 @@
       <Name>WpfRangeControls</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)</PostBuildEvent>
