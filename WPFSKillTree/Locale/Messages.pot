@@ -13,119 +13,115 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:41
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:64 Views\MainWindow.xaml:671
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:671
 msgid "Attributes"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:49
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:107
 msgid "Load from tree"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:115
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:214
-msgid "Target"
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:110
+msgid "Convert to Pseudo Attributes"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:121
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:219
-msgid "Weight"
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:112
+msgid "Converts the attributes to pseudo attributes where possible using the defined settings."
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:165
-msgid "Pseudo Attributes"
-msgstr ""
-
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:200
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:137
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:228
 msgid "Add"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:209
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:146
+msgid "Attribute"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:151
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:242
+msgid "Target"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:163
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:254
+msgid "Weight"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:193
+msgid "Pseudo Attributes"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:237
 msgid "Pseudo attribute"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:259
-msgid "Combined Attributes"
-msgstr ""
-
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:262
-msgid "Not enabled in 'Tree only' mode."
-msgstr ""
-
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:268
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:295
 msgid "Settings"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:290
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:313
 msgid "Tree + Items"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:293
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:316
 msgid "Tree only"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:296
-msgid "'Tree + Items' mode is not yet implemented."
-msgstr ""
-
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:301
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:323
 msgid "Reload Pseudo Attributes from filesystem"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:306
-msgid "Weapon class:"
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:329
+msgid "Weapon class"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:319
-msgid "Off hand:"
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:344
+msgid "Off hand"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:333
-msgid "Tags:"
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:367
+msgid "Tags"
 msgstr ""
 
-#: TreeGenerator\Views\ControllerWindow.xaml:34
+#: TreeGenerator\Views\ControllerWindow.xaml:36
 msgid "Finding optimal Skill tree..."
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:31
+#: TreeGenerator\Views\SettingsWindow.xaml:33
 msgid "Level:"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:38
+#: TreeGenerator\Views\SettingsWindow.xaml:40
 msgid "Additional points:"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:44
+#: TreeGenerator\Views\SettingsWindow.xaml:46
 msgid "Total points:"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:50
+#: TreeGenerator\Views\SettingsWindow.xaml:52
 msgid "include Check-tagged nodes"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:53
+#: TreeGenerator\Views\SettingsWindow.xaml:55
 msgid "exclude Cross-tagged nodes"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:56
+#: TreeGenerator\Views\SettingsWindow.xaml:58
 msgid "only search in current tree"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:59
+#: TreeGenerator\Views\SettingsWindow.xaml:61
 msgid "current tree as initial solution"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:63
+#: TreeGenerator\Views\SettingsWindow.xaml:65
 msgid "Run"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:66 Views\MainWindow.xaml:534
+#: TreeGenerator\Views\SettingsWindow.xaml:68 Views\MainWindow.xaml:534
 msgid "Reset"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:76
-msgid "'Automated' Solver is not yet implemented."
 msgstr ""
 
 #: Views\AboutWindow.xaml:12
@@ -581,7 +577,7 @@ msgid "Character Sheet"
 msgstr ""
 
 #: Views\MainWindow.xaml:757 SkillTreeFiles\Compute.cs:2296
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:46
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:86
 #: Utils\Converter\GroupStringConverter.cs:28
 msgid "Defense"
 msgstr ""
@@ -680,81 +676,81 @@ msgstr ""
 msgid "Nested PseudoAttribute {0} does not exist as top level PseudoAttribute"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:39
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:72
 msgid "Popular"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:41
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:81
 #: Utils\Converter\GroupStringConverter.cs:30
 msgid "Core Attributes"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:42
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:82
 #: Utils\Converter\GroupStringConverter.cs:27
 msgid "General"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:43
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:83
 #: Utils\Converter\GroupStringConverter.cs:16
 msgid "Keystone"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:44
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:84
 #: Utils\Converter\GroupStringConverter.cs:18
 msgid "Charges"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:47
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:87
 #: Utils\Converter\GroupStringConverter.cs:26
 msgid "Block"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:48
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:88
 #: Utils\Converter\GroupStringConverter.cs:25
 msgid "Shield"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:50
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:90
 #: Utils\Converter\GroupStringConverter.cs:17
 msgid "Weapon"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:51
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:91
 #: Utils\Converter\GroupStringConverter.cs:29
 msgid "Spell"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:52
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:92
 #: Utils\Converter\GroupStringConverter.cs:24
 msgid "Critical Strike"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:54
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:94
 #: Utils\Converter\GroupStringConverter.cs:23
 msgid "Aura"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:55
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:95
 #: Utils\Converter\GroupStringConverter.cs:22
 msgid "Curse"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:56
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:96
 #: Utils\Converter\GroupStringConverter.cs:19
 msgid "Minion"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:57
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:97
 #: Utils\Converter\GroupStringConverter.cs:20
 msgid "Trap"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:58
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:98
 #: Utils\Converter\GroupStringConverter.cs:21
 msgid "Totem"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:363
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:446
 msgid "Advanced"
 msgstr ""
 
@@ -803,10 +799,6 @@ msgstr ""
 
 #: TreeGenerator\ViewModels\SettingsViewModel.cs:161
 msgid "Skill tree Generator"
-msgstr ""
-
-#: TreeGenerator\ViewModels\SettingsViewModel.cs:171
-msgid "Level"
 msgstr ""
 
 #: TreeGenerator\ViewModels\SteinerTabViewModel.cs:22
