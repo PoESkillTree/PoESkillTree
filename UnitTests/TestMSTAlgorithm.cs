@@ -109,7 +109,7 @@ namespace UnitTests
             
             try
             {
-                distances.CalculateFully(mstNodes2);
+                var _ = distances[mstNodes2[0], mstNodes2[3]];
             }
             catch (GraphNotConnectedException)
             {
