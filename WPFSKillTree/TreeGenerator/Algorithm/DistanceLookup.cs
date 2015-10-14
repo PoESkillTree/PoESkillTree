@@ -59,6 +59,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// traversed).</returns>
         /// <remarks>
         ///  If CalculateFully has been called and the nodes are not connected, 0 will be returned.
+        ///  If CalculateFully has been called and the nodes were not both passed to it, a IndexOutOfRangeException will be thrown.
         ///  If CalculateFully has not been called and the nodes are not connected, a GraphNotConnectedException will be thrown.
         /// </remarks>
         public int this[GraphNode a, GraphNode b]
@@ -99,6 +100,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <returns>The shortest path from a to b, not containing either and ordered from a to b or b to a.</returns>
         /// <remarks>
         ///  If CalculateFully has been called and the nodes are not connected, null will be returned.
+        ///  If CalculateFully has been called and the nodes were not both passed to it, a IndexOutOfRangeException will be thrown.
         ///  If CalculateFully has not been called and the nodes are not connected, a GraphNotConnectedException will be thrown.
         /// </remarks>
         public ushort[] GetShortestPath(GraphNode a, GraphNode b)
@@ -161,7 +163,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// Sets DistancesIndex of the nodes as incremental index in the cache starting from 0.
         /// </summary>
         /// <remarks>Calls to GetDistance and GetShortestPath after this method
-        /// has been called must already be cached or exceptions will be thrown.</remarks>
+        /// has been called must already be cached.</remarks>
         public void CalculateFully(List<GraphNode> nodes)
         {
             if (nodes == null) throw new ArgumentNullException("nodes");
