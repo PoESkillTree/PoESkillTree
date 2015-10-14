@@ -197,7 +197,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 new AdvancedTabViewModel(_tree),
                 new AutomatedTabViewModel(_tree),
-                new SteinerTabViewModel(_tree) // TODO this one should be removed at some point
+                new SteinerTabViewModel(_tree)
             };
         }
 

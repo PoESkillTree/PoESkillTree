@@ -279,7 +279,8 @@
                 </Grid>
             </TabItem>
 
-            <TabItem metroControls:ControlsHelper.HeaderFontSize="15"
+            <!-- 'Tree + gear' mode not yet implemented -->
+            <!--<TabItem metroControls:ControlsHelper.HeaderFontSize="15"
                      IsEnabled="False" ToolTipService.ShowOnDisabled="True">
                 <TabItem.Header>
                     <l:Catalog Message="Combined Attributes"/>
@@ -287,7 +288,7 @@
                 <TabItem.ToolTip>
                     <l:Catalog Message="Not enabled in 'Tree only' mode."/>
                 </TabItem.ToolTip>
-            </TabItem>
+            </TabItem>-->
 
             <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
                 <TabItem.Header>
@@ -303,19 +304,17 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="200" />
                     </Grid.RowDefinitions>
+                    <!-- 'Tree + gear' mode not yet implemented -->
                     <metroControls:ToggleSwitch Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,0,5"
                                                 HorizontalAlignment="Center"
                                                 IsChecked="{Binding TreePlusItemsMode}"
-                                                IsEnabled="False" ToolTipService.ShowOnDisabled="True">
+                                                Visibility="Collapsed">
                         <metroControls:ToggleSwitch.OnLabel>
                             <l:Catalog Message="Tree + Items"/>
                         </metroControls:ToggleSwitch.OnLabel>
                         <metroControls:ToggleSwitch.OffLabel>
                             <l:Catalog Message="Tree only"/>
                         </metroControls:ToggleSwitch.OffLabel>
-                        <metroControls:ToggleSwitch.ToolTip>
-                            <l:Catalog Message="'Tree + Items' mode is not yet implemented."/>
-                        </metroControls:ToggleSwitch.ToolTip>
                     </metroControls:ToggleSwitch>
 
                     <Button Grid.Column="1" Grid.Row="1" Margin="4,4,4,4"

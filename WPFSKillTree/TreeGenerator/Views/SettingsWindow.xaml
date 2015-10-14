@@ -72,14 +72,13 @@
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
                 <local:AdvancedGeneratorTab/>
             </TabItem>
-            <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}"
-                     IsEnabled="False" ToolTipService.ShowOnDisabled="True">
-                <TabItem.ToolTip>
-                    <l:Catalog Message="'Automated' Solver is not yet implemented."/>
-                </TabItem.ToolTip>
+            <!-- 'Automated' Solver is not yet implemented. -->
+            <!-- <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}">
                 <local:AutomatedGeneratorTab/>
-            </TabItem>
+            </TabItem> -->
             <TabItem DataContext="{Binding Tabs[2]}" Header="{Binding DisplayName}">
+                <TextBlock Margin="10"><l:Catalog Message="Equivalent to 'Tools' -> 'Nodes' -> 'Skill Tagged Nodes'."/>
+                <LineBreak/><l:Catalog Message="Ignores 'Total points'."/></TextBlock>
             </TabItem>
         </TabControl>
 
