@@ -26,6 +26,7 @@ namespace POESKillTree.TreeGenerator.Model
         }
 
         private const int DefaultWeight = 100;
+        private const float DefaultTargetValue = 1;
 
         private T _data;
 
@@ -35,7 +36,7 @@ namespace POESKillTree.TreeGenerator.Model
             set { SetProperty(ref _data, value); }
         }
 
-        private float _targetValue;
+        private float _targetValue = DefaultTargetValue;
 
         public float TargetValue
         {
