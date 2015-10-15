@@ -433,6 +433,11 @@
                             <l:Catalog Message="C_ross-tag highlighted Nodes" />
                         </MenuItem.Header>
                     </MenuItem>
+                    <MenuItem Click="Menu_OpenTreeGenerator">
+                        <MenuItem.Header>
+                            <l:Catalog Message="_Skill Tree Generator" />
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
@@ -519,7 +524,9 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
                     <Label Content="Level:" x:Name="lblLevel" />
-                    <TextBox Margin="5,0,0,0" x:Name="tbLevel" TextChanged="tbLevel_TextChanged" MaxLength="3" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                    <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="35" DataContext="{Binding Tree, ElementName=window}"
+                                            Value="{Binding Level, ValidatesOnDataErrors=True}"
+                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}" />
                     <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged"></ComboBox>
                     <Label Content="Used:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
                     <TextBox Margin="5,0,0,0" x:Name="tbUsedPoints" IsReadOnly="True" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>

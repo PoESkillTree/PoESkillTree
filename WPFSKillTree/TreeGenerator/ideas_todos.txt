@@ -1,0 +1,19 @@
+List of smaller ideas/todos
+===========================
+
+Bigger things (best to discuss these in GitHub issues)
+=============
+
+Extend advanced generator with stats like dps, life, ... (tree + gear):
+- Compute.cs refactoring
+Random ideas to support the UI:
+- tab in the normal UI to switch between stats imported from gear and manually typed stats
+- bandit support
+- some way to display different skill gems, support gems (maybe), weapon types
+
+Automatically generate constraints -> automated generator
+
+General ideas:
+- alternative solutions
+- base class optimized, not specified by the user
+- load base stat requirements from gear
