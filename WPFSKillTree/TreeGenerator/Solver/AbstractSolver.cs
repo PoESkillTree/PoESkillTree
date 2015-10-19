@@ -109,13 +109,13 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// Gets or sets the fixed start nodes of this solver run.
         /// </summary>
-        protected Supernode StartNodes { get; private set; }
+        public Supernode StartNodes { get; private set; }
 
         private HashSet<GraphNode> _targetNodes;
         /// <summary>
         /// Gets  the target nodes this solver run must include.
         /// </summary>
-        protected IEnumerable<GraphNode> TargetNodes
+        public IEnumerable<GraphNode> TargetNodes
         {
             get { return _targetNodes; }
         }
@@ -131,7 +131,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// Gets the list of GraphNodes from which this solver tries
         /// to find the best subset.
         /// </summary>
-        protected IReadOnlyCollection<GraphNode> SearchSpace
+        public IReadOnlyCollection<GraphNode> SearchSpace
         {
             get { return _searchSpace; }
         }
@@ -153,7 +153,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// DistanceLookup for calculating and caching distances and shortest paths between nodes.
         /// </summary>
-        protected readonly DistanceLookup Distances = new DistanceLookup();
+        public readonly DistanceLookup Distances = new DistanceLookup();
 
         /// <summary>
         /// Gets or sets whether this solver should try to improve the solution with simple HillClimbing

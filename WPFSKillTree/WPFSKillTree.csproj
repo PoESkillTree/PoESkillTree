@@ -126,6 +126,10 @@
     <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Z3, Version=4.4.1.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\z3-4.4.1-x86-win\Microsoft.Z3.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -229,6 +233,7 @@
     <Compile Include="TreeGenerator\Settings\SolverSettings.cs" />
     <Compile Include="TreeGenerator\Solver\AbstractSolver.cs" />
     <Compile Include="TreeGenerator\Solver\AdvancedSolver.cs" />
+    <Compile Include="TreeGenerator\Solver\SteinerSmtSolver.cs" />
     <Compile Include="TreeGenerator\Solver\SteinerSolver.cs" />
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 
@@ -20,10 +21,15 @@ namespace POESKillTree.TreeGenerator.Algorithm
     ///  Abstract class representing a node (or a collection thereof) in the
     ///  simplified skill tree.
     /// </summary>
+    [DebuggerDisplay("{Name}")]
     public abstract class GraphNode
     {
         private readonly ushort _id;
         public ushort Id { get { return _id; } }
+
+#if DEBUG
+        public string Name { get { return SkillTree.Skillnodes[_id].Name; } }
+#endif
 
         public int DistancesIndex { get; set; }
 

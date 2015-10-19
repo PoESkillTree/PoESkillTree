@@ -9,11 +9,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
     /// </summary>
     public abstract class ViewModelBase : Notifier
     {
+        private string _displayName;
         /// <summary>
         /// Returns the user-friendly name of this object.
-        /// Child classes can set this property to a new value,
-        /// or override it to determine the value on-demand.
         /// </summary>
-        public virtual string DisplayName { get; protected set; }
+        public string DisplayName
+        {
+            get { return _displayName; }
+            protected set { SetProperty(ref _displayName, value); }
+        }
     }
 }

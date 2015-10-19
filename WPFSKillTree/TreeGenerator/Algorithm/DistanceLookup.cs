@@ -118,6 +118,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return _paths[index];
         }
 
+        public ushort[] GetShortestPath(int a, int b)
+        {
+            return _pathsFast[a, b];
+        }
+
         /// <summary>
         /// Returns the GraphNode with the specified <see cref="GraphNode.DistancesIndex"/>.
         /// </summary>

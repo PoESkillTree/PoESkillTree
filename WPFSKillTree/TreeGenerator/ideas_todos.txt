@@ -1,6 +1,10 @@
 List of smaller ideas/todos
 ===========================
 
+- Wings of Entropy pseudo attribute settings (2-hand axe + dual wield)
+- Integrate 'Skill Tagged Nodes' feature into new UI completely and remove old menu entry
+- test search space shrinking from http://www.zib.de/koch/biblio/paper/kochmartin1998.pdf
+
 Bigger things (best to discuss these in GitHub issues)
 =============
 

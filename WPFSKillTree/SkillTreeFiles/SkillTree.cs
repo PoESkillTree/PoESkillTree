@@ -1065,6 +1065,7 @@ namespace POESKillTree.SkillTreeFiles
                 Popup.Error(L10n.Message("Error while trying to find solution"), e.Message);
                 Debug.WriteLine("Exception in 'Skill Tagged Nodes':");
                 Debug.WriteLine(e.Message);
+                Debug.WriteLine(e.StackTrace);
             }
         }
 
