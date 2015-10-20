@@ -115,10 +115,12 @@ namespace POESKillTree.TreeGenerator.Solver
                 }
             }
 
-            foreach (var edge in _edgeList)
-            {
-                _softConstraintsHandle = _o.AssertSoft(_c.MkEq(_zero, _c.MkAdd(_edgeDictionary[edge])), edge.Weight, "a");
-            }
+            //foreach (var edge in _edgeList)
+            //{
+            //    _softConstraintsHandle = _o.AssertSoft(_c.MkEq(_zero, _c.MkAdd(_edgeDictionary[edge])), edge.Weight, "a");
+            //}
+            _softConstraintsHandle = _o.MkMinimize(_c.MkAdd(_edgeList
+                .Select(edge => MkEdgeWeightExpr(_edgeDictionary[edge], edge.Weight)).ToArray()));
         }
 
         private List<int> SortNodes(IEnumerable<int> nodes)
@@ -131,6 +133,11 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             if (!_adjacencyMatrix[n1].Any()) return _zero;
             return _c.MkAdd(_adjacencyMatrix[n1].Select(n2 => _edgeDictionary[new Edge(n1, n2, 0)][graph]).ToArray());
+        }
+
+        private ArithExpr MkEdgeWeightExpr(ArithExpr[] es, uint weight)
+        {
+            return (ArithExpr)_c.MkITE(_c.MkGt(_c.MkAdd(es), _zero), _c.MkInt(weight), _zero);
         }
 
         public IEnumerable<Edge> Run()
@@ -335,17 +342,25 @@ namespace POESKillTree.TreeGenerator.Solver
 ;(assert-soft (= 0 (+ e3-4g0 e3-4g1)) :weight 1 :id a)
 ");
                 o.Assert(assertions);
-                o.AssertSoft(c.MkEq(zero, c.MkAdd(e01G0, e01G1)), 3, "a");
-                o.AssertSoft(c.MkEq(zero, c.MkAdd(e05G0, e05G1)), 1, "a");
-                o.AssertSoft(c.MkEq(zero, c.MkAdd(e02G0, e02G1)), 1, "a");
-                o.AssertSoft(c.MkEq(zero, c.MkAdd(e13G0, e13G1)), 1, "a");
-                o.AssertSoft(c.MkEq(zero, c.MkAdd(e23G0, e23G1)), 4, "a");
-                var handle = o.AssertSoft(c.MkEq(zero, c.MkAdd(e34G0, e34G1)), 1, "a");
-                // TODO model doesn't represent optimization run at all
+                //var h1 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e01G0, e01G1)), 3, "a");
+                //var h2 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e05G0, e05G1)), 1, "a");
+                //var h3 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e02G0, e02G1)), 1, "a");
+                //var h4 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e13G0, e13G1)), 1, "a");
+                //var h5 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e23G0, e23G1)), 4, "a");
+                //var h6 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e34G0, e34G1)), 1, "a");
+                Func<IntExpr, IntExpr, int, IntExpr> bte =
+                    (e1, e2, n) => (IntExpr)c.MkITE(c.MkGt(c.MkAdd(e1, e2), zero), c.MkInt(n), zero);
+                var handle = o.MkMinimize(c.MkAdd(
+                    bte(e01G0, e01G1, 3),
+                    bte(e05G0, e05G1, 1),
+                    bte(e02G0, e02G1, 1),
+                    bte(e13G0, e13G1, 1),
+                    bte(e23G0, e23G1, 4),
+                    bte(e34G0, e34G1, 1)));
                 o.Check();
-                Debug.Print(handle.Value.ToString());
                 Debug.Print(o.Model.ToString());
-                Debug.Assert(new[] {e13G0, e13G1, e01G0, e01G1}.All(e => ((IntNum) o.Model.ConstInterp(e)).Int > 0));
+                Debug.Assert(new[] {e13G0, e13G1}.Any(e => ((IntNum) o.Model.ConstInterp(e)).Int > 0));
+                Debug.Assert(new[] {e01G0, e01G1}.Any(e => ((IntNum)o.Model.ConstInterp(e)).Int > 0));
                 Debug.Assert(new[] {e23G0, e23G1, e02G0, e02G1}.All(e => ((IntNum) o.Model.ConstInterp(e)).Int == 0));
             }
         }
@@ -354,10 +369,28 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             var edges = _runner.Run();
             var nodes = new HashSet<ushort>();
+            // TODO fix SkillTree.ForceRefundNode() and SkillTree.ForceRefundNodePreview() to not need this.
+            nodes.UnionWith(_tree.SkilledNodes);
             foreach (var edge in edges)
             {
-                nodes.Add(_distances.IndexToNode(edge.N1).Id);
-                nodes.Add(_distances.IndexToNode(edge.N2).Id);
+                var n1 = _distances.IndexToNode(edge.N1);
+                if (n1 is Supernode)
+                {
+                    nodes.UnionWith(((Supernode)n1).Nodes);
+                }
+                else
+                {
+                    nodes.Add(_distances.IndexToNode(edge.N1).Id);
+                }
+                var n2 = _distances.IndexToNode(edge.N2);
+                if (n2 is Supernode)
+                {
+                    nodes.UnionWith(((Supernode)n2).Nodes);
+                }
+                else
+                {
+                    nodes.Add(_distances.IndexToNode(edge.N2).Id);
+                }
                 nodes.UnionWith(_distances.GetShortestPath(edge.N1, edge.N2));
             }
             BestSolution = nodes;
