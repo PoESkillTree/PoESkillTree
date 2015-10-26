@@ -639,9 +639,10 @@ namespace POESKillTree.SkillTreeFiles
 
             //SkilledNodes.Remove(nodeId);
 
+            var charStart = GetCharNodeId();
             var front = new HashSet<ushort>();
-            front.Add(SkilledNodes.First());
-            foreach (SkillNode i in Skillnodes[SkilledNodes.First()].Neighbor)
+            front.Add(charStart);
+            foreach (SkillNode i in Skillnodes[charStart].Neighbor)
                 if (SkilledNodes.Contains(i.Id))
                     front.Add(i.Id);
             var skilled_reachable = new HashSet<ushort>(front);
@@ -670,9 +671,10 @@ namespace POESKillTree.SkillTreeFiles
 
             SkilledNodes.Remove(nodeId);
 
+            var charStart = GetCharNodeId();
             var front = new HashSet<ushort>();
-            front.Add(SkilledNodes.First());
-            foreach (SkillNode i in Skillnodes[SkilledNodes.First()].Neighbor)
+            front.Add(charStart);
+            foreach (SkillNode i in Skillnodes[charStart].Neighbor)
                 if (SkilledNodes.Contains(i.Id))
                     front.Add(i.Id);
 
@@ -1049,8 +1051,10 @@ namespace POESKillTree.SkillTreeFiles
                 return;
             }
 
+#if !DEBUG
             try
             {
+#endif
                 // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
                 var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this));
                 settingsVm.StartController += (sender, args) =>
@@ -1059,14 +1063,13 @@ namespace POESKillTree.SkillTreeFiles
                     dialog.ShowDialog();
                 };
                 settingsVm.RunCommand.Execute(null);
+#if !DEBUG
             }
             catch (Exception e)
             {
                 Popup.Error(L10n.Message("Error while trying to find solution"), e.Message);
-                Debug.WriteLine("Exception in 'Skill Tagged Nodes':");
-                Debug.WriteLine(e.Message);
-                Debug.WriteLine(e.StackTrace);
             }
+#endif
         }
 
         public ushort GetCharNodeId()

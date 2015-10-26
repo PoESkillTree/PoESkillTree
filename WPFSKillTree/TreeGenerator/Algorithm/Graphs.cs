@@ -1,71 +1,60 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
-    public class GraphEdge
-    {
-        public readonly GraphNode Inside, Outside;
-
-        public GraphEdge(GraphNode inside, GraphNode outside)
-        {
-            Inside = inside;
-            Outside = outside;
-        }
-
-    }
-
     /// <summary>
     ///  Abstract class representing a node (or a collection thereof) in the
     ///  simplified skill tree.
     /// </summary>
     [DebuggerDisplay("{Name}")]
-    public abstract class GraphNode
+    public class GraphNode
     {
         private readonly ushort _id;
         public ushort Id { get { return _id; } }
 
 #if DEBUG
-        public string Name { get { return SkillTree.Skillnodes[_id].Name; } }
+        private string Name { get { return SkillTree.Skillnodes[_id].Name; } }
 #endif
 
         public int DistancesIndex { get; set; }
+        
+        private List<GraphNode> _adjacent = new List<GraphNode>();
+        public IReadOnlyCollection<GraphNode> Adjacent { get { return _adjacent;} }
 
-        // Because HashSet does not implement IReadOnlyCollection, we can't easily
-        // make sure it doesn't get changed.
-        public readonly HashSet<GraphNode> Adjacent = new HashSet<GraphNode>();
+        private readonly List<ushort> _nodes;
+        public IReadOnlyCollection<ushort> Nodes { get { return _nodes; } }
 
-        protected GraphNode(ushort id)
+        public int Size { get { return Nodes.Count; } }
+        
+        internal GraphNode(ushort id)
         {
-            _id = id;
             DistancesIndex = -1;
+            _nodes = new List<ushort> {id};
+            _id = id;
         }
-    }
 
-    /// <summary>
-    ///  A graph node representing an actual node in the skill tree.
-    /// </summary>
-    public class SingleNode : GraphNode
-    {
-        public SingleNode(SkillNode baseNode)
-            : base(baseNode.Id)
-        { }
-    }
-
-    /// <summary>
-    ///  A graph node representing a collection of nodes of the skill tree.
-    ///  This is used to group up the already skilled nodes.
-    /// </summary>
-    public class Supernode : GraphNode
-    {
-        public readonly IReadOnlyCollection<ushort> Nodes;
-
-        public Supernode(HashSet<ushort> nodes)
-            : base(nodes.First())
+        internal GraphNode(IEnumerable<ushort> nodes)
         {
-            Nodes = new List<ushort>(nodes);
+            DistancesIndex = -1;
+            _nodes = new List<ushort>(nodes);
+            if (!_nodes.Any()) throw new ArgumentException("Node enumerable must not be empty", "nodes");
+            _id = _nodes.First();
+        }
+
+        internal void AddNeighbor(GraphNode other)
+        {
+            _adjacent.Add(other);
+        }
+
+        public void MergeWith(GraphNode other, IEnumerable<ushort> path)
+        {
+            _adjacent = _adjacent.Union(other._adjacent).Where(n => n != this && n != other).ToList();
+            _nodes.AddRange(other._nodes);
+            _nodes.AddRange(path);
         }
     }
 
@@ -89,7 +78,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <returns>The graph node that is added to the graph.</returns>
         public GraphNode AddNode(SkillNode node)
         {
-            SingleNode graphNode = new SingleNode(node);
+            var graphNode = new GraphNode(node.Id);
             NodeDict.Add(node, graphNode);
             CheckLinks(node);
             return graphNode;
@@ -100,9 +89,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return AddNode(SkillTree.Skillnodes[nodeId]);
         }
 
-        public Supernode SetStartNodes(HashSet<ushort> startNodes)
+        public GraphNode SetStartNodes(HashSet<ushort> startNodes)
         {
-            Supernode supernode = new Supernode(startNodes);
+            var supernode = new GraphNode(startNodes);
             foreach (ushort nodeId in startNodes)
             {
                 SkillNode node = SkillTree.Skillnodes[nodeId];
@@ -125,8 +114,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
                     if (adjacentNode == currentNode) continue;
 
-                    adjacentNode.Adjacent.Add(currentNode);
-                    currentNode.Adjacent.Add(adjacentNode);
+                    adjacentNode.AddNeighbor(currentNode);
+                    currentNode.AddNeighbor(adjacentNode);
                 }
             }
         }

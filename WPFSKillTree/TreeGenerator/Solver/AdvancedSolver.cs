@@ -97,6 +97,8 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private Dictionary<ushort, bool> _areTravelNodes;
 
+        private List<ushort> _fixedNodes;
+
         /// <summary>
         /// Array of the values for each attribute independent of the current calculated skill tree.
         /// </summary>
@@ -125,8 +127,8 @@ namespace POESKillTree.TreeGenerator.Solver
             FinalHillClimbEnabled = true;
         }
 
-        protected override void OnStartAndTargetNodesCreated()
-        {
+        protected override void OnTargetNodesCreated()
+        {// TODO execute on start of Initialize()
             // Evaluate the pseudo constraints into attribute lists.
             var convertedPseudos = EvalPseudoAttrConstraints();
             // Assign a number to each attribute and pseudo attribute constraint
@@ -134,8 +136,6 @@ namespace POESKillTree.TreeGenerator.Solver
             FormalizeConstraints(Settings.AttributeConstraints, convertedPseudos);
             // Extract attributes from nodes and set travel nodes.
             ExtractNodeAttributes();
-            // Set fixed attributes from fixed nodes and Settings.InitialAttributes
-            CreateFixedAttributes();
         }
 
         /// <summary>
@@ -143,7 +143,8 @@ namespace POESKillTree.TreeGenerator.Solver
         /// their weights and target values into _attrConstraints, saves the numbers for each
         /// name into _attrNameLookup and saves the conversion multipliers into _attrConversionMultipliers.
         /// </summary>
-        private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> attrConstraints, List<ConvertedPseudoAttributeConstraint> pseudoConstraints)
+        private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> attrConstraints,
+            IReadOnlyCollection<ConvertedPseudoAttributeConstraint> pseudoConstraints)
         {
             _attrConstraints = new Tuple<float, double>[attrConstraints.Count + pseudoConstraints.Count];
             _attrNameLookup = new Dictionary<string, List<int>>(attrConstraints.Count);
@@ -153,7 +154,7 @@ namespace POESKillTree.TreeGenerator.Solver
             foreach (var kvPair in attrConstraints)
             {
                 _attrConstraints[i] = kvPair.Value;
-                _attrNameLookup[kvPair.Key] = new List<int> { i };
+                _attrNameLookup[kvPair.Key] = new List<int> {i};
                 _attrConversionMultipliers[Tuple.Create(kvPair.Key, i)] = 1;
                 i++;
             }
@@ -168,14 +169,14 @@ namespace POESKillTree.TreeGenerator.Solver
                     }
                     else
                     {
-                        _attrNameLookup[tuple.Item1] = new List<int> { i };
+                        _attrNameLookup[tuple.Item1] = new List<int> {i};
                     }
                     _attrConversionMultipliers[Tuple.Create(tuple.Item1, i)] = tuple.Item2;
                 }
                 i++;
             }
         }
-        
+
         protected override bool MustIncludeNodeGroup(SkillNode node)
         {
             // If the node has stats and is not a travel node and is part of the subtree,
@@ -188,29 +189,6 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             // Keystones can only be included if they are check-tagged.
             return !(node.IsKeyStone);
-        }
-
-        /// <summary>
-        /// Sets the fixed attribute values from <see cref="AbstractSolver{T}.FixedNodes"/> and
-        /// from <see cref="AdvancedSolverSettings.InitialAttributes"/>.
-        /// </summary>
-        private void CreateFixedAttributes()
-        {
-            // Set start stats from start and target nodes.
-            AddAttributes(FixedNodes, _fixedAttributes);
-            // Add the initial stats from the settings.
-            foreach (var initialStat in Settings.InitialAttributes)
-            {
-                var name = initialStat.Key;
-                if (_attrNameLookup.ContainsKey(name))
-                {
-                    foreach (var i in _attrNameLookup[name])
-                    {
-                        var value = initialStat.Value * _attrConversionMultipliers[Tuple.Create(name, i)];
-                        AddAttribute(Tuple.Create(i, value), _fixedAttributes);
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -262,9 +240,9 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private List<ConvertedPseudoAttributeConstraint> EvalPseudoAttrConstraints()
         {
-            var keystones = from nodeId in FixedNodes
-                            where SkillTree.Skillnodes[nodeId].IsKeyStone
-                            select SkillTree.Skillnodes[nodeId].Name;
+            var keystones = from node in Settings.Checked
+                            where SkillTree.Skillnodes[node].IsKeyStone
+                            select SkillTree.Skillnodes[node].Name;
             var conditionSettings = new ConditionSettings(Settings.Tags, Settings.OffHand, keystones.ToArray(), Settings.WeaponClass);
 
             var resolvedWildcardNames = new Dictionary<string, List<Tuple<string, string[]>>>();
@@ -320,18 +298,61 @@ namespace POESKillTree.TreeGenerator.Solver
             return result;
         }
 
-        protected override bool IncludeNode(GraphNode node)
+        protected override bool IsVariableTargetNode(GraphNode node)
         {
-            // Add potential steiner nodes.
-            // Add all non-travel nodes with stats.
-            return node.Adjacent.Count > 2 || (_nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id]);
+            return _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id];
         }
 
-        protected override bool IncludeNodeUsingDistances(GraphNode node)
+        protected override void OnFinalSearchSpaceCreated()
         {
-            // Don't add nodes that are not connected to the start node (through cross-tagging)
-            // Excluding "too far away" nodes isn't really applicable since on normal sized trees, every part could be reached.
-            return Distances.AreConnected(node, StartNodes);
+            // Merge attributes for nodes that were merged.
+            // Combine duplicate attributes per node.
+            foreach (var pair in NodeExpansionDictionary)
+            {
+                var dict = new Dictionary<int, float>();
+                foreach (var containedNode in pair.Value)
+                {
+                    foreach (var tuple in _nodeAttributes[containedNode])
+                    {
+                        if (!dict.ContainsKey(tuple.Item1))
+                        {
+                            dict.Add(tuple.Item1, tuple.Item2);
+                        }
+                        else
+                        {
+                            dict[tuple.Item1] += tuple.Item2;
+                        }
+                    }
+                    _nodeAttributes.Remove(containedNode);
+                }
+                _nodeAttributes[pair.Key] = dict.Select(p => Tuple.Create(p.Key, p.Value)).ToList();
+            }
+
+            // Set fixed attributes from target nodes and Settings.InitialAttributes
+            CreateFixedAttributes();
+        }
+
+        /// <summary>
+        /// Sets the fixed attribute values from <see cref="AbstractSolver{T}.TargetNodes"/> and
+        /// from <see cref="AdvancedSolverSettings.InitialAttributes"/>.
+        /// </summary>
+        private void CreateFixedAttributes()
+        {
+            _fixedNodes = TargetNodes.SelectMany(n => n.Nodes).ToList();
+            // Set start stats from start and target nodes.
+            AddAttributes(_fixedNodes, _fixedAttributes);
+            // Add the initial stats from the settings.
+            foreach (var initialStat in Settings.InitialAttributes)
+            {
+                var name = initialStat.Key;
+                if (_attrNameLookup.ContainsKey(name))
+                {
+                    foreach (var i in _attrNameLookup[name])
+                    {
+                        _fixedAttributes[i] += initialStat.Value * _attrConversionMultipliers[Tuple.Create(name, i)];
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -343,17 +364,9 @@ namespace POESKillTree.TreeGenerator.Solver
             {
                 foreach (var tuple in _nodeAttributes[id])
                 {
-                    AddAttribute(tuple, to);
+                    to[tuple.Item1] += tuple.Item2;
                 }
             }
-        }
-
-        /// <summary>
-        /// Adds Item2 of the given tuple to the entry at index represented by Item1.
-        /// </summary>
-        private static void AddAttribute(Tuple<int, float> attrTuple, IList<float> to)
-        {
-            to[attrTuple.Item1] += attrTuple.Item2;
         }
 
         protected override double FitnessFunction(HashSet<ushort> skilledNodes)
@@ -363,7 +376,7 @@ namespace POESKillTree.TreeGenerator.Solver
             // Don't count the character start node.
             var usedNodeCount = skilledNodes.Count - 1;
             var totalPoints = Settings.TotalPoints;
-            skilledNodes.ExceptWith(FixedNodes);
+            skilledNodes.ExceptWith(_fixedNodes);
             AddAttributes(skilledNodes, totalStats);
 
             // Calculate constraint value for each stat and multiply them.

@@ -15,23 +15,23 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private readonly Optimize _o;
 
-        private readonly Dictionary<Edge, ArithExpr[]> _edgeDictionary;
+        private readonly Dictionary<GraphEdge, ArithExpr[]> _edgeDictionary;
 
         private readonly HashSet<int>[] _adjacencyMatrix;
 
-        private readonly IList<Edge> _edgeList;
+        private readonly IList<GraphEdge> _edgeList;
 
         private readonly IntNum _zero;
 
         private readonly Optimize.Handle _softConstraintsHandle;
 
-        public SmtRunner(IEnumerable<Edge> edges, IEnumerable<int> targetNodes, int totalNodeCount, Func<int, int, uint> weightFunc)
+        public SmtRunner(IEnumerable<GraphEdge> edges, IEnumerable<int> targetNodes, int totalNodeCount, Func<int, int, uint> weightFunc)
         {
             _o = _c.MkOptimize();
             
-            var edgeSet = new HashSet<Edge>(edges.Distinct());
-            var sortedTargetNodes = SortNodes(targetNodes);
-            var targetHashSet = new HashSet<int>(sortedTargetNodes);
+            var edgeSet = new HashSet<GraphEdge>(edges.Distinct());
+            var targetList = targetNodes.ToList();
+            var targetHashSet = new HashSet<int>(targetList);
             
             _adjacencyMatrix = Enumerable.Range(0, totalNodeCount).Select(_ => new HashSet<int>()).ToArray();
             foreach (var edge in edgeSet)
@@ -52,7 +52,7 @@ namespace POESKillTree.TreeGenerator.Solver
                         var other = neighbors.First();
                         _adjacencyMatrix[other].Remove(i);
                         neighbors.Clear();
-                        edgeSet.Remove(new Edge(i, other, 0));
+                        edgeSet.Remove(new GraphEdge(i, other, 0));
 
                         changed = true;
                     }
@@ -64,9 +64,9 @@ namespace POESKillTree.TreeGenerator.Solver
                         _adjacencyMatrix[right].Remove(i);
                         neighbors.Clear();
 
-                        var tmpLeftEdge = new Edge(i, left, 0);
+                        var tmpLeftEdge = new GraphEdge(i, left, 0);
                         var leftEdge = edgeSet.First(e => tmpLeftEdge.Equals(e));
-                        var tmpRightEdge = new Edge(i, right, 0);
+                        var tmpRightEdge = new GraphEdge(i, right, 0);
                         var rightEdge = edgeSet.First(e => tmpRightEdge.Equals(e));
                         edgeSet.Remove(leftEdge);
                         edgeSet.Remove(rightEdge);
@@ -75,7 +75,7 @@ namespace POESKillTree.TreeGenerator.Solver
                         {
                             _adjacencyMatrix[right].Add(left);
                             _adjacencyMatrix[left].Add(right);
-                            edgeSet.Add(new Edge(left, right, leftEdge.Weight + rightEdge.Weight));
+                            edgeSet.Add(new GraphEdge(left, right, leftEdge.Weight + rightEdge.Weight));
                         }
 
                         changed = true;
@@ -84,17 +84,17 @@ namespace POESKillTree.TreeGenerator.Solver
             }
 
             _edgeList = edgeSet.ToList();
-            _edgeDictionary = new Dictionary<Edge, ArithExpr[]>(_edgeList.Count);
+            _edgeDictionary = new Dictionary<GraphEdge, ArithExpr[]>(_edgeList.Count);
             foreach (var edge in _edgeList)
             {
-                _edgeDictionary[edge] = new ArithExpr[sortedTargetNodes.Count - 1];
+                _edgeDictionary[edge] = new ArithExpr[targetList.Count - 1];
             }
 
             _zero = _c.MkInt(0);
             var one = _c.MkInt(1);
             var two = _c.MkInt(2);
 
-            for (var gi = 0; gi < sortedTargetNodes.Count - 1; gi++)
+            for (var gi = 0; gi < targetList.Count - 1; gi++)
             {
                 foreach (var edge in _edgeList)
                 {
@@ -104,7 +104,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 }
                 for (var i = 0; i < totalNodeCount; i++)
                 {
-                    if (i == sortedTargetNodes[gi] || i == sortedTargetNodes[gi + 1])
+                    if (i == targetList[gi] || i == targetList[gi + 1])
                     {
                         _o.Assert(_c.MkEq(one, AddNeighbors(i, gi)));
                     }
@@ -114,25 +114,15 @@ namespace POESKillTree.TreeGenerator.Solver
                     }
                 }
             }
-
-            //foreach (var edge in _edgeList)
-            //{
-            //    _softConstraintsHandle = _o.AssertSoft(_c.MkEq(_zero, _c.MkAdd(_edgeDictionary[edge])), edge.Weight, "a");
-            //}
+            
             _softConstraintsHandle = _o.MkMinimize(_c.MkAdd(_edgeList
                 .Select(edge => MkEdgeWeightExpr(_edgeDictionary[edge], edge.Weight)).ToArray()));
-        }
-
-        private List<int> SortNodes(IEnumerable<int> nodes)
-        {
-            // TODO
-            return nodes.ToList();
         }
 
         private ArithExpr AddNeighbors(int n1, int graph)
         {
             if (!_adjacencyMatrix[n1].Any()) return _zero;
-            return _c.MkAdd(_adjacencyMatrix[n1].Select(n2 => _edgeDictionary[new Edge(n1, n2, 0)][graph]).ToArray());
+            return _c.MkAdd(_adjacencyMatrix[n1].Select(n2 => _edgeDictionary[new GraphEdge(n1, n2, 0)][graph]).ToArray());
         }
 
         private ArithExpr MkEdgeWeightExpr(ArithExpr[] es, uint weight)
@@ -140,7 +130,7 @@ namespace POESKillTree.TreeGenerator.Solver
             return (ArithExpr)_c.MkITE(_c.MkGt(_c.MkAdd(es), _zero), _c.MkInt(weight), _zero);
         }
 
-        public IEnumerable<Edge> Run()
+        public IEnumerable<GraphEdge> Run()
         {
             var status = _o.Check();
             switch (status)
@@ -171,45 +161,6 @@ namespace POESKillTree.TreeGenerator.Solver
         { }
     }
 
-    [DebuggerDisplay("{N1}-{N2}:{Weight}")]
-    public class Edge : IEquatable<Edge>
-    {
-        public readonly int N1, N2;
-
-        public readonly uint Weight;
-
-        public Edge(int n1, int n2, uint weight)
-        {
-            N1 = n1;
-            N2 = n2;
-            Weight = weight;
-        }
-
-        public bool Equals(Edge other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return N1 == other.N1 && N2 == other.N2
-                || N1 == other.N2 && N2 == other.N1;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Edge) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (Math.Min(N1, N2) * 397) ^ Math.Max(N1, N2);
-            }
-        }
-    }
-
     public class SteinerSmtSolver : ISolver
     {
 
@@ -232,7 +183,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private SmtRunner _runner;
 
-        private DistanceLookup _distances;
+        private IDistanceLookup _distances;
 
         public SteinerSmtSolver(SkillTree tree, SolverSettings settings)
         {
@@ -244,18 +195,15 @@ namespace POESKillTree.TreeGenerator.Solver
 
         public void Initialize()
         {
-            TestCase();
-
             var auxiliarySolver = new SteinerSolver(_tree, _settings);
             auxiliarySolver.Initialize();
             BestSolution = auxiliarySolver.BestSolution;
             _distances = auxiliarySolver.Distances;
             var nodes = new HashSet<GraphNode>(
-                auxiliarySolver.SearchSpace.Concat(auxiliarySolver.TargetNodes)
-                    .Concat(new[] { auxiliarySolver.StartNodes }));
+                auxiliarySolver.SearchSpace.Concat(auxiliarySolver.TargetNodes));
             var targets = new HashSet<int>(
-                auxiliarySolver.TargetNodes.Concat(new[] { auxiliarySolver.StartNodes }).Select(n => n.DistancesIndex));
-            var edges = new List<Edge>();
+                auxiliarySolver.TargetNodes.Select(n => n.DistancesIndex));
+            var edges = new List<GraphEdge>();
             foreach (var node in nodes)
             {
                 foreach (var neighbor in node.Adjacent)
@@ -270,127 +218,23 @@ namespace POESKillTree.TreeGenerator.Solver
                         current = current.Adjacent.First(n => n != previous);
                         previous = tmp;
                     }
-                    if (current.DistancesIndex >= 0 && node != current && path.SetEquals(_distances.GetShortestPath(node, current)))
+                    if (current.DistancesIndex >= 0 && node != current && path.SetEquals(_distances.GetShortestPath(node.DistancesIndex, current.DistancesIndex)))
                     {
-                        edges.Add(new Edge(node.DistancesIndex, current.DistancesIndex, (uint)_distances[node, current]));
+                        edges.Add(new GraphEdge(node.DistancesIndex, current.DistancesIndex, _distances[node.DistancesIndex, current.DistancesIndex]));
                     }
                 }
             }
-            _runner = new SmtRunner(edges, targets, nodes.Count, (n1, n2) => (uint)_distances[n1, n2]);
-        }
-
-        private static void TestCase()
-        {
-            using (var c = new Context())
-            {
-                var o = c.MkOptimize();
-                var e01G0 = c.MkIntConst("e0-1g0");
-                var e05G0 = c.MkIntConst("e0-5g0");
-                var e02G0 = c.MkIntConst("e0-2g0");
-                var e13G0 = c.MkIntConst("e1-3g0");
-                var e23G0 = c.MkIntConst("e2-3g0");
-                var e34G0 = c.MkIntConst("e3-4g0");
-                var e01G1 = c.MkIntConst("e0-1g1");
-                var e05G1 = c.MkIntConst("e0-5g1");
-                var e02G1 = c.MkIntConst("e0-2g1");
-                var e13G1 = c.MkIntConst("e1-3g1");
-                var e23G1 = c.MkIntConst("e2-3g1");
-                var e34G1 = c.MkIntConst("e3-4g1");
-                var zero = c.MkInt(0);
-                var assertions = c.ParseSMTLIB2String(@"
-(declare-fun e0-1g0 () Int)
-(declare-fun e0-5g0 () Int)
-(declare-fun e0-2g0 () Int)
-(declare-fun e1-3g0 () Int)
-(declare-fun e2-3g0 () Int)
-(declare-fun e3-4g0 () Int)
-(declare-fun e0-1g1 () Int)
-(declare-fun e0-5g1 () Int)
-(declare-fun e0-2g1 () Int)
-(declare-fun e1-3g1 () Int)
-(declare-fun e2-3g1 () Int)
-(declare-fun e3-4g1 () Int)
-(assert (and (>= e0-1g0 0) (<= e0-1g0 1)))
-(assert (and (>= e0-5g0 0) (<= e0-5g0 1)))
-(assert (and (>= e0-2g0 0) (<= e0-2g0 1)))
-(assert (and (>= e1-3g0 0) (<= e1-3g0 1)))
-(assert (and (>= e2-3g0 0) (<= e2-3g0 1)))
-(assert (and (>= e3-4g0 0) (<= e3-4g0 1)))
-(assert (or (= 0 (+ e0-1g0 e0-5g0 e0-2g0)) (= 2 (+ e0-1g0 e0-5g0 e0-2g0))))
-(assert (or (= 0 (+ e0-1g0 e1-3g0)) (= 2 (+ e0-1g0 e1-3g0))))
-(assert (or (= 0 (+ e0-2g0 e2-3g0)) (= 2 (+ e0-2g0 e2-3g0))))
-(assert (= 1 (+ e1-3g0 e2-3g0 e3-4g0)))
-(assert (= 1 (+ e3-4g0)))
-(assert (or (= 0 (+ e0-5g0)) (= 2 (+ e0-5g0))))
-(assert (and (>= e0-1g1 0) (<= e0-1g1 1)))
-(assert (and (>= e0-5g1 0) (<= e0-5g1 1)))
-(assert (and (>= e0-2g1 0) (<= e0-2g1 1)))
-(assert (and (>= e1-3g1 0) (<= e1-3g1 1)))
-(assert (and (>= e2-3g1 0) (<= e2-3g1 1)))
-(assert (and (>= e3-4g1 0) (<= e3-4g1 1)))
-(assert (or (= 0 (+ e0-1g1 e0-5g1 e0-2g1)) (= 2 (+ e0-1g1 e0-5g1 e0-2g1))))
-(assert (or (= 0 (+ e0-1g1 e1-3g1)) (= 2 (+ e0-1g1 e1-3g1))))
-(assert (or (= 0 (+ e0-2g1 e2-3g1)) (= 2 (+ e0-2g1 e2-3g1))))
-(assert (or (= 0 (+ e1-3g1 e2-3g1 e3-4g1)) (= 2 (+ e1-3g1 e2-3g1 e3-4g1))))
-(assert (= 1 (+ e3-4g1)))
-(assert (= 1 (+ e0-5g1)))
-;(assert-soft (= 0 (+ e0-1g0 e0-1g1)) :weight 3 :id a)
-;(assert-soft (= 0 (+ e0-5g0 e0-5g1)) :weight 1 :id a)
-;(assert-soft (= 0 (+ e0-2g0 e0-2g1)) :weight 1 :id a)
-;(assert-soft (= 0 (+ e1-3g0 e1-3g1)) :weight 1 :id a)
-;(assert-soft (= 0 (+ e2-3g0 e2-3g1)) :weight 4 :id a)
-;(assert-soft (= 0 (+ e3-4g0 e3-4g1)) :weight 1 :id a)
-");
-                o.Assert(assertions);
-                //var h1 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e01G0, e01G1)), 3, "a");
-                //var h2 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e05G0, e05G1)), 1, "a");
-                //var h3 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e02G0, e02G1)), 1, "a");
-                //var h4 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e13G0, e13G1)), 1, "a");
-                //var h5 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e23G0, e23G1)), 4, "a");
-                //var h6 = o.AssertSoft(c.MkEq(zero, c.MkAdd(e34G0, e34G1)), 1, "a");
-                Func<IntExpr, IntExpr, int, IntExpr> bte =
-                    (e1, e2, n) => (IntExpr)c.MkITE(c.MkGt(c.MkAdd(e1, e2), zero), c.MkInt(n), zero);
-                var handle = o.MkMinimize(c.MkAdd(
-                    bte(e01G0, e01G1, 3),
-                    bte(e05G0, e05G1, 1),
-                    bte(e02G0, e02G1, 1),
-                    bte(e13G0, e13G1, 1),
-                    bte(e23G0, e23G1, 4),
-                    bte(e34G0, e34G1, 1)));
-                o.Check();
-                Debug.Print(o.Model.ToString());
-                Debug.Assert(new[] {e13G0, e13G1}.Any(e => ((IntNum) o.Model.ConstInterp(e)).Int > 0));
-                Debug.Assert(new[] {e01G0, e01G1}.Any(e => ((IntNum)o.Model.ConstInterp(e)).Int > 0));
-                Debug.Assert(new[] {e23G0, e23G1, e02G0, e02G1}.All(e => ((IntNum) o.Model.ConstInterp(e)).Int == 0));
-            }
+            _runner = new SmtRunner(edges, targets, nodes.Count, (n1, n2) => _distances[n1, n2]);
         }
 
         public void Step()
         {
             var edges = _runner.Run();
             var nodes = new HashSet<ushort>();
-            // TODO fix SkillTree.ForceRefundNode() and SkillTree.ForceRefundNodePreview() to not need this.
-            nodes.UnionWith(_tree.SkilledNodes);
             foreach (var edge in edges)
             {
-                var n1 = _distances.IndexToNode(edge.N1);
-                if (n1 is Supernode)
-                {
-                    nodes.UnionWith(((Supernode)n1).Nodes);
-                }
-                else
-                {
-                    nodes.Add(_distances.IndexToNode(edge.N1).Id);
-                }
-                var n2 = _distances.IndexToNode(edge.N2);
-                if (n2 is Supernode)
-                {
-                    nodes.UnionWith(((Supernode)n2).Nodes);
-                }
-                else
-                {
-                    nodes.Add(_distances.IndexToNode(edge.N2).Id);
-                }
+                nodes.UnionWith(_distances.IndexToNode(edge.N1).Nodes);
+                nodes.UnionWith(_distances.IndexToNode(edge.N2).Nodes);
                 nodes.UnionWith(_distances.GetShortestPath(edge.N1, edge.N2));
             }
             BestSolution = nodes;

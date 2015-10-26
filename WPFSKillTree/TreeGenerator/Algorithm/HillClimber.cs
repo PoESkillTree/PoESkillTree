@@ -59,7 +59,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <param name="fitnessFunc">Function returning the fitness of a set of nodes. (not null)</param>
         /// <param name="fixedNodes">Nodes that can not swapped out of the current set. (not null)</param>
         /// <param name="allNodes">All nodes of the graph. (not null)</param>
-        public HillClimber(Func<HashSet<ushort>, double> fitnessFunc, IEnumerable<ushort> fixedNodes,
+        public HillClimber(Func<HashSet<ushort>, double> fitnessFunc, IEnumerable<GraphNode> fixedNodes,
             IEnumerable<GraphNode> allNodes)
         {
             if (fitnessFunc == null) throw new ArgumentNullException("fitnessFunc");
@@ -67,7 +67,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             if (allNodes == null) throw new ArgumentNullException("allNodes");
 
             _fitnessFunc = fitnessFunc;
-            _fixedNodes = new HashSet<ushort>(fixedNodes);
+            _fixedNodes = new HashSet<ushort>(fixedNodes.Select(n => n.Id));
             _allNodes = new HashSet<ushort>();
             foreach (var graphNode in allNodes)
             {

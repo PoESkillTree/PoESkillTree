@@ -147,7 +147,7 @@ namespace UnitTests
             MinimalSpanningTree mst1 = new MinimalSpanningTree(mstNodes1, distances);
             mst1.Span(graphNodes1[0]);
 
-            Assert.AreEqual(3, mst1.SpanningEdges.Count, "Wrong amount of spanning edges");
+            Assert.AreEqual(3, mst1.SpanningEdges.Count(), "Wrong amount of spanning edges");
             var goalEdges = new []
             {
                 new []{0, 5}, new []{5, 3}, new []{5, 7}
@@ -155,10 +155,10 @@ namespace UnitTests
             foreach (var edge in goalEdges)
             {
                 Assert.AreEqual(1,
-                    mst1.SpanningEdges.Count(
-                        e =>
-                            (e.Inside.Id == edge[0] && e.Outside.Id == edge[1]) ||
-                            (e.Inside.Id == edge[1] && e.Outside.Id == edge[0])),
+                    mst1.SpanningEdges.Select(e => new Tuple<ushort, ushort>(distances.IndexToNode(e.N1).Id, distances.IndexToNode(e.N2).Id)).Count(
+                        t =>
+                            (t.Item1 == edge[0] && t.Item2 == edge[1]) ||
+                            (t.Item1 == edge[1] && t.Item2 == edge[0])),
                     "Edge " + edge + " not contained exactly once.");
             }
             Assert.AreEqual(6, mst1.GetUsedNodes().Count, "Wrong MST length");
@@ -185,7 +185,7 @@ namespace UnitTests
                 int t = queueTestOrder[i];
 
                 if (t > 0)
-                    queue.Enqueue(testNodes[t], t);
+                    queue.Enqueue(testNodes[t], (uint)t);
                 if (t < 0)
                     Assert.IsTrue(queue.Dequeue().Priority == -t);
             }

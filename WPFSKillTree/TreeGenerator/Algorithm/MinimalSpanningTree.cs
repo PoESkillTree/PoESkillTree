@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
@@ -18,33 +21,81 @@ namespace POESKillTree.TreeGenerator.Algorithm
         }
     }
 
-    public class MinimalSpanningTree
+    [DebuggerDisplay("{N1}-{N2}:{Weight}")]
+    public class GraphEdge : IEquatable<GraphEdge>
     {
+        public readonly int N1, N2;
+
+        public readonly uint Weight;
+
+        public GraphEdge(int n1, int n2, uint weight)
+        {
+            N1 = Math.Min(n1, n2);
+            N2 = Math.Max(n1, n2);
+            Weight = weight;
+        }
+
+        public bool Equals(GraphEdge other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return N1 == other.N1 && N2 == other.N2;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((GraphEdge)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (N1 * 397) ^ N2;
+            }
+        }
+    }
+
+    public class MinimalSpanningTree : IDisposable
+    {
+        
+        private static readonly ConcurrentStack<HashSet<ushort>> HashSetStack = new ConcurrentStack<HashSet<ushort>>();
+
+        private readonly List<HashSet<ushort>> _usedSets = new List<HashSet<ushort>>();
 
         private readonly List<GraphNode> _mstNodes;
 
-        private readonly DistanceLookup _distances;
+        private readonly IDistanceLookup _distances;
 
         // I'd like to control at what point the spanning actually happens.
         public bool IsSpanned { get; private set; }
 
+        private List<LinkedGraphEdge> _spanningEdges;
+
         /// <summary>
-        /// Returns the edges which span this tree.
+        /// Returns the edges which span this tree as an linq enumerable (so it's slow and not cached).
         /// Only set after <see cref="Span(GraphNode)"/> or <see cref="Span(LinkedGraphEdge)"/> has been called.
         /// </summary>
-        public List<GraphEdge> SpanningEdges { get; private set; }
+        public IEnumerable<GraphEdge> SpanningEdges
+        {
+            get
+            {
+                return _spanningEdges.Select(e => new GraphEdge(e.Inside, e.Outside, _distances[e.Inside, e.Outside]));
+            }
+        }
 
         /// <summary>
         ///  Instantiates a new MinimalSpanningTree.
         /// </summary>
         /// <param name="mstNodes">The GraphNodes that should be spanned. (not null)</param>
-        /// <param name="distances">The DistanceLookup used as cache.
-        /// <see cref="DistanceLookup.CalculateFully"/> must have been called. (not null</param>
-        public MinimalSpanningTree(List<GraphNode> mstNodes, DistanceLookup distances)
+        /// <param name="distances">The DistanceLookup used as cache. (not null)</param>
+        public MinimalSpanningTree(List<GraphNode> mstNodes, IDistanceLookup distances)
         {
             if (mstNodes == null) throw new ArgumentNullException("mstNodes");
             if (distances == null) throw new ArgumentNullException("distances");
-            if (!distances.FullyCached) throw new ArgumentException("CalculateFully must have been called.", "distances");
 
             // Copy might be preferable, doesn't really matter atm though.
             _mstNodes = mstNodes;
@@ -57,17 +108,18 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         public HashSet<ushort> GetUsedNodes()
         {
-            var nodes = new HashSet<ushort>();
-            foreach (var edge in SpanningEdges)
+            HashSet<ushort> hashSet;
+            if (!HashSetStack.TryPop(out hashSet))
             {
-                // Shortest paths are saved in DistanceLookup, so we can use those.
-                var path = _distances.GetShortestPath(edge.Inside, edge.Outside);
-                // Save nodes into the HashSet, the set only saves each node once.
-                nodes.Add(edge.Inside.Id);
-                nodes.Add(edge.Outside.Id);
-                nodes.UnionWith(path);
+                hashSet = new HashSet<ushort>();
             }
-            return nodes;
+            hashSet.UnionWith(_mstNodes.Select(n => n.Id));
+            foreach (var edge in _spanningEdges)
+            {
+                hashSet.UnionWith(_distances.GetShortestPath(edge.Inside, edge.Outside));
+            }
+            _usedSets.Add(hashSet);
+            return hashSet;
         }
 
         /// <summary>
@@ -85,7 +137,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             // If the index node is already included.
             var inMst = new bool[_distances.CacheSize];
             // The spanning edges.
-            var mstEdges = new List<GraphEdge>(_mstNodes.Count);
+            var mstEdges = new List<LinkedGraphEdge>(_mstNodes.Count);
 
             for (var i = 0; i < _mstNodes.Count; i++)
             {
@@ -110,9 +162,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     shortestEdge = adjacentEdgeQueue.Dequeue();
                     newIn = shortestEdge.Outside;
                 } while (inMst[newIn]);
-                mstEdges.Add(new GraphEdge(
-                    _distances.IndexToNode(shortestEdge.Inside),
-                    _distances.IndexToNode(shortestEdge.Outside)));
+                mstEdges.Add(shortestEdge);
                 inMst[newIn] = true;
 
                 // Find all newly adjacent edges and enqueue them.
@@ -131,7 +181,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 }
             }
 
-            SpanningEdges = mstEdges;
+            _spanningEdges = mstEdges;
             IsSpanned = true;
         }
         
@@ -152,7 +202,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </remarks>
         public void Span(LinkedGraphEdge first)
         {
-            var mstEdges = new List<GraphEdge>(_mstNodes.Count);
+            var mstEdges = new List<LinkedGraphEdge>(_mstNodes.Count);
             var set = new DisjointSet(_distances.CacheSize);
             var considered = new bool[_distances.CacheSize];
             var toAddCount = _mstNodes.Count - 1;
@@ -168,12 +218,21 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 // (most likely because branch prediction can't predict the result)
                 if (!considered[inside] | !considered[outside]) continue;
                 if (set.Find(inside) == set.Find(outside)) continue;
-                mstEdges.Add(new GraphEdge(_distances.IndexToNode(inside), _distances.IndexToNode(outside)));
+                mstEdges.Add(current);
                 set.Union(inside, outside);
                 if (--toAddCount == 0) break;
             }
-            SpanningEdges = mstEdges;
+            _spanningEdges = mstEdges;
             IsSpanned = true;
+        }
+
+        public void Dispose()
+        {
+            foreach (var set in _usedSets)
+            {
+                set.Clear();
+                HashSetStack.Push(set);
+            }
         }
     }
 }

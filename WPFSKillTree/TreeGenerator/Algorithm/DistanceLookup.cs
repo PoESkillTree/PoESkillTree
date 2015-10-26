@@ -5,18 +5,29 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("UnitTests")]
 namespace POESKillTree.TreeGenerator.Algorithm
 {
+    public interface IDistanceLookup
+    {
+        int CacheSize { get; }
+
+        uint this[int a, int b] { get; }
+
+        IReadOnlyCollection<ushort> GetShortestPath(int a, int b);
+
+        GraphNode IndexToNode(int index);
+    }
+
     /// <summary>
     ///  Calculates and caches distances between nodes. Only relies on adjacency
     ///  information stored in the nodes.
     /// </summary>
-    public class DistanceLookup
+    public class DistanceLookup : IDistanceLookup
     {
         // The uint compounds both ushort indices.
-        private Dictionary<uint, int> _distances = new Dictionary<uint, int>();
+        private Dictionary<uint, uint> _distances = new Dictionary<uint, uint>();
 
         private Dictionary<uint, ushort[]> _paths = new Dictionary<uint, ushort[]>();
         
-        private int[,] _distancesFast;
+        private uint[,] _distancesFast;
 
         private ushort[,][] _pathsFast;
 
@@ -29,7 +40,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <summary>
         /// Whether CalculateFully got called.
         /// </summary>
-        public bool FullyCached { get; private set; }
+        private bool _fullyCached;
 
         /// <summary>
         /// Number of cached nodes.
@@ -43,7 +54,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         {
             get
             {
-                if (!FullyCached)
+                if (!_fullyCached)
                     throw new InvalidOperationException("CacheSize is only accessible once CalculateFully() got called!");
                 return _cacheSize;
             }
@@ -62,11 +73,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
         ///  If CalculateFully has been called and the nodes were not both passed to it, a IndexOutOfRangeException will be thrown.
         ///  If CalculateFully has not been called and the nodes are not connected, a GraphNotConnectedException will be thrown.
         /// </remarks>
-        public int this[GraphNode a, GraphNode b]
+        public uint this[GraphNode a, GraphNode b]
         {
             get
             {
-                if (FullyCached)
+                if (_fullyCached)
                 {
                     return _distancesFast[a.DistancesIndex, b.DistancesIndex];
                 }
@@ -86,7 +97,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         /// <returns>The length of the path from a to b (equals the amount of edges
         /// traversed).</returns>
-        public int this[int a, int b]
+        public uint this[int a, int b]
         {
             get { return _distancesFast[a, b]; }
         }
@@ -103,9 +114,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
         ///  If CalculateFully has been called and the nodes were not both passed to it, a IndexOutOfRangeException will be thrown.
         ///  If CalculateFully has not been called and the nodes are not connected, a GraphNotConnectedException will be thrown.
         /// </remarks>
-        public ushort[] GetShortestPath(GraphNode a, GraphNode b)
+        private IReadOnlyCollection<ushort> GetShortestPath(GraphNode a, GraphNode b)
         {
-            if (FullyCached)
+            if (_fullyCached)
             {
                 return _pathsFast[a.DistancesIndex, b.DistancesIndex];
             }
@@ -118,7 +129,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return _paths[index];
         }
 
-        public ushort[] GetShortestPath(int a, int b)
+        public IReadOnlyCollection<ushort> GetShortestPath(int a, int b)
         {
             return _pathsFast[a, b];
         }
@@ -162,6 +173,34 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return (uint)(Math.Min(aId, bId) << 16) + Math.Max(aId, bId);
         }
 
+        private void SetFastDistance(int a, int b, uint value)
+        {
+            _distancesFast[a, b] = _distancesFast[b, a] = value;
+        }
+
+        private void SetFastShortestPath(int a, int b, ushort[] path)
+        {
+            _pathsFast[a, b] = _pathsFast[b, a] = path;
+        }
+
+        public void MergeInto(int x, int into)
+        {
+            if (!_fullyCached)
+                throw new InvalidOperationException("Distances must be fully cached to merge nodes");
+            
+            SetFastDistance(x, into, 0);
+            SetFastShortestPath(x, into, new ushort[0]);
+            for (var i = 0; i < _cacheSize; i++)
+            {
+                if (i == into || i == x) continue;
+                if (_distancesFast[i, x] < _distancesFast[i, into])
+                {
+                    SetFastDistance(i, into, _distancesFast[i, x]);
+                    SetFastShortestPath(i, into, _pathsFast[i, x]);
+                }
+            }
+        }
+
         /// <summary>
         /// Calculates and caches all distances between the given nodes.
         /// Enables fast lookups.
@@ -180,10 +219,10 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 nodes[i].DistancesIndex = i;
                 _nodes[i] = nodes[i];
             }
-            _distancesFast = new int[_cacheSize, _cacheSize];
+            _distancesFast = new uint[_cacheSize, _cacheSize];
             _pathsFast = new ushort[_cacheSize, _cacheSize][];
 
-            FullyCached = true;
+            _fullyCached = true;
             foreach (var node in nodes)
             {
                 Dijkstra(node);
@@ -198,21 +237,29 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// Removes the given nodes from the cache.
         /// Resets DistancesIndex of removedNodes to -1 and of remainingNodes to be
         /// incremental without holes again.
+        /// O(|removedNodes| + |remainingNodes|^2)
         /// </summary>
-        public void RemoveNodes(List<GraphNode> removedNodes, List<GraphNode> remainingNodes)
+        public List<GraphNode> RemoveNodes(IEnumerable<GraphNode> removedNodes)
         {
             if (removedNodes == null) throw new ArgumentNullException("removedNodes");
-            if (remainingNodes == null) throw new ArgumentNullException("remainingNodes");
 
+            var removed = new bool[CacheSize];
             foreach (var node in removedNodes)
             {
+                removed[node.DistancesIndex] = true;
                 node.DistancesIndex = -1;
+            }
+            var remainingNodes = new List<GraphNode>();
+            for (var i = 0; i < CacheSize; i++)
+            {
+                if (!removed[i])
+                    remainingNodes.Add(IndexToNode(i));
             }
 
             var oldDistances = _distancesFast;
             var oldPaths = _pathsFast;
             _cacheSize = remainingNodes.Count;
-            _distancesFast = new int[_cacheSize, _cacheSize];
+            _distancesFast = new uint[_cacheSize, _cacheSize];
             _pathsFast = new ushort[_cacheSize, _cacheSize][];
 
             for (var i = 0; i < _cacheSize; i++)
@@ -232,6 +279,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 remainingNodes[i].DistancesIndex = i;
                 _nodes[i] = remainingNodes[i];
             }
+
+            return remainingNodes;
         }
 
         /// <summary>
@@ -304,15 +353,15 @@ namespace POESKillTree.TreeGenerator.Algorithm
         {
             var length = distFromStart + 1;
 
-            if (FullyCached)
+            if (_fullyCached)
             {
                 var i1 = from.DistancesIndex;
                 var i2 = to.DistancesIndex;
                 if (_pathsFast[i1, i2] != null) return;
 
                 var path = length > 0 ? GenerateShortestPath(from.Id, to.Id, predecessors, length) : new ushort[0];
-                _distancesFast[i1, i2] = _distancesFast[i2, i1] = length;
-                _pathsFast[i1, i2] = _pathsFast[i2, i1] = path;
+                SetFastDistance(i1, i2, (uint)length);
+                SetFastShortestPath(i1, i2, path);
             }
             else
             {
@@ -321,7 +370,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
                 var path = length > 0 ? GenerateShortestPath(from.Id, to.Id, predecessors, length) : new ushort[0];
                 _paths[index] = path;
-                _distances[index] = length;
+                _distances[index] = (uint)length;
             }
         }
         
@@ -346,7 +395,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         }
     }
     
-    internal class GraphNotConnectedException : Exception
+    public class GraphNotConnectedException : Exception
     {
     }
 }

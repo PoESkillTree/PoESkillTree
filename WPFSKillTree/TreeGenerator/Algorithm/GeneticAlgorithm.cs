@@ -44,7 +44,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// Maximum length of sequences that are flipped at once by mutation.
         /// </summary>
         public readonly int MaxMutateClusterSize;
-        
+
         public GeneticAlgorithmParameters(int maxGeneration, int populationSize, int dnaLength,
             double temperature = 6, double annealingFactor = 1, int maxMutateClusterSize = 1)
         {
@@ -249,6 +249,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             Individual[] newPopulation = new Individual[_populationSize];
             // The initial solution is included in the initial population.
             newPopulation[0] = SpawnIndividual(_initialSolution);
+            newPopulation[0].Age++;
             //for (int i = 1; i < populationSize; i++)
             Parallel.For(1, _populationSize, i =>
             {
@@ -316,8 +317,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 individual.Rank = index;
                 individual.Age++;
 
-                newPopulation[newPopIndex] = individual;
-                newPopIndex++;
+                newPopulation[newPopIndex++] = individual;
             }
 
             //for (int i = 0; i < newPopIndex; i++)

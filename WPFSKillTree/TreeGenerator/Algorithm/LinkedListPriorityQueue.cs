@@ -9,7 +9,7 @@
         /// <summary>
         /// The Priority to insert this node at.
         /// </summary>
-        internal int Priority;
+        internal uint Priority;
 
         /// <summary>
         /// The node coming after this node in the queue.
@@ -69,7 +69,7 @@
         /// <param name="node">The node to be stored.</param>
         /// <param name="priority">The priority of the node. Older nodes with
         /// the same priority are stored in front.</param>
-        public void Enqueue(T node, int priority)
+        public void Enqueue(T node, uint priority)
         {
             node.Priority = priority;
             if (Count++ == 0)
