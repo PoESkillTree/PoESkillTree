@@ -1,94 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
-    class GraphEdgeSet : ICollection<GraphEdge>
-    {
-        private readonly Dictionary<GraphEdge, GraphEdge> _edgeDict = new Dictionary<GraphEdge, GraphEdge>();
-
-        private readonly HashSet<int>[] _adjacencyMatrix;
-
-        public int Count { get { return _edgeDict.Count; } }
-
-        public bool IsReadOnly { get { return false; } }
-
-        public GraphEdge this[int n1, int n2]
-        {
-            get { return _edgeDict[CreateTmpEdge(n1, n2)]; }
-        }
-
-        public GraphEdgeSet(int nodeCount)
-        {
-            _adjacencyMatrix = Enumerable.Range(0, nodeCount).Select(_ => new HashSet<int>()).ToArray();
-        }
-
-        public IReadOnlyList<int> NeighborsOf(int node)
-        {
-            return _adjacencyMatrix[node].ToList();
-        }
-
-        public bool HasNeighbors(int node)
-        {
-            return _adjacencyMatrix[node].Any();
-        }
-
-        public void Add(GraphEdge edge)
-        {
-            _edgeDict[edge] = edge;
-            _adjacencyMatrix[edge.N1].Add(edge.N2);
-            _adjacencyMatrix[edge.N2].Add(edge.N1);
-        }
-
-        public void Clear()
-        {
-            foreach (var set in _adjacencyMatrix)
-            {
-                set.Clear();
-            }
-            _edgeDict.Clear();
-        }
-
-        public bool Contains(GraphEdge item)
-        {
-            return _edgeDict.ContainsKey(item);
-        }
-
-        public void CopyTo(GraphEdge[] array, int arrayIndex)
-        {
-            _edgeDict.Keys.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(GraphEdge edge)
-        {
-            _adjacencyMatrix[edge.N1].Remove(edge.N2);
-            _adjacencyMatrix[edge.N2].Remove(edge.N1);
-            return _edgeDict.Remove(edge);
-        }
-
-        public void Remove(int n1, int n2)
-        {
-            Remove(CreateTmpEdge(n1, n2));
-        }
-
-        private static GraphEdge CreateTmpEdge(int n1, int n2)
-        {
-            return new GraphEdge(n1, n2, 0);
-        }
-
-        public IEnumerator<GraphEdge> GetEnumerator()
-        {
-            return _edgeDict.Keys.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-    }
-
     public class SteinerPreprocessor
     {
         private List<GraphNode> _searchSpace;
@@ -113,6 +28,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
         public IEnumerable<ushort> LeastSolution { get; private set; }
 
         private GraphEdgeSet _edgeSet;
+
+        public IReadOnlyGraphEdgeSet EdgeSet { get { return _edgeSet; } }
 
         private bool[] _isFixedTarget;
 
@@ -160,7 +77,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             LeastSolution = leastMst.GetUsedNodes();
 
             // Removal of nodes which are not connected or too far away to be useful.
-            // TODO check if maxEdgeDistance is of use when there are variable target nodes
             var maxEdgeDistance = _fixedTargetNodes.Count > 1 && _variableTargetNodes.Count == 0
                 ? leastMst.SpanningEdges.Max(e => e.Weight)
                 : int.MaxValue;
@@ -177,8 +93,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             DegreeTest();
 
             // TODO further reductions
-
-            // TODO save edges somwhere for use from outside
 
             _searchSpace = _distanceLookup.RemoveNodes(_searchSpace.Where(n => _isRemoved[n.DistancesIndex]));
 
@@ -272,8 +186,22 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     }
                 }
             }
+        }
 
-            RemoveUnconnectedNodes();
+        private void SpecialDistanceTest()
+        {
+            // V: all nodes; E: all edges; T: fixed target nodes
+            // u,v \in V; u != v
+            // P \subset E; connecting u and v
+            // Tp: nodes in path P that are in T or {u,v}
+            // b(P) = max{c(F) | F \subset P; connecting two nodes from
+            //                  Tp such that exactly two nodes from
+            //                  F are in Tp}
+            // b(P): maximum distance between any two nodes of a given
+            //       path between u and v that are both in Tp not
+            //       containing any other nodes of Tp
+            // s(u,v) = min{b(P) | P connecting u and v}
+            // delete edges {u,v} \in E with s(u,v) < weight
         }
 
         private void RemoveNode(int index)
@@ -303,6 +231,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 default:
                     throw new ArgumentException("Removing nodes with more than 2 neighbors is not supported", "index");
             }
+
+            MarkNodeAsRemove(index);
         }
 
         private void MergeInto(int x, int into)
@@ -325,31 +255,27 @@ namespace POESKillTree.TreeGenerator.Algorithm
             }
             
             _distanceLookup.MergeInto(x, into);
+
+            MarkNodeAsRemove(x);
         }
 
-        private void RemoveUnconnectedNodes()
+        private void MarkNodeAsRemove(int i)
         {
-            for (var i = 0; i < _searchSpace.Count; i++)
+            _isRemoved[i] = true;
+            if (_isTarget[i])
             {
-                if (!_edgeSet.HasNeighbors(i))
+                var node = _searchSpace[i];
+                _isTarget[i] = false;
+                _allTargetNodes.Remove(node);
+                if (_isFixedTarget[i])
                 {
-                    _isRemoved[i] = true;
-                    if (_isTarget[i])
-                    {
-                        var node = _searchSpace[i];
-                        _isTarget[i] = false;
-                        _allTargetNodes.Remove(node);
-                        if (_isFixedTarget[i])
-                        {
-                            _isFixedTarget[i] = false;
-                            _fixedTargetNodes.Remove(node);
-                        }
-                        else
-                        {
-                            _isVariableTarget[i] = false;
-                            _variableTargetNodes.Remove(node);
-                        }
-                    }
+                    _isFixedTarget[i] = false;
+                    _fixedTargetNodes.Remove(node);
+                }
+                else
+                {
+                    _isVariableTarget[i] = false;
+                    _variableTargetNodes.Remove(node);
                 }
             }
         }

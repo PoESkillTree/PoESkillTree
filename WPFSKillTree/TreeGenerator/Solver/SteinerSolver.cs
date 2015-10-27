@@ -8,7 +8,7 @@ namespace POESKillTree.TreeGenerator.Solver
     /// <summary>
     /// Implementation of AbstractSolver that solves the Steiner tree problem.
     /// </summary>
-    public class SteinerSolver : AbstractSolver<SolverSettings>
+    public class SteinerSolver : AbstractGeneticSolver<SolverSettings>
     {
         ///////////////////////////////////////////////////////////////////////////
         /// This code is a heuristic solution to the Steiner tree problem (STP).

@@ -12,7 +12,7 @@ namespace POESKillTree.TreeGenerator.Solver
     /// <summary>
     /// Implementation of AbstractSolver that tries to find optimal trees based on constraints.
     /// </summary>
-    public class AdvancedSolver : AbstractSolver<AdvancedSolverSettings>
+    public class AdvancedSolver : AbstractGeneticSolver<AdvancedSolverSettings>
     {
         /// <summary>
         /// PseudoAttributeConstraint data object where the PseudoAttribute is converted
@@ -127,8 +127,8 @@ namespace POESKillTree.TreeGenerator.Solver
             FinalHillClimbEnabled = true;
         }
 
-        protected override void OnTargetNodesCreated()
-        {// TODO execute on start of Initialize()
+        public override void Initialize()
+        {
             // Evaluate the pseudo constraints into attribute lists.
             var convertedPseudos = EvalPseudoAttrConstraints();
             // Assign a number to each attribute and pseudo attribute constraint
@@ -136,6 +136,8 @@ namespace POESKillTree.TreeGenerator.Solver
             FormalizeConstraints(Settings.AttributeConstraints, convertedPseudos);
             // Extract attributes from nodes and set travel nodes.
             ExtractNodeAttributes();
+
+            base.Initialize();
         }
 
         /// <summary>

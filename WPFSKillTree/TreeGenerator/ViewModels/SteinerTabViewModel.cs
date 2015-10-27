@@ -29,8 +29,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         public override ISolver CreateSolver(SolverSettings settings)
         {
-            return new SteinerSolver(Tree, settings);
-            //return new SteinerSmtSolver(Tree, settings);
+            //return new SteinerSolver(Tree, settings);
+            return new SteinerSmtSolver(Tree, settings);
         }
     }
 }
