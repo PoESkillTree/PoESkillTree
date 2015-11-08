@@ -64,7 +64,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// DistanceLookup for calculating and caching distances and shortest paths between nodes.
         /// </summary>
-        protected IDistanceLookup Distances { get; private set; }
+        protected IDistancePathLookup Distances { get; private set; }
 
         protected IReadOnlyDictionary<ushort, IReadOnlyCollection<ushort>> NodeExpansionDictionary { get; private set; }
 
@@ -105,6 +105,7 @@ namespace POESKillTree.TreeGenerator.Solver
             TargetNodes = preProc.FixedTargetNodes;
             Distances = preProc.DistanceLookup;
             SearchSpaceEdgeSet = preProc.EdgeSet;
+            StartNode = preProc.StartNode;
 
             var expansionDict = remainingNodes.ToDictionary(n => n.Id, n => n.Nodes);
             foreach (var node in AllNodes)

@@ -130,7 +130,7 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
-        private MinimalSpanningTree DnaToSpannedMst(BitArray dna)
+        private MinimalSpanningTreeWithNodes DnaToSpannedMst(BitArray dna)
         {
             var mstNodes = new List<GraphNode>();
             for (var i = 0; i < dna.Length; i++)
@@ -140,7 +140,7 @@ namespace POESKillTree.TreeGenerator.Solver
             }
             mstNodes.AddRange(TargetNodes);
 
-            var mst = new MinimalSpanningTree(mstNodes, Distances);
+            var mst = new MinimalSpanningTreeWithNodes(mstNodes, Distances);
             if (_firstEdge != null)
                 mst.Span(_firstEdge);
             else

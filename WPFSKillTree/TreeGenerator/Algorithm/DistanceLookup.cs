@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("UnitTests")]
@@ -10,7 +11,10 @@ namespace POESKillTree.TreeGenerator.Algorithm
         int CacheSize { get; }
 
         uint this[int a, int b] { get; }
+    }
 
+    public interface IDistancePathLookup : IDistanceLookup
+    {
         IReadOnlyCollection<ushort> GetShortestPath(int a, int b);
 
         GraphNode IndexToNode(int index);
@@ -20,7 +24,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
     ///  Calculates and caches distances between nodes. Only relies on adjacency
     ///  information stored in the nodes.
     /// </summary>
-    public class DistanceLookup : IDistanceLookup
+    public class DistanceLookup : IDistancePathLookup
     {
         // The uint compounds both ushort indices.
         private Dictionary<uint, uint> _distances = new Dictionary<uint, uint>();
@@ -100,6 +104,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
         public uint this[int a, int b]
         {
             get { return _distancesFast[a, b]; }
+        }
+
+        public uint GetShortestDistance(int a, int b)
+        {
+            return this[a, b];
         }
 
         /// <summary>
@@ -187,16 +196,25 @@ namespace POESKillTree.TreeGenerator.Algorithm
         {
             if (!_fullyCached)
                 throw new InvalidOperationException("Distances must be fully cached to merge nodes");
-            
+
+            var path = GetShortestPath(x, into);
             SetFastDistance(x, into, 0);
             SetFastShortestPath(x, into, new ushort[0]);
             for (var i = 0; i < _cacheSize; i++)
             {
                 if (i == into || i == x) continue;
-                if (_distancesFast[i, x] < _distancesFast[i, into])
+
+                var ixPath = GetShortestPath(i, x).Except(path).ToArray();
+                var iIntoPath = GetShortestPath(i, into).Except(path).ToArray();
+                if (ixPath.Length < iIntoPath.Length)
                 {
-                    SetFastDistance(i, into, _distancesFast[i, x]);
-                    SetFastShortestPath(i, into, _pathsFast[i, x]);
+                    SetFastDistance(i, into, (uint) ixPath.Length + 1);
+                    SetFastShortestPath(i, into, ixPath);
+                }
+                else
+                {
+                    SetFastDistance(i, into, (uint) iIntoPath.Length + 1);
+                    SetFastShortestPath(i, into, iIntoPath);
                 }
             }
         }

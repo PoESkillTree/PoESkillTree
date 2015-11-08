@@ -226,10 +226,10 @@ namespace POESKillTree.TreeGenerator.Algorithm
             _temperature = parameters.Temperature;
             _annealingFactor = parameters.AnnealingFactor;
             _maxMutateClusterSize = parameters.MaxMutateClusterSize;
-
-            _bestSolution = new Individual(null, 0);
-
+            
             _initialSolution = initialSolution ?? new BitArray(_dnaLength);
+            // To have a solution in case _populationSize is 0.
+            _bestSolution = new Individual(_initialSolution, 0);
             _population = CreatePopulation();
             GenerationCount = 0;
             UpdateBestSolution();
@@ -269,6 +269,13 @@ namespace POESKillTree.TreeGenerator.Algorithm
             if (_population == null)
                 throw new InvalidOperationException("Cannot generate a next" +
                     " generation without prior call to InitializeEvolution!");
+
+            if (_populationSize == 0)
+            {
+                // The only thing not returning would lead to is an infertile generation.
+                GenerationCount = MaxGeneration;
+                return GenerationCount;
+            }
 
             Individual[] newPopulation = new Individual[_populationSize];
             int newPopIndex = 0;

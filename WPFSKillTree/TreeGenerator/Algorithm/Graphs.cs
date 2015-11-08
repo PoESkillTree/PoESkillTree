@@ -47,7 +47,10 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         internal void AddNeighbor(GraphNode other)
         {
-            _adjacent.Add(other);
+            if (!_adjacent.Contains(other))
+            {
+                _adjacent.Add(other);
+            }
         }
 
         public void MergeWith(GraphNode other, IEnumerable<ushort> path)
@@ -55,6 +58,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
             _adjacent = _adjacent.Union(other._adjacent).Where(n => n != this && n != other).ToList();
             _nodes.AddRange(other._nodes);
             _nodes.AddRange(path);
+            other._adjacent.Clear();
+            other._nodes.Clear();
         }
     }
 

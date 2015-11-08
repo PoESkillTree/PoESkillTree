@@ -144,10 +144,10 @@ namespace UnitTests
             var mstNodes1 = new List<GraphNode>
                 { graphNodes1[3], graphNodes1[5], graphNodes1[7], graphNodes1[0] };
             distances.CalculateFully(mstNodes1);
-            MinimalSpanningTree mst1 = new MinimalSpanningTree(mstNodes1, distances);
+            var mst1 = new MinimalSpanningTreeWithNodes(mstNodes1, distances);
             mst1.Span(graphNodes1[0]);
 
-            Assert.AreEqual(3, mst1.SpanningEdges.Count(), "Wrong amount of spanning edges");
+            Assert.AreEqual(3, mst1.SpanningGraphEdges.Count(), "Wrong amount of spanning edges");
             var goalEdges = new []
             {
                 new []{0, 5}, new []{5, 3}, new []{5, 7}
@@ -155,7 +155,7 @@ namespace UnitTests
             foreach (var edge in goalEdges)
             {
                 Assert.AreEqual(1,
-                    mst1.SpanningEdges.Select(e => new Tuple<ushort, ushort>(distances.IndexToNode(e.N1).Id, distances.IndexToNode(e.N2).Id)).Count(
+                    mst1.SpanningGraphEdges.Select(e => new Tuple<ushort, ushort>(distances.IndexToNode(e.N1).Id, distances.IndexToNode(e.N2).Id)).Count(
                         t =>
                             (t.Item1 == edge[0] && t.Item2 == edge[1]) ||
                             (t.Item1 == edge[1] && t.Item2 == edge[0])),

@@ -383,11 +383,10 @@ namespace POESKillTree.TreeGenerator.Solver
 
             // Calculate constraint value for each stat and multiply them.
             var csvs = 1.0;
-            var i = 0;
-            foreach (var stat in _attrConstraints)
+            for (var i = 0; i < _attrConstraints.Length; i++)
             {
+                var stat = _attrConstraints[i];
                 csvs *= CalcCsv(totalStats[i], stat.Item2, stat.Item1);
-                i++;
             }
 
             // Total points spent is another csv.
@@ -403,7 +402,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 csvs *= 1 + UsedNodeCountFactor * Math.Log(totalPoints + 1 - usedNodeCount);
             }
 
-            return csvs;
+            return Math.Max(csvs, 0);
         }
 
         private static double CalcCsv(float x, double weight, float target)

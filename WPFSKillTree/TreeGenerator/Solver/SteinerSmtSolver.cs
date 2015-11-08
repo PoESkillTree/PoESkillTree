@@ -68,7 +68,7 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             return !_edges.HasNeighbors(n1)
                 ? _zero
-                : _c.MkAdd(_edges.NeighborsOf(n1).Select(n2 => _edgeDictionary[new GraphEdge(n1, n2, 0)][graph]).ToArray());
+                : _c.MkAdd(_edges.NeighborEdges(n1).Select(edge => _edgeDictionary[edge][graph]).ToArray());
         }
 
         private ArithExpr MkEdgeWeightExpr(ArithExpr[] es, uint weight)

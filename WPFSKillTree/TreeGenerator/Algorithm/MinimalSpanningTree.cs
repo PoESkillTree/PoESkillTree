@@ -28,7 +28,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         public readonly uint Weight;
 
-        public GraphEdge(int n1, int n2, uint weight)
+        internal GraphEdge(int n1, int n2, uint weight)
         {
             N1 = Math.Min(n1, n2);
             N2 = Math.Max(n1, n2);
@@ -59,48 +59,26 @@ namespace POESKillTree.TreeGenerator.Algorithm
         }
     }
 
-    public class MinimalSpanningTree : IDisposable
+    public class MinimalSpanningTreeWithNodes : MinimalSpanningTree, IDisposable
     {
-        
         private static readonly ConcurrentStack<HashSet<ushort>> HashSetStack = new ConcurrentStack<HashSet<ushort>>();
 
         private readonly List<HashSet<ushort>> _usedSets = new List<HashSet<ushort>>();
 
-        private readonly List<GraphNode> _mstNodes;
+        private readonly IReadOnlyList<GraphNode> _mstGraphNodes;
 
-        private readonly IDistanceLookup _distances;
-
-        // I'd like to control at what point the spanning actually happens.
-        public bool IsSpanned { get; private set; }
-
-        private List<LinkedGraphEdge> _spanningEdges;
-
-        /// <summary>
-        /// Returns the edges which span this tree as an linq enumerable (so it's slow and not cached).
-        /// Only set after <see cref="Span(GraphNode)"/> or <see cref="Span(LinkedGraphEdge)"/> has been called.
-        /// </summary>
-        public IEnumerable<GraphEdge> SpanningEdges
-        {
-            get
-            {
-                return _spanningEdges.Select(e => new GraphEdge(e.Inside, e.Outside, _distances[e.Inside, e.Outside]));
-            }
-        }
+        private readonly IDistancePathLookup _paths;
 
         /// <summary>
         ///  Instantiates a new MinimalSpanningTree.
         /// </summary>
         /// <param name="mstNodes">The GraphNodes that should be spanned. (not null)</param>
         /// <param name="distances">The DistanceLookup used as cache. (not null)</param>
-        public MinimalSpanningTree(List<GraphNode> mstNodes, IDistanceLookup distances)
+        public MinimalSpanningTreeWithNodes(IReadOnlyList<GraphNode> mstNodes, IDistancePathLookup distances)
+            : base(mstNodes.Select(n => n.DistancesIndex).ToList(), distances)
         {
-            if (mstNodes == null) throw new ArgumentNullException("mstNodes");
-            if (distances == null) throw new ArgumentNullException("distances");
-
-            // Copy might be preferable, doesn't really matter atm though.
-            _mstNodes = mstNodes;
-            _distances = distances;
-            IsSpanned = false;
+            _mstGraphNodes = mstNodes;
+            _paths = distances;
         }
 
         /// <summary>
@@ -108,15 +86,17 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         public HashSet<ushort> GetUsedNodes()
         {
+            if (SpanningEdges == null)
+                throw new InvalidOperationException("MST is not spanned!");
             HashSet<ushort> hashSet;
             if (!HashSetStack.TryPop(out hashSet))
             {
                 hashSet = new HashSet<ushort>();
             }
-            hashSet.UnionWith(_mstNodes.Select(n => n.Id));
-            foreach (var edge in _spanningEdges)
+            hashSet.UnionWith(_mstGraphNodes.Select(n => n.Id));
+            foreach (var edge in SpanningEdges)
             {
-                hashSet.UnionWith(_distances.GetShortestPath(edge.Inside, edge.Outside));
+                hashSet.UnionWith(_paths.GetShortestPath(edge.Inside, edge.Outside));
             }
             _usedSets.Add(hashSet);
             return hashSet;
@@ -129,9 +109,58 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <param name="startFrom">A GraphNode to start from.</param>
         public void Span(GraphNode startFrom)
         {
+            Span(startFrom.DistancesIndex);
+        }
+
+        public void Dispose()
+        {
+            foreach (var set in _usedSets)
+            {
+                set.Clear();
+                HashSetStack.Push(set);
+            }
+        }
+    }
+
+    public class MinimalSpanningTree
+    {
+
+        private readonly IReadOnlyList<int> _mstNodes;
+
+        private readonly IDistanceLookup _distances;
+
+        public IReadOnlyList<LinkedGraphEdge> SpanningEdges { get; private set; }
+
+        /// <summary>
+        /// Returns the edges which span this tree as an linq enumerable (so it's slow and not cached).
+        /// Only set after <see cref="Span(GraphNode)"/> or <see cref="Span(LinkedGraphEdge)"/> has been called.
+        /// </summary>
+        public IEnumerable<GraphEdge> SpanningGraphEdges
+        {
+            get
+            {
+                return SpanningEdges.Select(e => new GraphEdge(e.Inside, e.Outside, _distances[e.Inside, e.Outside]));
+            }
+        }
+
+        /// <summary>
+        ///  Instantiates a new MinimalSpanningTree.
+        /// </summary>
+        /// <param name="mstNodes">The GraphNodes that should be spanned. (not null)</param>
+        /// <param name="distances">The DistanceLookup used as cache. (not null)</param>
+        public MinimalSpanningTree(IReadOnlyList<int> mstNodes, IDistanceLookup distances)
+        {
+            if (mstNodes == null) throw new ArgumentNullException("mstNodes");
+            if (distances == null) throw new ArgumentNullException("distances");
+            
+            _mstNodes = mstNodes;
+            _distances = distances;
+        }
+
+        public void Span(int startIndex)
+        {
             var adjacentEdgeQueue = new LinkedListPriorityQueue<LinkedGraphEdge>(100);
 
-            var startIndex = startFrom.DistancesIndex;
             // All nodes that are not yet included.
             var toAdd = new List<int>(_mstNodes.Count);
             // If the index node is already included.
@@ -139,14 +168,13 @@ namespace POESKillTree.TreeGenerator.Algorithm
             // The spanning edges.
             var mstEdges = new List<LinkedGraphEdge>(_mstNodes.Count);
 
-            for (var i = 0; i < _mstNodes.Count; i++)
+            foreach (var t in _mstNodes)
             {
-                var index = _mstNodes[i].DistancesIndex;
-                if (index != startIndex)
+                if (t != startIndex)
                 {
-                    toAdd.Add(index);
-                    var adjacentEdge = new LinkedGraphEdge(startIndex, index);
-                    adjacentEdgeQueue.Enqueue(adjacentEdge, _distances[startIndex, index]);
+                    toAdd.Add(t);
+                    var adjacentEdge = new LinkedGraphEdge(startIndex, t);
+                    adjacentEdgeQueue.Enqueue(adjacentEdge, _distances[startIndex, t]);
                 }
             }
             inMst[startIndex] = true;
@@ -181,10 +209,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 }
             }
 
-            _spanningEdges = mstEdges;
-            IsSpanned = true;
+            SpanningEdges = mstEdges;
         }
-        
+
         /// <summary>
         /// Uses Kruskal's algorithm to build an MST spanning the mstNodes
         /// with the given edges as a linked list ordered by priority ascending.
@@ -208,7 +235,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             var toAddCount = _mstNodes.Count - 1;
             foreach (var t in _mstNodes)
             {
-                considered[t.DistancesIndex] = true;
+                considered[t] = true;
             }
             for (var current = first; current != null; current = current.Next)
             {
@@ -222,17 +249,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 set.Union(inside, outside);
                 if (--toAddCount == 0) break;
             }
-            _spanningEdges = mstEdges;
-            IsSpanned = true;
-        }
-
-        public void Dispose()
-        {
-            foreach (var set in _usedSets)
-            {
-                set.Clear();
-                HashSetStack.Push(set);
-            }
+            SpanningEdges = mstEdges;
         }
     }
 }

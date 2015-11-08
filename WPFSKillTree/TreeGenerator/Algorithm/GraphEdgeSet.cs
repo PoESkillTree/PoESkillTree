@@ -9,17 +9,17 @@ namespace POESKillTree.TreeGenerator.Algorithm
         bool HasNeighbors(int node);
 
         IReadOnlyList<int> NeighborsOf(int node);
+
+        IReadOnlyList<GraphEdge> NeighborEdges(int node);
     }
 
-    class GraphEdgeSet : ICollection<GraphEdge>, IReadOnlyGraphEdgeSet
+    class GraphEdgeSet : IReadOnlyGraphEdgeSet
     {
         private readonly Dictionary<GraphEdge, GraphEdge> _edgeDict = new Dictionary<GraphEdge, GraphEdge>();
 
         private readonly HashSet<int>[] _adjacencyMatrix;
 
         public int Count { get { return _edgeDict.Count; } }
-
-        public bool IsReadOnly { get { return false; } }
 
         public GraphEdge this[int n1, int n2]
         {
@@ -36,42 +36,31 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return _adjacencyMatrix[node].ToList();
         }
 
+        public IReadOnlyList<GraphEdge> NeighborEdges(int node)
+        {
+            return _adjacencyMatrix[node].Select(n2 => this[node, n2]).ToList();
+        }
+
         public bool HasNeighbors(int node)
         {
             return _adjacencyMatrix[node].Any();
         }
 
-        public void Add(GraphEdge edge)
+        public void Add(int n1, int n2, uint weight)
         {
+            var edge = new GraphEdge(n1, n2, weight);
+            // Assigning with indexer does not override the existing value ...
+            _edgeDict.Remove(edge);
             _edgeDict[edge] = edge;
             _adjacencyMatrix[edge.N1].Add(edge.N2);
             _adjacencyMatrix[edge.N2].Add(edge.N1);
         }
 
-        public void Clear()
-        {
-            foreach (var set in _adjacencyMatrix)
-            {
-                set.Clear();
-            }
-            _edgeDict.Clear();
-        }
-
-        public bool Contains(GraphEdge item)
-        {
-            return _edgeDict.ContainsKey(item);
-        }
-
-        public void CopyTo(GraphEdge[] array, int arrayIndex)
-        {
-            _edgeDict.Keys.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(GraphEdge edge)
+        public void Remove(GraphEdge edge)
         {
             _adjacencyMatrix[edge.N1].Remove(edge.N2);
             _adjacencyMatrix[edge.N2].Remove(edge.N1);
-            return _edgeDict.Remove(edge);
+            _edgeDict.Remove(edge);
         }
 
         public void Remove(int n1, int n2)
