@@ -6,6 +6,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
 {
     public interface IReadOnlyGraphEdgeSet : IReadOnlyCollection<GraphEdge>
     {
+        GraphEdge this[int n1, int n2] { get; }
+
         bool HasNeighbors(int node);
 
         IReadOnlyList<int> NeighborsOf(int node);
@@ -13,7 +15,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         IReadOnlyList<GraphEdge> NeighborEdges(int node);
     }
 
-    class GraphEdgeSet : IReadOnlyGraphEdgeSet
+    internal class GraphEdgeSet : IReadOnlyGraphEdgeSet
     {
         private readonly Dictionary<GraphEdge, GraphEdge> _edgeDict = new Dictionary<GraphEdge, GraphEdge>();
 

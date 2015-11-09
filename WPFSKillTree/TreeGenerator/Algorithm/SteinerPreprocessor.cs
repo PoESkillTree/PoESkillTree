@@ -5,15 +5,24 @@ using System.Linq;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
-    static class Extensions
+    public static class Extensions
     {
-        public static void Add<TKey, TValue>(this Dictionary<TKey, List<TValue>> dict, TKey key, TValue value)
+        public static void Add<TKey, TValue, TCollection>(this Dictionary<TKey, TCollection> dict, TKey key, TValue value)
+            where TCollection : ICollection<TValue>, new()
         {
             if (!dict.ContainsKey(key))
             {
-                dict.Add(key, new List<TValue>());
+                dict.Add(key, new TCollection());
             }
             dict[key].Add(value);
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var item in enumerable)
+            {
+                action(item);
+            }
         }
     }
 
@@ -70,7 +79,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         private bool[] _isRemoved;
 
-        private uint _maxTargetMstEdgeDistance;
+        private uint[,] _smatrix;
 
         public SteinerPreprocessor(IEnumerable<GraphNode> searchSpace, IEnumerable<GraphNode> fixedTargetNodes,
             GraphNode startNode = null, IEnumerable<GraphNode> variableTargetNodes = null,
@@ -113,19 +122,10 @@ namespace POESKillTree.TreeGenerator.Algorithm
             leastMst.Span(StartNode);
             LeastSolution = leastMst.GetUsedNodes();
 
-            // Removal of nodes which are not connected or too far away to be useful.
-            _maxTargetMstEdgeDistance = _fixedTargetNodes.Count > 1 && _variableTargetNodes.Count == 0
-                ? leastMst.SpanningGraphEdges.Max(e => e.Weight)
-                : int.MaxValue;
-            var query =
-                from n in _searchSpace
-                where !_distanceLookup.AreConnected(n, StartNode) ||
-                      (!_allTargetNodes.Contains(n) &&
-                       _fixedTargetNodes.All(targetNode => _distanceLookup[targetNode, n] >= _maxTargetMstEdgeDistance))
-                select n;
             nodeCountBefore = _searchSpace.Count;
-            _searchSpace = _distanceLookup.RemoveNodes(query);
-            Debug.WriteLine("Basic distance based reduction (or unconnectedness):");
+            // Removal of unconnected nodes.
+            _searchSpace = _distanceLookup.RemoveNodes(_searchSpace.Where(n => !_distanceLookup.AreConnected(n, StartNode)));
+            Debug.WriteLine("Removed unconnected nodes:");
             Debug.WriteLine("   removed nodes: " + (nodeCountBefore - _searchSpace.Count));
 
             ComputeFields();
@@ -139,20 +139,20 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 + "     fixed targets: " + _fixedTargetNodes.Count + "\n"
                 + "             edges: " + initialEdgeCount);
             
-            var edgeCountBefore = _edgeSet.Count;
-            var removedNodes = DegreeTest();
-            Debug.WriteLine("Degree Test #0:");
-            Debug.WriteLine("   removed nodes: " + removedNodes);
-            Debug.WriteLine("   removed edges: " + (edgeCountBefore - _edgeSet.Count));
+            var dummy = 0;
+            RunDegreeTest("0", ref dummy, ref dummy);
 
             ContractSearchSpace();
             ComputeFields();
             
             _smatrix = CalcBottleneckSteinerDistances();
 
+            var farAwayNonTerminalsEnabled    = _variableTargetNodes.Count == 0;
             var pathsWithManyTerminalsEnabled = true;
-            var longestEdgeEnabled = true;
-            var nonTermimalsOfDegreeKEnabled = true;
+            var longestEdgeEnabled            = _variableTargetNodes.Count == 0;
+            var nonTermimalsOfDegreeKEnabled  = true;
+            var nearestVertexEnabled          = true;
+            var shortestLinksEnabled          = true;
             for (var i = 1; i < 10; i++)
             {
                 var edgeElims = 0;
@@ -160,6 +160,16 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
                 //ContractSearchSpace();
                 //ComputeFields();
+
+                if (farAwayNonTerminalsEnabled)
+                {
+                    if (!RunTest(FarAwayNonTerminalsTest, "Far away non terminals", i.ToString(),
+                        ref edgeElims, ref nodeElims))
+                    {
+                        farAwayNonTerminalsEnabled = false;
+                    }
+                    RunDegreeTest(i + ".0", ref edgeElims, ref nodeElims);
+                }
 
                 if (pathsWithManyTerminalsEnabled)
                 {
@@ -191,6 +201,26 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     RunDegreeTest(i + ".3", ref edgeElims, ref nodeElims);
                 }
 
+                if (nearestVertexEnabled)
+                {
+                    if (!RunTest(NearestVertextTest, "Nearest Vertex", i.ToString(),
+                        ref edgeElims, ref nodeElims))
+                    {
+                        nearestVertexEnabled = false;
+                    }
+                    RunDegreeTest(i + ".4", ref edgeElims, ref nodeElims);
+                }
+
+                if (shortestLinksEnabled)
+                {
+                    if (!RunTest(ShortLinksTest, "Shortest Links", i.ToString(),
+                        ref edgeElims, ref nodeElims))
+                    {
+                        shortestLinksEnabled = false;
+                    }
+                    RunDegreeTest(i + ".5", ref edgeElims, ref nodeElims);
+                }
+
                 Debug.WriteLine("Eliminations in round {0}:", i);
                 Debug.WriteLine("   removed nodes: " + nodeElims);
                 Debug.WriteLine("   removed edges: " + edgeElims);
@@ -210,9 +240,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return _searchSpace;
         }
 
-        private bool RunDegreeTest(string iterationId, ref int edgeElims, ref int nodeElims)
+        private void RunDegreeTest(string iterationId, ref int edgeElims, ref int nodeElims)
         {
-            return RunTest(DegreeTest, "Degree", iterationId, ref edgeElims, ref nodeElims);
+            RunTest(DegreeTest, "Degree", iterationId, ref edgeElims, ref nodeElims);
         }
 
         private bool RunTest(Func<int> testFunc, string testId, string iterationId,
@@ -432,7 +462,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return smatrix;
         }
 
-        private uint[,] _smatrix;
         private int PathsWithManyTerminalsTest()
         {
             // TODO Improving the Test in the Case of Equality
@@ -445,12 +474,43 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         private int LongestEdgeTest()
         {
-            if (_maxTargetMstEdgeDistance >= int.MaxValue) return 0;
+            if (_fixedTargetNodes.Count <= 1 || _variableTargetNodes.Count > 0) return 0;
+            
+            var mst = new MinimalSpanningTree(_fixedTargetNodes.Select(n => n.DistancesIndex).ToList(), _distanceLookup);
+            mst.Span(StartNode.DistancesIndex);
+            var maxEdgeDistance = mst.SpanningEdges.Max(e => _distanceLookup[e.Inside, e.Outside]);
 
-            _edgeSet.Where(e => e.Weight > _maxTargetMstEdgeDistance)
+            _edgeSet.Where(e => e.Weight > maxEdgeDistance)
                 .ToList().ForEach(_edgeSet.Remove);
 
             return 0;
+        }
+
+        private int FarAwayNonTerminalsTest()
+        {
+            if (_fixedTargetNodes.Count <= 1 || _variableTargetNodes.Count > 0) return 0;
+
+            var removedNodes = 0;
+
+            var mst = new MinimalSpanningTree(_fixedTargetNodes.Select(n => n.DistancesIndex).ToList(), _distanceLookup);
+            mst.Span(StartNode.DistancesIndex);
+            var maxEdgeDistance = mst.SpanningEdges.Max(e => _distanceLookup[e.Inside, e.Outside]);
+
+            var voronoiPartition = new VoronoiPartition(_distanceLookup, _fixedTargetNodes.Select(n => n.DistancesIndex), _edgeSet);
+
+            for (var i = 0; i < _searchSpace.Count; i++)
+            {
+                if (_isTarget[i] || _isRemoved[i]) continue;
+
+                if (_distanceLookup[i, voronoiPartition.Base(i)] >= maxEdgeDistance)
+                {
+                    _edgeSet.NeighborEdges(i).ForEach(_edgeSet.Remove);
+                    MarkNodeAsRemoved(i);
+                    removedNodes++;
+                }
+            }
+
+            return removedNodes;
         }
 
         private int TriangleTest()
@@ -533,12 +593,120 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         private int NearestVertextTest()
         {
-            return 0;
+            if (_fixedTargetNodes.Count == 1) return 0;
+
+            var removedNodes = 0;
+            var untested = new HashSet<int>(_fixedTargetNodes.Select(n => n.DistancesIndex));
+            // For each terminal zi with degree of at least 2
+            while (untested.Any())
+            {
+                var zi = untested.First();
+                untested.Remove(zi);
+
+                var neighbors = _edgeSet.NeighborsOf(zi);
+                if (neighbors.Count < 2) continue;
+
+                // Let (zi, v1) and (zi, v2) be the shortest and second shortest edges incident to zi.
+                var tuple = ShortestTwoEdgesOf(_edgeSet.NeighborEdges(zi));
+                var shortest = tuple.Item1;
+                var secondShortestWeight = tuple.Item2;
+
+                var v1 = shortest.N1 == zi ? shortest.N2 : shortest.N1;
+                
+                // (zi, v1) belongs to at least one Steiner minimal tree, if there is a terminal zj, zi != zj
+                // with: c(zi, v2) >= c(zi, v1) + d(v1, zj)
+                var canBeContracted =
+                    _fixedTargetNodes.Select(n => n.DistancesIndex)
+                        .Where(zj => zi != zj)
+                        .Any(zj => secondShortestWeight >= shortest.Weight + _distanceLookup[v1, zj]);
+                // If there is, v1 and (zi, v1) can be merged into zi.
+                if (canBeContracted)
+                {
+                    untested.Add(zi);
+                    untested.Remove(v1);
+                    MergeInto(v1, zi);
+                    removedNodes++;
+                }
+            }
+            return removedNodes;
+        }
+
+        private static Tuple<GraphEdge, uint> ShortestTwoEdgesOf(IReadOnlyList<GraphEdge> edges)
+        {
+            var shortest = edges[0];
+            var secondShortestWeight = edges[1].Weight;
+            if (shortest.Weight > secondShortestWeight)
+            {
+                secondShortestWeight = shortest.Weight;
+                shortest = edges[1];
+            }
+            for (var i = 2; i < edges.Count; i++)
+            {
+                var currentWeight = edges[i].Weight;
+                if (currentWeight < shortest.Weight)
+                {
+                    secondShortestWeight = shortest.Weight;
+                    shortest = edges[i];
+                }
+                else if (currentWeight < secondShortestWeight)
+                {
+                    secondShortestWeight = currentWeight;
+                }
+            }
+            return Tuple.Create(shortest, secondShortestWeight);
         }
 
         private int ShortLinksTest()
         {
-            return 0;
+            if (_fixedTargetNodes.Count == 1) return 0;
+
+            var removedNodes = 0;
+
+            var terminalVisited = new bool[_searchSpace.Count];
+            var voronoiPartition = new VoronoiPartition(_distanceLookup, _fixedTargetNodes.Select(n => n.DistancesIndex),
+                _edgeSet);
+
+            for (var i = 0; i < _searchSpace.Count; i++)
+            {
+                if (!_isFixedTarget[i] || terminalVisited[i]) continue;
+
+                var links = voronoiPartition.Links(i);
+                var tuple = links.Count > 1 ? ShortestTwoEdgesOf(links) : Tuple.Create(links[0], uint.MaxValue);
+                var shortestEdge = tuple.Item1;
+                var secondShortestWeight = tuple.Item2;
+                int iNonTerminal;
+                int otherNonTerminal;
+                if (voronoiPartition.Base(shortestEdge.N1) == i)
+                {
+                    iNonTerminal = shortestEdge.N1;
+                    otherNonTerminal = shortestEdge.N2;
+                }
+                else
+                {
+                    iNonTerminal = shortestEdge.N2;
+                    otherNonTerminal = shortestEdge.N1;
+                }
+                var otherTerminal = voronoiPartition.Base(otherNonTerminal);
+
+                if (secondShortestWeight >=
+                    _distanceLookup[iNonTerminal, i] + shortestEdge.Weight +
+                    _distanceLookup[otherNonTerminal, otherTerminal])
+                {
+                    var into = _isFixedTarget[iNonTerminal]
+                        ? iNonTerminal
+                        : (_isTarget[otherNonTerminal] ? otherNonTerminal : iNonTerminal);
+                    var x = into == iNonTerminal ? otherNonTerminal : iNonTerminal;
+                    MakeFixedTarget(into);
+                    MergeInto(x, into);
+                    terminalVisited[i] = true;
+                    terminalVisited[otherTerminal] = true;
+                    // Was changed into a terminal, but was not considered in calculation of voronoiPartition.
+                    terminalVisited[into] = true;
+                    removedNodes++;
+                }
+            }
+
+            return removedNodes;
         }
 
         private void RemoveNode(int index)
@@ -604,6 +772,23 @@ namespace POESKillTree.TreeGenerator.Algorithm
             MarkNodeAsRemoved(x);
 
             return xNeighbors;
+        }
+
+        private void MakeFixedTarget(int i)
+        {
+            if (_isFixedTarget[i]) return;
+            var node = _searchSpace[i];
+            if (_isVariableTarget[i])
+            {
+                _isVariableTarget[i] = false;
+                _variableTargetNodes.Remove(node);
+            }
+            else
+            {
+                _isTarget[i] = true;
+            }
+            _isFixedTarget[i] = true;
+            _fixedTargetNodes.Add(node);
         }
 
         private void MarkNodeAsRemoved(int i)

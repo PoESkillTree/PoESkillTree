@@ -133,7 +133,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         /// <summary>
         /// Returns the edges which span this tree as an linq enumerable (so it's slow and not cached).
-        /// Only set after <see cref="Span(GraphNode)"/> or <see cref="Span(LinkedGraphEdge)"/> has been called.
+        /// Only set after <see cref="Span(int)"/> or <see cref="Span(LinkedGraphEdge)"/> has been called.
         /// </summary>
         public IEnumerable<GraphEdge> SpanningGraphEdges
         {

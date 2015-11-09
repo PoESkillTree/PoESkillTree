@@ -219,6 +219,7 @@
     <Compile Include="TreeGenerator\Algorithm\LinkedListPriorityQueue.cs" />
     <Compile Include="TreeGenerator\Algorithm\MinimalSpanningTree.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerPreprocessor.cs" />
+    <Compile Include="TreeGenerator\Algorithm\VoronoiPartition.cs" />
     <Compile Include="TreeGenerator\Algorithm\WeightedSampling.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\Attribute.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\Conditions.cs" />
