@@ -31,7 +31,7 @@
 		<Attribute Name="#% increased Cast Speed while Dual Wielding">
 			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
 		</Attribute>
-		<Attribute Name="Spells cast by Totems have #% increased Attack Speed">
+		<Attribute Name="Spells cast by Totems have #% increased Cast Speed">
 			<Conditions><Tag>Totem</Tag></Conditions>
 		</Attribute>
 	</PseudoAttribute>
