@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
@@ -35,7 +34,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             {
                 if (isTerminal[i])
                 {
-                    prioQueue.Enqueue(new LinkedGraphEdge(i, i), 0);
+                    prioQueue.Enqueue(new LinkedGraphEdge(i, i, 0));
                     _base[i] = i;
                     _regionDict.Add(i, i);
                     pathDists[i] = 0;
@@ -57,7 +56,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 {
                     if (connected[m] || pathDists[m] <= pathDists[k] + distances[k, m]) continue;
                     pathDists[m] = pathDists[k] + distances[k, m];
-                    prioQueue.Enqueue(new LinkedGraphEdge(k, m), pathDists[m]);
+                    prioQueue.Enqueue(new LinkedGraphEdge(k, m, pathDists[m]));
                     _base[m] = _base[k];
                     _regionDict.Add(_base[k], m);
                 }

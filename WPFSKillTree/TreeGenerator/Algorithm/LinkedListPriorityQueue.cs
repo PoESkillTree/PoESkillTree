@@ -9,12 +9,17 @@
         /// <summary>
         /// The Priority to insert this node at.
         /// </summary>
-        internal uint Priority;
+        internal readonly uint Priority;
 
         /// <summary>
         /// The node coming after this node in the queue.
         /// </summary>
         internal T Next;
+
+        protected LinkedListPriorityQueueNode(uint priority)
+        {
+            Priority = priority;
+        } 
     }
 
     /// <summary>
@@ -65,13 +70,13 @@
         /// Enqueue the given node. Always O(1) with respect to the number of nodes stored
         /// but gets slower when the difference between the given and the next lower priority
         /// already stored gets larger.
+        /// 
+        /// Older nodes with the same priority are stored in front.
         /// </summary>
         /// <param name="node">The node to be stored.</param>
-        /// <param name="priority">The priority of the node. Older nodes with
-        /// the same priority are stored in front.</param>
-        public void Enqueue(T node, uint priority)
+        public void Enqueue(T node)
         {
-            node.Priority = priority;
+            var priority = node.Priority;
             if (Count++ == 0)
             {
                 First = _last = node;

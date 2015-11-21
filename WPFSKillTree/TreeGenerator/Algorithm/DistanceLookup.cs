@@ -106,11 +106,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             get { return _distancesFast[a, b]; }
         }
 
-        public uint GetShortestDistance(int a, int b)
-        {
-            return this[a, b];
-        }
-
         /// <summary>
         ///  Retrieves the shortest path from one node to another, or calculates
         ///  it if it has not yet been found and CalculateFully has not been called.
@@ -197,15 +192,15 @@ namespace POESKillTree.TreeGenerator.Algorithm
             if (!_fullyCached)
                 throw new InvalidOperationException("Distances must be fully cached to merge nodes");
 
-            var path = GetShortestPath(x, into);
+            var path = new HashSet<ushort>(GetShortestPath(x, into));
             SetFastDistance(x, into, 0);
             SetFastShortestPath(x, into, new ushort[0]);
             for (var i = 0; i < _cacheSize; i++)
             {
                 if (i == into || i == x) continue;
 
-                var ixPath = GetShortestPath(i, x).Except(path).ToArray();
-                var iIntoPath = GetShortestPath(i, into).Except(path).ToArray();
+                var ixPath = GetShortestPath(i, x).Where(n => !path.Contains(n)).ToArray();
+                var iIntoPath = GetShortestPath(i, into).Where(n => !path.Contains(n)).ToArray();
                 if (ixPath.Length < iIntoPath.Length)
                 {
                     SetFastDistance(i, into, (uint) ixPath.Length + 1);

@@ -178,14 +178,14 @@ namespace UnitTests
 
             TestNode[] testNodes = new TestNode[nodeCount];
             for (int i = 0; i < nodeCount; i++)
-                testNodes[i] = new TestNode();
+                testNodes[i] = new TestNode((uint)Math.Abs(queueTestOrder[i]));
 
             for (int i = 0; i < queueTestOrder.Length; i++)
             {
                 int t = queueTestOrder[i];
 
                 if (t > 0)
-                    queue.Enqueue(testNodes[t], (uint)t);
+                    queue.Enqueue(testNodes[t]);
                 if (t < 0)
                     Assert.IsTrue(queue.Dequeue().Priority == -t);
             }
@@ -193,6 +193,11 @@ namespace UnitTests
 
         class TestNode : LinkedListPriorityQueueNode<TestNode>
         {
+            public TestNode(uint priority)
+                : base (priority)
+            {
+                
+            }
         }
     }
 }

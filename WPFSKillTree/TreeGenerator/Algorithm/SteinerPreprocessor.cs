@@ -144,7 +144,10 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
             ContractSearchSpace();
             ComputeFields();
-            
+
+            // These values may become lower by merging nodes. Since the reductions based on these distance
+            // don't help if there are many variable target nodes, it is not really worth it to always recalculate them.
+            // It would either slow the preprocessing by like 30% or would need an approximation algorithmus.
             _smatrix = CalcBottleneckSteinerDistances();
 
             var farAwayNonTerminalsEnabled    = _variableTargetNodes.Count == 0;
@@ -157,9 +160,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             {
                 var edgeElims = 0;
                 var nodeElims = 0;
-
-                //ContractSearchSpace();
-                //ComputeFields();
 
                 if (farAwayNonTerminalsEnabled)
                 {
@@ -464,8 +464,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         private int PathsWithManyTerminalsTest()
         {
-            // TODO Improving the Test in the Case of Equality
-
             _edgeSet.Where(e => e.Weight > _smatrix[e.N1, e.N2])
                 .ToList().ForEach(_edgeSet.Remove);
 
@@ -511,11 +509,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             }
 
             return removedNodes;
-        }
-
-        private int TriangleTest()
-        {
-            return 0;
         }
 
         private int NonTerminalsOfDegreeKTest()
@@ -744,8 +737,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
         {
             if (!_isFixedTarget[into])
                 throw new ArgumentException("Nodes can only be merged into fixed target nodes", "into");
-
-            // TODO does _smatrix need to be updated?
 
             _searchSpace[into].MergeWith(_searchSpace[x], _distanceLookup.GetShortestPath(x, into));
 

@@ -72,7 +72,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 {
                     for (var j = i + 1; j < totalCount; j++)
                     {
-                        prioQueue.Enqueue(new LinkedGraphEdge(i, j), Distances[i, j]);
+                        prioQueue.Enqueue(new LinkedGraphEdge(i, j, Distances[i, j]));
                     }
                 }
                 _firstEdge = prioQueue.First;

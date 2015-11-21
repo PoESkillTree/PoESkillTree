@@ -14,7 +14,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
     {
         public readonly int Inside, Outside;
 
-        public LinkedGraphEdge(int inside, int outside)
+        public LinkedGraphEdge(int inside, int outside, uint priority)
+            : base(priority)
         {
             Inside = inside;
             Outside = outside;
@@ -173,8 +174,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 if (t != startIndex)
                 {
                     toAdd.Add(t);
-                    var adjacentEdge = new LinkedGraphEdge(startIndex, t);
-                    adjacentEdgeQueue.Enqueue(adjacentEdge, _distances[startIndex, t]);
+                    var adjacentEdge = new LinkedGraphEdge(startIndex, t, _distances[startIndex, t]);
+                    adjacentEdgeQueue.Enqueue(adjacentEdge);
                 }
             }
             inMst[startIndex] = true;
@@ -203,8 +204,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     }
                     else
                     {
-                        var edge = new LinkedGraphEdge(newIn, otherNode);
-                        adjacentEdgeQueue.Enqueue(edge, _distances[newIn, otherNode]);
+                        var edge = new LinkedGraphEdge(newIn, otherNode, _distances[newIn, otherNode]);
+                        adjacentEdgeQueue.Enqueue(edge);
                     }
                 }
             }
