@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using POESKillTree.TreeGenerator.Algorithm;
+using POESKillTree.TreeGenerator.Genetic;
+
 namespace UnitTests
 {
     [TestClass]

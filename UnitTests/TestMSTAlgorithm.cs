@@ -79,10 +79,10 @@ namespace UnitTests
             Dictionary<int, GraphNode> graphNodes = GetGraphNodesIdIndex(searchGraph1);
 
 
-            DistanceLookup distanceLookup = new DistanceLookup();
-            Assert.AreEqual(0, distanceLookup[graphNodes[0], graphNodes[0]], "Failed 0 distance test");
-            Assert.AreEqual(2, distanceLookup[graphNodes[0], graphNodes[5]], "Wrong distance");
-            Assert.AreEqual(3, distanceLookup[graphNodes[0], graphNodes[3]], "Wrong distance");
+            DistanceLookup distanceLookup = new DistanceLookup(graphNodes.Values.ToList());
+            Assert.AreEqual((uint)0, distanceLookup[graphNodes[0].DistancesIndex, graphNodes[0].DistancesIndex], "Failed 0 distance test");
+            Assert.AreEqual((uint)2, distanceLookup[graphNodes[0].DistancesIndex, graphNodes[5].DistancesIndex], "Wrong distance");
+            Assert.AreEqual((uint)3, distanceLookup[graphNodes[0].DistancesIndex, graphNodes[3].DistancesIndex], "Wrong distance");
         }
 
         [TestMethod]
@@ -103,21 +103,12 @@ namespace UnitTests
             };
             SearchGraph searchGraph2 = SearchGraphFromData(graph2);
             Dictionary<int, GraphNode> graphNodes2 = GetGraphNodesIdIndex(searchGraph2);
-            var mstNodes2 = new List<GraphNode> {graphNodes2[0], graphNodes2[2], graphNodes2[4], graphNodes2[3]};
+            var mstNodes2 = new List<GraphNode> { graphNodes2[0], graphNodes2[2], graphNodes2[4], graphNodes2[3] };
 
-            var distances = new DistanceLookup();
-            
-            try
-            {
-                var _ = distances[mstNodes2[0], mstNodes2[3]];
-            }
-            catch (GraphNotConnectedException)
-            {
-                return;
-            }
-            Assert.Fail("No exception thrown for disconnected graph");
+            var distances = new DistanceLookup(graphNodes2.Values.ToArray());
+            Assert.IsNull(distances.GetShortestPath(mstNodes2[0].DistancesIndex, mstNodes2[3].DistancesIndex));
         }
-
+        
         [TestMethod]
         public void TestMST()
         {
@@ -139,29 +130,27 @@ namespace UnitTests
             SearchGraph searchGraph1 = SearchGraphFromData(graph1);
 
             Dictionary<int, GraphNode> graphNodes1 = GetGraphNodesIdIndex(searchGraph1);
-            var distances = new DistanceLookup();
 
             var mstNodes1 = new List<GraphNode>
                 { graphNodes1[3], graphNodes1[5], graphNodes1[7], graphNodes1[0] };
-            distances.CalculateFully(mstNodes1);
-            var mst1 = new MinimalSpanningTreeWithNodes(mstNodes1, distances);
-            mst1.Span(graphNodes1[0]);
+            var distances = new DistanceLookup(mstNodes1);
+            var mst1 = new MinimalSpanningTree(mstNodes1.Select(n => n.DistancesIndex).ToList(), distances);
+            mst1.Span(graphNodes1[0].DistancesIndex);
 
-            Assert.AreEqual(3, mst1.SpanningGraphEdges.Count(), "Wrong amount of spanning edges");
-            var goalEdges = new []
+            Assert.AreEqual(3, mst1.SpanningEdges.Count, "Wrong amount of spanning edges");
+            var goalEdges = new[]
             {
                 new []{0, 5}, new []{5, 3}, new []{5, 7}
             };
             foreach (var edge in goalEdges)
             {
                 Assert.AreEqual(1,
-                    mst1.SpanningGraphEdges.Select(e => new Tuple<ushort, ushort>(distances.IndexToNode(e.N1).Id, distances.IndexToNode(e.N2).Id)).Count(
+                    mst1.SpanningEdges.Select(e => new Tuple<ushort, ushort>(distances.IndexToNode(e.Inside).Id, distances.IndexToNode(e.Outside).Id)).Count(
                         t =>
                             (t.Item1 == edge[0] && t.Item2 == edge[1]) ||
                             (t.Item1 == edge[1] && t.Item2 == edge[0])),
                     "Edge " + edge + " not contained exactly once.");
             }
-            Assert.AreEqual(6, mst1.GetUsedNodes().Count, "Wrong MST length");
         }
 
         [TestMethod]
@@ -169,23 +158,13 @@ namespace UnitTests
         {
 
             int[] queueTestOrder = { 10, 3, 11, 6, -3, 17, 13, -6, 2, 8, -2, -8 };
-            int nodeCount = 0;
-            for (int i = 0; i < queueTestOrder.Length; i++)
-                nodeCount = Math.Max(queueTestOrder[i] + 1, nodeCount);
 
             LinkedListPriorityQueue<TestNode> queue = new LinkedListPriorityQueue<TestNode>(30);
 
-
-            TestNode[] testNodes = new TestNode[nodeCount];
-            for (int i = 0; i < nodeCount; i++)
-                testNodes[i] = new TestNode((uint)Math.Abs(queueTestOrder[i]));
-
-            for (int i = 0; i < queueTestOrder.Length; i++)
+            foreach (int t in queueTestOrder)
             {
-                int t = queueTestOrder[i];
-
                 if (t > 0)
-                    queue.Enqueue(testNodes[t]);
+                    queue.Enqueue(new TestNode((uint)t));
                 if (t < 0)
                     Assert.IsTrue(queue.Dequeue().Priority == -t);
             }

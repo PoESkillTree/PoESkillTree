@@ -205,18 +205,20 @@
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
-    <Compile Include="TreeGenerator\Algorithm\BitArrayKey.cs" />
     <Compile Include="TreeGenerator\Algorithm\DisjointSet.cs" />
     <Compile Include="TreeGenerator\Algorithm\DistanceLookup.cs" />
-    <Compile Include="TreeGenerator\Algorithm\GeneticAlgorithm.cs" />
+    <Compile Include="TreeGenerator\Algorithm\GraphEdge.cs" />
     <Compile Include="TreeGenerator\Algorithm\GraphEdgeSet.cs" />
-    <Compile Include="TreeGenerator\Algorithm\Graphs.cs" />
+    <Compile Include="TreeGenerator\Algorithm\GraphNode.cs" />
     <Compile Include="TreeGenerator\Algorithm\HillClimber.cs" />
     <Compile Include="TreeGenerator\Algorithm\LinkedListPriorityQueue.cs" />
     <Compile Include="TreeGenerator\Algorithm\MinimalSpanningTree.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SearchGraph.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerPreprocessor.cs" />
     <Compile Include="TreeGenerator\Algorithm\VoronoiPartition.cs" />
-    <Compile Include="TreeGenerator\Algorithm\WeightedSampling.cs" />
+    <Compile Include="TreeGenerator\Genetic\BitArrayKey.cs" />
+    <Compile Include="TreeGenerator\Genetic\GeneticAlgorithm.cs" />
+    <Compile Include="TreeGenerator\Genetic\WeightedSampling.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\Attribute.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\Conditions.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs" />
@@ -249,6 +251,7 @@
     <Compile Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml.cs">
       <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\CollectionExtensions.cs" />
     <Compile Include="Utils\Converter\BoolConverter.cs" />
     <Compile Include="Utils\Converter\EnumConverter.cs" />
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />

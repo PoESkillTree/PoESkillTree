@@ -2,30 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
-    public static class Extensions
-    {
-        public static void Add<TKey, TValue, TCollection>(this Dictionary<TKey, TCollection> dict, TKey key, TValue value)
-            where TCollection : ICollection<TValue>, new()
-        {
-            if (!dict.ContainsKey(key))
-            {
-                dict.Add(key, new TCollection());
-            }
-            dict[key].Add(value);
-        }
-
-        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
-        {
-            foreach (var item in enumerable)
-            {
-                action(item);
-            }
-        }
-    }
-
     public class SteinerPreprocessor
     {
         private class SMatrixLookup : IDistanceLookup
@@ -61,11 +41,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
         public GraphNode StartNode { get; private set; }
 
-        private readonly DistanceLookup _distanceLookup;
+        private DistanceLookup _distanceLookup;
 
         public IDistancePathLookup DistanceLookup { get { return _distanceLookup; } }
         
-        public IEnumerable<ushort> LeastSolution { get; private set; }
+        //public IEnumerable<ushort> LeastSolution { get; private set; }
 
         private GraphEdgeSet _edgeSet;
 
@@ -82,8 +62,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         private uint[,] _smatrix;
 
         public SteinerPreprocessor(IEnumerable<GraphNode> searchSpace, IEnumerable<GraphNode> fixedTargetNodes,
-            GraphNode startNode = null, IEnumerable<GraphNode> variableTargetNodes = null,
-            DistanceLookup distanceLookup = null)
+            GraphNode startNode = null, IEnumerable<GraphNode> variableTargetNodes = null)
         {
             _fixedTargetNodes = new HashSet<GraphNode>(fixedTargetNodes);
             if (!_fixedTargetNodes.Any())
@@ -97,8 +76,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             StartNode = startNode ?? _fixedTargetNodes.First();
             if (!_fixedTargetNodes.Contains(StartNode))
                 throw new ArgumentException("Start node must be a fixed target node if specified.", "startNode");
-
-            _distanceLookup = distanceLookup ?? new DistanceLookup();
         }
         
         // Nodes that are not fixed target nodes must only be merged into fixed target nodes.
@@ -111,22 +88,25 @@ namespace POESKillTree.TreeGenerator.Algorithm
             Debug.WriteLine("First basic degree reduction:\n" +
                             "   removed nodes: " + (nodeCountBefore - _searchSpace.Count) + " (of " + nodeCountBefore +
                             " initial nodes)");
-            _distanceLookup.CalculateFully(_searchSpace);
+            _distanceLookup = new DistanceLookup(_searchSpace);
 
             if (_fixedTargetNodes.Any(n => !_distanceLookup.AreConnected(n, StartNode)))
             {
                 throw new GraphNotConnectedException();
             }
-            
-            var leastMst = new MinimalSpanningTreeWithNodes(_fixedTargetNodes.ToList(), _distanceLookup);
-            leastMst.Span(StartNode);
-            LeastSolution = leastMst.GetUsedNodes();
 
             nodeCountBefore = _searchSpace.Count;
             // Removal of unconnected nodes.
             _searchSpace = _distanceLookup.RemoveNodes(_searchSpace.Where(n => !_distanceLookup.AreConnected(n, StartNode)));
             Debug.WriteLine("Removed unconnected nodes:");
             Debug.WriteLine("   removed nodes: " + (nodeCountBefore - _searchSpace.Count));
+
+            // Even the basic degree reductions hurt the AdvancedSolver's performance.
+            // Reenabling should be tested when other algorithm parts are changed/improved.
+            if (_variableTargetNodes.Count > 0)
+            {
+                return _searchSpace;
+            }
 
             ComputeFields();
             _edgeSet = ComputeEdges();
@@ -147,12 +127,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
             // These values may become lower by merging nodes. Since the reductions based on these distance
             // don't help if there are many variable target nodes, it is not really worth it to always recalculate them.
-            // It would either slow the preprocessing by like 30% or would need an approximation algorithmus.
+            // It would either slow the preprocessing by like 30% or would need an approximation algorithm.
             _smatrix = CalcBottleneckSteinerDistances();
 
             var farAwayNonTerminalsEnabled    = _variableTargetNodes.Count == 0;
             var pathsWithManyTerminalsEnabled = true;
-            var longestEdgeEnabled            = _variableTargetNodes.Count == 0;
             var nonTermimalsOfDegreeKEnabled  = true;
             var nearestVertexEnabled          = true;
             var shortestLinksEnabled          = true;
@@ -191,16 +170,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     RunDegreeTest(i + ".2", ref edgeElims, ref nodeElims);
                 }
 
-                if (longestEdgeEnabled)
-                {
-                    if (!RunTest(LongestEdgeTest, "Longest Edge", i.ToString(),
-                        ref edgeElims, ref nodeElims))
-                    {
-                        longestEdgeEnabled = false;
-                    }
-                    RunDegreeTest(i + ".3", ref edgeElims, ref nodeElims);
-                }
-
                 if (nearestVertexEnabled)
                 {
                     if (!RunTest(NearestVertextTest, "Nearest Vertex", i.ToString(),
@@ -208,7 +177,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     {
                         nearestVertexEnabled = false;
                     }
-                    RunDegreeTest(i + ".4", ref edgeElims, ref nodeElims);
+                    RunDegreeTest(i + ".3", ref edgeElims, ref nodeElims);
                 }
 
                 if (shortestLinksEnabled)
@@ -218,7 +187,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     {
                         shortestLinksEnabled = false;
                     }
-                    RunDegreeTest(i + ".5", ref edgeElims, ref nodeElims);
+                    RunDegreeTest(i + ".4", ref edgeElims, ref nodeElims);
                 }
 
                 Debug.WriteLine("Eliminations in round {0}:", i);
@@ -470,20 +439,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return 0;
         }
 
-        private int LongestEdgeTest()
-        {
-            if (_fixedTargetNodes.Count <= 1 || _variableTargetNodes.Count > 0) return 0;
-            
-            var mst = new MinimalSpanningTree(_fixedTargetNodes.Select(n => n.DistancesIndex).ToList(), _distanceLookup);
-            mst.Span(StartNode.DistancesIndex);
-            var maxEdgeDistance = mst.SpanningEdges.Max(e => _distanceLookup[e.Inside, e.Outside]);
-
-            _edgeSet.Where(e => e.Weight > maxEdgeDistance)
-                .ToList().ForEach(_edgeSet.Remove);
-
-            return 0;
-        }
-
         private int FarAwayNonTerminalsTest()
         {
             if (_fixedTargetNodes.Count <= 1 || _variableTargetNodes.Count > 0) return 0;
@@ -502,7 +457,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
                 if (_distanceLookup[i, voronoiPartition.Base(i)] >= maxEdgeDistance)
                 {
-                    _edgeSet.NeighborEdges(i).ForEach(_edgeSet.Remove);
+                    _edgeSet.EdgesOf(i).ForEach(_edgeSet.Remove);
                     MarkNodeAsRemoved(i);
                     removedNodes++;
                 }
@@ -600,7 +555,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 if (neighbors.Count < 2) continue;
 
                 // Let (zi, v1) and (zi, v2) be the shortest and second shortest edges incident to zi.
-                var tuple = ShortestTwoEdgesOf(_edgeSet.NeighborEdges(zi));
+                var tuple = ShortestTwoEdgesOf(_edgeSet.EdgesOf(zi));
                 var shortest = tuple.Item1;
                 var secondShortestWeight = tuple.Item2;
 

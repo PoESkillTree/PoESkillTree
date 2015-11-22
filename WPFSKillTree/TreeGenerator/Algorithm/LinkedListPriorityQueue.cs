@@ -1,6 +1,22 @@
 ﻿namespace POESKillTree.TreeGenerator.Algorithm
 {
     /// <summary>
+    /// Type of nodes used for the Priority Queue.
+    /// The values represent the DistancesIndex of the two GraphNodes this edge connects.
+    /// </summary>
+    public class LinkedGraphEdge : LinkedListPriorityQueueNode<LinkedGraphEdge>
+    {
+        public readonly int Inside, Outside;
+
+        public LinkedGraphEdge(int inside, int outside, uint priority)
+            : base(priority)
+        {
+            Inside = inside;
+            Outside = outside;
+        }
+    }
+
+    /// <summary>
     /// Priority queue nodes used for LinkedListPriorityQueue.
     /// </summary>
     /// <typeparam name="T">Type of the parent class.</typeparam>
@@ -13,6 +29,7 @@
 
         /// <summary>
         /// The node coming after this node in the queue.
+        /// Do not manually edit this.
         /// </summary>
         internal T Next;
 

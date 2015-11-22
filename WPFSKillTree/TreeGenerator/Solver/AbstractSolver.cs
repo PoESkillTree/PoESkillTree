@@ -9,8 +9,8 @@ using POESKillTree.TreeGenerator.Settings;
 namespace POESKillTree.TreeGenerator.Solver
 {
     /// <summary>
-    ///  A class controlling the interaction between the skill tree data and the
-    ///  genetic algorithm used to find (hopefully) optimal solutions.
+    ///  Base solver class controlling the interaction between the skill tree data and the
+    ///  algorithm used to find (hopefully) optimal solutions.
     /// </summary>
     /// <typeparam name="TS">The type of SolverSettings this solver uses.</typeparam>
     public abstract class AbstractSolver<TS> : ISolver
@@ -30,7 +30,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         public abstract int CurrentStep { get; }
         
-        public IEnumerable<ushort> BestSolution { get; protected set; }
+        public abstract IEnumerable<ushort> BestSolution { get; }
 
         private readonly SkillTree _tree;
 
@@ -68,7 +68,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected IReadOnlyDictionary<ushort, IReadOnlyCollection<ushort>> NodeExpansionDictionary { get; private set; }
 
-        protected IReadOnlyGraphEdgeSet SearchSpaceEdgeSet { get; private set; }
+        //protected IReadOnlyGraphEdgeSet SearchSpaceEdgeSet { get; private set; }
 
         /// <summary>
         /// Creates a new, uninitialized instance.
@@ -99,12 +99,11 @@ namespace POESKillTree.TreeGenerator.Solver
             var variableTargetNodes = SearchSpace.Where(IsVariableTargetNode);
             var preProc = new SteinerPreprocessor(SearchSpace, TargetNodes, StartNode, variableTargetNodes);
             var remainingNodes = preProc.ReduceSearchSpace();
-
-            BestSolution = preProc.LeastSolution;
+            
             SearchSpace = remainingNodes.Except(TargetNodes).ToList();
             TargetNodes = preProc.FixedTargetNodes;
             Distances = preProc.DistanceLookup;
-            SearchSpaceEdgeSet = preProc.EdgeSet;
+            //SearchSpaceEdgeSet = preProc.EdgeSet;
             StartNode = preProc.StartNode;
 
             var expansionDict = remainingNodes.ToDictionary(n => n.Id, n => n.Nodes);
@@ -127,6 +126,11 @@ namespace POESKillTree.TreeGenerator.Solver
 
         public abstract void FinalStep();
 
+        /// <summary>
+        /// Returns true iff the given node can't be removed from the search space because it can become a target
+        /// node in some instances (if optimizing for something else than simple Steiner).
+        /// Overwrite if there are variable target nodes.
+        /// </summary>
         protected virtual bool IsVariableTargetNode(GraphNode node)
         {
             return false;

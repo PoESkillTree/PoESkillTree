@@ -82,7 +82,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         /// <param name="original">The solution to improve. (not null)</param>
         /// <returns>The potentially improved solution.</returns>
-        public IEnumerable<ushort> Improve(IEnumerable<ushort> original)
+        public HashSet<ushort> Improve(IEnumerable<ushort> original)
         {
             if (original == null) throw new ArgumentNullException("original");
 

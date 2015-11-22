@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Algorithm;
+using POESKillTree.TreeGenerator.Genetic;
 using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 using POESKillTree.TreeGenerator.Settings;
 
@@ -109,8 +110,8 @@ namespace POESKillTree.TreeGenerator.Solver
             get
             {
                 return new GeneticAlgorithmParameters(
-                    (int)(GenMultiplier * SearchSpace.Count),
-                    (int)(PopMultiplier * SearchSpace.Count),
+                    (int) (GenMultiplier*SearchSpace.Count),
+                    (int) (PopMultiplier*SearchSpace.Count),
                     SearchSpace.Count,
                     maxMutateClusterSize: MaxMutateClusterSize);
             }

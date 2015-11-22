@@ -1,148 +1,23 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
     /// <summary>
-    /// Type of nodes used for the Priority Queue.
-    /// The nodes of this edge are represented by the value of <see cref="GraphNode.DistancesIndex"/>.
+    /// Provides algorithms for building the minimal spanning distance tree between a set of nodes
+    /// while saving the spanning edges.
     /// </summary>
-    public class LinkedGraphEdge : LinkedListPriorityQueueNode<LinkedGraphEdge>
-    {
-        public readonly int Inside, Outside;
-
-        public LinkedGraphEdge(int inside, int outside, uint priority)
-            : base(priority)
-        {
-            Inside = inside;
-            Outside = outside;
-        }
-    }
-
-    [DebuggerDisplay("{N1}-{N2}:{Weight}")]
-    public class GraphEdge : IEquatable<GraphEdge>
-    {
-        public readonly int N1, N2;
-
-        public readonly uint Weight;
-
-        internal GraphEdge(int n1, int n2, uint weight)
-        {
-            N1 = Math.Min(n1, n2);
-            N2 = Math.Max(n1, n2);
-            Weight = weight;
-        }
-
-        public bool Equals(GraphEdge other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return N1 == other.N1 && N2 == other.N2;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((GraphEdge)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (N1 * 397) ^ N2;
-            }
-        }
-    }
-
-    public class MinimalSpanningTreeWithNodes : MinimalSpanningTree, IDisposable
-    {
-        private static readonly ConcurrentStack<HashSet<ushort>> HashSetStack = new ConcurrentStack<HashSet<ushort>>();
-
-        private readonly List<HashSet<ushort>> _usedSets = new List<HashSet<ushort>>();
-
-        private readonly IReadOnlyList<GraphNode> _mstGraphNodes;
-
-        private readonly IDistancePathLookup _paths;
-
-        /// <summary>
-        ///  Instantiates a new MinimalSpanningTree.
-        /// </summary>
-        /// <param name="mstNodes">The GraphNodes that should be spanned. (not null)</param>
-        /// <param name="distances">The DistanceLookup used as cache. (not null)</param>
-        public MinimalSpanningTreeWithNodes(IReadOnlyList<GraphNode> mstNodes, IDistancePathLookup distances)
-            : base(mstNodes.Select(n => n.DistancesIndex).ToList(), distances)
-        {
-            _mstGraphNodes = mstNodes;
-            _paths = distances;
-        }
-
-        /// <summary>
-        /// Returns the nodes the spanning tree includes.
-        /// </summary>
-        public HashSet<ushort> GetUsedNodes()
-        {
-            if (SpanningEdges == null)
-                throw new InvalidOperationException("MST is not spanned!");
-            HashSet<ushort> hashSet;
-            if (!HashSetStack.TryPop(out hashSet))
-            {
-                hashSet = new HashSet<ushort>();
-            }
-            hashSet.UnionWith(_mstGraphNodes.Select(n => n.Id));
-            foreach (var edge in SpanningEdges)
-            {
-                hashSet.UnionWith(_paths.GetShortestPath(edge.Inside, edge.Outside));
-            }
-            _usedSets.Add(hashSet);
-            return hashSet;
-        }
-
-        /// <summary>
-        ///  Uses Prim's algorithm to build an MST spanning the mstNodes.
-        ///  O(|mstNodes|^2) runtime.
-        /// </summary>
-        /// <param name="startFrom">A GraphNode to start from.</param>
-        public void Span(GraphNode startFrom)
-        {
-            Span(startFrom.DistancesIndex);
-        }
-
-        public void Dispose()
-        {
-            foreach (var set in _usedSets)
-            {
-                set.Clear();
-                HashSetStack.Push(set);
-            }
-        }
-    }
-
     public class MinimalSpanningTree
     {
-
         private readonly IReadOnlyList<int> _mstNodes;
 
         private readonly IDistanceLookup _distances;
 
-        public IReadOnlyList<LinkedGraphEdge> SpanningEdges { get; private set; }
-
         /// <summary>
-        /// Returns the edges which span this tree as an linq enumerable (so it's slow and not cached).
+        /// Gets the edges which span this tree as a list of <see cref="LinkedGraphEdge"/>s.
         /// Only set after <see cref="Span(int)"/> or <see cref="Span(LinkedGraphEdge)"/> has been called.
         /// </summary>
-        public IEnumerable<GraphEdge> SpanningGraphEdges
-        {
-            get
-            {
-                return SpanningEdges.Select(e => new GraphEdge(e.Inside, e.Outside, _distances[e.Inside, e.Outside]));
-            }
-        }
+        public IReadOnlyList<LinkedGraphEdge> SpanningEdges { get; private set; }
 
         /// <summary>
         ///  Instantiates a new MinimalSpanningTree.
@@ -158,6 +33,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
             _distances = distances;
         }
 
+        /// <summary>
+        ///  Uses Prim's algorithm to build an MST spanning the mstNodes.
+        ///  O(|mstNodes|^2) runtime.
+        /// </summary>
+        /// <param name="startIndex">The node index to start from.</param>
         public void Span(int startIndex)
         {
             var adjacentEdgeQueue = new LinkedListPriorityQueue<LinkedGraphEdge>(100);

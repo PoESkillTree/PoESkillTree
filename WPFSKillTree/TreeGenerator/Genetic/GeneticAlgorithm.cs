@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using POESKillTree.Utils;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace POESKillTree.TreeGenerator.Genetic
 {
     /// <summary>
     /// Data struct to pass parameters to <see cref="GeneticAlgorithm"/>.

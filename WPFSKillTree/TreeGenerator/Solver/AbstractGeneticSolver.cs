@@ -4,11 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Algorithm;
+using POESKillTree.TreeGenerator.Genetic;
 using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
-    public abstract class AbstractGeneticSolver<TS> : AbstractSolver<TS> where TS : SolverSettings
+    /// <summary>
+    /// Abstract solver that uses <see cref="GeneticAlgorithm"/> for solving.
+    /// Subclasses at least need to provide a fitness function and <see cref="GeneticAlgorithmParameters"/>.
+    /// </summary>
+    /// <typeparam name="TS">The type of SolverSettings this solver uses.</typeparam>
+    public abstract class AbstractGeneticSolver<TS> : AbstractSolver<TS>
+        where TS : SolverSettings
     {
 
         public override int MaxSteps
@@ -19,6 +26,13 @@ namespace POESKillTree.TreeGenerator.Solver
         public override int CurrentStep
         {
             get { return IsInitialized ? _ga.GenerationCount : 0; }
+        }
+
+        private HashSet<ushort> _bestSolution;
+
+        public override IEnumerable<ushort> BestSolution
+        {
+            get { return _bestSolution; }
         }
 
         /// <summary>
@@ -96,6 +110,8 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             _ga = new GeneticAlgorithm(FitnessFunction);
             _ga.InitializeEvolution(GaParameters, TreeToDna(Settings.InitialTree));
+            _bestDna = _ga.GetBestDNA();
+            _bestSolution = DnaToSolution(_bestDna);
         }
 
         private BitArray TreeToDna(HashSet<ushort> nodes)
@@ -125,27 +141,45 @@ namespace POESKillTree.TreeGenerator.Solver
             if ((_bestDna == null) || (GeneticAlgorithm.SetBits(_ga.GetBestDNA().Xor(_bestDna)) != 0))
             {
                 _bestDna = _ga.GetBestDNA();
-                var skilledNodes = DnaToSpannedMst(_bestDna).GetUsedNodes();
-                BestSolution = new HashSet<ushort>(skilledNodes.SelectMany(n => NodeExpansionDictionary[n]));
+                _bestSolution = DnaToSolution(_bestDna);
             }
         }
 
-        private MinimalSpanningTreeWithNodes DnaToSpannedMst(BitArray dna)
+        private HashSet<ushort> DnaToSolution(BitArray dna)
         {
+            var skilledNodes = DnaToUsedNodes(dna);
+            return new HashSet<ushort>(skilledNodes.SelectMany(n => NodeExpansionDictionary[n]));
+        }
+
+        private HashSet<ushort> DnaToUsedNodes(BitArray dna)
+        {
+            var usedNodes = new HashSet<ushort>();
             var mstNodes = new List<GraphNode>();
+            var mstIndices = new List<int>();
             for (var i = 0; i < dna.Length; i++)
             {
                 if (dna[i])
+                {
                     mstNodes.Add(SearchSpace[i]);
+                    mstIndices.Add(i);
+                }
             }
             mstNodes.AddRange(TargetNodes);
+            mstIndices.AddRange(TargetNodes.Select(n => n.DistancesIndex));
 
-            var mst = new MinimalSpanningTreeWithNodes(mstNodes, Distances);
+            var mst = new MinimalSpanningTree(mstIndices, Distances);
             if (_firstEdge != null)
                 mst.Span(_firstEdge);
             else
-                mst.Span(StartNode);
-            return mst;
+                mst.Span(StartNode.DistancesIndex);
+
+            usedNodes.UnionWith(mstNodes.Select(n => n.Id));
+            foreach (var edge in mst.SpanningEdges)
+            {
+                usedNodes.UnionWith(Distances.GetShortestPath(edge.Inside, edge.Outside));
+            }
+
+            return usedNodes;
         }
 
         public override void FinalStep()
@@ -153,7 +187,7 @@ namespace POESKillTree.TreeGenerator.Solver
             if (FinalHillClimbEnabled)
             {
                 var hillClimber = new HillClimber(FitnessFunction, TargetNodes, AllNodes);
-                BestSolution = hillClimber.Improve(BestSolution);
+                _bestSolution = hillClimber.Improve(BestSolution);
             }
         }
 
@@ -165,10 +199,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private double FitnessFunction(BitArray dna)
         {
-            using (var mst = DnaToSpannedMst(dna))
-            {
-                return FitnessFunction(mst.GetUsedNodes());
-            }
+            return FitnessFunction(DnaToUsedNodes(dna));
         }
     }
 }

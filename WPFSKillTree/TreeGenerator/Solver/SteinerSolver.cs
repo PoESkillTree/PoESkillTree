@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Algorithm;
+using POESKillTree.TreeGenerator.Genetic;
 using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
