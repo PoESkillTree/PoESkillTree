@@ -39,8 +39,8 @@ using System.Windows;
 // Updated by release.xml. DO NOT MODIFY!
 [assembly: AssemblyDescription("Passive skill tree planner for Path of Exile®")]
 [assembly: AssemblyCompany("PoESkillTree Team")]
-[assembly: AssemblyProduct("PoESkillTree - The Awakening")]
+[assembly: AssemblyProduct("PoESkillTree - Talisman")]
 [assembly: AssemblyCopyright("Copyright © 2012-2015 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.2.2.758")]
-[assembly: AssemblyInformationalVersion("2.2.2")]
+[assembly: AssemblyFileVersion("2.2.3.767")]
+[assembly: AssemblyInformationalVersion("2.2.3")]

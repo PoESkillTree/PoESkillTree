@@ -886,7 +886,7 @@ msgstr "Файл не найден"
 msgid "Could not open Skill Tree Generator"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:499 Views\MainWindow.xaml.cs:1796
+#: Views\MainWindow.xaml.cs:499 Views\MainWindow.xaml.cs:1795
 msgid "An error occurred while copying to Clipboard."
 msgstr "Произошла ошибка при копировании."
 
@@ -894,7 +894,7 @@ msgstr "Произошла ошибка при копировании."
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr "Существующие активы будут удалены и будут загружены новые."
 
-#: Views\MainWindow.xaml.cs:506 Views\MainWindow.xaml.cs:1982
+#: Views\MainWindow.xaml.cs:506 Views\MainWindow.xaml.cs:1981
 msgid "Do you want to continue?"
 msgstr "Хотите продолжить?"
 
@@ -956,54 +956,54 @@ msgstr "Произошла ошибка при загрузке."
 msgid "An error occurred while attempting to start the installation."
 msgstr "Произошла ошибка при попытке начать установку."
 
-#: Views\MainWindow.xaml.cs:1217
+#: Views\MainWindow.xaml.cs:1216
 msgid "An error occurred while attempting to load item data."
 msgstr "Произошла ошибка при попытке загрузки базы данных предметов."
 
-#: Views\MainWindow.xaml.cs:1289
+#: Views\MainWindow.xaml.cs:1288
 msgid "Right click to edit"
 msgstr "Нажмите правую кнопку мыши для изменения"
 
-#: Views\MainWindow.xaml.cs:1360
+#: Views\MainWindow.xaml.cs:1359
 msgid "Please select a saved build."
 msgstr "Выберите сохраненный билд"
 
-#: Views\MainWindow.xaml.cs:1452
+#: Views\MainWindow.xaml.cs:1451
 msgid "An error occurred during a save operation."
 msgstr "Произошла ошибка при сохранении."
 
-#: Views\MainWindow.xaml.cs:1475
+#: Views\MainWindow.xaml.cs:1474
 msgid "Resolving shortened tree address"
 msgstr "Обрабатывается ссылка"
 
-#: Views\MainWindow.xaml.cs:1531
+#: Views\MainWindow.xaml.cs:1530
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Произошла ошибка при попытке загрузить ссылку."
 
-#: Views\MainWindow.xaml.cs:1776
+#: Views\MainWindow.xaml.cs:1775
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Создается ссылка PoEUrl"
 
-#: Views\MainWindow.xaml.cs:1782
+#: Views\MainWindow.xaml.cs:1781
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Произошла ошибка при попытке соединения с PoEUrl."
 
-#: Views\MainWindow.xaml.cs:1792
+#: Views\MainWindow.xaml.cs:1791
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "Сссылка PoEUrl была скопирована."
 
-#: Views\MainWindow.xaml.cs:1928
+#: Views\MainWindow.xaml.cs:1927
 msgid "An error occurred while attempting to load saved builds."
 msgstr "Произошла ошибка при попытке загрузить сохраненные билды."
 
-#: Views\MainWindow.xaml.cs:1981
+#: Views\MainWindow.xaml.cs:1980
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr "Существующие активы будут удалены и будут загружены новые."
 
-#: Views\MainWindow.xaml.cs:2002
+#: Views\MainWindow.xaml.cs:2001
 msgid "Downloading Item assets"
 msgstr "Загрузка активов предметов"
 
-#: Views\MainWindow.xaml.cs:2075
+#: Views\MainWindow.xaml.cs:2074
 msgid "Error while downloading assets."
 msgstr "Произошла ошибка при загрузке активов"

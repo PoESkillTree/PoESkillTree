@@ -1008,13 +1008,12 @@ namespace POESKillTree.Views
             var v = new Vector2D(p.X, p.Y);
 
             v = v * _multransform + _addtransform;
-
+           
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
             if (nodes.Count() != 0)
             {
                 var node = nodes.First().Value;
-
                 // Ignore clicks on character portraits and masteries
                 if (node.Spc == null && !node.IsMastery)
                 {
