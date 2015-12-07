@@ -376,7 +376,9 @@ namespace POESKillTree.Views
 
         private void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
         {
-            Tree.UntagAllNodes();
+            var response = MessageBox.Show("Are you sure you want to Untag all nodes?", "Untag all nodes", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
+            if(response == MessageBoxResult.Yes)
+                Tree.UntagAllNodes();
         }
 
         private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
