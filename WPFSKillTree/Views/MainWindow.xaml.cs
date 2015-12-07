@@ -1437,6 +1437,8 @@ namespace POESKillTree.Views
             {
                 SaveBuildsToFile();
             }
+            lvSavedBuilds.SelectedIndex = lvSavedBuilds.Items.Count - 1;
+            lvSavedBuilds.ScrollIntoView(lvSavedBuilds.Items[lvSavedBuilds.Items.Count - 1]);
         }
 
         private void SaveBuildsToFile()
@@ -1463,7 +1465,7 @@ namespace POESKillTree.Views
                 }
                 else if (tbSkillURL.Text.Contains("tinyurl.com") || tbSkillURL.Text.Contains("poeurl.com"))
                 {
-                    var skillUrl = tbSkillURL.Text;
+                    var skillUrl = tbSkillURL.Text.Replace("preview.", "");
                     if (skillUrl.Contains("poeurl.com"))
                     {
                         skillUrl = skillUrl.Replace("http://poeurl.com/",
@@ -1497,7 +1499,11 @@ namespace POESKillTree.Views
                         "https://pathofexile.com/fullscreen-passive-skill-tree/",
                         "http://pathofexile.com/fullscreen-passive-skill-tree/",
                         "http://cb.poedb.tw/us/passive-skill-tree/",
-                        "http://poedb.tw/us/passive-skill-tree/"
+                        "http://poedb.tw/us/passive-skill-tree/",
+                        "http://exiletools.com/passive-skill-tree/",
+                        "https://exiletools.com/passive-skill-tree",
+                        "http://exiletools.com/fullscreen-passive-skill-tree/",
+                        "https://exiletools.com/fullscreen-passive-skill-tree",
                     };
                     var urlString = tbSkillURL.Text;
                     foreach (string link in urls)
