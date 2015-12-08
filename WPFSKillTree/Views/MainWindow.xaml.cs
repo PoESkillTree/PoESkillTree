@@ -1482,40 +1482,12 @@ namespace POESKillTree.Views
 
                     LoadBuildFromUrl();
                 }
-                else if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accountName"))
-                {
-                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
-                    LoadBuildFromUrl();
-                }
                 else
                 {
-                    string[] urls = new string[] {
-                        "https://poebuilder.com/character/",
-                        "http://poebuilder.com/character/",
-                        "https://www.poebuilder.com/character/",
-                        "http://www.poebuilder.com/character/",
-                        "http://pathofexile.com/passive-skill-tree/",
-                        "http://www.pathofexile.com/passive-skill-tree/",
-                        "https://www.pathofexile.com/fullscreen-passive-skill-tree/",
-                        "http://www.pathofexile.com/fullscreen-passive-skill-tree/",
-                        "https://pathofexile.com/fullscreen-passive-skill-tree/",
-                        "http://pathofexile.com/fullscreen-passive-skill-tree/",
-                        "http://cb.poedb.tw/us/passive-skill-tree/",
-                        "http://poedb.tw/us/passive-skill-tree/",
-                        "http://exiletools.com/passive-skill-tree/",
-                        "https://exiletools.com/passive-skill-tree",
-                        "http://exiletools.com/fullscreen-passive-skill-tree/",
-                        "https://exiletools.com/fullscreen-passive-skill-tree",
-                    };
-                    var urlString = tbSkillURL.Text;
-                    foreach (string link in urls)
-                    {
-                        urlString = urlString.Replace(link, SkillTree.TreeAddress);
-                    }
-                    if (!urlString.Contains("https://"))
-                        urlString = "https://" + urlString;
-                    tbSkillURL.Text = urlString;
-                    Tree.LoadFromURL(urlString);
+                    if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accountName"))
+                        tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
+                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"(http(|s):\/\/|).*?\/(character\/|passive-skill-tree\/|fullscreen-passive-skill-tree\/)", SkillTree.TreeAddress);
+                    Tree.LoadFromURL(tbSkillURL.Text);
                 }
 
 
