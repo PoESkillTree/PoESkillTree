@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using POESKillTree.Views;
+using POESKillTree.Utils;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -259,13 +260,27 @@ namespace POESKillTree.SkillTreeFiles
                         // If it has FromHover, don't mix it with the other highlights.
                         if (hs.HasFlag(HighlightState.FromHover))
                         {
-                            hpen = new Pen(Brushes.DodgerBlue, 20);
+                            var brushColor = (Brush) new BrushConverter().ConvertFromString(Properties.Settings.Default.NodeHoverHighlightColor.Name.ToString());
+                            hpen = new Pen(brushColor, 20);
                         }
                         else
                         {
-                            byte red = (byte)(hs.HasFlag(HighlightState.FromSearch) ? 255 : 0);
-                            byte green = (byte)(hs.HasFlag(HighlightState.FromAttrib) ? 255 : 0);
-                            hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, 0)), 20);
+                            int red = 0;
+                            int green = 0;
+                            int blue = 0;
+                            if (hs.HasFlag(HighlightState.FromAttrib))
+                            {
+                                red = (red | Properties.Settings.Default.NodeAttrHighlightColor.R);
+                                green = (green | Properties.Settings.Default.NodeAttrHighlightColor.G);
+                                blue = (blue | Properties.Settings.Default.NodeAttrHighlightColor.B);
+                            }
+                            if (hs.HasFlag(HighlightState.FromSearch))
+                            {
+                                red = (red | Properties.Settings.Default.NodeSearchHighlightColor.R);
+                                green = (green | Properties.Settings.Default.NodeSearchHighlightColor.G);
+                                blue = (blue | Properties.Settings.Default.NodeSearchHighlightColor.B);
+                            }
+                            hpen = new Pen(new SolidColorBrush(Color.FromRgb((byte)red, (byte)green, (byte)blue)), 20);
                         }
 
                         dc.DrawEllipse(null, hpen, pair.Key.Position, 80, 80);

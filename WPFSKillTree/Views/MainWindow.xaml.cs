@@ -582,6 +582,12 @@ namespace POESKillTree.Views
             helpWindow.ShowDialog();
         }
 
+        private void Menu_OpenSettings(object sender, RoutedEventArgs e)
+        {
+            var settingsWindows = new SettingsMenuWindow() { Owner = this };
+            settingsWindows.ShowDialog();
+        }
+
         private void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
         {
             var aboutWindow = new HotkeysWindow() { Owner = this };
@@ -1440,7 +1446,8 @@ namespace POESKillTree.Views
                 SaveBuildsToFile();
             }
             lvSavedBuilds.SelectedIndex = lvSavedBuilds.Items.Count - 1;
-            lvSavedBuilds.ScrollIntoView(lvSavedBuilds.Items[lvSavedBuilds.Items.Count - 1]);
+            if(lvSavedBuilds.SelectedIndex != -1)
+                lvSavedBuilds.ScrollIntoView(lvSavedBuilds.Items[lvSavedBuilds.Items.Count - 1]);
         }
 
         private void SaveBuildsToFile()

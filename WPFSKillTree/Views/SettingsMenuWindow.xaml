@@ -1,0 +1,42 @@
+﻿<controls:MetroWindow
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    x:Class="POESKillTree.Views.SettingsMenuWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+    xmlns:md="clr-namespace:Markdown.Xaml"
+    x:Name="Window"
+    WindowStartupLocation="CenterOwner" Width="500" Height="600"
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
+    Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded">
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="Settings"/>
+    </controls:MetroWindow.Title>
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+        <Label Margin="30,0,0,505" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="Auto">
+            <Label.Content>
+                <l:Catalog Message="Node Search Highlight" />
+            </Label.Content>
+        </Label>
+        <ComboBox Name="NodeSearchHighlightColor" Margin="0,38,198,508" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" HorizontalAlignment="Right" Width="131" />
+        <Label Margin="30,0,0,474" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="Auto">
+            <Label.Content>
+                <l:Catalog Message="Attribute Highlight" />
+            </Label.Content>
+        </Label>
+        <ComboBox Name="NodeAttrHighlightColor" Margin="0,72,198,474" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" HorizontalAlignment="Right" Width="131" />
+        <Label Margin="30,0,0,443" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="Auto">
+            <Label.Content>
+                <l:Catalog Message="Node Hover Highlight" />
+            </Label.Content>
+        </Label>
+        <ComboBox Name="NodeHoverHighlightColor" Margin="0,108,198,438" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" HorizontalAlignment="Right" Width="131" />
+        <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
+            <Label.Content>
+                <l:Catalog Message="Colors:" />
+            </Label.Content>
+        </Label>
+    </Grid>
+</controls:MetroWindow>

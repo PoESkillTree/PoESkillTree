@@ -21,6 +21,14 @@ namespace POESKillTree.Utils
         const string SETTING = "setting";
 
         private readonly string _settingsKey;
+        /// <summary>
+        /// Loads the file into memory.
+        /// </summary>
+        public CustomSettingsProvider()
+        {
+            SettingsDictionary = new Dictionary<string, SettingStruct>();
+            _settingsKey = Settings.Default.SettingsKey;
+        }
 
         /// <summary>
         /// Loads the file into memory.
@@ -181,6 +189,12 @@ namespace POESKillTree.Utils
         /// </summary>
         private void SaveValuesToFile()
         {
+            if (!File.Exists(UserConfigPath))
+            {
+                //if the config file is not where it's supposed to be create a new one.
+                CreateEmptyConfig();
+            }
+
             //load the current xml from the file.
             var import = XDocument.Load(UserConfigPath);
 

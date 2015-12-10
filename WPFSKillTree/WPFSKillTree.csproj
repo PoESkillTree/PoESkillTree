@@ -336,6 +336,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Views\SettingsMenuWindow.xaml.cs">
+      <DependentUpon>SettingsMenuWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TabPicker.xaml.cs">
       <DependentUpon>TabPicker.xaml</DependentUpon>
     </Compile>
@@ -414,6 +417,10 @@
     <Page Include="Views\MetroMessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SettingsMenuWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TabPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
