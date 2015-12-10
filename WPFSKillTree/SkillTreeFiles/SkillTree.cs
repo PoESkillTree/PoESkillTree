@@ -29,7 +29,7 @@ namespace POESKillTree.SkillTreeFiles
         public static readonly float LifePerLevel = 12;
         public static readonly float AccPerLevel = 2;
         public static readonly float EvasPerLevel = 3;
-        public static readonly float ManaPerLevel = 4;
+        public static readonly float ManaPerLevel = 6;
         public static readonly float IntPerMana = 2;
         public static readonly float IntPerES = 5; //%
         public static readonly float StrPerLife = 2;
