@@ -243,14 +243,6 @@
                         <ContentControl Template="{StaticResource SaveIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Click="Menu_OpenSettings">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Settings" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <ContentControl Template="{StaticResource SettingsIcon}" />
-                    </MenuItem.Icon>
-                </MenuItem>
                 <MenuItem Click="Menu_Exit">
                     <MenuItem.Header>
                         <l:Catalog Message="E_xit" />
@@ -264,6 +256,14 @@
                 <MenuItem.Header>
                     <l:Catalog Message="_Edit" />
                 </MenuItem.Header>
+                <MenuItem Click="Menu_OpenSettings">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Settings" />
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource SettingsIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem x:Name="mnuUndo" InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click">
                     <MenuItem.Header>
                         <l:Catalog Message="_Undo" />
