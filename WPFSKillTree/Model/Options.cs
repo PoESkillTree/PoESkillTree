@@ -8,6 +8,9 @@ namespace POESKillTree.Model
         public string Language { get; set; }
         public string Theme { get; set; }
         public string Accent { get; set; } //Controlled by Menu Accent Headers
+        public string NodeSearchHighlightColor { get; set; }
+        public string NodeAttrHighlightColor { get; set; }
+        public string NodeHoverHighlightColor { get; set; }
 
         private bool _attributesBarOpened;
         public bool AttributesBarOpened
@@ -69,6 +72,9 @@ namespace POESKillTree.Model
             // Don't set Language property! When not set, L10n.Initialize will try to use OS settings.
             Theme = "Dark";
             Accent = "Steel";
+            NodeSearchHighlightColor = "Red";
+            NodeAttrHighlightColor = "LawnGreen";
+            NodeHoverHighlightColor = "DodgerBlue";
         }
 
         private void OnPropertyChanged(string caller)

@@ -2040,6 +2040,7 @@ namespace POESKillTree.Views
                             File.Copy(Path.Combine(AppData.GetFolder(@"DataBackup\Equipment"), "Affixlist.xml"), Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Affixlist.xml"));
                             
                             Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
+                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\PseudoAttributes"), Path.Combine(appDataPath, @"Data\PseudoAttributes"));
                             if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
                                 Directory.Delete(Path.Combine(appDataPath, "DataBackup"), true);
 

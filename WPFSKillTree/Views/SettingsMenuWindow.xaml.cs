@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using POESKillTree.Utils;
 using System.Configuration;
+using POESKillTree.Model;
 
 namespace POESKillTree.Views
 {
@@ -14,6 +15,8 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class SettingsMenuWindow : MetroWindow
     {
+        private readonly PersistentData _persistentData = App.PersistentData;
+
         public SettingsMenuWindow()
         {
             InitializeComponent();
@@ -28,15 +31,32 @@ namespace POESKillTree.Views
                 cbItem.Content = prop.Name;
                 cbItem.Foreground = (Brush)new BrushConverter().ConvertFromString(prop.Name);
                 s.Items.Add(cbItem);
-                var property = Properties.Settings.Default[s.Name];
-                var type = property.GetType();
-                if(type == typeof(System.Drawing.Color))
+
+                switch (s.Name)
                 {
-                    if (((System.Drawing.Color)property).Name.ToString() == cbItem.Content.ToString())
-                    {
-                        s.SelectedIndex = s.Items.IndexOf(cbItem);
-                        s.Foreground = (Brush)new BrushConverter().ConvertFromString(cbItem.Content.ToString());
-                    }
+                    case "NodeHoverHighlightColor":
+                        if (_persistentData.Options.NodeHoverHighlightColor == cbItem.Content.ToString())
+                        {
+                            s.SelectedIndex = s.Items.IndexOf(cbItem);
+                            s.Foreground = (Brush)new BrushConverter().ConvertFromString(cbItem.Content.ToString());
+                        }
+                        break;
+                    case "NodeAttrHighlightColor":
+                        if (_persistentData.Options.NodeAttrHighlightColor == cbItem.Content.ToString())
+                        {
+                            s.SelectedIndex = s.Items.IndexOf(cbItem);
+                            s.Foreground = (Brush)new BrushConverter().ConvertFromString(cbItem.Content.ToString());
+                        }
+                        break;
+                    case "NodeSearchHighlightColor":
+                        if (_persistentData.Options.NodeSearchHighlightColor == cbItem.Content.ToString())
+                        {
+                            s.SelectedIndex = s.Items.IndexOf(cbItem);
+                            s.Foreground = (Brush)new BrushConverter().ConvertFromString(cbItem.Content.ToString());
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -62,8 +82,21 @@ namespace POESKillTree.Views
         }
         private void SaveSetting(string name, string value)
         {
-            Properties.Settings.Default[name] = System.Drawing.Color.FromName(value);
-            Properties.Settings.Default.Save();
+            switch(name) 
+            {
+                case "NodeHoverHighlightColor":
+                    _persistentData.Options.NodeHoverHighlightColor = value;
+                    break;
+                case "NodeAttrHighlightColor":
+                    _persistentData.Options.NodeAttrHighlightColor = value;
+                    break;
+                case "NodeSearchHighlightColor":
+                    _persistentData.Options.NodeSearchHighlightColor = value;
+                    break;
+                default:
+                    break;
+            }
+            _persistentData.SavePersistentDataToFile();
         }
     }
 }

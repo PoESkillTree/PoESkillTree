@@ -22,41 +22,5 @@ namespace POESKillTree.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
-        public global::System.Drawing.Color NodeSearchHighlightColor {
-            get {
-                return ((global::System.Drawing.Color)(this["NodeSearchHighlightColor"]));
-            }
-            set {
-                this["NodeSearchHighlightColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("LawnGreen")]
-        public global::System.Drawing.Color NodeAttrHighlightColor {
-            get {
-                return ((global::System.Drawing.Color)(this["NodeAttrHighlightColor"]));
-            }
-            set {
-                this["NodeAttrHighlightColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DodgerBlue")]
-        public global::System.Drawing.Color NodeHoverHighlightColor {
-            get {
-                return ((global::System.Drawing.Color)(this["NodeHoverHighlightColor"]));
-            }
-            set {
-                this["NodeHoverHighlightColor"] = value;
-            }
-        }
     }
 }

@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using POESKillTree.Views;
 using POESKillTree.Utils;
+using POESKillTree.Model;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -47,6 +48,7 @@ namespace POESKillTree.SkillTreeFiles
         }
         
         private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
+        private readonly PersistentData _persistentData = App.PersistentData;
 
         public DrawingVisual SkillTreeVisual;
         public DrawingVisual picActiveLinks;
@@ -260,7 +262,7 @@ namespace POESKillTree.SkillTreeFiles
                         // If it has FromHover, don't mix it with the other highlights.
                         if (hs.HasFlag(HighlightState.FromHover))
                         {
-                            var brushColor = (Brush) new BrushConverter().ConvertFromString(Properties.Settings.Default.NodeHoverHighlightColor.Name.ToString());
+                            var brushColor = (Brush)new BrushConverter().ConvertFromString(_persistentData.Options.NodeHoverHighlightColor);
                             hpen = new Pen(brushColor, 20);
                         }
                         else
@@ -268,17 +270,20 @@ namespace POESKillTree.SkillTreeFiles
                             int red = 0;
                             int green = 0;
                             int blue = 0;
+                            System.Drawing.Color attrHighlight = System.Drawing.Color.FromName(_persistentData.Options.NodeAttrHighlightColor);
+                            System.Drawing.Color searchHighlight = System.Drawing.Color.FromName(_persistentData.Options.NodeSearchHighlightColor);
+
                             if (hs.HasFlag(HighlightState.FromAttrib))
                             {
-                                red = (red | Properties.Settings.Default.NodeAttrHighlightColor.R);
-                                green = (green | Properties.Settings.Default.NodeAttrHighlightColor.G);
-                                blue = (blue | Properties.Settings.Default.NodeAttrHighlightColor.B);
+                                red = (red | attrHighlight.R);
+                                green = (green | attrHighlight.G);
+                                blue = (blue | attrHighlight.B);
                             }
                             if (hs.HasFlag(HighlightState.FromSearch))
                             {
-                                red = (red | Properties.Settings.Default.NodeSearchHighlightColor.R);
-                                green = (green | Properties.Settings.Default.NodeSearchHighlightColor.G);
-                                blue = (blue | Properties.Settings.Default.NodeSearchHighlightColor.B);
+                                red = (red | searchHighlight.R);
+                                green = (green | searchHighlight.G);
+                                blue = (blue | searchHighlight.B);
                             }
                             hpen = new Pen(new SolidColorBrush(Color.FromRgb((byte)red, (byte)green, (byte)blue)), 20);
                         }
