@@ -54,7 +54,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
     /// </summary>
     public class Supernode : GraphNode
     {
-        public readonly IReadOnlyCollection<ushort> Nodes;
+        public readonly List<ushort> Nodes;
 
         public Supernode(HashSet<ushort> nodes)
             : base(nodes.First())

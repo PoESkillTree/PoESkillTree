@@ -608,7 +608,7 @@ namespace POESKillTree.Views
                 // No non-Task way without rewriting Updater to support/use await directly.
                 var release =
                     await AwaitAsyncTask(L10n.Message("Checking for updates"),
-                        Task.Run(() => Updater.CheckForUpdates()));
+                        Task.Factory.StartNew(() => Updater.CheckForUpdates()));
 
                 if (release == null)
                 {

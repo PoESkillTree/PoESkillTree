@@ -8,7 +8,7 @@
     <ExpectDefence>
         Character
         Life: 1986
-        Mana: 394
+        Mana: 523
         Maximum Energy Shield: 12
         Strength: 284
         Dexterity: 107
@@ -21,7 +21,7 @@
         Estimated chance to Evade Attacks: 18%
         #FIXME Energy Shield Recharge per Second: 2.4
         #FIXME Life Regeneration per Second: 69.3
-        Mana Regeneration per Second: 11.9
+        Mana Regeneration per Second: 15.8
         # Bandits: +10 to all Elemental resistences
         #Fire Resistance: 76% (112%)
         #Cold Resistance: 75% (107%)
