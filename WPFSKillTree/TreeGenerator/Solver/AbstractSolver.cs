@@ -131,7 +131,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// Gets the list of GraphNodes from which this solver tries
         /// to find the best subset.
         /// </summary>
-        protected IReadOnlyCollection<GraphNode> SearchSpace
+        protected List<GraphNode> SearchSpace
         {
             get { return _searchSpace; }
         }

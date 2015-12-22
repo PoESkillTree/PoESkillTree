@@ -199,7 +199,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             DisplayName = L10n.Message("Skill tree generator") + " - " + generatorName;
             _tree = tree;
 
-            _progress = new Progress<Tuple<int, IEnumerable<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2));
+            _progress = new Microsoft.Progress<Tuple<int, IEnumerable<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2));
             _reportStopwatch.Start();
 
             RequestClose += (sender, args) => CancelClose();
@@ -225,7 +225,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             try
             {
-                _maxSteps = await Task.Run(() =>
+                _maxSteps = await Task.Factory.StartNew(() =>
                 {
 #if DEBUG
                     var stopwatch = new Stopwatch();
@@ -271,7 +271,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             IEnumerable<ushort> result;
             try
             {
-                result = await Task.Run(() =>
+                result = await Task.Factory.StartNew(() =>
                 {
 #if DEBUG
                     var stopwatch = new Stopwatch();

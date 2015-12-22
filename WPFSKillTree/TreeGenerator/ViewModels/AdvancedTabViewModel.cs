@@ -419,7 +419,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             AttributesView = new ListCollectionView(_attributes)
             {
                 Filter = item => !_addedAttributes.Contains(item),
-                CustomSort = Comparer<string>.Create((s1, s2) =>
+                CustomSort = POESKillTree.TreeGenerator.ViewModels.Comparer.Create<string>((s1, s2) =>
                 {
                     // Sort by group as in AttrGroupOrder first and then by name.
                     var groupCompare = AttrGroupOrder[AttrToGroupConverter.Convert(s1)].CompareTo(
@@ -674,6 +674,26 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 // TODO add attributes from items (tree+gear mode)
             }
             return stats;
+        }
+    }
+    public static class Comparer
+    {
+        public static Comparer<T> Create<T>(Comparison<T> comparison)
+        {
+            if (comparison == null) throw new ArgumentNullException("comparison");
+            return new ComparisonComparer<T>(comparison);
+        }
+        private sealed class ComparisonComparer<T> : Comparer<T>
+        {
+            private readonly Comparison<T> comparison;
+            public ComparisonComparer(Comparison<T> comparison)
+            {
+                this.comparison = comparison;
+            }
+            public override int Compare(T x, T y)
+            {
+                return comparison(x, y);
+            }
         }
     }
 }
