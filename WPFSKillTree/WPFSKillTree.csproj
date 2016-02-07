@@ -215,6 +215,15 @@
     <Compile Include="TreeGenerator\Algorithm\MinimalSpanningTree.cs" />
     <Compile Include="TreeGenerator\Algorithm\SearchGraph.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerPreprocessor.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\DegreeTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\FarAwayNonTerminalsTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Data.cs" />
+    <Compile Include="TreeGenerator\Algorithm\NodeStates.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NearestVertexTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NonTerminalsOfDegreeKTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\PathsWithManyTerminalsTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\ShortestLinksTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\SteinerReduction.cs" />
     <Compile Include="TreeGenerator\Algorithm\VoronoiPartition.cs" />
     <Compile Include="TreeGenerator\Genetic\BitArrayKey.cs" />
     <Compile Include="TreeGenerator\Genetic\GeneticAlgorithm.cs" />
