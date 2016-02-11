@@ -8,24 +8,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
 {
     public class SteinerPreprocessor
     {
-        private class SMatrixLookup : IDistanceLookup
-        {
-            public int CacheSize { get; private set; }
-
-            private readonly uint[,] _smatrix;
-
-            public uint this[int a, int b]
-            {
-                get { return _smatrix[a, b]; }
-            }
-
-            public SMatrixLookup(int cacheSize, uint[,] smatrix)
-            {
-                CacheSize = cacheSize;
-                _smatrix = smatrix;
-            }
-        }
-
         private List<GraphNode> _searchSpace;
 
         private readonly HashSet<GraphNode> _fixedTargetNodes;
@@ -111,7 +93,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 + "     fixed targets: " + _fixedTargetNodes.Count + "\n"
                 + "             edges: " + initialEdgeCount);
 
-            _data = new Data(_edgeSet, _searchSpace, _distanceLookup, StartNode);
+            _data = new Data(_edgeSet, _distanceLookup, StartNode);
             _data.StartNodeChanged += (sender, node) => StartNode = node;
             var dummy = 0;
             new DegreeTest(_nodeStates, _data).RunTest(ref dummy, ref dummy);
@@ -120,8 +102,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             // These values may become lower by merging nodes. Since the reductions based on these distance
             // don't help if there are many variable target nodes, it is not really worth it to always recalculate them.
             // It would either slow the preprocessing by like 30% or would need an approximation algorithm.
-            var smatrix = CalcBottleneckSteinerDistances();
-            _data.SMatrix = new SMatrixLookup(_searchSpace.Count, smatrix);
+            _data.SMatrix = new BottleneckSteinerDistanceCalculator(_distanceLookup).CalcBottleneckSteinerDistances(_fixedTargetNodes);
 
             var degreeTest = new DegreeTest(_nodeStates, _data);
             var tests = new List<SteinerReduction>
@@ -179,11 +160,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             }
 
             _nodeStates.SearchSpace = _searchSpace;
-            if (_data != null)
-            {
-                _data.SearchSpace = _searchSpace;
-                _data.EdgeSet = _edgeSet;
-            }
+            _data.EdgeSet = _edgeSet;
         }
 
         private GraphEdgeSet ComputeEdges()
@@ -213,72 +190,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 }
             }
             return edgeSet;
-        }
-        
-        private uint[] CalcBottleneckSteinerDistancesTo(int from, IEnumerable<int> to)
-        {
-            var nodeCount = _searchSpace.Count;
-
-            // All not permanetly labeled target nodes.
-            var targetsRemaining = new HashSet<int>(_fixedTargetNodes.Select(n => n.DistancesIndex));
-            targetsRemaining.Remove(from);
-            // All not permanently labeled nodes (neigbors and targets, we don't care about other nodes).
-            var nodesRemaining = new HashSet<int>(targetsRemaining);
-            nodesRemaining.UnionWith(to);
-
-            // Labels of nodes, approaches special distance to i.
-            var labels = new uint[nodeCount];
-            foreach (var j in nodesRemaining)
-            {
-                // Initialize labels with distance.
-                labels[j] = _distanceLookup[from, j];
-            }
-
-            // While not all target nodes were labeled.
-            while (targetsRemaining.Any())
-            {
-                // Determine the not permanently labeled target node k* with smallest label and select it.
-                var max = uint.MaxValue;
-                var kstar = -1;
-                foreach (var t in targetsRemaining)
-                {
-                    if (labels[t] < max)
-                    {
-                        max = labels[t];
-                        kstar = t;
-                    }
-                }
-                // Label k* permanently.
-                targetsRemaining.Remove(kstar);
-                nodesRemaining.Remove(kstar);
-
-                // For all not permanently labeled nodes.
-                foreach (var j in nodesRemaining)
-                {
-                    // Decrease label if the bottleneck length on the path over k* is smaller.
-                    labels[j] = Math.Min(labels[j], Math.Max(labels[kstar], _distanceLookup[kstar, j]));
-                }
-            }
-
-            return labels;
-        }
-
-        private uint[,] CalcBottleneckSteinerDistances()
-        {
-            var nodeCount = _searchSpace.Count;
-            var smatrix = new uint[nodeCount, nodeCount];
-            var searchSpaceIndices = Enumerable.Range(0, nodeCount).ToList();
-            // For each node i
-            for (var i1 = 0; i1 < nodeCount; i1++)
-            {
-                var labels = CalcBottleneckSteinerDistancesTo(i1, searchSpaceIndices);
-
-                foreach (var j in searchSpaceIndices)
-                {
-                    smatrix[i1, j] = labels[j];
-                }
-            }
-            return smatrix;
         }
         
     }

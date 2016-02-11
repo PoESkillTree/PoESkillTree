@@ -18,7 +18,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 
         protected int SearchSpaceSize
         {
-            get { return _data.SearchSpace.Count; }
+            get { return _data.DistanceLookup.CacheSize; }
         }
 
         protected IDistanceLookup DistanceLookup
@@ -104,8 +104,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
             if (!NodeStates.IsFixedTarget(into))
                 throw new ArgumentException("Nodes can only be merged into fixed target nodes", "into");
 
-            _data.SearchSpace[into].MergeWith(_data.SearchSpace[x], _data.DistanceLookup.GetShortestPath(x, into));
-
+            _data.DistanceLookup.IndexToNode(into).MergeWith(_data.DistanceLookup.IndexToNode(x), _data.DistanceLookup.GetShortestPath(x, into));
             _data.DistanceLookup.MergeInto(x, into);
 
             EdgeSet.Remove(x, into);

@@ -215,6 +215,7 @@
     <Compile Include="TreeGenerator\Algorithm\MinimalSpanningTree.cs" />
     <Compile Include="TreeGenerator\Algorithm\SearchGraph.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerPreprocessor.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\BottleneckSteinerDistanceCalculator.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\DegreeTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\FarAwayNonTerminalsTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\Data.cs" />

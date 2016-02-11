@@ -1,44 +1,67 @@
-﻿namespace POESKillTree.TreeGenerator.Algorithm
-{
-    /// <summary>
-    /// Type of nodes used for the Priority Queue.
-    /// The values represent the DistancesIndex of the two GraphNodes this edge connects.
-    /// </summary>
-    public class LinkedGraphEdge : LinkedListPriorityQueueNode<LinkedGraphEdge>
-    {
-        public readonly int Inside, Outside;
+﻿using System;
+using System.Collections.Concurrent;
 
-        public LinkedGraphEdge(int inside, int outside, uint priority)
-            : base(priority)
+namespace POESKillTree.TreeGenerator.Algorithm
+{
+    public interface ITwoDArray<out T>
+    {
+        T this[int a, int b] { get; }
+    }
+
+    public class TwoDArray<T> : ITwoDArray<T>
+    {
+        private readonly T[,] _array;
+
+        public T this[int a, int b]
         {
-            Inside = inside;
-            Outside = outside;
+            get { return _array[a, b]; }
+        }
+
+        public TwoDArray(T[,] array)
+        {
+            _array = array;
+        }
+    }
+
+    public class FunctionalTwoDArray<T> : ITwoDArray<T>
+    {
+        private readonly Func<int, int, T> _f;
+
+        public T this[int a, int b]
+        {
+            get { return _f(a, b); }
+        }
+
+        public FunctionalTwoDArray(Func<int, int, T> f)
+        {
+            _f = f;
         }
     }
 
     /// <summary>
-    /// Priority queue nodes used for LinkedListPriorityQueue.
+    /// Type of nodes used for the Priority Queue.
+    /// The values represent the DistancesIndex of the two GraphNodes this edge connects.
     /// </summary>
-    /// <typeparam name="T">Type of the parent class.</typeparam>
-    public abstract class LinkedListPriorityQueueNode<T>
+    public class DirectedGraphEdge : IWithPriority
     {
-        /// <summary>
-        /// The Priority to insert this node at.
-        /// </summary>
-        internal readonly uint Priority;
+        public readonly int Inside, Outside;
 
-        /// <summary>
-        /// The node coming after this node in the queue.
-        /// Do not manually edit this.
-        /// </summary>
-        internal T Next;
-
-        protected LinkedListPriorityQueueNode(uint priority)
+        public DirectedGraphEdge(int inside, int outside, uint priority)
         {
+            Inside = inside;
+            Outside = outside;
             Priority = priority;
-        } 
+        }
+
+        public uint Priority { get; private set; }
     }
 
+    public interface IWithPriority
+    {
+        uint Priority { get; }
+    }
+    
+    // todo Redo Documentation
     /// <summary>
     /// Priority Queue based on a linked list and a lookup table for priorities.
     /// </summary>
@@ -54,23 +77,42 @@
     /// No actual traversing through the linked list happens.
     /// </remarks>
     /// <typeparam name="T">Type of the stored objects</typeparam>
-    public class LinkedListPriorityQueue<T>
-        where T : LinkedListPriorityQueueNode<T>
+    public class LinkedListPriorityQueue<T> : IDisposable
+        where T: IWithPriority
     {
-        public T First { get; private set; }
+        private struct DataArrays
+        {
+            public readonly T[] Nodes;
 
-        private T _last;
+            public readonly int[] Links;
 
-        /// <summary>
-        /// Number of nodes currently in the Queue.
-        /// </summary>
-        public int Count { get; private set; }
+            public DataArrays(T[] nodes, int[] links)
+            {
+                Nodes = nodes;
+                Links = links;
+            }
+        }
 
-        /// <summary>
-        /// Contains the last node stored currently for each priority.
-        /// Priorities without nodes stored are null.
-        /// </summary>
-        private readonly T[] _prioritiyLookup;
+        private static readonly ConcurrentBag<DataArrays> DataStack = new ConcurrentBag<DataArrays>();
+
+        private uint _top = uint.MaxValue;
+        
+        private int _count;
+
+        public bool IsEmpty
+        {
+            get { return _count == 0; }
+        }
+
+        private readonly int[] _firstElements;
+
+        private readonly int[] _lastElements;
+
+        private readonly T[] _nodes;
+
+        private readonly int[] _links;
+
+        private int _nextId = 1;
 
         /// <summary>
         /// Creates a queue with the given maximum priority of stored nodes.
@@ -78,9 +120,28 @@
         /// <param name="maxPriority">The maximum priority of nodes that will be stored.
         /// If a node with a higher priority is to be stored, an exception will be thrown.
         /// The value has no impact on runtime, only on used memory.</param>
-        public LinkedListPriorityQueue(int maxPriority)
+        /// <param name="size"></param>
+        public LinkedListPriorityQueue(int maxPriority, int size)
         {
-            _prioritiyLookup = new T[maxPriority + 1];
+            _firstElements = new int[maxPriority + 1];
+            _lastElements = new int[maxPriority + 1];
+            DataArrays current;
+            if (!DataStack.TryTake(out current))
+            {
+                _nodes = new T[size + 1];
+                _links = new int[size + 1];
+            }
+            else if (current.Links.Length < size + 1)
+            {
+                var length = Math.Max(size + 1, current.Links.Length*2);
+                _nodes = new T[length];
+                _links = new int[length];
+            }
+            else
+            {
+                _links = current.Links;
+                _nodes = current.Nodes;
+            }
         }
 
         /// <summary>
@@ -94,31 +155,25 @@
         public void Enqueue(T node)
         {
             var priority = node.Priority;
-            if (Count++ == 0)
+            var id = _nextId++;
+            _nodes[id] = node;
+            _links[id] = 0;
+
+            _count++;
+            var old = _lastElements[priority];
+            if (old == 0)
             {
-                First = _last = node;
-            }
-            else if (priority < First.Priority)
-            {
-                node.Next = First;
-                First = node;
-            }
-            else if (priority >= _last.Priority)
-            {
-                _last.Next = node;
-                _last = node;
+                _firstElements[priority] = id;
+                if (priority < _top)
+                {
+                    _top = priority;
+                }
             }
             else
             {
-                var index = priority;
-                while (_prioritiyLookup[index] == null)
-                    index--;
-                var previous = _prioritiyLookup[index];
-                var next = previous.Next;
-                node.Next = next;
-                previous.Next = node;
+                _links[old] = id;
             }
-            _prioritiyLookup[priority] = node;
+            _lastElements[priority] = id;
         }
 
         /// <summary>
@@ -127,23 +182,35 @@
         /// </summary>
         public T Dequeue()
         {
-            var node = First;
-            if (Count-- == 1)
+            _count--;
+            var id = _firstElements[_top];
+            var node = _nodes[id];
+            var next = _links[id];
+            if (next == 0)
             {
-                First = null;
-                _last = null;
+                _lastElements[_top] = 0;
+                if (_count == 0)
+                {
+                    _top = uint.MaxValue;
+                }
+                else
+                {
+                    while (_lastElements[++_top] == 0)
+                    {
+                    }
+                }
             }
             else
             {
-                First = node.Next;
+                _firstElements[_top] = next;
             }
-            node.Next = null;
-            var prio = node.Priority;
-            if (_prioritiyLookup[prio] == node)
-            {
-                _prioritiyLookup[prio] = null;
-            }
+            _links[id] = 0;
             return node;
+        }
+
+        public void Dispose()
+        {
+            DataStack.Add(new DataArrays(_nodes, _links));
         }
     }
 }

@@ -61,7 +61,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
             // Priority queue storing the unchecked edges. The priority is the shortest
             // found path to any terminal of the outside node (which goes over the inside node).
-            var prioQueue = new LinkedListPriorityQueue<LinkedGraphEdge>(100);
+            var prioQueue = new LinkedListPriorityQueue<DirectedGraphEdge>(100, _edgeSet.Count + distances.CacheSize);
             // Currently shortest distance to any terminal for each non terminal.
             var pathDists = new uint[distances.CacheSize];
             // Saves the unchecked nodes. True once the node got dequeued.
@@ -72,7 +72,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 if (isTerminal[i])
                 {
                     // Terminals are added to queue. They are checked first.
-                    prioQueue.Enqueue(new LinkedGraphEdge(i, i, 0));
+                    prioQueue.Enqueue(new DirectedGraphEdge(i, i, 0));
                     // Nearest terminal of a terminal is itself (with distance 0).
                     _base[i] = i;
                     pathDists[i] = 0;
@@ -87,7 +87,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 }
             }
             // Traverse the graph starting at the terminals.
-            while (prioQueue.Count > 0)
+            while (!prioQueue.IsEmpty)
             {
                 // Dequeue the shortest edge until the outside node is unchecked.
                 var k = prioQueue.Dequeue().Outside;
@@ -105,7 +105,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     // t -- k -- m is the shortest found path from m to any terminal.
                     // So t is the nearest terminal of m at this point.
                     pathDists[m] = pathDists[k] + distances[k, m];
-                    prioQueue.Enqueue(new LinkedGraphEdge(k, m, pathDists[m]));
+                    prioQueue.Enqueue(new DirectedGraphEdge(k, m, pathDists[m]));
                     _base[m] = t;
                 }
             }
@@ -115,6 +115,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
             {
                 _regionDict.Add(_base[i], i);
             }
+
+            prioQueue.Dispose();
         }
 
         /// <summary>

@@ -159,7 +159,7 @@ namespace UnitTests
 
             int[] queueTestOrder = { 10, 3, 11, 6, -3, 17, 13, -6, 2, 8, -2, -8 };
 
-            LinkedListPriorityQueue<TestNode> queue = new LinkedListPriorityQueue<TestNode>(30);
+            LinkedListPriorityQueue<TestNode> queue = new LinkedListPriorityQueue<TestNode>(30, queueTestOrder.Length);
 
             foreach (int t in queueTestOrder)
             {
@@ -170,12 +170,13 @@ namespace UnitTests
             }
         }
 
-        class TestNode : LinkedListPriorityQueueNode<TestNode>
+        class TestNode : IWithPriority
         {
+            public uint Priority { get; }
+
             public TestNode(uint priority)
-                : base (priority)
             {
-                
+                Priority = priority;
             }
         }
     }

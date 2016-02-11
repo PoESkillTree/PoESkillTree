@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
     public interface IData
     {
         GraphEdgeSet EdgeSet { get; }
-
-        IReadOnlyList<GraphNode> SearchSpace { get; }
 
         DistanceLookup DistanceLookup { get; }
 
@@ -19,7 +16,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
     public class Data : IData
     {
         public GraphEdgeSet EdgeSet { get; set; }
-        public IReadOnlyList<GraphNode> SearchSpace { get; set; }
         public DistanceLookup DistanceLookup { get; private set; }
         public IDistanceLookup SMatrix { get; set; }
 
@@ -36,10 +32,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
             }
         }
 
-        public Data(GraphEdgeSet edgeSet, IReadOnlyList<GraphNode> searchSpace, DistanceLookup distanceLookup, GraphNode startNode)
+        public Data(GraphEdgeSet edgeSet, DistanceLookup distanceLookup, GraphNode startNode)
         {
             EdgeSet = edgeSet;
-            SearchSpace = searchSpace;
             DistanceLookup = distanceLookup;
             _startNode = startNode;
         }

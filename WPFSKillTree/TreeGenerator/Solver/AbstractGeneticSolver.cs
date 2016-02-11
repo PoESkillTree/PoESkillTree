@@ -57,9 +57,11 @@ namespace POESKillTree.TreeGenerator.Solver
         private const double PreFilledSpanThreshold = 1.0 / 10;
 
         /// <summary>
-        /// First edge of the linked list of edges ordered by priority.
+        /// List of edges ordered by priority.
         /// </summary>
-        private LinkedGraphEdge _firstEdge;
+        private List<DirectedGraphEdge> _orderedEdges;
+
+        private ITwoDArray<DirectedGraphEdge> _edges;
 
         /// <summary>
         /// Gets or sets whether this solver should try to improve the solution with simple HillClimbing
@@ -79,17 +81,37 @@ namespace POESKillTree.TreeGenerator.Solver
             OnFinalSearchSpaceCreated();
 
             var totalCount = SearchSpace.Count + TargetNodes.Count;
-            if (TargetNodes.Count / (double)totalCount >= PreFilledSpanThreshold)
+
+            var edges = new DirectedGraphEdge[totalCount, totalCount];
+            for (int i = 0; i < totalCount; i++)
             {
-                var prioQueue = new LinkedListPriorityQueue<LinkedGraphEdge>(100);
-                for (var i = 0; i < totalCount; i++)
+                for (int j = 0; j < totalCount; j++)
                 {
-                    for (var j = i + 1; j < totalCount; j++)
+                    edges[i, j] = new DirectedGraphEdge(i, j, Distances[i, j]);
+                }
+            }
+            _edges = new TwoDArray<DirectedGraphEdge>(edges);
+
+            if (TargetNodes.Count/(double) totalCount >= PreFilledSpanThreshold)
+            {
+                using (var prioQueue = new LinkedListPriorityQueue<DirectedGraphEdge>(100, totalCount*totalCount))
+                {
+                    var enqueued = 0;
+                    for (var i = 0; i < totalCount; i++)
                     {
-                        prioQueue.Enqueue(new LinkedGraphEdge(i, j, Distances[i, j]));
+                        for (var j = i + 1; j < totalCount; j++)
+                        {
+                            prioQueue.Enqueue(_edges[i, j]);
+                            enqueued++;
+                        }
+                    }
+
+                    _orderedEdges = new List<DirectedGraphEdge>(enqueued);
+                    while (!prioQueue.IsEmpty)
+                    {
+                        _orderedEdges.Add(prioQueue.Dequeue());
                     }
                 }
-                _firstEdge = prioQueue.First;
             }
 
             InitializeGa();
@@ -153,7 +175,6 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private HashSet<ushort> DnaToUsedNodes(BitArray dna)
         {
-            var usedNodes = new HashSet<ushort>();
             var mstNodes = new List<GraphNode>();
             var mstIndices = new List<int>();
             for (var i = 0; i < dna.Length; i++)
@@ -168,12 +189,12 @@ namespace POESKillTree.TreeGenerator.Solver
             mstIndices.AddRange(TargetNodes.Select(n => n.DistancesIndex));
 
             var mst = new MinimalSpanningTree(mstIndices, Distances);
-            if (_firstEdge != null)
-                mst.Span(_firstEdge);
+            if (_orderedEdges != null)
+                mst.Span(_orderedEdges);
             else
-                mst.Span(StartNode.DistancesIndex);
+                mst.Span(StartNode.DistancesIndex, _edges);
 
-            usedNodes.UnionWith(mstNodes.Select(n => n.Id));
+            var usedNodes = new HashSet<ushort>(mstNodes.Select(n => n.Id));
             foreach (var edge in mst.SpanningEdges)
             {
                 usedNodes.UnionWith(Distances.GetShortestPath(edge.Inside, edge.Outside));
