@@ -103,38 +103,44 @@ namespace POESKillTree.Utils
 
                 for (int i = 0; i < lines.Count; i++)
                 {
-                    var namel = lines[i].SelectNodes("td");
-
-                    var image = namel[0].SelectSingleNode("img[@data-large-image]").Attributes["data-large-image"].Value;
-
-                    var name = namel[1].InnerText;
-                    var level = namel[2].InnerText;
-
-                    images.Add(Tuple.Create(name, image));
-
-                    var xe = new ItemBase()
+                    try
                     {
-                        GearGroup = JewelryGroupMap[h],
-                        Class = JewelryClassMap[h],
-                        ItemType = name,
-                        Level = int.Parse(level)
+                        var namel = lines[i].SelectNodes("td");
 
-                    };
+                        var image = namel[0].SelectSingleNode("img[@data-large-image]").Attributes["data-large-image"].Value;
 
-                    var implModnodes = new string[2][];
-                    implModnodes[0] = namel[3].InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-                    implModnodes[1] = namel[4].InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+                        var name = namel[1].InnerText;
+                        var level = namel[2].InnerText;
+
+                        images.Add(Tuple.Create(name, image));
+
+                        var xe = new ItemBase()
+                        {
+                            GearGroup = JewelryGroupMap[h],
+                            Class = JewelryClassMap[h],
+                            ItemType = name,
+                            Level = int.Parse(level)
+
+                        };
+
+                        var implModnodes = new string[2][];
+                        implModnodes[0] = namel[3].InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+                        implModnodes[1] = namel[4].InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
 
 
-                    if (implModnodes.Length > 0)
-                    {
-                        implModnodes[0] = implModnodes[0].Select(n => n.Replace("+", "").Trim()).ToArray();
-                        for (int j = 0; j < implModnodes[0].Length; j++)
-                            xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
+                        if (implModnodes.Length > 0 && implModnodes[0].Length == implModnodes[1].Length)
+                        {
+                            implModnodes[0] = implModnodes[0].Select(n => n.Replace("+", "").Trim()).ToArray();
+                            for (int j = 0; j < implModnodes[0].Length; j++)
+                                xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
+                        }
+
+
+                        items.Add(xe);
                     }
-
-
-                    items.Add(xe);
+                    catch(Exception e)
+                    {
+                    }
                 }
             }
 
@@ -158,61 +164,68 @@ namespace POESKillTree.Utils
 
                 for (int i = 0; i < lines.Count; i += 2)
                 {
-                    var namel = lines[i].SelectNodes("td");
-
-                    var image = namel[0].SelectSingleNode("img[@data-large-image]").Attributes["data-large-image"].Value;
-                    var name = namel[1].InnerText;
-
-                    images.Add(Tuple.Create(name, image));
-
-                    var level = namel[2].InnerText;
-
-
-                    var armour = namel[3].InnerText;
-                    var evasionrating = namel[4].InnerText;
-                    var energyshield = namel[5].InnerText;
-
-                    var reqStr = namel[6].InnerText;
-                    var reqDex = namel[7].InnerText;
-                    var reqInt = namel[8].InnerText;
-
-
-                    var xe = new ItemBase()
+                    try
                     {
-                        GearGroup = ArmorGroupMap[h],
-                        Class = ArmorClassMap[h],
-                        ItemType = name,
-                        Level = int.Parse(level),
-                        RequiredStr = int.Parse(reqStr),
-                        RequiredDex = int.Parse(reqDex),
-                        RequiredInt = int.Parse(reqInt),
-                    };
+                        var namel = lines[i].SelectNodes("td");
+
+                        var image = namel[0].SelectSingleNode("img[@data-large-image]").Attributes["data-large-image"].Value;
+                        var name = namel[1].InnerText;
+
+                        images.Add(Tuple.Create(name, image));
+
+                        var level = namel[2].InnerText;
 
 
-                    if (armour != "0")
-                        xe.Properties.Add(new Stat("Armour", armour ));
-                    if (energyshield != "0")
-                        xe.Properties.Add(new Stat( "Energy Shield", energyshield));
-                    if (evasionrating != "0")
-                        xe.Properties.Add(new Stat( "Evasion Rating", evasionrating));
+                        var armour = namel[3].InnerText;
+                        var evasionrating = namel[4].InnerText;
+                        var energyshield = namel[5].InnerText;
+
+                        var reqStr = namel[6].InnerText;
+                        var reqDex = namel[7].InnerText;
+                        var reqInt = namel[8].InnerText;
 
 
-                    var implModnodes = lines[i + 1].SelectNodes("td")
-                        .Select(n => n.InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries))
-                        .Where(v => v.Any(s => !string.IsNullOrEmpty(s))).ToArray();
-
-                    if (implModnodes.Length > 0)
-                    {
-                        implModnodes[0] = implModnodes[0].Select(n => n.Replace("Minimum", "").Replace("Maximum", "").Replace("+","").Trim()).Distinct().ToArray();
-
-                        for (int j = 0; j < implModnodes[0].Length; j++)
+                        var xe = new ItemBase()
                         {
-                            xe.ImplicitMods.Add(new Stat(implModnodes[0][j],implModnodes[1][j]));
+                            GearGroup = ArmorGroupMap[h],
+                            Class = ArmorClassMap[h],
+                            ItemType = name,
+                            Level = int.Parse(level),
+                            RequiredStr = int.Parse(reqStr),
+                            RequiredDex = int.Parse(reqDex),
+                            RequiredInt = int.Parse(reqInt),
+                        };
+
+
+                        if (armour != "0")
+                            xe.Properties.Add(new Stat("Armour", armour));
+                        if (energyshield != "0")
+                            xe.Properties.Add(new Stat("Energy Shield", energyshield));
+                        if (evasionrating != "0")
+                            xe.Properties.Add(new Stat("Evasion Rating", evasionrating));
+
+
+                        var implModnodes = lines[i + 1].SelectNodes("td")
+                            .Select(n => n.InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries))
+                            .Where(v => v.Any(s => !string.IsNullOrEmpty(s))).ToArray();
+
+                        if (implModnodes.Length > 0)
+                        {
+                            implModnodes[0] = implModnodes[0].Select(n => n.Replace("Minimum", "").Replace("Maximum", "").Replace("+", "").Trim()).Distinct().ToArray();
+                            implModnodes[0] = implModnodes[0].Where(val => val != "Dummy Stat Display Nothing").ToArray();
+                            for (int j = 0; j < implModnodes[0].Length; j++)
+                            {
+                                xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
+                            }
                         }
+
+
+                        items.Add(xe);
                     }
+                    catch (Exception e)
+                    {
 
-
-                    items.Add(xe);
+                    }
                 }
             }
         }
@@ -237,56 +250,63 @@ namespace POESKillTree.Utils
 
                 for (int i = 0; i < lines.Count; i += 2)
                 {
-                    var namel = lines[i].SelectNodes("td");
-
-                    var image = namel[0].SelectSingleNode("img[@data-large-image]").Attributes["data-large-image"].Value;
-                    var name = namel[1].InnerText;
-
-                    images.Add(Tuple.Create(name, image));
-
-                    var level = namel[2].InnerText;
-                    var damage = namel[3].InnerText;
-                    var aps = namel[4].InnerText;
-                    var dps = namel[5].InnerText;
-                    var reqStr = namel[6].InnerText;
-                    var reqDex = namel[7].InnerText;
-                    var reqInt = namel[8].InnerText;
-
-                    var xe = new ItemBase()
+                    try
                     {
-                        GearGroup = WeaponGroupMap[h],
-                        Class = WeaponClassMap[h],
-                        ItemType = name,
-                        Level = int.Parse(level),
-                        RequiredStr = int.Parse(reqStr),
-                        RequiredDex = int.Parse(reqDex),
-                        RequiredInt = int.Parse(reqInt),
-                    };
+                        var namel = lines[i].SelectNodes("td");
 
+                        var image = namel[0].SelectSingleNode("img[@data-large-image]").Attributes["data-large-image"].Value;
+                        var name = namel[1].InnerText;
 
+                        images.Add(Tuple.Create(name, image));
 
-                    xe.Properties.Add(new Stat("Physical Damage", damage));
+                        var level = namel[2].InnerText;
+                        var damage = namel[3].InnerText;
+                        var aps = namel[4].InnerText;
+                        var dps = namel[5].InnerText;
+                        var reqStr = namel[6].InnerText;
+                        var reqDex = namel[7].InnerText;
+                        var reqInt = namel[8].InnerText;
 
-                    xe.Properties.Add(new Stat("Atacks Per Second", aps ));
-
-                    xe.Properties.Add(new Stat("Critical Strike Chance %", "5"));
-
-
-                    var implModnodes = lines[i + 1].SelectNodes("td")
-                        .Select(n => n.InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries))
-                        .Where(v => v.Any(s => !string.IsNullOrEmpty(s))).ToArray();
-
-                    if (implModnodes.Length > 0)
-                    {
-                        implModnodes[0] = implModnodes[0].Select(n => n.Replace("Minimum", "").Replace("Maximum", "").Trim()).Distinct().ToArray();
-
-                        for (int j = 0; j < implModnodes[0].Length; j++)
+                        var xe = new ItemBase()
                         {
-                            xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
-                        }
-                    }
+                            GearGroup = WeaponGroupMap[h],
+                            Class = WeaponClassMap[h],
+                            ItemType = name,
+                            Level = int.Parse(level),
+                            RequiredStr = int.Parse(reqStr),
+                            RequiredDex = int.Parse(reqDex),
+                            RequiredInt = int.Parse(reqInt),
+                        };
 
-                    items.Add(xe);
+
+
+                        xe.Properties.Add(new Stat("Physical Damage", damage));
+
+                        xe.Properties.Add(new Stat("Atacks Per Second", aps));
+
+                        xe.Properties.Add(new Stat("Critical Strike Chance %", "5"));
+
+
+                        var implModnodes = lines[i + 1].SelectNodes("td")
+                            .Select(n => n.InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries))
+                            .Where(v => v.Any(s => !string.IsNullOrEmpty(s))).ToArray();
+
+                        if (implModnodes.Length > 0)
+                        {
+                            implModnodes[0] = implModnodes[0].Select(n => n.Replace("Minimum", "").Replace("Maximum", "").Trim()).Distinct().ToArray();
+
+                            for (int j = 0; j < implModnodes[0].Length; j++)
+                            {
+                                xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
+                            }
+                        }
+
+                        items.Add(xe);
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
                 }
             }
         }

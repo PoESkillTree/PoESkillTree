@@ -376,7 +376,9 @@ namespace POESKillTree.Views
 
         private void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
         {
-            Tree.UntagAllNodes();
+            var response = MessageBox.Show(L10n.Message("Are you sure?"), L10n.Message("Untag All Skill Nodes"), MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
+            if(response == MessageBoxResult.Yes)
+                Tree.UntagAllNodes();
         }
 
         private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
@@ -578,6 +580,12 @@ namespace POESKillTree.Views
         {
             var helpWindow = new HelpWindow() { Owner = this };
             helpWindow.ShowDialog();
+        }
+
+        private void Menu_OpenSettings(object sender, RoutedEventArgs e)
+        {
+            var settingsWindows = new SettingsMenuWindow() { Owner = this };
+            settingsWindows.ShowDialog();
         }
 
         private void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
@@ -1008,13 +1016,12 @@ namespace POESKillTree.Views
             var v = new Vector2D(p.X, p.Y);
 
             v = v * _multransform + _addtransform;
-
+           
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
             if (nodes.Count() != 0)
             {
                 var node = nodes.First().Value;
-
                 // Ignore clicks on character portraits and masteries
                 if (node.Spc == null && !node.IsMastery)
                 {
@@ -1438,6 +1445,9 @@ namespace POESKillTree.Views
             {
                 SaveBuildsToFile();
             }
+            lvSavedBuilds.SelectedIndex = lvSavedBuilds.Items.Count - 1;
+            if(lvSavedBuilds.SelectedIndex != -1)
+                lvSavedBuilds.ScrollIntoView(lvSavedBuilds.Items[lvSavedBuilds.Items.Count - 1]);
         }
 
         private void SaveBuildsToFile()
@@ -1464,7 +1474,7 @@ namespace POESKillTree.Views
                 }
                 else if (tbSkillURL.Text.Contains("tinyurl.com") || tbSkillURL.Text.Contains("poeurl.com"))
                 {
-                    var skillUrl = tbSkillURL.Text;
+                    var skillUrl = tbSkillURL.Text.Replace("preview.", "");
                     if (skillUrl.Contains("poeurl.com"))
                     {
                         skillUrl = skillUrl.Replace("http://poeurl.com/",
@@ -1479,36 +1489,12 @@ namespace POESKillTree.Views
 
                     LoadBuildFromUrl();
                 }
-                else if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accountName"))
-                {
-                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
-                    LoadBuildFromUrl();
-                }
                 else
                 {
-                    string[] urls = new string[] {
-                        "https://poebuilder.com/character/",
-                        "http://poebuilder.com/character/",
-                        "https://www.poebuilder.com/character/",
-                        "http://www.poebuilder.com/character/",
-                        "http://pathofexile.com/passive-skill-tree/",
-                        "http://www.pathofexile.com/passive-skill-tree/",
-                        "https://www.pathofexile.com/fullscreen-passive-skill-tree/",
-                        "http://www.pathofexile.com/fullscreen-passive-skill-tree/",
-                        "https://pathofexile.com/fullscreen-passive-skill-tree/",
-                        "http://pathofexile.com/fullscreen-passive-skill-tree/",
-                        "http://cb.poedb.tw/us/passive-skill-tree/",
-                        "http://poedb.tw/us/passive-skill-tree/"
-                    };
-                    var urlString = tbSkillURL.Text;
-                    foreach (string link in urls)
-                    {
-                        urlString = urlString.Replace(link, SkillTree.TreeAddress);
-                    }
-                    if (!urlString.Contains("https://"))
-                        urlString = "https://" + urlString;
-                    tbSkillURL.Text = urlString;
-                    Tree.LoadFromURL(urlString);
+                    if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accountName"))
+                        tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
+                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"(http(|s):\/\/|).*?\/(character\/|passive-skill-tree\/|fullscreen-passive-skill-tree\/|#)", SkillTree.TreeAddress);
+                    Tree.LoadFromURL(tbSkillURL.Text);
                 }
 
 
@@ -2054,6 +2040,7 @@ namespace POESKillTree.Views
                             File.Copy(Path.Combine(AppData.GetFolder(@"DataBackup\Equipment"), "Affixlist.xml"), Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Affixlist.xml"));
                             
                             Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
+                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\PseudoAttributes"), Path.Combine(appDataPath, @"Data\PseudoAttributes"));
                             if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
                                 Directory.Delete(Path.Combine(appDataPath, "DataBackup"), true);
 

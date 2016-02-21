@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using POESKillTree.Views;
+using POESKillTree.Utils;
+using POESKillTree.Model;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -46,6 +48,7 @@ namespace POESKillTree.SkillTreeFiles
         }
         
         private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
+        private readonly PersistentData _persistentData = App.PersistentData;
 
         public DrawingVisual SkillTreeVisual;
         public DrawingVisual picActiveLinks;
@@ -259,13 +262,30 @@ namespace POESKillTree.SkillTreeFiles
                         // If it has FromHover, don't mix it with the other highlights.
                         if (hs.HasFlag(HighlightState.FromHover))
                         {
-                            hpen = new Pen(Brushes.DodgerBlue, 20);
+                            var brushColor = (Brush)new BrushConverter().ConvertFromString(_persistentData.Options.NodeHoverHighlightColor);
+                            hpen = new Pen(brushColor, 20);
                         }
                         else
                         {
-                            byte red = (byte)(hs.HasFlag(HighlightState.FromSearch) ? 255 : 0);
-                            byte green = (byte)(hs.HasFlag(HighlightState.FromAttrib) ? 255 : 0);
-                            hpen = new Pen(new SolidColorBrush(Color.FromRgb(red, green, 0)), 20);
+                            int red = 0;
+                            int green = 0;
+                            int blue = 0;
+                            System.Drawing.Color attrHighlight = System.Drawing.Color.FromName(_persistentData.Options.NodeAttrHighlightColor);
+                            System.Drawing.Color searchHighlight = System.Drawing.Color.FromName(_persistentData.Options.NodeSearchHighlightColor);
+
+                            if (hs.HasFlag(HighlightState.FromAttrib))
+                            {
+                                red = (red | attrHighlight.R);
+                                green = (green | attrHighlight.G);
+                                blue = (blue | attrHighlight.B);
+                            }
+                            if (hs.HasFlag(HighlightState.FromSearch))
+                            {
+                                red = (red | searchHighlight.R);
+                                green = (green | searchHighlight.G);
+                                blue = (blue | searchHighlight.B);
+                            }
+                            hpen = new Pen(new SolidColorBrush(Color.FromRgb((byte)red, (byte)green, (byte)blue)), 20);
                         }
 
                         dc.DrawEllipse(null, hpen, pair.Key.Position, 80, 80);

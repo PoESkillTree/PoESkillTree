@@ -15,13 +15,22 @@
 		<Attribute Name="#% increased Critical Strike Chance while Dual Wielding">
 			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
 		</Attribute>
+		<Attribute Name="#% increased Weapon Critical Strike Chance while Dual Wielding">
+			<Conditions>
+				<AndComposition>
+					<Tag>Attack</Tag>
+                    <OffHand>Dual Wield</OffHand>
+					<Not><WeaponClass>Unarmed</WeaponClass></Not>
+				</AndComposition>
+			</Conditions>
+		</Attribute>
 		<Attribute Name="#% increased Critical Strike Chance for Spells">
 			<Conditions><Tag>Spell</Tag></Conditions>
 		</Attribute>
 		<Attribute Name="#% increased Melee Critical Strike Chance">
 			<Conditions><Tag>Melee</Tag></Conditions>
 		</Attribute>
-		<Attribute Name="#% increased Global Critical Strike Chance while wielding a staff">
+		<Attribute Name="#% increased Global Critical Strike Chance while wielding a Staff">
 			<Conditions><WeaponClass>Staff</WeaponClass></Conditions>
 		</Attribute>
 	</PseudoAttribute>
@@ -45,7 +54,7 @@
 		<Attribute Name="#% increased Melee Critical Strike Multiplier">
 			<Conditions><Tag>Melee</Tag></Conditions>
 		</Attribute>
-		<Attribute Name="#% increased Global Critical Strike Multiplier while wielding a staff">
+		<Attribute Name="#% increased Global Critical Strike Multiplier while wielding a Staff">
 			<Conditions><WeaponClass>Staff</WeaponClass></Conditions>
 		</Attribute>
 	</PseudoAttribute>
