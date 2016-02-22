@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
@@ -54,12 +55,15 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                         ? iNonTerminal
                         : (NodeStates.IsTarget(otherNonTerminal) ? otherNonTerminal : iNonTerminal);
                     var x = into == iNonTerminal ? otherNonTerminal : iNonTerminal;
-                    NodeStates.SetFixedTarget(into);
+
+                    // Requiring one of the nodes to already be a terminal.
+                    // Simplifies the code without any practical disadvantage (it very rarely happens that both are non-terminals in our scenarios).
+                    if (!NodeStates.IsFixedTarget(into)) continue;
+                    Debug.Assert(iNonTerminal == i || otherNonTerminal == otherTerminal, "Voronoi-base of a terminal must be itself.");
+
                     MergeInto(x, into);
                     terminalVisited[i] = true;
                     terminalVisited[otherTerminal] = true;
-                    // Was changed into a terminal, but was not considered in calculation of voronoiPartition.
-                    terminalVisited[into] = true;
                     removedNodes++;
                 }
             }

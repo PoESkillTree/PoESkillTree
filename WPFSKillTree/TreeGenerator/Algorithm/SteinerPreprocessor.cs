@@ -95,8 +95,10 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
             _data = new Data(_edgeSet, _distanceLookup, StartNode);
             _data.StartNodeChanged += (sender, node) => StartNode = node;
+
+            var degreeTest = new DegreeTest(_nodeStates, _data);
             var dummy = 0;
-            new DegreeTest(_nodeStates, _data).RunTest(ref dummy, ref dummy);
+            degreeTest.RunTest(ref dummy, ref dummy);
 
             ContractSearchSpace();
             // These values may become lower by merging nodes. Since the reductions based on these distance
@@ -104,7 +106,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
             // It would either slow the preprocessing by like 30% or would need an approximation algorithm.
             _data.SMatrix = new BottleneckSteinerDistanceCalculator(_distanceLookup).CalcBottleneckSteinerDistances(_fixedTargetNodes);
 
-            var degreeTest = new DegreeTest(_nodeStates, _data);
             var tests = new List<SteinerReduction>
             {
                 new FarAwayNonTerminalsTest(_nodeStates, _data) { IsEnabled = _variableTargetNodes.Count == 0 },

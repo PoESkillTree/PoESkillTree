@@ -26,7 +26,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         /// <summary>
         /// Gets the best solution generated up to this point as
-        /// HashSet of <see cref="SkillNode"/> ids.
+        /// HashSet of <see cref="SkillTreeFiles.SkillNode"/> ids.
         /// Return value is undefined until <see cref="Initialize"/> got called.
         /// </summary>
         IEnumerable<ushort> BestSolution { get; }

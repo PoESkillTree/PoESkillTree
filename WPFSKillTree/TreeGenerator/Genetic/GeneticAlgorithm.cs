@@ -228,7 +228,7 @@ namespace POESKillTree.TreeGenerator.Genetic
             _maxMutateClusterSize = parameters.MaxMutateClusterSize;
             
             _initialSolution = initialSolution ?? new BitArray(_dnaLength);
-            // To have a solution in case _populationSize is 0.
+            // Make sure there is a valid solution in case _populationSize is 0.
             _bestSolution = new Individual(_initialSolution, 0);
             _population = CreatePopulation();
             GenerationCount = 0;
@@ -272,7 +272,7 @@ namespace POESKillTree.TreeGenerator.Genetic
 
             if (_populationSize == 0)
             {
-                // The only thing not returning would lead to is an infertile generation.
+                // Not returning would lead to an infertile infertile generation.
                 GenerationCount = MaxGeneration;
                 return GenerationCount;
             }
@@ -324,7 +324,8 @@ namespace POESKillTree.TreeGenerator.Genetic
                 individual.Rank = index;
                 individual.Age++;
 
-                newPopulation[newPopIndex++] = individual;
+                newPopulation[newPopIndex] = individual;
+                newPopIndex++;
             }
 
             //for (int i = 0; i < newPopIndex; i++)

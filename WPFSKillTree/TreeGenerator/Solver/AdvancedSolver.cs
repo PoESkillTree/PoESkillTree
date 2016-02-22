@@ -11,7 +11,7 @@ using POESKillTree.TreeGenerator.Settings;
 namespace POESKillTree.TreeGenerator.Solver
 {
     /// <summary>
-    /// Implementation of AbstractSolver that tries to find optimal trees based on constraints.
+    /// Implementation of AbstractGeneticSolver that tries to find optimal trees based on constraints.
     /// </summary>
     public class AdvancedSolver : AbstractGeneticSolver<AdvancedSolverSettings>
     {
@@ -98,6 +98,10 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private Dictionary<ushort, bool> _areTravelNodes;
 
+        /// <summary>
+        /// Contains all SkillNode-Ids contained in <see cref="AbstractSolver{TS}.TargetNodes"/>
+        /// (contents from <see cref="GraphNode.Nodes"/>).
+        /// </summary>
         private List<ushort> _fixedNodes;
 
         /// <summary>
@@ -110,8 +114,8 @@ namespace POESKillTree.TreeGenerator.Solver
             get
             {
                 return new GeneticAlgorithmParameters(
-                    (int) (GenMultiplier*SearchSpace.Count),
-                    (int) (PopMultiplier*SearchSpace.Count),
+                    (int) (GenMultiplier * SearchSpace.Count),
+                    (int) (PopMultiplier * SearchSpace.Count),
                     SearchSpace.Count,
                     maxMutateClusterSize: MaxMutateClusterSize);
             }
@@ -294,15 +298,17 @@ namespace POESKillTree.TreeGenerator.Solver
         private static string[] ExtractGroupValuesFromGroupCollection(GroupCollection groups)
         {
             var result = new string[groups.Count - 1];
-            for (int i = 0, j = 1; j < groups.Count; i++, j++)
+            for (var i = 1; i < groups.Count; i++)
             {
-                result[i] = groups[j].Value;
+                result[i - 1] = groups[i].Value;
             }
             return result;
         }
 
         protected override bool IsVariableTargetNode(GraphNode node)
         {
+            // Nodes that have relevant attributes and are not travel nodes (+10 int/str/dex) can be selected
+            // as target nodes.
             return _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id];
         }
 
@@ -403,6 +409,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 csvs *= 1 + UsedNodeCountFactor * Math.Log(totalPoints + 1 - usedNodeCount);
             }
 
+            // Make sure the fitness is not < 0 (can't happen with the current implementation anyway).
             return Math.Max(csvs, 0);
         }
 

@@ -51,16 +51,21 @@ namespace POESKillTree.TreeGenerator.Solver
         private GeneticAlgorithm _ga;
 
         /// <summary>
-        /// Minimum ratio of number of target nodes to search space + target nodes
-        /// to use a pre filled edge queue (that contains all possible edges) for mst calculation.
+        /// Minimum ratio of number of target nodes to (search space + target nodes)
+        /// to use a pre ordered edges for mst calculation.
         /// </summary>
         private const double PreFilledSpanThreshold = 1.0 / 10;
 
         /// <summary>
         /// List of edges ordered by priority.
+        /// (used for mst calculation if <see cref="PreFilledSpanThreshold"/> is satisfied)
         /// </summary>
         private List<DirectedGraphEdge> _orderedEdges;
 
+        /// <summary>
+        /// Unordered edges accessible by the two DistanceIndexes of the nodes.
+        /// (used for mst calculation if <see cref="PreFilledSpanThreshold"/> is not satisfied)
+        /// </summary>
         private ITwoDArray<DirectedGraphEdge> _edges;
 
         /// <summary>
@@ -82,6 +87,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
             var totalCount = SearchSpace.Count + TargetNodes.Count;
 
+            // Create edges
             var edges = new DirectedGraphEdge[totalCount, totalCount];
             for (int i = 0; i < totalCount; i++)
             {
@@ -92,10 +98,13 @@ namespace POESKillTree.TreeGenerator.Solver
             }
             _edges = new TwoDArray<DirectedGraphEdge>(edges);
 
+            // Sort edges if PreFilledSpanThreshold is satisfied.
             if (TargetNodes.Count/(double) totalCount >= PreFilledSpanThreshold)
             {
-                using (var prioQueue = new LinkedListPriorityQueue<DirectedGraphEdge>(100, totalCount*totalCount))
+                using (var prioQueue = new LinkedListPriorityQueue<DirectedGraphEdge>(100, totalCount * totalCount))
                 {
+                    // A PriorityQueue is used for sorting. Should be faster than sorting-methods that don't exploit 
+                    // sorting ints.
                     var enqueued = 0;
                     for (var i = 0; i < totalCount; i++)
                     {
@@ -175,6 +184,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private HashSet<ushort> DnaToUsedNodes(BitArray dna)
         {
+            // Convert dna to corresponding GraphNodes.
             var mstNodes = new List<GraphNode>();
             var mstIndices = new List<int>();
             for (var i = 0; i < dna.Length; i++)
@@ -188,18 +198,19 @@ namespace POESKillTree.TreeGenerator.Solver
             mstNodes.AddRange(TargetNodes);
             mstIndices.AddRange(TargetNodes.Select(n => n.DistancesIndex));
 
+            // Calculate MST from nodes.
             var mst = new MinimalSpanningTree(mstIndices, Distances);
             if (_orderedEdges != null)
                 mst.Span(_orderedEdges);
             else
                 mst.Span(StartNode.DistancesIndex, _edges);
 
+            // Convert GraphNodes and GraphEdges to SkillNode-Ids.
             var usedNodes = new HashSet<ushort>(mstNodes.Select(n => n.Id));
             foreach (var edge in mst.SpanningEdges)
             {
                 usedNodes.UnionWith(Distances.GetShortestPath(edge.Inside, edge.Outside));
             }
-
             return usedNodes;
         }
 

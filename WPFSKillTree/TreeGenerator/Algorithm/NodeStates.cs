@@ -8,7 +8,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
         IEnumerable<GraphNode> FixedTargetNodes { get; }
         int FixedTargetNodeCount { get; }
         int VariableTargetNodeCount { get; }
-        void SetFixedTarget(int i);
         bool IsFixedTarget(int i);
         bool IsTarget(int i);
         void MarkNodeAsRemoved(int i);
@@ -75,23 +74,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 searchSpaceIndexes.Select(i => _variableTargetNodes.Contains(_searchSpace[i])).ToArray();
             _isTarget = searchSpaceIndexes.Select(i => _isFixedTarget[i] || _isVariableTarget[i]).ToArray();
             _isRemoved = new bool[_searchSpace.Count];
-        }
-
-        public void SetFixedTarget(int i)
-        {
-            if (_isFixedTarget[i]) return;
-            var node = _searchSpace[i];
-            if (_isVariableTarget[i])
-            {
-                _isVariableTarget[i] = false;
-                _variableTargetNodes.Remove(node);
-            }
-            else
-            {
-                _isTarget[i] = true;
-            }
-            _isFixedTarget[i] = true;
-            _fixedTargetNodes.Add(node);
         }
 
         public bool IsFixedTarget(int i)

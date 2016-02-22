@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace POESKillTree.Utils
 {
     /// <summary>
-    /// Extensionsmethods for collections.
+    /// Extensionmethods for collections.
     /// </summary>
     public static class CollectionExtensions
     {

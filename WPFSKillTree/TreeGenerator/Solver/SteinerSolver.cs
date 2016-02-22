@@ -16,7 +16,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// assumed.)
         /// 
         /// The main code logic is found in these classes:
-        ///  - SteinerSolver and AbstractSolver:
+        ///  - SteinerSolver, AbstractGeneticSolver and AbstractSolver:
         ///         Handles all model knowledge and converts between the SkillNode
         ///         and preprocessed GraphNode tree versions. Also defines the fit-
         ///         ness function used in the genetic algorithm.
@@ -70,6 +70,8 @@ namespace POESKillTree.TreeGenerator.Solver
         ///     In addition, nodes too far away from the start or target nodes also
         ///     do not qualify. The precise criteria for this are not exactly clear
         ///     yet, but the current approach seems to work.
+        ///     A few other reductions are also performed, see to SteinerPreprocessor
+        ///     for more information.
         /// 
         /// Steps 1 and 2 greatly reduce the dimension of the search space, which
         /// enables an optimal (or near-optimal) solution to be found within quite

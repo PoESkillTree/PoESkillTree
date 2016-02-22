@@ -32,6 +32,9 @@ namespace POESKillTree.TreeGenerator.Solver
         
         public abstract IEnumerable<ushort> BestSolution { get; }
 
+        /// <summary>
+        /// Skill tree instance to operate on.
+        /// </summary>
         private readonly SkillTree _tree;
 
         /// <summary>
@@ -50,14 +53,12 @@ namespace POESKillTree.TreeGenerator.Solver
         protected IReadOnlyList<GraphNode> TargetNodes { get; private set; }
 
         /// <summary>
-        /// Node enumeration in which all nodes that can be skilled lie.
-        /// Simplification of the skill tree
+        /// Contains all nodes that can be skilled. Simplification of the skill tree.
         /// </summary>
         protected IReadOnlyList<GraphNode> AllNodes { get; private set; }
         
         /// <summary>
-        /// Gets the list of GraphNodes from which this solver tries
-        /// to find the best subset.
+        /// Gets the list of GraphNodes from which this solver tries to find the best subset.
         /// </summary>
         protected IReadOnlyList<GraphNode> SearchSpace { get; private set; }
 
@@ -66,8 +67,13 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         protected IDistancePathLookup Distances { get; private set; }
 
+        /// <summary>
+        /// Nodes may be merged by the Preprocessor. This Dictionary contains the node-ids that are represented
+        /// by a single node-id. If the node is unmerged, it only contains itself.
+        /// </summary>
         protected IReadOnlyDictionary<ushort, IReadOnlyCollection<ushort>> NodeExpansionDictionary { get; private set; }
 
+        // May become useful at some point if edge-based-optimization (instead of node-based) is implemented.
         //protected IReadOnlyGraphEdgeSet SearchSpaceEdgeSet { get; private set; }
 
         /// <summary>
@@ -88,25 +94,29 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         ///  Initializes the solver so that the optimization can be run.
         /// </summary>
-        /// <exception cref="InvalidOperationException">
+        /// <exception cref="GraphNotConnectedException">
         /// If not all target nodes are connected to the start node.
         /// </exception>
         public virtual void Initialize()
         {
             BuildSearchGraph();
 
+            // Use SteinerPreprocessor for search space reduction.
             SearchSpace = AllNodes.ToList();
             var variableTargetNodes = SearchSpace.Where(IsVariableTargetNode);
             var preProc = new SteinerPreprocessor(SearchSpace, TargetNodes, StartNode, variableTargetNodes);
             var remainingNodes = preProc.ReduceSearchSpace();
-            
-            SearchSpace = remainingNodes.Except(TargetNodes).ToList();
+
             TargetNodes = preProc.FixedTargetNodes;
+            SearchSpace = remainingNodes.Except(TargetNodes).ToList();
             Distances = preProc.DistanceLookup;
             //SearchSpaceEdgeSet = preProc.EdgeSet;
             StartNode = preProc.StartNode;
 
+            // SkillNode-Ids of the remaining search space may represent more than one node. This
+            // information needs to be safed.
             var expansionDict = remainingNodes.ToDictionary(n => n.Id, n => n.Nodes);
+            // Add the remaining nodes as single (unmerged) ones.
             foreach (var node in AllNodes)
             {
                 if (!expansionDict.ContainsKey(node.Id))
@@ -150,7 +160,7 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
         /// <summary>
-        /// Initializes <see cref="StartNode"/>.
+        /// Initializes <see cref="StartNode"/> and sets the start node in the provided SearchGraph.
         /// </summary>
         private void CreateStartNodes(SearchGraph searchGraph)
         {
@@ -166,7 +176,8 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
         /// <summary>
-        /// Initializes <see cref="TargetNodes"/>.
+        /// Initializes <see cref="TargetNodes"/> with all check-tagged nodes and the start node.
+        /// Adds the check-tagged nodes to the provided SearchGraph.
         /// </summary>
         private void CreateTargetNodes(SearchGraph searchGraph)
         {
@@ -178,7 +189,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         /// <summary>
         /// Initializes the search graph by going through all node groups
-        /// of the skill tree and including the that could be part of the solution.
+        /// of the skill tree and including those that could be part of the solution.
         /// </summary>
         private void CreateSearchGraph(SearchGraph searchGraph)
         {
