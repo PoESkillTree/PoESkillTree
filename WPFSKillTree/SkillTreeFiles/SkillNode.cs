@@ -10,6 +10,8 @@ namespace POESKillTree.SkillTreeFiles
         public Dictionary<string, List<float>> Attributes;
         public HashSet<int> Connections = new HashSet<int>();
         public List<SkillNode> Neighbor = new List<SkillNode>();
+        // The subset of neighbors to which connections should be drawn.
+        public readonly List<SkillNode> VisibleNeighbors = new List<SkillNode>();
         public SkillNodeGroup SkillNodeGroup;
         public int A; // "a": 3,
         public string[] attributes; // "sd": ["8% increased Block Recovery"],

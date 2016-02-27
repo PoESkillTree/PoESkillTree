@@ -399,6 +399,10 @@ namespace POESKillTree.SkillTreeFiles
                     if (!Skillnodes[ints[1]].Neighbor.Contains(Skillnodes[ints[0]]))
                         Skillnodes[ints[1]].Neighbor.Add(Skillnodes[ints[0]]);
                 }
+                foreach (var skillnode in Skillnodes)
+                {
+                    skillnode.Value.VisibleNeighbors.AddRange(skillnode.Value.Neighbor);
+                }
             }
 
 
@@ -1120,7 +1124,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (ushort n1 in SkilledNodes)
                 {
-                    foreach (SkillNode n2 in Skillnodes[n1].Neighbor)
+                    foreach (SkillNode n2 in Skillnodes[n1].VisibleNeighbors)
                     {
                         if (SkilledNodes.Contains(n2.Id))
                         {
