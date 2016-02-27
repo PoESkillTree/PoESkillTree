@@ -636,13 +636,22 @@ namespace POESKillTree.SkillTreeFiles
             return skillTree;
         }
 
-        public void ConnectWithStartNodesOf(int chartype)
+        /// <summary>
+        /// Adds (invisible) connections between the Scion's root node and the nodes adjacent to the
+        /// root node of chartype's root node.
+        /// </summary>
+        /// <param name="chartype">Character type whose starting nodes should be connected to the current root node.</param>
+        public void ConnectScionWithStartNodesOf(int chartype)
         {
+            var scion = Skillnodes[(ushort)rootNodeClassDictionary[CharacterNames.Scion]];
             var start = rootNodeClassDictionary[CharName[chartype]];
-            ConnectNodes(GetCharNode(), Skillnodes[(ushort)start].Neighbor);
+            ConnectNodes(scion, Skillnodes[(ushort)start].Neighbor);
         }
 
-        private static void ConnectNodes(SkillNode n1, List<SkillNode> ns)
+        /// <summary>
+        /// Adds (invisible) connections between n1 and all nodes in ns.
+        /// </summary>
+        private static void ConnectNodes(SkillNode n1, IEnumerable<SkillNode> ns)
         {
             foreach (var n2 in ns)
             {
@@ -651,14 +660,20 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
+        /// <summary>
+        /// Removes the connections added by <see cref="ConnectScionWithStartNodesOf"/>s.
+        /// </summary>
         public void RemoveStartNodeConnectionToScion(int chartype)
         {
-            var fromNode = Skillnodes[(ushort) rootNodeClassDictionary[CharacterNames.Scion]];
+            var scion = Skillnodes[(ushort) rootNodeClassDictionary[CharacterNames.Scion]];
             var start = rootNodeClassDictionary[CharName[chartype]];
-            UnconnectNodes(fromNode, Skillnodes[(ushort)start].Neighbor);
+            UnconnectNodes(scion, Skillnodes[(ushort)start].Neighbor);
         }
 
-        private static void UnconnectNodes(SkillNode n1, List<SkillNode> ns)
+        /// <summary>
+        /// Removes the connections between n1 and all nodes in ns.
+        /// </summary>
+        private static void UnconnectNodes(SkillNode n1, IEnumerable<SkillNode> ns)
         {
             foreach (var n2 in ns)
             {
@@ -1106,11 +1121,6 @@ namespace POESKillTree.SkillTreeFiles
         public ushort GetCharNodeId()
         {
             return (ushort)rootNodeClassDictionary[CharName[_chartype]];
-        }
-
-        public SkillNode GetCharNode()
-        {
-            return Skillnodes[GetCharNodeId()];
         }
 
         /// <summary>

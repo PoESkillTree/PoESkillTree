@@ -166,8 +166,6 @@ namespace POESKillTree.Views
             get { return _ascendantAdditionalStart; }
             set
             {
-                // todo Warn if there are unconnected nodes after subclass or class change
-                // todo (maybe) show connection to start node
                 if (_ascendantAdditionalStart == value) return;
 
                 if (_ascendantAdditionalStart != AscendantAdditionalStart.None)
@@ -176,7 +174,7 @@ namespace POESKillTree.Views
                 }
                 if (value != AscendantAdditionalStart.None)
                 {
-                    Tree.ConnectWithStartNodesOf((int) value);
+                    Tree.ConnectScionWithStartNodesOf((int) value);
                 }
 
                 _ascendantAdditionalStart = value;
