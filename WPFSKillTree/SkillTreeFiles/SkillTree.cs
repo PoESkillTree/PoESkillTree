@@ -451,6 +451,7 @@ namespace POESKillTree.SkillTreeFiles
             DrawLinkBackgroundLayer(_links);
             InitOtherDynamicLayers();
             CreateCombineVisual();
+            DrawFaces();
 
             if (_links != null)
             {
@@ -494,16 +495,15 @@ namespace POESKillTree.SkillTreeFiles
             get { return _chartype; }
             set
             {
-                _chartype = value;
-                SkilledNodes.Clear();
-                KeyValuePair<ushort, SkillNode> node =
-                    Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
-                SkilledNodes.Add(node.Value.Id);
-                UpdateAvailNodes();
-                DrawFaces();
+                SetProperty(ref _chartype, value, () =>
+                {
+                    SkilledNodes.Clear();
+                    SkilledNodes.Add(GetCharNodeId());
+                    UpdateAvailNodes();
+                    DrawFaces();
+                });
             }
         }
-
 
         public Dictionary<string, List<float>> HighlightedAttributes;
 
@@ -634,6 +634,37 @@ namespace POESKillTree.SkillTreeFiles
             if (displayProgress)
                 finish();
             return skillTree;
+        }
+
+        public void ConnectWithStartNodesOf(int chartype)
+        {
+            var start = rootNodeClassDictionary[CharName[chartype]];
+            ConnectNodes(GetCharNode(), Skillnodes[(ushort)start].Neighbor);
+        }
+
+        private static void ConnectNodes(SkillNode n1, List<SkillNode> ns)
+        {
+            foreach (var n2 in ns)
+            {
+                n1.Neighbor.Add(n2);
+                n2.Neighbor.Add(n1);
+            }
+        }
+
+        public void RemoveStartNodeConnectionToScion(int chartype)
+        {
+            var fromNode = Skillnodes[(ushort) rootNodeClassDictionary[CharacterNames.Scion]];
+            var start = rootNodeClassDictionary[CharName[chartype]];
+            UnconnectNodes(fromNode, Skillnodes[(ushort)start].Neighbor);
+        }
+
+        private static void UnconnectNodes(SkillNode n1, List<SkillNode> ns)
+        {
+            foreach (var n2 in ns)
+            {
+                n1.Neighbor.Remove(n2);
+                n2.Neighbor.Remove(n1);
+            }
         }
 
         public void ForceRefundNode(ushort nodeId)
@@ -1075,6 +1106,11 @@ namespace POESKillTree.SkillTreeFiles
         public ushort GetCharNodeId()
         {
             return (ushort)rootNodeClassDictionary[CharName[_chartype]];
+        }
+
+        public SkillNode GetCharNode()
+        {
+            return Skillnodes[GetCharNodeId()];
         }
 
         /// <summary>
