@@ -8,7 +8,9 @@
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
-    
+        xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
+        xmlns:views="clr-namespace:POESKillTree.Views"
+
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
@@ -18,6 +20,7 @@
         >
     <Window.Resources>
         <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
+        <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
 
         <Style x:Key="ContainerStyleIsExpanded" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
@@ -298,6 +301,54 @@
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem>
+                    <MenuItem.Header>
+                        <l:Catalog Message="Scion ascendancy" />
+                    </MenuItem.Header>
+                    <MenuItem local:MenuItemExtensions.GroupName="ScionAdditionalStart" IsCheckable="True"
+                              IsChecked="{Binding ScionAdditionalStart, ElementName=window, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static views:ScionAdditionalStart.None}}">
+                        <MenuItem.Header>
+                            <l:Catalog Message="None" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem local:MenuItemExtensions.GroupName="ScionAdditionalStart" IsCheckable="True"
+                              IsChecked="{Binding ScionAdditionalStart, ElementName=window, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static views:ScionAdditionalStart.Marauder}}">
+                        <MenuItem.Header>
+                            <l:Catalog Message="Marauder" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem local:MenuItemExtensions.GroupName="ScionAdditionalStart" IsCheckable="True"
+                              IsChecked="{Binding ScionAdditionalStart, ElementName=window, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static views:ScionAdditionalStart.Ranger}}">
+                        <MenuItem.Header>
+                            <l:Catalog Message="Ranger" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem local:MenuItemExtensions.GroupName="ScionAdditionalStart" IsCheckable="True"
+                              IsChecked="{Binding ScionAdditionalStart, ElementName=window, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static views:ScionAdditionalStart.Witch}}">
+                        <MenuItem.Header>
+                            <l:Catalog Message="Witch" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem local:MenuItemExtensions.GroupName="ScionAdditionalStart" IsCheckable="True"
+                              IsChecked="{Binding ScionAdditionalStart, ElementName=window, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static views:ScionAdditionalStart.Duelist}}">
+                        <MenuItem.Header>
+                            <l:Catalog Message="Duelist" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem local:MenuItemExtensions.GroupName="ScionAdditionalStart" IsCheckable="True"
+                              IsChecked="{Binding ScionAdditionalStart, ElementName=window, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static views:ScionAdditionalStart.Templar}}">
+                        <MenuItem.Header>
+                            <l:Catalog Message="Templar" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem local:MenuItemExtensions.GroupName="ScionAdditionalStart" IsCheckable="True"
+                              IsChecked="{Binding ScionAdditionalStart, ElementName=window, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static views:ScionAdditionalStart.Shadow}}">
+                        <MenuItem.Header>
+                            <l:Catalog Message="Shadow" />
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
             </MenuItem>
             <MenuItem>

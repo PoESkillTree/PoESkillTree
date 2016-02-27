@@ -49,6 +49,17 @@ using Path = System.IO.Path;
 
 namespace POESKillTree.Views
 {
+    public enum ScionAdditionalStart
+    {
+        None,
+        Marauder,
+        Ranger,
+        Witch,
+        Duelist,
+        Templar,
+        Shadow
+    }
+
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
@@ -153,6 +164,33 @@ namespace POESKillTree.Views
                 {
                     PropertyChanged(this, new PropertyChangedEventArgs("NoAsyncTaskRunning"));
                 }
+            }
+        }
+
+        private ScionAdditionalStart _scionAdditionalStart = ScionAdditionalStart.None;
+
+        public ScionAdditionalStart ScionAdditionalStart
+        {
+            get { return _scionAdditionalStart; }
+            set
+            {
+                if (_scionAdditionalStart != ScionAdditionalStart.None)
+                {
+                    var start = SkillTree.rootNodeClassDictionary[SkillTree.CharName[(int) _scionAdditionalStart]];
+                    var scionStartNode = SkillTree.Skillnodes[(ushort) SkillTree.rootNodeClassDictionary[CharacterNames.Scion]];
+                    var oldConnections = SkillTree.Skillnodes[(ushort) start].Neighbor;
+                    oldConnections.ForEach(n => scionStartNode.Neighbor.Remove(n));
+                    oldConnections.ForEach(n => n.Neighbor.Remove(scionStartNode));
+                }
+                if (_tree.Chartype == 0 && value != ScionAdditionalStart.None)
+                {
+                    var start = SkillTree.rootNodeClassDictionary[SkillTree.CharName[(int)value]];
+                    var scionStartNode = SkillTree.Skillnodes[(ushort)SkillTree.rootNodeClassDictionary[CharacterNames.Scion]];
+                    var newConnections = SkillTree.Skillnodes[(ushort) start].Neighbor;
+                    scionStartNode.Neighbor.AddRange(newConnections);
+                    newConnections.ForEach(n => n.Neighbor.Add(scionStartNode));
+                }
+                _scionAdditionalStart = value;
             }
         }
 
