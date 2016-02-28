@@ -1,6 +1,7 @@
 using System;
 using System.Xml.Serialization;
 using POESKillTree.Localization;
+using POESKillTree.Model.Ascendancy;
 
 namespace POESKillTree.ViewModels
 {
@@ -17,6 +18,7 @@ namespace POESKillTree.ViewModels
         public string Note { get; set; }
         public string ItemData { get; set; }
         public DateTime LastUpdated { get; set; }
+        public AscendantAdditionalStart AscendantAdditionalStart { get; set; }
 
         [XmlIgnoreAttribute]
         public string Image { get { return "/POESKillTree;component/Images/" + Class + ".jpg"; } }
@@ -66,6 +68,7 @@ namespace POESKillTree.ViewModels
                 Url = build.Url,
                 Note = build.Note,
                 ItemData = build.ItemData,
+                AscendantAdditionalStart = build.AscendantAdditionalStart
             };
         }
     }

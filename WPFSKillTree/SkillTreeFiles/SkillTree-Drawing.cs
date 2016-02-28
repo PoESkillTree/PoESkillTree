@@ -404,7 +404,7 @@ namespace POESKillTree.SkillTreeFiles
                     foreach (ushort n1 in HighlightedNodes)
                     {
 
-                        foreach (SkillNode n2 in Skillnodes[n1].Neighbor)
+                        foreach (SkillNode n2 in Skillnodes[n1].VisibleNeighbors)
                         {
                             if (HighlightedNodes.Contains(n2.Id))
                             {
@@ -515,14 +515,21 @@ namespace POESKillTree.SkillTreeFiles
 
             using (DrawingContext dc = picPathOverlay.RenderOpen())
             {
-                for (int i = -1; i < path.Count - 1; i++)
+                // Draw a connection from a skilled node to the first path node.
+                var skilledNeighbors =
+                    Skillnodes[path[0]].VisibleNeighbors.Where(sn => SkilledNodes.Contains(sn.Id)).ToList();
+                // The node might not be connected to a skilled node through visible neighbors
+                // in which case we don't want to draw a connection anyway.
+                if (skilledNeighbors.Any())
+                    DrawConnection(dc, pen2, skilledNeighbors.First(), Skillnodes[path[0]]);
+                
+                // Draw connections for the path itself (only those that should be visible).
+                for (var i = 0; i < path.Count - 1; i++)
                 {
-                    SkillNode n1 = i == -1
-                        ? Skillnodes[path[i + 1]].Neighbor.First(sn => SkilledNodes.Contains(sn.Id))
-                        : Skillnodes[path[i]];
-                    SkillNode n2 = Skillnodes[path[i + 1]];
-
-                    DrawConnection(dc, pen2, n1, n2);
+                    var n1 = Skillnodes[path[i]];
+                    var n2 = Skillnodes[path[i + 1]];
+                    if (n1.VisibleNeighbors.Contains(n2))
+                        DrawConnection(dc, pen2, n1, n2);
                 }
             }
         }
@@ -536,7 +543,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (ushort node in nodes)
                 {
-                    foreach (SkillNode n2 in Skillnodes[node].Neighbor)
+                    foreach (SkillNode n2 in Skillnodes[node].VisibleNeighbors)
                     {
                         if (SkilledNodes.Contains(n2.Id) && (node < n2.Id || !(nodes.Contains(n2.Id))))
                             DrawConnection(dc, pen2, Skillnodes[node], n2);

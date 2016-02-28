@@ -399,6 +399,10 @@ namespace POESKillTree.SkillTreeFiles
                     if (!Skillnodes[ints[1]].Neighbor.Contains(Skillnodes[ints[0]]))
                         Skillnodes[ints[1]].Neighbor.Add(Skillnodes[ints[0]]);
                 }
+                foreach (var skillnode in Skillnodes)
+                {
+                    skillnode.Value.VisibleNeighbors.AddRange(skillnode.Value.Neighbor);
+                }
             }
 
 
@@ -447,6 +451,7 @@ namespace POESKillTree.SkillTreeFiles
             DrawLinkBackgroundLayer(_links);
             InitOtherDynamicLayers();
             CreateCombineVisual();
+            DrawFaces();
 
             if (_links != null)
             {
@@ -490,16 +495,15 @@ namespace POESKillTree.SkillTreeFiles
             get { return _chartype; }
             set
             {
-                _chartype = value;
-                SkilledNodes.Clear();
-                KeyValuePair<ushort, SkillNode> node =
-                    Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
-                SkilledNodes.Add(node.Value.Id);
-                UpdateAvailNodes();
-                DrawFaces();
+                SetProperty(ref _chartype, value, () =>
+                {
+                    SkilledNodes.Clear();
+                    SkilledNodes.Add(GetCharNodeId());
+                    UpdateAvailNodes();
+                    DrawFaces();
+                });
             }
         }
-
 
         public Dictionary<string, List<float>> HighlightedAttributes;
 
@@ -630,6 +634,52 @@ namespace POESKillTree.SkillTreeFiles
             if (displayProgress)
                 finish();
             return skillTree;
+        }
+
+        /// <summary>
+        /// Adds (invisible) connections between the Scion's root node and the nodes adjacent to the
+        /// root node of chartype's root node.
+        /// </summary>
+        /// <param name="chartype">Character type whose starting nodes should be connected to the current root node.</param>
+        public void ConnectScionWithStartNodesOf(int chartype)
+        {
+            var scion = Skillnodes[(ushort)rootNodeClassDictionary[CharacterNames.Scion]];
+            var start = rootNodeClassDictionary[CharName[chartype]];
+            ConnectNodes(scion, Skillnodes[(ushort)start].Neighbor);
+        }
+
+        /// <summary>
+        /// Adds (invisible) connections between n1 and all nodes in ns.
+        /// </summary>
+        private static void ConnectNodes(SkillNode n1, IEnumerable<SkillNode> ns)
+        {
+            foreach (var n2 in ns)
+            {
+                n1.Neighbor.Add(n2);
+                n2.Neighbor.Add(n1);
+            }
+        }
+
+        /// <summary>
+        /// Removes the connections added by <see cref="ConnectScionWithStartNodesOf"/>s.
+        /// </summary>
+        public void RemoveStartNodeConnectionToScion(int chartype)
+        {
+            var scion = Skillnodes[(ushort) rootNodeClassDictionary[CharacterNames.Scion]];
+            var start = rootNodeClassDictionary[CharName[chartype]];
+            UnconnectNodes(scion, Skillnodes[(ushort)start].Neighbor);
+        }
+
+        /// <summary>
+        /// Removes the connections between n1 and all nodes in ns.
+        /// </summary>
+        private static void UnconnectNodes(SkillNode n1, IEnumerable<SkillNode> ns)
+        {
+            foreach (var n2 in ns)
+            {
+                n1.Neighbor.Remove(n2);
+                n2.Neighbor.Remove(n1);
+            }
         }
 
         public void ForceRefundNode(ushort nodeId)
@@ -1120,7 +1170,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (ushort n1 in SkilledNodes)
                 {
-                    foreach (SkillNode n2 in Skillnodes[n1].Neighbor)
+                    foreach (SkillNode n2 in Skillnodes[n1].VisibleNeighbors)
                     {
                         if (SkilledNodes.Contains(n2.Id))
                         {
