@@ -201,11 +201,10 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 else
                 {
-                    Regex regexString = new Regex(@"Can Allocate Passives from the .* starting point");
                     var draw = true;
                     foreach(var attibute in n1.attributes)
                     {
-                        if(regexString.IsMatch(attibute))
+                        if(AscendantClassStartRegex.IsMatch(attibute))
                             draw = false;
                     }
                     if (draw)

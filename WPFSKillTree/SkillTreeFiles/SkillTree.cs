@@ -38,6 +38,12 @@ namespace POESKillTree.SkillTreeFiles
         public static readonly float DexPerEvas = 5; //%
         public static readonly string TreeAddress = "https://www.pathofexile.com/passive-skill-tree/";
 
+        /// <summary>
+        /// Nodes with an attribute matching this regex are one of the "Path of the ..." nodes connection Scion
+        /// Ascendant with other classes.
+        /// </summary>
+        private static readonly Regex AscendantClassStartRegex = new Regex(@"Can Allocate Passives from the .* starting point");
+
         // The absolute path of Assets folder (contains trailing directory separator).
         public static string AssetsFolderPath;
         // The absolute path of Data folder (contains trailing directory separator).
@@ -798,6 +804,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (Skillnodes[newNode].Spc.HasValue)
                         continue;
                     if (Skillnodes[newNode].IsMastery)
+                        continue;
+                    if (Skillnodes[newNode].attributes.Any(s => AscendantClassStartRegex.IsMatch(s)))
                         continue;
                     distance.Add(connection, dis + 1);
                     newOnes.Enqueue(connection);
