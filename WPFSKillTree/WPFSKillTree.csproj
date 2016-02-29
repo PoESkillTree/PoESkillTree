@@ -621,6 +621,13 @@
     <Resource Include="Images\EquipmentUI\SocketSupportRed.png" />
     <Resource Include="Images\EquipmentUI\Socket_Link_Horizontal.png" />
     <Resource Include="Images\EquipmentUI\Socket_Link_Vertical.png" />
+    <Resource Include="Images\Witch_Highlighted.jpg" />
+    <Resource Include="Images\Templar_Highlighted.jpg" />
+    <Resource Include="Images\Shadow_Highlighted.jpg" />
+    <Resource Include="Images\Scion_Highlighted.jpg" />
+    <Resource Include="Images\Ranger_Highlighted.jpg" />
+    <Resource Include="Images\Marauder_Highlighted.jpg" />
+    <Resource Include="Images\Duelist__Highlighted.jpg" />
     <Content Include="release.iss" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

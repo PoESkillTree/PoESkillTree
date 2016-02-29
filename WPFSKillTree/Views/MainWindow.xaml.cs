@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -211,6 +212,8 @@ namespace POESKillTree.Views
         private SettingsWindow _settingsWindow;
 
         private bool _isClosing;
+
+        private const string MainWindowTitle = "Path of Exile: Passive Skill Tree Planner";
 
         public MainWindow()
         {
@@ -507,7 +510,7 @@ namespace POESKillTree.Views
                 lvSavedBuilds.Items.Add(build);
             }
 
-            ImportLegacySavedBuilds();
+            CheckAppVersionAndDoNecessaryChanges();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -557,6 +560,9 @@ namespace POESKillTree.Views
                         break;
                     case Key.S:
                         SaveNewBuild();
+                        break;
+                    case Key.N:
+                        NewBuild();
                         break;
                 }
             }
@@ -633,7 +639,19 @@ namespace POESKillTree.Views
 
         #endregion
 
+        #region Utility
+        private void SetTitle(string buildName)
+        {
+            Title = buildName + " - " + MainWindowTitle;
+        }
+        #endregion
+
         #region Menu
+        
+        private void Menu_NewBuild(object sender, RoutedEventArgs e)
+        {
+            NewBuild();
+        }
 
         private void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
         {
@@ -1599,6 +1617,9 @@ namespace POESKillTree.Views
                 selectedBuild.AccountName = formBuildName.GetAccountName();
                 selectedBuild.ItemData = formBuildName.GetItemData();
                 lvSavedBuilds.Items.Refresh();
+                if(selectedBuild.CurrentlyOpen)
+                    SetTitle(selectedBuild.Name);
+
             }
             SaveBuildsToFile();
         }
@@ -1635,35 +1656,39 @@ namespace POESKillTree.Views
 
         private void btnOverwriteBuild_Click(object sender, RoutedEventArgs e)
         {
-            if (lvSavedBuilds.SelectedItems.Count > 0)
+            var currentOpenBuild =
+                (from PoEBuild build in lvSavedBuilds.Items
+                    where build.CurrentlyOpen
+                    select build).FirstOrDefault();
+            if (currentOpenBuild != null)
             {
-                var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
-                selectedBuild.Class = cbCharType.Text;
-                selectedBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
-                selectedBuild.AccountName = _persistentData.CurrentBuild.AccountName;
-                selectedBuild.Level = GetLevelAsString();
-                selectedBuild.PointsUsed = tbUsedPoints.Text;
-                selectedBuild.Url = tbSkillURL.Text;
-                selectedBuild.ItemData = _persistentData.CurrentBuild.ItemData;
-                selectedBuild.LastUpdated = DateTime.Now;
-                selectedBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
-                selectedBuild.AscendantAdditionalStart = AscendantAdditionalStart;
-                lvSavedBuilds.Items.Refresh();
+                currentOpenBuild.Class = cbCharType.Text;
+                currentOpenBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
+                currentOpenBuild.AccountName = _persistentData.CurrentBuild.AccountName;
+                currentOpenBuild.Level = GetLevelAsString();
+                currentOpenBuild.PointsUsed = tbUsedPoints.Text;
+                currentOpenBuild.Url = tbSkillURL.Text;
+                currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
+                currentOpenBuild.LastUpdated = DateTime.Now;
+                currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
+                currentOpenBuild.AscendantAdditionalStart = AscendantAdditionalStart;
+                SetCurrentBuild(currentOpenBuild);
                 SaveBuildsToFile();
             }
             else
             {
-                Popup.Info(L10n.Message("Please select a saved build."));
+                SaveNewBuild();
             }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (lvSavedBuilds.SelectedItems.Count > 0)
-            {
-                lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
-                SaveBuildsToFile();
-            }
+            if (lvSavedBuilds.SelectedItems.Count <= 0) return;
+
+            if(((PoEBuild)lvSavedBuilds.SelectedItem).CurrentlyOpen)
+                NewBuild();
+            lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
+            SaveBuildsToFile();
         }
 
         private void lvSavedBuilds_KeyUp(object sender, KeyEventArgs e)
@@ -1699,6 +1724,14 @@ namespace POESKillTree.Views
         #region Builds - Services
         private void SetCurrentBuild(PoEBuild build)
         {
+            foreach (PoEBuild item in lvSavedBuilds.Items)
+            {
+                item.CurrentlyOpen = false;
+            }
+            build.CurrentlyOpen = true;
+            lvSavedBuilds.Items.Refresh();
+            SetTitle(build.Name);
+
             _persistentData.CurrentBuild = PoEBuild.Copy(build);
 
             tbSkillURL.Text = build.Url;
@@ -1706,6 +1739,17 @@ namespace POESKillTree.Views
             LoadItemData(build.ItemData);
             SetCustomGroups(build.CustomGroups);
             AscendantAdditionalStart = build.AscendantAdditionalStart;
+        }
+
+        private void NewBuild()
+        {
+            SetCurrentBuild(new PoEBuild
+            {
+                Name = "New Build",
+                Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3),
+                Level = "1"
+            });
+            LoadBuildFromUrl();
         }
 
         private void SaveNewBuild()
@@ -1727,7 +1771,7 @@ namespace POESKillTree.Views
                     AccountName = formBuildName.GetAccountName(),
                     ItemData = formBuildName.GetItemData(),
                     LastUpdated = DateTime.Now,
-                    CustomGroups = _attributeGroups.CopyCustomGroups()
+                    CustomGroups = _attributeGroups.CopyCustomGroups(),
                     AscendantAdditionalStart = AscendantAdditionalStart.None
                 };
                 SetCurrentBuild(newBuild);
@@ -2162,6 +2206,43 @@ namespace POESKillTree.Views
         #endregion
 
         #region Legacy
+
+        /// <summary>
+        /// Compares the AssemblyVersion against the one in PersistentData and makes
+        /// nessary updates when versions don't match.
+        /// </summary>
+        private void CheckAppVersionAndDoNecessaryChanges()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var productVersion = fvi.ProductVersion;
+            var persistentDataVersion = _persistentData.AppVersion;
+            if (productVersion == persistentDataVersion)
+                return;
+            if(string.IsNullOrEmpty(persistentDataVersion))
+                ImportLegacySavedBuilds();
+            if (String.CompareOrdinal("2.2.4", persistentDataVersion) > 0)
+                SetCurrentOpenBuildBasedOnName();
+
+            _persistentData.AppVersion = productVersion;
+        }
+
+        private void SetCurrentOpenBuildBasedOnName()
+        {
+            var buildNameMatch =
+                (from PoEBuild build in lvSavedBuilds.Items
+                    where build.Name == _persistentData.CurrentBuild.Name
+                    select build).FirstOrDefault();
+            if (buildNameMatch != null)
+            {
+                foreach (PoEBuild item in lvSavedBuilds.Items)
+                {
+                    item.CurrentlyOpen = false;
+                }
+                buildNameMatch.CurrentlyOpen = true;
+                lvSavedBuilds.Items.Refresh();
+            }
+        }
 
         /// <summary>
         /// Import builds from legacy build save file "savedBuilds" to PersistentData.xml.

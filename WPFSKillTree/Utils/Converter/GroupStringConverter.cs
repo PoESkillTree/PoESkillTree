@@ -245,15 +245,6 @@ namespace POESKillTree.Utils.Converter
 
         public GroupStringConverter()
         {
-            /*if (File.Exists("groups.txt"))
-            {
-                DefaultGroups.Clear();
-                foreach (string s in File.ReadAllLines("groups.txt"))
-                {
-                    string[] sa = s.Split(',');
-                    DefaultGroups.Add(sa);
-                }
-            }*/
             CustomGroups = new List<string[]>();
             foreach (var group in DefaultGroups)
             {

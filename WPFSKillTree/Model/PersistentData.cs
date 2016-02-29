@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
@@ -16,12 +17,11 @@ namespace POESKillTree.Model
 {
     public class PersistentData : INotifyPropertyChanged
     {
-
+        public string AppVersion { get; set; }
         public List<StashBookmark> StashBookmarks { get; set; }
         public Options Options { get; set; }
         public PoEBuild CurrentBuild { get; set; }
         public List<PoEBuild> Builds { get; set; }
-
 
         [XmlIgnore]
         private ObservableCollection<Item> _stash = new ObservableCollection<Item>();
@@ -34,10 +34,10 @@ namespace POESKillTree.Model
 
         public PersistentData()
         {
-
             Options = new Options();
             CurrentBuild = new PoEBuild
             {
+                Name = "New Build",
                 Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3),
                 Level = "1"
             };
@@ -47,8 +47,7 @@ namespace POESKillTree.Model
         // Creates empty file with language option set.
         public static void CreateSetupTemplate(string path, string language)
         {
-            PersistentData data = new PersistentData();
-            data.Options.Language = language;
+            var data = new PersistentData {Options = {Language = language}};
             data.SavePersistentDataToFileEx(Path.Combine(path, "PersistentData.xml"));
         }
 
@@ -58,7 +57,8 @@ namespace POESKillTree.Model
         }
 
         public void SavePersistentDataToFileEx(string path)
-        {            var writer = new XmlSerializer(typeof (PersistentData));
+        {
+            var writer = new XmlSerializer(typeof(PersistentData));
             var file = new StreamWriter(path, false, System.Text.Encoding.UTF8);
             writer.Serialize(file, this);
             file.Close();
@@ -78,6 +78,7 @@ namespace POESKillTree.Model
                 Builds = obj.Builds;
                 CurrentBuild = obj.CurrentBuild;
                 StashBookmarks = obj.StashBookmarks;
+                AppVersion = obj.AppVersion;
                 reader.Close();
                 OnPropertyChanged(null);
             }
@@ -89,8 +90,7 @@ namespace POESKillTree.Model
         {
             try
             {
-
-                JArray arr = new JArray();
+                var arr = new JArray();
                 foreach (var item in StashItems)
                 {
                     arr.Add(item.JSONBase);

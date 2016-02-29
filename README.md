@@ -21,8 +21,10 @@ PoESkillTree
 ---
 ####Install
 1. Go to the [release page](https://github.com/EmmittJ/PoESkillTree/releases) and select the version you would like, most likely the latest.
-2. Download the zip file
-3. Unzip it to a location of your choice
+2. Download
+  1. Portal: choose the zip file
+  2. Installer: choose the exe file
+3. Unzip/Install it to a location of your choice
 4. Start POESKillTree.exe
 
 ####Update

@@ -21,9 +21,19 @@ namespace POESKillTree.ViewModels
         public DateTime LastUpdated { get; set; }
         public List<string[]> CustomGroups { get; set; }
         public AscendantAdditionalStart AscendantAdditionalStart { get; set; }
+        public bool CurrentlyOpen { get; set; }
 
         [XmlIgnoreAttribute]
-        public string Image { get { return "/POESKillTree;component/Images/" + Class + ".jpg"; } }
+        public string Image
+        {
+            get
+            {
+                var imgPath = "/POESKillTree;component/Images/" +  Class;
+                if (CurrentlyOpen)
+                    imgPath += "_Highlighted";
+                return imgPath + ".jpg";
+            }
+        }
         [XmlIgnoreAttribute]
         public string Description
         {
@@ -41,6 +51,7 @@ namespace POESKillTree.ViewModels
         public PoEBuild()
         {
             Visible = true;
+            CustomGroups = new List<string[]>();
         }
 
         public PoEBuild(string name, string poeClass, string pointsUsed, string url, string note)
@@ -50,6 +61,7 @@ namespace POESKillTree.ViewModels
             PointsUsed = pointsUsed;
             Url = url;
             Note = note;
+            CustomGroups = new List<string[]>();
         }
 
         public override string ToString()
@@ -70,7 +82,7 @@ namespace POESKillTree.ViewModels
                 Url = build.Url,
                 Note = build.Note,
                 ItemData = build.ItemData,
-                CustomGroups = new List<string[]>(build.CustomGroups)
+                CustomGroups = new List<string[]>(build.CustomGroups),
                 AscendantAdditionalStart = build.AscendantAdditionalStart
             };
         }
