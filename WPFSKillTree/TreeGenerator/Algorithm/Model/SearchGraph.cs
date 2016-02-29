@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using POESKillTree.SkillTreeFiles;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace POESKillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     /// A graph representing a simplified skill tree. 

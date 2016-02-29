@@ -272,7 +272,7 @@ namespace POESKillTree.TreeGenerator.Genetic
 
             if (_populationSize == 0)
             {
-                // Not returning would lead to an infertile infertile generation.
+                // Not returning would lead to an infertile generation.
                 GenerationCount = MaxGeneration;
                 return GenerationCount;
             }

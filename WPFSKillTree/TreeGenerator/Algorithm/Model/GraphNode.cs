@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace POESKillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     ///  Represents a node (or a collection thereof) in the
@@ -14,6 +14,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
     public class GraphNode
     {
         private readonly ushort _id;
+        /// <summary>
+        /// Gets the Id of the corresponding SkillNode.
+        /// </summary>
         public ushort Id { get { return _id; } }
 
 #if DEBUG

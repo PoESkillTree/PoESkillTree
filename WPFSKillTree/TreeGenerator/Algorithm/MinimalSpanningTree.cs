@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
@@ -44,6 +45,12 @@ namespace POESKillTree.TreeGenerator.Algorithm
             Span(startIndex, edges);
         }
 
+        /// <summary>
+        ///     Uses Prim's algorithm to build an MST spanning the mstNodes.
+        ///     O(|mstNodes|^2) runtime.
+        /// </summary>
+        /// <param name="startIndex">The node index to start from.</param>
+        /// <param name="edges">Cache for the edges used.</param>
         public void Span(int startIndex, ITwoDArray<DirectedGraphEdge> edges)
         {
             // All nodes that are not yet included.

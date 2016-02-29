@@ -3,43 +3,8 @@ using System.Collections.Concurrent;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
-    public interface ITwoDArray<out T>
-    {
-        T this[int a, int b] { get; }
-    }
-
-    public class TwoDArray<T> : ITwoDArray<T>
-    {
-        private readonly T[,] _array;
-
-        public T this[int a, int b]
-        {
-            get { return _array[a, b]; }
-        }
-
-        public TwoDArray(T[,] array)
-        {
-            _array = array;
-        }
-    }
-
-    public class FunctionalTwoDArray<T> : ITwoDArray<T>
-    {
-        private readonly Func<int, int, T> _f;
-
-        public T this[int a, int b]
-        {
-            get { return _f(a, b); }
-        }
-
-        public FunctionalTwoDArray(Func<int, int, T> f)
-        {
-            _f = f;
-        }
-    }
-
     /// <summary>
-    /// Type of nodes used for the Priority Queue.
+    /// Type of nodes mainly used for the Priority Queue.
     /// The values represent the DistancesIndex of the two GraphNodes this edge connects.
     /// </summary>
     public class DirectedGraphEdge : IWithPriority
@@ -56,14 +21,17 @@ namespace POESKillTree.TreeGenerator.Algorithm
         public uint Priority { get; private set; }
     }
 
+    /// <summary>
+    /// Interface for nodes used with <see cref="LinkedListPriorityQueue{T}"/>.
+    /// </summary>
     public interface IWithPriority
     {
         uint Priority { get; }
     }
-    
+
     // todo Redo Documentation
     /// <summary>
-    /// Priority Queue based on a linked list and a lookup table for priorities.
+    /// Priority Queue based on a linked list for each priority.
     /// </summary>
     /// <remarks>
     /// Has O(1) Enqueue and Dequeue with respect to the number of nodes enqueued.
@@ -76,7 +44,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
     /// 
     /// No actual traversing through the linked list happens.
     /// </remarks>
-    /// <typeparam name="T">Type of the stored objects</typeparam>
+    /// <typeparam name="T">Type of the stored objects, needs to implement <see cref="IWithPriority"/>.</typeparam>
     public class LinkedListPriorityQueue<T> : IDisposable
         where T: IWithPriority
     {

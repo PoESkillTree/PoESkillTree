@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Algorithm;
+using POESKillTree.TreeGenerator.Algorithm.Model;
 using POESKillTree.TreeGenerator.Genetic;
 using POESKillTree.TreeGenerator.Settings;
 

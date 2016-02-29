@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using POESKillTree.TreeGenerator.Algorithm.Model;
 using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Algorithm
@@ -16,6 +17,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
     /// The region and base calculation runs in O(|E| + |V|).
     /// Calculating links for all terminals takes O(|E|) time.
     /// </summary>
+    /// <remarks>
+    /// For a general idea, see https://en.wikipedia.org/wiki/Voronoi_diagram (only talks about planes, not graphs).
+    /// </remarks>
     public class VoronoiPartition
     {
         private readonly IReadOnlyGraphEdgeSet _edgeSet;

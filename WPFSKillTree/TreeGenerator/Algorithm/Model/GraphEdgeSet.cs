@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace POESKillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     /// A readonly set of <see cref="GraphEdge"/>s.
@@ -17,19 +17,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
         GraphEdge this[int n1, int n2] { get; }
 
         /// <summary>
-        /// Returns true iff the given node has any edges in this set.
-        /// </summary>
-        bool HasNeighbors(int node);
-
-        /// <summary>
         /// Returns all adjacent nodes of the given node.
         /// </summary>
         IReadOnlyList<int> NeighborsOf(int node);
-
-        /// <summary>
-        /// Returns all edges of the given node.
-        /// </summary>
-        IReadOnlyList<GraphEdge> EdgesOf(int node);
     }
 
     /// <summary>
@@ -63,14 +53,12 @@ namespace POESKillTree.TreeGenerator.Algorithm
             return _adjacencyMatrix[node].ToList();
         }
 
+        /// <summary>
+        /// Returns all edges of the given node.
+        /// </summary>
         public IReadOnlyList<GraphEdge> EdgesOf(int node)
         {
             return _adjacencyMatrix[node].Select(n2 => this[node, n2]).ToList();
-        }
-
-        public bool HasNeighbors(int node)
-        {
-            return _adjacencyMatrix[node].Any();
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using POESKillTree.SkillTreeFiles;
 using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.TreeGenerator.Algorithm;
+using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace UnitTests
 {

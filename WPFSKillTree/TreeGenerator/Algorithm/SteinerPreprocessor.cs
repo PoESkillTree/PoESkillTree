@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using POESKillTree.TreeGenerator.Algorithm.Model;
 using POESKillTree.TreeGenerator.Algorithm.SteinerReductions;
 
 namespace POESKillTree.TreeGenerator.Algorithm
@@ -88,9 +89,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
             var initialEdgeCount = _edgeSet.Count;
             Debug.WriteLine("Initial counts:\n"
                 + "             nodes: " + initialNodeCount + "\n"
-                + "       non targets: " + (_searchSpace.Count - _allTargetNodes.Count) + "\n"
-                + "  variable targets: " + _variableTargetNodes.Count + "\n"
-                + "     fixed targets: " + _fixedTargetNodes.Count + "\n"
+                + "       non targets: " + (_searchSpace.Count - _nodeStates.TargetNodeCount) + "\n"
+                + "  variable targets: " + _nodeStates.VariableTargetNodeCount + "\n"
+                + "     fixed targets: " + _nodeStates.FixedTargetNodeCount + "\n"
                 + "             edges: " + initialEdgeCount);
 
             _data = new Data(_edgeSet, _distanceLookup, StartNode);
@@ -104,11 +105,11 @@ namespace POESKillTree.TreeGenerator.Algorithm
             // These values may become lower by merging nodes. Since the reductions based on these distance
             // don't help if there are many variable target nodes, it is not really worth it to always recalculate them.
             // It would either slow the preprocessing by like 30% or would need an approximation algorithm.
-            _data.SMatrix = new BottleneckSteinerDistanceCalculator(_distanceLookup).CalcBottleneckSteinerDistances(_fixedTargetNodes);
+            _data.SMatrix = new BottleneckSteinerDistanceCalculator(_distanceLookup).CalcBottleneckSteinerDistances(_nodeStates.FixedTargetNodes);
 
             var tests = new List<SteinerReduction>
             {
-                new FarAwayNonTerminalsTest(_nodeStates, _data) { IsEnabled = _variableTargetNodes.Count == 0 },
+                new FarAwayNonTerminalsTest(_nodeStates, _data) { IsEnabled = _nodeStates.VariableTargetNodeCount == 0 },
                 new PathsWithManyTerminalsTest(_nodeStates, _data),
                 new NonTerminalsOfDegreeKTest(_nodeStates, _data),
                 new NearestVertexTest(_nodeStates, _data),
@@ -139,9 +140,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
             Debug.WriteLine("Final counts:\n"
                 + "             nodes: " + _searchSpace.Count + " (of " + initialNodeCount + " after basic reductions)\n"
-                + "       non targets: " + (_searchSpace.Count - _allTargetNodes.Count) + "\n"
-                + "  variable targets: " + _variableTargetNodes.Count + "\n"
-                + "     fixed targets: " + _fixedTargetNodes.Count + "\n"
+                + "       non targets: " + (_searchSpace.Count - _nodeStates.TargetNodeCount) + "\n"
+                + "  variable targets: " + _nodeStates.VariableTargetNodeCount + "\n"
+                + "     fixed targets: " + _nodeStates.FixedTargetNodeCount + "\n"
                 + "             edges: " + _edgeSet.Count + " (of " + initialEdgeCount + " after basic reductions)");
 
             return _searchSpace;

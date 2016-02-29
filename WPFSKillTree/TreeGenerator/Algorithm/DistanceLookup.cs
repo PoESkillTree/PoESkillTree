@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using POESKillTree.TreeGenerator.Algorithm.Model;
 
 [assembly: InternalsVisibleTo("UnitTests")]
 namespace POESKillTree.TreeGenerator.Algorithm
@@ -12,8 +13,15 @@ namespace POESKillTree.TreeGenerator.Algorithm
     /// </summary>
     public interface IDistanceLookup
     {
+        /// <summary>
+        /// Gets the number of cached nodes. CacheSize - 1 is the maximum index that can be used
+        /// for <see cref="this"/>.
+        /// </summary>
         int CacheSize { get; }
 
+        /// <summary>
+        /// Gets the stored distance between a and b.
+        /// </summary>
         uint this[int a, int b] { get; }
     }
 
@@ -51,9 +59,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         private GraphNode[] _nodes;
 
-        /// <summary>
-        /// Gets the number of cached nodes.
-        /// </summary>
         public int CacheSize { get; private set; }
 
         /// <summary>
@@ -108,12 +113,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         public bool AreConnected(GraphNode a, GraphNode b)
         {
-            return AreConnected(a.DistancesIndex, b.DistancesIndex);
-        }
-
-        private bool AreConnected(int a, int b)
-        {
-            return GetShortestPath(a, b) != null;
+            return GetShortestPath(a.DistancesIndex, b.DistancesIndex) != null;
         }
 
         /// <summary>
@@ -176,6 +176,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// incremental without holes again.
         /// O(|removedNodes| + |remainingNodes|^2)
         /// </summary>
+        /// <returns>List of the remaining node. Ordered by their distance index.</returns>
         public List<GraphNode> RemoveNodes(IEnumerable<GraphNode> removedNodes)
         {
             if (removedNodes == null) throw new ArgumentNullException("removedNodes");
