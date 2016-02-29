@@ -81,7 +81,7 @@ namespace POESKillTree.SkillTreeFiles
         double GetOrbitAngle(int orbit_index, int max_node_positions )
         {
             // An orbit with 40 node placements has specific angles for certain orbit indices.
-            if( max_node_positions == 40 )
+            /*if( max_node_positions == 40 )
             {
                 switch( orbit_index )
                 {
@@ -126,7 +126,7 @@ namespace POESKillTree.SkillTreeFiles
                 case 38: return GetOrbitAngle( 11, 12 ) + 1 * 10.0f;
                 case 39: return GetOrbitAngle( 11, 12 ) + 2 * 10.0f;
                 }
-            }
+            }*/
 
             return 2 * Math.PI * orbit_index / max_node_positions;
         }

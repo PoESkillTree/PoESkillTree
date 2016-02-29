@@ -62,6 +62,7 @@ namespace POESKillTree.SkillTreeFiles
         public DrawingVisual picActiveSkillIconLayer;
         public DrawingVisual picSkillSurround;
         public DrawingVisual picJewelHighlight;
+        public DrawingVisual picAscendancyClasses;
 
 
         public DrawingVisual picSkillSurroundHighlight;
@@ -71,6 +72,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             SkillTreeVisual = new DrawingVisual();
             SkillTreeVisual.Children.Add(picBackground);
+            SkillTreeVisual.Children.Add(picAscendancyClasses);
             SkillTreeVisual.Children.Add(picPathHighlight);
             SkillTreeVisual.Children.Add(picLinks);
             SkillTreeVisual.Children.Add(picActiveLinks);
@@ -229,6 +231,29 @@ namespace POESKillTree.SkillTreeFiles
                         dc.DrawText(text, pos - new Vector2D(-69, -32));
 
                     }
+                }
+            }
+        }
+
+        public void DrawAscendancyClasses()
+        {
+            using (DrawingContext dc = picAscendancyClasses.RenderOpen())
+            {
+                foreach (var node in Skillnodes)
+                {
+                    if (node.Value.IsAscendancyStart)
+                    {
+                        string imageName = "Classes" + node.Value.ascendancyName;
+                        BitmapImage bitmap = _assets[imageName].PImage; 
+                        var brush = new ImageBrush(_assets[imageName].PImage);
+                        Vector2D pos = node.Value.Position;
+                        dc.DrawRectangle(brush, null,
+                            new Rect(
+                                pos -
+                                new Vector2D(bitmap.PixelWidth * .5, bitmap.PixelHeight * .5),
+                                new Size(bitmap.PixelWidth, bitmap.PixelHeight)));
+                    }
+
                 }
             }
         }
@@ -753,6 +778,7 @@ namespace POESKillTree.SkillTreeFiles
             picSkillSurroundHighlight = new DrawingVisual();
             picPathHighlight = new DrawingVisual();
             picJewelHighlight = new DrawingVisual();
+            picAscendancyClasses = new DrawingVisual();
         }
 
         public static void ClearAssets()

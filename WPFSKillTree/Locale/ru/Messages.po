@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:736
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:688
 msgid "Attributes"
 msgstr "Атрибуты"
 
@@ -132,7 +132,7 @@ msgstr ""
 msgid "Run"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:68 Views\MainWindow.xaml:599
+#: TreeGenerator\Views\SettingsWindow.xaml:68 Views\MainWindow.xaml:551
 msgid "Reset"
 msgstr "Сбросить"
 
@@ -301,27 +301,27 @@ msgstr "Отдалить"
 msgid "Scion"
 msgstr "Дворянка"
 
-#: Views\HotkeysWindow.xaml:71 Views\MainWindow.xaml:320
+#: Views\HotkeysWindow.xaml:71
 msgid "Marauder"
 msgstr "Дикарь"
 
-#: Views\HotkeysWindow.xaml:75 Views\MainWindow.xaml:326
+#: Views\HotkeysWindow.xaml:75
 msgid "Ranger"
 msgstr "Охотница"
 
-#: Views\HotkeysWindow.xaml:79 Views\MainWindow.xaml:332
+#: Views\HotkeysWindow.xaml:79
 msgid "Witch"
 msgstr "Ведьма"
 
-#: Views\HotkeysWindow.xaml:83 Views\MainWindow.xaml:338
+#: Views\HotkeysWindow.xaml:83
 msgid "Duelist"
 msgstr "Гладиатор"
 
-#: Views\HotkeysWindow.xaml:87 Views\MainWindow.xaml:344
+#: Views\HotkeysWindow.xaml:87
 msgid "Templar"
 msgstr "Жрец"
 
-#: Views\HotkeysWindow.xaml:91 Views\MainWindow.xaml:350
+#: Views\HotkeysWindow.xaml:91
 msgid "Shadow"
 msgstr "Бандит"
 
@@ -431,191 +431,183 @@ msgid "Reset Skill _Tree"
 msgstr "Сбросить пассивные умения"
 
 #: Views\MainWindow.xaml:309
-msgid "Ascendant additional start"
-msgstr ""
-
-#: Views\MainWindow.xaml:314
-msgid "None"
-msgstr ""
-
-#: Views\MainWindow.xaml:357
 msgid "_View"
 msgstr "Вид"
 
-#: Views\MainWindow.xaml:361
+#: Views\MainWindow.xaml:313
 msgid "_Theme"
 msgstr "Тема"
 
-#: Views\MainWindow.xaml:368
+#: Views\MainWindow.xaml:320
 msgctxt "color"
 msgid "Light"
 msgstr "Светлая"
 
-#: Views\MainWindow.xaml:373
+#: Views\MainWindow.xaml:325
 msgctxt "color"
 msgid "Dark"
 msgstr "Темная"
 
-#: Views\MainWindow.xaml:408
+#: Views\MainWindow.xaml:360
 msgid "Saved _Builds"
 msgstr "Сохраненные билды"
 
-#: Views\MainWindow.xaml:413
+#: Views\MainWindow.xaml:365
 msgid "_Attributes"
 msgstr "Атрибуты"
 
-#: Views\MainWindow.xaml:418
+#: Views\MainWindow.xaml:370
 msgid "_Character Sheet"
 msgstr "Список характеристкик героя"
 
-#: Views\MainWindow.xaml:423
+#: Views\MainWindow.xaml:375
 msgid "Skill _Tree Comparison"
 msgstr "Сравнение пассивных веток"
 
-#: Views\MainWindow.xaml:429
+#: Views\MainWindow.xaml:381
 msgid "_Tools"
 msgstr "Инструменты"
 
-#: Views\MainWindow.xaml:433
+#: Views\MainWindow.xaml:385
 msgid "Take _Screenshot of Skilled Nodes"
 msgstr "Сделать скриншот"
 
-#: Views\MainWindow.xaml:442
+#: Views\MainWindow.xaml:394
 msgid "_Equipment"
 msgstr "Снаряжение"
 
-#: Views\MainWindow.xaml:449
+#: Views\MainWindow.xaml:401
 msgid "_Download & Import Items"
 msgstr "Загрузить и импортировать предметы"
 
-#: Views\MainWindow.xaml:457
+#: Views\MainWindow.xaml:409
 msgid "_Download & Import Stash"
 msgstr "Загрузить и импортировать личный сундук"
 
-#: Views\MainWindow.xaml:471
+#: Views\MainWindow.xaml:423
 msgid "_Nodes"
 msgstr "Пассивные навыки"
 
-#: Views\MainWindow.xaml:478
+#: Views\MainWindow.xaml:430
 msgid "Skill _Tagged Nodes"
 msgstr "Получить отмеченные навыки"
 
-#: Views\MainWindow.xaml:483
+#: Views\MainWindow.xaml:435
 msgid "Un_tag All Nodes"
 msgstr "Убрать все отметки"
 
-#: Views\MainWindow.xaml:488
+#: Views\MainWindow.xaml:440
 msgid "_Unhighlight All Nodes"
 msgstr "Снять выделение"
 
-#: Views\MainWindow.xaml:493
+#: Views\MainWindow.xaml:445
 msgid "_Check-tag highlighted Nodes"
 msgstr "Проверить выделенные навыки"
 
-#: Views\MainWindow.xaml:498
+#: Views\MainWindow.xaml:450
 msgid "C_ross-tag highlighted Nodes"
 msgstr "Проверить выделенные навыки"
 
-#: Views\MainWindow.xaml:503
+#: Views\MainWindow.xaml:455
 #, fuzzy
 msgid "_Skill Tree Generator"
 msgstr "Оптимизатор"
 
-#: Views\MainWindow.xaml:509
+#: Views\MainWindow.xaml:461
 msgid "_Program Assets"
 msgstr "Програмниые активы"
 
-#: Views\MainWindow.xaml:516
+#: Views\MainWindow.xaml:468
 msgid "_Redownload Skill Tree Assets"
 msgstr "Перезагрузить активы"
 
-#: Views\MainWindow.xaml:531
+#: Views\MainWindow.xaml:483
 msgid "_Help"
 msgstr "Помощь"
 
-#: Views\MainWindow.xaml:535
+#: Views\MainWindow.xaml:487
 msgid "_Links"
 msgstr "Ссылки"
 
-#: Views\MainWindow.xaml:542
+#: Views\MainWindow.xaml:494
 msgid "_Path of Exile Website"
 msgstr "оффициальный вебсайт Path of Exile"
 
-#: Views\MainWindow.xaml:549
+#: Views\MainWindow.xaml:501
 msgid "View _Help"
 msgstr "Помощь"
 
-#: Views\MainWindow.xaml:557
+#: Views\MainWindow.xaml:509
 msgid "Hot_keys"
 msgstr "Горячие клавиши"
 
-#: Views\MainWindow.xaml:565
+#: Views\MainWindow.xaml:517
 msgid "Check for _Updates"
 msgstr "Проверить наличие обновлений"
 
-#: Views\MainWindow.xaml:573
+#: Views\MainWindow.xaml:525
 msgid "_About PoESkillTree"
 msgstr "О PoESkillTree"
 
-#: Views\MainWindow.xaml:651
+#: Views\MainWindow.xaml:603
 msgid "Saved Builds"
 msgstr "Сохраненные билды"
 
-#: Views\MainWindow.xaml:669
+#: Views\MainWindow.xaml:621
 msgid "Filter:"
 msgstr "Фильтр"
 
-#: Views\MainWindow.xaml:712
+#: Views\MainWindow.xaml:664
 msgid "Skill tree comparison"
 msgstr "Сравнение пассивных веток"
 
-#: Views\MainWindow.xaml:721
+#: Views\MainWindow.xaml:673
 msgid "Save"
 msgstr "Сохранить"
 
-#: Views\MainWindow.xaml:724
+#: Views\MainWindow.xaml:676
 msgid "Save As"
 msgstr "Сохранить как"
 
-#: Views\MainWindow.xaml:727
+#: Views\MainWindow.xaml:679
 msgid "Delete"
 msgstr "Удалить"
 
-#: Views\MainWindow.xaml:743
+#: Views\MainWindow.xaml:695
 msgid "Passive Attributes"
 msgstr "Пассивные свойства"
 
-#: Views\MainWindow.xaml:760
+#: Views\MainWindow.xaml:712
 msgid "Item Attributes"
 msgstr "Свойства предметов"
 
-#: Views\MainWindow.xaml:779
+#: Views\MainWindow.xaml:731
 msgid "Total Attributes"
 msgstr "Общее"
 
-#: Views\MainWindow.xaml:815
+#: Views\MainWindow.xaml:767
 msgid "Character Sheet"
 msgstr "Список характеристкик героя"
 
-#: Views\MainWindow.xaml:822 SkillTreeFiles\Compute.cs:2296
+#: Views\MainWindow.xaml:774 SkillTreeFiles\Compute.cs:2296
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:86
 #: Utils\Converter\GroupStringConverter.cs:28
 msgid "Defense"
 msgstr "Защита"
 
-#: Views\MainWindow.xaml:839
+#: Views\MainWindow.xaml:791
 msgid "Offense"
 msgstr "Атака"
 
-#: Views\MainWindow.xaml:873
+#: Views\MainWindow.xaml:825
 msgid "Search:"
 msgstr "Поиск"
 
-#: Views\MainWindow.xaml:880
+#: Views\MainWindow.xaml:832
 msgid "Skill tree link:"
 msgstr "Сссылка"
 
-#: Views\MainWindow.xaml:886
+#: Views\MainWindow.xaml:838
 msgid "Load Tree"
 msgstr "Загрузить"
 

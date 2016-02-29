@@ -463,6 +463,7 @@ namespace POESKillTree.SkillTreeFiles
             InitOtherDynamicLayers();
             CreateCombineVisual();
             DrawFaces();
+            DrawAscendancyClasses();
 
             if (_links != null)
             {
