@@ -637,7 +637,7 @@
                               SelectedIndex="{Binding ElementName=window,Path=PersistentData.Options.SelectedBuildIndex}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Grid x:Name="Grid1" Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -650,6 +650,11 @@
                                         <TextBlock Text="{Binding Description}" MaxHeight="60"/>
                                     </StackPanel>
                                 </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentlyOpen}" Value="True">
+                                        <Setter Property="Background" TargetName="Grid1" Value="{DynamicResource AccentColorBrush4}" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                         <ListBox.ItemContainerStyle>

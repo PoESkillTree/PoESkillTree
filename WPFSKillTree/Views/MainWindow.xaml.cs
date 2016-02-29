@@ -1608,7 +1608,7 @@ namespace POESKillTree.Views
                 selectedBuild.AccountName = formBuildName.GetAccountName();
                 selectedBuild.ItemData = formBuildName.GetItemData();
                 lvSavedBuilds.Items.Refresh();
-                if(selectedBuild.CurrentlySelected)
+                if(selectedBuild.CurrentlyOpen)
                     SetTitle(selectedBuild.Name);
 
             }
@@ -1647,25 +1647,28 @@ namespace POESKillTree.Views
 
         private void btnOverwriteBuild_Click(object sender, RoutedEventArgs e)
         {
-            if (lvSavedBuilds.SelectedItems.Count > 0)
+            var currentOpenBuild =
+                (from PoEBuild build in lvSavedBuilds.Items
+                    where build.CurrentlyOpen
+                    select build).FirstOrDefault();
+            if (currentOpenBuild != null)
             {
-                var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
-                selectedBuild.Class = cbCharType.Text;
-                selectedBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
-                selectedBuild.AccountName = _persistentData.CurrentBuild.AccountName;
-                selectedBuild.Level = GetLevelAsString();
-                selectedBuild.PointsUsed = tbUsedPoints.Text;
-                selectedBuild.Url = tbSkillURL.Text;
-                selectedBuild.ItemData = _persistentData.CurrentBuild.ItemData;
-                selectedBuild.LastUpdated = DateTime.Now;
-                selectedBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
-                selectedBuild.AscendantAdditionalStart = AscendantAdditionalStart;
-                lvSavedBuilds.Items.Refresh();
+                currentOpenBuild.Class = cbCharType.Text;
+                currentOpenBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
+                currentOpenBuild.AccountName = _persistentData.CurrentBuild.AccountName;
+                currentOpenBuild.Level = GetLevelAsString();
+                currentOpenBuild.PointsUsed = tbUsedPoints.Text;
+                currentOpenBuild.Url = tbSkillURL.Text;
+                currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
+                currentOpenBuild.LastUpdated = DateTime.Now;
+                currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
+                currentOpenBuild.AscendantAdditionalStart = AscendantAdditionalStart;
+                SetCurrentBuild(currentOpenBuild);
                 SaveBuildsToFile();
             }
             else
             {
-                Popup.Info(L10n.Message("Please select a saved build."));
+                SaveNewBuild();
             }
         }
 
@@ -1713,10 +1716,10 @@ namespace POESKillTree.Views
         {
             foreach (PoEBuild item in lvSavedBuilds.Items)
             {
-                item.CurrentlySelected = false;
+                item.CurrentlyOpen = false;
             }
             lvSavedBuilds.Items.Refresh();
-            build.CurrentlySelected = true;
+            build.CurrentlyOpen = true;
             SetTitle(build.Name);
 
             _persistentData.CurrentBuild = PoEBuild.Copy(build);

@@ -21,7 +21,7 @@ namespace POESKillTree.ViewModels
         public DateTime LastUpdated { get; set; }
         public List<string[]> CustomGroups { get; set; }
         public AscendantAdditionalStart AscendantAdditionalStart { get; set; }
-        public bool CurrentlySelected { get; set; }
+        public bool CurrentlyOpen { get; set; }
 
         [XmlIgnoreAttribute]
         public string Image
@@ -29,7 +29,7 @@ namespace POESKillTree.ViewModels
             get
             {
                 var imgPath = "/POESKillTree;component/Images/" +  Class;
-                if (CurrentlySelected)
+                if (CurrentlyOpen)
                     imgPath += "_Highlighted";
                 return imgPath + ".jpg";
             }
