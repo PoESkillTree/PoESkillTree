@@ -946,7 +946,13 @@ namespace POESKillTree.Views
             }
 
             _attributeCollection.Refresh();
-            tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
+            var usedPoints = 0;
+            foreach (var node in Tree.SkilledNodes)
+            {
+                if (SkillTree.Skillnodes[node].ascendancyName == null && !SkillTree.rootNodeList.Contains(node))
+                    usedPoints += 1;
+            }
+            tbUsedPoints.Text = "" + usedPoints;
         }
 
         public void UpdateStatistics()
@@ -1163,7 +1169,7 @@ namespace POESKillTree.Views
 
             _hoveredNode = node;
 
-            if (node != null)
+            if (node != null && !SkillTree.rootNodeList.Contains(node.Id))
             {
                 if (node.IsJewelSocket)
                 {

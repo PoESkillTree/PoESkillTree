@@ -370,7 +370,6 @@ namespace POESKillTree.SkillTreeFiles
                         passivePointsGranted = nd.passivePointsGranted,
                         ascendancyName = nd.ascendancyName,
                         IsAscendancyStart = nd.isAscendancyStart,
-                        IsRootNode = _rootNodeClassDictionary.Values.Contains(nd.id)
                     });
                     if (_rootNodeList.Contains(nd.id))
                     {

@@ -36,7 +36,6 @@ namespace POESKillTree.SkillTreeFiles
         public int passivePointsGranted; //"passivePointsGranted": 1
         public string ascendancyName; //"ascendancyName": "Raider"
         public bool IsAscendancyStart; //"isAscendancyStart": false
-        public bool IsRootNode;
 
         public Vector2D Position
         {
