@@ -212,6 +212,8 @@ namespace POESKillTree.Views
 
         private bool _isClosing;
 
+        private const string MainWindowTitle = "Path of Exile - Passive Skill Tree Planner";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -631,6 +633,13 @@ namespace POESKillTree.Views
             _loadingWindow.Close();
         }
 
+        #endregion
+
+        #region Utility
+        private void SetTitle(string buildName)
+        {
+            Title = buildName + " - " + MainWindowTitle;
+        }
         #endregion
 
         #region Menu
@@ -1599,6 +1608,9 @@ namespace POESKillTree.Views
                 selectedBuild.AccountName = formBuildName.GetAccountName();
                 selectedBuild.ItemData = formBuildName.GetItemData();
                 lvSavedBuilds.Items.Refresh();
+                if(selectedBuild.CurrentlySelected)
+                    SetTitle(selectedBuild.Name);
+
             }
             SaveBuildsToFile();
         }
@@ -1699,6 +1711,14 @@ namespace POESKillTree.Views
         #region Builds - Services
         private void SetCurrentBuild(PoEBuild build)
         {
+            foreach (PoEBuild item in lvSavedBuilds.Items)
+            {
+                item.CurrentlySelected = false;
+            }
+            lvSavedBuilds.Items.Refresh();
+            build.CurrentlySelected = true;
+            SetTitle(build.Name);
+
             _persistentData.CurrentBuild = PoEBuild.Copy(build);
 
             tbSkillURL.Text = build.Url;

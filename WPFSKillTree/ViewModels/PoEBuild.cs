@@ -21,9 +21,19 @@ namespace POESKillTree.ViewModels
         public DateTime LastUpdated { get; set; }
         public List<string[]> CustomGroups { get; set; }
         public AscendantAdditionalStart AscendantAdditionalStart { get; set; }
+        public bool CurrentlySelected { get; set; }
 
         [XmlIgnoreAttribute]
-        public string Image { get { return "/POESKillTree;component/Images/" + Class + ".jpg"; } }
+        public string Image
+        {
+            get
+            {
+                var imgPath = "/POESKillTree;component/Images/" +  Class;
+                if (CurrentlySelected)
+                    imgPath += "_Highlighted";
+                return imgPath + ".jpg";
+            }
+        }
         [XmlIgnoreAttribute]
         public string Description
         {
