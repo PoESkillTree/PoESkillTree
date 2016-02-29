@@ -632,15 +632,15 @@ msgstr ""
 msgid "Character"
 msgstr "Герой"
 
-#: SkillTreeFiles\SkillTree.cs:631
+#: SkillTreeFiles\SkillTree.cs:632
 msgid "Downloading Skill tree assets"
 msgstr "Загрузить активы"
 
-#: SkillTreeFiles\SkillTree.cs:1109
+#: SkillTreeFiles\SkillTree.cs:1110
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr "Отмечайте не выбранние навики используя правую кнопку мыши."
 
-#: SkillTreeFiles\SkillTree.cs:1126
+#: SkillTreeFiles\SkillTree.cs:1127
 msgid "Error while trying to find solution"
 msgstr ""
 

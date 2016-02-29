@@ -196,7 +196,7 @@ namespace POESKillTree.SkillTreeFiles
             }
             else
             {
-                if(n2.IsAscendancyStart != true && !n1.Name.Contains("Path of the"))
+                if (n2.IsAscendancyStart != true && !n1.Name.Contains("Path of the Witch") && !n1.Name.Contains("Path of the Shadow") && !n1.Name.Contains("Path of the Ranger") && !n1.Name.Contains("Path of the Duelist") && !n1.Name.Contains("Path of the Marauder") && !n1.Name.Contains("Path of the Templar"))
                     dc.DrawLine(pen2, n1.Position, n2.Position);
             }
         }

@@ -641,16 +641,16 @@ msgstr ""
 msgid "Character"
 msgstr "Postava"
 
-#: SkillTreeFiles\SkillTree.cs:631
+#: SkillTreeFiles\SkillTree.cs:632
 msgid "Downloading Skill tree assets"
 msgstr "Sťahujem údaje stromu zručností"
 
-#: SkillTreeFiles\SkillTree.cs:1109
+#: SkillTreeFiles\SkillTree.cs:1110
 #, fuzzy
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom."
 
-#: SkillTreeFiles\SkillTree.cs:1126
+#: SkillTreeFiles\SkillTree.cs:1127
 msgid "Error while trying to find solution"
 msgstr ""
 
