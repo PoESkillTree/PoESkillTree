@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:671
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:688
 msgid "Attributes"
 msgstr ""
 
@@ -56,7 +56,8 @@ msgstr ""
 msgid "Pseudo attribute"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:295
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:295 Views\MainWindow.xaml:265
+#: Views\SettingsMenuWindow.xaml:13
 msgid "Settings"
 msgstr ""
 
@@ -120,7 +121,7 @@ msgstr ""
 msgid "Run"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:68 Views\MainWindow.xaml:534
+#: TreeGenerator\Views\SettingsWindow.xaml:68 Views\MainWindow.xaml:551
 msgid "Reset"
 msgstr ""
 
@@ -390,227 +391,243 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: Views\MainWindow.xaml:230
+#: Views\MainWindow.xaml:240
 msgid "_File"
 msgstr ""
 
-#: Views\MainWindow.xaml:234
+#: Views\MainWindow.xaml:244
 msgid "Save _As"
 msgstr ""
 
-#: Views\MainWindow.xaml:242
+#: Views\MainWindow.xaml:252
 msgid "E_xit"
 msgstr ""
 
-#: Views\MainWindow.xaml:252
+#: Views\MainWindow.xaml:261
 msgid "_Edit"
 msgstr ""
 
-#: Views\MainWindow.xaml:256
+#: Views\MainWindow.xaml:273
 msgid "_Undo"
 msgstr ""
 
-#: Views\MainWindow.xaml:264
+#: Views\MainWindow.xaml:281
 msgid "_Redo"
 msgstr ""
 
-#: Views\MainWindow.xaml:272
+#: Views\MainWindow.xaml:289
 msgid "Reset Skill _Tree"
 msgstr ""
 
-#: Views\MainWindow.xaml:292
+#: Views\MainWindow.xaml:309
 msgid "_View"
 msgstr ""
 
-#: Views\MainWindow.xaml:296
+#: Views\MainWindow.xaml:313
 msgid "_Theme"
 msgstr ""
 
-#: Views\MainWindow.xaml:303
+#: Views\MainWindow.xaml:320
 msgctxt "color"
 msgid "Light"
 msgstr ""
 
-#: Views\MainWindow.xaml:308
+#: Views\MainWindow.xaml:325
 msgctxt "color"
 msgid "Dark"
 msgstr ""
 
-#: Views\MainWindow.xaml:343
+#: Views\MainWindow.xaml:360
 msgid "Saved _Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:348
+#: Views\MainWindow.xaml:365
 msgid "_Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:353
+#: Views\MainWindow.xaml:370
 msgid "_Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:358
+#: Views\MainWindow.xaml:375
 msgid "Skill _Tree Comparison"
 msgstr ""
 
-#: Views\MainWindow.xaml:364
+#: Views\MainWindow.xaml:381
 msgid "_Tools"
 msgstr ""
 
-#: Views\MainWindow.xaml:368
+#: Views\MainWindow.xaml:385
 msgid "Take _Screenshot of Skilled Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:377
+#: Views\MainWindow.xaml:394
 msgid "_Equipment"
 msgstr ""
 
-#: Views\MainWindow.xaml:384
+#: Views\MainWindow.xaml:401
 msgid "_Download & Import Items"
 msgstr ""
 
-#: Views\MainWindow.xaml:392
+#: Views\MainWindow.xaml:409
 msgid "_Download & Import Stash"
 msgstr ""
 
-#: Views\MainWindow.xaml:406
+#: Views\MainWindow.xaml:423
 msgid "_Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:413
+#: Views\MainWindow.xaml:430
 msgid "Skill _Tagged Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:418
+#: Views\MainWindow.xaml:435
 msgid "Un_tag All Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:423
+#: Views\MainWindow.xaml:440
 msgid "_Unhighlight All Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:428
+#: Views\MainWindow.xaml:445
 msgid "_Check-tag highlighted Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:433
+#: Views\MainWindow.xaml:450
 msgid "C_ross-tag highlighted Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:438
+#: Views\MainWindow.xaml:455
 msgid "_Skill Tree Generator"
 msgstr ""
 
-#: Views\MainWindow.xaml:444
+#: Views\MainWindow.xaml:461
 msgid "_Program Assets"
 msgstr ""
 
-#: Views\MainWindow.xaml:451
+#: Views\MainWindow.xaml:468
 msgid "_Redownload Skill Tree Assets"
 msgstr ""
 
-#: Views\MainWindow.xaml:466
+#: Views\MainWindow.xaml:483
 msgid "_Help"
 msgstr ""
 
-#: Views\MainWindow.xaml:470
+#: Views\MainWindow.xaml:487
 msgid "_Links"
 msgstr ""
 
-#: Views\MainWindow.xaml:477
+#: Views\MainWindow.xaml:494
 msgid "_Path of Exile Website"
 msgstr ""
 
-#: Views\MainWindow.xaml:484
+#: Views\MainWindow.xaml:501
 msgid "View _Help"
 msgstr ""
 
-#: Views\MainWindow.xaml:492
+#: Views\MainWindow.xaml:509
 msgid "Hot_keys"
 msgstr ""
 
-#: Views\MainWindow.xaml:500
+#: Views\MainWindow.xaml:517
 msgid "Check for _Updates"
 msgstr ""
 
-#: Views\MainWindow.xaml:508
+#: Views\MainWindow.xaml:525
 msgid "_About PoESkillTree"
 msgstr ""
 
-#: Views\MainWindow.xaml:586
+#: Views\MainWindow.xaml:603
 msgid "Saved Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:604
+#: Views\MainWindow.xaml:621
 msgid "Filter:"
 msgstr ""
 
-#: Views\MainWindow.xaml:647
+#: Views\MainWindow.xaml:664
 msgid "Skill tree comparison"
 msgstr ""
 
-#: Views\MainWindow.xaml:656
+#: Views\MainWindow.xaml:673
 msgid "Save"
 msgstr ""
 
-#: Views\MainWindow.xaml:659
+#: Views\MainWindow.xaml:676
 msgid "Save As"
 msgstr ""
 
-#: Views\MainWindow.xaml:662
+#: Views\MainWindow.xaml:679
 msgid "Delete"
 msgstr ""
 
-#: Views\MainWindow.xaml:678
+#: Views\MainWindow.xaml:695
 msgid "Passive Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:695
+#: Views\MainWindow.xaml:712
 msgid "Item Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:714
+#: Views\MainWindow.xaml:731
 msgid "Total Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:750
+#: Views\MainWindow.xaml:767
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:757 SkillTreeFiles\Compute.cs:2296
+#: Views\MainWindow.xaml:774 SkillTreeFiles\Compute.cs:2296
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:86
 #: Utils\Converter\GroupStringConverter.cs:28
 msgid "Defense"
 msgstr ""
 
-#: Views\MainWindow.xaml:774
+#: Views\MainWindow.xaml:791
 msgid "Offense"
 msgstr ""
 
-#: Views\MainWindow.xaml:808
+#: Views\MainWindow.xaml:825
 msgid "Search:"
 msgstr ""
 
-#: Views\MainWindow.xaml:815
+#: Views\MainWindow.xaml:832
 msgid "Skill tree link:"
 msgstr ""
 
-#: Views\MainWindow.xaml:821
+#: Views\MainWindow.xaml:838
 msgid "Load Tree"
+msgstr ""
+
+#: Views\SettingsMenuWindow.xaml:20
+msgid "Colors:"
+msgstr ""
+
+#: Views\SettingsMenuWindow.xaml:25
+msgid "Node Search Highlight"
+msgstr ""
+
+#: Views\SettingsMenuWindow.xaml:30
+msgid "Attribute Highlight"
+msgstr ""
+
+#: Views\SettingsMenuWindow.xaml:35
+msgid "Node Hover Highlight"
 msgstr ""
 
 #: SkillTreeFiles\Compute.cs:2295
 msgid "Character"
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:616
+#: SkillTreeFiles\SkillTree.cs:632
 msgid "Downloading Skill tree assets"
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:1048
+#: SkillTreeFiles\SkillTree.cs:1110
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:1065
+#: SkillTreeFiles\SkillTree.cs:1127
 msgid "Error while trying to find solution"
 msgstr ""
 
@@ -825,7 +842,7 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: ViewModels\PoEBuild.cs:31
+#: ViewModels\PoEBuild.cs:33
 #, csharp-format
 msgid "{0}, {1} point used"
 msgid_plural "{0}, {1} points used"
@@ -867,128 +884,136 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:427
+#: Views\MainWindow.xaml.cs:441
+msgid "Are you sure?"
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:441
+msgid "Untag All Skill Nodes"
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:491
 msgid "Could not open Skill Tree Generator"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:499 Views\MainWindow.xaml.cs:1795
+#: Views\MainWindow.xaml.cs:563 Views\MainWindow.xaml.cs:1847
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:505
+#: Views\MainWindow.xaml.cs:569
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:506 Views\MainWindow.xaml.cs:1981
+#: Views\MainWindow.xaml.cs:570 Views\MainWindow.xaml.cs:2033
 msgid "Do you want to continue?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:552
+#: Views\MainWindow.xaml.cs:616
 msgid "An error occurred while downloading assets."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:602
+#: Views\MainWindow.xaml.cs:672
 msgid "Checking for updates"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:607
+#: Views\MainWindow.xaml.cs:677
 msgid "You have the latest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:612
+#: Views\MainWindow.xaml.cs:682
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:615
+#: Views\MainWindow.xaml.cs:685
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:616
+#: Views\MainWindow.xaml.cs:686
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:619
+#: Views\MainWindow.xaml.cs:689
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:623
+#: Views\MainWindow.xaml.cs:693
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:627
+#: Views\MainWindow.xaml.cs:697
 msgid "Do you want to download and install the update?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:628
+#: Views\MainWindow.xaml.cs:698
 msgid "Do you want to download and install the new version?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:641
+#: Views\MainWindow.xaml.cs:711
 msgid "An error occurred while attempting to contact the update location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:651
+#: Views\MainWindow.xaml.cs:721
 msgid "Downloading latest version"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:656 Views\MainWindow.xaml.cs:681
+#: Views\MainWindow.xaml.cs:726 Views\MainWindow.xaml.cs:751
 msgid "An error occurred during the download operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:694
+#: Views\MainWindow.xaml.cs:764
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1216
+#: Views\MainWindow.xaml.cs:1286
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1288
+#: Views\MainWindow.xaml.cs:1358
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1359
+#: Views\MainWindow.xaml.cs:1430
 msgid "Please select a saved build."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1451
+#: Views\MainWindow.xaml.cs:1527
 msgid "An error occurred during a save operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1474
+#: Views\MainWindow.xaml.cs:1550
 msgid "Resolving shortened tree address"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1530
+#: Views\MainWindow.xaml.cs:1582
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1775
+#: Views\MainWindow.xaml.cs:1827
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1781
+#: Views\MainWindow.xaml.cs:1833
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1791
+#: Views\MainWindow.xaml.cs:1843
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1927
+#: Views\MainWindow.xaml.cs:1979
 msgid "An error occurred while attempting to load saved builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1980
+#: Views\MainWindow.xaml.cs:2032
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2001
+#: Views\MainWindow.xaml.cs:2053
 msgid "Downloading Item assets"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2074
+#: Views\MainWindow.xaml.cs:2127
 msgid "Error while downloading assets."
 msgstr ""

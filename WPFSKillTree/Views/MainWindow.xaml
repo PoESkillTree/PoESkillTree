@@ -8,7 +8,10 @@
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
-    
+        xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
+        xmlns:views="clr-namespace:POESKillTree.Views"
+        xmlns:ascendancy="clr-namespace:POESKillTree.Model.Ascendancy"
+
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
@@ -18,6 +21,7 @@
         >
     <Window.Resources>
         <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
+        <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
 
         <Style x:Key="ContainerStyleIsExpanded" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">

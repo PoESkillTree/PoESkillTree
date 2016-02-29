@@ -48,9 +48,9 @@ namespace POESKillTree.SkillTreeFiles
             {"+# to maximum Mana", 36},
             {"+# to maximum Life", 38},
             {"Evasion Rating: #", 53},
-            {"+# Maximum Endurance Charge", 3},
-            {"+# Maximum Frenzy Charge", 3},
-            {"+# Maximum Power Charge", 3},
+            {"+# to Maximum Endurance Charges", 3},
+            {"+# to Maximum Frenzy Charges", 3},
+            {"+# to Maximum Power Charges", 3},
             {"#% Additional Elemental Resistance per Endurance Charge", 4},
             {"#% Physical Damage Reduction per Endurance Charge", 4},
             {"#% Attack Speed Increase per Frenzy Charge", 4},
@@ -65,6 +65,14 @@ namespace POESKillTree.SkillTreeFiles
                "+# to Strength and Intelligence", 
                new List<string> {"+# to Strength", "+# to Intelligence"} 
             },
+            {
+                "+# to Strength and Dexterity",
+                new List<string> {"+# to Strength", "+# to Dexterity"}
+            },
+            {
+                "+# to Dexterity and Intelligence",
+                new List<string> {"+# to Dexterity", "+# to Intelligence"}
+            }
         };
 
         public static readonly Dictionary<string, string> RenameImplicitAttributes = new Dictionary<string, string>
@@ -108,7 +116,9 @@ namespace POESKillTree.SkillTreeFiles
             {"normal", "PSSkillFrame"},
             {"notable", "NotableFrameUnallocated"},
             {"keystone", "KeystoneFrameUnallocated"},
-            {"jewel", "JewelFrameUnallocated"}
+            {"jewel", "JewelFrameUnallocated"},
+            {"ascendancyNormal", "PassiveSkillScreenAscendancyFrameSmallNormal"},
+            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeNormal"}
         };
 
         public static readonly Dictionary<string, string> NodeBackgroundsActive = new Dictionary<string, string>
@@ -116,7 +126,9 @@ namespace POESKillTree.SkillTreeFiles
             {"normal", "PSSkillFrameActive"},
             {"notable", "NotableFrameAllocated"},
             {"keystone", "KeystoneFrameAllocated"},
-            {"jewel", "JewelFrameAllocated"}
+            {"jewel", "JewelFrameAllocated"},
+            {"ascendancyNormal", "PassiveSkillScreenAscendancyFrameSmallAllocated"},
+            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeAllocated"}
         };
 
         private static SkillIcons _IconActiveSkills;
@@ -349,10 +361,15 @@ namespace POESKillTree.SkillTreeFiles
                         Ia = nd.ia,
                         IsKeyStone = nd.ks,
                         IsNotable = nd.not,
-                        IsJewelSocket = nd.dn.Contains("Jewel Socket"),
+                        IsJewelSocket = nd.isJewelSocket,
                         Sa = nd.sa,
                         IsMastery = nd.m,
-                        Spc = nd.spc.Count() > 0 ? (int?)nd.spc[0] : null
+                        Spc = nd.spc.Count() > 0 ? (int?)nd.spc[0] : null,
+                        IsMultipleChoice = nd.isMultipleChoice,
+                        IsMultipleChoiceOption = nd.isMultipleChoiceOption,
+                        passivePointsGranted = nd.passivePointsGranted,
+                        ascendancyName = nd.ascendancyName,
+                        IsAscendancyStart = nd.isAscendancyStart,
                     });
                     if (_rootNodeList.Contains(nd.id))
                     {
@@ -362,7 +379,7 @@ namespace POESKillTree.SkillTreeFiles
                         }
                         foreach (int linkedNode in nd.ot)
                         {
-                            if (!_startNodeDictionary.ContainsKey(nd.id))
+                            if (!_startNodeDictionary.ContainsKey(nd.id) && !nd.isAscendancyStart)
                             {
                                 _startNodeDictionary.Add(linkedNode, nd.id);
                             }
@@ -394,10 +411,45 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 foreach (var ints in _links)
                 {
-                    if (!Skillnodes[ints[0]].Neighbor.Contains(Skillnodes[ints[1]]))
-                        Skillnodes[ints[0]].Neighbor.Add(Skillnodes[ints[1]]);
-                    if (!Skillnodes[ints[1]].Neighbor.Contains(Skillnodes[ints[0]]))
-                        Skillnodes[ints[1]].Neighbor.Add(Skillnodes[ints[0]]);
+                    Regex regexString = new Regex(@"Can Allocate Passives from the .* starting point");
+                    bool isScionAscendancyNotable = false;
+                    foreach(var attibute in Skillnodes[ints[0]].attributes)
+                    {
+                        if(regexString.IsMatch(attibute))
+                            isScionAscendancyNotable = true;
+                    }
+                    foreach (var attibute in Skillnodes[ints[1]].attributes)
+                    {
+                        if (regexString.IsMatch(attibute))
+                            isScionAscendancyNotable = true;
+                    }
+
+                    if (isScionAscendancyNotable && _startNodeDictionary.Keys.Contains(ints[0]))
+                    {
+                        if (!Skillnodes[ints[1]].Neighbor.Contains(Skillnodes[ints[0]]))
+                            Skillnodes[ints[1]].Neighbor.Add(Skillnodes[ints[0]]);
+                    }
+                    else if (isScionAscendancyNotable && _startNodeDictionary.Keys.Contains(ints[1]))
+                    {
+                        if (!Skillnodes[ints[0]].Neighbor.Contains(Skillnodes[ints[1]]))
+                            Skillnodes[ints[0]].Neighbor.Add(Skillnodes[ints[1]]);
+                    }
+                    else
+                    {
+                        if (!Skillnodes[ints[0]].Neighbor.Contains(Skillnodes[ints[1]]))
+                            Skillnodes[ints[0]].Neighbor.Add(Skillnodes[ints[1]]);
+                        if (!Skillnodes[ints[1]].Neighbor.Contains(Skillnodes[ints[0]]))
+                            Skillnodes[ints[1]].Neighbor.Add(Skillnodes[ints[0]]);
+                    }
+                }
+                foreach (var skillnode in Skillnodes)
+                {
+                    foreach (var snn in skillnode.Value.Neighbor)
+                    {
+                        if (snn.IsAscendancyStart && skillnode.Value.LinkId.Contains(snn.Id))
+                            continue;
+                        skillnode.Value.VisibleNeighbors.Add(snn);
+                    }
                 }
             }
 
@@ -447,6 +499,9 @@ namespace POESKillTree.SkillTreeFiles
             DrawLinkBackgroundLayer(_links);
             InitOtherDynamicLayers();
             CreateCombineVisual();
+            DrawFaces();
+            DrawAscendancyClasses();
+            DrawAscendancyButtons();
 
             if (_links != null)
             {
@@ -490,16 +545,15 @@ namespace POESKillTree.SkillTreeFiles
             get { return _chartype; }
             set
             {
-                _chartype = value;
-                SkilledNodes.Clear();
-                KeyValuePair<ushort, SkillNode> node =
-                    Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
-                SkilledNodes.Add(node.Value.Id);
-                UpdateAvailNodes();
-                DrawFaces();
+                SetProperty(ref _chartype, value, () =>
+                {
+                    SkilledNodes.Clear();
+                    SkilledNodes.Add(GetCharNodeId());
+                    UpdateAvailNodes();
+                    DrawFaces();
+                });
             }
         }
-
 
         public Dictionary<string, List<float>> HighlightedAttributes;
 
@@ -630,6 +684,52 @@ namespace POESKillTree.SkillTreeFiles
             if (displayProgress)
                 finish();
             return skillTree;
+        }
+
+        /// <summary>
+        /// Adds (invisible) connections between the Scion's root node and the nodes adjacent to the
+        /// root node of chartype's root node.
+        /// </summary>
+        /// <param name="chartype">Character type whose starting nodes should be connected to the current root node.</param>
+        public void ConnectScionWithStartNodesOf(int chartype)
+        {
+            var scion = Skillnodes[(ushort)rootNodeClassDictionary[CharacterNames.Scion]];
+            var start = rootNodeClassDictionary[CharName[chartype]];
+            ConnectNodes(scion, Skillnodes[(ushort)start].Neighbor);
+        }
+
+        /// <summary>
+        /// Adds (invisible) connections between n1 and all nodes in ns.
+        /// </summary>
+        private static void ConnectNodes(SkillNode n1, IEnumerable<SkillNode> ns)
+        {
+            foreach (var n2 in ns)
+            {
+                n1.Neighbor.Add(n2);
+                n2.Neighbor.Add(n1);
+            }
+        }
+
+        /// <summary>
+        /// Removes the connections added by <see cref="ConnectScionWithStartNodesOf"/>s.
+        /// </summary>
+        public void RemoveStartNodeConnectionToScion(int chartype)
+        {
+            var scion = Skillnodes[(ushort) rootNodeClassDictionary[CharacterNames.Scion]];
+            var start = rootNodeClassDictionary[CharName[chartype]];
+            UnconnectNodes(scion, Skillnodes[(ushort)start].Neighbor);
+        }
+
+        /// <summary>
+        /// Removes the connections between n1 and all nodes in ns.
+        /// </summary>
+        private static void UnconnectNodes(SkillNode n1, IEnumerable<SkillNode> ns)
+        {
+            foreach (var n2 in ns)
+            {
+                n1.Neighbor.Remove(n2);
+                n2.Neighbor.Remove(n1);
+            }
         }
 
         public void ForceRefundNode(ushort nodeId)
@@ -1120,7 +1220,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (ushort n1 in SkilledNodes)
                 {
-                    foreach (SkillNode n2 in Skillnodes[n1].Neighbor)
+                    foreach (SkillNode n2 in Skillnodes[n1].VisibleNeighbors)
                     {
                         if (SkilledNodes.Contains(n2.Id))
                         {

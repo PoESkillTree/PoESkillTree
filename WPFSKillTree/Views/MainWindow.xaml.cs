@@ -25,6 +25,7 @@ using MahApps.Metro.Controls;
 using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Ascendancy;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
@@ -156,6 +157,53 @@ namespace POESKillTree.Views
                 if (PropertyChanged != null)
                 {
                     PropertyChanged(this, new PropertyChangedEventArgs("NoAsyncTaskRunning"));
+                }
+            }
+        }
+
+        private AscendantAdditionalStart _ascendantAdditionalStart = AscendantAdditionalStart.None;
+        /// <summary>
+        /// Gets or sets the additional class start nodes selected from the Scion Ascendant subclass.
+        /// </summary>
+        public AscendantAdditionalStart AscendantAdditionalStart
+        {
+            get { return _ascendantAdditionalStart; }
+            set
+            {
+                if (_ascendantAdditionalStart == value) return;
+
+                if (_ascendantAdditionalStart != AscendantAdditionalStart.None)
+                {
+                    Tree.RemoveStartNodeConnectionToScion((int)_ascendantAdditionalStart);
+                }
+                if (value != AscendantAdditionalStart.None)
+                {
+                    Tree.ConnectScionWithStartNodesOf((int) value);
+                }
+
+                _ascendantAdditionalStart = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("AscendantAdditionalStart"));
+                }
+            }
+        }
+
+        private bool _isScion;
+        /// <summary>
+        /// True iff the currently selected class is Scion.
+        /// </summary>
+        public bool IsScion
+        {
+            get { return _isScion; }
+            private set
+            {
+                if (_isScion == value) return;
+
+                _isScion = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsScion"));
                 }
             }
         }
@@ -422,6 +470,19 @@ namespace POESKillTree.Views
             SetAccent(_persistentData.Options.Accent);
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+            Tree.PropertyChanged += (o, args) =>
+            {
+                if (args.PropertyName == "Chartype")
+                {
+                    if (IsScion)
+                    {
+                        // Reset subclass if switching from Scion to another class.
+                        AscendantAdditionalStart = AscendantAdditionalStart.None;
+                    }
+                    IsScion = Tree.Chartype == 0;
+                }
+            };
+            IsScion = Tree.Chartype == 0;
             recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
@@ -437,7 +498,7 @@ namespace POESKillTree.Views
             else
                 LoadItemData(null);
 
-            btnLoadBuild_Click(this, new RoutedEventArgs());
+            LoadBuildFromUrl();
             _justLoaded = false;
             // loading saved build
             lvSavedBuilds.Items.Clear();
@@ -534,6 +595,7 @@ namespace POESKillTree.Views
 
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
             _persistentData.CurrentBuild.Level = GetLevelAsString();
+            _persistentData.CurrentBuild.AscendantAdditionalStart = AscendantAdditionalStart;
             _persistentData.SetBuilds(lvSavedBuilds.Items);
             _persistentData.StashBookmarks = Stash.Bookmarks.ToList();
 
@@ -746,7 +808,7 @@ namespace POESKillTree.Views
                         SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
 
 
-                        btnLoadBuild_Click(this, new RoutedEventArgs());
+                        LoadBuildFromUrl();
                         _justLoaded = false;
 
                         if (Directory.Exists(appDataPath + "DataBackup"))
@@ -1098,7 +1160,13 @@ namespace POESKillTree.Views
                 }
             }
 
-            tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
+            var usedPoints = 0;
+            foreach (var node in Tree.SkilledNodes)
+            {
+                if (SkillTree.Skillnodes[node].ascendancyName == null && !SkillTree.rootNodeList.Contains(node))
+                    usedPoints += 1;
+            }
+            tbUsedPoints.Text = "" + usedPoints;
         }
 
         public void UpdateStatistics()
@@ -1318,7 +1386,7 @@ namespace POESKillTree.Views
 
             _hoveredNode = node;
 
-            if (node != null && node.Attributes.Count != 0)
+            if (node != null && !SkillTree.rootNodeList.Contains(node.Id))
             {
                 if (node.IsJewelSocket)
                 {
@@ -1335,8 +1403,10 @@ namespace POESKillTree.Views
                     _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
                     Tree.DrawPath(_prePath);
                 }
+                var tooltip = node.Name;
+                if (node.Attributes.Count != 0)
+                    tooltip += "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
 
-                var tooltip = node.Name + "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
                 if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
                 {
                     var sp = new StackPanel();
@@ -1344,7 +1414,7 @@ namespace POESKillTree.Views
                     {
                         Text = tooltip
                     });
-                    if (_prePath != null)
+                    if (_prePath != null && !node.IsMastery)
                     {
                         sp.Children.Add(new Separator());
                         sp.Children.Add(new TextBlock { Text = "Points to skill node: " + _prePath.Count });
@@ -1496,7 +1566,7 @@ namespace POESKillTree.Views
             if (lvi == null) return;
             var build = ((PoEBuild)lvi);
             SetCurrentBuild(build);
-            btnLoadBuild_Click(this, null); // loading the build
+            LoadBuildFromUrl(); // loading the build
         }
 
         private void lvi_MouseLeave(object sender, MouseEventArgs e)
@@ -1577,6 +1647,7 @@ namespace POESKillTree.Views
                 selectedBuild.ItemData = _persistentData.CurrentBuild.ItemData;
                 selectedBuild.LastUpdated = DateTime.Now;
                 selectedBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
+                selectedBuild.AscendantAdditionalStart = AscendantAdditionalStart;
                 lvSavedBuilds.Items.Refresh();
                 SaveBuildsToFile();
             }
@@ -1634,6 +1705,7 @@ namespace POESKillTree.Views
             SetLevelFromString(build.Level);
             LoadItemData(build.ItemData);
             SetCustomGroups(build.CustomGroups);
+            AscendantAdditionalStart = build.AscendantAdditionalStart;
         }
 
         private void SaveNewBuild()
@@ -1656,6 +1728,7 @@ namespace POESKillTree.Views
                     ItemData = formBuildName.GetItemData(),
                     LastUpdated = DateTime.Now,
                     CustomGroups = _attributeGroups.CopyCustomGroups()
+                    AscendantAdditionalStart = AscendantAdditionalStart.None
                 };
                 SetCurrentBuild(newBuild);
                 lvSavedBuilds.Items.Add(newBuild);
