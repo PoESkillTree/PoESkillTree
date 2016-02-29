@@ -1163,7 +1163,7 @@ namespace POESKillTree.Views
 
             _hoveredNode = node;
 
-            if (node != null && node.Attributes.Count != 0)
+            if (node != null)
             {
                 if (node.IsJewelSocket)
                 {
@@ -1180,8 +1180,10 @@ namespace POESKillTree.Views
                     _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
                     Tree.DrawPath(_prePath);
                 }
+                var tooltip = node.Name;
+                if (node.Attributes.Count != 0)
+                    tooltip += "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
 
-                var tooltip = node.Name + "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
                 if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
                 {
                     var sp = new StackPanel();
@@ -1189,7 +1191,7 @@ namespace POESKillTree.Views
                     {
                         Text = tooltip
                     });
-                    if (_prePath != null)
+                    if (_prePath != null && !node.IsMastery)
                     {
                         sp.Children.Add(new Separator());
                         sp.Children.Add(new TextBlock { Text = "Points to skill node: " + _prePath.Count });

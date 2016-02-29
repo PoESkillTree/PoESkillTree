@@ -394,8 +394,27 @@ namespace POESKillTree.SkillTreeFiles
                     foreach (ushort skillNode in HighlightedNodes)
                     {
                         Vector2D pos = (Skillnodes[skillNode].Position);
-                        
-                        if (Skillnodes[skillNode].IsNotable)
+                        if (Skillnodes[skillNode].IsAscendancyStart)
+                        {
+                            //already drawn, but needs to be here to prevent highlighting
+                        }
+                        else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].IsNotable)
+                        {
+                            dc.DrawRectangle(NodeSurroundHighlightBrush[11].Value, null,
+                                new Rect((int)pos.X - NodeSurroundBrush[11].Key.Width * factor,
+                                    (int)pos.Y - NodeSurroundBrush[11].Key.Height * factor,
+                                    NodeSurroundBrush[11].Key.Width * 2 * factor,
+                                    NodeSurroundBrush[11].Key.Height * 2 * factor));
+                        }
+                        else if (Skillnodes[skillNode].ascendancyName != null)
+                        {
+                            dc.DrawRectangle(NodeSurroundHighlightBrush[9].Value, null,
+                                new Rect((int)pos.X - NodeSurroundBrush[9].Key.Width * factor,
+                                    (int)pos.Y - NodeSurroundBrush[9].Key.Height * factor,
+                                    NodeSurroundBrush[9].Key.Width * 2 * factor,
+                                    NodeSurroundBrush[9].Key.Height * 2 * factor));
+                        }
+                        else if (Skillnodes[skillNode].IsNotable)
                         {
                             dc.DrawRectangle(NodeSurroundHighlightBrush[3].Value, null,
                                 new Rect((int)pos.X - NodeSurroundBrush[3].Key.Width * factor,
@@ -461,7 +480,34 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Vector2D pos = (Skillnodes[skillNode].Position);
 
-                    if (Skillnodes[skillNode].IsNotable)
+                    if (Skillnodes[skillNode].IsAscendancyStart)
+                    {
+                        string imageName = "PassiveSkillScreenAscendancyMiddle";
+                        BitmapImage bitmap = _assets[imageName].PImage;
+                        var brush = new ImageBrush(_assets[imageName].PImage);
+                        dc.DrawRectangle(brush, null,
+                            new Rect(
+                                pos -
+                                new Vector2D(bitmap.PixelWidth, bitmap.PixelHeight),
+                                new Size(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2)));
+                    }
+                    else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].IsNotable)
+                    {
+                        dc.DrawRectangle(NodeSurroundBrush[11].Value, null,
+                            new Rect((int)pos.X - NodeSurroundBrush[11].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[11].Key.Height,
+                                NodeSurroundBrush[11].Key.Width * 2,
+                                NodeSurroundBrush[11].Key.Height * 2));
+                    }
+                    else if (Skillnodes[skillNode].ascendancyName != null)
+                    {
+                        dc.DrawRectangle(NodeSurroundBrush[9].Value, null,
+                            new Rect((int)pos.X - NodeSurroundBrush[9].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[9].Key.Height,
+                                NodeSurroundBrush[9].Key.Width * 2,
+                                NodeSurroundBrush[9].Key.Height * 2));
+                    }
+                    else if (Skillnodes[skillNode].IsNotable)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[3].Value, null,
                             new Rect((int)pos.X - NodeSurroundBrush[3].Key.Width,
@@ -507,7 +553,27 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Vector2D pos = (Skillnodes[skillNode].Position);
 
-                    if (Skillnodes[skillNode].IsNotable)
+                    if (Skillnodes[skillNode].IsAscendancyStart)
+                    {
+                        //already drawn, but needs to be here to prevent highlighting
+                    }
+                    else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].IsNotable)
+                    {
+                        dc.DrawRectangle(NodeSurroundBrush[11].Value, null,
+                            new Rect((int)pos.X - NodeSurroundBrush[11].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[11].Key.Height,
+                                NodeSurroundBrush[10].Key.Width * 2,
+                                NodeSurroundBrush[10].Key.Height * 2));
+                    }
+                    else if (Skillnodes[skillNode].ascendancyName != null)
+                    {
+                        dc.DrawRectangle(NodeSurroundBrush[9].Value, null,
+                            new Rect((int)pos.X - NodeSurroundBrush[9].Key.Width,
+                                (int)pos.Y - NodeSurroundBrush[9].Key.Height,
+                                NodeSurroundBrush[8].Key.Width * 2,
+                                NodeSurroundBrush[8].Key.Height * 2));
+                    }
+                    else if (Skillnodes[skillNode].IsNotable)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[5].Value, null,
                             new Rect((int)pos.X - NodeSurroundBrush[5].Key.Width,
@@ -738,14 +804,42 @@ namespace POESKillTree.SkillTreeFiles
                 brJewelA.ImageSource = PImageJewelA;
                 Size isSizeJewelA = new Size(PImageJewelA.PixelWidth, PImageJewelA.PixelHeight);
 
+                var ascedancyNormal = new ImageBrush();
+                ascedancyNormal.Stretch = Stretch.Uniform;
+                BitmapImage ascedancyNormalPImage = _assets[NodeBackgrounds["ascendancyNormal"]].PImage;
+                ascedancyNormal.ImageSource = ascedancyNormalPImage;
+                Size isSizeAscedancyNormal = new Size(ascedancyNormalPImage.PixelWidth, ascedancyNormalPImage.PixelHeight);
+
+                var ascedancyNormalA = new ImageBrush();
+                ascedancyNormalA.Stretch = Stretch.Uniform;
+                BitmapImage ascedancyNormalAPImageJewelA = _assets[NodeBackgroundsActive["ascendancyNormal"]].PImage;
+                ascedancyNormalA.ImageSource = ascedancyNormalAPImageJewelA;
+                Size isSizeAscedancyNormalA = new Size(ascedancyNormalAPImageJewelA.PixelWidth, ascedancyNormalAPImageJewelA.PixelHeight);
+
+                var ascedancyNotable = new ImageBrush();
+                ascedancyNotable.Stretch = Stretch.Uniform;
+                BitmapImage ascedancyNotablePImage = _assets[NodeBackgrounds["ascendancyNotable"]].PImage;
+                ascedancyNotable.ImageSource = ascedancyNotablePImage;
+                Size isSizeAscedancyNotable = new Size(ascedancyNotablePImage.PixelWidth, ascedancyNotablePImage.PixelHeight);
+
+                var ascedancyNotableA = new ImageBrush();
+                ascedancyNotableA.Stretch = Stretch.Uniform;
+                BitmapImage ascedancyNotableAPImageJewelA = _assets[NodeBackgroundsActive["ascendancyNotable"]].PImage;
+                ascedancyNotableA.ImageSource = ascedancyNotableAPImageJewelA;
+                Size isSizeAscedancyNotableA = new Size(ascedancyNotableAPImageJewelA.PixelWidth, ascedancyNotableAPImageJewelA.PixelHeight);
+
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isizeNorm, brNorm));
-                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isizeNormA, brNormA));
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isizeNormA, brNormA)); //1
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeKs, brKS));
-                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeNot, brNot));
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeNot, brNot)); //3
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeKsH, brKSH));
-                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeNotH, brNotH));
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(sizeNotH, brNotH)); //5
                 NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isSizeJewel, brJewel));
-                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isSizeJewelA, brJewelA));
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isSizeJewelA, brJewelA)); //7
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isSizeAscedancyNormal, ascedancyNormal));
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isSizeAscedancyNormalA, ascedancyNormalA)); //9
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isSizeAscedancyNotable, ascedancyNormal));
+                NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(isSizeAscedancyNotableA, ascedancyNormalA)); //11
 
 
 

@@ -116,7 +116,9 @@ namespace POESKillTree.SkillTreeFiles
             {"normal", "PSSkillFrame"},
             {"notable", "NotableFrameUnallocated"},
             {"keystone", "KeystoneFrameUnallocated"},
-            {"jewel", "JewelFrameUnallocated"}
+            {"jewel", "JewelFrameUnallocated"},
+            {"ascendancyNormal", "PassiveSkillScreenAscendancyFrameSmallNormal"},
+            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeNormal"}
         };
 
         public static readonly Dictionary<string, string> NodeBackgroundsActive = new Dictionary<string, string>
@@ -124,7 +126,9 @@ namespace POESKillTree.SkillTreeFiles
             {"normal", "PSSkillFrameActive"},
             {"notable", "NotableFrameAllocated"},
             {"keystone", "KeystoneFrameAllocated"},
-            {"jewel", "JewelFrameAllocated"}
+            {"jewel", "JewelFrameAllocated"},
+            {"ascendancyNormal", "PassiveSkillScreenAscendancyFrameSmallAllocated"},
+            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeAllocated"}
         };
 
         private static SkillIcons _IconActiveSkills;
