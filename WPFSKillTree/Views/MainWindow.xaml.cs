@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -509,7 +510,7 @@ namespace POESKillTree.Views
                 lvSavedBuilds.Items.Add(build);
             }
 
-            ImportLegacySavedBuilds();
+            CheckAppVersionAndDoNecessaryChanges();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -1718,8 +1719,8 @@ namespace POESKillTree.Views
             {
                 item.CurrentlyOpen = false;
             }
-            lvSavedBuilds.Items.Refresh();
             build.CurrentlyOpen = true;
+            lvSavedBuilds.Items.Refresh();
             SetTitle(build.Name);
 
             _persistentData.CurrentBuild = PoEBuild.Copy(build);
@@ -2185,6 +2186,43 @@ namespace POESKillTree.Views
         #endregion
 
         #region Legacy
+
+        /// <summary>
+        /// Compares the AssemblyVersion against the one in PersistentData and makes
+        /// nessary updates when versions don't match.
+        /// </summary>
+        private void CheckAppVersionAndDoNecessaryChanges()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var productVersion = fvi.ProductVersion;
+            var persistentDataVersion = _persistentData.AppVersion;
+            if (productVersion == persistentDataVersion)
+                return;
+            if(string.IsNullOrEmpty(persistentDataVersion))
+                ImportLegacySavedBuilds();
+            if (String.CompareOrdinal("2.2.4", persistentDataVersion) > 0)
+                SetCurrentOpenBuildBasedOnName();
+
+            _persistentData.AppVersion = productVersion;
+        }
+
+        private void SetCurrentOpenBuildBasedOnName()
+        {
+            var buildNameMatch =
+                (from PoEBuild build in lvSavedBuilds.Items
+                    where build.Name == _persistentData.CurrentBuild.Name
+                    select build).FirstOrDefault();
+            if (buildNameMatch != null)
+            {
+                foreach (PoEBuild item in lvSavedBuilds.Items)
+                {
+                    item.CurrentlyOpen = false;
+                }
+                buildNameMatch.CurrentlyOpen = true;
+                lvSavedBuilds.Items.Refresh();
+            }
+        }
 
         /// <summary>
         /// Import builds from legacy build save file "savedBuilds" to PersistentData.xml.

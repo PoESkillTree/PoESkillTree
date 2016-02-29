@@ -17,6 +17,7 @@ namespace POESKillTree.Model
 {
     public class PersistentData : INotifyPropertyChanged
     {
+        public string AppVersion { get; set; }
         public List<StashBookmark> StashBookmarks { get; set; }
         public Options Options { get; set; }
         public PoEBuild CurrentBuild { get; set; }
@@ -76,6 +77,7 @@ namespace POESKillTree.Model
                 Builds = obj.Builds;
                 CurrentBuild = obj.CurrentBuild;
                 StashBookmarks = obj.StashBookmarks;
+                AppVersion = obj.AppVersion;
                 reader.Close();
                 OnPropertyChanged(null);
             }
