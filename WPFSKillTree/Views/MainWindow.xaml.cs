@@ -84,6 +84,10 @@ namespace POESKillTree.Views
         private ListCollectionView _offenceCollection;
         private RenderTargetBitmap _clipboardBmp;
 
+        private GroupStringConverter _attributeGroups;
+        private ContextMenu _attributeContextMenu;
+        private MenuItem cmCreateGroup, cmAddToGroup, cmRemoveFromGroup, cmDeleteGroup;
+
         private ItemAttributes _itemAttributes;
 
         public ItemAttributes ItemAttributes
@@ -165,6 +169,195 @@ namespace POESKillTree.Views
             InitializeComponent();
         }
 
+        //This whole region, along with most of GroupStringConverter, makes up our user-defined attribute group functionality - Sectoidfodder 02/29/16
+        #region Attribute grouping helpers
+
+        private void IgnoreRightClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        //there's probably a better way that doesn't break if tab ordering changes but I'm UI-challenged
+        private ListBox GetActiveAttributeGroupList()
+        {
+            if (tabControl1.SelectedIndex == 2)
+                return lbAllAttr;
+            else if (tabControl1.SelectedIndex == 0)
+                return listBox1;
+            else
+                return null;
+        }
+
+        //Necessary to update the summed numbers in group names before every refresh
+        private void RefreshAttributeLists()
+        {
+            
+            if (GetActiveAttributeGroupList()==lbAllAttr)
+            {
+                _attributeGroups.UpdateGroupNames(_allAttributesList);
+            }
+            //use passive attribute list as a default so nothing breaks if neither tab is actually active
+            else
+            {
+                _attributeGroups.UpdateGroupNames(_attiblist);
+            }
+            _attributeCollection.Refresh();
+            _allAttributeCollection.Refresh();
+        }
+
+        private void SetCustomGroups(List<string[]> customgroups)
+        {
+            cmAddToGroup.Items.Clear();
+            cmDeleteGroup.Items.Clear();
+
+            List<string> groupnames = new List<string>();
+            MenuItem newSubMenu;
+
+            foreach (var gp in customgroups)
+            {
+                if (!groupnames.Contains(gp[1]))
+                {
+                    groupnames.Add(gp[1]);
+                }
+            }
+
+            cmAddToGroup.IsEnabled = false;
+            cmDeleteGroup.IsEnabled = false;
+
+            foreach (string name in groupnames)
+            {
+                newSubMenu = new MenuItem();
+                newSubMenu.Header = name;
+                newSubMenu.Click += AddToGroup;
+                cmAddToGroup.Items.Add(newSubMenu);
+                cmAddToGroup.IsEnabled = true;
+                newSubMenu = new MenuItem();
+                newSubMenu.Header = name;
+                newSubMenu.Click += DeleteGroup;
+                cmDeleteGroup.Items.Add(newSubMenu);
+                cmDeleteGroup.IsEnabled = true;
+            }
+
+            _attributeGroups.ResetGroups(customgroups);
+            RefreshAttributeLists();
+        }
+
+        //Adds currently selected attributes to a new group
+        private void CreateGroup(object sender, RoutedEventArgs e)
+        {
+            ListBox lb = GetActiveAttributeGroupList();
+            if (lb == null)
+                return;
+            List<string> attributelist = new List<string>();
+            foreach (object o in lb.SelectedItems)
+            {
+                attributelist.Add(o.ToString());
+            }
+            //Error - at least one attribute must be selected
+            if (attributelist.Count == 0)
+            {
+                System.Windows.Forms.MessageBox.Show("No attributes selected for new group.");
+                return;
+            }
+
+            //Build and show form to enter group name
+            var formGroupName = new FormChooseGroupName();
+            formGroupName.Owner = this;
+            var show_dialog = formGroupName.ShowDialog();
+            if (show_dialog != null && (bool)show_dialog)
+            {
+                string name = formGroupName.GetGroupName();
+                if (_attributeGroups.AttributeGroups.ContainsKey(name))
+                {
+                    System.Windows.Forms.MessageBox.Show("A group with that name already exists.");
+                    return;
+                }
+
+                //Add submenus that add to and delete the new group
+                MenuItem newSubMenu = new MenuItem();
+                newSubMenu.Header = name;
+                newSubMenu.Click += AddToGroup;
+                cmAddToGroup.Items.Add(newSubMenu);
+                cmAddToGroup.IsEnabled = true;
+                newSubMenu = new MenuItem();
+                newSubMenu.Header = name;
+                newSubMenu.Click += DeleteGroup;
+                cmDeleteGroup.Items.Add(newSubMenu);
+                cmDeleteGroup.IsEnabled = true;
+
+                //Back end - actually make the new group
+                _attributeGroups.AddGroup(name, attributelist.ToArray());
+                RefreshAttributeLists();
+            }
+        }
+
+        //Removes currently selected attributes from their custom groups, restoring them to their default groups
+        private void RemoveFromGroup(object sender, RoutedEventArgs e)
+        {
+            ListBox lb = GetActiveAttributeGroupList();
+            if (lb == null)
+                return;
+            List<string> attributelist = new List<string>();
+            foreach (object o in lb.SelectedItems)
+            {
+                attributelist.Add(o.ToString());
+            }
+            if (attributelist.Count > 0)
+            {
+                _attributeGroups.RemoveFromGroup(attributelist.ToArray());
+                RefreshAttributeLists();
+            }
+        }
+
+        //Adds currently selected attributes to an existing custom group named by sender.Header
+        private void AddToGroup(object sender, RoutedEventArgs e)
+        {
+            ListBox lb = GetActiveAttributeGroupList();
+            if (lb == null)
+                return;
+            List<string> attributelist = new List<string>();
+            foreach (object o in lb.SelectedItems)
+            {
+                attributelist.Add(o.ToString());
+            }
+            if (attributelist.Count > 0)
+            {
+                _attributeGroups.AddGroup(((MenuItem)sender).Header.ToString(), attributelist.ToArray());
+                RefreshAttributeLists();
+            }
+        }
+
+        //Deletes the entire custom group named by sender.Header, restoring all contained attributes to their default groups
+        private void DeleteGroup(object sender, RoutedEventArgs e)
+        {
+            //Remove submenus that work with the group
+            for (int i = 0; i < cmAddToGroup.Items.Count; i++)
+            {
+                if (((MenuItem)cmAddToGroup.Items[i]).Header.ToString().ToLower().Equals(((MenuItem)sender).Header.ToString().ToLower()))
+                {
+                    cmAddToGroup.Items.RemoveAt(i);
+                    if (cmAddToGroup.Items.Count == 0)
+                        cmAddToGroup.IsEnabled = false;
+                    break;
+                }
+            }
+            for (int i = 0; i < cmDeleteGroup.Items.Count; i++)
+            {
+                if (((MenuItem)cmDeleteGroup.Items[i]).Header.ToString().ToLower().Equals(((MenuItem)sender).Header.ToString().ToLower()))
+                {
+                    cmDeleteGroup.Items.RemoveAt(i);
+                    if (cmDeleteGroup.Items.Count == 0)
+                        cmDeleteGroup.IsEnabled = false;
+                    break;
+                }
+            }
+
+            _attributeGroups.DeleteGroup(((MenuItem)sender).Header.ToString());
+            RefreshAttributeLists();
+        }
+
+        #endregion
+
         #region Window methods
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -173,19 +366,41 @@ namespace POESKillTree.Views
             ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();
 
+            cmCreateGroup = new MenuItem();
+            cmCreateGroup.Header = "Create new group";
+            cmCreateGroup.Click += CreateGroup;
+            cmAddToGroup = new MenuItem();
+            cmAddToGroup.Header = "Add to group...";
+            cmAddToGroup.IsEnabled = false;
+            cmDeleteGroup = new MenuItem();
+            cmDeleteGroup.Header = "Delete group...";
+            cmDeleteGroup.IsEnabled = false;
+            cmRemoveFromGroup = new MenuItem();
+            cmRemoveFromGroup.Header = "Remove from group";
+            cmRemoveFromGroup.Click += RemoveFromGroup;
+
+            _attributeGroups = new GroupStringConverter();
+            _attributeContextMenu = new ContextMenu();
+            _attributeContextMenu.Items.Add(cmCreateGroup);
+            _attributeContextMenu.Items.Add(cmAddToGroup);
+            _attributeContextMenu.Items.Add(cmDeleteGroup);
+            _attributeContextMenu.Items.Add(cmRemoveFromGroup);
+
             _attributeCollection = new ListCollectionView(_attiblist);
+            _attributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
+            _attributeCollection.CustomSort = _attributeGroups;
             listBox1.ItemsSource = _attributeCollection;
-            _attributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text")
-            {
-                Converter = new GroupStringConverter()
-            });
+            listBox1.SelectionMode = SelectionMode.Extended;
+            listBox1.PreviewMouseRightButtonDown += IgnoreRightClick;
+            listBox1.ContextMenu = _attributeContextMenu;
 
             _allAttributeCollection = new ListCollectionView(_allAttributesList);
-            _allAttributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text")
-            {
-                Converter = new GroupStringConverter()
-            });
+            _allAttributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
+            _allAttributeCollection.CustomSort = _attributeGroups;
             lbAllAttr.ItemsSource = _allAttributeCollection;
+            lbAllAttr.SelectionMode = SelectionMode.Extended;
+            lbAllAttr.PreviewMouseRightButtonDown += IgnoreRightClick;
+            lbAllAttr.ContextMenu = _attributeContextMenu;
 
             _defenceCollection = new ListCollectionView(_defenceList);
             _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
@@ -790,6 +1005,7 @@ namespace POESKillTree.Views
         {
             UpdateAttributeList();
             UpdateAllAttributeList();
+            RefreshAttributeLists();
             UpdateStatistics();
             UpdateClass();
         }
@@ -842,7 +1058,6 @@ namespace POESKillTree.Views
                 }
             }
 
-            _allAttributeCollection.Refresh();
         }
 
         public void UpdateClass()
@@ -883,7 +1098,6 @@ namespace POESKillTree.Views
                 }
             }
 
-            _attributeCollection.Refresh();
             tbUsedPoints.Text = "" + (Tree.SkilledNodes.Count - 1);
         }
 
@@ -973,6 +1187,8 @@ namespace POESKillTree.Views
 
         private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
+            //Sectoidfodder - Disabled for now because it clashes w/ context menu functionality 
+            /*
             var newHighlightedAttribute =
                 "^" + Regex.Replace(listBox1.SelectedItem.ToString()
                         .Replace(@"+", @"\+")
@@ -980,6 +1196,7 @@ namespace POESKillTree.Views
                         .Replace(@"%", @"\%"), @"[0-9]*\.?[0-9]+", @"[0-9]*\.?[0-9]+") + "$";
             _highlightedAttribute = newHighlightedAttribute == _highlightedAttribute ? "" : newHighlightedAttribute;
             Tree.HighlightNodesBySearch(_highlightedAttribute, true, NodeHighlighter.HighlightState.FromAttrib);
+            */
         }
 
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
@@ -1359,6 +1576,7 @@ namespace POESKillTree.Views
                 selectedBuild.Url = tbSkillURL.Text;
                 selectedBuild.ItemData = _persistentData.CurrentBuild.ItemData;
                 selectedBuild.LastUpdated = DateTime.Now;
+                selectedBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
                 lvSavedBuilds.Items.Refresh();
                 SaveBuildsToFile();
             }
@@ -1415,6 +1633,7 @@ namespace POESKillTree.Views
             tbSkillURL.Text = build.Url;
             SetLevelFromString(build.Level);
             LoadItemData(build.ItemData);
+            SetCustomGroups(build.CustomGroups);
         }
 
         private void SaveNewBuild()
@@ -1435,7 +1654,8 @@ namespace POESKillTree.Views
                     CharacterName = formBuildName.GetCharacterName(),
                     AccountName = formBuildName.GetAccountName(),
                     ItemData = formBuildName.GetItemData(),
-                    LastUpdated = DateTime.Now
+                    LastUpdated = DateTime.Now,
+                    CustomGroups = _attributeGroups.CopyCustomGroups()
                 };
                 SetCurrentBuild(newBuild);
                 lvSavedBuilds.Items.Add(newBuild);
