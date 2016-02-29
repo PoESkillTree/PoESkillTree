@@ -106,7 +106,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PoESkillTree - Talisman.
+        ///   Looks up a localized string similar to PoESkillTree - Ascendancy.
         /// </summary>
         public static string ProductName {
             get {
