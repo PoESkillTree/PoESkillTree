@@ -349,10 +349,16 @@ namespace POESKillTree.SkillTreeFiles
                         Ia = nd.ia,
                         IsKeyStone = nd.ks,
                         IsNotable = nd.not,
-                        IsJewelSocket = nd.dn.Contains("Jewel Socket"),
+                        IsJewelSocket = nd.isJewelSocket,
                         Sa = nd.sa,
                         IsMastery = nd.m,
-                        Spc = nd.spc.Count() > 0 ? (int?)nd.spc[0] : null
+                        Spc = nd.spc.Count() > 0 ? (int?)nd.spc[0] : null,
+                        IsMultipleChoice = nd.isMultipleChoice,
+                        IsMultipleChoiceOption = nd.isMultipleChoiceOption,
+                        passivePointsGranted = nd.passivePointsGranted,
+                        ascendancyName = nd.ascendancyName,
+                        IsAscendancyStart = nd.isAscendancyStart,
+                        IsRootNode = _rootNodeClassDictionary.Values.Contains(nd.id)
                     });
                     if (_rootNodeList.Contains(nd.id))
                     {
@@ -401,7 +407,12 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 foreach (var skillnode in Skillnodes)
                 {
-                    skillnode.Value.VisibleNeighbors.AddRange(skillnode.Value.Neighbor);
+                    foreach (var snn in skillnode.Value.Neighbor)
+                    {
+                        if (snn.IsAscendancyStart)
+                            continue;
+                        skillnode.Value.VisibleNeighbors.Add(snn);
+                    }
                 }
             }
 

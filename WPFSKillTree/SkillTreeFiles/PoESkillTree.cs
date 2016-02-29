@@ -61,34 +61,26 @@ namespace POESKillTree.SkillTreeFiles
 
     internal class Node
     {
-        public ushort id { get; set; }
-
-        public string icon { get; set; }
-
-        public bool ks { get; set; }
-
-        public bool not { get; set; }
-
-        public string dn { get; set; }
-
-        public bool m { get; set; }
-
-        public int[] spc { get; set; }
-
-        public string[] sd { get; set; }
-
-        public int g { get; set; }
-
-        public int o { get; set; }
-
-        public int oidx { get; set; }
-
-        public int sa { get; set; }
-
-        public int da { get; set; }
-
-        public int ia { get; set; }
-
+         public ushort id { get; set; }
+         public string icon { get; set; } 
+         public bool ks { get; set; }
+         public bool not { get; set; }
+         public string dn { get; set; }
+         public bool m { get; set; }
+         public bool isJewelSocket { get; set; }
+         public bool isMultipleChoice { get; set; }
+         public bool isMultipleChoiceOption { get; set; }
+         public int passivePointsGranted { get; set; }
+         public string ascendancyName { get; set; }
+         public bool isAscendancyStart { get; set; }
+         public int[] spc { get; set; }
+         public string[] sd { get; set; }
+         public int g { get; set; }
+         public int o { get; set; }
+         public int oidx { get; set; }
+         public int sa { get; set; }
+         public int da { get; set; }
+         public int ia { get; set; }
 
         [JsonProperty("out")]
         public List<int> ot { get; set; }

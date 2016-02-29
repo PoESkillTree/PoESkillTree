@@ -194,7 +194,8 @@ namespace POESKillTree.SkillTreeFiles
             }
             else
             {
-                dc.DrawLine(pen2, n1.Position, n2.Position);
+                if(n2.IsAscendancyStart != true && !n1.Name.Contains("Path of the"))
+                    dc.DrawLine(pen2, n1.Position, n2.Position);
             }
         }
 
@@ -516,12 +517,12 @@ namespace POESKillTree.SkillTreeFiles
             using (DrawingContext dc = picPathOverlay.RenderOpen())
             {
                 // Draw a connection from a skilled node to the first path node.
-                var skilledNeighbors =
-                    Skillnodes[path[0]].VisibleNeighbors.Where(sn => SkilledNodes.Contains(sn.Id)).ToList();
+                //var skilledNeighbors =
+                   // Skillnodes[path[0]].VisibleNeighbors.Where(sn => SkilledNodes.Contains(sn.Id)).ToList();
                 // The node might not be connected to a skilled node through visible neighbors
                 // in which case we don't want to draw a connection anyway.
-                if (skilledNeighbors.Any())
-                    DrawConnection(dc, pen2, skilledNeighbors.First(), Skillnodes[path[0]]);
+                //if (skilledNeighbors.Any())
+                    //DrawConnection(dc, pen2, skilledNeighbors.First(), Skillnodes[path[0]]);
                 
                 // Draw connections for the path itself (only those that should be visible).
                 for (var i = 0; i < path.Count - 1; i++)

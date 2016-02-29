@@ -23,7 +23,7 @@ namespace POESKillTree.SkillTreeFiles
         public bool IsKeyStone; //"ks": false,
         public bool IsNotable; // not": false,
         public bool IsMastery; // m: false,
-        public bool IsJewelSocket; //comes from name
+        public bool IsJewelSocket; //"isJewelSocket": false
         public List<int> LinkId = new List<int>(); // "out": []
         public string Name; //"dn": "Block Recovery",
         public int Orbit; //  "o": 1,
@@ -31,6 +31,12 @@ namespace POESKillTree.SkillTreeFiles
         public int Sa; //s "sa": 0,
         public bool IsSkilled = false;
         public int? Spc;
+        public bool IsMultipleChoice; //"isMultipleChoice": false
+        public bool IsMultipleChoiceOption; //"isMultipleChoiceOption": false
+        public int passivePointsGranted; //"passivePointsGranted": 1
+        public string ascendancyName; //"ascendancyName": "Raider"
+        public bool IsAscendancyStart; //"isAscendancyStart": false
+        public bool IsRootNode;
 
         public Vector2D Position
         {
