@@ -501,6 +501,7 @@ namespace POESKillTree.SkillTreeFiles
             CreateCombineVisual();
             DrawFaces();
             DrawAscendancyClasses();
+            DrawAscendancyButtons();
 
             if (_links != null)
             {

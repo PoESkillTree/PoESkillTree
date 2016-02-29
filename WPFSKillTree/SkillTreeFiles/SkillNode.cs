@@ -46,7 +46,6 @@ namespace POESKillTree.SkillTreeFiles
                 return (SkillNodeGroup.Position - new Vector2D(d * Math.Sin(-Arc), d * Math.Cos(-Arc)));
             }
         }
-
         public double Arc
         {
             get { return GetOrbitAngle(OrbitIndex, (int) SkillsPerOrbit[Orbit]); }

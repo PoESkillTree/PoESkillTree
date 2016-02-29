@@ -102,7 +102,7 @@ namespace POESKillTree.Utils.Converter
             new[] {"Effect of Buffs on You", Aura},
             new[] {"Weapon Critical Strike Chance", CriticalStrike},
             new[] {"increased Critical Strike Chance", CriticalStrike},
-            new[] {"increased Critical Strike Multiplier", CriticalStrike},
+            new[] {"to Critical Strike Multiplier", CriticalStrike},
             new[] {"Global Critical Strike", CriticalStrike},
             new[] {"Critical Strikes with Daggers Poison the enemy", CriticalStrike},
             new[] {"Knocks Back enemies if you get a Critical Strike", CriticalStrike},
