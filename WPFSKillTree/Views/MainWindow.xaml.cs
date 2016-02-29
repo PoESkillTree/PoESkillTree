@@ -213,7 +213,7 @@ namespace POESKillTree.Views
 
         private bool _isClosing;
 
-        private const string MainWindowTitle = "Path of Exile - Passive Skill Tree Planner";
+        private const string MainWindowTitle = "Path of Exile: Passive Skill Tree Planner";
 
         public MainWindow()
         {
@@ -561,6 +561,9 @@ namespace POESKillTree.Views
                     case Key.S:
                         SaveNewBuild();
                         break;
+                    case Key.N:
+                        NewBuild();
+                        break;
                 }
             }
 
@@ -644,6 +647,11 @@ namespace POESKillTree.Views
         #endregion
 
         #region Menu
+        
+        private void Menu_NewBuild(object sender, RoutedEventArgs e)
+        {
+            NewBuild();
+        }
 
         private void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
         {
@@ -1675,11 +1683,12 @@ namespace POESKillTree.Views
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (lvSavedBuilds.SelectedItems.Count > 0)
-            {
-                lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
-                SaveBuildsToFile();
-            }
+            if (lvSavedBuilds.SelectedItems.Count <= 0) return;
+
+            if(((PoEBuild)lvSavedBuilds.SelectedItem).CurrentlyOpen)
+                NewBuild();
+            lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
+            SaveBuildsToFile();
         }
 
         private void lvSavedBuilds_KeyUp(object sender, KeyEventArgs e)
@@ -1730,6 +1739,17 @@ namespace POESKillTree.Views
             LoadItemData(build.ItemData);
             SetCustomGroups(build.CustomGroups);
             AscendantAdditionalStart = build.AscendantAdditionalStart;
+        }
+
+        private void NewBuild()
+        {
+            SetCurrentBuild(new PoEBuild
+            {
+                Name = "New Build",
+                Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3),
+                Level = "1"
+            });
+            LoadBuildFromUrl();
         }
 
         private void SaveNewBuild()
