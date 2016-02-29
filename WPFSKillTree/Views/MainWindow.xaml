@@ -10,7 +10,6 @@
         xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
         xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
         xmlns:views="clr-namespace:POESKillTree.Views"
-        xmlns:ascendancy="clr-namespace:POESKillTree.Model.Ascendancy"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="Path of Exile: Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
