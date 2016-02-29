@@ -400,10 +400,36 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 foreach (var ints in _links)
                 {
-                    if (!Skillnodes[ints[0]].Neighbor.Contains(Skillnodes[ints[1]]))
-                        Skillnodes[ints[0]].Neighbor.Add(Skillnodes[ints[1]]);
-                    if (!Skillnodes[ints[1]].Neighbor.Contains(Skillnodes[ints[0]]))
-                        Skillnodes[ints[1]].Neighbor.Add(Skillnodes[ints[0]]);
+                    Regex regexString = new Regex(@"Can Allocate Passives from the .* starting point");
+                    bool isScionAscendancyNotable = false;
+                    foreach(var attibute in Skillnodes[ints[0]].attributes)
+                    {
+                        if(regexString.IsMatch(attibute))
+                            isScionAscendancyNotable = true;
+                    }
+                    foreach (var attibute in Skillnodes[ints[1]].attributes)
+                    {
+                        if (regexString.IsMatch(attibute))
+                            isScionAscendancyNotable = true;
+                    }
+
+                    if (isScionAscendancyNotable && _startNodeDictionary.Keys.Contains(ints[0]))
+                    {
+                        if (!Skillnodes[ints[1]].Neighbor.Contains(Skillnodes[ints[0]]))
+                            Skillnodes[ints[1]].Neighbor.Add(Skillnodes[ints[0]]);
+                    }
+                    else if (isScionAscendancyNotable && _startNodeDictionary.Keys.Contains(ints[1]))
+                    {
+                        if (!Skillnodes[ints[0]].Neighbor.Contains(Skillnodes[ints[1]]))
+                            Skillnodes[ints[0]].Neighbor.Add(Skillnodes[ints[1]]);
+                    }
+                    else
+                    {
+                        if (!Skillnodes[ints[0]].Neighbor.Contains(Skillnodes[ints[1]]))
+                            Skillnodes[ints[0]].Neighbor.Add(Skillnodes[ints[1]]);
+                        if (!Skillnodes[ints[1]].Neighbor.Contains(Skillnodes[ints[0]]))
+                            Skillnodes[ints[1]].Neighbor.Add(Skillnodes[ints[0]]);
+                    }
                 }
                 foreach (var skillnode in Skillnodes)
                 {

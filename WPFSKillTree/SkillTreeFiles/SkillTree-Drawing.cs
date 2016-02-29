@@ -10,6 +10,7 @@ using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightStat
 using POESKillTree.Views;
 using POESKillTree.Utils;
 using POESKillTree.Model;
+using System.Text.RegularExpressions;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -198,7 +199,14 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 else
                 {
-                    if (!n1.Name.Contains("Path of the Witch") && !n1.Name.Contains("Path of the Shadow") && !n1.Name.Contains("Path of the Ranger") && !n1.Name.Contains("Path of the Duelist") && !n1.Name.Contains("Path of the Marauder") && !n1.Name.Contains("Path of the Templar"))
+                    Regex regexString = new Regex(@"Can Allocate Passives from the .* starting point");
+                    var draw = true;
+                    foreach(var attibute in n1.attributes)
+                    {
+                        if(regexString.IsMatch(attibute))
+                            draw = false;
+                    }
+                    if (draw)
                         dc.DrawLine(pen2, n1.Position, n2.Position);
                 }
             }
