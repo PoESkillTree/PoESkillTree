@@ -48,9 +48,9 @@ namespace POESKillTree.SkillTreeFiles
             {"+# to maximum Mana", 36},
             {"+# to maximum Life", 38},
             {"Evasion Rating: #", 53},
-            {"+# Maximum Endurance Charge", 3},
-            {"+# Maximum Frenzy Charge", 3},
-            {"+# Maximum Power Charge", 3},
+            {"+# to Maximum Endurance Charges", 3},
+            {"+# to Maximum Frenzy Charges", 3},
+            {"+# to Maximum Power Charges", 3},
             {"#% Additional Elemental Resistance per Endurance Charge", 4},
             {"#% Physical Damage Reduction per Endurance Charge", 4},
             {"#% Attack Speed Increase per Frenzy Charge", 4},
@@ -65,6 +65,14 @@ namespace POESKillTree.SkillTreeFiles
                "+# to Strength and Intelligence", 
                new List<string> {"+# to Strength", "+# to Intelligence"} 
             },
+            {
+                "+# to Strength and Dexterity",
+                new List<string> {"+# to Strength", "+# to Dexterity"}
+            },
+            {
+                "+# to Dexterity and Intelligence",
+                new List<string> {"+# to Dexterity", "+# to Intelligence"}
+            }
         };
 
         public static readonly Dictionary<string, string> RenameImplicitAttributes = new Dictionary<string, string>
