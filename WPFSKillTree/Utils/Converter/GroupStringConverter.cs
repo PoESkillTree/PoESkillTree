@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Data;
 using POESKillTree.Localization;
 using POESKillTree.ViewModels;
@@ -10,9 +12,10 @@ namespace POESKillTree.Utils.Converter
 {
     [ValueConversion(typeof (string), typeof (string))]
     //list view sorter here
-    public class GroupStringConverter : IValueConverter
+    public class GroupStringConverter : IValueConverter, IComparer
     {
         public Dictionary<string, AttributeGroup> AttributeGroups = new Dictionary<string, AttributeGroup>();
+        private List<string[]> CustomGroups = new List<string[]>();
         private static readonly string Keystone = L10n.Message("Keystone");
         private static readonly string Weapon = L10n.Message("Weapon");
         private static readonly string Charges = L10n.Message("Charges");
@@ -28,7 +31,9 @@ namespace POESKillTree.Utils.Converter
         private static readonly string Defense = L10n.Message("Defense");
         private static readonly string Spell = L10n.Message("Spell");
         private static readonly string CoreAttributes = L10n.Message("Core Attributes");
-        private static readonly List<string[]> Groups = new List<string[]>
+        private static readonly string MiscLabel = "Everything Else";
+        private static readonly string DecimalRegex = "\\d+[\\.\\d*]?";
+        private static readonly List<string[]> DefaultGroups = new List<string[]>
         {
             new[] {"Share Endurance, Frenzy and Power Charges with nearby party members", Keystone},
             new[] {"and Endurance Charges on Hit with Claws", Weapon},
@@ -240,24 +245,152 @@ namespace POESKillTree.Utils.Converter
 
         public GroupStringConverter()
         {
-            if (File.Exists("groups.txt"))
+            /*if (File.Exists("groups.txt"))
             {
-                Groups.Clear();
+                DefaultGroups.Clear();
                 foreach (string s in File.ReadAllLines("groups.txt"))
                 {
                     string[] sa = s.Split(',');
-                    Groups.Add(sa);
+                    DefaultGroups.Add(sa);
                 }
-            }
-
-            foreach (var group in Groups)
+            }*/
+            CustomGroups = new List<string[]>();
+            foreach (var group in DefaultGroups)
             {
                 if (!AttributeGroups.ContainsKey(group[1]))
                 {
                     AttributeGroups.Add(group[1], new AttributeGroup(group[1]));
                 }
             }
-            AttributeGroups.Add("Everything else", new AttributeGroup("Everything else"));
+            foreach (var group in CustomGroups)
+            {
+                if (!AttributeGroups.ContainsKey(group[1]))
+                {
+                    AttributeGroups.Add(group[1], new AttributeGroup("Custom: "+group[1]));
+                }
+            }
+            AttributeGroups.Add(MiscLabel, new AttributeGroup(MiscLabel));
+        }
+
+        public List<string[]> CopyCustomGroups()
+        {
+            List<string[]> deepcopy = new List<string[]>();
+            foreach (var gp in CustomGroups)
+            {
+                deepcopy.Add((string[])gp.Clone());
+            }
+            return deepcopy;
+        }
+
+        public void ResetGroups(List<string[]> newgroups)
+        {
+            CustomGroups = new List<string[]>();
+            foreach (var gp in newgroups)
+            {
+                CustomGroups.Add((string[])gp.Clone());
+            }
+
+            AttributeGroups = new Dictionary<string, AttributeGroup>();
+            foreach (var group in DefaultGroups)
+            {
+                if (!AttributeGroups.ContainsKey(group[1]))
+                {
+                    AttributeGroups.Add(group[1], new AttributeGroup(group[1]));
+                }
+            }
+            foreach (var group in CustomGroups)
+            {
+                if (!AttributeGroups.ContainsKey(group[1]))
+                {
+                    AttributeGroups.Add(group[1], new AttributeGroup("Custom: " + group[1]));
+                }
+            }
+            AttributeGroups.Add(MiscLabel, new AttributeGroup(MiscLabel));
+        }
+
+        public void AddGroup(string groupname, string[] attributes)
+        {
+            if (!AttributeGroups.ContainsKey(groupname))
+            {
+                AttributeGroups.Add(groupname, new AttributeGroup("Custom: "+groupname));
+            }
+            foreach (string attr in attributes)
+            {
+                AddAttributeToGroup(attr, groupname);
+            }
+        }
+
+        private void AddAttributeToGroup(string attribute, string groupname)
+        {
+            //Remove it from any existing custom groups first
+            RemoveFromGroup(new string[] { attribute });
+            CustomGroups.Insert(0, new string[] { attribute, groupname });
+        }
+
+        public void RemoveFromGroup(string[] attributes)
+        {
+            List<string[]> linesToRemove = new List<string[]>();
+            foreach (string attr in attributes)
+            {
+                foreach (var gp in CustomGroups)
+                {
+                    if (new NumberLessStringComparer().Compare(attr.ToLower(), gp[0].ToLower()) == 0)
+                    {
+                        linesToRemove.Add(gp);
+                    }
+                }
+            }
+            foreach (string[] line in linesToRemove)
+            {
+                CustomGroups.Remove(line);
+            }
+        }
+
+        public void DeleteGroup(string groupname)
+        {
+            List<string[]> linesToRemove = new List<string[]>();
+            foreach (var gp in CustomGroups)
+            {
+                if (groupname.ToLower().Equals(gp[1].ToLower()))
+                {
+                    linesToRemove.Add(gp);
+                }
+            }
+            foreach (string[] line in linesToRemove)
+            {
+                CustomGroups.Remove(line);
+            }
+            AttributeGroups.Remove(groupname);
+        }
+
+        public void UpdateGroupNames(List<POESKillTree.ViewModels.Attribute> attrlist)
+        {
+            Dictionary<string, Decimal> groupTotals = new Dictionary<string, Decimal>();
+            foreach (var gp in CustomGroups)
+            {
+                foreach (POESKillTree.ViewModels.Attribute attr in attrlist)
+                {
+                    if (new NumberLessStringComparer().Compare(attr.Text.ToLower(), gp[0].ToLower()) == 0)
+                    {
+                        Match matchResult = Regex.Match(attr.Text, DecimalRegex);
+                        if (matchResult.Success)
+                        {
+                            if (!groupTotals.ContainsKey(gp[1]))
+                                groupTotals.Add(gp[1], 0);
+                            groupTotals[gp[1]] += Decimal.Parse(matchResult.Value);
+                        }
+                    }
+                }
+            }
+
+            foreach (string key in groupTotals.Keys)
+            {
+                if (AttributeGroups.ContainsKey(key))
+                {
+                    AttributeGroups[key].GroupName = "Custom: "+key.Replace("#", groupTotals[key].ToString());
+                }
+            }
+            
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -265,16 +398,93 @@ namespace POESKillTree.Utils.Converter
             return Convert(value.ToString());
         }
 
+        public int Compare(object a, object b)
+        {
+            string attr1 = ((POESKillTree.ViewModels.Attribute)a).ToString();
+            string attr2 = ((POESKillTree.ViewModels.Attribute)b).ToString();
+            //find the group names and types that the attributes belong in
+            //2 = misc group, 1 = default group, 0 = custom group
+            int group1 = 2;
+            int group2 = 2;
+            string attrgroup1 = MiscLabel;
+            string attrgroup2 = MiscLabel;
+            foreach (var gp in CustomGroups)
+            {
+                if (new NumberLessStringComparer().Compare(attr1.ToLower(), gp[0].ToLower()) == 0)
+                {
+                    attrgroup1 = gp[1];
+                    group1 = 0;
+                    break;
+                }
+            }
+            if (group1 == 2) { 
+                foreach (var gp in DefaultGroups)
+                {
+                    if (attr1.ToLower().Contains(gp[0].ToLower()))
+                    {
+                        attrgroup1 = gp[1];
+                        group1 = 1;
+                        break;
+                    }
+                }
+            }
+            foreach (var gp in CustomGroups)
+            {
+                if (new NumberLessStringComparer().Compare(attr2.ToLower(), gp[0].ToLower()) == 0)
+                {
+                    attrgroup2 = gp[1];
+                    group2 = 0;
+                    break;
+                }
+            }
+            if (group2 == 2)
+            {
+                foreach (var gp in DefaultGroups)
+                {
+                    if (attr2.ToLower().Contains(gp[0].ToLower()))
+                    {
+                        attrgroup2 = gp[1];
+                        group2 = 1;
+                        break;
+                    }
+                }
+            }
+
+            //primary: if group types are different, sort by group type - custom first, then defaults, then misc
+            if (group1 != group2)
+            {
+                return group1 - group2;
+            }
+            //secondary: if groups are different, sort by group names, alphabetically, excluding numbers
+            if (!attrgroup1.Equals(attrgroup2))
+            {
+                attrgroup1 = Regex.Replace(attrgroup1, DecimalRegex, "#");
+                attrgroup2 = Regex.Replace(attrgroup2, DecimalRegex, "#");
+                return attrgroup1.CompareTo(attrgroup2);
+            }
+            //tertiary: if in the same group, sort by attribute string, alphabetically, excluding numbers
+            attr1 = Regex.Replace(attr1, DecimalRegex, "#");
+            attr2 = Regex.Replace(attr2, DecimalRegex, "#");
+            return attr1.CompareTo(attr2);
+        }
+
         public AttributeGroup Convert(string s)
         {
-            foreach (var gp in Groups)
+            foreach (var gp in CustomGroups)
+            {
+                if (new NumberLessStringComparer().Compare(s.ToLower(), gp[0].ToLower()) == 0)
+                {
+                    return AttributeGroups[gp[1]];
+                }
+            }
+            foreach (var gp in DefaultGroups)
             {
                 if (s.ToLower().Contains(gp[0].ToLower()))
                 {
                     return AttributeGroups[gp[1]];
                 }
             }
-            return AttributeGroups["Everything else"];
+            return AttributeGroups[MiscLabel];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
