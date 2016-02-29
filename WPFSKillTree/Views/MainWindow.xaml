@@ -21,8 +21,6 @@
         >
     <Window.Resources>
         <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
-        <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
-
         <Style x:Key="ContainerStyleIsExpanded" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
                 <Setter.Value>

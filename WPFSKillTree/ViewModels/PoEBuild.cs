@@ -41,6 +41,7 @@ namespace POESKillTree.ViewModels
         public PoEBuild()
         {
             Visible = true;
+            CustomGroups = new List<string[]>();
         }
 
         public PoEBuild(string name, string poeClass, string pointsUsed, string url, string note)
@@ -50,6 +51,7 @@ namespace POESKillTree.ViewModels
             PointsUsed = pointsUsed;
             Url = url;
             Note = note;
+            CustomGroups = new List<string[]>();
         }
 
         public override string ToString()
@@ -70,7 +72,7 @@ namespace POESKillTree.ViewModels
                 Url = build.Url,
                 Note = build.Note,
                 ItemData = build.ItemData,
-                CustomGroups = new List<string[]>(build.CustomGroups)
+                CustomGroups = new List<string[]>(build.CustomGroups),
                 AscendantAdditionalStart = build.AscendantAdditionalStart
             };
         }

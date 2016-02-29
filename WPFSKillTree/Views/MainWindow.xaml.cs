@@ -1727,7 +1727,7 @@ namespace POESKillTree.Views
                     AccountName = formBuildName.GetAccountName(),
                     ItemData = formBuildName.GetItemData(),
                     LastUpdated = DateTime.Now,
-                    CustomGroups = _attributeGroups.CopyCustomGroups()
+                    CustomGroups = _attributeGroups.CopyCustomGroups(),
                     AscendantAdditionalStart = AscendantAdditionalStart.None
                 };
                 SetCurrentBuild(newBuild);
