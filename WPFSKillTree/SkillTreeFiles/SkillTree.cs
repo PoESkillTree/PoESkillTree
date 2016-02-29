@@ -368,7 +368,7 @@ namespace POESKillTree.SkillTreeFiles
                         }
                         foreach (int linkedNode in nd.ot)
                         {
-                            if (!_startNodeDictionary.ContainsKey(nd.id))
+                            if (!_startNodeDictionary.ContainsKey(nd.id) && !nd.isAscendancyStart)
                             {
                                 _startNodeDictionary.Add(linkedNode, nd.id);
                             }
@@ -409,7 +409,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     foreach (var snn in skillnode.Value.Neighbor)
                     {
-                        if (snn.IsAscendancyStart)
+                        if (snn.IsAscendancyStart && skillnode.Value.LinkId.Contains(snn.Id))
                             continue;
                         skillnode.Value.VisibleNeighbors.Add(snn);
                     }

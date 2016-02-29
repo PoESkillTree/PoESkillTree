@@ -178,26 +178,29 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawConnection(DrawingContext dc, Pen pen2, SkillNode n1, SkillNode n2)
         {
-            if (n1.SkillNodeGroup == n2.SkillNodeGroup && n1.Orbit == n2.Orbit)
+            if (n1.VisibleNeighbors.Contains(n2) && n2.VisibleNeighbors.Contains(n1))
             {
-                if (n1.Arc - n2.Arc > 0 && n1.Arc - n2.Arc <= Math.PI ||
-                    n1.Arc - n2.Arc < -Math.PI)
+                if (n1.SkillNodeGroup == n2.SkillNodeGroup && n1.Orbit == n2.Orbit)
                 {
-                    dc.DrawArc(null, pen2, n1.Position, n2.Position,
-                        new Size(SkillNode.OrbitRadii[n1.Orbit],
-                            SkillNode.OrbitRadii[n1.Orbit]));
+                    if (n1.Arc - n2.Arc > 0 && n1.Arc - n2.Arc <= Math.PI ||
+                        n1.Arc - n2.Arc < -Math.PI)
+                    {
+                        dc.DrawArc(null, pen2, n1.Position, n2.Position,
+                            new Size(SkillNode.OrbitRadii[n1.Orbit],
+                                SkillNode.OrbitRadii[n1.Orbit]));
+                    }
+                    else
+                    {
+                        dc.DrawArc(null, pen2, n2.Position, n1.Position,
+                            new Size(SkillNode.OrbitRadii[n1.Orbit],
+                                SkillNode.OrbitRadii[n1.Orbit]));
+                    }
                 }
                 else
                 {
-                    dc.DrawArc(null, pen2, n2.Position, n1.Position,
-                        new Size(SkillNode.OrbitRadii[n1.Orbit],
-                            SkillNode.OrbitRadii[n1.Orbit]));
+                    if (!n1.Name.Contains("Path of the Witch") && !n1.Name.Contains("Path of the Shadow") && !n1.Name.Contains("Path of the Ranger") && !n1.Name.Contains("Path of the Duelist") && !n1.Name.Contains("Path of the Marauder") && !n1.Name.Contains("Path of the Templar"))
+                        dc.DrawLine(pen2, n1.Position, n2.Position);
                 }
-            }
-            else
-            {
-                if (n2.IsAscendancyStart != true && !n1.Name.Contains("Path of the Witch") && !n1.Name.Contains("Path of the Shadow") && !n1.Name.Contains("Path of the Ranger") && !n1.Name.Contains("Path of the Duelist") && !n1.Name.Contains("Path of the Marauder") && !n1.Name.Contains("Path of the Templar"))
-                    dc.DrawLine(pen2, n1.Position, n2.Position);
             }
         }
 
@@ -542,12 +545,13 @@ namespace POESKillTree.SkillTreeFiles
             using (DrawingContext dc = picPathOverlay.RenderOpen())
             {
                 // Draw a connection from a skilled node to the first path node.
-                //var skilledNeighbors =
-                   // Skillnodes[path[0]].VisibleNeighbors.Where(sn => SkilledNodes.Contains(sn.Id)).ToList();
+                var skilledNeighbors = new List<SkillNode>();
+                if(path.Count > 0)
+                    skilledNeighbors = Skillnodes[path[0]].VisibleNeighbors.Where(sn => SkilledNodes.Contains(sn.Id)).ToList();
                 // The node might not be connected to a skilled node through visible neighbors
                 // in which case we don't want to draw a connection anyway.
-                //if (skilledNeighbors.Any())
-                    //DrawConnection(dc, pen2, skilledNeighbors.First(), Skillnodes[path[0]]);
+                if (skilledNeighbors.Any())
+                    DrawConnection(dc, pen2, skilledNeighbors.First(), Skillnodes[path[0]]);
                 
                 // Draw connections for the path itself (only those that should be visible).
                 for (var i = 0; i < path.Count - 1; i++)
