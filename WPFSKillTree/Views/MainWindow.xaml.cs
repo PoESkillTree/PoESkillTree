@@ -133,7 +133,6 @@ namespace POESKillTree.Views
         private AdornerLayer _layer;
 
         private MouseButton _lastMouseButton;
-        private String _highlightedAttribute = "";
 
         /// <summary>
         /// The node of the SkillTree that currently has the mouse over it.
@@ -369,6 +368,16 @@ namespace POESKillTree.Views
             ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();
 
+            var cmHighlight = new MenuItem
+            {
+                Header = L10n.Message("Highlight nodes by attribute")
+            };
+            cmHighlight.Click += HighlightNodesByAttribute;
+            var cmRemoveHighlight = new MenuItem
+            {
+                Header = L10n.Message("Remove highlights by attribute")
+            };
+            cmRemoveHighlight.Click += UnhighlightNodesByAttribute;
             cmCreateGroup = new MenuItem();
             cmCreateGroup.Header = "Create new group";
             cmCreateGroup.Click += CreateGroup;
@@ -384,6 +393,8 @@ namespace POESKillTree.Views
 
             _attributeGroups = new GroupStringConverter();
             _attributeContextMenu = new ContextMenu();
+            _attributeContextMenu.Items.Add(cmHighlight);
+            _attributeContextMenu.Items.Add(cmRemoveHighlight);
             _attributeContextMenu.Items.Add(cmCreateGroup);
             _attributeContextMenu.Items.Add(cmAddToGroup);
             _attributeContextMenu.Items.Add(cmDeleteGroup);
@@ -394,7 +405,6 @@ namespace POESKillTree.Views
             _attributeCollection.CustomSort = _attributeGroups;
             listBox1.ItemsSource = _attributeCollection;
             listBox1.SelectionMode = SelectionMode.Extended;
-            listBox1.PreviewMouseRightButtonDown += IgnoreRightClick;
             listBox1.ContextMenu = _attributeContextMenu;
 
             _allAttributeCollection = new ListCollectionView(_allAttributesList);
@@ -402,7 +412,6 @@ namespace POESKillTree.Views
             _allAttributeCollection.CustomSort = _attributeGroups;
             lbAllAttr.ItemsSource = _allAttributeCollection;
             lbAllAttr.SelectionMode = SelectionMode.Extended;
-            lbAllAttr.PreviewMouseRightButtonDown += IgnoreRightClick;
             lbAllAttr.ContextMenu = _attributeContextMenu;
 
             _defenceCollection = new ListCollectionView(_defenceList);
@@ -1209,18 +1218,22 @@ namespace POESKillTree.Views
             }
         }
 
-        private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void HighlightNodesByAttribute(object sender, RoutedEventArgs e)
         {
-            //Sectoidfodder - Disabled for now because it clashes w/ context menu functionality 
-            /*
+            var listBox = _attributeContextMenu.PlacementTarget as ListBox;
+            if (listBox == null || !listBox.IsVisible) return;
+
             var newHighlightedAttribute =
-                "^" + Regex.Replace(listBox1.SelectedItem.ToString()
+                "^" + Regex.Replace(listBox.SelectedItem.ToString()
                         .Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
                         .Replace(@"%", @"\%"), @"[0-9]*\.?[0-9]+", @"[0-9]*\.?[0-9]+") + "$";
-            _highlightedAttribute = newHighlightedAttribute == _highlightedAttribute ? "" : newHighlightedAttribute;
-            Tree.HighlightNodesBySearch(_highlightedAttribute, true, NodeHighlighter.HighlightState.FromAttrib);
-            */
+            Tree.HighlightNodesBySearch(newHighlightedAttribute, true, NodeHighlighter.HighlightState.FromAttrib);
+        }
+
+        private void UnhighlightNodesByAttribute(object sender, RoutedEventArgs e)
+        {
+            Tree.HighlightNodesBySearch("", true, NodeHighlighter.HighlightState.FromAttrib);
         }
 
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)

@@ -712,11 +712,6 @@
                             </TabItem.Header>
                             <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                                 <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <ContentControl Content="{Binding Converter={StaticResource attributeToTextblockConverter}}" MouseRightButtonUp="TextBlock_MouseRightButtonUp"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
                                     <ListBox.GroupStyle>
                                         <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
                                     </ListBox.GroupStyle>
