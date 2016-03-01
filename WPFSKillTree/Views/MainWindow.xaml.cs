@@ -26,7 +26,6 @@ using MahApps.Metro.Controls;
 using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
-using POESKillTree.Model.Ascendancy;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
@@ -134,7 +133,6 @@ namespace POESKillTree.Views
         private AdornerLayer _layer;
 
         private MouseButton _lastMouseButton;
-        private String _highlightedAttribute = "";
 
         /// <summary>
         /// The node of the SkillTree that currently has the mouse over it.
@@ -158,53 +156,6 @@ namespace POESKillTree.Views
                 if (PropertyChanged != null)
                 {
                     PropertyChanged(this, new PropertyChangedEventArgs("NoAsyncTaskRunning"));
-                }
-            }
-        }
-
-        private AscendantAdditionalStart _ascendantAdditionalStart = AscendantAdditionalStart.None;
-        /// <summary>
-        /// Gets or sets the additional class start nodes selected from the Scion Ascendant subclass.
-        /// </summary>
-        public AscendantAdditionalStart AscendantAdditionalStart
-        {
-            get { return _ascendantAdditionalStart; }
-            set
-            {
-                if (_ascendantAdditionalStart == value) return;
-
-                if (_ascendantAdditionalStart != AscendantAdditionalStart.None)
-                {
-                    Tree.RemoveStartNodeConnectionToScion((int)_ascendantAdditionalStart);
-                }
-                if (value != AscendantAdditionalStart.None)
-                {
-                    Tree.ConnectScionWithStartNodesOf((int) value);
-                }
-
-                _ascendantAdditionalStart = value;
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("AscendantAdditionalStart"));
-                }
-            }
-        }
-
-        private bool _isScion;
-        /// <summary>
-        /// True iff the currently selected class is Scion.
-        /// </summary>
-        public bool IsScion
-        {
-            get { return _isScion; }
-            private set
-            {
-                if (_isScion == value) return;
-
-                _isScion = value;
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("IsScion"));
                 }
             }
         }
@@ -417,6 +368,16 @@ namespace POESKillTree.Views
             ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();
 
+            var cmHighlight = new MenuItem
+            {
+                Header = L10n.Message("Highlight nodes by attribute")
+            };
+            cmHighlight.Click += HighlightNodesByAttribute;
+            var cmRemoveHighlight = new MenuItem
+            {
+                Header = L10n.Message("Remove highlights by attribute")
+            };
+            cmRemoveHighlight.Click += UnhighlightNodesByAttribute;
             cmCreateGroup = new MenuItem();
             cmCreateGroup.Header = "Create new group";
             cmCreateGroup.Click += CreateGroup;
@@ -432,6 +393,8 @@ namespace POESKillTree.Views
 
             _attributeGroups = new GroupStringConverter();
             _attributeContextMenu = new ContextMenu();
+            _attributeContextMenu.Items.Add(cmHighlight);
+            _attributeContextMenu.Items.Add(cmRemoveHighlight);
             _attributeContextMenu.Items.Add(cmCreateGroup);
             _attributeContextMenu.Items.Add(cmAddToGroup);
             _attributeContextMenu.Items.Add(cmDeleteGroup);
@@ -442,7 +405,6 @@ namespace POESKillTree.Views
             _attributeCollection.CustomSort = _attributeGroups;
             listBox1.ItemsSource = _attributeCollection;
             listBox1.SelectionMode = SelectionMode.Extended;
-            listBox1.PreviewMouseRightButtonDown += IgnoreRightClick;
             listBox1.ContextMenu = _attributeContextMenu;
 
             _allAttributeCollection = new ListCollectionView(_allAttributesList);
@@ -450,7 +412,6 @@ namespace POESKillTree.Views
             _allAttributeCollection.CustomSort = _attributeGroups;
             lbAllAttr.ItemsSource = _allAttributeCollection;
             lbAllAttr.SelectionMode = SelectionMode.Extended;
-            lbAllAttr.PreviewMouseRightButtonDown += IgnoreRightClick;
             lbAllAttr.ContextMenu = _attributeContextMenu;
 
             _defenceCollection = new ListCollectionView(_defenceList);
@@ -473,19 +434,6 @@ namespace POESKillTree.Views
             SetAccent(_persistentData.Options.Accent);
 
             Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
-            Tree.PropertyChanged += (o, args) =>
-            {
-                if (args.PropertyName == "Chartype")
-                {
-                    if (IsScion)
-                    {
-                        // Reset subclass if switching from Scion to another class.
-                        AscendantAdditionalStart = AscendantAdditionalStart.None;
-                    }
-                    IsScion = Tree.Chartype == 0;
-                }
-            };
-            IsScion = Tree.Chartype == 0;
             recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
@@ -601,7 +549,6 @@ namespace POESKillTree.Views
 
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
             _persistentData.CurrentBuild.Level = GetLevelAsString();
-            _persistentData.CurrentBuild.AscendantAdditionalStart = AscendantAdditionalStart;
             _persistentData.SetBuilds(lvSavedBuilds.Items);
             _persistentData.StashBookmarks = Stash.Bookmarks.ToList();
 
@@ -1271,18 +1218,22 @@ namespace POESKillTree.Views
             }
         }
 
-        private void TextBlock_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void HighlightNodesByAttribute(object sender, RoutedEventArgs e)
         {
-            //Sectoidfodder - Disabled for now because it clashes w/ context menu functionality 
-            /*
+            var listBox = _attributeContextMenu.PlacementTarget as ListBox;
+            if (listBox == null || !listBox.IsVisible) return;
+
             var newHighlightedAttribute =
-                "^" + Regex.Replace(listBox1.SelectedItem.ToString()
+                "^" + Regex.Replace(listBox.SelectedItem.ToString()
                         .Replace(@"+", @"\+")
                         .Replace(@"-", @"\-")
                         .Replace(@"%", @"\%"), @"[0-9]*\.?[0-9]+", @"[0-9]*\.?[0-9]+") + "$";
-            _highlightedAttribute = newHighlightedAttribute == _highlightedAttribute ? "" : newHighlightedAttribute;
-            Tree.HighlightNodesBySearch(_highlightedAttribute, true, NodeHighlighter.HighlightState.FromAttrib);
-            */
+            Tree.HighlightNodesBySearch(newHighlightedAttribute, true, NodeHighlighter.HighlightState.FromAttrib);
+        }
+
+        private void UnhighlightNodesByAttribute(object sender, RoutedEventArgs e)
+        {
+            Tree.HighlightNodesBySearch("", true, NodeHighlighter.HighlightState.FromAttrib);
         }
 
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
@@ -1671,7 +1622,6 @@ namespace POESKillTree.Views
                 currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
                 currentOpenBuild.LastUpdated = DateTime.Now;
                 currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
-                currentOpenBuild.AscendantAdditionalStart = AscendantAdditionalStart;
                 SetCurrentBuild(currentOpenBuild);
                 SaveBuildsToFile();
             }
@@ -1738,7 +1688,6 @@ namespace POESKillTree.Views
             SetLevelFromString(build.Level);
             LoadItemData(build.ItemData);
             SetCustomGroups(build.CustomGroups);
-            AscendantAdditionalStart = build.AscendantAdditionalStart;
         }
 
         private void NewBuild()
@@ -1771,8 +1720,7 @@ namespace POESKillTree.Views
                     AccountName = formBuildName.GetAccountName(),
                     ItemData = formBuildName.GetItemData(),
                     LastUpdated = DateTime.Now,
-                    CustomGroups = _attributeGroups.CopyCustomGroups(),
-                    AscendantAdditionalStart = AscendantAdditionalStart.None
+                    CustomGroups = _attributeGroups.CopyCustomGroups()
                 };
                 SetCurrentBuild(newBuild);
                 lvSavedBuilds.Items.Add(newBuild);
