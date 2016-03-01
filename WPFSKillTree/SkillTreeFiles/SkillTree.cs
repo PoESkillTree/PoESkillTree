@@ -38,6 +38,12 @@ namespace POESKillTree.SkillTreeFiles
         public static readonly float DexPerEvas = 5; //%
         public static readonly string TreeAddress = "https://www.pathofexile.com/passive-skill-tree/";
 
+        /// <summary>
+        /// Nodes with an attribute matching this regex are one of the "Path of the ..." nodes connection Scion
+        /// Ascendant with other classes.
+        /// </summary>
+        private static readonly Regex AscendantClassStartRegex = new Regex(@"Can Allocate Passives from the .* starting point");
+
         // The absolute path of Assets folder (contains trailing directory separator).
         public static string AssetsFolderPath;
         // The absolute path of Data folder (contains trailing directory separator).
@@ -686,52 +692,6 @@ namespace POESKillTree.SkillTreeFiles
             return skillTree;
         }
 
-        /// <summary>
-        /// Adds (invisible) connections between the Scion's root node and the nodes adjacent to the
-        /// root node of chartype's root node.
-        /// </summary>
-        /// <param name="chartype">Character type whose starting nodes should be connected to the current root node.</param>
-        public void ConnectScionWithStartNodesOf(int chartype)
-        {
-            var scion = Skillnodes[(ushort)rootNodeClassDictionary[CharacterNames.Scion]];
-            var start = rootNodeClassDictionary[CharName[chartype]];
-            ConnectNodes(scion, Skillnodes[(ushort)start].Neighbor);
-        }
-
-        /// <summary>
-        /// Adds (invisible) connections between n1 and all nodes in ns.
-        /// </summary>
-        private static void ConnectNodes(SkillNode n1, IEnumerable<SkillNode> ns)
-        {
-            foreach (var n2 in ns)
-            {
-                n1.Neighbor.Add(n2);
-                n2.Neighbor.Add(n1);
-            }
-        }
-
-        /// <summary>
-        /// Removes the connections added by <see cref="ConnectScionWithStartNodesOf"/>s.
-        /// </summary>
-        public void RemoveStartNodeConnectionToScion(int chartype)
-        {
-            var scion = Skillnodes[(ushort) rootNodeClassDictionary[CharacterNames.Scion]];
-            var start = rootNodeClassDictionary[CharName[chartype]];
-            UnconnectNodes(scion, Skillnodes[(ushort)start].Neighbor);
-        }
-
-        /// <summary>
-        /// Removes the connections between n1 and all nodes in ns.
-        /// </summary>
-        private static void UnconnectNodes(SkillNode n1, IEnumerable<SkillNode> ns)
-        {
-            foreach (var n2 in ns)
-            {
-                n1.Neighbor.Remove(n2);
-                n2.Neighbor.Remove(n1);
-            }
-        }
-
         public void ForceRefundNode(ushort nodeId)
         {
             if (!SkilledNodes.Remove(nodeId))
@@ -844,6 +804,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (Skillnodes[newNode].Spc.HasValue)
                         continue;
                     if (Skillnodes[newNode].IsMastery)
+                        continue;
+                    if (Skillnodes[newNode].attributes.Any(s => AscendantClassStartRegex.IsMatch(s)))
                         continue;
                     distance.Add(connection, dis + 1);
                     newOnes.Enqueue(connection);

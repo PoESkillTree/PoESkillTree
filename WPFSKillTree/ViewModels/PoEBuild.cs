@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using POESKillTree.Localization;
-using POESKillTree.Model.Ascendancy;
 
 namespace POESKillTree.ViewModels
 {
@@ -20,7 +19,6 @@ namespace POESKillTree.ViewModels
         public string ItemData { get; set; }
         public DateTime LastUpdated { get; set; }
         public List<string[]> CustomGroups { get; set; }
-        public AscendantAdditionalStart AscendantAdditionalStart { get; set; }
         public bool CurrentlyOpen { get; set; }
 
         [XmlIgnoreAttribute]
@@ -82,8 +80,7 @@ namespace POESKillTree.ViewModels
                 Url = build.Url,
                 Note = build.Note,
                 ItemData = build.ItemData,
-                CustomGroups = new List<string[]>(build.CustomGroups),
-                AscendantAdditionalStart = build.AscendantAdditionalStart
+                CustomGroups = new List<string[]>(build.CustomGroups)
             };
         }
     }

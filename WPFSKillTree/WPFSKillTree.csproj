@@ -284,7 +284,6 @@
     <Compile Include="TreeGenerator\Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Ascendancy\AscendantAdditionalStart.cs" />
     <Compile Include="Views\CraftWindow.xaml.cs">
       <DependentUpon>CraftWindow.xaml</DependentUpon>
     </Compile>
