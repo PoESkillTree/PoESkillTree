@@ -178,11 +178,19 @@ namespace POESKillTree.TreeGenerator.Algorithm
             _distancesFast = new int[_cacheSize, _cacheSize];
             _pathsFast = new ushort[_cacheSize, _cacheSize][];
 
-            FullyCached = true;
-            foreach (var node in nodes)
+
+            try
             {
-                Dijkstra(node);
+                foreach (var node in nodes)
+                {
+                    Dijkstra(node);
+                }
             }
+            catch (GraphNotConnectedException)
+            {
+                throw new InvalidOperationException("The graph is disconnected.");
+            }
+            FullyCached = true;
 
             // No longer needed.
             _distances = null;
@@ -289,6 +297,13 @@ namespace POESKillTree.TreeGenerator.Algorithm
             // Target node was not found because start and target are not connected.
             if (target != null)
                 throw new GraphNotConnectedException();
+
+            // Check if all nodes were reached
+            foreach (var otherNode in _nodes)
+            {
+                if (_pathsFast[start.DistancesIndex, otherNode.DistancesIndex] == null)
+                    throw new GraphNotConnectedException();
+            }
         }
 
         /// <summary>
