@@ -177,7 +177,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             }
             _distancesFast = new int[_cacheSize, _cacheSize];
             _pathsFast = new ushort[_cacheSize, _cacheSize][];
-
+            
             FullyCached = true;
             foreach (var node in nodes)
             {
