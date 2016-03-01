@@ -74,13 +74,16 @@ namespace POESKillTree.ViewModels
                 Name = build.Name,
                 CharacterName = build.CharacterName,
                 AccountName = build.AccountName,
+                League = build.League,
                 Level = build.Level,
                 Class = build.Class,
                 PointsUsed = build.PointsUsed,
                 Url = build.Url,
                 Note = build.Note,
                 ItemData = build.ItemData,
-                CustomGroups = new List<string[]>(build.CustomGroups)
+                LastUpdated = build.LastUpdated,
+                CustomGroups = new List<string[]>(build.CustomGroups),
+                CurrentlyOpen = build.CurrentlyOpen
             };
         }
     }
