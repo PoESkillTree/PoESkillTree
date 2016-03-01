@@ -2328,7 +2328,7 @@ namespace POESKillTree.Views
             }
 
             Tree.DrawNodeBaseSurroundHighlight();
-            UpdateAttributeList();
+            UpdateUI();
         }
 
         private void ToggleTreeComparison_Click(object sender, RoutedEventArgs e)

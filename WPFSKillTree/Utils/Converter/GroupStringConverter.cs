@@ -32,7 +32,7 @@ namespace POESKillTree.Utils.Converter
         private static readonly string Spell = L10n.Message("Spell");
         private static readonly string CoreAttributes = L10n.Message("Core Attributes");
         private static readonly string MiscLabel = "Everything Else";
-        private static readonly string DecimalRegex = "\\d+[\\.\\d*]?";
+        private static readonly string DecimalRegex = "\\d+(\\.\\d*)?";
         private static readonly List<string[]> DefaultGroups = new List<string[]>
         {
             new[] {"Share Endurance, Frenzy and Power Charges with nearby party members", Keystone},
@@ -356,9 +356,13 @@ namespace POESKillTree.Utils.Converter
 
         public void UpdateGroupNames(List<POESKillTree.ViewModels.Attribute> attrlist)
         {
-            Dictionary<string, Decimal> groupTotals = new Dictionary<string, Decimal>();
+            Dictionary<string, float> groupTotals = new Dictionary<string, float>();
+            Dictionary<string, float> groupDeltas = new Dictionary<string, float>();
             foreach (var gp in CustomGroups)
             {
+                //only sum for the groups that need it
+                if (!gp[1].Contains("#"))
+                    continue;
                 foreach (POESKillTree.ViewModels.Attribute attr in attrlist)
                 {
                     if (new NumberLessStringComparer().Compare(attr.Text.ToLower(), gp[0].ToLower()) == 0)
@@ -367,18 +371,31 @@ namespace POESKillTree.Utils.Converter
                         if (matchResult.Success)
                         {
                             if (!groupTotals.ContainsKey(gp[1]))
+                            {
                                 groupTotals.Add(gp[1], 0);
-                            groupTotals[gp[1]] += Decimal.Parse(matchResult.Value);
+                                groupDeltas.Add(gp[1], 0);
+                            }
+                            groupTotals[gp[1]] += (float)Decimal.Parse(matchResult.Value);
+                            if (attr.Deltas.Length > 0)
+                                groupDeltas[gp[1]] += attr.Deltas[0];
                         }
+
                     }
                 }
             }
 
+            string deltaString;
             foreach (string key in groupTotals.Keys)
             {
                 if (AttributeGroups.ContainsKey(key))
                 {
-                    AttributeGroups[key].GroupName = "Custom: "+key.Replace("#", groupTotals[key].ToString());
+                    if (groupDeltas[key] == 0)
+                        deltaString = "";
+                    else if (groupDeltas[key] > 0)
+                        deltaString = " +" + groupDeltas[key].ToString();
+                    else
+                        deltaString = " " + groupDeltas[key].ToString();
+                    AttributeGroups[key].GroupName = "Custom: "+key.Replace("#", groupTotals[key].ToString())+deltaString;
                 }
             }
             
