@@ -507,7 +507,7 @@ namespace POESKillTree.Views
                         tbSkillURL_Redo();
                         break;
                     case Key.S:
-                        SaveNewBuild();
+                        SaveBuild();
                         break;
                     case Key.N:
                         NewBuild();
@@ -526,6 +526,16 @@ namespace POESKillTree.Views
                 {
                     case Key.Q:
                         ToggleCharacterSheet();
+                        break;
+                }
+            }
+
+            if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) == (ModifierKeys.Control | ModifierKeys.Alt))
+            {
+                switch (e.Key)
+                {
+                    case Key.S:
+                        SaveNewBuild();
                         break;
                 }
             }
@@ -1600,35 +1610,14 @@ namespace POESKillTree.Views
             return listViewItem;
         }
 
+        private void btnSaveBuild_Click(object sender, RoutedEventArgs e)
+        {
+            SaveBuild();
+        }
+
         private void btnSaveNewBuild_Click(object sender, RoutedEventArgs e)
         {
             SaveNewBuild();
-        }
-
-        private void btnOverwriteBuild_Click(object sender, RoutedEventArgs e)
-        {
-            var currentOpenBuild =
-                (from PoEBuild build in lvSavedBuilds.Items
-                    where build.CurrentlyOpen
-                    select build).FirstOrDefault();
-            if (currentOpenBuild != null)
-            {
-                currentOpenBuild.Class = cbCharType.Text;
-                currentOpenBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
-                currentOpenBuild.AccountName = _persistentData.CurrentBuild.AccountName;
-                currentOpenBuild.Level = GetLevelAsString();
-                currentOpenBuild.PointsUsed = tbUsedPoints.Text;
-                currentOpenBuild.Url = tbSkillURL.Text;
-                currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
-                currentOpenBuild.LastUpdated = DateTime.Now;
-                currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
-                SetCurrentBuild(currentOpenBuild);
-                SaveBuildsToFile();
-            }
-            else
-            {
-                SaveNewBuild();
-            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -1699,6 +1688,32 @@ namespace POESKillTree.Views
                 Level = "1"
             });
             LoadBuildFromUrl();
+        }
+
+        private void SaveBuild()
+        {
+            var currentOpenBuild =
+                (from PoEBuild build in lvSavedBuilds.Items
+                 where build.CurrentlyOpen
+                 select build).FirstOrDefault();
+            if (currentOpenBuild != null)
+            {
+                currentOpenBuild.Class = cbCharType.Text;
+                currentOpenBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
+                currentOpenBuild.AccountName = _persistentData.CurrentBuild.AccountName;
+                currentOpenBuild.Level = GetLevelAsString();
+                currentOpenBuild.PointsUsed = tbUsedPoints.Text;
+                currentOpenBuild.Url = tbSkillURL.Text;
+                currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
+                currentOpenBuild.LastUpdated = DateTime.Now;
+                currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
+                SetCurrentBuild(currentOpenBuild);
+                SaveBuildsToFile();
+            }
+            else
+            {
+                SaveNewBuild();
+            }
         }
 
         private void SaveNewBuild()
