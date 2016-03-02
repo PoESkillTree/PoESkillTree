@@ -1772,10 +1772,21 @@ namespace POESKillTree.Views
                     SkillTreeImporter.LoadBuildFromPoezone(Tree, tbSkillURL.Text);
                     tbSkillURL.Text = Tree.SaveToURL();
                 }
+                else if (tbSkillURL.Text.Contains("google.com"))
+                {
+                    Match match = Regex.Match(tbSkillURL.Text, @"q=(.*?)&");
+                    if (match.Success)
+                    {
+                        tbSkillURL.Text = match.ToString().Replace("q=", "").Replace("&", "");
+                        LoadBuildFromUrl();
+                    }
+                    else
+                        throw new Exception();
+                }
                 else if (tbSkillURL.Text.Contains("tinyurl.com") || tbSkillURL.Text.Contains("poeurl.com"))
                 {
                     var skillUrl = tbSkillURL.Text.Replace("preview.", "");
-                    if (skillUrl.Contains("poeurl.com"))
+                    if (skillUrl.Contains("poeurl.com") && !skillUrl.Contains("redirect.php"))
                     {
                         skillUrl = skillUrl.Replace("http://poeurl.com/",
                             "http://poeurl.com/redirect.php?url=");
