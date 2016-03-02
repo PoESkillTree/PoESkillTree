@@ -546,6 +546,17 @@ namespace POESKillTree.SkillTreeFiles
             set { SetProperty(ref _level, value); }
         }
 
+        public int GetSkillPointCount()
+        {
+            var usedPoints = 0;
+            foreach (var node in SkilledNodes)
+            {
+                if (Skillnodes[node].ascendancyName == null && !rootNodeList.Contains(node))
+                    usedPoints += 1;
+            }
+            return usedPoints;
+        }
+
         public int Chartype
         {
             get { return _chartype; }

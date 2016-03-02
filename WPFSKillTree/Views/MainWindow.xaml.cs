@@ -1135,13 +1135,7 @@ namespace POESKillTree.Views
                 }
             }
 
-            var usedPoints = 0;
-            foreach (var node in Tree.SkilledNodes)
-            {
-                if (SkillTree.Skillnodes[node].ascendancyName == null && !SkillTree.rootNodeList.Contains(node))
-                    usedPoints += 1;
-            }
-            tbUsedPoints.Text = "" + usedPoints;
+            tbUsedPoints.Text = Tree.GetSkillPointCount();
         }
 
         public void UpdateStatistics()
