@@ -1135,7 +1135,7 @@ namespace POESKillTree.Views
                 }
             }
 
-            tbUsedPoints.Text = Tree.GetSkillPointCount();
+            tbUsedPoints.Text = Tree.GetSkillPointCount().ToString();
         }
 
         public void UpdateStatistics()
