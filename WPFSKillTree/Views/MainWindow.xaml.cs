@@ -255,6 +255,12 @@ namespace POESKillTree.Views
             {
                 attributelist.Add(o.ToString());
             }
+            //Error - at least one attribute must be selected
+            if (attributelist.Count == 0)
+            {
+                Popup.Error(L10n.Message("No attributes selected for new group."));
+                return;
+            }
 
             //Build and show form to enter group name
             var formGroupName = new FormChooseGroupName();
@@ -265,7 +271,7 @@ namespace POESKillTree.Views
                 string name = formGroupName.GetGroupName();
                 if (_attributeGroups.AttributeGroups.ContainsKey(name))
                 {
-                    Popup.Info("A group with that name already exists.");
+                    Popup.Error(L10n.Message("A group with that name already exists."));
                     return;
                 }
 
