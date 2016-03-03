@@ -220,7 +220,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 _tree.SkilledNodes = new HashSet<ushort>(controllerVm.BestSoFar);
             }
             _tree.HighlightedNodes = savedHighlights;
-            _tree.DrawNodeBaseSurroundHighlight();
+            _tree.DrawTreeComparisonHighlight();
             _tree.DrawHighlights();
             _tree.UpdateAvailNodes();
 

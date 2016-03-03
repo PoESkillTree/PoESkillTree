@@ -531,20 +531,9 @@ namespace POESKillTree.SkillTreeFiles
             }
 
 
-            InitNodeSurround();//
-
-            DrawNodeSurround();
-            DrawNodeBaseSurround();
-            InitSkillIconLayers();
-            DrawSkillIconLayer();
-            DrawBackgroundLayer();
-            InitFaceBrushesAndLayer();
-            DrawLinkBackgroundLayer(_links);
-            InitOtherDynamicLayers();
+            InitializeDynamicLayers();
+            DrawDynamicLayers();
             CreateCombineVisual();
-            DrawFaces();
-            DrawAscendancyClasses();
-            //DrawAscendancyButtons();
 
             if (_links != null)
             {
@@ -1254,7 +1243,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
             DrawActiveNodeIcons();
-            DrawNodeSurround();
+            DrawNodeHighlightSurround();
         }
 
         public static Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)

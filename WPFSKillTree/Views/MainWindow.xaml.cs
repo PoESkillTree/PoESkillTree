@@ -2295,7 +2295,7 @@ namespace POESKillTree.Views
                 Tree.HighlightedAttributes = null;
             }
 
-            Tree.DrawNodeBaseSurroundHighlight();
+            Tree.DrawTreeComparisonHighlight();
             UpdateUI();
         }
 
