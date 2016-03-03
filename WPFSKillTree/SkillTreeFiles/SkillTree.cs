@@ -51,7 +51,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public static readonly Dictionary<string, float> BaseAttributes = new Dictionary<string, float>
         {
-            {"+# to maximum Mana", 36},
+            {"+# to maximum Mana", 34},
             {"+# to maximum Life", 38},
             {"Evasion Rating: #", 53},
             {"+# to Maximum Endurance Charges", 3},
@@ -1035,6 +1035,46 @@ namespace POESKillTree.SkillTreeFiles
             float dex = attribs["+# to Dexterity"][0];
             dex = (float)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
             retval["#% increased Evasion Rating"] = new List<float> { dex / DexPerEvas };
+
+            int endurancecharges, frenzycharges, powercharges;
+            endurancecharges = frenzycharges = powercharges = 0;
+            if (attribs.ContainsKey("+# to Maximum Endurance Charges"))
+                endurancecharges = (int)(attribs["+# to Maximum Endurance Charges"][0]);
+            if (attribs.ContainsKey("+# to Maximum Frenzy Charges"))
+                frenzycharges = (int)(attribs["+# to Maximum Frenzy Charges"][0]);
+            if (attribs.ContainsKey("+# to Maximum Power Charges"))
+                powercharges = (int)(attribs["+# to Maximum Power Charges"][0]);
+            string newkey;
+            foreach (string key in attribs.Keys)
+            {
+                if (key.Contains("per Endurance Charge") && endurancecharges > 0)
+                {
+                    newkey = key.Replace("per Endurance Charge", "with all Endurance Charges");
+                    retval.Add(newkey, new List<float>());
+                    foreach (float f in attribs[key])
+                    {
+                        retval[newkey].Add(f * endurancecharges);
+                    }
+                }
+                if (key.Contains("per Frenzy Charge") && endurancecharges > 0)
+                {
+                    newkey = key.Replace("per Frenzy Charge", "with all Frenzy Charges");
+                    retval.Add(newkey, new List<float>());
+                    foreach (float f in attribs[key])
+                    {
+                        retval[newkey].Add(f * frenzycharges);
+                    }
+                }
+                if (key.Contains("per Power Charge") && endurancecharges > 0)
+                {
+                    newkey = key.Replace("per Power Charge", "with all Power Charges");
+                    retval.Add(newkey, new List<float>());
+                    foreach (float f in attribs[key])
+                    {
+                        retval[newkey].Add(f * powercharges);
+                    }
+                }
+            }
 
             return retval;
         }
