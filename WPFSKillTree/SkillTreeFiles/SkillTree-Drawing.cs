@@ -264,6 +264,27 @@ namespace POESKillTree.SkillTreeFiles
                                 pos -
                                 new Vector2D(bitmap.PixelWidth * .5, bitmap.PixelHeight * .5),
                                 new Size(bitmap.PixelWidth, bitmap.PixelHeight)));
+                        AscendancyClasses.Class currentClass = ascendancyClasses.GetClass(node.Value.ascendancyName);
+                        if(currentClass != null)
+                        {
+                            var textBrush = new SolidColorBrush(Color.FromRgb(
+                                (byte) currentClass.flavourTextColour[0],
+                                (byte) currentClass.flavourTextColour[1],
+                                (byte) currentClass.flavourTextColour[2]));
+                            var text =
+                                new FormattedText(
+                                    currentClass.flavourText,
+                                    new CultureInfo("en-us"), FlowDirection.LeftToRight,
+                                    new Typeface(new FontFamily("Arial"), FontStyles.Italic, FontWeights.Regular,
+                                    new FontStretch()),
+                                    40, textBrush);
+                            Point textPos =
+                                new Point(
+                                    pos.X - (bitmap.PixelWidth * .5) + currentClass.flavourTextRect.Left, 
+                                    pos.Y - (bitmap.PixelHeight * .5) + currentClass.flavourTextRect.Top);
+                            text.TextAlignment = TextAlignment.Left;
+                            dc.DrawText(text, textPos);
+                        }
                     }
 
                 }
