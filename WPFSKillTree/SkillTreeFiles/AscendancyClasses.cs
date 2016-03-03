@@ -67,5 +67,17 @@ namespace POESKillTree.SkillTreeFiles
             }
             return allClasses;
         }
+        public Class GetClass(string ascClass)
+        {
+            foreach (KeyValuePair<string, List<Class>> entry in classes)
+            {
+                foreach (Class item in entry.Value)
+                {
+                    if (item.name == ascClass)
+                        return item;
+                }
+            }
+            return null;
+        }
     }    
 }
