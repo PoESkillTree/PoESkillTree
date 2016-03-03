@@ -255,6 +255,12 @@ namespace POESKillTree.Views
             {
                 attributelist.Add(o.ToString());
             }
+            //Error - at least one attribute must be selected
+            if (attributelist.Count == 0)
+            {
+                Popup.Error(L10n.Message("No attributes selected for new group."));
+                return;
+            }
 
             //Build and show form to enter group name
             var formGroupName = new FormChooseGroupName();
@@ -265,7 +271,7 @@ namespace POESKillTree.Views
                 string name = formGroupName.GetGroupName();
                 if (_attributeGroups.AttributeGroups.ContainsKey(name))
                 {
-                    Popup.Info("A group with that name already exists.");
+                    Popup.Error(L10n.Message("A group with that name already exists."));
                     return;
                 }
 
@@ -501,7 +507,7 @@ namespace POESKillTree.Views
                         tbSkillURL_Redo();
                         break;
                     case Key.S:
-                        SaveNewBuild();
+                        SaveBuild();
                         break;
                     case Key.N:
                         NewBuild();
@@ -520,6 +526,16 @@ namespace POESKillTree.Views
                 {
                     case Key.Q:
                         ToggleCharacterSheet();
+                        break;
+                }
+            }
+
+            if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) == (ModifierKeys.Control | ModifierKeys.Alt))
+            {
+                switch (e.Key)
+                {
+                    case Key.S:
+                        SaveNewBuild();
                         break;
                 }
             }
@@ -1119,13 +1135,7 @@ namespace POESKillTree.Views
                 }
             }
 
-            var usedPoints = 0;
-            foreach (var node in Tree.SkilledNodes)
-            {
-                if (SkillTree.Skillnodes[node].ascendancyName == null && !SkillTree.rootNodeList.Contains(node))
-                    usedPoints += 1;
-            }
-            tbUsedPoints.Text = "" + usedPoints;
+            tbUsedPoints.Text = Tree.GetSkillPointCount().ToString();
         }
 
         public void UpdateStatistics()
@@ -1594,35 +1604,14 @@ namespace POESKillTree.Views
             return listViewItem;
         }
 
+        private void btnSaveBuild_Click(object sender, RoutedEventArgs e)
+        {
+            SaveBuild();
+        }
+
         private void btnSaveNewBuild_Click(object sender, RoutedEventArgs e)
         {
             SaveNewBuild();
-        }
-
-        private void btnOverwriteBuild_Click(object sender, RoutedEventArgs e)
-        {
-            var currentOpenBuild =
-                (from PoEBuild build in lvSavedBuilds.Items
-                    where build.CurrentlyOpen
-                    select build).FirstOrDefault();
-            if (currentOpenBuild != null)
-            {
-                currentOpenBuild.Class = cbCharType.Text;
-                currentOpenBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
-                currentOpenBuild.AccountName = _persistentData.CurrentBuild.AccountName;
-                currentOpenBuild.Level = GetLevelAsString();
-                currentOpenBuild.PointsUsed = tbUsedPoints.Text;
-                currentOpenBuild.Url = tbSkillURL.Text;
-                currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
-                currentOpenBuild.LastUpdated = DateTime.Now;
-                currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
-                SetCurrentBuild(currentOpenBuild);
-                SaveBuildsToFile();
-            }
-            else
-            {
-                SaveNewBuild();
-            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -1695,6 +1684,32 @@ namespace POESKillTree.Views
             LoadBuildFromUrl();
         }
 
+        private void SaveBuild()
+        {
+            var currentOpenBuild =
+                (from PoEBuild build in lvSavedBuilds.Items
+                 where build.CurrentlyOpen
+                 select build).FirstOrDefault();
+            if (currentOpenBuild != null)
+            {
+                currentOpenBuild.Class = cbCharType.Text;
+                currentOpenBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
+                currentOpenBuild.AccountName = _persistentData.CurrentBuild.AccountName;
+                currentOpenBuild.Level = GetLevelAsString();
+                currentOpenBuild.PointsUsed = tbUsedPoints.Text;
+                currentOpenBuild.Url = tbSkillURL.Text;
+                currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
+                currentOpenBuild.LastUpdated = DateTime.Now;
+                currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
+                SetCurrentBuild(currentOpenBuild);
+                SaveBuildsToFile();
+            }
+            else
+            {
+                SaveNewBuild();
+            }
+        }
+
         private void SaveNewBuild()
         {
             var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName, _persistentData.CurrentBuild.ItemData);
@@ -1751,10 +1766,21 @@ namespace POESKillTree.Views
                     SkillTreeImporter.LoadBuildFromPoezone(Tree, tbSkillURL.Text);
                     tbSkillURL.Text = Tree.SaveToURL();
                 }
+                else if (tbSkillURL.Text.Contains("google.com"))
+                {
+                    Match match = Regex.Match(tbSkillURL.Text, @"q=(.*?)&");
+                    if (match.Success)
+                    {
+                        tbSkillURL.Text = match.ToString().Replace("q=", "").Replace("&", "");
+                        LoadBuildFromUrl();
+                    }
+                    else
+                        throw new Exception();
+                }
                 else if (tbSkillURL.Text.Contains("tinyurl.com") || tbSkillURL.Text.Contains("poeurl.com"))
                 {
                     var skillUrl = tbSkillURL.Text.Replace("preview.", "");
-                    if (skillUrl.Contains("poeurl.com"))
+                    if (skillUrl.Contains("poeurl.com") && !skillUrl.Contains("redirect.php"))
                     {
                         skillUrl = skillUrl.Replace("http://poeurl.com/",
                             "http://poeurl.com/redirect.php?url=");
@@ -2269,7 +2295,7 @@ namespace POESKillTree.Views
                 Tree.HighlightedAttributes = null;
             }
 
-            Tree.DrawNodeBaseSurroundHighlight();
+            Tree.DrawTreeComparisonHighlight();
             UpdateUI();
         }
 

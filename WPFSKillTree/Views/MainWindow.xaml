@@ -250,13 +250,18 @@
                         <ContentControl Template="{StaticResource NewIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click">
+                <MenuItem InputGestureText="Ctrl+S" Click="btnSaveBuild_Click">
                     <MenuItem.Header>
-                        <l:Catalog Message="Save _As" />
+                        <l:Catalog Message="_Save" />
                     </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource SaveIcon}" />
                     </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem InputGestureText="Ctrl+Alt+S" Click="btnSaveNewBuild_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Save _As" />
+                    </MenuItem.Header>
                 </MenuItem>
                 <MenuItem Click="Menu_Exit">
                     <MenuItem.Header>
@@ -685,7 +690,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="85"/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="btnOverwriteBuild" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="82">
+                        <Button x:Name="btnOverwriteBuild" VerticalAlignment="Bottom" Click="btnSaveBuild_Click" HorizontalAlignment="Left" Width="82">
                             <l:Catalog Message="Save"/>
                         </Button>
                         <Button x:Name="btnSaveNewBuild" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnSaveNewBuild_Click" Width="82" Grid.Column="1">

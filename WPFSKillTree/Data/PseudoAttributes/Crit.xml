@@ -34,9 +34,9 @@
 			<Conditions><WeaponClass>Staff</WeaponClass></Conditions>
 		</Attribute>
 	</PseudoAttribute>
-	<PseudoAttribute Name="#% increased Critical Strike Multiplier" Group="Critical Strike">
-		<Attribute Name="#% increased Critical Strike Multiplier" />
-		<Attribute Name="#% increased Critical Strike Multiplier with {0}">
+	<PseudoAttribute Name="+#% to Critical Strike Multiplier" Group="Critical Strike">
+		<Attribute Name="+#% to Critical Strike Multiplier" />
+		<Attribute Name="+#% to Critical Strike Multiplier with {0}">
 			<Conditions>
 				<AndComposition>
 					<WeaponClass>{0}</WeaponClass>
@@ -45,16 +45,16 @@
 				<Tag>{0}</Tag>
 			</Conditions>
 		</Attribute>
-		<Attribute Name="#% increased Critical Strike Multiplier while Dual Wielding">
+		<Attribute Name="+#% to Critical Strike Multiplier while Dual Wielding">
 			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
 		</Attribute>
-		<Attribute Name="#% increased Critical Strike Multiplier for Spells">
+		<Attribute Name="+#% to Critical Strike Multiplier for Spells">
 			<Conditions><Tag>Spell</Tag></Conditions>
 		</Attribute>
-		<Attribute Name="#% increased Melee Critical Strike Multiplier">
+		<Attribute Name="+#% to Melee Critical Strike Multiplier">
 			<Conditions><Tag>Melee</Tag></Conditions>
 		</Attribute>
-		<Attribute Name="#% increased Global Critical Strike Multiplier while wielding a Staff">
+		<Attribute Name="+#% to Global Critical Strike Multiplier while wielding a Staff">
 			<Conditions><WeaponClass>Staff</WeaponClass></Conditions>
 		</Attribute>
 	</PseudoAttribute>

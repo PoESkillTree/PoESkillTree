@@ -144,4 +144,39 @@ namespace POESKillTree.SkillTreeFiles
 
         public double[] imageZoomLevels { get; set; }
     }
+
+    internal class Opts
+    {
+        private string passiveSkillTreeData { get; set; }
+
+        public Dictionary<int, baseToAscClass> ascClasses { get; set; }
+
+        public double[] zoomLevels { get; set; }
+
+        public int height { get; set; }
+
+        public int startClass { get; set; }
+
+        public bool fullScreen { get; set; }
+    }
+
+    internal class baseToAscClass
+    {
+        public string name { get; set; }
+        public Dictionary<int, classes> classes { get; set; }
+    }
+
+    internal class classes 
+    {
+        [JsonProperty("name")]
+        public string name { get; set; }
+        [JsonProperty("displayName")]
+        public string displayName { get; set; }
+        [JsonProperty("flavourText")]
+        public string flavourText { get; set; }
+        [JsonProperty("flavourTextRect")]
+        public string flavourTextRect { get; set; }
+        [JsonProperty("flavourTextColour")]
+        public string flavourTextColour { get; set; }
+    }
 }

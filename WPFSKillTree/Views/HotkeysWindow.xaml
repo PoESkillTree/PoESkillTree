@@ -37,6 +37,8 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="140"/>
@@ -124,44 +126,48 @@
         <TextBlock Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="Redo last Skill tree change"/>
         </TextBlock>
-        <TextBlock Grid.Row="18" Grid.Column="0">Ctrl + S</TextBlock>
+        <TextBlock Grid.Row="18" Grid.Column="0">Ctrl + N</TextBlock>
         <TextBlock Grid.Row="18" Grid.Column="1" Grid.ColumnSpan="3">
-            <l:Catalog Message="Save build as"/>
-        </TextBlock>
-        <TextBlock Grid.Row="19" Grid.Column="0">Ctrl + N</TextBlock>
-        <TextBlock Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="3">
             <l:Catalog Message="New build"/>
         </TextBlock>
-        <TextBlock Grid.Row="20" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
+        <TextBlock Grid.Row="19" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + S</TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Save build"/>
+        </TextBlock>
+        <TextBlock Grid.Row="20" Grid.Column="0">Ctrl + Alt + S</TextBlock>
+        <TextBlock Grid.Row="20" Grid.Column="1" Grid.ColumnSpan="3">
+            <l:Catalog Message="Save build as"/>
+        </TextBlock>
+        <TextBlock Grid.Row="21" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="Right Click"/>
         </TextBlock>
-        <TextBlock Grid.Row="20" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+        <TextBlock Grid.Row="21" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="(Skill tree) Center Skill tree and reset zoom"/></TextBlock>
-        <TextBlock Grid.Row="21" Grid.Column="0">
+        <TextBlock Grid.Row="22" Grid.Column="0">
             <l:Catalog Message="Right Click"/>
         </TextBlock>
-        <TextBlock Grid.Row="21" Grid.Column="1" Grid.ColumnSpan="3">
+        <TextBlock Grid.Row="22" Grid.Column="1" Grid.ColumnSpan="3">
             <l:Catalog Message="(Attributes) Highlight corresponding nodes in Skill tree"/>
         </TextBlock>
-        <TextBlock Grid.Row="22" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
+        <TextBlock Grid.Row="23" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="Right Click"/>
         </TextBlock>
-        <TextBlock Grid.Row="22" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+        <TextBlock Grid.Row="23" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="(Skill node) Toggle skill node highlighting"/>
         </TextBlock>
-        <TextBlock Grid.Row="23" Grid.Column="0">
+        <TextBlock Grid.Row="24" Grid.Column="0">
             <l:Catalog Message="Shift + Right Click"/>
         </TextBlock>
-        <TextBlock Grid.Row="23" Grid.Column="1" Grid.ColumnSpan="3">
+        <TextBlock Grid.Row="24" Grid.Column="1" Grid.ColumnSpan="3">
             <l:Catalog Message="(Skill node) Toggle skill node highlighting (reversed)"/>
         </TextBlock>
-        <TextBlock Grid.Row="24" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
+        <TextBlock Grid.Row="25" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="Shift + Hover"/>
         </TextBlock>
-        <TextBlock Grid.Row="24" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
+        <TextBlock Grid.Row="25" Grid.Column="1" Grid.ColumnSpan="3" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="(Skill node) Highlight similar skill nodes"/>
         </TextBlock>
-        <Button Grid.Row="25" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0" x:Name="btnPopupClose" Click="btnPopupClose_Click">
+        <Button Grid.Row="26" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0" x:Name="btnPopupClose" Click="btnPopupClose_Click">
             <l:Catalog Message="Close"/>
         </Button>
     </Grid>
