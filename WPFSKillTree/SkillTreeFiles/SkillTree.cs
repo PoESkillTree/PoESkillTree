@@ -233,11 +233,19 @@ namespace POESKillTree.SkillTreeFiles
 
         private int _level = UndefinedLevel;
 
+        private static AscendancyClasses _asendancyClasses;
+
+        public AscendancyClasses ascendancyClasses 
+        {
+            get { return SkillTree._asendancyClasses; } 
+        }
+
 
         private static bool _Initialized = false;
-        public SkillTree(String treestring, bool displayProgress, UpdateLoadingWindow update)
+        public SkillTree(String treestring, String opsstring , bool displayProgress, UpdateLoadingWindow update)
         {
             PoESkillTree inTree = null;
+            Opts inOpts = null;
             if (!_Initialized)
             {
                 var jss = new JsonSerializerSettings
@@ -250,6 +258,7 @@ namespace POESKillTree.SkillTreeFiles
                 };
                 
                 inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, jss);
+                inOpts = JsonConvert.DeserializeObject<Opts>(opsstring, jss);
             }
             int qindex = 0;
 
@@ -314,6 +323,34 @@ namespace POESKillTree.SkillTreeFiles
                         _rootNodeList.Add(i);
                     }
                 }
+            }
+            if(!_Initialized)
+            {
+                _asendancyClasses = new AscendancyClasses();
+                if(inOpts != null)
+                {
+                    foreach(KeyValuePair<int, baseToAscClass> ascClass in inOpts.ascClasses )
+                    {
+                        List<AscendancyClasses.Class> classes = new List<AscendancyClasses.Class>();
+                        foreach (KeyValuePair<int, classes> asc in ascClass.Value.classes)
+                        {
+                            AscendancyClasses.Class newClass = new AscendancyClasses.Class();
+                            newClass.displayName = asc.Value.displayName;
+                            newClass.name = asc.Value.name;
+                            newClass.flavourText = asc.Value.flavourText;
+                            newClass.flavourTextColour = asc.Value.flavourTextColour.Split(',').Select(int.Parse).ToArray();
+                            int[] tempPointList = asc.Value.flavourTextRect.Split(',').Select(int.Parse).ToArray();
+                            newClass.flavourTextRect = 
+                                new Rect2D(
+                                    new Vector2D(tempPointList[0], tempPointList[1]),
+                                    new Vector2D(tempPointList[2], tempPointList[3]));
+                            classes.Add(newClass);
+
+                        }
+                        _asendancyClasses.classes.Add(ascClass.Value.name, classes);
+                    }
+                }
+
             }
 
             if (displayProgress)
@@ -507,7 +544,7 @@ namespace POESKillTree.SkillTreeFiles
             CreateCombineVisual();
             DrawFaces();
             DrawAscendancyClasses();
-            DrawAscendancyButtons();
+            //DrawAscendancyButtons();
 
             if (_links != null)
             {
@@ -695,9 +732,23 @@ namespace POESKillTree.SkillTreeFiles
                 File.WriteAllText(skillTreeFile, skilltreeobj);
             }
 
+            string optsFile = DataFolderPath + "Opts.txt";
+            string optsobj = "";
+            if (File.Exists(optsFile))
+            {
+                optsobj = File.ReadAllText(optsFile);
+            }
+
+            if (optsobj == "")
+            {
+                //TODO: Pull once data is officially released
+                var currentOptsData = "{\"passiveSkillTreeData\": \"passiveSkillTreeData\", \"ascClasses\": {\"1\":{\"name\":\"Marauder\",\"classes\":{\"1\":{\"name\":\"Juggernaut\",\"displayName\":\"Juggernaut\",\"flavourText\":\" What divides the conqueror \\n from the conquered? Perseverance.\",\"flavourTextRect\":\"250,150,1063,436\",\"flavourTextColour\":\"175,90,50\"},\"2\":{\"name\":\"Berserker\",\"displayName\":\"Berserker\",\"flavourText\":\"The savage path is \\nalways swift and sure.\",\"flavourTextRect\":\"760,415,976,429\",\"flavourTextColour\":\"175,90,50\"},\"3\":{\"name\":\"Chieftain\",\"displayName\":\"Chieftain\",\"flavourText\":\"     The Ancestors speak \\nthrough your clenched fists.\",\"flavourTextRect\":\"250,175,976,429\",\"flavourTextColour\":\"175,90,50\"}}},\"2\":{\"name\":\"Ranger\",\"classes\":{\"1\":{\"name\":\"Raider\",\"displayName\":\"Raider\",\"flavourText\":\"The huntress has much to learn \\n from the wiles of her quarry.\",\"flavourTextRect\":\"365,965,900,1250\",\"flavourTextColour\":\"124,179,118\"},\"2\":{\"name\":\"Deadeye\",\"displayName\":\"Deadeye\",\"flavourText\":\"A woman can change the world \\nwith a single, well-placed arrow.\",\"flavourTextRect\":\"365,965,900,1250\",\"flavourTextColour\":\"124,179,118\"},\"3\":{\"name\":\"Pathfinder\",\"displayName\":\"Pathfinder\",\"flavourText\":\"There are venoms and virtues aplenty in \\n the wilds, if you know where to look.\",\"flavourTextRect\":\"265,975,900,1250\",\"flavourTextColour\":\"124,179,118\"}}},\"3\":{\"name\":\"Witch\",\"classes\":{\"1\":{\"name\":\"Occultist\",\"displayName\":\"Occultist\",\"flavourText\":\" Throw off the chains\\nof fear and embrace that\\n which was forbidden.\",\"flavourTextRect\":\"735,520,976,429\",\"flavourTextColour\":\"154,195,201\"},\"2\":{\"name\":\"Elementalist\",\"displayName\":\"Elementalist\",\"flavourText\":\"Feed a storm with savage intent \\nand not even the strongest walls\\nwill hold it back.\",\"flavourTextRect\":\"139,475,517,768\",\"flavourTextColour\":\"139,113,146\"},\"3\":{\"name\":\"Necromancer\",\"displayName\":\"Necromancer\",\"flavourText\":\"Embrace the serene\\npower that is undeath.\",\"flavourTextRect\":\"745,510,1000,1000\",\"flavourTextColour\":\"154,195,201\"}}},\"4\":{\"name\":\"Duelist\",\"classes\":{\"1\":{\"name\":\"Slayer\",\"displayName\":\"Slayer\",\"flavourText\":\" No judge. No jury.\\nJust the executioner.\",\"flavourTextRect\":\"470,310,976,429\",\"flavourTextColour\":\"150,175,200\"},\"2\":{\"name\":\"Gladiator\",\"displayName\":\"Gladiator\",\"flavourText\":\"Raise your hand to the \\nroaring crowd and pledge \\nyour allegiance to glory.\",\"flavourTextRect\":\"670,395,976,429\",\"flavourTextColour\":\"150,175,200\"},\"3\":{\"name\":\"Champion\",\"displayName\":\"Champion\",\"flavourText\":\"Champion that which \\n you love. He who fights\\n for nothing, dies\\n for nothing.\",\"flavourTextRect\":\"735,550,976,429\",\"flavourTextColour\":\"150,175,200\"}}},\"5\":{\"name\":\"Templar\",\"classes\":{\"1\":{\"name\":\"Inquisitor\",\"displayName\":\"Inquisitor\",\"flavourText\":\" Truth is elusive, yet God has\\nprovided us with all the tools \\n necessary to find it.\",\"flavourTextRect\":\"335,940,976,429\",\"flavourTextColour\":\"114,149,161\"},\"2\":{\"name\":\"Hierophant\",\"displayName\":\"Hierophant\",\"flavourText\":\"Drink deeply from God's\\n chalice, for the faithful\\n will never find it empty.\",\"flavourTextRect\":\"150,760,976,429\",\"flavourTextColour\":\"114,149,161\"},\"3\":{\"name\":\"Guardian\",\"displayName\":\"Guardian\",\"flavourText\":\"When bound by faith\\n and respect, the flock\\n will overwhelm the wolf.\",\"flavourTextRect\":\"170,780,976,429\",\"flavourTextColour\":\"114,149,161\"}}},\"6\":{\"name\":\"Shadow\",\"classes\":{\"1\":{\"name\":\"Assassin\",\"displayName\":\"Assassin\",\"flavourText\":\"Death is a banquet. \\n It's up to the murderer \\n to write the menu.\",\"flavourTextRect\":\"505,845,976,429\",\"flavourTextColour\":\"134,149,121\"},\"2\":{\"name\":\"Trickster\",\"displayName\":\"Trickster\",\"flavourText\":\"  Everyone knows how to die. \\n Some just need a little nudge \\nto get them started.\",\"flavourTextRect\":\"315,150,976,429\",\"flavourTextColour\":\"114,149,161\"},\"3\":{\"name\":\"Saboteur\",\"displayName\":\"Saboteur\",\"flavourText\":\"The artist need not be present \\n to make a lasting impression.\",\"flavourTextRect\":\"355,970,976,429\",\"flavourTextColour\":\"114,129,141\"}}},\"0\":{\"name\":\"Scion\",\"classes\":{\"1\":{\"name\":\"Ascendant\",\"displayName\":\"Ascendant\",\"flavourText\":\"\",\"flavourTextRect\":\"305,925,976,429\",\"flavourTextColour\":\"90,90,90\"}}}}, \"zoomLevels\": [0.1246,0.2109,0.2972,0.3835], \"height\": 767, \"startClass\": 3, \"fullScreen\": false}";
+                File.WriteAllText(optsFile, currentOptsData);
+            }
+
             if (displayProgress)
                 update(25, 100);
-            var skillTree = new SkillTree(skilltreeobj, displayProgress, update);
+            var skillTree = new SkillTree(skilltreeobj, optsobj, displayProgress, update);
             if (displayProgress)
                 finish();
             return skillTree;

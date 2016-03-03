@@ -75,7 +75,6 @@ namespace POESKillTree.SkillTreeFiles
             SkillTreeVisual = new DrawingVisual();
             SkillTreeVisual.Children.Add(picBackground);
             SkillTreeVisual.Children.Add(picAscendancyClasses);
-            SkillTreeVisual.Children.Add(picAscendancyButtons);
             SkillTreeVisual.Children.Add(picPathHighlight);
             SkillTreeVisual.Children.Add(picLinks);
             SkillTreeVisual.Children.Add(picActiveLinks);
@@ -86,6 +85,7 @@ namespace POESKillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(picSkillBaseSurround);
             SkillTreeVisual.Children.Add(picSkillSurround);
             SkillTreeVisual.Children.Add(picFaces);
+            SkillTreeVisual.Children.Add(picAscendancyButtons);
             SkillTreeVisual.Children.Add(picHighlights);
             SkillTreeVisual.Children.Add(picJewelHighlight);
         }
@@ -272,54 +272,37 @@ namespace POESKillTree.SkillTreeFiles
 
         public void DrawAscendancyButtons()
         {
-            /*using (DrawingContext dc = picAscendancyButtons.RenderOpen())
+            using (DrawingContext dc = picAscendancyButtons.RenderOpen())
             {
                 foreach (var node in Skillnodes)
                 {
-                    if (node.Value.IsAscendancyStart)
+                    if (SkillTree.rootNodeList.Contains(node.Value.Id))
                     {
                         string imageName = "PassiveSkillScreenAscendancyButton";
-                        BitmapImage bitmap = _assets[imageName].PImage;
+                        BitmapImage b = _assets[imageName].PImage;
                         var brush = new ImageBrush(_assets[imageName].PImage);
 
                         var worldPos = node.Value.Position;
-                        var distanceFromStartNodeCenter = 270 * 2;
+                        var distanceFromStartNodeCenter = 250;
                         var dirX = 0.0;
                         var dirY = 1.0;
                         var distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
                         var isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
-                        if(!isCentered){
-	                        dirX = worldPos.X / distToCentre;
-	                        dirY = -worldPos.X / distToCentre;
+                        if (!isCentered)
+                        {
+                            dirX = worldPos.X / distToCentre;
+                            dirY = -worldPos.Y / distToCentre;
                         }
+                        var zoom = 0.3835;
+
                         var ascButtonRot = Math.Atan2(dirX, dirY);
-
-                        var buttonCX = worldPos.X + distanceFromStartNodeCenter * Math.Cos(ascButtonRot + Math.PI/2);
-                        var buttonCY = worldPos.Y + distanceFromStartNodeCenter * Math.Sin(ascButtonRot + Math.PI/2);
-                        Vector2D buttonPoint = new Vector2D(buttonCX, buttonCY);
-
-                        string classArtImage = "Classes" + node.Value.ascendancyName;
-                        BitmapImage classBitMap = _assets[imageName].PImage;
-                        var classBrush = new ImageBrush(_assets[imageName].PImage);
-                        var imageCX = worldPos.X + (distanceFromStartNodeCenter + classBitMap.Height / 2) * Math.Cos(ascButtonRot + Math.PI / 2);
-                        var imageCY = worldPos.Y + (distanceFromStartNodeCenter + classBitMap.Height / 2) * Math.Sin(ascButtonRot + Math.PI / 2);
-                        var imagePoint = new Point(imageCX, imageCY);
-
-                        var ascendancyBounds = 
-                            new Rect(
-                                new Point(imagePoint.X - classBitMap.Width / 2, imagePoint.Y - classBitMap.Height / 2),
-                                new Point(imagePoint.X + classBitMap.Width / 2, imagePoint.Y + classBitMap.Height / 2)
-                            );
-                        dc.DrawRectangle(brush, null,
-                            new Rect(
-                                buttonPoint -
-                                new Vector2D(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2),
-                                new Size(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2)));
-
+                        var buttonCX = worldPos.X + distanceFromStartNodeCenter * Math.Cos(ascButtonRot + Math.PI / 2);
+                        var buttonCY = worldPos.Y + distanceFromStartNodeCenter * Math.Sin(ascButtonRot + Math.PI / 2);
+                        var buttonPoint = new Vector2D(buttonCX, buttonCY);
                     }
 
                 }
-            }*/
+            }
         }
         private FormattedText CreateAttributeText(string text, SolidColorBrush colorBrush)
         {

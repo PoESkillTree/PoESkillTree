@@ -195,6 +195,7 @@
       <DependentUpon>Version.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="SkillTreeFiles\AscendancyClasses.cs" />
     <Compile Include="SkillTreeFiles\Asset.cs" />
     <Compile Include="SkillTreeFiles\Bootstrap.cs" />
     <Compile Include="SkillTreeFiles\CharacterNames.cs" />
