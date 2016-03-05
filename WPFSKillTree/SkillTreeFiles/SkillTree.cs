@@ -1101,7 +1101,7 @@ namespace POESKillTree.SkillTreeFiles
             if (i > 0)
                 j = decbuff[5];
             var nodes = new List<UInt16>();
-            for (int k = 6; k < decbuff.Length; k += 2)
+            for (int k = 6; k < decbuff.Length - 1; k += 2)
             {
                 byte[] dbff = { decbuff[k + 1], decbuff[k + 0] };
                 if (Skillnodes.Keys.Contains(BitConverter.ToUInt16(dbff, 0)))
@@ -1158,7 +1158,7 @@ namespace POESKillTree.SkillTreeFiles
         public static string GetCharacterURL(byte CharTypeByte = 0)
         {
             var b = new byte[6];
-            byte[] b2 = BitConverter.GetBytes(3); //skilltree version
+            byte[] b2 = BitConverter.GetBytes(4); //skilltree version
             for (var i = 0; i < b2.Length; i++)
             {
                 b[i] = b2[(b2.Length - 1) - i];
