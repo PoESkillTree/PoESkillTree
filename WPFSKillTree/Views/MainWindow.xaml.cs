@@ -1776,7 +1776,7 @@ namespace POESKillTree.Views
                         LoadBuildFromUrl();
                     }
                     else
-                        throw new Exception();
+                        throw new Exception("The URL you are trying to load is invalid.");
                 }
                 else if (tbSkillURL.Text.Contains("tinyurl.com") || tbSkillURL.Text.Contains("poeurl.com"))
                 {
@@ -1791,15 +1791,17 @@ namespace POESKillTree.Views
                         await AwaitAsyncTask(L10n.Message("Resolving shortened tree address"),
                             new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead));
                     response.EnsureSuccessStatusCode();
-                    tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
-
+                    if (Regex.IsMatch(response.RequestMessage.RequestUri.ToString(), SkillTree.TreeRegex))
+                        tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
+                    else
+                        throw new Exception("The URL you are trying to load is invalid.");
                     LoadBuildFromUrl();
                 }
                 else
                 {
                     if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accountName"))
                         tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
-                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"(http(|s):\/\/|).*?\/(character\/|passive-skill-tree\/|fullscreen-passive-skill-tree\/|#|poeplanner.com\/)", SkillTree.TreeAddress);
+                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, SkillTree.TreeRegex, SkillTree.TreeAddress);
                     Tree.LoadFromURL(tbSkillURL.Text);
                 }
 
@@ -1820,6 +1822,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
+                tbSkillURL.Text = Tree.SaveToURL();
                 Popup.Error(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }

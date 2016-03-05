@@ -37,6 +37,7 @@ namespace POESKillTree.SkillTreeFiles
         public static readonly float DexPerAcc = 0.5f;
         public static readonly float DexPerEvas = 5; //%
         public static readonly string TreeAddress = "https://www.pathofexile.com/passive-skill-tree/";
+        public static readonly string TreeRegex = @"(http(|s):\/\/|).*?\/(character\/|passive-skill-tree\/|fullscreen-passive-skill-tree\/|#|poeplanner.com\/)";
 
         /// <summary>
         /// Nodes with an attribute matching this regex are one of the "Path of the ..." nodes connection Scion
