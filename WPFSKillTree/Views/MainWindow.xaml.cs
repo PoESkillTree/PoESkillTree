@@ -1373,7 +1373,6 @@ namespace POESKillTree.Views
                 var tooltip = node.Name;
                 if (node.Attributes.Count != 0)
                     tooltip += "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
-
                 if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
                 {
                     var sp = new StackPanel();
@@ -1381,6 +1380,11 @@ namespace POESKillTree.Views
                     {
                         Text = tooltip
                     });
+                    if(node.reminderText != null)
+                    {
+                        sp.Children.Add(new Separator());
+                        sp.Children.Add(new TextBlock { Text = node.reminderText.Aggregate((s1, s2) => s1 + '\n' + s2) });
+                    }
                     if (_prePath != null && !node.IsMastery)
                     {
                         var points = _prePath.Count;

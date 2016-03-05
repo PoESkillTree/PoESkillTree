@@ -410,6 +410,7 @@ namespace POESKillTree.SkillTreeFiles
                         passivePointsGranted = nd.passivePointsGranted,
                         ascendancyName = nd.ascendancyName,
                         IsAscendancyStart = nd.isAscendancyStart,
+                        reminderText = nd.reminderText
                     });
                     if (_rootNodeList.Contains(nd.id))
                     {
