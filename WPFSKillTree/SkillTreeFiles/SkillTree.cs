@@ -1115,7 +1115,7 @@ namespace POESKillTree.SkillTreeFiles
             if (decbuff.Length >= 7)
                 j = decbuff[6];
             var nodes = new List<UInt16>();
-            for (int k = 7; k < decbuff.Length; k += 2)
+            for (int k = (i > 3 ? 7 : 6); k < decbuff.Length; k += 2)
             {
                 byte[] dbff = { decbuff[k + 1], decbuff[k + 0] };
                 if (Skillnodes.Keys.Contains(BitConverter.ToUInt16(dbff, 0)))
