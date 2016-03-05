@@ -19,7 +19,7 @@ namespace POESKillTree.SkillTreeFiles
             public string name;
             public string displayName;
             public string flavourText;
-            public Rect2D flavourTextRect;
+            public Vector2D flavourTextRect;
             public int[] flavourTextColour;
         }
         /// <summary>

@@ -785,7 +785,7 @@ namespace POESKillTree.Views
                     }
                     catch (Exception ex)
                     {
-                        if (Directory.Exists(appDataPath + "Data"))
+                        if (Directory.Exists(appDataPath + "Data") && Directory.Exists(appDataPath + "DataBackup"))
                             Directory.Delete(appDataPath + "Data", true);
                         try
                         {

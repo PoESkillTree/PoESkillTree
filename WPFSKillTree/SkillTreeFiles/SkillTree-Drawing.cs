@@ -262,8 +262,8 @@ namespace POESKillTree.SkillTreeFiles
                         dc.DrawRectangle(brush, null,
                             new Rect(
                                 pos -
-                                new Vector2D(bitmap.PixelWidth * .5, bitmap.PixelHeight * .5),
-                                new Size(bitmap.PixelWidth, bitmap.PixelHeight)));
+                                new Vector2D(bitmap.PixelWidth * 1.25, bitmap.PixelHeight * 1.25),
+                                new Size(bitmap.PixelWidth * 2.5, bitmap.PixelHeight * 2.5)));
                         AscendancyClasses.Class currentClass = ascendancyClasses.GetClass(node.Value.ascendancyName);
                         if(currentClass != null)
                         {
@@ -277,11 +277,11 @@ namespace POESKillTree.SkillTreeFiles
                                     new CultureInfo("en-us"), FlowDirection.LeftToRight,
                                     new Typeface(new FontFamily("Arial"), FontStyles.Italic, FontWeights.Regular,
                                     new FontStretch()),
-                                    40, textBrush);
+                                    42, textBrush);
                             Point textPos =
                                 new Point(
-                                    pos.X - (bitmap.PixelWidth * .5) + currentClass.flavourTextRect.Left, 
-                                    pos.Y - (bitmap.PixelHeight * .5) + currentClass.flavourTextRect.Top);
+                                    (pos.X - (bitmap.PixelWidth * 1.25)) + currentClass.flavourTextRect.X, 
+                                    (pos.Y - (bitmap.PixelHeight * 1.25)) + currentClass.flavourTextRect.Y);
                             text.TextAlignment = TextAlignment.Left;
                             dc.DrawText(text, textPos);
                         }

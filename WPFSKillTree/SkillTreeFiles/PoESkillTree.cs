@@ -147,17 +147,7 @@ namespace POESKillTree.SkillTreeFiles
 
     internal class Opts
     {
-        private string passiveSkillTreeData { get; set; }
-
         public Dictionary<int, baseToAscClass> ascClasses { get; set; }
-
-        public double[] zoomLevels { get; set; }
-
-        public int height { get; set; }
-
-        public int startClass { get; set; }
-
-        public bool fullScreen { get; set; }
     }
 
     internal class baseToAscClass
