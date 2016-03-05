@@ -16,6 +16,7 @@ namespace POESKillTree.SkillTreeFiles
         }
         public class Class
         {
+            public int order;
             public string name;
             public string displayName;
             public string flavourText;
@@ -35,6 +36,47 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     if (item.name == ascClass)
                         return entry.Key;
+                }
+            }
+            return null;
+        }
+        /// <summary>
+        /// Returns the number associated with the class 
+        /// </summary>
+        /// <param name="ascClass"></param>
+        /// <returns></returns>
+        public int GetClassNumber(string ascClass)
+        {
+            foreach (KeyValuePair<string, List<Class>> entry in classes)
+            {
+                foreach (Class item in entry.Value)
+                {
+                    if (item.name == ascClass)
+                        return item.order;
+                }
+            }
+            return 0;
+        }
+        /// <summary>
+        /// Returns a class name based on starting class and 0, 1, or 2 asc class
+        /// </summary>
+        /// <param name="startingClass"></param>
+        /// <param name="ascOrder">Get this from the tree decoding</param>
+        /// <returns></returns>
+        public string GetClassName(string startingClass, int ascOrder)
+        {
+            ascOrder -= 1;
+            foreach(KeyValuePair<string, string> pair in CharacterNames.NameToContent)
+            {
+                if (pair.Key == startingClass)
+                    startingClass = pair.Value;
+            }
+            foreach (KeyValuePair<string, List<Class>> entry in classes)
+            {
+                if (entry.Key == startingClass)
+                {
+                    if (ascOrder < entry.Value.Count)
+                        return entry.Value[ascOrder].name;
                 }
             }
             return null;

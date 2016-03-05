@@ -226,6 +226,8 @@ namespace POESKillTree.SkillTreeFiles
         public HashSet<ushort> HighlightedNodes = new HashSet<ushort>();
 
         private int _chartype;
+
+        private int _asctype;
         
         public static int UndefinedLevel { get { return 0; } }
 
@@ -234,7 +236,7 @@ namespace POESKillTree.SkillTreeFiles
         private int _level = UndefinedLevel;
 
         private static AscendancyClasses _asendancyClasses;
-
+        
         public AscendancyClasses ascendancyClasses 
         {
             get { return SkillTree._asendancyClasses; } 
@@ -335,6 +337,7 @@ namespace POESKillTree.SkillTreeFiles
                         foreach (KeyValuePair<int, classes> asc in ascClass.Value.classes)
                         {
                             AscendancyClasses.Class newClass = new AscendancyClasses.Class();
+                            newClass.order = asc.Key;
                             newClass.displayName = asc.Value.displayName;
                             newClass.name = asc.Value.name;
                             newClass.flavourText = asc.Value.flavourText;
@@ -596,6 +599,18 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
+        public int AscType
+        {
+            get { return _asctype; }
+            set
+            {
+                SetProperty(ref _asctype, value, () =>
+                    {
+                        ascendancyClasses.GetClassNumber(GetAscendancyClass(SkilledNodes));
+                    });
+            }
+        }
+
         public Dictionary<string, List<float>> HighlightedAttributes;
 
         public Dictionary<string, List<float>> SelectedAttributes
@@ -725,8 +740,6 @@ namespace POESKillTree.SkillTreeFiles
             {
                 optsobj = File.ReadAllText(optsFile);
             }
-
-            displayProgress = false;
             if (optsobj == "")
             {
                 displayProgress = (start != null && update != null && finish != null);
@@ -1095,13 +1108,14 @@ namespace POESKillTree.SkillTreeFiles
                     .Replace("-", "+")
                     .Replace("_", "/");
             byte[] decbuff = Convert.FromBase64String(s);
-            int i = BitConverter.ToInt32(new[] { decbuff[3], decbuff[2], decbuff[1], decbuff[1] }, 0);
+            int i = BitConverter.ToInt32(new[] { decbuff[3], decbuff[2], decbuff[1], decbuff[0] }, 0);
             byte b = decbuff[4];
             long j = 0L;
-            if (i > 0)
-                j = decbuff[5];
+            byte asc = decbuff[5];
+            if (decbuff.Length >= 7)
+                j = decbuff[6];
             var nodes = new List<UInt16>();
-            for (int k = 6; k < decbuff.Length - 1; k += 2)
+            for (int k = 7; k < decbuff.Length; k += 2)
             {
                 byte[] dbff = { decbuff[k + 1], decbuff[k + 0] };
                 if (Skillnodes.Keys.Contains(BitConverter.ToUInt16(dbff, 0)))
@@ -1112,6 +1126,12 @@ namespace POESKillTree.SkillTreeFiles
 
             SkillNode startnode = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[b]).Value;
             skillednodes.Add(startnode.Id);
+            if (asc > 0)
+            {
+                SkillNode ascNode = Skillnodes.First(nd => nd.Value.ascendancyName == _asendancyClasses.GetClassName(CharName[b], asc) && nd.Value.IsAscendancyStart).Value;
+                skillednodes.Add(ascNode.Id);
+            }
+
             foreach (ushort node in nodes)
             {
                 skillednodes.Add(node);
@@ -1141,31 +1161,40 @@ namespace POESKillTree.SkillTreeFiles
 
         public string SaveToURL()
         {
-            var b = new byte[(SkilledNodes.Count - 1) * 2];
-            var CharacterURL = GetCharacterURL((byte) Chartype);
-            int pos = 0;
+            var b = new byte[7 + (SkilledNodes.Count - 1) * 2];
+            var b2 = GetCharacterBytes((byte)Chartype, (byte) AscType);
+            for (var i = 0; i < b2.Length; i++)
+                b[i] = b2[i];
+            int pos = 7;
             foreach (ushort inn in SkilledNodes)
             {
                 if (CharName.Contains(Skillnodes[inn].Name.ToUpperInvariant()))
+                    continue;
+                if (Skillnodes[inn].IsAscendancyStart)
                     continue;
                 byte[] dbff = BitConverter.GetBytes((Int16)inn);
                 b[pos++] = dbff[1];
                 b[pos++] = dbff[0];
             }
-            return TreeAddress + CharacterURL + Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
+            return TreeAddress + Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
-        public static string GetCharacterURL(byte CharTypeByte = 0)
+        public static string GetCharacterURL(byte CharTypeByte = 0, byte AscTypeByte = 0)
         {
-            var b = new byte[6];
+            var b = GetCharacterBytes(CharTypeByte, AscTypeByte);
+            return Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
+        }
+
+        public static byte[] GetCharacterBytes(byte CharTypeByte = 0, byte AscTypeByte = 0)
+        {
+            var b = new byte[7];
             byte[] b2 = BitConverter.GetBytes(4); //skilltree version
             for (var i = 0; i < b2.Length; i++)
-            {
                 b[i] = b2[(b2.Length - 1) - i];
-            }
             b[4] = (byte)(CharTypeByte);
-            b[5] = 0;
-            return Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
+            b[5] = (byte)(AscTypeByte); //ascedancy class
+            b[6] = 0;
+            return b;
         }
 
         /// <summary>
@@ -1230,6 +1259,19 @@ namespace POESKillTree.SkillTreeFiles
         public ushort GetCharNodeId()
         {
             return (ushort)rootNodeClassDictionary[CharName[_chartype]];
+        }
+
+        public string GetAscendancyClass(HashSet<ushort> skilledNodes)
+        {
+            HashSet<ushort> availNodes = new HashSet<ushort>();
+
+            foreach (ushort inode in skilledNodes)
+            {
+                SkillNode node = Skillnodes[inode];
+                if (node.ascendancyName != null)
+                    return node.ascendancyName;
+            }
+            return null;
         }
 
         /// <summary>
