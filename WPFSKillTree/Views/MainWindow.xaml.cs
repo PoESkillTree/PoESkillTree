@@ -1799,7 +1799,7 @@ namespace POESKillTree.Views
                 {
                     if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accountName"))
                         tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
-                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"(http(|s):\/\/|).*?\/(character\/|passive-skill-tree\/|fullscreen-passive-skill-tree\/|#)", SkillTree.TreeAddress);
+                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"(http(|s):\/\/|).*?\/(character\/|passive-skill-tree\/|fullscreen-passive-skill-tree\/|#|poeplanner.com\/)", SkillTree.TreeAddress);
                     Tree.LoadFromURL(tbSkillURL.Text);
                 }
 
