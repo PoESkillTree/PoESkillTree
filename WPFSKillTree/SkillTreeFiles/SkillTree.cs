@@ -770,9 +770,10 @@ namespace POESKillTree.SkillTreeFiles
 
             //SkilledNodes.Remove(nodeId);
 
+            var charStart = GetCharNodeId();
             var front = new HashSet<ushort>();
-            front.Add(SkilledNodes.First());
-            foreach (SkillNode i in Skillnodes[SkilledNodes.First()].Neighbor)
+            front.Add(charStart);
+            foreach (SkillNode i in Skillnodes[charStart].Neighbor)
                 if (SkilledNodes.Contains(i.Id))
                     front.Add(i.Id);
             var skilled_reachable = new HashSet<ushort>(front);
@@ -801,9 +802,10 @@ namespace POESKillTree.SkillTreeFiles
 
             SkilledNodes.Remove(nodeId);
 
+            var charStart = GetCharNodeId();
             var front = new HashSet<ushort>();
-            front.Add(SkilledNodes.First());
-            foreach (SkillNode i in Skillnodes[SkilledNodes.First()].Neighbor)
+            front.Add(charStart);
+            foreach (SkillNode i in Skillnodes[charStart].Neighbor)
                 if (SkilledNodes.Contains(i.Id))
                     front.Add(i.Id);
 
@@ -876,7 +878,7 @@ namespace POESKillTree.SkillTreeFiles
                         continue;
                     if (Skillnodes[newNode].IsMastery)
                         continue;
-                    if (Skillnodes[newNode].attributes.Any(s => AscendantClassStartRegex.IsMatch(s)))
+                    if (IsAscendantClassStartNode(newNode))
                         continue;
                     distance.Add(connection, dis + 1);
                     newOnes.Enqueue(connection);
@@ -903,6 +905,22 @@ namespace POESKillTree.SkillTreeFiles
             }
             result.Reverse();
             return result;
+        }
+
+        /// <summary>
+        /// Returns true iff node is a Ascendant "Path of the ..." node.
+        /// </summary>
+        private static bool IsAscendantClassStartNode(ushort node)
+        {
+            return IsAscendantClassStartNode(Skillnodes[node]);
+        }
+
+        /// <summary>
+        /// Returns true iff node is a Ascendant "Path of the ..." node.
+        /// </summary>
+        public static bool IsAscendantClassStartNode(SkillNode node)
+        {
+            return node.attributes.Any(s => AscendantClassStartRegex.IsMatch(s));
         }
 
         /// <summary>
