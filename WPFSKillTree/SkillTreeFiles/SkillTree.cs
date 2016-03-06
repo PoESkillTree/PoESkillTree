@@ -878,7 +878,7 @@ namespace POESKillTree.SkillTreeFiles
                         continue;
                     if (Skillnodes[newNode].IsMastery)
                         continue;
-                    if (Skillnodes[newNode].attributes.Any(s => AscendantClassStartRegex.IsMatch(s)))
+                    if (IsAscendantClassStartNode(newNode))
                         continue;
                     distance.Add(connection, dis + 1);
                     newOnes.Enqueue(connection);
@@ -905,6 +905,22 @@ namespace POESKillTree.SkillTreeFiles
             }
             result.Reverse();
             return result;
+        }
+
+        /// <summary>
+        /// Returns true iff node is a Ascendant "Path of the ..." node.
+        /// </summary>
+        private static bool IsAscendantClassStartNode(ushort node)
+        {
+            return IsAscendantClassStartNode(Skillnodes[node]);
+        }
+
+        /// <summary>
+        /// Returns true iff node is a Ascendant "Path of the ..." node.
+        /// </summary>
+        public static bool IsAscendantClassStartNode(SkillNode node)
+        {
+            return node.attributes.Any(s => AscendantClassStartRegex.IsMatch(s));
         }
 
         /// <summary>
