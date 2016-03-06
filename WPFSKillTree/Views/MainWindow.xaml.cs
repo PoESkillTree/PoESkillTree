@@ -2279,7 +2279,8 @@ namespace POESKillTree.Views
                 var build = (PoEBuild)lvSavedBuilds.SelectedItem;
                 HashSet<ushort> nodes;
                 int ctype;
-                SkillTree.DecodeURL(build.Url, out nodes, out ctype);
+                int atype;
+                SkillTree.DecodeURL(build.Url, out nodes, out ctype, out atype);
 
                 Tree.HighlightedNodes = nodes;
                 int level = 0;

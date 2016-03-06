@@ -607,7 +607,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 SetProperty(ref _asctype, value, () =>
                     {
-                        ascendancyClasses.GetClassNumber(GetAscendancyClass(SkilledNodes));
+                        _asctype = value;
                     });
             }
         }
@@ -1118,7 +1118,7 @@ namespace POESKillTree.SkillTreeFiles
         }
 
 
-        public static void DecodeURL(string url, out HashSet<ushort> skillednodes, out int chartype)
+        public static void DecodeURL(string url, out HashSet<ushort> skillednodes, out int chartype, out int asctype)
         {
             skillednodes = new HashSet<ushort>();
             url = Regex.Replace(url, @"\t| |\n|\r", "");
@@ -1141,7 +1141,7 @@ namespace POESKillTree.SkillTreeFiles
                     nodes.Add((BitConverter.ToUInt16(dbff, 0)));
             }
             chartype = b;
-
+            asctype = asc;
 
             SkillNode startnode = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[b]).Value;
             skillednodes.Add(startnode.Id);
@@ -1162,9 +1162,11 @@ namespace POESKillTree.SkillTreeFiles
         public void LoadFromURL(string url)
         {
             int b;
+            int asc;
             HashSet<ushort> snodes;
-            SkillTree.DecodeURL(url, out snodes, out b);
+            SkillTree.DecodeURL(url, out snodes, out b, out asc);
             Chartype = b;
+            AscType = asc;
             SkilledNodes = snodes;
             
             UpdateAvailNodes();
@@ -1181,6 +1183,7 @@ namespace POESKillTree.SkillTreeFiles
         public string SaveToURL()
         {
             var b = new byte[7 + (SkilledNodes.Count - 1) * 2];
+            AscType = ascendancyClasses.GetClassNumber(GetAscendancyClass(SkilledNodes));
             var b2 = GetCharacterBytes((byte)Chartype, (byte) AscType);
             for (var i = 0; i < b2.Length; i++)
                 b[i] = b2[i];
