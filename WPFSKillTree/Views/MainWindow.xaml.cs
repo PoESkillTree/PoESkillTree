@@ -795,7 +795,8 @@ namespace POESKillTree.Views
                         {
                             //Nothing
                         }
-                        Directory.Move(appDataPath + "DataBackup", appDataPath + "Data");
+                        if (Directory.Exists(appDataPath + "DataBackup"))
+                            Directory.Move(appDataPath + "DataBackup", appDataPath + "Data");
 
                         Popup.Error(L10n.Message("An error occurred while downloading assets."), ex.Message);
                     }
@@ -2395,7 +2396,7 @@ namespace POESKillTree.Views
                         }
                         catch (Exception ex)
                         {
-                            if (Directory.Exists(Path.Combine(appDataPath, "Data")))
+                            if (Directory.Exists(appDataPath + "Data") && Directory.Exists(appDataPath + "DataBackup"))
                                 Directory.Delete(Path.Combine(appDataPath, "Data"), true);
                             try
                             {
@@ -2405,7 +2406,8 @@ namespace POESKillTree.Views
                             {
                                 //Nothing
                             }
-                            Directory.Move(Path.Combine(appDataPath, "DataBackup"), Path.Combine(appDataPath, "Data"));
+                            if (Directory.Exists(appDataPath + "DataBackup"))
+                                Directory.Move(Path.Combine(appDataPath, "DataBackup"), Path.Combine(appDataPath, "Data"));
                             Popup.Error(L10n.Message("Error while downloading assets."));
                         }
                     }

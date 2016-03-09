@@ -743,9 +743,6 @@ namespace POESKillTree.SkillTreeFiles
             }
             if (optsobj == "")
             {
-                displayProgress = (start != null && update != null && finish != null);
-                if (displayProgress)
-                    start(L10n.Message("Downloading Ascendancy Classes"));
                 string uriString = SkillTree.TreeAddress;
                 var req = (HttpWebRequest)WebRequest.Create(uriString);
                 var resp = (HttpWebResponse)req.GetResponse();
