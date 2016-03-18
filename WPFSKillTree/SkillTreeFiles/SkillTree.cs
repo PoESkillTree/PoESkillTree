@@ -1118,6 +1118,12 @@ namespace POESKillTree.SkillTreeFiles
         public static void DecodeURL(string url, out HashSet<ushort> skillednodes, out int chartype, out int asctype)
         {
             skillednodes = new HashSet<ushort>();
+            chartype = 0;
+            asctype = 0;
+
+            if (url == "" || url == null)
+                return;
+
             url = Regex.Replace(url, @"\t| |\n|\r", "");
             string s =
                 url.Substring(TreeAddress.Length + (url.StartsWith("https") ? 0 : -1))
