@@ -58,6 +58,13 @@ namespace POESKillTree.Model
 
         public void SavePersistentDataToFileEx(string path)
         {
+            if (File.Exists(path))
+            {
+                string pathBak = AppData.GetFolder(true) + "PersistentData.bak";
+                if (File.Exists(pathBak))
+                    File.Delete(pathBak);
+                File.Move(path, pathBak);
+            }
             var writer = new XmlSerializer(typeof(PersistentData));
             var file = new StreamWriter(path, false, System.Text.Encoding.UTF8);
             writer.Serialize(file, this);
@@ -67,23 +74,44 @@ namespace POESKillTree.Model
 
         public void LoadPersistentDataFromFile()
         {
-            string filePath = AppData.GetFolder(true) + "PersistentData.xml";
+            LoadPersistenDataFromFileEx(AppData.GetFolder(true) + "PersistentData.xml");
+        }
 
-            if (File.Exists(filePath))
+        private void LoadPersistenDataFromFileEx(string filePath)
+        {
+            try
             {
-                var reader = new StreamReader(filePath);
-                var ser = new XmlSerializer(typeof (PersistentData));
-                var obj = (PersistentData)ser.Deserialize(reader);
-                Options = obj.Options;
-                Builds = obj.Builds;
-                CurrentBuild = obj.CurrentBuild;
-                StashBookmarks = obj.StashBookmarks;
-                AppVersion = obj.AppVersion;
-                reader.Close();
-                OnPropertyChanged(null);
+                if (File.Exists(filePath))
+                {
+                    var reader = new StreamReader(filePath);
+                    var ser = new XmlSerializer(typeof(PersistentData));
+                    var obj = (PersistentData)ser.Deserialize(reader);
+                    Options = obj.Options;
+                    Builds = obj.Builds;
+                    CurrentBuild = obj.CurrentBuild;
+                    StashBookmarks = obj.StashBookmarks;
+                    AppVersion = obj.AppVersion;
+                    reader.Close();
+                    OnPropertyChanged(null);
+                }
+                DeserializeStash();
             }
+            catch (Exception ex)
+            {
+                string pathBak = AppData.GetFolder(true) + "PersistentData.bak";
+                if(!filePath.Contains("PersistenData.bak") && File.Exists(pathBak))
+                    LoadPersistenDataFromFileEx(pathBak);
+                else 
+                {
+                    //move persistentdata to a location that won't be saved over
+                    string pathBad = AppData.GetFolder(true) + "PersistentData_Bad.xml";
+                    if(File.Exists(pathBad))
+                        File.Delete(pathBad);
+                    File.Copy(filePath, pathBad);
 
-            DeserializeStash();
+                    throw new Exception(ex.Message + "\nYour PersistentData folder could not be loaded correctly. It has been moved to " + pathBad);
+                }
+            }
         }
 
         private void SerializeStash()
