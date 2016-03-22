@@ -712,9 +712,61 @@ namespace POESKillTree.Views
                 _clipboardBmp.Render(dw);
                 _clipboardBmp.Freeze();
 
+                //Save image in clipboard
                 Clipboard.SetImage(_clipboardBmp);
 
+                //Convert renderTargetBitmap to bitmap
+                MemoryStream stream = new MemoryStream();
+                BitmapEncoder encoder = new BmpBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(_clipboardBmp));
+                encoder.Save(stream);
+
+                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(stream);
+                System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
+
+                // Configure save file dialog box
+                Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+
+                // Default file name -- current build name ("buildname - xxx points used")
+                uint skilledNodes = (uint) Tree.GetSkillPointCount();
+                dialog.FileName = PersistentData.CurrentBuild.Name + " - " + string.Format(L10n.Plural("{0} point used", "{0} points used", skilledNodes), skilledNodes);
+
+                dialog.DefaultExt = ".jpg"; // Default file extension
+                dialog.Filter = "JPEG (*.jpg, *.jpeg)|*.jpg;|PNG (*.png)|*.png"; // Filter files by extension
+                dialog.OverwritePrompt = true;
+
+                // Show save file dialog box
+                bool? result = dialog.ShowDialog();
+
+                // Continue if the user did select a path
+                if (result.HasValue && result == true)
+                {
+                    System.Drawing.Imaging.ImageFormat format;
+                    string fileExtension = System.IO.Path.GetExtension(dialog.FileName);
+
+                    //set the selected data type
+                    switch (fileExtension)
+                    {
+                        case ".png":
+                            format = System.Drawing.Imaging.ImageFormat.Png;
+                            break;
+
+                        case ".jpg":
+                        case ".jpeg":
+                        default:
+                            format = System.Drawing.Imaging.ImageFormat.Jpeg;
+                            break;
+                    }
+
+                    //save the file
+                    image.Save(dialog.FileName, format);
+                }
+
                 recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+            }
+            else
+            {
+                MessageBox.Show(L10n.Message("Your build must use at least one node to generate a screenshot"), "Screenshot Generator", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
