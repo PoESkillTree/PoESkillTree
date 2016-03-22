@@ -729,7 +729,7 @@ namespace POESKillTree.Views
 
                 // Default file name -- current build name ("buildname - xxx points used")
                 uint skilledNodes = (uint) Tree.GetSkillPointCount();
-                dialog.FileName = PersistentData.CurrentBuild.Name + " - " + string.Format(L10n.Plural("{0} point used", "{0} points used", skilledNodes), skilledNodes);
+                dialog.FileName = PersistentData.CurrentBuild.Name + " - " + string.Format(L10n.Plural("{0} point", "{0} points", skilledNodes), skilledNodes);
 
                 dialog.DefaultExt = ".jpg"; // Default file extension
                 dialog.Filter = "JPEG (*.jpg, *.jpeg)|*.jpg;|PNG (*.png)|*.png"; // Filter files by extension
