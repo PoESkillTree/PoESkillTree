@@ -22,6 +22,7 @@ namespace POESKillTree.Model
         public Options Options { get; set; }
         public PoEBuild CurrentBuild { get; set; }
         public List<PoEBuild> Builds { get; set; }
+        public static string FileName = "PersistentData";
 
         [XmlIgnore]
         private ObservableCollection<Item> _stash = new ObservableCollection<Item>();
@@ -48,19 +49,19 @@ namespace POESKillTree.Model
         public static void CreateSetupTemplate(string path, string language)
         {
             var data = new PersistentData {Options = {Language = language}};
-            data.SavePersistentDataToFileEx(Path.Combine(path, "PersistentData.xml"));
+            data.SavePersistentDataToFileEx(Path.Combine(path, FileName + ".xml"));
         }
 
         public void SavePersistentDataToFile()
         {
-            SavePersistentDataToFileEx(AppData.GetFolder(true) + "PersistentData.xml");
+            SavePersistentDataToFileEx(AppData.GetFolder(true) + FileName + ".xml");
         }
 
         public void SavePersistentDataToFileEx(string path)
         {
             if (File.Exists(path))
             {
-                string pathBak = AppData.GetFolder(true) + "PersistentData.bak";
+                string pathBak = AppData.GetFolder(true) + FileName + ".bak";
                 if (File.Exists(pathBak))
                     File.Delete(pathBak);
                 File.Move(path, pathBak);
@@ -74,7 +75,7 @@ namespace POESKillTree.Model
 
         public void LoadPersistentDataFromFile()
         {
-            LoadPersistenDataFromFileEx(AppData.GetFolder(true) + "PersistentData.xml");
+            LoadPersistenDataFromFileEx(AppData.GetFolder(true) + FileName + ".xml");
         }
 
         private void LoadPersistenDataFromFileEx(string filePath)
@@ -98,13 +99,13 @@ namespace POESKillTree.Model
             }
             catch (Exception ex)
             {
-                string pathBak = AppData.GetFolder(true) + "PersistentData.bak";
-                if(!filePath.Contains("PersistenData.bak") && File.Exists(pathBak))
+                string pathBak = AppData.GetFolder(true) + FileName + ".bak";
+                if (!filePath.Contains(FileName + ".bak") && File.Exists(pathBak))
                     LoadPersistenDataFromFileEx(pathBak);
                 else 
                 {
                     //move persistentdata to a location that won't be saved over
-                    string pathBad = AppData.GetFolder(true) + "PersistentData_Bad.xml";
+                    string pathBad = AppData.GetFolder(true) + FileName + "_Bad.xml";
                     if(File.Exists(pathBad))
                         File.Delete(pathBad);
                     File.Copy(filePath, pathBad);
