@@ -6,7 +6,7 @@
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:md="clr-namespace:Markdown.Xaml"
     x:Name="Window"
-    WindowStartupLocation="CenterOwner" Width="500" Height="250"
+    WindowStartupLocation="CenterOwner" Width="500" Height="255.705"
     ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
     Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded">
     <controls:MetroWindow.Title>
@@ -14,29 +14,41 @@
     </controls:MetroWindow.Title>
     <Window.Resources>
     </Window.Resources>
-    <Grid Margin="0,0,0,0">
-        <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
+    <Grid Margin="0,0,0,15">
+        <Label HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top">
             <Label.Content>
                 <l:Catalog Message="Colors:" />
             </Label.Content>
         </Label>
-        <Label Margin="25,0,0,164" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="Auto">
-            <Label.Content>
-                <l:Catalog Message="Node Search Highlight" />
-            </Label.Content>
-        </Label>
-        <Label Margin="25,0,0,129" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="Auto">
-            <Label.Content>
-                <l:Catalog Message="Attribute Highlight" />
-            </Label.Content>
-        </Label>
-        <Label Margin="25,0,0,94" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="Auto">
-            <Label.Content>
-                <l:Catalog Message="Node Hover Highlight" />
-            </Label.Content>
-        </Label>
-        <ComboBox x:Name="NodeHoverHighlightColor" Margin="0,102,198,90" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" HorizontalAlignment="Right" Width="130" Height="30"/>
-        <ComboBox x:Name="NodeAttrHighlightColor" Margin="0,67,198,125" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" HorizontalAlignment="Right" Width="130" Height="30"/>
-        <ComboBox x:Name="NodeSearchHighlightColor" Margin="0,32,198,160" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" HorizontalAlignment="Right" Width="130" Height="30"/>
+        <Grid Margin="25,24,0,79">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+
+            <Label VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto">
+                <Label.Content>
+                    <l:Catalog Message="Node Search Highlight" />
+                </Label.Content>
+            </Label>
+            <Label VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto" Grid.Row="1">
+                <Label.Content>
+                    <l:Catalog Message="Attribute Highlight" />
+                </Label.Content>
+            </Label>
+            <Label VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto" Grid.Row ="2">
+                <Label.Content>
+                    <l:Catalog Message="Node Hover Highlight" />
+                </Label.Content>
+            </Label>
+            <ComboBox Grid.Column="1" x:Name="NodeHoverHighlightColor" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" Width="130" Height="30" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" x:Name="NodeAttrHighlightColor" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" Width="130" Height="30" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1" Grid.Row="2" x:Name="NodeSearchHighlightColor" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" Width="130" Height="30" VerticalAlignment="Center"/>
+        </Grid>
     </Grid>
 </controls:MetroWindow>
