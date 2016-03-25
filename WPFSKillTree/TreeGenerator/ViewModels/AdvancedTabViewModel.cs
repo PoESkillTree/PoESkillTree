@@ -96,7 +96,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {L10n.Message("Minion"), 12},
             {L10n.Message("Trap"), 13},
             {L10n.Message("Totem"), 14},
-            {"Everything Else", 15}
+            {L10n.Message("Everything Else"), 15}
         };
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         };
 
         #endregion
-        
+
         /// <summary>
         /// Gets all values of the WeaponClass Enum.
         /// </summary>
@@ -310,7 +310,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         var oldConstraint = (AttributeConstraint) param;
                         _addedAttributes.Remove(oldConstraint.Data);
                         AttributesView.Refresh();
-                        
+
                         NewAttributeConstraint = oldConstraint;
                         AttributeConstraints.Remove(oldConstraint);
                     },
@@ -445,7 +445,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             DisplayName = L10n.Message("Advanced");
         }
-        
+
         public override void Reset()
         {
             _addedAttributes.Clear();
@@ -507,7 +507,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         private void LoadAttributesFromTree()
         {
             Tree.UntagAllNodes();
-            
+
             var attributes = new Dictionary<string, float>();
             foreach (var node in Tree.SkilledNodes)
             {
@@ -565,8 +565,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
         private void ConverteAttributeToPseudoAttributeConstraints()
         {
             var keystones = from id in Tree.GetCheckedNodes()
-                where SkillTree.Skillnodes[id].IsKeyStone
-                select SkillTree.Skillnodes[id].Name;
+                            where SkillTree.Skillnodes[id].IsKeyStone
+                            select SkillTree.Skillnodes[id].Name;
             var conditionSettings = new ConditionSettings(Tags, OffHand, keystones.ToArray(), WeaponClass);
             var convertedConstraints = new List<AttributeConstraint>();
             foreach (var attributeConstraint in AttributeConstraints)
@@ -641,7 +641,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, CreateInitialAttributes(), attributeConstraints,
                 pseudoConstraints, WeaponClass, Tags, OffHand));
         }
-        
+
         /// <summary>
         /// Creates the attributes the skill tree has with these settings initially
         /// (without any tree generating done).

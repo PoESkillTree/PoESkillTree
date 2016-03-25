@@ -12,10 +12,12 @@
         x:Class="POESKillTree.Views.CraftWindow"
     
         WindowStartupLocation="CenterOwner"
-        Title="{l:Catalog 'Craft Window'}"
         x:Name="window" Width="600"
         SizeToContent="Height"
         >
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="Craft Window"/>
+    </controls:MetroWindow.Title>
     <controls:MetroWindow.Resources>
         <conv:ItemTypeToImageConverter x:Key="ItemTypeToImageConverter"/>
     </controls:MetroWindow.Resources>

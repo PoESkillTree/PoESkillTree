@@ -215,7 +215,7 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
-    
+
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <!-- Making it a disabled button is a lazy way for not having to style it manually. -->
@@ -227,7 +227,7 @@
             </Button>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
-    
+
     <Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="31"/>
@@ -309,12 +309,18 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator />
-                <MenuItem Click="Menu_CopyStats" Header="{l:Catalog Message=Copy _Passive Attributes to Clipboard}">
+                <MenuItem Click="Menu_CopyStats">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Copy _Passive Attributes to Clipboard"/>
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Click="btnPoeUrl_Click" Header="{l:Catalog Message=Copy Po_EUrl of Skill tree to Clipboard}" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                <MenuItem Click="btnPoeUrl_Click" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Copy Po_EUrl of Skill tree to Clipboard" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
@@ -342,33 +348,128 @@
                         </MenuItem.Header>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="{l:Catalog Message=Acce_nt}">
+                <MenuItem>
+                    <MenuItem.Header>
+                        <l:Catalog Message="Acce_nt" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ThemeIcon}" />
                     </MenuItem.Icon>
-                    <MenuItem x:Name="mnuViewAccentAmber" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Amber" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Amber}"/>
-                    <MenuItem x:Name="mnuViewAccentBlue" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Blue" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Blue}"/>
-                    <MenuItem x:Name="mnuViewAccentBrown" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Brown" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Brown}"/>
-                    <MenuItem x:Name="mnuViewAccentCobalt" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cobalt" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Cobalt}"/>
-                    <MenuItem x:Name="mnuViewAccentCrimson" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Crimson" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Crimson}"/>
-                    <MenuItem x:Name="mnuViewAccentCyan" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cyan" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Cyan}"/>
-                    <MenuItem x:Name="mnuViewAccentEmerald" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Emerald" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Emerald}"/>
-                    <MenuItem x:Name="mnuViewAccentGreen" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Green" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Green}"/>
-                    <MenuItem x:Name="mnuViewAccentIndigo" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Indigo" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Indigo}"/>
-                    <MenuItem x:Name="mnuViewAccentLime" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Lime" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Lime}"/>
-                    <MenuItem x:Name="mnuViewAccentMagenta" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Magenta" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Magenta}"/>
-                    <MenuItem x:Name="mnuViewAccentMauve" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Mauve" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Mauve}"/>
-                    <MenuItem x:Name="mnuViewAccentOlive" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Olive" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Olive}"/>
-                    <MenuItem x:Name="mnuViewAccentOrange" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Orange" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Orange}"/>
-                    <MenuItem x:Name="mnuViewAccentPink" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Pink" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Pink}"/>
-                    <MenuItem x:Name="mnuViewAccentPurple" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Purple" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Purple}"/>
-                    <MenuItem x:Name="mnuViewAccentRed" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Red" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Red}"/>
-                    <MenuItem x:Name="mnuViewAccentSienna" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Sienna" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Sienna}"/>
-                    <MenuItem x:Name="mnuViewAccentSteel" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Steel" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Steel}"/>
-                    <MenuItem x:Name="mnuViewAccentTaupe" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Taupe" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Taupe}"/>
-                    <MenuItem x:Name="mnuViewAccentTeal" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Teal" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Teal}"/>
-                    <MenuItem x:Name="mnuViewAccentViolet" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Violet" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Violet}"/>
-                    <MenuItem x:Name="mnuViewAccentYellow" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Yellow" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Yellow}"/>
+                    <MenuItem x:Name="mnuViewAccentAmber" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Amber" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Amber"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentBlue" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Blue" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Blue"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentBrown" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Brown" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Brown"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentCobalt" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cobalt" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Cobalt"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentCrimson" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Crimson" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Crimson"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentCyan" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cyan" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Cyan"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentEmerald" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Emerald" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Emerald"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentGreen" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Green" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Green"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentIndigo" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Indigo" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Indigo"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentLime" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Lime" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Lime"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentMagenta" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Magenta" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Magenta"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentMauve" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Mauve" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Mauve"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentOlive" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Olive" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Olive"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentOrange" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Orange" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Orange"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentPink" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Pink" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Pink"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentPurple" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Purple" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Purple"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentRed" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Red" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Red"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentSienna" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Sienna" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Sienna"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentSteel" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Steel" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Steel"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentTaupe" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Taupe" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Taupe"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentTeal" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Teal" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Teal"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentViolet" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Violet" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Violet"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentYellow" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Yellow" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Yellow"/>
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
                 <Separator />
                 <MenuItem x:Name="mnuViewBuilds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="{Binding PersistentData.Options.BuildsBarOpened,ElementName=window, Mode=TwoWay}">
@@ -428,7 +529,10 @@
                             <ContentControl Template="{StaticResource DownloadIcon}" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="mnuClearItems" Click="Menu_ClearItems" IsEnabled="False" Header="{l:Catalog Message=_Clear Items}">
+                    <MenuItem x:Name="mnuClearItems" Click="Menu_ClearItems" IsEnabled="False">
+                        <MenuItem.Header>
+                            <l:Catalog Message="_Clear Items"/>
+                        </MenuItem.Header>
                         <MenuItem.Icon>
                             <ContentControl Template="{StaticResource ClearIcon}" />
                         </MenuItem.Icon>
@@ -487,7 +591,10 @@
                             <ContentControl Template="{StaticResource RedownloadIcon}" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="_Redownload Item Assets" Click="Menu_RedownloadItemAssets">
+                    <MenuItem Click="Menu_RedownloadItemAssets">
+                        <MenuItem.Header>
+                            <l:Catalog Message="_Redownload Item Assets" />
+                        </MenuItem.Header>
                         <MenuItem.Icon>
                             <ContentControl Template="{StaticResource RedownloadIcon}" />
                         </MenuItem.Icon>
@@ -510,7 +617,11 @@
                             <l:Catalog Message="_Path of Exile Website" />
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Header="Path of Exile _Wiki" Click="Menu_OpenWiki"/>
+                    <MenuItem Click="Menu_OpenWiki">
+                        <MenuItem.Header>
+                            <l:Catalog Message="Path of Exile _Wiki" />
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Click="Menu_OpenHelp">
                     <MenuItem.Header>
@@ -591,20 +702,27 @@
                         </Style.Setters>
                     </Style>
                 </TabControl.ItemContainerStyle>
-                <TabItem IsSelected="True" Header="{l:Catalog 'PASSIVE TREE'}" Name="tyPAssiveTree">
+                <TabItem IsSelected="True" Name="tyPAssiveTree">
+                    <TabItem.Header>
+                        <l:Catalog Message="PASSIVE TREE"/>
+                    </TabItem.Header>
                     <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
                         <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </local:ZoomBorder>
                 </TabItem>
-                <TabItem Header="{l:Catalog 'EQUIPMENT'}" Name="tyEquipment">
+                <TabItem Name="tyEquipment">
+                    <TabItem.Header>
+                        <l:Catalog Message="EQUIPMENT"/>
+                    </TabItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
-                        <Button  Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40" Content="{l:Catalog 'Craft new item'}" />
-
+                        <Button  Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">
+                            <l:Catalog Message="Craft new item"/>
+                        </Button>
 
                         <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
 
@@ -764,7 +882,10 @@
                                 </ListBox>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="ItemList" Margin="0" controls:ControlsHelper.HeaderFontSize="15">
+                        <TabItem Margin="0" controls:ControlsHelper.HeaderFontSize="15">
+                            <TabItem.Header>
+                                <l:Catalog Message="ItemList" />
+                            </TabItem.Header>
                             <Grid>
                                 <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Equip, ElementName=window, Mode=OneWay}" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemList" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                     <ListBox.ItemTemplate>
