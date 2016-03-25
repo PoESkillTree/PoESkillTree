@@ -1029,23 +1029,17 @@ namespace POESKillTree.Views
 
             if (Tree.CanSwitchClass(className))
             {
-                var currentClassArray = GetCurrentClass();
-                var changeClassArray = getAnyClass(className);
-
-                if (currentClassArray[0] == "ERROR")
-                    return;
-                if (changeClassArray[0] == "ERROR")
-                    return;
-
-                Tree.LoadFromURL(tbSkillURL.Text.Replace(currentClassArray[1], changeClassArray[1]));
+                HashSet<ushort> tempNodes = new HashSet<ushort>(Tree.SkilledNodes);
+                foreach(int i in SkillTree.rootNodeList)
+                {
+                    if (tempNodes.Contains((ushort)i))
+                        tempNodes.Remove((ushort)i);
+                }
+                Tree.Chartype = cbCharType.SelectedIndex;
+                Tree.SkilledNodes.UnionWith(tempNodes);
             }
             else
             {
-                var startnode =
-                    SkillTree.Skillnodes.First(
-                        nd => nd.Value.Name.ToUpperInvariant() == (SkillTree.CharName[cbCharType.SelectedIndex])).Value;
-                Tree.SkilledNodes.Clear();
-                Tree.SkilledNodes.Add(startnode.Id);
                 Tree.Chartype = cbCharType.SelectedIndex;
             }
             Tree.UpdateAvailNodes();
@@ -2198,52 +2192,6 @@ namespace POESKillTree.Views
             ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
             ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewAccent" + sAccent)).IsChecked = true;
             _persistentData.Options.Accent = sAccent;
-        }
-        #endregion
-
-        #region Change Class - No Reset
-
-        /**
-         * Will get the current class name and start string from the tree url
-         * return: array[]
-         *         index 0 containing the Class Name
-         *         index 1 containing the Class Start String
-         **/
-
-        private string[] GetCurrentClass()
-        {
-            foreach (var item in CharacterNames.NameToLink)
-            {
-                if (tbSkillURL.Text.IndexOf(item.Value, StringComparison.InvariantCulture) != -1)
-                {
-                    return getAnyClass(item.Key);
-                }
-            }
-            return getAnyClass("ERROR");
-        }
-
-        /**
-         * parameters: className - any valid class name string
-         * return: array[]
-         *         index 0 containing the Class Name
-         *         index 1 containing the Class Start String
-         **/
-        private string[] getAnyClass(string className)
-        {
-            string[] array = new string[2];
-            string classStartString;
-            if (CharacterNames.NameToLink.TryGetValue(className, out classStartString))
-            {
-                array[0] = className;
-                array[1] = classStartString;
-            }
-            else
-            {
-                array[0] = "ERROR";
-                array[1] = "ERROR";
-            }
-
-            return array;
         }
         #endregion
 

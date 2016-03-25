@@ -1200,7 +1200,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public string SaveToURL()
         {
-            var b = new byte[7 + (SkilledNodes.Count - 1) * 2];
+            var b = new byte[7 + SkilledNodes.Count * 2];
             AscType = ascendancyClasses.GetClassNumber(GetAscendancyClass(SkilledNodes));
             var b2 = GetCharacterBytes((byte)Chartype, (byte) AscType);
             for (var i = 0; i < b2.Length; i++)
@@ -1399,13 +1399,13 @@ namespace POESKillTree.SkillTreeFiles
             var temp = new List<ushort>();
 
             _rootNodeClassDictionary.TryGetValue(className.ToUpperInvariant(), out rootNodeValue);
-            var classSpecificStartNodes = _startNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key);
+            List<int> classSpecificStartNodes = _startNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key).ToList<int>();
 
-            foreach (int node in classSpecificStartNodes)
+            foreach(int node in classSpecificStartNodes)
             {
-                temp = GetShortestPathTo((ushort)node, SkilledNodes);
+                temp = GetShortestPathTo((ushort) node, SkilledNodes);
 
-                if (!temp.Any())
+                if (!temp.Any() && Skillnodes[(ushort) node].ascendancyName == null)
                     return true;
             }
             return false;
