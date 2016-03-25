@@ -728,7 +728,7 @@ namespace POESKillTree.Views
                 Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
 
                 // Default file name -- current build name ("buildname - xxx points used")
-                uint skilledNodes = (uint) Tree.GetSkillPointCount();
+                uint skilledNodes = (uint) Tree.GetPointCount()["NormalUsed"];
                 dialog.FileName = PersistentData.CurrentBuild.Name + " - " + string.Format(L10n.Plural("{0} point", "{0} points", skilledNodes), skilledNodes);
 
                 dialog.DefaultExt = ".jpg"; // Default file extension
@@ -1181,10 +1181,16 @@ namespace POESKillTree.Views
                     _attiblist.Add(a);
                 }
             }
-
-            tbUsedPoints.Text = Tree.GetSkillPointCount().ToString();
+            UpdatePoints();
         }
-
+        public void UpdatePoints()
+        {
+            Dictionary<string, int> points = Tree.GetPointCount();
+            NormalUsedPoints.Content = points["NormalUsed"].ToString();
+            NormalTotalPoints.Content = points["NormalTotal"].ToString();
+            AscendancyUsedPoints.Content = "[" + points["AscendancyUsed"].ToString() + "]";
+            AscendancyTotalPoints.Content = "[" + points["AscendancyTotal"].ToString() + "]";
+        }
         public void UpdateStatistics()
         {
             _defenceList.Clear();
@@ -1750,7 +1756,7 @@ namespace POESKillTree.Views
                 currentOpenBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
                 currentOpenBuild.AccountName = _persistentData.CurrentBuild.AccountName;
                 currentOpenBuild.Level = GetLevelAsString();
-                currentOpenBuild.PointsUsed = tbUsedPoints.Text;
+                currentOpenBuild.PointsUsed = NormalUsedPoints.Content.ToString();
                 currentOpenBuild.Url = tbSkillURL.Text;
                 currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
                 currentOpenBuild.LastUpdated = DateTime.Now;
@@ -1776,7 +1782,7 @@ namespace POESKillTree.Views
                     Name = formBuildName.GetBuildName(),
                     Level = GetLevelAsString(),
                     Class = cbCharType.Text,
-                    PointsUsed = tbUsedPoints.Text,
+                    PointsUsed = NormalUsedPoints.Content.ToString(),
                     Url = tbSkillURL.Text,
                     Note = formBuildName.GetNote(),
                     CharacterName = formBuildName.GetCharacterName(),

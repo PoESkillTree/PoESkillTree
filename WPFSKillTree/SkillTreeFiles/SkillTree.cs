@@ -243,7 +243,6 @@ namespace POESKillTree.SkillTreeFiles
             get { return SkillTree._asendancyClasses; } 
         }
 
-
         private static bool _Initialized = false;
         public SkillTree(String treestring, String opsstring , bool displayProgress, UpdateLoadingWindow update)
         {
@@ -573,16 +572,32 @@ namespace POESKillTree.SkillTreeFiles
             get { return _level; }
             set { SetProperty(ref _level, value); }
         }
-
-        public int GetSkillPointCount()
+        /// <summary>
+        /// This will get all skill points related to the tree both Normal and Ascendancy
+        /// </summary>
+        /// <returns>A Dictionary with keys of "NormalUsed", "NormalTotal", "AscendancyUsed", and "AscendancyTotal"</returns>
+        public Dictionary<string, int> GetPointCount()
         {
-            var usedPoints = 0;
+            Dictionary<string, int> points = new Dictionary<string,int>()
+            {
+                {"NormalUsed", 0},
+                {"NormalTotal", 123},
+                {"AscendancyUsed", 0},
+                {"AscendancyTotal", 6}
+            };
+
             foreach (var node in SkilledNodes)
             {
-                if (Skillnodes[node].ascendancyName == null && !rootNodeList.Contains(node))
-                    usedPoints += 1;
+                var nodeInfo = Skillnodes[node];
+                if (nodeInfo.ascendancyName == null && !rootNodeList.Contains(node))
+                    points["NormalUsed"] += 1;
+                else if (nodeInfo.ascendancyName != null && !nodeInfo.IsAscendancyStart && !nodeInfo.IsMultipleChoiceOption)
+                {
+                    points["AscendancyUsed"] += 1;
+                    points["NormalTotal"] += nodeInfo.passivePointsGranted;
+                }
             }
-            return usedPoints;
+            return points;
         }
 
         public int Chartype
