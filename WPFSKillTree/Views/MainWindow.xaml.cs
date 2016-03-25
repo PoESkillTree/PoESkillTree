@@ -1382,6 +1382,10 @@ namespace POESKillTree.Views
                     }
                 }
             }
+            else if ((Tree.ascedancyButtonPos - v).Length < 150)
+            {
+                Tree.DrawAscendancyButton("Pressed");
+            }
             else
             {
                 if (p.X < 0 || p.Y < 0 || p.X > size.Width || p.Y > size.Height)
@@ -1416,7 +1420,6 @@ namespace POESKillTree.Views
                 node = nodes.First().Value;
 
             _hoveredNode = node;
-
             if (node != null && !SkillTree.rootNodeList.Contains(node.Id))
             {
                 if (node.IsJewelSocket)
@@ -1466,6 +1469,10 @@ namespace POESKillTree.Views
                     _lasttooltip = tooltip;
                 }
             }
+            else if ((Tree.ascedancyButtonPos - v).Length < 150)
+            {
+                Tree.DrawAscendancyButton("Highlight");
+            }
             else
             {
                 _sToolTip.Tag = false;
@@ -1476,6 +1483,7 @@ namespace POESKillTree.Views
                 {
                     Tree.ClearPath();
                     Tree.ClearJewelHighlight();
+                    Tree.DrawAscendancyButton();
                 }
             }
         }

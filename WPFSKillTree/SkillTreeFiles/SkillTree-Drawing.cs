@@ -64,8 +64,7 @@ namespace POESKillTree.SkillTreeFiles
         public DrawingVisual picNodeHighlightSurround;
         public DrawingVisual picJewelHighlight;
         public DrawingVisual picAscendancyClasses;
-        public DrawingVisual picAscendancyButtons;
-
+        public DrawingVisual picAscendancyButton;
 
         public DrawingVisual picNodeTreeComparisonHighlight;
         public DrawingVisual picPathTreeComparisonHighlight;
@@ -85,7 +84,7 @@ namespace POESKillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(picNodeNormalSurround);
             SkillTreeVisual.Children.Add(picNodeHighlightSurround);
             SkillTreeVisual.Children.Add(picFaces);
-            SkillTreeVisual.Children.Add(picAscendancyButtons);
+            SkillTreeVisual.Children.Add(picAscendancyButton);
             SkillTreeVisual.Children.Add(picHighlights);
             SkillTreeVisual.Children.Add(picJewelHighlight);
         }
@@ -100,7 +99,6 @@ namespace POESKillTree.SkillTreeFiles
         {
             picJewelHighlight.RenderOpen().Close();
         }
-
         private void DrawBackgroundLayer()
         {
             picBackground = new DrawingVisual();
@@ -176,6 +174,7 @@ namespace POESKillTree.SkillTreeFiles
                             new Vector2D(iscr[maxr].PixelWidth * 1.25, iscr[maxr].PixelHeight * 1.25 * maxfac),
                             new Size(iscr[maxr].PixelWidth * 2.5, iscr[maxr].PixelHeight * 2.5 * maxfac)));
                 }
+                drawingContext.Close();
             }
         }
 
@@ -244,6 +243,7 @@ namespace POESKillTree.SkillTreeFiles
 
                     }
                 }
+                dc.Close();
             }
         }
 
@@ -288,43 +288,73 @@ namespace POESKillTree.SkillTreeFiles
                     }
 
                 }
+                dc.Close();
             }
         }
-
-        public void DrawAscendancyButtons()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type">"Normal", "Highlight", and "Pressed"</param>
+        public void DrawAscendancyButton(string type = "Normal")
         {
-            using (DrawingContext dc = picAscendancyButtons.RenderOpen())
+            //TODO: enable once all drawing stuff is complete like repositioning node groups
+            return;
+            using (DrawingContext dc = picAscendancyButton.RenderOpen())
             {
-                foreach (var node in Skillnodes)
+                foreach (var i in SkillTree.rootNodeList)
                 {
-                    if (SkillTree.rootNodeList.Contains(node.Value.Id))
+                    if (!SkilledNodes.Contains((ushort) i))
+                        continue;
+                    if (AscType == 0)
+                        continue;
+                    var x = SkilledNodes;
+                    var node = Skillnodes[(ushort) i];
+                    string imageName;
+                    switch (type)
                     {
-                        string imageName = "PassiveSkillScreenAscendancyButton";
-                        BitmapImage b = _assets[imageName].PImage;
-                        var brush = new ImageBrush(_assets[imageName].PImage);
-
-                        var worldPos = node.Value.Position;
-                        var distanceFromStartNodeCenter = 250;
-                        var dirX = 0.0;
-                        var dirY = 1.0;
-                        var distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
-                        var isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
-                        if (!isCentered)
-                        {
-                            dirX = worldPos.X / distToCentre;
-                            dirY = -worldPos.Y / distToCentre;
-                        }
-                        var zoom = 0.3835;
-
-                        var ascButtonRot = Math.Atan2(dirX, dirY);
-                        var buttonCX = worldPos.X + distanceFromStartNodeCenter * Math.Cos(ascButtonRot + Math.PI / 2);
-                        var buttonCY = worldPos.Y + distanceFromStartNodeCenter * Math.Sin(ascButtonRot + Math.PI / 2);
-                        var buttonPoint = new Vector2D(buttonCX, buttonCY);
+                        case "Highlight":
+                            imageName = "PassiveSkillScreenAscendancyButtonHighlight";
+                            break;
+                        case "Pressed":
+                            imageName = "PassiveSkillScreenAscendancyButtonPressed";
+                            break;
+                        case "Normal":
+                        default:
+                            imageName = "PassiveSkillScreenAscendancyButton";
+                            break;
                     }
+                     
+                    BitmapImage b = _assets[imageName].PImage;
+                    var brush = new ImageBrush(_assets[imageName].PImage);
 
+                    var worldPos = node.Position;
+                    var distanceFromStartNodeCenter = 325;
+                    var dirX = 0.0;
+                    var dirY = 1.0;
+                    var distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
+                    var isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
+                    if (!isCentered)
+                    {
+                        dirX = worldPos.X / distToCentre;
+                        dirY = -worldPos.Y / distToCentre;
+                    }
+                    var zoom = 0.3835;
+
+                    var ascButtonRot = Math.Atan2(dirX, dirY);
+                    var buttonCX = worldPos.X + distanceFromStartNodeCenter * Math.Cos(ascButtonRot + Math.PI / 2);
+                    var buttonCY = worldPos.Y + distanceFromStartNodeCenter * Math.Sin(ascButtonRot + Math.PI / 2);
+                    var buttonPoint = new Vector2D(buttonCX, buttonCY);
+
+                    Rect rect = new Rect(buttonCX - b.Height * 1.75, buttonCY - b.Width * 1.75, b.Width * 2.5, b.Height * 2.5);
+                    dc.PushTransform(new RotateTransform(ascButtonRot * (180/Math.PI), buttonCX, buttonCY));
+                    dc.DrawRectangle(brush, null, rect);
+
+                    ascedancyButtonPos = buttonPoint;
                 }
+                dc.Close();
             }
         }
+
         private FormattedText CreateAttributeText(string text, SolidColorBrush colorBrush)
         {
             return new FormattedText(text,
@@ -402,6 +432,7 @@ namespace POESKillTree.SkillTreeFiles
                         dc.DrawLine(crossPen, new Point(x + 50, y - 70), new Point(x - 50, y + 70));
                     }
                 }
+                dc.Close();
             }
         }
 
@@ -417,6 +448,7 @@ namespace POESKillTree.SkillTreeFiles
                     SkillNode n2 = Skillnodes[nid[1]];
                     DrawConnection(dc, pen2, n1, n2);
                 }
+                dc.Close();
             }
         }
 
@@ -487,6 +519,7 @@ namespace POESKillTree.SkillTreeFiles
                                     NodeSurroundHighlightBrush[0].Key.Height * 2 * factor));
                     }
                 }
+                dc.Close();
             }
 
             var pen2 = new Pen(new SolidColorBrush(_treeComparisonColor), 25 * factor);
@@ -506,6 +539,7 @@ namespace POESKillTree.SkillTreeFiles
                         }
                     }
                 }
+                dc.Close();
             }
         }
 
@@ -579,6 +613,7 @@ namespace POESKillTree.SkillTreeFiles
                                 NodeSurroundBrush[0].Key.Width * 2,
                                 NodeSurroundBrush[0].Key.Height * 2));
                 }
+                dc.Close();
             }
         }
 
@@ -645,6 +680,7 @@ namespace POESKillTree.SkillTreeFiles
                                 NodeSurroundBrush[1].Key.Width * 2,
                                 NodeSurroundBrush[1].Key.Height * 2));
                 }
+                dc.Close();
             }
         }
 
@@ -672,6 +708,7 @@ namespace POESKillTree.SkillTreeFiles
                     if (n1.VisibleNeighbors.Contains(n2))
                         DrawConnection(dc, pen2, n1, n2);
                 }
+                dc.Close();
             }
         }
 
@@ -690,6 +727,7 @@ namespace POESKillTree.SkillTreeFiles
                             DrawConnection(dc, pen2, Skillnodes[node], n2);
                     }
                 }
+                dc.Close();
             }
         }
 
@@ -722,6 +760,7 @@ namespace POESKillTree.SkillTreeFiles
                     Vector2D pos = (skillNode.Value.Position);
                     dc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
                 }
+                dc.Close();
             }
         }
 
@@ -735,7 +774,6 @@ namespace POESKillTree.SkillTreeFiles
                 dc.DrawGeometry(null, pen, g);
                 foreach (var skillNode in SkilledNodes)
                 {
-                    Size isize;
                     var imageBrush = new ImageBrush();
                     var rect = IconActiveSkills.SkillPositions[Skillnodes[skillNode].IconKey].Key;
                     var bitmapImage = IconActiveSkills.Images[IconActiveSkills.SkillPositions[Skillnodes[skillNode].IconKey].Value];
@@ -748,6 +786,7 @@ namespace POESKillTree.SkillTreeFiles
                     Vector2D pos = (Skillnodes[skillNode].Position);
                     dc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
                 }
+                dc.Close();
             }
         }
 
@@ -855,7 +894,7 @@ namespace POESKillTree.SkillTreeFiles
             picNodeTreeComparisonHighlight = new DrawingVisual();
             picPathTreeComparisonHighlight = new DrawingVisual();
             picJewelHighlight = new DrawingVisual();
-            picAscendancyButtons = new DrawingVisual();
+            picAscendancyButton = new DrawingVisual();
             picAscendancyClasses = new DrawingVisual();
         }
 
@@ -868,7 +907,6 @@ namespace POESKillTree.SkillTreeFiles
             DrawLinkBackgroundLayer(_links);
             DrawFaces();
             DrawAscendancyClasses();
-            //DrawAscendancyButtons();
         }
         public static void ClearAssets()
         {
@@ -889,6 +927,7 @@ namespace POESKillTree.SkillTreeFiles
                 dc.DrawEllipse(null, radiusPen, node.Position, smallRadius, smallRadius);
                 dc.DrawEllipse(null, radiusPen, node.Position, mediumRadius, mediumRadius);
                 dc.DrawEllipse(null, radiusPen, node.Position, largeRadius, largeRadius);
+                dc.Close();
             }
         }
     }

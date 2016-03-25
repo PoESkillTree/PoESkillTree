@@ -39,6 +39,7 @@ namespace POESKillTree.SkillTreeFiles
         public static readonly string TreeAddress = "https://www.pathofexile.com/passive-skill-tree/";
         public static readonly string TreeRegex = @"(http(|s):\/\/|).*?\/(character\/|passive-skill-tree\/|fullscreen-passive-skill-tree\/|#|poeplanner.com\/)";
 
+        public Vector2D ascedancyButtonPos = new Vector2D();
         /// <summary>
         /// Nodes with an attribute matching this regex are one of the "Path of the ..." nodes connection Scion
         /// Ascendant with other classes.
@@ -611,6 +612,7 @@ namespace POESKillTree.SkillTreeFiles
                     SkilledNodes.Add(GetCharNodeId());
                     UpdateAvailNodes();
                     DrawFaces();
+                    DrawAscendancyButton();
                 });
             }
         }
