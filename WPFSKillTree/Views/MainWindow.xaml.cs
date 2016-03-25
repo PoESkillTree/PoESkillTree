@@ -1435,7 +1435,8 @@ namespace POESKillTree.Views
                 else
                 {
                     _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
-                    Tree.DrawPath(_prePath);
+                    if (!node.IsMastery)
+                        Tree.DrawPath(_prePath);
                 }
                 var tooltip = node.Name;
                 if (node.Attributes.Count != 0)

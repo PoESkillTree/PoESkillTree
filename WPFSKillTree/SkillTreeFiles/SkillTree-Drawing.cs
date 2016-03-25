@@ -208,6 +208,8 @@ namespace POESKillTree.SkillTreeFiles
                         if(AscendantClassStartRegex.IsMatch(attibute))
                             draw = false;
                     }
+                    if (n1.IsMastery || n2.IsMastery)
+                        draw = false;
                     if (draw)
                         dc.DrawLine(pen2, n1.Position, n2.Position);
                 }
