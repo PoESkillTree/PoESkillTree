@@ -1365,6 +1365,17 @@ namespace POESKillTree.Views
                         {
                             foreach (ushort i in _prePath)
                             {
+                                if (SkillTree.Skillnodes[i].IsMultipleChoiceOption)
+                                {
+                                    foreach(var j in Tree.SkilledNodes)
+                                    {
+                                        if (SkillTree.Skillnodes[j].IsMultipleChoiceOption && Tree.ascendancyClasses.GetStartingClass(SkillTree.Skillnodes[i].Name) == Tree.ascendancyClasses.GetStartingClass(SkillTree.Skillnodes[j].Name))
+                                        {
+                                            Tree.SkilledNodes.Remove(j);
+                                            break;
+                                        }
+                                    }
+                                }
                                 Tree.SkilledNodes.Add(i);
                             }
                             UpdateUI();
