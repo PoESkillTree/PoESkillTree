@@ -31,7 +31,7 @@ namespace POESKillTree.Utils.Converter
         private static readonly string Defense = L10n.Message("Defense");
         private static readonly string Spell = L10n.Message("Spell");
         private static readonly string CoreAttributes = L10n.Message("Core Attributes");
-        private static readonly string MiscLabel = "Everything Else";
+        private static readonly string MiscLabel = L10n.Message("Everything Else");
         private static readonly string DecimalRegex = "\\d+(\\.\\d*)?";
         private static readonly List<string[]> DefaultGroups = new List<string[]>
         {
@@ -398,7 +398,7 @@ namespace POESKillTree.Utils.Converter
                     AttributeGroups[key].GroupName = "Custom: "+key.Replace("#", groupTotals[key].ToString())+deltaString;
                 }
             }
-            
+
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -425,7 +425,7 @@ namespace POESKillTree.Utils.Converter
                     break;
                 }
             }
-            if (group1 == 2) { 
+            if (group1 == 2) {
                 foreach (var gp in DefaultGroups)
                 {
                     if (attr1.ToLower().Contains(gp[0].ToLower()))
