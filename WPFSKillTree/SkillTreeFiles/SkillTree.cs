@@ -532,7 +532,6 @@ namespace POESKillTree.SkillTreeFiles
                     new Vector2D(inTree.max_x * 1.1 + padding, inTree.max_y * 1.1 + padding));
             }
 
-
             InitializeDynamicLayers();
             DrawDynamicLayers();
             CreateCombineVisual();
@@ -1188,7 +1187,7 @@ namespace POESKillTree.SkillTreeFiles
             Chartype = b;
             AscType = asc;
             SkilledNodes = snodes;
-            
+
             UpdateAvailNodes();
         }
 

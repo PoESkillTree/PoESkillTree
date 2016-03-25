@@ -160,6 +160,8 @@ namespace POESKillTree.SkillTreeFiles
                 drawingContext.DrawRectangle(rightGradient, null, rightRect);
                 foreach (var skillNodeGroup in NodeGroups)
                 {
+                    if (skillNodeGroup.Nodes.Where(n => n.ascendancyName != null).ToArray().Length > 0)
+                        continue;
                     if (skillNodeGroup.OcpOrb == null)
                         skillNodeGroup.OcpOrb = new Dictionary<int, bool>();
                     var cgrp = skillNodeGroup.OcpOrb.Keys.Where(ng => ng <= 3);
@@ -338,7 +340,6 @@ namespace POESKillTree.SkillTreeFiles
                         dirX = worldPos.X / distToCentre;
                         dirY = -worldPos.Y / distToCentre;
                     }
-                    var zoom = 0.3835;
 
                     var ascButtonRot = Math.Atan2(dirX, dirY);
                     var buttonCX = worldPos.X + distanceFromStartNodeCenter * Math.Cos(ascButtonRot + Math.PI / 2);
