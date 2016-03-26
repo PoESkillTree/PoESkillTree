@@ -263,39 +263,34 @@ namespace POESKillTree.SkillTreeFiles
                 inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, jss);
                 inOpts = JsonConvert.DeserializeObject<Opts>(opsstring, jss);
             }
-            int qindex = 0;
 
             if (!_Initialized)
             {
                 SkillTree._IconInActiveSkills = new SkillIcons();
-                //TODO: (SpaceOgre) This is not used atm, so no need to run it.
-                foreach (var obj in inTree.skillSprites)
-                {
-                    if (obj.Key.Contains("inactive"))
-                        continue;
-                    _IconInActiveSkills.Images[obj.Value[3].filename] = null;
-                    foreach (var o in obj.Value[3].coords)
-                    {
-                        _IconInActiveSkills.SkillPositions[o.Key + "_" + o.Value.w] =
-                            new KeyValuePair<Rect, string>(new Rect(o.Value.x, o.Value.y, o.Value.w, o.Value.h),
-                                obj.Value[3].filename);
-                    }
-                }
-            }
-
-            if (!_Initialized)
-            {
                 SkillTree._IconActiveSkills = new SkillIcons();
                 foreach (var obj in inTree.skillSprites)
                 {
-                    if (obj.Key.Contains("active"))
-                        continue;
-                    _IconActiveSkills.Images[obj.Value[3].filename] = null;
-                    foreach (var o in obj.Value[3].coords)
+                    if (obj.Key.Contains("Active"))
                     {
-                        _IconActiveSkills.SkillPositions[o.Key + "_" + o.Value.w] =
-                            new KeyValuePair<Rect, string>(new Rect(o.Value.x, o.Value.y, o.Value.w, o.Value.h),
-                                obj.Value[3].filename);
+                        //Adds active nodes to IconActiveSkills
+                        _IconActiveSkills.Images[obj.Value[3].filename] = null;
+                        foreach (var o in obj.Value[3].coords)
+                        {
+                            _IconActiveSkills.SkillPositions[o.Key + "_" + o.Value.w] =
+                                new KeyValuePair<Rect, string>(new Rect(o.Value.x, o.Value.y, o.Value.w, o.Value.h),
+                                    obj.Value[3].filename);
+                        }
+                    }
+                    else 
+                    {
+                        //Adds inactive nodes and masteries to IconInActiveSkills
+                        _IconInActiveSkills.Images[obj.Value[3].filename] = null;
+                        foreach (var o in obj.Value[3].coords)
+                        {
+                            _IconInActiveSkills.SkillPositions[o.Key + "_" + o.Value.w] =
+                                new KeyValuePair<Rect, string>(new Rect(o.Value.x, o.Value.y, o.Value.w, o.Value.h),
+                                    obj.Value[3].filename);
+                        }
                     }
                 }
             }
@@ -487,18 +482,39 @@ namespace POESKillTree.SkillTreeFiles
                             Skillnodes[ints[1]].Neighbor.Add(Skillnodes[ints[0]]);
                     }
                 }
+
+                var regexAttrib = new Regex("[0-9]*\\.?[0-9]+");
                 foreach (var skillnode in Skillnodes)
                 {
+                    //add each other as visible neighbors
                     foreach (var snn in skillnode.Value.Neighbor)
                     {
                         if (snn.IsAscendancyStart && skillnode.Value.LinkId.Contains(snn.Id))
                             continue;
                         skillnode.Value.VisibleNeighbors.Add(snn);
                     }
+
+                    //populate the Attributes fields with parsed attributes 
+                    skillnode.Value.Attributes = new Dictionary<string, List<float>>();
+                    foreach (string s in skillnode.Value.attributes)
+                    {
+                        var values = new List<float>();
+
+                        foreach (Match m in regexAttrib.Matches(s))
+                        {
+                            if (!AttributeTypes.Contains(regexAttrib.Replace(s, "#")))
+                                AttributeTypes.Add(regexAttrib.Replace(s, "#"));
+                            if (m.Value == "")
+                                values.Add(float.NaN);
+                            else
+                                values.Add(float.Parse(m.Value, CultureInfo.InvariantCulture));
+                        }
+                        string cs = (regexAttrib.Replace(s, "#"));
+
+                        skillnode.Value.Attributes[cs] = values;
+                    }
                 }
             }
-
-
 
             if (!_Initialized)
             {
@@ -536,31 +552,6 @@ namespace POESKillTree.SkillTreeFiles
             DrawDynamicLayers();
             CreateCombineVisual();
 
-            if (_links != null)
-            {
-                var regexAttrib = new Regex("[0-9]*\\.?[0-9]+");
-                foreach (var skillNode in Skillnodes)
-                {
-                    skillNode.Value.Attributes = new Dictionary<string, List<float>>();
-                    foreach (string s in skillNode.Value.attributes)
-                    {
-                        var values = new List<float>();
-
-                        foreach (Match m in regexAttrib.Matches(s))
-                        {
-                            if (!AttributeTypes.Contains(regexAttrib.Replace(s, "#")))
-                                AttributeTypes.Add(regexAttrib.Replace(s, "#"));
-                            if (m.Value == "")
-                                values.Add(float.NaN);
-                            else
-                                values.Add(float.Parse(m.Value, CultureInfo.InvariantCulture));
-                        }
-                        string cs = (regexAttrib.Replace(s, "#"));
-
-                        skillNode.Value.Attributes[cs] = values;
-                    }
-                }
-            }
             if (displayProgress)
                 update(100, 100);
 
@@ -1187,7 +1178,6 @@ namespace POESKillTree.SkillTreeFiles
             Chartype = b;
             AscType = asc;
             SkilledNodes = snodes;
-
             UpdateAvailNodes();
         }
 
