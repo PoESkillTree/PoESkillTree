@@ -440,13 +440,8 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     foreach (ushort i in skillNode.Value.LinkId)
                     {
-                        if (
-                            _links.Count(nd => (nd[0] == i && nd[1] == skillNode.Key) || nd[0] == skillNode.Key && nd[1] == i) ==
-                            1)
-                        {
-                            continue;
-                        }
-                        _links.Add(new[] { skillNode.Key, i });
+                        if (_links.Count(nd => (nd[0] == i && nd[1] == skillNode.Key) || nd[0] == skillNode.Key && nd[1] == i) != 1)
+                            _links.Add(new[] { skillNode.Key, i });
                     }
                 }
                 foreach (var ints in _links)
@@ -1350,16 +1345,27 @@ namespace POESKillTree.SkillTreeFiles
 
             using (DrawingContext dc = picActiveLinks.RenderOpen())
             {
-                foreach (ushort n1 in SkilledNodes)
+                using (DrawingContext dcAsc = picAscActiveLinks.RenderOpen()) 
                 {
-                    foreach (SkillNode n2 in Skillnodes[n1].VisibleNeighbors)
+                    foreach (ushort n1 in SkilledNodes)
                     {
-                        if (SkilledNodes.Contains(n2.Id))
+                        foreach (SkillNode n2 in Skillnodes[n1].VisibleNeighbors)
                         {
-                            DrawConnection(dc, pen2, n2, Skillnodes[n1]);
+                            if (SkilledNodes.Contains(n2.Id))
+                            {
+                                if (n2.ascendancyName != null)
+                                {
+                                    if (drawAscendancy)
+                                        DrawConnection(dcAsc, pen2, n2, Skillnodes[n1]);
+                                }
+                                else
+                                    DrawConnection(dc, pen2, n2, Skillnodes[n1]);
+                            }
                         }
                     }
+                    dcAsc.Close();
                 }
+                dc.Close();
             }
             DrawActiveNodeIcons();
             DrawNodeHighlightSurround();

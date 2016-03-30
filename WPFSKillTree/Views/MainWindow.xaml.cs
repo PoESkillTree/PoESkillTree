@@ -1385,6 +1385,7 @@ namespace POESKillTree.Views
             else if ((Tree.ascedancyButtonPos - v).Length < 150)
             {
                 Tree.DrawAscendancyButton("Pressed");
+                Tree.ToggleAscendancyTree();
             }
             else
             {
