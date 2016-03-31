@@ -1047,7 +1047,9 @@ namespace POESKillTree.Views
                 Tree.AscType = 0;
             else
                 Tree.AscType = cbAscType.SelectedIndex;
+            Tree.UpdateAvailNodes();
             UpdateUI();
+            tbSkillURL.Text = Tree.SaveToURL();
         }
 
         private void populateAsendancySelectionList()

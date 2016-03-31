@@ -390,8 +390,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             using (DrawingContext dc = picAscendancyButton.RenderOpen())
             {
-                dc.DrawDrawing(picAscendancyButton.Drawing);
-                if (AscType != 0)
+                if (AscType != 0 && !_persistentData.Options.ShowAllAscendancyClasses)
                 {
                     foreach (var i in SkillTree.rootNodeList)
                     {
