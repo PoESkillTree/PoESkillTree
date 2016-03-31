@@ -737,9 +737,9 @@
 
             <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">
+                    <Label Margin="6,0" TextBlock.FontSize="16">
                         <l:Catalog Message="Saved Builds"/>
-                    </TextBlock>
+                    </Label>
                 </Expander.Header>
 
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left"  FlowDirection="LeftToRight" Background="{DynamicResource WhiteColorBrush}">
@@ -827,9 +827,9 @@
 
             <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewAttributes}" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}" MouseLeave="expAttributes_MouseLeave">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" FontSize="16">
+                    <Label Margin="-5,0" FontSize="16">
                         <l:Catalog Message="Attributes"/>
-                    </TextBlock>
+                    </Label>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
                     <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
@@ -909,9 +909,9 @@
 
             <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}" Expanded="expCharacterSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">
+                    <Label Margin="-5,0" TextBlock.FontSize="16">
                         <l:Catalog Message="Character Sheet"/>
-                    </TextBlock>
+                    </Label>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-109,0,0,-1">
                     <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
