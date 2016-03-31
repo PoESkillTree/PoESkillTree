@@ -672,7 +672,7 @@
                                             Value="{Binding Level, ValidatesOnDataErrors=True}"
                                             Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}" />
                     <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged"></ComboBox>
-                    <ComboBox Margin="5,0,0,0" x:Name="cbAscType" Width="100" SelectionChanged="cbCharType_SelectionChanged"></ComboBox>
+                    <ComboBox Margin="5,0,0,0" x:Name="cbAscType" Width="100" SelectionChanged="cbAscType_SelectionChanged"></ComboBox>
                     <Label Content="Points:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
                     <Label Content="0" Margin="0,0,0,0" x:Name="NormalUsedPoints"/>
                     <Label Content="[0]" Margin="-8,0,0,0" x:Name="AscendancyUsedPoints"/>

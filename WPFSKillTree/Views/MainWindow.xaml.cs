@@ -1033,35 +1033,21 @@ namespace POESKillTree.Views
                 return;
             }
 
-            var ComboItem = (ComboBoxItem)cbCharType.SelectedItem;
-            var className = ComboItem.Name;
+            Tree.Chartype = cbCharType.SelectedIndex;
+            Tree.AscType = 0;
 
-            if (Tree.CanSwitchClass(className))
-            {
-                HashSet<ushort> tempNodes = new HashSet<ushort>(Tree.SkilledNodes);
-                foreach(int i in SkillTree.rootNodeList)
-                {
-                    if (tempNodes.Contains((ushort)i))
-                        tempNodes.Remove((ushort)i);
-                }
-                Tree.Chartype = cbCharType.SelectedIndex;
-                if (cbAscType.SelectedIndex != -1)
-                    Tree.AscType = cbAscType.SelectedIndex;
-                Tree.SkilledNodes.UnionWith(tempNodes);
-            }
-            else
-            {
-                Tree.Chartype = cbCharType.SelectedIndex;
-                Tree.AscType = cbAscType.SelectedIndex;
-            }
-
-            if (Tree.updateAscendancyClasses)
-            {
-                populateAsendancySelectionList();
-            }
+            populateAsendancySelectionList();
             Tree.UpdateAvailNodes();
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToURL();
+        }
+        private void cbAscType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbAscType.SelectedIndex < 0 || cbAscType.SelectedIndex > 3)
+                Tree.AscType = 0;
+            else
+                Tree.AscType = cbAscType.SelectedIndex;
+            UpdateUI();
         }
 
         private void populateAsendancySelectionList()
@@ -1072,7 +1058,6 @@ namespace POESKillTree.Views
                 ascendancyItems.Add(name.displayName);
             cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
             Tree.updateAscendancyClasses = false;
-            cbAscType.SelectedIndex = Tree.AscType;
         }
 
         private string GetLevelAsString()
@@ -1114,6 +1099,7 @@ namespace POESKillTree.Views
             RefreshAttributeLists();
             UpdateStatistics();
             UpdateClass();
+            UpdatePoints();
         }
 
         public void UpdateAllAttributeList()
@@ -1168,10 +1154,8 @@ namespace POESKillTree.Views
 
         public void UpdateClass()
         {
-            if (Tree.Chartype != -1)
-                cbCharType.SelectedIndex = Tree.Chartype;
-            if (Tree.AscType != -1)
-                cbAscType.SelectedIndex = Tree.AscType;
+            cbCharType.SelectedIndex = Tree.Chartype;
+            cbAscType.SelectedIndex = Tree.AscType;
         }
 
         public void UpdateAttributeList()
@@ -1362,7 +1346,7 @@ namespace POESKillTree.Views
                 if (node.ascendancyName != null && !Tree.drawAscendancy)
                     return;
                 string className = CharacterNames.NameToContent.Where(x => x.Key == SkillTree.CharName[Tree.Chartype]).First().Value;
-                if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != Tree.ascendancyClasses.GetClassName(className, Tree.AscType))
+                if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.ascendancyClasses.GetClassName(className, Tree.AscType))
                     return;
 
                 if (node.Spc == null && !node.IsMastery)
