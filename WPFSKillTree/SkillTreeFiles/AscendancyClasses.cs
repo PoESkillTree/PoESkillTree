@@ -65,7 +65,8 @@ namespace POESKillTree.SkillTreeFiles
         /// <returns></returns>
         public string GetClassName(string startingClass, int ascOrder)
         {
-            ascOrder -= 1;
+            if (ascOrder > 0)
+                ascOrder -= 1;
             foreach(KeyValuePair<string, string> pair in CharacterNames.NameToContent)
             {
                 if (pair.Key == startingClass)

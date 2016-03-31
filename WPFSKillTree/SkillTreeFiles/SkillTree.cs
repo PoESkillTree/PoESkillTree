@@ -586,6 +586,7 @@ namespace POESKillTree.SkillTreeFiles
             return points;
         }
 
+        public bool updateAscendancyClasses = true;
         public int Chartype
         {
             get { return _chartype; }
@@ -593,11 +594,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 SetProperty(ref _chartype, value, () =>
                 {
-                    SkilledNodes.Clear();
-                    SkilledNodes.Add(GetCharNodeId());
-                    UpdateAvailNodes();
-                    DrawFaces();
-                    DrawAscendancyButton();
+                    CharacterTypeUpdate();
                 });
             }
         }
@@ -607,11 +604,40 @@ namespace POESKillTree.SkillTreeFiles
             get { return _asctype; }
             set
             {
-                SetProperty(ref _asctype, value, () =>
-                    {
-                        _asctype = value;
-                    });
+                SetProperty(ref _asctype, value, () => 
+                {
+                    if (value == -1)
+                        return;
+                    string className = CharacterNames.NameToContent.Where(x => x.Key == CharName[_chartype]).First().Value;
+                    string ascName = ascendancyClasses.GetClassName(className, value);
+                     HashSet<ushort> remove = new HashSet<ushort>();
+                    if(value == 0)
+                        remove = new HashSet<ushort>(SkilledNodes.Where(x => Skillnodes[x].ascendancyName != null));
+                    else
+                        remove = new HashSet<ushort>(SkilledNodes.Where(x => Skillnodes[x].ascendancyName == null ? false : Skillnodes[x].ascendancyName != ascName));
+                    foreach (var n in remove)
+                        SkilledNodes.Remove(n);
+                    ushort node = GetAscNodeId();
+                    if (node != 0)
+                        SkilledNodes.Add(node);
+                });
             }
+        }
+
+        private void CharacterTypeUpdate()
+        {
+            SkilledNodes.Clear();
+            SkilledNodes.Add(GetCharNodeId());
+            if (AscType != -1)
+            {
+                ushort node = GetAscNodeId();
+                if (node != 0)
+                    SkilledNodes.Add(node);
+            }
+            UpdateAvailNodes();
+            DrawFaces();
+            DrawAscendancyButton();
+            updateAscendancyClasses = true;
         }
 
         public Dictionary<string, List<float>> HighlightedAttributes;
@@ -1285,6 +1311,14 @@ namespace POESKillTree.SkillTreeFiles
         public ushort GetCharNodeId()
         {
             return (ushort)rootNodeClassDictionary[CharName[_chartype]];
+        }
+
+        public ushort GetAscNodeId()
+        {
+            if (AscType == 0)
+                return 0;
+            string classname = CharacterNames.NameToContent.Where(x => x.Key == CharName[_chartype]).First().Value;
+            return Skillnodes.Where(x => x.Value.ascendancyName == ascendancyClasses.GetClassName(classname, AscType) && x.Value.IsAscendancyStart).First().Key;
         }
 
         public string GetAscendancyClass(HashSet<ushort> skilledNodes)
