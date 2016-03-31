@@ -14,13 +14,13 @@
     </controls:MetroWindow.Title>
     <Window.Resources>
     </Window.Resources>
-    <Grid Margin="0,0,0,15">
-        <Label HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top">
+    <Grid>
+        <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
             <Label.Content>
                 <l:Catalog Message="Colors:" />
             </Label.Content>
         </Label>
-        <Grid Margin="25,24,0,79">
+        <Grid Margin="25,24,0,96">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="150"/>
@@ -49,6 +49,27 @@
             <ComboBox Grid.Column="1" x:Name="NodeHoverHighlightColor" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" Width="130" Height="30" VerticalAlignment="Center"/>
             <ComboBox Grid.Column="1" Grid.Row="1" x:Name="NodeAttrHighlightColor" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" Width="130" Height="30" VerticalAlignment="Center"/>
             <ComboBox Grid.Column="1" Grid.Row="2" x:Name="NodeSearchHighlightColor" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" Width="130" Height="30" VerticalAlignment="Center"/>
+        </Grid>
+        <Label HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top">
+            <Label.Content>
+                <l:Catalog Message="General:" />
+            </Label.Content>
+        </Label>
+        <Grid Margin="25,160,0,96">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+            <Label VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto">
+                <Label.Content>
+                    <l:Catalog Message="Show All Ascendancy Classes" />
+                </Label.Content>
+            </Label>
+            <CheckBox Grid.Column="1" x:Name="ShowAllAscendancyClasses" Height="30" VerticalAlignment="Center" Checked="ShowAllAscendancyClasses_Checked" Unchecked="ShowAllAscendancyClasses_Unchecked" Initialized="ShowAllAscendancyClasses_Initialized"/>
         </Grid>
     </Grid>
 </controls:MetroWindow>

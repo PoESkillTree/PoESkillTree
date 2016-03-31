@@ -476,24 +476,31 @@ namespace POESKillTree.Views
                         break;
                     case Key.D1:
                         cbCharType.SelectedIndex = 0;
+                        cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D2:
                         cbCharType.SelectedIndex = 1;
+                        cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D3:
                         cbCharType.SelectedIndex = 2;
+                        cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D4:
                         cbCharType.SelectedIndex = 3;
+                        cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D5:
                         cbCharType.SelectedIndex = 4;
+                        cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D6:
                         cbCharType.SelectedIndex = 5;
+                        cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D7:
                         cbCharType.SelectedIndex = 6;
+                        cbAscType.SelectedIndex = 0;
                         break;
                     case Key.Z:
                         tbSkillURL_Undo();
@@ -1353,7 +1360,7 @@ namespace POESKillTree.Views
             {
                 var node = nodes.First().Value;
                 // Ignore clicks on character portraits and masteries
-                if (node.Spc == null && !node.IsMastery)
+                if (node.Spc == null && !node.IsMastery || (node.ascendancyName != null && !Tree.drawAscendancy))
                 {
                     if (_lastMouseButton == MouseButton.Right)
                     {
@@ -1375,8 +1382,6 @@ namespace POESKillTree.Views
                         if (Tree.SkilledNodes.Contains(node.Id))
                         {
                             Tree.ForceRefundNode(node.Id);
-
-
                             _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
                             Tree.DrawPath(_prePath);
                         }
@@ -1456,10 +1461,13 @@ namespace POESKillTree.Views
             _hoveredNode = node;
             if (node != null && !SkillTree.rootNodeList.Contains(node.Id))
             {
+                if (node.ascendancyName != null && !Tree.drawAscendancy)
+                    return;
                 if (node.IsJewelSocket)
                 {
                     Tree.DrawJewelHighlight(node);
                 }
+                
                 if (Tree.SkilledNodes.Contains(node.Id))
                 {
                     _toRemove = Tree.ForceRefundNodePreview(node.Id);

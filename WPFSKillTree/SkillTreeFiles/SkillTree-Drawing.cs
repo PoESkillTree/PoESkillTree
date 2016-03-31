@@ -51,7 +51,7 @@ namespace POESKillTree.SkillTreeFiles
         private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
         private readonly PersistentData _persistentData = App.PersistentData;
 
-        private bool drawAscendancy = true;
+        public bool drawAscendancy = false;
 
         public DrawingVisual SkillTreeVisual;
         public DrawingVisual picBackground;
@@ -100,7 +100,6 @@ namespace POESKillTree.SkillTreeFiles
 
             //Draw Ascendancy stuff on top of the normal tree
             AscSkilltreeVisual.Children.Add(picAscendancyClasses);
-            AscSkilltreeVisual.Children.Add(picAscendancyButton);
             AscSkilltreeVisual.Children.Add(picAscPathTreeComparisonHighlight);
             AscSkilltreeVisual.Children.Add(picAscNodeTreeComparisonHighlight);
             AscSkilltreeVisual.Children.Add(picAscLinks);
@@ -113,6 +112,7 @@ namespace POESKillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(AscSkilltreeVisual);
 
             //These need to drawn on top of all other elements
+            SkillTreeVisual.Children.Add(picAscendancyButton);
             SkillTreeVisual.Children.Add(picHighlights);
             SkillTreeVisual.Children.Add(picJewelHighlight);
         }
@@ -128,11 +128,26 @@ namespace POESKillTree.SkillTreeFiles
         {
             picJewelHighlight.RenderOpen().Close();
         }
-
+        public void ClearAsendancyDrawing()
+        {
+            picAscendancyClasses.RenderOpen().Close();
+            picAscendancyButton.RenderOpen().Close();
+            picAscPathTreeComparisonHighlight.RenderOpen().Close();
+            picAscNodeTreeComparisonHighlight.RenderOpen().Close();
+            picAscLinks.RenderOpen().Close();
+            picAscActiveLinks.RenderOpen().Close();
+            picAscPathOverlay.RenderOpen().Close();
+            picAscSkillIconLayer.RenderOpen().Close();
+            picAscActiveSkillIconLayer.RenderOpen().Close();
+            picAscNodeNormalSurround.RenderOpen().Close();
+            picAscNodeHighlightSurround.RenderOpen().Close();
+            AscSkilltreeVisual.RenderOpen().Close();
+            drawAscendancy = false;
+        }
         public void ToggleAscendancyTree()
         {
             drawAscendancy = !drawAscendancy;
-            DrawDynamicLayers();
+            DrawInitialLayers();
             UpdateAvailNodes();
         }
         private void DrawBackgroundLayer()
@@ -298,7 +313,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 foreach (var node in Skillnodes)
                 {
-                    if (node.Value.IsAscendancyStart)
+                    if (node.Value.IsAscendancyStart ? (_persistentData.Options.ShowAllAscendancyClasses ? true : node.Value.ascendancyName == CurrentAscendancyClassName) : false)
                     {
                         string imageName = "Classes" + node.Value.ascendancyName;
                         BitmapImage bitmap = _assets[imageName].PImage; 
@@ -342,9 +357,9 @@ namespace POESKillTree.SkillTreeFiles
         /// <param name="type">"Normal", "Highlight", and "Pressed"</param>
         public void DrawAscendancyButton(string type = "Normal")
         {
-            //TODO: enable once all drawing stuff is complete like repositioning node groups
             using (DrawingContext dc = picAscendancyButton.RenderOpen())
             {
+                dc.DrawDrawing(picAscendancyButton.Drawing);
                 if (AscType != 0)
                 {
                     foreach (var i in SkillTree.rootNodeList)
@@ -418,6 +433,8 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (var pair in nh.nodeHighlights)
                 {
+                    if (pair.Key.ascendancyName != null && !drawAscendancy || pair.Key.Spc != null)
+                        continue;
                     // TODO: Make more elegant? Needs profiling.
                     HighlightState hs = pair.Value;
 
@@ -495,7 +512,10 @@ namespace POESKillTree.SkillTreeFiles
                         if (n1.ascendancyName != null && n2.ascendancyName != null)
                         {
                             if (drawAscendancy)
-                                DrawConnection(dcAsc, pen2, n1, n2);
+                            {
+                                if (_persistentData.Options.ShowAllAscendancyClasses ? true : (n1.ascendancyName == CurrentAscendancyClassName && n2.ascendancyName == CurrentAscendancyClassName))
+                                    DrawConnection(dcAsc, pen2, n1, n2);
+                            }
                         }
                         else
                             DrawConnection(dc, pen2, n1, n2);
@@ -527,20 +547,26 @@ namespace POESKillTree.SkillTreeFiles
                             else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].IsNotable)
                             {
                                 if (drawAscendancy)
-                                    dcAsc.DrawRectangle(NodeSurroundHighlightBrush[5].Value, null,
-                                        new Rect((int)pos.X - NodeSurroundHighlightBrush[5].Key.Width * .875 * factor,
-                                            (int)pos.Y - NodeSurroundHighlightBrush[5].Key.Height * .875 * factor,
-                                            NodeSurroundHighlightBrush[5].Key.Width * 1.75 * factor,
-                                            NodeSurroundHighlightBrush[5].Key.Height * 1.75 * factor));
+                                {
+                                    if (_persistentData.Options.ShowAllAscendancyClasses ? true : Skillnodes[skillNode].ascendancyName == CurrentAscendancyClassName)
+                                        dcAsc.DrawRectangle(NodeSurroundHighlightBrush[5].Value, null,
+                                            new Rect((int)pos.X - NodeSurroundHighlightBrush[5].Key.Width * .875 * factor,
+                                                (int)pos.Y - NodeSurroundHighlightBrush[5].Key.Height * .875 * factor,
+                                                NodeSurroundHighlightBrush[5].Key.Width * 1.75 * factor,
+                                                NodeSurroundHighlightBrush[5].Key.Height * 1.75 * factor));
+                                }
                             }
                             else if (Skillnodes[skillNode].ascendancyName != null)
                             {
                                 if (drawAscendancy)
-                                    dcAsc.DrawRectangle(NodeSurroundHighlightBrush[4].Value, null,
-                                        new Rect((int)pos.X - NodeSurroundHighlightBrush[4].Key.Width * factor,
-                                            (int)pos.Y - NodeSurroundHighlightBrush[4].Key.Height * factor,
-                                            NodeSurroundHighlightBrush[4].Key.Width * 2 * factor,
-                                            NodeSurroundHighlightBrush[4].Key.Height * 2 * factor));
+                                {
+                                    if (_persistentData.Options.ShowAllAscendancyClasses ? true : Skillnodes[skillNode].ascendancyName == CurrentAscendancyClassName)
+                                        dcAsc.DrawRectangle(NodeSurroundHighlightBrush[4].Value, null,
+                                            new Rect((int)pos.X - NodeSurroundHighlightBrush[4].Key.Width * factor,
+                                                (int)pos.Y - NodeSurroundHighlightBrush[4].Key.Height * factor,
+                                                NodeSurroundHighlightBrush[4].Key.Width * 2 * factor,
+                                                NodeSurroundHighlightBrush[4].Key.Height * 2 * factor));
+                                }
                             }
                             else if (Skillnodes[skillNode].IsNotable)
                             {
@@ -599,7 +625,8 @@ namespace POESKillTree.SkillTreeFiles
                                     if (n2.ascendancyName != null && Skillnodes[n1].ascendancyName != null)
                                     {
                                         if (drawAscendancy)
-                                            DrawConnection(dcAsc, pen2, n2, Skillnodes[n1]);
+                                            if (_persistentData.Options.ShowAllAscendancyClasses ? true : (Skillnodes[n1].ascendancyName == CurrentAscendancyClassName && n2.ascendancyName == CurrentAscendancyClassName))
+                                                DrawConnection(dcAsc, pen2, n2, Skillnodes[n1]);
                                     }
                                     else
                                         DrawConnection(dc, pen2, n2, Skillnodes[n1]);
@@ -628,29 +655,38 @@ namespace POESKillTree.SkillTreeFiles
                             BitmapImage bitmap = _assets[imageName].PImage;
                             var brush = new ImageBrush(_assets[imageName].PImage);
                             if (drawAscendancy)
-                                dcAsc.DrawRectangle(brush, null,
-                                    new Rect(
-                                        pos -
-                                        new Vector2D(bitmap.PixelWidth, bitmap.PixelHeight),
-                                        new Size(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2)));
+                            {
+                                if (_persistentData.Options.ShowAllAscendancyClasses ? true : Skillnodes[skillNode].ascendancyName == CurrentAscendancyClassName)
+                                    dcAsc.DrawRectangle(brush, null,
+                                        new Rect(
+                                            pos -
+                                            new Vector2D(bitmap.PixelWidth, bitmap.PixelHeight),
+                                            new Size(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2)));
+                            }
                         }
                         else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].IsNotable)
                         {
                             if (drawAscendancy)
-                                dcAsc.DrawRectangle(NodeSurroundBrush[10].Value, null,
-                                    new Rect((int)pos.X - NodeSurroundBrush[10].Key.Width * .875,
-                                        (int)pos.Y - NodeSurroundBrush[10].Key.Height * .875,
-                                        NodeSurroundBrush[10].Key.Width * 1.75,
-                                        NodeSurroundBrush[10].Key.Height * 1.75));
+                            {
+                                if (_persistentData.Options.ShowAllAscendancyClasses ? true : Skillnodes[skillNode].ascendancyName == CurrentAscendancyClassName)
+                                    dcAsc.DrawRectangle(NodeSurroundBrush[10].Value, null,
+                                        new Rect((int)pos.X - NodeSurroundBrush[10].Key.Width * .875,
+                                            (int)pos.Y - NodeSurroundBrush[10].Key.Height * .875,
+                                            NodeSurroundBrush[10].Key.Width * 1.75,
+                                            NodeSurroundBrush[10].Key.Height * 1.75));
+                            }
                         }
                         else if (Skillnodes[skillNode].ascendancyName != null)
                         {
                             if (drawAscendancy)
-                                dcAsc.DrawRectangle(NodeSurroundBrush[8].Value, null,
-                                    new Rect((int)pos.X - NodeSurroundBrush[8].Key.Width,
-                                        (int)pos.Y - NodeSurroundBrush[8].Key.Height,
-                                        NodeSurroundBrush[8].Key.Width * 2,
-                                        NodeSurroundBrush[8].Key.Height * 2));
+                            {
+                                if (_persistentData.Options.ShowAllAscendancyClasses ? true : Skillnodes[skillNode].ascendancyName == CurrentAscendancyClassName)
+                                    dcAsc.DrawRectangle(NodeSurroundBrush[8].Value, null,
+                                        new Rect((int)pos.X - NodeSurroundBrush[8].Key.Width,
+                                            (int)pos.Y - NodeSurroundBrush[8].Key.Height,
+                                            NodeSurroundBrush[8].Key.Width * 2,
+                                            NodeSurroundBrush[8].Key.Height * 2));
+                            }
                         }
                         else if (Skillnodes[skillNode].IsNotable)
                         {
@@ -709,20 +745,26 @@ namespace POESKillTree.SkillTreeFiles
                         else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].IsNotable)
                         {
                             if (drawAscendancy)
-                                dcAsc.DrawRectangle(NodeSurroundBrush[11].Value, null,
-                                    new Rect((int)pos.X - NodeSurroundBrush[11].Key.Width * .875,
-                                        (int)pos.Y - NodeSurroundBrush[11].Key.Height * .875,
-                                        NodeSurroundBrush[11].Key.Width * 1.75,
-                                        NodeSurroundBrush[11].Key.Height * 1.75));
+                            {
+                                if (_persistentData.Options.ShowAllAscendancyClasses ? true : Skillnodes[skillNode].ascendancyName == CurrentAscendancyClassName)
+                                    dcAsc.DrawRectangle(NodeSurroundBrush[11].Value, null,
+                                        new Rect((int)pos.X - NodeSurroundBrush[11].Key.Width * .875,
+                                            (int)pos.Y - NodeSurroundBrush[11].Key.Height * .875,
+                                            NodeSurroundBrush[11].Key.Width * 1.75,
+                                            NodeSurroundBrush[11].Key.Height * 1.75));
+                            }
                         }
                         else if (Skillnodes[skillNode].ascendancyName != null)
                         {
                             if (drawAscendancy)
-                                dcAsc.DrawRectangle(NodeSurroundBrush[9].Value, null,
-                                    new Rect((int)pos.X - NodeSurroundBrush[9].Key.Width,
-                                        (int)pos.Y - NodeSurroundBrush[9].Key.Height,
-                                        NodeSurroundBrush[9].Key.Width * 2,
-                                        NodeSurroundBrush[9].Key.Height * 2));
+                            {
+                                if (_persistentData.Options.ShowAllAscendancyClasses ? true : Skillnodes[skillNode].ascendancyName == CurrentAscendancyClassName)
+                                    dcAsc.DrawRectangle(NodeSurroundBrush[9].Value, null,
+                                        new Rect((int)pos.X - NodeSurroundBrush[9].Key.Width,
+                                            (int)pos.Y - NodeSurroundBrush[9].Key.Height,
+                                            NodeSurroundBrush[9].Key.Width * 2,
+                                            NodeSurroundBrush[9].Key.Height * 2));
+                            }
                         }
                         else if (Skillnodes[skillNode].IsNotable)
                         {
@@ -785,7 +827,10 @@ namespace POESKillTree.SkillTreeFiles
                         if (skilledNeighbors.First().ascendancyName != null && Skillnodes[path[0]] != null)
                         {
                             if (drawAscendancy)
-                                DrawConnection(dcAsc, pen2, skilledNeighbors.First(), Skillnodes[path[0]]);
+                            {
+                                if (_persistentData.Options.ShowAllAscendancyClasses ? true : (Skillnodes[path[0]].ascendancyName == CurrentAscendancyClassName && skilledNeighbors.First().ascendancyName == CurrentAscendancyClassName))
+                                    DrawConnection(dcAsc, pen2, skilledNeighbors.First(), Skillnodes[path[0]]);
+                            }
                         }
                         else
                             DrawConnection(dc, pen2, skilledNeighbors.First(), Skillnodes[path[0]]);
@@ -801,7 +846,10 @@ namespace POESKillTree.SkillTreeFiles
                             if (n1.ascendancyName != null && n2.ascendancyName != null)
                             {
                                 if (drawAscendancy)
-                                    DrawConnection(dcAsc, pen2, n1, n2);
+                                {
+                                    if (_persistentData.Options.ShowAllAscendancyClasses ? true : (n1.ascendancyName == CurrentAscendancyClassName && n2.ascendancyName == CurrentAscendancyClassName))
+                                        DrawConnection(dcAsc, pen2, n1, n2);
+                                }
                             }
                             else
                                 DrawConnection(dc, pen2, n1, n2);
@@ -831,7 +879,10 @@ namespace POESKillTree.SkillTreeFiles
                                 if (Skillnodes[node].ascendancyName != null && n2.ascendancyName != null)
                                 {
                                     if (drawAscendancy)
-                                        DrawConnection(dcAsc, pen2, Skillnodes[node], n2);
+                                    {
+                                        if (_persistentData.Options.ShowAllAscendancyClasses ? true : (Skillnodes[node].ascendancyName == CurrentAscendancyClassName && n2.ascendancyName == CurrentAscendancyClassName))
+                                            DrawConnection(dcAsc, pen2, Skillnodes[node], n2);
+                                    }
                                 }
                                 else
                                     DrawConnection(dc, pen2, Skillnodes[node], n2);
@@ -876,7 +927,10 @@ namespace POESKillTree.SkillTreeFiles
                         if (skillNode.Value.ascendancyName != null)
                         {
                             if (drawAscendancy)
-                                dcAsc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
+                            {
+                                if (_persistentData.Options.ShowAllAscendancyClasses ? true : skillNode.Value.ascendancyName == CurrentAscendancyClassName)
+                                    dcAsc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
+                            }
                         }
                         else
                             dc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
@@ -913,7 +967,10 @@ namespace POESKillTree.SkillTreeFiles
                         if (Skillnodes[skillNode].ascendancyName != null)
                         {
                             if (drawAscendancy)
-                                dcAsc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
+                            {
+                                if (_persistentData.Options.ShowAllAscendancyClasses ? true : Skillnodes[skillNode].ascendancyName == CurrentAscendancyClassName)
+                                    dcAsc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
+                            }
                         }
                         else
                             dc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
@@ -1041,7 +1098,7 @@ namespace POESKillTree.SkillTreeFiles
             picAscPathTreeComparisonHighlight = new DrawingVisual();
         }
 
-        private void DrawDynamicLayers()
+        private void DrawInitialLayers()
         {
             DrawNodeHighlightSurround();
             DrawNodeNormalSurround();

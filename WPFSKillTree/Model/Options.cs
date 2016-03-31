@@ -11,6 +11,7 @@ namespace POESKillTree.Model
         public string NodeSearchHighlightColor { get; set; }
         public string NodeAttrHighlightColor { get; set; }
         public string NodeHoverHighlightColor { get; set; }
+        public bool ShowAllAscendancyClasses { get; set; }
 
         private bool _attributesBarOpened;
         public bool AttributesBarOpened
@@ -75,6 +76,7 @@ namespace POESKillTree.Model
             NodeSearchHighlightColor = "Red";
             NodeAttrHighlightColor = "LawnGreen";
             NodeHoverHighlightColor = "DodgerBlue";
+            ShowAllAscendancyClasses = true;
         }
 
         private void OnPropertyChanged(string caller)
