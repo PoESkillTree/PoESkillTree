@@ -587,7 +587,6 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         public bool updateAscendancyClasses = true;
-        public string CurrentAscendancyClassName = "";
         public int Chartype
         {
             get { return _chartype; }
@@ -613,15 +612,10 @@ namespace POESKillTree.SkillTreeFiles
                     
                      HashSet<ushort> remove = new HashSet<ushort>();
                      if (value == 0)
-                     {
-                         CurrentAscendancyClassName = "";
                          remove = new HashSet<ushort>(SkilledNodes.Where(x => Skillnodes[x].ascendancyName != null));
-                     }
                      else
-                     {
-                         CurrentAscendancyClassName = ascendancyClasses.GetClassName(className, value);
-                         remove = new HashSet<ushort>(SkilledNodes.Where(x => Skillnodes[x].ascendancyName == null ? false : Skillnodes[x].ascendancyName != CurrentAscendancyClassName));
-                     }
+                         remove = new HashSet<ushort>(SkilledNodes.Where(x => Skillnodes[x].ascendancyName == null ? false : Skillnodes[x].ascendancyName != ascendancyClasses.GetClassName(className, value)));
+                     
                     foreach (var n in remove)
                         SkilledNodes.Remove(n);
                     ushort node = GetAscNodeId();
@@ -1396,6 +1390,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 using (DrawingContext dcAsc = picAscActiveLinks.RenderOpen()) 
                 {
+                    string className = CharacterNames.NameToContent.Where(x => x.Key == CharName[_chartype]).First().Value;
                     foreach (ushort n1 in SkilledNodes)
                     {
                         foreach (SkillNode n2 in Skillnodes[n1].VisibleNeighbors)
@@ -1406,7 +1401,7 @@ namespace POESKillTree.SkillTreeFiles
                                 {
                                     if (drawAscendancy)
                                     {
-                                        if (_persistentData.Options.ShowAllAscendancyClasses ? true : n2.ascendancyName == CurrentAscendancyClassName)
+                                        if (_persistentData.Options.ShowAllAscendancyClasses ? true : n2.ascendancyName == ascendancyClasses.GetClassName(className, AscType))
                                             DrawConnection(dcAsc, pen2, n2, Skillnodes[n1]);
                                     }
                                 }
