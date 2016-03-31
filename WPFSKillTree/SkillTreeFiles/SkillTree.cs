@@ -542,7 +542,8 @@ namespace POESKillTree.SkillTreeFiles
                 _TRect = new Rect2D(new Vector2D(inTree.min_x * 1.1 - padding, inTree.min_y * 1.1 - padding),
                     new Vector2D(inTree.max_x * 1.1 + padding, inTree.max_y * 1.1 + padding));
             }
-
+            if (_persistentData.Options.ShowAllAscendancyClasses)
+                drawAscendancy = true;
             InitializeDynamicLayers();
             DrawInitialLayers();
             CreateCombineVisual();
@@ -606,8 +607,11 @@ namespace POESKillTree.SkillTreeFiles
             {
                 SetProperty(ref _asctype, value, () => 
                 {
-                    if (value == -1)
-                        return;
+                    if (value < 0 || value > 3)
+                    {
+                        _asctype = 0;
+                        value = 0;
+                    }
                     string className = CharacterNames.NameToContent.Where(x => x.Key == CharName[_chartype]).First().Value;
                     
                      HashSet<ushort> remove = new HashSet<ushort>();
@@ -621,7 +625,8 @@ namespace POESKillTree.SkillTreeFiles
                     ushort node = GetAscNodeId();
                     if (node != 0)
                         SkilledNodes.Add(node);
-                    ClearAsendancyDrawing();
+                    if (!_persistentData.Options.ShowAllAscendancyClasses)
+                        ClearAsendancyDrawing();
                 });
             }
         }
@@ -1208,6 +1213,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             SkilledNodes.Clear();
             KeyValuePair<ushort, SkillNode> node = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
+            AscType = 0;
             SkilledNodes.Add(node.Value.Id);
             UpdateAvailNodes();
         }

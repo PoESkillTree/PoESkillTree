@@ -452,7 +452,6 @@ namespace POESKillTree.Views
             {
                 lvSavedBuilds.Items.Add(build);
             }
-
             CheckAppVersionAndDoNecessaryChanges();
         }
 

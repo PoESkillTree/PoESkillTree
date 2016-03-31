@@ -151,7 +151,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 string className = CharacterNames.NameToContent.Where(x => x.Key == CharName[_chartype]).First().Value;
                 var nodeList = Skillnodes.Where(x => x.Value.ascendancyName == ascendancyClasses.GetClassName(className, AscType));
-                var startNode = Skillnodes.Where(x => x.Value.Name == CharName[_chartype]).First();
+                var startNode = Skillnodes.Where(x => x.Value.Name.ToUpperInvariant() == CharName[_chartype]).First();
                 var worldPos = startNode.Value.Position;
                 foreach(var n in nodeList)
                 {                     
