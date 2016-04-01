@@ -662,37 +662,51 @@
         <Grid x:Name="BtnGrid" Grid.Row="1" HorizontalAlignment="Stretch" Panel.ZIndex="99" VerticalAlignment="Center">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100*"/>
                     <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <Label Content="Level:" x:Name="lblLevel" />
                     <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="35" DataContext="{Binding Tree, ElementName=window}"
                                             Value="{Binding Level, ValidatesOnDataErrors=True}"
-                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}" />
-                    <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged"></ComboBox>
-                    <ComboBox Margin="5,0,0,0" x:Name="cbAscType" Width="100" SelectionChanged="cbAscType_SelectionChanged"></ComboBox>
-                    <Label Content="Points:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
-                    <Label Content="0" Margin="0,0,0,0" x:Name="NormalUsedPoints"/>
-                    <Label Content="[0]" Margin="-8,0,0,0" x:Name="AscendancyUsedPoints"/>
-                    <Label Content="/" Margin="-5,0,-5,0" Opacity="0.5"/>
-                    <Label Content="123" Margin="0,0,0,0" x:Name="NormalTotalPoints" Opacity="0.50"/>
-                    <Label Content="[6]" Margin="-8,0,0,0" x:Name="AscendancyTotalPoints" Opacity="0.50"/>
-                    <Button x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0">
-                        <l:Catalog Message="Reset"/>
-                    </Button>
+                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}">
+                        <controls:NumericUpDown.ToolTip>
+                            <l:Catalog Message="Level"/>
+                        </controls:NumericUpDown.ToolTip>
+                    </controls:NumericUpDown>
+                    <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged"/>
+                    <ComboBox Margin="5,0,0,0" x:Name="cbAscType" Width="100" SelectionChanged="cbAscType_SelectionChanged"/>
+                    <Label Content="0" Margin="8,0,0,0" x:Name="NormalUsedPoints" FontSize="14">
+                        <Label.ToolTip>
+                            <l:Catalog Message="Used Passive Skill Points"/>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Content="[0]" Margin="-5,0,0,0" x:Name="AscendancyUsedPoints" FontSize="14">
+                        <Label.ToolTip>
+                            <l:Catalog Message="Used Ascendancy Skill Points"/>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Content="/" Margin="-5,0,-5,0" Opacity="0.5" FontSize="14"/>
+                    <Label Content="123" Margin="0,0,0,0" x:Name="NormalTotalPoints" Opacity="0.50" FontSize="14">
+                        <Label.ToolTip>
+                            <l:Catalog Message="Total Passive Skill Points"/>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Content="[6]" Margin="-5,0,0,0" x:Name="AscendancyTotalPoints" Opacity="0.50" FontSize="14">
+                        <Label.ToolTip>
+                            <l:Catalog Message="Total Ascendancy Skill Points"/>
+                        </Label.ToolTip>
+                    </Label>
+                    <Button x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0" Content="{l:Catalog Message=Reset}"/>
                 </StackPanel>
 
                 <Grid Grid.Column="2" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="{Binding ActualWidth,ElementName=expSavedBuilds}"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0">
-                        <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}"/>
-                        <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}"/>
-                    </StackPanel>
+                    <RadioButton HorizontalAlignment="Center" IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}" Margin="16,0,102,0"/>
+                    <RadioButton HorizontalAlignment="Center" IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}" Margin="100,0,33,0"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -738,7 +752,7 @@
 
             <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
-                    <Label Margin="6,0" TextBlock.FontSize="16">
+                    <Label Margin="-5,0" TextBlock.FontSize="16">
                         <l:Catalog Message="Saved Builds"/>
                     </Label>
                 </Expander.Header>
