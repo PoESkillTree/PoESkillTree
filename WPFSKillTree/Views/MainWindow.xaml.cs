@@ -212,8 +212,7 @@ namespace POESKillTree.Views
             cmAddToGroup.Items.Clear();
             cmDeleteGroup.Items.Clear();
 
-            List<string> groupnames = new List<string>();
-            MenuItem newSubMenu;
+            var groupnames = new List<string>();
 
             foreach (var gp in customgroups)
             {
@@ -226,15 +225,13 @@ namespace POESKillTree.Views
             cmAddToGroup.IsEnabled = false;
             cmDeleteGroup.IsEnabled = false;
 
-            foreach (string name in groupnames)
+            foreach (var name in groupnames)
             {
-                newSubMenu = new MenuItem();
-                newSubMenu.Header = name;
+                var newSubMenu = new MenuItem {Header = name};
                 newSubMenu.Click += AddToGroup;
                 cmAddToGroup.Items.Add(newSubMenu);
                 cmAddToGroup.IsEnabled = true;
-                newSubMenu = new MenuItem();
-                newSubMenu.Header = name;
+                newSubMenu = new MenuItem {Header = name};
                 newSubMenu.Click += DeleteGroup;
                 cmDeleteGroup.Items.Add(newSubMenu);
                 cmDeleteGroup.IsEnabled = true;
@@ -250,19 +247,18 @@ namespace POESKillTree.Views
             ListBox lb = GetActiveAttributeGroupList();
             if (lb == null)
                 return;
-            List<string> attributelist = new List<string>();
+            var attributelist = new List<string>();
             foreach (object o in lb.SelectedItems)
             {
                 attributelist.Add(o.ToString());
             }
 
             //Build and show form to enter group name
-            var formGroupName = new FormChooseGroupName();
-            formGroupName.Owner = this;
-            var show_dialog = formGroupName.ShowDialog();
-            if (show_dialog != null && (bool)show_dialog)
+            var formGroupName = new FormChooseGroupName {Owner = this};
+            var showDialog = formGroupName.ShowDialog();
+            if (showDialog != null && (bool)showDialog)
             {
-                string name = formGroupName.GetGroupName();
+                var name = formGroupName.GetGroupName();
                 if (_attributeGroups.AttributeGroups.ContainsKey(name))
                 {
                     Popup.Info(L10n.Message("A group with that name already exists."));
@@ -270,13 +266,11 @@ namespace POESKillTree.Views
                 }
 
                 //Add submenus that add to and delete the new group
-                MenuItem newSubMenu = new MenuItem();
-                newSubMenu.Header = name;
+                var newSubMenu = new MenuItem {Header = name};
                 newSubMenu.Click += AddToGroup;
                 cmAddToGroup.Items.Add(newSubMenu);
                 cmAddToGroup.IsEnabled = true;
-                newSubMenu = new MenuItem();
-                newSubMenu.Header = name;
+                newSubMenu = new MenuItem {Header = name};
                 newSubMenu.Click += DeleteGroup;
                 cmDeleteGroup.Items.Add(newSubMenu);
                 cmDeleteGroup.IsEnabled = true;
@@ -293,7 +287,7 @@ namespace POESKillTree.Views
             ListBox lb = GetActiveAttributeGroupList();
             if (lb == null)
                 return;
-            List<string> attributelist = new List<string>();
+            var attributelist = new List<string>();
             foreach (object o in lb.SelectedItems)
             {
                 attributelist.Add(o.ToString());
@@ -311,7 +305,7 @@ namespace POESKillTree.Views
             ListBox lb = GetActiveAttributeGroupList();
             if (lb == null)
                 return;
-            List<string> attributelist = new List<string>();
+            var attributelist = new List<string>();
             foreach (object o in lb.SelectedItems)
             {
                 attributelist.Add(o.ToString());
@@ -1054,10 +1048,9 @@ namespace POESKillTree.Views
 
         private void populateAsendancySelectionList()
         {
-            List<string> ascendancyItems = new List<string>();
-            ascendancyItems.Add("None");
-            foreach (var name in Tree.ascendancyClasses.GetClasses(((ComboBoxItem)cbCharType.SelectedItem).Content.ToString()))
-                ascendancyItems.Add(name.displayName);
+            var ascendancyItems = new List<string> {"None"};
+            foreach (var name in Tree.AscendancyClasses.GetClasses(((ComboBoxItem)cbCharType.SelectedItem).Content.ToString()))
+                ascendancyItems.Add(name.DisplayName);
             cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
             Tree.updateAscendancyClasses = false;
         }
@@ -1347,8 +1340,10 @@ namespace POESKillTree.Views
                 // Ignore clicks on character portraits and masteries
                 if (node.ascendancyName != null && !Tree.drawAscendancy)
                     return;
-                string className = CharacterNames.NameToContent.Where(x => x.Key == SkillTree.CharName[Tree.Chartype]).First().Value;
-                if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.ascendancyClasses.GetClassName(className, Tree.AscType))
+
+                var className = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
+                var ascendancyClassName = Tree.AscendancyClasses.GetClassName(className, Tree.AscType);
+                if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
 
                 if (node.Spc == null && !node.IsMastery)
@@ -1383,9 +1378,10 @@ namespace POESKillTree.Views
                                 var temp = SkillTree.Skillnodes[i];
                                 if (temp.IsMultipleChoiceOption)
                                 {
+                                    //SpaceOgre 20160401: We never seem to end up here. Not needed?
                                     foreach(var j in Tree.SkilledNodes)
                                     {
-                                        if (SkillTree.Skillnodes[j].IsMultipleChoiceOption && Tree.ascendancyClasses.GetStartingClass(SkillTree.Skillnodes[i].Name) == Tree.ascendancyClasses.GetStartingClass(SkillTree.Skillnodes[j].Name))
+                                        if (SkillTree.Skillnodes[j].IsMultipleChoiceOption && Tree.AscendancyClasses.GetStartingClass(SkillTree.Skillnodes[i].Name) == Tree.AscendancyClasses.GetStartingClass(SkillTree.Skillnodes[j].Name))
                                         {
                                             Tree.SkilledNodes.Remove(j);
                                             break;
@@ -1394,7 +1390,7 @@ namespace POESKillTree.Views
                                 }
                                 else if (temp.IsAscendancyStart)
                                 {
-                                    HashSet<ushort> remove = new HashSet<ushort>(Tree.SkilledNodes.Where(x => SkillTree.Skillnodes[x].ascendancyName == null ? false : SkillTree.Skillnodes[x].ascendancyName != temp.ascendancyName));
+                                    var remove = Tree.SkilledNodes.Where(x => SkillTree.Skillnodes[x].ascendancyName != null && SkillTree.Skillnodes[x].ascendancyName != temp.ascendancyName).ToArray();
                                     foreach (var n in remove)
                                         Tree.SkilledNodes.Remove(n);
                                 }
@@ -1439,18 +1435,18 @@ namespace POESKillTree.Views
 
         private void zbSkillTreeBackground_MouseMove(object sender, MouseEventArgs e)
         {
-            Point p = e.GetPosition(zbSkillTreeBackground.Child);
+            var p = e.GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
             v = v * _multransform + _addtransform;
             SkillNode node = null;
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            string className = CharacterNames.NameToContent.Where(x => x.Key == SkillTree.CharName[Tree.Chartype]).First().Value;
+            var className = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
             if (nodes.Count() != 0)
             {
                 var dnode = nodes.First();
-                node = nodes.Where(x => x.Value.ascendancyName == Tree.ascendancyClasses.GetClassName(className, Tree.AscType)).DefaultIfEmpty(dnode).First().Value;
+                node = nodes.Where(x => x.Value.ascendancyName == Tree.AscendancyClasses.GetClassName(className, Tree.AscType)).DefaultIfEmpty(dnode).First().Value;
             }
 
 
@@ -1459,7 +1455,7 @@ namespace POESKillTree.Views
             {         
                 if (!Tree.drawAscendancy && node.ascendancyName != null)
                     return;
-                else if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.ascendancyClasses.GetClassName(className, Tree.AscType))
+                if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscendancyClasses.GetClassName(className, Tree.AscType))
                     return;
                 if (node.IsJewelSocket)
                 {
@@ -2010,28 +2006,27 @@ namespace POESKillTree.Views
 
         private void ListViewDrop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent("myFormat"))
+            if (!e.Data.GetDataPresent("myFormat")) return;
+
+            var name = e.Data.GetData("myFormat");
+            var listView = lvSavedBuilds;
+            var listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
+
+            if (listViewItem != null)
             {
-                var name = e.Data.GetData("myFormat");
-                ListView listView = lvSavedBuilds;
-                ListViewItem listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
+                var itemToReplace = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                int index = listView.Items.IndexOf(itemToReplace);
 
-                if (listViewItem != null)
-                {
-                    var itemToReplace = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-                    int index = listView.Items.IndexOf(itemToReplace);
-
-                    if (index >= 0)
-                    {
-                        listView.Items.Remove(name);
-                        listView.Items.Insert(index, name);
-                    }
-                }
-                else
+                if (index >= 0)
                 {
                     listView.Items.Remove(name);
-                    listView.Items.Add(name);
+                    listView.Items.Insert(index, name);
                 }
+            }
+            else
+            {
+                listView.Items.Remove(name);
+                listView.Items.Add(name);
             }
         }
 
@@ -2421,11 +2416,10 @@ namespace POESKillTree.Views
                                 {
                                     using (var ms = new MemoryStream(client.DownloadData(imgroups[i].Key)))
                                     {
-                                        PngBitmapDecoder dec = new PngBitmapDecoder(ms, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-
+                                        var dec = new PngBitmapDecoder(ms, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                                         var image = dec.Frames[0];
                                         var cropped = new CroppedBitmap(image, new Int32Rect(4, 4, image.PixelWidth - 8, image.PixelHeight - 8));
-                                        PngBitmapEncoder encoder = new PngBitmapEncoder();
+                                        var encoder = new PngBitmapEncoder();
                                         encoder.Frames.Add(BitmapFrame.Create(cropped));
 
                                         using (var m = new MemoryStream())
@@ -2439,7 +2433,6 @@ namespace POESKillTree.Views
                                                     m.Seek(0, SeekOrigin.Begin);
                                                     m.CopyTo(f);
                                                 }
-
                                             }
                                         }
 
@@ -2488,17 +2481,16 @@ namespace POESKillTree.Views
         private void Button_Craft_Click(object sender, RoutedEventArgs e)
         {
             var w = new CraftWindow() { Owner = this };
-            if (w.ShowDialog() == true)
-            {
-                var item = w.Item;
-                if (PersistentData.StashItems.Count > 0)
-                    item.Y = PersistentData.StashItems.Max(i => i.Y + i.Height);
+            if (w.ShowDialog() != true) return;
 
-                Stash.Items.Add(item);
+            var item = w.Item;
+            if (PersistentData.StashItems.Count > 0)
+                item.Y = PersistentData.StashItems.Max(i => i.Y + i.Height);
 
-                Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.Height });
-                Stash.asBar.Value = item.Y;
-            }
+            Stash.Items.Add(item);
+
+            Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.Height });
+            Stash.asBar.Value = item.Y;
         }
 
         private void deleteRect_DragOver(object sender, DragEventArgs e)
@@ -2602,27 +2594,26 @@ namespace POESKillTree.Views
         public override IWindowPlacementSettings GetWindowPlacementSettings()
         {
             var settings = base.GetWindowPlacementSettings();
-            if (WindowPlacementSettings == null)
+            if (WindowPlacementSettings != null) return settings;
+
+            // Settings just got created, give them a proper SettingsProvider.
+            var appSettings = settings as ApplicationSettingsBase;
+            if (appSettings == null)
             {
-                // Settings just got created, give them a proper SettingsProvider.
-                var appSettings = settings as ApplicationSettingsBase;
-                if (appSettings == null)
-                {
-                    // Nothing we can do here.
-                    return settings;
-                }
-                var provider = new CustomSettingsProvider(appSettings.SettingsKey);
-                // This may look ugly, but it is needed and nulls are the only parameter
-                // Initialize is ever called with by anything.
-                provider.Initialize(null, null);
-                appSettings.Providers.Add(provider);
-                // Change the provider for each SettingsProperty.
-                foreach (var property in appSettings.Properties)
-                {
-                    ((SettingsProperty) property).Provider = provider;
-                }
-                appSettings.Reload();
+                // Nothing we can do here.
+                return settings;
             }
+            var provider = new CustomSettingsProvider(appSettings.SettingsKey);
+            // This may look ugly, but it is needed and nulls are the only parameter
+            // Initialize is ever called with by anything.
+            provider.Initialize(null, null);
+            appSettings.Providers.Add(provider);
+            // Change the provider for each SettingsProperty.
+            foreach (var property in appSettings.Properties)
+            {
+                ((SettingsProperty) property).Provider = provider;
+            }
+            appSettings.Reload();
             return settings;
         }
     }

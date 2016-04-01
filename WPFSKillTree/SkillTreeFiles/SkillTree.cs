@@ -239,7 +239,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private static AscendancyClasses _asendancyClasses;
         
-        public AscendancyClasses ascendancyClasses 
+        public AscendancyClasses AscendancyClasses 
         {
             get { return SkillTree._asendancyClasses; } 
         }
@@ -329,21 +329,23 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     foreach(KeyValuePair<int, baseToAscClass> ascClass in inOpts.ascClasses )
                     {
-                        List<AscendancyClasses.Class> classes = new List<AscendancyClasses.Class>();
+                        var classes = new List<AscendancyClasses.Class>();
                         foreach (KeyValuePair<int, classes> asc in ascClass.Value.classes)
                         {
-                            AscendancyClasses.Class newClass = new AscendancyClasses.Class();
-                            newClass.order = asc.Key;
-                            newClass.displayName = asc.Value.displayName;
-                            newClass.name = asc.Value.name;
-                            newClass.flavourText = asc.Value.flavourText;
-                            newClass.flavourTextColour = asc.Value.flavourTextColour.Split(',').Select(int.Parse).ToArray();
+                            var newClass = new AscendancyClasses.Class
+                            {
+                                Order = asc.Key,
+                                DisplayName = asc.Value.displayName,
+                                Name = asc.Value.name,
+                                FlavourText = asc.Value.flavourText,
+                                FlavourTextColour = asc.Value.flavourTextColour.Split(',').Select(int.Parse).ToArray()
+                            };
                             int[] tempPointList = asc.Value.flavourTextRect.Split(',').Select(int.Parse).ToArray();
-                            newClass.flavourTextRect = new Vector2D(tempPointList[0], tempPointList[1]);
+                            newClass.FlavourTextRect = new Vector2D(tempPointList[0], tempPointList[1]);
                             classes.Add(newClass);
 
                         }
-                        _asendancyClasses.classes.Add(ascClass.Value.name, classes);
+                        _asendancyClasses.Classes.Add(ascClass.Value.name, classes);
                     }
                 }
 
@@ -1229,7 +1231,7 @@ namespace POESKillTree.SkillTreeFiles
         public string SaveToURL()
         {
             var b = new byte[7 + SkilledNodes.Count * 2];
-            AscType = ascendancyClasses.GetClassNumber(GetAscendancyClass(SkilledNodes));
+            AscType = AscendancyClasses.GetClassNumber(GetAscendancyClass(SkilledNodes));
             var b2 = GetCharacterBytes((byte)Chartype, (byte) AscType);
             for (var i = 0; i < b2.Length; i++)
                 b[i] = b2[i];
@@ -1333,10 +1335,11 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (AscType <= 0 || AscType > 3)
                 return 0;
-            string classname = CharacterNames.NameToContent.Where(x => x.Key == CharName[_chartype]).First().Value;
+            var className = CharacterNames.GetClassNameFromChartype(_chartype);
+            var ascendancyClassName = AscendancyClasses.GetClassName(className, AscType);
             try
             {
-                return Skillnodes.Where(x => x.Value.ascendancyName == ascendancyClasses.GetClassName(classname, AscType) && x.Value.IsAscendancyStart).First().Key;
+                return Skillnodes.First(x => x.Value.ascendancyName == ascendancyClassName && x.Value.IsAscendancyStart).Key;
             }
             catch
             {
@@ -1404,24 +1407,21 @@ namespace POESKillTree.SkillTreeFiles
             {
                 using (DrawingContext dcAsc = picAscActiveLinks.RenderOpen()) 
                 {
-                    string className = CharacterNames.NameToContent.Where(x => x.Key == CharName[_chartype]).First().Value;
+                    var className = CharacterNames.GetClassNameFromChartype(_chartype);
+                    var ascendancyClassName = AscendancyClasses.GetClassName(className, AscType);
                     foreach (ushort n1 in SkilledNodes)
                     {
                         foreach (SkillNode n2 in Skillnodes[n1].VisibleNeighbors)
                         {
-                            if (SkilledNodes.Contains(n2.Id))
+                            if (!SkilledNodes.Contains(n2.Id)) continue;
+                            if (n2.ascendancyName != null)
                             {
-                                if (n2.ascendancyName != null)
-                                {
-                                    if (drawAscendancy)
-                                    {
-                                        if (_persistentData.Options.ShowAllAscendancyClasses ? true : n2.ascendancyName == ascendancyClasses.GetClassName(className, AscType))
-                                            DrawConnection(dcAsc, pen2, n2, Skillnodes[n1]);
-                                    }
-                                }
-                                else
-                                    DrawConnection(dc, pen2, n2, Skillnodes[n1]);
+                                if (!drawAscendancy) continue;
+                                if (_persistentData.Options.ShowAllAscendancyClasses || n2.ascendancyName == ascendancyClassName)
+                                    DrawConnection(dcAsc, pen2, n2, Skillnodes[n1]);
                             }
+                            else
+                                DrawConnection(dc, pen2, n2, Skillnodes[n1]);
                         }
                     }
                     dcAsc.Close();
