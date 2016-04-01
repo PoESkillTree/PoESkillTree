@@ -1044,7 +1044,7 @@ namespace POESKillTree.Views
         private void cbAscType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbAscType.SelectedIndex < 0 || cbAscType.SelectedIndex > 3)
-                Tree.AscType = 0;
+                return;
             else
                 Tree.AscType = cbAscType.SelectedIndex;
             Tree.UpdateAvailNodes();

@@ -645,7 +645,8 @@ namespace POESKillTree.SkillTreeFiles
             SkilledNodes.Add(GetCharNodeId());
             UpdateAvailNodes();
             DrawFaces();
-            ClearAsendancyDrawing();
+            if (_persistentData.Options.ShowAllAscendancyClasses)
+                drawAscendancy = true;
             DrawAscendancyButton();
             updateAscendancyClasses = true;
         }
