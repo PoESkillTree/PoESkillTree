@@ -1446,20 +1446,17 @@ namespace POESKillTree.Views
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
+            string className = CharacterNames.NameToContent.Where(x => x.Key == SkillTree.CharName[Tree.Chartype]).First().Value;
             if (nodes.Count() != 0)
             {
                 var dnode = nodes.First();
-                node = nodes.Where(x => x.Value.ascendancyName != null).DefaultIfEmpty(dnode).First().Value;
+                node = nodes.Where(x => x.Value.ascendancyName == Tree.ascendancyClasses.GetClassName(className, Tree.AscType)).DefaultIfEmpty(dnode).First().Value;
             }
 
 
             _hoveredNode = node;
             if (node != null && !SkillTree.rootNodeList.Contains(node.Id))
-            {
-                if (node.ascendancyName != null && !Tree.drawAscendancy)
-                    return;
-                string className = CharacterNames.NameToContent.Where(x => x.Key == SkillTree.CharName[Tree.Chartype]).First().Value;
-                
+            {         
                 if (!Tree.drawAscendancy && node.ascendancyName != null)
                     return;
                 else if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.ascendancyClasses.GetClassName(className, Tree.AscType))

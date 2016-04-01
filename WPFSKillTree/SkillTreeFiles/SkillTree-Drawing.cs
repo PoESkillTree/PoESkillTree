@@ -150,31 +150,48 @@ namespace POESKillTree.SkillTreeFiles
             if(!_persistentData.Options.ShowAllAscendancyClasses)
             {
                 string className = CharacterNames.NameToContent.Where(x => x.Key == CharName[_chartype]).First().Value;
-                var nodeList = Skillnodes.Where(x => x.Value.ascendancyName == ascendancyClasses.GetClassName(className, AscType));
-                var startNode = Skillnodes.Where(x => x.Value.Name.ToUpperInvariant() == CharName[_chartype]).First();
-                var worldPos = startNode.Value.Position;
+                var nodeList = Skillnodes.Where(x => x.Value.ascendancyName == ascendancyClasses.GetClassName(className, AscType) && !x.Value.IsAscendancyStart);
+                Vector2D worldPos = Skillnodes.Where(x => x.Value.Name.ToUpperInvariant() == CharName[_chartype]).First().Value.Position;
+                var ascStartNode = Skillnodes.Where(x => x.Value.ascendancyName == ascendancyClasses.GetClassName(className, AscType) && x.Value.IsAscendancyStart).First().Value;
+                Vector2D ascNodeOriginalPos = ascStartNode.SkillNodeGroup.Position;
+
+                string imageName = "Classes" + ascStartNode.ascendancyName;
+                BitmapImage bitmap = _assets[imageName].PImage;
+
+                var distanceFromStartNodeCenter = 270;
+                var dirX = 0.0;
+                var dirY = 1.0;
+                var distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
+                var isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
+                if (!isCentered)
+                {
+                    dirX = worldPos.X / distToCentre;
+                    dirY = -worldPos.Y / distToCentre;
+                }
+                var ascButtonRot = Math.Atan2(dirX, dirY);
+                var imageCX = worldPos.X + (distanceFromStartNodeCenter + bitmap.Height * 1.25) * Math.Cos(ascButtonRot + Math.PI / 2);
+                var imageCY = worldPos.Y + (distanceFromStartNodeCenter + bitmap.Width * 1.25) * Math.Sin(ascButtonRot + Math.PI / 2);
+
+                ascStartNode.SkillNodeGroup.Position = new Vector2D(imageCX, imageCY);
+                List<SkillNodeGroup> done = new List<SkillNodeGroup>();
+                done.Add(ascStartNode.SkillNodeGroup);
                 foreach(var n in nodeList)
-                {                     
-                    if(worldPos != null)
-                    {
-                        string imageName = "Classes" + n.Value.ascendancyName;
-                        BitmapImage bitmap = _assets[imageName].PImage;
-
-                        var distanceFromStartNodeCenter = bitmap.Height * 1.75;
-                        var dirX = 0.0;
-                        var dirY = 1.0;
-                        var distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
-                        var isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
-                        if(!isCentered){
-	                        dirX = worldPos.X / distToCentre;
-	                        dirY = -worldPos.Y / distToCentre;
-                        }
-                        var ascButtonRot = Math.Atan2(dirX, dirY);
-                        var imageCX = worldPos.X + dirX + (distanceFromStartNodeCenter) * Math.Cos(ascButtonRot + Math.PI / 2);
-                        var imageCY = worldPos.Y + dirY + (distanceFromStartNodeCenter) * Math.Sin(ascButtonRot + Math.PI / 2);
-
-                        n.Value.SkillNodeGroup.Position = new Vector2D(imageCX, imageCY);
+                {
+                    if (done.Contains(n.Value.SkillNodeGroup))
+                        continue;
+                    Vector2D diffDist = ascNodeOriginalPos - n.Value.SkillNodeGroup.Position;
+                    distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
+                    isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
+                    if(!isCentered){
+	                    dirX = worldPos.X / distToCentre;
+	                    dirY = -worldPos.Y / distToCentre;
                     }
+                    ascButtonRot = Math.Atan2(dirX, dirY);
+                    imageCX = ascStartNode.SkillNodeGroup.Position.X - diffDist.X;
+                    imageCY = ascStartNode.SkillNodeGroup.Position.Y - diffDist.Y;
+
+                    n.Value.SkillNodeGroup.Position = new Vector2D(imageCX, imageCY);
+                    done.Add(n.Value.SkillNodeGroup);
                 }
             }
             DrawInitialLayers();
