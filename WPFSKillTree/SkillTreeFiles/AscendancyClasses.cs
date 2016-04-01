@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace POESKillTree.SkillTreeFiles
 {
     public class AscendancyClasses
     {
-        public Dictionary<string, List<Class>> classes;
+        public Dictionary<string, List<Class>> Classes;
 
         public AscendancyClasses()
         {
-            classes = new Dictionary<string, List<Class>>();
+            Classes = new Dictionary<string, List<Class>>();
         }
+
         public class Class
         {
-            public int order;
-            public string name;
-            public string displayName;
-            public string flavourText;
-            public Vector2D flavourTextRect;
-            public int[] flavourTextColour;
+            public int Order;
+            public string Name;
+            public string DisplayName;
+            public string FlavourText;
+            public Vector2D FlavourTextRect;
+            public int[] FlavourTextColour;
         }
+
         /// <summary>
         /// Gets the starting class associated with an Ascendancy class
         /// </summary>
@@ -30,16 +29,17 @@ namespace POESKillTree.SkillTreeFiles
         /// <returns></returns>
         public string GetStartingClass(string ascClass)
         {
-            foreach(KeyValuePair<string, List<Class>> entry in classes)
+            foreach(KeyValuePair<string, List<Class>> entry in Classes)
             {
                 foreach(Class item in entry.Value)
                 {
-                    if (item.name == ascClass)
+                    if (item.Name == ascClass)
                         return entry.Key;
                 }
             }
             return null;
         }
+
         /// <summary>
         /// Returns the number associated with the class 
         /// </summary>
@@ -47,16 +47,10 @@ namespace POESKillTree.SkillTreeFiles
         /// <returns></returns>
         public int GetClassNumber(string ascClass)
         {
-            foreach (KeyValuePair<string, List<Class>> entry in classes)
-            {
-                foreach (Class item in entry.Value)
-                {
-                    if (item.name == ascClass)
-                        return item.order;
-                }
-            }
-            return 0;
+            var resClass = GetClass(ascClass);
+            return resClass == null ? 0 : resClass.Order;
         }
+
         /// <summary>
         /// Returns a class name based on starting class and 0, 1, or 2 asc class
         /// </summary>
@@ -72,16 +66,17 @@ namespace POESKillTree.SkillTreeFiles
                 if (pair.Key == startingClass)
                     startingClass = pair.Value;
             }
-            foreach (KeyValuePair<string, List<Class>> entry in classes)
+            foreach (KeyValuePair<string, List<Class>> entry in Classes)
             {
                 if (entry.Key == startingClass)
                 {
                     if (ascOrder < entry.Value.Count)
-                        return entry.Value[ascOrder].name;
+                        return entry.Value[ascOrder].Name;
                 }
             }
             return null;
         }
+
         /// <summary>
         /// Gets all Ascendancy classes associated with a starting class 
         /// </summary>
@@ -89,38 +84,23 @@ namespace POESKillTree.SkillTreeFiles
         /// <returns>A Class list or null if nothing was found</returns>
         public List<Class> GetClasses(string startingClass)
         {
-            foreach(KeyValuePair<string, List<Class>> entry in classes)
-            {
-                if (entry.Key == startingClass)
-                    return entry.Value;
-            }
-            return null;
+            List<Class> classes;
+            Classes.TryGetValue(startingClass, out classes);
+            return classes;
         }
+
         /// <summary>
         /// Gets all Ascedancy classes
         /// </summary>
         /// <returns>A combined list of all Ascendancy classes</returns>
         public List<Class> GetClasses()
         {
-            List<Class> allClasses = new List<Class>();
-            foreach(KeyValuePair<string, List<Class>> entry in classes)
-            {
-                foreach (Class item in entry.Value)
-                    allClasses.Add(item);
-            }
-            return allClasses;
+            return Classes.Values.SelectMany(x => x).ToList();
         }
+
         public Class GetClass(string ascClass)
         {
-            foreach (KeyValuePair<string, List<Class>> entry in classes)
-            {
-                foreach (Class item in entry.Value)
-                {
-                    if (item.name == ascClass)
-                        return item;
-                }
-            }
-            return null;
+            return GetClasses().FirstOrDefault(x => x.Name == ascClass);
         }
     }    
 }
