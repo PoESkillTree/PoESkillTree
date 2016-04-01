@@ -130,23 +130,6 @@ namespace POESKillTree.SkillTreeFiles
             picJewelHighlight.RenderOpen().Close();
         }
 
-        public void ClearAsendancyDrawing()
-        {
-            picAscendancyClasses.RenderOpen().Close();
-            picAscendancyButton.RenderOpen().Close();
-            picAscPathTreeComparisonHighlight.RenderOpen().Close();
-            picAscNodeTreeComparisonHighlight.RenderOpen().Close();
-            picAscLinks.RenderOpen().Close();
-            picAscActiveLinks.RenderOpen().Close();
-            picAscPathOverlay.RenderOpen().Close();
-            picAscSkillIconLayer.RenderOpen().Close();
-            picAscActiveSkillIconLayer.RenderOpen().Close();
-            picAscNodeNormalSurround.RenderOpen().Close();
-            picAscNodeHighlightSurround.RenderOpen().Close();
-            AscSkilltreeVisual.RenderOpen().Close();
-            drawAscendancy = false;
-        }
-
         public void ToggleAscendancyTree()
         {
             drawAscendancy = !drawAscendancy;
