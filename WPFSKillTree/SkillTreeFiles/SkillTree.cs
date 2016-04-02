@@ -623,7 +623,6 @@ namespace POESKillTree.SkillTreeFiles
             SkilledNodes.Add(GetCharNodeId());
             drawAscendancy = _persistentData.Options.ShowAllAscendancyClasses;
             DrawAscendancyLayers();
-            UpdateAvailNodes(!drawAscendancy);
             UpdateAscendancyClasses = true;
         }
 
@@ -1129,7 +1128,6 @@ namespace POESKillTree.SkillTreeFiles
             return retval;
         }
 
-
         public static void DecodeURL(string url, out HashSet<ushort> skillednodes, out int chartype, out int asctype)
         {
             skillednodes = new HashSet<ushort>();
@@ -1175,7 +1173,6 @@ namespace POESKillTree.SkillTreeFiles
             }
 
         }
-
 
         public void LoadFromURL(string url)
         {

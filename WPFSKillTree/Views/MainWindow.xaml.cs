@@ -447,13 +447,14 @@ namespace POESKillTree.Views
                 lvSavedBuilds.Items.Add(build);
             }
             _persistentData.Options.PropertyChanged += Options_PropertyChanged;
-            populateAsendancySelectionList();
+            PopulateAsendancySelectionList();
             CheckAppVersionAndDoNecessaryChanges();
         }
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Tree.ToggleAscendancyTree(_persistentData.Options.ShowAllAscendancyClasses);
+            if (e.PropertyName == _persistentData.Options.Name(x => x.ShowAllAscendancyClasses))
+                Tree.ToggleAscendancyTree(_persistentData.Options.ShowAllAscendancyClasses);
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -1034,6 +1035,7 @@ namespace POESKillTree.Views
         {
             userInteraction = true;
         }
+
         private void cbCharType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
              if (Tree == null)
@@ -1048,9 +1050,10 @@ namespace POESKillTree.Views
             tbSkillURL.Text = Tree.SaveToURL();
             Tree.LoadFromURL(tbSkillURL.Text);
             userInteraction = false;
-            populateAsendancySelectionList();
+            PopulateAsendancySelectionList();
             cbAscType.SelectedIndex = Tree.AscType = 0;
         }
+
         private void cbAscType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!userInteraction)
@@ -1066,16 +1069,15 @@ namespace POESKillTree.Views
             userInteraction = false;
         }
 
-        private void populateAsendancySelectionList()
+        private void PopulateAsendancySelectionList()
         {
-            if (Tree.UpdateAscendancyClasses)
-            {
-                Tree.UpdateAscendancyClasses = false;
-                var ascendancyItems = new List<string> { "None" };
-                foreach (var name in Tree.AscendancyClasses.GetClasses(((ComboBoxItem)cbCharType.SelectedItem).Content.ToString()))
-                    ascendancyItems.Add(name.DisplayName);
-                cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
-            }
+            if (!Tree.UpdateAscendancyClasses) return;
+
+            Tree.UpdateAscendancyClasses = false;
+            var ascendancyItems = new List<string> { "None" };
+            foreach (var name in Tree.AscendancyClasses.GetClasses(((ComboBoxItem)cbCharType.SelectedItem).Content.ToString()))
+                ascendancyItems.Add(name.DisplayName);
+            cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
         }
 
         private string GetLevelAsString()
@@ -1428,6 +1430,9 @@ namespace POESKillTree.Views
                         }
                     }
                 }
+                tbSkillURL.Text = Tree.SaveToURL();
+                Tree.LoadFromURL(tbSkillURL.Text);
+                UpdateUI();
             }
             else if ((Tree.ascedancyButtonPos - v).Length < 150)
             {
@@ -1444,9 +1449,6 @@ namespace POESKillTree.Views
                     }
                 }
             }
-            tbSkillURL.Text = Tree.SaveToURL();
-            Tree.LoadFromURL(tbSkillURL.Text);
-            UpdateUI();
         }
 
         private void zbSkillTreeBackground_MouseLeave(object sender, MouseEventArgs e)
@@ -1961,7 +1963,7 @@ namespace POESKillTree.Views
                 {
                     UpdateClass();
                     Tree.UpdateAscendancyClasses = true;
-                    populateAsendancySelectionList();
+                    PopulateAsendancySelectionList();
                 }
                 UpdateUI();
                 _justLoaded = false;
