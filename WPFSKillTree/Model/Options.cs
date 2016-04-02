@@ -11,7 +11,6 @@ namespace POESKillTree.Model
         public string NodeSearchHighlightColor { get; set; }
         public string NodeAttrHighlightColor { get; set; }
         public string NodeHoverHighlightColor { get; set; }
-        public bool ShowAllAscendancyClasses { get; set; }
 
         private bool _attributesBarOpened;
         public bool AttributesBarOpened
@@ -65,6 +64,17 @@ namespace POESKillTree.Model
             { 
                 _selectedBuildIndex = value;
                 OnPropertyChanged("SelectedBuildIndex");
+            }
+        }
+
+        private bool _showAllAscendancyClasses = true;
+        public bool ShowAllAscendancyClasses
+        {
+            get { return _showAllAscendancyClasses; }
+            set
+            {
+                _showAllAscendancyClasses = value;
+                OnPropertyChanged("ShowAllAscendancyClasses");
             }
         }
 

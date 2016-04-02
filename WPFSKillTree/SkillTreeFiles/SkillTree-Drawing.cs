@@ -50,7 +50,7 @@ namespace POESKillTree.SkillTreeFiles
         
         private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
         private readonly PersistentData _persistentData = App.PersistentData;
-
+        private List<Tuple<int, Vector2D>> _originalPositions = new List<Tuple<int, Vector2D>>();
         public bool drawAscendancy = false;
 
         public DrawingVisual SkillTreeVisual;
@@ -133,13 +133,26 @@ namespace POESKillTree.SkillTreeFiles
         public void ToggleAscendancyTree()
         {
             drawAscendancy = !drawAscendancy;
-            if(!_persistentData.Options.ShowAllAscendancyClasses)
+            DrawAscendancyLayers();
+        }
+        
+        public void ToggleAscendancyTree(bool draw)
+        {
+            drawAscendancy = draw;
+            DrawAscendancyLayers();
+        }
+
+        private void UpdateAscendancyClassPositions()
+        {
+            if (!_persistentData.Options.ShowAllAscendancyClasses)
             {
                 var className = CharacterNames.GetClassNameFromChartype(_chartype);
                 var nodeList = Skillnodes.Where(x => x.Value.ascendancyName == AscendancyClasses.GetClassName(className, AscType) && !x.Value.IsAscendancyStart);
                 var worldPos = Skillnodes.First(x => x.Value.Name.ToUpperInvariant() == CharName[_chartype]).Value.Position;
                 var ascStartNode = Skillnodes.First(x => x.Value.ascendancyName == AscendancyClasses.GetClassName(className, AscType) && x.Value.IsAscendancyStart).Value;
                 var ascNodeOriginalPos = ascStartNode.SkillNodeGroup.Position;
+                if (!_originalPositions.Any(x => x.Item1 == ascStartNode.G))
+                    _originalPositions.Add(new Tuple<int, Vector2D>(ascStartNode.G, new Vector2D(ascNodeOriginalPos.ToContainingPoint())));
 
                 var imageName = "Classes" + ascStartNode.ascendancyName;
                 var bitmap = _assets[imageName].PImage;
@@ -159,17 +172,21 @@ namespace POESKillTree.SkillTreeFiles
                 var imageCY = worldPos.Y + (distanceFromStartNodeCenter + bitmap.Width * 1.25) * Math.Sin(ascButtonRot + Math.PI / 2);
 
                 ascStartNode.SkillNodeGroup.Position = new Vector2D(imageCX, imageCY);
-                var done = new List<SkillNodeGroup> {ascStartNode.SkillNodeGroup};
-                foreach(var n in nodeList)
+                var done = new List<SkillNodeGroup> { ascStartNode.SkillNodeGroup };
+                
+                foreach (var n in nodeList)
                 {
                     if (done.Contains(n.Value.SkillNodeGroup))
                         continue;
+                    if (!_originalPositions.Any(x => x.Item1 == n.Value.G))
+                        _originalPositions.Add(new Tuple<int, Vector2D>(n.Value.G, new Vector2D(n.Value.SkillNodeGroup.Position.ToContainingPoint())));
                     var diffDist = ascNodeOriginalPos - n.Value.SkillNodeGroup.Position;
                     distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
                     isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
-                    if(!isCentered){
-	                    dirX = worldPos.X / distToCentre;
-	                    dirY = -worldPos.Y / distToCentre;
+                    if (!isCentered)
+                    {
+                        dirX = worldPos.X / distToCentre;
+                        dirY = -worldPos.Y / distToCentre;
                     }
                     ascButtonRot = Math.Atan2(dirX, dirY);
                     imageCX = ascStartNode.SkillNodeGroup.Position.X - diffDist.X;
@@ -179,8 +196,18 @@ namespace POESKillTree.SkillTreeFiles
                     done.Add(n.Value.SkillNodeGroup);
                 }
             }
-
-            DrawAscendancyLayers();
+            else
+            {
+                foreach(var g in _originalPositions)
+                {
+                    foreach(var n in Skillnodes)
+                    {
+                        if (g.Item1 != n.Value.G) continue;
+                        n.Value.SkillNodeGroup.Position = g.Item2;
+                    }
+                }
+                _originalPositions.Clear();
+            }
         }
 
         private void DrawBackgroundLayer()
@@ -1210,10 +1237,12 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (drawAscendancy)
             {
+                UpdateAscendancyClassPositions();
                 DrawAscendancyNodeNormalSurround();
                 DrawAscendancySkillIconLayer();
                 DrawAscendancyLinkBackgroundLayer(_links);
                 DrawAscendancyClasses();
+                UpdateAvailNodes();
             }
             else
             {
