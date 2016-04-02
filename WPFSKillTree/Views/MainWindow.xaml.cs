@@ -1031,7 +1031,6 @@ namespace POESKillTree.Views
             Tree.AscType = 0;
 
             populateAsendancySelectionList();
-            Tree.UpdateAvailNodes();
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToURL();
         }
@@ -1041,7 +1040,6 @@ namespace POESKillTree.Views
                 return;
             else
                 Tree.AscType = cbAscType.SelectedIndex;
-            Tree.UpdateAvailNodes();
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToURL();
         }
@@ -1185,7 +1183,6 @@ namespace POESKillTree.Views
                     _attiblist.Add(a);
                 }
             }
-            UpdatePoints();
         }
         public void UpdatePoints()
         {
@@ -1914,15 +1911,13 @@ namespace POESKillTree.Views
                     Tree.LoadFromURL(tbSkillURL.Text);
                 }
 
-
-                _justLoaded = true;
-                //cleans the default tree on load if 2
                 if (_justLoaded)
                 {
                     if (_undoList.Count > 1)
                     {
                         string holder = _undoList.Pop();
-                        _undoList.Pop();
+                        while (_undoList.Count != 0)
+                            _undoList.Pop();
                         _undoList.Push(holder);
                     }
                 }
