@@ -1466,6 +1466,13 @@ namespace POESKillTree.Views
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
+            if(Tree.drawAscendancy)
+            {
+                var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
+                var bitmap = Tree.Assets["Classes" + asn.ascendancyName].PImage;
+
+                nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
+            }
             var className = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
             if (nodes.Count() != 0)
             {

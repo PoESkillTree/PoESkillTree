@@ -217,6 +217,8 @@ namespace POESKillTree.SkillTreeFiles
 
         private static readonly Dictionary<string, Asset> _assets = new Dictionary<string, Asset>();
 
+        public Dictionary<string, Asset> Assets { get { return _assets; } }
+
         private static Dictionary<string, int> _rootNodeClassDictionary = new Dictionary<string, int>();
 
         private static readonly List<ushort[]> _links = new List<ushort[]>();
