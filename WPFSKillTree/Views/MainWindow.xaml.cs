@@ -1068,9 +1068,9 @@ namespace POESKillTree.Views
 
         private void populateAsendancySelectionList()
         {
-            if (Tree.updateAscendancyClasses)
+            if (Tree.UpdateAscendancyClasses)
             {
-                Tree.updateAscendancyClasses = false;
+                Tree.UpdateAscendancyClasses = false;
                 var ascendancyItems = new List<string> { "None" };
                 foreach (var name in Tree.AscendancyClasses.GetClasses(((ComboBoxItem)cbCharType.SelectedItem).Content.ToString()))
                     ascendancyItems.Add(name.DisplayName);
@@ -1960,7 +1960,7 @@ namespace POESKillTree.Views
                 if(!_justLoaded)
                 {
                     UpdateClass();
-                    Tree.updateAscendancyClasses = true;
+                    Tree.UpdateAscendancyClasses = true;
                     populateAsendancySelectionList();
                 }
                 UpdateUI();

@@ -250,7 +250,6 @@ namespace POESKillTree.SkillTreeFiles
         public SkillTree(String treestring, String opsstring , bool displayProgress, UpdateLoadingWindow update)
         {
             PoESkillTree inTree = null;
-            Opts inOpts = null;
             if (!_Initialized)
             {
                 var jss = new JsonSerializerSettings
@@ -263,13 +262,10 @@ namespace POESKillTree.SkillTreeFiles
                 };
                 
                 inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, jss);
-                inOpts = JsonConvert.DeserializeObject<Opts>(opsstring, jss);
-            }
+                var inOpts = JsonConvert.DeserializeObject<Opts>(opsstring, jss);
 
-            if (!_Initialized)
-            {
-                SkillTree._IconInActiveSkills = new SkillIcons();
-                SkillTree._IconActiveSkills = new SkillIcons();
+                _IconInActiveSkills = new SkillIcons();
+                _IconActiveSkills = new SkillIcons();
                 foreach (var obj in inTree.skillSprites)
                 {
                     if (obj.Key.Contains("Active"))
@@ -295,19 +291,13 @@ namespace POESKillTree.SkillTreeFiles
                         }
                     }
                 }
-            }
 
-            if (!_Initialized)
-            {
                 foreach (var ass in inTree.assets)
                 {
                     _assets[ass.Key] = new Asset(ass.Key,
                         ass.Value.ContainsKey(0.3835f) ? ass.Value[0.3835f] : ass.Value.Values.First());
                 }
-            }
 
-            if (!_Initialized)
-            {
                 _rootNodeList = new List<int>();
                 if (inTree.root != null)
                 {
@@ -323,9 +313,7 @@ namespace POESKillTree.SkillTreeFiles
                         _rootNodeList.Add(i);
                     }
                 }
-            }
-            if(!_Initialized)
-            {
+
                 _asendancyClasses = new AscendancyClasses();
                 if(inOpts != null)
                 {
@@ -363,11 +351,9 @@ namespace POESKillTree.SkillTreeFiles
                 update(75, 100);
 
             if (!_Initialized)
+            {
                 _IconInActiveSkills.OpenOrDownloadImages(update);
 
-
-            if (!_Initialized)
-            {
                 _CharBaseAttributes = new Dictionary<string, float>[7];
                 foreach (var c in inTree.characterData)
                 {
@@ -378,12 +364,7 @@ namespace POESKillTree.SkillTreeFiles
                     {"+# to Intelligence", c.Value.base_int}
                 };
                 }
-            }
 
-
-
-            if (!_Initialized)
-            {
                 _Skillnodes = new Dictionary<ushort, SkillNode>();
                 _rootNodeClassDictionary = new Dictionary<string, int>();
                 _startNodeDictionary = new Dictionary<int, int>();
@@ -438,7 +419,6 @@ namespace POESKillTree.SkillTreeFiles
                     }
 
                 }
-
 
                 foreach (var skillNode in Skillnodes)
                 {
@@ -513,10 +493,7 @@ namespace POESKillTree.SkillTreeFiles
                         skillnode.Value.Attributes[cs] = values;
                     }
                 }
-            }
 
-            if (!_Initialized)
-            {
                 _NodeGroups = new List<SkillNodeGroup>();
                 foreach (var gp in inTree.groups)
                 {
@@ -538,14 +515,12 @@ namespace POESKillTree.SkillTreeFiles
                     }
                 }
 
-            }
-
-            if (!_Initialized)
-            {
                 const int padding = 500; //This is to account for jewel range circles. Might need to find a better way to do it.
                 _TRect = new Rect2D(new Vector2D(inTree.min_x * 1.1 - padding, inTree.min_y * 1.1 - padding),
                     new Vector2D(inTree.max_x * 1.1 + padding, inTree.max_y * 1.1 + padding));
             }
+
+
             if (_persistentData.Options.ShowAllAscendancyClasses)
                 drawAscendancy = true;
             InitializeLayers();
@@ -563,6 +538,7 @@ namespace POESKillTree.SkillTreeFiles
             get { return _level; }
             set { SetProperty(ref _level, value); }
         }
+
         /// <summary>
         /// This will get all skill points related to the tree both Normal and Ascendancy
         /// </summary>
@@ -591,16 +567,13 @@ namespace POESKillTree.SkillTreeFiles
             return points;
         }
 
-        public bool updateAscendancyClasses = true;
+        public bool UpdateAscendancyClasses = true;
         public int Chartype
         {
             get { return _chartype; }
             set
             {
-                SetProperty(ref _chartype, value, () =>
-                {
-                    CharacterTypeUpdate();
-                });
+                SetProperty(ref _chartype, value, CharacterTypeUpdate);
             }
         }
 
@@ -650,8 +623,8 @@ namespace POESKillTree.SkillTreeFiles
             SkilledNodes.Add(GetCharNodeId());
             drawAscendancy = _persistentData.Options.ShowAllAscendancyClasses;
             DrawAscendancyLayers();
-            UpdateAvailNodes(true);
-            updateAscendancyClasses = true;
+            UpdateAvailNodes(!drawAscendancy);
+            UpdateAscendancyClasses = true;
         }
 
         public Dictionary<string, List<float>> HighlightedAttributes;
@@ -1222,7 +1195,7 @@ namespace POESKillTree.SkillTreeFiles
             KeyValuePair<ushort, SkillNode> node = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
             AscType = 0;
             SkilledNodes.Add(node.Value.Id);
-            updateAscendancyClasses = true;
+            UpdateAscendancyClasses = true;
             UpdateAvailNodes();
         }
 
@@ -1397,38 +1370,6 @@ namespace POESKillTree.SkillTreeFiles
             return availNodes;
         }
 
-        private void UpdateAvailNodesDraw()
-        {
-            var pen2 = new Pen(Brushes.DarkKhaki, 15f);
-
-            using (DrawingContext dc = picActiveLinks.RenderOpen())
-            {
-                using (DrawingContext dcAsc = picAscActiveLinks.RenderOpen()) 
-                {
-                    var className = CharacterNames.GetClassNameFromChartype(_chartype);
-                    var ascendancyClassName = AscendancyClasses.GetClassName(className, AscType);
-                    foreach (ushort n1 in SkilledNodes)
-                    {
-                        foreach (SkillNode n2 in Skillnodes[n1].VisibleNeighbors)
-                        {
-                            if (!SkilledNodes.Contains(n2.Id)) continue;
-                            if (n2.ascendancyName != null)
-                            {
-                                if (!drawAscendancy) continue;
-                                if (_persistentData.Options.ShowAllAscendancyClasses || n2.ascendancyName == ascendancyClassName)
-                                    DrawConnection(dcAsc, pen2, n2, Skillnodes[n1]);
-                            }
-                            else
-                                DrawConnection(dc, pen2, n2, Skillnodes[n1]);
-                        }
-                    }
-                    dcAsc.Close();
-                }
-                dc.Close();
-            }
-            DrawDynamicLayers();
-        }
-
         public static Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
         {
             foreach (var attribute in attributes.ToList())
@@ -1454,7 +1395,7 @@ namespace POESKillTree.SkillTreeFiles
             var temp = new List<ushort>();
 
             _rootNodeClassDictionary.TryGetValue(className.ToUpperInvariant(), out rootNodeValue);
-            List<int> classSpecificStartNodes = _startNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key).ToList<int>();
+            var classSpecificStartNodes = _startNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key).ToList();
 
             foreach(int node in classSpecificStartNodes)
             {
