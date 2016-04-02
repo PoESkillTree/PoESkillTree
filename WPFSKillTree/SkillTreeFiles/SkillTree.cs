@@ -648,7 +648,7 @@ namespace POESKillTree.SkillTreeFiles
             SkilledNodes.Add(GetCharNodeId());
             drawAscendancy = _persistentData.Options.ShowAllAscendancyClasses;
             DrawAscendancyLayers();
-            UpdateAvailNodes();
+            UpdateAvailNodes(true);
             updateAscendancyClasses = true;
         }
 
@@ -1211,6 +1211,7 @@ namespace POESKillTree.SkillTreeFiles
             Chartype = b;
             AscType = asc;
             SkilledNodes = snodes;
+            UpdateAvailNodes();
         }
 
         public void Reset()

@@ -133,7 +133,7 @@ namespace POESKillTree.Views
         private AdornerLayer _layer;
 
         private MouseButton _lastMouseButton;
-
+        private bool userInteraction = false;
         /// <summary>
         /// The node of the SkillTree that currently has the mouse over it.
         /// Null if no node is under the mouse.
@@ -446,7 +446,14 @@ namespace POESKillTree.Views
             {
                 lvSavedBuilds.Items.Add(build);
             }
+            _persistentData.Options.PropertyChanged += Options_PropertyChanged;
+            populateAsendancySelectionList();
             CheckAppVersionAndDoNecessaryChanges();
+        }
+
+        private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            Tree.ToggleAscendancyTree(_persistentData.Options.ShowAllAscendancyClasses);
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -468,30 +475,37 @@ namespace POESKillTree.Views
                         btnPoeUrl_Click(sender, e);
                         break;
                     case Key.D1:
+                        userInteraction = true;
                         cbCharType.SelectedIndex = 0;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D2:
+                        userInteraction = true;
                         cbCharType.SelectedIndex = 1;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D3:
+                        userInteraction = true;
                         cbCharType.SelectedIndex = 2;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D4:
+                        userInteraction = true;
                         cbCharType.SelectedIndex = 3;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D5:
+                        userInteraction = true;
                         cbCharType.SelectedIndex = 4;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D6:
+                        userInteraction = true;
                         cbCharType.SelectedIndex = 5;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D7:
+                        userInteraction = true;
                         cbCharType.SelectedIndex = 6;
                         cbAscType.SelectedIndex = 0;
                         break;
@@ -614,6 +628,7 @@ namespace POESKillTree.Views
                 Tree.SkillAllTaggedNodes();
                 UpdateUI();
                 tbSkillURL.Text = Tree.SaveToURL();
+                Tree.LoadFromURL(tbSkillURL.Text);
             }
             finally
             {
@@ -655,6 +670,7 @@ namespace POESKillTree.Views
                     {
                         UpdateUI();
                         tbSkillURL.Text = Tree.SaveToURL();
+                        Tree.LoadFromURL(tbSkillURL.Text);
                     };
                     vm.StartController += (o, args) =>
                     {
@@ -1014,43 +1030,52 @@ namespace POESKillTree.Views
         #endregion
 
         #region  Character Selection
-
+        private void userInteraction_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            userInteraction = true;
+        }
         private void cbCharType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
              if (Tree == null)
                 return;
-
-            if (_justLoaded)
-            {
-                _justLoaded = false;
-                populateAsendancySelectionList();
-                return;
-            }
+             if (!userInteraction)
+                 return;
+             if (Tree.Chartype == cbCharType.SelectedIndex) return;
 
             Tree.Chartype = cbCharType.SelectedIndex;
-            Tree.AscType = 0;
-
-            populateAsendancySelectionList();
+            
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToURL();
+            Tree.LoadFromURL(tbSkillURL.Text);
+            userInteraction = false;
+            populateAsendancySelectionList();
+            cbAscType.SelectedIndex = Tree.AscType = 0;
         }
         private void cbAscType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!userInteraction)
+                return;
             if (cbAscType.SelectedIndex < 0 || cbAscType.SelectedIndex > 3)
                 return;
-            else
-                Tree.AscType = cbAscType.SelectedIndex;
+
+            Tree.AscType = cbAscType.SelectedIndex;
+
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToURL();
+            Tree.LoadFromURL(tbSkillURL.Text);
+            userInteraction = false;
         }
 
         private void populateAsendancySelectionList()
         {
-            var ascendancyItems = new List<string> {"None"};
-            foreach (var name in Tree.AscendancyClasses.GetClasses(((ComboBoxItem)cbCharType.SelectedItem).Content.ToString()))
-                ascendancyItems.Add(name.DisplayName);
-            cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
-            Tree.updateAscendancyClasses = false;
+            if (Tree.updateAscendancyClasses)
+            {
+                Tree.updateAscendancyClasses = false;
+                var ascendancyItems = new List<string> { "None" };
+                foreach (var name in Tree.AscendancyClasses.GetClasses(((ComboBoxItem)cbCharType.SelectedItem).Content.ToString()))
+                    ascendancyItems.Add(name.DisplayName);
+                cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
+            }
         }
 
         private string GetLevelAsString()
@@ -1079,6 +1104,7 @@ namespace POESKillTree.Views
             Tree.Reset();
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToURL();
+            Tree.LoadFromURL(tbSkillURL.Text);
         }
 
         #endregion
@@ -1419,6 +1445,7 @@ namespace POESKillTree.Views
                 }
             }
             tbSkillURL.Text = Tree.SaveToURL();
+            Tree.LoadFromURL(tbSkillURL.Text);
             UpdateUI();
         }
 
@@ -1868,6 +1895,7 @@ namespace POESKillTree.Views
         {
             try
             {
+                userInteraction = true;
                 if (tbSkillURL.Text.Contains("poezone.ru"))
                 {
                     SkillTreeImporter.LoadBuildFromPoezone(Tree, tbSkillURL.Text);
@@ -1921,12 +1949,20 @@ namespace POESKillTree.Views
                         _undoList.Push(holder);
                     }
                 }
+
+                if(!_justLoaded)
+                {
+                    UpdateClass();
+                    Tree.updateAscendancyClasses = true;
+                    populateAsendancySelectionList();
+                }
                 UpdateUI();
                 _justLoaded = false;
             }
             catch (Exception ex)
             {
                 tbSkillURL.Text = Tree.SaveToURL();
+                Tree.LoadFromURL(tbSkillURL.Text);
                 Popup.Error(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }

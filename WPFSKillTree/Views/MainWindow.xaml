@@ -674,8 +674,8 @@
                             <l:Catalog Message="Level"/>
                         </controls:NumericUpDown.ToolTip>
                     </controls:NumericUpDown>
-                    <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged"/>
-                    <ComboBox Margin="5,0,0,0" x:Name="cbAscType" Width="100" SelectionChanged="cbAscType_SelectionChanged"/>
+                    <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
+                    <ComboBox Margin="5,0,0,0" x:Name="cbAscType" Width="100" SelectionChanged="cbAscType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
                     <Label Content="0" Margin="8,0,0,0" x:Name="NormalUsedPoints" FontSize="14">
                         <Label.ToolTip>
                             <l:Catalog Message="Used Passive Skill Points"/>

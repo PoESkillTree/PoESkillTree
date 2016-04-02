@@ -1242,7 +1242,7 @@ namespace POESKillTree.SkillTreeFiles
                 DrawAscendancySkillIconLayer();
                 DrawAscendancyLinkBackgroundLayer(_links);
                 DrawAscendancyClasses();
-                UpdateAvailNodes();
+                UpdateAvailNodes(true);
             }
             else
             {
