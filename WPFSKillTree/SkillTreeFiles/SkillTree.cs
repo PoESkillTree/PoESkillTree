@@ -546,7 +546,7 @@ namespace POESKillTree.SkillTreeFiles
             }
             if (_persistentData.Options.ShowAllAscendancyClasses)
                 drawAscendancy = true;
-            InitializeDynamicLayers();
+            InitializeLayers();
             DrawInitialLayers();
             CreateCombineVisual();
 
@@ -621,7 +621,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private void CharacterTypeUpdate()
         {
-            HashSet<ushort> add = new HashSet<ushort>();
+            var add = new HashSet<ushort>();
             if (AscType != -1)
             {
                 ushort sn = GetAscNodeId();
@@ -630,8 +630,8 @@ namespace POESKillTree.SkillTreeFiles
                     add.Add(sn);
                     foreach (var n in SkilledNodes)
                     {
-                        if (Skillnodes[sn].ascendancyName == Skillnodes[n].ascendancyName || Skillnodes[n].ascendancyName == null)
-                            add.Add(n);
+                        if (Skillnodes[sn].ascendancyName != Skillnodes[n].ascendancyName) continue;
+                        add.Add(n);
                     }
                 }
             }
@@ -639,16 +639,15 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (var n in SkilledNodes)
                 {
-                    if (Skillnodes[n].ascendancyName == null && !_rootNodeList.Contains(n))
-                        add.Add(n);
+                    if (Skillnodes[n].ascendancyName != null) continue;
+                    if (_rootNodeList.Contains(n)) continue;
+                    add.Add(n);
                 }
             }
             SkilledNodes = add;
             SkilledNodes.Add(GetCharNodeId());
-            UpdateAvailNodes();
-            DrawFaces();
             drawAscendancy = _persistentData.Options.ShowAllAscendancyClasses;
-            DrawAscendancyLayers();
+            UpdateAvailNodes();
             updateAscendancyClasses = true;
         }
 
@@ -1425,8 +1424,8 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 dc.Close();
             }
-            DrawActiveNodeIcons();
-            DrawNodeHighlightSurround();
+            DrawDynamicLayers();
+            DrawAscendancyLayers();
         }
 
         public static Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)

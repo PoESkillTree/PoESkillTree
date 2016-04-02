@@ -1160,7 +1160,7 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        private void InitializeDynamicLayers()
+        private void InitializeLayers()
         {
             InitNodeSurround();
             InitSkillIconLayers();
@@ -1185,16 +1185,22 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawInitialLayers()
         {
-            DrawNodeHighlightSurround();
             DrawNodeNormalSurround();
             DrawSkillIconLayer();
             DrawBackgroundLayer();
             DrawLinkBackgroundLayer(_links);
-            DrawFaces();
             DrawAscendancyNodeNormalSurround();
             DrawAscendancySkillIconLayer();
             DrawAscendancyLinkBackgroundLayer(_links);
             DrawAscendancyClasses();
+            DrawDynamicLayers();
+        }
+
+        private void DrawDynamicLayers()
+        {
+            DrawActiveNodeIcons();
+            DrawNodeHighlightSurround();
+            DrawFaces();
         }
 
         /// <summary>
@@ -1208,7 +1214,6 @@ namespace POESKillTree.SkillTreeFiles
                 DrawAscendancySkillIconLayer();
                 DrawAscendancyLinkBackgroundLayer(_links);
                 DrawAscendancyClasses();
-                UpdateAvailNodes();
             }
             else
             {

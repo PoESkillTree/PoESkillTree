@@ -1375,7 +1375,7 @@ namespace POESKillTree.Views
                                 var temp = SkillTree.Skillnodes[i];
                                 if (temp.IsMultipleChoiceOption)
                                 {
-                                    //SpaceOgre 20160401: We never seem to end up here. Not needed?
+                                    //Emmitt 20160401: This is for Scion Ascendancy MultipleChoice nodes
                                     foreach(var j in Tree.SkilledNodes)
                                     {
                                         if (SkillTree.Skillnodes[j].IsMultipleChoiceOption && Tree.AscendancyClasses.GetStartingClass(SkillTree.Skillnodes[i].Name) == Tree.AscendancyClasses.GetStartingClass(SkillTree.Skillnodes[j].Name))
