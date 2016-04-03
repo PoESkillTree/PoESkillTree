@@ -206,7 +206,7 @@
                 </Trigger>
                 <Trigger Property="IsKeyboardFocusWithin" Value="True">
                     <Setter Property="BorderThickness" TargetName="Background" Value="2,2,2,0"/>
-                    <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource ButtonMouseOverBorderBrush}"/>
+                    <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource GrayBrush5}"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="0.7"/>
@@ -667,8 +667,9 @@
                     <ColumnDefinition Width="100*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="35" DataContext="{Binding Tree, ElementName=window}"
-                                            Value="{Binding Level, ValidatesOnDataErrors=True}"
+                    <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
+                                            Height="{Binding ActualHeight, ElementName=cbCharType}"
+                                            DataContext="{Binding Tree, ElementName=window}" Value="{Binding Level, ValidatesOnDataErrors=True}"
                                             Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}">
                         <controls:NumericUpDown.ToolTip>
                             <l:Catalog Message="Level"/>
@@ -700,13 +701,13 @@
                     <Button x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0" Content="{l:Catalog Message=Reset}"/>
                 </StackPanel>
 
-                <Grid Grid.Column="2" HorizontalAlignment="Stretch">
+                <Grid Grid.Column="2" HorizontalAlignment="Stretch" Margin="0,0,0,-4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <RadioButton HorizontalAlignment="Center" IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}" Margin="16,0,102,0"/>
-                    <RadioButton HorizontalAlignment="Center" IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}" Margin="100,0,33,0"/>
+                    <RadioButton Grid.Column="0" HorizontalAlignment="Center" IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}" Margin="100,0,33,0"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -738,14 +739,15 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
-                        <Button  Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">
+                        <Rectangle Grid.ColumnSpan="2" Height="2" Fill="{DynamicResource GrayBrush5}" VerticalAlignment="Top"></Rectangle>
+                        <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,0,0" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
+                        <Button Grid.Column="0" Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">
                             <l:Catalog Message="Craft new item"/>
                         </Button>
 
                         <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
 
-                        <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
+                        <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Margin="0,4,0,0" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
                     </Grid>
                 </TabItem>
             </TabControl>
