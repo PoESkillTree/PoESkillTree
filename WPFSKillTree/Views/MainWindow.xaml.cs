@@ -1422,8 +1422,6 @@ namespace POESKillTree.Views
                                 Tree.SkilledNodes.Add(i);
                             }
 
-                            Tree.UpdateAvailNodes();
-
                             _toRemove = Tree.ForceRefundNodePreview(node.Id);
                             if (_toRemove != null)
                                 Tree.DrawRefundPreview(_toRemove);
@@ -1958,8 +1956,7 @@ namespace POESKillTree.Views
                         _undoList.Push(holder);
                     }
                 }
-
-                if(!_justLoaded)
+                else
                 {
                     UpdateClass();
                     Tree.UpdateAscendancyClasses = true;

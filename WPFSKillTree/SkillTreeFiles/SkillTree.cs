@@ -803,7 +803,6 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             SkilledNodes = skilled_reachable;
-            UpdateAvailNodes();
         }
 
         public HashSet<ushort> ForceRefundNodePreview(ushort nodeId)
@@ -1179,7 +1178,7 @@ namespace POESKillTree.SkillTreeFiles
             int b;
             int asc;
             HashSet<ushort> snodes;
-            SkillTree.DecodeURL(url, out snodes, out b, out asc);
+            DecodeURL(url, out snodes, out b, out asc);
             Chartype = b;
             AscType = asc;
             SkilledNodes = snodes;
@@ -1193,7 +1192,6 @@ namespace POESKillTree.SkillTreeFiles
             AscType = 0;
             SkilledNodes.Add(node.Value.Id);
             UpdateAscendancyClasses = true;
-            UpdateAvailNodes();
         }
 
         public string SaveToURL()
