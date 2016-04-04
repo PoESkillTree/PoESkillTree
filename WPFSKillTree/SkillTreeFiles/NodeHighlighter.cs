@@ -18,6 +18,16 @@ namespace POESKillTree.SkillTreeFiles
 
         public Dictionary<SkillNode, HighlightState> nodeHighlights = new Dictionary<SkillNode, HighlightState>();
 
+        /// <summary>
+        /// Returns flags without HighlightState.Tags if the node is an ascendancy node.
+        /// Returns flags unchanged if it is not.
+        /// </summary>
+        private static HighlightState CleanFlags(SkillNode node, HighlightState flags)
+        {
+            if (node.ascendancyName == null) return flags;
+            return flags & ~HighlightState.Tags;
+        }
+
         public bool NodeHasHighlights(SkillNode node, HighlightState flags)
         {
             if (nodeHighlights.ContainsKey(node))
@@ -27,23 +37,13 @@ namespace POESKillTree.SkillTreeFiles
             return false;
         }
 
-        public void ToggleHighlightNode(SkillNode node, HighlightState toggleFlags)
-        {
-            if (toggleFlags == 0) return;
-            if (nodeHighlights.ContainsKey(node))
-            {
-                nodeHighlights[node] ^= toggleFlags;
-                if (nodeHighlights[node] == 0) nodeHighlights.Remove(node);
-            }
-            else nodeHighlights.Add(node, toggleFlags);
-        }
-
         public void HighlightNode(SkillNode node, HighlightState newFlags)
         {
-            if (newFlags == 0) return;
+            var flags = CleanFlags(node, newFlags);
+            if (flags == 0) return;
             if (nodeHighlights.ContainsKey(node))
-                nodeHighlights[node] |= newFlags;
-            else nodeHighlights.Add(node, newFlags);
+                nodeHighlights[node] |= flags;
+            else nodeHighlights.Add(node, flags);
         }
 
         public void UnhighlightNode(SkillNode node, HighlightState removeFlags)
@@ -88,7 +88,7 @@ namespace POESKillTree.SkillTreeFiles
             foreach (var pair in pairs)
             {
                 nodeHighlights[pair.Key] &= ifFlags;
-                nodeHighlights[pair.Key] |= newFlags;
+                nodeHighlights[pair.Key] |= CleanFlags(pair.Key, newFlags);
             }
         }
     }

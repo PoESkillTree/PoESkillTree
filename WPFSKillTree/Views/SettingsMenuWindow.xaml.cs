@@ -98,5 +98,22 @@ namespace POESKillTree.Views
             }
             _persistentData.SavePersistentDataToFile();
         }
+
+        private void ShowAllAscendancyClasses_Checked(object sender, RoutedEventArgs e)
+        {
+            _persistentData.Options.ShowAllAscendancyClasses = true;
+            _persistentData.SavePersistentDataToFile();
+        }
+
+        private void ShowAllAscendancyClasses_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _persistentData.Options.ShowAllAscendancyClasses = false;
+            _persistentData.SavePersistentDataToFile();
+        }
+
+        private void ShowAllAscendancyClasses_Initialized(object sender, System.EventArgs e)
+        {
+            ((CheckBox)sender).IsChecked = _persistentData.Options.ShowAllAscendancyClasses;
+        }
     }
 }

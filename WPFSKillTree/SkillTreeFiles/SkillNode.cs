@@ -10,6 +10,8 @@ namespace POESKillTree.SkillTreeFiles
         public Dictionary<string, List<float>> Attributes;
         public HashSet<int> Connections = new HashSet<int>();
         public List<SkillNode> Neighbor = new List<SkillNode>();
+        // The subset of neighbors to which connections should be drawn.
+        public readonly List<SkillNode> VisibleNeighbors = new List<SkillNode>();
         public SkillNodeGroup SkillNodeGroup;
         public int A; // "a": 3,
         public string[] attributes; // "sd": ["8% increased Block Recovery"],
@@ -21,7 +23,7 @@ namespace POESKillTree.SkillTreeFiles
         public bool IsKeyStone; //"ks": false,
         public bool IsNotable; // not": false,
         public bool IsMastery; // m: false,
-        public bool IsJewelSocket; //comes from name
+        public bool IsJewelSocket; //"isJewelSocket": false
         public List<int> LinkId = new List<int>(); // "out": []
         public string Name; //"dn": "Block Recovery",
         public int Orbit; //  "o": 1,
@@ -29,6 +31,12 @@ namespace POESKillTree.SkillTreeFiles
         public int Sa; //s "sa": 0,
         public bool IsSkilled = false;
         public int? Spc;
+        public bool IsMultipleChoice; //"isMultipleChoice": false
+        public bool IsMultipleChoiceOption; //"isMultipleChoiceOption": false
+        public int passivePointsGranted; //"passivePointsGranted": 1
+        public string ascendancyName; //"ascendancyName": "Raider"
+        public bool IsAscendancyStart; //"isAscendancyStart": false
+        public string[] reminderText;
 
         public Vector2D Position
         {
@@ -39,7 +47,6 @@ namespace POESKillTree.SkillTreeFiles
                 return (SkillNodeGroup.Position - new Vector2D(d * Math.Sin(-Arc), d * Math.Cos(-Arc)));
             }
         }
-
         public double Arc
         {
             get { return GetOrbitAngle(OrbitIndex, (int) SkillsPerOrbit[Orbit]); }
@@ -73,7 +80,7 @@ namespace POESKillTree.SkillTreeFiles
         double GetOrbitAngle(int orbit_index, int max_node_positions )
         {
             // An orbit with 40 node placements has specific angles for certain orbit indices.
-            if( max_node_positions == 40 )
+            /*if( max_node_positions == 40 )
             {
                 switch( orbit_index )
                 {
@@ -118,7 +125,7 @@ namespace POESKillTree.SkillTreeFiles
                 case 38: return GetOrbitAngle( 11, 12 ) + 1 * 10.0f;
                 case 39: return GetOrbitAngle( 11, 12 ) + 2 * 10.0f;
                 }
-            }
+            }*/
 
             return 2 * Math.PI * orbit_index / max_node_positions;
         }

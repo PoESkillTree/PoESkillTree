@@ -48,7 +48,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 BestResultText = string.Format(L10n.Plural("Best result so far: {0} point spent",
                     "Best result so far: {0} points spent", (uint)_bestSoFar.Count - 1), _bestSoFar.Count - 1);
                 _tree.HighlightedNodes = new HashSet<ushort>(_bestSoFar);
-                _tree.DrawNodeBaseSurroundHighlight();
+                _tree.DrawTreeComparisonHighlight();
             }
         }
 

@@ -23,7 +23,7 @@
         </ContextMenu>
         <CompositeCollection x:Key="stashTabsCollection">
             <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>
-            <Button Width="16" MinWidth="16" MinHeight="16" Height="16" Padding="3" Click="Button_AddBookmark">
+            <Button Width="17" MinWidth="17" MinHeight="17" Height="17" Margin="0,1,0,0" Padding="3" Click="Button_AddBookmark">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>

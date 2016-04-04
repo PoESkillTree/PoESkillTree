@@ -138,7 +138,7 @@
     <comment>The assembly version used by CLR to resolve dependencies. Change only when public API has changed and all client assemblies has to be recompiled.</comment>
   </data>
   <data name="ProductName" xml:space="preserve">
-    <value>PoESkillTree - Talisman</value>
+    <value>PoESkillTree - Ascendancy</value>
     <comment>The product name also used as name of Program Files group, Application Data folder, Start Menu group and Desktop shortcut. Change only when AppId is changed.</comment>
   </data>
   <data name="ProductURL" xml:space="preserve">
@@ -146,7 +146,7 @@
     <comment>The URL of product website.</comment>
   </data>
   <data name="ProductVersion" xml:space="preserve">
-    <value>2.2.3</value>
+    <value>2.2.5</value>
     <comment>The application version identical to Git release tag. Change each release.</comment>
   </data>
 </root>

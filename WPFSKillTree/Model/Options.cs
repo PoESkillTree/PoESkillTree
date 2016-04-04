@@ -67,6 +67,17 @@ namespace POESKillTree.Model
             }
         }
 
+        private bool _showAllAscendancyClasses = true;
+        public bool ShowAllAscendancyClasses
+        {
+            get { return _showAllAscendancyClasses; }
+            set
+            {
+                _showAllAscendancyClasses = value;
+                OnPropertyChanged("ShowAllAscendancyClasses");
+            }
+        }
+
         public Options()
         {
             // Don't set Language property! When not set, L10n.Initialize will try to use OS settings.
@@ -75,6 +86,7 @@ namespace POESKillTree.Model
             NodeSearchHighlightColor = "Red";
             NodeAttrHighlightColor = "LawnGreen";
             NodeHoverHighlightColor = "DodgerBlue";
+            ShowAllAscendancyClasses = true;
         }
 
         private void OnPropertyChanged(string caller)

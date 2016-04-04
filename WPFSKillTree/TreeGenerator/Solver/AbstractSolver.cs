@@ -153,11 +153,32 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private void BuildSearchGraph()
         {
+            // Make all directed edges from Scion Ascendant "Path of the ..." node undirected.
+            // This is really dirty but the whole code is so dependant on the skill tree stuff that
+            // I don't see a non dirty way.
+            var ascendantClassStartNodes = SkillTree.Skillnodes.Values.Where(SkillTree.IsAscendantClassStartNode).ToList();
+            foreach (var classStartNode in ascendantClassStartNodes)
+            {
+                foreach (var neighbor in classStartNode.Neighbor)
+                {
+                    neighbor.Neighbor.Add(classStartNode);
+                }
+            }
+
             var searchGraph = new SearchGraph();
             CreateStartNodes(searchGraph);
             CreateTargetNodes(searchGraph);
             CreateSearchGraph(searchGraph);
             AllNodes = searchGraph.NodeDict.Values.ToList();
+
+            // Remove all added edges again.
+            foreach (var classStartNode in ascendantClassStartNodes)
+            {
+                foreach (var neighbor in classStartNode.Neighbor)
+                {
+                    neighbor.Neighbor.Remove(classStartNode);
+                }
+            }
         }
 
         /// <summary>
@@ -246,7 +267,9 @@ namespace POESKillTree.TreeGenerator.Solver
                             // Only add nodes in the subsettree if one is given.
                             || Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(node.Id)
                             // Mastery nodes are obviously not useful.
-                            || node.IsMastery)
+                            || node.IsMastery
+                            // Ignore ascendancies for now
+                            || node.ascendancyName != null)
                             continue;
 
                         if (IncludeNodeInSearchGraph(node))

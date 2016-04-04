@@ -2411,6 +2411,8 @@ namespace POESKillTree.SkillTreeFiles
 
             foreach (Item item in Items)
             {
+                if (item.Gems == null)
+                    continue;
                 foreach (Item gem in item.Gems)
                 {
                     if (AttackSkill.IsAttackSkill(gem))

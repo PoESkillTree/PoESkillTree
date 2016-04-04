@@ -105,13 +105,10 @@ namespace POESKillTree.Views
                     return SystemSounds.Hand;
                 case MessageBoxImage.Question:
                     return SystemSounds.Question;
-                    break;
                 case MessageBoxImage.Exclamation: // also MessageBoxImage.Warning
                     return SystemSounds.Exclamation;
-                    break;
                 case MessageBoxImage.Asterisk: //case MessageBoxImage.Information
                     return SystemSounds.Asterisk;
-                    break;
                 default:
                     return SystemSounds.Beep;
             }

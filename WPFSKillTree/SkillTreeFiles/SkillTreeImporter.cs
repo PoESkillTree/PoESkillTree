@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Windows;
 using POESKillTree.Localization;
 using POESKillTree.Utils;
 
@@ -46,16 +45,10 @@ namespace POESKillTree.SkillTreeFiles
                 req.Host = "poezone.ru";
                 req.Referer = "http://poezone.ru/skilltree/";
                 req.AutomaticDecompression = DecompressionMethods.GZip;
-                //req.Headers.Add( "Accept", "application/json, text/javascript" );
                 req.Headers.Add("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.3");
                 req.Headers.Add("Accept-Encoding", "gzip,deflate,sdch");
                 req.Headers.Add("Accept-Language", "en-US,en;q=0.8");
-
-                //req.Headers.Add( "Connection", "keep-alive" );
-                //req.Headers.Add( "Host", "poezone.ru" );
                 req.Headers.Add("Origin", "http://poezone.ru");
-                //req.Headers.Add( "Referer", "http://poezone.ru/skilltree/" );
-                //req.Headers.Add( "User-Agent", );
                 req.Headers.Add("X-Requested-With", "XMLHttpRequest");
                 req.Expect = "";
                 req.Credentials = CredentialCache.DefaultCredentials;
@@ -65,7 +58,6 @@ namespace POESKillTree.SkillTreeFiles
                 dataStream.Close();
 
                 WebResponse resp = req.GetResponse();
-                string status = (resp as HttpWebResponse).StatusDescription;
                 buildFile = new StreamReader(resp.GetResponseStream()).ReadToEnd();
             }
 
@@ -168,8 +160,6 @@ namespace POESKillTree.SkillTreeFiles
                 tree.SkilledNodes.Add(minNode.Key);
             }
             tree.UpdateAvailNodes();
-
-            //string dataFile = 
         }
     }
 }
