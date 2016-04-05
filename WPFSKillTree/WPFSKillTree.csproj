@@ -214,13 +214,13 @@
     <Compile Include="TreeGenerator\Algorithm\HillClimber.cs" />
     <Compile Include="TreeGenerator\Algorithm\LinkedListPriorityQueue.cs" />
     <Compile Include="TreeGenerator\Algorithm\MinimalSpanningTree.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SearchGraph.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Model\SearchGraph.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerPreprocessor.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\BottleneckSteinerDistanceCalculator.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\DegreeTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\FarAwayNonTerminalsTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\Model\Data.cs" />
-    <Compile Include="TreeGenerator\Algorithm\NodeStates.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Model\NodeStates.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NearestVertexTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NonTerminalsOfDegreeKTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\PathsWithManyTerminalsTest.cs" />
