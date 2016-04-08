@@ -849,6 +849,21 @@
                     </Label>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0">
+                            <l:Catalog Message="Filter:"/>
+                        </Label>
+                        <TextBox Height="26" x:Name="tbAttributesFilter" Width="auto" Margin="5,0,0,0" Grid.Column="1" TextChanged="tbAttributesFilter_TextChanged" />
+                    </Grid>
+                    <Grid Grid.Row="1">
                     <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                             <TabItem.Header>
@@ -922,6 +937,7 @@
                         </TabItem>
                     </TabControl>
                 </Grid>
+        </Grid>
             </Expander>
 
             <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}" Expanded="expCharacterSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">

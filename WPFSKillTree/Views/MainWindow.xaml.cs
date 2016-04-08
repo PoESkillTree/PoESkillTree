@@ -1123,7 +1123,7 @@ namespace POESKillTree.Views
             UpdatePoints();
         }
 
-        public void UpdateAllAttributeList()
+        public void UpdateAllAttributeList(string filter = "")
         {
             _allAttributesList.Clear();
 
@@ -1167,6 +1167,7 @@ namespace POESKillTree.Views
                 foreach (string item in (attritemp.Select(InsertNumbersInAttributes)))
                 {
                     var a = new Attribute(item);
+                    if (!a.Text.Contains(filter, StringComparison.InvariantCultureIgnoreCase)) continue;
                     _allAttributesList.Add(a);
                 }
             }
@@ -1179,7 +1180,7 @@ namespace POESKillTree.Views
             cbAscType.SelectedIndex = Tree.AscType;
         }
 
-        public void UpdateAttributeList()
+        public void UpdateAttributeList(string filter = "")
         {
             _attiblist.Clear();
             Dictionary<string, List<float>> copy = (Tree.HighlightedAttributes == null) ? null : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
@@ -1187,6 +1188,7 @@ namespace POESKillTree.Views
             foreach (var item in Tree.SelectedAttributes)
             {
                 var a = new Attribute(InsertNumbersInAttributes(item));
+                if (!a.Text.Contains(filter, StringComparison.InvariantCultureIgnoreCase)) continue;
                 if (copy != null && copy.ContainsKey(item.Key))
                 {
                     var citem = copy[item.Key];
@@ -1205,6 +1207,7 @@ namespace POESKillTree.Views
                 foreach (var item in copy)
                 {
                     var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<float>>(item.Key, item.Value.Select(v => 0f).ToList())));
+                    if (!a.Text.Contains(filter, StringComparison.InvariantCultureIgnoreCase)) continue;
                     a.Deltas = item.Value.Select((h) => 0 - h).ToArray();
                     // if(item.Value.Count == 0)
                     a.Missing = true;
@@ -1340,6 +1343,12 @@ namespace POESKillTree.Views
             _persistentData.Options.BuildsBarOpened = !_persistentData.Options.BuildsBarOpened;
         }
 
+        private void tbAttributesFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateAllAttributeList(tbAttributesFilter.Text);
+            UpdateAttributeList(tbAttributesFilter.Text);
+            RefreshAttributeLists();
+        }
         #endregion
 
         #region zbSkillTreeBackground
