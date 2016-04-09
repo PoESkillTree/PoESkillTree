@@ -1513,7 +1513,7 @@ namespace POESKillTree.Views
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            if(Tree.drawAscendancy)
+            if(Tree.drawAscendancy && Tree.AscType > 0)
             {
                 var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
                 var bitmap = Tree.Assets["Classes" + asn.ascendancyName].PImage;
