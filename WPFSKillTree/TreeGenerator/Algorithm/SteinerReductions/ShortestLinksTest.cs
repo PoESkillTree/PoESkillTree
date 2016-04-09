@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
@@ -23,7 +22,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
             var removedNodes = 0;
 
             var terminalVisited = new bool[SearchSpaceSize];
-            var voronoiPartition = new VoronoiPartition(DistanceLookup, NodeStates.FixedTargetNodes.Select(n => n.DistancesIndex),
+            var voronoiPartition = new VoronoiPartition(DistanceLookup, NodeStates.FixedTargetNodeIndices,
                 EdgeSet);
 
             for (var i = 0; i < SearchSpaceSize; i++)

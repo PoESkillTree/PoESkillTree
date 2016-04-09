@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
@@ -66,6 +68,20 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                 removedNodes++;
             }
             return removedNodes;
+        }
+
+        private static IEnumerable<List<int>> GetAllSubsets(IReadOnlyList<int> of)
+        {
+            var subsets = new List<List<int>>((int)Math.Pow(2, of.Count));
+            for (var i = 1; i < of.Count; i++)
+            {
+                subsets.Add(new List<int>(new[] { of[i - 1] }));
+                var i1 = i;
+                var newSubsets = subsets.Select(subset => subset.Concat(new[] { of[i1] }).ToList()).ToList();
+                subsets.AddRange(newSubsets);
+            }
+            subsets.Add(new List<int>(new[] { of.Last() }));
+            return subsets;
         }
     }
 }

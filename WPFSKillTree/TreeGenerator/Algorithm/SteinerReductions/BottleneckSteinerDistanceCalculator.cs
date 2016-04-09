@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 {
@@ -35,9 +34,9 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
             _distances = distances;
         }
 
-        public IDistanceLookup CalcBottleneckSteinerDistances(IEnumerable<GraphNode> fixedTargetNodes)
+        public IDistanceLookup CalcBottleneckSteinerDistances(IEnumerable<int> fixedTargetNodes)
         {
-            _fixedTargetNodes = fixedTargetNodes.Select(n => n.DistancesIndex).ToList();
+            _fixedTargetNodes = fixedTargetNodes.ToList();
 
             var nodeCount = _distances.CacheSize;
             var smatrix = new uint[nodeCount, nodeCount];

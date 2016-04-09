@@ -20,7 +20,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
             if (NodeStates.FixedTargetNodeCount == 1) return 0;
 
             var removedNodes = 0;
-            var untested = new HashSet<int>(NodeStates.FixedTargetNodes.Select(n => n.DistancesIndex));
+            var untested = new HashSet<int>(NodeStates.FixedTargetNodeIndices);
             // For each terminal zi with degree of at least 2
             while (untested.Any())
             {
@@ -39,8 +39,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 
                 // (zi, v1) belongs to at least one Steiner minimal tree, if there is a terminal zj, zi != zj
                 // with: c(zi, v2) >= c(zi, v1) + d(v1, zj)
-                var canBeContracted =
-                    NodeStates.FixedTargetNodes.Select(n => n.DistancesIndex)
+                var canBeContracted = NodeStates.FixedTargetNodeIndices
                         .Where(zj => zi != zj)
                         .Any(zj => secondShortestWeight >= shortest.Weight + DistanceLookup[v1, zj]);
                 // If there is, v1 and (zi, v1) can be merged into zi.

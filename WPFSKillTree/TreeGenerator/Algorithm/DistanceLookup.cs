@@ -117,6 +117,14 @@ namespace POESKillTree.TreeGenerator.Algorithm
         }
 
         /// <summary>
+        /// Returns true iff the given nodes are connected.
+        /// </summary>
+        public bool AreConnected(int a, int b)
+        {
+            return GetShortestPath(a, b) != null;
+        }
+
+        /// <summary>
         /// Merges both nodes so that distances and paths to any of the two nodes are overwritten
         /// to the shortest distance and path to any of the two nodes or the nodes on the shortest path
         /// between them.

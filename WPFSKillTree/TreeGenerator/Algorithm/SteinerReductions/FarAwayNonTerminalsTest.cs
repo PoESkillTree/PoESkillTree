@@ -21,11 +21,11 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 
             var removedNodes = 0;
 
-            var mst = new MinimalSpanningTree(NodeStates.FixedTargetNodes.Select(n => n.DistancesIndex).ToList(), DistanceLookup);
-            mst.Span(StartNode.DistancesIndex);
+            var mst = new MinimalSpanningTree(NodeStates.FixedTargetNodeIndices.ToList(), DistanceLookup);
+            mst.Span(StartNodeIndex);
             var maxEdgeDistance = mst.SpanningEdges.Max(e => DistanceLookup[e.Inside, e.Outside]);
 
-            var voronoiPartition = new VoronoiPartition(DistanceLookup, NodeStates.FixedTargetNodes.Select(n => n.DistancesIndex), EdgeSet);
+            var voronoiPartition = new VoronoiPartition(DistanceLookup, NodeStates.FixedTargetNodeIndices, EdgeSet);
 
             for (var i = 0; i < SearchSpaceSize; i++)
             {

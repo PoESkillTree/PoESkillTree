@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using POESKillTree.TreeGenerator.Algorithm.Model;
@@ -95,6 +96,37 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
             }
 
             return removedNodes;
+        }
+
+        private void RemoveNode(int index)
+        {
+            if (NodeStates.IsTarget(index))
+                throw new ArgumentException("Target nodes can't be removed", "index");
+
+            var neighbors = EdgeSet.NeighborsOf(index);
+            switch (neighbors.Count)
+            {
+                case 0:
+                    break;
+                case 1:
+                    EdgeSet.Remove(index, neighbors[0]);
+                    break;
+                case 2:
+                    var left = neighbors[0];
+                    var right = neighbors[1];
+                    var newWeight = EdgeSet[index, left].Weight + EdgeSet[index, right].Weight;
+                    EdgeSet.Remove(index, left);
+                    EdgeSet.Remove(index, right);
+                    if (newWeight <= DistanceLookup[left, right])
+                    {
+                        EdgeSet.Add(left, right, newWeight);
+                    }
+                    break;
+                default:
+                    throw new ArgumentException("Removing nodes with more than 2 neighbors is not supported", "index");
+            }
+
+            NodeStates.MarkNodeAsRemoved(index);
         }
     }
 }

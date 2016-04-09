@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace POESKillTree.TreeGenerator.Algorithm.Model
+﻿namespace POESKillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     /// Interface used to provide the reductions in SteinerReductions with the necessary data.
@@ -23,45 +21,35 @@ namespace POESKillTree.TreeGenerator.Algorithm.Model
         IDistanceLookup SMatrix { get; }
 
         /// <summary>
-        /// Gets or sets the start node of the current reduced skill tree. Needs to be changed if the 
+        /// Gets or sets the index of the start node of the current reduced skill tree. Needs to be changed if the 
         /// start node is merged into another node, which becomes the new start node.
         /// </summary>
-        GraphNode StartNode { get; set; }
+        int StartNodeIndex { get; set; }
     }
 
     /// <summary>
-    /// Implementation of <see cref="IData"/>. Provides an Event for changes to <see cref="StartNode"/>.
+    /// Implementation of <see cref="IData"/>.
     /// </summary>
     public class Data : IData
     {
         public GraphEdgeSet EdgeSet { get; set; }
-        public DistanceLookup DistanceLookup { get; private set; }
+        public DistanceLookup DistanceLookup { get; set; }
         public IDistanceLookup SMatrix { get; set; }
 
-        private GraphNode _startNode;
-
-        public GraphNode StartNode
-        {
-            get { return _startNode; }
-            set
-            {
-                if (_startNode == value) return;
-                _startNode = value;
-                if (StartNodeChanged != null)
-                    StartNodeChanged(this, _startNode);
-            }
-        }
-
-        public Data(GraphEdgeSet edgeSet, DistanceLookup distanceLookup, GraphNode startNode)
-        {
-            EdgeSet = edgeSet;
-            DistanceLookup = distanceLookup;
-            _startNode = startNode;
-        }
-
         /// <summary>
-        /// Event which is raised after <see cref="StartNode"/> was changed.
+        /// Gets or sets the the start node of the current reduced skill tree.
         /// </summary>
-        public event EventHandler<GraphNode> StartNodeChanged;
+        public GraphNode StartNode { get; private set; }
+
+        public int StartNodeIndex
+        {
+            get { return StartNode.DistancesIndex; }
+            set { StartNode = DistanceLookup.IndexToNode(value); }
+        }
+
+        public Data(GraphNode startNode)
+        {
+            StartNode = startNode;
+        }
     }
 }

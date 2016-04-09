@@ -7,114 +7,164 @@ using POESKillTree.TreeGenerator.Algorithm.SteinerReductions;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
+    /// <summary>
+    /// Reduces the search space of instances of the Steiner tree problem (SteinerSolver) and the variation used
+    /// in AdvancedSolver to speed up runtime and increase the likelihood of finding the optimal solution.
+    /// </summary>
     public class SteinerPreprocessor
     {
-        private List<GraphNode> _searchSpace;
+        /* Remarks for extensions that are not mentioned elsewhere:
+         * - Nodes that are not fixed target nodes must only be merged into fixed target nodes.
+         *   Because of this, a GraphNode only has nodes.Count > 1 if it is a fixed target node.
+         * - Adjacency information (edges) between GraphNode are stored in _edgeSet. The information
+         *   stored in the GraphNode must not be used once _edgeSet is initialised.
+         */
 
-        private readonly HashSet<GraphNode> _fixedTargetNodes;
-
+        /// <summary>
+        /// Gets the target nodes of this problem instance. These are the subset of target nodes provided
+        /// at construction which remained in the search space.
+        /// </summary>
         public IReadOnlyList<GraphNode> FixedTargetNodes
         {
-            get { return _fixedTargetNodes.ToList(); }
+            get { return _nodeStates.FixedTargetNodes.ToList(); }
         }
 
-        private readonly HashSet<GraphNode> _variableTargetNodes;
+        /// <summary>
+        /// Gets the GraphNode which serves as the start node from which trees are built. Is changed if the old start node
+        /// is merged into another node (the new start node).
+        /// 
+        /// <code>StartNode.Nodes</code> always contains the initial start node.
+        /// </summary>
+        public GraphNode StartNode { get { return _data.StartNode; } }
 
-        private readonly HashSet<GraphNode> _allTargetNodes;
+        /// <summary>
+        /// Gets a distance lookup containing distances and shortest paths between all nodes of the search space.
+        /// Contents of the lookup change while <see cref="ReduceSearchSpace"/> is executed.
+        /// </summary>
+        public IDistancePathLookup DistanceLookup { get { return _data.DistanceLookup; } }
 
-        public GraphNode StartNode { get; private set; }
+        /// <summary>
+        /// Gets the set of edges containing all edges that are currently part of the search space.
+        /// Edges change while <see cref="ReduceSearchSpace"/> is executed.
+        /// </summary>
+        public IReadOnlyGraphEdgeSet EdgeSet { get { return _data.EdgeSet; } }
 
-        private DistanceLookup _distanceLookup;
+        /// <summary>
+        /// Contains the search space and target node states.
+        /// </summary>
+        private readonly NodeStates _nodeStates;
 
-        public IDistancePathLookup DistanceLookup { get { return _distanceLookup; } }
+        /// <summary>
+        /// Contains data about the current edges, distances, Steiner distances and start node.
+        /// </summary>
+        private readonly Data _data;
 
-        private GraphEdgeSet _edgeSet;
-
-        public IReadOnlyGraphEdgeSet EdgeSet { get { return _edgeSet; } }
-
-        private NodeStates _nodeStates;
-
-        private Data _data;
-
+        /// <summary>
+        /// Creates a new object that can reduce the problem instance described by the given parameters.
+        /// </summary>
+        /// <param name="searchSpace">Problem solutions must be a subset of these nodes. They also describe the initial edges.
+        /// Must contain all nodes from the other parameters.</param>
+        /// <param name="fixedTargetNodes">All nodes that must be included in solutions. The nodes for which the minimal
+        /// Steiner tree has to be found.</param>
+        /// <param name="startNode">The node from which solution trees are built. Must be a fixed target node.
+        /// If null, the first fixed target node will be taken.</param>
+        /// <param name="variableTargetNodes">Finding the subset of these nodes (unioned with the fixed target nodes) whose
+        /// minimal Steiner tree optimizes the constraints formulates the extended Steiner problem solved by the AdvancedSolver.
+        /// These nodes are in a special state between normal nodes and fixed target nodes for reductions.
+        /// If null, no nodes are considered as variable target nodes and the problem is an instance of the normal Steiner tree problem.</param>
+        /// <remarks>
+        /// The fixed target nodes are removed from the search space and then added to the end of it so they always get the last distance
+        /// indices. This improves the quality of solutions because the MST algorithm considers edges involving these after same priority edges
+        /// not involving them.
+        /// </remarks>
         public SteinerPreprocessor(IEnumerable<GraphNode> searchSpace, IEnumerable<GraphNode> fixedTargetNodes,
             GraphNode startNode = null, IEnumerable<GraphNode> variableTargetNodes = null)
         {
-            _fixedTargetNodes = new HashSet<GraphNode>(fixedTargetNodes);
-            if (!_fixedTargetNodes.Any())
+            var fixedTargetNodesSet = new HashSet<GraphNode>(fixedTargetNodes);
+            if (!fixedTargetNodesSet.Any())
                 throw new ArgumentException("At least one fixed target node must be provided.", "fixedTargetNodes");
-            _variableTargetNodes = new HashSet<GraphNode>(variableTargetNodes ?? new GraphNode[0]);
-            _allTargetNodes = new HashSet<GraphNode>(_variableTargetNodes.Union(_fixedTargetNodes));
 
-            // Fixed target nodes are added last into the search space to get the last distance indexes.
-            // TODO make it adjustable? (at least document it in method)
-            _searchSpace = searchSpace.Except(_fixedTargetNodes).Union(_fixedTargetNodes).ToList();
-            StartNode = startNode ?? _fixedTargetNodes.First();
-            if (!_fixedTargetNodes.Contains(StartNode))
+            // Fixed target nodes are added last into the search space to get the last distance indices.
+            _nodeStates = new NodeStates(searchSpace.Except(fixedTargetNodesSet).Union(fixedTargetNodesSet),
+                fixedTargetNodesSet, variableTargetNodes ?? new GraphNode[0]);
+            _data = new Data(startNode ?? _nodeStates.FixedTargetNodes.First());
+            if (startNode != null && !_nodeStates.IsFixedTarget(startNode))
                 throw new ArgumentException("Start node must be a fixed target node if specified.", "startNode");
         }
         
-        // Nodes that are not fixed target nodes must only be merged into fixed target nodes.
-        // A GraphNode either has nodes.Count = 1 or is a fixed target node.
-        public List<GraphNode> ReduceSearchSpace()
+        /// <summary>
+        /// Reduces the search space by removing nodes, removing edges and merging nodes.
+        /// </summary>
+        /// <returns>The nodes contained in the reduced search space.</returns>
+        public IReadOnlyList<GraphNode> ReduceSearchSpace()
         {
-            // Basic reduction based on steiner nodes needing more than two edges.
-            var nodeCountBefore = _searchSpace.Count;
-            _searchSpace = _searchSpace.Where(n => n.Adjacent.Count > 2 || _allTargetNodes.Contains(n)).ToList();
+            // Remove all non target nodes with 2 or less edges. (Steiner nodes always have more than 2 edges)
+            var nodeCountBefore = _nodeStates.SearchSpaceSize;
+            _nodeStates.SearchSpace = _nodeStates.SearchSpace.Where(n => n.Adjacent.Count > 2 || _nodeStates.IsTarget(n)).ToList();
             Debug.WriteLine("First basic degree reduction:\n" +
-                            "   removed nodes: " + (nodeCountBefore - _searchSpace.Count) + " (of " + nodeCountBefore +
+                            "   removed nodes: " + (nodeCountBefore - _nodeStates.SearchSpaceSize) + " (of " + nodeCountBefore +
                             " initial nodes)");
-            _distanceLookup = new DistanceLookup(_searchSpace);
+            // Initialise the distance lookup.
+            _data.DistanceLookup = new DistanceLookup(_nodeStates.SearchSpace);
+            var distanceLookup = _data.DistanceLookup;
+            // Distance indices were not set before.
+            _nodeStates.ComputeFields();
 
-            if (_fixedTargetNodes.Any(n => !_distanceLookup.AreConnected(n, StartNode)))
+            // If a fixed target node is not connected to the start node, there obviously is no solution at all.
+            if (_nodeStates.FixedTargetNodeIndices.Any(i => !distanceLookup.AreConnected(i, _data.StartNodeIndex)))
             {
                 throw new GraphNotConnectedException();
             }
 
-            nodeCountBefore = _searchSpace.Count;
-            // Removal of unconnected nodes.
-            _searchSpace = _distanceLookup.RemoveNodes(_searchSpace.Where(n => !_distanceLookup.AreConnected(n, StartNode)));
+            nodeCountBefore = _nodeStates.SearchSpaceSize;
+            // Remove all unconnected nodes.
+            _nodeStates.SearchSpace = distanceLookup.RemoveNodes(_nodeStates.SearchSpace.Where(n => !distanceLookup.AreConnected(n, StartNode)));
             Debug.WriteLine("Removed unconnected nodes:");
-            Debug.WriteLine("   removed nodes: " + (nodeCountBefore - _searchSpace.Count));
+            Debug.WriteLine("   removed nodes: " + (nodeCountBefore - _nodeStates.SearchSpaceSize));
 
             // Even the basic degree reductions hurt the AdvancedSolver's performance.
             // Reenabling should be tested when other algorithm parts are changed/improved.
-            if (_variableTargetNodes.Count > 0)
+            if (_nodeStates.VariableTargetNodeCount > 0)
             {
-                return _searchSpace;
+                return _nodeStates.SearchSpace;
             }
 
-            _nodeStates = new NodeStates(_searchSpace, _fixedTargetNodes, _variableTargetNodes, _allTargetNodes);
-            _edgeSet = ComputeEdges();
-            var initialNodeCount = _searchSpace.Count;
-            var initialEdgeCount = _edgeSet.Count;
+            // Initialise node states and edges. Edges are calculated from the information in the
+            // GraphNode. Adjacency information from GraphNode instances must not be used after this.
+            _data.EdgeSet = ComputeEdges();
+            var initialNodeCount = _nodeStates.SearchSpaceSize;
+            var initialEdgeCount = _data.EdgeSet.Count;
             Debug.WriteLine("Initial counts:\n"
                 + "             nodes: " + initialNodeCount + "\n"
-                + "       non targets: " + (_searchSpace.Count - _nodeStates.TargetNodeCount) + "\n"
+                + "       non targets: " + (_nodeStates.SearchSpaceSize - _nodeStates.TargetNodeCount) + "\n"
                 + "  variable targets: " + _nodeStates.VariableTargetNodeCount + "\n"
                 + "     fixed targets: " + _nodeStates.FixedTargetNodeCount + "\n"
                 + "             edges: " + initialEdgeCount);
 
-            _data = new Data(_edgeSet, _distanceLookup, StartNode);
-            _data.StartNodeChanged += (sender, node) => StartNode = node;
-
+            // Execute an initial DegreeTest.
             var degreeTest = new DegreeTest(_nodeStates, _data);
             var dummy = 0;
             degreeTest.RunTest(ref dummy, ref dummy);
 
+            // Update _searchSpace, _edgeSet and _distanceLookup
             ContractSearchSpace();
             // These values may become lower by merging nodes. Since the reductions based on these distance
             // don't help if there are many variable target nodes, it is not really worth it to always recalculate them.
             // It would either slow the preprocessing by like 30% or would need an approximation algorithm.
-            _data.SMatrix = new BottleneckSteinerDistanceCalculator(_distanceLookup).CalcBottleneckSteinerDistances(_nodeStates.FixedTargetNodes);
+            _data.SMatrix = new BottleneckSteinerDistanceCalculator(distanceLookup).CalcBottleneckSteinerDistances(_nodeStates.FixedTargetNodeIndices);
 
+            // The set of reduction test that are run until they are no longer able to reduce the search space.
             var tests = new List<SteinerReduction>
             {
-                new FarAwayNonTerminalsTest(_nodeStates, _data) { IsEnabled = _nodeStates.VariableTargetNodeCount == 0 },
+                new FarAwayNonTerminalsTest(_nodeStates, _data),
                 new PathsWithManyTerminalsTest(_nodeStates, _data),
                 new NonTerminalsOfDegreeKTest(_nodeStates, _data),
                 new NearestVertexTest(_nodeStates, _data),
                 new ShortestLinksTest(_nodeStates, _data)
             };
+            // Run every reduction test (each followed by a simple degree reduction test) until they are no longer able
+            // to reduce the search space or 10 reduction rounds were executed.
+            // (the 10 round limit is never actually reached from what I've seen)
             for (int i = 0; i < 10; i++)
             {
                 var edgeElims = 0;
@@ -133,61 +183,76 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 Debug.WriteLine("   removed nodes: " + nodeElims);
                 Debug.WriteLine("   removed edges: " + edgeElims);
 
+                // No test should be still enabled in this case so we can stop running them.
                 if (edgeElims == 0) break;
             }
 
+            // Calculate the final search space.
             ContractSearchSpace();
 
             Debug.WriteLine("Final counts:\n"
-                + "             nodes: " + _searchSpace.Count + " (of " + initialNodeCount + " after basic reductions)\n"
-                + "       non targets: " + (_searchSpace.Count - _nodeStates.TargetNodeCount) + "\n"
+                + "             nodes: " + _nodeStates.SearchSpaceSize + " (of " + initialNodeCount + " after basic reductions)\n"
+                + "       non targets: " + (_nodeStates.SearchSpaceSize - _nodeStates.TargetNodeCount) + "\n"
                 + "  variable targets: " + _nodeStates.VariableTargetNodeCount + "\n"
                 + "     fixed targets: " + _nodeStates.FixedTargetNodeCount + "\n"
-                + "             edges: " + _edgeSet.Count + " (of " + initialEdgeCount + " after basic reductions)");
+                + "             edges: " + _data.EdgeSet.Count + " (of " + initialEdgeCount + " after basic reductions)");
 
-            return _searchSpace;
+            return _nodeStates.SearchSpace;
         }
 
+        /// <summary>
+        /// Removes all nodes that were marked as removed from the search space and updates the distance lookup and the edge set.
+        /// </summary>
         private void ContractSearchSpace()
         {
+            var distanceLookup = _data.DistanceLookup;
+            // Save all edges by the GraphNodes they are connecting. (the indices are worthless after the search space is contracted)
             var edges =
-                _edgeSet.Select(
-                    e => Tuple.Create(_distanceLookup.IndexToNode(e.N1), _distanceLookup.IndexToNode(e.N2), e.Weight))
+                _data.EdgeSet.Select(
+                    e => Tuple.Create(distanceLookup.IndexToNode(e.N1), distanceLookup.IndexToNode(e.N2), e.Weight))
                     .ToList();
-            _searchSpace = _distanceLookup.RemoveNodes(_searchSpace.Where(n => _nodeStates.IsRemoved(n.DistancesIndex)));
-            _edgeSet = new GraphEdgeSet(_distanceLookup.CacheSize);
+            // Contract the search space and update _distanceLookup.
+            _nodeStates.SearchSpace = distanceLookup.RemoveNodes(_nodeStates.SearchSpace.Where(n => _nodeStates.IsRemoved(n.DistancesIndex)));
+            // Add all edges back.
+            _data.EdgeSet = new GraphEdgeSet(distanceLookup.CacheSize);
             foreach (var tuple in edges)
             {
-                _edgeSet.Add(tuple.Item1.DistancesIndex, tuple.Item2.DistancesIndex, tuple.Item3);
+                _data.EdgeSet.Add(tuple.Item1.DistancesIndex, tuple.Item2.DistancesIndex, tuple.Item3);
             }
-
-            _nodeStates.SearchSpace = _searchSpace;
-            _data.EdgeSet = _edgeSet;
         }
 
+        /// <summary>
+        /// Calculates the edge set from the adjacency information stored in the GraphNodes of the current search space.
+        /// </summary>
         private GraphEdgeSet ComputeEdges()
         {
-            var edgeSet = new GraphEdgeSet(_searchSpace.Count);
-            foreach (var node in _searchSpace)
+            var edgeSet = new GraphEdgeSet(_nodeStates.SearchSpaceSize);
+            // Go through all nodes and their neigbors ...
+            foreach (var node in _nodeStates.SearchSpace)
             {
                 foreach (var neighbor in node.Adjacent)
                 {
                     var current = neighbor;
                     var previous = node;
                     var path = new HashSet<ushort>();
+                    // Skip nodes with degree 2 that are not target nodes and instead traverse through them.
                     while (current.Adjacent.Count == 2 && (current.DistancesIndex < 0 || !_nodeStates.IsTarget(current.DistancesIndex)))
                     {
                         path.Add(current.Id);
                         var tmp = current;
+                        // Because the current node has degree 2, there is exactly one node adjacent that is not the previous one.
                         current = current.Adjacent.First(n => n != previous);
                         previous = tmp;
                     }
-                    // Only edges representing the shortest path are kept.
+                    // Now create an edge if
+                    // - current is in the search space
+                    // - the edge is not reflexive
+                    // - the edge is the shortest path between both nodes
                     if (current.DistancesIndex >= 0 && node != current &&
-                        path.SetEquals(_distanceLookup.GetShortestPath(node.DistancesIndex, current.DistancesIndex)))
+                        path.SetEquals(_data.DistanceLookup.GetShortestPath(node.DistancesIndex, current.DistancesIndex)))
                     {
                         edgeSet.Add(node.DistancesIndex, current.DistancesIndex,
-                            _distanceLookup[node.DistancesIndex, current.DistancesIndex]);
+                            _data.DistanceLookup[node.DistancesIndex, current.DistancesIndex]);
                     }
                 }
             }
