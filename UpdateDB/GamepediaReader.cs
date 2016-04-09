@@ -35,23 +35,29 @@ namespace UpdateDB
         static HashSet<string> IgnoreTokens = new HashSet<string>
         {
             "requiredlevel", "requiredstrength", "requireddexterity", "requiredintelligence",
-            "experienceneededtolevelup"
+            "experienceneededtolevelup", "totalexperienceneeded", "perx%quality:"
         };
         // Mapping of tokens to actual attributes.
         static Dictionary<string, string> Tokens = new Dictionary<string, string>
         {
-            { "additionalchaosdamage", "Adds #-# Chaos Damage" },
-            { "additionalcolddamage", "Adds #-# Cold Damage" },
-            { "additionalfiredamage", "Adds #-# Fire Damage" },
-            { "additionallightningdamage", "Adds #-# Lightning Damage" },
+            { "addsx-ychaosdamage", "Adds #-# Chaos Damage" },
+            { "addsx–ycolddamage", "Adds #-# Cold Damage" },
+            { "addsx–yfiredamage", "Adds #-# Fire Damage" },
+            { "addsx-ylightningdamage", "Adds #-# Lightning Damage" },
             { "additionalphysicaldamage", "Adds #-# Physical Damage" },
             { "toaccuracyrating", "+# to Accuracy Rating" },
-            { "chaosdamage", "Deals #-# Chaos Damage" },
-            { "colddamage", "Deals #-# Cold Damage" },
-            { "icedamage", "Deals #-# Cold Damage" },
-            { "firedamage", "Deals #-# Fire Damage" },
-            { "lightningdamage", "Deals #-# Lightning Damage" },
-            { "physicaldamage", "Deals #-# Physical Damage" },
+            { "dealsx-ychaosdamage", "Deals #-# Chaos Damage" },
+            { "dealsx-yicedamage", "Deals #-# Cold Damage" },
+            { "dealsx-ycolddamage", "Deals #-# Cold Damage" },
+            { "dealsx-yfiredamage", "Deals #-# Fire Damage" },
+            { "dealsx-ylightningdamage", "Deals #-# Lightning Damage" },
+            { "dealsx-yphysicaldamage", "Deals #-# Physical Damage" },
+            { "addsx-ycolddamagetospells", "Adds #-# Cold Damage to Spells" },
+            { "addsx-ycolddamagetoattacks", "Adds #-# Cold Damage to Attacks" },
+            { "addsx-yfiredamagetospells", "Adds #-# Fire Damage to Spells" },
+            { "addsx-yfiredamagetoattacks", "Adds #-# Fire Damage to Attacks" },
+            { "addsx-ylightningdamagetospells", "Adds #-# Lightning Damage to Spells" },
+            { "addsx-ylightningdamagetoattacks", "Adds #-# Lightning Damage to Attacks" },
             { "increasedattackspeed", "#% increased Attack Speed"},
             { "reducedattackspeed", "#% reduced Attack Speed" },
             { "increasedcastspeed", "#% increased Cast Speed" },
@@ -77,14 +83,65 @@ namespace UpdateDB
             { "lessdamage", "#% less Damage" },
             { "moreareadamage", "#% more Area Damage" },
             { "multipliertomeleephysicaldamage", "#% more Melee Physical Damage" },
-            { "moremeleephysicaldamageonfulllife", "#% more Melee Physical Damage when on Full Life" },
+            { "moremeleephysicaldamagewhenonfulllife", "#% more Melee Physical Damage when on Full Life" },
+            { "moremeleephysicaldamage", "#% more Melee Physical Damage" },
             { "morephysicalprojectileattackdamage", "#% more Physical Projectile Attack Damage" },
             { "moreweaponelementaldamage", "#% more Weapon Elemental Damage" },
             { "ofcoldaddedasfire", "Gain #% of Cold Damage Added as Extra Fire Damage" },
             { "gainx%ofphysicaldamageasextrachaosdamage", "Gain #% of Physical Damage as Extra Chaos Damage" },
             { "gainx%ofphysicaldamageasextrafiredamage", "Gain #% of Physical Damage as Extra Fire Damage" },
+            { "gainx%ofphysicaldamageasextracolddamage", "Gain #% of Physical Damage as Extra Cold Damage" },
+            { "gainx%ofphysicaldamageasextralightningdamage", "Gain #% of Physical Damage as Extra Lightning Damage" },
             { "manacost", "Mana Cost: #%" },
-            { "reducedmanacost", "#% reduced Mana Cost" }
+            { "reducedmanacost", "#% reduced Mana Cost" },
+            { "chainxtimes", "Chain +# Times" },
+            { "basedurationisxseconds", "Base duration is # seconds" },
+            { "dealsx%ofbasedamage", "Deals x% of Base Damage" }, 
+            { "increasedburningdamage", "x% increased Burning Damage" },
+            { "supportedattackshaveax%chancetocastsupportedspellswhenyoucritanenemy", "Supported Attacks have a #% chance to Cast Supported Spells when you Crit an Enemy" }, 
+            { "moredamagewhiledead", "#% more Damage while Dead" },
+            { "supportedtriggeredspellshavex%increasedspelldamage", "Supported Triggered Spells have #% increased Spell Damage" },
+            { "castssupportedspellswhenyoutakeatotalofxdamage", "Casts Supported Spells when you take a total of # Damage" },
+            { "lessdamage\nx%moredamage", "#% more Damage" },
+            { "thisgemcanonlysupportskillgemsrequiringlevelxorlower", "This Gem can only Support Skill Gems requiring Level # or lower" },
+            { "chancetocastsupportedspellswhenstunned", "#% chance to Cast Supported Spells when Stunned" },
+            { "increasedareaofeffectradius", "#% increased Area of Effect radius" },
+            { "gainx%ofcolddamageasextrafiredamage", "Gain #% of Cold Damage as Extra Fire Damage" },
+            { "candealx-ybasefiredamage", "Can deal #-# base Fire damage" },
+            { "candealx-ycolddamage", "Can deal #-# base Cold damage" },
+            { "candealx-ylightningdamage", "Can deal #-# base Lightning damage" }, 
+            { "increasedaccuracyrating", "#% increased Accuracy Rating" }, 
+            { "chancetoshockenemies", "#% chance to Shock enemies" }, 
+            { "increasedignitedurationonenemies", "#% increased Ignite Duration on enemies" },
+            { "increasedareaofeffectradiuswhiledead", "#% increased Area of Effect radius while Dead" },
+            { "increasedprojectilespeed", "#% increased Projectile Speed" }, 
+            { "lessprojectilespeed", "#% less Projectile Speed" }, 
+            { "minionsdealx%increaseddamage", "Minions deal #% increased Damage" },
+            { "increasedelementaldamage", "#% increased Elemental Damage" },
+            { "chancetoigniteenemies", "#% chance to Ignite enemies"},
+            { "explosiondealsx-ybasefiredamageperfusecharge", "Explosion deals #-# Base Fire damage per Fuse Charge" },
+            { "lessprojectiledamage", "#% less Projectile Damage" }, 
+            { "moreprojectiledamage", "#% more Projectile Damage" },
+            { "wallwillbexunitslong", "Wall will be # units long" }, 
+            { "increasedduration", "#% increased Duration"},
+            { "reducedduration", "#% reduced Duration"},
+            { "chancetoknockenemiesbackonhit", "#% chance to Knock Enemies Back on hit" },
+            { "increasedstundurationonenemies", "#% increased Stun Duration on enemies" },
+            { "additionalprojectiles", "# additional Projectiles"},
+            { "additionalarrows", "# additional Arrows"},
+            { "increasedchilldurationonenemies", "#% increased Chill Duration on enemies" },
+            { "increasedfreezedurationonenemies", "#% increased Freeze Duration on enemies" },
+            { "tocriticalstrikemultiplier", "+#% to Critical Strike Multiplier" },
+            { "tocriticalstrikechance", "+#% to Critical Strike Chance" },
+            { "chanceofprojectilespiercing", "#% chance of Projectiles Piercing" },
+            { "lessdamagetoothertargets", "#% less Damage to other targets" },
+            { "moremeleesplashradius", "#% more Melee Splash Radius" },
+            { "shieldsbreakafterxtotaldamageisprevented", "Shields break after # total Damage is prevented" },
+            { "additionalarmour", "# additional Armour" },
+            { "dealsxbasechaosdamagepersecond", "Deals # Base Chaos Damage per second" },
+            { "increasedmovementspeed", "#% increased Movement Speed" },
+            { "moredamageatmaximumchargedistance", "#% more Damage at Maximum Charge Distance" },
+            { "increasedshockdurationonenemies", "#% increased Shock Duration on enemies" }
         };
         // The Wiki URL.
         static string URL = "http://pathofexile.gamepedia.com";
@@ -152,7 +209,7 @@ namespace UpdateDB
 
             List<Attribute> attributes = new List<Attribute>();
 
-            HtmlNodeCollection found = doc.DocumentNode.SelectNodes("//table[contains(@class,'GemLevelTable')]");
+            HtmlNodeCollection found = doc.DocumentNode.SelectNodes("//table[contains(@class,'skill-progression-table')]");
             if (found == null)
                 Warning("Gem level table not found");
             else
@@ -240,14 +297,14 @@ namespace UpdateDB
                     attributes.AddRange(columnAttribute.Values);
             }
 
-            found = doc.DocumentNode.SelectNodes("//table[contains(@class,'GemInfoboxInfo')]");
+            found = doc.DocumentNode.SelectNodes("//div[contains(@class,'itembox-gem')]");
             if (found.Count == 0)
                 Warning("Gem infobox table not found");
             else
             {
                 HtmlNode table = found[0];
-
-                HtmlNode td = table.SelectSingleNode("tr[td/text()='Per 1% Quality']/td[2]");
+                HtmlNode itemboxstats = table.SelectSingleNode("//span[contains(@class, 'itemboxstats')]");
+                HtmlNode td = itemboxstats.SelectSingleNode("//span[contains(@class, 'text-mod')]");
                 if (td != null)
                 {
                     HtmlNodeCollection textNodes = td.SelectNodes(".//text()");
