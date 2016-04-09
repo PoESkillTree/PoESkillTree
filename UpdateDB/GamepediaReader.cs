@@ -34,30 +34,30 @@ namespace UpdateDB
         // Set of tokens to ignore.
         static HashSet<string> IgnoreTokens = new HashSet<string>
         {
-            "requiredlevel", "requiredstrength", "requireddexterity", "requiredintelligence",
-            "experienceneededtolevelup", "totalexperienceneeded", "perx%quality:"
+            "Required Level", "Required Strength", "Required Dexterity", "Required Intelligence",
+            "Experience Needed to Level Up", "Total experience needed", "Per #% Quality:"
         };
         // Mapping of tokens to actual attributes.
         static Dictionary<string, string> Tokens = new Dictionary<string, string>
         {
-            { "addsx-ychaosdamage", "Adds #-# Chaos Damage" },
+            { "adds#-#chaosdamage", "Adds #-# Chaos Damage" },
             { "addsx–ycolddamage", "Adds #-# Cold Damage" },
             { "addsx–yfiredamage", "Adds #-# Fire Damage" },
-            { "addsx-ylightningdamage", "Adds #-# Lightning Damage" },
+            { "adds#-#lightningdamage", "Adds #-# Lightning Damage" },
             { "additionalphysicaldamage", "Adds #-# Physical Damage" },
             { "toaccuracyrating", "+# to Accuracy Rating" },
-            { "dealsx-ychaosdamage", "Deals #-# Chaos Damage" },
-            { "dealsx-yicedamage", "Deals #-# Cold Damage" },
-            { "dealsx-ycolddamage", "Deals #-# Cold Damage" },
-            { "dealsx-yfiredamage", "Deals #-# Fire Damage" },
-            { "dealsx-ylightningdamage", "Deals #-# Lightning Damage" },
-            { "dealsx-yphysicaldamage", "Deals #-# Physical Damage" },
-            { "addsx-ycolddamagetospells", "Adds #-# Cold Damage to Spells" },
-            { "addsx-ycolddamagetoattacks", "Adds #-# Cold Damage to Attacks" },
-            { "addsx-yfiredamagetospells", "Adds #-# Fire Damage to Spells" },
-            { "addsx-yfiredamagetoattacks", "Adds #-# Fire Damage to Attacks" },
-            { "addsx-ylightningdamagetospells", "Adds #-# Lightning Damage to Spells" },
-            { "addsx-ylightningdamagetoattacks", "Adds #-# Lightning Damage to Attacks" },
+            { "deals#-#chaosdamage", "Deals #-# Chaos Damage" },
+            { "deals#-#icedamage", "Deals #-# Cold Damage" },
+            { "deals#-#colddamage", "Deals #-# Cold Damage" },
+            { "deals#-#firedamage", "Deals #-# Fire Damage" },
+            { "deals#-#lightningdamage", "Deals #-# Lightning Damage" },
+            { "deals#-#physicaldamage", "Deals #-# Physical Damage" },
+            { "adds#-#colddamagetospells", "Adds #-# Cold Damage to Spells" },
+            { "adds#-#colddamagetoattacks", "Adds #-# Cold Damage to Attacks" },
+            { "adds#-#firedamagetospells", "Adds #-# Fire Damage to Spells" },
+            { "adds#-#firedamagetoattacks", "Adds #-# Fire Damage to Attacks" },
+            { "adds#-#lightningdamagetospells", "Adds #-# Lightning Damage to Spells" },
+            { "adds#-#lightningdamagetoattacks", "Adds #-# Lightning Damage to Attacks" },
             { "increasedattackspeed", "#% increased Attack Speed"},
             { "reducedattackspeed", "#% reduced Attack Speed" },
             { "increasedcastspeed", "#% increased Cast Speed" },
@@ -92,7 +92,7 @@ namespace UpdateDB
             { "gainx%ofphysicaldamageasextrafiredamage", "Gain #% of Physical Damage as Extra Fire Damage" },
             { "gainx%ofphysicaldamageasextracolddamage", "Gain #% of Physical Damage as Extra Cold Damage" },
             { "gainx%ofphysicaldamageasextralightningdamage", "Gain #% of Physical Damage as Extra Lightning Damage" },
-            { "manacost", "Mana Cost: #%" },
+            { "manacost", "Mana Cost: #" },
             { "reducedmanacost", "#% reduced Mana Cost" },
             { "chainxtimes", "Chain +# Times" },
             { "basedurationisxseconds", "Base duration is # seconds" },
@@ -107,9 +107,9 @@ namespace UpdateDB
             { "chancetocastsupportedspellswhenstunned", "#% chance to Cast Supported Spells when Stunned" },
             { "increasedareaofeffectradius", "#% increased Area of Effect radius" },
             { "gainx%ofcolddamageasextrafiredamage", "Gain #% of Cold Damage as Extra Fire Damage" },
-            { "candealx-ybasefiredamage", "Can deal #-# base Fire damage" },
-            { "candealx-ycolddamage", "Can deal #-# base Cold damage" },
-            { "candealx-ylightningdamage", "Can deal #-# base Lightning damage" }, 
+            { "candeal#-#basefiredamage", "Can deal #-# base Fire damage" },
+            { "candeal#-#colddamage", "Can deal #-# base Cold damage" },
+            { "candeal#-#lightningdamage", "Can deal #-# base Lightning damage" }, 
             { "increasedaccuracyrating", "#% increased Accuracy Rating" }, 
             { "chancetoshockenemies", "#% chance to Shock enemies" }, 
             { "increasedignitedurationonenemies", "#% increased Ignite Duration on enemies" },
@@ -119,7 +119,7 @@ namespace UpdateDB
             { "minionsdealx%increaseddamage", "Minions deal #% increased Damage" },
             { "increasedelementaldamage", "#% increased Elemental Damage" },
             { "chancetoigniteenemies", "#% chance to Ignite enemies"},
-            { "explosiondealsx-ybasefiredamageperfusecharge", "Explosion deals #-# Base Fire damage per Fuse Charge" },
+            { "explosiondeals#-#basefiredamageperfusecharge", "Explosion deals #-# Base Fire damage per Fuse Charge" },
             { "lessprojectiledamage", "#% less Projectile Damage" }, 
             { "moreprojectiledamage", "#% more Projectile Damage" },
             { "wallwillbexunitslong", "Wall will be # units long" }, 
@@ -155,24 +155,23 @@ namespace UpdateDB
         // Translates gem name to actual Wiki page (e.g. Iron Grip (support gem)).
         static Dictionary<string, string> TranslateName = new Dictionary<string, string>
         {
+            { "Fortify", "Fortify_(support_gem)" },
+            { "Life_Gain_on_Hit", "Life_Gain_on_Hit_(support_gem)" },
+            { "Point_Blank", "Point_Blank_(support_gem)" },
             { "Blind", "Blind_(support_gem)" },
             { "Blood_Magic", "Blood_Magic_(support_gem)" },
-            { "Cast_On_Melee_Kill", "Cast_on_Melee_Kill" },
-            { "Cast_When_Damage_Taken", "Cast_when_Damage_Taken" },
-            { "Cold_To_Fire", "Cold_to_Fire" },
-            { "Herald_Of_Ice", "Herald_of_Ice" },
-            { "Herald_Of_Thunder", "Herald_of_Thunder" },
+            { "Culling_Strike", "Culling_Strike_(support_gem)" },
             { "Iron_Grip", "Iron_Grip_(support_gem)" },
             { "Knockback", "Knockback_(support_gem)" },
             { "Life_Leech", "Life_Leech_(support_gem)" },
             { "Mana_Leech", "Mana_Leech_(support_gem)" },
-            { "Melee_Damage_On_Full_Life", "Melee_Damage_on_Full_Life" },
-            { "Physical_To_Lightning", "Physical_to_Lightning" },
             { "Pierce", "Pierce_(support_gem)" },
-            { "Point_Blank", "Point_Blank_(support_gem)" },
-            { "Rain_Of_Arrows", "Rain_of_Arrows" },
+            { "Poison", "Poison_(support_gem)" },
             { "Stun", "Stun_(support_gem)" },
-            { "Trap", "Trap_(support_gem)" }
+            { "Trap", "Trap_(support_gem)" },
+            { "Curse_on_Hit", "Curse_On_Hit" },
+            { "Portal_(Gem)", "Portal_(gem)" },
+            { "Power_Charge_on_Critical", "Power_Charge_On_Critical" }
         };
 
         // Fetches gem data.
@@ -266,9 +265,9 @@ namespace UpdateDB
                                 text = cell.InnerText;
                             }
 
-                            text = System.Net.WebUtility.HtmlDecode(text).Replace(" ", "").ToLowerInvariant();
+                            text = System.Net.WebUtility.HtmlDecode(text);
 
-                            if (text == "level")
+                            if (text == "Level")
                             {
                                 levelColumn = column;
                                 Verbose("  [" + column + "] Level");
@@ -348,20 +347,26 @@ namespace UpdateDB
                 value = value.TrimStart();
 
                 // Replace numbers with 'x'.
-                string token = ReNumber.Replace(text, "x");
+                string token = ReNumber.Replace(text, "#");
+                token = token.Replace("x-", "#-");
+                token = token.Replace("-y", "-#");
                 // Remove whitespaces and lowercase token.
-                token = ReWhitespace.Replace(token, "").ToLowerInvariant();
+                //token = ReWhitespace.Replace(token, "").ToLowerInvariant();
                 // Try removing +x% or shorter version from beginning of token.
-                token = RePercent.Replace(token, "");
+                //token = RePercent.Replace(token, "");
 
-                if (Tokens.ContainsKey(token))
+                if (IgnoreTokens.Contains(token))
+                    texts.Remove(text);
+                else if (Tokens.ContainsKey(token.ToLowerInvariant()))
                 {
-                    string name = Tokens[token];
-                    tokens.Add(new Token { IsAttribute = true, Name = XlateAttribute(gemName, Tokens[token]), Value = value.Length == 0 ? null : value });
+                    tokens.Add(new Token { IsAttribute = true, Name = XlateAttribute(gemName, Tokens[token.ToLowerInvariant()]), Value = value.Length == 0 ? null : value });
                     texts.Remove(text);
                 }
-                else if (IgnoreTokens.Contains(token))
+                else
+                {
+                    tokens.Add(new Token { IsAttribute = true, Name = XlateAttribute(gemName, token), Value = value.Length == 0 ? null : value });
                     texts.Remove(text);
+                }
             }
 
             // 2) Try concatenated texts as single token.
@@ -417,6 +422,12 @@ namespace UpdateDB
 
             // Replace space with underscore.
             name = name.Replace(' ', '_');
+
+            //Replace incorrectly capt words
+            name = name.Replace("_On_", "_on_");
+            name = name.Replace("_Of_", "_of_");
+            name = name.Replace("_And_", "_and_");
+            name = name.Replace("_To_", "_to_");
 
             // If gem has different page than it's name, translate it.
             if (TranslateName.ContainsKey(name))
