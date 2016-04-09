@@ -271,6 +271,7 @@
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Utils\Notifier.cs" />
     <Compile Include="Utils\PropertyExtension.cs" />
+    <Compile Include="Utils\RegexTools.cs" />
     <Compile Include="Utils\ThreadSafeRandom.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />

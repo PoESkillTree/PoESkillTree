@@ -193,7 +193,6 @@ namespace POESKillTree.Views
         //Necessary to update the summed numbers in group names before every refresh
         private void RefreshAttributeLists()
         {
-            
             if (GetActiveAttributeGroupList()==lbAllAttr)
             {
                 _attributeGroups.UpdateGroupNames(_allAttributesList);
@@ -1127,50 +1126,49 @@ namespace POESKillTree.Views
         {
             _allAttributesList.Clear();
 
-            if (_itemAttributes != null)
+            if (_itemAttributes == null) return;
+
+            Dictionary<string, List<float>> attritemp = Tree.SelectedAttributesWithoutImplicit;
+            foreach (ItemAttributes.Attribute mod in _itemAttributes.NonLocalMods)
             {
-                Dictionary<string, List<float>> attritemp = Tree.SelectedAttributesWithoutImplicit;
-                foreach (ItemAttributes.Attribute mod in _itemAttributes.NonLocalMods)
+                if (attritemp.ContainsKey(mod.TextAttribute))
                 {
-                    if (attritemp.ContainsKey(mod.TextAttribute))
+                    for (var i = 0; i < mod.Value.Count; i++)
                     {
-                        for (int i = 0; i < mod.Value.Count; i++)
-                        {
-                            attritemp[mod.TextAttribute][i] += mod.Value[i];
-                        }
-                    }
-                    else
-                    {
-                        attritemp[mod.TextAttribute] = mod.Value;
+                        attritemp[mod.TextAttribute][i] += mod.Value[i];
                     }
                 }
-
-                foreach (var a in SkillTree.ImplicitAttributes(attritemp, Tree.Level))
+                else
                 {
-                    string key = SkillTree.RenameImplicitAttributes.ContainsKey(a.Key)
-                        ? SkillTree.RenameImplicitAttributes[a.Key]
-                        : a.Key;
-
-                    if (!attritemp.ContainsKey(key))
-                        attritemp[key] = new List<float>();
-                    for (int i = 0; i < a.Value.Count; i++)
-                    {
-                        if (attritemp.ContainsKey(key) && attritemp[key].Count > i)
-                            attritemp[key][i] += a.Value[i];
-                        else
-                        {
-                            attritemp[key].Add(a.Value[i]);
-                        }
-                    }
-                }
-
-                foreach (string item in (attritemp.Select(InsertNumbersInAttributes)))
-                {
-                    var a = new Attribute(item);
-                    _allAttributesList.Add(a);
+                    attritemp[mod.TextAttribute] = mod.Value;
                 }
             }
 
+            foreach (var a in SkillTree.ImplicitAttributes(attritemp, Tree.Level))
+            {
+                var key = SkillTree.RenameImplicitAttributes.ContainsKey(a.Key)
+                    ? SkillTree.RenameImplicitAttributes[a.Key]
+                    : a.Key;
+
+                if (!attritemp.ContainsKey(key))
+                    attritemp[key] = new List<float>();
+                for (int i = 0; i < a.Value.Count; i++)
+                {
+                    if (attritemp.ContainsKey(key) && attritemp[key].Count > i)
+                        attritemp[key][i] += a.Value[i];
+                    else
+                    {
+                        attritemp[key].Add(a.Value[i]);
+                    }
+                }
+            }
+
+            foreach (var item in (attritemp.Select(InsertNumbersInAttributes)))
+            {
+                var a = new Attribute(item);
+                if (!CheckIfAttributeMatchesFilter(a)) continue;
+                _allAttributesList.Add(a);
+            }
         }
 
         public void UpdateClass()
@@ -1182,11 +1180,12 @@ namespace POESKillTree.Views
         public void UpdateAttributeList()
         {
             _attiblist.Clear();
-            Dictionary<string, List<float>> copy = (Tree.HighlightedAttributes == null) ? null : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
+            var copy = (Tree.HighlightedAttributes == null) ? null : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
 
             foreach (var item in Tree.SelectedAttributes)
             {
                 var a = new Attribute(InsertNumbersInAttributes(item));
+                if (!CheckIfAttributeMatchesFilter(a)) continue;
                 if (copy != null && copy.ContainsKey(item.Key))
                 {
                     var citem = copy[item.Key];
@@ -1205,6 +1204,7 @@ namespace POESKillTree.Views
                 foreach (var item in copy)
                 {
                     var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<float>>(item.Key, item.Value.Select(v => 0f).ToList())));
+                    if (!CheckIfAttributeMatchesFilter(a)) continue;
                     a.Deltas = item.Value.Select((h) => 0 - h).ToArray();
                     // if(item.Value.Count == 0)
                     a.Missing = true;
@@ -1212,6 +1212,7 @@ namespace POESKillTree.Views
                 }
             }
         }
+
         public void UpdatePoints()
         {
             Dictionary<string, int> points = Tree.GetPointCount();
@@ -1220,6 +1221,7 @@ namespace POESKillTree.Views
             AscendancyUsedPoints.Content = "[" + points["AscendancyUsed"].ToString() + "]";
             AscendancyTotalPoints.Content = "[" + points["AscendancyTotal"].ToString() + "]";
         }
+
         public void UpdateStatistics()
         {
             _defenceList.Clear();
@@ -1270,6 +1272,25 @@ namespace POESKillTree.Views
                 s = _backreplace.Replace(s, f + "", 1);
             }
             return s;
+        }
+
+        private bool CheckIfAttributeMatchesFilter(Attribute a)
+        {
+            var filter = tbAttributesFilter.Text;
+            if (cbAttributesFilterRegEx.IsChecked == true)
+            {
+                try
+                {
+                    var regex = new Regex(filter, RegexOptions.IgnoreCase);
+                    if (!regex.IsMatch(a.Text)) return false;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            else if (!a.Text.Contains(filter, StringComparison.InvariantCultureIgnoreCase)) return false;
+            return true;
         }
 
         #endregion
@@ -1338,6 +1359,32 @@ namespace POESKillTree.Views
         private void ToggleBuilds()
         {
             _persistentData.Options.BuildsBarOpened = !_persistentData.Options.BuildsBarOpened;
+        }
+
+        private void tbAttributesFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FilterAttributeLists();
+        }
+
+        private void cbAttributesFilterRegEx_Click(object sender, RoutedEventArgs e)
+        {
+            FilterAttributeLists();
+        }
+
+        private void FilterAttributeLists()
+        {
+            if (cbAttributesFilterRegEx.IsChecked == true && !RegexTools.IsValidRegex(tbAttributesFilter.Text)) return;
+            UpdateAllAttributeList();
+            UpdateAttributeList();
+            RefreshAttributeLists();
+        }
+
+        private void tabControl1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tabItem1.IsSelected || tabItem3.IsSelected)
+                gAttributesFilter.Visibility = Visibility.Visible;
+            else
+                gAttributesFilter.Visibility = Visibility.Collapsed;
         }
 
         #endregion
