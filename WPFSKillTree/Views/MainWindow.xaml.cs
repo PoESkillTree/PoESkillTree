@@ -1403,21 +1403,34 @@ namespace POESKillTree.Views
             var v = new Vector2D(p.X, p.Y);
 
             v = v * _multransform + _addtransform;
-           
+
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            if (nodes.Count() != 0)
+            if (Tree.drawAscendancy && Tree.AscType > 0)
             {
-                var node = nodes.First().Value;
-                // Ignore clicks on character portraits and masteries
+                var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
+                var bitmap = Tree.Assets["Classes" + asn.ascendancyName].PImage;
+
+                nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
+            }
+            var className = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
+            SkillNode node = null;
+            if (nodes.Count() != 0 && !Tree.drawAscendancy)
+                node = nodes.First().Value;
+            else if (nodes.Count() != 0)
+            {
+                var dnode = nodes.First();
+                node = nodes.Where(x => x.Value.ascendancyName == Tree.AscendancyClasses.GetClassName(className, Tree.AscType)).DefaultIfEmpty(dnode).First().Value;
+            }
+
+            if (node != null && !SkillTree.rootNodeList.Contains(node.Id))
+            {
                 if (node.ascendancyName != null && !Tree.drawAscendancy)
                     return;
-
-                var className = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
                 var ascendancyClassName = Tree.AscendancyClasses.GetClassName(className, Tree.AscType);
                 if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
-
+                // Ignore clicks on character portraits and masteries
                 if (node.Spc == null && !node.IsMastery)
                 {
                     if (_lastMouseButton == MouseButton.Right)
@@ -1509,7 +1522,6 @@ namespace POESKillTree.Views
             var p = e.GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
             v = v * _multransform + _addtransform;
-            SkillNode node = null;
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
@@ -1521,7 +1533,10 @@ namespace POESKillTree.Views
                 nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
             }
             var className = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
-            if (nodes.Count() != 0)
+            SkillNode node = null;
+            if (nodes.Count() != 0 && !Tree.drawAscendancy)
+                node = nodes.First().Value;
+            else if (nodes.Count() != 0)
             {
                 var dnode = nodes.First();
                 node = nodes.Where(x => x.Value.ascendancyName == Tree.AscendancyClasses.GetClassName(className, Tree.AscType)).DefaultIfEmpty(dnode).First().Value;
