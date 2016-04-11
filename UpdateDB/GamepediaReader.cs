@@ -242,6 +242,7 @@ namespace UpdateDB
                             if (cell != null)
                             {
                                 string text = System.Net.WebUtility.HtmlDecode(cell.InnerText).Trim();
+                                text = text.Replace("%", "");
                                 if (text.Length > 0)
                                     columnAttribute[column].Values.Add(new ValueAt { Level = level, Text = text });
                             }
@@ -348,12 +349,12 @@ namespace UpdateDB
 
                 // Replace numbers with 'x'.
                 string token = ReNumber.Replace(text, "#");
-                token = token.Replace("x-", "#-");
-                token = token.Replace("-y", "-#");
-                // Remove whitespaces and lowercase token.
-                //token = ReWhitespace.Replace(token, "").ToLowerInvariant();
-                // Try removing +x% or shorter version from beginning of token.
-                //token = RePercent.Replace(token, "");
+                token = token.Replace("+x", "+#");
+                token = token.Replace("x%", "#%");
+                token = token.Replace("x-y", "#-#");
+                token = token.Replace("x–y", "#-#"); //weird dash
+                token = token.Replace("x ", "# ");
+                token = token.Replace(" x", " #");
 
                 if (IgnoreTokens.Contains(token))
                     texts.Remove(text);
