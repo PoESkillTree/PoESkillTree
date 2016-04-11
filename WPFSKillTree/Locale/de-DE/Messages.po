@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PoESkillTree 2.1.3\n"
-"POT-Creation-Date: 2016-03-23 00:23+0100\n"
+"POT-Creation-Date: 2015-01-01 00:00+0000\n"
 "PO-Revision-Date: 2016-03-23 00:25+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:827
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:848
 msgid "Attributes"
 msgstr "Attribute"
 
@@ -27,12 +27,8 @@ msgid "Convert to Pseudo Attributes"
 msgstr "Konvertiere zu Pseudo-Attributen"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:112
-msgid ""
-"Converts the attributes to pseudo attributes where possible using the "
-"defined settings."
-msgstr ""
-"Konvertiert die Attribute mithilfe der definierten Einstellungen, wo es "
-"möglich ist, zu Pseudo-Attributen."
+msgid "Converts the attributes to pseudo attributes where possible using the defined settings."
+msgstr "Konvertiert die Attribute mithilfe der definierten Einstellungen, wo es möglich ist, zu Pseudo-Attributen."
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:137
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:228
@@ -126,7 +122,7 @@ msgstr "Aktueller Baum als erste Lösung"
 msgid "Run"
 msgstr "Los"
 
-#: TreeGenerator\Views\SettingsWindow.xaml:68 Views\MainWindow.xaml:678
+#: TreeGenerator\Views\SettingsWindow.xaml:68
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -187,26 +183,20 @@ msgid "Download & Import Items"
 msgstr "Herunterladen & Importieren von Items"
 
 #: Views\DownloadItemsWindow.xaml:14
-msgid ""
-"Please enter Your Character and Account Name below and click on 'Open in "
-"Browser'."
+msgid "Please enter Your Character and Account Name below and click on 'Open in Browser'."
 msgstr ""
 "Gib unten bitte deinen Charakter- und Kontonamen ein und klicke\n"
 "dann auf 'Im Browser öffnen'."
 
 #: Views\DownloadItemsWindow.xaml:15 Views\DownloadStashWindow.xaml:30
-msgid ""
-"This will open a page in your default Web-browser containing the item data."
+msgid "This will open a page in your default Web-browser containing the item data."
 msgstr ""
 "Dies wird eine Seite mit den Gegenstandsdaten in deinem \n"
 "Internetbrowser öffnen."
 
 #: Views\DownloadItemsWindow.xaml:16
-msgid ""
-"Save the page anywhere, then click on 'Load File' and select the saved file."
-msgstr ""
-"Speichere diese Seite, klicke dann auf \"Datei laden\" und wähle die "
-"gespeicherte Datei."
+msgid "Save the page anywhere, then click on 'Load File' and select the saved file."
+msgstr "Speichere diese Seite, klicke dann auf \"Datei laden\" und wähle die gespeicherte Datei."
 
 #: Views\DownloadItemsWindow.xaml:23 Views\DownloadStashWindow.xaml:22
 #: Views\DownloadStashWindow.xaml:53
@@ -222,23 +212,17 @@ msgid "Download & Import Stash"
 msgstr "Herunterladen & Importieren von Truhen"
 
 #: Views\DownloadStashWindow.xaml:14
-msgid ""
-"Please enter Account Name and league below and click on 'Open in Browser'."
+msgid "Please enter Account Name and league below and click on 'Open in Browser'."
 msgstr ""
 "Bitte wähle unten deinen Kontonamen sowie deine Liga\n"
 "und dann klicke auf 'Im Browser öffnen'."
 
 #: Views\DownloadStashWindow.xaml:15
-msgid ""
-"This will open a page in your default Web-browser containing stash tab list"
-msgstr ""
-"Dies wird eine Seite mit einer Liste deiner Truhenseiten in deinem "
-"Internetbrowser öffnen."
+msgid "This will open a page in your default Web-browser containing stash tab list"
+msgstr "Dies wird eine Seite mit einer Liste deiner Truhenseiten in deinem Internetbrowser öffnen."
 
 #: Views\DownloadStashWindow.xaml:16
-msgid ""
-"Save the page anywhere, then click on 'Load stash tab list' and select the "
-"saved file."
+msgid "Save the page anywhere, then click on 'Load stash tab list' and select the saved file."
 msgstr ""
 "Speichere die Seite, klicke dann auf \"Lade Liste von Truhenseiten\"\n"
 "und wähle die gespeicherte Datei."
@@ -252,12 +236,8 @@ msgid "Select stash tab and click 'Open in browser' below"
 msgstr "Wähle die Truhenseite und klicke unten auf \"Im Browser öffnen\""
 
 #: Views\DownloadStashWindow.xaml:31
-msgid ""
-"Save the page anywhere, then click on 'Load stash tab' and select the saved "
-"file."
-msgstr ""
-"Speichere die Seite, klicke dann auf \"Lade Truhenseite\" und wähle die "
-"gespeicherte Datei."
+msgid "Save the page anywhere, then click on 'Load stash tab' and select the saved file."
+msgstr "Speichere die Seite, klicke dann auf \"Lade Truhenseite\" und wähle die gespeicherte Datei."
 
 #: Views\DownloadStashWindow.xaml:56
 msgid "Load stash tab"
@@ -418,8 +398,7 @@ msgstr "Rechtsklick"
 
 #: Views\HotkeysWindow.xaml:145
 msgid "(Skill tree) Center Skill tree and reset zoom"
-msgstr ""
-"(Fähigkeitenbaum) Zentriere Fähigkeitenbaum und setze die Zoomstufe zurück"
+msgstr "(Fähigkeitenbaum) Zentriere Fähigkeitenbaum und setze die Zoomstufe zurück"
 
 #: Views\HotkeysWindow.xaml:150
 msgid "(Attributes) Highlight corresponding nodes in Skill tree"
@@ -435,8 +414,7 @@ msgstr "Shift + Rechtsklick"
 
 #: Views\HotkeysWindow.xaml:162
 msgid "(Skill node) Toggle skill node highlighting (reversed)"
-msgstr ""
-"(Fähigkeitsknoten) Schalte die Markierung von Fähigkeitsknoten um (umgekehrt)"
+msgstr "(Fähigkeitsknoten) Schalte die Markierung von Fähigkeitsknoten um (umgekehrt)"
 
 #: Views\HotkeysWindow.xaml:165
 msgid "Shift + Hover"
@@ -743,81 +721,102 @@ msgstr "Suche nach _Aktualisierungen"
 msgid "_About PoESkillTree"
 msgstr "_Über PoESkillTree"
 
-#: Views\MainWindow.xaml:707
+#: Views\MainWindow.xaml:675
+#, fuzzy
+msgid "Level"
+msgstr "Level:"
+
+#: Views\MainWindow.xaml:682
+msgid "Used Passive Skill Points"
+msgstr ""
+
+#: Views\MainWindow.xaml:687
+msgid "Used Ascendancy Skill Points"
+msgstr ""
+
+#: Views\MainWindow.xaml:693
+msgid "Total Passive Skill Points"
+msgstr ""
+
+#: Views\MainWindow.xaml:698
+msgid "Total Ascendancy Skill Points"
+msgstr ""
+
+#: Views\MainWindow.xaml:727
 msgid "PASSIVE TREE"
 msgstr "FÄHIGKEITENBAUM"
 
-#: Views\MainWindow.xaml:715
+#: Views\MainWindow.xaml:735
 msgid "EQUIPMENT"
 msgstr "AUSRÜSTUNG"
 
-#: Views\MainWindow.xaml:724
+#: Views\MainWindow.xaml:745
 msgid "Craft new item"
 msgstr "Erstelle neuen Gegenstand"
 
-#: Views\MainWindow.xaml:737
+#: Views\MainWindow.xaml:758
 msgid "Saved Builds"
 msgstr "Gespeicherte Builds"
 
-#: Views\MainWindow.xaml:755
+#: Views\MainWindow.xaml:776 Views\MainWindow.xaml:863
 msgid "Filter:"
 msgstr "Filter:"
 
-#: Views\MainWindow.xaml:803
+#: Views\MainWindow.xaml:824
 msgid "Skill tree comparison"
 msgstr "Fähigkeitenbaum Vergleich"
 
-#: Views\MainWindow.xaml:812
+#: Views\MainWindow.xaml:833
 msgid "Save"
 msgstr "Speichern"
 
-#: Views\MainWindow.xaml:815
+#: Views\MainWindow.xaml:836
 msgid "Save As"
 msgstr "Speich. als"
 
-#: Views\MainWindow.xaml:818
+#: Views\MainWindow.xaml:839
 msgid "Delete"
 msgstr "Löschen"
 
-#: Views\MainWindow.xaml:834
+#: Views\MainWindow.xaml:872
 msgid "Passive Attributes"
 msgstr "Passive Attribute"
 
-#: Views\MainWindow.xaml:851
+#: Views\MainWindow.xaml:889
 msgid "Item Attributes"
 msgstr "Gegenstandsattribute"
 
-#: Views\MainWindow.xaml:870
+#: Views\MainWindow.xaml:908
 msgid "Total Attributes"
 msgstr "Zusammengerechnete Attribute"
 
-#: Views\MainWindow.xaml:887
+#: Views\MainWindow.xaml:925
 msgid "ItemList"
 msgstr "Gegenstandsliste"
 
-#: Views\MainWindow.xaml:909
+#: Views\MainWindow.xaml:948
 msgid "Character Sheet"
 msgstr "Charakterinformationen"
 
-#: Views\MainWindow.xaml:916 SkillTreeFiles\Compute.cs:2296
+#: Views\MainWindow.xaml:955 SkillTreeFiles\Compute.cs:2296
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:86
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
 msgstr "Verteidigung"
 
-#: Views\MainWindow.xaml:933
+#: Views\MainWindow.xaml:972
 msgid "Offense"
 msgstr "Angriff"
 
-#: Views\MainWindow.xaml:967
+#: Views\MainWindow.xaml:1006
 msgid "Search:"
 msgstr "Suche:"
 
-#: Views\MainWindow.xaml:974
+#: Views\MainWindow.xaml:1013
 msgid "Skill tree link:"
 msgstr "Fähigkeitenbaum Link:"
 
-#: Views\MainWindow.xaml:980
+#: Views\MainWindow.xaml:1019
 msgid "Load Tree"
 msgstr "Lade Baum"
 
@@ -855,28 +854,36 @@ msgstr "Attribut Hervorhebung"
 msgid "Node Hover Highlight"
 msgstr "Knoten Schwebehervorhebung"
 
+#: Views\SettingsMenuWindow.xaml:55
+#, fuzzy
+msgid "General:"
+msgstr "Allgemein"
+
+#: Views\SettingsMenuWindow.xaml:69
+#, fuzzy
+msgid "Show All Ascendancy Classes"
+msgstr "Herunterladen von Ascendancy Klassen"
+
 #: SkillTreeFiles\Compute.cs:2295
 msgid "Character"
 msgstr "Charakter"
 
-#: SkillTreeFiles\SkillTree.cs:727
+#: SkillTreeFiles\SkillTree.cs:741
 msgid "Downloading Skill tree assets"
 msgstr "Herunterladen der Fähigkeitenbaum Assets"
 
-#: SkillTreeFiles\SkillTree.cs:1261
+#: SkillTreeFiles\SkillTree.cs:1272
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr "Markiere nicht geskillte Knoten durch einen Rechtsklick"
 
-#: SkillTreeFiles\SkillTree.cs:1278
+#: SkillTreeFiles\SkillTree.cs:1289
 msgid "Error while trying to find solution"
 msgstr "Beim Finden der Lösung ist ein Fehler aufgetreten"
 
-#: SkillTreeFiles\SkillTreeImporter.cs:74
+#: SkillTreeFiles\SkillTreeImporter.cs:66
 #, csharp-format
 msgid "An error occured while attempting to load Skill tree from {0} location."
-msgstr ""
-"Während des Versuches den Fähigkeitenbaum von {0} zu laden, ist ein Fehler "
-"aufgetreten"
+msgstr "Während des Versuches den Fähigkeitenbaum von {0} zu laden, ist ein Fehler aufgetreten"
 
 #: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:237
 msgid "Download already in progress"
@@ -910,9 +917,7 @@ msgstr "Das Programm ist nicht korrekt installiert."
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:74
 #, csharp-format
 msgid "No Pseudo Attributes loaded. Make sure {0} is not empty."
-msgstr ""
-"Es wurden keine Pseudoattribute geladen. Stelle sicher, dass {0} nicht leer "
-"ist."
+msgstr "Es wurden keine Pseudoattribute geladen. Stelle sicher, dass {0} nicht leer ist."
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:105
 msgid "Invalid Xml file: "
@@ -930,23 +935,19 @@ msgstr "Nicht supporteter Bedingungstyp in Attribut {0} in Pseudoattribut {1}"
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:235
 msgid "A PseudoAttribute is nested in itself or nesting depth is too high"
-msgstr ""
-"Ein Pseudoattribut ist in sich selbst verschachtelt oder die "
-"Verschachtelungstiefe ist zu groß"
+msgstr "Ein Pseudoattribut ist in sich selbst verschachtelt oder die Verschachtelungstiefe ist zu groß"
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:245
 #, csharp-format
 msgid "Nested PseudoAttribute {0} does not exist as top level PseudoAttribute"
-msgstr ""
-"Verschachteltes Pseudoattribute {0} existiert nicht als top Level "
-"Pseudoattribute"
+msgstr "Verschachteltes Pseudoattribute {0} existiert nicht als top Level Pseudoattribute"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:72
 msgid "Popular"
 msgstr "Populär"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:81
-#: Utils\Converter\GroupStringConverter.cs:33
+#: Utils\Converter\GroupStringConverter.cs:34
 msgid "Core Attributes"
 msgstr "Kernattribute"
 
@@ -1016,7 +1017,7 @@ msgid "Totem"
 msgstr ""
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:99
-#: Utils\Converter\GroupStringConverter.cs:34
+#: Utils\Converter\GroupStringConverter.cs:35
 msgid "Everything Else"
 msgstr "Alles andere"
 
@@ -1071,6 +1072,10 @@ msgstr "Fähigkeitenbaum Generator"
 #: TreeGenerator\ViewModels\SteinerTabViewModel.cs:22
 msgid "Tagged Nodes"
 msgstr "Markierte Knoten"
+
+#: Utils\Converter\GroupStringConverter.cs:33
+msgid "Flasks"
+msgstr ""
 
 #: Utils\Popup.cs:14
 msgid "Question"
@@ -1134,184 +1139,158 @@ msgstr "Letzte Aktualisierung: {0}"
 msgid "Help file not found"
 msgstr "Die Hilfedatei wurde nicht gefunden"
 
-#: Views\MainWindow.xaml.cs:268
+#: Views\MainWindow.xaml.cs:263
 msgid "A group with that name already exists."
 msgstr "Es existiert bereits eine Gruppe mit diesem Namen"
 
-#: Views\MainWindow.xaml.cs:367
+#: Views\MainWindow.xaml.cs:360
 msgid "Highlight nodes by attribute"
 msgstr "Markiere Knoten nach Attribut"
 
-#: Views\MainWindow.xaml.cs:372
+#: Views\MainWindow.xaml.cs:365
 msgid "Remove highlights by attribute"
 msgstr "Entferne die Markierung von Knoten nach Attribut"
 
-#: Views\MainWindow.xaml.cs:625
+#: Views\MainWindow.xaml.cs:641
 msgid "Are you sure?"
 msgstr "Bist du sicher?"
 
-#: Views\MainWindow.xaml.cs:625
+#: Views\MainWindow.xaml.cs:641
 msgid "Untag All Skill Nodes"
 msgstr "Entmarkiere alle Fähigkeitsknoten"
 
-#: Views\MainWindow.xaml.cs:675
+#: Views\MainWindow.xaml.cs:692
 msgid "Could not open Skill Tree Generator"
 msgstr "Der Fähigkeitenbaum Generator konnte nicht geöffnet werden"
 
-#: Views\MainWindow.xaml.cs:732
+#: Views\MainWindow.xaml.cs:749
 #, csharp-format
 msgid "{0} point"
 msgid_plural "{0} points"
 msgstr[0] "{0} Punkt"
 msgstr[1] "{0} Punkte"
 
-#: Views\MainWindow.xaml.cs:769
+#: Views\MainWindow.xaml.cs:786
 msgid "Your build must use at least one node to generate a screenshot"
-msgstr ""
-"Dein Build muss mindestens einen Knoten geskillt haben, damit ein "
-"Screenshort generiert werden kann."
+msgstr "Dein Build muss mindestens einen Knoten geskillt haben, damit ein Screenshort generiert werden kann."
 
-#: Views\MainWindow.xaml.cs:799 Views\MainWindow.xaml.cs:2144
+#: Views\MainWindow.xaml.cs:816 Views\MainWindow.xaml.cs:2298
 msgid "An error occurred while copying to Clipboard."
 msgstr "Beim Kopieren in den Zwischenspeicher ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:805
-msgid ""
-"The existing Skill tree assets will be deleted and new assets will be "
-"downloaded."
-msgstr ""
-"Die existierenden Bilder sowie Assets des Fähigkeitenbaums werden gelöscht "
-"und neu heruntergeladen."
+#: Views\MainWindow.xaml.cs:822
+msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
+msgstr "Die existierenden Bilder sowie Assets des Fähigkeitenbaums werden gelöscht und neu heruntergeladen."
 
-#: Views\MainWindow.xaml.cs:806 Views\MainWindow.xaml.cs:2368
+#: Views\MainWindow.xaml.cs:823 Views\MainWindow.xaml.cs:2476
 msgid "Do you want to continue?"
 msgstr "Möchtest du fortfahren?"
 
-#: Views\MainWindow.xaml.cs:853
+#: Views\MainWindow.xaml.cs:870
 msgid "An error occurred while downloading assets."
 msgstr "Beim Herunterladen der Assets ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:909
+#: Views\MainWindow.xaml.cs:926
 msgid "Checking for updates"
 msgstr "Prüfen auf Aktualisierungen"
 
-#: Views\MainWindow.xaml.cs:914
+#: Views\MainWindow.xaml.cs:931
 msgid "You have the latest version!"
 msgstr "Das Programm ist bereits auf dem aktuellsten Stand!"
 
-#: Views\MainWindow.xaml.cs:919
+#: Views\MainWindow.xaml.cs:936
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr "Eine neue Version für {0} ({1}) ist verfügbar!"
 
-#: Views\MainWindow.xaml.cs:922
-msgid ""
-"The application will be closed when download completes to proceed with the "
-"update."
-msgstr ""
-"Nachdem das Herunterladen abgeschlossen ist, wird das Programm geschlossen, "
-"um mit dem Update fortzufahren."
+#: Views\MainWindow.xaml.cs:939
+msgid "The application will be closed when download completes to proceed with the update."
+msgstr "Nachdem das Herunterladen abgeschlossen ist, wird das Programm geschlossen, um mit dem Update fortzufahren."
 
-#: Views\MainWindow.xaml.cs:923
+#: Views\MainWindow.xaml.cs:940
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "Eine neue Version {0} ist verfügbar!"
 
-#: Views\MainWindow.xaml.cs:926
-msgid ""
-"The new version of application will be installed side-by-side with earlier "
-"versions."
-msgstr ""
-"Die neue Version es Programms wird neben den älteren Versionen installiert"
+#: Views\MainWindow.xaml.cs:943
+msgid "The new version of application will be installed side-by-side with earlier versions."
+msgstr "Die neue Version es Programms wird neben den älteren Versionen installiert"
 
-#: Views\MainWindow.xaml.cs:930
+#: Views\MainWindow.xaml.cs:947
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
-msgstr ""
-"Warnung: Das ist eine Vorabveröffentlichung. Dies bedeutet, dass Fehler "
-"auftreten können!"
+msgstr "Warnung: Das ist eine Vorabveröffentlichung. Dies bedeutet, dass Fehler auftreten können!"
 
-#: Views\MainWindow.xaml.cs:934
+#: Views\MainWindow.xaml.cs:951
 msgid "Do you want to download and install the update?"
 msgstr "Möchtest du das Update herunterladen und installieren?"
 
-#: Views\MainWindow.xaml.cs:935
+#: Views\MainWindow.xaml.cs:952
 msgid "Do you want to download and install the new version?"
 msgstr "Möchtest du die neue Version herunterladen und installieren?"
 
-#: Views\MainWindow.xaml.cs:948
+#: Views\MainWindow.xaml.cs:965
 msgid "An error occurred while attempting to contact the update location."
 msgstr "Beim Verbinden mit der Updatestelle ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:958
+#: Views\MainWindow.xaml.cs:975
 msgid "Downloading latest version"
 msgstr "Herunterladen der letzten Version"
 
-#: Views\MainWindow.xaml.cs:963 Views\MainWindow.xaml.cs:988
+#: Views\MainWindow.xaml.cs:980 Views\MainWindow.xaml.cs:1005
 msgid "An error occurred during the download operation."
 msgstr "Während des Herunterladens ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1001
+#: Views\MainWindow.xaml.cs:1018
 msgid "An error occurred while attempting to start the installation."
 msgstr "Beim Versuch die Installation zu starten, ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1538
+#: Views\MainWindow.xaml.cs:1687
 msgid "An error occurred while attempting to load item data."
 msgstr "Beim Laden der Truhendaten ist ein Fehler aufgetreten"
 
-#: Views\MainWindow.xaml.cs:1610
+#: Views\MainWindow.xaml.cs:1759
 msgid "Right click to edit"
 msgstr "Rechtsklick um zu bearbeiten"
 
-#: Views\MainWindow.xaml.cs:1810
+#: Views\MainWindow.xaml.cs:1959
 msgid "An error occurred during a save operation."
 msgstr "Beim Speichern ist ein Fehler aufgetreten"
 
-#: Views\MainWindow.xaml.cs:1844
+#: Views\MainWindow.xaml.cs:1994
 msgid "Resolving shortened tree address"
 msgstr "Auflösung der gekürzten Baumadresse"
 
-#: Views\MainWindow.xaml.cs:1879
+#: Views\MainWindow.xaml.cs:2034
 msgid "An error occurred while attempting to load Skill tree from URL."
-msgstr ""
-"Beim Versuch die Fähigkeitenbaumdaten von der URL zu laden, ist ein Fehler "
-"aufgetreten."
+msgstr "Beim Versuch die Fähigkeitenbaumdaten von der URL zu laden, ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:2124
+#: Views\MainWindow.xaml.cs:2278
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Generieren von PoEUrl des Fähigkeitenbaums"
 
-#: Views\MainWindow.xaml.cs:2130
+#: Views\MainWindow.xaml.cs:2284
 msgid "An error occurred while attempting to contact the PoEUrl location."
-msgstr ""
-"Beim Versuch die PoeUrl Stelle zu kontaktieren, ist ein Fehler aufgetreten."
+msgstr "Beim Versuch die PoeUrl Stelle zu kontaktieren, ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:2140
+#: Views\MainWindow.xaml.cs:2294
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "Der PoEUrl Link wurde in den Zwischenspeicher kopiert."
 
-#: Views\MainWindow.xaml.cs:2313
+#: Views\MainWindow.xaml.cs:2421
 msgid "An error occurred while attempting to load saved builds."
-msgstr ""
-"Beim Versuch die gespeicherten Builds zu laden, ist ein Fehler aufgetreten."
+msgstr "Beim Versuch die gespeicherten Builds zu laden, ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:2367
-msgid ""
-"The existing Skill Item assets will be deleted and new assets will be "
-"downloaded."
-msgstr ""
-"Die existierenden Fähigkeits- und Gegenstandsassets werden gelöscht und neue "
-"Assets werden heruntergeladen."
+#: Views\MainWindow.xaml.cs:2475
+msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
+msgstr "Die existierenden Fähigkeits- und Gegenstandsassets werden gelöscht und neue Assets werden heruntergeladen."
 
-#: Views\MainWindow.xaml.cs:2388
+#: Views\MainWindow.xaml.cs:2496
 msgid "Downloading Item assets"
 msgstr "Herunterladen von Gegenstandsassets"
 
-#: Views\MainWindow.xaml.cs:2463
+#: Views\MainWindow.xaml.cs:2569
 msgid "Error while downloading assets."
 msgstr "Fehler beim Herunterladen von Assets."
-
-#~ msgid "Downloading Ascendancy Classes"
-#~ msgstr "Herunterladen von Ascendancy Klassen"
 
 #~ msgid "Please select a saved build."
 #~ msgstr "Prosím zvoľte uloženú zostavu."

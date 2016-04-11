@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:709
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:848
 msgid "Attributes"
 msgstr "Атрибуты"
 
@@ -132,7 +132,7 @@ msgstr ""
 msgid "Run"
 msgstr ""
 
-#: TreeGenerator\Views\SettingsWindow.xaml:68 Views\MainWindow.xaml:567
+#: TreeGenerator\Views\SettingsWindow.xaml:68
 msgid "Reset"
 msgstr "Сбросить"
 
@@ -173,12 +173,16 @@ msgid "Data used in character calculations are from"
 msgstr "Данные, используемые в расчетах взяты с"
 
 #: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
-#: Views\DownloadStashWindow.xaml:58 Views\HelpWindow.xaml:52
+#: Views\DownloadStashWindow.xaml:60 Views\HelpWindow.xaml:52
 #: Views\HotkeysWindow.xaml:171
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:306
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:371
 msgid "Close"
 msgstr "Закрыть"
+
+#: Views\CraftWindow.xaml:19
+msgid "Craft Window"
+msgstr ""
 
 #: Views\DownloadItemsWindow.xaml:10
 msgid "Download & Import Items"
@@ -188,7 +192,7 @@ msgstr "Загрузить и импортировать предметы"
 msgid "Please enter Your Character and Account Name below and click on 'Open in Browser'."
 msgstr "Введите Имя Героя и Имя Аккаунта и нажмите 'Открыть в браузере'."
 
-#: Views\DownloadItemsWindow.xaml:15 Views\DownloadStashWindow.xaml:28
+#: Views\DownloadItemsWindow.xaml:15 Views\DownloadStashWindow.xaml:30
 msgid "This will open a page in your default Web-browser containing the item data."
 msgstr "Откроется страница в браузере содержащая данные о предметах."
 
@@ -196,8 +200,8 @@ msgstr "Откроется страница в браузере содержащ
 msgid "Save the page anywhere, then click on 'Load File' and select the saved file."
 msgstr "Сохраните станицу где-либо (Ctrl + S), нажмите 'Загрузить файл' и выберите сохраненный файл"
 
-#: Views\DownloadItemsWindow.xaml:23 Views\DownloadStashWindow.xaml:20
-#: Views\DownloadStashWindow.xaml:51
+#: Views\DownloadItemsWindow.xaml:23 Views\DownloadStashWindow.xaml:22
+#: Views\DownloadStashWindow.xaml:53
 msgid "Open in Browser"
 msgstr "Открыть в браузере"
 
@@ -205,31 +209,36 @@ msgstr "Открыть в браузере"
 msgid "Load File"
 msgstr "Загрузить файл"
 
-#: Views\DownloadStashWindow.xaml:12
+#: Views\DownloadStashWindow.xaml:10
+#, fuzzy
+msgid "Download & Import Stash"
+msgstr "Загрузить и импортировать личный сундук"
+
+#: Views\DownloadStashWindow.xaml:14
 msgid "Please enter Account Name and league below and click on 'Open in Browser'."
 msgstr "Введите Имя Аккаунта, Лигу и на 'Открыть в браузере'."
 
-#: Views\DownloadStashWindow.xaml:13
+#: Views\DownloadStashWindow.xaml:15
 msgid "This will open a page in your default Web-browser containing stash tab list"
 msgstr "В Вашем браузере по умолчанию откроется страница, содержащая список секций личного сундука"
 
-#: Views\DownloadStashWindow.xaml:14
+#: Views\DownloadStashWindow.xaml:16
 msgid "Save the page anywhere, then click on 'Load stash tab list' and select the saved file."
 msgstr "Сохраните страницу где-либо, после чего нажмите 'Загрузить список секций личного сундука' и выберите сохраненный файл."
 
-#: Views\DownloadStashWindow.xaml:23
+#: Views\DownloadStashWindow.xaml:25
 msgid "Load stash tab list"
 msgstr "Загрузить список секций личного сундука"
 
-#: Views\DownloadStashWindow.xaml:27
+#: Views\DownloadStashWindow.xaml:29
 msgid "Select stash tab and click 'Open in browser' below"
 msgstr "Выбрать секцию и нажмите 'Открыть в браузере' "
 
-#: Views\DownloadStashWindow.xaml:29
+#: Views\DownloadStashWindow.xaml:31
 msgid "Save the page anywhere, then click on 'Load stash tab' and select the saved file."
 msgstr "Сохраните станицу где-либо, нажмите 'Загрузить секцию личного сундука' и выберите сохраненный файл"
 
-#: Views\DownloadStashWindow.xaml:54
+#: Views\DownloadStashWindow.xaml:56
 msgid "Load stash tab"
 msgstr "Загрузить секцию"
 
@@ -459,226 +468,431 @@ msgstr "Отменить"
 msgid "Reset Skill _Tree"
 msgstr "Сбросить пассивные умения"
 
-#: Views\MainWindow.xaml:325
+#: Views\MainWindow.xaml:314
+#, fuzzy
+msgid "Copy _Passive Attributes to Clipboard"
+msgstr "Пассивные свойства"
+
+#: Views\MainWindow.xaml:322
+#, fuzzy
+msgid "Copy Po_EUrl of Skill tree to Clipboard"
+msgstr "Скопировать ссылку PoEUrl"
+
+#: Views\MainWindow.xaml:331
 msgid "_View"
 msgstr "Вид"
 
-#: Views\MainWindow.xaml:329
+#: Views\MainWindow.xaml:335
 msgid "_Theme"
 msgstr "Тема"
 
-#: Views\MainWindow.xaml:336
+#: Views\MainWindow.xaml:342
 msgctxt "color"
 msgid "Light"
 msgstr "Светлая"
 
-#: Views\MainWindow.xaml:341
+#: Views\MainWindow.xaml:347
 msgctxt "color"
 msgid "Dark"
 msgstr "Темная"
 
-#: Views\MainWindow.xaml:376
+#: Views\MainWindow.xaml:353
+msgid "Acce_nt"
+msgstr ""
+
+#: Views\MainWindow.xaml:360
+msgctxt "color"
+msgid "Amber"
+msgstr ""
+
+#: Views\MainWindow.xaml:365
+msgctxt "color"
+msgid "Blue"
+msgstr ""
+
+#: Views\MainWindow.xaml:370
+msgctxt "color"
+msgid "Brown"
+msgstr ""
+
+#: Views\MainWindow.xaml:375
+msgctxt "color"
+msgid "Cobalt"
+msgstr ""
+
+#: Views\MainWindow.xaml:380
+msgctxt "color"
+msgid "Crimson"
+msgstr ""
+
+#: Views\MainWindow.xaml:385
+msgctxt "color"
+msgid "Cyan"
+msgstr ""
+
+#: Views\MainWindow.xaml:390
+msgctxt "color"
+msgid "Emerald"
+msgstr ""
+
+#: Views\MainWindow.xaml:395
+msgctxt "color"
+msgid "Green"
+msgstr ""
+
+#: Views\MainWindow.xaml:400
+msgctxt "color"
+msgid "Indigo"
+msgstr ""
+
+#: Views\MainWindow.xaml:405
+msgctxt "color"
+msgid "Lime"
+msgstr ""
+
+#: Views\MainWindow.xaml:410
+msgctxt "color"
+msgid "Magenta"
+msgstr ""
+
+#: Views\MainWindow.xaml:415
+msgctxt "color"
+msgid "Mauve"
+msgstr ""
+
+#: Views\MainWindow.xaml:420
+msgctxt "color"
+msgid "Olive"
+msgstr ""
+
+#: Views\MainWindow.xaml:425
+#, fuzzy
+msgctxt "color"
+msgid "Orange"
+msgstr "Охотница"
+
+#: Views\MainWindow.xaml:430
+msgctxt "color"
+msgid "Pink"
+msgstr ""
+
+#: Views\MainWindow.xaml:435
+msgctxt "color"
+msgid "Purple"
+msgstr ""
+
+#: Views\MainWindow.xaml:440
+#, fuzzy
+msgctxt "color"
+msgid "Red"
+msgstr "Отменить"
+
+#: Views\MainWindow.xaml:445
+msgctxt "color"
+msgid "Sienna"
+msgstr ""
+
+#: Views\MainWindow.xaml:450
+msgctxt "color"
+msgid "Steel"
+msgstr ""
+
+#: Views\MainWindow.xaml:455
+msgctxt "color"
+msgid "Taupe"
+msgstr ""
+
+#: Views\MainWindow.xaml:460
+msgctxt "color"
+msgid "Teal"
+msgstr ""
+
+#: Views\MainWindow.xaml:465
+msgctxt "color"
+msgid "Violet"
+msgstr ""
+
+#: Views\MainWindow.xaml:470
+msgctxt "color"
+msgid "Yellow"
+msgstr ""
+
+#: Views\MainWindow.xaml:477
 msgid "Saved _Builds"
 msgstr "Сохраненные билды"
 
-#: Views\MainWindow.xaml:381
+#: Views\MainWindow.xaml:482
 msgid "_Attributes"
 msgstr "Атрибуты"
 
-#: Views\MainWindow.xaml:386
+#: Views\MainWindow.xaml:487
 msgid "_Character Sheet"
 msgstr "Список характеристкик героя"
 
-#: Views\MainWindow.xaml:391
+#: Views\MainWindow.xaml:492
 msgid "Skill _Tree Comparison"
 msgstr "Сравнение пассивных веток"
 
-#: Views\MainWindow.xaml:397
+#: Views\MainWindow.xaml:498
 msgid "_Tools"
 msgstr "Инструменты"
 
-#: Views\MainWindow.xaml:401
+#: Views\MainWindow.xaml:502
 msgid "Take _Screenshot of Skilled Nodes"
 msgstr "Сделать скриншот"
 
-#: Views\MainWindow.xaml:410
+#: Views\MainWindow.xaml:511
 msgid "_Equipment"
 msgstr "Снаряжение"
 
-#: Views\MainWindow.xaml:417
+#: Views\MainWindow.xaml:518
 msgid "_Download & Import Items"
 msgstr "Загрузить и импортировать предметы"
 
-#: Views\MainWindow.xaml:425
+#: Views\MainWindow.xaml:526
 msgid "_Download & Import Stash"
 msgstr "Загрузить и импортировать личный сундук"
 
-#: Views\MainWindow.xaml:439
+#: Views\MainWindow.xaml:534
+msgid "_Clear Items"
+msgstr ""
+
+#: Views\MainWindow.xaml:543
 msgid "_Nodes"
 msgstr "Пассивные навыки"
 
-#: Views\MainWindow.xaml:446
+#: Views\MainWindow.xaml:550
 msgid "Skill _Tagged Nodes"
 msgstr "Получить отмеченные навыки"
 
-#: Views\MainWindow.xaml:451
+#: Views\MainWindow.xaml:555
 msgid "Un_tag All Nodes"
 msgstr "Убрать все отметки"
 
-#: Views\MainWindow.xaml:456
+#: Views\MainWindow.xaml:560
 msgid "_Unhighlight All Nodes"
 msgstr "Снять выделение"
 
-#: Views\MainWindow.xaml:461
+#: Views\MainWindow.xaml:565
 msgid "_Check-tag highlighted Nodes"
 msgstr "Проверить выделенные навыки"
 
-#: Views\MainWindow.xaml:466
+#: Views\MainWindow.xaml:570
 msgid "C_ross-tag highlighted Nodes"
 msgstr "Проверить выделенные навыки"
 
-#: Views\MainWindow.xaml:471
+#: Views\MainWindow.xaml:575
 #, fuzzy
 msgid "_Skill Tree Generator"
 msgstr "Оптимизатор"
 
-#: Views\MainWindow.xaml:477
+#: Views\MainWindow.xaml:581
 msgid "_Program Assets"
 msgstr "Програмниые активы"
 
-#: Views\MainWindow.xaml:484
+#: Views\MainWindow.xaml:588
 msgid "_Redownload Skill Tree Assets"
 msgstr "Перезагрузить активы"
 
-#: Views\MainWindow.xaml:499
+#: Views\MainWindow.xaml:596
+#, fuzzy
+msgid "_Redownload Item Assets"
+msgstr "Загрузка активов предметов"
+
+#: Views\MainWindow.xaml:606
 msgid "_Help"
 msgstr "Помощь"
 
-#: Views\MainWindow.xaml:503
+#: Views\MainWindow.xaml:610
 msgid "_Links"
 msgstr "Ссылки"
 
-#: Views\MainWindow.xaml:510
+#: Views\MainWindow.xaml:617
 msgid "_Path of Exile Website"
 msgstr "оффициальный вебсайт Path of Exile"
 
-#: Views\MainWindow.xaml:517
+#: Views\MainWindow.xaml:622
+#, fuzzy
+msgid "Path of Exile _Wiki"
+msgstr "оффициальный вебсайт Path of Exile"
+
+#: Views\MainWindow.xaml:628
 msgid "View _Help"
 msgstr "Помощь"
 
-#: Views\MainWindow.xaml:525
+#: Views\MainWindow.xaml:636
 msgid "Hot_keys"
 msgstr "Горячие клавиши"
 
-#: Views\MainWindow.xaml:533
+#: Views\MainWindow.xaml:644
 msgid "Check for _Updates"
 msgstr "Проверить наличие обновлений"
 
-#: Views\MainWindow.xaml:541
+#: Views\MainWindow.xaml:652
 msgid "_About PoESkillTree"
 msgstr "О PoESkillTree"
 
-#: Views\MainWindow.xaml:619
+#: Views\MainWindow.xaml:675
+msgid "Level"
+msgstr ""
+
+#: Views\MainWindow.xaml:682
+msgid "Used Passive Skill Points"
+msgstr ""
+
+#: Views\MainWindow.xaml:687
+msgid "Used Ascendancy Skill Points"
+msgstr ""
+
+#: Views\MainWindow.xaml:693
+msgid "Total Passive Skill Points"
+msgstr ""
+
+#: Views\MainWindow.xaml:698
+msgid "Total Ascendancy Skill Points"
+msgstr ""
+
+#: Views\MainWindow.xaml:727
+msgid "PASSIVE TREE"
+msgstr ""
+
+#: Views\MainWindow.xaml:735
+msgid "EQUIPMENT"
+msgstr ""
+
+#: Views\MainWindow.xaml:745
+msgid "Craft new item"
+msgstr ""
+
+#: Views\MainWindow.xaml:758
 msgid "Saved Builds"
 msgstr "Сохраненные билды"
 
-#: Views\MainWindow.xaml:637
+#: Views\MainWindow.xaml:776 Views\MainWindow.xaml:863
 msgid "Filter:"
 msgstr "Фильтр"
 
-#: Views\MainWindow.xaml:685
+#: Views\MainWindow.xaml:824
 msgid "Skill tree comparison"
 msgstr "Сравнение пассивных веток"
 
-#: Views\MainWindow.xaml:694
+#: Views\MainWindow.xaml:833
 msgid "Save"
 msgstr "Сохранить"
 
-#: Views\MainWindow.xaml:697
+#: Views\MainWindow.xaml:836
 msgid "Save As"
 msgstr "Сохранить как"
 
-#: Views\MainWindow.xaml:700
+#: Views\MainWindow.xaml:839
 msgid "Delete"
 msgstr "Удалить"
 
-#: Views\MainWindow.xaml:716
+#: Views\MainWindow.xaml:872
 msgid "Passive Attributes"
 msgstr "Пассивные свойства"
 
-#: Views\MainWindow.xaml:733
+#: Views\MainWindow.xaml:889
 msgid "Item Attributes"
 msgstr "Свойства предметов"
 
-#: Views\MainWindow.xaml:752
+#: Views\MainWindow.xaml:908
 msgid "Total Attributes"
 msgstr "Общее"
 
-#: Views\MainWindow.xaml:788
+#: Views\MainWindow.xaml:925
+#, fuzzy
+msgid "ItemList"
+msgstr "Данные о предметах"
+
+#: Views\MainWindow.xaml:948
 msgid "Character Sheet"
 msgstr "Список характеристкик героя"
 
-#: Views\MainWindow.xaml:795 SkillTreeFiles\Compute.cs:2296
+#: Views\MainWindow.xaml:955 SkillTreeFiles\Compute.cs:2296
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:86
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
 msgstr "Защита"
 
-#: Views\MainWindow.xaml:812
+#: Views\MainWindow.xaml:972
 msgid "Offense"
 msgstr "Атака"
 
-#: Views\MainWindow.xaml:846
+#: Views\MainWindow.xaml:1006
 msgid "Search:"
 msgstr "Поиск"
 
-#: Views\MainWindow.xaml:853
+#: Views\MainWindow.xaml:1013
 msgid "Skill tree link:"
 msgstr "Сссылка"
 
-#: Views\MainWindow.xaml:859
+#: Views\MainWindow.xaml:1019
 msgid "Load Tree"
 msgstr "Загрузить"
+
+#: Views\MetroMessageBoxWindow.xaml:26
+msgid "Yes"
+msgstr ""
+
+#: Views\MetroMessageBoxWindow.xaml:30
+msgid "No"
+msgstr ""
+
+#: Views\MetroMessageBoxWindow.xaml:34
+msgid "Ok"
+msgstr ""
+
+#: Views\MetroMessageBoxWindow.xaml:38
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:132
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:363
+msgid "Cancel"
+msgstr "Закрыть"
 
 #: Views\SettingsMenuWindow.xaml:20
 msgid "Colors:"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:25
+#: Views\SettingsMenuWindow.xaml:36
 msgid "Node Search Highlight"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:30
+#: Views\SettingsMenuWindow.xaml:41
 #, fuzzy
 msgid "Attribute Highlight"
 msgstr "Атрибуты"
 
-#: Views\SettingsMenuWindow.xaml:35
+#: Views\SettingsMenuWindow.xaml:46
 msgid "Node Hover Highlight"
 msgstr ""
+
+#: Views\SettingsMenuWindow.xaml:55
+#, fuzzy
+msgid "General:"
+msgstr "Общее"
+
+#: Views\SettingsMenuWindow.xaml:69
+#, fuzzy
+msgid "Show All Ascendancy Classes"
+msgstr "Загрузка активов предметов"
 
 #: SkillTreeFiles\Compute.cs:2295
 msgid "Character"
 msgstr "Герой"
 
-#: SkillTreeFiles\SkillTree.cs:726
+#: SkillTreeFiles\SkillTree.cs:741
 msgid "Downloading Skill tree assets"
 msgstr "Загрузить активы"
 
-#: SkillTreeFiles\SkillTree.cs:747
-#, fuzzy
-msgid "Downloading Ascendancy Classes"
-msgstr "Загрузка активов предметов"
-
-#: SkillTreeFiles\SkillTree.cs:1236
+#: SkillTreeFiles\SkillTree.cs:1272
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr "Отмечайте не выбранние навики используя правую кнопку мыши."
 
-#: SkillTreeFiles\SkillTree.cs:1253
+#: SkillTreeFiles\SkillTree.cs:1289
 msgid "Error while trying to find solution"
 msgstr ""
 
-#: SkillTreeFiles\SkillTreeImporter.cs:74
+#: SkillTreeFiles\SkillTreeImporter.cs:66
 #, csharp-format
 msgid "An error occured while attempting to load Skill tree from {0} location."
 msgstr "Произошла ошибка при попытке загрузить актив из {0}"
@@ -745,7 +959,7 @@ msgid "Popular"
 msgstr ""
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:81
-#: Utils\Converter\GroupStringConverter.cs:33
+#: Utils\Converter\GroupStringConverter.cs:34
 msgid "Core Attributes"
 msgstr "Главние атрибуты"
 
@@ -814,6 +1028,11 @@ msgstr "Ловушки"
 msgid "Totem"
 msgstr "Тотемы"
 
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:99
+#: Utils\Converter\GroupStringConverter.cs:35
+msgid "Everything Else"
+msgstr ""
+
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:446
 msgid "Advanced"
 msgstr ""
@@ -832,11 +1051,6 @@ msgstr[1] "дополнительно потрачено {0} навыков"
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:102
 msgid "Initializing..."
 msgstr "Подождите..."
-
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:132
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:363
-msgid "Cancel"
-msgstr "Закрыть"
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:152
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:362
@@ -871,6 +1085,10 @@ msgstr "Сссылка"
 #, fuzzy
 msgid "Tagged Nodes"
 msgstr "Получить отмеченные навыки"
+
+#: Utils\Converter\GroupStringConverter.cs:33
+msgid "Flasks"
+msgstr ""
 
 #: Utils\Popup.cs:14
 msgid "Question"
@@ -934,146 +1152,157 @@ msgstr "Последнее обновление {0}"
 msgid "Help file not found"
 msgstr "Файл не найден"
 
-#: Views\MainWindow.xaml.cs:268
+#: Views\MainWindow.xaml.cs:263
 msgid "A group with that name already exists."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:367
+#: Views\MainWindow.xaml.cs:360
 msgid "Highlight nodes by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:372
+#: Views\MainWindow.xaml.cs:365
 msgid "Remove highlights by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:625
+#: Views\MainWindow.xaml.cs:641
 msgid "Are you sure?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:625
+#: Views\MainWindow.xaml.cs:641
 #, fuzzy
 msgid "Untag All Skill Nodes"
 msgstr "Убрать все отметки"
 
-#: Views\MainWindow.xaml.cs:675
+#: Views\MainWindow.xaml.cs:692
 msgid "Could not open Skill Tree Generator"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:747 Views\MainWindow.xaml.cs:2088
+#: Views\MainWindow.xaml.cs:749
+#, fuzzy, csharp-format
+msgid "{0} point"
+msgid_plural "{0} points"
+msgstr[0] "{0}, {1} умений использовано"
+msgstr[1] "{0}, {1} умений использовано"
+
+#: Views\MainWindow.xaml.cs:786
+msgid "Your build must use at least one node to generate a screenshot"
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:816 Views\MainWindow.xaml.cs:2298
 msgid "An error occurred while copying to Clipboard."
 msgstr "Произошла ошибка при копировании."
 
-#: Views\MainWindow.xaml.cs:753
+#: Views\MainWindow.xaml.cs:822
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr "Существующие активы будут удалены и будут загружены новые."
 
-#: Views\MainWindow.xaml.cs:754 Views\MainWindow.xaml.cs:2311
+#: Views\MainWindow.xaml.cs:823 Views\MainWindow.xaml.cs:2476
 msgid "Do you want to continue?"
 msgstr "Хотите продолжить?"
 
-#: Views\MainWindow.xaml.cs:800
+#: Views\MainWindow.xaml.cs:870
 msgid "An error occurred while downloading assets."
 msgstr "Произошла ошибка при загрузке активов."
 
-#: Views\MainWindow.xaml.cs:856
+#: Views\MainWindow.xaml.cs:926
 msgid "Checking for updates"
 msgstr "Проверяется наличие обновлений"
 
-#: Views\MainWindow.xaml.cs:861
+#: Views\MainWindow.xaml.cs:931
 msgid "You have the latest version!"
 msgstr "Вы используете последнюю версию!"
 
-#: Views\MainWindow.xaml.cs:866
+#: Views\MainWindow.xaml.cs:936
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr "Доступно обновление {0} ({1})"
 
-#: Views\MainWindow.xaml.cs:869
+#: Views\MainWindow.xaml.cs:939
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr "Приложение будет закрыито по завершению загрузки для продолжения обновления."
 
-#: Views\MainWindow.xaml.cs:870
+#: Views\MainWindow.xaml.cs:940
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "Длступна новая версия {0}!"
 
-#: Views\MainWindow.xaml.cs:873
+#: Views\MainWindow.xaml.cs:943
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr "Новая версия прилодения будет установлена поверх предидущей."
 
-#: Views\MainWindow.xaml.cs:877
+#: Views\MainWindow.xaml.cs:947
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr "Внимание! Это пре-релизная версия, что значит, что моут возникать баги."
 
-#: Views\MainWindow.xaml.cs:881
+#: Views\MainWindow.xaml.cs:951
 msgid "Do you want to download and install the update?"
 msgstr "Хотите загрузить и установить обновление?"
 
-#: Views\MainWindow.xaml.cs:882
+#: Views\MainWindow.xaml.cs:952
 msgid "Do you want to download and install the new version?"
 msgstr "Хотите загрузить и установить новую версию?"
 
-#: Views\MainWindow.xaml.cs:895
+#: Views\MainWindow.xaml.cs:965
 msgid "An error occurred while attempting to contact the update location."
 msgstr "Произошла ошибка при попытке соединения."
 
-#: Views\MainWindow.xaml.cs:905
+#: Views\MainWindow.xaml.cs:975
 msgid "Downloading latest version"
 msgstr "Загрузить последнюю версию"
 
-#: Views\MainWindow.xaml.cs:910 Views\MainWindow.xaml.cs:935
+#: Views\MainWindow.xaml.cs:980 Views\MainWindow.xaml.cs:1005
 msgid "An error occurred during the download operation."
 msgstr "Произошла ошибка при загрузке."
 
-#: Views\MainWindow.xaml.cs:948
+#: Views\MainWindow.xaml.cs:1018
 msgid "An error occurred while attempting to start the installation."
 msgstr "Произошла ошибка при попытке начать установку."
 
-#: Views\MainWindow.xaml.cs:1485
+#: Views\MainWindow.xaml.cs:1687
 msgid "An error occurred while attempting to load item data."
 msgstr "Произошла ошибка при попытке загрузки базы данных предметов."
 
-#: Views\MainWindow.xaml.cs:1557
+#: Views\MainWindow.xaml.cs:1759
 msgid "Right click to edit"
 msgstr "Нажмите правую кнопку мыши для изменения"
 
-#: Views\MainWindow.xaml.cs:1757
+#: Views\MainWindow.xaml.cs:1959
 msgid "An error occurred during a save operation."
 msgstr "Произошла ошибка при сохранении."
 
-#: Views\MainWindow.xaml.cs:1791
+#: Views\MainWindow.xaml.cs:1994
 msgid "Resolving shortened tree address"
 msgstr "Обрабатывается ссылка"
 
-#: Views\MainWindow.xaml.cs:1823
+#: Views\MainWindow.xaml.cs:2034
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Произошла ошибка при попытке загрузить ссылку."
 
-#: Views\MainWindow.xaml.cs:2068
+#: Views\MainWindow.xaml.cs:2278
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Создается ссылка PoEUrl"
 
-#: Views\MainWindow.xaml.cs:2074
+#: Views\MainWindow.xaml.cs:2284
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Произошла ошибка при попытке соединения с PoEUrl."
 
-#: Views\MainWindow.xaml.cs:2084
+#: Views\MainWindow.xaml.cs:2294
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "Сссылка PoEUrl была скопирована."
 
-#: Views\MainWindow.xaml.cs:2257
+#: Views\MainWindow.xaml.cs:2421
 msgid "An error occurred while attempting to load saved builds."
 msgstr "Произошла ошибка при попытке загрузить сохраненные билды."
 
-#: Views\MainWindow.xaml.cs:2310
+#: Views\MainWindow.xaml.cs:2475
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr "Существующие активы будут удалены и будут загружены новые."
 
-#: Views\MainWindow.xaml.cs:2331
+#: Views\MainWindow.xaml.cs:2496
 msgid "Downloading Item assets"
 msgstr "Загрузка активов предметов"
 
-#: Views\MainWindow.xaml.cs:2405
+#: Views\MainWindow.xaml.cs:2569
 msgid "Error while downloading assets."
 msgstr "Произошла ошибка при загрузке активов"
 
