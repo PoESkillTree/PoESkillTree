@@ -344,3 +344,9 @@ AutoStartProgramGroupDescription=Beginn des Setups:
 AutoStartProgram=Starte automatisch%1
 AddonHostProgramNotFound=%1 konnte im ausgwählten Ordner nicht gefunden werden.%n%nMöchten Sie dennoch fortfahren?
 
+; *** "Installation Type" dialog messages
+InstallationTypeTitle=Art der Installation
+InstallationTypeDesc=Wählen Sie die Art der Installation aus
+InstallationTypeLabel=Wählen Sie die portable Installtion nur, wenn Sie dieses Programm und dessen Einstellungen auf einem Wechseldatenträger transportieren wollen. Es werden keine Verknüpfungen erstellt und es wird keine Option zum Deinstallieren geben.
+InstallationTypeStandardLabel=Standard - Auf diesem Computer installieren (empfohlen)
+InstallationTypePortableLabel=Portabel - Auf einem Wechseldatenträger installieren
