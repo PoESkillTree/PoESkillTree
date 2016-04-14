@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using POESKillTree.Model;
 using POESKillTree.Utils;
+using POESKillTree.Views;
 
 namespace POESKillTree.Localization
 {
@@ -56,6 +57,8 @@ namespace POESKillTree.Localization
         {
             // Set culture for current thread.
             System.Threading.Thread.CurrentThread.CurrentCulture = Culture;
+
+            App.PersistentData.Options.Language = Culture.ToString();
         }
 
         // Returns available languages.
@@ -80,6 +83,8 @@ namespace POESKillTree.Localization
             string language = null;
             if (!string.IsNullOrEmpty(data.Options.Language))
                 language = data.Options.Language;
+            else
+                data.Options.Language = _Language;
 
             // No language in options, try to match OS language.
             if (language == null)

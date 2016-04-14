@@ -1,11 +1,9 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using MahApps.Metro.Controls;
-using POESKillTree.Localization;
-using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Controls;
-using POESKillTree.Utils;
-using System.Configuration;
+using POESKillTree.Localization;
 using POESKillTree.Model;
 
 namespace POESKillTree.Views
@@ -22,14 +20,21 @@ namespace POESKillTree.Views
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void ColorComboBox_Initialized(object sender, System.EventArgs e)
         {
             var s = (ComboBox)sender;
             foreach (System.Reflection.PropertyInfo prop in typeof(Brushes).GetProperties())
             {
-                ComboBoxItem cbItem = new ComboBoxItem();
-                cbItem.Content = prop.Name;
-                cbItem.Foreground = (Brush)new BrushConverter().ConvertFromString(prop.Name);
+                var cbItem = new ComboBoxItem
+                {
+                    Content = prop.Name,
+                    Foreground = (Brush) new BrushConverter().ConvertFromString(prop.Name)
+                };
                 s.Items.Add(cbItem);
 
                 switch (s.Name)
@@ -64,14 +69,9 @@ namespace POESKillTree.Views
         private void ColorComboBox_Closed(object sender, System.EventArgs e)
         {
             var s = (ComboBox)sender;
-            ComboBoxItem color = (ComboBoxItem)s.Items.CurrentItem;
+            var color = (ComboBoxItem)s.Items.CurrentItem;
             if(color != null)
                 s.Foreground = (Brush)new BrushConverter().ConvertFromString(color.Content.ToString());
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void ColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -80,6 +80,7 @@ namespace POESKillTree.Views
             var value = ((ComboBoxItem)s.Items.CurrentItem).Content.ToString();
             SaveSetting(s.Name, value);
         }
+
         private void SaveSetting(string name, string value)
         {
             switch(name) 
@@ -114,6 +115,27 @@ namespace POESKillTree.Views
         private void ShowAllAscendancyClasses_Initialized(object sender, System.EventArgs e)
         {
             ((CheckBox)sender).IsChecked = _persistentData.Options.ShowAllAscendancyClasses;
+        }
+
+        private void Languages_Initialized(object sender, System.EventArgs e)
+        {
+            var s = ((ComboBox) sender);
+            s.DisplayMemberPath = "Value";
+            s.SelectedValuePath = "Key";
+            s.ItemsSource = L10n.GetLanguages();
+            s.SelectedValue = _persistentData.Options.Language;
+        }
+
+        private void Languages_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var s = (KeyValuePair<string,string>) e.AddedItems[0];
+            
+            if (s.Key == _persistentData.Options.Language) return;
+            
+            MetroMessageBox.Show(L10n.Message("You will need to restart the program for all changes to take effect."), L10n.Message("Restart is needed"));
+
+            L10n.SetLanguage(s.Key);
+            _persistentData.SavePersistentDataToFile();            
         }
     }
 }

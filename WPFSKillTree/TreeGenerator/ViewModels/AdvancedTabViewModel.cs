@@ -96,7 +96,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {L10n.Message("Minion"), 12},
             {L10n.Message("Trap"), 13},
             {L10n.Message("Totem"), 14},
-            {L10n.Message("Everything Else"), 15}
+            {L10n.Message("Flasks"), 15 },
+            {L10n.Message("Everything Else"), 16}
         };
 
         /// <summary>

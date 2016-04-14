@@ -648,7 +648,7 @@
     <Resource Include="Images\Scion_Highlighted.jpg" />
     <Resource Include="Images\Ranger_Highlighted.jpg" />
     <Resource Include="Images\Marauder_Highlighted.jpg" />
-    <Resource Include="Images\Duelist__Highlighted.jpg" />
+    <Resource Include="Images\Duelist_Highlighted.jpg" />
     <Content Include="release.iss" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

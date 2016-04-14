@@ -43,6 +43,7 @@ SolidCompression=yes
 Name: "en_US"; MessagesFile: "compiler:Default.isl"
 Name: "sk"; MessagesFile: "compiler:Languages\Slovak.isl"
 Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"
+Name: "de_DE"; MessagesFile: "compiler:Languages\German.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: CheckStandardMode; Flags: unchecked
