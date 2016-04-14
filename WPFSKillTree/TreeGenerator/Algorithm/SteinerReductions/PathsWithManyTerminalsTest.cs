@@ -16,8 +16,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 
         protected override int ExecuteTest()
         {
-            EdgeSet.Where(e => e.Weight > SMatrix[e.N1, e.N2])
-                .ToList().ForEach(EdgeSet.Remove);
+            EdgeSet.Where(e => e.Weight > SMatrix[e.N1, e.N2]).ToList().ForEach(EdgeSet.Remove);
 
             return 0;
         }

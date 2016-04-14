@@ -38,7 +38,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                     var edgeSum = subset.Sum(j => edges[j].Weight);
                     var mst = new MinimalSpanningTree(subset, SMatrix);
                     mst.Span(subset[0]);
-                    var mstEdgeSum = mst.SpanningEdges.Sum(e => SMatrix[e.Inside, e.Outside]);
+                    var mstEdgeSum = mst.SpanningEdges.Sum(e => e.Priority);
                     if (edgeSum < mstEdgeSum)
                     {
                         canBeRemoved = false;
@@ -57,6 +57,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                         if (neighbor >= neighbor2) continue;
                         var edge2 = edges[neighbor2];
                         var newEdgeWeight = edge.Weight + edge2.Weight;
+                        // Implicit path with many terminals test: don't add edges that would be removed by it.
                         if (newEdgeWeight <= SMatrix[neighbor, neighbor2])
                         {
                             EdgeSet.Add(neighbor, neighbor2, newEdgeWeight);
