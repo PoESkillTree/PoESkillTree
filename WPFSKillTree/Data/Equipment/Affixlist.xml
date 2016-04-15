@@ -4865,4 +4865,1464 @@
       </mod>
     </tiers>
   </affix>
+    <affix mod="Additional Staff Block %" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Additional Staff Block %</alias>
+        </aliases>
+        <tiers>
+            <mod name="Deflecting" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Additional Staff Block %" from="1" to="1" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed while Dual Wielding" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed while Dual Wielding</alias>
+        </aliases>
+        <tiers>
+            <mod name="Harmonic" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed while Dual Wielding" from="4" to="6" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed +% While Holding Shield" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed +% While Holding Shield</alias>
+        </aliases>
+        <tiers>
+            <mod name="Charging" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed +% While Holding Shield" from="4" to="6" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed with Axes" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed with Axes</alias>
+        </aliases>
+        <tiers>
+            <mod name="Cleaving" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed with Axes" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Blocking while Dual Wielding" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Blocking while Dual Wielding</alias>
+        </aliases>
+        <tiers>
+            <mod name="Parrying" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Blocking while Dual Wielding" from="1" to="1" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed with Bows" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed with Bows</alias>
+        </aliases>
+        <tiers>
+            <mod name="Volleying" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed with Bows" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cast Speed For Cold Skills +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cast Speed For Cold Skills +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Cryomantic" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cast Speed For Cold Skills +%" from="3" to="5" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cast Speed For Fire Skills +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cast Speed For Fire Skills +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Pyromantic" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cast Speed For Fire Skills +%" from="3" to="5" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cast Speed For Lightning Skills +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cast Speed For Lightning Skills +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Electromantic" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cast Speed For Lightning Skills +%" from="3" to="5" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cast Speed While Dual Wielding +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cast Speed While Dual Wielding +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Resonant" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cast Speed While Dual Wielding +%" from="3" to="5" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cast Speed +% While Holding Shield" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cast Speed +% While Holding Shield</alias>
+        </aliases>
+        <tiers>
+            <mod name="Warding" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cast Speed +% While Holding Shield" from="3" to="5" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cast Speed +% While Holding Staff" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cast Speed +% While Holding Staff</alias>
+        </aliases>
+        <tiers>
+            <mod name="Wright's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cast Speed +% While Holding Staff" from="3" to="5" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Chaos Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Chaos Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Chaotic" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Chaos Damage +%" from="9" to="13" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed with Claws" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed with Claws</alias>
+        </aliases>
+        <tiers>
+            <mod name="Ripping" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed with Claws" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cold Critical Strike Chance +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cold Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Avalanching" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cold Critical Strike Chance +%" from="14" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cold Critical Strike Multiplier +" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cold Critical Strike Multiplier +</alias>
+        </aliases>
+        <tiers>
+            <mod name="Arctic" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cold Critical Strike Multiplier +" from="15" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cold Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cold Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Chilling" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cold Damage +%" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Critical Strike Chance While Dual Wielding +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Critical Strike Chance While Dual Wielding +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Technical" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Critical Strike Chance While Dual Wielding +%" from="14" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Critical Strike Multiplier While Dual Wielding +" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Critical Strike Multiplier While Dual Wielding +</alias>
+        </aliases>
+        <tiers>
+            <mod name="Puncturing" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Critical Strike Multiplier While Dual Wielding +" from="15" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed with Daggers" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed with Daggers</alias>
+        </aliases>
+        <tiers>
+            <mod name="Slicing" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed with Daggers" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Energy Shield Delay Recovery Increase" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Energy Shield Delay Recovery Increase</alias>
+        </aliases>
+        <tiers>
+            <mod name="Serene" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Energy Shield Delay Recovery Increase" from="4" to="6" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Energy Shield Recharge Rate +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Energy Shield Recharge Rate +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Fevered" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Energy Shield Recharge Rate +%" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Global Evasion Rating +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Global Evasion Rating +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Evasive" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Global Evasion Rating +%" from="14" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Fire Critical Strike Chance +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Fire Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Incinerating" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Fire Critical Strike Chance +%" from="14" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Fire Critical Strike Multiplier +" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Fire Critical Strike Multiplier +</alias>
+        </aliases>
+        <tiers>
+            <mod name="Infernal" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Fire Critical Strike Multiplier +" from="15" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Fire Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Fire Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Flaming" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Fire Damage +%" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Lightning Critical Strike Chance +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Lightning Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Thundering" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Lightning Critical Strike Chance +%" from="14" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Lightning Critical Strike Multiplier +" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Lightning Critical Strike Multiplier +</alias>
+        </aliases>
+        <tiers>
+            <mod name="Surging" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Lightning Critical Strike Multiplier +" from="15" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Lightning Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Lightning Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Humming" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Lightning Damage +%" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed with Maces" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed with Maces</alias>
+        </aliases>
+        <tiers>
+            <mod name="Beating" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed with Maces" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Mana Regeneration Rate +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Mana Regeneration Rate +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Energetic" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Mana Regeneration Rate +%" from="12" to="15" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Global Maximum Energy Shield +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Global Maximum Energy Shield +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Shimmering" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Global Maximum Energy Shield +%" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Maximum Life +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Maximum Life +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Vivid" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Maximum Life +%" from="5" to="7" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Maximum Mana +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Maximum Mana +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Enlightened" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Maximum Mana +%" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Melee Physical Damage +% While Holding Shield" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Melee Physical Damage +% While Holding Shield</alias>
+        </aliases>
+        <tiers>
+            <mod name="Flanking" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Melee Physical Damage +% While Holding Shield" from="12" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Mine Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Mine Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Sabotage" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Mine Damage +%" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Mine Laying Speed increase" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Mine Laying Speed increase</alias>
+        </aliases>
+        <tiers>
+            <mod name="Arming" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Mine Laying Speed increase" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Minion Damage increase" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Minion Damage increase</alias>
+        </aliases>
+        <tiers>
+            <mod name="Leadership" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Minion Damage increase" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Minion Life Increase" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Minion Life Increase</alias>
+        </aliases>
+        <tiers>
+            <mod name="Master's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Minion Life Increase" from="8" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="One Handed Melee Attack Speed +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>One Handed Melee Attack Speed +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Bandit's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="One Handed Melee Attack Speed +%" from="4" to="6" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="One Handed Melee Critical Strike Chance +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>One Handed Melee Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Harming" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="One Handed Melee Critical Strike Chance +%" from="14" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="One Handed Melee Critical Strike Multiplier +" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>One Handed Melee Critical Strike Multiplier +</alias>
+        </aliases>
+        <tiers>
+            <mod name="Piercing" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="One Handed Melee Critical Strike Multiplier +" from="15" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="One Handed Melee Physical Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>One Handed Melee Physical Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Soldier's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="One Handed Melee Physical Damage +%" from="12" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Axe Damage" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Axe Damage</alias>
+        </aliases>
+        <tiers>
+            <mod name="Sinister" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Axe Damage" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Bow Damage" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Bow Damage</alias>
+        </aliases>
+        <tiers>
+            <mod name="Fierce" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Bow Damage" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Claw Damage" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Claw Damage</alias>
+        </aliases>
+        <tiers>
+            <mod name="Savage" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Claw Damage" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Dagger Damage" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Dagger Damage</alias>
+        </aliases>
+        <tiers>
+            <mod name="Lethal" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Dagger Damage" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Physical Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Physical Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Sharpened" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Physical Damage +%" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Physical Damage Reduction Rating +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Physical Damage Reduction Rating +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Armoured" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Physical Damage Reduction Rating +%" from="14" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Physical Damage While Dual Wielding +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Physical Damage While Dual Wielding +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Gladiator's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Physical Damage While Dual Wielding +%" from="12" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Mace Damage" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Mace Damage</alias>
+        </aliases>
+        <tiers>
+            <mod name="Brutal" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Mace Damage" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Staff Damage" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Staff Damage</alias>
+        </aliases>
+        <tiers>
+            <mod name="Judging" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Staff Damage" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Sword Damage" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Sword Damage</alias>
+        </aliases>
+        <tiers>
+            <mod name="Vicious" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Sword Damage" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Wand Damage" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Wand Damage</alias>
+        </aliases>
+        <tiers>
+            <mod name="Cruel" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Wand Damage" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Shield Block Chance" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Shield Block Chance</alias>
+        </aliases>
+        <tiers>
+            <mod name="Shielding" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Shield Block Chance" from="1" to="1" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Shield Spell Block %" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Shield Spell Block %</alias>
+        </aliases>
+        <tiers>
+            <mod name="Thwarting" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Shield Spell Block %" from="1" to="1" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Spell Block While Dual Wielding %" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Spell Block While Dual Wielding %</alias>
+        </aliases>
+        <tiers>
+            <mod name="Dissipating" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Spell Block While Dual Wielding %" from="1" to="1" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Spell Block With Staff %" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Spell Block With Staff %</alias>
+        </aliases>
+        <tiers>
+            <mod name="Halting" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Spell Block With Staff %" from="1" to="1" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Spell Damage +% While Dual Wielding" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Spell Damage +% While Dual Wielding</alias>
+        </aliases>
+        <tiers>
+            <mod name="Sorcerer's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Spell Damage +% While Dual Wielding" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Spell Damage +% While Holding Shield" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Spell Damage +% While Holding Shield</alias>
+        </aliases>
+        <tiers>
+            <mod name="Battlemage's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Spell Damage +% While Holding Shield" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Spell Staff Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Spell Staff Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Wizard's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Spell Staff Damage +%" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed with Staves" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed with Staves</alias>
+        </aliases>
+        <tiers>
+            <mod name="Blunt" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed with Staves" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed with Swords" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed with Swords</alias>
+        </aliases>
+        <tiers>
+            <mod name="Fencing" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed with Swords" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Totem Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Totem Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Shaman's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Totem Damage +%" from="12" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Totem Life increase" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Totem Life increase</alias>
+        </aliases>
+        <tiers>
+            <mod name="Carved" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Totem Life increase" from="8" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Trap Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Trap Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Trapping" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Trap Damage +%" from="14" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Trap Throwing Speed increase" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Trap Throwing Speed increase</alias>
+        </aliases>
+        <tiers>
+            <mod name="Honed" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Trap Throwing Speed increase" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Two Handed Melee Attack Speed +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Two Handed Melee Attack Speed +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Warrior's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Two Handed Melee Attack Speed +%" from="4" to="6" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Two Handed Melee Critical Strike Chance +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Two Handed Melee Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Sundering" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Two Handed Melee Critical Strike Chance +%" from="14" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Two Handed Melee Critical Strike Multiplier +" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Two Handed Melee Critical Strike Multiplier +</alias>
+        </aliases>
+        <tiers>
+            <mod name="Rupturing" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Two Handed Melee Critical Strike Multiplier +" from="15" to="18" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Two Handed Melee Physical Damage +%" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Two Handed Melee Physical Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="Champion's" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Two Handed Melee Physical Damage +%" from="12" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed with Wands" modtype="Prefix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed with Wands</alias>
+        </aliases>
+        <tiers>
+            <mod name="Jinxing" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed with Wands" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Accuracy Rating +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Accuracy Rating +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Precision" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Accuracy Rating +%" from="10" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Accuracy Rating +%|Critical Strike Chance +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Accuracy Rating +%</alias>
+            <alias>Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Deadliness" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Accuracy Rating +%" from="6" to="10" />
+                    <stat name="Critical Strike Chance +%" from="6" to="10" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Additional All Attributes" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Additional All Attributes</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Adaption" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Additional All Attributes" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Additional Dexterity" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Additional Dexterity</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Dexterity" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Additional Dexterity" from="12" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Additional Dexterity And Intelligence" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Additional Dexterity And Intelligence</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Cunning" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Additional Dexterity And Intelligence" from="8" to="10" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Additional Intelligence" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Additional Intelligence</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Intelligence" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Additional Intelligence" from="12" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Additional Strength" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Additional Strength</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Strength" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Additional Strength" from="12" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Additional Strength And Dexterity" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Additional Strength And Dexterity</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Athletics" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Additional Strength And Dexterity" from="8" to="10" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Additional Strength And Intelligence" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Additional Strength And Intelligence</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Spirit" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Additional Strength And Intelligence" from="8" to="10" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Area Damage +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Area Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Blasting" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Area Damage +%" from="10" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack And Cast Speed +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack And Cast Speed +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Zeal" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack And Cast Speed +%" from="2" to="4" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Attack Speed +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Attack Speed +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Berserking" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Attack Speed +%" from="3" to="5" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cast Speed +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cast Speed +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Enchanting" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cast Speed +%" from="2" to="4" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Chance to Freeze %|Freeze Duration Increase" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Chance to Freeze %</alias>
+            <alias>Freeze Duration Increase</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Freezing" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Chance to Freeze %" from="2" to="3" />
+                    <stat name="Freeze Duration Increase" from="12" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Chance to Ignite %|Ignite Duration Increase" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Chance to Ignite %</alias>
+            <alias>Ignite Duration Increase</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Burning" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Chance to Ignite %" from="2" to="3" />
+                    <stat name="Ignite Duration Increase" from="3" to="5" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Chance to Shock %|Shock Duration Increase" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Chance to Shock %</alias>
+            <alias>Shock Duration Increase</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Shocking" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Chance to Shock %" from="2" to="3" />
+                    <stat name="Shock Duration Increase" from="12" to="16" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Chaos Damage Resistance %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Chaos Damage Resistance %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Order" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Chaos Damage Resistance %" from="7" to="13" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Cold Damage Resistance %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Cold Damage Resistance %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of the Beast" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Cold Damage Resistance %" from="12" to="15" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Critical Strike Multiplier +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Critical Strike Multiplier +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Potency" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Critical Strike Multiplier +%" from="9" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Fire Damage Resistance %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Fire Damage Resistance %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of the Dragon" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Fire Damage Resistance %" from="12" to="15" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Global Chance to Knockback %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Global Chance to Knockback %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Fending" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Global Chance to Knockback %" from="4" to="6" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Item Found Rarity +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Item Found Rarity +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Raiding" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Item Found Rarity +%" from="4" to="6" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Life Gained On Hit" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Life Gained On Hit</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Rejuvenation" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Life Gained On Hit" from="2" to="3" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Lightning Damage Resistance %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Lightning Damage Resistance %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Grounding" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Lightning Damage Resistance %" from="12" to="15" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Mana Cost Reduction" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Mana Cost Reduction</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Efficiency" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Mana Cost Reduction" from="3" to="5" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Projectile Speed +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Projectile Speed +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Soaring" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Projectile Speed +%" from="6" to="8" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Resist all Elements" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Resist all Elements</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Resistance" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Resist all Elements" from="8" to="10" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Spell Critical Strike Multiplier +" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Spell Critical Strike Multiplier +</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Unmaking" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Spell Critical Strike Multiplier +" from="12" to="15" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Stun Duration +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Stun Duration +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Stunning" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Stun Duration +%" from="10" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Base Stun Recovery +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Base Stun Recovery +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Recovery" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Base Stun Recovery +%" from="10" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Cold And Lightning Damage Resistance %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Cold And Lightning Damage Resistance %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Shelter" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Cold And Lightning Damage Resistance %" from="10" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Critical Strike Chance +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Menace" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Critical Strike Chance +%" from="8" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="All Damage" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>All Damage</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Wounding" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="All Damage" from="8" to="10" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Damage Over Time +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Damage Over Time +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Entropy" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Damage Over Time +%" from="10" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Elemental Critical Strike Chance +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Elemental Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of the Apocalypse" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Elemental Critical Strike Chance +%" from="10" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Elemental Critical Strike Multiplier +" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Elemental Critical Strike Multiplier +</alias>
+        </aliases>
+        <tiers>
+            <mod name="of the Elements" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Elemental Critical Strike Multiplier +" from="12" to="15" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Energy Shield Gain Per Target" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Energy Shield Gain Per Target</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Focus" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Energy Shield Gain Per Target" from="2" to="3" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Fire And Cold Damage Resistance %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Fire And Cold Damage Resistance %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of the Hearth" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Fire And Cold Damage Resistance %" from="10" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Fire And Lightning Damage Resistance %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Fire And Lightning Damage Resistance %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Insulation" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Fire And Lightning Damage Resistance %" from="10" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Mana gained on Hit" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Mana gained on Hit</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Absorption" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Mana gained on Hit" from="1" to="2" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Melee Critical Strike Chance +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Melee Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Weight" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Melee Critical Strike Chance +%" from="10" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Melee Damage +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Melee Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Combat" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Melee Damage +%" from="10" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Melee Weapon Critical Strike Multiplier +" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Melee Weapon Critical Strike Multiplier +</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Demolishing" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Melee Weapon Critical Strike Multiplier +" from="12" to="15" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Minion Block %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Minion Block %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of the Wall" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Minion Block %" from="2" to="4" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Minion Elemental Resistance %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Minion Elemental Resistance %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Resilience" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Minion Elemental Resistance %" from="6" to="10" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Projectile Damage +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Projectile Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Archery" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Projectile Damage +%" from="10" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Spell Critical Strike Chance +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Spell Critical Strike Chance +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Annihilation" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Spell Critical Strike Chance +%" from="10" to="14" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Spell Damage +%" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Spell Damage +%</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Mysticism" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Spell Damage +%" from="10" to="12" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
+    <affix mod="Totem Elemental Resistance %" modtype="Suffix" signaturemod="false" legacymod="false" category="" twohweaponmod="false" onehweaponmod="false" applicablegear="Jewel">
+        <aliases>
+            <alias>Totem Elemental Resistance %</alias>
+        </aliases>
+        <tiers>
+            <mod name="of Runes" level="1" mastercrafted="false" tier="1">
+                <stats>
+                    <stat name="Totem Elemental Resistance %" from="6" to="10" />
+                </stats>
+            </mod>
+        </tiers>
+    </affix>
 </modlist>

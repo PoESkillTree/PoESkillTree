@@ -82,8 +82,19 @@ namespace POESKillTree.Utils
             {"Shield",GearGroup.Shield},
         };
 
+        static Dictionary<string, ItemClass> JewelClassMap = new Dictionary<string, ItemClass>()
+        {
+            {"Crimson", ItemClass.Jewel},
+            {"Cobalt", ItemClass.Jewel},
+            {"Viridian", ItemClass.Jewel},
+        };
 
-
+        static Dictionary<string, GearGroup> JewelGroupMap = new Dictionary<string, GearGroup>()
+        {
+            {"Crimson", GearGroup.Jewel},
+            {"Cobalt", GearGroup.Jewel},
+            {"Viridian", GearGroup.Jewel},
+        };
 
         public static void ExtractJewelry(List<ItemBase> items, List<Tuple<string, string>> images)
         {

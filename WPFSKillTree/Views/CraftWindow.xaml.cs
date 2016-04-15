@@ -144,6 +144,8 @@ namespace POESKillTree.Views
 
             msp1.Affixes = msp2.Affixes = msp3.Affixes = _prefixes;
             mss1.Affixes = mss2.Affixes = mss3.Affixes = _suffixes;
+            msp3.Visibility = Item.Class == ItemClass.Jewel ? Visibility.Hidden : Visibility.Visible;
+            mss3.Visibility = Item.Class == ItemClass.Jewel ? Visibility.Hidden : Visibility.Visible;
 
             SkipRedraw = false;
 
@@ -171,7 +173,8 @@ namespace POESKillTree.Views
         {
             if (SkipRedraw)
                 return;
-
+            if (Item == null)
+                return;
 
             Item.NameLine = "";
             Item.TypeLine = Item.BaseType;
@@ -326,7 +329,7 @@ namespace POESKillTree.Views
 
             Item.Properties = plist;
 
-            Item.FlavourText = "Crafted by Power - PoeSkillTree";
+            Item.FlavourText = "Crafted by PoESkillTree";
         }
 
         ModSelector[] _selectedSuff = new ModSelector[0];
