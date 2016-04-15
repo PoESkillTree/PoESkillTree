@@ -1,9 +1,20 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 {
+    /// <summary>
+    /// A reduction test that merges nearest direct neighbors of terminals into them.
+    /// </summary>
+    /// <remarks>
+    /// See the inline documentation for a more detailed explanation.
+    /// 
+    /// Source of the test:
+    ///     T. Polzin (2003): "Algorithms for the Steiner Problem in Networks", p. 54
+    ///     (test was first published by J. E. Beasley in 1984)
+    /// </remarks>
     public class NearestVertexTest : SteinerReduction
     {
         protected override string TestId
@@ -17,41 +28,74 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 
         protected override int ExecuteTest()
         {
-            if (NodeStates.FixedTargetNodeCount == 1) return 0;
+            // The test only makes sense with at least 2 terminals.
+            if (NodeStates.FixedTargetNodeCount <= 1) return 0;
 
             var removedNodes = 0;
             var untested = new HashSet<int>(NodeStates.FixedTargetNodeIndices);
-            // For each terminal zi with degree of at least 2
+            // For each terminal z with degree of at least 2
             while (untested.Any())
             {
-                var zi = untested.First();
-                untested.Remove(zi);
+                var z = untested.First();
+                untested.Remove(z);
 
-                var neighbors = EdgeSet.NeighborsOf(zi);
+                var neighbors = EdgeSet.NeighborsOf(z);
                 if (neighbors.Count < 2) continue;
 
-                // Let (zi, v1) and (zi, v2) be the shortest and second shortest edges incident to zi.
-                var tuple = ShortestTwoEdgesOf(EdgeSet.EdgesOf(zi));
+                // Determine the shortest and second shortest edge incident to z.
+                // For the second shortest, only the weight is of interest.
+                var tuple = ShortestTwoEdgesOf(EdgeSet.EdgesOf(z));
                 var shortest = tuple.Item1;
                 var secondShortestWeight = tuple.Item2;
+                // v is the node which is connected to z via the shortest edge.
+                var v = shortest.N1 == z ? shortest.N2 : shortest.N1;
 
-                var v1 = shortest.N1 == zi ? shortest.N2 : shortest.N1;
-
-                // (zi, v1) belongs to at least one Steiner minimal tree, if there is a terminal zj, zi != zj
-                // with: c(zi, v2) >= c(zi, v1) + d(v1, zj)
+                // The shortest edge belongs to at least one Steiner minimal tree, if
+                // secondShortestWeight >= shortest.Weight + distance(v, y) for any terminal y, y != z
                 var canBeContracted = NodeStates.FixedTargetNodeIndices
-                        .Where(zj => zi != zj)
-                        .Any(zj => secondShortestWeight >= shortest.Weight + DistanceLookup[v1, zj]);
-                // If there is, v1 and (zi, v1) can be merged into zi.
+                        .Where(y => z != y)
+                        .Any(y => secondShortestWeight >= shortest.Weight + DistanceLookup[v, y]);
+                // If such a y exists, we can merge v into z.
                 if (canBeContracted)
                 {
-                    untested.Add(zi);
-                    untested.Remove(v1);
-                    MergeInto(v1, zi);
+                    // z was changed and can be tested again.
+                    untested.Add(z);
+                    // v no longer exists and as such must not be tested.
+                    untested.Remove(v);
+                    MergeInto(v, z);
                     removedNodes++;
                 }
             }
             return removedNodes;
+        }
+
+        /// <summary>
+        /// Returns the two edges of the parameter which have the lowest weights.
+        /// </summary>
+        /// <returns>A tuple of the edge with the lowest weight and the weight of the second shortest edge.</returns>
+        private static Tuple<GraphEdge, uint> ShortestTwoEdgesOf(IReadOnlyList<GraphEdge> edges)
+        {
+            var shortest = edges[0];
+            var secondShortestWeight = edges[1].Weight;
+            if (shortest.Weight > secondShortestWeight)
+            {
+                secondShortestWeight = shortest.Weight;
+                shortest = edges[1];
+            }
+            for (var i = 2; i < edges.Count; i++)
+            {
+                var currentWeight = edges[i].Weight;
+                if (currentWeight < shortest.Weight)
+                {
+                    secondShortestWeight = shortest.Weight;
+                    shortest = edges[i];
+                }
+                else if (currentWeight < secondShortestWeight)
+                {
+                    secondShortestWeight = currentWeight;
+                }
+            }
+            return Tuple.Create(shortest, secondShortestWeight);
         }
     }
 }

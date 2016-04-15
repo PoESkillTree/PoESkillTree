@@ -4,6 +4,7 @@ using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 {
+    // T. Polzin (2003): "Algorithms for the Steiner Problem in Networks", p. 55
     public class ShortestLinksTest : SteinerReduction
     {
         protected override string TestId
@@ -30,6 +31,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                 if (!NodeStates.IsFixedTarget(i) || terminalVisited[i]) continue;
 
                 var links = voronoiPartition.Links(i);
+                // ShortestTwoEdgesOf was moved from SteinerReduction to NearestVertexTest
                 var tuple = links.Count > 1 ? ShortestTwoEdgesOf(links) : Tuple.Create(links[0], uint.MaxValue);
                 var shortestEdge = tuple.Item1;
                 var secondShortestWeight = tuple.Item2;

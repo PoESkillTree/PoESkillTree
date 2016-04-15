@@ -7,6 +7,23 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 {
+    /// <summary>
+    /// A test that uses 4 fast degree based reductions.
+    /// </summary>
+    /// <remarks>
+    /// 1. non-terminals of degree 1 can be removed.
+    /// 2. non-terminals of degree 2 can be removed after the edges to their
+    ///    two neighbors are combined into one edge.
+    /// 3. non-terminals adjacent to terminals of degree 1 must be taken
+    ///    and can be merged into the terminal.
+    /// 4. An edge connecting two terminals that is the shortest edge of
+    ///    one of those terminals can be in an optimal solution. The terminals
+    ///    can be combined into one.
+    /// 
+    /// Source:
+    ///     T. Koch, A. Martin (1998): "Solving Steiner Tree Problems in Graphs to Optimality"
+    ///     (test was first published by J. E. Beasley in 1984)
+    /// </remarks>
     public class DegreeTest : SteinerReduction
     {
         protected override string TestId
@@ -112,6 +129,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                     EdgeSet.Remove(index, neighbors[0]);
                     break;
                 case 2:
+                    // Merge the two incident edges.
                     var left = neighbors[0];
                     var right = neighbors[1];
                     var newWeight = EdgeSet[index, left].Weight + EdgeSet[index, right].Weight;

@@ -25,7 +25,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
     /// Source (original definition of the special distance and the basic algorithm idea):
     ///     C. W. Duin, A. Volgenant (1989): "An edge elimination test for the steiner problem in graphs"
     /// Source for the used "Steiner distance" terminology:
-    ///     Tobias Polzin (2003): "Algorithms for the Steiner Problem in Networks", p. 50
+    ///     T. Polzin (2003): "Algorithms for the Steiner Problem in Networks", p. 50
     ///     (freely available: http://scidok.sulb.uni-saarland.de/volltexte/2004/218/pdf/TobiasPolzin_ProfDrKurtMehlhorn.pdf)
     /// </remarks>
     public class BottleneckSteinerDistanceCalculator

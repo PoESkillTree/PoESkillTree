@@ -108,8 +108,10 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
             var edgeCountBefore = EdgeSet.Count;
             var removedNodes = ExecuteTest();
             Debug.WriteLine("{0} Test #{1}:", TestId, ++_iteration);
-            Debug.WriteLine("   removed nodes: " + removedNodes);
-            Debug.WriteLine("   removed edges: " + (edgeCountBefore - EdgeSet.Count));
+            if (removedNodes > 0)
+                Debug.WriteLine("   removed nodes: " + removedNodes);
+            if (edgeCountBefore - EdgeSet.Count > 0)
+                Debug.WriteLine("   removed edges: " + (edgeCountBefore - EdgeSet.Count));
             edgeElims += edgeCountBefore - EdgeSet.Count;
             nodeElims += removedNodes;
             return edgeCountBefore - EdgeSet.Count > 0;
@@ -154,35 +156,6 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
             NodeStates.MarkNodeAsRemoved(x);
 
             return xNeighbors;
-        }
-
-        /// <summary>
-        /// Returns the two edges of the parameter which have the lowest weights.
-        /// </summary>
-        /// <returns>A tuple of the edge with the lowest weight and the weight of the second shortest edge.</returns>
-        protected static Tuple<GraphEdge, uint> ShortestTwoEdgesOf(IReadOnlyList<GraphEdge> edges)
-        {
-            var shortest = edges[0];
-            var secondShortestWeight = edges[1].Weight;
-            if (shortest.Weight > secondShortestWeight)
-            {
-                secondShortestWeight = shortest.Weight;
-                shortest = edges[1];
-            }
-            for (var i = 2; i < edges.Count; i++)
-            {
-                var currentWeight = edges[i].Weight;
-                if (currentWeight < shortest.Weight)
-                {
-                    secondShortestWeight = shortest.Weight;
-                    shortest = edges[i];
-                }
-                else if (currentWeight < secondShortestWeight)
-                {
-                    secondShortestWeight = currentWeight;
-                }
-            }
-            return Tuple.Create(shortest, secondShortestWeight);
         }
         
     }

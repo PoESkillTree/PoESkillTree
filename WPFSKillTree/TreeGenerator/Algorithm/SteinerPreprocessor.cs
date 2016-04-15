@@ -159,8 +159,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
                 new FarAwayNonTerminalsTest(_nodeStates, _data),
                 new PathsWithManyTerminalsTest(_nodeStates, _data),
                 new NonTerminalsOfDegreeKTest(_nodeStates, _data),
-                new NearestVertexTest(_nodeStates, _data),
-                new ShortestLinksTest(_nodeStates, _data)
+                new NearestVertexTest(_nodeStates, _data)
             };
             // Run every reduction test (each followed by a simple degree reduction test) until they are no longer able
             // to reduce the search space or 10 reduction rounds were executed.
