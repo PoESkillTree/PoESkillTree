@@ -84,16 +84,16 @@ namespace POESKillTree.Utils
 
         static Dictionary<string, ItemClass> JewelClassMap = new Dictionary<string, ItemClass>()
         {
-            {"Crimson", ItemClass.Jewel},
-            {"Cobalt", ItemClass.Jewel},
-            {"Viridian", ItemClass.Jewel},
+            {"Crimson Jewel", ItemClass.Jewel},
+            {"Cobalt Jewel", ItemClass.Jewel},
+            {"Viridian Jewel", ItemClass.Jewel},
         };
 
         static Dictionary<string, GearGroup> JewelGroupMap = new Dictionary<string, GearGroup>()
         {
-            {"Crimson", GearGroup.Jewel},
-            {"Cobalt", GearGroup.Jewel},
-            {"Viridian", GearGroup.Jewel},
+            {"Crimson Jewel", GearGroup.Jewel},
+            {"Cobalt Jewel", GearGroup.Jewel},
+            {"Viridian Jewel", GearGroup.Jewel},
         };
 
         public static void ExtractJewelry(List<ItemBase> items, List<Tuple<string, string>> images)
@@ -319,6 +319,48 @@ namespace POESKillTree.Utils
 
                     }
                 }
+            }
+        }
+
+        public static void ExtractJewels(List<ItemBase> items, List<Tuple<string, string>> images)
+        {
+            try
+            {
+                var crimson_jewel = "Crimson Jewel";
+                var cobalt_jewel = "Cobalt Jewel";
+                var viridian_jewel = "Viridian Jewel";
+                images.Add(Tuple.Create(crimson_jewel, "https://p7p4m6s5.ssl.hwcdn.net/image/Art/2DItems/Jewels/basicstr.png?scale=1&w=1&h=1&v=5496129c557831c118a679c1001f3df93"));
+                images.Add(Tuple.Create(cobalt_jewel, "https://p7p4m6s5.ssl.hwcdn.net/image/Art/2DItems/Jewels/basicint.png?scale=1&w=1&h=1&v=cd579ea22c05f1c6ad2fd015d7a710bd3"));
+                images.Add(Tuple.Create(viridian_jewel, "https://p7p4m6s5.ssl.hwcdn.net/image/Art/2DItems/Jewels/basicdex.png?scale=1&w=1&h=1&v=7375b3bb90a9809870b31d1aa4aa68b93"));
+                var crimson = new ItemBase()
+                {
+                    GearGroup = JewelGroupMap[crimson_jewel],
+                    Class = JewelClassMap[crimson_jewel],
+                    ItemType = crimson_jewel,
+                    Level = 1,
+                };
+                var cobalt = new ItemBase()
+                {
+                    GearGroup = JewelGroupMap[cobalt_jewel],
+                    Class = JewelClassMap[cobalt_jewel],
+                    ItemType = cobalt_jewel,
+                    Level = 1,
+                };
+                var viridian = new ItemBase()
+                {
+                    GearGroup = JewelGroupMap[viridian_jewel],
+                    Class = JewelClassMap[viridian_jewel],
+                    ItemType = viridian_jewel,
+                    Level = 1,
+                };
+
+                items.Add(crimson);
+                items.Add(cobalt);
+                items.Add(viridian);
+            }
+            catch (Exception e)
+            {
+
             }
         }
     }

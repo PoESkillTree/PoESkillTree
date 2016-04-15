@@ -2494,13 +2494,15 @@ namespace POESKillTree.Views
                             var images = new List<Tuple<string, string>>();
 
                             StartLoadingWindow(L10n.Message("Downloading Item assets"));
-                            UpdateLoadingWindow(0, 3);
+                            UpdateLoadingWindow(0, 4);
                             ItemAssetDownloader.ExtractJewelry(bases, images);
-                            UpdateLoadingWindow(1, 3);
+                            UpdateLoadingWindow(1, 4);
                             ItemAssetDownloader.ExtractArmors(bases, images);
-                            UpdateLoadingWindow(2, 3);
+                            UpdateLoadingWindow(2, 4);
                             ItemAssetDownloader.ExtractWeapons(bases, images);
-                            UpdateLoadingWindow(3, 3);
+                            UpdateLoadingWindow(3, 4);
+                            ItemAssetDownloader.ExtractJewels(bases, images);
+                            UpdateLoadingWindow(4, 4);
 
                             new System.Xml.Linq.XElement("ItemBaseList", bases.Select(b => b.Serialize())).Save(Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Itemlist.xml"));
 
