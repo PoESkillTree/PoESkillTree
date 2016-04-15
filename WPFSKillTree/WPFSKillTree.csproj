@@ -224,10 +224,8 @@
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NearestVertexTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NonTerminalsOfDegreeKTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\PathsWithManyTerminalsTest.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\ShortestLinksTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\SteinerReduction.cs" />
     <Compile Include="TreeGenerator\Algorithm\Model\TwoDArray.cs" />
-    <Compile Include="TreeGenerator\Algorithm\VoronoiPartition.cs" />
     <Compile Include="TreeGenerator\Genetic\BitArrayKey.cs" />
     <Compile Include="TreeGenerator\Genetic\GeneticAlgorithm.cs" />
     <Compile Include="TreeGenerator\Genetic\WeightedSampling.cs" />
