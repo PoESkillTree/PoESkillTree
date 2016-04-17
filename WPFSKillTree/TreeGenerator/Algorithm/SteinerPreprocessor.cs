@@ -124,6 +124,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
             // Even the basic degree reductions hurt the AdvancedSolver's performance.
             // Reenabling should be tested when other algorithm parts are changed/improved.
+            // todo experiment with reductions and AdvancedSolver
             if (_nodeStates.VariableTargetNodeCount > 0)
             {
                 return _nodeStates.SearchSpace;

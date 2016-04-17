@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Algorithm;
 using POESKillTree.TreeGenerator.Algorithm.Model;
 using POESKillTree.TreeGenerator.Genetic;
 using POESKillTree.TreeGenerator.Model.PseudoAttributes;
@@ -44,9 +43,9 @@ namespace POESKillTree.TreeGenerator.Solver
         private static readonly Regex TravelNodeRegex = new Regex(@"\+# to (Strength|Intelligence|Dexterity)");
 
         // It doesn't gain anything from larger populations and more generations.
-        // Increasing GenMultiplier has the upside that it doesn't take much longer because
+        // Increasing MaxGeneration has the upside that it doesn't take much longer because
         // the GA reaches a point where not many new DNAs are generated and it can use the cache nearly always.
-        private const double GenMultiplier = 0.6;
+        private const int MaxGeneration = 200;
 
         private const double PopMultiplier = 7;
 
@@ -115,7 +114,7 @@ namespace POESKillTree.TreeGenerator.Solver
             get
             {
                 return new GeneticAlgorithmParameters(
-                    (int) (GenMultiplier * SearchSpace.Count),
+                    MaxGeneration,
                     (int) (PopMultiplier * SearchSpace.Count),
                     SearchSpace.Count,
                     maxMutateClusterSize: MaxMutateClusterSize);
