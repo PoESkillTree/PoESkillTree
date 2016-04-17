@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using POESKillTree.Utils;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace POESKillTree.TreeGenerator.Genetic
 {
     /// <summary>
     /// Data struct to pass parameters to <see cref="GeneticAlgorithm"/>.
@@ -44,7 +44,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// Maximum length of sequences that are flipped at once by mutation.
         /// </summary>
         public readonly int MaxMutateClusterSize;
-        
+
         public GeneticAlgorithmParameters(int maxGeneration, int populationSize, int dnaLength,
             double temperature = 6, double annealingFactor = 1, int maxMutateClusterSize = 1)
         {
@@ -226,10 +226,10 @@ namespace POESKillTree.TreeGenerator.Algorithm
             _temperature = parameters.Temperature;
             _annealingFactor = parameters.AnnealingFactor;
             _maxMutateClusterSize = parameters.MaxMutateClusterSize;
-
-            _bestSolution = new Individual(null, 0);
-
+            
             _initialSolution = initialSolution ?? new BitArray(_dnaLength);
+            // Make sure there is a valid solution in case _populationSize is 0.
+            _bestSolution = new Individual(_initialSolution, 0);
             _population = CreatePopulation();
             GenerationCount = 0;
             UpdateBestSolution();
@@ -249,6 +249,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             Individual[] newPopulation = new Individual[_populationSize];
             // The initial solution is included in the initial population.
             newPopulation[0] = SpawnIndividual(_initialSolution);
+            newPopulation[0].Age++;
             //for (int i = 1; i < populationSize; i++)
             Parallel.For(1, _populationSize, i =>
             {
@@ -268,6 +269,13 @@ namespace POESKillTree.TreeGenerator.Algorithm
             if (_population == null)
                 throw new InvalidOperationException("Cannot generate a next" +
                     " generation without prior call to InitializeEvolution!");
+
+            if (_populationSize == 0)
+            {
+                // Not returning would lead to an infertile generation.
+                GenerationCount = MaxGeneration;
+                return GenerationCount;
+            }
 
             Individual[] newPopulation = new Individual[_populationSize];
             int newPopIndex = 0;

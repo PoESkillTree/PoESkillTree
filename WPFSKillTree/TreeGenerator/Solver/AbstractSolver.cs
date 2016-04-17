@@ -1,65 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Algorithm;
+using POESKillTree.TreeGenerator.Algorithm.Model;
 using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
     /// <summary>
-    /// Interface of solver classes for use without generic parameter.
-    /// </summary>
-    public interface ISolver
-    {
-        /// <summary>
-        /// Gets whether the maximum number of steps is executed.
-        /// </summary>
-        bool IsConsideredDone { get; }
-
-        /// <summary>
-        /// Gets the maximum number of steps the solver executes.
-        /// Return value is undefined until <see cref="Initialize"/> got called.
-        /// </summary>
-        int MaxSteps { get; }
-
-        /// <summary>
-        /// Gets the number of steps executed up to this point.
-        /// Return value is undefined until <see cref="Initialize"/> got called.
-        /// </summary>
-        int CurrentStep { get; }
-
-        /// <summary>
-        /// Gets the best solution generated up to this point as
-        /// HashSet of <see cref="SkillNode"/> ids.
-        /// Return value is undefined until <see cref="Initialize"/> got called.
-        /// </summary>
-        IEnumerable<ushort> BestSolution { get; }
-
-        /// <summary>
-        /// Initializes the solver. Must be called before <see cref="Step"/>.
-        /// </summary>
-        void Initialize();
-
-        /// <summary>
-        /// Progresses execution of the solver by one step.
-        /// Call this function in a loop until <see cref="IsConsideredDone"/> is true.
-        /// <see cref="Initialize"/> must be called before this.
-        /// </summary>
-        void Step();
-
-        /// <summary>
-        /// Optionally applies final algorithms after the last step to improve the solution.
-        /// <see cref="Initialize"/> and <see cref="Step"/> must be called before this.
-        /// </summary>
-        void FinalStep();
-    }
-
-    /// <summary>
-    ///  A class controlling the interaction between the skill tree data and the
-    ///  genetic algorithm used to find (hopefully) optimal solutions.
+    ///  Base solver class controlling the interaction between the skill tree data and the
+    ///  algorithm used to find (hopefully) optimal solutions.
     /// </summary>
     /// <typeparam name="TS">The type of SolverSettings this solver uses.</typeparam>
     public abstract class AbstractSolver<TS> : ISolver
@@ -68,32 +20,22 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// True once <see cref="Initialize"/> returned.
         /// </summary>
-        private bool _isInitialized;
+        protected bool IsInitialized { get; private set; }
         
         public bool IsConsideredDone
         {
-            get { return _isInitialized && CurrentStep >= MaxSteps; }
+            get { return IsInitialized && CurrentStep >= MaxSteps; }
         }
+
+        public abstract int MaxSteps { get; }
+
+        public abstract int CurrentStep { get; }
         
-        public int MaxSteps
-        {
-            get { return _isInitialized ? _ga.MaxGeneration : 0; }
-        }
-        
-        public int CurrentStep
-        {
-            get { return _isInitialized ? _ga.GenerationCount : 0; }
-        }
-        
+        public abstract IEnumerable<ushort> BestSolution { get; }
+
         /// <summary>
-        /// The best dna calculated by the GA up to this point.
+        /// Skill tree instance to operate on.
         /// </summary>
-        private BitArray _bestDna;
-        
-        public IEnumerable<ushort> BestSolution { get; private set; }
-
-        //public IEnumerable<HashSet<ushort>> AlternativeSolutions { get; private set; }
-
         private readonly SkillTree _tree;
 
         /// <summary>
@@ -102,75 +44,38 @@ namespace POESKillTree.TreeGenerator.Solver
         protected readonly TS Settings;
 
         /// <summary>
-        /// Gets the GaParameters to initialize the genetic algorithm with.
+        /// The fixed start node (can contain multiple) of this solver run.
         /// </summary>
-        protected abstract GeneticAlgorithmParameters GaParameters { get; }
+        protected GraphNode StartNode { get; private set; }
+        
+        /// <summary>
+        /// Gets the target nodes this solver run must include.
+        /// </summary>
+        protected IReadOnlyList<GraphNode> TargetNodes { get; private set; }
 
         /// <summary>
-        /// Gets or sets the fixed start nodes of this solver run.
+        /// Contains all nodes that can be skilled. Simplification of the skill tree.
         /// </summary>
-        protected Supernode StartNodes { get; private set; }
-
-        private HashSet<GraphNode> _targetNodes;
+        protected IReadOnlyList<GraphNode> AllNodes { get; private set; }
+        
         /// <summary>
-        /// Gets  the target nodes this solver run must include.
+        /// Gets the list of GraphNodes from which this solver tries to find the best subset.
         /// </summary>
-        protected IEnumerable<GraphNode> TargetNodes
-        {
-            get { return _targetNodes; }
-        }
-
-        /// <summary>
-        /// The search graph in which all used nodes lie. Simplification
-        /// of the skill tree.
-        /// </summary>
-        private SearchGraph _searchGraph;
-
-        private List<GraphNode> _searchSpace;
-        /// <summary>
-        /// Gets the list of GraphNodes from which this solver tries
-        /// to find the best subset.
-        /// </summary>
-        protected IReadOnlyCollection<GraphNode> SearchSpace
-        {
-            get { return _searchSpace; }
-        }
-
-        private HashSet<ushort> _fixedNodes;
-        /// <summary>
-        /// Get the collection of nodes always included in solutions.
-        /// </summary>
-        protected IEnumerable<ushort> FixedNodes
-        {
-            get { return _fixedNodes; }
-        }
-
-        /// <summary>
-        /// The genetic algorithm used by the solver to generate solutions.
-        /// </summary>
-        private GeneticAlgorithm _ga;
+        protected IReadOnlyList<GraphNode> SearchSpace { get; private set; }
 
         /// <summary>
         /// DistanceLookup for calculating and caching distances and shortest paths between nodes.
         /// </summary>
-        protected readonly DistanceLookup Distances = new DistanceLookup();
+        protected IDistancePathLookup Distances { get; private set; }
 
         /// <summary>
-        /// Gets or sets whether this solver should try to improve the solution with simple HillClimbing
-        /// after the final step.
+        /// Nodes may be merged by the Preprocessor. This Dictionary contains the node-ids that are represented
+        /// by a single node-id. If the node is unmerged, it only contains itself.
         /// </summary>
-        protected bool FinalHillClimbEnabled { private get; set; }
+        protected IReadOnlyDictionary<ushort, IReadOnlyCollection<ushort>> NodeExpansionDictionary { get; private set; }
 
-        /// <summary>
-        /// Minimum ratio of number of target nodes to search space + target nodes
-        /// to use a pre filled edge queue (that contains all possible edges) for mst calculation.
-        /// </summary>
-        private const double PreFilledSpanThreshold = 1.0 / 10;
-
-        /// <summary>
-        /// First edge of the linked list of edges ordered by priority.
-        /// </summary>
-        private LinkedGraphEdge _firstEdge;
+        // May become useful at some point if edge-based-optimization (instead of node-based) is implemented.
+        //protected IReadOnlyGraphEdgeSet SearchSpaceEdgeSet { get; private set; }
 
         /// <summary>
         /// Creates a new, uninitialized instance.
@@ -182,7 +87,7 @@ namespace POESKillTree.TreeGenerator.Solver
             if (tree == null) throw new ArgumentNullException("tree");
             if (settings == null) throw new ArgumentNullException("settings");
 
-            _isInitialized = false;
+            IsInitialized = false;
             _tree = tree;
             Settings = settings;
         }
@@ -190,65 +95,56 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         ///  Initializes the solver so that the optimization can be run.
         /// </summary>
-        /// <exception cref="InvalidOperationException">
+        /// <exception cref="GraphNotConnectedException">
         /// If not all target nodes are connected to the start node.
         /// </exception>
-        public void Initialize()
+        public virtual void Initialize()
         {
             BuildSearchGraph();
 
-            _searchSpace =
-                _searchGraph.NodeDict.Values.Where(n => IncludeNode(n) && n != StartNodes && !TargetNodes.Contains(n))
-                    .ToList();
+            // Use SteinerPreprocessor for search space reduction.
+            SearchSpace = AllNodes.ToList();
+            var variableTargetNodes = SearchSpace.Where(IsVariableTargetNode);
+            var preProc = new SteinerPreprocessor(SearchSpace, TargetNodes, StartNode, variableTargetNodes);
+            var remainingNodes = preProc.ReduceSearchSpace();
 
-            var consideredNodes = SearchSpace.Concat(TargetNodes).ToList();
-            consideredNodes.Add(StartNodes);
-            Distances.CalculateFully(consideredNodes);
+            TargetNodes = preProc.FixedTargetNodes;
+            SearchSpace = remainingNodes.Except(TargetNodes).ToList();
+            Distances = preProc.DistanceLookup;
+            //SearchSpaceEdgeSet = preProc.EdgeSet;
+            StartNode = preProc.StartNode;
 
-            if (_targetNodes.Any(node => !Distances.AreConnected(StartNodes, node)))
+            // SkillNode-Ids of the remaining search space may represent more than one node. This
+            // information needs to be safed.
+            var expansionDict = remainingNodes.ToDictionary(n => n.Id, n => n.Nodes);
+            // Add the remaining nodes as single (unmerged) ones.
+            foreach (var node in AllNodes)
             {
-                throw new InvalidOperationException("The graph is disconnected.");
-            }
-
-            // Saving the leastSolution as initial solution. Makes sure there is always a
-            // solution even if the search space is empty or MaxGeneration is 0.
-            BestSolution = SpannedMstToSkillnodes(CreateLeastSolution());
-
-            var removedNodes = new List<GraphNode>();
-            var newSearchSpace = new List<GraphNode>();
-            foreach (var node in SearchSpace)
-            {
-                if (IncludeNodeUsingDistances(node))
+                if (!expansionDict.ContainsKey(node.Id))
                 {
-                    newSearchSpace.Add(node);
-                }
-                else
-                {
-                    removedNodes.Add(node);
+                    expansionDict.Add(node.Id, new[] {node.Id});
                 }
             }
-            _searchSpace = newSearchSpace;
+            NodeExpansionDictionary = expansionDict;
 
-            var remainingNodes = SearchSpace.Concat(TargetNodes).ToList();
-            remainingNodes.Add(StartNodes);
-            Distances.RemoveNodes(removedNodes, remainingNodes);
+            Debug.WriteLine("Search space dimension: " + SearchSpace.Count);
+            Debug.WriteLine("Target node count: " + TargetNodes.Count);
 
-            if (_targetNodes.Count/(double) remainingNodes.Count >= PreFilledSpanThreshold)
-            {
-                var prioQueue = new LinkedListPriorityQueue<LinkedGraphEdge>(100);
-                for (var i = 0; i < remainingNodes.Count; i++)
-                {
-                    for (var j = i + 1; j < remainingNodes.Count; j++)
-                    {
-                        prioQueue.Enqueue(new LinkedGraphEdge(i, j), Distances[i, j]);
-                    }
-                }
-                _firstEdge = prioQueue.First;
-            }
+            IsInitialized = true;
+        }
 
-            InitializeGa();
+        public abstract void Step();
 
-            _isInitialized = true;
+        public abstract void FinalStep();
+
+        /// <summary>
+        /// Returns true iff the given node can't be removed from the search space because it can become a target
+        /// node in some instances (if optimizing for something else than simple Steiner).
+        /// Overwrite if there are variable target nodes.
+        /// </summary>
+        protected virtual bool IsVariableTargetNode(GraphNode node)
+        {
+            return false;
         }
 
         /// <summary>
@@ -269,14 +165,11 @@ namespace POESKillTree.TreeGenerator.Solver
                 }
             }
 
-            _searchGraph = new SearchGraph();
-            CreateStartNodes();
-            CreateTargetNodes();
-            // Set start and target nodes as the fixed nodes.
-            _fixedNodes = new HashSet<ushort>(StartNodes.Nodes);
-            _fixedNodes.UnionWith(_targetNodes.Select(node => node.Id));
-            OnStartAndTargetNodesCreated();
-            CreateSearchGraph();
+            var searchGraph = new SearchGraph();
+            CreateStartNodes(searchGraph);
+            CreateTargetNodes(searchGraph);
+            CreateSearchGraph(searchGraph);
+            AllNodes = searchGraph.NodeDict.Values.ToList();
 
             // Remove all added edges again.
             foreach (var classStartNode in ascendantClassStartNodes)
@@ -289,54 +182,38 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
         /// <summary>
-        /// Called after <see cref="StartNodes"/>, <see cref="TargetNodes"/> and
-        /// <see cref="FixedNodes"/> are set.
-        /// Override to execute additional logic that needs those calculated.
+        /// Initializes <see cref="StartNode"/> and sets the start node in the provided SearchGraph.
         /// </summary>
-        protected virtual void OnStartAndTargetNodesCreated()
-        { }
-
-        /// <summary>
-        /// Initializes <see cref="StartNodes"/>.
-        /// </summary>
-        private void CreateStartNodes()
+        private void CreateStartNodes(SearchGraph searchGraph)
         {
             if (Settings.SubsetTree.Count > 0 || Settings.InitialTree.Count > 0)
             {
                 // if the current tree does not need to be part of the result, only skill the character node
-                StartNodes = _searchGraph.SetStartNodes(new HashSet<ushort> { _tree.GetCharNodeId() });
+                StartNode = searchGraph.SetStartNodes(new HashSet<ushort> { _tree.GetCharNodeId() });
             }
             else
             {
-                StartNodes = _searchGraph.SetStartNodes(_tree.SkilledNodes);
+                StartNode = searchGraph.SetStartNodes(_tree.SkilledNodes);
             }
         }
 
         /// <summary>
-        /// Initializes <see cref="TargetNodes"/>.
+        /// Initializes <see cref="TargetNodes"/> with all check-tagged nodes and the start node.
+        /// Adds the check-tagged nodes to the provided SearchGraph.
         /// </summary>
-        private void CreateTargetNodes()
+        private void CreateTargetNodes(SearchGraph searchGraph)
         {
-            _targetNodes = new HashSet<GraphNode>();
-            foreach (var nodeId in Settings.Checked)
-            {
-                // Don't add nodes that are already skilled.
-                if (_searchGraph.NodeDict.ContainsKey(SkillTree.Skillnodes[nodeId]))
-                    continue;
-                // Don't add nodes that should not be skilled.
-                if (Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(nodeId))
-                    continue;
-                // Add target node to the graph.
-                var node = _searchGraph.AddNodeId(nodeId);
-                _targetNodes.Add(node);
-            }
+            TargetNodes = (from nodeId in Settings.Checked
+                           where !searchGraph.NodeDict.ContainsKey(SkillTree.Skillnodes[nodeId])
+                           select searchGraph.AddNodeId(nodeId))
+                          .Union(new[] {StartNode}).ToList();
         }
 
         /// <summary>
-        /// Initializes <see cref="_searchGraph"/> by going through all node groups
-        /// of the skill tree and including the that could be part of the solution.
+        /// Initializes the search graph by going through all node groups
+        /// of the skill tree and including those that could be part of the solution.
         /// </summary>
-        private void CreateSearchGraph()
+        private void CreateSearchGraph(SearchGraph searchGraph)
         {
             foreach (var ng in SkillTree.NodeGroups)
             {
@@ -349,7 +226,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 {
                     // If the group contains a skilled node or a target node,
                     // it can't be omitted.
-                    if (_searchGraph.NodeDict.ContainsKey(node)
+                    if (searchGraph.NodeDict.ContainsKey(node)
                         || MustIncludeNodeGroup(node))
                     {
                         mustInclude = true;
@@ -384,7 +261,7 @@ namespace POESKillTree.TreeGenerator.Solver
                         if (SkillTree.rootNodeList.Contains(node.Id)
                             // Don't add nodes that are already in the graph (as
                             // target or start nodes).
-                            || _searchGraph.NodeDict.ContainsKey(node)
+                            || searchGraph.NodeDict.ContainsKey(node)
                             // Don't add nodes that should not be skilled.
                             || Settings.Crossed.Contains(node.Id)
                             // Only add nodes in the subsettree if one is given.
@@ -396,7 +273,7 @@ namespace POESKillTree.TreeGenerator.Solver
                             continue;
 
                         if (IncludeNodeInSearchGraph(node))
-                            _searchGraph.AddNode(node);
+                            searchGraph.AddNode(node);
                     }
                 }
             }
@@ -421,143 +298,5 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             return true;
         }
-
-        /// <summary>
-        /// Indicates whether the given node should be included initially in <see cref="SearchSpace"/>.
-        /// </summary>
-        /// <param name="node">The node in question (not null)</param>
-        /// <returns>true if the given node should be included</returns>
-        protected abstract bool IncludeNode(GraphNode node);
-
-        /// <summary>
-        /// Returns the least possible solution calculated by simply calculating the minimal spanning
-        /// tree between start and target nodes.
-        /// </summary>
-        /// <returns></returns>
-        private MinimalSpanningTree CreateLeastSolution()
-        {
-            // LeastSolution: MST between start and check-tagged nodes.
-            var nodes = new List<GraphNode>(_targetNodes) { StartNodes };
-            var leastSolution = new MinimalSpanningTree(nodes, Distances);
-            leastSolution.Span(StartNodes);
-            OnLeastSolutionCreated(leastSolution.SpanningEdges);
-            return leastSolution;
-        }
-
-        /// <summary>
-        /// Called after calculating the least possible solution which spans start and target nodes.
-        /// Override to execute additional logic that needs those calculated.
-        /// </summary>
-        /// <param name="spanninEdges">The spanning edges of the least solution (not null)</param>
-        protected virtual void OnLeastSolutionCreated(IEnumerable<GraphEdge> spanninEdges)
-        { }
-
-        /// <summary>
-        /// Indicates whether the given node should be included in <see cref="SearchSpace"/> using
-        /// the now calculated distances. Called after <see cref="IncludeNode"/> and after
-        /// <see cref="OnLeastSolutionCreated"/>.
-        /// </summary>
-        /// <param name="node">The node in question (not null)</param>
-        /// <returns></returns>
-        protected abstract bool IncludeNodeUsingDistances(GraphNode node);
-
-        /// <summary>
-        ///  Sets up the genetic algorithm to be ready for the evolutionary search.
-        /// </summary>
-        private void InitializeGa()
-        {
-            Debug.WriteLine("Search space dimension: " + SearchSpace.Count);
-
-            _ga = new GeneticAlgorithm(FitnessFunction);
-            _ga.InitializeEvolution(GaParameters, TreeToDna(Settings.InitialTree));
-        }
-
-        private BitArray TreeToDna(HashSet<ushort> nodes)
-        {
-            var dna = new BitArray(SearchSpace.Count);
-            for (var i = 0; i < SearchSpace.Count; i++)
-            {
-                if (nodes.Contains(_searchSpace[i].Id))
-                {
-                    dna[i] = true;
-                }
-            }
-            return dna;
-        }
-
-        /// <summary>
-        ///  Tells the genetic algorithm to advance one generation and processes
-        ///  the resulting (possibly) improved solution.
-        /// </summary>
-        public void Step()
-        {
-            if (!_isInitialized)
-                throw new InvalidOperationException("Solver not initialized!");
-
-            _ga.NewGeneration();
-
-            if ((_bestDna == null) || (GeneticAlgorithm.SetBits(_ga.GetBestDNA().Xor(_bestDna)) != 0))
-            {
-                _bestDna = _ga.GetBestDNA();
-                BestSolution = SpannedMstToSkillnodes(DnaToSpannedMst(_bestDna));
-            }
-        }
-
-        public void FinalStep()
-        {
-            if (FinalHillClimbEnabled)
-            {
-                var hillClimber = new HillClimber(FitnessFunction, FixedNodes, _searchGraph.NodeDict.Values);
-                BestSolution = hillClimber.Improve(BestSolution);
-            }
-        }
-
-        /// <summary>
-        ///  Converts an MST spanning a set of GraphNodes back into its equivalent
-        ///  as a HashSet of SkillNode IDs.
-        /// </summary>
-        /// <param name="mst">The spanned MinimalSpanningTree.</param>
-        /// <returns>A HashSet containing the node IDs of all SkillNodes spanned
-        /// by the MST.</returns>
-        private IEnumerable<ushort> SpannedMstToSkillnodes(MinimalSpanningTree mst)
-        {
-            if (!mst.IsSpanned)
-                throw new Exception("The passed MST is not spanned!");
-
-            var newSkilledNodes = mst.GetUsedNodes();
-            newSkilledNodes.UnionWith(StartNodes.Nodes);
-            return newSkilledNodes;
-        }
-
-        private MinimalSpanningTree DnaToSpannedMst(BitArray dna)
-        {
-            var mstNodes = new List<GraphNode>();
-            for (var i = 0; i < dna.Length; i++)
-            {
-                if (dna[i])
-                    mstNodes.Add(_searchSpace[i]);
-            }
-
-            mstNodes.Add(StartNodes);
-            mstNodes.AddRange(_targetNodes);
-
-            var mst = new MinimalSpanningTree(mstNodes, Distances);
-            if (_firstEdge != null)
-                mst.Span(_firstEdge);
-            else
-                mst.Span(StartNodes);
-            return mst;
-        }
-
-        private double FitnessFunction(BitArray dna)
-        {
-            return FitnessFunction(DnaToSpannedMst(dna).GetUsedNodes());
-        }
-
-        /// <summary>
-        /// Calculates the fitness given a set of nodes that form the skill tree.
-        /// </summary>
-        /// <returns>a value indicating the fitness of the given nodes. Higher means better.</returns>
-        protected abstract double FitnessFunction(HashSet<ushort> skilledNodes);
     }
 }

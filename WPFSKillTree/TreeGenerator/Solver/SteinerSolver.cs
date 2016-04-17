@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Algorithm;
+using POESKillTree.TreeGenerator.Genetic;
 using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
@@ -9,7 +8,7 @@ namespace POESKillTree.TreeGenerator.Solver
     /// <summary>
     /// Implementation of AbstractSolver that solves the Steiner tree problem.
     /// </summary>
-    public class SteinerSolver : AbstractSolver<SolverSettings>
+    public class SteinerSolver : AbstractGeneticSolver<SolverSettings>
     {
         ///////////////////////////////////////////////////////////////////////////
         /// This code is a heuristic solution to the Steiner tree problem (STP).
@@ -17,7 +16,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// assumed.)
         /// 
         /// The main code logic is found in these classes:
-        ///  - SteinerSolver and AbstractSolver:
+        ///  - SteinerSolver, AbstractGeneticSolver and AbstractSolver:
         ///         Handles all model knowledge and converts between the SkillNode
         ///         and preprocessed GraphNode tree versions. Also defines the fit-
         ///         ness function used in the genetic algorithm.
@@ -71,6 +70,8 @@ namespace POESKillTree.TreeGenerator.Solver
         ///     In addition, nodes too far away from the start or target nodes also
         ///     do not qualify. The precise criteria for this are not exactly clear
         ///     yet, but the current approach seems to work.
+        ///     A few other reductions are also performed, see to SteinerPreprocessor
+        ///     for more information.
         /// 
         /// Steps 1 and 2 greatly reduce the dimension of the search space, which
         /// enables an optimal (or near-optimal) solution to be found within quite
@@ -128,32 +129,13 @@ namespace POESKillTree.TreeGenerator.Solver
         /// shortest path from start to Coldhearted Calculation and then taking the
         /// shortest path to Void Barrier results in a tree with 1 more point spent.
 
-        // A higher population has more influence than a higher generation count.
-        // For lower search space sizes (lower than ConstRuntimeEndpoint, the
-        // generation count is higher so maxGeneration * population stays the same since
-        // small search spaces seem to profit far more from a higher generation count.
-        private const double GenMultiplier = 0.3;
-
-        private const double PopMultiplier = 1.5;
-
-        /// <summary>
-        /// The SearchSpace size to which maxGeneration gets scaled up so maxGeneration*population
-        /// stays the same. After this point GenMultiplier applies.
-        /// </summary>
-        private const int ConstRuntimeEndpoint = 150;
-
-        private int _maxEdgeDistance;
-
         protected override GeneticAlgorithmParameters GaParameters
         {
-            // up to ConstRuntimeEndpoint: maxGeneration * populationSize = GenMultiplier * PopMultiplier * ConstRuntimeEndpoint^2
-            // after that: maxGeneration * populationSize = GenMultiplier * PopMultiplier * SearchSpace.Count^2
             get
             {
                 return new GeneticAlgorithmParameters(
-                    SearchSpace.Count == 0 ? 0
-                        : (int)(GenMultiplier * (SearchSpace.Count < ConstRuntimeEndpoint ? (ConstRuntimeEndpoint*ConstRuntimeEndpoint) / SearchSpace.Count : SearchSpace.Count)),
-                    (int)(PopMultiplier * SearchSpace.Count),
+                    100,
+                    (int)(1.5 * SearchSpace.Count),
                     SearchSpace.Count);
             }
         }
@@ -169,24 +151,6 @@ namespace POESKillTree.TreeGenerator.Solver
             // The implemented HillClimbing that swaps single nodes doesn't make much sense for
             // the Steiner tree problem.
             FinalHillClimbEnabled = false;
-        }
-
-        protected override bool IncludeNode(GraphNode node)
-        {
-            // Steiner nodes need to have at least 2 neighbors.
-            return node.Adjacent.Count > 2;
-        }
-
-        protected override void OnLeastSolutionCreated(IEnumerable<GraphEdge> spanningEdges)
-        {
-            // Used for IncludeNodeUsingDistances.
-            _maxEdgeDistance = spanningEdges.Max(edge => Distances[edge.Inside, edge.Outside]);
-        }
-
-        protected override bool IncludeNodeUsingDistances(GraphNode node)
-        {
-            // Find potential steiner points that are in reasonable vicinity.
-            return _maxEdgeDistance >= 0 && TargetNodes.Any(targetNode => Distances[targetNode, node] < _maxEdgeDistance);
         }
 
         protected override double FitnessFunction(HashSet<ushort> skilledNodes)

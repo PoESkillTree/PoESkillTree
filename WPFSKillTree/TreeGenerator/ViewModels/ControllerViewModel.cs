@@ -7,6 +7,7 @@ using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.TreeGenerator.Algorithm;
 using POESKillTree.TreeGenerator.Solver;
 using POESKillTree.Utils;
 
@@ -240,7 +241,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 });
 
             }
-            catch (InvalidOperationException)
+            catch (GraphNotConnectedException)
             {
                 // Show a dialog and close this if the omitted nodes disconnect the tree.
                 Popup.Warning(L10n.Message("The optimizer was unable to find a conforming tree.\nPlease change skill node tagging and try again."));

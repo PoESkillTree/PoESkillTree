@@ -1273,8 +1273,10 @@ namespace POESKillTree.SkillTreeFiles
                 return;
             }
 
+#if !DEBUG
             try
             {
+#endif
                 // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
                 var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this));
                 settingsVm.StartController += (sender, args) =>
@@ -1283,13 +1285,13 @@ namespace POESKillTree.SkillTreeFiles
                     dialog.ShowDialog();
                 };
                 settingsVm.RunCommand.Execute(null);
+#if !DEBUG
             }
             catch (Exception e)
             {
                 Popup.Error(L10n.Message("Error while trying to find solution"), e.Message);
-                Debug.WriteLine("Exception in 'Skill Tagged Nodes':");
-                Debug.WriteLine(e.Message);
             }
+#endif
         }
 
         public ushort GetCharNodeId()

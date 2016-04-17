@@ -206,15 +206,29 @@
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
     <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
-    <Compile Include="TreeGenerator\Algorithm\BitArrayKey.cs" />
     <Compile Include="TreeGenerator\Algorithm\DisjointSet.cs" />
     <Compile Include="TreeGenerator\Algorithm\DistanceLookup.cs" />
-    <Compile Include="TreeGenerator\Algorithm\GeneticAlgorithm.cs" />
-    <Compile Include="TreeGenerator\Algorithm\Graphs.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Model\GraphEdge.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Model\GraphEdgeSet.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Model\GraphNode.cs" />
     <Compile Include="TreeGenerator\Algorithm\HillClimber.cs" />
     <Compile Include="TreeGenerator\Algorithm\LinkedListPriorityQueue.cs" />
     <Compile Include="TreeGenerator\Algorithm\MinimalSpanningTree.cs" />
-    <Compile Include="TreeGenerator\Algorithm\WeightedSampling.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Model\SearchGraph.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerPreprocessor.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\BottleneckSteinerDistanceCalculator.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\DegreeTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\FarAwayNonTerminalsTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Model\Data.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Model\NodeStates.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NearestVertexTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NonTerminalsOfDegreeKTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\PathsWithManyTerminalsTest.cs" />
+    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\SteinerReduction.cs" />
+    <Compile Include="TreeGenerator\Algorithm\Model\TwoDArray.cs" />
+    <Compile Include="TreeGenerator\Genetic\BitArrayKey.cs" />
+    <Compile Include="TreeGenerator\Genetic\GeneticAlgorithm.cs" />
+    <Compile Include="TreeGenerator\Genetic\WeightedSampling.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\Attribute.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\Conditions.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs" />
@@ -228,8 +242,10 @@
     <Compile Include="TreeGenerator\Settings\AdvancedSolverSettings.cs" />
     <Compile Include="TreeGenerator\Settings\AutomatedSolverSettings.cs" />
     <Compile Include="TreeGenerator\Settings\SolverSettings.cs" />
+    <Compile Include="TreeGenerator\Solver\AbstractGeneticSolver.cs" />
     <Compile Include="TreeGenerator\Solver\AbstractSolver.cs" />
     <Compile Include="TreeGenerator\Solver\AdvancedSolver.cs" />
+    <Compile Include="TreeGenerator\Solver\ISolver.cs" />
     <Compile Include="TreeGenerator\Solver\SteinerSolver.cs" />
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
@@ -245,6 +261,7 @@
     <Compile Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml.cs">
       <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\CollectionExtensions.cs" />
     <Compile Include="Utils\Converter\BoolConverter.cs" />
     <Compile Include="Utils\Converter\EnumConverter.cs" />
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />

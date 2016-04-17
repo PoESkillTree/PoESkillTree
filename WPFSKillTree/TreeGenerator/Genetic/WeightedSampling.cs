@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace POESKillTree.TreeGenerator.Genetic
 {
     /// <summary>
     ///  A generic class storing entries that can be randomly sampled from. The

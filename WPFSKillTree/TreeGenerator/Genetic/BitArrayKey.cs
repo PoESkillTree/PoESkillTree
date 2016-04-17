@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace POESKillTree.TreeGenerator.Genetic
 {
     /// <summary>
     /// Class for using BitArrays as keys in dictonaries.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
@@ -59,7 +60,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <param name="fitnessFunc">Function returning the fitness of a set of nodes. (not null)</param>
         /// <param name="fixedNodes">Nodes that can not swapped out of the current set. (not null)</param>
         /// <param name="allNodes">All nodes of the graph. (not null)</param>
-        public HillClimber(Func<HashSet<ushort>, double> fitnessFunc, IEnumerable<ushort> fixedNodes,
+        public HillClimber(Func<HashSet<ushort>, double> fitnessFunc, IEnumerable<GraphNode> fixedNodes,
             IEnumerable<GraphNode> allNodes)
         {
             if (fitnessFunc == null) throw new ArgumentNullException("fitnessFunc");
@@ -67,7 +68,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
             if (allNodes == null) throw new ArgumentNullException("allNodes");
 
             _fitnessFunc = fitnessFunc;
-            _fixedNodes = new HashSet<ushort>(fixedNodes);
+            _fixedNodes = new HashSet<ushort>(fixedNodes.Select(n => n.Id));
             _allNodes = new HashSet<ushort>();
             foreach (var graphNode in allNodes)
             {
@@ -82,7 +83,7 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// </summary>
         /// <param name="original">The solution to improve. (not null)</param>
         /// <returns>The potentially improved solution.</returns>
-        public IEnumerable<ushort> Improve(IEnumerable<ushort> original)
+        public HashSet<ushort> Improve(IEnumerable<ushort> original)
         {
             if (original == null) throw new ArgumentNullException("original");
 
