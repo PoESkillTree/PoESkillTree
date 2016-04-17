@@ -117,10 +117,11 @@ namespace POESKillTree.TreeGenerator.Solver
             // SkillNode-Ids of the remaining search space may represent more than one node. This
             // information needs to be safed.
             var expansionDict = remainingNodes.ToDictionary(n => n.Id, n => n.Nodes);
+            var inExpansion = new HashSet<ushort>(remainingNodes.SelectMany(n => n.Nodes));
             // Add the remaining nodes as single (unmerged) ones.
             foreach (var node in AllNodes)
             {
-                if (!expansionDict.ContainsKey(node.Id))
+                if (!inExpansion.Contains(node.Id))
                 {
                     expansionDict.Add(node.Id, new[] {node.Id});
                 }

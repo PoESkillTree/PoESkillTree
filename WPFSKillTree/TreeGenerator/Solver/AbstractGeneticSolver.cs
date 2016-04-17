@@ -143,7 +143,7 @@ namespace POESKillTree.TreeGenerator.Solver
             _ga = new GeneticAlgorithm(FitnessFunction);
             _ga.InitializeEvolution(GaParameters, TreeToDna(Settings.InitialTree));
             _bestDna = _ga.GetBestDNA();
-            _bestSolution = DnaToSolution(_bestDna);
+            _bestSolution = Extend(DnaToUsedNodes(_bestDna));
         }
 
         private BitArray TreeToDna(HashSet<ushort> nodes)
@@ -173,14 +173,13 @@ namespace POESKillTree.TreeGenerator.Solver
             if ((_bestDna == null) || (GeneticAlgorithm.SetBits(_ga.GetBestDNA().Xor(_bestDna)) != 0))
             {
                 _bestDna = _ga.GetBestDNA();
-                _bestSolution = DnaToSolution(_bestDna);
+                _bestSolution = Extend(DnaToUsedNodes(_bestDna));
             }
         }
 
-        private HashSet<ushort> DnaToSolution(BitArray dna)
+        private HashSet<ushort> Extend(HashSet<ushort> nodes)
         {
-            var skilledNodes = DnaToUsedNodes(dna);
-            return new HashSet<ushort>(skilledNodes.SelectMany(n => NodeExpansionDictionary[n]));
+            return new HashSet<ushort>(nodes.SelectMany(n => NodeExpansionDictionary[n]));
         }
 
         private HashSet<ushort> DnaToUsedNodes(BitArray dna)
@@ -220,7 +219,7 @@ namespace POESKillTree.TreeGenerator.Solver
             if (FinalHillClimbEnabled)
             {
                 var hillClimber = new HillClimber(FitnessFunction, TargetNodes, AllNodes);
-                _bestSolution = hillClimber.Improve(BestSolution);
+                _bestSolution = Extend(hillClimber.Improve(DnaToUsedNodes(_bestDna)));
             }
         }
 

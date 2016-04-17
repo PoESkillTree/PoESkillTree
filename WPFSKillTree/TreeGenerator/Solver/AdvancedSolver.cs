@@ -347,7 +347,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private void CreateFixedAttributes()
         {
-            _fixedNodes = TargetNodes.SelectMany(n => n.Nodes).ToList();
+            _fixedNodes = TargetNodes.Select(n => n.Id).ToList();
             // Set start stats from start and target nodes.
             AddAttributes(_fixedNodes, _fixedAttributes);
             // Add the initial stats from the settings.
@@ -383,6 +383,7 @@ namespace POESKillTree.TreeGenerator.Solver
             // Add stats of the MST-nodes and start stats.
             var totalStats = (float[])_fixedAttributes.Clone();
             // Don't count the character start node.
+            // todo Nodes need to be extended before counting them
             var usedNodeCount = skilledNodes.Count - 1;
             var totalPoints = Settings.TotalPoints;
             skilledNodes.ExceptWith(_fixedNodes);

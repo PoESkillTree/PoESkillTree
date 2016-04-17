@@ -302,10 +302,18 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="200" />
                     </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" TextWrapping="Wrap" MaxWidth="600" Margin="5">
+                        <TextBlock.Text>
+                            <l:Catalog Message="These settings define which attributes influence pseudo attributes.&#10;For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected."/>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    
                     <!-- 'Tree + gear' mode not yet implemented -->
-                    <metroControls:ToggleSwitch Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,0,5"
+                    <metroControls:ToggleSwitch Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,0,5"
                                                 HorizontalAlignment="Center"
                                                 IsChecked="{Binding TreePlusItemsMode}"
                                                 Visibility="Collapsed">
@@ -317,14 +325,14 @@
                         </metroControls:ToggleSwitch.OffLabel>
                     </metroControls:ToggleSwitch>
 
-                    <Button Grid.Column="1" Grid.Row="1" Margin="4,4,4,4"
+                    <Button Grid.Column="1" Grid.Row="2" Margin="4,4,4,4"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             Command="{Binding ReloadPseudoAttributesCommand}">
                         <l:Catalog Message="Reload Pseudo Attributes from filesystem"/>
                     </Button>
 
                     <!-- WeaponClass -->
-                    <GroupBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+                    <GroupBox Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">
                         <GroupBox.Header>
                             <l:Catalog Message="Weapon class"/>
                         </GroupBox.Header>
@@ -339,7 +347,7 @@
                     </GroupBox>
 
                     <!-- OffHand -->
-                    <GroupBox Grid.Row="2" Grid.Column="0">
+                    <GroupBox Grid.Row="3" Grid.Column="0">
                         <GroupBox.Header>
                             <l:Catalog Message="Off hand"/>
                         </GroupBox.Header>
@@ -362,7 +370,7 @@
                     </GroupBox>
 
                     <!-- Tags -->
-                    <GroupBox Grid.Row="2" Grid.Column="1">
+                    <GroupBox Grid.Row="3" Grid.Column="1">
                         <GroupBox.Header>
                             <l:Catalog Message="Tags"/>
                         </GroupBox.Header>

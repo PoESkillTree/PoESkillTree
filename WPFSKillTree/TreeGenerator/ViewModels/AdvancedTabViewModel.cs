@@ -468,13 +468,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         /// <summary>
         /// Creates possible attributes from the SkillTree nodes.
-        /// Only non unique and not blacklisted attributes are selected.
+        /// Unique and blacklisted attributes are not taken.
+        /// Attributes of ascendancy nodes are ignored.
+        /// Attributes must have at least one '#' in their name (which means they have a value).
         /// </summary>
         private static IEnumerable<string> CreatePossibleAttributes()
         {
             return from node in SkillTree.Skillnodes.Values
+                   where node.ascendancyName == null
                    from attr in SkillTree.ExpandHybridAttributes(node.Attributes)
-                   where !AttributeBlackList.Contains(attr.Key)
+                   where !AttributeBlackList.Contains(attr.Key) && attr.Key.Contains("#")
                    group attr by attr.Key into attrGroup
                    where attrGroup.Count() > 1
                    select attrGroup.First().Key;

@@ -32,9 +32,9 @@
         <Label Grid.Row="0" Grid.Column="0" Margin="5" Target="{Binding ElementName=Level}">
             <l:Catalog Message="Level:" />
         </Label>
-        <TextBox Grid.Row="0" Grid.Column="1" x:Name="Level" IsReadOnly="True"
-                 Text="{Binding Tree.Level, Mode=OneWay}"
-                 Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,40,0"/>
+        <controls:NumericUpDown Grid.Row="0" Grid.Column="1" x:Name="Level"
+                                Minimum="{Binding Tree.UndefinedLevel}" Maximum="{Binding Tree.MaximumLevel}"
+                                Value="{Binding Tree.Level}"/>
 
         <Label Grid.Row="1" Grid.Column="0" Margin="5" Target="{Binding ElementName=AddPoints}">
             <l:Catalog Message="Additional points:" />
@@ -65,7 +65,7 @@
             <l:Catalog Message="Run"/>
         </Button>
         <Button Grid.Row="2" Grid.Column="2" Margin="20,5,10,5" Command="{Binding ResetCommand}">
-            <l:Catalog Message="Reset"/>
+            <l:Catalog Message="Reset settings"/>
         </Button>
         
         <TabControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex}">
