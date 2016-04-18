@@ -28,8 +28,16 @@ namespace POESKillTree.TreeGenerator.Solver
         /// Gets the best solution generated up to this point as
         /// HashSet of <see cref="SkillTreeFiles.SkillNode"/> ids.
         /// Return value is undefined until <see cref="Initialize"/> got called.
+        /// 
+        /// If these are counted, <see cref="UncountedNodes"/> has to be subtracted from the result.
         /// </summary>
         IEnumerable<ushort> BestSolution { get; }
+        
+        /// <summary>
+        /// The number of nodes that are not counted as points in the result. Includes the
+        /// hidden character start node and ascendancy nodes.
+        /// </summary>
+        int UncountedNodes { get; }
 
         /// <summary>
         /// Initializes the solver. Must be called before <see cref="Step"/>.

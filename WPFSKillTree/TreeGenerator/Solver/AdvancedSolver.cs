@@ -383,8 +383,7 @@ namespace POESKillTree.TreeGenerator.Solver
             // Add stats of the MST-nodes and start stats.
             var totalStats = (float[])_fixedAttributes.Clone();
             // Don't count the character start node.
-            // todo Nodes need to be extended before counting them
-            var usedNodeCount = skilledNodes.Count - 1;
+            var usedNodeCount = skilledNodes.Select(n => NodeExpansionDictionary[n].Count).Sum() - UncountedNodes;
             var totalPoints = Settings.TotalPoints;
             skilledNodes.ExceptWith(_fixedNodes);
             AddAttributes(skilledNodes, totalStats);

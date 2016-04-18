@@ -42,6 +42,8 @@ namespace POESKillTree.TreeGenerator.Solver
         /// The SolverSettings that customize this solver run.
         /// </summary>
         protected readonly TS Settings;
+        
+        public int UncountedNodes { get; private set; }
 
         /// <summary>
         /// The fixed start node (can contain multiple) of this solver run.
@@ -127,6 +129,9 @@ namespace POESKillTree.TreeGenerator.Solver
                 }
             }
             NodeExpansionDictionary = expansionDict;
+            
+            // The hidden root node and ascendancy nodes do not count for the total node count.
+            UncountedNodes = 1 + StartNode.Nodes.Count(n => SkillTree.Skillnodes[n].ascendancyName != null);
 
             Debug.WriteLine("Search space dimension: " + SearchSpace.Count);
             Debug.WriteLine("Target node count: " + TargetNodes.Count);
