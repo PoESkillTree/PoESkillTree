@@ -104,11 +104,14 @@ namespace POESKillTree.Model
                     LoadPersistenDataFromFileEx(pathBak);
                 else 
                 {
-                    //move persistentdata to a location that won't be saved over
                     string pathBad = AppData.GetFolder(true) + FileName + "_Bad.xml";
                     if(File.Exists(pathBad))
                         File.Delete(pathBad);
                     File.Copy(filePath, pathBad);
+                    if (File.Exists(AppData.GetFolder(true) + FileName + ".xml"))
+                        File.Delete(AppData.GetFolder(true) + FileName + ".xml");
+                    if (File.Exists(AppData.GetFolder(true) + FileName + ".bak"))
+                        File.Delete(AppData.GetFolder(true) + FileName + ".bak");
 
                     throw new Exception(ex.Message + "\nYour PersistentData folder could not be loaded correctly. It has been moved to " + pathBad);
                 }

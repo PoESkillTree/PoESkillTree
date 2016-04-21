@@ -1081,7 +1081,16 @@ namespace POESKillTree.Views
 
         private string GetLevelAsString()
         {
-            return Tree.Level.ToString(CultureInfo.CurrentCulture);
+            string level_string;
+            try
+            {
+                level_string = Tree.Level.ToString(CultureInfo.CurrentCulture);
+            }
+            catch
+            {
+                level_string = "0";
+            }
+            return level_string;
         }
 
         private void SetLevelFromString(string s)
