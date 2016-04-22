@@ -61,27 +61,33 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:313
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:311
+msgid ""
+"These settings define which attributes influence pseudo attributes.\n"
+"For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected."
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:321
 msgid "Tree + Items"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:316
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:324
 msgid "Tree only"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:323
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:331
 msgid "Reload Pseudo Attributes from filesystem"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:329
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:337
 msgid "Weapon class"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:344
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:352
 msgid "Off hand"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:367
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:375
 msgid "Tags"
 msgstr ""
 
@@ -122,7 +128,7 @@ msgid "Run"
 msgstr ""
 
 #: TreeGenerator\Views\SettingsWindow.xaml:68
-msgid "Reset"
+msgid "Reset settings"
 msgstr ""
 
 #: Views\AboutWindow.xaml:12
@@ -149,23 +155,23 @@ msgstr ""
 msgid "original author"
 msgstr ""
 
-#: Views\AboutWindow.xaml:58
+#: Views\AboutWindow.xaml:59
 msgid "Legal"
 msgstr ""
 
-#: Views\AboutWindow.xaml:61
+#: Views\AboutWindow.xaml:62
 msgid "Skill tree assets and images belong to"
 msgstr ""
 
-#: Views\AboutWindow.xaml:62
+#: Views\AboutWindow.xaml:63
 msgid "Data used in character calculations are from"
 msgstr ""
 
-#: Views\AboutWindow.xaml:67 Views\DownloadItemsWindow.xaml:29
+#: Views\AboutWindow.xaml:68 Views\DownloadItemsWindow.xaml:29
 #: Views\DownloadStashWindow.xaml:60 Views\HelpWindow.xaml:52
 #: Views\HotkeysWindow.xaml:171
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:306
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:371
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:307
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:372
 msgid "Close"
 msgstr ""
 
@@ -819,8 +825,8 @@ msgid "Ok"
 msgstr ""
 
 #: Views\MetroMessageBoxWindow.xaml:38
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:132
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:363
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:133
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:364
 msgid "Cancel"
 msgstr ""
 
@@ -848,6 +854,10 @@ msgstr ""
 msgid "Show All Ascendancy Classes"
 msgstr ""
 
+#: Views\SettingsMenuWindow.xaml:75
+msgid "Language"
+msgstr ""
+
 #: SkillTreeFiles\Compute.cs:2295
 msgid "Character"
 msgstr ""
@@ -860,7 +870,7 @@ msgstr ""
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:1289
+#: SkillTreeFiles\SkillTree.cs:1292
 msgid "Error while trying to find solution"
 msgstr ""
 
@@ -1001,11 +1011,16 @@ msgid "Totem"
 msgstr ""
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:99
+#: Utils\Converter\GroupStringConverter.cs:33
+msgid "Flasks"
+msgstr ""
+
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:100
 #: Utils\Converter\GroupStringConverter.cs:35
 msgid "Everything Else"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:446
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:447
 msgid "Advanced"
 msgstr ""
 
@@ -1013,37 +1028,37 @@ msgstr ""
 msgid "Automated"
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:47
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:48
 #, csharp-format
 msgid "Best result so far: {0} point spent"
 msgid_plural "Best result so far: {0} points spent"
 msgstr[0] ""
 msgstr[1] ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:102
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:103
 msgid "Initializing..."
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:152
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:362
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:153
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:363
 msgid "Pause"
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:199
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:200
 msgid "Skill tree generator"
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:246
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:247
 msgid ""
 "The optimizer was unable to find a conforming tree.\n"
 "Please change skill node tagging and try again."
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:305
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:306
 msgid "Finished!"
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:370
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:371
 msgid "Continue"
 msgstr ""
 
@@ -1053,10 +1068,6 @@ msgstr ""
 
 #: TreeGenerator\ViewModels\SteinerTabViewModel.cs:22
 msgid "Tagged Nodes"
-msgstr ""
-
-#: Utils\Converter\GroupStringConverter.cs:33
-msgid "Flasks"
 msgstr ""
 
 #: Utils\Popup.cs:14
@@ -1156,7 +1167,7 @@ msgstr[1] ""
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:816 Views\MainWindow.xaml.cs:2298
+#: Views\MainWindow.xaml.cs:816 Views\MainWindow.xaml.cs:2307
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
@@ -1164,7 +1175,7 @@ msgstr ""
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:823 Views\MainWindow.xaml.cs:2476
+#: Views\MainWindow.xaml.cs:823 Views\MainWindow.xaml.cs:2485
 msgid "Do you want to continue?"
 msgstr ""
 
@@ -1226,50 +1237,58 @@ msgstr ""
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1687
+#: Views\MainWindow.xaml.cs:1696
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1759
+#: Views\MainWindow.xaml.cs:1768
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1959
+#: Views\MainWindow.xaml.cs:1968
 msgid "An error occurred during a save operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1994
+#: Views\MainWindow.xaml.cs:2003
 msgid "Resolving shortened tree address"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2034
+#: Views\MainWindow.xaml.cs:2043
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2278
+#: Views\MainWindow.xaml.cs:2287
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2284
+#: Views\MainWindow.xaml.cs:2293
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2294
+#: Views\MainWindow.xaml.cs:2303
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2421
+#: Views\MainWindow.xaml.cs:2430
 msgid "An error occurred while attempting to load saved builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2475
+#: Views\MainWindow.xaml.cs:2484
 msgid "The existing Skill Item assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2496
+#: Views\MainWindow.xaml.cs:2505
 msgid "Downloading Item assets"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2569
+#: Views\MainWindow.xaml.cs:2580
 msgid "Error while downloading assets."
+msgstr ""
+
+#: Views\SettingsMenuWindow.xaml.cs:135
+msgid "You will need to restart the program for all changes to take effect."
+msgstr ""
+
+#: Views\SettingsMenuWindow.xaml.cs:135
+msgid "Restart is needed"
 msgstr ""
