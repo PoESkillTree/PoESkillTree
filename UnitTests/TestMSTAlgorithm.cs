@@ -173,7 +173,7 @@ namespace UnitTests
 
         class TestNode : IWithPriority
         {
-            public uint Priority { get; }
+            public uint Priority { get; set; }
 
             public TestNode(uint priority)
             {
