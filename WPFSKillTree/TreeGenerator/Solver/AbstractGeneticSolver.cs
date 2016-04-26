@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
@@ -170,7 +169,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
             _ga.NewGeneration();
 
-            if ((_bestDna == null) || (GeneticAlgorithm.SetBits(_ga.GetBestDNA().Xor(_bestDna)) != 0))
+            if (_bestDna == null || !_ga.GetBestDNA().Equals(_bestDna))
             {
                 _bestDna = _ga.GetBestDNA();
                 _bestSolution = Extend(DnaToUsedNodes(_bestDna));

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
@@ -200,7 +199,7 @@ namespace POESKillTree.TreeGenerator.Genetic
         /// <summary>
         /// Cache for the fitness values so they are only calculated once.
         /// </summary>
-        private readonly ConcurrentDictionary<BitArrayKey, double> _fitnessCache = new ConcurrentDictionary<BitArrayKey, double>();
+        private readonly ConcurrentDictionary<BitArray, double> _fitnessCache = new ConcurrentDictionary<BitArray, double>();
 
         /// <summary>
         /// Initializes a new instance of the genetic algorithm optimizer.
@@ -434,7 +433,7 @@ namespace POESKillTree.TreeGenerator.Genetic
         /// <returns>The new individual.</returns>
         private Individual SpawnIndividual(BitArray dna)
         {
-            var fitness = _fitnessCache.GetOrAdd(new BitArrayKey(dna), key => _solutionFitness(key.Data));
+            var fitness = _fitnessCache.GetOrAdd(dna, key => _solutionFitness(key));
             return new Individual(dna, fitness);
         }
 
@@ -518,7 +517,7 @@ namespace POESKillTree.TreeGenerator.Genetic
         /// </summary>
         /// <param name="dna">The BitArray whose set bits shall be counted.</param>
         /// <returns>The amount of bits set in dna.</returns>
-        public static int SetBits(BitArray dna)
+        private static int SetBits(BitArray dna)
         {
             int sum = 0;
             for (int i = 0; i < dna.Length; i++)
