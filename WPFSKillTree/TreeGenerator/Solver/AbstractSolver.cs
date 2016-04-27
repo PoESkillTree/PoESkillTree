@@ -71,10 +71,11 @@ namespace POESKillTree.TreeGenerator.Solver
         protected IDistancePathLookup Distances { get; private set; }
 
         /// <summary>
-        /// Nodes may be merged by the Preprocessor. This Dictionary contains the node-ids that are represented
+        /// Nodes may be merged by the Preprocessor. This Pseudo-Dictionary contains the node-ids that are represented
         /// by a single node-id. If the node is unmerged, it only contains itself.
+        /// Fits all possible ushorts (node ids) and is pretty sparse. Not contained ids have null as value.
         /// </summary>
-        protected IReadOnlyDictionary<ushort, IReadOnlyCollection<ushort>> NodeExpansionDictionary { get; private set; }
+        protected IReadOnlyList<IReadOnlyCollection<ushort>> NodeExpansionDictionary { get; private set; }
 
         // May become useful at some point if edge-based-optimization (instead of node-based) is implemented.
         //protected IReadOnlyGraphEdgeSet SearchSpaceEdgeSet { get; private set; }
@@ -118,14 +119,18 @@ namespace POESKillTree.TreeGenerator.Solver
 
             // SkillNode-Ids of the remaining search space may represent more than one node. This
             // information needs to be safed.
-            var expansionDict = remainingNodes.ToDictionary(n => n.Id, n => n.Nodes);
+            var expansionDict = new IReadOnlyCollection<ushort>[ushort.MaxValue];
+            foreach (var node in remainingNodes)
+            {
+                expansionDict[node.Id] = node.Nodes;
+            }
             var inExpansion = new HashSet<ushort>(remainingNodes.SelectMany(n => n.Nodes));
             // Add the remaining nodes as single (unmerged) ones.
             foreach (var node in AllNodes)
             {
                 if (!inExpansion.Contains(node.Id))
                 {
-                    expansionDict.Add(node.Id, new[] {node.Id});
+                    expansionDict[node.Id] = new[] {node.Id};
                 }
             }
             NodeExpansionDictionary = expansionDict;

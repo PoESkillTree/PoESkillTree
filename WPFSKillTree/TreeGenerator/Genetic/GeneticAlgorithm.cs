@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define VERBOSE
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
@@ -44,8 +45,15 @@ namespace POESKillTree.TreeGenerator.Genetic
         /// </summary>
         public readonly int MaxMutateClusterSize;
 
+        /// <summary>
+        /// The number of iterations of the genetic algorithm that should be run. The
+        /// best solution of all iterations is kept but the population is reset for each one.
+        /// </summary>
+        public readonly int Iterations;
+
         public GeneticAlgorithmParameters(int maxGeneration, int populationSize, int dnaLength,
-            double temperature = 6, double annealingFactor = 1, int maxMutateClusterSize = 1)
+            double temperature = 6, double annealingFactor = 1, int maxMutateClusterSize = 1,
+            int iterations = 1)
         {
             if (maxGeneration < 0)
                 throw new ArgumentOutOfRangeException("maxGeneration", maxGeneration, "must be >= 0");
@@ -62,6 +70,7 @@ namespace POESKillTree.TreeGenerator.Genetic
             Temperature = temperature;
             AnnealingFactor = annealingFactor;
             MaxMutateClusterSize = maxMutateClusterSize;
+            Iterations = iterations;
         }
     }
 
@@ -150,11 +159,17 @@ namespace POESKillTree.TreeGenerator.Genetic
 
         private double _temperature;
 
+        private double _initialTemperature;
+
         private double _annealingFactor;
 
         public int GenerationCount { get; private set; }
 
         public int MaxGeneration { get; private set; }
+
+        public int CurrentIteration { get; private set; }
+
+        public int Iterations { get; private set; }
 
         private BitArray _initialSolution;
 
@@ -223,8 +238,11 @@ namespace POESKillTree.TreeGenerator.Genetic
             MaxGeneration = parameters.MaxGeneration;
             _dnaLength = parameters.DnaLength;
             _temperature = parameters.Temperature;
+            _initialTemperature = _temperature;
             _annealingFactor = parameters.AnnealingFactor;
             _maxMutateClusterSize = parameters.MaxMutateClusterSize;
+            Iterations = parameters.Iterations;
+            CurrentIteration = 0;
             
             _initialSolution = initialSolution ?? new BitArray(_dnaLength);
             // Make sure there is a valid solution in case _populationSize is 0.
@@ -263,7 +281,7 @@ namespace POESKillTree.TreeGenerator.Genetic
         ///  Progresses the optimization by evolving the current population.
         /// </summary>
         /// <returns>The number of generations thus far.</returns>
-        public int NewGeneration()
+        public void NewGeneration()
         {
             if (_population == null)
                 throw new InvalidOperationException("Cannot generate a next" +
@@ -273,7 +291,7 @@ namespace POESKillTree.TreeGenerator.Genetic
             {
                 // Not returning would lead to an infertile generation.
                 GenerationCount = MaxGeneration;
-                return GenerationCount;
+                return;
             }
 
             Individual[] newPopulation = new Individual[_populationSize];
@@ -281,18 +299,17 @@ namespace POESKillTree.TreeGenerator.Genetic
             GenerationCount++;
 
             WeightedSampler<Individual> sampler = new WeightedSampler<Individual>(_random);
-
-#if DEBUG
+            
+#if VERBOSE
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            double averageHealth = 0;
-            double averageBitsSet = 0;
-            double averageAge = 0;
+            double totalHealth = 0;
+            double totalBitsSet = 0;
+            double totalAge = 0;
             int acceptedTotal = 0;
             int acceptedWorse = 0;
 #endif
-
             // Sort the population by fitness.
             _population = _population.OrderBy(ind => ind.Fitness).ToArray();
 
@@ -300,10 +317,11 @@ namespace POESKillTree.TreeGenerator.Genetic
             foreach (Individual individual in _population)
             {
                 index++;
-
-#if DEBUG
-                averageHealth += individual.Fitness;
-                averageBitsSet += SetBits(individual.DNA);
+#if VERBOSE
+                stopwatch.Stop();
+                totalHealth += individual.Fitness;
+                totalBitsSet += SetBits(individual.DNA);
+                stopwatch.Start();
 #endif
 
                 // Survival of the fittest (population was ordered by fitness above)
@@ -317,8 +335,8 @@ namespace POESKillTree.TreeGenerator.Genetic
                 // to procreate, the solution quality is kept high.
                 if (individual.Age >= 1)
                     sampler.AddEntry(individual, index);
-#if DEBUG
-                averageAge += individual.Age;
+#if VERBOSE
+                totalAge += individual.Age;
 #endif
                 individual.Rank = index;
                 individual.Age++;
@@ -340,7 +358,7 @@ namespace POESKillTree.TreeGenerator.Genetic
                 // relative to the non-mutated individual. See explanation above.
                 if (AcceptNewState(temp, mutation))
                 {
-#if DEBUG
+#if VERBOSE
                     // If you want to measure these for debugging purposes, remove the
                     // parallelization of this loop.
                     //acceptedTotal++;
@@ -352,27 +370,13 @@ namespace POESKillTree.TreeGenerator.Genetic
                 newPopulation[i] = temp;
             });
 
-#if DEBUG
-            stopwatch.Stop();
-            //Debug.Write("Evaluation time for " + GenerationCount + " : ");
-            //Debug.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
-            //Debug.WriteLine("Average health: " + averageHealth / _populationSize);
-            //Debug.WriteLine("Average bits set: " + averageBitsSet / _populationSize);
-            //Debug.WriteLine("Average age: " + averageAge / PopulationSize);
-            //Debug.WriteLine("Accepted new states (all/worse): " + acceptedTotal + "/" + acceptedWorse);
-            //Debug.WriteLine("Sampler entries: " + sampler.EntryCount);
-            
-            stopwatch.Restart();
-#endif
-
             if (!sampler.CanSample)
             {
                 // This is actually a pretty serious problem.
                 _population = CreatePopulation();
                 Debug.WriteLine("Entire population was infertile (Generation " +
                                    GenerationCount + ").");
-                //Debug.Fail("Population went extinct, not good...");
-                return GenerationCount;
+                return;
             }
 
             // Replace purged individuals
@@ -394,14 +398,32 @@ namespace POESKillTree.TreeGenerator.Genetic
 
             _temperature *= _annealingFactor;
 
-#if DEBUG
+#if VERBOSE
             stopwatch.Stop();
-            //Debug.WriteLine("Best value so far: " + _bestSolution.Fitness);
-            //Debug.WriteLine("------------------");
-            //Debug.Out.Flush();
-#endif
+            Debug.Write("Evaluation time for " + GenerationCount + " : ");
+            Debug.WriteLine(stopwatch.ElapsedMilliseconds + " ms");
+            Debug.WriteLine("Average health: " + totalHealth / _populationSize);
+            Debug.WriteLine("Average bits set: " + totalBitsSet / _populationSize);
+            Debug.WriteLine("Average age: " + totalAge / _populationSize);
+            Debug.WriteLine("Accepted new states (all/worse): " + acceptedTotal + "/" + acceptedWorse);
+            Debug.WriteLine("Sampler entries: " + sampler.EntryCount);
 
-            return GenerationCount;
+            Debug.WriteLine("Best value so far: " + _bestSolution.Fitness);
+            Debug.WriteLine("------------------");
+            Debug.Flush();
+#endif
+        }
+
+        /// <summary>
+        /// Resets the population for the next iteration.
+        /// </summary>
+        public void NextIteration()
+        {
+            _temperature = _initialTemperature;
+            CurrentIteration++;
+            _population = CreatePopulation();
+            GenerationCount = 0;
+            UpdateBestSolution();
         }
 
         /// <summary>
@@ -415,8 +437,7 @@ namespace POESKillTree.TreeGenerator.Genetic
             foreach (Individual individual in _population)
             {
                 if (individual.Fitness < 0)
-                    throw new ArgumentOutOfRangeException("solutionFitness function",
-                        "Negative fitness values are not allowed! Use 0 fitness " +
+                    throw new NotSupportedException("Negative fitness values are not allowed! Use 0 fitness " +
                         "for solutions that should not reproduce.");
 
                 if (individual.Fitness > _bestSolution.Fitness)
@@ -437,7 +458,7 @@ namespace POESKillTree.TreeGenerator.Genetic
             return new Individual(dna, fitness);
         }
 
-        #region DNA mutation
+#region DNA mutation
         /// <summary>
         ///  Flips a random sequence of bits in the passed DNA bitstring and returns the result.
         ///  The sequence length is up to _maxMutateClusterSize (inclusive).
@@ -512,6 +533,7 @@ namespace POESKillTree.TreeGenerator.Genetic
             return bitArray;
         }
 
+#if VERBOSE
         /// <summary>
         ///  Returns the amount of bits that are set in the dna BitArray.
         /// </summary>
@@ -524,7 +546,8 @@ namespace POESKillTree.TreeGenerator.Genetic
                 sum += (dna[i] ? 1 : 0);
             return sum;
         }
-        #endregion
+#endif
+#endregion
 
         /// <summary>
         ///  Takes a non-mutated individual and a mutated form of it and and decides

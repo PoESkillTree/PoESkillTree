@@ -17,15 +17,15 @@ namespace POESKillTree.TreeGenerator.Solver
     public abstract class AbstractGeneticSolver<TS> : AbstractSolver<TS>
         where TS : SolverSettings
     {
-
+        // todo make iteration things adjustable from SettingsWindow and visualize them in ControllerWindow
         public override int MaxSteps
         {
-            get { return IsInitialized ? _ga.MaxGeneration : 0; }
+            get { return IsInitialized ? _ga.MaxGeneration * _ga.Iterations : 0; }
         }
 
         public override int CurrentStep
         {
-            get { return IsInitialized ? _ga.GenerationCount : 0; }
+            get { return IsInitialized ? _ga.MaxGeneration * _ga.CurrentIteration +_ga.GenerationCount : 0; }
         }
 
         private HashSet<ushort> _bestSolution;
@@ -167,6 +167,10 @@ namespace POESKillTree.TreeGenerator.Solver
             if (!IsInitialized)
                 throw new InvalidOperationException("Solver not initialized!");
 
+            if (_ga.GenerationCount >= _ga.MaxGeneration)
+            {
+                _ga.NextIteration();
+            }
             _ga.NewGeneration();
 
             if (_bestDna == null || !_ga.GetBestDNA().Equals(_bestDna))
@@ -176,7 +180,7 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
-        private HashSet<ushort> Extend(HashSet<ushort> nodes)
+        private HashSet<ushort> Extend(IEnumerable<ushort> nodes)
         {
             return new HashSet<ushort>(nodes.SelectMany(n => NodeExpansionDictionary[n]));
         }

@@ -90,9 +90,10 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private Dictionary<Tuple<string, int>, float> _attrConversionMultipliers;
         /// <summary>
-        /// Dictionary that maps node ids to a list of their attributes as a pair of the constraint number and the value.
+        /// Pseudo-Dictionary that maps node ids to a list of their attributes as a pair of the constraint number and the value.
+        /// Fits all possible ushorts (node ids) and is pretty sparse. Not contained ids have null as value.
         /// </summary>
-        private Dictionary<ushort, List<Tuple<int, float>>> _nodeAttributes;
+        private List<Tuple<int, float>>[] _nodeAttributes;
         /// <summary>
         /// Dictionary that saves which nodes (represented by their id) are travel nodes.
         /// </summary>
@@ -117,7 +118,8 @@ namespace POESKillTree.TreeGenerator.Solver
                     MaxGeneration,
                     (int) (PopMultiplier * SearchSpace.Count),
                     SearchSpace.Count,
-                    maxMutateClusterSize: MaxMutateClusterSize);
+                    maxMutateClusterSize: MaxMutateClusterSize,
+                    iterations: 5);
             }
         }
 
@@ -207,7 +209,7 @@ namespace POESKillTree.TreeGenerator.Solver
             var skillNodes = Settings.SubsetTree.Count > 0
                 ? Settings.SubsetTree.ToDictionary(id => id, id => SkillTree.Skillnodes[id])
                 : SkillTree.Skillnodes;
-            _nodeAttributes = new Dictionary<ushort, List<Tuple<int, float>>>(skillNodes.Count);
+            _nodeAttributes = new List<Tuple<int, float>>[ushort.MaxValue];
             _areTravelNodes = new Dictionary<ushort, bool>(skillNodes.Count);
             foreach (var node in skillNodes)
             {
@@ -316,10 +318,10 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             // Merge attributes for nodes that were merged.
             // Combine duplicate attributes per node.
-            foreach (var pair in NodeExpansionDictionary)
+            foreach (var node in AllNodes.Select(n => n.Id))
             {
                 var dict = new Dictionary<int, float>();
-                foreach (var containedNode in pair.Value)
+                foreach (var containedNode in NodeExpansionDictionary[node])
                 {
                     foreach (var tuple in _nodeAttributes[containedNode])
                     {
@@ -332,9 +334,9 @@ namespace POESKillTree.TreeGenerator.Solver
                             dict[tuple.Item1] += tuple.Item2;
                         }
                     }
-                    _nodeAttributes.Remove(containedNode);
+                    _nodeAttributes[containedNode] = null;
                 }
-                _nodeAttributes[pair.Key] = dict.Select(p => Tuple.Create(p.Key, p.Value)).ToList();
+                _nodeAttributes[node] = dict.Select(p => Tuple.Create(p.Key, p.Value)).ToList();
             }
 
             // Set fixed attributes from target nodes and Settings.InitialAttributes
