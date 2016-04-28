@@ -43,10 +43,12 @@ namespace POESKillTree.TreeGenerator.Solver
         private static readonly Regex TravelNodeRegex = new Regex(@"\+# to (Strength|Intelligence|Dexterity)");
 
         // It doesn't gain anything from larger populations and more generations.
-        // Increasing MaxGeneration has the upside that it doesn't take much longer because
+        // Running more generations has the upside that it doesn't take much longer because
         // the GA reaches a point where not many new DNAs are generated and it can use the cache nearly always.
-        private const int MaxGeneration = 200;
-
+        protected override int Generations
+        {
+            get { return 200; }
+        }
         private const double PopMultiplier = 7;
 
         // Between 3 and 5 seems to be the optimal point. Anything higher or lower is worse.
@@ -115,11 +117,9 @@ namespace POESKillTree.TreeGenerator.Solver
             get
             {
                 return new GeneticAlgorithmParameters(
-                    MaxGeneration,
                     (int) (PopMultiplier * SearchSpace.Count),
                     SearchSpace.Count,
-                    maxMutateClusterSize: MaxMutateClusterSize,
-                    iterations: 5);
+                    maxMutateClusterSize: MaxMutateClusterSize);
             }
         }
 

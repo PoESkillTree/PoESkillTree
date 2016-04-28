@@ -37,8 +37,8 @@ namespace UnitTests
                 }
                 return multiplier;
             });
-            ga.InitializeEvolution(new GeneticAlgorithmParameters(100, 100, 10));
-            while (ga.GenerationCount < ga.MaxGeneration)
+            ga.InitializeEvolution(new GeneticAlgorithmParameters(100, 10));
+            while (ga.GenerationCount < 100)
                 ga.NewGeneration();
             var gaBest = ga.GetBestDNA();
             for (int i = 0; i < 10; i++)

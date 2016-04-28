@@ -24,12 +24,16 @@ namespace POESKillTree.TreeGenerator.Solver
         
         public bool IsConsideredDone
         {
-            get { return IsInitialized && CurrentStep >= MaxSteps; }
+            get { return IsInitialized && CurrentIteration >= (Iterations - 1) && CurrentStep >= Steps; }
         }
 
-        public abstract int MaxSteps { get; }
+        public abstract int Steps { get; }
 
         public abstract int CurrentStep { get; }
+
+        public int Iterations { get { return Settings.Iterations; } }
+
+        public abstract int CurrentIteration { get; }
         
         public abstract IEnumerable<ushort> BestSolution { get; }
 

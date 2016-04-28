@@ -15,11 +15,6 @@ namespace POESKillTree.TreeGenerator.Genetic
     public struct GeneticAlgorithmParameters
     {
         /// <summary>
-        /// The number of generations the GA should calculate.
-        /// </summary>
-        public readonly int MaxGeneration;
-
-        /// <summary>
         /// The number of individuals kept in the population simultaneously.
         /// </summary>
         public readonly int PopulationSize;
@@ -45,32 +40,21 @@ namespace POESKillTree.TreeGenerator.Genetic
         /// </summary>
         public readonly int MaxMutateClusterSize;
 
-        /// <summary>
-        /// The number of iterations of the genetic algorithm that should be run. The
-        /// best solution of all iterations is kept but the population is reset for each one.
-        /// </summary>
-        public readonly int Iterations;
-
-        public GeneticAlgorithmParameters(int maxGeneration, int populationSize, int dnaLength,
-            double temperature = 6, double annealingFactor = 1, int maxMutateClusterSize = 1,
-            int iterations = 1)
+        public GeneticAlgorithmParameters(int populationSize, int dnaLength,
+            double temperature = 6, double annealingFactor = 1, int maxMutateClusterSize = 1)
         {
-            if (maxGeneration < 0)
-                throw new ArgumentOutOfRangeException("maxGeneration", maxGeneration, "must be >= 0");
             if (populationSize < 0)
                 throw new ArgumentOutOfRangeException("populationSize", populationSize, "must be <= 0");
             if (dnaLength < 0)
                 throw new ArgumentOutOfRangeException("dnaLength", dnaLength, "must be >= 0");
             if (maxMutateClusterSize < 1)
                 throw new ArgumentOutOfRangeException("maxMutateClusterSize", maxMutateClusterSize, "must be > 0");
-
-            MaxGeneration = maxGeneration;
+            
             PopulationSize = populationSize;
             DnaLength = dnaLength;
             Temperature = temperature;
             AnnealingFactor = annealingFactor;
             MaxMutateClusterSize = maxMutateClusterSize;
-            Iterations = iterations;
         }
     }
 
@@ -165,11 +149,7 @@ namespace POESKillTree.TreeGenerator.Genetic
 
         public int GenerationCount { get; private set; }
 
-        public int MaxGeneration { get; private set; }
-
         public int CurrentIteration { get; private set; }
-
-        public int Iterations { get; private set; }
 
         private BitArray _initialSolution;
 
@@ -235,13 +215,11 @@ namespace POESKillTree.TreeGenerator.Genetic
         public void InitializeEvolution(GeneticAlgorithmParameters parameters, BitArray initialSolution = null)
         {
             _populationSize = parameters.PopulationSize;
-            MaxGeneration = parameters.MaxGeneration;
             _dnaLength = parameters.DnaLength;
             _temperature = parameters.Temperature;
             _initialTemperature = _temperature;
             _annealingFactor = parameters.AnnealingFactor;
             _maxMutateClusterSize = parameters.MaxMutateClusterSize;
-            Iterations = parameters.Iterations;
             CurrentIteration = 0;
             
             _initialSolution = initialSolution ?? new BitArray(_dnaLength);
@@ -287,16 +265,16 @@ namespace POESKillTree.TreeGenerator.Genetic
                 throw new InvalidOperationException("Cannot generate a next" +
                     " generation without prior call to InitializeEvolution!");
 
+            GenerationCount++;
+
             if (_populationSize == 0)
             {
                 // Not returning would lead to an infertile generation.
-                GenerationCount = MaxGeneration;
                 return;
             }
 
             Individual[] newPopulation = new Individual[_populationSize];
             int newPopIndex = 0;
-            GenerationCount++;
 
             WeightedSampler<Individual> sampler = new WeightedSampler<Individual>(_random);
             
