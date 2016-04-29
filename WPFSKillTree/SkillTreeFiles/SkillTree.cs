@@ -555,10 +555,18 @@ namespace POESKillTree.SkillTreeFiles
             Dictionary<string, int> points = new Dictionary<string,int>()
             {
                 {"NormalUsed", 0},
-                {"NormalTotal", 123},
+                {"NormalTotal", 21},
                 {"AscendancyUsed", 0},
                 {"AscendancyTotal", 6}
             };
+
+            points["NormalTotal"] += Level - 1;
+            if (BanditSettings.Normal == Bandit.None)
+                points["NormalTotal"]++;
+            if (BanditSettings.Cruel == Bandit.None)
+                points["NormalTotal"]++;
+            if (BanditSettings.Merciless == Bandit.None)
+                points["NormalTotal"]++;
 
             foreach (var node in SkilledNodes)
             {
