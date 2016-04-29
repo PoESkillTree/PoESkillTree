@@ -318,7 +318,7 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             // Merge attributes for nodes that were merged.
             // Combine duplicate attributes per node.
-            foreach (var node in AllNodes.Select(n => n.Id))
+            foreach (var node in AllNodes.Select(n => n.Id).Distinct())
             {
                 var dict = new Dictionary<int, float>();
                 foreach (var containedNode in NodeExpansionDictionary[node])
