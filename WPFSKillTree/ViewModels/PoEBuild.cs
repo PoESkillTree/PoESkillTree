@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using POESKillTree.Localization;
+using POESKillTree.Model;
 
 namespace POESKillTree.ViewModels
 {
@@ -20,6 +21,7 @@ namespace POESKillTree.ViewModels
         public DateTime LastUpdated { get; set; }
         public List<string[]> CustomGroups { get; set; }
         public bool CurrentlyOpen { get; set; }
+        public BanditSettings Bandits { get; set; }
 
         [XmlIgnoreAttribute]
         public string Image
@@ -50,6 +52,7 @@ namespace POESKillTree.ViewModels
         {
             Visible = true;
             CustomGroups = new List<string[]>();
+            Bandits = new BanditSettings();
         }
 
         public PoEBuild(string name, string poeClass, string pointsUsed, string url, string note)
@@ -60,6 +63,7 @@ namespace POESKillTree.ViewModels
             Url = url;
             Note = note;
             CustomGroups = new List<string[]>();
+            Bandits = new BanditSettings();
         }
 
         public override string ToString()
@@ -83,7 +87,8 @@ namespace POESKillTree.ViewModels
                 ItemData = build.ItemData,
                 LastUpdated = build.LastUpdated,
                 CustomGroups = new List<string[]>(build.CustomGroups),
-                CurrentlyOpen = build.CurrentlyOpen
+                CurrentlyOpen = build.CurrentlyOpen,
+                Bandits = build.Bandits.Clone()
             };
         }
     }

@@ -110,8 +110,10 @@ namespace POESKillTree.Views
             private set
             {
                 _tree = value;
-                value.MainWindow = this;
-                LevelUpDown.DataContext = _tree;
+                _tree.MainWindow = this;
+                _tree.BanditSettings.PropertyChanged += BanditSettings_PropertyChanged;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("Tree"));
             }
         }
 
@@ -169,15 +171,37 @@ namespace POESKillTree.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            PersistentData.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "CurrentBuild" && Tree != null)
+                {
+                    Tree.BanditSettings.PropertyChanged -= BanditSettings_PropertyChanged;
+                    Tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
+                    Tree.BanditSettings.PropertyChanged += BanditSettings_PropertyChanged;
+                }
+            };
+        }
+
+        private void BanditSettings_PropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            switch (args.PropertyName)
+            {
+                case "Normal":
+                    PersistentData.CurrentBuild.Bandits.Normal = Tree.BanditSettings.Normal;
+                    break;
+                case "Cruel":
+                    PersistentData.CurrentBuild.Bandits.Cruel = Tree.BanditSettings.Cruel;
+                    break;
+                case "Merciless":
+                    PersistentData.CurrentBuild.Bandits.Merciless = Tree.BanditSettings.Merciless;
+                    break;
+            }
+            UpdateUI();
         }
 
         //This whole region, along with most of GroupStringConverter, makes up our user-defined attribute group functionality - Sectoidfodder 02/29/16
         #region Attribute grouping helpers
-
-        private void IgnoreRightClick(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-        }
 
         //there's probably a better way that doesn't break if tab ordering changes but I'm UI-challenged
         private ListBox GetActiveAttributeGroupList()
@@ -1138,6 +1162,7 @@ namespace POESKillTree.Views
             if (_itemAttributes == null) return;
 
             Dictionary<string, List<float>> attritemp = Tree.SelectedAttributesWithoutImplicit;
+
             foreach (ItemAttributes.Attribute mod in _itemAttributes.NonLocalMods)
             {
                 if (attritemp.ContainsKey(mod.TextAttribute))
@@ -1171,7 +1196,7 @@ namespace POESKillTree.Views
                     }
                 }
             }
-
+            
             foreach (var item in (attritemp.Select(InsertNumbersInAttributes)))
             {
                 var a = new Attribute(item);
@@ -1190,7 +1215,7 @@ namespace POESKillTree.Views
         {
             _attiblist.Clear();
             var copy = (Tree.HighlightedAttributes == null) ? null : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
-
+            
             foreach (var item in Tree.SelectedAttributes)
             {
                 var a = new Attribute(InsertNumbersInAttributes(item));
@@ -1913,6 +1938,7 @@ namespace POESKillTree.Views
                 currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
                 currentOpenBuild.LastUpdated = DateTime.Now;
                 currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
+                currentOpenBuild.Bandits = _persistentData.CurrentBuild.Bandits.Clone();
                 SetCurrentBuild(currentOpenBuild);
                 SaveBuildsToFile();
             }
@@ -1941,7 +1967,8 @@ namespace POESKillTree.Views
                     AccountName = formBuildName.GetAccountName(),
                     ItemData = formBuildName.GetItemData(),
                     LastUpdated = DateTime.Now,
-                    CustomGroups = _attributeGroups.CopyCustomGroups()
+                    CustomGroups = _attributeGroups.CopyCustomGroups(),
+                    Bandits = _persistentData.CurrentBuild.Bandits
                 };
                 SetCurrentBuild(newBuild);
                 lvSavedBuilds.Items.Add(newBuild);
@@ -2444,9 +2471,9 @@ namespace POESKillTree.Views
             if (Tree == null)
                 return;
 
-            if (lvSavedBuilds != null && lvSavedBuilds.SelectedItem is PoEBuild && _persistentData.Options.TreeComparisonEnabled)
+            var build = lvSavedBuilds.SelectedItem as PoEBuild;
+            if (build != null && _persistentData.Options.TreeComparisonEnabled)
             {
-                var build = (PoEBuild)lvSavedBuilds.SelectedItem;
                 HashSet<ushort> nodes;
                 int ctype;
                 int atype;
@@ -2462,7 +2489,7 @@ namespace POESKillTree.Views
                 {
                     level = 0;
                 }
-                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, level);
+                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, level, build.Bandits);
             }
             else
             {

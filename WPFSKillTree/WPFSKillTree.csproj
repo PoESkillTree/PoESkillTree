@@ -184,7 +184,7 @@
     <Compile Include="Localization\Markdown\TextToFlowDocumentConverter.cs" />
     <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
-    <Compile Include="Model\Notifier.cs" />
+    <Compile Include="Model\Bandit.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
@@ -304,6 +304,9 @@
     <Compile Include="TreeGenerator\Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\BanditSelection.xaml.cs">
+      <DependentUpon>BanditSelection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CraftWindow.xaml.cs">
       <DependentUpon>CraftWindow.xaml</DependentUpon>
     </Compile>
@@ -392,6 +395,10 @@
     <Page Include="DefaultTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BanditSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CraftWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

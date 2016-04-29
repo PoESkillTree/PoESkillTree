@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Media;
+using POESKillTree.Model;
 using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
@@ -243,7 +243,14 @@ namespace POESKillTree.SkillTreeFiles
         
         public AscendancyClasses AscendancyClasses 
         {
-            get { return SkillTree._asendancyClasses; } 
+            get { return SkillTree._asendancyClasses; }
+        }
+
+        private BanditSettings _banditSettings = new BanditSettings();
+        public BanditSettings BanditSettings
+        {
+            get { return _banditSettings; }
+            set { SetProperty(ref _banditSettings, value); }
         }
 
         private static bool _Initialized = false;
@@ -632,13 +639,13 @@ namespace POESKillTree.SkillTreeFiles
         {
             get
             {
-                return GetAttributes(SkilledNodes, Chartype, Level);
+                return GetAttributes(SkilledNodes, Chartype, Level, BanditSettings);
             }
         }
 
-        public static Dictionary<string, List<float>> GetAttributes(IEnumerable<ushort> skilledNodes, int chartype, int level)
+        public static Dictionary<string, List<float>> GetAttributes(IEnumerable<ushort> skilledNodes, int chartype, int level, BanditSettings banditSettings)
         {
-            Dictionary<string, List<float>> temp = GetAttributesWithoutImplicit(skilledNodes,chartype);
+            Dictionary<string, List<float>> temp = GetAttributesWithoutImplicit(skilledNodes,chartype, banditSettings);
 
             foreach (var a in ImplicitAttributes(temp, level))
             {
@@ -663,39 +670,21 @@ namespace POESKillTree.SkillTreeFiles
         {
             get
             {
-                return GetAttributesWithoutImplicit(SkilledNodes,Chartype);
+                return GetAttributesWithoutImplicit(SkilledNodes, Chartype, BanditSettings);
             }
         }
 
 
-        public static Dictionary<string, List<float>> GetAttributesWithoutImplicit( IEnumerable<ushort> skilledNodes, int chartype)
+        public static Dictionary<string, List<float>> GetAttributesWithoutImplicit(IEnumerable<ushort> skilledNodes, int chartype, BanditSettings banditSettings)
         {
             var temp = new Dictionary<string, List<float>>();
 
-            foreach (var attr in CharBaseAttributes[chartype])
+            foreach (var attr in CharBaseAttributes[chartype].Union(BaseAttributes).Union(banditSettings.Rewards))
             {
                 if (!temp.ContainsKey(attr.Key))
-                    temp[attr.Key] = new List<float>();
-
-                if (temp.ContainsKey(attr.Key) && temp[attr.Key].Count > 0)
+                    temp[attr.Key] = new List<float> {attr.Value};
+                else if (temp[attr.Key].Any())
                     temp[attr.Key][0] += attr.Value;
-                else
-                {
-                    temp[attr.Key].Add(attr.Value);
-                }
-            }
-
-            foreach (var attr in BaseAttributes)
-            {
-                if (!temp.ContainsKey(attr.Key))
-                    temp[attr.Key] = new List<float>();
-
-                if (temp.ContainsKey(attr.Key) && temp[attr.Key].Count > 0)
-                    temp[attr.Key][0] += attr.Value;
-                else
-                {
-                    temp[attr.Key].Add(attr.Value);
-                }
             }
 
             foreach (ushort inode in skilledNodes)

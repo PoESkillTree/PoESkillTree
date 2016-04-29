@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Serialization;
 using POESKillTree.ViewModels;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
@@ -15,18 +14,48 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
-    public class PersistentData : INotifyPropertyChanged
+    public class PersistentData : Notifier
     {
-        public string AppVersion { get; set; }
-        public List<StashBookmark> StashBookmarks { get; set; }
-        public Options Options { get; set; }
-        public PoEBuild CurrentBuild { get; set; }
-        public List<PoEBuild> Builds { get; set; }
-        public static string FileName = "PersistentData";
+        private string _appVersion;
+        public string AppVersion
+        {
+            get { return _appVersion; }
+            set { SetProperty(ref _appVersion, value); }
+        }
+
+        private List<StashBookmark> _stashBookmarks;
+        public List<StashBookmark> StashBookmarks
+        {
+            get { return _stashBookmarks; }
+            set { SetProperty(ref _stashBookmarks, value); }
+        }
+
+        private Options _options;
+        public Options Options
+        {
+            get { return _options; }
+            set { SetProperty(ref _options, value); }
+        }
+
+        private PoEBuild _currentBuild;
+        public PoEBuild CurrentBuild
+        {
+            get { return _currentBuild; }
+            set { SetProperty(ref _currentBuild, value); }
+        }
+
+        private List<PoEBuild> _builds;
+        public List<PoEBuild> Builds
+        {
+            get { return _builds; }
+            set { SetProperty(ref _builds, value); }
+        }
+
+        private const string FileName = "PersistentData";
 
         [XmlIgnore]
-        private ObservableCollection<Item> _stash = new ObservableCollection<Item>();
-
+        private readonly ObservableCollection<Item> _stash = new ObservableCollection<Item>();
+        
         [XmlIgnore]
         public ObservableCollection<Item> StashItems
         {
@@ -57,7 +86,7 @@ namespace POESKillTree.Model
             SavePersistentDataToFileEx(AppData.GetFolder(true) + FileName + ".xml");
         }
 
-        public void SavePersistentDataToFileEx(string path)
+        private void SavePersistentDataToFileEx(string path)
         {
             if (File.Exists(path))
             {
@@ -93,7 +122,6 @@ namespace POESKillTree.Model
                     StashBookmarks = obj.StashBookmarks;
                     AppVersion = obj.AppVersion;
                     reader.Close();
-                    OnPropertyChanged(null);
                 }
                 DeserializeStash();
             }
@@ -157,13 +185,5 @@ namespace POESKillTree.Model
         {
             Builds = (from PoEBuild item in items select item).ToList();
         }
-
-        private void OnPropertyChanged(string caller)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(caller));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
