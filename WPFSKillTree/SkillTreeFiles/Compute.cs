@@ -1073,7 +1073,7 @@ namespace POESKillTree.SkillTreeFiles
                 // The damage type to convert to.
                 DamageType To;
 
-                static Regex ReConvertMod = new Regex("^#% of ([^ ]+) Damage converted to ([^ ]+) Damage$");
+                static Regex ReConvertMod = new Regex("^#% of ([^ ]+) Damage (C|c)onverted to ([^ ]+) Damage$");
 
                 public Converted(DamageConversionSource source, float percent, DamageType from, DamageType to)
                 {
@@ -1089,7 +1089,7 @@ namespace POESKillTree.SkillTreeFiles
                     Match m = ReConvertMod.Match(attr.Key);
                     if (m.Success)
                     {
-                        return new Converted(source, attr.Value[0], DamageNature.Types[m.Groups[1].Value], DamageNature.Types[m.Groups[2].Value]);
+                        return new Converted(source, attr.Value[0], DamageNature.Types[m.Groups[1].Value], DamageNature.Types[m.Groups[3].Value]);
                     }
 
                     return null;
