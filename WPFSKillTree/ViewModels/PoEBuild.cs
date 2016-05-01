@@ -3,21 +3,43 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels
 {
-    public class PoEBuild
+    public class PoEBuild : Notifier
     {
         public string Name { get; set; }
-        public string CharacterName { get; set; }
-        public string AccountName { get; set;}
+
+        private string _characterName;
+        public string CharacterName
+        {
+            get { return _characterName; }
+            set { SetProperty(ref _characterName, value); }
+        }
+
+        private string _accountName;
+        public string AccountName
+        {
+            get { return _accountName; }
+            set { SetProperty(ref _accountName, value); }
+        }
+
         public string League { get; set; }
         public string Level { get; set; }
         public string Class { get; set; }
         public string PointsUsed { get; set; }
         public string Url { get; set; }
         public string Note { get; set; }
-        public string ItemData { get; set; }
+
+        private string _itemData;
+
+        public string ItemData
+        {
+            get { return _itemData; }
+            set { SetProperty(ref _itemData, value); }
+        }
+
         public DateTime LastUpdated { get; set; }
         public List<string[]> CustomGroups { get; set; }
         public bool CurrentlyOpen { get; set; }

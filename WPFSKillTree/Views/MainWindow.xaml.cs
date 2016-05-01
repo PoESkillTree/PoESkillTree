@@ -89,7 +89,7 @@ namespace POESKillTree.Views
         private ContextMenu _attributeContextMenu;
         private MenuItem cmCreateGroup, cmAddToGroup, cmRemoveFromGroup, cmDeleteGroup;
 
-        private ItemAttributes _itemAttributes;
+        private ItemAttributes _itemAttributes = new ItemAttributes();
 
         public ItemAttributes ItemAttributes
         {
@@ -111,7 +111,7 @@ namespace POESKillTree.Views
             {
                 _tree = value;
                 _tree.MainWindow = this;
-                _tree.BanditSettings.PropertyChanged += BanditSettings_PropertyChanged;
+                _tree.BanditSettings = _persistentData.CurrentBuild.Bandits;
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("Tree"));
             }
@@ -172,32 +172,37 @@ namespace POESKillTree.Views
         {
             InitializeComponent();
 
+            // Register handlers
+            PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
+            PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
+            // Re-register handlers when PersistentData.CurrentBuild is set.
             PersistentData.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "CurrentBuild" && Tree != null)
+                if (args.PropertyName == "CurrentBuild")
                 {
-                    Tree.BanditSettings.PropertyChanged -= BanditSettings_PropertyChanged;
-                    Tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
-                    Tree.BanditSettings.PropertyChanged += BanditSettings_PropertyChanged;
+                    PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
+                    PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
+                    if (Tree != null)
+                        Tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
+                }
+            };
+            // This makes sure CurrentBuildOnPropertyChanged is called only
+            // on the PoEBuild instance currently stored in PersistentData.CurrentBuild.
+            PersistentData.PropertyChanging += (sender, args) =>
+            {
+                if (args.PropertyName == "CurrentBuild")
+                {
+                    PersistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
                 }
             };
         }
 
-        private void BanditSettings_PropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            switch (args.PropertyName)
+            if (propertyChangedEventArgs.PropertyName == "ItemData")
             {
-                case "Normal":
-                    PersistentData.CurrentBuild.Bandits.Normal = Tree.BanditSettings.Normal;
-                    break;
-                case "Cruel":
-                    PersistentData.CurrentBuild.Bandits.Cruel = Tree.BanditSettings.Cruel;
-                    break;
-                case "Merciless":
-                    PersistentData.CurrentBuild.Bandits.Merciless = Tree.BanditSettings.Merciless;
-                    break;
+                LoadItemData();
             }
-            UpdateUI();
         }
 
         //This whole region, along with most of GroupStringConverter, makes up our user-defined attribute group functionality - Sectoidfodder 02/29/16
@@ -458,8 +463,6 @@ namespace POESKillTree.Views
             // loading last build
             if (_persistentData.CurrentBuild != null)
                 SetCurrentBuild(_persistentData.CurrentBuild);
-            else
-                LoadItemData(null);
 
             LoadBuildFromUrl();
             _justLoaded = false;
@@ -813,15 +816,12 @@ namespace POESKillTree.Views
 
         private void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
-            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName) { Owner = this };
+            var diw = new DownloadItemsWindow
+            {
+                Owner = this,
+                DataContext = new DownloadItemsViewModel(_persistentData.CurrentBuild)
+            };
             diw.ShowDialog();
-            _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
-            _persistentData.CurrentBuild.AccountName = diw.GetAccountName();
-        }
-
-        private void Menu_ClearItems(object sender, RoutedEventArgs e)
-        {
-            ClearCurrentItemData();
         }
 
         private void Menu_CopyStats(object sender, RoutedEventArgs e)
@@ -1703,38 +1703,29 @@ namespace POESKillTree.Views
 
         #region Items
 
-        public void LoadItemData(string itemData)
+        private void LoadItemData()
         {
+            var itemData = _persistentData.CurrentBuild.ItemData;
             if (!string.IsNullOrEmpty(itemData))
             {
                 try
                 {
-                    _persistentData.CurrentBuild.ItemData = itemData;
                     ItemAttributes = new ItemAttributes(itemData);
-                    mnuClearItems.IsEnabled = true;
                 }
                 catch (Exception ex)
                 {
+                    // This will call this method again.
                     _persistentData.CurrentBuild.ItemData = "";
-                    ItemAttributes = new ItemAttributes();
-                    ClearCurrentItemData();
                     Popup.Error(L10n.Message("An error occurred while attempting to load item data."), ex.Message);
+                    return;
                 }
             }
             else
             {
-                ClearCurrentItemData();
+                ItemAttributes = new ItemAttributes();
             }
 
             UpdateUI();
-        }
-
-        public void ClearCurrentItemData()
-        {
-            _persistentData.CurrentBuild.ItemData = "";
-            ItemAttributes = new ItemAttributes();
-            UpdateUI();
-            mnuClearItems.IsEnabled = false;
         }
 
         #endregion
@@ -1906,7 +1897,7 @@ namespace POESKillTree.Views
 
             tbSkillURL.Text = build.Url;
             SetLevelFromString(build.Level);
-            LoadItemData(build.ItemData);
+            LoadItemData();
             SetCustomGroups(build.CustomGroups);
         }
 

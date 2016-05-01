@@ -3,7 +3,7 @@ using System.Windows.Input;
 using POESKillTree.Model;
 using POESKillTree.Utils;
 
-namespace POESKillTree.TreeGenerator.ViewModels
+namespace POESKillTree.ViewModels
 {
     /// <summary>
     /// Abstract class for ViewModels that can be closed.

@@ -249,12 +249,12 @@
     <Compile Include="TreeGenerator\Solver\SteinerSolver.cs" />
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
-    <Compile Include="TreeGenerator\ViewModels\CloseableViewModel.cs" />
+    <Compile Include="ViewModels\CloseableViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
-    <Compile Include="TreeGenerator\ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
       <DependentUpon>AdvancedGeneratorTab.xaml</DependentUpon>
     </Compile>
@@ -281,6 +281,7 @@
     <Compile Include="Utils\StringExtension.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
+    <Compile Include="ViewModels\DownloadItemsViewModel.cs" />
     <Compile Include="ViewModels\Items\Affix.cs" />
     <Compile Include="ViewModels\Items\FrameType.cs" />
     <Compile Include="ViewModels\Items\GearType.cs" />

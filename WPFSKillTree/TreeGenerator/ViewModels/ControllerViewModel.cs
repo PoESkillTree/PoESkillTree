@@ -10,6 +10,7 @@ using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Algorithm;
 using POESKillTree.TreeGenerator.Solver;
 using POESKillTree.Utils;
+using POESKillTree.ViewModels;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {

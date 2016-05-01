@@ -528,14 +528,6 @@
                             <ContentControl Template="{StaticResource DownloadIcon}" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="mnuClearItems" Click="Menu_ClearItems" IsEnabled="False">
-                        <MenuItem.Header>
-                            <l:Catalog Message="_Clear Items"/>
-                        </MenuItem.Header>
-                        <MenuItem.Icon>
-                            <ContentControl Template="{StaticResource ClearIcon}" />
-                        </MenuItem.Icon>
-                    </MenuItem>
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>

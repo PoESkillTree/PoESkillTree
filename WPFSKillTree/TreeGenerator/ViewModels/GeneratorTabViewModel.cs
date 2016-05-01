@@ -2,6 +2,7 @@
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;
+using POESKillTree.ViewModels;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
