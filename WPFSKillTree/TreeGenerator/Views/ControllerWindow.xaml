@@ -20,28 +20,35 @@
             <i:InvokeCommandAction Command="{Binding CloseCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid Background="{DynamicResource WhiteColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="30"/>
             <RowDefinition/>
-            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5">
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
             <l:Catalog Message="Finding optimal Skill tree..."/>
         </Label>
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            <ProgressBar Maximum="{Binding ProgressbarMax}" Value="{Binding ProgressbarCurrent, Mode=OneWay}" IsEnabled="{Binding ProgressbarEnabled}" Height="20" HorizontalAlignment="Stretch" BorderThickness="0"  Margin="5" Background="{DynamicResource WhiteColorBrush}"/>
+        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
+               Visibility="{Binding IterationTextVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+               Content="{Binding IterationText}"/>
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <ProgressBar Minimum="1" Maximum="{Binding ProgressbarMax}" Value="{Binding ProgressbarCurrent, Mode=OneWay}" IsEnabled="{Binding ProgressbarEnabled}" Height="20" HorizontalAlignment="Stretch" BorderThickness="0"  Margin="5" Background="{DynamicResource WhiteColorBrush}"/>
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding ProgressbarText}"/>
         </Grid>
 
-        <Label Content="{Binding BestResultText}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5"/>
-        <Button Grid.Row="3" Grid.Column="0" Content="{Binding PauseResumeText}" IsEnabled="{Binding PauseResumeEnabled}" Margin="5" Command="{Binding PauseResumeCommand}"/>
-        <Button Grid.Row="3" Grid.Column="1" Content="{Binding CancelCloseText}" IsEnabled="{Binding CancelCloseEnabled}" Margin="5" Command="{Binding CloseCommand}"/>
+        <Label Content="{Binding BestResultText}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"/>
+        <Button Grid.Row="4" Grid.Column="0" Content="{Binding PauseResumeText}" IsEnabled="{Binding PauseResumeEnabled}" Margin="5" Command="{Binding PauseResumeCommand}"/>
+        <Button Grid.Row="4" Grid.Column="1" Content="{Binding CancelCloseText}" IsEnabled="{Binding CancelCloseEnabled}" Margin="5" Command="{Binding CloseCommand}"/>
     </Grid>
 </controls:MetroWindow>

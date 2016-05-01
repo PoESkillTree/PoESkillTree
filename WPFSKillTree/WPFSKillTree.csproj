@@ -226,7 +226,7 @@
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\PathsWithManyTerminalsTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\SteinerReduction.cs" />
     <Compile Include="TreeGenerator\Algorithm\Model\TwoDArray.cs" />
-    <Compile Include="TreeGenerator\Genetic\BitArrayKey.cs" />
+    <Compile Include="TreeGenerator\Genetic\BitArray.cs" />
     <Compile Include="TreeGenerator\Genetic\GeneticAlgorithm.cs" />
     <Compile Include="TreeGenerator\Genetic\WeightedSampling.cs" />
     <Compile Include="TreeGenerator\Model\PseudoAttributes\Attribute.cs" />

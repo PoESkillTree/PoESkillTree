@@ -7,8 +7,9 @@ namespace POESKillTree.TreeGenerator.Settings
     /// </summary>
     public class AutomatedSolverSettings : SolverSettings
     {
-        public AutomatedSolverSettings(int level, int totalPoints, HashSet<ushort> @checked, HashSet<ushort> crossed, HashSet<ushort> subsetTree, HashSet<ushort> initialTree)
-            : base(level, totalPoints, @checked, crossed, subsetTree, initialTree)
+        public AutomatedSolverSettings(int level, int totalPoints, HashSet<ushort> @checked,
+            HashSet<ushort> crossed, HashSet<ushort> subsetTree, HashSet<ushort> initialTree, int iterations)
+            : base(level, totalPoints, @checked, crossed, subsetTree, initialTree, iterations)
         {
         }
     }

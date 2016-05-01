@@ -129,12 +129,16 @@ namespace POESKillTree.TreeGenerator.Solver
         /// shortest path from start to Coldhearted Calculation and then taking the
         /// shortest path to Void Barrier results in a tree with 1 more point spent.
 
+        protected override int Generations
+        {
+            get { return 100; }
+        }
+
         protected override GeneticAlgorithmParameters GaParameters
         {
             get
             {
                 return new GeneticAlgorithmParameters(
-                    100,
                     (int)(1.5 * SearchSpace.Count),
                     SearchSpace.Count);
             }

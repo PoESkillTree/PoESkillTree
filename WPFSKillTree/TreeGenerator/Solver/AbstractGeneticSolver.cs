@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
@@ -18,15 +17,20 @@ namespace POESKillTree.TreeGenerator.Solver
     public abstract class AbstractGeneticSolver<TS> : AbstractSolver<TS>
         where TS : SolverSettings
     {
-
-        public override int MaxSteps
+        
+        public override int Steps
         {
-            get { return IsInitialized ? _ga.MaxGeneration : 0; }
+            get { return IsInitialized ? Generations : 0; }
         }
 
         public override int CurrentStep
         {
             get { return IsInitialized ? _ga.GenerationCount : 0; }
+        }
+
+        public override int CurrentIteration
+        {
+            get { return IsInitialized ? _ga.CurrentIteration : 0; }
         }
 
         private HashSet<ushort> _bestSolution;
@@ -41,6 +45,12 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private BitArray _bestDna;
         
+        /// <summary>
+        /// Gets the number of generations of the genetic algorithm that should be calculated
+        /// per iteration. One generation is calculated per step.
+        /// </summary>
+        protected abstract int Generations { get; }
+
         /// <summary>
         /// Gets the GaParameters to initialize the genetic algorithm with.
         /// </summary>
@@ -168,16 +178,20 @@ namespace POESKillTree.TreeGenerator.Solver
             if (!IsInitialized)
                 throw new InvalidOperationException("Solver not initialized!");
 
+            if (_ga.GenerationCount >= Steps)
+            {
+                _ga.NextIteration();
+            }
             _ga.NewGeneration();
 
-            if ((_bestDna == null) || (GeneticAlgorithm.SetBits(_ga.GetBestDNA().Xor(_bestDna)) != 0))
+            if (_bestDna == null || !_ga.GetBestDNA().Equals(_bestDna))
             {
                 _bestDna = _ga.GetBestDNA();
                 _bestSolution = Extend(DnaToUsedNodes(_bestDna));
             }
         }
 
-        private HashSet<ushort> Extend(HashSet<ushort> nodes)
+        private HashSet<ushort> Extend(IEnumerable<ushort> nodes)
         {
             return new HashSet<ushort>(nodes.SelectMany(n => NodeExpansionDictionary[n]));
         }
