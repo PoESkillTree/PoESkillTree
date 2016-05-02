@@ -141,7 +141,8 @@ namespace UpdateDB
             { "dealsxbasechaosdamagepersecond", "Deals # Base Chaos Damage per second" },
             { "increasedmovementspeed", "#% increased Movement Speed" },
             { "moredamageatmaximumchargedistance", "#% more Damage at Maximum Charge Distance" },
-            { "increasedshockdurationonenemies", "#% increased Shock Duration on enemies" }
+            { "increasedshockdurationonenemies", "#% increased Shock Duration on enemies" },
+            { "deals #% of base damage", "Deals #% of Base Attack Damage"}
         };
         // The Wiki URL.
         static string URL = "http://pathofexile.gamepedia.com";
