@@ -169,7 +169,7 @@ App_Data/*.ldf
 POESKillTree.exe.config
 
 # contains ReSharper specific settings
-WPFSKillTree/WPFSKillTree.csproj.DotSettings
+*.csproj.DotSettings
 
 #############
 ## Windows detritus

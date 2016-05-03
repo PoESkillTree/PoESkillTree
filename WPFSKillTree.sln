@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSKillTree", "WPFSKillTree\WPFSKillTree.csproj", "{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangeTree", "RangeTree\RangeTree\RangeTree.csproj", "{9CC3EB9D-32D2-41E6-96EE-C01DC32A5AED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfRangeControls", "WpfRangeControls\WpfRangeControls\WpfRangeControls.csproj", "{8BD896F3-4860-4797-9FE5-78E2980B4F75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateEquipment", "UpdateEquipment\UpdateEquipment.csproj", "{504A4241-B091-4287-B9A1-680A0ED20CFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,14 @@ Global
 		{8BD896F3-4860-4797-9FE5-78E2980B4F75}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8BD896F3-4860-4797-9FE5-78E2980B4F75}.Release|x86.ActiveCfg = Release|Any CPU
 		{8BD896F3-4860-4797-9FE5-78E2980B4F75}.Release|x86.Build.0 = Release|Any CPU
+		{504A4241-B091-4287-B9A1-680A0ED20CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{504A4241-B091-4287-B9A1-680A0ED20CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{504A4241-B091-4287-B9A1-680A0ED20CFE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{504A4241-B091-4287-B9A1-680A0ED20CFE}.Debug|x86.Build.0 = Debug|Any CPU
+		{504A4241-B091-4287-B9A1-680A0ED20CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{504A4241-B091-4287-B9A1-680A0ED20CFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{504A4241-B091-4287-B9A1-680A0ED20CFE}.Release|x86.ActiveCfg = Release|Any CPU
+		{504A4241-B091-4287-B9A1-680A0ED20CFE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
