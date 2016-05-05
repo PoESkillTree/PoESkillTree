@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Xml.Serialization;
 using Newtonsoft.Json.Linq;
 
 namespace UpdateEquipment
 {
-    public class AffixDataLoader
+    public class AffixDataLoader : DataLoader<XmlAffixList>
     {
         private const string Url = "http://www.exilemods.com/js/data.js";
 
@@ -25,9 +23,7 @@ namespace UpdateEquipment
 
         private const string IncorrectFromToRename = "$1 to $2";
 
-        private AffixList _affixList = new AffixList();
-
-        public void Load()
+        public override void Load()
         {
             string file;
             using (var client = new WebClient())
@@ -45,7 +41,7 @@ namespace UpdateEquipment
             // <tr><td colspan='3'>...</td><tr> -> mod started, next line describes the tiers
             // </table>... -> Prefixes end, Suffixes start on next line
             
-            var affixes = new List<Affix>();
+            var affixes = new List<XmlAffix>();
             foreach (var type in types)
             {
                 // We don't care about groups, they only contain the sub groups.
@@ -76,7 +72,7 @@ namespace UpdateEquipment
 
                     var nameLine = lines[i];
                     var affixName = ExtractAffixName(nameLine);
-                    var affix = new Affix
+                    var affix = new XmlAffix
                     {
                         ModType = modType,
                         Global = IsGlobal(nameLine),
@@ -90,36 +86,27 @@ namespace UpdateEquipment
                     
                     var tierRows = lines[++i].Replace("</table>", "").Replace("<tr>", "")
                         .Split(new [] {"</tr>"}, StringSplitOptions.RemoveEmptyEntries);
-                    var tierList = new List<AffixTier>();
+                    var tierList = new List<XmlTier>();
                     foreach (var tierRow in tierRows)
                     {
                         var columns = tierRow.Replace("<td>", "").Split(new[] { "</td>" }, StringSplitOptions.None);
-                        tierList.Add(new AffixTier
+                        tierList.Add(new XmlTier
                         {
-                            ItemLevel = int.Parse(columns[0]),
-                            Stat = ExtractStats(columns[1]).ToArray(),
+                            ItemLevel = ParseInt(columns[0]),
+                            Stats = ExtractStats(columns[1], affixName).ToArray(),
                             Name = columns[2]
                         });
                     }
-                    affix.Tier = tierList.ToArray();
+                    affix.Tiers = tierList.ToArray();
 
                     affixes.Add(affix);
                 }
             }
 
-            _affixList = new AffixList
+            Data = new XmlAffixList
             {
-                Affix = affixes.ToArray()
+                Affixes = affixes.ToArray()
             };
-        }
-
-        public void Save(string to)
-        {
-            using (TextWriter writer = new StreamWriter(to))
-            {
-                var ser = new XmlSerializer(typeof(AffixList));
-                ser.Serialize(writer, _affixList);
-            }
         }
 
         private static string Trim(string html)
@@ -142,9 +129,6 @@ namespace UpdateEquipment
                 .Replace("1h", "OneHand")
                 .Replace("2h", "TwoHand")
                 .Replace("_and_", "_")
-                .Replace("energy_shield", "energy")
-                .Replace("body_armours", "chests")
-                .Replace("helmets", "helms")
                 .Replace("_", "");
             return Enum.TryParse(replaced, true, out itemType);
         }
@@ -159,18 +143,20 @@ namespace UpdateEquipment
             return AffixNameLineRegex.Match(line).Groups[2].Value;
         }
 
-        private static IEnumerable<AffixTierStat> ExtractStats(string statColumn)
+        private static IEnumerable<XmlStat> ExtractStats(string statColumn, string affixName)
         {
-            foreach (var stat in statColumn.Split(new []{" / "}, StringSplitOptions.None))
+            var affixesSplit = affixName.Split(new[] {", "}, StringSplitOptions.None);
+            foreach (var tuple in statColumn.Split(new []{" / "}, StringSplitOptions.None).Zip(affixesSplit, Tuple.Create))
             {
-                var correct = stat;
+                var stat = tuple.Item1;
                 if (IncorrectFromToRegex.IsMatch(stat))
-                    correct = IncorrectFromToRegex.Replace(stat, IncorrectFromToRename);
-                var fromTo = correct.Split(new[] {" to "}, StringSplitOptions.None);
-                yield return new AffixTierStat
+                    stat = IncorrectFromToRegex.Replace(stat, IncorrectFromToRename);
+                var fromTo = stat.Split(new[] {" to "}, StringSplitOptions.None);
+                yield return new XmlStat
                 {
-                    From = float.Parse(fromTo[0]),
-                    To = fromTo.Length > 1 ? float.Parse(fromTo[1]) : float.Parse(fromTo[0])
+                    Name = tuple.Item2,
+                    From = ParseFloat(fromTo[0]),
+                    To = fromTo.Length > 1 ? ParseFloat(fromTo[1]) : ParseFloat(fromTo[0])
                 };
             }
         }

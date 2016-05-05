@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UpdateEquipment
+﻿namespace UpdateEquipment
 {
     public static class Program
     {
@@ -13,6 +7,10 @@ namespace UpdateEquipment
             var affixDataLoader = new AffixDataLoader();
             affixDataLoader.Load();
             affixDataLoader.Save("AffixList.xml");
+
+            var itemDataLoader = new ItemDataLoader();
+            itemDataLoader.Load();
+            itemDataLoader.Save("ItemList.xml");
         }
     }
 }
