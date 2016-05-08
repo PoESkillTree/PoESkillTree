@@ -6,10 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using POESKillTree.Model.Items;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.Items;
 
 namespace UnitTests
 {

@@ -51,18 +51,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AffixData.cs" />
     <Compile Include="AffixDataLoader.cs" />
     <Compile Include="DataLoader.cs" />
-    <Compile Include="ItemData.cs" />
     <Compile Include="ItemDataLoader.cs" />
-    <Compile Include="ItemType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WPFSKillTree\WPFSKillTree.csproj">
+      <Project>{fcda18d8-4fd9-484b-b7dc-dbf771b3aec7}</Project>
+      <Name>WPFSKillTree</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

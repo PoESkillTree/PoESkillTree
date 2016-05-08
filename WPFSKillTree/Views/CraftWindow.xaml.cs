@@ -1,21 +1,13 @@
 ﻿using MahApps.Metro.Controls;
 using POESKillTree.Controls;
-using POESKillTree.Utils;
-using POESKillTree.ViewModels.Items;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using POESKillTree.Model.Items;
 
 namespace POESKillTree.Views
 {
@@ -107,40 +99,22 @@ namespace POESKillTree.Views
             var itm = ibase.CreateItem();
             Item = itm;
 
-            if (ibase.ImplicitMods != null)
+            if (ibase.ImplicitMods.Any())
             {
-                Affix implaff = new Affix(ibase.ImplicitMods.Select(s => s.Name).ToArray(), new[] { new ItemModTier("implicits", 0, ibase.ImplicitMods) });
-
-                List<string> aliases = new List<string>();
-
-                foreach (var mn in ibase.ImplicitMods)
+                msImplicitMods.Affixes = new List<Affix>
                 {
-                    string mname = mn.Name.Replace("-", "").Replace("+", "");
-                    var afm = Affix.AllAffixes.FirstOrDefault(a => a.Mod.Contains(mname));
-                    if (afm != null)
-                    {
-                        var indx = afm.Mod.IndexOf(mname);
-                        var al = afm.Aliases[indx].First();
-                        aliases.Add(al);
-                    }
-                    else
-                        aliases.Add(mn.Name);
-                }
-
-                implaff.Aliases = aliases.Select(a => new HashSet<string>() { a }).ToArray();
-
-
-                msImplicitMods.Affixes = new List<Affix>() { implaff };
+                    new Affix(ibase.ImplicitMods.Select(s => s.Name).ToArray(), new[] { new ItemModTier("implicits", 0, ibase.ImplicitMods) })
+                };
             }
             else
             {
                 msImplicitMods.Affixes = null;
             }
 
-            var aaff = Affix.AllAffixes.Where(a => a.ApplicableGear.Contains(itm.GearGroup)).ToArray();
+            var aaff = Affix.AffixesPerItemType[itm.ItemType].ToArray();
 
-            _prefixes = aaff.Where(a => a.IsPrefix).ToList();
-            _suffixes = aaff.Where(a => a.IsSuffix).ToList();
+            _prefixes = aaff.Where(a => a.ModType == ModType.Prefix).ToList();
+            _suffixes = aaff.Where(a => a.ModType == ModType.Suffix).ToList();
 
             msp1.Affixes = msp2.Affixes = msp3.Affixes = _prefixes;
             mss1.Affixes = mss2.Affixes = mss3.Affixes = _suffixes;
@@ -177,7 +151,7 @@ namespace POESKillTree.Views
                 return;
 
             Item.NameLine = "";
-            Item.TypeLine = Item.BaseType;
+            Item.TypeLine = Item.BaseType.Name;
 
             if (_selectedPreff.Length + _selectedSuff.Length == 0)
             {
@@ -358,7 +332,7 @@ namespace POESKillTree.Views
 
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
-            Item.JSONBase = Item.GenerateJson();
+            Item.SetJsonBase();
 
             Item.Attributes = Item.Properties.ToDictionary(k => k.Attribute, v => v.Value);
 

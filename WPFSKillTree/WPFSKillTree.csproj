@@ -185,6 +185,11 @@
     <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Bandit.cs" />
+    <Compile Include="Model\Items\XmlItemList.cs" />
+    <Compile Include="Model\Items\XmlAffixList.cs" />
+    <Compile Include="Model\Items\ItemGroup.cs" />
+    <Compile Include="Model\Items\ItemType.cs" />
+    <Compile Include="Model\Items\ModType.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
@@ -254,6 +259,7 @@
     <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
+    <Compile Include="Model\Items\Stat.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
       <DependentUpon>AdvancedGeneratorTab.xaml</DependentUpon>
@@ -282,15 +288,14 @@
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\DownloadItemsViewModel.cs" />
-    <Compile Include="ViewModels\Items\Affix.cs" />
-    <Compile Include="ViewModels\Items\FrameType.cs" />
-    <Compile Include="ViewModels\Items\GearType.cs" />
-    <Compile Include="ViewModels\Items\Item.cs" />
-    <Compile Include="ViewModels\Items\ItemAttributes.cs" />
-    <Compile Include="ViewModels\Items\ItemBase.cs" />
-    <Compile Include="ViewModels\Items\ItemClass.cs" />
-    <Compile Include="ViewModels\Items\ItemMod.cs" />
-    <Compile Include="ViewModels\Items\ItemModTier.cs" />
+    <Compile Include="Model\Items\Affix.cs" />
+    <Compile Include="Model\Items\FrameType.cs" />
+    <Compile Include="Model\Items\Item.cs" />
+    <Compile Include="Model\Items\ItemAttributes.cs" />
+    <Compile Include="Model\Items\ItemBase.cs" />
+    <Compile Include="Model\Items\ItemClass.cs" />
+    <Compile Include="Model\Items\ItemMod.cs" />
+    <Compile Include="Model\Items\ItemModTier.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
     <Compile Include="SkillTreeFiles\ImageHelper.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
@@ -707,6 +712,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Assets\" />
+    <Folder Include="ViewModels\Items\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

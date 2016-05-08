@@ -4,11 +4,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
-        xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-    
-    
-        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:items1="clr-namespace:POESKillTree.Model.Items"
         x:Class="POESKillTree.Views.CraftWindow"
     
         WindowStartupLocation="CenterOwner"
@@ -32,10 +29,10 @@
             <ComboBox x:Name="cbClassSelection" ItemsSource="{Binding ClassList, ElementName=window}" SelectedIndex="0" SelectionChanged="cbClassSelection_SelectionChanged" />
             <ComboBox x:Name="cbBaseSelection" ItemsSource="{Binding BaseList, ElementName=window}" SelectedIndex="0" SelectionChanged="cbBaseSelection_SelectionChanged" >
                 <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type items:ItemBase}">
+                    <DataTemplate DataType="{x:Type items1:ItemBase}">
                         <StackPanel Orientation="Horizontal">
-                            <Image Height="20" VerticalAlignment="Center" Source="{Binding ItemType, Converter={StaticResource ItemTypeToImageConverter}}" StretchDirection="DownOnly" Margin="0,0,3,0"/>
-                            <TextBlock VerticalAlignment="Center" ><Run Text="{Binding ItemType}"/><Run Text=" (ilvl "/><Run Text="{Binding Level}"/><Run Text=")"/></TextBlock>
+                            <Image Height="20" VerticalAlignment="Center" Source="{Binding Name, Converter={StaticResource ItemTypeToImageConverter}}" StretchDirection="DownOnly" Margin="0,0,3,0"/>
+                            <TextBlock VerticalAlignment="Center" ><Run Text="{Binding Name, Mode=OneWay}"/><Run Text=" (ilvl "/><Run Text="{Binding Level, Mode=OneWay}"/><Run Text=")"/></TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>

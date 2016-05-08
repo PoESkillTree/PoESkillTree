@@ -1,16 +1,9 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
-namespace UpdateEquipment
+namespace POESKillTree.Model.Items
 {
-    public enum ModType
-    {
-        Prefix,
-        Suffix
-    }
+    // Contains the classes that allow serialization and deserialization of AffixList.xml
 
-    [Serializable]
-    [XmlType(AnonymousType = true)]
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "AffixList")]
     public class XmlAffixList
     {
@@ -18,8 +11,6 @@ namespace UpdateEquipment
         public XmlAffix[] Affixes { get; set; }
     }
 
-    [Serializable]
-    [XmlType(AnonymousType = true)]
     public class XmlAffix
     {
         [XmlElement("Tier")]
@@ -41,8 +32,6 @@ namespace UpdateEquipment
         public string CraftedAs { get; set; }
     }
 
-    [Serializable]
-    [XmlType(AnonymousType = true)]
     public class XmlTier
     {
         [XmlElement("Stat")]
@@ -53,10 +42,11 @@ namespace UpdateEquipment
 
         [XmlAttribute]
         public string Name { get; set; }
+
+        [XmlAttribute]
+        public int Tier { get; set; }
     }
 
-    [Serializable]
-    [XmlType(AnonymousType = true)]
     public class XmlStat
     {
         [XmlAttribute]

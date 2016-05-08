@@ -6,9 +6,9 @@ using System.Windows.Controls;
 using System.Xml.Serialization;
 using POESKillTree.ViewModels;
 using System.Collections.ObjectModel;
-using POESKillTree.ViewModels.Items;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Controls;
+using POESKillTree.Model.Items;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 
@@ -153,7 +153,7 @@ namespace POESKillTree.Model
                 var arr = new JArray();
                 foreach (var item in StashItems)
                 {
-                    arr.Add(item.JSONBase);
+                    arr.Add(item.JsonBase);
                 }
 
                 File.WriteAllText(Path.Combine(AppData.GetFolder(), "stash.json"), arr.ToString());

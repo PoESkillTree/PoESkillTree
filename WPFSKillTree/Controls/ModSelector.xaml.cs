@@ -1,18 +1,11 @@
-﻿using POESKillTree.ViewModels.Items;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using POESKillTree.Model.Items;
 
 namespace POESKillTree.Controls
 {
@@ -105,17 +98,17 @@ namespace POESKillTree.Controls
                 tbtlabel.Text = "";
                 if (aff != EmptySelection)
                 {
-                    for (int i = 0; i < aff.Mod.Count; i++)
+                    for (int i = 0; i < aff.Mods.Count; i++)
                     {
                         OverlayedSlider os = new OverlayedSlider();
-                        os.OverlayText = aff.AliasStrings[i];
+                        os.OverlayText = aff.Mods[i];
 
                         sliders.Add(os);
                         os.ValueChanged += slValue_ValueChanged;
                         os.Tag = i;
                         var tics = tiers.SelectMany(im => Enumerable.Range((int)Math.Round(im.Stats[i].Range.From), (int)Math.Round(im.Stats[i].Range.To - im.Stats[i].Range.From + 1))).Select(f => (double)f).ToList();
 
-                        if (aff.AliasStrings[i].Contains(" per second"))
+                        if (aff.Mods[i].Contains(" per second"))
                         {
                             tics = tics.Select(t => t / 60.0).ToList();
                         }

@@ -5,32 +5,43 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using POESKillTree.Model.Items;
 
 namespace UpdateEquipment
 {
+    /// <summary>
+    /// Extracts item bases from the wiki as a <see cref="XmlItemList"/>.
+    /// </summary>
     public class ItemDataLoader : DataLoader<XmlItemList>
     {
+        /// <summary>
+        /// Contains all property columns in wiki tables that must be ignored because they contain redundant information.
+        /// </summary>
         private static readonly HashSet<string> IgnoredColumns = new HashSet<string> { "Damage per Second" };
 
         private static readonly Regex NumberRegex = new Regex(@"\d+(\.\d+)?");
 
         private const string WikiUrlPrefix = "http://pathofexile.gamepedia.com/";
 
+        /// <summary>
+        /// Contains all wiki pages that must be scraped and the item types that can be found in them
+        /// (in the order in which they occur).
+        /// </summary>
         private static readonly IReadOnlyDictionary<string, IReadOnlyList<ItemType>> WikiUrls = new Dictionary<string, IReadOnlyList<ItemType>>
         {
-            {"List_of_axes", new []{ItemType.OneHandAxes, ItemType.TwoHandAxes}},
-            {"List_of_bows", new []{ItemType.Bows}},
-            {"List_of_claws", new []{ItemType.Claws}},
-            {"List_of_daggers", new []{ItemType.Daggers}},
-            {"List_of_maces", new []{ItemType.OneHandMaces, ItemType.Sceptres, ItemType.TwoHandMaces}},
-            {"List_of_staves", new []{ItemType.Staves}},
-            {"List_of_swords", new []{ItemType.OneHandSwords, ItemType.ThrustingOneHandSwords, ItemType.TwoHandSwords}},
-            {"List_of_wands", new []{ItemType.Wands}},
+            {"List_of_axes", new []{ItemType.OneHandedAxe, ItemType.TwoHandedAxe}},
+            {"List_of_bows", new []{ItemType.Bow}},
+            {"List_of_claws", new []{ItemType.Claw}},
+            {"List_of_daggers", new []{ItemType.Dagger}},
+            {"List_of_maces", new []{ItemType.OneHandedMace, ItemType.Sceptre, ItemType.TwoHandedMace}},
+            {"List_of_staves", new []{ItemType.Staff}},
+            {"List_of_swords", new []{ItemType.OneHandedSword, ItemType.ThrustingOneHandedSword, ItemType.TwoHandedSword}},
+            {"List_of_wands", new []{ItemType.Wand}},
 
-            {"List_of_amulets", new []{ItemType.Amulets}},
-            {"List_of_belts", new []{ItemType.Belts}},
-            {"List_of_quivers", new []{ItemType.Quivers}},
-            {"List_of_rings", new []{ItemType.Rings}},
+            {"List_of_amulets", new []{ItemType.Amulet}},
+            {"List_of_belts", new []{ItemType.Belt}},
+            {"List_of_quivers", new []{ItemType.Quiver, ItemType.Quiver}}, // current quivers and old quivers
+            {"List_of_rings", new []{ItemType.Ring}},
 
             {"Body_armour", ItemGroup.BodyArmour.Types()},
             {"Boots", ItemGroup.Boots.Types()},
@@ -39,6 +50,9 @@ namespace UpdateEquipment
             {"Shield", ItemGroup.Shield.Types()}
         };
 
+        /// <summary>
+        /// Contains all item types that have hidden implicits that are not listed in the wiki tables.
+        /// </summary>
         private static readonly IReadOnlyDictionary<ItemType, XmlStat> HiddenImplicits;
 
         private static readonly IEnumerable<XmlItemBase> Jewels =
@@ -69,8 +83,8 @@ namespace UpdateEquipment
             {
                 dict[itemType] = penalty4;
             }
-            dict[ItemType.BodyArmoursArmour] = penalty8;
-            dict[ItemType.BodyArmoursArmourEnergyShield] = penalty8;
+            dict[ItemType.BodyArmourArmour] = penalty8;
+            dict[ItemType.BodyArmourArmourEnergyShield] = penalty8;
             foreach (var itemType in ItemGroup.Shield.Types())
             {
                 dict[itemType] = penalty3;
@@ -171,9 +185,9 @@ namespace UpdateEquipment
                     {
                         Level = ParseCell(row.ChildNodes[lvlColumn], 0),
                         ItemType = itemType,
-                        Name = row.ChildNodes[nameColumn].GetAttributeValue("data-sort-value", ""),
+                        Name = WebUtility.HtmlDecode(row.ChildNodes[nameColumn].GetAttributeValue("data-sort-value", "")),
                         Properties = ParseProperties(row, propertyColumns, implicitMultiplier).ToArray(),
-                        Implicit = implicits.ToArray()
+                        Implicit = implicits.Any() ? implicits.ToArray() : null
                     };
                 }
             }
@@ -269,12 +283,6 @@ namespace UpdateEquipment
                 return @default;
             int value;
             return TryParseInt(cell.InnerHtml, out value) ? value : @default;
-        }
-
-        private static float ParseCell(HtmlNode cell, float @default)
-        {
-            float value;
-            return TryParseCell(cell, out value) ? value : @default;
         }
 
         private static bool TryParseCell(HtmlNode cell, out float value)

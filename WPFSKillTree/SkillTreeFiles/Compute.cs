@@ -4,8 +4,8 @@ using System.Text.RegularExpressions;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.Items;
 using System.Linq;
+using POESKillTree.Model.Items;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -921,7 +921,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
-            public DamageNature(List<string> keywords)
+            public DamageNature(IEnumerable<string> keywords)
             {
                 foreach (string word in keywords)
                 {
@@ -1503,23 +1503,29 @@ namespace POESKillTree.SkillTreeFiles
                     Item = item;
 
                     // Get weapon type (damage nature).
-                    if (item.Keywords == null) // Quiver or shield.
+                    if (item.ItemGroup != ItemGroup.OneHandWeapon && item.ItemGroup != ItemGroup.TwoHandWeapon)
+                        // Quiver or shield.
                     {
-                        if (item.BaseType.Contains("Quiver"))
-                            Nature = new DamageNature() { WeaponType = WeaponType.Quiver };
+                        if (item.BaseType.Name.Contains("Quiver"))
+                            Nature = new DamageNature() {WeaponType = WeaponType.Quiver};
+                        else if (item.BaseType.Name.Contains("Shield") || item.BaseType.Name.Contains("Buckler") ||
+                                 item.BaseType.Name == "Spiked Bundle")
+                            Nature = new DamageNature() {WeaponType = WeaponType.Shield};
                         else
-                            if (item.BaseType.Contains("Shield") || item.BaseType.Contains("Buckler") || item.BaseType == "Spiked Bundle")
-                                Nature = new DamageNature() { WeaponType = WeaponType.Shield };
-                            else
-                                throw new Exception("Unknown weapon type: " + item.BaseType);
+                            throw new Exception("Unknown weapon type: " + item.BaseType);
                     }
                     else // Regular weapon.
-                        foreach (string keyword in item.Keywords)
-                            if (Types.ContainsKey(keyword))
-                            {
-                                Nature = new DamageNature() { WeaponType = Types[keyword] };
-                                break;
-                            }
+                    {
+                        WeaponType weaponType;
+                        if (!Enum.TryParse(item.ItemType.ToString(), out weaponType))
+                        {
+                            if (item.ItemType == ItemType.ThrustingOneHandedSword)
+                                weaponType = WeaponType.OneHandedSword;
+                            else
+                                throw new Exception("Unknown weapon type: " + item.BaseType);
+                        }
+                        Nature = new DamageNature {WeaponType = weaponType};
+                    }
 
                     // If weapon is melee, it defaults to melee form. If it's ranged then projectile.
                     if (Nature.Is(WeaponType.Melee))
@@ -1541,7 +1547,7 @@ namespace POESKillTree.SkillTreeFiles
                     // Copy local and non-local mods and collect added non-physical damage.
                     foreach (var mod in item.Mods)
                     {
-                        if (mod.isLocal)
+                        if (mod.IsLocal)
                         {
                             Damage.Added added = Damage.Added.Create(Nature.Source, mod);
                             if (added != null && added.Type != DamageType.Physical)

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace POESKillTree.ViewModels.Items
+namespace POESKillTree.Model.Items
 {
     /// <summary>
     /// itemclass and itemslot values with same name must have same value
@@ -23,7 +20,7 @@ namespace POESKillTree.ViewModels.Items
         Gem = 0x200,
         Belt = 0x400,
         TwoHand = 0x800,
-        Jewel = 0x1600,
+        Jewel = 0x1000,
         Unequipable = 0x800000,
     }
 

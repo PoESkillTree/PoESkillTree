@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
-using System.Linq;
-using MahApps.Metro.Converters;
 using Newtonsoft.Json.Linq;
-using System.Collections.ObjectModel;
 using POESKillTree.Utils;
+using POESKillTree.ViewModels;
 
-namespace POESKillTree.ViewModels.Items
+namespace POESKillTree.Model.Items
 {
-    public class ItemAttributes : INotifyPropertyChanged
+    public class ItemAttributes : Notifier
     {
         #region slotted items
         public Item Armor
@@ -138,107 +137,71 @@ namespace POESKillTree.ViewModels.Items
             }
         }
 
-
-        public Item GetItemInSlot(ItemSlot slot)
+        private Item GetItemInSlot(ItemSlot slot)
         {
-            return _Equip.FirstOrDefault(i => i.Slot == slot);
+            return Equip.FirstOrDefault(i => i.Slot == slot);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="slot"></param>
-        /// <returns>true if item was set</returns>
-        public bool SetItemInSlot(Item value, ItemSlot slot)
+        private void SetItemInSlot(Item value, ItemSlot slot)
         {
-            if (value != null)
-            {
-                if (value.Class == ItemClass.Unequipable)
-                    return false;
-
-                if ((int)value.Class != (int)slot && (slot == ItemSlot.Ring2 && value.Class != ItemClass.Ring))
-                    return false;
-
-            }
+            if (value != null && ((int)value.Class & (int) slot) == 0)
+                return;
             if (slot == ItemSlot.Unequipable)
-                return false;
+                return;
             RemoveItemFromSlot(slot);
 
             if (value != null)
             {
                 value.Slot = slot;
-                _Equip.Add(value);
+                Equip.Add(value);
             }
             OnPropertyChanged(slot.ToString());
             RefreshItemAttributes();
-            return true;
         }
 
-        public Item RemoveItemFromSlot(ItemSlot slot)
+        private void RemoveItemFromSlot(ItemSlot slot)
         {
-            var itm = _Equip.FirstOrDefault(i => i.Slot == slot);
+            var itm = Equip.FirstOrDefault(i => i.Slot == slot);
             if (itm != null)
-                _Equip.Remove(itm);
+                Equip.Remove(itm);
 
-            OnPropertyChanged("Equip");
             OnPropertyChanged(slot.ToString());
 
             if (itm != null)
                 itm.Slot = ItemSlot.Unequipable;
-            return itm;
         }
         #endregion
 
-        private readonly List<Attribute> aList = new List<Attribute>();
-        private Dictionary<string, List<float>> AgregatedAttributes;
+        private readonly List<Attribute> _aList = new List<Attribute>();
 
-        private ListCollectionView _Attributes;
+        public ObservableCollection<Item> Equip { get; private set; }
 
-        private ObservableCollection<Item> _Equip = new ObservableCollection<Item>();
-
-        public ObservableCollection<Item> Equip
-        {
-            get { return _Equip; }
-            set
-            {
-                _Equip = value;
-                OnPropertyChanged("Equip");
-            }
-        }
-
+        private ListCollectionView _attributes;
         public ListCollectionView Attributes
         {
-            get
-            {
-                return _Attributes;
-            }
-
-            set
-            {
-                _Attributes = value;
-                OnPropertyChanged("Attributes");
-            }
+            get { return _attributes; }
+            private set { SetProperty(ref _attributes, value); }
         }
 
-        public List<Attribute> NonLocalMods = new List<Attribute>();
+        private readonly List<Attribute> _nonLocalMods = new List<Attribute>();
+        public IReadOnlyList<Attribute> NonLocalMods
+        {
+            get { return _nonLocalMods; }
+        }
 
         public ItemAttributes()
         {
+            Equip = new ObservableCollection<Item>();
             RefreshItemAttributes();
         }
 
         public ItemAttributes(string itemData)
         {
-            #region Readin
+            Equip = new ObservableCollection<Item>();
 
-            JObject jObject = JObject.Parse(itemData);
+            var jObject = JObject.Parse(itemData);
             foreach (JObject jobj in (JArray)jObject["items"])
             {
-                var html = jobj["x"].Value<string>();
-                //html =
-                //   html.Replace("\\\"", "\"").Replace("\\/", "/").Replace("\\n", " ").Replace("\\t", " ").Replace(
-                //     "\\r", "").Replace("e\"", "e\" ").Replace("\"style", "\" style");
                 var id = jobj["inventoryId"].Value<string>();
                 if (id == "BodyArmour")
                 {
@@ -282,30 +245,27 @@ namespace POESKillTree.ViewModels.Items
                 }
             }
 
-            #endregion
-
             RefreshItemAttributes();
         }
 
         private void RefreshItemAttributes()
         {
-            aList.Clear();
-            NonLocalMods.Clear();
-            Attributes = new ListCollectionView(aList);
-            foreach (Item item in Equip)
+            _aList.Clear();
+            _nonLocalMods.Clear();
+            Attributes = new ListCollectionView(_aList);
+            foreach (var item in Equip)
             {
-                LoadItem(item, aList, NonLocalMods);
+                LoadItem(item, _aList, _nonLocalMods);
             }
 
-            var pgd = new PropertyGroupDescription("Group");
-            pgd.Converter = new HeaderConverter();
+            var pgd = new PropertyGroupDescription("Group", new HeaderConverter());
             Attributes.GroupDescriptions.Add(pgd);
             Attributes.CustomSort = new NumberLessStringComparer();
 
             Attributes.Refresh();
         }
 
-        public static void LoadItem(Item item, List<Attribute> attributes,List<Attribute> nonlocal)
+        public static void LoadItem(Item item, List<Attribute> attributes, List<Attribute> nonlocal)
         {
             foreach (var attr in item.Attributes)
             {
@@ -315,20 +275,18 @@ namespace POESKillTree.ViewModels.Items
 
             foreach (ItemMod mod in item.Mods)
             {
-                Attribute attTo = null;
-                attTo =
-                    attributes.Find(
-                        ad =>
-                            ad.TextAttribute == mod.Attribute &&
-                            ad.Group == (mod.isLocal ? item.Class.ToString() : "Independent"));
+                var attTo = attributes.Find(
+                    ad =>
+                        ad.TextAttribute == mod.Attribute &&
+                        ad.Group == (mod.IsLocal ? item.Class.ToString() : "Independent"));
                 if (attTo == null)
                 {
                     attributes.Add(new Attribute(mod.Attribute, mod.Value,
-                        (mod.isLocal ? item.Class.ToString() : "Independent")));
+                        mod.IsLocal ? item.Class.ToString() : "Independent"));
                 }
                 else
                 {
-                    attTo.Add(mod.Attribute, mod.Value);
+                    attTo.Add(mod.Value);
                 }
             }
 
@@ -341,82 +299,58 @@ namespace POESKillTree.ViewModels.Items
                 if (attr.Key.ToLower().Contains("damage")) continue;
                 if (attr.Key.Contains("Weapon Class")) continue;
                 if (attr.Key.Contains("Elemental Damage")) continue;
-                Attribute attTo = null;
-                attTo = nonlocal.Find(ad => ad.TextAttribute == attr.Key);
+                var attTo = nonlocal.Find(ad => ad.TextAttribute == attr.Key);
                 if (attTo == null)
                 {
                     nonlocal.Add(new Attribute(attr.Key, attr.Value, ""));
                 }
                 else
                 {
-                    attTo.Add(attr.Key, attr.Value);
+                    attTo.Add(attr.Value);
                 }
             }
 
             foreach (ItemMod mod in item.Mods)
             {
-                if (mod.isLocal) continue;
-                Attribute attTo = null;
-                attTo = nonlocal.Find(ad => ad.TextAttribute == mod.Attribute);
+                if (mod.IsLocal) continue;
+                var attTo = nonlocal.Find(ad => ad.TextAttribute == mod.Attribute);
                 if (attTo == null)
                 {
                     nonlocal.Add(new Attribute(mod.Attribute, mod.Value, ""));
                 }
                 else
                 {
-                    attTo.Add(mod.Attribute, mod.Value);
+                    attTo.Add(mod.Value);
                 }
             }
         }
 
         private void AddItem(JObject val, ItemClass iclass, ItemSlot islot)
         {
-            Item item = null;
-            item = new Item(iclass, val);
-            item.Slot = islot;
+            var item = new Item(iclass, val) {Slot = islot};
             Equip.Add(item);
-            OnPropertyChanged("Equip");
 
             RefreshItemAttributes();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string property)
+
+        public class Attribute : Notifier
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-        }
+            public static readonly Regex Backreplace = new Regex("#");
 
-        public class Attribute : INotifyPropertyChanged
-        {
-            private readonly string _attribute;
-            private static readonly Regex _backreplace = new Regex("#");
-
-            public static Regex Backreplace
-            {
-                get { return _backreplace; }
-            }
-
-            private readonly string _group;
             private readonly List<float> _value;
-
-            public Attribute(string s, List<float> val, string grp)
-            {
-                _attribute = s;
-                _value = new List<float>(val);
-                _group = grp;
-            }
-
-            public List<float> Value
+            public IReadOnlyList<float> Value
             {
                 get { return _value; }
             }
 
+            private readonly string _group;
             public string Group
             {
                 get { return _group; }
             }
 
+            private readonly string _attribute;
             public string TextAttribute
             {
                 get { return _attribute; }
@@ -424,91 +358,74 @@ namespace POESKillTree.ViewModels.Items
 
             public string ValuedAttribute
             {
-                get { return InsertNumbersInAttributes(_attribute, _value); }
+                get { return _value.Aggregate(_attribute, (current, f) => Backreplace.Replace(current, f + "", 1)); }
             }
 
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            private string InsertNumbersInAttributes(string s, List<float> attrib)
+            public Attribute(string s, IEnumerable<float> val, string grp)
             {
-                foreach (float f in attrib)
-                {
-                    s = _backreplace.Replace(s, f + "", 1);
-                }
-                return s;
+                _attribute = s;
+                _value = new List<float>(val);
+                _group = grp;
             }
 
-            public bool Add(string s, List<float> val)
+            public void Add(IReadOnlyList<float> val)
             {
-                if (_attribute != s) return false;
-                if (_value.Count != val.Count) return false;
-                for (int i = 0; i < val.Count; i++)
+                if (_value.Count != val.Count) throw new NotSupportedException();
+                for (var i = 0; i < val.Count; i++)
                 {
                     _value[i] += val[i];
                 }
                 OnPropertyChanged("ValuedAttribute");
-                return true;
-            }
-
-            private void OnPropertyChanged(string info)
-            {
-                PropertyChangedEventHandler handler = PropertyChanged;
-                if (handler != null)
-                {
-                    handler(this, new PropertyChangedEventArgs(info));
-                }
             }
         }
 
-        public class NumberLessStringComparer : IComparer
+
+        private class NumberLessStringComparer : IComparer, IComparer<Attribute>
         {
-            private static readonly Regex numberfilter = new Regex("[0-9]*\\.?[0-9]+");
+            private static readonly Regex Numberfilter = new Regex("[0-9]*\\.?[0-9]+");
 
             public int Compare(object x, object y)
             {
-                if (x is Attribute && y is Attribute)
-                {
-                    if (((Attribute)x).Group == "Independent" && !(((Attribute)y).Group == "Independent")) return +1;
-                    if (((Attribute)y).Group == "Independent" && !(((Attribute)x).Group == "Independent")) return -1;
-                    return
-                        numberfilter.Replace(((Attribute)y).Group, "")
-                            .CompareTo(numberfilter.Replace(((Attribute)y).Group, ""));
-                }
-                return 0;
+                return Compare(x as Attribute, y as Attribute);
             }
 
-            public int Compare(string x, string y)
+            public int Compare(Attribute xAttr, Attribute yAttr)
             {
-                return numberfilter.Replace(x, "").CompareTo(numberfilter.Replace(y, ""));
+                if (xAttr == null || yAttr == null) return 0;
+                var xGroup = xAttr.Group;
+                var yGroup = yAttr.Group;
+                if (xGroup == "Independent" && yGroup != "Independent") return +1;
+                if (yGroup == "Independent" && xGroup != "Independent") return -1;
+                return Numberfilter.Replace(xGroup, "").CompareTo(Numberfilter.Replace(yGroup, ""));
             }
         }
 
 
-        public class HeaderConverter : IValueConverter
+        private class HeaderConverter : IValueConverter
         {
-            public Dictionary<string, AttributeGroup> ItemGroups = new Dictionary<string, AttributeGroup>();
+            private readonly Dictionary<string, AttributeGroup> _itemGroups = new Dictionary<string, AttributeGroup>();
 
             public HeaderConverter()
             {
                 foreach (var itemClass in Enum.GetValues(typeof(ItemClass)))
                 {
-                    if (!ItemGroups.ContainsKey(itemClass.ToString()))
+                    if (!_itemGroups.ContainsKey(itemClass.ToString()))
                     {
-                        ItemGroups.Add(itemClass.ToString(), new AttributeGroup(itemClass.ToString()));
+                        _itemGroups.Add(itemClass.ToString(), new AttributeGroup(itemClass.ToString()));
                     }
                 }
 
-                ItemGroups.Add("Independent", new AttributeGroup("Independent"));
+                _itemGroups.Add("Independent", new AttributeGroup("Independent"));
             }
 
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                return ItemGroups[value.ToString()];
+                return _itemGroups[value.ToString()];
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
     }

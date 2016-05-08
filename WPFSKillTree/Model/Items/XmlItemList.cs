@@ -1,10 +1,9 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
-namespace UpdateEquipment
+namespace POESKillTree.Model.Items
 {
-    [Serializable]
-    [XmlType(AnonymousType = true)]
+    // Contains the classes that allow serialization and deserialization of ItemList.xml
+
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "ItemList")]
     public class XmlItemList
     {
@@ -12,14 +11,12 @@ namespace UpdateEquipment
         public XmlItemBase[] ItemBases { get; set; }
     }
     
-    [Serializable]
-    [XmlType(AnonymousType = true)]
     public class XmlItemBase
     {
-        [XmlArrayItem("Stat", IsNullable = false)]
+        [XmlArrayItem("Stat")]
         public XmlStat[] Implicit { get; set; }
         
-        [XmlArrayItem("Stat", IsNullable = false)]
+        [XmlArrayItem("Stat")]
         public XmlStat[] Properties { get; set; }
         
         [XmlAttribute]

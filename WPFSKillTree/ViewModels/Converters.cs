@@ -9,10 +9,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 using System.IO;
-using POESKillTree.ViewModels.Items;
-using System.Diagnostics;
 using System.Reflection;
 using System.Resources;
+using POESKillTree.Model.Items;
 using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels
@@ -242,7 +241,7 @@ namespace POESKillTree.ViewModels
             BitmapImage img = null;
             if (itm != null)
             {
-                img = GetImageForBase(itm.BaseType);
+                img = GetImageForBase(itm.BaseType.Name);
                 if (img != null)
                     return img;
 

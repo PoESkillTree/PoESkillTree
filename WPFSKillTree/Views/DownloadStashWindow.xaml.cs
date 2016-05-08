@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Windows.Media;
 using System.ComponentModel;
 using System.Linq;
-using POESKillTree.ViewModels.Items;
+using POESKillTree.Model.Items;
 
 namespace POESKillTree.Views
 {

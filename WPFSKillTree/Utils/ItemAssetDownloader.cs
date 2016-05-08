@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.Xml.Linq;
 using System.IO;
-using POESKillTree.ViewModels.Items;
 using MB.Algodat;
+using POESKillTree.Model.Items;
 
 namespace POESKillTree.Utils
 {
     internal class ItemAssetDownloader
     {
-
-        static Dictionary<string, ItemClass> JewelryClassMap = new Dictionary<string, ItemClass>()
+        // todo
+        /*static Dictionary<string, ItemClass> JewelryClassMap = new Dictionary<string, ItemClass>()
         {
             {"Amulet", ItemClass.Amulet},
             {"Belt",ItemClass.Belt},
@@ -94,7 +94,7 @@ namespace POESKillTree.Utils
             {"Crimson Jewel", GearGroup.Jewel},
             {"Cobalt Jewel", GearGroup.Jewel},
             {"Viridian Jewel", GearGroup.Jewel},
-        };
+        };*/
 
         public static void ExtractJewelry(List<ItemBase> items, List<Tuple<string, string>> images)
         {
@@ -125,14 +125,16 @@ namespace POESKillTree.Utils
 
                         images.Add(Tuple.Create(name, image));
 
+                        /*
                         var xe = new ItemBase()
                         {
                             GearGroup = JewelryGroupMap[h],
                             Class = JewelryClassMap[h],
-                            ItemType = name,
+                            Name = name,
                             Level = int.Parse(level)
 
                         };
+                        */
 
                         var implModnodes = new string[2][];
                         implModnodes[0] = namel[3].InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
@@ -142,12 +144,12 @@ namespace POESKillTree.Utils
                         if (implModnodes.Length > 0 && implModnodes[0].Length == implModnodes[1].Length)
                         {
                             implModnodes[0] = implModnodes[0].Select(n => n.Replace("+", "").Trim()).ToArray();
-                            for (int j = 0; j < implModnodes[0].Length; j++)
-                                xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
+                            //for (int j = 0; j < implModnodes[0].Length; j++)
+                            //    xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
                         }
 
 
-                        items.Add(xe);
+                        //items.Add(xe);
                     }
                     catch(Exception e)
                     {
@@ -191,20 +193,13 @@ namespace POESKillTree.Utils
                         var evasionrating = namel[4].InnerText;
                         var energyshield = namel[5].InnerText;
 
-                        var reqStr = namel[6].InnerText;
-                        var reqDex = namel[7].InnerText;
-                        var reqInt = namel[8].InnerText;
-
-
+                        /*
                         var xe = new ItemBase()
                         {
                             GearGroup = ArmorGroupMap[h],
                             Class = ArmorClassMap[h],
-                            ItemType = name,
+                            Name = name,
                             Level = int.Parse(level),
-                            RequiredStr = int.Parse(reqStr),
-                            RequiredDex = int.Parse(reqDex),
-                            RequiredInt = int.Parse(reqInt),
                         };
 
 
@@ -214,7 +209,7 @@ namespace POESKillTree.Utils
                             xe.Properties.Add(new Stat("Energy Shield", energyshield));
                         if (evasionrating != "0")
                             xe.Properties.Add(new Stat("Evasion Rating", evasionrating));
-
+                            */
 
                         var implModnodes = lines[i + 1].SelectNodes("td")
                             .Select(n => n.InnerHtml.Trim().Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries))
@@ -224,14 +219,14 @@ namespace POESKillTree.Utils
                         {
                             implModnodes[0] = implModnodes[0].Select(n => n.Replace("Minimum", "").Replace("Maximum", "").Replace("+", "").Trim()).Distinct().ToArray();
                             implModnodes[0] = implModnodes[0].Where(val => val != "Dummy Stat Display Nothing").ToArray();
-                            for (int j = 0; j < implModnodes[0].Length; j++)
-                            {
-                                xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
-                            }
+                            //for (int j = 0; j < implModnodes[0].Length; j++)
+                            //{
+                            //    xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
+                            //}
                         }
 
 
-                        items.Add(xe);
+                        //items.Add(xe);
                     }
                     catch (Exception e)
                     {
@@ -273,20 +268,14 @@ namespace POESKillTree.Utils
                         var level = namel[2].InnerText;
                         var damage = namel[3].InnerText;
                         var aps = namel[4].InnerText;
-                        var dps = namel[5].InnerText;
-                        var reqStr = namel[6].InnerText;
-                        var reqDex = namel[7].InnerText;
-                        var reqInt = namel[8].InnerText;
 
+                        /*
                         var xe = new ItemBase()
                         {
                             GearGroup = WeaponGroupMap[h],
                             Class = WeaponClassMap[h],
-                            ItemType = name,
+                            Name = name,
                             Level = int.Parse(level),
-                            RequiredStr = int.Parse(reqStr),
-                            RequiredDex = int.Parse(reqDex),
-                            RequiredInt = int.Parse(reqInt),
                         };
 
 
@@ -295,7 +284,7 @@ namespace POESKillTree.Utils
 
                         xe.Properties.Add(new Stat("Atacks Per Second", aps));
 
-                        xe.Properties.Add(new Stat("Critical Strike Chance %", "5"));
+                        xe.Properties.Add(new Stat("Critical Strike Chance %", "5"));*/
 
 
                         var implModnodes = lines[i + 1].SelectNodes("td")
@@ -306,13 +295,13 @@ namespace POESKillTree.Utils
                         {
                             implModnodes[0] = implModnodes[0].Select(n => n.Replace("Minimum", "").Replace("Maximum", "").Trim()).Distinct().ToArray();
 
-                            for (int j = 0; j < implModnodes[0].Length; j++)
-                            {
-                                xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
-                            }
+                            //for (int j = 0; j < implModnodes[0].Length; j++)
+                            //{
+                            //    xe.ImplicitMods.Add(new Stat(implModnodes[0][j], implModnodes[1][j]));
+                            //}
                         }
 
-                        items.Add(xe);
+                        //items.Add(xe);
                     }
                     catch(Exception e)
                     {
@@ -332,31 +321,31 @@ namespace POESKillTree.Utils
                 images.Add(Tuple.Create(crimson_jewel, "https://p7p4m6s5.ssl.hwcdn.net/image/Art/2DItems/Jewels/basicstr.png?scale=1&w=1&h=1&v=5496129c557831c118a679c1001f3df93"));
                 images.Add(Tuple.Create(cobalt_jewel, "https://p7p4m6s5.ssl.hwcdn.net/image/Art/2DItems/Jewels/basicint.png?scale=1&w=1&h=1&v=cd579ea22c05f1c6ad2fd015d7a710bd3"));
                 images.Add(Tuple.Create(viridian_jewel, "https://p7p4m6s5.ssl.hwcdn.net/image/Art/2DItems/Jewels/basicdex.png?scale=1&w=1&h=1&v=7375b3bb90a9809870b31d1aa4aa68b93"));
-                var crimson = new ItemBase()
+                /*var crimson = new ItemBase()
                 {
                     GearGroup = JewelGroupMap[crimson_jewel],
                     Class = JewelClassMap[crimson_jewel],
-                    ItemType = crimson_jewel,
+                    Name = crimson_jewel,
                     Level = 1,
                 };
                 var cobalt = new ItemBase()
                 {
                     GearGroup = JewelGroupMap[cobalt_jewel],
                     Class = JewelClassMap[cobalt_jewel],
-                    ItemType = cobalt_jewel,
+                    Name = cobalt_jewel,
                     Level = 1,
                 };
                 var viridian = new ItemBase()
                 {
                     GearGroup = JewelGroupMap[viridian_jewel],
                     Class = JewelClassMap[viridian_jewel],
-                    ItemType = viridian_jewel,
+                    Name = viridian_jewel,
                     Level = 1,
                 };
 
                 items.Add(crimson);
                 items.Add(cobalt);
-                items.Add(viridian);
+                items.Add(viridian);*/
             }
             catch (Exception e)
             {

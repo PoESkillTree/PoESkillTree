@@ -1,25 +1,18 @@
 ﻿using MB.Algodat;
-using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
-using POESKillTree.ViewModels.Items;
 using POESKillTree.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using POESKillTree.Model.Items;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Controls
@@ -880,7 +873,7 @@ namespace POESKillTree.Controls
 
             List<string> modstrings = new List<string>()
             {
-                i.BaseType,
+                i.BaseType.Name,
                 i.FlavourText,
                 i.Name,
             };

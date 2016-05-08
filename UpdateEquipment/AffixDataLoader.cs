@@ -4,9 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
+using POESKillTree.Model.Items;
 
 namespace UpdateEquipment
 {
+    /// <summary>
+    /// Extracts affix information from exilemods.com as a <see cref="XmlAffixList"/>.
+    /// </summary>
     public class AffixDataLoader : DataLoader<XmlAffixList>
     {
         private const string Url = "http://www.exilemods.com/js/data.js";
@@ -87,17 +91,19 @@ namespace UpdateEquipment
                     var tierRows = lines[++i].Replace("</table>", "").Replace("<tr>", "")
                         .Split(new [] {"</tr>"}, StringSplitOptions.RemoveEmptyEntries);
                     var tierList = new List<XmlTier>();
-                    foreach (var tierRow in tierRows)
+                    var currentTier = 1;
+                    foreach (var tierRow in tierRows.Reverse())
                     {
                         var columns = tierRow.Replace("<td>", "").Split(new[] { "</td>" }, StringSplitOptions.None);
                         tierList.Add(new XmlTier
                         {
                             ItemLevel = ParseInt(columns[0]),
                             Stats = ExtractStats(columns[1], affixName).ToArray(),
-                            Name = columns[2]
+                            Name = columns[2],
+                            Tier = columns[2].Contains(" lvl: ") ? 0 : currentTier++
                         });
                     }
-                    affix.Tiers = tierList.ToArray();
+                    affix.Tiers = Enumerable.Reverse(tierList).ToArray();
 
                     affixes.Add(affix);
                 }
@@ -125,11 +131,15 @@ namespace UpdateEquipment
 
         private static bool TryParseItemType(string jsonType, out ItemType itemType)
         {
-            var replaced = jsonType
-                .Replace("1h", "OneHand")
-                .Replace("2h", "TwoHand")
+            var replaced = Regex.Replace(jsonType, "s$", "")
+                .Replace("s_", "_")
+                .Replace("1h", "OneHanded")
+                .Replace("2h", "TwoHanded")
                 .Replace("_and_", "_")
-                .Replace("_", "");
+                .Replace("_", "")
+                .Replace("stave", "staff")
+                .Replace("boot", "boots")
+                .Replace("glove", "gloves");
             return Enum.TryParse(replaced, true, out itemType);
         }
 
@@ -145,7 +155,18 @@ namespace UpdateEquipment
 
         private static IEnumerable<XmlStat> ExtractStats(string statColumn, string affixName)
         {
-            var affixesSplit = affixName.Split(new[] {", "}, StringSplitOptions.None);
+            var affixesSplit = new List<string>();
+            foreach (var split in Regex.Split(affixName, @"(?<=.*#.*), (?=.*#.*)"))
+            {
+                if (split.Contains("#") || !affixesSplit.Any())
+                {
+                    affixesSplit.Add(split);
+                }
+                else
+                {
+                    affixesSplit[affixesSplit.Count - 1] += ", " + split;
+                }
+            }
             foreach (var tuple in statColumn.Split(new []{" / "}, StringSplitOptions.None).Zip(affixesSplit, Tuple.Create))
             {
                 var stat = tuple.Item1;

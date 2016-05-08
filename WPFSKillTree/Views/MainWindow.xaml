@@ -7,8 +7,8 @@
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
-        xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
         xmlns:views="clr-namespace:POESKillTree.Views"
+        xmlns:items="clr-namespace:POESKillTree.Model.Items"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="Path of Exile: Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 

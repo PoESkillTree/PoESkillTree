@@ -26,6 +26,7 @@ using MahApps.Metro.Controls;
 using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Items;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
@@ -44,8 +45,6 @@ using ListViewItem = System.Windows.Controls.ListViewItem;
 using MessageBox = POESKillTree.Views.MetroMessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using ToolTip = System.Windows.Controls.ToolTip;
-using POESKillTree.ViewModels.Items;
-
 using Path = System.IO.Path;
 
 namespace POESKillTree.Views
@@ -1174,7 +1173,7 @@ namespace POESKillTree.Views
                 }
                 else
                 {
-                    attritemp[mod.TextAttribute] = mod.Value;
+                    attritemp[mod.TextAttribute] = new List<float>(mod.Value);
                 }
             }
 
@@ -2531,7 +2530,7 @@ namespace POESKillTree.Views
                             ItemAssetDownloader.ExtractJewels(bases, images);
                             UpdateLoadingWindow(4, 4);
 
-                            new System.Xml.Linq.XElement("ItemBaseList", bases.Select(b => b.Serialize())).Save(Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Itemlist.xml"));
+                            //new System.Xml.Linq.XElement("ItemBaseList", bases.Select(b => b.Serialize())).Save(Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Itemlist.xml"));
 
                             var imgroups = images.GroupBy(t => t.Item2).ToArray();
 
