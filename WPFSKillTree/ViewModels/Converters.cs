@@ -100,12 +100,13 @@ namespace POESKillTree.ViewModels
         private static SolidColorBrush fireAffectedColor = new SolidColorBrush(Color.FromRgb(0x96, 0x00, 0x04));
         private static SolidColorBrush coldAffectedColor = new SolidColorBrush(Color.FromRgb(0x36, 0x64, 0x92));
         private static SolidColorBrush lightningAffectedColor = new SolidColorBrush(Color.FromRgb(0xFF, 0xD7, 0x00));
+        private static SolidColorBrush chaosAffectedColor = new SolidColorBrush(Color.FromRgb(0xD0, 0x20, 0x90));
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var mod = value as ItemMod;
             if (mod == null)
-                throw new NotImplementedException();
+                throw new NotSupportedException();
 
             var inlines = new List<Inline>();
 
@@ -163,6 +164,8 @@ namespace POESKillTree.ViewModels
                         return coldAffectedColor;
                     case ItemMod.ValueColoring.Lightning:
                         return lightningAffectedColor;
+                    case ItemMod.ValueColoring.Chaos:
+                        return chaosAffectedColor;
                 }
 
             return Brushes.White;
@@ -170,18 +173,16 @@ namespace POESKillTree.ViewModels
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
-
-
-
 
 
     [ValueConversion(typeof(string), typeof(ImageSource))]
     class ItemTypeToImageConverter : IValueConverter
     {
         protected static Dictionary<string, BitmapImage> TypeCache = new Dictionary<string, BitmapImage>();
+
         protected BitmapImage GetImageForBase(string ibase)
         {
             BitmapImage img;
@@ -194,7 +195,6 @@ namespace POESKillTree.ViewModels
 
                     if (imgfile.Exists)
                     {
-
                         img = new BitmapImage();
                         img.BeginInit();
                         img.CacheOption = BitmapCacheOption.OnLoad;
@@ -228,13 +228,13 @@ namespace POESKillTree.ViewModels
         {
             throw new NotImplementedException();
         }
-
     }
 
     [ValueConversion(typeof(Item), typeof(ImageSource))]
     class ItemToImageConverter : ItemTypeToImageConverter, IValueConverter
     {
         protected static Dictionary<ItemClass, BitmapImage> DefaultCache = new Dictionary<ItemClass, BitmapImage>();
+
         new public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var itm = value as Item;
@@ -245,7 +245,7 @@ namespace POESKillTree.ViewModels
                 if (img != null)
                     return img;
 
-                lock (DefaultCache)//i am not entirely sure that WPF isnt using converter concurently
+                lock (DefaultCache) //i am not entirely sure that WPF isnt using converter concurently
                 {
                     if (!DefaultCache.TryGetValue(itm.Class, out img))
                     {
@@ -270,7 +270,6 @@ namespace POESKillTree.ViewModels
                         DefaultCache.Add(itm.Class, img);
                     }
                 }
-
             }
             return img;
         }
@@ -286,13 +285,13 @@ namespace POESKillTree.ViewModels
         public static bool ResourceExists(Assembly assembly, string resourcePath)
         {
             if (_resourceKeyCache == null)
-                _resourceKeyCache = GetResourcePaths(assembly).Select(o=>o as string).Where(s=>s!=null).ToList();
+                _resourceKeyCache = GetResourcePaths(assembly).Select(o => o as string).Where(s => s != null).ToList();
 
-                return _resourceKeyCache.Contains(resourcePath.ToLower());
-
+            return _resourceKeyCache.Contains(resourcePath.ToLower());
         }
 
         static List<string> _resourceKeyCache;
+
         public static IEnumerable<object> GetResourcePaths(Assembly assembly)
         {
             var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
@@ -319,5 +318,4 @@ namespace POESKillTree.ViewModels
             throw new NotImplementedException();
         }
     }
-
 }

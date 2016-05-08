@@ -16,7 +16,8 @@ namespace POESKillTree.Model.Items
 
             Fire = 4,
             Cold = 5,
-            Lightning = 6
+            Lightning = 6,
+            Chaos = 7
         }
 
 
@@ -174,7 +175,8 @@ namespace POESKillTree.Model.Items
                           || attr == "+# to Accuracy Rating"
                           || attr.StartsWith("Adds ") && (attr.EndsWith(" Damage") || attr.EndsWith(" Damage in Main Hand") || attr.EndsWith(" Damage in Off Hand"))
                           || attr == "#% increased Physical Damage"
-                          || attr == "#% increased Critical Strike Chance");
+                          || attr == "#% increased Critical Strike Chance")
+                   || (item.ItemGroup == ItemGroup.Shield && attr == "+#% Chance to Block");
         }
 
         public ItemMod()

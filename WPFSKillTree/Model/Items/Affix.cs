@@ -49,6 +49,11 @@ namespace POESKillTree.Model.Items
             }
         }
 
+        public Stat RangeCombinedStat
+        {
+            get { return new Stat(Mods.Select(s => s.Replace(" minimum", "").Replace(" maximum", "")).Distinct().Single(), new Range<float>()); }
+        }
+
         public IReadOnlyList<string> Mods { get; private set; }
 
         public string Name { get; private set; }

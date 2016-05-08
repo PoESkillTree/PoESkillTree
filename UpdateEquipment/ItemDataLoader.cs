@@ -166,19 +166,18 @@ namespace UpdateEquipment
                 else
                 {
                     var implicits = new List<XmlStat>();
-                    if (HiddenImplicits.ContainsKey(itemType))
-                    {
-                        implicits.Add(HiddenImplicits[itemType]);
-                    }
                     var implicitMultiplier = 1F;
                     if (implicitColumn >= 0)
                     {
-                        var impl = ParseImplicit(row.ChildNodes[implicitColumn]);
-                        if (impl != null)
+                        implicits.AddRange(ParseImplicit(row.ChildNodes[implicitColumn]));
+                        if (implicits.Any())
                         {
-                            implicits.Add(impl);
-                            implicitMultiplier += impl.From / 100;
+                            implicitMultiplier += implicits[0].From / 100;
                         }
+                    }
+                    if (HiddenImplicits.ContainsKey(itemType))
+                    {
+                        implicits.Add(HiddenImplicits[itemType]);
                     }
 
                     yield return new XmlItemBase
@@ -193,23 +192,47 @@ namespace UpdateEquipment
             }
         }
 
-        private static XmlStat ParseImplicit(HtmlNode implicitCell)
+        private static IEnumerable<XmlStat> ParseImplicit(HtmlNode implicitCell)
         {
-            if (IsNotApplicableCell(implicitCell)) return null;
+            if (IsNotApplicableCell(implicitCell)) yield break;
 
-            var mod = FindContent(implicitCell);
+            var mod = WebUtility.HtmlDecode(FindContent(implicitCell));
             var matches = NumberRegex.Matches(mod);
-            if (matches.Count > 0)
+            if (matches.Count <= 0) yield break;
+
+            mod = NumberRegex.Replace(mod, "#").Replace("–", "-");
+            if (mod.Contains("#-#"))
             {
+                if (matches.Count != 2)
+                {
+                    Console.WriteLine("Could not parse implicit " + FindContent(implicitCell));
+                    yield break;
+                }
                 var from = ParseFloat(matches[0].Value);
-                return new XmlStat
+                yield return new XmlStat
                 {
                     From = from,
-                    To = matches.Count > 1 ? ParseFloat(matches[1].Value) : @from,
-                    Name = NumberRegex.Replace(mod, "#").Replace("(# to #)", "#")
+                    To = from,
+                    Name = mod.Replace("#-#", "# minimum")
+                };
+                from = ParseFloat(matches[1].Value);
+                yield return new XmlStat
+                {
+                    From = from,
+                    To = from,
+                    Name = mod.Replace("#-#", "# maximum")
                 };
             }
-            return null;
+            else
+            {
+                var from = ParseFloat(matches[0].Value);
+                yield return new XmlStat
+                {
+                    From = from,
+                    To = matches.Count > 1 ? ParseFloat(matches[1].Value) : from,
+                    Name = mod.Replace("(# to #)", "#")
+                };
+            }
         }
 
         private static IEnumerable<XmlStat> ParseProperties(HtmlNode row, IReadOnlyDictionary<int, string> propertyColumns, float implicitMultiplier)
@@ -223,6 +246,8 @@ namespace UpdateEquipment
                 float from;
                 float to;
                 var name = propertyColumn.Value;
+                if (name == "Damage")
+                    name = "Physical Damage";
                 var success = true;
                 if (TryParseCell(cell, out from) || (modified && TryParseFloat(childInner, out from)))
                 {

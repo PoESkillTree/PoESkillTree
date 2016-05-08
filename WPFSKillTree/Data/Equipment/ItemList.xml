@@ -2,56 +2,56 @@
 <ItemList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ItemBase ItemType="OneHandedAxe" Name="Rusted Hatchet" Level="0">
     <Properties>
-      <Stat Name="Damage" From="5" To="9" />
+      <Stat Name="Physical Damage" From="5" To="9" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Jade Hatchet" Level="6">
     <Properties>
-      <Stat Name="Damage" From="8" To="13" />
+      <Stat Name="Physical Damage" From="8" To="13" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Boarding Axe" Level="11">
     <Properties>
-      <Stat Name="Damage" From="9" To="17" />
+      <Stat Name="Physical Damage" From="9" To="17" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Cleaver" Level="16">
     <Properties>
-      <Stat Name="Damage" From="11" To="33" />
+      <Stat Name="Physical Damage" From="11" To="33" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Broad Axe" Level="21">
     <Properties>
-      <Stat Name="Damage" From="17" To="31" />
+      <Stat Name="Physical Damage" From="17" To="31" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Arming Axe" Level="25">
     <Properties>
-      <Stat Name="Damage" From="12" To="36" />
+      <Stat Name="Physical Damage" From="12" To="36" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Decorative Axe" Level="29">
     <Properties>
-      <Stat Name="Damage" From="23" To="43" />
+      <Stat Name="Physical Damage" From="23" To="43" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Spectral Axe" Level="33">
     <Properties>
-      <Stat Name="Damage" From="26" To="43" />
+      <Stat Name="Physical Damage" From="26" To="43" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -61,56 +61,56 @@
       <Stat Name="#% increased Physical Damage" From="8" To="8" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="24" To="42" />
+      <Stat Name="Physical Damage" From="24" To="42" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Jasper Axe" Level="36">
     <Properties>
-      <Stat Name="Damage" From="31" To="47" />
+      <Stat Name="Physical Damage" From="31" To="47" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Tomahawk" Level="39">
     <Properties>
-      <Stat Name="Damage" From="25" To="47" />
+      <Stat Name="Physical Damage" From="25" To="47" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Wrist Chopper" Level="42">
     <Properties>
-      <Stat Name="Damage" From="23" To="68" />
+      <Stat Name="Physical Damage" From="23" To="68" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="War Axe" Level="45">
     <Properties>
-      <Stat Name="Damage" From="30" To="55" />
+      <Stat Name="Physical Damage" From="30" To="55" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Chest Splitter" Level="48">
     <Properties>
-      <Stat Name="Damage" From="20" To="61" />
+      <Stat Name="Physical Damage" From="20" To="61" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Ceremonial Axe" Level="51">
     <Properties>
-      <Stat Name="Damage" From="37" To="69" />
+      <Stat Name="Physical Damage" From="37" To="69" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Wraith Axe" Level="54">
     <Properties>
-      <Stat Name="Damage" From="39" To="65" />
+      <Stat Name="Physical Damage" From="39" To="65" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -120,56 +120,56 @@
       <Stat Name="#% increased Physical Damage" From="8" To="8" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="35" To="63" />
+      <Stat Name="Physical Damage" From="35" To="63" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Karui Axe" Level="57">
     <Properties>
-      <Stat Name="Damage" From="41" To="64" />
+      <Stat Name="Physical Damage" From="41" To="64" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Siege Axe" Level="59">
     <Properties>
-      <Stat Name="Damage" From="32" To="59" />
+      <Stat Name="Physical Damage" From="32" To="59" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Reaver Axe" Level="61">
     <Properties>
-      <Stat Name="Damage" From="31" To="92" />
+      <Stat Name="Physical Damage" From="31" To="92" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Butcher Axe" Level="63">
     <Properties>
-      <Stat Name="Damage" From="38" To="71" />
+      <Stat Name="Physical Damage" From="38" To="71" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Vaal Hatchet" Level="65">
     <Properties>
-      <Stat Name="Damage" From="25" To="74" />
+      <Stat Name="Physical Damage" From="25" To="74" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Royal Axe" Level="67">
     <Properties>
-      <Stat Name="Damage" From="43" To="80" />
+      <Stat Name="Physical Damage" From="43" To="80" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedAxe" Name="Infernal Axe" Level="69">
     <Properties>
-      <Stat Name="Damage" From="43" To="72" />
+      <Stat Name="Physical Damage" From="43" To="72" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -179,63 +179,63 @@
       <Stat Name="#% increased Physical Damage" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="38" To="68" />
+      <Stat Name="Physical Damage" From="38" To="68" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Stone Axe" Level="0">
     <Properties>
-      <Stat Name="Damage" From="10" To="17" />
+      <Stat Name="Physical Damage" From="10" To="17" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Jade Chopper" Level="9">
     <Properties>
-      <Stat Name="Damage" From="17" To="27" />
+      <Stat Name="Physical Damage" From="17" To="27" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Woodsplitter" Level="13">
     <Properties>
-      <Stat Name="Damage" From="17" To="35" />
+      <Stat Name="Physical Damage" From="17" To="35" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Poleaxe" Level="18">
     <Properties>
-      <Stat Name="Damage" From="29" To="44" />
+      <Stat Name="Physical Damage" From="29" To="44" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Double Axe" Level="23">
     <Properties>
-      <Stat Name="Damage" From="32" To="54" />
+      <Stat Name="Physical Damage" From="32" To="54" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Gilded Axe" Level="28">
     <Properties>
-      <Stat Name="Damage" From="43" To="58" />
+      <Stat Name="Physical Damage" From="43" To="58" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Shadow Axe" Level="33">
     <Properties>
-      <Stat Name="Damage" From="42" To="62" />
+      <Stat Name="Physical Damage" From="42" To="62" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Jasper Chopper" Level="37">
     <Properties>
-      <Stat Name="Damage" From="50" To="78" />
+      <Stat Name="Physical Damage" From="50" To="78" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -245,42 +245,42 @@
       <Stat Name="#% increased Critical Strike Chance" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="45" To="71" />
+      <Stat Name="Physical Damage" From="45" To="71" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Timber Axe" Level="41">
     <Properties>
-      <Stat Name="Damage" From="41" To="85" />
+      <Stat Name="Physical Damage" From="41" To="85" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Headsman Axe" Level="45">
     <Properties>
-      <Stat Name="Damage" From="53" To="79" />
+      <Stat Name="Physical Damage" From="53" To="79" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Labrys" Level="49">
     <Properties>
-      <Stat Name="Damage" From="71" To="118" />
+      <Stat Name="Physical Damage" From="71" To="118" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Noble Axe" Level="52">
     <Properties>
-      <Stat Name="Damage" From="73" To="98" />
+      <Stat Name="Physical Damage" From="73" To="98" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Abyssal Axe" Level="55">
     <Properties>
-      <Stat Name="Damage" From="69" To="104" />
+      <Stat Name="Physical Damage" From="69" To="104" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -290,49 +290,49 @@
       <Stat Name="#% increased Critical Strike Chance" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="75" To="118" />
+      <Stat Name="Physical Damage" From="75" To="118" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Karui Chopper" Level="58">
     <Properties>
-      <Stat Name="Damage" From="80" To="125" />
+      <Stat Name="Physical Damage" From="80" To="125" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Sundering Axe" Level="60">
     <Properties>
-      <Stat Name="Damage" From="62" To="128" />
+      <Stat Name="Physical Damage" From="62" To="128" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Ezomyte Axe" Level="62">
     <Properties>
-      <Stat Name="Damage" From="72" To="108" />
+      <Stat Name="Physical Damage" From="72" To="108" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Vaal Axe" Level="64">
     <Properties>
-      <Stat Name="Damage" From="79" To="131" />
+      <Stat Name="Physical Damage" From="79" To="131" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Despot Axe" Level="66">
     <Properties>
-      <Stat Name="Damage" From="76" To="103" />
+      <Stat Name="Physical Damage" From="76" To="103" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Void Axe" Level="68">
     <Properties>
-      <Stat Name="Damage" From="76" To="114" />
+      <Stat Name="Physical Damage" From="76" To="114" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -342,49 +342,49 @@
       <Stat Name="#% increased Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="80" To="125" />
+      <Stat Name="Physical Damage" From="80" To="125" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Crude Bow" Level="1">
     <Properties>
-      <Stat Name="Damage" From="5" To="13" />
+      <Stat Name="Physical Damage" From="5" To="13" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Short Bow" Level="5">
     <Properties>
-      <Stat Name="Damage" From="6" To="16" />
+      <Stat Name="Physical Damage" From="6" To="16" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Long Bow" Level="9">
     <Properties>
-      <Stat Name="Damage" From="6" To="25" />
+      <Stat Name="Physical Damage" From="6" To="25" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Composite Bow" Level="14">
     <Properties>
-      <Stat Name="Damage" From="12" To="26" />
+      <Stat Name="Physical Damage" From="12" To="26" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Recurve Bow" Level="18">
     <Properties>
-      <Stat Name="Damage" From="11" To="34" />
+      <Stat Name="Physical Damage" From="11" To="34" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Bone Bow" Level="23">
     <Properties>
-      <Stat Name="Damage" From="12" To="36" />
+      <Stat Name="Physical Damage" From="12" To="36" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -394,7 +394,7 @@
       <Stat Name="#% increased Elemental Damage with Weapons" From="6" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="10" To="41" />
+      <Stat Name="Physical Damage" From="10" To="41" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
     </Properties>
@@ -404,14 +404,14 @@
       <Stat Name="#% increased Critical Strike Chance" From="30" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="20" To="53" />
+      <Stat Name="Physical Damage" From="20" To="53" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Grove Bow" Level="35">
     <Properties>
-      <Stat Name="Damage" From="15" To="44" />
+      <Stat Name="Physical Damage" From="15" To="44" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -421,35 +421,35 @@
       <Stat Name="#% increased Movement Speed" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="27" To="40" />
+      <Stat Name="Physical Damage" From="27" To="40" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Decurve Bow" Level="38">
     <Properties>
-      <Stat Name="Damage" From="17" To="70" />
+      <Stat Name="Physical Damage" From="17" To="70" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Compound Bow" Level="41">
     <Properties>
-      <Stat Name="Damage" From="24" To="56" />
+      <Stat Name="Physical Damage" From="24" To="56" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Sniper Bow" Level="44">
     <Properties>
-      <Stat Name="Damage" From="23" To="68" />
+      <Stat Name="Physical Damage" From="23" To="68" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Ivory Bow" Level="47">
     <Properties>
-      <Stat Name="Damage" From="21" To="64" />
+      <Stat Name="Physical Damage" From="21" To="64" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -459,7 +459,7 @@
       <Stat Name="#% increased Elemental Damage with Weapons" From="6" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="66" />
+      <Stat Name="Physical Damage" From="17" To="66" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
     </Properties>
@@ -469,14 +469,14 @@
       <Stat Name="#% increased Critical Strike Chance" From="30" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="31" To="81" />
+      <Stat Name="Physical Damage" From="31" To="81" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Thicket Bow" Level="56">
     <Properties>
-      <Stat Name="Damage" From="22" To="66" />
+      <Stat Name="Physical Damage" From="22" To="66" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -486,35 +486,35 @@
       <Stat Name="#% increased Movement Speed" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="40" To="60" />
+      <Stat Name="Physical Damage" From="40" To="60" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Citadel Bow" Level="58">
     <Properties>
-      <Stat Name="Damage" From="25" To="101" />
+      <Stat Name="Physical Damage" From="25" To="101" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Ranger Bow" Level="60">
     <Properties>
-      <Stat Name="Damage" From="34" To="79" />
+      <Stat Name="Physical Damage" From="34" To="79" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Assassin Bow" Level="62">
     <Properties>
-      <Stat Name="Damage" From="30" To="89" />
+      <Stat Name="Physical Damage" From="30" To="89" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Spine Bow" Level="64">
     <Properties>
-      <Stat Name="Damage" From="27" To="80" />
+      <Stat Name="Physical Damage" From="27" To="80" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -524,7 +524,7 @@
       <Stat Name="#% increased Elemental Damage with Weapons" From="6" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="19" To="78" />
+      <Stat Name="Physical Damage" From="19" To="78" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
     </Properties>
@@ -534,7 +534,7 @@
       <Stat Name="#% increased Critical Strike Chance" From="30" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="35" To="91" />
+      <Stat Name="Physical Damage" From="35" To="91" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -544,7 +544,7 @@
       <Stat Name="#% increased Movement Speed" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="44" To="65" />
+      <Stat Name="Physical Damage" From="44" To="65" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -554,7 +554,7 @@
       <Stat Name="+# Life gained for each enemy hit by your Attacks" From="3" To="3" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="4" To="9" />
+      <Stat Name="Physical Damage" From="4" To="9" />
       <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -564,7 +564,7 @@
       <Stat Name="+# Life gained for each enemy hit by your Attacks" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="6" To="15" />
+      <Stat Name="Physical Damage" From="6" To="15" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -574,7 +574,7 @@
       <Stat Name="+# Life gained for each enemy hit by your Attacks" From="5" To="5" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="6" To="20" />
+      <Stat Name="Physical Damage" From="6" To="20" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -584,7 +584,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="1.6" To="1.6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="10" To="19" />
+      <Stat Name="Physical Damage" From="10" To="19" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -594,7 +594,7 @@
       <Stat Name="+# Life gained for each enemy hit by your Attacks" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="10" To="27" />
+      <Stat Name="Physical Damage" From="10" To="27" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -604,7 +604,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="36" />
+      <Stat Name="Physical Damage" From="14" To="36" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -614,7 +614,7 @@
       <Stat Name="+# Life gained for each enemy hit by your Attacks" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="12" To="32" />
+      <Stat Name="Physical Damage" From="12" To="32" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -624,7 +624,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="9" To="37" />
+      <Stat Name="Physical Damage" From="9" To="37" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -634,7 +634,7 @@
       <Stat Name="+# Life and Mana gained for each Enemy hit" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="13" To="40" />
+      <Stat Name="Physical Damage" From="13" To="40" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -644,7 +644,7 @@
       <Stat Name="+# Life gained for each Enemy hit by Attacks" From="21" To="21" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="18" To="48" />
+      <Stat Name="Physical Damage" From="18" To="48" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -654,7 +654,7 @@
       <Stat Name="+# Life gained for each enemy hit by your Attacks" From="13" To="13" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="13" To="46" />
+      <Stat Name="Physical Damage" From="13" To="46" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -664,7 +664,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="1.6" To="1.6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="21" To="38" />
+      <Stat Name="Physical Damage" From="21" To="38" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -674,7 +674,7 @@
       <Stat Name="+# Life gained for each enemy hit by your Attacks" From="21" To="21" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="18" To="48" />
+      <Stat Name="Physical Damage" From="18" To="48" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -684,7 +684,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="23" To="61" />
+      <Stat Name="Physical Damage" From="23" To="61" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -694,7 +694,7 @@
       <Stat Name="+# Life gained for each Enemy hit by Attacks" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="19" To="50" />
+      <Stat Name="Physical Damage" From="19" To="50" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -704,7 +704,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="56" />
+      <Stat Name="Physical Damage" From="14" To="56" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -714,7 +714,7 @@
       <Stat Name="+# Life and Mana gained for each Enemy hit" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="20" To="60" />
+      <Stat Name="Physical Damage" From="20" To="60" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -724,7 +724,7 @@
       <Stat Name="+# Life gained for each Enemy hit by Attacks" From="34" To="34" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="27" To="70" />
+      <Stat Name="Physical Damage" From="27" To="70" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -734,7 +734,7 @@
       <Stat Name="+# Life gained for each Enemy hit by Attacks" From="21" To="21" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="19" To="65" />
+      <Stat Name="Physical Damage" From="19" To="65" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -744,7 +744,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="1.6" To="1.6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="27" To="51" />
+      <Stat Name="Physical Damage" From="27" To="51" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -754,7 +754,7 @@
       <Stat Name="+# Life gained for each enemy hit by Attacks" From="31" To="31" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="23" To="61" />
+      <Stat Name="Physical Damage" From="23" To="61" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -764,7 +764,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="27" To="72" />
+      <Stat Name="Physical Damage" From="27" To="72" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -774,7 +774,7 @@
       <Stat Name="+# Life gained for each Enemy hit by Attacks" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="22" To="57" />
+      <Stat Name="Physical Damage" From="22" To="57" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -784,7 +784,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="60" />
+      <Stat Name="Physical Damage" From="15" To="60" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -794,7 +794,7 @@
       <Stat Name="+# Life and Mana gained for each Enemy hit" From="14" To="14" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="21" To="63" />
+      <Stat Name="Physical Damage" From="21" To="63" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -804,7 +804,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="3" To="10" />
+      <Stat Name="Physical Damage" From="3" To="10" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -814,7 +814,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="4" To="16" />
+      <Stat Name="Physical Damage" From="4" To="16" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -824,7 +824,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="2" To="22" />
+      <Stat Name="Physical Damage" From="2" To="22" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -834,7 +834,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="6" To="23" />
+      <Stat Name="Physical Damage" From="6" To="23" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -844,7 +844,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="8" To="30" />
+      <Stat Name="Physical Damage" From="8" To="30" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -854,7 +854,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="10" To="39" />
+      <Stat Name="Physical Damage" From="10" To="39" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -864,7 +864,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="9" To="37" />
+      <Stat Name="Physical Damage" From="9" To="37" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
     </Properties>
@@ -874,7 +874,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="12" To="49" />
+      <Stat Name="Physical Damage" From="12" To="49" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -884,7 +884,7 @@
       <Stat Name="#% Chance to Block" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="13" To="51" />
+      <Stat Name="Physical Damage" From="13" To="51" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -894,7 +894,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="56" />
+      <Stat Name="Physical Damage" From="14" To="56" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -904,7 +904,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="6" To="54" />
+      <Stat Name="Physical Damage" From="6" To="54" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -914,7 +914,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="12" To="48" />
+      <Stat Name="Physical Damage" From="12" To="48" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -924,7 +924,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="55" />
+      <Stat Name="Physical Damage" From="14" To="55" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -934,7 +934,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="16" To="65" />
+      <Stat Name="Physical Damage" From="16" To="65" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -944,7 +944,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="59" />
+      <Stat Name="Physical Damage" From="15" To="59" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
     </Properties>
@@ -954,7 +954,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="19" To="76" />
+      <Stat Name="Physical Damage" From="19" To="76" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -964,7 +964,7 @@
       <Stat Name="#% Chance to Block" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="19" To="74" />
+      <Stat Name="Physical Damage" From="19" To="74" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -974,7 +974,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="21" To="84" />
+      <Stat Name="Physical Damage" From="21" To="84" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -984,7 +984,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="9" To="78" />
+      <Stat Name="Physical Damage" From="9" To="78" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -994,7 +994,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="67" />
+      <Stat Name="Physical Damage" From="17" To="67" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -1004,7 +1004,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="18" To="72" />
+      <Stat Name="Physical Damage" From="18" To="72" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1014,7 +1014,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="20" To="81" />
+      <Stat Name="Physical Damage" From="20" To="81" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1024,7 +1024,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="69" />
+      <Stat Name="Physical Damage" From="17" To="69" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
     </Properties>
@@ -1034,7 +1034,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="21" To="85" />
+      <Stat Name="Physical Damage" From="21" To="85" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1044,7 +1044,7 @@
       <Stat Name="#% Chance to Block" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="20" To="80" />
+      <Stat Name="Physical Damage" From="20" To="80" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1054,7 +1054,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="5" To="7" />
+      <Stat Name="Physical Damage" From="5" To="7" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
     </Properties>
@@ -1064,7 +1064,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="7" To="12" />
+      <Stat Name="Physical Damage" From="7" To="12" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -1074,7 +1074,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="11" To="14" />
+      <Stat Name="Physical Damage" From="11" To="14" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1084,7 +1084,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="27" />
+      <Stat Name="Physical Damage" From="14" To="27" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -1094,7 +1094,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="11" To="26" />
+      <Stat Name="Physical Damage" From="11" To="26" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1104,7 +1104,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="18" To="30" />
+      <Stat Name="Physical Damage" From="18" To="30" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1114,7 +1114,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="26" To="33" />
+      <Stat Name="Physical Damage" From="26" To="33" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1124,7 +1124,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="35" />
+      <Stat Name="Physical Damage" From="17" To="35" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1134,7 +1134,7 @@
       <Stat Name="#% increased Attack Speed" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="23" To="35" />
+      <Stat Name="Physical Damage" From="23" To="35" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -1144,7 +1144,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="25" To="41" />
+      <Stat Name="Physical Damage" From="25" To="41" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1154,7 +1154,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="27" To="34" />
+      <Stat Name="Physical Damage" From="27" To="34" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1164,7 +1164,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="30" To="55" />
+      <Stat Name="Physical Damage" From="30" To="55" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -1174,7 +1174,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="20" To="48" />
+      <Stat Name="Physical Damage" From="20" To="48" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1184,7 +1184,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="30" To="50" />
+      <Stat Name="Physical Damage" From="30" To="50" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1194,7 +1194,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="42" To="53" />
+      <Stat Name="Physical Damage" From="42" To="53" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1204,7 +1204,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="26" To="54" />
+      <Stat Name="Physical Damage" From="26" To="54" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1214,7 +1214,7 @@
       <Stat Name="#% increased Attack Speed" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="35" To="53" />
+      <Stat Name="Physical Damage" From="35" To="53" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -1224,7 +1224,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="37" To="62" />
+      <Stat Name="Physical Damage" From="37" To="62" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1234,7 +1234,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="38" To="49" />
+      <Stat Name="Physical Damage" From="38" To="49" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1244,7 +1244,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="42" To="77" />
+      <Stat Name="Physical Damage" From="42" To="77" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -1254,7 +1254,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="27" To="63" />
+      <Stat Name="Physical Damage" From="27" To="63" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1264,7 +1264,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="37" To="62" />
+      <Stat Name="Physical Damage" From="37" To="62" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1274,7 +1274,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="49" To="63" />
+      <Stat Name="Physical Damage" From="49" To="63" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1284,7 +1284,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="29" To="61" />
+      <Stat Name="Physical Damage" From="29" To="61" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1294,7 +1294,7 @@
       <Stat Name="#% increased Attack Speed" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="38" To="57" />
+      <Stat Name="Physical Damage" From="38" To="57" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -1304,7 +1304,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="5" To="7" />
+      <Stat Name="Physical Damage" From="5" To="7" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1314,7 +1314,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="7" To="10" />
+      <Stat Name="Physical Damage" From="7" To="10" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -1324,7 +1324,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="10" To="19" />
+      <Stat Name="Physical Damage" From="10" To="19" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1334,7 +1334,7 @@
       <Stat Name="#% increased Elemental Damage" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="21" />
+      <Stat Name="Physical Damage" From="14" To="21" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1344,7 +1344,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="18" To="27" />
+      <Stat Name="Physical Damage" From="18" To="27" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1354,7 +1354,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="28" />
+      <Stat Name="Physical Damage" From="15" To="28" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1364,7 +1364,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="18" To="41" />
+      <Stat Name="Physical Damage" From="18" To="41" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1374,7 +1374,7 @@
       <Stat Name="#% increased Elemental Damage" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="25" To="37" />
+      <Stat Name="Physical Damage" From="25" To="37" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1384,7 +1384,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="21" To="32" />
+      <Stat Name="Physical Damage" From="21" To="32" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -1394,7 +1394,7 @@
       <Stat Name="Damage Penetrates #% Elemental Resistances" From="1" To="1" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="22" To="42" />
+      <Stat Name="Physical Damage" From="22" To="42" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1404,7 +1404,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="25" To="46" />
+      <Stat Name="Physical Damage" From="25" To="46" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1414,7 +1414,7 @@
       <Stat Name="#% increased Elemental Damage" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="29" To="43" />
+      <Stat Name="Physical Damage" From="29" To="43" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1424,7 +1424,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="32" To="48" />
+      <Stat Name="Physical Damage" From="32" To="48" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1434,7 +1434,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="25" To="47" />
+      <Stat Name="Physical Damage" From="25" To="47" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1444,7 +1444,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="29" To="67" />
+      <Stat Name="Physical Damage" From="29" To="67" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1454,7 +1454,7 @@
       <Stat Name="#% increased Elemental Damage" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="38" To="57" />
+      <Stat Name="Physical Damage" From="38" To="57" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1464,7 +1464,7 @@
       <Stat Name="Damage Penetrates #% Elemental Resistances" From="1" To="1" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="32" To="60" />
+      <Stat Name="Physical Damage" From="32" To="60" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1474,7 +1474,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="32" To="47" />
+      <Stat Name="Physical Damage" From="32" To="47" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -1484,7 +1484,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="36" To="67" />
+      <Stat Name="Physical Damage" From="36" To="67" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1494,7 +1494,7 @@
       <Stat Name="#% increased Elemental Damage" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="40" To="60" />
+      <Stat Name="Physical Damage" From="40" To="60" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1504,7 +1504,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="42" To="63" />
+      <Stat Name="Physical Damage" From="42" To="63" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1514,7 +1514,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="31" To="58" />
+      <Stat Name="Physical Damage" From="31" To="58" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -1524,7 +1524,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="34" To="78" />
+      <Stat Name="Physical Damage" From="34" To="78" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1534,7 +1534,7 @@
       <Stat Name="#% increased Elemental Damage" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="42" To="63" />
+      <Stat Name="Physical Damage" From="42" To="63" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1544,7 +1544,7 @@
       <Stat Name="Damage Penetrates #% Elemental Resistances" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="35" To="65" />
+      <Stat Name="Physical Damage" From="35" To="65" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1554,7 +1554,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="9" To="13" />
+      <Stat Name="Physical Damage" From="9" To="13" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1564,7 +1564,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="23" />
+      <Stat Name="Physical Damage" From="15" To="23" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1574,7 +1574,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="30" />
+      <Stat Name="Physical Damage" From="15" To="30" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1584,7 +1584,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="21" To="32" />
+      <Stat Name="Physical Damage" From="21" To="32" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1594,7 +1594,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="24" To="45" />
+      <Stat Name="Physical Damage" From="24" To="45" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1604,7 +1604,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="34" To="51" />
+      <Stat Name="Physical Damage" From="34" To="51" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1614,7 +1614,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="39" To="53" />
+      <Stat Name="Physical Damage" From="39" To="53" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1624,7 +1624,7 @@
       <Stat Name="#% increased Radius of Area Skills" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="39" To="58" />
+      <Stat Name="Physical Damage" From="39" To="58" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1634,7 +1634,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="49" To="73" />
+      <Stat Name="Physical Damage" From="49" To="73" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.1" To="1.1" />
     </Properties>
@@ -1644,7 +1644,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="37" To="76" />
+      <Stat Name="Physical Damage" From="37" To="76" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1654,7 +1654,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="47" To="70" />
+      <Stat Name="Physical Damage" From="47" To="70" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1664,7 +1664,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="47" To="88" />
+      <Stat Name="Physical Damage" From="47" To="88" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1674,7 +1674,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="62" To="92" />
+      <Stat Name="Physical Damage" From="62" To="92" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1684,7 +1684,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="66" To="89" />
+      <Stat Name="Physical Damage" From="66" To="89" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1694,7 +1694,7 @@
       <Stat Name="#% increased Radius of Area Skills" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="64" To="97" />
+      <Stat Name="Physical Damage" From="64" To="97" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1704,7 +1704,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="79" To="118" />
+      <Stat Name="Physical Damage" From="79" To="118" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.1" To="1.1" />
     </Properties>
@@ -1714,7 +1714,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="57" To="118" />
+      <Stat Name="Physical Damage" From="57" To="118" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1724,7 +1724,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="67" To="100" />
+      <Stat Name="Physical Damage" From="67" To="100" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1734,7 +1734,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="63" To="117" />
+      <Stat Name="Physical Damage" From="63" To="117" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1744,7 +1744,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="74" To="111" />
+      <Stat Name="Physical Damage" From="74" To="111" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1754,7 +1754,7 @@
       <Stat Name="#% increased Stun Duration on enemies" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="75" To="102" />
+      <Stat Name="Physical Damage" From="75" To="102" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1764,7 +1764,7 @@
       <Stat Name="#% increased Radius of Area Skills" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="74" To="110" />
+      <Stat Name="Physical Damage" From="74" To="110" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1774,7 +1774,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="8" To="17" />
+      <Stat Name="Physical Damage" From="8" To="17" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1784,7 +1784,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="9" To="28" />
+      <Stat Name="Physical Damage" From="9" To="28" />
       <Stat Name="Critical Strike Chance %" From="6.8" To="6.8" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1794,7 +1794,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="28" />
+      <Stat Name="Physical Damage" From="17" To="28" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1804,7 +1804,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="16" To="47" />
+      <Stat Name="Physical Damage" From="16" To="47" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1814,7 +1814,7 @@
       <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="23" To="48" />
+      <Stat Name="Physical Damage" From="23" To="48" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1824,7 +1824,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="23" To="70" />
+      <Stat Name="Physical Damage" From="23" To="70" />
       <Stat Name="Critical Strike Chance %" From="7.2" To="7.2" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -1834,7 +1834,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="33" To="62" />
+      <Stat Name="Physical Damage" From="33" To="62" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1844,7 +1844,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="35" To="73" />
+      <Stat Name="Physical Damage" From="35" To="73" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1854,7 +1854,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="29" To="88" />
+      <Stat Name="Physical Damage" From="29" To="88" />
       <Stat Name="Critical Strike Chance %" From="6.8" To="6.8" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -1864,7 +1864,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="41" To="68" />
+      <Stat Name="Physical Damage" From="41" To="68" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1874,7 +1874,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="34" To="101" />
+      <Stat Name="Physical Damage" From="34" To="101" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1884,7 +1884,7 @@
       <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="46" To="95" />
+      <Stat Name="Physical Damage" From="46" To="95" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1894,7 +1894,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="42" To="125" />
+      <Stat Name="Physical Damage" From="42" To="125" />
       <Stat Name="Critical Strike Chance %" From="7.2" To="7.2" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -1904,7 +1904,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="55" To="103" />
+      <Stat Name="Physical Damage" From="55" To="103" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1914,7 +1914,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="57" To="118" />
+      <Stat Name="Physical Damage" From="57" To="118" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1924,7 +1924,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="47" To="141" />
+      <Stat Name="Physical Damage" From="47" To="141" />
       <Stat Name="Critical Strike Chance %" From="6.8" To="6.8" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -1934,7 +1934,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="62" To="103" />
+      <Stat Name="Physical Damage" From="62" To="103" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -1944,7 +1944,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="46" To="138" />
+      <Stat Name="Physical Damage" From="46" To="138" />
       <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1954,7 +1954,7 @@
       <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="57" To="119" />
+      <Stat Name="Physical Damage" From="57" To="119" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1964,7 +1964,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="49" To="147" />
+      <Stat Name="Physical Damage" From="49" To="147" />
       <Stat Name="Critical Strike Chance %" From="7.2" To="7.2" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -1974,7 +1974,7 @@
       <Stat Name="#% Chance to Block" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="61" To="113" />
+      <Stat Name="Physical Damage" From="61" To="113" />
       <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -1984,7 +1984,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="60" To="125" />
+      <Stat Name="Physical Damage" From="60" To="125" />
       <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -1994,7 +1994,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="4" To="8" />
+      <Stat Name="Physical Damage" From="4" To="8" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
     </Properties>
@@ -2004,7 +2004,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="6" To="12" />
+      <Stat Name="Physical Damage" From="6" To="12" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -2014,7 +2014,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="4" To="18" />
+      <Stat Name="Physical Damage" From="4" To="18" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
     </Properties>
@@ -2024,7 +2024,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="21" />
+      <Stat Name="Physical Damage" From="14" To="21" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2034,7 +2034,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="16" To="30" />
+      <Stat Name="Physical Damage" From="16" To="30" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2044,7 +2044,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="31" />
+      <Stat Name="Physical Damage" From="17" To="31" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2054,7 +2054,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="27" />
+      <Stat Name="Physical Damage" From="17" To="27" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2064,7 +2064,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="43" />
+      <Stat Name="Physical Damage" From="15" To="43" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2074,7 +2074,7 @@
       <Stat Name="#% chance to Dodge Attacks" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="23" To="49" />
+      <Stat Name="Physical Damage" From="23" To="49" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -2084,7 +2084,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="20" To="43" />
+      <Stat Name="Physical Damage" From="20" To="43" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2094,7 +2094,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="11" To="44" />
+      <Stat Name="Physical Damage" From="11" To="44" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
     </Properties>
@@ -2104,7 +2104,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="29" To="42" />
+      <Stat Name="Physical Damage" From="29" To="42" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2114,7 +2114,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="30" To="55" />
+      <Stat Name="Physical Damage" From="30" To="55" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2124,7 +2124,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="28" To="52" />
+      <Stat Name="Physical Damage" From="28" To="52" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2134,7 +2134,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="27" To="44" />
+      <Stat Name="Physical Damage" From="27" To="44" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2144,7 +2144,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="23" To="66" />
+      <Stat Name="Physical Damage" From="23" To="66" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2154,7 +2154,7 @@
       <Stat Name="#% chance to Dodge Attacks" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="35" To="75" />
+      <Stat Name="Physical Damage" From="35" To="75" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -2164,7 +2164,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="30" To="64" />
+      <Stat Name="Physical Damage" From="30" To="64" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2174,7 +2174,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="16" To="63" />
+      <Stat Name="Physical Damage" From="16" To="63" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
     </Properties>
@@ -2184,7 +2184,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="41" To="59" />
+      <Stat Name="Physical Damage" From="41" To="59" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2194,7 +2194,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="39" To="73" />
+      <Stat Name="Physical Damage" From="39" To="73" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2204,7 +2204,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="35" To="65" />
+      <Stat Name="Physical Damage" From="35" To="65" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2214,7 +2214,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="32" To="52" />
+      <Stat Name="Physical Damage" From="32" To="52" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2224,7 +2224,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="26" To="74" />
+      <Stat Name="Physical Damage" From="26" To="74" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2234,7 +2234,7 @@
       <Stat Name="#% chance to Dodge Attacks" From="3" To="3" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="43" To="92" />
+      <Stat Name="Physical Damage" From="43" To="92" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
     </Properties>
@@ -2244,7 +2244,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="4" To="10" />
+      <Stat Name="Physical Damage" From="4" To="10" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -2254,7 +2254,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="4" To="15" />
+      <Stat Name="Physical Damage" From="4" To="15" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
     </Properties>
@@ -2264,7 +2264,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="10" To="18" />
+      <Stat Name="Physical Damage" From="10" To="18" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -2274,7 +2274,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="9" To="22" />
+      <Stat Name="Physical Damage" From="9" To="22" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2284,7 +2284,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="11" To="25" />
+      <Stat Name="Physical Damage" From="11" To="25" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -2294,7 +2294,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="10" To="40" />
+      <Stat Name="Physical Damage" From="10" To="40" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2304,7 +2304,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="28" />
+      <Stat Name="Physical Damage" From="15" To="28" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -2314,7 +2314,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="50" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="16" To="37" />
+      <Stat Name="Physical Damage" From="16" To="37" />
       <Stat Name="Critical Strike Chance %" From="5.7" To="5.7" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -2324,7 +2324,7 @@
       <Stat Name="#% chance to cause Bleeding on Hit" From="8" To="8" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="36" />
+      <Stat Name="Physical Damage" From="17" To="36" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
     </Properties>
@@ -2334,7 +2334,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="11" To="44" />
+      <Stat Name="Physical Damage" From="11" To="44" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2344,7 +2344,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="22" To="41" />
+      <Stat Name="Physical Damage" From="22" To="41" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -2354,7 +2354,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="19" To="44" />
+      <Stat Name="Physical Damage" From="19" To="44" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2364,7 +2364,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="19" To="43" />
+      <Stat Name="Physical Damage" From="19" To="43" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -2374,7 +2374,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="67" />
+      <Stat Name="Physical Damage" From="17" To="67" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2384,7 +2384,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="24" To="45" />
+      <Stat Name="Physical Damage" From="24" To="45" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -2394,7 +2394,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="50" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="24" To="55" />
+      <Stat Name="Physical Damage" From="24" To="55" />
       <Stat Name="Critical Strike Chance %" From="5.7" To="5.7" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -2404,7 +2404,7 @@
       <Stat Name="#% chance to cause Bleeding on Hit" From="8" To="8" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="26" To="53" />
+      <Stat Name="Physical Damage" From="26" To="53" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
     </Properties>
@@ -2414,7 +2414,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="16" To="65" />
+      <Stat Name="Physical Damage" From="16" To="65" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2424,7 +2424,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="31" To="58" />
+      <Stat Name="Physical Damage" From="31" To="58" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -2434,7 +2434,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="25" To="59" />
+      <Stat Name="Physical Damage" From="25" To="59" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2444,7 +2444,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="24" To="55" />
+      <Stat Name="Physical Damage" From="24" To="55" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -2454,7 +2454,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="20" To="80" />
+      <Stat Name="Physical Damage" From="20" To="80" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2464,7 +2464,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="27" To="51" />
+      <Stat Name="Physical Damage" From="27" To="51" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
     </Properties>
@@ -2474,7 +2474,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="50" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="26" To="60" />
+      <Stat Name="Physical Damage" From="26" To="60" />
       <Stat Name="Critical Strike Chance %" From="5.7" To="5.7" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -2484,7 +2484,7 @@
       <Stat Name="#% chance to cause Bleeding on Hit" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="28" To="58" />
+      <Stat Name="Physical Damage" From="28" To="58" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2494,7 +2494,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="7" To="14" />
+      <Stat Name="Physical Damage" From="7" To="14" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -2504,7 +2504,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="33" />
+      <Stat Name="Physical Damage" From="14" To="33" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.1" To="1.1" />
     </Properties>
@@ -2514,7 +2514,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="25" />
+      <Stat Name="Physical Damage" From="15" To="25" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -2524,7 +2524,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="23" To="43" />
+      <Stat Name="Physical Damage" From="23" To="43" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2534,7 +2534,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="29" To="61" />
+      <Stat Name="Physical Damage" From="29" To="61" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2544,7 +2544,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="32" To="53" />
+      <Stat Name="Physical Damage" From="32" To="53" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2554,7 +2554,7 @@
       <Stat Name="#% increased Accuracy Rating" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="35" To="73" />
+      <Stat Name="Physical Damage" From="35" To="73" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2564,7 +2564,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="39" To="65" />
+      <Stat Name="Physical Damage" From="39" To="65" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -2574,7 +2574,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="40" To="93" />
+      <Stat Name="Physical Damage" From="40" To="93" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.1" To="1.1" />
     </Properties>
@@ -2584,7 +2584,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="42" To="70" />
+      <Stat Name="Physical Damage" From="42" To="70" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -2594,7 +2594,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="50" To="92" />
+      <Stat Name="Physical Damage" From="50" To="92" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2604,7 +2604,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="55" To="115" />
+      <Stat Name="Physical Damage" From="55" To="115" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.1" To="1.1" />
     </Properties>
@@ -2614,7 +2614,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="55" To="91" />
+      <Stat Name="Physical Damage" From="55" To="91" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2624,7 +2624,7 @@
       <Stat Name="#% increased Accuracy Rating" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="55" To="114" />
+      <Stat Name="Physical Damage" From="55" To="114" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2634,7 +2634,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="63" To="105" />
+      <Stat Name="Physical Damage" From="63" To="105" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -2644,7 +2644,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="59" To="139" />
+      <Stat Name="Physical Damage" From="59" To="139" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.1" To="1.1" />
     </Properties>
@@ -2654,7 +2654,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="59" To="99" />
+      <Stat Name="Physical Damage" From="59" To="99" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -2664,7 +2664,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="65" To="121" />
+      <Stat Name="Physical Damage" From="65" To="121" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2674,7 +2674,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="67" To="140" />
+      <Stat Name="Physical Damage" From="67" To="140" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.1" To="1.1" />
     </Properties>
@@ -2684,7 +2684,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="63" To="105" />
+      <Stat Name="Physical Damage" From="63" To="105" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2694,7 +2694,7 @@
       <Stat Name="#% increased Accuracy Rating" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="57" To="118" />
+      <Stat Name="Physical Damage" From="57" To="118" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -2704,7 +2704,7 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="60" To="60" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="68" To="114" />
+      <Stat Name="Physical Damage" From="68" To="114" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
@@ -2714,7 +2714,7 @@
       <Stat Name="#% increased Spell Damage" From="8" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="3" To="6" />
+      <Stat Name="Physical Damage" From="3" To="6" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
     </Properties>
@@ -2724,7 +2724,7 @@
       <Stat Name="#% increased Spell Damage" From="9" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="5" To="10" />
+      <Stat Name="Physical Damage" From="5" To="10" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2734,7 +2734,7 @@
       <Stat Name="#% increased Spell Damage" From="9" To="13" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="6" To="11" />
+      <Stat Name="Physical Damage" From="6" To="11" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2744,7 +2744,7 @@
       <Stat Name="#% increased Spell Damage" From="11" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="9" To="17" />
+      <Stat Name="Physical Damage" From="9" To="17" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2754,7 +2754,7 @@
       <Stat Name="#% increased Spell Damage" From="10" To="14" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="8" To="24" />
+      <Stat Name="Physical Damage" From="8" To="24" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2764,7 +2764,7 @@
       <Stat Name="#% increased Spell Damage" From="11" To="14" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="28" />
+      <Stat Name="Physical Damage" From="15" To="28" />
       <Stat Name="Critical Strike Chance %" From="9" To="9" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2774,7 +2774,7 @@
       <Stat Name="#% increased Cast Speed" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="26" />
+      <Stat Name="Physical Damage" From="14" To="26" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -2784,7 +2784,7 @@
       <Stat Name="#% increased Spell Damage" From="12" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="32" />
+      <Stat Name="Physical Damage" From="17" To="32" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2794,7 +2794,7 @@
       <Stat Name="#% increased Spell Damage" From="12" To="16" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="14" To="27" />
+      <Stat Name="Physical Damage" From="14" To="27" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2804,7 +2804,7 @@
       <Stat Name="#% increased Spell Damage" From="14" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="19" To="35" />
+      <Stat Name="Physical Damage" From="19" To="35" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2814,7 +2814,7 @@
       <Stat Name="#% increased Spell Damage" From="13" To="17" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="15" To="44" />
+      <Stat Name="Physical Damage" From="15" To="44" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2824,7 +2824,7 @@
       <Stat Name="#% increased Spell Damage" From="14" To="17" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="25" To="46" />
+      <Stat Name="Physical Damage" From="25" To="46" />
       <Stat Name="Critical Strike Chance %" From="9" To="9" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2834,7 +2834,7 @@
       <Stat Name="#% increased Cast Speed" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="21" To="40" />
+      <Stat Name="Physical Damage" From="21" To="40" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -2844,7 +2844,7 @@
       <Stat Name="#% increased Spell Damage" From="15" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="26" To="48" />
+      <Stat Name="Physical Damage" From="26" To="48" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2854,7 +2854,7 @@
       <Stat Name="#% increased Spell Damage" From="15" To="19" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="20" To="38" />
+      <Stat Name="Physical Damage" From="20" To="38" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
     </Properties>
@@ -2864,7 +2864,7 @@
       <Stat Name="#% increased Spell Damage" From="17" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="24" To="45" />
+      <Stat Name="Physical Damage" From="24" To="45" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2874,7 +2874,7 @@
       <Stat Name="#% increased Spell Damage" From="16" To="19" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="17" To="52" />
+      <Stat Name="Physical Damage" From="17" To="52" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
     </Properties>
@@ -2884,7 +2884,7 @@
       <Stat Name="#% increased Spell Damage" From="16" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="27" To="51" />
+      <Stat Name="Physical Damage" From="27" To="51" />
       <Stat Name="Critical Strike Chance %" From="9" To="9" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
     </Properties>
@@ -2894,7 +2894,7 @@
       <Stat Name="#% increased Cast Speed" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Damage" From="23" To="43" />
+      <Stat Name="Physical Damage" From="23" To="43" />
       <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -3003,7 +3003,8 @@
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Serrated Arrow Quiver" Level="5">
     <Implicit>
-      <Stat Name="Adds #&amp;##;# Physical Damage to Attacks with Bows" From="1" To="8211" />
+      <Stat Name="Adds # minimum Physical Damage to Attacks with Bows" From="1" To="1" />
+      <Stat Name="Adds # maximum Physical Damage to Attacks with Bows" From="4" To="4" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3027,13 +3028,15 @@
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Fire Arrow Quiver" Level="22">
     <Implicit>
-      <Stat Name="Adds #&amp;##;# Fire Damage to Attacks with Bows" From="4" To="8211" />
+      <Stat Name="Adds # minimum Fire Damage to Attacks with Bows" From="4" To="4" />
+      <Stat Name="Adds # maximum Fire Damage to Attacks with Bows" From="8" To="8" />
     </Implicit>
     <Properties />
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Broadhead Arrow Quiver" Level="28">
     <Implicit>
-      <Stat Name="Adds #&amp;##;# Physical Damage to Attacks with Bows" From="6" To="8211" />
+      <Stat Name="Adds # minimum Physical Damage to Attacks with Bows" From="6" To="6" />
+      <Stat Name="Adds # maximum Physical Damage to Attacks with Bows" From="12" To="12" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3051,25 +3054,29 @@
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Rugged Quiver" Level="0">
     <Implicit>
-      <Stat Name="Adds #&amp;##;# Cold Damage" From="2" To="8211" />
+      <Stat Name="Adds # minimum Cold Damage" From="2" To="2" />
+      <Stat Name="Adds # maximum Cold Damage" From="3" To="3" />
     </Implicit>
     <Properties />
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Cured Quiver" Level="0">
     <Implicit>
-      <Stat Name="Adds #&amp;##;# Fire Damage" From="2" To="8211" />
+      <Stat Name="Adds # minimum Fire Damage" From="2" To="2" />
+      <Stat Name="Adds # maximum Fire Damage" From="4" To="4" />
     </Implicit>
     <Properties />
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Conductive Quiver" Level="0">
     <Implicit>
-      <Stat Name="Adds #&amp;##;# Lightning Damage" From="1" To="8211" />
+      <Stat Name="Adds # minimum Lightning Damage" From="1" To="1" />
+      <Stat Name="Adds # maximum Lightning Damage" From="5" To="5" />
     </Implicit>
     <Properties />
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Heavy Quiver" Level="5">
     <Implicit>
-      <Stat Name="Adds #&amp;##;# Physical Damage" From="1" To="8211" />
+      <Stat Name="Adds # minimum Physical Damage" From="1" To="1" />
+      <Stat Name="Adds # maximum Physical Damage" From="4" To="4" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3081,7 +3088,8 @@
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Iron Ring" Level="0">
     <Implicit>
-      <Stat Name="Adds #&amp;##;# Physical Damage to Attacks" From="1" To="8211" />
+      <Stat Name="Adds # minimum Physical Damage to Attacks" From="1" To="1" />
+      <Stat Name="Adds # maximum Physical Damage to Attacks" From="4" To="4" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3283,8 +3291,8 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Astral Plate" Level="62">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="8" To="8" />
       <Stat Name="+#% to all Elemental Resistances" From="8" To="12" />
+      <Stat Name="#% reduced Movement Speed" From="8" To="8" />
     </Implicit>
     <Properties>
       <Stat Name="Armour Rating" From="507" To="507" />
@@ -3436,8 +3444,8 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Assassin's Garb" Level="68">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="4" To="4" />
       <Stat Name="#% increased Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed" From="4" To="4" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="525" To="525" />
@@ -3557,8 +3565,8 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Occultist's Vestment" Level="62">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="4" To="4" />
       <Stat Name="#% increased Spell Damage" From="3" To="10" />
+      <Stat Name="#% reduced Movement Speed" From="4" To="4" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="140" To="140" />
@@ -4032,8 +4040,8 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Carnal Armour" Level="71">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="4" To="4" />
       <Stat Name="+# to maximum Mana" From="20" To="25" />
+      <Stat Name="#% reduced Movement Speed" From="4" To="4" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="251" To="251" />
@@ -5259,8 +5267,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Twig Spirit Shield" Level="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="22" To="22" />
@@ -5269,8 +5277,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Yew Spirit Shield" Level="9">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5279,8 +5287,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Bone Spirit Shield" Level="15">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="15" To="15" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="22" To="22" />
@@ -5289,8 +5297,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Tarnished Spirit Shield" Level="23">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5299,8 +5307,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Jingling Spirit Shield" Level="28">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5318,8 +5326,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Walnut Spirit Shield" Level="37">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5328,8 +5336,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Ivory Spirit Shield" Level="41">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="15" To="15" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="22" To="22" />
@@ -5338,8 +5346,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Ancient Spirit Shield" Level="45">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5348,8 +5356,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Chiming Spirit Shield" Level="49">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5367,8 +5375,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Lacewood Spirit Shield" Level="56">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5377,8 +5385,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Fossilised Spirit Shield" Level="59">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="15" To="15" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="22" To="22" />
@@ -5387,8 +5395,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Vaal Spirit Shield" Level="62">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5397,8 +5405,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Harmonic Spirit Shield" Level="65">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5416,8 +5424,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Rotted Round Shield" Level="5">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="60" To="60" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5427,8 +5435,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Fir Round Shield" Level="12">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="180" To="180" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5438,8 +5446,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Studded Round Shield" Level="20">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="60" To="60" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5459,8 +5467,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Splendid Round Shield" Level="33">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="120" To="120" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5470,8 +5478,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Maple Round Shield" Level="39">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="180" To="180" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5481,8 +5489,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Spiked Round Shield" Level="45">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="60" To="60" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5502,8 +5510,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Baroque Round Shield" Level="54">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="120" To="120" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5513,8 +5521,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Teak Round Shield" Level="58">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="180" To="180" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5524,8 +5532,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Spiny Round Shield" Level="62">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="60" To="60" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5545,8 +5553,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Elegant Round Shield" Level="70">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="120" To="120" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5556,8 +5564,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Plank Kite Shield" Level="7">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="4" To="4" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="22" To="22" />
@@ -5567,8 +5575,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Linden Kite Shield" Level="13">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="4" To="4" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5588,8 +5596,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Layered Kite Shield" Level="27">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="8" To="8" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5599,8 +5607,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Ceremonial Kite Shield" Level="34">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="12" To="12" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="22" To="22" />
@@ -5610,8 +5618,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Etched Kite Shield" Level="40">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="4" To="4" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5631,8 +5639,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Laminated Kite Shield" Level="50">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="8" To="8" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5642,8 +5650,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Angelic Kite Shield" Level="55">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="12" To="12" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="22" To="22" />
@@ -5653,8 +5661,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Branded Kite Shield" Level="59">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="4" To="4" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5674,8 +5682,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Mosaic Kite Shield" Level="65">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="8" To="8" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5685,8 +5693,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Archon Kite Shield" Level="68">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="12" To="12" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="22" To="22" />
@@ -5696,8 +5704,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Spiked Bundle" Level="5">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="2" To="5" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5707,8 +5715,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Driftwood Spiked Shield" Level="12">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="2" To="5" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5718,8 +5726,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Alloyed Spiked Shield" Level="20">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="5" To="12" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5729,8 +5737,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Burnished Spiked Shield" Level="27">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="10" To="23" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5740,8 +5748,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Ornate Spiked Shield" Level="33">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="24" To="35" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5751,8 +5759,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Redwood Spiked Shield" Level="39">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="36" To="50" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5762,8 +5770,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Compound Spiked Shield" Level="45">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="51" To="70" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5773,8 +5781,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Polished Spiked Shield" Level="49">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="71" To="90" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5784,8 +5792,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Sovereign Spiked Shield" Level="54">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="91" To="120" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5795,8 +5803,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Alder Spiked Shield" Level="58">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="121" To="150" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5806,8 +5814,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Ezomyte Spiked Shield" Level="62">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="151" To="180" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5817,8 +5825,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Mirrored Spiked Shield" Level="66">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="181" To="220" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5828,8 +5836,8 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Supreme Spiked Shield" Level="70">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="221" To="260" />
+      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />

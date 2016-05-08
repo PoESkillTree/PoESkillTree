@@ -108,12 +108,6 @@ namespace POESKillTree.Controls
                         os.Tag = i;
                         var tics = tiers.SelectMany(im => Enumerable.Range((int)Math.Round(im.Stats[i].Range.From), (int)Math.Round(im.Stats[i].Range.To - im.Stats[i].Range.From + 1))).Select(f => (double)f).ToList();
 
-                        if (aff.Mods[i].Contains(" per second"))
-                        {
-                            tics = tics.Select(t => t / 60.0).ToList();
-                        }
-
-
                         os.Minimum = tics.First();
                         os.Maximum = tics.Last();
                         os.Ticks = new DoubleCollection(tics);
@@ -152,22 +146,6 @@ namespace POESKillTree.Controls
             {
                 if (i != indx)
                 {
-                    if (aff.IsRangeMod)
-                    {
-                        if (i > indx)
-                        {
-                            if (sliders[i].Value < sliders[indx].Value)
-                                sliders[i].Value = sliders[indx].Value;
-                        }
-                        else if (i < indx)
-                        {
-                            if (sliders[i].Value > sliders[indx].Value)
-                                sliders[i].Value = sliders[indx].Value;
-                        }
-
-                    }
-
-
                     if (aff.QueryMod(i, (float)sliders[i].Value).Intersect(tiers).FirstOrDefault() == null)
                     { //slider isnt inside current tier
                         var moveto = tiers[0].Stats[i].Range;
@@ -207,15 +185,12 @@ namespace POESKillTree.Controls
             if (SelectedAffix != null)
             {
                 float[] values = sliders.Select(s => (float)s.Value).ToArray();
-                if (SelectedAffix.Name.Contains(" per second"))
-                    values = values.Select(v => v * 60f).ToArray();
 
-                var aff = SelectedAffix.Query(values).FirstOrDefault();
+                var aff = SelectedAffix.Query(values).First();
 
-
-                if (aff.ParentAffix.IsRangeMod)
+                if (SelectedAffix.IsRangeMod)
                 {
-                    return new[] { aff.Stats[0].ToItemMod(sliders.Select(s => (float)s.Value).ToArray()) };
+                    return new[] { SelectedAffix.RangeCombinedStat.ToItemMod(sliders.Select(s => (float)s.Value).ToArray()) };
                 }
 
                 var fvalues = aff.Stats.Select((s, i) => s.ToItemMod((float)sliders[i].Value));
