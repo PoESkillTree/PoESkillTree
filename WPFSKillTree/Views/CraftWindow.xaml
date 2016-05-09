@@ -5,11 +5,11 @@
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-        xmlns:items1="clr-namespace:POESKillTree.Model.Items"
+        xmlns:items="clr-namespace:POESKillTree.Model.Items"
+        xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
         x:Class="POESKillTree.Views.CraftWindow"
-    
         WindowStartupLocation="CenterOwner"
-        x:Name="window" Width="600"
+        x:Name="Window" Width="700"
         SizeToContent="Height"
         >
     <controls:MetroWindow.Title>
@@ -19,6 +19,9 @@
         <conv:ItemTypeToImageConverter x:Key="ItemTypeToImageConverter"/>
     </controls:MetroWindow.Resources>
     <Grid Margin="5">
+        <Grid.Resources>
+            <converter:EnumToSpacedStringConverter x:Key="EnumToSpacedStringConverter" />
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -26,10 +29,23 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
-            <ComboBox x:Name="cbClassSelection" ItemsSource="{Binding ClassList, ElementName=window}" SelectedIndex="0" SelectionChanged="cbClassSelection_SelectionChanged" />
-            <ComboBox x:Name="cbBaseSelection" ItemsSource="{Binding BaseList, ElementName=window}" SelectedIndex="0" SelectionChanged="cbBaseSelection_SelectionChanged" >
+            <ComboBox x:Name="GroupSelection" ItemsSource="{Binding GroupList, ElementName=Window}" SelectedIndex="0" SelectionChanged="GroupSelection_SelectionChanged">
                 <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type items1:ItemBase}">
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox x:Name="TypeSelection" ItemsSource="{Binding TypeList, ElementName=Window}" SelectedIndex="0" SelectionChanged="ClassSelection_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox x:Name="BaseSelection" ItemsSource="{Binding BaseList, ElementName=Window}" SelectedIndex="0" SelectionChanged="BaseSelection_SelectionChanged" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type items:ItemBase}">
                         <StackPanel Orientation="Horizontal">
                             <Image Height="20" VerticalAlignment="Center" Source="{Binding Name, Converter={StaticResource ItemTypeToImageConverter}}" StretchDirection="DownOnly" Margin="0,0,3,0"/>
                             <TextBlock VerticalAlignment="Center" ><Run Text="{Binding Name, Mode=OneWay}"/><Run Text=" (ilvl "/><Run Text="{Binding Level, Mode=OneWay}"/><Run Text=")"/></TextBlock>
@@ -67,13 +83,13 @@
                 <local:ModSelector x:Name="mss2" SelectedAffixChanged="mss1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
                 <local:ModSelector x:Name="mss3" SelectedAffixChanged="mss1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
             </StackPanel>
-            <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=window}" Width="94" Height="188" Grid.Row="0" Margin="5"/>
+            <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=Window}" Width="94" Height="188" Grid.Row="0" Margin="5"/>
         </Grid>
         <Border Padding="4" Grid.Row="2" Background="{DynamicResource GrayBrush8}" Margin="0,4">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Click="Button_OK_Click" Content="{l:Catalog 'OK'}" MinWidth="80"/>
             </StackPanel>
         </Border>
-        <local:ItemTooltip Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Item="{Binding Item, ElementName=window}" />
+        <local:ItemTooltip Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Item="{Binding Item, ElementName=Window}" />
     </Grid>
 </controls:MetroWindow>

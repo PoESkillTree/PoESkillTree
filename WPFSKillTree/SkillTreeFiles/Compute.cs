@@ -1503,7 +1503,7 @@ namespace POESKillTree.SkillTreeFiles
                     Item = item;
 
                     // Get weapon type (damage nature).
-                    if (item.ItemGroup != ItemGroup.OneHandWeapon && item.ItemGroup != ItemGroup.TwoHandWeapon)
+                    if (item.ItemGroup != ItemGroup.OneHandedWeapon && item.ItemGroup != ItemGroup.TwoHandedWeapon)
                         // Quiver or shield.
                     {
                         if (item.BaseType.Name.Contains("Quiver"))

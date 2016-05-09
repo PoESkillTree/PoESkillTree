@@ -9,8 +9,8 @@ namespace POESKillTree.Model.Items
     public enum ItemGroup
     {
         Unknown,
-        OneHandWeapon,
-        TwoHandWeapon,
+        OneHandedWeapon,
+        TwoHandedWeapon,
         Belt,
         Ring,
         Amulet,

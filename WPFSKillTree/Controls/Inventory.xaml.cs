@@ -11,7 +11,7 @@ namespace POESKillTree.Controls
     /// <summary>
     /// Interaction logic for Inventory.xaml
     /// </summary>
-    public partial class Inventory : UserControl
+    public partial class Inventory
     {
         public ItemAttributes ItemAttributes
         {
@@ -31,8 +31,8 @@ namespace POESKillTree.Controls
         {
             if ((e.AllowedEffects & DragDropEffects.Link) != 0 && e.Data.GetDataPresent(typeof(ItemVisualizer)))
             {
-                var targslot = (ItemSlot)(sender as ItemVisualizer).Tag;
-                var itm = (e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer).Item;
+                var targslot = (ItemSlot)((ItemVisualizer) sender).Tag;
+                var itm = ((ItemVisualizer) e.Data.GetData(typeof(ItemVisualizer))).Item;
 
                 if (itm != null && (((int)itm.Class & (int)targslot) != 0 || (itm.Class == ItemClass.TwoHand && targslot == ItemSlot.MainHand)))
                 {
@@ -52,9 +52,9 @@ namespace POESKillTree.Controls
             var target = sender as ItemVisualizer;
             if (target != null && (e.AllowedEffects & DragDropEffects.Link) != 0 && e.Data.GetDataPresent(typeof(ItemVisualizer)))
             {
-                var vis = e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer;
-                var targslot = (ItemSlot)(sender as ItemVisualizer).Tag;
-                var itm = (e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer).Item;
+                var vis = (ItemVisualizer) e.Data.GetData(typeof(ItemVisualizer));
+                var targslot = (ItemSlot) target.Tag;
+                var itm = ((ItemVisualizer)e.Data.GetData(typeof(ItemVisualizer))).Item;
 
                 if (itm != null && (((int)itm.Class & (int)targslot) != 0 || (itm.Class == ItemClass.TwoHand && targslot == ItemSlot.MainHand)))
                 {
@@ -82,8 +82,6 @@ namespace POESKillTree.Controls
 
                 if (hh != null)
                     (hh as ItemVisualizer).Item = null;
-
-
             }
         }
 
@@ -106,7 +104,6 @@ namespace POESKillTree.Controls
                 if (vis != null)
                 {
                     vis.Item = null;
-                   
                 }
             }
         }

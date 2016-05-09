@@ -78,7 +78,7 @@ namespace POESKillTree.Model.Items
                 case ItemGroup.Boots:
                 case ItemGroup.Quiver:
                 case ItemGroup.Shield:
-                case ItemGroup.TwoHandWeapon:
+                case ItemGroup.TwoHandedWeapon:
                     return name == "Corroded Blade" ? 1 : 2;
             }
             switch (type)
@@ -117,7 +117,7 @@ namespace POESKillTree.Model.Items
         {
             switch (group)
             {
-                case ItemGroup.TwoHandWeapon:
+                case ItemGroup.TwoHandedWeapon:
                     return name.EndsWith("Crude Bow") || name.EndsWith("Short Bow") || name.EndsWith("Grove Bow") || name.EndsWith("Thicket Bow") ? 3 : 4;
                 case ItemGroup.Helmet:
                 case ItemGroup.Gloves:
@@ -137,7 +137,7 @@ namespace POESKillTree.Model.Items
             }
 
             // belts, amulets, rings
-            if (group != ItemGroup.OneHandWeapon) return 1;
+            if (group != ItemGroup.OneHandedWeapon) return 1;
 
             switch (type)
             {
@@ -156,8 +156,7 @@ namespace POESKillTree.Model.Items
                     return 1;
             }
         }
-        
-        // todo Class may be obsolete
+
         public int Level { get; private set; }
         public string Name { get; private set; }
         public ItemClass Class { get; private set; }
@@ -190,7 +189,7 @@ namespace POESKillTree.Model.Items
         {
             var props = new List<ItemMod>();
             
-            if (ItemGroup == ItemGroup.TwoHandWeapon || ItemGroup == ItemGroup.OneHandWeapon)
+            if (ItemGroup == ItemGroup.TwoHandedWeapon || ItemGroup == ItemGroup.OneHandedWeapon)
                 props.Add(new ItemMod { Attribute = Regex.Replace(ItemType.ToString(), @"([a-z])([A-Z])", m => m.Groups[1].Value + " " + m.Groups[2].Value) });
 
             if (Properties != null)

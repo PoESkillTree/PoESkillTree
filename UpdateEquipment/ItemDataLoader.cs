@@ -56,7 +56,7 @@ namespace UpdateEquipment
         private static readonly IReadOnlyDictionary<ItemType, XmlStat> HiddenImplicits;
 
         private static readonly IEnumerable<XmlItemBase> Jewels =
-            ItemGroup.Jewel.Types().Select(t => new XmlItemBase { ItemType = t, Name = t.ToString().Replace("Jewels", " Jewel") }).ToList();
+            ItemGroup.Jewel.Types().Select(t => new XmlItemBase { ItemType = t, Name = t.ToString().Replace("Jewel", " Jewel") }).ToList();
 
         static ItemDataLoader()
         {

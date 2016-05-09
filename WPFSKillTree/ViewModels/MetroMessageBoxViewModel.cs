@@ -1,6 +1,5 @@
 using POESKillTree.Model;
 using POESKillTree.Views;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -8,7 +7,7 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels
 {
-    public class MetroMessageBoxViewModel : Notifier, INotifyPropertyChanged
+    public class MetroMessageBoxViewModel : Notifier
     {
         #region fields
         private string _title;

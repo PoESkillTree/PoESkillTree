@@ -1,6 +1,4 @@
-﻿using MB.Algodat;
-using POESKillTree.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -12,8 +10,10 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using MB.Algodat;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
+using POESKillTree.Views;
 
 namespace POESKillTree.Controls
 {
@@ -27,7 +27,7 @@ namespace POESKillTree.Controls
     /// <summary>
     /// Interaction logic for Stash.xaml
     /// </summary>
-    public partial class Stash : UserControl, INotifyPropertyChanged
+    public partial class Stash : INotifyPropertyChanged
     {
 
         public ObservableCollection<Item> Items
@@ -41,7 +41,7 @@ namespace POESKillTree.Controls
 
         private static void ItemsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var stash = d as Stash;
+            var stash = (Stash) d;
 
             if (e.OldValue != null)
             {
@@ -83,64 +83,56 @@ namespace POESKillTree.Controls
             DependencyProperty.Register("NewlyAddedRanges", typeof(ObservableCollection<IntRange>), typeof(Stash), new PropertyMetadata(null));
 
 
+        private readonly Dictionary<Item, ItemVisualizer> _usedVisualizers = new Dictionary<Item, ItemVisualizer>();
+        private readonly Dictionary<StashBookmark, Rectangle> _usedBMarks = new Dictionary<StashBookmark, Rectangle>();
 
-
-        Dictionary<Item, ItemVisualizer> _usedVisualizers = new Dictionary<Item, ItemVisualizer>();
-        Dictionary<StashBookmark, Rectangle> _usedBMarks = new Dictionary<StashBookmark, Rectangle>();
-
-        void items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
 
             if (e.OldItems != null)
             {
                 foreach (Item i in e.OldItems)
-                    _StashRange.Remove(i);
+                    _stashRange.Remove(i);
             }
 
             if (e.NewItems != null)
             {
                 foreach (Item i in e.NewItems)
-                    _StashRange.Add(i);
+                    _stashRange.Add(i);
 
             }
 
             if (!_supressrebuild)
             {
-                _StashRange.Rebuild();
+                _stashRange.Rebuild();
                 OnPropertyChanged("LastLine");
             }
 
             RedrawItems();
         }
 
-        private double getValueForTop(double top)
+        private double GetValueForTop(double top)
         {
-            var d = (asBar.Maximum - asBar.Minimum);
+            var d = asBar.Maximum - asBar.Minimum;
             if (d == StashGridHeight)
                 return 0;
 
             return top * d / (d - StashGridHeight);
         }
 
-        private double getTopForValue(double value)
+        private double GetTopForValue(double value)
         {
             return value - value / (asBar.Maximum - asBar.Minimum) * StashGridHeight;
         }
 
-        public int PageTop
+        private int PageTop
         {
-            get
-            {
-                return (int)Math.Round(getTopForValue(asBar.Value));
-            }
+            get { return (int) Math.Round(GetTopForValue(asBar.Value)); }
         }
 
-        public int PageBottom
+        private int PageBottom
         {
-            get
-            {
-                return PageTop + StashGridHeight + 1;
-            }
+            get { return PageTop + StashGridHeight + 1; }
         }
 
         private void RedrawItems()
@@ -158,15 +150,17 @@ namespace POESKillTree.Controls
 
                     if (!_usedBMarks.TryGetValue(tab, out r))
                     {
-                        r = new Rectangle();
-                        r.Fill = new SolidColorBrush(tab.Color);
-                        r.Height = 2;
-                        r.Tag = tab;
-                        r.Cursor = Cursors.SizeNS;
+                        r = new Rectangle
+                        {
+                            Fill = new SolidColorBrush(tab.Color),
+                            Height = 2,
+                            Tag = tab,
+                            Cursor = Cursors.SizeNS
+                        };
                         r.MouseDown += R_MouseDown;
 
                         gcontent.Children.Add(r);
-                        Grid.SetZIndex(r, -1000000);
+                        Panel.SetZIndex(r, -1000000);
                         _usedBMarks.Add(tab, r);
                     }
                     r.Margin = new Thickness(0, y - 1, 0, gcontent.ActualHeight - y - 1);
@@ -182,7 +176,7 @@ namespace POESKillTree.Controls
             }
 
 
-            var items = new HashSet<Item>(_StashRange.Query(new Range<int>(from, to)));
+            var items = new HashSet<Item>(_stashRange.Query(new Range<int>(from, to)));
             var toremove = _usedVisualizers.Where(p => !items.Contains(p.Key)).ToArray();
             foreach (var item in toremove)
             {
@@ -192,30 +186,30 @@ namespace POESKillTree.Controls
 
             foreach (var item in items)
             {
-                ItemVisualizer iv = null;
+                ItemVisualizer iv;
 
                 if (!_usedVisualizers.TryGetValue(item, out iv))
                 {
-                    iv = new ItemVisualizer()
+                    iv = new ItemVisualizer
                     {
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
-                        Item = item,
+                        Item = item
                     };
 
                     Binding b = new Binding();
-                    var menu = this.Resources["itemContextMenu"] as ContextMenu;
+                    var menu = Resources["itemContextMenu"] as ContextMenu;
 
                     b.Source = menu;
                     b.Mode = BindingMode.OneWay;
 
-                    iv.SetBinding(ItemVisualizer.ContextMenuProperty, b);
+                    iv.SetBinding(ContextMenuProperty, b);
                     
 
-                    if (item == _dnd_item)
+                    if (item == _dndItem)
                         iv.Opacity = 0.3;
 
-                    if (_FoundItems.Contains(item))
+                    if (_foundItems.Contains(item))
                         iv.Background = ItemVisualizer.FoundItemBrush;
 
                     iv.MouseLeftButtonDown += Iv_MouseLeftButtonDown;
@@ -240,28 +234,27 @@ namespace POESKillTree.Controls
         {
             NewlyAddedRanges.Clear();
             _supressrebuild = false;
-            _StashRange.Rebuild();
+            _stashRange.Rebuild();
             ResizeScrollbarThumb();
         }
 
 
         private void R_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Rectangle r = sender as Rectangle;
-            StashBookmark sb = r.Tag as StashBookmark;
-            _dnd_startDrag = Mouse.GetPosition(gcontent);
-            _dnd_overlay = new Rectangle()
+            Rectangle r = (Rectangle) sender;
+            _dndStartDrag = Mouse.GetPosition(gcontent);
+            _dndOverlay = new Rectangle
             {
                 Fill = r.Fill,
                 Height = r.Height,
                 Margin = r.Margin,
-                Opacity = 0.3,
+                Opacity = 0.3
             };
-            gcontent.Children.Add(_dnd_overlay);
-            Grid.SetZIndex(_dnd_overlay, 52635);
+            gcontent.Children.Add(_dndOverlay);
+            Panel.SetZIndex(_dndOverlay, 52635);
             DragDrop.DoDragDrop(this, sender, DragDropEffects.Move);
-            gcontent.Children.Remove(_dnd_overlay);
-            _dnd_overlay = null;
+            gcontent.Children.Remove(_dndOverlay);
+            _dndOverlay = null;
         }
 
         private void ReloadItem()
@@ -269,27 +262,17 @@ namespace POESKillTree.Controls
             _supressrebuild = true;
             foreach (var i in Items)
             {
-                _StashRange.Add(i);
+                _stashRange.Add(i);
             }
             _supressrebuild = false;
 
-            _StashRange.Rebuild();
+            _stashRange.Rebuild();
             OnPropertyChanged("LastLine");
 
         }
 
 
-
-
-        public double GridSize
-        {
-            get { return (double)GetValue(GridSizeProperty); }
-            set { SetValue(GridSizeProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for GridSize.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty GridSizeProperty =
-            DependencyProperty.Register("GridSize", typeof(double), typeof(Stash), new PropertyMetadata(47.0));
+        private const double GridSize = 47.0;
 
 
 
@@ -301,7 +284,7 @@ namespace POESKillTree.Controls
 
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                this.SetValue(BookmarksProperty, new ObservableCollection<StashBookmark>()
+                SetValue(BookmarksProperty, new ObservableCollection<StashBookmark>
                 {
                     new StashBookmark("0",0, Colors.Blue),
                     new StashBookmark("1",12, Colors.Maroon),
@@ -311,7 +294,7 @@ namespace POESKillTree.Controls
                     new StashBookmark("50000",60, Colors.Purple),
                     new StashBookmark("600000",72, Colors.Violet),
                     new StashBookmark("7000000",84, Colors.SteelBlue),
-                    new StashBookmark("0",96),
+                    new StashBookmark("0",96)
                 });
             }
 
@@ -332,7 +315,7 @@ namespace POESKillTree.Controls
 
         private static void BookmarksPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var stash = d as Stash;
+            var stash = (Stash) d;
 
             if (d == null)
                 return;
@@ -352,46 +335,6 @@ namespace POESKillTree.Controls
             OnPropertyChanged("LastLine");
         }
 
-        public void AddItems(IEnumerable<Item> items, string tabname = null)
-        {
-
-            int y = LastOccupiedLine + 2;
-            if (tabname != null)
-            {
-                StashBookmark sb = new StashBookmark(tabname, y);
-                AddBookmark(sb);
-            }
-
-            int x = 0;
-            int maxh = 0;
-            var y2 = y;
-            var y3 = y;
-            foreach (var item in items)
-            {
-                if (x + item.Width > 12) //next line
-                {
-                    x = 0;
-                    y += maxh;
-                    maxh = 0;
-                }
-
-                item.X = x;
-                x += item.Width;
-
-                if (maxh < item.Height)
-                    maxh = item.Height;
-
-                item.Y = y;
-                Items.Add(item);
-
-                if (y3 < item.Y + item.Height)
-                    y3 = item.Y + item.Height;
-            }
-
-            AddHighlightRange(new IntRange() { From = y2, Range = y3 - y2 });
-            ResizeScrollbarThumb();
-        }
-
         internal void AddHighlightRange(IntRange range)
         {
             while (NewlyAddedRanges.Count > 5)
@@ -402,7 +345,8 @@ namespace POESKillTree.Controls
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string prop)
+
+        private void OnPropertyChanged(string prop)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
@@ -417,40 +361,33 @@ namespace POESKillTree.Controls
             }
         }
 
-        private RangeTree<int, Item> _StashRange = new RangeTree<int, Item>(new ItemModComparer());
+        private readonly RangeTree<int, Item> _stashRange = new RangeTree<int, Item>(new ItemModComparer());
 
 
-
-        public int StashGridHeight
+        private int StashGridHeight
         {
             get { return (int)(gcontent.ActualHeight / GridSize); }
         }
 
         public int LastLine
         {
-            get
-            {
-                return LastOccupiedLine + StashGridHeight;
-            }
+            get { return LastOccupiedLine + StashGridHeight; }
         }
 
 
         public int LastOccupiedLine
         {
-            get
-            {
-                return Math.Max(_StashRange.Max, Bookmarks.Count > 0 ? Bookmarks.Max(b => b.Position) : 0);
-            }
+            get { return Math.Max(_stashRange.Max, Bookmarks.Count > 0 ? Bookmarks.Max(b => b.Position) : 0); }
         }
 
-        bool _supressrebuild = false;
+        private bool _supressrebuild;
 
         private void asBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             RedrawItems();
         }
 
-        void ResizeScrollbarThumb()
+        private void ResizeScrollbarThumb()
         {
             OnPropertyChanged("LastLine");
             asBar.LargeChange = StashGridHeight;
@@ -480,19 +417,19 @@ namespace POESKillTree.Controls
                 asBar.Value += 1;
         }
 
-        ItemVisualizer _dndVis = null;
-        Rectangle _dnd_overlay = null;
-        Point _dnd_startDrag;
-        Thickness _dnd_original_Margin;
-        Item _dnd_item = null;
+        private ItemVisualizer _dndVis;
+        private Rectangle _dndOverlay;
+        private Point _dndStartDrag;
+        private Thickness _dndOriginalMargin;
+        private Item _dndItem;
         private void Iv_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
             var siv = sender as ItemVisualizer;
             if (siv != null)
             {
-                _dnd_startDrag = Mouse.GetPosition(gcontent);// e.GetPosition(gcontent);
-                _dnd_overlay = new Rectangle()
+                _dndStartDrag = Mouse.GetPosition(gcontent);// e.GetPosition(gcontent);
+                _dndOverlay = new Rectangle
                 {
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
@@ -500,13 +437,13 @@ namespace POESKillTree.Controls
                     Height = siv.ActualHeight,
                     Fill = Brushes.DarkGreen,
                     Margin = siv.Margin,
-                    Opacity = 0.3,
+                    Opacity = 0.3
                 };
-                _dnd_original_Margin = siv.Margin;
-                gcontent.Children.Add(_dnd_overlay);
-                Grid.SetZIndex(_dnd_overlay, 52635);
+                _dndOriginalMargin = siv.Margin;
+                gcontent.Children.Add(_dndOverlay);
+                Panel.SetZIndex(_dndOverlay, 52635);
 
-                _dndVis = new ItemVisualizer()
+                _dndVis = new ItemVisualizer
                 {
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
@@ -515,28 +452,28 @@ namespace POESKillTree.Controls
                     Item = siv.Item,
                     Margin = siv.Margin,
                     Opacity = 0.5,
-                    Background = null,
+                    Background = null
                 };
                 gcontent.Children.Add(_dndVis);
-                Grid.SetZIndex(_dndVis, 52636);
+                Panel.SetZIndex(_dndVis, 52636);
 
 
                 siv.Opacity = 0.3;
-                _dnd_item = siv.Item;
+                _dndItem = siv.Item;
                 DragDrop.DoDragDrop(this, sender, DragDropEffects.Link | DragDropEffects.Move);
                 siv.Opacity = 1;
-                gcontent.Children.Remove(_dnd_overlay);
+                gcontent.Children.Remove(_dndOverlay);
                 gcontent.Children.Remove(_dndVis);
                 _dndVis = null;
-                _dnd_overlay = null;
-                _dnd_item = null;
+                _dndOverlay = null;
+                _dndItem = null;
             }
         }
 
 
         private void control_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this || _dnd_overlay == null)
+            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this || _dndOverlay == null)
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
@@ -561,7 +498,7 @@ namespace POESKillTree.Controls
                 if (e.Data.GetDataPresent(typeof(Rectangle)))
                 {
                     line = true;
-                    if (!((e.Data.GetData(typeof(Rectangle)) as Rectangle).Tag is StashBookmark))
+                    if (!(((Rectangle) e.Data.GetData(typeof(Rectangle))).Tag is StashBookmark))
                     {
                         e.Effects = DragDropEffects.None;
                         return;
@@ -579,11 +516,11 @@ namespace POESKillTree.Controls
 
                 var newpos = e.GetPosition(gcontent);
 
-                var dx = newpos.X - _dnd_startDrag.X;
-                var dy = newpos.Y - _dnd_startDrag.Y;
+                var dx = newpos.X - _dndStartDrag.X;
+                var dy = newpos.Y - _dndStartDrag.Y;
 
-                var newx = _dnd_original_Margin.Left + dx;
-                var newy = _dnd_original_Margin.Top + dy;
+                var newx = _dndOriginalMargin.Left + dx;
+                var newy = _dndOriginalMargin.Top + dy;
 
                 var x = (int)Math.Round((newx / GridSize));
                 var y = (int)Math.Round((newy / GridSize));
@@ -591,23 +528,23 @@ namespace POESKillTree.Controls
                 if (line)
                 {
                     y = (int)Math.Round(newpos.Y / GridSize);
-                    _dnd_overlay.Margin = new Thickness(0, y * GridSize - 1, 0, gcontent.ActualHeight - y * GridSize - 1);
+                    _dndOverlay.Margin = new Thickness(0, y * GridSize - 1, 0, gcontent.ActualHeight - y * GridSize - 1);
                 }
                 else
                 {
-                    _dnd_overlay.Margin = new Thickness(x * GridSize, y * GridSize, 0, 0);
+                    _dndOverlay.Margin = new Thickness(x * GridSize, y * GridSize, 0, 0);
 
-                    y += (int)PageTop;
+                    y += PageTop;
 
                     var itm = _dndVis.Item;
-                    var overlapedy = _StashRange.Query(new Range<int>(y, y + itm.Height - 1));
+                    var overlapedy = _stashRange.Query(new Range<int>(y, y + itm.Height - 1));
 
                     var newposr = new Range<int>(x, x + itm.Width - 1);
 
                     if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.Width - 1).Intersects(newposr)) || newposr.To >= 12 || y < 0 || x < 0)
-                        _dnd_overlay.Fill = Brushes.DarkRed;
+                        _dndOverlay.Fill = Brushes.DarkRed;
                     else
-                        _dnd_overlay.Fill = Brushes.DarkGreen;
+                        _dndOverlay.Fill = Brushes.DarkGreen;
 
                     _dndVis.Margin = new Thickness(newx, newy, 0, 0);
                 }
@@ -630,14 +567,14 @@ namespace POESKillTree.Controls
                 if (e.Data.GetDataPresent(typeof(Rectangle)))
                 {
                     line = true;
-                    if (!((e.Data.GetData(typeof(Rectangle)) as Rectangle).Tag is StashBookmark))
+                    if (!(((Rectangle) e.Data.GetData(typeof(Rectangle))).Tag is StashBookmark))
                     {
                         e.Effects = DragDropEffects.None;
                         return;
                     }
 
                 }
-                else if (!e.Data.GetDataPresent(typeof(ItemVisualizer)) || _dnd_overlay.Fill != Brushes.DarkGreen)
+                else if (!e.Data.GetDataPresent(typeof(ItemVisualizer)) || !Equals(_dndOverlay.Fill, Brushes.DarkGreen))
                 {
                     e.Effects = DragDropEffects.None;
                     return;
@@ -648,22 +585,22 @@ namespace POESKillTree.Controls
 
                 var newpos = e.GetPosition(gcontent);
 
-                var dx = newpos.X - _dnd_startDrag.X;
-                var dy = newpos.Y - _dnd_startDrag.Y;
+                var dx = newpos.X - _dndStartDrag.X;
+                var dy = newpos.Y - _dndStartDrag.Y;
 
-                var newx = _dnd_original_Margin.Left + dx;
-                var newy = _dnd_original_Margin.Top + dy;
+                var newx = _dndOriginalMargin.Left + dx;
+                var newy = _dndOriginalMargin.Top + dy;
 
                 var x = (int)Math.Round((newx / GridSize));
                 var y = (int)Math.Round((newy / GridSize));
 
-                y += (int)PageTop;
+                y += PageTop;
 
                 if (line)
                 {
                     y = (int)Math.Round(newpos.Y / GridSize + PageTop);
-                    Rectangle r = e.Data.GetData(typeof(Rectangle)) as Rectangle;
-                    StashBookmark sb = r.Tag as StashBookmark;
+                    Rectangle r = (Rectangle) e.Data.GetData(typeof(Rectangle));
+                    StashBookmark sb = (StashBookmark) r.Tag;
                     sb.Position = y;
                     Bookmarks.Remove(sb);
                     AddBookmark(sb);
@@ -672,8 +609,8 @@ namespace POESKillTree.Controls
                 else
                 {
 
-                    var itm = _dnd_item;
-                    _dnd_item = null;
+                    var itm = _dndItem;
+                    _dndItem = null;
                     itm.X = x;
                     itm.Y = y;
 
@@ -696,8 +633,8 @@ namespace POESKillTree.Controls
             if (_dndVis != null)
                 _dndVis.Visibility = Visibility.Collapsed;
 
-            if (_dnd_overlay != null)
-                _dnd_overlay.Visibility = Visibility.Collapsed;
+            if (_dndOverlay != null)
+                _dndOverlay.Visibility = Visibility.Collapsed;
         }
 
         private void gcontent_DragEnter(object sender, DragEventArgs e)
@@ -714,21 +651,21 @@ namespace POESKillTree.Controls
             if (_dndVis != null)
                 _dndVis.Visibility = Visibility.Visible;
 
-            if (_dnd_overlay != null)
-                _dnd_overlay.Visibility = Visibility.Visible;
+            if (_dndOverlay != null)
+                _dndOverlay.Visibility = Visibility.Visible;
         }
 
         private void Button_StashTab_Click(object sender, RoutedEventArgs e)
         {
-            var bm = (sender as Button).DataContext as StashBookmark;
-            asBar.Value = getValueForTop(bm.Position);
+            var bm = (StashBookmark) ((Button) sender).DataContext;
+            asBar.Value = GetValueForTop(bm.Position);
         }
 
 
 
         private void Button_AddBookmark(object sender, RoutedEventArgs e)
         {
-            var picker = new TabPicker() { Owner = Window.GetWindow(this) };
+            var picker = new TabPicker { Owner = Window.GetWindow(this) };
             var ret = picker.ShowDialog();
             if (ret == true && !picker.Delete)
             {
@@ -739,10 +676,10 @@ namespace POESKillTree.Controls
 
         public void AddBookmark(StashBookmark stashBookmark)
         {
-            Bookmarks.Insert(findbpos(stashBookmark.Position, 0, Bookmarks.Count), stashBookmark);
+            Bookmarks.Insert(FindBPos(stashBookmark.Position, 0, Bookmarks.Count), stashBookmark);
         }
 
-        private int findbpos(int position, int from, int limit)
+        private int FindBPos(int position, int from, int limit)
         {
             if (Bookmarks.Count == 0)
                 return 0;
@@ -756,18 +693,17 @@ namespace POESKillTree.Controls
                 return limit + 1;
 
             if (Bookmarks[middle].Position > position)
-                return findbpos(position, from, middle);
-            else
-                return findbpos(position, middle, limit);
+                return FindBPos(position, from, middle);
+            return FindBPos(position, middle, limit);
         }
 
         private void ButtonStashTabMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Right)
             {
-                var bm = (sender as Button).DataContext as StashBookmark;
+                var bm = (StashBookmark) ((Button) sender).DataContext;
 
-                var picker = new TabPicker() { Owner = Window.GetWindow(this), SelectedColor = bm.Color, Text = bm.Name };
+                var picker = new TabPicker { Owner = Window.GetWindow(this), SelectedColor = bm.Color, Text = bm.Name };
                 if (picker.ShowDialog() == true)
                 {
                     if (picker.Delete)
@@ -835,47 +771,47 @@ namespace POESKillTree.Controls
 
             foreach (var item in _usedVisualizers)
             {
-                if (_FoundItems.Contains(item.Key))
-                    item.Value.ClearValue(ItemVisualizer.BackgroundProperty);
+                if (_foundItems.Contains(item.Key))
+                    item.Value.ClearValue(BackgroundProperty);
             }
 
             if (string.IsNullOrWhiteSpace(txt))
             {
                 SearchMatches.Clear();
-                _FoundItems.Clear();
+                _foundItems.Clear();
                 return;
             }
 
             if (txt.Length < 3)
                 return;
 
-            _FoundItems = new HashSet<Item>(Items.Where(i => IsSearchMatch(i, txt)));
+            _foundItems = new HashSet<Item>(Items.Where(i => IsSearchMatch(i, txt)));
 
             foreach (var item in _usedVisualizers)
             {
-                if (_FoundItems.Contains(item.Key))
+                if (_foundItems.Contains(item.Key))
                 {
                     item.Value.Background = ItemVisualizer.FoundItemBrush;
                 }
             }
 
-            SearchMatches = new ObservableCollection<int>(_FoundItems.Select(i => i.Y).Distinct());
+            SearchMatches = new ObservableCollection<int>(_foundItems.Select(i => i.Y).Distinct());
         }
 
-        HashSet<Item> _FoundItems = new HashSet<Item>();
+        private HashSet<Item> _foundItems = new HashSet<Item>();
 
-        private bool IsSearchMatch(Item i, string txt)
+        private static bool IsSearchMatch(Item i, string txt)
         {
             var local = new List<ItemAttributes.Attribute>();
             var nonlocal = new List<ItemAttributes.Attribute>();
 
             ItemAttributes.LoadItem(i, local, nonlocal);
 
-            List<string> modstrings = new List<string>()
+            List<string> modstrings = new List<string>
             {
                 i.BaseType.Name,
                 i.FlavourText,
-                i.Name,
+                i.Name
             };
 
             modstrings.AddRange( local.Select(a => a.ValuedAttribute));
@@ -888,8 +824,8 @@ namespace POESKillTree.Controls
 
         private void Button_DragEnter(object sender, DragEventArgs e)
         {
-            var sb = (sender as Button).DataContext as StashBookmark;
-            asBar.Value = getValueForTop(sb.Position);
+            var sb = (StashBookmark) ((Button)sender).DataContext;
+            asBar.Value = GetValueForTop(sb.Position);
         }
 
         private void MenuItem_Delete_Click(object sender, RoutedEventArgs e)

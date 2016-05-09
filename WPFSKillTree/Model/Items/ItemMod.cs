@@ -169,7 +169,7 @@ namespace POESKillTree.Model.Items
                        || attr.Contains("Weapon Class")
                        || attr.Contains("Critical Strike Chance with this Weapon")
                        || attr.Contains("Critical Strike Damage Multiplier with this Weapon"))
-                   || (item.ItemGroup == ItemGroup.OneHandWeapon || item.ItemGroup == ItemGroup.TwoHandWeapon)
+                   || (item.ItemGroup == ItemGroup.OneHandedWeapon || item.ItemGroup == ItemGroup.TwoHandedWeapon)
                       && (attr == "#% increased Attack Speed"
                           || attr == "#% increased Accuracy Rating"
                           || attr == "+# to Accuracy Rating"

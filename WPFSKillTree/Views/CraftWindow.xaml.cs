@@ -1,9 +1,9 @@
-﻿using MahApps.Metro.Controls;
-using POESKillTree.Controls;
+﻿using POESKillTree.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,40 +14,70 @@ namespace POESKillTree.Views
     /// <summary>
     /// Interaction logic for CraftWindow.xaml
     /// </summary>
-    public partial class CraftWindow : MetroWindow, INotifyPropertyChanged
+    public partial class CraftWindow : INotifyPropertyChanged
     {
-
-        string[] _clist;
-
-        public string[] ClassList
+        private ItemGroup[] _groupList;
+        public ItemGroup[] GroupList
         {
-            get { return _clist; }
-            set { _clist = value; OnpropertyChanged("ClassList"); }
+            get { return _groupList; }
+            private set { _groupList = value; OnPropertyChanged(); }
         }
 
-        ItemBase[] _blist;
+        private ItemType[] _typeList;
+        public ItemType[] TypeList
+        {
+            get { return _typeList; }
+            private set
+            {
+                _typeList = value;
+                OnPropertyChanged();
+                TypeSelection.Visibility = value.Length <= 1 ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        private ItemBase[] _blist;
         public ItemBase[] BaseList
         {
             get { return _blist; }
-            set { _blist = value; OnpropertyChanged("BaseList"); }
+            private set { _blist = value; OnPropertyChanged(); }
         }
 
-        Item _item;
-
+        private Item _item;
         public Item Item
         {
             get { return _item; }
-            set { _item = value; OnpropertyChanged("Item"); }
+            private set { _item = value; OnPropertyChanged(); }
         }
+
+        private List<Affix> _prefixes = new List<Affix>();
+        private List<Affix> _suffixes = new List<Affix>();
+
+        private int _skipRedraw;
+        private bool SkipRedraw
+        {
+            get { return _skipRedraw > 0; }
+            set
+            {
+                if (value)
+                    _skipRedraw++;
+                else
+                    _skipRedraw--;
+
+                if (_skipRedraw == 0)
+                    RecalculateItem();
+            }
+        }
+
+        private ModSelector[] _selectedPreff = new ModSelector[0];
+        private ModSelector[] _selectedSuff = new ModSelector[0];
 
         public CraftWindow()
         {
             InitializeComponent();
-            ClassList = Enum.GetNames(typeof(ItemClass)).Except(new[] { "" + ItemClass.Unequipable, "" + ItemClass.Invalid, "" + ItemClass.Gem, }).ToArray();
+            GroupList = Enum.GetValues(typeof(ItemGroup)).Cast<ItemGroup>().Except(new[] {ItemGroup.Unknown}).ToArray();
         }
 
-
-        public void OnpropertyChanged(string prop)
+        private void OnPropertyChanged([CallerMemberName] string prop = null)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
@@ -55,38 +85,30 @@ namespace POESKillTree.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        List<Affix> _prefixes = new List<Affix>();
-        List<Affix> _suffixes = new List<Affix>();
-
-        int _SkipRedraw = 0;
-
-        public bool SkipRedraw
-        {
-            get { return _SkipRedraw > 0; }
-            set
-            {
-                if (value)
-                    _SkipRedraw++;
-                else
-                    _SkipRedraw--;
-
-                if (_SkipRedraw == 0)
-                    RecalculateItem();
-            }
-        }
-
-        private void cbClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void GroupSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SkipRedraw = true;
-            var val = (ItemClass)Enum.Parse(typeof(ItemClass), (string)cbClassSelection.SelectedItem);
-            BaseList = ItemBase.BaseList.Where(b => (b.Class & val) == val).ToArray();
-            cbBaseSelection.SelectedIndex = 0;
+            var val = (ItemGroup) GroupSelection.SelectedItem;
+            TypeList = Enum.GetValues(typeof(ItemType)).Cast<ItemType>().Where(t => t.Group() == val).ToArray();
+            TypeSelection.SelectedIndex = 0;
             SkipRedraw = false;
         }
 
-        private void cbBaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbBaseSelection.SelectedItem == null)
+            // Happens if called in GroupSelection_SelectionChanged
+            if (TypeSelection.SelectedItem == null) return;
+
+            SkipRedraw = true;
+            var val = (ItemType) TypeSelection.SelectedItem;
+            BaseList = ItemBase.BaseList.Where(b => b.ItemType == val).ToArray();
+            BaseSelection.SelectedIndex = 0;
+            SkipRedraw = false;
+        }
+
+        private void BaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (BaseSelection.SelectedItem == null)
             {
                 Item = null;
                 return;
@@ -95,7 +117,7 @@ namespace POESKillTree.Views
             SkipRedraw = true;
             msp1.Affixes = msp2.Affixes = msp3.Affixes = mss1.Affixes = mss1.Affixes = mss2.Affixes = mss3.Affixes = null;
 
-            var ibase = (ItemBase)cbBaseSelection.SelectedItem;
+            var ibase = (ItemBase)BaseSelection.SelectedItem;
             Item = ibase.CreateItem();
 
             if (ibase.ImplicitMods.Any())
@@ -125,12 +147,11 @@ namespace POESKillTree.Views
             SkipRedraw = false;
         }
 
-        ModSelector[] _selectedPreff = new ModSelector[0];
         private void msp1_SelectedAffixChanged(object sender, Affix aff)
         {
             SkipRedraw = true;
             var ms = sender as ModSelector;
-            List<Affix> exc = new List<Affix>();
+
             if (msp1 != ms)
                 msp1.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp3.SelectedAffix }).ToList();
 
@@ -160,7 +181,7 @@ namespace POESKillTree.Views
             else if (_selectedPreff.Length <= 1 && _selectedSuff.Length <= 1)
             {
                 Item.Frame = FrameType.Magic;
-                string typeline = "";
+                var typeline = "";
 
                 if (_selectedPreff.Length > 0)
                     typeline = _selectedPreff[0].SelectedAffix.Query(_selectedPreff[0].SelectedValues.Select(v => (float)v).ToArray()).First().Name + " ";
@@ -202,15 +223,11 @@ namespace POESKillTree.Views
                 var elementalmods = allmods.Where(m => m.Attribute.StartsWith("Adds") && (m.Attribute.Contains("Fire") || m.Attribute.Contains("Cold") || m.Attribute.Contains("Lightning"))).ToList();
                 if (elementalmods.Count > 0)
                 {
-                    List<float> values = new List<float>();
+                    var values = new List<float>();
+                    var mods = new List<string>();
+                    var cols = new List<ItemMod.ValueColoring>();
 
                     var fmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Fire"));
-                    var cmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
-                    var lmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
-
-                    List<string> mods = new List<string>();
-                    List<ItemMod.ValueColoring> cols = new List<ItemMod.ValueColoring>();
-
                     if (fmod != null)
                     {
                         values.AddRange(fmod.Value);
@@ -219,6 +236,7 @@ namespace POESKillTree.Views
                         cols.Add(ItemMod.ValueColoring.Fire);
                     }
 
+                    var cmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
                     if (cmod != null)
                     {
                         values.AddRange(cmod.Value);
@@ -227,6 +245,7 @@ namespace POESKillTree.Views
                         cols.Add(ItemMod.ValueColoring.Cold);
                     }
 
+                    var lmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
                     if (lmod != null)
                     {
                         values.AddRange(lmod.Value);
@@ -235,28 +254,23 @@ namespace POESKillTree.Views
                         cols.Add(ItemMod.ValueColoring.Lightning);
                     }
 
-                    string mname = "Elemental Damage: ";
-                    ItemMod mod = new ItemMod()
+                    properties.Add(new ItemMod
                     {
-                        Attribute = mname + string.Join(", ", mods),
+                        Attribute = "Elemental Damage: " + string.Join(", ", mods),
                         Value = values,
                         ValueColor = cols,
-                    };
-
-                    properties.Add(mod);
+                    });
                 }
 
                 var chaosMods = allmods.Where(m => m.Attribute.StartsWith("Adds") && m.Attribute.Contains("Chaos")).ToList();
                 if (chaosMods.Count > 0)
                 {
-                    var mod = new ItemMod
+                    properties.Add(new ItemMod
                     {
                         Attribute = "Chaos Damage: #-#",
                         Value = new List<float>(chaosMods[0].Value),
                         ValueColor = new List<ItemMod.ValueColoring> { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos },
-                    };
-
-                    properties.Add(mod);
+                    });
                 }
             }
 
@@ -290,7 +304,7 @@ namespace POESKillTree.Views
                 {
                     var val = valuem.Select(m => m.Value).Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2).ToList());
                     var nval = mod.Value.Zip(val, (f1, f2) => f1 + f2).ToList();
-                    mod.ValueColor = mod.ValueColor.Select((c, i) => ((val[i] == nval[i]) ? mod.ValueColor[i] : ItemMod.ValueColoring.LocallyAffected)).ToList();
+                    mod.ValueColor = mod.ValueColor.Select((c, i) => val[i] == nval[i] ? mod.ValueColor[i] : ItemMod.ValueColoring.LocallyAffected).ToList();
                     mod.Value = nval;
                 }
 
@@ -314,7 +328,6 @@ namespace POESKillTree.Views
             }
         }
 
-        ModSelector[] _selectedSuff = new ModSelector[0];
         private void mss1_SelectedAffixChanged(object sender, Affix aff)
         {
             var ms = sender as ModSelector;
@@ -344,16 +357,9 @@ namespace POESKillTree.Views
             Item.Attributes = Item.Properties.ToDictionary(k => k.Attribute, v => v.Value);
 
             Item.Mods = new List<ItemMod>();
-
-            if (Item.HaveImplicitMods)
-                Item.Mods.AddRange(Item.ImplicitMods);
-
-            if (Item.HaveCraftedMods)
-                Item.Mods.AddRange(Item.CraftedMods);
-
-            if (Item.HaveExplicitMods)
-                Item.Mods.AddRange(Item.ExplicitMods);
-
+            Item.Mods.AddRange(Item.ImplicitMods);
+            Item.Mods.AddRange(Item.CraftedMods);
+            Item.Mods.AddRange(Item.ExplicitMods);
 
             Item.X = 0;
             Item.Y = 0;

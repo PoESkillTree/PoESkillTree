@@ -5845,7 +5845,7 @@
       <Stat Name="Energy Shield" From="62" To="62" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="CobaltJewel" Name="CobaltJewel" Level="0" />
-  <ItemBase ItemType="CrimsonJewel" Name="CrimsonJewel" Level="0" />
-  <ItemBase ItemType="ViridianJewel" Name="ViridianJewel" Level="0" />
+  <ItemBase ItemType="CobaltJewel" Name="Cobalt Jewel" Level="0" />
+  <ItemBase ItemType="CrimsonJewel" Name="Crimson Jewel" Level="0" />
+  <ItemBase ItemType="ViridianJewel" Name="Viridian Jewel" Level="0" />
 </ItemList>

@@ -192,7 +192,6 @@
     <Compile Include="Model\Items\ModType.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
-    <Compile Include="Controls\Arrow.cs" />
     <Compile Include="Model\RelayCommand.cs" />
     <Compile Include="Properties\Version.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -712,7 +711,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Assets\" />
-    <Folder Include="ViewModels\Items\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

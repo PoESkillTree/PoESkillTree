@@ -194,7 +194,7 @@ namespace POESKillTree.Model.Items
 
         public bool IsWeapon
         {
-            get { return ItemGroup == ItemGroup.OneHandWeapon || ItemGroup == ItemGroup.TwoHandWeapon; }
+            get { return ItemGroup == ItemGroup.OneHandedWeapon || ItemGroup == ItemGroup.TwoHandedWeapon; }
         }
 
         /// <summary>

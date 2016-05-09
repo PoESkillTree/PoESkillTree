@@ -82,12 +82,12 @@ namespace POESKillTree.Model.Items
         {
             // The ItemTypes in a group must be declared in the order in which they are listed on the wiki page for the group
             // if all ItemTypes of a ItemGroup a listed on one wiki page.
-            {ItemGroup.OneHandWeapon, new List<ItemType>
+            {ItemGroup.OneHandedWeapon, new List<ItemType>
             {
                 ItemType.OneHandedSword, ItemType.ThrustingOneHandedSword, ItemType.OneHandedAxe, ItemType.OneHandedMace,
                 ItemType.Sceptre, ItemType.Dagger, ItemType.Claw, ItemType.Wand
             }},
-            {ItemGroup.TwoHandWeapon, new List<ItemType>
+            {ItemGroup.TwoHandedWeapon, new List<ItemType>
             {
                 ItemType.TwoHandedMace, ItemType.TwoHandedAxe, ItemType.TwoHandedSword, ItemType.Staff, ItemType.Bow
             }},
@@ -166,9 +166,9 @@ namespace POESKillTree.Model.Items
                     return ItemClass.OffHand;
                 case ItemGroup.Jewel:
                     return ItemClass.Jewel;
-                case ItemGroup.OneHandWeapon:
+                case ItemGroup.OneHandedWeapon:
                     return ItemClass.MainHand;
-                case ItemGroup.TwoHandWeapon:
+                case ItemGroup.TwoHandedWeapon:
                     return ItemClass.TwoHand;
                 case ItemGroup.Belt:
                     return ItemClass.Belt;

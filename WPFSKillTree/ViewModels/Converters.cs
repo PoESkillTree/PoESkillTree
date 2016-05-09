@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
-using System.IO;
-using System.Reflection;
-using System.Resources;
+using System.Windows.Navigation;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
 
@@ -18,13 +22,13 @@ namespace POESKillTree.ViewModels
 {
     class AttributeToTextblockConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var attr = value as Attribute;
             if (attr == null)
-                throw new NotImplementedException();
+                throw new NotSupportedException();
 
-            var tb = new TextBlock() { TextWrapping = TextWrapping.Wrap };
+            var tb = new TextBlock { TextWrapping = TextWrapping.Wrap };
             var txt = new Run(attr.Text);
             if (attr.Missing)
                 txt.Foreground = Brushes.Red;
@@ -45,20 +49,20 @@ namespace POESKillTree.ViewModels
             return tb;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 
     class DebugViewConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value;
         }
@@ -96,13 +100,13 @@ namespace POESKillTree.ViewModels
     [ValueConversion(typeof(ItemMod), typeof(IEnumerable<Inline>))]
     class ItemModToInlinesConverter : IValueConverter
     {
-        private static SolidColorBrush locallyAffectedColor = new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0xFF));
-        private static SolidColorBrush fireAffectedColor = new SolidColorBrush(Color.FromRgb(0x96, 0x00, 0x04));
-        private static SolidColorBrush coldAffectedColor = new SolidColorBrush(Color.FromRgb(0x36, 0x64, 0x92));
-        private static SolidColorBrush lightningAffectedColor = new SolidColorBrush(Color.FromRgb(0xFF, 0xD7, 0x00));
-        private static SolidColorBrush chaosAffectedColor = new SolidColorBrush(Color.FromRgb(0xD0, 0x20, 0x90));
+        private static readonly SolidColorBrush LocallyAffectedColor = new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0xFF));
+        private static readonly SolidColorBrush FireAffectedColor = new SolidColorBrush(Color.FromRgb(0x96, 0x00, 0x04));
+        private static readonly SolidColorBrush ColdAffectedColor = new SolidColorBrush(Color.FromRgb(0x36, 0x64, 0x92));
+        private static readonly SolidColorBrush LightningAffectedColor = new SolidColorBrush(Color.FromRgb(0xFF, 0xD7, 0x00));
+        private static readonly SolidColorBrush ChaosAffectedColor = new SolidColorBrush(Color.FromRgb(0xD0, 0x20, 0x90));
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var mod = value as ItemMod;
             if (mod == null)
@@ -157,21 +161,21 @@ namespace POESKillTree.ViewModels
                 switch (mod.ValueColor[i])
                 {
                     case ItemMod.ValueColoring.LocallyAffected:
-                        return locallyAffectedColor;
+                        return LocallyAffectedColor;
                     case ItemMod.ValueColoring.Fire:
-                        return fireAffectedColor;
+                        return FireAffectedColor;
                     case ItemMod.ValueColoring.Cold:
-                        return coldAffectedColor;
+                        return ColdAffectedColor;
                     case ItemMod.ValueColoring.Lightning:
-                        return lightningAffectedColor;
+                        return LightningAffectedColor;
                     case ItemMod.ValueColoring.Chaos:
-                        return chaosAffectedColor;
+                        return ChaosAffectedColor;
                 }
 
             return Brushes.White;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
         }
@@ -181,13 +185,13 @@ namespace POESKillTree.ViewModels
     [ValueConversion(typeof(string), typeof(ImageSource))]
     class ItemTypeToImageConverter : IValueConverter
     {
-        protected static Dictionary<string, BitmapImage> TypeCache = new Dictionary<string, BitmapImage>();
+        private static readonly Dictionary<string, BitmapImage> TypeCache = new Dictionary<string, BitmapImage>();
 
         protected BitmapImage GetImageForBase(string ibase)
         {
-            BitmapImage img;
             lock (TypeCache)
             {
+                BitmapImage img;
                 if (!TypeCache.TryGetValue(ibase, out img))
                 {
                     //default
@@ -213,29 +217,28 @@ namespace POESKillTree.ViewModels
         }
 
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var itm = value as string;
-            BitmapImage img = null;
             if (itm != null)
             {
                 return GetImageForBase(itm);
             }
-            return img;
+            return null;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 
     [ValueConversion(typeof(Item), typeof(ImageSource))]
     class ItemToImageConverter : ItemTypeToImageConverter, IValueConverter
     {
-        protected static Dictionary<ItemClass, BitmapImage> DefaultCache = new Dictionary<ItemClass, BitmapImage>();
+        private static readonly Dictionary<ItemClass, BitmapImage> DefaultCache = new Dictionary<ItemClass, BitmapImage>();
 
-        new public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public new object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var itm = value as Item;
             BitmapImage img = null;
@@ -255,7 +258,7 @@ namespace POESKillTree.ViewModels
 
                         img.BeginInit();
                         img.CacheOption = BitmapCacheOption.OnLoad;
-                        var bu = System.Windows.Navigation.BaseUriHelper.GetBaseUri(Application.Current.MainWindow);
+                        var bu = BaseUriHelper.GetBaseUri(Application.Current.MainWindow);
                         var bus = bu.ToString();
                         bus = bus.Substring(0, bus.IndexOf(";component/") + 11);
                         string image = "Images/EquipmentUI/ItemDefaults/" + itm.Class + ".png";
@@ -275,14 +278,14 @@ namespace POESKillTree.ViewModels
         }
 
 
-        public static bool ResourceExists(string resourcePath)
+        private static bool ResourceExists(string resourcePath)
         {
             var assembly = Assembly.GetExecutingAssembly();
 
             return ResourceExists(assembly, resourcePath);
         }
 
-        public static bool ResourceExists(Assembly assembly, string resourcePath)
+        private static bool ResourceExists(Assembly assembly, string resourcePath)
         {
             if (_resourceKeyCache == null)
                 _resourceKeyCache = GetResourcePaths(assembly).Select(o => o as string).Where(s => s != null).ToList();
@@ -290,11 +293,11 @@ namespace POESKillTree.ViewModels
             return _resourceKeyCache.Contains(resourcePath.ToLower());
         }
 
-        static List<string> _resourceKeyCache;
+        private static List<string> _resourceKeyCache;
 
-        public static IEnumerable<object> GetResourcePaths(Assembly assembly)
+        private static IEnumerable<object> GetResourcePaths(Assembly assembly)
         {
-            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var culture = Thread.CurrentThread.CurrentCulture;
             var resourceName = assembly.GetName().Name + ".g";
             var resourceManager = new ResourceManager(resourceName, assembly);
 
@@ -302,7 +305,7 @@ namespace POESKillTree.ViewModels
             {
                 var resourceSet = resourceManager.GetResourceSet(culture, true, true);
 
-                foreach (System.Collections.DictionaryEntry resource in resourceSet)
+                foreach (DictionaryEntry resource in resourceSet)
                 {
                     yield return resource.Key;
                 }
@@ -313,9 +316,9 @@ namespace POESKillTree.ViewModels
             }
         }
 
-        new public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public new object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }
