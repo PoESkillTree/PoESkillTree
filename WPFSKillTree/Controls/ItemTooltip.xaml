@@ -16,6 +16,7 @@
             <Style.Setters>
                 <Setter Property="Typography.Capitals" Value="SmallCaps"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="TextAlignment" Value="Center"/>
                 <Setter Property="Foreground" Value="#FF8888FF"/>
             </Style.Setters>
         </Style>
@@ -356,7 +357,9 @@
             </Image.Style>
         </Image>
 
-        <TextBlock Margin="3,0" Grid.Row="10" FontStyle="Oblique" Style="{StaticResource qualitycoloredTextblock}" Visibility="{Binding Item.HaveFlavourText,ElementName=control, Converter={StaticResource BoolToVisConverter}}" Text="{Binding Item.FlavourText, ElementName=control}"></TextBlock>
+        <TextBlock Margin="3,0" Grid.Row="10" FontStyle="Oblique" Style="{StaticResource qualitycoloredTextblock}"
+                   Visibility="{Binding Item.HaveFlavourText,ElementName=control, Converter={StaticResource BoolToVisConverter}}"
+                   Text="{Binding Item.FlavourText, ElementName=control}" />
 
     </Grid>
 </UserControl>

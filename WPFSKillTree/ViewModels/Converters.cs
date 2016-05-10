@@ -124,6 +124,12 @@ namespace POESKillTree.ViewModels
             {
                 var m = matches[i];
                 istring = mod.Attribute.Substring(from, m.Index - from);
+                var prefix = "";
+                if (parameter != null && !string.IsNullOrEmpty(istring) && istring.Last() == '+')
+                {
+                    istring = istring.Substring(0, istring.Length - 1);
+                    prefix = "+";
+                }
                 r = new Run(istring);
 
                 SolidColorBrush clr = GetColoringFor(mod, i);
@@ -136,7 +142,7 @@ namespace POESKillTree.ViewModels
 
                 inlines.Add(r);
 
-                r = new Run(mod.Value[i].ToString("###0.##"));
+                r = new Run(prefix + mod.Value[i].ToString("###0.##"));
                 if (parameter != null)
                     r.Foreground = clr;
 

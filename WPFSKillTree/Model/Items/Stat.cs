@@ -21,7 +21,7 @@ namespace POESKillTree.Model.Items
         public Stat(XmlStat xmlStat)
         {
             Name = xmlStat.Name;
-            // RangeTrees don't like if from > to.
+            // RangeTrees don't like from > to.
             Range = new Range<float>(Math.Min(xmlStat.From, xmlStat.To), Math.Max(xmlStat.From, xmlStat.To));
         }
 
@@ -46,8 +46,8 @@ namespace POESKillTree.Model.Items
             }
             else if (char.IsUpper(Name[0]))
             {
-                if (Name.Last() == '%')
-                    attribute = Name.Substring(0, Name.Length - 1) + ": #%";
+                if (Name.EndsWith(" %"))
+                    attribute = Name.Substring(0, Name.Length - 2) + ": #%";
                 else
                     attribute = Name + ": #";
             }

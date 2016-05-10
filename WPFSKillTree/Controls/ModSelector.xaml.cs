@@ -166,14 +166,13 @@ namespace POESKillTree.Controls
             }
 
             tbtlabel.Text = TiersString(tiers);
-
         }
 
         private static string TiersString(IReadOnlyCollection<ItemModTier> tiers)
         {
             if (tiers == null || tiers.Count == 0)
                 return "";
-            return string.Join("/", tiers.Select(s => string.Format("T{0}:{1}", s.Tier, s.Name)));
+            return string.Join("/", tiers.OrderByDescending(t => t.Tier).Select(s => string.Format("T{0}:{1}", s.Tier, s.Name)));
         }
 
         public ItemMod[] GetExactMods()

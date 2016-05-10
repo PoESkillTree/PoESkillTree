@@ -807,19 +807,13 @@ namespace POESKillTree.Controls
 
             ItemAttributes.LoadItem(i, local, nonlocal);
 
-            List<string> modstrings = new List<string>
-            {
+            var modstrings = new [] {
                 i.BaseType.Name,
                 i.FlavourText,
                 i.Name
-            };
+            }.Union(local.Select(a => a.ValuedAttribute).Union(nonlocal.Select(a => a.ValuedAttribute)));
 
-            modstrings.AddRange( local.Select(a => a.ValuedAttribute));
-            modstrings.AddRange(nonlocal.Select(a => a.ValuedAttribute));
-
-            modstrings = modstrings.Distinct().ToList();
-
-            return modstrings.Any(s =>s!=null && s.ToLower().Contains(txt));
+            return modstrings.Any(s => s != null && s.ToLower().Contains(txt));
         }
 
         private void Button_DragEnter(object sender, DragEventArgs e)

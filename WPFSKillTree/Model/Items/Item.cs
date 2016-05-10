@@ -327,7 +327,7 @@ namespace POESKillTree.Model.Items
                 }
 
             if (val["flavourText"] != null)
-                FlavourText = string.Join("\r\n", val["flavourText"].Values<string>());
+                FlavourText = string.Join("\r\n", val["flavourText"].Values<string>().Select(s => s.Replace("\r", "")));
 
 
             if (iClass == ItemClass.Gem)
