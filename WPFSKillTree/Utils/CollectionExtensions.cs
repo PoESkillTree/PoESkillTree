@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace POESKillTree.Utils
 {
@@ -37,6 +38,11 @@ namespace POESKillTree.Utils
             {
                 action(item);
             }
+        }
+
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> enumerable)
+        {
+            return enumerable.SelectMany(e => e);
         }
     }
 }

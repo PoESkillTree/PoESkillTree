@@ -48,7 +48,7 @@ namespace POESKillTree.Model.Items
                 Root.AddWordset(wl);
         }
 
-        public static ItemBase ItemTypeFromTypeline(string typeline)
+        public static ItemBase ItemBaseFromTypeline(string typeline)
         {
             var wlist = typeline.Split(' ');
             var ms = new List<WordSetTreeNode>();
@@ -158,6 +158,10 @@ namespace POESKillTree.Model.Items
         }
 
         public int Level { get; private set; }
+        public int RequiredStrength { get; private set; }
+        public int RequiredDexterity { get; private set; }
+        public int RequiredIntelligence { get; private set; }
+
         public string Name { get; private set; }
         public ItemClass Class { get; private set; }
         public ItemType ItemType { get; private set; }
@@ -169,6 +173,10 @@ namespace POESKillTree.Model.Items
         private ItemBase(XmlItemBase xmlBase)
         {
             Level = xmlBase.Level;
+            RequiredStrength = xmlBase.Strength;
+            RequiredDexterity = xmlBase.Dexterity;
+            RequiredIntelligence = xmlBase.Intelligence;
+
             Name = xmlBase.Name;
             ImplicitMods = xmlBase.Implicit != null ? xmlBase.Implicit.Select(i => new Stat(i)).ToList() : new List<Stat>();
             Properties = xmlBase.Properties != null ? xmlBase.Properties.Select(p => new Stat(p)).ToList() : new List<Stat>();

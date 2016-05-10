@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -11,7 +12,6 @@ namespace POESKillTree.Model.Items
     public class Item : Notifier, IRangeProvider<int>
     {
         private static readonly Regex Numberfilter = new Regex(@"[0-9]*\.?[0-9]+");
-        private static readonly Regex Numberfilter2 = new Regex(@"%\d|[0-9]*\.?[0-9]+");
 
         public Dictionary<string, List<float>> Attributes { get; set; }
 
@@ -157,7 +157,7 @@ namespace POESKillTree.Model.Items
         {
             get { return _baseType; }
         }
-        
+
         public JObject JsonBase { get; private set; }
 
         private int _x;
@@ -213,7 +213,7 @@ namespace POESKillTree.Model.Items
         {
             if (Frame < FrameType.Rare)
             {
-                _baseType = ItemBase.ItemTypeFromTypeline(TypeLine);
+                _baseType = ItemBase.ItemBaseFromTypeline(TypeLine);
             }
 
             if (BaseType != null)
@@ -224,7 +224,6 @@ namespace POESKillTree.Model.Items
             }
 
             FixOldItems();
-
         }
 
         public Item(ItemBase itemBase, int width, int height)
@@ -235,6 +234,7 @@ namespace POESKillTree.Model.Items
             _itemGroup = itemBase.ItemGroup;
             Width = width;
             Height = height;
+            RequirementsFromBase();
         }
 
         public Item(ItemClass iClass, JObject val)
@@ -266,104 +266,64 @@ namespace POESKillTree.Model.Items
             Frame = (FrameType)val["frameType"].Value<int>();
 
             if (val["properties"] != null)
-                foreach (JObject obj in (JArray)val["properties"])
+            {
+                foreach (var obj in val["properties"])
                 {
-                    var values = new List<float>();
-                    string s = "";
-
-                    foreach (JArray jva in (JArray)obj["values"])
-                    {
-                        s += " " + jva[0].Value<string>();
-                    }
-                    s = s.TrimStart();
-
-                    if (s == "")
-                    {
-                        Properties.Add(ItemMod.CreateMod(this, obj["name"].Value<string>(), Numberfilter));
-
-                        // The name of one property of gems contains the Keywords of that gem.
-                        _keywords = new List<string>();
-                        string[] sl = obj["name"].Value<string>().Split(',');
-                        foreach (string i in sl)
-                            _keywords.Add(i.Trim());
-                        continue;
-                    }
-
-                    foreach (Match m in Numberfilter.Matches(s))
-                    {
-                        if (m.Value == "") values.Add(float.NaN);
-                        else values.Add(float.Parse(m.Value, CultureInfo.InvariantCulture));
-                    }
-                    string cs = obj["name"].Value<string>() + ": " + (Numberfilter.Replace(s, "#"));
-
-                    var mod = ItemMod.CreateMod(this, obj, Numberfilter2);
+                    var mod = ItemModFromJson(obj, false);
                     Properties.Add(mod);
-
-
-                    mod.ValueColor = ((JArray)obj["values"]).Select(a =>
-                    {
-                        var floats = ((JArray)a)[0].Value<string>().Split('-');
-                        return floats.Select(f => (ItemMod.ValueColoring)((JArray)a)[1].Value<int>());
-                    }).SelectMany(c => c).ToList();
-
-                    Attributes.Add(cs, values);
+                    Attributes.Add(mod.Attribute, new List<float>(mod.Value));
                 }
+                if (Properties.Any(m => !m.Value.Any()))
+                {
+                    // The name of one property of gems contains the Keywords of that gem.
+                    _keywords = Properties.First(m => !m.Value.Any()).Attribute.Split(',').Select(i => i.Trim()).ToList();
+                }
+            }
 
             if (val["requirements"] != null)
             {
-                string reqs = "";
-                List<float> numbers = new List<float>();
-                List<ItemMod.ValueColoring> affects = new List<ItemMod.ValueColoring>();
-
-                foreach (JObject obj in (JArray)val["requirements"])
+                var mods = val["requirements"].Select(t => ItemModFromJson(t, true)).ToList();
+                if (!mods.Any(m => m.Attribute.StartsWith("Requires ")))
                 {
-                    var n = obj["name"].Value<string>();
-
-                    if (obj["displayMode"].Value<int>() == 0)
-                        n = n + " #";
-                    else
-                        n = "# " + n;
-
-                    numbers.Add(((JArray)((JArray)obj["values"])[0])[0].Value<float>());
-                    affects.Add((ItemMod.ValueColoring)((JArray)((JArray)obj["values"])[0])[1].Value<int>());
-
-                    if (!string.IsNullOrEmpty(reqs))
-                        reqs += ", " + n;
-                    else
-                        reqs += n;
+                    var modsToMerge = new []
+                    {
+                        mods.FirstOrDefault(m => m.Attribute == "Level #"),
+                        mods.FirstOrDefault(m => m.Attribute == "# Str"),
+                        mods.FirstOrDefault(m => m.Attribute == "# Dex"),
+                        mods.FirstOrDefault(m => m.Attribute == "# Int")
+                    }.Where(m => m != null).ToList();
+                    modsToMerge.ForEach(m => mods.Remove(m));
+                    mods.Add(new ItemMod
+                    {
+                        Attribute = "Requires " + string.Join(", ", modsToMerge.Select(m => m.Attribute)),
+                        Value = modsToMerge.Select(m => m.Value).Flatten().ToList(),
+                        ValueColor = modsToMerge.Select(m => m.ValueColor).Flatten().ToList()
+                    });
                 }
-
-                var m = ItemMod.CreateMod(this, "Requires " + reqs, Numberfilter);
-                m.Value = numbers;
-                m.ValueColor = affects;
-                _requirements.Add(m);
+                _requirements.AddRange(mods);
             }
 
 
             if (val["implicitMods"] != null)
-                foreach (string s in val["implicitMods"].Values<string>())
+                foreach (var s in val["implicitMods"].Values<string>())
                 {
-                    IEnumerable<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), Numberfilter);
-                    Mods.AddRange(mods);
-
-                    _implicitMods.Add(ItemMod.CreateMod(this, s, Numberfilter));
+                    var mod = new ItemMod(this, s, Numberfilter);
+                    Mods.Add(mod);
+                    _implicitMods.Add(mod);
                 }
             if (val["explicitMods"] != null)
-                foreach (string s in val["explicitMods"].Values<string>())
+                foreach (var s in val["explicitMods"].Values<string>())
                 {
-                    IEnumerable<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), Numberfilter);
-                    Mods.AddRange(mods);
-
-                    ExplicitMods.Add(ItemMod.CreateMod(this, s, Numberfilter));
+                    var mod = new ItemMod(this, s, Numberfilter);
+                    Mods.Add(mod);
+                    ExplicitMods.Add(mod);
                 }
-
             if (val["craftedMods"] != null)
-                foreach (string s in val["craftedMods"].Values<string>())
+                foreach (var s in val["craftedMods"].Values<string>())
                 {
-                    IEnumerable<ItemMod> mods = ItemMod.CreateMods(this, s.Replace("Additional ", ""), Numberfilter);
-                    Mods.AddRange(mods);
-
-                    CraftedMods.Add(ItemMod.CreateMod(this, s, Numberfilter));
+                    var mod = new ItemMod(this, s, Numberfilter);
+                    Mods.Add(mod);
+                    CraftedMods.Add(mod);
                 }
 
             if (val["flavourText"] != null)
@@ -392,21 +352,69 @@ namespace POESKillTree.Model.Items
                 _gems = new List<Item>();
             }
 
-            var Sockets = new List<int>();
+            var sockets = new List<int>();
             if (val["sockets"] != null)
-                foreach (JObject obj in (JArray)val["sockets"])
+                foreach (var obj in (JArray)val["sockets"])
                 {
-                    Sockets.Add(obj["group"].Value<int>());
+                    sockets.Add(obj["group"].Value<int>());
                 }
             if (val["socketedItems"] != null)
             {
                 int socket = 0;
                 foreach (JObject obj in (JArray)val["socketedItems"])
                 {
-                    var item = new Item(ItemClass.Gem, obj) { _socketGroup = Sockets[socket++] };
+                    var item = new Item(ItemClass.Gem, obj) { _socketGroup = sockets[socket++] };
                     _gems.Add(item);
                 }
             }
+        }
+
+        private ItemMod ItemModFromJson(JToken jsonMod, bool areRequirements)
+        {
+            var valuePairs = (from a in jsonMod["values"]
+                              let vc = (ItemMod.ValueColoring)a[1].Value<int>()
+                              select new { Value = a[0].Value<string>(), ValueColor = vc }).ToList();
+            var values = valuePairs.Select(p => p.Value).ToList();
+            var valueColors = (from p in valuePairs
+                               let valueCount = Numberfilter.Matches(p.Value).Count
+                               select Enumerable.Repeat(p.ValueColor, valueCount))
+                               .Flatten();
+
+            /* displayMode:
+             * - 0: `attribute = name + ": " + values.Join(", ")` if in "properties" or `attribute = name + " " + value` if in "requirements"
+             * - 1: `attribute = values.Join(", ") + " " + name`
+             * - 2: experience bar for gems, not applicable
+             * - 3: `attribute = name.Replace(%i with values[i])`
+             */
+            var name = jsonMod["name"].Value<string>();
+            var mode0Separator = areRequirements ? " " : ": ";
+            string attribute;
+            if (values.Any())
+            {
+                switch (int.Parse(jsonMod["displayMode"].Value<string>(), CultureInfo.InvariantCulture))
+                {
+                    case 0:
+                        attribute = name + mode0Separator + string.Join(", ", values);
+                        break;
+                    case 1:
+                        attribute = string.Join(", ", values) + " " + name;
+                        break;
+                    case 2:
+                        throw new NotSupportedException("Experience bar display mode is not supported.");
+                    case 3:
+                        attribute = Regex.Replace(name, @"%\d", m => values[int.Parse(m.Value.Substring(1))]);
+                        break;
+                    default:
+                        throw new NotSupportedException("Unsupported display mode: " +
+                                                        jsonMod["displayMode"].Value<string>());
+                }
+            }
+            else
+            {
+                attribute = name;
+            }
+
+            return new ItemMod(this, attribute, Numberfilter, valueColors);
         }
 
         private void FixOldItems()
@@ -415,6 +423,41 @@ namespace POESKillTree.Model.Items
                 Height = 3;
             if (ItemGroup == ItemGroup.BodyArmour && Height == 4)
                 Height = 3;
+        }
+
+        private void RequirementsFromBase()
+        {
+            var requirements = new List<string>();
+            var values = new List<float>();
+            if (BaseType.Level > 0)
+            {
+                requirements.Add("Level #");
+                values.Add(BaseType.Level);
+            }
+            if (BaseType.RequiredStrength > 0)
+            {
+                requirements.Add("# Str");
+                values.Add(BaseType.RequiredStrength);
+            }
+            if (BaseType.RequiredDexterity > 0)
+            {
+                requirements.Add("# Dex");
+                values.Add(BaseType.RequiredDexterity);
+            }
+            if (BaseType.RequiredIntelligence > 0)
+            {
+                requirements.Add("# Int");
+                values.Add(BaseType.RequiredIntelligence);
+            }
+            if (requirements.Any())
+            {
+                _requirements.Add(new ItemMod
+                {
+                    Attribute = "Requires " + string.Join(", ", requirements),
+                    Value = values,
+                    ValueColor = Enumerable.Repeat(ItemMod.ValueColoring.White, values.Count).ToList()
+                });
+            }
         }
 
         public void SetJsonBase()

@@ -58,6 +58,15 @@ namespace UpdateEquipment
         private static readonly IEnumerable<XmlItemBase> Jewels =
             ItemGroup.Jewel.Types().Select(t => new XmlItemBase { ItemType = t, Name = t.ToString().Replace("Jewel", " Jewel") }).ToList();
 
+        /// <summary>
+        /// Contains properties that have to be renamed because the Wiki's naming is incorrect.
+        /// </summary>
+        private static readonly IReadOnlyDictionary<string, string> PropertyRenaming = new Dictionary<string, string>
+        {
+            {"Damage", "Physical Damage"},
+            {"Armour Rating", "Armour"}
+        };
+
         static ItemDataLoader()
         {
             var penalty3 = new XmlStat
@@ -134,6 +143,9 @@ namespace UpdateEquipment
             var nameColumn = -1;
             var lvlColumn = -1;
             var implicitColumn = -1;
+            var strColumn = -1;
+            var dexColumn = -1;
+            var intColumn = -1;
             var propertyColumns = new Dictionary<int, string>();
             foreach (var row in table.Elements("tr"))
             {
@@ -159,6 +171,18 @@ namespace UpdateEquipment
                         {
                             lvlColumn = i;
                         }
+                        else if (cell.FirstChild.GetAttributeValue("title", "") == "Required Strength")
+                        {
+                            strColumn = i;
+                        }
+                        else if (cell.FirstChild.GetAttributeValue("title", "") == "Required Dexterity")
+                        {
+                            dexColumn = i;
+                        }
+                        else if (cell.FirstChild.GetAttributeValue("title", "") == "Required Intelligence")
+                        {
+                            intColumn = i;
+                        }
                         i++;
                     }
                     isFirstRow = false;
@@ -183,6 +207,9 @@ namespace UpdateEquipment
                     yield return new XmlItemBase
                     {
                         Level = ParseCell(row.ChildNodes[lvlColumn], 0),
+                        Strength = strColumn >= 0 ? ParseCell(row.ChildNodes[strColumn], 0) : 0,
+                        Dexterity = dexColumn >= 0 ? ParseCell(row.ChildNodes[dexColumn], 0) : 0,
+                        Intelligence = intColumn >= 0 ? ParseCell(row.ChildNodes[intColumn], 0) : 0,
                         ItemType = itemType,
                         Name = WebUtility.HtmlDecode(row.ChildNodes[nameColumn].GetAttributeValue("data-sort-value", "")),
                         Properties = ParseProperties(row, propertyColumns, implicitMultiplier).ToArray(),
@@ -246,8 +273,8 @@ namespace UpdateEquipment
                 float from;
                 float to;
                 var name = propertyColumn.Value;
-                if (name == "Damage")
-                    name = "Physical Damage";
+                if (PropertyRenaming.ContainsKey(name))
+                    name = PropertyRenaming[name];
                 var success = true;
                 if (TryParseCell(cell, out from) || (modified && TryParseFloat(childInner, out from)))
                 {

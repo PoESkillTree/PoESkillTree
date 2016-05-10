@@ -1822,8 +1822,6 @@ namespace POESKillTree.SkillTreeFiles
                 Global.Remove("+# to Dexterity and Intelligence");
             }
 
-            // TODO: Onyx Amulet (when hack in POESKillTree.ViewModels.ItemAttribute.ItemMod.CreateMods will be removed).
-            /*
             if (Global.ContainsKey("+# to all Attributes"))
             {
                 strength += Global["+# to all Attributes"][0];
@@ -1832,7 +1830,6 @@ namespace POESKillTree.SkillTreeFiles
 
                 Global.Remove("+# to all Attributes");
             }
-             */
 
             if (strength != 0)
                 Global["+# to Strength"][0] += strength;

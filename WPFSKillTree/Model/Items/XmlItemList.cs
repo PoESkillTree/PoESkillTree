@@ -27,5 +27,14 @@ namespace POESKillTree.Model.Items
         
         [XmlAttribute]
         public int Level { get; set; }
+
+        [XmlAttribute]
+        public int Strength { get; set; }
+
+        [XmlAttribute]
+        public int Dexterity { get; set; }
+
+        [XmlAttribute]
+        public int Intelligence { get; set; }
     }
 }

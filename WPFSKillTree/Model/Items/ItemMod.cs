@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -31,126 +30,19 @@ namespace POESKillTree.Model.Items
 
         public bool IsLocal { get; private set; }
 
-        private ItemClass _itemclass;
-
-        public static ItemMod CreateMod(Item item, JObject obj, Regex numberfilter)
+        public ItemMod(Item item, string attribute, Regex numberfilter, IEnumerable<ValueColoring> valueColor = null)
         {
-            int dmode = (obj["displayMode"] != null) ? obj["displayMode"].Value<int>() : 0;
-            string at = obj["name"].Value<string>();
-            at = numberfilter.Replace(at, "#");
-
-            var parsed = ((JArray)obj["values"]).Select(a =>
-            {
-                var str = ((JArray)a)[0].Value<string>();
-                var floats = new List<float>();
-                var parts = str.Split('-');
-
-                if (dmode != 3)
-                    if (parts.Length > 1)
-                        at += ": ";
-                    else
-                        at += " ";
-
-                for (int i = 0; i < parts.Length; i++)
-                {
-                    string v = parts[i];
-                    float val;
-                    if (float.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
-                    {
-                        floats.Add(val);
-                        if (dmode != 3)
-                            at += "#";
-                    }
-                    else
-                    {
-                        foreach (Match m in numberfilter.Matches(v))
-                            floats.Add(float.Parse(m.Value, CultureInfo.InvariantCulture));
-
-                        at += " " + numberfilter.Replace(v, "#");
-                    }
-
-                    if (i < parts.Length - 1)
-                    {
-                        if (dmode != 3)
-                            at += "-";
-                    }
-                }
-
-                var cols = floats.Select(f => (ValueColoring)((JArray)a)[1].Value<int>()).ToList();
-                return new { floats, cols };
-            }).ToList();
-
-            return new ItemMod
-            {
-                _itemclass = item.Class,
-                Value = parsed.Select(p => p.floats).SelectMany(v => v).ToList(),
-                ValueColor = parsed.Select(p => p.cols).SelectMany(v => v).ToList(),
-                Attribute = at,
-                IsLocal = DetermineLocal(item, at)
-            };
+            Value = (from Match match in numberfilter.Matches(attribute)
+                     select float.Parse(match.Value, CultureInfo.InvariantCulture))
+                     .ToList();
+            Attribute = numberfilter.Replace(attribute, "#"); ;
+            IsLocal = DetermineLocal(item, Attribute);
+            ValueColor = valueColor == null ? new List<ValueColoring>() : new List<ValueColoring>(valueColor);
         }
 
-        public static ItemMod CreateMod(Item item, string attribute, Regex numberfilter)
+        public ItemMod()
         {
-            var values = new List<float>();
-            foreach (Match match in numberfilter.Matches(attribute))
-            {
-                values.Add(float.Parse(match.Value, CultureInfo.InvariantCulture));
-            }
-            string at = numberfilter.Replace(attribute, "#");
-
-            return new ItemMod
-            {
-                _itemclass = item.Class,
-                Value = values,
-                Attribute = at,
-                IsLocal = DetermineLocal(item, at)
-            };
-        }
-
-        public static IEnumerable<ItemMod> CreateMods(Item item, string attribute, Regex numberfilter)
-        {
-            ItemClass ic = item.Class;
-            var mods = new List<ItemMod>();
-            var values = new List<float>();
-
-            foreach (Match match in numberfilter.Matches(attribute))
-            {
-                values.Add(float.Parse(match.Value, CultureInfo.InvariantCulture));
-            }
-            string at = numberfilter.Replace(attribute, "#");
-            if (at == "+# to all Attributes")
-            {
-                mods.Add(new ItemMod
-                {
-                    _itemclass = ic,
-                    Value = values,
-                    Attribute = "+# to Strength"
-                });
-                mods.Add(new ItemMod
-                {
-                    _itemclass = ic,
-                    Value = values,
-                    Attribute = "+# to Dexterity"
-                });
-                mods.Add(new ItemMod
-                {
-                    _itemclass = ic,
-                    Value = values,
-                    Attribute = "+# to Intelligence"
-                });
-            }
-            else
-            {
-                mods.Add(new ItemMod
-                {
-                    _itemclass = ic,
-                    Value = values,
-                    Attribute = at,
-                    IsLocal = DetermineLocal(item, at)
-                });
-            }
-            return mods;
+            ValueColor = new List<ValueColoring>();
         }
 
         public bool DetermineLocalFor(Item itm)
@@ -179,17 +71,11 @@ namespace POESKillTree.Model.Items
                    || (item.ItemGroup == ItemGroup.Shield && attr == "+#% Chance to Block");
         }
 
-        public ItemMod()
-        {
-            ValueColor = new List<ValueColoring>();
-        }
-
         public ItemMod Sum(ItemMod m)
         {
             return new ItemMod
             {
                 Attribute = Attribute,
-                _itemclass = _itemclass,
                 IsLocal = IsLocal,
                 Parent = Parent,
                 ValueColor = ValueColor.ToList(),
@@ -197,84 +83,65 @@ namespace POESKillTree.Model.Items
             };
         }
 
+        private string InsertValues(string into, ref int index)
+        {
+            var indexCopy = index;
+            var result = Regex.Replace(into, "#",
+                m => Value[indexCopy++].ToString("###0.##", CultureInfo.InvariantCulture));
+            index = indexCopy;
+            return result;
+        }
+
+        private JArray[] ValueTokensToJArrays(IEnumerable<string> tokens)
+        {
+            var valueIndex = 0;
+            return tokens.Select(t => new JArray(InsertValues(t, ref valueIndex), ValueColor[valueIndex - 1])).ToArray();
+        }
+
         public JToken ToJobject(bool asMod = false)
         {
-            string defaultFormat = "###0.##";
             if (asMod)
             {
-                int index = 0;
-                return new JValue(ItemAttributes.Attribute.Backreplace.Replace(Attribute, m => Value[index++].ToString(defaultFormat)));
+                var index = 0;
+                return new JValue(InsertValues(Attribute, ref index));
             }
-            var j = new JObject();
 
-            if (Value != null && Value.Count > 2)
-                j.Add("displayMode", 3);
-            else
-                j.Add("displayMode", 0);
-
-
-
+            const string allowedTokens = @"(#|#%|\+#%|#-#|#/#)";
+            string name;
+            var tokens = new List<string>();
+            int displayMode;
             if (Value == null || Value.Count == 0)
             {
-                j.Add("name", Attribute);
-                j.Add("values", new JArray());
+                name = Attribute;
+                displayMode = 0;
             }
-            else if (Value.Count == 1)
+            else if (Regex.IsMatch(Attribute, @"^[^#]*: (" + allowedTokens + @"(, |$))+"))
             {
-                if (Attribute.EndsWith(": #"))
+                // displayMode 0 is for the form `Attribute = name + ": " + values.Join(", ")`
+                name = Regex.Replace(Attribute, @"(: |, )" + allowedTokens + @"(?=, |$)", m =>
                 {
-                    j.Add("name", Attribute.Substring(0, Attribute.Length - 3));
-                    j.Add("values", new JArray((object)new JArray(Value[0], ValueColor[0])));
-                }
-                else if (Attribute.EndsWith(" #%"))
-                {
-                    j.Add("name", Attribute.Substring(0, Attribute.Length - 3));
-                    j.Add("values", new JArray((object)new JArray(Value[0] + "%", ValueColor[0])));
-                }
-                else if (Attribute.StartsWith("# "))
-                {
-                    j.Add("name", Attribute.Substring(2));
-                    j.Add("values", new JArray((object)new JArray(Value[0].ToString(defaultFormat), ValueColor[0])));
-                }
-                else
-                    throw new NotSupportedException();
-
-            }
-            else if (Value.Count == 2)
-            {
-                if (Attribute.EndsWith(": #-#") && ValueColor.All(v => v == ValueColor[0]))
-                {
-                    j.Add("name", Attribute.Substring(0, Attribute.Length - 5));
-                    j.Add("values", new JArray((object)new JArray(string.Join("-", Value), ValueColor[0])));
-                }
-                else
-                    throw new NotSupportedException();
+                    tokens.Add(m.Value.TrimStart(',', ':', ' '));
+                    return "";
+                });
+                displayMode = 0;
             }
             else
             {
-                var str = Attribute;
-                while (str.EndsWith(" #-#"))
+                // displayMode 3 is for the form `Attribute = name.Replace("%i" with values[i])`
+                var matchIndex = 0;
+                name = Regex.Replace(Attribute, @"(?<=^|\s)" + allowedTokens + @"(?=$|\s|,)", m =>
                 {
-                    str = str.Substring(0, str.Length - 4);
-                    str = str.Trim(',', ':', ' ');
-                }
-                j.Add("name", str);
-
-                JArray vals = new JArray();
-                for (int i = 0; i < Value.Count; i += 2)
-                {
-                    var val = string.Format("{0}-{1}", Value[i], Value[i + 1]);
-
-                    if (ValueColor[i] != ValueColor[i + 1])
-                        throw new NotSupportedException();
-                    vals.Add(new JArray(val, ValueColor[i]));
-                }
-
-                j.Add("values", vals);
-
+                    tokens.Add(m.Value);
+                    return "%" + matchIndex++;
+                });
+                displayMode = 3;
             }
-
-            return j;
+            return new JObject
+            {
+                {"name", name},
+                {"values", new JArray(ValueTokensToJArrays(tokens))},
+                {"displayMode", displayMode}
+            };
         }
 
     }
