@@ -104,15 +104,17 @@ namespace POESKillTree.Controls
                 tbtlabel.Text = "";
                 if (aff != EmptySelection)
                 {
-                    for (int i = 0; i < aff.Mods.Count; i++)
+                    for (var i = 0; i < aff.Mods.Count; i++)
                     {
+                        var ranges = tiers.Select(t => t.Stats[i].Range).ToList();
+                        var isFloatMod =
+                            ranges.Any(r => Math.Abs((int) r.From - r.From) > 1e-5 || Math.Abs((int) r.To - r.To) > 1e-5);
                         var tics =
-                            tiers.SelectMany(
-                                im =>
-                                    Enumerable.Range((int) Math.Round(im.Stats[i].Range.From),
-                                        (int) Math.Round(im.Stats[i].Range.To - im.Stats[i].Range.From + 1)))
-                                .Select(f => (double) f)
-                                .ToList();
+                            ranges.SelectMany(
+                                r =>
+                                    Enumerable.Range((int) Math.Round(isFloatMod ? r.From * 100 : r.From),
+                                        (int) Math.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
+                                .Select(f => isFloatMod ? (double) f / 100 : f);
                         var os = new OverlayedSlider(aff.Mods[i], new DoubleCollection(tics));
 
                         os.ValueChanged += slValue_ValueChanged;

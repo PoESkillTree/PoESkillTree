@@ -96,16 +96,16 @@ namespace POESKillTree.Model.Items
 
         public IEnumerable<ItemModTier> QueryMod(int index, float value)
         {
-            return Tiers[index].Query(value).Select(mw => mw.ItemMod).ToList();
+            return Tiers[index].Query(value).Select(mw => mw.ItemMod);
         }
 
         public IEnumerable<ItemModTier> Query(params float[] value)
         {
             if (Tiers.Length != value.Length)
                 throw new ArgumentException("different number ov number than search params");
-            var matches = value.Select((v, i) => Tiers[i].Query(v).Select(w => w.ItemMod).ToArray()).ToArray();
+            var matches = value.Select((v, i) => Tiers[i].Query(v).Select(w => w.ItemMod));
 
-            return matches.Aggregate((a, n) => a.Intersect(n).ToArray()).OrderBy(c => c.IsMasterCrafted ? 1 : 0).ToList();
+            return matches.Aggregate((a, n) => a.Intersect(n)).OrderByDescending(c => c.Tier);
         }
 
         public ItemModTier[] GetTiers()
