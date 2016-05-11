@@ -1001,8 +1001,9 @@ namespace POESKillTree.SkillTreeFiles
                     var regex = new Regex(search, RegexOptions.IgnoreCase);
                     var nodes =
                         Skillnodes.Values.Where(
-                            nd => matchFct(nd.attributes, att => regex.IsMatch(att)) ||
-                                  regex.IsMatch(nd.Name) && !nd.IsMastery);
+                            nd => (matchFct(nd.attributes, att => regex.IsMatch(att)) ||
+                                  regex.IsMatch(nd.Name) && !nd.IsMastery) &&
+                                  (drawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses ? true : nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null) : nd.ascendancyName == null));
                     _nodeHighlighter.ReplaceHighlights(nodes, flag);
                     DrawHighlights();
                 }
@@ -1016,8 +1017,9 @@ namespace POESKillTree.SkillTreeFiles
                 search = search.ToLowerInvariant();
                 var nodes =
                     Skillnodes.Values.Where(
-                        nd => matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
-                              nd.Name.ToLowerInvariant().Contains(search) && !nd.IsMastery);
+                        nd => (matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
+                              nd.Name.ToLowerInvariant().Contains(search) && !nd.IsMastery) &&
+                              (drawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses ? true : nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null) : nd.ascendancyName == null ));
                 _nodeHighlighter.ReplaceHighlights(nodes, flag);
                 DrawHighlights();
             }
