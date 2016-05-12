@@ -320,6 +320,10 @@ namespace POESKillTree.TreeGenerator.Solver
             // Combine duplicate attributes per node.
             foreach (var node in AllNodes.Select(n => n.Id).Distinct())
             {
+                // This node is contained in another, it will be removed from
+                // _nodeAttributes when its parent is processed.
+                if (NodeExpansionDictionary[node] == null) continue;
+
                 var dict = new Dictionary<int, float>();
                 foreach (var containedNode in NodeExpansionDictionary[node])
                 {
