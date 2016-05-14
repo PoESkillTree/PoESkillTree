@@ -403,7 +403,10 @@ namespace POESKillTree.ViewModels.Items
             public Attribute(string s, List<float> val, string grp)
             {
                 _attribute = s;
-                _value = new List<float>(val);
+                if (val != null)
+                    _value = new List<float>(val);
+                else
+                    _value = new List<float>(0);
                 _group = grp;
             }
 
