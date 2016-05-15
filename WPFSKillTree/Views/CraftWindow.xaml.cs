@@ -124,10 +124,10 @@ namespace POESKillTree.Views
             {
                 msImplicitMods.Affixes = new List<Affix>
                 {
-                    new Affix(ibase.ImplicitMods.Select(s => s.Name).ToArray(), new[] { new ItemModTier("implicits", 0, ibase.ImplicitMods) })
+                    new Affix(ibase.ImplicitMods.Select(s => s.Name).ToArray(), new[] { new ItemModTier(ibase.ImplicitMods) })
                 };
                 Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
-                ApplyLocals(Item.ImplicitMods, Item.Properties);
+                ApplyLocals();
             }
             else
             {
@@ -141,13 +141,13 @@ namespace POESKillTree.Views
 
             msp1.Affixes = msp2.Affixes = msp3.Affixes = _prefixes;
             mss1.Affixes = mss2.Affixes = mss3.Affixes = _suffixes;
-            msp3.Visibility = Item.Class == ItemClass.Jewel ? Visibility.Hidden : Visibility.Visible;
-            mss3.Visibility = Item.Class == ItemClass.Jewel ? Visibility.Hidden : Visibility.Visible;
+            msp3.Visibility = Item.ItemGroup == ItemGroup.Jewel ? Visibility.Hidden : Visibility.Visible;
+            mss3.Visibility = Item.ItemGroup == ItemGroup.Jewel ? Visibility.Hidden : Visibility.Visible;
 
             SkipRedraw = false;
         }
 
-        private void msp1_SelectedAffixChanged(object sender, Affix aff)
+        private void msp_SelectedAffixChanged(object sender, Affix aff)
         {
             SkipRedraw = true;
             var ms = sender as ModSelector;
@@ -206,17 +206,16 @@ namespace POESKillTree.Views
                 .Select(g => g.Aggregate((m1, m2) => m1.Sum(m2)))
                 .ToList();
 
-            Item.ExplicitMods = allmods.Where(m => m.Parent == null || m.Parent.ParentTier == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
-            Item.CraftedMods = allmods.Where(m => m.Parent != null && m.Parent.ParentTier != null && m.Parent.ParentTier.IsMasterCrafted).ToList();
+            Item.ExplicitMods = allmods.Where(m => m.Parent == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
+            Item.CraftedMods = allmods.Where(m => m.Parent != null && m.Parent.ParentTier.IsMasterCrafted).ToList();
 
             if (msImplicitMods.Affixes != null)
             {
                 Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
             }
-            allmods.AddRange(Item.ImplicitMods);
 
-            var properties = Item.BaseType.GetRawProperties();
-            ApplyLocals(allmods, properties);
+            Item.Properties = Item.BaseType.GetRawProperties();
+            ApplyLocals();
 
             if (Item.IsWeapon)
             {
@@ -254,9 +253,8 @@ namespace POESKillTree.Views
                         cols.Add(ItemMod.ValueColoring.Lightning);
                     }
 
-                    properties.Add(new ItemMod
+                    Item.Properties.Add(new ItemMod(Item.ItemType, "Elemental Damage: " + string.Join(", ", mods))
                     {
-                        Attribute = "Elemental Damage: " + string.Join(", ", mods),
                         Value = values,
                         ValueColor = cols,
                     });
@@ -265,56 +263,42 @@ namespace POESKillTree.Views
                 var chaosMods = allmods.Where(m => m.Attribute.StartsWith("Adds") && m.Attribute.Contains("Chaos")).ToList();
                 if (chaosMods.Count > 0)
                 {
-                    properties.Add(new ItemMod
+                    Item.Properties.Add(new ItemMod(Item.ItemType, "Chaos Damage: #-#")
                     {
-                        Attribute = "Chaos Damage: #-#",
                         Value = new List<float>(chaosMods[0].Value),
                         ValueColor = new List<ItemMod.ValueColoring> { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos },
                     });
                 }
             }
 
-            Item.Properties = properties;
-
             Item.FlavourText = "Crafted by PoESkillTree";
         }
 
-        private void ApplyLocals(IEnumerable<ItemMod> allMods, IEnumerable<ItemMod> properties)
+        private void ApplyLocals()
         {
-            var localmods = allMods.Where(m => m.DetermineLocalFor(Item)).ToList();
-            if (localmods.Count <= 0) return;
-
-            var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds #-# |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");
-
-            var localnames = localmods.Select(m =>
-                r.Replace(m.Attribute.Replace("to maximum", "to"), "")
-                    .Split(new[] { "and", "," }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(s =>
-                        s.Trim().Replace("Attack Speed", "Attacks per Second"))
-                        .ToList())
-                .ToList();
-
-            foreach (var mod in properties)
+            foreach (var pair in Item.GetModsAffectingProperties())
             {
-                var applymods = localmods.Where((m, i) => localnames[i].Any(n => mod.Attribute.Contains(n))).ToList();
+                var prop = pair.Key;
+                var applymods = pair.Value;
+
                 var percm = applymods.Where(m => Regex.IsMatch(m.Attribute, @"(?<!\+)#%")).ToList();
                 var valuem = applymods.Except(percm).ToList();
 
                 if (valuem.Count > 0)
                 {
                     var val = valuem.Select(m => m.Value).Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2).ToList());
-                    var nval = mod.Value.Zip(val, (f1, f2) => f1 + f2).ToList();
-                    mod.ValueColor = mod.ValueColor.Select((c, i) => val[i] == nval[i] ? mod.ValueColor[i] : ItemMod.ValueColoring.LocallyAffected).ToList();
-                    mod.Value = nval;
+                    var nval = prop.Value.Zip(val, (f1, f2) => f1 + f2).ToList();
+                    prop.ValueColor = prop.ValueColor.Select((c, i) => val[i] == nval[i] ? prop.ValueColor[i] : ItemMod.ValueColoring.LocallyAffected).ToList();
+                    prop.Value = nval;
                 }
 
                 Func<float, float> roundf = val => (float)Math.Round(val);
 
-                if (mod.Attribute.Contains("Critical"))
+                if (prop.Attribute.Contains("Critical"))
                 {
                     roundf = f => (float)(Math.Round(f * 10) / 10);
                 }
-                else if (mod.Attribute.Contains("per Second"))
+                else if (prop.Attribute.Contains("per Second"))
                 {
                     roundf = f => (float)(Math.Round(f * 100) / 100);
                 }
@@ -322,13 +306,13 @@ namespace POESKillTree.Views
                 if (percm.Count > 0)
                 {
                     var perc = 1f + percm.Select(m => m.Value[0]).Sum() / 100f;
-                    mod.ValueColor = mod.ValueColor.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
-                    mod.Value = mod.Value.Select(v => roundf(v * perc)).ToList();
+                    prop.ValueColor = prop.ValueColor.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
+                    prop.Value = prop.Value.Select(v => roundf(v * perc)).ToList();
                 }
             }
         }
 
-        private void mss1_SelectedAffixChanged(object sender, Affix aff)
+        private void mss_SelectedAffixChanged(object sender, Affix aff)
         {
             var ms = sender as ModSelector;
             if (mss1 != ms)
@@ -353,13 +337,6 @@ namespace POESKillTree.Views
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
             Item.SetJsonBase();
-
-            Item.Attributes = Item.Properties.ToDictionary(k => k.Attribute, v => v.Value);
-
-            Item.Mods = new List<ItemMod>();
-            Item.Mods.AddRange(Item.ImplicitMods);
-            Item.Mods.AddRange(Item.CraftedMods);
-            Item.Mods.AddRange(Item.ExplicitMods);
 
             Item.X = 0;
             Item.Y = 0;

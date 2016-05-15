@@ -1,34 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using MB.Algodat;
 
 namespace POESKillTree.Model.Items
 {
     public class ItemModTier : IEquatable<ItemModTier>
     {
-        public Affix ParentAffix { get; set; }
         public string Name { get; private set; }
         private int Level { get; set; }
         public IReadOnlyList<Stat> Stats { get; private set; }
         public bool IsMasterCrafted { get; private set; }
         public int Tier { get; private set; }
 
-        public ItemModTier(string name, int level, IEnumerable<Stat> stats)
+        public bool IsRangeMod
         {
-            Name = name;
-            Level = level;
-            Stats = stats.Select(s => new Stat(s.Name, s.Range) {ParentTier = this }).ToList();
+            get { return RangeCombinedStat != null; }
         }
 
-        public ItemModTier(XmlTier xmlTier)
+        public Stat RangeCombinedStat { get; private set; }
+
+        /// <summary>
+        /// Constructor for a tier that is not more than a collection of stats.
+        /// Used for implicit mods of an item.
+        /// </summary>
+        public ItemModTier(IEnumerable<Stat> stats)
         {
-            IsMasterCrafted = Regex.IsMatch(xmlTier.Name, @" lvl: \d+");
+            Name = "";
+            Stats = stats.Select(s => new Stat(s.Name, s.Range, s.ItemType, this)).ToList();
+            RangeCombinedStat = CreateRangeCombinedStat();
+        }
+
+        public ItemModTier(XmlTier xmlTier, ItemType itemType)
+        {
+            IsMasterCrafted = xmlTier.IsMasterCrafted;
             Tier = xmlTier.Tier;
             Name = xmlTier.Name;
             Level = xmlTier.ItemLevel;
-            Stats = xmlTier.Stats.Select(s => new Stat(s)).ToList();
+            Stats = xmlTier.Stats.Select(s => new Stat(s, itemType, this)).ToList();
+            RangeCombinedStat = CreateRangeCombinedStat();
+        }
+
+        private Stat CreateRangeCombinedStat()
+        {
+            if (Stats.Count < 2)
+                return null;
+            var names =
+                Stats.Select(s => s.Name)
+                    .Select(s => s.Replace(" minimum", "").Replace(" maximum", ""))
+                    .Distinct().ToList();
+            if (names.Count != 1)
+                return null;
+            return new Stat(names.Single(), new Range<float>(), Stats[0].ItemType, this);
         }
 
         public Range<float> Range(string mod)
@@ -38,9 +61,9 @@ namespace POESKillTree.Model.Items
 
         public override string ToString()
         {
-            return "" + (ParentAffix != null ? ParentAffix.ModType == ModType.Prefix ? "P" : "S" : "") + Tier + " " + Name + " - " + string.Join("; ", Stats.Select(s => s.Name + " {" + s.Range + "} "));
+            return Tier + " " + Name + " - " + string.Join("; ", Stats.Select(s => s.Name + " {" + s.Range + "} "));
         }
-        
+
         public bool Equals(ItemModTier other)
         {
             var x = this;

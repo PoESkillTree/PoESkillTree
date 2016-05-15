@@ -5,8 +5,7 @@ using System.Linq;
 namespace POESKillTree.Model.Items
 {
     /// <summary>
-    /// The ItemType of an item defines which mod can be crafted on it and in
-    /// which eqipment slots it can go.
+    /// The ItemType of an item defines which mod can be crafted on it.
     /// </summary>
     public enum ItemType
     {
@@ -150,36 +149,41 @@ namespace POESKillTree.Model.Items
             return Groups[group];
         }
 
-        public static ItemClass ToItemClass(this ItemType type)
+        /// <summary>
+        /// Returns all <see cref="ItemSlot"/>s items of this group can be slotted into.
+        /// </summary>
+        public static ItemSlot ItemSlots(this ItemGroup group)
         {
-            switch (type.Group())
+            switch (group)
             {
                 case ItemGroup.BodyArmour:
-                    return ItemClass.Armor;
+                    return ItemSlot.Armor;
                 case ItemGroup.Boots:
-                    return ItemClass.Boots;
+                    return ItemSlot.Boots;
                 case ItemGroup.Gloves:
-                    return ItemClass.Gloves;
+                    return ItemSlot.Gloves;
                 case ItemGroup.Helmet:
-                    return ItemClass.Helm;
+                    return ItemSlot.Helm;
                 case ItemGroup.Shield:
-                    return ItemClass.OffHand;
-                case ItemGroup.Jewel:
-                    return ItemClass.Jewel;
-                case ItemGroup.OneHandedWeapon:
-                    return ItemClass.MainHand;
-                case ItemGroup.TwoHandedWeapon:
-                    return ItemClass.TwoHand;
-                case ItemGroup.Belt:
-                    return ItemClass.Belt;
-                case ItemGroup.Ring:
-                    return ItemClass.Ring;
-                case ItemGroup.Amulet:
-                    return ItemClass.Amulet;
                 case ItemGroup.Quiver:
-                    return ItemClass.OffHand;
+                    return ItemSlot.OffHand;
+                case ItemGroup.OneHandedWeapon:
+                    return ItemSlot.MainHand | ItemSlot.OffHand;
+                case ItemGroup.TwoHandedWeapon:
+                    return ItemSlot.MainHand;
+                case ItemGroup.Belt:
+                    return ItemSlot.Belt;
+                case ItemGroup.Ring:
+                    return ItemSlot.Ring | ItemSlot.Ring2;
+                case ItemGroup.Amulet:
+                    return ItemSlot.Amulet;
+                case ItemGroup.Gem:
+                    return ItemSlot.Gem;
+                case ItemGroup.Jewel:
+                case ItemGroup.Unknown:
+                    return ItemSlot.Unequipable;
                 default:
-                    return ItemClass.Invalid;
+                    return ItemSlot.Unequipable;
             }
         }
     }

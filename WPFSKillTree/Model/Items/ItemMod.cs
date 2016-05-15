@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,9 +21,9 @@ namespace POESKillTree.Model.Items
         }
 
 
-        public Stat Parent { get; set; }
+        public Stat Parent { get; private set; }
 
-        public string Attribute { get; set; }
+        public string Attribute { get; private set; }
 
         public List<float> Value { get; set; }
 
@@ -30,64 +31,86 @@ namespace POESKillTree.Model.Items
 
         public bool IsLocal { get; private set; }
 
-        public ItemMod(Item item, string attribute, Regex numberfilter, IEnumerable<ValueColoring> valueColor = null)
+        public ItemMod(ItemType itemType, string attribute, Regex numberfilter, IEnumerable<ValueColoring> valueColor = null)
         {
             Value = (from Match match in numberfilter.Matches(attribute)
                      select float.Parse(match.Value, CultureInfo.InvariantCulture))
                      .ToList();
-            Attribute = numberfilter.Replace(attribute, "#"); ;
-            IsLocal = DetermineLocal(item, Attribute);
+            Attribute = numberfilter.Replace(attribute, "#");
+            IsLocal = DetermineLocal(itemType, Attribute);
             ValueColor = valueColor == null ? new List<ValueColoring>() : new List<ValueColoring>(valueColor);
         }
 
-        public ItemMod()
+        public ItemMod(ItemType itemType, string attribute, Stat parent = null)
         {
+            IsLocal = DetermineLocal(itemType, attribute);
+            Attribute = attribute;
+            Parent = parent;
+            Value = new List<float>();
             ValueColor = new List<ValueColoring>();
         }
 
-        public bool DetermineLocalFor(Item itm)
+        private ItemMod()
         {
-            return DetermineLocal(itm, Attribute);
         }
 
         // Returns true if property/mod is local, false otherwise.
-        private static bool DetermineLocal(Item item, string attr)
+        private static bool DetermineLocal(ItemType itemType, string attr)
         {
-            return item.ItemGroup != ItemGroup.Amulet && item.ItemGroup != ItemGroup.Ring &&
-                    item.ItemGroup != ItemGroup.Belt
-                   && ((attr.Contains("Armour") && !attr.EndsWith("Armour against Projectiles"))
-                       || attr.Contains("Evasion")
-                       || (attr.Contains("Energy Shield") && !attr.EndsWith("Energy Shield Recharge"))
-                       || attr.Contains("Weapon Class")
-                       || attr.Contains("Critical Strike Chance with this Weapon")
-                       || attr.Contains("Critical Strike Damage Multiplier with this Weapon"))
-                   || (item.ItemGroup == ItemGroup.OneHandedWeapon || item.ItemGroup == ItemGroup.TwoHandedWeapon)
-                      && (attr == "#% increased Attack Speed"
-                          || attr == "#% increased Accuracy Rating"
-                          || attr == "+# to Accuracy Rating"
-                          || attr.StartsWith("Adds ") && (attr.EndsWith(" Damage") || attr.EndsWith(" Damage in Main Hand") || attr.EndsWith(" Damage in Off Hand"))
-                          || attr == "#% increased Physical Damage"
-                          || attr == "#% increased Critical Strike Chance")
-                   || (item.ItemGroup == ItemGroup.Shield && attr == "+#% Chance to Block");
+            if (attr == "#% reduced Attribute Requirements"
+                || attr.Contains("+# to Level of Socketed "))
+                return true;
+            var group = itemType.Group();
+            // Chance to Block is only local on shields.
+            if (attr == "+#% Chance to Block")
+                return group == ItemGroup.Shield;
+            switch (group)
+            {
+                case ItemGroup.Amulet:
+                case ItemGroup.Ring:
+                case ItemGroup.Belt:
+                case ItemGroup.Unknown:
+                case ItemGroup.Quiver:
+                case ItemGroup.Jewel:
+                case ItemGroup.Gem:
+                    // These item types have no local mods.
+                    return false;
+                case ItemGroup.OneHandedWeapon:
+                case ItemGroup.TwoHandedWeapon:
+                    return attr == "#% increased Attack Speed"
+                           || attr == "#% increased Accuracy Rating"
+                           || attr == "+# to Accuracy Rating"
+                           || attr.StartsWith("Adds ") && (attr.EndsWith(" Damage") || attr.EndsWith(" Damage in Main Hand") || attr.EndsWith(" Damage in Off Hand"))
+                           || attr == "#% increased Physical Damage"
+                           || attr == "#% increased Critical Strike Chance"
+                           || attr.Contains("Damage Leeched as")
+                           || attr.Contains("Critical Strike Chance with this Weapon")
+                           || attr.Contains("Critical Strike Damage Multiplier with this Weapon");
+                case ItemGroup.Shield:
+                case ItemGroup.BodyArmour:
+                case ItemGroup.Boots:
+                case ItemGroup.Gloves:
+                case ItemGroup.Helmet:
+                    return (attr.Contains("Armour") && !attr.EndsWith("Armour against Projectiles"))
+                        || attr.Contains("Evasion Rating")
+                        || (attr.Contains("Energy Shield") && !attr.EndsWith("Energy Shield Recharge"));
+                default:
+                    throw new NotSupportedException("Someone forgot to add a switch case.");
+            }
         }
 
         public ItemMod Sum(ItemMod m)
         {
             return new ItemMod
             {
-                Attribute = Attribute,
-                IsLocal = IsLocal,
-                Parent = Parent,
-                ValueColor = ValueColor.ToList(),
-                Value = Value.Zip(m.Value, (f1, f2) => f1 + f2).ToList()
+                IsLocal = IsLocal, Attribute = Attribute, Parent = Parent, ValueColor = ValueColor.ToList(), Value = Value.Zip(m.Value, (f1, f2) => f1 + f2).ToList()
             };
         }
 
         private string InsertValues(string into, ref int index)
         {
             var indexCopy = index;
-            var result = Regex.Replace(into, "#",
-                m => Value[indexCopy++].ToString("###0.##", CultureInfo.InvariantCulture));
+            var result = Regex.Replace(into, "#", m => Value[indexCopy++].ToString("###0.##", CultureInfo.InvariantCulture));
             index = indexCopy;
             return result;
         }
@@ -138,11 +161,43 @@ namespace POESKillTree.Model.Items
             }
             return new JObject
             {
-                {"name", name},
-                {"values", new JArray(ValueTokensToJArrays(tokens))},
-                {"displayMode", displayMode}
+                {"name", name}, {"values", new JArray(ValueTokensToJArrays(tokens))}, {"displayMode", displayMode}
             };
         }
+    }
 
+    /// <summary>
+    /// Extension methods for <see cref="IEnumerable{T}"/>s of <see cref="ItemMod"/>s.
+    /// </summary>
+    public static class ItemModExtensions
+    {
+        /// <summary>
+        /// Returns the value at index <paramref name="valueIndex"/> of the first ItemMod in <paramref name="mods"/> whose
+        /// attribute equals <paramref name="attribute"/>, or <paramref name="defaultValue"/> if there is no such ItemMod.
+        /// </summary>
+        public static float First(this IEnumerable<ItemMod> mods, string attribute, int valueIndex, float defaultValue)
+        {
+            return mods.Where(p => p.Attribute == attribute).Select(p => p.Value[valueIndex]).DefaultIfEmpty(defaultValue).First();
+        }
+
+        /// <summary>
+        /// Returns true and writes the value at index <paramref name="valueIndex"/> of the first ItemMod in <paramref name="mods"/> whose
+        /// attribute equals <paramref name="attribute"/> into <paramref name="value"/>, or returns false and writes 0 into <paramref name="value"/>
+        /// if there is no such ItemMod.
+        /// </summary>
+        public static bool TryGetValue(this IEnumerable<ItemMod> mods, string attribute, int valueIndex, out float value)
+        {
+            var mod = mods.FirstOrDefault(p => p.Attribute == attribute);
+            if (mod == null)
+            {
+                value = default(float);
+                return false;
+            }
+            else
+            {
+                value = mod.Value[valueIndex];
+                return true;
+            }
+        }
     }
 }

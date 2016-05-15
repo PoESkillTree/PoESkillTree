@@ -19,11 +19,9 @@ namespace UpdateEquipment
 
         private static readonly Regex AffixNameLineRegex = new Regex(@"<tr><td colspan='3'>\((.+?)\) (.*?)</td></tr>");
 
-        private static readonly Regex AddedDamageRegex = new Regex(@"Adds # minimum (.+) Damage, Adds # maximum .+ Damage");
-
-        private const string AddedDamageRename = "Adds #-# $1 Damage";
-
         private static readonly Regex IncorrectFromToRegex = new Regex(@"(\d+), (\d+), .+");
+
+        private static readonly Regex MasterCraftedRegex = new Regex(@" lvl: \d+");
 
         private const string IncorrectFromToRename = "$1 to $2";
 
@@ -83,11 +81,7 @@ namespace UpdateEquipment
                         ItemType = itemType,
                         Name = affixName
                     };
-                    if (AddedDamageRegex.IsMatch(affixName))
-                    {
-                        affix.CraftedAs = AddedDamageRegex.Replace(affixName, AddedDamageRename);
-                    }
-                    
+
                     var tierRows = lines[++i].Replace("</table>", "").Replace("<tr>", "")
                         .Split(new [] {"</tr>"}, StringSplitOptions.RemoveEmptyEntries);
                     var tierList = new List<XmlTier>();
@@ -100,6 +94,7 @@ namespace UpdateEquipment
                             ItemLevel = ParseInt(columns[0]),
                             Stats = ExtractStats(columns[1], affixName).ToArray(),
                             Name = columns[2],
+                            IsMasterCrafted = MasterCraftedRegex.IsMatch(columns[2]),
                             Tier = columns[2].Contains(" lvl: ") ? 0 : currentTier++
                         });
                     }

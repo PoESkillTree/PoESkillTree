@@ -13,14 +13,6 @@ namespace POESKillTree.Model.Items
     {
         private static readonly Regex Numberfilter = new Regex(@"[0-9]*\.?[0-9]+");
 
-        public Dictionary<string, List<float>> Attributes { get; set; }
-
-        private readonly ItemClass _class;
-        public ItemClass Class
-        {
-            get { return _class; }
-        }
-
         private ItemSlot _slot;
         public ItemSlot Slot
         {
@@ -124,7 +116,10 @@ namespace POESKillTree.Model.Items
             get { return !string.IsNullOrEmpty(_flavourText); }
         }
 
-        public List<ItemMod> Mods { get; set; }
+        public IEnumerable<ItemMod> Mods
+        {
+            get { return ImplicitMods.Union(ExplicitMods).Union(CraftedMods); }
+        }
 
         public string Name
         {
@@ -209,27 +204,14 @@ namespace POESKillTree.Model.Items
         }
 
         public Item(JObject val)
-            : this(ItemClass.Unequipable, val)
+            : this(ItemGroup.Unknown, val)
         {
-            if (Frame < FrameType.Rare)
-            {
-                _baseType = ItemBase.ItemBaseFromTypeline(TypeLine);
-            }
-
-            if (BaseType != null)
-            {
-                _class = BaseType.Class;
-                _itemType = BaseType.ItemType;
-                _itemGroup = BaseType.ItemGroup;
-            }
-
             FixOldItems();
         }
 
         public Item(ItemBase itemBase, int width, int height)
         {
             _baseType = itemBase;
-            _class = itemBase.Class;
             _itemType = itemBase.ItemType;
             _itemGroup = itemBase.ItemGroup;
             Width = width;
@@ -237,13 +219,11 @@ namespace POESKillTree.Model.Items
             RequirementsFromBase();
         }
 
-        public Item(ItemClass iClass, JObject val)
+        private Item(ItemGroup itemGroup, JObject val)
         {
             JsonBase = val;
 
-            Attributes = new Dictionary<string, List<float>>();
-            Mods = new List<ItemMod>();
-            _class = iClass;
+            _itemGroup = itemGroup;
 
             Width = val["w"].Value<int>();
             Height = val["h"].Value<int>();
@@ -255,23 +235,27 @@ namespace POESKillTree.Model.Items
             if (val["name"] != null)
                 NameLine = FilterJsonString(val["name"].Value<string>());
 
+            Frame = (FrameType)val["frameType"].Value<int>();
             TypeLine = FilterJsonString(val["typeLine"].Value<string>());
-            ItemBase.BaseDictionary.TryGetValue(TypeLine, out _baseType);
-            if (BaseType != null)
+            if (Frame < FrameType.Rare)
+            {
+                _baseType = ItemBase.ItemBaseFromTypeline(TypeLine);
+            }
+            else
+            {
+                ItemBase.BaseDictionary.TryGetValue(TypeLine, out _baseType);
+            }
+            if (_baseType != null)
             {
                 _itemType = BaseType.ItemType;
                 _itemGroup = BaseType.ItemGroup;
             }
 
-            Frame = (FrameType)val["frameType"].Value<int>();
-
             if (val["properties"] != null)
             {
                 foreach (var obj in val["properties"])
                 {
-                    var mod = ItemModFromJson(obj, false);
-                    Properties.Add(mod);
-                    Attributes.Add(mod.Attribute, new List<float>(mod.Value));
+                    Properties.Add(ItemModFromJson(obj, false));
                 }
                 if (Properties.Any(m => !m.Value.Any()))
                 {
@@ -293,9 +277,8 @@ namespace POESKillTree.Model.Items
                         mods.FirstOrDefault(m => m.Attribute == "# Int")
                     }.Where(m => m != null).ToList();
                     modsToMerge.ForEach(m => mods.Remove(m));
-                    mods.Add(new ItemMod
+                    mods.Add(new ItemMod(_itemType, "Requires " + string.Join(", ", modsToMerge.Select(m => m.Attribute)))
                     {
-                        Attribute = "Requires " + string.Join(", ", modsToMerge.Select(m => m.Attribute)),
                         Value = modsToMerge.Select(m => m.Value).Flatten().ToList(),
                         ValueColor = modsToMerge.Select(m => m.ValueColor).Flatten().ToList()
                     });
@@ -307,30 +290,24 @@ namespace POESKillTree.Model.Items
             if (val["implicitMods"] != null)
                 foreach (var s in val["implicitMods"].Values<string>())
                 {
-                    var mod = new ItemMod(this, s, Numberfilter);
-                    Mods.Add(mod);
-                    _implicitMods.Add(mod);
+                    _implicitMods.Add(new ItemMod(_itemType, s, Numberfilter));
                 }
             if (val["explicitMods"] != null)
                 foreach (var s in val["explicitMods"].Values<string>())
                 {
-                    var mod = new ItemMod(this, s, Numberfilter);
-                    Mods.Add(mod);
-                    ExplicitMods.Add(mod);
+                    ExplicitMods.Add(new ItemMod(_itemType, s, Numberfilter));
                 }
             if (val["craftedMods"] != null)
                 foreach (var s in val["craftedMods"].Values<string>())
                 {
-                    var mod = new ItemMod(this, s, Numberfilter);
-                    Mods.Add(mod);
-                    CraftedMods.Add(mod);
+                    CraftedMods.Add(new ItemMod(_itemType, s, Numberfilter));
                 }
 
             if (val["flavourText"] != null)
                 FlavourText = string.Join("\r\n", val["flavourText"].Values<string>().Select(s => s.Replace("\r", "")));
 
 
-            if (iClass == ItemClass.Gem)
+            if (itemGroup == ItemGroup.Gem)
             {
                 switch (val["colour"].Value<string>())
                 {
@@ -363,7 +340,7 @@ namespace POESKillTree.Model.Items
                 int socket = 0;
                 foreach (JObject obj in (JArray)val["socketedItems"])
                 {
-                    var item = new Item(ItemClass.Gem, obj) { _socketGroup = sockets[socket++] };
+                    var item = new Item(ItemGroup.Gem, obj) { _socketGroup = sockets[socket++] };
                     _gems.Add(item);
                 }
             }
@@ -414,7 +391,7 @@ namespace POESKillTree.Model.Items
                 attribute = name;
             }
 
-            return new ItemMod(this, attribute, Numberfilter, valueColors);
+            return new ItemMod(_itemType, attribute, Numberfilter, valueColors);
         }
 
         private void FixOldItems()
@@ -451,9 +428,8 @@ namespace POESKillTree.Model.Items
             }
             if (requirements.Any())
             {
-                _requirements.Add(new ItemMod
+                _requirements.Add(new ItemMod(_itemType, "Requires " + string.Join(", ", requirements))
                 {
-                    Attribute = "Requires " + string.Join(", ", requirements),
                     Value = values,
                     ValueColor = Enumerable.Repeat(ItemMod.ValueColoring.White, values.Count).ToList()
                 });
@@ -522,6 +498,32 @@ namespace POESKillTree.Model.Items
         public List<Item> GetLinkedGems(Item gem)
         {
             return Gems.Where(linked => linked != gem && linked._socketGroup == gem._socketGroup).ToList();
+        }
+
+        /// <summary>
+        /// Key: Property
+        /// Value: Mods affecting the Property
+        /// </summary>
+        public Dictionary<ItemMod, List<ItemMod>> GetModsAffectingProperties()
+        {
+            var localmods = Mods.Where(m => m.IsLocal).ToList();
+
+            var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds #-# |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");
+
+            var localnames = localmods.Select(m =>
+                r.Replace(m.Attribute.Replace("to maximum", "to"), "")
+                    .Split(new[] { "and", "," }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s =>
+                        s.Trim().Replace("Attack Speed", "Attacks per Second"))
+                        .ToList())
+                .ToList();
+
+            var dict = new Dictionary<ItemMod, List<ItemMod>>();
+            foreach (var mod in Properties)
+            {
+                dict[mod] = localmods.Where((m, i) => localnames[i].Any(n => mod.Attribute.Contains(n))).ToList();
+            }
+            return dict;
         }
     }
 }

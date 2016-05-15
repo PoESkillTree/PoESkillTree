@@ -802,16 +802,11 @@ namespace POESKillTree.Controls
 
         private static bool IsSearchMatch(Item i, string txt)
         {
-            var local = new List<ItemAttributes.Attribute>();
-            var nonlocal = new List<ItemAttributes.Attribute>();
-
-            ItemAttributes.LoadItem(i, local, nonlocal);
-
             var modstrings = new [] {
                 i.BaseType.Name,
                 i.FlavourText,
                 i.Name
-            }.Union(local.Select(a => a.ValuedAttribute).Union(nonlocal.Select(a => a.ValuedAttribute)));
+            }.Union(i.Properties.Select(p => p.Attribute)).Union(i.Mods.Select(m => m.Attribute));
 
             return modstrings.Any(s => s != null && s.ToLower().Contains(txt));
         }

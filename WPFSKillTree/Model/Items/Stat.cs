@@ -10,19 +10,25 @@ namespace POESKillTree.Model.Items
 
         public Range<float> Range { get; private set; }
 
-        public ItemModTier ParentTier { get; set; }
+        public ItemModTier ParentTier { get; private set; }
 
-        public Stat(string name, Range<float> range)
+        public ItemType ItemType { get; private set; }
+
+        public Stat(string name, Range<float> range, ItemType itemType, ItemModTier parentTier)
         {
             Name = name;
             Range = range;
+            ParentTier = parentTier;
+            ItemType = itemType;
         }
 
-        public Stat(XmlStat xmlStat)
+        public Stat(XmlStat xmlStat, ItemType itemType, ItemModTier parentTier = null)
         {
             Name = xmlStat.Name;
             // RangeTrees don't like from > to.
             Range = new Range<float>(Math.Min(xmlStat.From, xmlStat.To), Math.Max(xmlStat.From, xmlStat.To));
+            ParentTier = parentTier;
+            ItemType = itemType;
         }
 
         public ItemMod ToItemMod(params float[] values)
@@ -38,9 +44,9 @@ namespace POESKillTree.Model.Items
 
             if (values.Length == 0 || values.Length > 2)
                 throw new ArgumentException();
-            
+
             string attribute;
-            if (Name.Contains("#"))
+            if (Name.Contains("#") || ParentTier != null)
             {
                 attribute = Name;
             }
@@ -55,12 +61,10 @@ namespace POESKillTree.Model.Items
             {
                 throw new NotSupportedException();
             }
-            return new ItemMod
+            return new ItemMod(ItemType, values.Length == 1 ? attribute : attribute.Replace("#", "#-#"), this)
             {
-                Parent = this,
                 Value = values.ToList(),
-                ValueColor = values.Select(_ => ItemMod.ValueColoring.White).ToList(),
-                Attribute = values.Length == 1 ? attribute : attribute.Replace("#", "#-#")
+                ValueColor = values.Select(_ => ItemMod.ValueColoring.White).ToList()
             };
         }
     }

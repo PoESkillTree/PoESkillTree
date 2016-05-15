@@ -41,19 +41,6 @@ namespace POESKillTree.Model.Items
 
         public ModType ModType { get; private set; }
 
-        public bool IsRangeMod
-        {
-            get
-            {
-                return Mods.Select(s => s.Replace("minimum", "").Replace("maximum", "")).Distinct().Count() == 1;
-            }
-        }
-
-        public Stat RangeCombinedStat
-        {
-            get { return new Stat(Mods.Select(s => s.Replace(" minimum", "").Replace(" maximum", "")).Distinct().Single(), new Range<float>()); }
-        }
-
         public IReadOnlyList<string> Mods { get; private set; }
 
         public string Name { get; private set; }
@@ -68,9 +55,6 @@ namespace POESKillTree.Model.Items
             if (modlist.Any())
             {
                 Tiers = new RangeTree<float, ModWrapper>[Mods.Count];
-
-                foreach (var item in modlist)
-                    item.ParentAffix = this;
 
                 for (int i = 0; i < Tiers.Length; i++)
                     Tiers[i] = new RangeTree<float, ModWrapper>(modlist.Select(im => new ModWrapper(Mods[i], im)), new ItemModComparer());
@@ -88,7 +72,7 @@ namespace POESKillTree.Model.Items
                 throw new NotSupportedException("There should not be any Affix without tiers");
             Name = xmlAffix.Name;
 
-            var tiers = xmlAffix.Tiers.Select(el => new ItemModTier(el) { ParentAffix = this }).ToList();
+            var tiers = xmlAffix.Tiers.Select(el => new ItemModTier(el, _itemType)).ToList();
             Tiers = new RangeTree<float, ModWrapper>[Mods.Count];
             for (var i = 0; i < Tiers.Length; i++)
                 Tiers[i] = new RangeTree<float, ModWrapper>(tiers.Select(im => new ModWrapper(Mods[i], im)), new ItemModComparer());

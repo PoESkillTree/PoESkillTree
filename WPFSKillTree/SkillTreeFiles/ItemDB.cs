@@ -1195,8 +1195,8 @@ namespace POESKillTree.SkillTreeFiles
             AttributeSet attrs = new AttributeSet();
 
             // Collect gem attributes and modifiers at gem level.
-            foreach (var attr in gem.Attributes)
-                attrs.Add(attr.Key, new List<float>(attr.Value));
+            foreach (var prop in gem.Properties)
+                attrs.Add(prop.Attribute, new List<float>(prop.Value));
             foreach (ItemMod mod in gem.Mods)
                 attrs.Add(mod.Attribute, new List<float>(mod.Value));
 
@@ -1367,9 +1367,11 @@ namespace POESKillTree.SkillTreeFiles
         // Returns level of gem.
         public static int LevelOf(Item gem)
         {
-            return gem.Attributes.ContainsKey("Level: #")
-                   ? (int)gem.Attributes["Level: #"][0]
-                   : (gem.Attributes.ContainsKey("Level: # (Max)") ? (int)gem.Attributes["Level: # (Max)"][0] : 1);
+            float ret;
+            if (gem.Properties.TryGetValue("Level: #", 0, out ret))
+                return (int) ret;
+            else
+                return (int) gem.Properties.First("Level: # (Max)", 0, 1);
         }
 
         // Loads items from XML file.
@@ -1471,9 +1473,11 @@ namespace POESKillTree.SkillTreeFiles
         // Returns quality of gem.
         public static int QualityOf(Item gem)
         {
-            return gem.Attributes.ContainsKey("Quality: +#%")
-                   ? (int)gem.Attributes["Quality: +#%"][0]
-                   : (gem.Attributes.ContainsKey("Quality: +#% (Max)") ? (int)gem.Attributes["Quality: +#% (Max)"][0] : 0);
+            float ret;
+            if (gem.Properties.TryGetValue("Quality: #", 0, out ret))
+                return (int)ret;
+            else
+                return (int)gem.Properties.First("Quality: # (Max)", 0, 0);
         }
 
         // Writes database to file.

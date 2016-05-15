@@ -163,7 +163,6 @@ namespace POESKillTree.Model.Items
         public int RequiredIntelligence { get; private set; }
 
         public string Name { get; private set; }
-        public ItemClass Class { get; private set; }
         public ItemType ItemType { get; private set; }
         public ItemGroup ItemGroup { get; private set; }
 
@@ -178,11 +177,10 @@ namespace POESKillTree.Model.Items
             RequiredIntelligence = xmlBase.Intelligence;
 
             Name = xmlBase.Name;
-            ImplicitMods = xmlBase.Implicit != null ? xmlBase.Implicit.Select(i => new Stat(i)).ToList() : new List<Stat>();
-            Properties = xmlBase.Properties != null ? xmlBase.Properties.Select(p => new Stat(p)).ToList() : new List<Stat>();
             ItemType = xmlBase.ItemType;
             ItemGroup = ItemType.Group();
-            Class = ItemType.ToItemClass();
+            ImplicitMods = xmlBase.Implicit != null ? xmlBase.Implicit.Select(i => new Stat(i, ItemType)).ToList() : new List<Stat>();
+            Properties = xmlBase.Properties != null ? xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList() : new List<Stat>();
         }
 
         public Item CreateItem()
@@ -196,9 +194,11 @@ namespace POESKillTree.Model.Items
         public List<ItemMod> GetRawProperties()
         {
             var props = new List<ItemMod>();
-            
+
             if (ItemGroup == ItemGroup.TwoHandedWeapon || ItemGroup == ItemGroup.OneHandedWeapon)
-                props.Add(new ItemMod { Attribute = Regex.Replace(ItemType.ToString(), @"([a-z])([A-Z])", m => m.Groups[1].Value + " " + m.Groups[2].Value) });
+                props.Add(new ItemMod(ItemType,
+                    Regex.Replace(ItemType.ToString(), @"([a-z])([A-Z])",
+                        m => m.Groups[1].Value + " " + m.Groups[2].Value)));
 
             if (Properties != null)
                 props.AddRange(Properties.Select(prop => prop.ToItemMod()));

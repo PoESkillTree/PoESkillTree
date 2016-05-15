@@ -34,7 +34,7 @@ namespace POESKillTree.Controls
                 var targslot = (ItemSlot)((ItemVisualizer) sender).Tag;
                 var itm = ((ItemVisualizer) e.Data.GetData(typeof(ItemVisualizer))).Item;
 
-                if (itm != null && (((int)itm.Class & (int)targslot) != 0 || (itm.Class == ItemClass.TwoHand && targslot == ItemSlot.MainHand)))
+                if (itm != null && ItemAttributes.CanEquip(itm, targslot))
                 {
                     e.Handled = true;
                     e.Effects = DragDropEffects.Link;
@@ -56,7 +56,7 @@ namespace POESKillTree.Controls
                 var targslot = (ItemSlot) target.Tag;
                 var itm = ((ItemVisualizer)e.Data.GetData(typeof(ItemVisualizer))).Item;
 
-                if (itm != null && (((int)itm.Class & (int)targslot) != 0 || (itm.Class == ItemClass.TwoHand && targslot == ItemSlot.MainHand)))
+                if (itm != null && ItemAttributes.CanEquip(itm, targslot))
                 {
                     e.Handled = true;
                     e.Effects = DragDropEffects.Link;

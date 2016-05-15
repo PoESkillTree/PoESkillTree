@@ -97,11 +97,11 @@ namespace POESKillTree.Controls
             spSLiders.Children.Clear();
             _sliders.Clear();
 
+            tbtlabel.Text = "";
             if (aff != null)
             {
                 var tiers = aff.GetTiers();
 
-                tbtlabel.Text = "";
                 if (aff != EmptySelection)
                 {
                     for (var i = 0; i < aff.Mods.Count; i++)
@@ -152,7 +152,7 @@ namespace POESKillTree.Controls
             {
                 if (i != indx)
                 {
-                    if (aff.QueryMod(i, (float)_sliders[i].Value).Intersect(tiers).FirstOrDefault() == null)
+                    if (!aff.QueryMod(i, (float)_sliders[i].Value).Intersect(tiers).Any())
                     { //slider isnt inside current tier
                         var moveto = tiers[0].Stats[i].Range;
                         _sliders[i].Value = (e.NewValue > e.OldValue) ? moveto.From : moveto.To;
@@ -167,17 +167,15 @@ namespace POESKillTree.Controls
                 SelectedValuesChanged(this, SelectedValues);
             }
 
-            tbtlabel.Text = TiersString(tiers);
+            tbtlabel.Text = TiersString(SelectedAffix.Query(_sliders.Select(s => (float)s.Value).ToArray()));
         }
 
-        private static string TiersString(IReadOnlyCollection<ItemModTier> tiers)
+        private static string TiersString(IEnumerable<ItemModTier> tiers)
         {
-            if (tiers == null || tiers.Count == 0)
-                return "";
-            return string.Join("/", tiers.OrderByDescending(t => t.Tier).Select(s => string.Format("T{0}:{1}", s.Tier, s.Name)));
+            return string.Join("/", tiers.Select(s => string.Format("T{0}:{1}", s.Tier, s.Name)));
         }
 
-        public ItemMod[] GetExactMods()
+        public IEnumerable<ItemMod> GetExactMods()
         {
             if (SelectedAffix != null)
             {
@@ -185,15 +183,12 @@ namespace POESKillTree.Controls
 
                 var aff = SelectedAffix.Query(values).First();
 
-                if (SelectedAffix.IsRangeMod)
+                if (aff.IsRangeMod)
                 {
-                    return new[] { SelectedAffix.RangeCombinedStat.ToItemMod(_sliders.Select(s => (float)s.Value).ToArray()) };
+                    return new[] { aff.RangeCombinedStat.ToItemMod(_sliders.Select(s => (float)s.Value).ToArray()) };
                 }
 
-                var fvalues = aff.Stats.Select((s, i) => s.ToItemMod((float)_sliders[i].Value));
-
-                return fvalues.ToArray();
-
+                return aff.Stats.Select((s, i) => s.ToItemMod((float)_sliders[i].Value));
             }
 
             return new ItemMod[0];

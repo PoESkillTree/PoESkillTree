@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -15,126 +14,65 @@ namespace POESKillTree.Model.Items
     public class ItemAttributes : Notifier
     {
         #region slotted items
+
         public Item Armor
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.Armor);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.Armor);
-            }
+            get { return GetItemInSlot(ItemSlot.Armor); }
+            set { SetItemInSlot(value, ItemSlot.Armor); }
         }
+
         public Item MainHand
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.MainHand);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.MainHand);
-            }
+            get { return GetItemInSlot(ItemSlot.MainHand); }
+            set { SetItemInSlot(value, ItemSlot.MainHand); }
         }
+
         public Item OffHand
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.OffHand);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.OffHand);
-            }
+            get { return GetItemInSlot(ItemSlot.OffHand); }
+            set { SetItemInSlot(value, ItemSlot.OffHand); }
         }
+
         public Item Ring
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.Ring);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.Ring);
-            }
+            get { return GetItemInSlot(ItemSlot.Ring); }
+            set { SetItemInSlot(value, ItemSlot.Ring); }
         }
+
         public Item Ring2
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.Ring2);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.Ring2);
-            }
+            get { return GetItemInSlot(ItemSlot.Ring2); }
+            set { SetItemInSlot(value, ItemSlot.Ring2); }
         }
+
         public Item Amulet
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.Amulet);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.Amulet);
-            }
+            get { return GetItemInSlot(ItemSlot.Amulet); }
+            set { SetItemInSlot(value, ItemSlot.Amulet); }
         }
+
         public Item Helm
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.Helm);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.Helm);
-            }
+            get { return GetItemInSlot(ItemSlot.Helm); }
+            set { SetItemInSlot(value, ItemSlot.Helm); }
         }
+
         public Item Gloves
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.Gloves);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.Gloves);
-            }
+            get { return GetItemInSlot(ItemSlot.Gloves); }
+            set { SetItemInSlot(value, ItemSlot.Gloves); }
         }
+
         public Item Boots
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.Boots);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.Boots);
-            }
+            get { return GetItemInSlot(ItemSlot.Boots); }
+            set { SetItemInSlot(value, ItemSlot.Boots); }
         }
-        public Item Gem
-        {
-            get
-            {
-                return GetItemInSlot(ItemSlot.Gem);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.Gem);
-            }
-        }
+
         public Item Belt
         {
-            get
-            {
-                return GetItemInSlot(ItemSlot.Belt);
-            }
-            set
-            {
-                SetItemInSlot(value, ItemSlot.Belt);
-            }
+            get { return GetItemInSlot(ItemSlot.Belt); }
+            set { SetItemInSlot(value, ItemSlot.Belt); }
         }
 
         private Item GetItemInSlot(ItemSlot slot)
@@ -144,9 +82,7 @@ namespace POESKillTree.Model.Items
 
         private void SetItemInSlot(Item value, ItemSlot slot)
         {
-            if (value != null && ((int)value.Class & (int) slot) == 0)
-                return;
-            if (slot == ItemSlot.Unequipable)
+            if (!CanEquip(value, slot))
                 return;
             RemoveItemFromSlot(slot);
 
@@ -170,9 +106,49 @@ namespace POESKillTree.Model.Items
             if (itm != null)
                 itm.Slot = ItemSlot.Unequipable;
         }
-        #endregion
 
-        private readonly List<Attribute> _aList = new List<Attribute>();
+        public bool CanEquip(Item item, ItemSlot slot)
+        {
+            if (item == null) return true;
+            if (slot == ItemSlot.Unequipable) return false;
+            // one handed -> only equippable if other hand is free, shield or matching one handed
+            if (item.ItemGroup == ItemGroup.OneHandedWeapon
+                && (slot == ItemSlot.MainHand || slot == ItemSlot.OffHand))
+            {
+                var other = slot == ItemSlot.MainHand ? OffHand : MainHand;
+                if (other == null || other.ItemGroup == ItemGroup.Shield)
+                    return true;
+                if (other.ItemGroup != ItemGroup.OneHandedWeapon)
+                    return false;
+                if ((item.ItemType == ItemType.Wand && other.ItemType != ItemType.Wand)
+                    || (other.ItemType == ItemType.Wand && item.ItemType != ItemType.Wand))
+                    return false;
+                return true;
+            }
+            // two handed and not bow -> only equippable if off hand is free
+            if (item.ItemGroup == ItemGroup.TwoHandedWeapon && item.ItemType != ItemType.Bow
+                && slot == ItemSlot.MainHand)
+            {
+                return OffHand == null;
+            }
+            // bow -> only equippable if off hand is free or quiver
+            if (item.ItemType == ItemType.Bow && slot == ItemSlot.MainHand)
+            {
+                return OffHand == null || OffHand.ItemGroup == ItemGroup.Quiver;
+            }
+            // quiver -> only equippable if main hand is free or bow
+            if (item.ItemGroup == ItemGroup.Quiver && slot == ItemSlot.OffHand)
+            {
+                return MainHand == null || MainHand.ItemType == ItemType.Bow;
+            }
+            // shield -> only equippable if main hand is free or one hand
+            if (item.ItemGroup == ItemGroup.Shield && slot == ItemSlot.OffHand)
+            {
+                return MainHand == null || MainHand.ItemGroup == ItemGroup.OneHandedWeapon;
+            }
+            return ((int)item.ItemGroup.ItemSlots() & (int)slot) != 0;
+        }
+        #endregion
 
         public ObservableCollection<Item> Equip { get; private set; }
 
@@ -183,11 +159,7 @@ namespace POESKillTree.Model.Items
             private set { SetProperty(ref _attributes, value); }
         }
 
-        private readonly List<Attribute> _nonLocalMods = new List<Attribute>();
-        public IReadOnlyList<Attribute> NonLocalMods
-        {
-            get { return _nonLocalMods; }
-        }
+        public IReadOnlyList<ItemMod> NonLocalMods { get; private set; }
 
         public ItemAttributes()
         {
@@ -202,46 +174,38 @@ namespace POESKillTree.Model.Items
             var jObject = JObject.Parse(itemData);
             foreach (JObject jobj in (JArray)jObject["items"])
             {
-                var id = jobj["inventoryId"].Value<string>();
-                if (id == "BodyArmour")
+                switch (jobj["inventoryId"].Value<string>())
                 {
-                    AddItem(jobj, ItemClass.Armor, ItemSlot.Armor);
-                }
-                if (id == "Ring")
-                {
-                    AddItem(jobj, ItemClass.Ring, ItemSlot.Ring);
-                }
-                if (id == "Ring2")
-                {
-                    AddItem(jobj, ItemClass.Ring, ItemSlot.Ring2);
-                }
-                if (id == "Gloves")
-                {
-                    AddItem(jobj, ItemClass.Gloves, ItemSlot.Gloves);
-                }
-                if (id == "Weapon")
-                {
-                    AddItem(jobj, ItemClass.MainHand, ItemSlot.MainHand);
-                }
-                if (id == "Offhand")
-                {
-                    AddItem(jobj, ItemClass.OffHand, ItemSlot.OffHand);
-                }
-                if (id == "Helm")
-                {
-                    AddItem(jobj, ItemClass.Helm, ItemSlot.Helm);
-                }
-                if (id == "Boots")
-                {
-                    AddItem(jobj, ItemClass.Boots, ItemSlot.Boots);
-                }
-                if (id == "Amulet")
-                {
-                    AddItem(jobj, ItemClass.Amulet, ItemSlot.Amulet);
-                }
-                if (id == "Belt")
-                {
-                    AddItem(jobj, ItemClass.Belt, ItemSlot.Belt);
+                    case "BodyArmour":
+                        AddItem(jobj, ItemSlot.Armor);
+                        break;
+                    case "Ring":
+                        AddItem(jobj, ItemSlot.Ring);
+                        break;
+                    case "Ring2":
+                        AddItem(jobj, ItemSlot.Ring2);
+                        break;
+                    case "Gloves":
+                        AddItem(jobj, ItemSlot.Gloves);
+                        break;
+                    case "Weapon":
+                        AddItem(jobj, ItemSlot.MainHand);
+                        break;
+                    case "Offhand":
+                        AddItem(jobj, ItemSlot.OffHand);
+                        break;
+                    case "Helm":
+                        AddItem(jobj, ItemSlot.Helm);
+                        break;
+                    case "Boots":
+                        AddItem(jobj, ItemSlot.Boots);
+                        break;
+                    case "Amulet":
+                        AddItem(jobj, ItemSlot.Amulet);
+                        break;
+                    case "Belt":
+                        AddItem(jobj, ItemSlot.Belt);
+                        break;
                 }
             }
 
@@ -250,87 +214,81 @@ namespace POESKillTree.Model.Items
 
         private void RefreshItemAttributes()
         {
-            _aList.Clear();
-            _nonLocalMods.Clear();
-            Attributes = new ListCollectionView(_aList);
+            NonLocalMods = (from item in Equip
+                            from mod in SelectNonLocalMods(item)
+                            group mod by mod.Attribute into modsForAttr
+                            select modsForAttr.Aggregate((m1, m2) => m1.Sum(m2))
+                           ).ToList();
+            var aList = new List<Attribute>();
+            var independent = new List<Attribute>();
             foreach (var item in Equip)
             {
-                LoadItem(item, _aList, _nonLocalMods);
+                LoadItemAttributes(item, aList, independent);
             }
+            aList.AddRange(independent);
+            Attributes = new ListCollectionView(aList);
 
             var pgd = new PropertyGroupDescription("Group", new HeaderConverter());
             Attributes.GroupDescriptions.Add(pgd);
-            Attributes.CustomSort = new NumberLessStringComparer();
 
             Attributes.Refresh();
         }
 
-        public static void LoadItem(Item item, List<Attribute> attributes, List<Attribute> nonlocal)
+        private static void AddAttribute(ItemMod mod, string group, ICollection<Attribute> attributes, Attribute existingAttribute)
         {
-            foreach (var attr in item.Attributes)
+            if (existingAttribute == null)
             {
-                if (attr.Key == "Quality: #") continue;
-                attributes.Add(new Attribute(attr.Key, attr.Value, item.Class.ToString()));
+                attributes.Add(new Attribute(mod.Attribute, mod.Value, group));
+            }
+            else
+            {
+                existingAttribute.Add(mod.Value);
+            }
+        }
+
+        private static void LoadItemAttributes(Item item, List<Attribute> attributes, List<Attribute> independentAttributes)
+        {
+            foreach (var attr in item.Properties)
+            {
+                // Show all properties except quality in the group for this slot.
+                if (attr.Attribute == "Quality: +#%") continue;
+                attributes.Add(new Attribute(attr.Attribute, attr.Value, item.Slot.ToString()));
             }
 
-            foreach (ItemMod mod in item.Mods)
+            var modsAffectingProperties = item.GetModsAffectingProperties().SelectMany(pair => pair.Value).ToList();
+            foreach (var mod in item.Mods)
             {
-                var attTo = attributes.Find(
-                    ad =>
-                        ad.TextAttribute == mod.Attribute &&
-                        ad.Group == (mod.IsLocal ? item.Class.ToString() : "Independent"));
-                if (attTo == null)
+                if (mod.IsLocal)
                 {
-                    attributes.Add(new Attribute(mod.Attribute, mod.Value,
-                        mod.IsLocal ? item.Class.ToString() : "Independent"));
+                    // Show local mods in the group for this slot
+                    // if they are not already represented by affecting properties.
+                    if (mod.Attribute.StartsWith("Adds") || modsAffectingProperties.Contains(mod))
+                        continue;
+                    var attTo = attributes.Find(ad => ad.TextAttribute == mod.Attribute && ad.Group == item.Slot.ToString());
+                    AddAttribute(mod, item.Slot.ToString(), attributes, attTo);
                 }
                 else
                 {
-                    attTo.Add(mod.Value);
-                }
-            }
-
-
-            foreach (var attr in item.Attributes)
-            {
-                if (attr.Key == "Quality: +#%") continue;
-                if (attr.Key == "Attacks per Second: #") continue;
-                if (attr.Key == "Critical Strike Chance: #%") continue;
-                if (attr.Key.ToLower().Contains("damage")) continue;
-                if (attr.Key.Contains("Weapon Class")) continue;
-                if (attr.Key.Contains("Elemental Damage")) continue;
-                var attTo = nonlocal.Find(ad => ad.TextAttribute == attr.Key);
-                if (attTo == null)
-                {
-                    nonlocal.Add(new Attribute(attr.Key, attr.Value, ""));
-                }
-                else
-                {
-                    attTo.Add(attr.Value);
-                }
-            }
-
-            foreach (ItemMod mod in item.Mods)
-            {
-                if (mod.IsLocal) continue;
-                var attTo = nonlocal.Find(ad => ad.TextAttribute == mod.Attribute);
-                if (attTo == null)
-                {
-                    nonlocal.Add(new Attribute(mod.Attribute, mod.Value, ""));
-                }
-                else
-                {
-                    attTo.Add(mod.Value);
+                    // Show all non-local mods in the Independent group.
+                    var attTo = independentAttributes.Find(ad => ad.TextAttribute == mod.Attribute && ad.Group == "Independent");
+                    AddAttribute(mod, "Independent", independentAttributes, attTo);
                 }
             }
         }
 
-        private void AddItem(JObject val, ItemClass iclass, ItemSlot islot)
+        private static IEnumerable<ItemMod> SelectNonLocalMods(Item item)
         {
-            var item = new Item(iclass, val) {Slot = islot};
-            Equip.Add(item);
+            var mods = item.Mods.Where(m => !m.IsLocal);
+            // Weapons are treated differently, their properties do not count towards global mods.
+            if (item.ItemGroup != ItemGroup.OneHandedWeapon && item.ItemGroup != ItemGroup.TwoHandedWeapon)
+                return mods.Union(item.Properties.Where(p => p.Attribute != "Quality: +#%"));
+            return mods;
+        }
 
-            RefreshItemAttributes();
+        private void AddItem(JObject val, ItemSlot islot)
+        {
+            var item = new Item(val) { Slot = islot };
+            Equip.Add(item);
         }
 
 
@@ -339,10 +297,6 @@ namespace POESKillTree.Model.Items
             public static readonly Regex Backreplace = new Regex("#");
 
             private readonly List<float> _value;
-            public IReadOnlyList<float> Value
-            {
-                get { return _value; }
-            }
 
             private readonly string _group;
             public string Group
@@ -380,38 +334,17 @@ namespace POESKillTree.Model.Items
         }
 
 
-        private class NumberLessStringComparer : IComparer, IComparer<Attribute>
-        {
-            private static readonly Regex Numberfilter = new Regex("[0-9]*\\.?[0-9]+");
-
-            public int Compare(object x, object y)
-            {
-                return Compare(x as Attribute, y as Attribute);
-            }
-
-            public int Compare(Attribute xAttr, Attribute yAttr)
-            {
-                if (xAttr == null || yAttr == null) return 0;
-                var xGroup = xAttr.Group;
-                var yGroup = yAttr.Group;
-                if (xGroup == "Independent" && yGroup != "Independent") return +1;
-                if (yGroup == "Independent" && xGroup != "Independent") return -1;
-                return Numberfilter.Replace(xGroup, "").CompareTo(Numberfilter.Replace(yGroup, ""));
-            }
-        }
-
-
         private class HeaderConverter : IValueConverter
         {
             private readonly Dictionary<string, AttributeGroup> _itemGroups = new Dictionary<string, AttributeGroup>();
 
             public HeaderConverter()
             {
-                foreach (var itemClass in Enum.GetValues(typeof(ItemClass)))
+                foreach (var slot in Enum.GetValues(typeof(ItemSlot)))
                 {
-                    if (!_itemGroups.ContainsKey(itemClass.ToString()))
+                    if (!_itemGroups.ContainsKey(slot.ToString()))
                     {
-                        _itemGroups.Add(itemClass.ToString(), new AttributeGroup(itemClass.ToString()));
+                        _itemGroups.Add(slot.ToString(), new AttributeGroup(slot.ToString()));
                     }
                 }
 

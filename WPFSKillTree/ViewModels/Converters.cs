@@ -242,7 +242,7 @@ namespace POESKillTree.ViewModels
     [ValueConversion(typeof(Item), typeof(ImageSource))]
     class ItemToImageConverter : ItemTypeToImageConverter, IValueConverter
     {
-        private static readonly Dictionary<ItemClass, BitmapImage> DefaultCache = new Dictionary<ItemClass, BitmapImage>();
+        private static readonly Dictionary<ItemGroup, BitmapImage> DefaultCache = new Dictionary<ItemGroup, BitmapImage>();
 
         public new object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -256,7 +256,7 @@ namespace POESKillTree.ViewModels
 
                 lock (DefaultCache) //i am not entirely sure that WPF isnt using converter concurently
                 {
-                    if (!DefaultCache.TryGetValue(itm.Class, out img))
+                    if (!DefaultCache.TryGetValue(itm.ItemGroup, out img))
                     {
                         img = new BitmapImage();
 
@@ -267,7 +267,7 @@ namespace POESKillTree.ViewModels
                         var bu = BaseUriHelper.GetBaseUri(Application.Current.MainWindow);
                         var bus = bu.ToString();
                         bus = bus.Substring(0, bus.IndexOf(";component/") + 11);
-                        string image = "Images/EquipmentUI/ItemDefaults/" + itm.Class + ".png";
+                        string image = "Images/EquipmentUI/ItemDefaults/" + itm.ItemGroup + ".png";
                         Uri u = new Uri(bus + image);
 
                         if (!ResourceExists(image))
@@ -276,7 +276,7 @@ namespace POESKillTree.ViewModels
                         img.UriSource = u;
                         img.EndInit();
 
-                        DefaultCache.Add(itm.Class, img);
+                        DefaultCache.Add(itm.ItemGroup, img);
                     }
                 }
             }

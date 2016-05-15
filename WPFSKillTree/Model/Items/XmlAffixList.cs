@@ -27,9 +27,6 @@ namespace POESKillTree.Model.Items
 
         [XmlAttribute]
         public ItemType ItemType { get; set; }
-
-        [XmlAttribute]
-        public string CraftedAs { get; set; }
     }
 
     public class XmlTier
@@ -45,6 +42,9 @@ namespace POESKillTree.Model.Items
 
         [XmlAttribute]
         public int Tier { get; set; }
+
+        [XmlAttribute]
+        public bool IsMasterCrafted { get; set; }
     }
 
     public class XmlStat

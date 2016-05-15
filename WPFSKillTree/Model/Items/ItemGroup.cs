@@ -1,7 +1,7 @@
 namespace POESKillTree.Model.Items
 {
     /// <summary>
-    /// Defines groups of <see cref="ItemType"/>s.
+    /// Defines groups of <see cref="ItemType"/>s and defines in which slot an item can be slotted.
     /// <para/>
     /// The <see cref="ItemType"/>s belonging to a <see cref="ItemGroup"/> can 
     /// be accessed via <see cref="ItemTypExtensions"/>.
@@ -20,6 +20,7 @@ namespace POESKillTree.Model.Items
         Gloves,
         Helmet,
         Shield,
-        Jewel
+        Jewel,
+        Gem
     }
 }
