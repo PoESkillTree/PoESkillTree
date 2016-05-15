@@ -189,7 +189,7 @@ namespace POESKillTree.Model.Items
 
         /// <summary>
         /// Creates an ItemBase that sets <see cref="ItemGroup"/> and <see cref="ItemType"/> on
-        /// a best effort base. They might not be set correctly.
+        /// a best effort basis. They might not be set correctly.
         /// <para/>
         /// Only <see cref="Name"/>, <see cref="ItemGroup"/> and <see cref="ItemType"/> may be called on
         /// ItemBases created via this constructor. It is not meant to produce bases that can exist independent
