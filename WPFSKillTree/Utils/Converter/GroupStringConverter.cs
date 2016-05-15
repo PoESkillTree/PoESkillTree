@@ -37,6 +37,7 @@ namespace POESKillTree.Utils.Converter
         private static readonly List<string[]> DefaultGroups = new List<string[]>
         {
             new[] {"Share Endurance, Frenzy and Power Charges with nearby party members", Keystone},
+            new[] {"Critical Strike Chance with Claws", CriticalStrike},
             new[] {"with Claws", Weapon},
             new[] {"Endurance Charge", Charges},
             new[] {"Frenzy Charge", Charges},
