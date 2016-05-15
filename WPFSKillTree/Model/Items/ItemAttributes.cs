@@ -287,8 +287,7 @@ namespace POESKillTree.Model.Items
 
         private void AddItem(JObject val, ItemSlot islot)
         {
-            var item = new Item(val) { Slot = islot };
-            Equip.Add(item);
+            Equip.Add(new Item(val, islot));
         }
 
 

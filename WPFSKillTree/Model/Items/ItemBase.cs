@@ -179,8 +179,92 @@ namespace POESKillTree.Model.Items
             Name = xmlBase.Name;
             ItemType = xmlBase.ItemType;
             ItemGroup = ItemType.Group();
-            ImplicitMods = xmlBase.Implicit != null ? xmlBase.Implicit.Select(i => new Stat(i, ItemType)).ToList() : new List<Stat>();
-            Properties = xmlBase.Properties != null ? xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList() : new List<Stat>();
+            ImplicitMods = xmlBase.Implicit != null
+                ? xmlBase.Implicit.Select(i => new Stat(i, ItemType)).ToList()
+                : new List<Stat>();
+            Properties = xmlBase.Properties != null
+                ? xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList()
+                : new List<Stat>();
+        }
+
+        /// <summary>
+        /// Creates an ItemBase that sets <see cref="ItemGroup"/> and <see cref="ItemType"/> on
+        /// a best effort base. They might not be set correctly.
+        /// <para/>
+        /// Only <see cref="Name"/>, <see cref="ItemGroup"/> and <see cref="ItemType"/> may be called on
+        /// ItemBases created via this constructor. It is not meant to produce bases that can exist independent
+        /// of the <see cref="Item"/> they are created for.
+        /// </summary>
+        /// <param name="itemSlot">The slot the parent <see cref="Item"/> is slotted into.
+        /// <see cref="ItemSlot.Unequipable"/> if is not equipped.</param>
+        /// <param name="typeLine">The TypeLine property of the parent <see cref="Item"/>.</param>
+        /// <param name="weaponClass">A string representing the weapon class of the parent <see cref="Item"/>.
+        /// Can be null or empty if that item is not a weapon. The weapon class generally is a property without value.</param>
+        public ItemBase(ItemSlot itemSlot, string typeLine, string weaponClass)
+        {
+            // These don't matter as we won't create new items from this base.
+            Level = 0;
+            RequiredStrength = 0;
+            RequiredDexterity = 0;
+            RequiredIntelligence = 0;
+            ImplicitMods = new List<Stat>();
+            Properties = new List<Stat>();
+
+            Name = typeLine;
+            ItemGroup = ItemSlotToGroup(itemSlot);
+            if (ItemGroup != ItemGroup.Unknown)
+            {
+                // This might be wrong for Armour slots, but the item will most likely not be edited so this is not important.
+                ItemType = ItemGroup.Types()[0];
+                return;
+            }
+            if (typeLine.Contains("Quiver"))
+                ItemType = ItemType.Quiver;
+            else if (typeLine.Contains("Shield") || typeLine.Contains("Buckler"))
+                ItemType = ItemType.ShieldArmour;
+            else if (typeLine.Contains("Amulet") || typeLine.Contains("Talisman"))
+                ItemType = ItemType.Amulet;
+            else if (typeLine.Contains("Ring"))
+                ItemType = ItemType.Ring;
+            else if (typeLine.Contains("Belt"))
+                ItemType = ItemType.Belt;
+            else if (!string.IsNullOrEmpty(weaponClass.Trim()))
+            {
+                ItemType type;
+                if (Enum.TryParse(Regex.Replace(weaponClass.Trim(), "([a-z]) ([A-Z])", "$1$2"), true, out type))
+                    ItemType = type;
+            }
+            ItemGroup = ItemType.Group();
+        }
+
+        /// <summary>
+        /// Returns the <see cref="ItemGroup"/> that fits <paramref name="itemSlot"/>
+        /// if it's not ambigous.
+        /// </summary>
+        private static ItemGroup ItemSlotToGroup(ItemSlot itemSlot)
+        {
+            switch (itemSlot)
+            {
+                case ItemSlot.Armor:
+                    return ItemGroup.BodyArmour;
+                case ItemSlot.Ring:
+                case ItemSlot.Ring2:
+                    return ItemGroup.Ring;
+                case ItemSlot.Amulet:
+                    return ItemGroup.Amulet;
+                case ItemSlot.Helm:
+                    return ItemGroup.Helmet;
+                case ItemSlot.Gloves:
+                    return ItemGroup.Gloves;
+                case ItemSlot.Boots:
+                    return ItemGroup.Boots;
+                case ItemSlot.Gem:
+                    return ItemGroup.Gem;
+                case ItemSlot.Belt:
+                    return ItemGroup.Belt;
+                default: // MainHand, OffHand, Unequippable
+                    return ItemGroup.Unknown;
+            }
         }
 
         public Item CreateItem()
@@ -196,9 +280,7 @@ namespace POESKillTree.Model.Items
             var props = new List<ItemMod>();
 
             if (ItemGroup == ItemGroup.TwoHandedWeapon || ItemGroup == ItemGroup.OneHandedWeapon)
-                props.Add(new ItemMod(ItemType,
-                    Regex.Replace(ItemType.ToString(), @"([a-z])([A-Z])",
-                        m => m.Groups[1].Value + " " + m.Groups[2].Value)));
+                props.Add(new ItemMod(ItemType, Regex.Replace(ItemType.ToString(), @"([a-z])([A-Z])", @"$1 $2")));
 
             if (Properties != null)
                 props.AddRange(Properties.Select(prop => prop.ToItemMod()));
@@ -231,7 +313,7 @@ namespace POESKillTree.Model.Items
                 WordSetTreeNode nod;
                 if (!_children.TryGetValue(word, out nod))
                 {
-                    nod = new WordSetTreeNode { _word = word, _parent = this, Level = Level + 1 };
+                    nod = new WordSetTreeNode {_word = word, _parent = this, Level = Level + 1};
                     _children.Add(word, nod);
                 }
 
@@ -251,7 +333,6 @@ namespace POESKillTree.Model.Items
 
                     if (nod._children == null || !nod._children.TryGetValue(w, out nod))
                         yield break;
-
                 }
 
                 if (nod._isLeaf)

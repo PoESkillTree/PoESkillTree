@@ -203,12 +203,6 @@ namespace POESKillTree.Model.Items
             }
         }
 
-        public Item(JObject val)
-            : this(ItemGroup.Unknown, val)
-        {
-            FixOldItems();
-        }
-
         public Item(ItemBase itemBase, int width, int height)
         {
             _baseType = itemBase;
@@ -219,11 +213,10 @@ namespace POESKillTree.Model.Items
             RequirementsFromBase();
         }
 
-        private Item(ItemGroup itemGroup, JObject val)
+        public Item(JObject val, ItemSlot itemSlot = ItemSlot.Unequipable, bool isGem = false)
         {
             JsonBase = val;
-
-            _itemGroup = itemGroup;
+            Slot = itemSlot;
 
             Width = val["w"].Value<int>();
             Height = val["h"].Value<int>();
@@ -234,22 +227,6 @@ namespace POESKillTree.Model.Items
 
             if (val["name"] != null)
                 NameLine = FilterJsonString(val["name"].Value<string>());
-
-            Frame = (FrameType)val["frameType"].Value<int>();
-            TypeLine = FilterJsonString(val["typeLine"].Value<string>());
-            if (Frame < FrameType.Rare)
-            {
-                _baseType = ItemBase.ItemBaseFromTypeline(TypeLine);
-            }
-            else
-            {
-                ItemBase.BaseDictionary.TryGetValue(TypeLine, out _baseType);
-            }
-            if (_baseType != null)
-            {
-                _itemType = BaseType.ItemType;
-                _itemGroup = BaseType.ItemGroup;
-            }
 
             if (val["properties"] != null)
             {
@@ -307,7 +284,7 @@ namespace POESKillTree.Model.Items
                 FlavourText = string.Join("\r\n", val["flavourText"].Values<string>().Select(s => s.Replace("\r", "")));
 
 
-            if (itemGroup == ItemGroup.Gem)
+            if (isGem)
             {
                 switch (val["colour"].Value<string>())
                 {
@@ -340,9 +317,36 @@ namespace POESKillTree.Model.Items
                 int socket = 0;
                 foreach (JObject obj in (JArray)val["socketedItems"])
                 {
-                    var item = new Item(ItemGroup.Gem, obj) { _socketGroup = sockets[socket++] };
+                    var item = new Item(obj, isGem: true) { _socketGroup = sockets[socket++] };
                     _gems.Add(item);
                 }
+            }
+
+            Frame = (FrameType)val["frameType"].Value<int>();
+            TypeLine = FilterJsonString(val["typeLine"].Value<string>());
+            if (isGem)
+            {
+                // BaseType will be null for gems.
+                _itemGroup = ItemGroup.Gem;
+            }
+            else
+            {
+                if (Frame < FrameType.Rare)
+                {
+                    _baseType = ItemBase.ItemBaseFromTypeline(TypeLine);
+                }
+                else
+                {
+                    ItemBase.BaseDictionary.TryGetValue(TypeLine, out _baseType);
+                }
+                if (_baseType == null)
+                {
+                    _baseType = new ItemBase(itemSlot, TypeLine, _keywords == null ? "" : _keywords.FirstOrDefault());
+                }
+                _itemType = BaseType.ItemType;
+                _itemGroup = BaseType.ItemGroup;
+
+                FixOldItems();
             }
         }
 
