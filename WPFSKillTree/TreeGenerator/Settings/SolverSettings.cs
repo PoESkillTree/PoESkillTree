@@ -41,6 +41,12 @@ namespace POESKillTree.TreeGenerator.Settings
         public readonly HashSet<ushort> InitialTree;
 
         /// <summary>
+        /// The number of iterations the solver should run. Each iteration is independent of each other
+        /// and the best solution over all iterations is kept.
+        /// </summary>
+        public readonly int Iterations;
+
+        /// <summary>
         /// Creates new SolverSettings.
         /// </summary>
         /// <param name="level">Character Level that calculations are based on. (>= 0)</param>
@@ -49,11 +55,13 @@ namespace POESKillTree.TreeGenerator.Settings
         /// <param name="crossed">Set of Nodes that must not be included in the result tree.</param>
         /// <param name="subsetTree">Nodes the result tree must be a subset of. (empty means no restriction)</param>
         /// <param name="initialTree">Tree for the initial configuration. (empty means starting from scratch)</param>
+        /// <param name="iterations">The number of iterations the solver should run. (>= 1)</param>
         public SolverSettings(int level, int totalPoints, HashSet<ushort> @checked, HashSet<ushort> crossed,
-            HashSet<ushort> subsetTree, HashSet<ushort> initialTree)
+            HashSet<ushort> subsetTree, HashSet<ushort> initialTree, int iterations)
         {
             if (level < 0) throw new ArgumentOutOfRangeException("level", level, "must be >= 0");
             if (totalPoints < 0) throw new ArgumentOutOfRangeException("totalPoints", totalPoints, "must be >= 0");
+            if (iterations < 1) throw new ArgumentOutOfRangeException("iterations", iterations, "must be >= 1");
 
             Level = level;
             TotalPoints = totalPoints;
@@ -61,6 +69,7 @@ namespace POESKillTree.TreeGenerator.Settings
             Crossed = crossed ?? new HashSet<ushort>();
             SubsetTree = subsetTree ?? new HashSet<ushort>();
             InitialTree = initialTree ?? new HashSet<ushort>();
+            Iterations = iterations;
         }
     }
 }

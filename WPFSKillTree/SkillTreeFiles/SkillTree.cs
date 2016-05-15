@@ -37,7 +37,7 @@ namespace POESKillTree.SkillTreeFiles
         public static readonly float DexPerAcc = 0.5f;
         public static readonly float DexPerEvas = 5; //%
         public static readonly string TreeAddress = "https://www.pathofexile.com/passive-skill-tree/";
-        public static readonly string TreeRegex = @"(http(|s):\/\/|).*?\/(character\/|passive-skill-tree\/|fullscreen-passive-skill-tree\/|#|poeplanner.com\/)";
+        public static readonly string TreeRegex = @"(http(|s):\/\/|).*?(character(\/|)|passive-skill-tree(\/|)|fullscreen-passive-skill-tree(\/|)|#|poeplanner.com(\/|))";
 
         public Vector2D ascedancyButtonPos = new Vector2D();
         /// <summary>
@@ -1001,8 +1001,9 @@ namespace POESKillTree.SkillTreeFiles
                     var regex = new Regex(search, RegexOptions.IgnoreCase);
                     var nodes =
                         Skillnodes.Values.Where(
-                            nd => matchFct(nd.attributes, att => regex.IsMatch(att)) ||
-                                  regex.IsMatch(nd.Name) && !nd.IsMastery);
+                            nd => (matchFct(nd.attributes, att => regex.IsMatch(att)) ||
+                                  regex.IsMatch(nd.Name) && !nd.IsMastery) &&
+                                  (drawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses ? true : nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null) : nd.ascendancyName == null));
                     _nodeHighlighter.ReplaceHighlights(nodes, flag);
                     DrawHighlights();
                 }
@@ -1016,8 +1017,9 @@ namespace POESKillTree.SkillTreeFiles
                 search = search.ToLowerInvariant();
                 var nodes =
                     Skillnodes.Values.Where(
-                        nd => matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
-                              nd.Name.ToLowerInvariant().Contains(search) && !nd.IsMastery);
+                        nd => (matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
+                              nd.Name.ToLowerInvariant().Contains(search) && !nd.IsMastery) &&
+                              (drawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses ? true : nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null) : nd.ascendancyName == null ));
                 _nodeHighlighter.ReplaceHighlights(nodes, flag);
                 DrawHighlights();
             }

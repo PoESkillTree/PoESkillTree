@@ -8,9 +8,6 @@ namespace POESKillTree.Model
         public string Language { get; set; }
         public string Theme { get; set; }
         public string Accent { get; set; } //Controlled by Menu Accent Headers
-        public string NodeSearchHighlightColor { get; set; }
-        public string NodeAttrHighlightColor { get; set; }
-        public string NodeHoverHighlightColor { get; set; }
 
         private bool _attributesBarOpened;
         public bool AttributesBarOpened
@@ -77,6 +74,42 @@ namespace POESKillTree.Model
                 OnPropertyChanged("ShowAllAscendancyClasses");
             }
         }
+
+        private string _nodeSearchHighlightColor = "Red";
+        public string NodeSearchHighlightColor
+        {
+            get { return _nodeSearchHighlightColor; }
+            set
+            {
+                _nodeSearchHighlightColor = value;
+                OnPropertyChanged("NodeSearchHighlightColor");
+            }
+        }
+
+        private string _nodeAttrHighlightColor = "LawnGreen";
+        public string NodeAttrHighlightColor
+        {
+            get { return _nodeAttrHighlightColor; }
+            set
+            {
+                _nodeAttrHighlightColor = value;
+                OnPropertyChanged("NodeAttrHighlightColor");
+            }
+        }
+
+        private string _nodeHoverHighlightColor = "DodgerBlue";
+        public string NodeHoverHighlightColor
+        {
+            get { return _nodeHoverHighlightColor; }
+            set
+            {
+                _nodeHoverHighlightColor = value;
+                OnPropertyChanged("NodeHoverHighlightColor");
+            }
+        }
+        
+        
+        
 
         public Options()
         {

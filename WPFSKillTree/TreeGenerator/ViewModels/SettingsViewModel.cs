@@ -120,6 +120,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set { SetProperty(ref _selectedTabIndex, value); }
         }
 
+        private int _iterations = 1;
+        /// <summary>
+        /// Gets or sets number of iterations this solver will run.
+        /// </summary>
+        public int Iterations
+        {
+            get { return _iterations; }
+            set { SetProperty(ref _iterations, value);}
+        }
+
         #endregion
 
 #region Commands
@@ -249,7 +259,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var crossed = _excludeCrossed ? _tree.GetCrossedNodes() : null;
             var subsetTree = _treeAsSubset ? _tree.SkilledNodes : null;
             var initialTree = _treeAsInitial ? _tree.SkilledNodes : null;
-            return new SolverSettings(level, totalPoints, @checked, crossed, subsetTree, initialTree);
+            var iterations = _iterations;
+            return new SolverSettings(level, totalPoints, @checked, crossed, subsetTree, initialTree, iterations);
         }
 
         /// <summary>

@@ -19,17 +19,14 @@ namespace POESKillTree.TreeGenerator.ViewModels
     /// </summary>
     public sealed class ControllerViewModel : CloseableViewModel
     {
+        private static readonly string IterationPrefix = L10n.Message("Current iteration:") + " ";
+
         /// <summary>
         /// The solver run by this ViewModel.
         /// </summary>
         private readonly ISolver _solver;
 
         private readonly SkillTree _tree;
-
-        /// <summary>
-        /// The maximum number of steps the solver does.
-        /// </summary>
-        private int _maxSteps;
 
         private HashSet<ushort> _bestSoFar;
         /// <summary>
@@ -77,7 +74,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Used to report progress from the solver running thread to the UI thread.
         /// </summary>
-        private readonly IProgress<Tuple<int, IEnumerable<ushort>>> _progress;
+        private readonly IProgress<Tuple<int, int, IEnumerable<ushort>>> _progress;
 
 #region Presentation
 
@@ -91,7 +88,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set { SetProperty(ref _progressbarMax, value); }
         }
 
-        private double _progressbarCurrent;
+        private double _progressbarCurrent = 1;
         /// <summary>
         /// Gets the current progress value.
         /// </summary>
@@ -119,6 +116,27 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             get { return _progressbarEnabled; }
             private set { SetProperty(ref _progressbarEnabled, value); }
+        }
+
+        private string _iterationText;
+        /// <summary>
+        /// Gets the text that should be displayed to indicate in which iteration
+        /// the solver currently is.
+        /// </summary>
+        public string IterationText
+        {
+            get { return _iterationText; }
+            private set { SetProperty(ref _iterationText, value); }
+        }
+
+        private bool _iterationTextVisible = true;
+        /// <summary>
+        /// True iff <see cref="IterationText"/> should be displayed.
+        /// </summary>
+        public bool IterationTextVisible
+        {
+            get { return _iterationTextVisible; }
+            private set { SetProperty(ref _iterationTextVisible, value); }
         }
 
         private bool _cancelCloseEnabled;
@@ -200,8 +218,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
             _solver = solver;
             DisplayName = L10n.Message("Skill tree generator") + " - " + generatorName;
             _tree = tree;
+            
+            IterationText = IterationPrefix + "1/" + _solver.Iterations;
+            IterationTextVisible = _solver.Iterations > 1;
 
-            _progress = new Progress<Tuple<int, IEnumerable<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2));
+            _progress = new Progress<Tuple<int, int, IEnumerable<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2, tuple.Item3));
             _reportStopwatch.Start();
 
             RequestClose += (sender, args) => CancelClose();
@@ -227,7 +248,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             try
             {
-                _maxSteps = await Task.Run(() =>
+                await Task.Run(() =>
                 {
 #if DEBUG
                     var stopwatch = new Stopwatch();
@@ -238,7 +259,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
                     stopwatch.Stop();
                     Debug.WriteLine("Initialization took " + stopwatch.ElapsedMilliseconds + " ms\n-----------------");
 #endif
-                    return _solver.MaxSteps;
                 });
 
             }
@@ -251,8 +271,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 return false;
             }
 
-            ProgressbarMax = _maxSteps;
-            ProgressbarText = "0/" + _maxSteps;
+            ProgressbarMax = _solver.Steps * _solver.Iterations;
+            ProgressbarText = "1/" + ProgressbarMax;
 
             CancelCloseEnabled = true;
             PauseResumeEnabled = true;
@@ -283,7 +303,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                     {
                         _solver.Step();
 
-                        _progress.Report(new Tuple<int, IEnumerable<ushort>>(_solver.CurrentStep, _solver.BestSolution));
+                        _progress.Report(new Tuple<int, int, IEnumerable<ushort>>(_solver.CurrentStep, _solver.CurrentIteration, _solver.BestSolution));
 
                         token.ThrowIfCancellationRequested();
                     }
@@ -310,7 +330,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             _isPaused = true;
 
             // Draw the final solution.
-            ProgressbarCurrent = _maxSteps;
+            ProgressbarCurrent = ProgressbarMax;
             BestSoFar = new HashSet<ushort>(result);
         }
 
@@ -318,16 +338,18 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Reports solver progress to be displayed.
         /// </summary>
         /// <param name="step">The number of executed steps.</param>
+        /// <param name="iteration">The number of executed iterations.</param>
         /// <param name="bestSoFar">The best result generated to this point.</param>
-        private void ReportProgress(int step, IEnumerable<ushort> bestSoFar)
+        private void ReportProgress(int step, int iteration, IEnumerable<ushort> bestSoFar)
         {
             if (_stopReporting || _reportStopwatch.ElapsedMilliseconds < 10)
             {
                 return;
             }
 
-            ProgressbarCurrent = step;
-            ProgressbarText = step + "/" + _maxSteps;
+            ProgressbarCurrent = step + iteration * _solver.Steps;
+            ProgressbarText = ProgressbarCurrent + "/" + ProgressbarMax;
+            IterationText = IterationPrefix + (iteration + 1) + "/" + _solver.Iterations;
             BestSoFar = new HashSet<ushort>(bestSoFar);
             
             _reportStopwatch.Restart();

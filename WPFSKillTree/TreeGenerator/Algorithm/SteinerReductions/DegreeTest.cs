@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using POESKillTree.TreeGenerator.Algorithm.Model;
-using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 {
@@ -40,7 +38,6 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
             var removedNodes = 0;
 
             var untested = new HashSet<int>(Enumerable.Range(0, SearchSpaceSize));
-            var dependentNodes = new Dictionary<int, List<int>>();
             while (untested.Any())
             {
                 var i = untested.First();
@@ -72,21 +69,19 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                     if (neighbors.Count == 1)
                     {
                         var other = neighbors[0];
-                        if (EdgeSet.NeighborsOf(other).Count > 2 || NodeStates.IsTarget(other))
-                        {
-                            // Fixed target nodes with one neighbor can be merged with their neighbor since
-                            // it must always be taken.
-                            untested.Add(i);
-                            untested.Remove(other);
-                            untested.UnionWith(MergeInto(other, i));
-                            removedNodes++;
-                        }
-                        else
-                        {
-                            // Node can only be merged once other has been processed. Other might be a dead end.
-                            Debug.Assert(untested.Contains(other));
-                            dependentNodes.Add(other, i);
-                        }
+                        // Fixed target nodes with one neighbor can be merged with their neighbor since
+                        // it must always be taken.
+                        // If the neighbor is no target and of degree 1 or 2, it will be removed by the tests above,
+                        // after which this node will be processed again.
+                        if (EdgeSet.NeighborsOf(other).Count <= 2 && !NodeStates.IsTarget(other)) continue;
+                        // If this node is the only fixed target, the neighbor must not be merged because
+                        //  if this is the only target, the neighbor and the rest of the tree will not be in the optimal solution,
+                        //  if there are only variable target nodes, the neighbor will not be in the optimal solution if the variable nodes are not taken.
+                        if (NodeStates.FixedTargetNodeCount == 1) continue;
+                        untested.Add(i);
+                        untested.Remove(other);
+                        untested.UnionWith(MergeInto(other, i));
+                        removedNodes++;
                     }
                     else if (neighbors.Count > 1)
                     {
@@ -103,12 +98,6 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                             removedNodes++;
                         }
                     }
-                }
-
-                List<int> dependent;
-                if (dependentNodes.TryGetValue(i, out dependent))
-                {
-                    untested.UnionWith(dependent);
                 }
             }
 

@@ -8,21 +8,32 @@ namespace POESKillTree.TreeGenerator.Solver
     public interface ISolver
     {
         /// <summary>
-        /// Gets whether the maximum number of steps is executed.
+        /// Gets whether all steps where executed for each iteration.
         /// </summary>
         bool IsConsideredDone { get; }
 
         /// <summary>
-        /// Gets the maximum number of steps the solver executes.
+        /// Gets the maximum number of steps the solver executes per iteration.
         /// Return value is undefined until <see cref="Initialize"/> got called.
         /// </summary>
-        int MaxSteps { get; }
+        int Steps { get; }
 
         /// <summary>
         /// Gets the number of steps executed up to this point.
-        /// Return value is undefined until <see cref="Initialize"/> got called.
+        /// Return value is 0 until <see cref="Initialize"/> got called.
         /// </summary>
         int CurrentStep { get; }
+
+        /// <summary>
+        /// Gets the number of iterations that should be executed.
+        /// </summary>
+        int Iterations { get; }
+
+        /// <summary>
+        /// Gets the number of the iteration that is currently executed.
+        /// This will only increase once the first step of the next iteration is being run.
+        /// </summary>
+        int CurrentIteration { get; }
 
         /// <summary>
         /// Gets the best solution generated up to this point as

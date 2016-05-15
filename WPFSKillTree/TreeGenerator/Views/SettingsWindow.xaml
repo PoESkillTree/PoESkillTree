@@ -26,6 +26,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -48,6 +49,19 @@
         <TextBox Grid.Row="2" Grid.Column="1" x:Name="TotalPoints" Text="{Binding TotalPoints, Mode=OneWay}" IsReadOnly="True"
                  Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,40,0"/>
 
+        <Label Grid.Row="3" Grid.Column="0" Margin="5" Target="{Binding ElementName=Iterations}">
+            <l:Catalog Message="Iterations:" />
+            <Label.ToolTip>
+                <TextBlock>
+                    <l:Catalog Message="Determines how often the generator is run. The best result from all runs is kept." />
+                    <LineBreak/>
+                    <l:Catalog Message="Pause and then Close it at any point to keep the current solution."></l:Catalog>
+                </TextBlock>
+            </Label.ToolTip>
+        </Label>
+        <controls:NumericUpDown Grid.Row="3" Grid.Column="1" x:Name="Iterations" Minimum="1"
+                                Value="{Binding Iterations, ValidatesOnDataErrors=True}"/>
+
         <CheckBox Grid.Row="0" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding IncludeChecked}">
             <l:Catalog Message="include Check-tagged nodes"/>
         </CheckBox>
@@ -61,14 +75,14 @@
             <l:Catalog Message="current tree as initial solution"/>
         </CheckBox>
 
-        <Button Grid.Row="2" Grid.Column="3" Margin="10,5" Command="{Binding RunCommand}">
+        <Button Grid.Row="3" Grid.Column="3" Margin="10,5" Command="{Binding RunCommand}">
             <l:Catalog Message="Run"/>
         </Button>
-        <Button Grid.Row="2" Grid.Column="2" Margin="20,5,10,5" Command="{Binding ResetCommand}">
+        <Button Grid.Row="3" Grid.Column="2" Margin="20,5,10,5" Command="{Binding ResetCommand}">
             <l:Catalog Message="Reset settings"/>
         </Button>
         
-        <TabControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex}">
+        <TabControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
                 <local:AdvancedGeneratorTab/>
             </TabItem>

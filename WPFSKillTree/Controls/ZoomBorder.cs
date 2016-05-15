@@ -12,6 +12,7 @@ namespace POESKillTree.Controls
         private UIElement _child;
         private Point _origin;
         private Point _start;
+        private bool allowZoom = true;
 
         public Point Origin
         {
@@ -71,7 +72,6 @@ namespace POESKillTree.Controls
                 _child.MouseLeftButtonDown += child_MouseLeftButtonDown;
                 _child.MouseLeftButtonUp += child_MouseLeftButtonUp;
                 _child.MouseMove += child_MouseMove;
-                _child.KeyUp += child_KeyDown;
             }
         }
 
@@ -127,12 +127,16 @@ namespace POESKillTree.Controls
 
         private void ZoomIn(dynamic e)
         {
+            if (!allowZoom)
+                return;
             if (_child != null)
             {
                 TranslateTransform tt = GetTranslateTransform(_child);
                 ScaleTransform st = GetScaleTransform(_child);
 
                 const double zoom = .3;
+                if (st.ScaleX + zoom > 75 || st.ScaleY + zoom > 75)
+                    return;
                 Point relative = e.GetPosition(_child);
 
                 double abosuluteX = relative.X * st.ScaleX + tt.X;
@@ -148,57 +152,21 @@ namespace POESKillTree.Controls
 
         private void ZoomOut(dynamic e)
         {
+            if (!allowZoom)
+                return;
             if (_child != null)
             {
                 TranslateTransform tt = GetTranslateTransform(_child);
                 ScaleTransform st = GetScaleTransform(_child);
 
-                if ((st.ScaleX < 0.4 || st.ScaleY < 0.4))
+                const double zoom = -.3;
+                if (st.ScaleX + zoom < 0.5 || st.ScaleY + zoom < 0.5)
                     return;
 
-                const double zoom = -.3;
                 Point relative = e.GetPosition(_child);
 
                 double abosuluteX = relative.X * st.ScaleX + tt.X;
                 double abosuluteY = relative.Y * st.ScaleY + tt.Y;
-
-                st.ScaleX += zoom * st.ScaleX;
-                st.ScaleY += zoom * st.ScaleY;
-
-                tt.X = abosuluteX - relative.X * st.ScaleX;
-                tt.Y = abosuluteY - relative.Y * st.ScaleY;
-            }
-        }
-
-        private void child_KeyDown(object sender, KeyEventArgs k)
-        {
-            if (_child != null)
-            {
-                var st = GetScaleTransform(_child);
-                var tt = GetTranslateTransform(_child);
-
-                double zoom;
-
-                switch (k.Key)
-                {
-                    case Key.Add:
-                        zoom = .3;
-                        break;
-                    case Key.Subtract:
-                        zoom = -.3;
-                        break;
-                    default:
-                        zoom = 0;
-                        break;
-                }
-
-                if ((st.ScaleX < 0.4 || st.ScaleY < 0.4))
-                    return;
-
-                var relative = _origin;
-
-                var abosuluteX = relative.X * st.ScaleX + tt.X;
-                var abosuluteY = relative.Y * st.ScaleY + tt.Y;
 
                 st.ScaleX += zoom * st.ScaleX;
                 st.ScaleY += zoom * st.ScaleY;
@@ -221,7 +189,7 @@ namespace POESKillTree.Controls
                 {
                     ZoomIn(e);
                 }
-
+                allowZoom = false;
                 var tt = GetTranslateTransform(_child);
                 _start = e.GetPosition(this);
                 _origin = new Point(tt.X, tt.Y);
@@ -234,7 +202,7 @@ namespace POESKillTree.Controls
         {
             // Not sure if this takes the zoom factor into account, but this feels reasonable.
             const double dragThreshold = 5;
-
+            allowZoom = true;
             if (_child != null)
             {
                 _child.ReleaseMouseCapture();
@@ -270,8 +238,6 @@ namespace POESKillTree.Controls
                 var st = GetScaleTransform(_child);
 
                 var zoom = e.Delta > 0 ? .3 : -.3;
-                if (!(e.Delta > 0) && (st.ScaleX < 0.4 || st.ScaleY < 0.4))
-                    return;
 
                 if (zoom > 0)
                     ZoomIn(e);

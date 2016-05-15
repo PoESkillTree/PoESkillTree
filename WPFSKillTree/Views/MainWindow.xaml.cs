@@ -480,6 +480,7 @@ namespace POESKillTree.Views
         {
             if (e.PropertyName == _persistentData.Options.Name(x => x.ShowAllAscendancyClasses))
                 Tree.ToggleAscendancyTree(_persistentData.Options.ShowAllAscendancyClasses);
+            SearchUpdate();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -1529,6 +1530,7 @@ namespace POESKillTree.Views
             {
                 Tree.DrawAscendancyButton("Pressed");
                 Tree.ToggleAscendancyTree();
+                SearchUpdate();
             }
             else
             {

@@ -728,7 +728,7 @@
                         <l:Catalog Message="PASSIVE TREE"/>
                     </TabItem.Header>
                     <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
-                        <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="True" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </local:ZoomBorder>
                 </TabItem>
                 <TabItem Name="tyEquipment">

@@ -36,7 +36,7 @@ namespace UnitTests
             // Per level gain.
             expect2 = new List<double> { double.NaN, 120, 121.4, 122.8, 124.2, 125.6, 127, 128.4, 129.8, 131.2, 132.6, 134, 135.4, 136.8, 138.2, 139.6, 141, 142.4, 143.8, 145.2, 146.6, 148, 149.4, 150.8, 152.2, 153.6, 155, 156.4, 157.8, 159.2, 160.6 };
             for (int level = 1; level < expect2.Count; ++level)
-                Assert.AreEqual(Math.Round(expect2[level], 1), Math.Round(GetValueOf("Molten Strike", "Deals #% of Base Damage", level)[0], 1));
+                Assert.AreEqual(Math.Round(expect2[level], 1), Math.Round(GetValueOf("Molten Strike", "Deals #% of Base Attack Damage", level)[0], 1));
 
             // Table of damage ranges.
             expectPair = new List<float[]> { new float[] { float.NaN, float.NaN },

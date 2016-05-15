@@ -48,10 +48,11 @@ namespace POESKillTree.TreeGenerator.Settings
         public readonly Dictionary<string, float> InitialAttributes;
 
         private AdvancedSolverSettings(int level, int totalPoints, HashSet<ushort> @checked, HashSet<ushort> crossed,
-            HashSet<ushort> subsetTree, HashSet<ushort> initialTree, Dictionary<string, float> initialAttributes,
+            HashSet<ushort> subsetTree, HashSet<ushort> initialTree, int iterations,
+            Dictionary<string, float> initialAttributes,
             Dictionary<string, Tuple<float, double>> attributeConstraints, Dictionary<PseudoAttribute, Tuple<float, double>> pseudoAttributeConstraints,
             WeaponClass weaponClass, Tags tags, OffHand offHand)
-            : base(level, totalPoints, @checked, crossed, subsetTree, initialTree)
+            : base(level, totalPoints, @checked, crossed, subsetTree, initialTree, iterations)
         {
             WeaponClass = weaponClass;
             Tags = tags;
@@ -86,7 +87,7 @@ namespace POESKillTree.TreeGenerator.Settings
             Dictionary<PseudoAttribute, Tuple<float, double>> pseudoAttributeConstraints,
             WeaponClass weaponClass, Tags tags, OffHand offHand)
             : this(baseSettings.Level, baseSettings.TotalPoints, baseSettings.Checked, baseSettings.Crossed,
-                baseSettings.SubsetTree, baseSettings.InitialTree, initialAttributes,
+                baseSettings.SubsetTree, baseSettings.InitialTree, baseSettings.Iterations, initialAttributes,
                 attributeConstraints, pseudoAttributeConstraints, weaponClass, tags, offHand)
         { }
     }

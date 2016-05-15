@@ -30,6 +30,10 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// Nodes that can not swapped out of the current set.
         /// </summary>
         private readonly HashSet<ushort> _fixedNodes;
+        /// <summary>
+        /// Nodes that are in the search space (their GraphNode has a valid DistanceIndex).
+        /// </summary>
+        private readonly HashSet<ushort> _searchSpaceNodes;
 
         private readonly object _improvementLock = new object();
 
@@ -70,10 +74,19 @@ namespace POESKillTree.TreeGenerator.Algorithm
             _fitnessFunc = fitnessFunc;
             _fixedNodes = new HashSet<ushort>(fixedNodes.Select(n => n.Id));
             _allNodes = new HashSet<ushort>();
+            _searchSpaceNodes = new HashSet<ushort>();
             foreach (var graphNode in allNodes)
             {
                 _allNodes.Add(graphNode.Id);
                 _adjacencyMatrix[graphNode.Id] = graphNode.Adjacent.Select(n => n.Id).ToArray();
+
+                // Only nodes that are in the search space can be removed. The adjacency information
+                // may be incorrect for nodes that did not survive reductions.
+                // In most cases this is not bad because nodes were removed from the search space for
+                // being irrelevant to the solution. It may be bad if entire clusters are switched out
+                // because the travel nodes to them are not in the search space.
+                if (graphNode.DistancesIndex >= 0)
+                    _searchSpaceNodes.Add(graphNode.Id);
             }
         }
 
@@ -99,8 +112,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
 
                 Parallel.ForEach(_current, (curNode, state) =>
                 {
-                    // If node is fixed it can't be removed.
-                    if (_fixedNodes.Contains(curNode)) return;
+                    // If node is fixed or not in the search space it can't be removed.
+                    if (_fixedNodes.Contains(curNode) || !_searchSpaceNodes.Contains(curNode)) return;
 
                     var newCur = new HashSet<ushort>(_current);
                     var newNot = new HashSet<ushort>(_notCurrent);
