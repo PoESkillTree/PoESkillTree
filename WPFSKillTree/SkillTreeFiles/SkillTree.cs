@@ -1195,7 +1195,9 @@ namespace POESKillTree.SkillTreeFiles
 
         public string SaveToURL()
         {
-            var b = new byte[7 + SkilledNodes.Count * 2];
+            var points = GetPointCount();
+            var count = points["NormalUsed"] + points["AscendancyUsed"];
+            var b = new byte[7 + count * 2];
             AscType = AscendancyClasses.GetClassNumber(GetAscendancyClass(SkilledNodes));
             var b2 = GetCharacterBytes((byte)Chartype, (byte) AscType);
             for (var i = 0; i < b2.Length; i++)
