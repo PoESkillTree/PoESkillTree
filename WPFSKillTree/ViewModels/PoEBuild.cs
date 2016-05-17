@@ -25,7 +25,13 @@ namespace POESKillTree.ViewModels
             set { SetProperty(ref _accountName, value); }
         }
 
-        public string League { get; set; }
+        private string _league;
+        public string League
+        {
+            get { return _league; }
+            set { SetProperty(ref _league, value); }
+        }
+
         public string Level { get; set; }
         public string Class { get; set; }
         public string PointsUsed { get; set; }

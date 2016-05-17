@@ -1,32 +1,23 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace POESKillTree.Model
 {
-    /// <summary>
-    /// this class is a copy from msisdn, needed to create commands
-    /// </summary>
-    public class RelayCommand : ICommand
+    public class RelayCommand : RelayCommand<object>
     {
-        #region Fields
-
-        readonly Action<object> _execute;
-        readonly Predicate<object> _canExecute;
-
-        #endregion
-
-        #region Constructors
-
-        public RelayCommand(Action<object> execute)
-            : this(execute, null)
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
+            : base(execute, canExecute)
         {
         }
+    }
 
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+    public class RelayCommand<T> : ICommand
+    {
+        private readonly Action<T> _execute;
+        private readonly Predicate<T> _canExecute;
+
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
         {
             if (execute == null)
                 throw new ArgumentNullException("execute");
@@ -34,14 +25,15 @@ namespace POESKillTree.Model
             _execute = execute;
             _canExecute = canExecute;
         }
-        #endregion 
-
-        #region ICommand Members
 
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute(parameter);
+            if (_canExecute == null)
+            {
+                return true;
+            }
+            return parameter is T && _canExecute((T) parameter);
         }
 
         public event EventHandler CanExecuteChanged
@@ -52,9 +44,7 @@ namespace POESKillTree.Model
 
         public void Execute(object parameter)
         {
-            _execute(parameter);
+            _execute((T) parameter);
         }
-
-        #endregion 
     }
 }

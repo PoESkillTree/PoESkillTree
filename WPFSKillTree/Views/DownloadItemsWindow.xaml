@@ -26,7 +26,7 @@
     </i:Interaction.Triggers>
     <StackPanel Background="{DynamicResource WhiteColorBrush}">
         <TextBlock Margin="5" TextWrapping="Wrap">
-            <l:Catalog Message="Please enter Your Character and Account Name below and click 'Open in Browser'."/><LineBreak/>
+            <l:Catalog Message="Please enter your Character and Account Name below and click 'Open in Browser'."/><LineBreak/>
             <l:Catalog Message="This will open a page in your default Web-Browser containing your character's item data"/><LineBreak/>
             <l:Catalog Message="Copy the contents of that page and paste them into the 'Item data' field."/>
         </TextBlock>
@@ -60,7 +60,7 @@
                 <l:Catalog Message="Open in Browser"/>
             </Button>
         </Grid>
-        <TextBox Margin="5" TextWrapping="Wrap" Text="{Binding ItemsLink}"/>
+        <TextBox Margin="5" TextWrapping="Wrap" Text="{Binding ItemsLink}" IsReadOnly="True"/>
         
         <Label HorizontalAlignment="Left" Margin="5,5,0,0">
             <l:Catalog Message="Item data:"/>

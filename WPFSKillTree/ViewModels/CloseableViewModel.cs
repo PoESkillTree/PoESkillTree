@@ -7,6 +7,9 @@ namespace POESKillTree.ViewModels
 {
     /// <summary>
     /// Abstract class for ViewModels that can be closed.
+    /// <para/>
+    /// Handlers of <see cref="RequestClose"/> need to set <see cref="Result"/> to
+    /// true or false if the View should be closed.
     /// </summary>
     public abstract class CloseableViewModel : ViewModelBase
     {
@@ -33,7 +36,7 @@ namespace POESKillTree.ViewModels
         /// <summary>
         /// Raised when the close command is executed.
         /// </summary>
-        public event EventHandler RequestClose;
+        protected event EventHandler RequestClose;
 
     }
 }

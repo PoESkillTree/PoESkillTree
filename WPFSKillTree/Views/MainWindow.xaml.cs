@@ -23,6 +23,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
@@ -822,6 +823,16 @@ namespace POESKillTree.Views
                 DataContext = new DownloadItemsViewModel(_persistentData.CurrentBuild)
             };
             diw.ShowDialog();
+        }
+
+        private void Menu_ImportStash(object sender, RoutedEventArgs e)
+        {
+            var dialog = new DownloadStashWindow
+            {
+                Owner = this,
+                DataContext = new DownloadStashViewModel(_persistentData.CurrentBuild, Stash, DialogCoordinator.Instance)
+            };
+            dialog.ShowDialog();
         }
 
         private void Menu_CopyStats(object sender, RoutedEventArgs e)
@@ -2666,14 +2677,6 @@ namespace POESKillTree.Views
             {
                 deleteRect.Opacity = 0.0;
             }
-        }
-
-        private void Menu_ImportStash(object sender, RoutedEventArgs e)
-        {
-            var diw = new DownloadStashWindow(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.League) { Owner = this };
-            diw.ShowDialog();
-            _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
-            _persistentData.CurrentBuild.League = diw.GetAccountName();
         }
 
         #region Async task helpers
