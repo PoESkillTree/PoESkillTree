@@ -1280,7 +1280,7 @@ namespace POESKillTree.SkillTreeFiles
                 var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this));
                 settingsVm.StartController += (sender, args) =>
                 {
-                    var dialog = new ControllerWindow() {Owner = MainWindow, DataContext = args.ViewModel};
+                    var dialog = new ControllerWindow {Owner = MainWindow, DataContext = args.ViewModel};
                     dialog.ShowDialog();
                 };
                 settingsVm.RunCommand.Execute(null);

@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow
+﻿<dialogs:CustomDialog
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     x:Class="POESKillTree.Views.DownloadItemsWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7,23 +7,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     xmlns:viewModels="clr-namespace:POESKillTree.ViewModels"
-    xmlns:utils="clr-namespace:POESKillTree.Utils"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    WindowStartupLocation="CenterOwner"
-    Width="350"
-    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
-    BorderBrush="{DynamicResource AccentColorBrush}"
-    BorderThickness="1"
+    xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     d:DataContext="{d:DesignInstance viewModels:DownloadItemsViewModel}"
-    utils:DialogCloser.DialogResult="{Binding Result}">
-    <controls:MetroWindow.Title>
-        <l:Catalog Message="Download &amp; Import Items"/>
-    </controls:MetroWindow.Title>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding CloseCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    Style="{StaticResource CustomDialog}">
     <StackPanel Background="{DynamicResource WhiteColorBrush}">
         <TextBlock Margin="5" TextWrapping="Wrap">
             <l:Catalog Message="Please enter your Character and Account Name below and click 'Open in Browser'."/><LineBreak/>
@@ -69,10 +55,5 @@
                  AcceptsTab="True" AcceptsReturn="True" MaxHeight="100"
                  controls:TextBoxHelper.ClearTextButton="True"
                  Text="{Binding Build.ItemData}" />
-
-        <Button HorizontalAlignment="Right" Margin="5" Width="75" IsDefault="True"
-                Command="{Binding CloseCommand}">
-            <l:Catalog Message="OK"/>
-        </Button>
     </StackPanel>
-</controls:MetroWindow>
+</dialogs:CustomDialog>

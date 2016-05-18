@@ -1,0 +1,78 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+                    xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                    xmlns:viewModels="clr-namespace:POESKillTree.ViewModels"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/Dialogs/BaseMetroDialog.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- The control template can't be partly adjusted so this is mostly copy pasted from
+         https://github.com/MahApps/MahApps.Metro/blob/1.2.4/MahApps.Metro/Themes/Dialogs/BaseMetroDialog.xaml
+         The button at the bottom is new and the title in the TextBlock is directly used from ViewModelBase.DisplayName.
+         -->
+    <ControlTemplate x:Key="CustomDialogTemplate" TargetType="{x:Type dialogs:CustomDialog}">
+        <Grid Background="{TemplateBinding Background}" d:DataContext="{d:DesignInstance viewModels:CloseableViewModel}">
+            <Border FocusVisualStyle="{x:Null}" Focusable="False">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ContentPresenter Grid.Row="0" Content="{TemplateBinding DialogTop}" />
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25*" />
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="25*" />
+                        </Grid.ColumnDefinitions>
+                        <!--  Content area  -->
+                        <Grid Grid.Column="1" Margin="0 10 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0"
+                                       FontSize="{DynamicResource DialogTitleFontSize}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding DisplayName}" />
+                            <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
+                            <StackPanel Grid.Row="2"
+                                        Height="85"
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal">
+                                <Button Height="35"
+                                        MinWidth="80"
+                                        Margin="0 0 5 0"
+                                        IsDefault="True"
+                                        Style="{DynamicResource AccentedDialogSquareButton}"
+                                        Command="{Binding CloseCommand}">
+                                    <l:Catalog Message="OK"/>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <ContentPresenter Grid.Row="2" Content="{TemplateBinding DialogBottom}" />
+                </Grid>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <EventTrigger.Actions>
+                    <BeginStoryboard Storyboard="{StaticResource DialogShownStoryboard}" />
+                </EventTrigger.Actions>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="CustomDialog" TargetType="{x:Type dialogs:CustomDialog}" BasedOn="{StaticResource {x:Type dialogs:BaseMetroDialog}}">
+        <Setter Property="Template" Value="{StaticResource CustomDialogTemplate}" />
+    </Style>
+
+</ResourceDictionary>

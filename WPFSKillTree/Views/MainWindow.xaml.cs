@@ -702,10 +702,10 @@ namespace POESKillTree.Views
                     };
                     vm.StartController += (o, args) =>
                     {
-                        var dialog = new ControllerWindow() {Owner = this, DataContext = args.ViewModel};
+                        var dialog = new ControllerWindow {Owner = this, DataContext = args.ViewModel};
                         dialog.ShowDialog();
                     };
-                    _settingsWindow = new SettingsWindow() {Owner = this, DataContext = vm};
+                    _settingsWindow = new SettingsWindow {Owner = this, DataContext = vm};
                     _settingsWindow.Closing += (o, args) =>
                     {
                         if (_isClosing) return;
@@ -815,24 +815,25 @@ namespace POESKillTree.Views
             }
         }
 
-        private void Menu_ImportItems(object sender, RoutedEventArgs e)
+        private async void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
-            var diw = new DownloadItemsWindow
-            {
-                Owner = this,
-                DataContext = new DownloadItemsViewModel(_persistentData.CurrentBuild)
-            };
-            diw.ShowDialog();
+            await ShowDialogAsync(
+                new DownloadItemsViewModel(_persistentData.CurrentBuild),
+                new DownloadItemsWindow());
         }
 
-        private void Menu_ImportStash(object sender, RoutedEventArgs e)
+        private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            var dialog = new DownloadStashWindow
-            {
-                Owner = this,
-                DataContext = new DownloadStashViewModel(_persistentData.CurrentBuild, Stash, DialogCoordinator.Instance)
-            };
-            dialog.ShowDialog();
+            await ShowDialogAsync(
+                new DownloadStashViewModel(_persistentData.CurrentBuild, Stash, DialogCoordinator.Instance),
+                new DownloadStashWindow());
+        }
+
+        private Task ShowDialogAsync(CloseableViewModel viewModel, BaseMetroDialog view)
+        {
+            viewModel.RequestsClose += () => this.HideMetroDialogAsync(view);
+            view.DataContext = viewModel;
+            return this.ShowMetroDialogAsync(view);
         }
 
         private void Menu_CopyStats(object sender, RoutedEventArgs e)

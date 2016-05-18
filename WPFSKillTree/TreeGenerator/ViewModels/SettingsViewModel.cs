@@ -15,7 +15,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
     /// ViewModel that enables setting up and running <see cref="Solver.ISolver"/> through
     /// contained <see cref="GeneratorTabViewModel"/>s.
     /// </summary>
-    public sealed class SettingsViewModel : CloseableViewModel
+    public sealed class SettingsViewModel : ViewModelBase
     {
 
         private readonly SkillTree _tree;

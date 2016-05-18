@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace POESKillTree.Utils
 {
@@ -9,7 +8,7 @@ namespace POESKillTree.Utils
     /// </summary>
     public static class EventHandlerExtensions
     {
-        public static void Raise(this PropertyChangedEventHandler handler, object sender, [CallerMemberName] string propertyName = null)
+        public static void Raise(this PropertyChangedEventHandler handler, object sender, string propertyName)
         {
             if (handler != null)
             {

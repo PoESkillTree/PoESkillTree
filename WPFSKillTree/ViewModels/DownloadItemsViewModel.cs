@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using POESKillTree.Localization;
 using POESKillTree.Model;
 
 namespace POESKillTree.ViewModels
@@ -33,14 +35,11 @@ namespace POESKillTree.ViewModels
 
         public DownloadItemsViewModel(PoEBuild build)
         {
+            DisplayName = L10n.Message("Download & Import Items");
             Build = build;
             Build.PropertyChanged += BuildOnPropertyChanged;
             BuildOnPropertyChanged(this, null);
-            RequestClose += (sender, args) =>
-            {
-                Build.PropertyChanged -= BuildOnPropertyChanged;
-                Result = true;
-            };
+            RequestsClose += () => Build.PropertyChanged -= BuildOnPropertyChanged;
         }
 
         private void BuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)

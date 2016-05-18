@@ -352,6 +352,10 @@
     <Compile Include="Views\FormChooseGroupName.xaml.cs">
       <DependentUpon>FormChooseGroupName.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\CustomDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

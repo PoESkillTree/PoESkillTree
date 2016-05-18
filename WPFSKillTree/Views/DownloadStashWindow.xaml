@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow
+﻿<dialog:CustomDialog
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     x:Class="POESKillTree.Views.DownloadStashWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -6,35 +6,17 @@
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-    xmlns:utils="clr-namespace:POESKillTree.Utils"
     xmlns:viewModels="clr-namespace:POESKillTree.ViewModels"
     xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    Width="700" WindowStartupLocation="CenterOwner"
-    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
-    BorderBrush="{DynamicResource AccentColorBrush}"
-    BorderThickness="1"
     d:DataContext="{d:DesignInstance viewModels:DownloadStashViewModel}"
-    utils:DialogCloser.DialogResult="{Binding Result}"
-    dialog:DialogParticipation.Register="{Binding}">
-    <controls:MetroWindow.Title>
-        <l:Catalog Message="Download &amp; Import Stash"/>
-    </controls:MetroWindow.Title>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding CloseCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-    <Window.Resources>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ComboBox.xaml" />
-    </Window.Resources>
+    dialog:DialogParticipation.Register="{Binding}"
+    Style="{StaticResource CustomDialog}">
     <Grid Background="{DynamicResource WhiteColorBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -136,13 +118,5 @@
                 Grid.Column="1" Grid.Row="4">
             <l:Catalog Message="Load stash tab from clipboard"/>
         </Button>
-
-        <Rectangle Fill="{DynamicResource GrayBrush8}" IsHitTestVisible="False"
-                   Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5"/>
-        <Button HorizontalAlignment="Right" Margin="5" Width="75" IsDefault="True"
-                Command="{Binding CloseCommand}"
-                Grid.Column="1" Grid.Row="5">
-            <l:Catalog Message="OK"/>
-        </Button>
     </Grid>
-</controls:MetroWindow>
+</dialog:CustomDialog>

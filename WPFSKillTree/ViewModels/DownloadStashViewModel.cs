@@ -98,6 +98,7 @@ namespace POESKillTree.ViewModels
             _stash = stash;
             _dialogCoordinator = dialogCoordinator;
             CurrentLeagues = LoadCurrentLeagues();
+            DisplayName = L10n.Message("Download & Import Stash");
 
             TabsView = new ListCollectionView(_tabs);
             TabsView.CurrentChanged += (sender, args) => UpdateTabLink();
@@ -105,11 +106,7 @@ namespace POESKillTree.ViewModels
             Build = build;
             Build.PropertyChanged += BuildOnPropertyChanged;
             BuildOnPropertyChanged(this, null);
-            RequestClose += (sender, args) =>
-            {
-                Build.PropertyChanged -= BuildOnPropertyChanged;
-                Result = true;
-            };
+            RequestsClose += () => Build.PropertyChanged -= BuildOnPropertyChanged;
         }
 
         private IReadOnlyList<string> LoadCurrentLeagues()

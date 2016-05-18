@@ -17,7 +17,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
     /// <summary>
     /// ViewModel that runs a solver and reports its results.
     /// </summary>
-    public sealed class ControllerViewModel : CloseableViewModel
+    public sealed class ControllerViewModel : CloseableViewModelWithResult
     {
         private static readonly string IterationPrefix = L10n.Message("Current iteration:") + " ";
 
@@ -225,7 +225,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             _progress = new Progress<Tuple<int, int, IEnumerable<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2, tuple.Item3));
             _reportStopwatch.Start();
 
-            RequestClose += (sender, args) => CancelClose();
+            RequestsClose += CancelClose;
         }
 
         /// <summary>
