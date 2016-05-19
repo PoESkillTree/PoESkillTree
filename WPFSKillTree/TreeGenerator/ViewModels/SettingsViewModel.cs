@@ -6,7 +6,7 @@ using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
-using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
 
 namespace POESKillTree.TreeGenerator.ViewModels

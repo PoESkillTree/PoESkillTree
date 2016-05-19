@@ -2,9 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using POESKillTree.Utils;
 using System.ComponentModel;
 using POESKillTree.Model.Items;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Controls
 {

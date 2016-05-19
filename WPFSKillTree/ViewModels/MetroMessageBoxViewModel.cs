@@ -1,80 +1,49 @@
 using POESKillTree.Model;
-using POESKillTree.Views;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels
 {
-    public class MetroMessageBoxViewModel : Notifier
+    public class MetroMessageBoxViewModel : CloseableViewModel
     {
         #region fields
-        private string _title;
-        private string _message;
-        private MessageBoxButton _buttons;
-        private MessageBoxImage _image;
-        private ImageSource _imageSource;
+        private readonly string _message;
+        private readonly string _details;
+        private readonly ImageSource _imageSource;
 
-        private MetroMessageBoxView _view;
-
-        private bool _isYesVisible;
-        private bool _isNoVisible;
-        private bool _isOKVisible;
-        private bool _isCancelVisible;
-
-        private bool _isYesDefault;
-        private bool _isNoDefault;
-        private bool _isOKDefault;
-        private bool _isCancelDefault;
-
+        private readonly bool _isYesVisible;
+        private readonly bool _isNoVisible;
+        private readonly bool _isOKVisible;
+        private readonly bool _isCancelVisible;
 
         private ICommand _yesCommand;
         private ICommand _noCommand;
         private ICommand _okCommand;
         private ICommand _cancelCommand;
-        private ICommand _escapeCommand;
-        private ICommand _closeCommand;
-
         #endregion
 
-        public MetroMessageBoxViewModel(MetroMessageBoxView mmbView, string message, string title, MessageBoxButton buttons, ImageSource imageSource)
+        public MetroMessageBoxViewModel(string message, string details, string title, MessageBoxButton buttons, ImageSource imageSource)
         {
-            _view = mmbView;
-
-            Message = message;
-            BoxTitle = title;
-            Buttons = buttons;
-            NotificationImageSource = imageSource;
-        }
-
-        #region properties
-        public MessageBoxButton Buttons
-        {
-            get { return _buttons; }
-            set
+            _message = message;
+            _details = details;
+            DisplayName = title;
+            switch (buttons)
             {
-                _buttons = value;
-                switch (_buttons)
-                {
-                    case MessageBoxButton.YesNo:
-                        IsYesVisible = IsNoVisible = true;
-                        IsYesDefault = true;
-                        break;
-                    case MessageBoxButton.YesNoCancel:
-                        IsYesVisible = IsNoVisible = IsCancelVisible = true;
-                        IsYesDefault = true;
-                        break;
-                    case MessageBoxButton.OK:
-                        IsOKVisible = true;
-                        IsOKDefault = true;
-                        break;
-                    case MessageBoxButton.OKCancel:
-                        IsOKVisible = IsCancelVisible = true;
-                        IsOKDefault = true;
-                        break;
-                }
+                case MessageBoxButton.YesNo:
+                    _isYesVisible = _isNoVisible = true;
+                    break;
+                case MessageBoxButton.YesNoCancel:
+                    _isYesVisible = _isNoVisible = _isCancelVisible = true;
+                    break;
+                case MessageBoxButton.OK:
+                    _isOKVisible = true;
+                    break;
+                case MessageBoxButton.OKCancel:
+                    _isOKVisible = _isCancelVisible = true;
+                    break;
             }
+            _imageSource = imageSource;
         }
 
         #region commands
@@ -82,77 +51,44 @@ namespace POESKillTree.ViewModels
         {
             get
             {
-                if (_yesCommand == null)
+                return _yesCommand ?? (_yesCommand = new RelayCommand(args =>
                 {
-                    _yesCommand = new RelayCommand(args =>
-                    {
-                        this.Result = MessageBoxResult.Yes;
-                        _view.Close();
-                    });
-                }
-                return _yesCommand;
+                    Result = MessageBoxResult.Yes;
+                    CloseCommand.Execute(null);
+                }));
             }
         }
         public ICommand NoCommand
         {
             get
             {
-                if (_noCommand == null)
+                return _noCommand ?? (_noCommand = new RelayCommand(args =>
                 {
-                    _noCommand = new RelayCommand(args =>
-                    {
-                        this.Result = MessageBoxResult.No;
-                        _view.Close();
-                    });
-                }
-                return _noCommand;
+                    Result = MessageBoxResult.No;
+                    CloseCommand.Execute(null);
+                }));
             }
         }
         public ICommand CancelCommand
         {
             get
             {
-                if (_cancelCommand == null)
+                return _cancelCommand ?? (_cancelCommand = new RelayCommand(args =>
                 {
-                    _cancelCommand = new RelayCommand(args =>
-                    {
-                        this.Result = MessageBoxResult.Cancel;
-                        _view.Close();
-                    });
-                }
-                return _cancelCommand;
+                    Result = MessageBoxResult.Cancel;
+                    CloseCommand.Execute(null);
+                }));
             }
         }
         public ICommand OKCommand
         {
             get
             {
-                if (_okCommand == null)
+                return _okCommand ?? (_okCommand = new RelayCommand(args =>
                 {
-                    _okCommand = new RelayCommand(args =>
-                    {
-                        this.Result = MessageBoxResult.OK;
-                        _view.Close();
-                    });
-                }
-                return _okCommand;
-            }
-        }
-        public ICommand EscapeCommand
-        {
-            get
-            {
-                if (_escapeCommand == null)
-                {
-                    _escapeCommand = new RelayCommand(args =>
-                    {
-                        this.Result = IsCancelVisible ? MessageBoxResult.Cancel :
-                            (IsNoVisible ? MessageBoxResult.No : MessageBoxResult.OK);
-                        _view.Close();
-                    });
-
-                }
-                return _escapeCommand;
+                    Result = MessageBoxResult.OK;
+                    CloseCommand.Execute(null);
+                }));
             }
         }
         #endregion
@@ -161,23 +97,18 @@ namespace POESKillTree.ViewModels
         public string Message
         {
             get { return _message; }
-            set { SetProperty(ref _message, value); }
         }
-        public string BoxTitle
+
+        public string Details
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get { return _details; }
         }
-        public MessageBoxResult Result
-        {
-            get;
-            set;
-        }
+
+        public MessageBoxResult Result { get; set; }
 
         public ImageSource NotificationImageSource
         {
             get { return _imageSource; }
-            set { SetProperty(ref _imageSource, value); }
         }
 
         public string ImageColumnWidth
@@ -190,48 +121,19 @@ namespace POESKillTree.ViewModels
         public bool IsYesVisible
         {
             get { return _isYesVisible; }
-            set { SetProperty(ref _isYesVisible, value); }
         }
         public bool IsNoVisible
         {
             get { return _isNoVisible; }
-            set { SetProperty(ref _isNoVisible, value); }
         }
         public bool IsOKVisible
         {
             get { return _isOKVisible; }
-            set { SetProperty(ref _isOKVisible, value); }
         }
         public bool IsCancelVisible
         {
             get { return _isCancelVisible; }
-            set { SetProperty(ref _isCancelVisible, value); }
         }
-        #endregion
-
-        #region buttons defaults
-        public bool IsYesDefault
-        {
-            get { return _isYesDefault; }
-            set { SetProperty(ref _isYesDefault, value); }
-        }
-        public bool IsNoDefault
-        {
-            get { return _isNoDefault; }
-            set { SetProperty(ref _isNoDefault, value); }
-        }
-        public bool IsOKDefault
-        {
-            get { return _isOKDefault; }
-            set { SetProperty(ref _isOKDefault, value); }
-        }
-        public bool IsCancelDefault
-        {
-            get { return _isCancelDefault; }
-            set { SetProperty(ref _isCancelDefault, value); }
-        }
-        #endregion
-
         #endregion
     }
 }

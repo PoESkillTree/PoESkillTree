@@ -4,14 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
              xmlns:items1="clr-namespace:POESKillTree.Model.Items"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Name="control" FontSize="14" FontWeight="Medium" Background="#7F000000">
     <Control.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-        <conv:ItemModToInlinesConverter x:Key="itemModToInlinesConverter" />
+        <items1:ItemModToInlinesConverter x:Key="itemModToInlinesConverter" />
         <Style TargetType="{x:Type TextBlock}" x:Key="allCapsTextblock">
             <Style.Setters>
                 <Setter Property="Typography.Capitals" Value="SmallCaps"/>
@@ -221,7 +220,7 @@
         <ItemsControl Margin="3,0" Grid.Row="1" Visibility="{Binding Item.HaveProperties,ElementName=control, Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.Properties,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock  Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" conv:Attached.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}, ConverterParameter=colorNumbers}" />
+                    <TextBlock  Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}, ConverterParameter=colorNumbers}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -249,7 +248,7 @@
         <ItemsControl Margin="3,0" Grid.Row="3" Visibility="{Binding Item.HaveRequirements,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.Requirements,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" conv:Attached.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter},ConverterParameter=colorNumbers}"/>
+                    <TextBlock Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter},ConverterParameter=colorNumbers}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -282,7 +281,7 @@
         <ItemsControl Margin="3,0" Grid.Row="5" Visibility="{Binding Item.HaveImplicitMods,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.ImplicitMods,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock Style="{StaticResource allCapsTextblock}" conv:Attached.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
+                    <TextBlock Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -321,7 +320,7 @@
         <ItemsControl Margin="3,0" Grid.Row="7" Visibility="{Binding Item.HaveExplicitMods,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.ExplicitMods,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock Style="{StaticResource allCapsTextblock}" conv:Attached.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
+                    <TextBlock Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -329,7 +328,7 @@
         <ItemsControl Margin="3,0" Grid.Row="8" Visibility="{Binding Item.HaveCraftedMods,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.CraftedMods,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock Foreground="#FFB4B4FF" Style="{StaticResource allCapsTextblock}" conv:Attached.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
+                    <TextBlock Foreground="#FFB4B4FF" Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using MB.Algodat;
 using POESKillTree.Model.Items;
-using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
 using POESKillTree.Views;
 
 namespace POESKillTree.Controls

@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Utils.Converter
 {

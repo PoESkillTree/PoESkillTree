@@ -33,6 +33,7 @@ using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Converter;
+using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
 using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
@@ -664,10 +665,10 @@ namespace POESKillTree.Views
             }
         }
 
-        private void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
+        private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
         {
-            var response = MessageBox.Show(L10n.Message("Are you sure?"), L10n.Message("Untag All Skill Nodes"), MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
-            if(response == MessageBoxResult.Yes)
+            var response = await Popup.Ask(L10n.Message("Are you sure?"), L10n.Message("Untag All Skill Nodes"), MessageBoxImage.None);
+            if (response == MessageBoxResult.Yes)
                 Tree.UntagAllNodes();
         }
 
@@ -811,7 +812,7 @@ namespace POESKillTree.Views
             }
             else
             {
-                MessageBox.Show(L10n.Message("Your build must use at least one node to generate a screenshot"), "Screenshot Generator", MessageBoxButton.OK, MessageBoxImage.Information);
+                Popup.Info(L10n.Message("Your build must use at least one node to generate a screenshot"), title: "Screenshot Generator");
             }
         }
 
@@ -829,11 +830,15 @@ namespace POESKillTree.Views
                 new DownloadStashWindow());
         }
 
-        private Task ShowDialogAsync(CloseableViewModel viewModel, BaseMetroDialog view)
+        private async Task ShowDialogAsync(CloseableViewModel viewModel, BaseMetroDialog view)
         {
             viewModel.RequestsClose += () => this.HideMetroDialogAsync(view);
             view.DataContext = viewModel;
-            return this.ShowMetroDialogAsync(view);
+            await this.ShowMetroDialogAsync(view);
+            var dialogCalling = viewModel as IDialogCallingInitialization;
+            if (dialogCalling != null)
+                dialogCalling.Initialize();
+            await view.WaitUntilUnloadedAsync();
         }
 
         private void Menu_CopyStats(object sender, RoutedEventArgs e)
@@ -853,12 +858,12 @@ namespace POESKillTree.Views
             }
         }
 
-        private void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
+        private async void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
         {
             string sMessageBoxText = L10n.Message("The existing Skill tree assets will be deleted and new assets will be downloaded.")
                                      + "\n\n" + L10n.Message("Do you want to continue?");
 
-            var rsltMessageBox = Popup.Ask(sMessageBoxText, MessageBoxImage.Warning);
+            var rsltMessageBox = await Popup.Ask(sMessageBoxText, icon: MessageBoxImage.Warning);
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
@@ -964,7 +969,7 @@ namespace POESKillTree.Views
 
                 if (release == null)
                 {
-                    Popup.Info(L10n.Message("You have the latest version!"));
+                    await Popup.Info(L10n.Message("You have the latest version!"));
                 }
                 else
                 {
@@ -987,8 +992,8 @@ namespace POESKillTree.Views
                                    ? L10n.Message("Do you want to download and install the update?")
                                    : L10n.Message("Do you want to download and install the new version?"));
 
-                    MessageBoxResult download = Popup.Ask(message,
-                        release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
+                    var download = await Popup.Ask(message,
+                        icon: release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
                     if (download == MessageBoxResult.Yes)
                         btnUpdateInstall();
                     else
@@ -2510,12 +2515,12 @@ namespace POESKillTree.Views
             lvSavedBuilds_SelectionChanged(null, null);
         }
 
-        private void Menu_RedownloadItemAssets(object sender, RoutedEventArgs e)
+        private async void Menu_RedownloadItemAssets(object sender, RoutedEventArgs e)
         {
             string sMessageBoxText = L10n.Message("The existing Skill Item assets will be deleted and new assets will be downloaded.")
                        + "\n\n" + L10n.Message("Do you want to continue?");
 
-            var rsltMessageBox = Popup.Ask(sMessageBoxText, MessageBoxImage.Warning);
+            var rsltMessageBox = await Popup.Ask(sMessageBoxText, icon: MessageBoxImage.Warning);
 
             string appDataPath = AppData.GetFolder(true);
             switch (rsltMessageBox)

@@ -158,6 +158,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\BaseDialog.cs" />
     <Compile Include="Controls\Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
@@ -253,6 +254,8 @@
     <Compile Include="TreeGenerator\Solver\SteinerSolver.cs" />
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
+    <Compile Include="Utils\Converter\StringConverter.cs" />
+    <Compile Include="ViewModels\AttributeToTextblockConverter.cs" />
     <Compile Include="ViewModels\CloseableViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
@@ -267,24 +270,24 @@
     <Compile Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml.cs">
       <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\CollectionExtensions.cs" />
+    <Compile Include="Utils\Extensions\CollectionExtensions.cs" />
     <Compile Include="Utils\Converter\BoolConverter.cs" />
     <Compile Include="Utils\Converter\EnumConverter.cs" />
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />
     <Compile Include="Utils\Converter\NumberLessStringComparer.cs" />
-    <Compile Include="Utils\EnumExtensions.cs" />
+    <Compile Include="Utils\Extensions\EnumExtensions.cs" />
     <Compile Include="Utils\Notifier.cs" />
-    <Compile Include="Utils\PropertyExtension.cs" />
+    <Compile Include="Utils\Extensions\PropertyExtension.cs" />
     <Compile Include="Utils\RegexTools.cs" />
     <Compile Include="Utils\ThreadSafeRandom.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
     <Compile Include="Utils\DialogCloser.cs" />
-    <Compile Include="Utils\EventHandlerExtensions.cs" />
-    <Compile Include="Utils\Helpers.cs" />
+    <Compile Include="Utils\Extensions\EventHandlerExtensions.cs" />
+    <Compile Include="Utils\Extensions\Helpers.cs" />
     <Compile Include="Utils\ItemAssetDownloader.cs" />
     <Compile Include="Utils\Popup.cs" />
-    <Compile Include="Utils\StringExtension.cs" />
+    <Compile Include="Utils\Extensions\StringExtension.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\DownloadItemsViewModel.cs" />
@@ -303,7 +306,7 @@
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
     <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
-    <Compile Include="ViewModels\Converters.cs" />
+    <Compile Include="Model\Items\ItemConverter.cs" />
     <Compile Include="TreeGenerator\Views\ControllerWindow.xaml.cs">
       <DependentUpon>ControllerWindow.xaml</DependentUpon>
     </Compile>
@@ -352,7 +355,11 @@
     <Compile Include="Views\FormChooseGroupName.xaml.cs">
       <DependentUpon>FormChooseGroupName.xaml</DependentUpon>
     </Compile>
-    <Page Include="Controls\CustomDialog.xaml">
+    <Page Include="Themes\BaseDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

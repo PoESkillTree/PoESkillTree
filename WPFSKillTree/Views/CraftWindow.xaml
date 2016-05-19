@@ -3,7 +3,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:POESKillTree.Controls"
-        xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         xmlns:items="clr-namespace:POESKillTree.Model.Items"
         xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
@@ -16,7 +15,7 @@
         <l:Catalog Message="Craft Window"/>
     </controls:MetroWindow.Title>
     <controls:MetroWindow.Resources>
-        <conv:ItemTypeToImageConverter x:Key="ItemTypeToImageConverter"/>
+        <items:ItemTypeToImageConverter x:Key="ItemTypeToImageConverter"/>
     </controls:MetroWindow.Resources>
     <Grid Margin="5">
         <Grid.Resources>

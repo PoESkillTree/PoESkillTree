@@ -1,7 +1,6 @@
 ﻿<Application x:Class="POESKillTree.Views.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
              Startup="App_Startup"
              StartupUri="MainWindow.xaml"
              Exit="App_Exit"
@@ -16,7 +15,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/DefaultTemplates.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Controls/CustomDialog.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -39,7 +39,12 @@ namespace POESKillTree.ViewModels
         }
     }
 
-    public class DownloadStashViewModel : CloseableViewModel
+    public interface IDialogCallingInitialization
+    {
+        void Initialize();
+    }
+
+    public class DownloadStashViewModel : CloseableViewModel, IDialogCallingInitialization
     {
         private readonly Stash _stash;
         private readonly IDialogCoordinator _dialogCoordinator;
@@ -69,7 +74,13 @@ namespace POESKillTree.ViewModels
 
         public ICollectionView TabsView { get; private set; }
 
-        public IReadOnlyList<string> CurrentLeagues { get; private set; }
+        private static IReadOnlyList<string> _currentLeagues;
+
+        public IReadOnlyList<string> CurrentLeagues
+        {
+            get { return _currentLeagues; }
+            private set { SetProperty(ref _currentLeagues, value); }
+        }
 
         private RelayCommand<string> _openInBrowserCommand;
         public ICommand OpenInBrowserCommand
@@ -97,7 +108,6 @@ namespace POESKillTree.ViewModels
         {
             _stash = stash;
             _dialogCoordinator = dialogCoordinator;
-            CurrentLeagues = LoadCurrentLeagues();
             DisplayName = L10n.Message("Download & Import Stash");
 
             TabsView = new ListCollectionView(_tabs);
@@ -109,15 +119,21 @@ namespace POESKillTree.ViewModels
             RequestsClose += () => Build.PropertyChanged -= BuildOnPropertyChanged;
         }
 
+        public void Initialize()
+        {
+            if (CurrentLeagues == null)
+                CurrentLeagues = LoadCurrentLeagues();
+        }
+
         private IReadOnlyList<string> LoadCurrentLeagues()
         {
-            string file;
-            using (var client = new WebClient())
-            {
-                file = client.DownloadString("http://api.pathofexile.com/leagues?type=main&compact=1");
-            }
             try
             {
+                string file;
+                using (var client = new WebClient())
+                {
+                    file = client.DownloadString("http://api.pathofexile.com/leagues?type=main&compact=1");
+                }
                 return JArray.Parse(file).Select(t => t["id"].Value<string>()).ToList();
             }
             catch (Exception e)

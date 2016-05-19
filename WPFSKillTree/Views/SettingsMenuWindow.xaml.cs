@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Views
 {
@@ -132,7 +133,7 @@ namespace POESKillTree.Views
             
             if (s.Key == _persistentData.Options.Language) return;
             
-            MetroMessageBox.Show(L10n.Message("You will need to restart the program for all changes to take effect."), L10n.Message("Restart is needed"));
+            Popup.Info(L10n.Message("You will need to restart the program for all changes to take effect."), title: L10n.Message("Restart is needed"));
 
             L10n.SetLanguage(s.Key);
             _persistentData.SavePersistentDataToFile();            

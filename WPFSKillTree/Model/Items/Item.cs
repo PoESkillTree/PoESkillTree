@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using MB.Algodat;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items
 {

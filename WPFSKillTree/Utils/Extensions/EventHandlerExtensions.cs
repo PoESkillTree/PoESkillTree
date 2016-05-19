@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace POESKillTree.Utils
+namespace POESKillTree.Utils.Extensions
 {
     /// <summary>
     /// Provides extension methods for EventHandlers.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POESKillTree.Utils
+namespace POESKillTree.Utils.Extensions
 {
     public static class StringExtensions
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace POESKillTree.Utils
+namespace POESKillTree.Utils.Extensions
 {
     public static class PropertyExtension
     {
