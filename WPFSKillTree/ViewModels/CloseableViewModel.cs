@@ -31,19 +31,5 @@ namespace POESKillTree.ViewModels
                     RequestsClose();
             });
         }
-
-    }
-
-    public abstract class CloseableViewModelWithResult : CloseableViewModel
-    {
-        private bool? _result;
-        /// <summary>
-        /// Gets or sets the result of the ViewModel (null if it has none).
-        /// </summary>
-        public bool? Result
-        {
-            get { return _result; }
-            protected set { SetProperty(ref _result, value); }
-        }
     }
 }

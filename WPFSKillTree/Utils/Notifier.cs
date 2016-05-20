@@ -60,32 +60,4 @@ namespace POESKillTree.Utils
             PropertyChanged.Raise(this, propertyName);
         }
     }
-
-    public static class NotifierAsExtension
-    {
-        /// <summary>
-        /// Sets <paramref name="backingStore"/> to <paramref name="value"/> and
-        /// raises <paramref name="handler"/> after setting the value.
-        /// </summary>
-        /// <param name="handler"></param>
-        /// <param name="backingStore">Target variable</param>
-        /// <param name="value">Source variable</param>
-        /// <param name="onChanged">Called after changing the value but before raising <paramref name="handler"/>.</param>
-        /// <param name="propertyName">Name of the changed property</param>
-        public static void SetProperty<T>(
-            this PropertyChangedEventHandler handler,
-            object sender,
-            ref T backingStore, T value,
-            Action onChanged = null,
-            [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value)) return;
-
-            backingStore = value;
-
-            if (onChanged != null) onChanged();
-
-            handler.Raise(sender, propertyName);
-        }
-    }
 }

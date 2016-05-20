@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;
@@ -19,6 +20,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
     {
 
         private readonly SkillTree _tree;
+
+        private readonly ISettingsDialogCoordinator _dialogCoordinator;
 
         public SkillTree Tree { get { return _tree; } }
 
@@ -142,7 +145,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         public ICommand RunCommand
         {
-            get { return _runCommand ?? (_runCommand = new RelayCommand(o => Run())); }
+            get { return _runCommand ?? (_runCommand = new RelayCommand(async o => await RunAsync())); }
         }
 
         private RelayCommand _resetCommand;
@@ -161,17 +164,19 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Constructs a new SettingsViewModel that operates on the given skill tree.
         /// </summary>
         /// <param name="tree">The skill tree to operate on. (not null)</param>
+        /// <param name="dialogCoordinator"></param>
         /// <param name="generator">Optional <see cref="GeneratorTabViewModel"/> initialize
         /// <see cref="Tabs"/> with. If non is provided, <see cref="AdvancedTabViewModel"/>,
         /// <see cref="AutomatedTabViewModel"/> and <see cref="SteinerTabViewModel"/> will be
         /// added to <see cref="Tabs"/>.</param>
-        public SettingsViewModel(SkillTree tree, GeneratorTabViewModel generator = null)
+        public SettingsViewModel(SkillTree tree, ISettingsDialogCoordinator dialogCoordinator, GeneratorTabViewModel generator = null)
         {
             if (tree == null) throw new ArgumentNullException("tree");
 
-            DisplayName = L10n.Message("Skill tree Generator");
+            DisplayName = L10n.Message("Skill tree Generator").ToUpper();
 
             _tree = tree;
+            _dialogCoordinator = dialogCoordinator;
             AdditionalPoints = CalculateAdditionalPointsNeeded(tree);
             
             tree.PropertyChanged += (sender, args) =>
@@ -212,23 +217,18 @@ namespace POESKillTree.TreeGenerator.ViewModels
             };
         }
 
-        private void Run()
+        public async Task RunAsync()
         {
-            if (StartController == null) return;
-
             var savedHighlights = _tree.HighlightedNodes;
 
             var settings = CreateSettings();
             var solver = Tabs[_selectedTabIndex].CreateSolver(settings);
-            var controllerVm = new ControllerViewModel(solver, Tabs[_selectedTabIndex].DisplayName, _tree);
 
-            controllerVm.StartSolverAsync();
-            // Kinda crude, but I'm not going to write a framework for a few popups.
-            StartController.Raise(this, new StartControllerEventArgs(controllerVm));
-
-            if (controllerVm.Result == true)
+            var controllerResult = await _dialogCoordinator
+                .ShowControllerDialogAsync(this, solver, Tabs[_selectedTabIndex].DisplayName, _tree);
+            if (controllerResult != null)
             {
-                _tree.SkilledNodes = new HashSet<ushort>(controllerVm.BestSoFar);
+                _tree.SkilledNodes = new HashSet<ushort>(controllerResult);
             }
             _tree.HighlightedNodes = savedHighlights;
             _tree.DrawTreeComparisonHighlight();
@@ -261,27 +261,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var initialTree = _treeAsInitial ? _tree.SkilledNodes : null;
             var iterations = _iterations;
             return new SolverSettings(level, totalPoints, @checked, crossed, subsetTree, initialTree, iterations);
-        }
-
-        /// <summary>
-        /// Event raised when <see cref="RunCommand"/> is executed and a
-        /// <see cref="ControllerViewModel"/> got created that may need to
-        /// be visualized to the user by connecting it to a View.
-        /// </summary>
-        public event EventHandler<StartControllerEventArgs> StartController;
-
-        /// <summary>
-        /// EventArgs belonging to <see cref="StartController"/> storing
-        /// the started <see cref="ControllerViewModel"/>
-        /// </summary>
-        public class StartControllerEventArgs : EventArgs
-        {
-            public ControllerViewModel ViewModel { get; private set; }
-
-            public StartControllerEventArgs(ControllerViewModel viewModel)
-            {
-                ViewModel = viewModel;
-            }
         }
 
         /// <summary>

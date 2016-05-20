@@ -9,7 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
+using MahApps.Metro.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model;
 using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
@@ -223,7 +226,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private static readonly List<ushort[]> _links = new List<ushort[]>();
 
-        public Window MainWindow;
+        public MetroWindow MainWindow;
         
         public HashSet<ushort> SkilledNodes = new HashSet<ushort>();
 
@@ -1264,11 +1267,11 @@ namespace POESKillTree.SkillTreeFiles
             return nodes;
         }
 
-        public void SkillAllTaggedNodes()
+        public async Task SkillAllTaggedNodes()
         {
             if (!GetCheckedNodes().Except(SkilledNodes).Any())
             {
-                Popup.Info(L10n.Message("Please tag non-skilled nodes by right-clicking them."));
+                await MainWindow.ShowInfoAsync(L10n.Message("Please tag non-skilled nodes by right-clicking them."));
                 return;
             }
 
@@ -1277,18 +1280,14 @@ namespace POESKillTree.SkillTreeFiles
             {
 #endif
                 // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
-                var settingsVm = new SettingsViewModel(this, new SteinerTabViewModel(this));
-                settingsVm.StartController += (sender, args) =>
-                {
-                    var dialog = new ControllerWindow {Owner = MainWindow, DataContext = args.ViewModel};
-                    dialog.ShowDialog();
-                };
-                settingsVm.RunCommand.Execute(null);
+                var settingsVm = new SettingsViewModel(this, SettingsDialogCoordinator.Instance, new SteinerTabViewModel(this));
+                DialogParticipation.SetRegister(MainWindow, settingsVm);
+                await settingsVm.RunAsync();
 #if !DEBUG
             }
             catch (Exception e)
             {
-                Popup.Error(L10n.Message("Error while trying to find solution"), e.Message);
+                MainWindow.ShowErrorAsync(L10n.Message("Error while trying to find solution"), e.Message);
             }
 #endif
         }

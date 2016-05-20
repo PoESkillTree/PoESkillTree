@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
-using POESKillTree.Utils;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -63,7 +63,7 @@ namespace POESKillTree.SkillTreeFiles
 
             if (!buildFile.Contains("["))
             {
-                Popup.Error(string.Format(L10n.Message("An error occured while attempting to load Skill tree from {0} location."), "poezone.ru"));
+                tree.MainWindow.ShowErrorAsync(string.Format(L10n.Message("An error occured while attempting to load Skill tree from {0} location."), "poezone.ru"));
                 return;
             }
 

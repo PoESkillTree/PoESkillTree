@@ -3,9 +3,9 @@ using System.Windows;
 using MahApps.Metro.Controls;
 using System.Windows.Media;
 using System.Windows.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
-using POESKillTree.Utils;
 
 namespace POESKillTree.Views
 {
@@ -133,7 +133,7 @@ namespace POESKillTree.Views
             
             if (s.Key == _persistentData.Options.Language) return;
             
-            Popup.Info(L10n.Message("You will need to restart the program for all changes to take effect."), title: L10n.Message("Restart is needed"));
+            this.ShowInfoAsync(L10n.Message("You will need to restart the program for all changes to take effect."), title: L10n.Message("Restart is needed"));
 
             L10n.SetLanguage(s.Key);
             _persistentData.SavePersistentDataToFile();            

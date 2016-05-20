@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace POESKillTree.Controls
+namespace POESKillTree.Controls.Dialogs
 {
     /// <summary>
     /// Subclass of <see cref="BaseMetroDialog"/> that has a few additional bindings to adjust

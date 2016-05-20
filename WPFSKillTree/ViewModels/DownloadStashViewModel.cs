@@ -3,48 +3,23 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Items;
+using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels
 {
-    public static class DialogCoordinatorExtensions
-    {
-        public static Task<MessageDialogResult> ShowErrorMessageAsync(this IDialogCoordinator dialogCoordinator, object context, string message, string details = null)
-        {
-            return dialogCoordinator.ShowMessageAsync(context, L10n.Message("Error"), Format(message, details));
-        }
-
-        public static Task<MessageDialogResult> ShowWarningMessageAsync(this IDialogCoordinator dialogCoordinator, object context, string message, string details = null)
-        {
-            return dialogCoordinator.ShowMessageAsync(context, L10n.Message("Warning"), Format(message, details));
-        }
-
-        private static string Format(string message, string details)
-        {
-            if (!string.IsNullOrEmpty(details))
-                message += "\n\n" + L10n.Message("Details:") + "\n" + details;
-
-            return message;
-        }
-    }
-
-    public interface IDialogCallingInitialization
-    {
-        void Initialize();
-    }
-
-    public class DownloadStashViewModel : CloseableViewModel, IDialogCallingInitialization
+    public class DownloadStashViewModel : CloseableViewModel
     {
         private readonly Stash _stash;
         private readonly IDialogCoordinator _dialogCoordinator;
@@ -74,13 +49,7 @@ namespace POESKillTree.ViewModels
 
         public ICollectionView TabsView { get; private set; }
 
-        private static IReadOnlyList<string> _currentLeagues;
-
-        public IReadOnlyList<string> CurrentLeagues
-        {
-            get { return _currentLeagues; }
-            private set { SetProperty(ref _currentLeagues, value); }
-        }
+        public static NotifyingTask<IReadOnlyList<string>> CurrentLeagues { get; private set; }
 
         private RelayCommand<string> _openInBrowserCommand;
         public ICommand OpenInBrowserCommand
@@ -117,30 +86,22 @@ namespace POESKillTree.ViewModels
             Build.PropertyChanged += BuildOnPropertyChanged;
             BuildOnPropertyChanged(this, null);
             RequestsClose += () => Build.PropertyChanged -= BuildOnPropertyChanged;
-        }
 
-        public void Initialize()
-        {
             if (CurrentLeagues == null)
-                CurrentLeagues = LoadCurrentLeagues();
+            {
+                CurrentLeagues = new NotifyingTask<IReadOnlyList<string>>(LoadCurrentLeaguesAsync(),
+                    async e => await _dialogCoordinator.ShowWarningAsync(this,
+                        L10n.Message("Could not load the currently running leagues."), e.Message));
+            }
         }
 
-        private IReadOnlyList<string> LoadCurrentLeagues()
+        private static async Task<IReadOnlyList<string>> LoadCurrentLeaguesAsync()
         {
-            try
+            using (var client = new HttpClient())
             {
-                string file;
-                using (var client = new WebClient())
-                {
-                    file = client.DownloadString("http://api.pathofexile.com/leagues?type=main&compact=1");
-                }
+                var file = await client.GetStringAsync("http://api.pathofexile.com/leagues?type=main&compact=1")
+                    .ConfigureAwait(false);
                 return JArray.Parse(file).Select(t => t["id"].Value<string>()).ToList();
-            }
-            catch (Exception e)
-            {
-                _dialogCoordinator.ShowWarningMessageAsync(this,
-                    L10n.Message("Could not load the currently running leagues."), e.Message);
-                return new List<string>();
             }
         }
 
@@ -187,7 +148,7 @@ namespace POESKillTree.ViewModels
             }
             catch (Exception e)
             {
-                _dialogCoordinator.ShowErrorMessageAsync(this,
+                _dialogCoordinator.ShowErrorAsync(this,
                     L10n.Message("An error occurred while attempting to load stash data."), e.Message);
             }
             TabsView.Refresh();
@@ -221,19 +182,19 @@ namespace POESKillTree.ViewModels
                     yEnd = Math.Max(yEnd, item.Y + item.Height);
                     if (item.X + item.Width > 12)
                     {
-                        await _dialogCoordinator.ShowWarningMessageAsync(this, "Skipping item because it is too wide.");
+                        await _dialogCoordinator.ShowWarningAsync(this, "Skipping item because it is too wide.");
                         continue;
                     }
                     _stash.Items.Add(item);
                 }
 
-                await _dialogCoordinator.ShowMessageAsync(this, L10n.Message("New tab added"),
+                await _dialogCoordinator.ShowInfoAsync(this, L10n.Message("New tab added"),
                     string.Format(L10n.Message("New tab with {0} items was added to stash."), items.Length));
                 highlightrange = new IntRange { From = yStart, Range = yEnd - yStart };
             }
             catch (Exception e)
             {
-                _dialogCoordinator.ShowErrorMessageAsync(this,
+                _dialogCoordinator.ShowErrorAsync(this,
                     L10n.Message("An error occurred while attempting to load stash data."), e.Message);
             }
             finally

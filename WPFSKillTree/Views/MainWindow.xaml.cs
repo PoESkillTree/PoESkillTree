@@ -23,8 +23,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.SimpleChildWindow;
 using POESKillTree.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Items;
@@ -44,7 +45,6 @@ using DragEventArgs = System.Windows.DragEventArgs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListView = System.Windows.Controls.ListView;
 using ListViewItem = System.Windows.Controls.ListViewItem;
-using MessageBox = POESKillTree.Views.MetroMessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using ToolTip = System.Windows.Controls.ToolTip;
 using Path = System.IO.Path;
@@ -290,7 +290,7 @@ namespace POESKillTree.Views
                 var name = formGroupName.GetGroupName();
                 if (_attributeGroups.AttributeGroups.ContainsKey(name))
                 {
-                    Popup.Info(L10n.Message("A group with that name already exists."));
+                    this.ShowInfoAsync(L10n.Message("A group with that name already exists."));
                     return;
                 }
 
@@ -648,26 +648,17 @@ namespace POESKillTree.Views
             NewBuild();
         }
 
-        private void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
+        private async void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
         {
-            var currentCursor = Cursor;
-            try
-            {
-                Cursor = Cursors.Wait;
-                Tree.SkillAllTaggedNodes();
-                UpdateUI();
-                tbSkillURL.Text = Tree.SaveToURL();
-                Tree.LoadFromURL(tbSkillURL.Text);
-            }
-            finally
-            {
-                Cursor = currentCursor;
-            }
+            await Tree.SkillAllTaggedNodes();
+            UpdateUI();
+            tbSkillURL.Text = Tree.SaveToURL();
+            Tree.LoadFromURL(tbSkillURL.Text);
         }
 
         private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
         {
-            var response = await Popup.Ask(L10n.Message("Are you sure?"), L10n.Message("Untag All Skill Nodes"), MessageBoxImage.None);
+            var response = await this.ShowQuestionAsync(L10n.Message("Are you sure?"), L10n.Message("Untag All Skill Nodes"), MessageBoxImage.None);
             if (response == MessageBoxResult.Yes)
                 Tree.UntagAllNodes();
         }
@@ -688,39 +679,27 @@ namespace POESKillTree.Views
             Tree.CrossAllHighlightedNodes();
         }
 
-        private void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
+        private async void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (_settingsWindow == null)
                 {
-                    var vm = new SettingsViewModel(Tree);
+                    var vm = new SettingsViewModel(Tree, SettingsDialogCoordinator.Instance);
                     vm.RunFinished += (o, args) =>
                     {
                         UpdateUI();
                         tbSkillURL.Text = Tree.SaveToURL();
                         Tree.LoadFromURL(tbSkillURL.Text);
                     };
-                    vm.StartController += (o, args) =>
-                    {
-                        var dialog = new ControllerWindow {Owner = this, DataContext = args.ViewModel};
-                        dialog.ShowDialog();
-                    };
-                    _settingsWindow = new SettingsWindow {Owner = this, DataContext = vm};
-                    _settingsWindow.Closing += (o, args) =>
-                    {
-                        if (_isClosing) return;
-                        args.Cancel = true;
-                        _settingsWindow.Hide();
-                    };
+                    _settingsWindow = new SettingsWindow { DataContext = vm};
+                    DialogParticipation.SetRegister(_settingsWindow, vm);
                 }
-                _settingsWindow.Show();
+                await this.ShowChildWindowAsync(_settingsWindow);
             }
             catch (Exception ex)
             {
-                Popup.Error(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
-                Debug.WriteLine("Exception in 'Skill Tree Generator':");
-                Debug.WriteLine(ex.Message);
+                this.ShowErrorAsync(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
             }
         }
 
@@ -812,33 +791,22 @@ namespace POESKillTree.Views
             }
             else
             {
-                Popup.Info(L10n.Message("Your build must use at least one node to generate a screenshot"), title: "Screenshot Generator");
+                this.ShowInfoAsync(L10n.Message("Your build must use at least one node to generate a screenshot"), title: "Screenshot Generator");
             }
         }
 
         private async void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
-            await ShowDialogAsync(
+            await this.ShowDialogAsync(
                 new DownloadItemsViewModel(_persistentData.CurrentBuild),
                 new DownloadItemsWindow());
         }
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            await ShowDialogAsync(
+            await this.ShowDialogAsync(
                 new DownloadStashViewModel(_persistentData.CurrentBuild, Stash, DialogCoordinator.Instance),
                 new DownloadStashWindow());
-        }
-
-        private async Task ShowDialogAsync(CloseableViewModel viewModel, BaseMetroDialog view)
-        {
-            viewModel.RequestsClose += () => this.HideMetroDialogAsync(view);
-            view.DataContext = viewModel;
-            await this.ShowMetroDialogAsync(view);
-            var dialogCalling = viewModel as IDialogCallingInitialization;
-            if (dialogCalling != null)
-                dialogCalling.Initialize();
-            await view.WaitUntilUnloadedAsync();
         }
 
         private void Menu_CopyStats(object sender, RoutedEventArgs e)
@@ -854,7 +822,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                Popup.Error(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
             }
         }
 
@@ -863,7 +831,7 @@ namespace POESKillTree.Views
             string sMessageBoxText = L10n.Message("The existing Skill tree assets will be deleted and new assets will be downloaded.")
                                      + "\n\n" + L10n.Message("Do you want to continue?");
 
-            var rsltMessageBox = await Popup.Ask(sMessageBoxText, icon: MessageBoxImage.Warning);
+            var rsltMessageBox = await this.ShowQuestionAsync(sMessageBoxText, image: MessageBoxImage.Warning);
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
@@ -908,7 +876,7 @@ namespace POESKillTree.Views
                         if (Directory.Exists(appDataPath + "DataBackup"))
                             Directory.Move(appDataPath + "DataBackup", appDataPath + "Data");
 
-                        Popup.Error(L10n.Message("An error occurred while downloading assets."), ex.Message);
+                        this.ShowErrorAsync(L10n.Message("An error occurred while downloading assets."), ex.Message);
                     }
                     break;
 
@@ -969,7 +937,7 @@ namespace POESKillTree.Views
 
                 if (release == null)
                 {
-                    await Popup.Info(L10n.Message("You have the latest version!"));
+                    await this.ShowInfoAsync(L10n.Message("You have the latest version!"));
                 }
                 else
                 {
@@ -992,8 +960,8 @@ namespace POESKillTree.Views
                                    ? L10n.Message("Do you want to download and install the update?")
                                    : L10n.Message("Do you want to download and install the new version?"));
 
-                    var download = await Popup.Ask(message,
-                        icon: release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
+                    var download = await this.ShowQuestionAsync(message, L10n.Message("Continue installation?"),
+                        release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
                     if (download == MessageBoxResult.Yes)
                         btnUpdateInstall();
                     else
@@ -1002,7 +970,7 @@ namespace POESKillTree.Views
             }
             catch (UpdaterException ex)
             {
-                Popup.Error(
+                this.ShowErrorAsync(
                     L10n.Message("An error occurred while attempting to contact the update location."),
                     ex.Message);
             }
@@ -1018,7 +986,7 @@ namespace POESKillTree.Views
             }
             catch (UpdaterException ex)
             {
-                Popup.Error(L10n.Message("An error occurred during the download operation."), ex.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred during the download operation."), ex.Message);
             }
         }
 
@@ -1043,7 +1011,7 @@ namespace POESKillTree.Views
             }
             else if (e.Error != null) // Check whether error occurred.
             {
-                Popup.Error(L10n.Message("An error occurred during the download operation."), e.Error.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred during the download operation."), e.Error.Message);
             }
             else // Download completed.
             {
@@ -1056,7 +1024,7 @@ namespace POESKillTree.Views
                 catch (UpdaterException ex)
                 {
                     Updater.Dispose();
-                    Popup.Error(L10n.Message("An error occurred while attempting to start the installation."), ex.Message);
+                    this.ShowErrorAsync(L10n.Message("An error occurred while attempting to start the installation."), ex.Message);
                 }
             }
         }
@@ -1734,7 +1702,7 @@ namespace POESKillTree.Views
                 {
                     // This will call this method again.
                     _persistentData.CurrentBuild.ItemData = "";
-                    Popup.Error(L10n.Message("An error occurred while attempting to load item data."), ex.Message);
+                    this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load item data."), ex.Message);
                     return;
                 }
             }
@@ -2001,7 +1969,7 @@ namespace POESKillTree.Views
             }
             catch (Exception e)
             {
-                Popup.Error(L10n.Message("An error occurred during a save operation."), e.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred during a save operation."), e.Message);
             }
         }
 
@@ -2076,7 +2044,7 @@ namespace POESKillTree.Views
             {
                 tbSkillURL.Text = Tree.SaveToURL();
                 Tree.LoadFromURL(tbSkillURL.Text);
-                Popup.Error(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }
 
@@ -2326,7 +2294,7 @@ namespace POESKillTree.Views
                 }
                 catch (Exception ex)
                 {
-                    Popup.Error(L10n.Message("An error occurred while attempting to contact the PoEUrl location."), ex.Message);
+                    this.ShowErrorAsync(L10n.Message("An error occurred while attempting to contact the PoEUrl location."), ex.Message);
                 }
             }
         }
@@ -2336,11 +2304,11 @@ namespace POESKillTree.Views
             try
             {
                 System.Windows.Forms.Clipboard.SetDataObject(poeurl, true);
-                Popup.Info(L10n.Message("The PoEUrl link has been copied to Clipboard.") + "\n\n" + poeurl);
+                this.ShowInfoAsync(L10n.Message("The PoEUrl link has been copied to Clipboard.") + "\n\n" + poeurl);
             }
             catch (Exception ex)
             {
-                Popup.Error(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
             }
         }
 
@@ -2463,7 +2431,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                Popup.Error(L10n.Message("An error occurred while attempting to load saved builds."), ex.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load saved builds."), ex.Message);
             }
         }
 
@@ -2520,7 +2488,7 @@ namespace POESKillTree.Views
             string sMessageBoxText = L10n.Message("The existing Skill Item assets will be deleted and new assets will be downloaded.")
                        + "\n\n" + L10n.Message("Do you want to continue?");
 
-            var rsltMessageBox = await Popup.Ask(sMessageBoxText, icon: MessageBoxImage.Warning);
+            var rsltMessageBox = await this.ShowQuestionAsync(sMessageBoxText, image: MessageBoxImage.Warning);
 
             string appDataPath = AppData.GetFolder(true);
             switch (rsltMessageBox)
@@ -2613,7 +2581,7 @@ namespace POESKillTree.Views
                             }
                             if (Directory.Exists(appDataPath + "DataBackup"))
                                 Directory.Move(Path.Combine(appDataPath, "DataBackup"), Path.Combine(appDataPath, "Data"));
-                            Popup.Error(L10n.Message("Error while downloading assets."));
+                            this.ShowErrorAsync(L10n.Message("Error while downloading assets.", ex.Message));
                         }
                     }
                     break;
