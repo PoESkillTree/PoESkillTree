@@ -2502,22 +2502,18 @@ namespace POESKillTree.Views
                                 Directory.Delete("DataBackup", true);
                             Directory.Move(Path.Combine(appDataPath, "Data"), Path.Combine(appDataPath, "DataBackup"));
 
-
-                            var bases = new List<ItemBase>();
                             var images = new List<Tuple<string, string>>();
 
                             StartLoadingWindow(L10n.Message("Downloading Item assets"));
                             UpdateLoadingWindow(0, 4);
-                            ItemAssetDownloader.ExtractJewelry(bases, images);
+                            ItemAssetDownloader.ExtractJewelry(images);
                             UpdateLoadingWindow(1, 4);
-                            ItemAssetDownloader.ExtractArmors(bases, images);
+                            ItemAssetDownloader.ExtractArmors(images);
                             UpdateLoadingWindow(2, 4);
-                            ItemAssetDownloader.ExtractWeapons(bases, images);
+                            ItemAssetDownloader.ExtractWeapons(images);
                             UpdateLoadingWindow(3, 4);
-                            ItemAssetDownloader.ExtractJewels(bases, images);
+                            ItemAssetDownloader.ExtractJewels(images);
                             UpdateLoadingWindow(4, 4);
-
-                            //new System.Xml.Linq.XElement("ItemBaseList", bases.Select(b => b.Serialize())).Save(Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Itemlist.xml"));
 
                             var imgroups = images.GroupBy(t => t.Item2).ToArray();
 

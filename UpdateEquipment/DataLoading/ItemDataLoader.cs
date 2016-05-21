@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using HtmlAgilityPack;
 using POESKillTree.Model.Items;
+using UpdateEquipment.Utils;
 
-namespace UpdateEquipment
+namespace UpdateEquipment.DataLoading
 {
     /// <summary>
     /// Extracts item bases from the wiki as a <see cref="XmlItemList"/>.
     /// </summary>
-    public class ItemDataLoader : DataLoader<XmlItemList>
+    public class ItemDataLoader : XmlDataLoader<XmlItemList>
     {
         /// <summary>
         /// Contains all property columns in wiki tables that must be ignored because they contain redundant information.
@@ -20,35 +21,6 @@ namespace UpdateEquipment
         private static readonly HashSet<string> IgnoredColumns = new HashSet<string> { "Damage per Second" };
 
         private static readonly Regex NumberRegex = new Regex(@"\d+(\.\d+)?");
-
-        private const string WikiUrlPrefix = "http://pathofexile.gamepedia.com/";
-
-        /// <summary>
-        /// Contains all wiki pages that must be scraped and the item types that can be found in them
-        /// (in the order in which they occur).
-        /// </summary>
-        private static readonly IReadOnlyDictionary<string, IReadOnlyList<ItemType>> WikiUrls = new Dictionary<string, IReadOnlyList<ItemType>>
-        {
-            {"List_of_axes", new []{ItemType.OneHandedAxe, ItemType.TwoHandedAxe}},
-            {"List_of_bows", new []{ItemType.Bow}},
-            {"List_of_claws", new []{ItemType.Claw}},
-            {"List_of_daggers", new []{ItemType.Dagger}},
-            {"List_of_maces", new []{ItemType.OneHandedMace, ItemType.Sceptre, ItemType.TwoHandedMace}},
-            {"List_of_staves", new []{ItemType.Staff}},
-            {"List_of_swords", new []{ItemType.OneHandedSword, ItemType.ThrustingOneHandedSword, ItemType.TwoHandedSword}},
-            {"List_of_wands", new []{ItemType.Wand}},
-
-            {"List_of_amulets", new []{ItemType.Amulet}},
-            {"List_of_belts", new []{ItemType.Belt}},
-            {"List_of_quivers", new []{ItemType.Quiver, ItemType.Quiver}}, // current quivers and old quivers
-            {"List_of_rings", new []{ItemType.Ring}},
-
-            {"Body_armour", ItemGroup.BodyArmour.Types()},
-            {"Boots", ItemGroup.Boots.Types()},
-            {"Gloves", ItemGroup.Gloves.Types()},
-            {"Helmet", ItemGroup.Helmet.Types()},
-            {"Shield", ItemGroup.Shield.Types()}
-        };
 
         /// <summary>
         /// Contains all item types that have hidden implicits that are not listed in the wiki tables.
@@ -101,40 +73,14 @@ namespace UpdateEquipment
             HiddenImplicits = dict;
         }
 
-        public override void Load()
+        protected override async Task LoadAsync(CachedHttpClient httpClient)
         {
-            using (var client = new WebClient())
+            var wikiUtils = new WikiUtils(httpClient);
+            var bases = await wikiUtils.SelectFromBaseItemsAsync(ParseTable);
+            Data = new XmlItemList
             {
-                client.Encoding = Encoding.UTF8;
-
-                var bases = new List<XmlItemBase>();
-                foreach (var pair in WikiUrls)
-                {
-                    var doc = new HtmlDocument
-                    {
-                        OptionDefaultStreamEncoding = Encoding.UTF8
-                    };
-                    doc.LoadHtml(client.DownloadString(WikiUrlPrefix + pair.Key));
-
-                    var itemTypes = pair.Value;
-                    var tables =
-                        doc.DocumentNode.SelectNodes("//table[contains(@class, 'wikitable')]")
-                            .Where(node => node.SelectNodes("tr[1]/th[1 and . = \"Name\"]") != null).ToList();
-                    if (itemTypes.Count > tables.Count)
-                    {
-                        Console.WriteLine("Not enough tables found in " + pair.Key +
-                                          " for the number of item types that should be there.");
-                        Console.WriteLine("Skipping item types " + itemTypes);
-                        continue;
-                    }
-                    // Only the first itemType.Count tables are parsed.
-                    bases.AddRange(tables.Take(itemTypes.Count).Zip(itemTypes, ParseTable).SelectMany(l => l));
-                }
-                Data = new XmlItemList
-                {
-                    ItemBases = bases.Union(Jewels).ToArray()
-                };
-            }
+                ItemBases = bases.Union(Jewels).ToArray()
+            };
         }
 
         private static IEnumerable<XmlItemBase> ParseTable(HtmlNode table, ItemType itemType)

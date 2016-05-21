@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Model.Items;
+using UpdateEquipment.Utils;
 
-namespace UpdateEquipment
+namespace UpdateEquipment.DataLoading
 {
     /// <summary>
     /// Extracts affix information from exilemods.com as a <see cref="XmlAffixList"/>.
     /// </summary>
-    public class AffixDataLoader : DataLoader<XmlAffixList>
+    public class AffixDataLoader : XmlDataLoader<XmlAffixList>
     {
         private const string Url = "http://www.exilemods.com/js/data.js";
 
@@ -25,13 +26,9 @@ namespace UpdateEquipment
 
         private const string IncorrectFromToRename = "$1 to $2";
 
-        public override void Load()
+        protected override async Task LoadAsync(CachedHttpClient httpClient)
         {
-            string file;
-            using (var client = new WebClient())
-            {
-                file = client.DownloadString(Url);
-            }
+            var file = await httpClient.GetStringAsync(Url);
             file = file.Replace(Root + " = ", "{ \"" + Root + "\": ") + "}";
 
             var json = JObject.Parse(file);
