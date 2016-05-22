@@ -111,6 +111,10 @@
       <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.2.4.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -295,7 +299,6 @@
     <Compile Include="Utils\CustomSettingsProvider.cs" />
     <Compile Include="Utils\Extensions\EventHandlerExtensions.cs" />
     <Compile Include="Utils\Extensions\Helpers.cs" />
-    <Compile Include="Utils\ItemAssetDownloader.cs" />
     <Compile Include="Utils\Extensions\StringExtension.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
@@ -517,6 +520,9 @@
     <None Include="Locale\en-US\Help.md" />
     <None Include="Locale\sk\Help.md" />
     <None Include="Localization\Markdown\Readme.md" />
+    <None Include="Log4Net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">

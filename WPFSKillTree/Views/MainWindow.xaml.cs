@@ -47,7 +47,6 @@ using ListView = System.Windows.Controls.ListView;
 using ListViewItem = System.Windows.Controls.ListViewItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using ToolTip = System.Windows.Controls.ToolTip;
-using Path = System.IO.Path;
 
 namespace POESKillTree.Views
 {
@@ -2481,111 +2480,6 @@ namespace POESKillTree.Views
         private void ToggleTreeComparison_Click(object sender, RoutedEventArgs e)
         {
             lvSavedBuilds_SelectionChanged(null, null);
-        }
-
-        private async void Menu_RedownloadItemAssets(object sender, RoutedEventArgs e)
-        {
-            string sMessageBoxText = L10n.Message("The existing Skill Item assets will be deleted and new assets will be downloaded.")
-                       + "\n\n" + L10n.Message("Do you want to continue?");
-
-            var rsltMessageBox = await this.ShowQuestionAsync(sMessageBoxText, image: MessageBoxImage.Warning);
-
-            string appDataPath = AppData.GetFolder(true);
-            switch (rsltMessageBox)
-            {
-                case MessageBoxResult.Yes:
-                    if (Directory.Exists(Path.Combine(appDataPath, "Data")))
-                    {
-                        try
-                        {
-                            if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
-                                Directory.Delete("DataBackup", true);
-                            Directory.Move(Path.Combine(appDataPath, "Data"), Path.Combine(appDataPath, "DataBackup"));
-
-                            var images = new List<Tuple<string, string>>();
-
-                            StartLoadingWindow(L10n.Message("Downloading Item assets"));
-                            UpdateLoadingWindow(0, 4);
-                            ItemAssetDownloader.ExtractJewelry(images);
-                            UpdateLoadingWindow(1, 4);
-                            ItemAssetDownloader.ExtractArmors(images);
-                            UpdateLoadingWindow(2, 4);
-                            ItemAssetDownloader.ExtractWeapons(images);
-                            UpdateLoadingWindow(3, 4);
-                            ItemAssetDownloader.ExtractJewels(images);
-                            UpdateLoadingWindow(4, 4);
-
-                            var imgroups = images.GroupBy(t => t.Item2).ToArray();
-
-                            UpdateLoadingWindow(0, imgroups.Length);
-
-                            var dir = AppData.GetFolder(@"Data\Equipment\Assets");
-                            using (var client = new WebClient())
-                            {
-                                for (int i = 0; i < imgroups.Length; i++)
-                                {
-                                    using (var ms = new MemoryStream(client.DownloadData(imgroups[i].Key)))
-                                    {
-                                        var dec = new PngBitmapDecoder(ms, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-                                        var image = dec.Frames[0];
-                                        var cropped = new CroppedBitmap(image, new Int32Rect(4, 4, image.PixelWidth - 8, image.PixelHeight - 8));
-                                        var encoder = new PngBitmapEncoder();
-                                        encoder.Frames.Add(BitmapFrame.Create(cropped));
-
-                                        using (var m = new MemoryStream())
-                                        {
-                                            encoder.Save(m);
-
-                                            foreach (var item in imgroups[i])
-                                            {
-                                                using (var f = File.Create(Path.Combine(dir, item.Item1 + ".png")))
-                                                {
-                                                    m.Seek(0, SeekOrigin.Begin);
-                                                    m.CopyTo(f);
-                                                }
-                                            }
-                                        }
-
-                                        UpdateLoadingWindow(i + 1, imgroups.Length);
-                                    }
-                                }
-                            }
-
-                            foreach (var file in new DirectoryInfo(Path.Combine(appDataPath, @"DataBackup")).GetFiles())
-                                file.CopyTo(Path.Combine(Path.Combine(appDataPath, @"Data"), file.Name));
-                            
-                            File.Copy(Path.Combine(AppData.GetFolder(@"DataBackup\Equipment"), "Affixlist.xml"), Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Affixlist.xml"));
-                            
-                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
-                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\PseudoAttributes"), Path.Combine(appDataPath, @"Data\PseudoAttributes"));
-                            if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
-                                Directory.Delete(Path.Combine(appDataPath, "DataBackup"), true);
-
-                            CloseLoadingWindow();
-                        }
-                        catch (Exception ex)
-                        {
-                            if (Directory.Exists(appDataPath + "Data") && Directory.Exists(appDataPath + "DataBackup"))
-                                Directory.Delete(Path.Combine(appDataPath, "Data"), true);
-                            try
-                            {
-                                CloseLoadingWindow();
-                            }
-                            catch (Exception)
-                            {
-                                //Nothing
-                            }
-                            if (Directory.Exists(appDataPath + "DataBackup"))
-                                Directory.Move(Path.Combine(appDataPath, "DataBackup"), Path.Combine(appDataPath, "Data"));
-                            this.ShowErrorAsync(L10n.Message("Error while downloading assets.", ex.Message));
-                        }
-                    }
-                    break;
-
-                case MessageBoxResult.No:
-                    //Do nothing
-                    break;
-            }
         }
 
         private void Button_Craft_Click(object sender, RoutedEventArgs e)

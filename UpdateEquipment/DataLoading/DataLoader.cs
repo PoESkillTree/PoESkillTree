@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.IO;
 using System.Threading.Tasks;
 using UpdateEquipment.Utils;
 
@@ -7,34 +6,20 @@ namespace UpdateEquipment.DataLoading
 {
     public interface IDataLoader
     {
-        Task LoadAndSaveAsync(CachedHttpClient httpClient, string savePath);
+        bool SavePathIsFolder { get; }
+
+        Task LoadAndSaveAsync(CachingHttpClient httpClient, string savePath);
     }
 
     public abstract class DataLoader : IDataLoader
     {
         protected string SavePath { get; private set; }
 
-        protected abstract bool SavePathIsFolder { get; }
+        public abstract bool SavePathIsFolder { get; }
 
-        public async Task LoadAndSaveAsync(CachedHttpClient httpClient, string savePath)
+        public async Task LoadAndSaveAsync(CachingHttpClient httpClient, string savePath)
         {
             SavePath = savePath;
-            if (SavePathIsFolder)
-            {
-                Directory.CreateDirectory(savePath);
-                var backupPath = savePath + "Backup";
-                if (Directory.Exists(backupPath))
-                    Directory.Delete(backupPath, true);
-                Directory.CreateDirectory(backupPath);
-                foreach (var filePath in Directory.GetFiles(savePath))
-                {
-                    File.Copy(filePath, filePath.Replace(savePath, backupPath), true);
-                }
-            }
-            else
-            {
-                File.Copy(savePath, savePath + ".bak", true);
-            }
             await LoadAsync(httpClient);
             await CompleteSavingAsync();
         }
@@ -42,7 +27,7 @@ namespace UpdateEquipment.DataLoading
         /// <summary>
         /// Extracts data from the web.
         /// </summary>
-        protected abstract Task LoadAsync(CachedHttpClient httpClient);
+        protected abstract Task LoadAsync(CachingHttpClient httpClient);
 
         protected abstract Task CompleteSavingAsync();
 

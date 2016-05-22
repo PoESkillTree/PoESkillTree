@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using log4net;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils.Extensions;
 
@@ -11,6 +12,8 @@ namespace UpdateEquipment.Utils
     public class WikiUtils
     {
         public const string WikiUrlPrefix = "http://pathofexile.gamepedia.com/";
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(WikiUtils));
 
         /// <summary>
         /// Contains all wiki pages that must be scraped and the item types that can be found in them
@@ -39,9 +42,9 @@ namespace UpdateEquipment.Utils
             {"Shield", ItemGroup.Shield.Types()}
         };
 
-        private readonly CachedHttpClient _httpClient;
+        private readonly CachingHttpClient _httpClient;
 
-        public WikiUtils(CachedHttpClient httpClient)
+        public WikiUtils(CachingHttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -77,16 +80,15 @@ namespace UpdateEquipment.Utils
                     .Where(node => node.SelectNodes("tr[1]/th[1 and . = \"Name\"]") != null).ToList();
             if (itemTypes.Count > tables.Count)
             {
-                Console.WriteLine("Not enough tables found in " + urlSuffix +
-                                    " for the number of item types that should be there.");
-                Console.WriteLine("Skipping item types " + itemTypes);
+                Log.WarnFormat("Not enough tables found in {0} for the number of item types that should be there.", urlSuffix);
+                Log.WarnFormat("Skipping item types {0}", itemTypes);
                 return new List<BaseItemTable>();
             }
             // Only the first itemType.Count tables are parsed.
             return tables.Take(itemTypes.Count).Zip(itemTypes, BaseItemTable.Create).ToList();
         }
 
-        public class BaseItemTable
+        private class BaseItemTable
         {
             public HtmlNode HtmlTable { get; private set; }
             public ItemType ItemType { get; private set; }

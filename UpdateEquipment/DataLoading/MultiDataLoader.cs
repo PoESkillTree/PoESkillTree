@@ -1,15 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using log4net;
 
 namespace UpdateEquipment.DataLoading
 {
     public abstract class MultiDataLoader<T> : DataLoader
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MultiDataLoader<T>));
+
         private readonly List<Task> _saveTasks = new List<Task>();
 
-        protected override bool SavePathIsFolder
+        public override bool SavePathIsFolder
         {
             get { return true; }
         }
@@ -31,7 +33,7 @@ namespace UpdateEquipment.DataLoading
             catch (IOException e)
             {
                 if (!fileName.Contains("Two-Stone Ring"))
-                    Console.WriteLine("Could not save to file " + fileName + ": " + e.Message);
+                    Log.Error("Could not save to file " + fileName + ": " + e.Message);
             }
         }
 

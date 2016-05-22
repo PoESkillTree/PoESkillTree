@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace UpdateEquipment.Utils
 {
-    public class CachedHttpClient : IDisposable
+    public class CachingHttpClient : IDisposable
     {
-        private readonly SemaphoreSlim _taskSema = new SemaphoreSlim(4);
+        private const int MaxParallelRequests = 4;
+
+        private readonly SemaphoreSlim _taskSema = new SemaphoreSlim(MaxParallelRequests);
 
         private readonly ConcurrentDictionary<string, Task<string>> _stringCache =
             new ConcurrentDictionary<string, Task<string>>();
@@ -31,8 +33,8 @@ namespace UpdateEquipment.Utils
         {
             return await _byteArrayCache.GetOrAdd(requestUri, async s =>
             {
-                var content = await GetAsync(s);
-                return await content.ReadAsByteArrayAsync();
+                var content = await GetAsync(s).ConfigureAwait(false);
+                return await content.ReadAsByteArrayAsync().ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
 

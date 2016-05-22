@@ -23,14 +23,14 @@ namespace UpdateEquipment.DataLoading
 
         private readonly bool _overwriteExisting;
 
-        private CachedHttpClient _httpClient;
+        private CachingHttpClient _httpClient;
 
         public ItemImageLoader(bool overwriteExisting)
         {
             _overwriteExisting = overwriteExisting;
         }
 
-        protected override async Task LoadAsync(CachedHttpClient httpClient)
+        protected override async Task LoadAsync(CachingHttpClient httpClient)
         {
             _httpClient = httpClient;
             var wikiUtils = new WikiUtils(httpClient);

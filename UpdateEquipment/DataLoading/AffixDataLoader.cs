@@ -26,7 +26,7 @@ namespace UpdateEquipment.DataLoading
 
         private const string IncorrectFromToRename = "$1 to $2";
 
-        protected override async Task LoadAsync(CachedHttpClient httpClient)
+        protected override async Task LoadAsync(CachingHttpClient httpClient)
         {
             var file = await httpClient.GetStringAsync(Url);
             file = file.Replace(Root + " = ", "{ \"" + Root + "\": ") + "}";

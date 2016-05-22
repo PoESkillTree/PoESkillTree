@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using log4net;
 using POESKillTree.Model.Items;
 using UpdateEquipment.Utils;
 
@@ -15,6 +15,8 @@ namespace UpdateEquipment.DataLoading
     /// </summary>
     public class ItemDataLoader : XmlDataLoader<XmlItemList>
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDataLoader));
+
         /// <summary>
         /// Contains all property columns in wiki tables that must be ignored because they contain redundant information.
         /// </summary>
@@ -73,7 +75,7 @@ namespace UpdateEquipment.DataLoading
             HiddenImplicits = dict;
         }
 
-        protected override async Task LoadAsync(CachedHttpClient httpClient)
+        protected override async Task LoadAsync(CachingHttpClient httpClient)
         {
             var wikiUtils = new WikiUtils(httpClient);
             var bases = await wikiUtils.SelectFromBaseItemsAsync(ParseTable);
@@ -83,7 +85,7 @@ namespace UpdateEquipment.DataLoading
             };
         }
 
-        private static IEnumerable<XmlItemBase> ParseTable(HtmlNode table, ItemType itemType)
+        private IEnumerable<XmlItemBase> ParseTable(HtmlNode table, ItemType itemType)
         {
             var isFirstRow = true;
             var nameColumn = -1;
@@ -165,7 +167,7 @@ namespace UpdateEquipment.DataLoading
             }
         }
 
-        private static IEnumerable<XmlStat> ParseImplicit(HtmlNode implicitCell)
+        private IEnumerable<XmlStat> ParseImplicit(HtmlNode implicitCell)
         {
             if (IsNotApplicableCell(implicitCell)) yield break;
 
@@ -178,7 +180,7 @@ namespace UpdateEquipment.DataLoading
             {
                 if (matches.Count != 2)
                 {
-                    Console.WriteLine("Could not parse implicit " + FindContent(implicitCell));
+                    Log.Warn("Could not parse implicit " + FindContent(implicitCell));
                     yield break;
                 }
                 var from = ParseFloat(matches[0].Value);
@@ -208,7 +210,7 @@ namespace UpdateEquipment.DataLoading
             }
         }
 
-        private static IEnumerable<XmlStat> ParseProperties(HtmlNode row, IReadOnlyDictionary<int, string> propertyColumns, float implicitMultiplier)
+        private IEnumerable<XmlStat> ParseProperties(HtmlNode row, IReadOnlyDictionary<int, string> propertyColumns, float implicitMultiplier)
         {
             foreach (var propertyColumn in propertyColumns)
             {
@@ -244,7 +246,7 @@ namespace UpdateEquipment.DataLoading
                 }
                 if (!success)
                 {
-                    Console.WriteLine("Could not parse floats from cell " + cell.InnerHtml);
+                    Log.Warn("Could not parse floats from cell " + cell.InnerHtml);
                     continue;
                 }
                 if (modified)

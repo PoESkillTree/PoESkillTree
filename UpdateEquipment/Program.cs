@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
 using POESKillTree.Utils;
 using UpdateEquipment.DataLoading;
 using UpdateEquipment.Utils;
@@ -13,6 +14,8 @@ namespace UpdateEquipment
 {
     public class Program : IDisposable
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Program));
+
         // current directory while debugging is UpdateEquipment/bin/Debug/
         private static readonly string PathForDebug = Path.Combine("..", "..", "..", "WPFSKillTree");
 
@@ -26,7 +29,7 @@ namespace UpdateEquipment
         private readonly string _savePath = Path.Combine(Debugger.IsAttached ? PathForDebug : AppData.GetFolder(),
             "Data", "Equipment");
 
-        private readonly CachedHttpClient _httpClient = new CachedHttpClient();
+        private readonly CachingHttpClient _httpClient = new CachingHttpClient();
 
         public static void Main(string[] args)
         {
@@ -44,9 +47,30 @@ namespace UpdateEquipment
 
         private async Task LoadAsync(string name, string path, IDataLoader dataLoader)
         {
-            Console.WriteLine("Loading " + name + " ...");
-            await dataLoader.LoadAndSaveAsync(_httpClient, Path.Combine(_savePath, path));
-            Console.WriteLine("Loaded " + name + "!");
+            Log.InfoFormat("Loading {0} ...", name);
+            var fullPath = Path.Combine(_savePath, path);
+            if (dataLoader.SavePathIsFolder)
+            {
+                if (Directory.Exists(fullPath))
+                {
+                    var backupPath = fullPath + "Backup";
+                    if (Directory.Exists(backupPath))
+                        Directory.Delete(backupPath, true);
+                    Directory.CreateDirectory(backupPath);
+                    foreach (var filePath in Directory.GetFiles(fullPath))
+                    {
+                        File.Copy(filePath, filePath.Replace(fullPath, backupPath), true);
+                    }
+                }
+                Directory.CreateDirectory(fullPath);
+            }
+            else
+            {
+                if (File.Exists(fullPath))
+                    File.Copy(fullPath, fullPath + ".bak", true);
+            }
+            await dataLoader.LoadAndSaveAsync(_httpClient, fullPath);
+            Log.InfoFormat("Loaded {0}!", name);
         }
 
         public void Dispose()

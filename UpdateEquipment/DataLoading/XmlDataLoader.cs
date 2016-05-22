@@ -15,7 +15,7 @@ namespace UpdateEquipment.DataLoading
         /// </summary>
         protected T Data { private get; set; }
 
-        protected override bool SavePathIsFolder
+        public override bool SavePathIsFolder
         {
             get { return false; }
         }
