@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace POESKillTree.Utils
 {
-    // Source: Stephen Cleary at https://msdn.microsoft.com/en-us/magazine/dn605875.aspx
+    // Original source: Stephen Cleary at https://msdn.microsoft.com/en-us/magazine/dn605875.aspx
     /// <summary>
     /// Wrapper class around Task that notifies property changes, has
     /// a non-blocking <see cref="Result"/> property and swallows exceptions
@@ -12,11 +12,12 @@ namespace POESKillTree.Utils
     /// </summary>
     public sealed class NotifyingTask<TResult> : INotifyPropertyChanged
     {
+        public TResult Default { private get; set; }
         public Task TaskCompletion { get; private set; }
         public Task<TResult> Task { get; private set; }
         public TResult Result
         {
-            get { return (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : default(TResult); }
+            get { return (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : Default; }
         }
         public TaskStatus Status { get { return Task.Status; } }
         public bool IsCompleted { get { return Task.IsCompleted; } }
@@ -45,16 +46,25 @@ namespace POESKillTree.Utils
             }
         }
 
+        public NotifyingTask(Task<TResult> task, Action<Exception> errorHandler)
+        {
+            Task = task;
+            if (!task.IsCompleted)
+            {
+                TaskCompletion = WatchTaskAsync(task, errorHandler, null);
+            }
+        }
+
         public NotifyingTask(Task<TResult> task, Func<Exception, Task> errorHandler = null)
         {
             Task = task;
             if (!task.IsCompleted)
             {
-                TaskCompletion = WatchTaskAsync(task, errorHandler);
+                TaskCompletion = WatchTaskAsync(task, null, errorHandler);
             }
         }
 
-        private async Task WatchTaskAsync(Task task, Func<Exception, Task> errorHandler = null)
+        private async Task WatchTaskAsync(Task task, Action<Exception> errorHandler, Func<Exception, Task> asyncErrorHandler)
         {
             Exception e = null;
             try
@@ -66,9 +76,12 @@ namespace POESKillTree.Utils
                 // No await in catch with C# 5.0
                 e = e1;
             }
-            if (e != null && errorHandler != null)
+            if (e != null)
             {
-                await errorHandler(e);
+                if (errorHandler != null)
+                    errorHandler(e);
+                if (asyncErrorHandler != null)
+                    await asyncErrorHandler(e);
             }
 
             var propertyChanged = PropertyChanged;

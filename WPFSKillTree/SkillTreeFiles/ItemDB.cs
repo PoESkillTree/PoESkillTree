@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using POESKillTree.Model;
 using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Utils;
 using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
 using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;

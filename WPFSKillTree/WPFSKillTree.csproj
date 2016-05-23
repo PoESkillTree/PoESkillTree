@@ -197,11 +197,19 @@
     <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Bandit.cs" />
+    <Compile Include="Model\Items\Affixes\Affix.cs" />
+    <Compile Include="Model\Items\Affixes\ItemMod.cs" />
+    <Compile Include="Model\Items\Affixes\ItemModTier.cs" />
+    <Compile Include="Model\Items\Affixes\Stat.cs" />
+    <Compile Include="Model\Items\Affixes\XmlAffixList.cs" />
+    <Compile Include="Model\Items\Enums\FrameType.cs" />
+    <Compile Include="Model\Items\Enums\ItemGroup.cs" />
+    <Compile Include="Model\Items\Enums\ItemSlot.cs" />
+    <Compile Include="Model\Items\Enums\ItemType.cs" />
+    <Compile Include="Model\Items\Enums\ModType.cs" />
+    <Compile Include="Model\Items\EquipmentData.cs" />
+    <Compile Include="Model\Items\ItemImage.cs" />
     <Compile Include="Model\Items\XmlItemList.cs" />
-    <Compile Include="Model\Items\XmlAffixList.cs" />
-    <Compile Include="Model\Items\ItemGroup.cs" />
-    <Compile Include="Model\Items\ItemType.cs" />
-    <Compile Include="Model\Items\ModType.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Model\RelayCommand.cs" />
@@ -268,15 +276,16 @@
     <Compile Include="TreeGenerator\ViewModels\SettingsDialogCoordinator.cs" />
     <Compile Include="Utils\Converter\StringConverter.cs" />
     <Compile Include="Controls\Dialogs\ExtendedDialogManager.cs" />
+    <Compile Include="Utils\Extensions\ImageExtensions.cs" />
     <Compile Include="Utils\Extensions\TaskExtensions.cs" />
     <Compile Include="Utils\NotifyingTask.cs" />
+    <Compile Include="Utils\WikiUtils.cs" />
     <Compile Include="ViewModels\AttributeToTextblockConverter.cs" />
     <Compile Include="ViewModels\CloseableViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
-    <Compile Include="Model\Items\Stat.cs" />
     <Compile Include="ViewModels\DownloadStashViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
@@ -303,14 +312,9 @@
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\DownloadItemsViewModel.cs" />
-    <Compile Include="Model\Items\Affix.cs" />
-    <Compile Include="Model\Items\FrameType.cs" />
     <Compile Include="Model\Items\Item.cs" />
     <Compile Include="Model\Items\ItemAttributes.cs" />
     <Compile Include="Model\Items\ItemBase.cs" />
-    <Compile Include="Model\Items\ItemSlot.cs" />
-    <Compile Include="Model\Items\ItemMod.cs" />
-    <Compile Include="Model\Items\ItemModTier.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
     <Compile Include="SkillTreeFiles\ImageHelper.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
@@ -635,7 +639,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ExpressionEvaluator.dll" />
-    <Content Include="ExpressionEvaluator.pdb" />
     <Resource Include="Images\EquipmentUI\Inventory.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Amulet.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Belt.png" />
@@ -681,7 +684,7 @@
     <Resource Include="Images\Ranger_Highlighted.jpg" />
     <Resource Include="Images\Marauder_Highlighted.jpg" />
     <Resource Include="Images\Duelist_Highlighted.jpg" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\BodyArmor.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\BodyArmour.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Helmet.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandedWeapon.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Quiver.png" />
@@ -703,7 +706,6 @@
     <None Include="Tools\isetup\WizModernSmallImage-IS.bmp" />
     <None Include="Tools\isetup\WizModernSmallImage.bmp" />
     <None Include="Tools\DeBOM.exe" />
-    <None Include="Tools\DeBOM.pdb" />
     <None Include="Localization\Markdown\License.txt" />
     <None Include="Locale\README.txt" />
     <None Include="LICENSE.txt">
@@ -712,7 +714,6 @@
     <None Include="Tools\Ionic.Zip.dll" />
     <None Include="Tools\MSBuild.ExtensionPack.dll" />
     <None Include="Tools\XAMLText.exe" />
-    <None Include="Tools\XAMLText.pdb" />
     <None Include="Locale\msginit.exe" />
     <None Include="Tools\gettext\msgmerge.exe" />
     <None Include="Tools\gettext\xgettext.exe" />

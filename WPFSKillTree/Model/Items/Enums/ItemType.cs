@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.Model.Items
+namespace POESKillTree.Model.Items.Enums
 {
     /// <summary>
     /// The ItemType of an item defines which mod can be crafted on it.

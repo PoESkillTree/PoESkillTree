@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using MB.Algodat;
 using Newtonsoft.Json.Linq;
+using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 
@@ -214,7 +216,7 @@ namespace POESKillTree.Model.Items
             RequirementsFromBase();
         }
 
-        public Item(JObject val, ItemSlot itemSlot = ItemSlot.Unequipable, bool isGem = false)
+        public Item(JObject val, EquipmentData equipmentData, ItemSlot itemSlot = ItemSlot.Unequipable, bool isGem = false)
         {
             JsonBase = val;
             Slot = itemSlot;
@@ -318,7 +320,7 @@ namespace POESKillTree.Model.Items
                 int socket = 0;
                 foreach (JObject obj in (JArray)val["socketedItems"])
                 {
-                    var item = new Item(obj, isGem: true) { _socketGroup = sockets[socket++] };
+                    var item = new Item(obj, equipmentData, isGem: true) { _socketGroup = sockets[socket++] };
                     _gems.Add(item);
                 }
             }
@@ -334,11 +336,11 @@ namespace POESKillTree.Model.Items
             {
                 if (Frame < FrameType.Rare)
                 {
-                    _baseType = ItemBase.ItemBaseFromTypeline(TypeLine);
+                    _baseType = equipmentData.ItemBaseFromTypeline(TypeLine);
                 }
                 else
                 {
-                    ItemBase.BaseDictionary.TryGetValue(TypeLine, out _baseType);
+                    equipmentData.BaseDictionary.TryGetValue(TypeLine, out _baseType);
                 }
                 if (_baseType == null)
                 {

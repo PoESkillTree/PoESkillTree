@@ -89,7 +89,7 @@ namespace UnitTests
             Tree.Level = level;
 
             string itemData = File.ReadAllText(buildFile);
-            ItemAttributes itemAttributes = new ItemAttributes(itemData);
+            ItemAttributes itemAttributes = new ItemAttributes(itemData, new EquipmentData());
             Compute.Initialize(Tree, itemAttributes);
 
             // Compare defense properties.

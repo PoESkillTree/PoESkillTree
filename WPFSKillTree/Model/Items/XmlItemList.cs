@@ -1,4 +1,6 @@
 ﻿using System.Xml.Serialization;
+using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
 {

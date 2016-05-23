@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Xml.Serialization;
 using POESKillTree.ViewModels;
 using System.Collections.ObjectModel;
+using log4net;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Controls;
 using POESKillTree.Model.Items;
@@ -16,6 +17,8 @@ namespace POESKillTree.Model
 {
     public class PersistentData : Notifier
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentData));
+
         private string _appVersion;
         public string AppVersion
         {
@@ -48,18 +51,23 @@ namespace POESKillTree.Model
         public List<PoEBuild> Builds
         {
             get { return _builds; }
-            set { SetProperty(ref _builds, value); }
+            private set { SetProperty(ref _builds, value); }
         }
 
         private const string FileName = "PersistentData";
 
-        [XmlIgnore]
         private readonly ObservableCollection<Item> _stash = new ObservableCollection<Item>();
-        
         [XmlIgnore]
         public ObservableCollection<Item> StashItems
         {
             get { return _stash; }
+        }
+
+        private readonly Lazy<EquipmentData> _equipmentData = new Lazy<EquipmentData>(() => new EquipmentData());
+        [XmlIgnore]
+        public EquipmentData EquipmentData
+        {
+            get { return _equipmentData.Value; }
         }
 
         public PersistentData()
@@ -158,8 +166,10 @@ namespace POESKillTree.Model
 
                 File.WriteAllText(Path.Combine(AppData.GetFolder(), "stash.json"), arr.ToString());
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Log.Error("Could not serialize stash", e);
+            }
         }
 
         private void DeserializeStash()
@@ -173,12 +183,14 @@ namespace POESKillTree.Model
                 var arr = JArray.Parse(File.ReadAllText(file));
                 foreach (var item in arr)
                 {
-                    var itm = new Item((JObject)item);
+                    var itm = new Item((JObject)item, EquipmentData);
                     StashItems.Add(itm);
                 }
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Log.Error("Could not deserialize stash", e);
+            }
         }
 
         public void SetBuilds(ItemCollection items)

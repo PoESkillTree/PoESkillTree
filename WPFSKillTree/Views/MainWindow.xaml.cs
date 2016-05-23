@@ -164,8 +164,6 @@ namespace POESKillTree.Views
 
         private SettingsWindow _settingsWindow;
 
-        private bool _isClosing;
-
         private const string MainWindowTitle = "Path of Exile: Passive Skill Tree Planner";
 
         public MainWindow()
@@ -592,8 +590,6 @@ namespace POESKillTree.Views
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            _isClosing = true;
-
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
             _persistentData.CurrentBuild.Level = GetLevelAsString();
             _persistentData.SetBuilds(lvSavedBuilds.Items);
@@ -804,7 +800,8 @@ namespace POESKillTree.Views
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
             await this.ShowDialogAsync(
-                new DownloadStashViewModel(_persistentData.CurrentBuild, Stash, DialogCoordinator.Instance),
+                new DownloadStashViewModel(_persistentData.CurrentBuild, Stash, _persistentData.EquipmentData,
+                    DialogCoordinator.Instance),
                 new DownloadStashWindow());
         }
 
@@ -1695,7 +1692,7 @@ namespace POESKillTree.Views
             {
                 try
                 {
-                    ItemAttributes = new ItemAttributes(itemData);
+                    ItemAttributes = new ItemAttributes(itemData, _persistentData.EquipmentData);
                 }
                 catch (Exception ex)
                 {
@@ -2484,7 +2481,7 @@ namespace POESKillTree.Views
 
         private void Button_Craft_Click(object sender, RoutedEventArgs e)
         {
-            var w = new CraftWindow() { Owner = this };
+            var w = new CraftWindow(PersistentData.EquipmentData) { Owner = this };
             if (w.ShowDialog() != true) return;
 
             var item = w.Item;

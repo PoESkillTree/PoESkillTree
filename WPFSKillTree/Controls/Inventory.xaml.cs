@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
 using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Controls

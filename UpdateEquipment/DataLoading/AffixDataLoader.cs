@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using POESKillTree.Model.Items;
-using UpdateEquipment.Utils;
+using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
 
 namespace UpdateEquipment.DataLoading
 {
@@ -26,7 +27,7 @@ namespace UpdateEquipment.DataLoading
 
         private const string IncorrectFromToRename = "$1 to $2";
 
-        protected override async Task LoadAsync(CachingHttpClient httpClient)
+        protected override async Task LoadAsync(HttpClient httpClient)
         {
             var file = await httpClient.GetStringAsync(Url);
             file = file.Replace(Root + " = ", "{ \"" + Root + "\": ") + "}";

@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Model.Items
+﻿namespace POESKillTree.Model.Items.Enums
 {
     public enum FrameType
     {

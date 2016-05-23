@@ -1,72 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Xml.Serialization;
-using POESKillTree.Utils;
+using System.Threading.Tasks;
+using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
 {
-
     public class ItemBase
     {
-        public static readonly IReadOnlyList<ItemBase> BaseList;
-
-        public static readonly IReadOnlyDictionary<string, ItemBase> BaseDictionary;
-
-        private static readonly WordSetTreeNode Root;
-
-        static ItemBase()
-        {
-            var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"ItemList.xml");
-            if (File.Exists(filename))
-            {
-                using (var reader = new StreamReader(filename))
-                {
-                    var ser = new XmlSerializer(typeof(XmlItemList));
-                    var xmlList = (XmlItemList) ser.Deserialize(reader);
-                    BaseList = xmlList.ItemBases.Select(x => new ItemBase(x)).ToList();
-                }
-            }
-            else
-            {
-                BaseList = new List<ItemBase>();
-            }
-
-            // todo The other two-stone rings are not selected by this. Needs disambiguation.
-            var dict = new Dictionary<string, ItemBase>();
-            foreach (var itemBase in BaseList)
-            {
-                dict[itemBase.Name] = itemBase;
-            }
-            BaseDictionary = dict;
-
-            Root = new WordSetTreeNode();
-            var allbs = BaseList.Select(m => m.Name.Split(' ')).OrderBy(s => s[0]).ToArray();
-            foreach (var wl in allbs)
-                Root.AddWordset(wl);
-        }
-
-        public static ItemBase ItemBaseFromTypeline(string typeline)
-        {
-            var wlist = typeline.Split(' ');
-            var ms = new List<WordSetTreeNode>();
-
-            for (int i = 0; i < wlist.Length; i++)
-            {
-                var m = Root.Match(wlist.Skip(i)).OrderByDescending(n => n.Level).FirstOrDefault();
-                if (m != null)
-                    ms.Add(m);
-            }
-
-            if (ms.Count == 0)
-                return null;
-            if (ms.Count > 1)
-                throw new NotSupportedException("duplicate type match");
-            return BaseDictionary[ms[0].ToString()];
-        }
-
         private static int GetWidthForItem(ItemType type, ItemGroup group, string name)
         {
             switch (group)
@@ -169,7 +112,9 @@ namespace POESKillTree.Model.Items
         public IReadOnlyList<Stat> ImplicitMods { get; private set; }
         private IReadOnlyList<Stat> Properties { get; set; }
 
-        private ItemBase(XmlItemBase xmlBase)
+        public ItemImage Image { get; private set; }
+
+        public ItemBase(XmlItemBase xmlBase)
         {
             Level = xmlBase.Level;
             RequiredStrength = xmlBase.Strength;
@@ -185,6 +130,8 @@ namespace POESKillTree.Model.Items
             Properties = xmlBase.Properties != null
                 ? xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList()
                 : new List<Stat>();
+
+            Image = new ItemImage(Name, ItemGroup);
         }
 
         /// <summary>
@@ -235,6 +182,8 @@ namespace POESKillTree.Model.Items
                     ItemType = type;
             }
             ItemGroup = ItemType.Group();
+
+            Image = new ItemImage(Name, ItemGroup);
         }
 
         /// <summary>
@@ -269,6 +218,7 @@ namespace POESKillTree.Model.Items
 
         public Item CreateItem()
         {
+            Image.DownloadMissingImage();
             return new Item(this, GetWidthForItem(ItemType, ItemGroup, Name), GetHeightForItem(ItemType, ItemGroup, Name))
             {
                 Properties = GetRawProperties()
@@ -290,67 +240,6 @@ namespace POESKillTree.Model.Items
         public override string ToString()
         {
             return Name;
-        }
-
-        private class WordSetTreeNode
-        {
-            public int Level { get; private set; }
-
-            private string _word;
-
-            private WordSetTreeNode _parent;
-
-            private bool _isLeaf;
-
-            private readonly Dictionary<string, WordSetTreeNode> _children = new Dictionary<string, WordSetTreeNode>();
-
-            public void AddWordset(IEnumerable<string> words)
-            {
-                var enumerated = words as string[] ?? words.ToArray();
-
-                var word = enumerated.First();
-
-                WordSetTreeNode nod;
-                if (!_children.TryGetValue(word, out nod))
-                {
-                    nod = new WordSetTreeNode {_word = word, _parent = this, Level = Level + 1};
-                    _children.Add(word, nod);
-                }
-
-                if (enumerated.Length > 1)
-                    nod.AddWordset(enumerated.Skip(1));
-                else
-                    nod._isLeaf = true;
-            }
-
-            public IEnumerable<WordSetTreeNode> Match(IEnumerable<string> enumerable)
-            {
-                var nod = this;
-                foreach (var w in enumerable)
-                {
-                    if (nod._isLeaf)
-                        yield return nod;
-
-                    if (nod._children == null || !nod._children.TryGetValue(w, out nod))
-                        yield break;
-                }
-
-                if (nod._isLeaf)
-                    yield return nod;
-            }
-
-            public override string ToString()
-            {
-                var lst = new Stack<string>();
-                var nod = this;
-                while (nod._parent != null)
-                {
-                    lst.Push(nod._word);
-                    nod = nod._parent;
-                }
-
-                return string.Join(" ", lst);
-            }
         }
     }
 }

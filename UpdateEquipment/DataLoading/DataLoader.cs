@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
+using System.Net.Http;
 using System.Threading.Tasks;
-using UpdateEquipment.Utils;
 
 namespace UpdateEquipment.DataLoading
 {
@@ -8,7 +8,7 @@ namespace UpdateEquipment.DataLoading
     {
         bool SavePathIsFolder { get; }
 
-        Task LoadAndSaveAsync(CachingHttpClient httpClient, string savePath);
+        Task LoadAndSaveAsync(HttpClient httpClient, string savePath);
     }
 
     public abstract class DataLoader : IDataLoader
@@ -17,7 +17,7 @@ namespace UpdateEquipment.DataLoading
 
         public abstract bool SavePathIsFolder { get; }
 
-        public async Task LoadAndSaveAsync(CachingHttpClient httpClient, string savePath)
+        public async Task LoadAndSaveAsync(HttpClient httpClient, string savePath)
         {
             SavePath = savePath;
             await LoadAsync(httpClient);
@@ -27,7 +27,7 @@ namespace UpdateEquipment.DataLoading
         /// <summary>
         /// Extracts data from the web.
         /// </summary>
-        protected abstract Task LoadAsync(CachingHttpClient httpClient);
+        protected abstract Task LoadAsync(HttpClient httpClient);
 
         protected abstract Task CompleteSavingAsync();
 

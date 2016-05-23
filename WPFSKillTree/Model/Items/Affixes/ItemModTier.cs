@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using MB.Algodat;
+using POESKillTree.Model.Items.Enums;
 
-namespace POESKillTree.Model.Items
+namespace POESKillTree.Model.Items.Affixes
 {
     public class ItemModTier : IEquatable<ItemModTier>
     {

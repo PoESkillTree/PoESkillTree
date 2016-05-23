@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using log4net;
-using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils.Extensions;
 
-namespace UpdateEquipment.Utils
+namespace POESKillTree.Utils
 {
     public class WikiUtils
     {
-        public const string WikiUrlPrefix = "http://pathofexile.gamepedia.com/";
+        public const double ItemImageResizeFactor = 0.6;
+
+        private const string WikiUrlPrefix = "http://pathofexile.gamepedia.com/";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(WikiUtils));
 
@@ -42,18 +45,18 @@ namespace UpdateEquipment.Utils
             {"Shield", ItemGroup.Shield.Types()}
         };
 
-        private readonly CachingHttpClient _httpClient;
+        private readonly Func<string, Task<string>> _getStringAsync;
 
-        public WikiUtils(CachingHttpClient httpClient)
+        public WikiUtils(HttpClient httpClient)
         {
-            _httpClient = httpClient;
+            _getStringAsync = httpClient.GetStringAsync;
         }
 
         public async Task ForEachBaseItemAsync(Action<HtmlNode, ItemType> tableParsingFunc)
         {
             foreach (var tablesTask in WikiUrls.Select(pair => LoadTableAsync(pair.Key, pair.Value)))
             {
-                var tables = await tablesTask;
+                var tables = await tablesTask.ConfigureAwait(false);
                 tables.ForEach(b => tableParsingFunc(b.HtmlTable, b.ItemType));
             }
         }
@@ -63,7 +66,7 @@ namespace UpdateEquipment.Utils
             var bases = new List<T>();
             foreach (var tablesTask in WikiUrls.Select(pair => LoadTableAsync(pair.Key, pair.Value)))
             {
-                var tables = await tablesTask;
+                var tables = await tablesTask.ConfigureAwait(false);
                 bases.AddRange(tables.Select(b => tableParsingFunc(b.HtmlTable, b.ItemType)).Flatten());
             }
             return bases;
@@ -72,7 +75,7 @@ namespace UpdateEquipment.Utils
         private async Task<IList<BaseItemTable>> LoadTableAsync(string urlSuffix, IReadOnlyCollection<ItemType> itemTypes)
         {
             var doc = new HtmlDocument();
-            var file = await _httpClient.GetStringAsync(WikiUrlPrefix + urlSuffix);
+            var file = await _getStringAsync(WikiUrlPrefix + urlSuffix).ConfigureAwait(false);
             doc.LoadHtml(file);
 
             var tables =
@@ -87,6 +90,19 @@ namespace UpdateEquipment.Utils
             // Only the first itemType.Count tables are parsed.
             return tables.Take(itemTypes.Count).Zip(itemTypes, BaseItemTable.Create).ToList();
         }
+
+        public async Task<Tuple<string, Uri>> LoadItemBoxImageAsync(string urlSuffix)
+        {
+            var doc = new HtmlDocument();
+            var file = await _getStringAsync(WikiUrlPrefix + urlSuffix).ConfigureAwait(false);
+            doc.LoadHtml(file);
+            // There are somehow two different formats for item boxes.
+            var nodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'itemboximage')]/a/img") ??
+                        doc.DocumentNode.SelectNodes("//div[contains(@class, 'item-box')]/div[contains(@class, 'image')]/a/img");
+            var node = nodes[0];
+            return Tuple.Create(node.GetAttributeValue("alt", ""), new Uri(node.GetAttributeValue("src", "")));
+        }
+
 
         private class BaseItemTable
         {

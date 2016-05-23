@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:items="clr-namespace:POESKillTree.Model.Items"
+             xmlns:affixes="clr-namespace:POESKillTree.Model.Items.Affixes"
              mc:Ignorable="d" d:DesignWidth="300" Name="control">
     <Grid>
         <StackPanel>
@@ -18,7 +19,7 @@
                     </Style>
                 </ComboBox.Style>
                 <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type items:Affix}">
+                    <DataTemplate DataType="{x:Type affixes:Affix}">
                         <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>

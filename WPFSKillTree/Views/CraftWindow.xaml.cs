@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Views
 {
@@ -71,8 +73,11 @@ namespace POESKillTree.Views
         private ModSelector[] _selectedPreff = new ModSelector[0];
         private ModSelector[] _selectedSuff = new ModSelector[0];
 
-        public CraftWindow()
+        private readonly EquipmentData _equipmentData;
+
+        public CraftWindow(EquipmentData equipmentData)
         {
+            _equipmentData = equipmentData;
             InitializeComponent();
             GroupList = Enum.GetValues(typeof(ItemGroup)).Cast<ItemGroup>().Except(new[] {ItemGroup.Unknown}).ToArray();
         }
@@ -101,7 +106,7 @@ namespace POESKillTree.Views
 
             SkipRedraw = true;
             var val = (ItemType) TypeSelection.SelectedItem;
-            BaseList = ItemBase.BaseList.Where(b => b.ItemType == val).ToArray();
+            BaseList = _equipmentData.BaseList.Where(b => b.ItemType == val).ToArray();
             BaseSelection.SelectedIndex = 0;
             SkipRedraw = false;
         }
@@ -134,7 +139,7 @@ namespace POESKillTree.Views
                 msImplicitMods.Affixes = null;
             }
 
-            var aaff = Affix.AffixesPerItemType[Item.ItemType].ToArray();
+            var aaff = _equipmentData.AffixesPerItemType[Item.ItemType].ToArray();
 
             _prefixes = aaff.Where(a => a.ModType == ModType.Prefix).ToList();
             _suffixes = aaff.Where(a => a.ModType == ModType.Suffix).ToList();

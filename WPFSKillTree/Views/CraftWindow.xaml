@@ -14,9 +14,6 @@
     <controls:MetroWindow.Title>
         <l:Catalog Message="Craft Window"/>
     </controls:MetroWindow.Title>
-    <controls:MetroWindow.Resources>
-        <items:ItemTypeToImageConverter x:Key="ItemTypeToImageConverter"/>
-    </controls:MetroWindow.Resources>
     <Grid Margin="5">
         <Grid.Resources>
             <converter:EnumToSpacedStringConverter x:Key="EnumToSpacedStringConverter" />
@@ -46,7 +43,8 @@
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type items:ItemBase}">
                         <StackPanel Orientation="Horizontal">
-                            <Image Height="20" VerticalAlignment="Center" Source="{Binding Name, Converter={StaticResource ItemTypeToImageConverter}}" StretchDirection="DownOnly" Margin="0,0,3,0"/>
+                            <Image Height="20" VerticalAlignment="Center" Source="{Binding Image.ImageSource.Result}"
+                                   StretchDirection="DownOnly" Margin="0,0,3,0"/>
                             <TextBlock VerticalAlignment="Center" ><Run Text="{Binding Name, Mode=OneWay}"/><Run Text=" (ilvl "/><Run Text="{Binding Level, Mode=OneWay}"/><Run Text=")"/></TextBlock>
                         </StackPanel>
                     </DataTemplate>

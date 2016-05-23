@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POESKillTree.Model.Items
+namespace POESKillTree.Model.Items.Enums
 {
     /// <summary>
     /// Defines the slots which can be filled with items.

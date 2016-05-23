@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using log4net;
 using POESKillTree.Model.Items;
-using UpdateEquipment.Utils;
+using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
+using POESKillTree.Utils;
 
 namespace UpdateEquipment.DataLoading
 {
@@ -75,7 +78,7 @@ namespace UpdateEquipment.DataLoading
             HiddenImplicits = dict;
         }
 
-        protected override async Task LoadAsync(CachingHttpClient httpClient)
+        protected override async Task LoadAsync(HttpClient httpClient)
         {
             var wikiUtils = new WikiUtils(httpClient);
             var bases = await wikiUtils.SelectFromBaseItemsAsync(ParseTable);

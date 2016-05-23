@@ -6,6 +6,8 @@ using POESKillTree.Model;
 using POESKillTree.ViewModels;
 using System.Linq;
 using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.SkillTreeFiles
 {

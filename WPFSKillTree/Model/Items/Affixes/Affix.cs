@@ -1,43 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 using MB.Algodat;
-using POESKillTree.Utils;
+using POESKillTree.Model.Items.Enums;
 
-namespace POESKillTree.Model.Items
+namespace POESKillTree.Model.Items.Affixes
 {
     public class Affix
     {
-        public static readonly IReadOnlyDictionary<ItemType, IReadOnlyList<Affix>> AffixesPerItemType;
-
-        static Affix()
-        {
-            IReadOnlyList<Affix> allAffixes;
-            var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"AffixList.xml");
-            if (File.Exists(filename))
-            {
-                using (var reader = new StreamReader(filename))
-                {
-                    var ser = new XmlSerializer(typeof(XmlAffixList));
-                    var xmlList = (XmlAffixList) ser.Deserialize(reader);
-                    allAffixes = xmlList.Affixes.Select(x => new Affix(x)).ToList();
-                }
-            }
-            else
-            {
-                allAffixes = new List<Affix>();
-            }
-            
-            AffixesPerItemType =
-                (from a in allAffixes
-                 group a by a._itemType into types
-                 select types)
-                 .ToDictionary(g => g.Key, g => (IReadOnlyList<Affix>) new List<Affix>(g));
-        }
-
-        private readonly ItemType _itemType;
+        public ItemType ItemType { get; private set; }
 
         public ModType ModType { get; private set; }
 
@@ -59,12 +30,12 @@ namespace POESKillTree.Model.Items
                 for (int i = 0; i < Tiers.Length; i++)
                     Tiers[i] = new RangeTree<float, ModWrapper>(modlist.Select(im => new ModWrapper(Mods[i], im)), new ItemModComparer());
             }
-            _itemType = ItemType.Unknown;
+            ItemType = ItemType.Unknown;
         }
 
-        private Affix(XmlAffix xmlAffix)
+        public Affix(XmlAffix xmlAffix)
         {
-            _itemType = xmlAffix.ItemType;
+            ItemType = xmlAffix.ItemType;
             ModType = xmlAffix.ModType;
             if (xmlAffix.Tiers.Any())
                 Mods = xmlAffix.Tiers[0].Stats.Select(s => s.Name).ToList();
@@ -72,7 +43,7 @@ namespace POESKillTree.Model.Items
                 throw new NotSupportedException("There should not be any Affix without tiers");
             Name = xmlAffix.Name;
 
-            var tiers = xmlAffix.Tiers.Select(el => new ItemModTier(el, _itemType)).ToList();
+            var tiers = xmlAffix.Tiers.Select(el => new ItemModTier(el, ItemType)).ToList();
             Tiers = new RangeTree<float, ModWrapper>[Mods.Count];
             for (var i = 0; i < Tiers.Length; i++)
                 Tiers[i] = new RangeTree<float, ModWrapper>(tiers.Select(im => new ModWrapper(Mods[i], im)), new ItemModComparer());

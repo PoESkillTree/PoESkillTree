@@ -1,6 +1,7 @@
 ﻿using System.Xml.Serialization;
+using POESKillTree.Model.Items.Enums;
 
-namespace POESKillTree.Model.Items
+namespace POESKillTree.Model.Items.Affixes
 {
     // Contains the classes that allow serialization and deserialization of AffixList.xml
 

@@ -1,4 +1,4 @@
-namespace POESKillTree.Model.Items
+namespace POESKillTree.Model.Items.Enums
 {
     /// <summary>
     /// Defines groups of <see cref="ItemType"/>s and defines in which slot an item can be slotted.

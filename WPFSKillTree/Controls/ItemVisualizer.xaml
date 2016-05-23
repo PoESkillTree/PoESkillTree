@@ -4,16 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cont="clr-namespace:POESKillTree.Controls"
-             xmlns:items="clr-namespace:POESKillTree.Model.Items"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="control"
              DataContext="{Binding Item, ElementName=control}" 
              PreviewMouseMove="control_PreviewMouseMove"
              >
-    <UserControl.Resources>
-        <items:ItemToImageConverter x:Key="itemToImageConverter"/>
-    </UserControl.Resources>
     <UserControl.Style>
         <Style TargetType="{x:Type UserControl}">
             <Style.Setters>
@@ -33,8 +29,7 @@
         <Popup AllowsTransparency="True" Name="tooltip" IsOpen="{Binding IsMouseOver,ElementName=control, Mode=OneWay}" Placement="RelativePoint" PlacementTarget="{Binding ElementName=control}" IsHitTestVisible="False" >
             <cont:ItemTooltip Item="{Binding Item, ElementName=control}"/>
         </Popup>
-        <Image Source="{Binding Item, ElementName=control, Converter={StaticResource itemToImageConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None"/>
-
-
+        <Image Source="{Binding Item.BaseType.Image.ImageSource.Result, ElementName=control}"
+               HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None"/>
     </Grid>
 </UserControl>

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using log4net;
 using POESKillTree.Utils;
 using UpdateEquipment.DataLoading;
-using UpdateEquipment.Utils;
 
 namespace UpdateEquipment
 {
@@ -29,7 +29,7 @@ namespace UpdateEquipment
         private readonly string _savePath = Path.Combine(Debugger.IsAttached ? PathForDebug : AppData.GetFolder(),
             "Data", "Equipment");
 
-        private readonly CachingHttpClient _httpClient = new CachingHttpClient();
+        private readonly HttpClient _httpClient = new HttpClient();
 
         public static void Main(string[] args)
         {

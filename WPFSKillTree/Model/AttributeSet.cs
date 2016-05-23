@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Affixes;
 
 namespace POESKillTree.Model
 {
