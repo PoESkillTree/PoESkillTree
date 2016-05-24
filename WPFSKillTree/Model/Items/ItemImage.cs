@@ -18,7 +18,7 @@ namespace POESKillTree.Model.Items
 {
     public class ItemImage : Notifier
     {
-        private static readonly string FilePathFormat = Path.Combine("Data", "Equipment", "Assets", "{0}.png");
+        private static readonly string FilePathFormat = Path.Combine(AppData.GetFolder(), "Data", "Equipment", "Assets", "{0}.png");
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemImage));
 

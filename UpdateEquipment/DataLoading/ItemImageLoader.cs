@@ -32,6 +32,10 @@ namespace UpdateEquipment.DataLoading
 
         protected override async Task LoadAsync(HttpClient httpClient)
         {
+            if (Directory.Exists(SavePath))
+                Directory.Delete(SavePath, true);
+            Directory.CreateDirectory(SavePath);
+
             _httpClient = httpClient;
             _wikiUtils = new WikiUtils(httpClient);
             var jewelTask = Task.WhenAll(JewelUrls.Select(LoadJewelAsync));

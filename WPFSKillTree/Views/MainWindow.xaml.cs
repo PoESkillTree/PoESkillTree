@@ -903,10 +903,11 @@ namespace POESKillTree.Views
             helpWindow.ShowDialog();
         }
 
-        private void Menu_OpenSettings(object sender, RoutedEventArgs e)
+        private async void Menu_OpenSettings(object sender, RoutedEventArgs e)
         {
-            var settingsWindows = new SettingsMenuWindow() { Owner = this };
-            settingsWindows.ShowDialog();
+            await this.ShowDialogAsync(
+                new SettingsMenuViewModel(_persistentData, DialogCoordinator.Instance),
+                new SettingsMenuWindow());
         }
 
         private void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
