@@ -25,6 +25,10 @@ namespace POESKillTree.Controls.Dialogs
         /// else:
         ///     call and await this, then call and await "view.WaitUntilUnloadedAsync()"
         ///     (that waits until the view model's RequestsClose is raised and the dialog is closed)
+        /// <para/>
+        /// todo It is possible that "await view.WaitUntilUnloadedAsync()" won't work correctly if there are dialogs shown from the dialog
+        ///      because that unloads the view.
+        ///      If this is the case, hook into RequestsClose
         /// </summary>
         public static async Task ShowDialogAsync(this MetroWindow window, CloseableViewModel viewModel,
             BaseMetroDialog view, bool hideOnRequestsClose = true)
@@ -32,11 +36,10 @@ namespace POESKillTree.Controls.Dialogs
             if (hideOnRequestsClose)
                 viewModel.RequestsClose += () => window.HideMetroDialogAsync(view);
             view.DataContext = viewModel;
+            view.Loaded += (sender, args) => DialogParticipation.SetRegister(view, viewModel);
             view.Unloaded += (sender, args) => DialogParticipation.SetRegister(view, null);
 
             await window.ShowMetroDialogAsync(view);
-            // view is loaded now
-            DialogParticipation.SetRegister(view, viewModel);
         }
 
         /// <summary>

@@ -209,6 +209,7 @@
     <Compile Include="Model\Items\Enums\ModType.cs" />
     <Compile Include="Model\Items\EquipmentData.cs" />
     <Compile Include="Model\Items\ItemImage.cs" />
+    <Compile Include="Model\Items\ItemImageFromOfficial.cs" />
     <Compile Include="Model\Items\XmlItemList.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />

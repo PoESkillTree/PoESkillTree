@@ -156,6 +156,14 @@ namespace POESKillTree.Model.Items
             get { return _baseType; }
         }
 
+        private readonly string _iconUrl;
+
+        private readonly ItemImage _image;
+        public ItemImage Image
+        {
+            get { return _image; }
+        }
+
         public JObject JsonBase { get; private set; }
 
         private int _x;
@@ -173,7 +181,6 @@ namespace POESKillTree.Model.Items
         }
 
         private int _y;
-
         public int Y
         {
             get { return _y; }
@@ -214,6 +221,7 @@ namespace POESKillTree.Model.Items
             Width = width;
             Height = height;
             RequirementsFromBase();
+            _image = itemBase.Image;
         }
 
         public Item(JObject val, EquipmentData equipmentData, ItemSlot itemSlot = ItemSlot.Unequipable, bool isGem = false)
@@ -325,11 +333,15 @@ namespace POESKillTree.Model.Items
                 }
             }
 
+            JToken iconToken;
+            if (val.TryGetValue("icon", out iconToken))
+                _iconUrl = iconToken.Value<string>();
+
             Frame = (FrameType)val["frameType"].Value<int>();
             TypeLine = FilterJsonString(val["typeLine"].Value<string>());
             if (isGem)
             {
-                // BaseType will be null for gems.
+                // BaseType will be null for socketed gems.
                 _itemGroup = ItemGroup.Gem;
             }
             else
@@ -342,6 +354,9 @@ namespace POESKillTree.Model.Items
                 {
                     equipmentData.BaseDictionary.TryGetValue(TypeLine, out _baseType);
                 }
+                // For known bases, images are only downloaded if the item is unique. All other items should always
+                // have the same image. (except alt art non-uniques that are rare enough to be ignored)
+                var loadImageFromIconUrl = _iconUrl != null && (_baseType == null || Frame == FrameType.Unique);
                 if (_baseType == null)
                 {
                     _baseType = new ItemBase(itemSlot, TypeLine, _keywords == null ? "" : _keywords.FirstOrDefault(),
@@ -349,6 +364,8 @@ namespace POESKillTree.Model.Items
                 }
                 _itemType = BaseType.ItemType;
                 _itemGroup = BaseType.ItemGroup;
+                // todo Don't do this if disabled in settings
+                _image = loadImageFromIconUrl ? new ItemImageFromOfficial(_baseType.Image, _iconUrl) : _baseType.Image;
 
                 FixOldItems();
             }
@@ -460,6 +477,8 @@ namespace POESKillTree.Model.Items
                 new JProperty("typeLine", TypeLine),
                 new JProperty("frameType", Frame)
                 );
+            if (_iconUrl != null)
+                j["icon"] = _iconUrl;
 
             if (Properties.Count > 0)
             {

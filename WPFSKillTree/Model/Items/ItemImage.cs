@@ -18,9 +18,13 @@ namespace POESKillTree.Model.Items
 {
     public class ItemImage : Notifier
     {
-        private static readonly string FilePathFormat = Path.Combine(AppData.GetFolder(), "Data", "Equipment", "Assets", "{0}.png");
-
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemImage));
+
+        private static readonly string AssetPathFormat =
+            Path.Combine(AppData.GetFolder(), "Data", "Equipment", "Assets", "{0}.png");
+
+        private const string ResourcePathFormat =
+            "pack://application:,,,/PoESkillTree;component/Images/EquipmentUI/ItemDefaults/{0}.png";
 
         private static readonly Dictionary<ItemGroup, ImageSource> DefaultImageCache =
             new Dictionary<ItemGroup, ImageSource>();
@@ -51,33 +55,31 @@ namespace POESKillTree.Model.Items
             LoadImage();
         }
 
+        protected ItemImage(ItemImage baseItemImage)
+        {
+            _baseName = baseItemImage._baseName;
+            _baseGroup = baseItemImage._baseGroup;
+            _imageSource = baseItemImage._imageSource;
+            _isDefaultImage = baseItemImage._isDefaultImage;
+            _defaultImage = baseItemImage._defaultImage;
+        }
+
         public void DownloadMissingImage()
         {
             // todo Don't do this if disabled in settings
             if (!_isDefaultImage)
                 return;
-            ImageSource = new NotifyingTask<ImageSource>(LoadFromWiki(), e =>
-            {
-                Log.Error("Downloading of missing base item image failed", e);
-            })
-            {
-                Default = _defaultImage
-            };
+            NewImageSourceTask(LoadFromWiki(), "Downloading of missing base item image failed", _defaultImage);
         }
 
         private void LoadImage()
         {
-            var fileName = string.Format(FilePathFormat, _baseName);
+            var fileName = string.Format(AssetPathFormat, _baseName);
             if (File.Exists(fileName))
             {
                 _isDefaultImage = false;
-                ImageSource = new NotifyingTask<ImageSource>(Task.Run(() => ImageSourceFromPath(fileName)), e =>
-                {
-                    Log.Error("Loading of base item image failed", e);
-                })
-                {
-                    Default = _defaultImage
-                };
+                NewImageSourceTask(Task.Run(() => ImageSourceFromPath(fileName)), "Loading of base item image failed",
+                    _defaultImage);
             }
             else
             {
@@ -91,7 +93,7 @@ namespace POESKillTree.Model.Items
             {
                 try
                 {
-                    var path = "pack://application:,,,/PoESkillTree;component/Images/EquipmentUI/ItemDefaults/" + _baseGroup + ".png";
+                    var path = string.Format(ResourcePathFormat, _baseGroup);
                     DefaultImageCache[_baseGroup] = ImageSourceFromPath(path);
                 }
                 catch (Exception e)
@@ -103,7 +105,7 @@ namespace POESKillTree.Model.Items
             return DefaultImageCache[_baseGroup];
         }
 
-        private static ImageSource ImageSourceFromPath(string path)
+        protected static ImageSource ImageSourceFromPath(string path)
         {
             var img = new BitmapImage();
             img.BeginInit();
@@ -121,7 +123,8 @@ namespace POESKillTree.Model.Items
                 var wikiUtils = new WikiUtils(client);
                 var imgTuple = await wikiUtils.LoadItemBoxImageAsync(_baseName).ConfigureAwait(false);
                 var imgData = await client.GetByteArrayAsync(imgTuple.Item2).ConfigureAwait(false);
-                var fileName = string.Format(FilePathFormat, _baseName);
+                var fileName = string.Format(AssetPathFormat, _baseName);
+                CreateDirectories(fileName);
                 using (var ms = new MemoryStream(imgData))
                 using (var image = Image.FromStream(ms))
                 using (var outputStream = File.Create(fileName, 65536, FileOptions.Asynchronous))
@@ -135,5 +138,24 @@ namespace POESKillTree.Model.Items
             }
         }
 
+        protected void NewImageSourceTask(Task<ImageSource> task, string errorMessage, ImageSource defaultValue)
+        {
+            ImageSource = new NotifyingTask<ImageSource>(task, e =>
+            {
+                Log.Error(errorMessage, e);
+            })
+            {
+                Default = defaultValue
+            };
+        }
+
+        protected static void CreateDirectories(string fileName)
+        {
+            var f = new FileInfo(fileName);
+            if (f.DirectoryName != null)
+            {
+                Directory.CreateDirectory(f.DirectoryName);
+            }
+        }
     }
 }

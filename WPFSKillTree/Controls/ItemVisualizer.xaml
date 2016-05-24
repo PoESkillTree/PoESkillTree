@@ -29,7 +29,7 @@
         <Popup AllowsTransparency="True" Name="tooltip" IsOpen="{Binding IsMouseOver,ElementName=control, Mode=OneWay}" Placement="RelativePoint" PlacementTarget="{Binding ElementName=control}" IsHitTestVisible="False" >
             <cont:ItemTooltip Item="{Binding Item, ElementName=control}"/>
         </Popup>
-        <Image Source="{Binding Item.BaseType.Image.ImageSource.Result, ElementName=control}"
+        <Image Source="{Binding Item.Image.ImageSource.Result, ElementName=control}"
                HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None"/>
     </Grid>
 </UserControl>
