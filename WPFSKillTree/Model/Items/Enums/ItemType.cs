@@ -69,7 +69,9 @@ namespace POESKillTree.Model.Items.Enums
         // Jewels
         CobaltJewel,
         CrimsonJewel,
-        ViridianJewel
+        ViridianJewel,
+        // Other
+        Gem
     }
 
     /// <summary>
@@ -124,6 +126,7 @@ namespace POESKillTree.Model.Items.Enums
             {
                 ItemType.CobaltJewel, ItemType.CrimsonJewel, ItemType.ViridianJewel
             }},
+            {ItemGroup.Gem, new [] {ItemType.Gem}},
             {ItemGroup.Unknown, new [] {ItemType.Unknown}}
         };
 

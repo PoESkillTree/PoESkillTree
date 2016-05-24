@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 
@@ -147,7 +146,8 @@ namespace POESKillTree.Model.Items
         /// <param name="typeLine">The TypeLine property of the parent <see cref="Item"/>.</param>
         /// <param name="weaponClass">A string representing the weapon class of the parent <see cref="Item"/>.
         /// Can be null or empty if that item is not a weapon. The weapon class generally is a property without value.</param>
-        public ItemBase(ItemSlot itemSlot, string typeLine, string weaponClass)
+        /// <param name="frameType">The frame type of the item.</param>
+        public ItemBase(ItemSlot itemSlot, string typeLine, string weaponClass, FrameType frameType)
         {
             // These don't matter as we won't create new items from this base.
             Level = 0;
@@ -165,7 +165,13 @@ namespace POESKillTree.Model.Items
                 ItemType = ItemGroup.Types()[0];
                 return;
             }
-            if (typeLine.Contains("Quiver"))
+
+            if (frameType == FrameType.Gem)
+                ItemType = ItemType.Gem;
+            else if (frameType == FrameType.Currency || frameType == FrameType.DivinationCard
+                || frameType == FrameType.QuestItem || frameType == FrameType.Prophecy)
+                ItemType = ItemType.Unknown;
+            else if (typeLine.Contains("Quiver"))
                 ItemType = ItemType.Quiver;
             else if (typeLine.Contains("Shield") || typeLine.Contains("Buckler"))
                 ItemType = ItemType.ShieldArmour;

@@ -334,7 +334,7 @@ namespace POESKillTree.Model.Items
             }
             else
             {
-                if (Frame < FrameType.Rare)
+                if (Frame == FrameType.Magic)
                 {
                     _baseType = equipmentData.ItemBaseFromTypeline(TypeLine);
                 }
@@ -344,7 +344,8 @@ namespace POESKillTree.Model.Items
                 }
                 if (_baseType == null)
                 {
-                    _baseType = new ItemBase(itemSlot, TypeLine, _keywords == null ? "" : _keywords.FirstOrDefault());
+                    _baseType = new ItemBase(itemSlot, TypeLine, _keywords == null ? "" : _keywords.FirstOrDefault(),
+                        Frame);
                 }
                 _itemType = BaseType.ItemType;
                 _itemGroup = BaseType.ItemGroup;

@@ -688,9 +688,12 @@
     <Resource Include="Images\EquipmentUI\ItemDefaults\BodyArmour.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Helmet.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandedWeapon.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Quiver.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Shield.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandedWeapon.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Jewel.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Quiver.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Gem.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Unknown.png" />
     <Content Include="release.iss" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
