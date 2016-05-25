@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using POESKillTree.Model;
 
@@ -23,13 +24,26 @@ namespace POESKillTree.ViewModels
         /// </summary>
         public event Action RequestsClose;
 
+        private readonly TaskCompletionSource<object> _closeCompletionSource =
+            new TaskCompletionSource<object>();
+
         protected CloseableViewModel()
         {
             _closeCommand = new RelayCommand(x =>
             {
                 if (RequestsClose != null)
                     RequestsClose();
+                _closeCompletionSource.TrySetResult(null);
             });
+        }
+
+        /// <summary>
+        /// Returns a task that completes once <see cref="CloseCommand"/> is executed
+        /// and all handlers for <see cref="RequestsClose"/> returned.
+        /// </summary>
+        public Task WaitForCloseAsync()
+        {
+            return _closeCompletionSource.Task;
         }
     }
 }

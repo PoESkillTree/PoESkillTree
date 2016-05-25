@@ -15,7 +15,6 @@ using MahApps.Metro.Controls;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model;
 using POESKillTree.TreeGenerator.ViewModels;
-using POESKillTree.TreeGenerator.Views;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 
@@ -225,8 +224,6 @@ namespace POESKillTree.SkillTreeFiles
         private static Dictionary<string, int> _rootNodeClassDictionary = new Dictionary<string, int>();
 
         private static readonly List<ushort[]> _links = new List<ushort[]>();
-
-        public MetroWindow MainWindow;
         
         public HashSet<ushort> SkilledNodes = new HashSet<ushort>();
 
@@ -256,9 +253,16 @@ namespace POESKillTree.SkillTreeFiles
             set { SetProperty(ref _banditSettings, value); }
         }
 
+        private readonly IDialogCoordinator _dialogCoordinator;
+
         private static bool _Initialized = false;
-        public SkillTree(String treestring, String opsstring , bool displayProgress, UpdateLoadingWindow update)
+
+        private SkillTree(IPersistentData persistentData, IDialogCoordinator dialogCoordinator, string treestring,
+            string opsstring , bool displayProgress, UpdateLoadingWindow update)
         {
+            _persistentData = persistentData;
+            _dialogCoordinator = dialogCoordinator;
+
             PoESkillTree inTree = null;
             if (!_Initialized)
             {
@@ -720,8 +724,8 @@ namespace POESKillTree.SkillTreeFiles
             return temp;
         }
 
-        public static SkillTree CreateSkillTree(StartLoadingWindow start = null, UpdateLoadingWindow update = null,
-            CloseLoadingWindow finish = null)
+        public static SkillTree CreateSkillTree(IPersistentData persistentData, IDialogCoordinator dialogCoordinator,
+            StartLoadingWindow start = null, UpdateLoadingWindow update = null, CloseLoadingWindow finish = null)
         {
             AssetsFolderPath = AppData.GetFolder(Path.Combine("Data", "Assets"), true);
             DataFolderPath = AppData.GetFolder("Data", true);
@@ -768,7 +772,8 @@ namespace POESKillTree.SkillTreeFiles
             }
             if (displayProgress)
                 update(25, 100);
-            var skillTree = new SkillTree(skilltreeobj, optsobj, displayProgress, update);
+            var skillTree = new SkillTree(persistentData, dialogCoordinator, skilltreeobj, optsobj, displayProgress,
+                update);
             if (displayProgress)
                 finish();
             return skillTree;
@@ -1271,7 +1276,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (!GetCheckedNodes().Except(SkilledNodes).Any())
             {
-                await MainWindow.ShowInfoAsync(L10n.Message("Please tag non-skilled nodes by right-clicking them."));
+                await _dialogCoordinator.ShowInfoAsync(this, L10n.Message("Please tag non-skilled nodes by right-clicking them."));
                 return;
             }
 
@@ -1281,13 +1286,15 @@ namespace POESKillTree.SkillTreeFiles
 #endif
                 // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
                 var settingsVm = new SettingsViewModel(this, SettingsDialogCoordinator.Instance, new SteinerTabViewModel(this));
-                DialogParticipation.SetRegister(MainWindow, settingsVm);
+                var registration = DialogParticipation.GetAssociation(this);
+                DialogParticipation.SetRegister(registration, settingsVm);
                 await settingsVm.RunAsync();
+                DialogParticipation.SetRegister(registration, this);
 #if !DEBUG
             }
             catch (Exception e)
             {
-                MainWindow.ShowErrorAsync(L10n.Message("Error while trying to find solution"), e.Message);
+                _dialogCoordinator.ShowErrorAsync(L10n.Message("Error while trying to find solution"), e.Message);
             }
 #endif
         }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
 using POESKillTree.Utils;
@@ -107,7 +105,7 @@ namespace UpdateDB
                         AppData.SetApplicationData(Environment.CurrentDirectory);
 
                         Info("Downloading skill tree assets...");
-                        SkillTree.CreateSkillTree();
+                        SkillTree.CreateSkillTree(new PersistentData(false), null);
                         Info("Done.");
                     }
                     catch (Exception e)

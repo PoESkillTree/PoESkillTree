@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using POESKillTree.Model;
 using POESKillTree.Utils;
-using POESKillTree.Views;
 
 namespace POESKillTree.Localization
 {
@@ -53,12 +50,12 @@ namespace POESKillTree.Localization
         }
 
         // Applies current language to application resources.
-        private static void Apply()
+        private static void Apply(IOptions options)
         {
             // Set culture for current thread.
             System.Threading.Thread.CurrentThread.CurrentCulture = Culture;
 
-            App.PersistentData.Options.Language = Culture.ToString();
+            options.Language = Culture.ToString();
         }
 
         // Returns available languages.
@@ -76,7 +73,7 @@ namespace POESKillTree.Localization
         }
 
         // Initializes localization.
-        public static void Initialize(PersistentData data)
+        public static void Initialize(IPersistentData data)
         {
             ScanLocaleDirectory();
 
@@ -92,12 +89,12 @@ namespace POESKillTree.Localization
 
             // Apply default language if no suitable language was found.
             if (language == null)
-                Apply();
+                Apply(data.Options);
             else
             {
                 // Apply default language, if language change fails.
-                if (!SetLanguage(language))
-                    Apply();
+                if (!SetLanguage(data.Options, language))
+                    Apply(data.Options);
             }
         }
 
@@ -237,7 +234,7 @@ namespace POESKillTree.Localization
         }
 
         // Sets current language.
-        public static bool SetLanguage(string language)
+        public static bool SetLanguage(IOptions options, string language)
         {
             // No change.
             if (language == _Language) return true;
@@ -269,7 +266,7 @@ namespace POESKillTree.Localization
             _Culture = CultureInfo.CreateSpecificCulture(language);
 
             // Apply changes.
-            Apply();
+            Apply(options);
 
             return true;
         }

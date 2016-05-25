@@ -22,7 +22,7 @@ namespace POESKillTree.ViewModels
     public class DownloadStashViewModel : CloseableViewModel
     {
         private readonly Stash _stash;
-        private readonly EquipmentData _equipmentData;
+        private readonly IPersistentData _persistenData;
         private readonly IDialogCoordinator _dialogCoordinator;
 
         private PoEBuild _build;
@@ -74,17 +74,17 @@ namespace POESKillTree.ViewModels
             get { return _loadTabContentsCommand ?? (_loadTabContentsCommand = new RelayCommand(async o => await LoadTabContents())); }
         }
 
-        public DownloadStashViewModel(PoEBuild build, Stash stash, EquipmentData equipmentData, IDialogCoordinator dialogCoordinator)
+        public DownloadStashViewModel(IDialogCoordinator dialogCoordinator, IPersistentData persistentData, Stash stash)
         {
             _stash = stash;
-            _equipmentData = equipmentData;
+            _persistenData = persistentData;
             _dialogCoordinator = dialogCoordinator;
             DisplayName = L10n.Message("Download & Import Stash");
 
             TabsView = new ListCollectionView(_tabs);
             TabsView.CurrentChanged += (sender, args) => UpdateTabLink();
 
-            Build = build;
+            Build = persistentData.CurrentBuild;
             Build.PropertyChanged += BuildOnPropertyChanged;
             BuildOnPropertyChanged(this, null);
             RequestsClose += () => Build.PropertyChanged -= BuildOnPropertyChanged;
@@ -164,7 +164,7 @@ namespace POESKillTree.ViewModels
             try
             {
                 var json = JObject.Parse(tabContents);
-                var items = json["items"].Select(i => new Item((JObject)i, _equipmentData)).ToArray();
+                var items = json["items"].Select(i => new Item(_persistenData, (JObject)i)).ToArray();
 
                 var yStart = _stash.LastOccupiedLine + 3;
 

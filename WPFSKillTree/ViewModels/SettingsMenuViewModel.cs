@@ -16,9 +16,9 @@ namespace POESKillTree.ViewModels
 
         private readonly IDialogCoordinator _dialogCoordinator;
 
-        public Options Options { get; private set; }
+        public IOptions Options { get; private set; }
 
-        public SettingsMenuViewModel(PersistentData persistentData, IDialogCoordinator dialogCoordinator)
+        public SettingsMenuViewModel(IPersistentData persistentData, IDialogCoordinator dialogCoordinator)
         {
             _dialogCoordinator = dialogCoordinator;
             Options = persistentData.Options;
@@ -29,19 +29,21 @@ namespace POESKillTree.ViewModels
             RequestsClose += () =>
             {
                 Options.PropertyChanged -= handler;
-                persistentData.SavePersistentDataToFile();
+                persistentData.SaveToFile();
             };
         }
 
         private async Task OptionsChanged(string propertyName)
         {
-            if (propertyName == "Language")
+            if (propertyName == "Language" ||
+                (propertyName == "DownloadMissingItemImages" && !Options.DownloadMissingItemImages))
             {
                 await _dialogCoordinator.ShowInfoAsync(this,
                     L10n.Message("You will need to restart the program for all changes to take effect."),
                     title: L10n.Message("Restart is needed"));
 
-                L10n.SetLanguage(Options.Language);
+                if (propertyName == "Language")
+                    L10n.SetLanguage(Options, Options.Language);
             }
         }
     }

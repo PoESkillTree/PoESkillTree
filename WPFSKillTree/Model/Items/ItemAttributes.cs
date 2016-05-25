@@ -163,14 +163,17 @@ namespace POESKillTree.Model.Items
 
         public IReadOnlyList<ItemMod> NonLocalMods { get; private set; }
 
+        private readonly IPersistentData _persistentData;
+
         public ItemAttributes()
         {
             Equip = new ObservableCollection<Item>();
             RefreshItemAttributes();
         }
 
-        public ItemAttributes(string itemData, EquipmentData equipmentData)
+        public ItemAttributes(IPersistentData persistentData, string itemData)
         {
+            _persistentData = persistentData;
             Equip = new ObservableCollection<Item>();
 
             var jObject = JObject.Parse(itemData);
@@ -179,34 +182,34 @@ namespace POESKillTree.Model.Items
                 switch (jobj["inventoryId"].Value<string>())
                 {
                     case "BodyArmour":
-                        AddItem(jobj, equipmentData, ItemSlot.Armor);
+                        AddItem(jobj, ItemSlot.Armor);
                         break;
                     case "Ring":
-                        AddItem(jobj, equipmentData, ItemSlot.Ring);
+                        AddItem(jobj, ItemSlot.Ring);
                         break;
                     case "Ring2":
-                        AddItem(jobj, equipmentData, ItemSlot.Ring2);
+                        AddItem(jobj, ItemSlot.Ring2);
                         break;
                     case "Gloves":
-                        AddItem(jobj, equipmentData, ItemSlot.Gloves);
+                        AddItem(jobj, ItemSlot.Gloves);
                         break;
                     case "Weapon":
-                        AddItem(jobj, equipmentData, ItemSlot.MainHand);
+                        AddItem(jobj, ItemSlot.MainHand);
                         break;
                     case "Offhand":
-                        AddItem(jobj, equipmentData, ItemSlot.OffHand);
+                        AddItem(jobj, ItemSlot.OffHand);
                         break;
                     case "Helm":
-                        AddItem(jobj, equipmentData, ItemSlot.Helm);
+                        AddItem(jobj, ItemSlot.Helm);
                         break;
                     case "Boots":
-                        AddItem(jobj, equipmentData, ItemSlot.Boots);
+                        AddItem(jobj, ItemSlot.Boots);
                         break;
                     case "Amulet":
-                        AddItem(jobj, equipmentData, ItemSlot.Amulet);
+                        AddItem(jobj, ItemSlot.Amulet);
                         break;
                     case "Belt":
-                        AddItem(jobj, equipmentData, ItemSlot.Belt);
+                        AddItem(jobj, ItemSlot.Belt);
                         break;
                 }
             }
@@ -287,9 +290,9 @@ namespace POESKillTree.Model.Items
             return mods;
         }
 
-        private void AddItem(JObject val, EquipmentData equipmentData, ItemSlot islot)
+        private void AddItem(JObject val, ItemSlot islot)
         {
-            Equip.Add(new Item(val, equipmentData, islot));
+            Equip.Add(new Item(_persistentData, val, islot));
         }
 
 

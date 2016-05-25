@@ -476,17 +476,20 @@
                         <l:Catalog Message="Saved _Builds" />
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem x:Name="mnuViewAttributes" InputGestureText="Ctrl+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.AttributesBarOpened,ElementName=window, Mode=TwoWay}">
+                <MenuItem x:Name="mnuViewAttributes" InputGestureText="Ctrl+Q" IsCheckable="true"
+                          IsChecked="{Binding PersistentData.Options.AttributesBarOpened,ElementName=window, Mode=TwoWay}">
                     <MenuItem.Header>
                         <l:Catalog Message="_Attributes" />
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem x:Name="mnuViewCharacterSheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}">
+                <MenuItem x:Name="mnuViewCharacterSheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true"
+                          IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}">
                     <MenuItem.Header>
                         <l:Catalog Message="_Character Sheet" />
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem x:Name="mnuViewComparison" IsCheckable="true" IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click">
+                <MenuItem x:Name="mnuViewComparison" IsCheckable="true"
+                          IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click">
                     <MenuItem.Header>
                         <l:Catalog Message="Skill _Tree Comparison" />
                     </MenuItem.Header>
@@ -786,7 +789,7 @@
                               MouseDoubleClick="lvi_MouseDoubleClick" SelectionChanged="lvSavedBuilds_SelectionChanged"
                               SelectedIndex="{Binding ElementName=window,Path=PersistentData.Options.SelectedBuildIndex}">
                         <ListView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="conv:PoEBuild">
                                 <Grid x:Name="Grid1" Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>

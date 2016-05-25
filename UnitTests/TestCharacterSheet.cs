@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using POESKillTree.Model;
 using POESKillTree.Model.Items;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
@@ -32,7 +33,8 @@ namespace UnitTests
 
             if (ItemDB.IsEmpty())
                 ItemDB.Load("Items.xml", true);
-            Tree = SkillTree.CreateSkillTree((string dummy) => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
+            Tree = SkillTree.CreateSkillTree(new PersistentData(false), null,
+                dummy => { Debug.WriteLine("Download started"); }, (dummy1, dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
         }
 
         readonly Regex _backreplace = new Regex("#");
@@ -89,7 +91,7 @@ namespace UnitTests
             Tree.Level = level;
 
             string itemData = File.ReadAllText(buildFile);
-            ItemAttributes itemAttributes = new ItemAttributes(itemData, new EquipmentData());
+            ItemAttributes itemAttributes = new ItemAttributes(new PersistentData(false), itemData);
             Compute.Initialize(Tree, itemAttributes);
 
             // Compare defense properties.

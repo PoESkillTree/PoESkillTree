@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
-using POESKillTree.Views;
-using POESKillTree.Utils;
 using POESKillTree.Model;
-using System.Text.RegularExpressions;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -49,7 +45,7 @@ namespace POESKillTree.SkillTreeFiles
         }
         
         private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
-        private readonly PersistentData _persistentData = App.PersistentData;
+        private readonly IPersistentData _persistentData;
         private List<Tuple<int, Vector2D>> _originalPositions = new List<Tuple<int, Vector2D>>();
         public bool drawAscendancy = false;
 

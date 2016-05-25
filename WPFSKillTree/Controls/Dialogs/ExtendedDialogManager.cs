@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,38 +17,21 @@ namespace POESKillTree.Controls.Dialogs
     public static class DialogManager
     {
         /// <summary>
-        /// If hideOnRequestsClose = false:
-        ///     call and await this, you must manually hide it with "await window.HideDialogAsync(view)"
-        /// <para/>
-        /// else if you open the dialog in an event manager and do not do anything after that:
-        ///     call (and optionally await) this
-        /// <para/>
-        /// else:
-        ///     call and await this, then call and await "view.WaitUntilUnloadedAsync()"
-        ///     (that waits until the view model's RequestsClose is raised and the dialog is closed)
-        /// <para/>
-        /// todo It is possible that "await view.WaitUntilUnloadedAsync()" won't work correctly if there are dialogs shown from the dialog
-        ///      because that unloads the view.
-        ///      If this is the case, hook into RequestsClose
+        /// Sets up the connection between view and viewModel, shows the view as a metro dialog,
+        /// calls <paramref name="onShown"/> and waits for the dialog to be closed.
         /// </summary>
         public static async Task ShowDialogAsync(this MetroWindow window, CloseableViewModel viewModel,
-            BaseMetroDialog view, bool hideOnRequestsClose = true)
+            BaseMetroDialog view, Action onShown = null)
         {
-            if (hideOnRequestsClose)
-                viewModel.RequestsClose += () => window.HideMetroDialogAsync(view);
             view.DataContext = viewModel;
-            view.Loaded += (sender, args) => DialogParticipation.SetRegister(view, viewModel);
-            view.Unloaded += (sender, args) => DialogParticipation.SetRegister(view, null);
 
             await window.ShowMetroDialogAsync(view);
-        }
+            DialogParticipation.SetRegister(view, viewModel);
+            if (onShown != null) onShown();
 
-        /// <summary>
-        /// Only needs to be called if <see cref="ShowDialogAsync"/> is called with hideOnRequestsClose = false.
-        /// </summary>
-        public static async Task HideDialogAsync(this MetroWindow window, BaseMetroDialog view)
-        {
+            await viewModel.WaitForCloseAsync();
             await window.HideMetroDialogAsync(view);
+            DialogParticipation.SetRegister(view, null);
         }
 
         public static Task<MessageBoxResult> ShowQuestionAsync(this MetroWindow window, string message,
@@ -120,13 +104,10 @@ namespace POESKillTree.Controls.Dialogs
             string title = "", MessageBoxButton buttons = MessageBoxButton.OK,
             MessageBoxImage image = MessageBoxImage.None, MessageBoxResult defaultResult = MessageBoxResult.OK)
         {
-            var view = new MetroMessageBoxView();
             var viewModel = new MetroMessageBoxViewModel(message, details, title, buttons,
                 MessageBoxImageToImageSource(image)) {Result = defaultResult};
-
-            await ShowDialogAsync(window, viewModel, view);
-            MessageBoxImageToSystemSound(image).Play();
-            await view.WaitUntilUnloadedAsync();
+            await ShowDialogAsync(window, viewModel, new MetroMessageBoxView(),
+                    () => MessageBoxImageToSystemSound(image).Play());
 
             return viewModel.Result;
         }

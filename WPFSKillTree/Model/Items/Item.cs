@@ -224,7 +224,7 @@ namespace POESKillTree.Model.Items
             _image = itemBase.Image;
         }
 
-        public Item(JObject val, EquipmentData equipmentData, ItemSlot itemSlot = ItemSlot.Unequipable, bool isGem = false)
+        public Item(IPersistentData persistentData, JObject val, ItemSlot itemSlot = ItemSlot.Unequipable, bool isGem = false)
         {
             JsonBase = val;
             Slot = itemSlot;
@@ -328,7 +328,7 @@ namespace POESKillTree.Model.Items
                 int socket = 0;
                 foreach (JObject obj in (JArray)val["socketedItems"])
                 {
-                    var item = new Item(obj, equipmentData, isGem: true) { _socketGroup = sockets[socket++] };
+                    var item = new Item(persistentData, obj, isGem: true) {_socketGroup = sockets[socket++]};
                     _gems.Add(item);
                 }
             }
@@ -348,24 +348,31 @@ namespace POESKillTree.Model.Items
             {
                 if (Frame == FrameType.Magic)
                 {
-                    _baseType = equipmentData.ItemBaseFromTypeline(TypeLine);
+                    _baseType = persistentData.EquipmentData.ItemBaseFromTypeline(TypeLine);
                 }
                 else
                 {
-                    equipmentData.BaseDictionary.TryGetValue(TypeLine, out _baseType);
+                    persistentData.EquipmentData.BaseDictionary.TryGetValue(TypeLine, out _baseType);
                 }
                 // For known bases, images are only downloaded if the item is unique. All other items should always
                 // have the same image. (except alt art non-uniques that are rare enough to be ignored)
                 var loadImageFromIconUrl = _iconUrl != null && (_baseType == null || Frame == FrameType.Unique);
                 if (_baseType == null)
                 {
-                    _baseType = new ItemBase(itemSlot, TypeLine, _keywords == null ? "" : _keywords.FirstOrDefault(),
-                        Frame);
+                    _baseType = new ItemBase(persistentData.Options, itemSlot, TypeLine,
+                        _keywords == null ? "" : _keywords.FirstOrDefault(), Frame);
                 }
                 _itemType = BaseType.ItemType;
                 _itemGroup = BaseType.ItemGroup;
-                // todo Don't do this if disabled in settings
-                _image = loadImageFromIconUrl ? new ItemImageFromOfficial(_baseType.Image, _iconUrl) : _baseType.Image;
+                if (loadImageFromIconUrl)
+                {
+                    _image = new ItemImageFromOfficial(_baseType.Image, _iconUrl);
+                }
+                else
+                {
+                    _image = _baseType.Image;
+                    _image.DownloadMissingImage();
+                }
 
                 FixOldItems();
             }

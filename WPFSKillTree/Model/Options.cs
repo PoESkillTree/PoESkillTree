@@ -1,9 +1,24 @@
-﻿using System.Xml.Serialization;
+﻿using System.ComponentModel;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
-    public class Options : Notifier
+    public interface IOptions : INotifyPropertyChanged, INotifyPropertyChanging
+    {
+        string Language { get; set; }
+        bool AttributesBarOpened { get; set; }
+        bool CharacterSheetBarOpened { get; set; }
+        bool BuildsBarOpened { get; set; }
+        bool TreeComparisonEnabled { get; set; }
+        int SelectedBuildIndex { get; set; }
+        string NodeSearchHighlightColor { get; set; }
+        string NodeHoverHighlightColor { get; set; }
+        string NodeAttrHighlightColor { get; set; }
+        bool ShowAllAscendancyClasses { get; set; }
+        bool DownloadMissingItemImages { get; set; }
+    }
+
+    public class Options : Notifier, IOptions
     {
         private string _language;
         public string Language
@@ -76,6 +91,13 @@ namespace POESKillTree.Model
         {
             get { return _nodeHoverHighlightColor; }
             set { SetProperty(ref _nodeHoverHighlightColor, value); }
+        }
+
+        private bool _downloadMissingItemImages = true;
+        public bool DownloadMissingItemImages
+        {
+            get { return _downloadMissingItemImages; }
+            set { SetProperty(ref _downloadMissingItemImages, value); }
         }
 
         public Options()

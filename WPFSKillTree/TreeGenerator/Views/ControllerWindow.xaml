@@ -10,7 +10,7 @@
     xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
     Title="{Binding DisplayName}"
     d:DataContext="{d:DesignInstance vm:ControllerViewModel}"
-    MaxContentWidth="400">
+    MaxContentWidth="500">
     <ContentControl.Resources>
         <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </ContentControl.Resources>

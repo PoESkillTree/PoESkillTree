@@ -27,7 +27,7 @@ namespace POESKillTree.Model.Items
                 "Downloading of item image from official url failed.", ImageSource.Result);
         }
 
-        private static async Task<ImageSource> LoadFromOfficial(string imageUrl)
+        private async Task<ImageSource> LoadFromOfficial(string imageUrl)
         {
             // Remove the query part, remove the host part, remove image/Art/2DItems/, trim slashes
             var relevantPart = Regex.Replace(imageUrl, @"(\?.*)|(.*(\.net|\.com)/)|(image/Art/2DItems/)", "").Trim('/');
@@ -39,12 +39,15 @@ namespace POESKillTree.Model.Items
                 relevantPart = string.Format("gen/{0}.png", match.Groups[1]);
             }
             var fileName = string.Format(PathFormat, relevantPart);
+
+            if (!File.Exists(fileName) && Options.DownloadMissingItemImages)
+                await DownloadFromOfficial(fileName, imageUrl, relevantPart).ConfigureAwait(false);
             if (!File.Exists(fileName))
-                await DownloadFromOfficial(fileName, imageUrl).ConfigureAwait(false);
+                return ImageSource.Result;
             return await Task.Run(() => ImageSourceFromPath(fileName)).ConfigureAwait(false);
         }
 
-        private static async Task DownloadFromOfficial(string fileName, string imageUrl)
+        private static async Task DownloadFromOfficial(string fileName, string imageUrl, string relevantPart)
         {
             using (var client = new HttpClient())
             {
@@ -59,12 +62,12 @@ namespace POESKillTree.Model.Items
                         {
                             image.Save(outputStream, ImageFormat.Png);
                         }
-                        Log.InfoFormat("Downloaded item image {0} to the file system.", fileName);
+                        Log.InfoFormat("Downloaded item image {0} to the file system.", relevantPart);
                         return;
                     }
                     catch (IOException e)
                     {
-                        Log.Info("File " + fileName +
+                        Log.Info("File " + relevantPart +
                                  " could not be created. Most likely because it was created from another thread.", e);
                         Log.Info("Waiting 1 sec for the other thread to finish.");
                     }

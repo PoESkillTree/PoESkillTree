@@ -34,6 +34,8 @@ namespace POESKillTree.Model.Items
             Int32Rect.Empty,
             BitmapSizeOptions.FromEmptyOptions());
 
+        protected IOptions Options { get; private set; }
+
         private readonly string _baseName;
         private readonly ItemGroup _baseGroup;
 
@@ -47,16 +49,18 @@ namespace POESKillTree.Model.Items
         private bool _isDefaultImage = true;
         private readonly ImageSource _defaultImage;
 
-        public ItemImage(string baseName, ItemGroup baseGroup)
+        public ItemImage(IOptions options, string baseName, ItemGroup baseGroup)
         {
             _baseName = baseName;
             _baseGroup = baseGroup;
+            Options = options;
             _defaultImage = LoadDefaultImage();
             LoadImage();
         }
 
         protected ItemImage(ItemImage baseItemImage)
         {
+            Options = baseItemImage.Options;
             _baseName = baseItemImage._baseName;
             _baseGroup = baseItemImage._baseGroup;
             _imageSource = baseItemImage._imageSource;
@@ -66,8 +70,7 @@ namespace POESKillTree.Model.Items
 
         public void DownloadMissingImage()
         {
-            // todo Don't do this if disabled in settings
-            if (!_isDefaultImage)
+            if (!_isDefaultImage || !Options.DownloadMissingItemImages)
                 return;
             NewImageSourceTask(LoadFromWiki(), "Downloading of missing base item image failed", _defaultImage);
         }

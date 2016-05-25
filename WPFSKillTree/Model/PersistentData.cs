@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using System.Xml.Serialization;
 using POESKillTree.ViewModels;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using JetBrains.Annotations;
 using log4net;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Controls;
@@ -15,7 +17,17 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
-    public class PersistentData : Notifier
+    public interface IPersistentData : INotifyPropertyChanged, INotifyPropertyChanging
+    {
+        IOptions Options { get; }
+        PoEBuild CurrentBuild { get; }
+        EquipmentData EquipmentData { get; }
+        IReadOnlyList<Item> StashItems { get; }
+
+        void SaveToFile();
+    }
+
+    public class PersistentData : Notifier, IPersistentData
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentData));
 
@@ -26,19 +38,14 @@ namespace POESKillTree.Model
             set { SetProperty(ref _appVersion, value); }
         }
 
-        private List<StashBookmark> _stashBookmarks;
-        public List<StashBookmark> StashBookmarks
-        {
-            get { return _stashBookmarks; }
-            set { SetProperty(ref _stashBookmarks, value); }
-        }
-
         private Options _options;
         public Options Options
         {
             get { return _options; }
             set { SetProperty(ref _options, value); }
         }
+        [XmlIgnore]
+        IOptions IPersistentData.Options { get { return _options; } }
 
         private PoEBuild _currentBuild;
         public PoEBuild CurrentBuild
@@ -47,30 +54,44 @@ namespace POESKillTree.Model
             set { SetProperty(ref _currentBuild, value); }
         }
 
+        private List<StashBookmark> _stashBookmarks;
+        public List<StashBookmark> StashBookmarks
+        {
+            get { return _stashBookmarks; }
+            set { SetProperty(ref _stashBookmarks, value); }
+        }
+
         private List<PoEBuild> _builds;
         public List<PoEBuild> Builds
         {
             get { return _builds; }
-            private set { SetProperty(ref _builds, value); }
+            set { SetProperty(ref _builds, value); }
         }
 
         private const string FileName = "PersistentData";
 
         private readonly ObservableCollection<Item> _stash = new ObservableCollection<Item>();
         [XmlIgnore]
-        public ObservableCollection<Item> StashItems
+        public IReadOnlyList<Item> StashItems
         {
             get { return _stash; }
         }
 
-        private readonly Lazy<EquipmentData> _equipmentData = new Lazy<EquipmentData>(() => new EquipmentData());
+        private EquipmentData _equipmentData;
         [XmlIgnore]
         public EquipmentData EquipmentData
         {
-            get { return _equipmentData.Value; }
+            get { return _equipmentData ?? (_equipmentData = new EquipmentData(Options)); }
         }
 
+        [Obsolete("Only for serialization")]
+        [UsedImplicitly]
         public PersistentData()
+            : this(false)
+        {
+        }
+
+        public PersistentData(bool loadFromFile)
         {
             Options = new Options();
             CurrentBuild = new PoEBuild
@@ -80,21 +101,24 @@ namespace POESKillTree.Model
                 Level = "1"
             };
             Builds = new List<PoEBuild>();
+            if (loadFromFile)
+                LoadFromFile(AppData.GetFolder(true) + FileName + ".xml");
         }
 
         // Creates empty file with language option set.
+        [UsedImplicitly]
         public static void CreateSetupTemplate(string path, string language)
         {
-            var data = new PersistentData {Options = {Language = language}};
-            data.SavePersistentDataToFileEx(Path.Combine(path, FileName + ".xml"));
+            var data = new PersistentData(false) {Options = {Language = language}};
+            data.SaveToFile(Path.Combine(path, FileName + ".xml"));
         }
 
-        public void SavePersistentDataToFile()
+        public void SaveToFile()
         {
-            SavePersistentDataToFileEx(AppData.GetFolder(true) + FileName + ".xml");
+            SaveToFile(AppData.GetFolder(true) + FileName + ".xml");
         }
 
-        private void SavePersistentDataToFileEx(string path)
+        private void SaveToFile(string path)
         {
             if (File.Exists(path))
             {
@@ -110,12 +134,7 @@ namespace POESKillTree.Model
             SerializeStash();
         }
 
-        public void LoadPersistentDataFromFile()
-        {
-            LoadPersistenDataFromFileEx(AppData.GetFolder(true) + FileName + ".xml");
-        }
-
-        private void LoadPersistenDataFromFileEx(string filePath)
+        private void LoadFromFile(string filePath)
         {
             try
             {
@@ -137,7 +156,7 @@ namespace POESKillTree.Model
             {
                 string pathBak = AppData.GetFolder(true) + FileName + ".bak";
                 if (!filePath.Contains(FileName + ".bak") && File.Exists(pathBak))
-                    LoadPersistenDataFromFileEx(pathBak);
+                    LoadFromFile(pathBak);
                 else 
                 {
                     string pathBad = AppData.GetFolder(true) + FileName + "_Bad.xml";
@@ -176,15 +195,15 @@ namespace POESKillTree.Model
         {
             try
             {
-                StashItems.Clear();
+                _stash.Clear();
                 var file = Path.Combine(AppData.GetFolder(), "stash.json");
                 if (!File.Exists(file))
                     return;
                 var arr = JArray.Parse(File.ReadAllText(file));
                 foreach (var item in arr)
                 {
-                    var itm = new Item((JObject)item, EquipmentData);
-                    StashItems.Add(itm);
+                    var itm = new Item(this, (JObject)item);
+                    _stash.Add(itm);
                 }
             }
             catch (Exception e)

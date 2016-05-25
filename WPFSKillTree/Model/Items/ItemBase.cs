@@ -113,7 +113,7 @@ namespace POESKillTree.Model.Items
 
         public ItemImage Image { get; private set; }
 
-        public ItemBase(XmlItemBase xmlBase)
+        public ItemBase(IOptions options, XmlItemBase xmlBase)
         {
             Level = xmlBase.Level;
             RequiredStrength = xmlBase.Strength;
@@ -130,7 +130,7 @@ namespace POESKillTree.Model.Items
                 ? xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList()
                 : new List<Stat>();
 
-            Image = new ItemImage(Name, ItemGroup);
+            Image = new ItemImage(options, Name, ItemGroup);
         }
 
         /// <summary>
@@ -141,13 +141,14 @@ namespace POESKillTree.Model.Items
         /// ItemBases created via this constructor. It is not meant to produce bases that can exist independent
         /// of the <see cref="Item"/> they are created for.
         /// </summary>
+        /// <param name="options"></param>
         /// <param name="itemSlot">The slot the parent <see cref="Item"/> is slotted into.
         /// <see cref="ItemSlot.Unequipable"/> if is not equipped.</param>
         /// <param name="typeLine">The TypeLine property of the parent <see cref="Item"/>.</param>
         /// <param name="weaponClass">A string representing the weapon class of the parent <see cref="Item"/>.
         /// Can be null or empty if that item is not a weapon. The weapon class generally is a property without value.</param>
         /// <param name="frameType">The frame type of the item.</param>
-        public ItemBase(ItemSlot itemSlot, string typeLine, string weaponClass, FrameType frameType)
+        public ItemBase(IOptions options, ItemSlot itemSlot, string typeLine, string weaponClass, FrameType frameType)
         {
             // These don't matter as we won't create new items from this base.
             Level = 0;
@@ -189,7 +190,7 @@ namespace POESKillTree.Model.Items
             }
             ItemGroup = ItemType.Group();
 
-            Image = new ItemImage(Name, ItemGroup);
+            Image = new ItemImage(options, Name, ItemGroup);
         }
 
         /// <summary>

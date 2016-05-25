@@ -11,6 +11,8 @@ namespace POESKillTree.Model.Items
 {
     public class EquipmentData
     {
+        private readonly IOptions _options;
+
         public IReadOnlyDictionary<ItemType, IReadOnlyList<Affix>> AffixesPerItemType { get; private set; }
 
         public IReadOnlyList<ItemBase> BaseList { get; private set; }
@@ -19,8 +21,9 @@ namespace POESKillTree.Model.Items
 
         private readonly WordSetTreeNode _root;
 
-        public EquipmentData()
+        public EquipmentData(IOptions options)
         {
+            _options = options;
             AffixesPerItemType =
                 (from a in LoadAffixes()
                  group a by a.ItemType into types
@@ -54,7 +57,7 @@ namespace POESKillTree.Model.Items
             }
         }
 
-        private static IEnumerable<ItemBase> LoadBases()
+        private IEnumerable<ItemBase> LoadBases()
         {
             var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"ItemList.xml");
             if (!File.Exists(filename))
@@ -64,7 +67,7 @@ namespace POESKillTree.Model.Items
             {
                 var ser = new XmlSerializer(typeof(XmlItemList));
                 var xmlList = (XmlItemList) ser.Deserialize(reader);
-                return xmlList.ItemBases.Select(x => new ItemBase(x));
+                return xmlList.ItemBases.Select(x => new ItemBase(_options, x));
             }
         }
 

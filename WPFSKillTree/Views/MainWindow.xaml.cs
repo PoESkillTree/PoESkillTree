@@ -64,7 +64,7 @@ namespace POESKillTree.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PersistentData PersistentData
+        public IPersistentData PersistentData
         {
             get { return _persistentData; }
         }
@@ -90,31 +90,33 @@ namespace POESKillTree.Views
         private MenuItem cmCreateGroup, cmAddToGroup, cmRemoveFromGroup, cmDeleteGroup;
 
         private ItemAttributes _itemAttributes = new ItemAttributes();
-
         public ItemAttributes ItemAttributes
         {
             get { return _itemAttributes; }
             private set
             {
                 _itemAttributes = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("ItemAttributes"));
+                PropertyChanged.Raise(this, "ItemAttributes");
             }
         }
 
         private SkillTree _tree;
-
         public SkillTree Tree
         {
             get { return _tree; }
             private set
             {
                 _tree = value;
-                _tree.MainWindow = this;
-                _tree.BanditSettings = _persistentData.CurrentBuild.Bandits;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("Tree"));
+                PropertyChanged.Raise(this, "Tree");
             }
+        }
+        private SkillTree CreateSkillTree()
+        {
+            var tree = SkillTree.CreateSkillTree(_persistentData, DialogCoordinator.Instance, StartLoadingWindow,
+                UpdateLoadingWindow, CloseLoadingWindow);
+            DialogParticipation.SetRegister(this, tree);
+            tree.BanditSettings = _persistentData.CurrentBuild.Bandits;
+            return tree;
         }
 
         private Vector2D _addtransform;
@@ -448,7 +450,7 @@ namespace POESKillTree.Views
             SetTheme(_persistentData.Options.Theme);
             SetAccent(_persistentData.Options.Accent);
 
-            Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+            Tree = CreateSkillTree();
             recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
@@ -800,8 +802,7 @@ namespace POESKillTree.Views
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
             await this.ShowDialogAsync(
-                new DownloadStashViewModel(_persistentData.CurrentBuild, Stash, _persistentData.EquipmentData,
-                    DialogCoordinator.Instance),
+                new DownloadStashViewModel(DialogCoordinator.Instance, _persistentData, Stash),
                 new DownloadStashWindow());
         }
 
@@ -843,12 +844,12 @@ namespace POESKillTree.Views
                             Directory.Move(appDataPath + "Data", appDataPath + "DataBackup");
                         }
 
-                        Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+                        Tree = CreateSkillTree();
                         recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
 
                         SkillTree.ClearAssets();//enable recaching of assets
-                        SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
+                        SkillTree.CreateSkillTree(_persistentData, DialogCoordinator.Instance);//create new skilltree to reinitialize cache
 
 
                         LoadBuildFromUrl();
@@ -1693,7 +1694,7 @@ namespace POESKillTree.Views
             {
                 try
                 {
-                    ItemAttributes = new ItemAttributes(itemData, _persistentData.EquipmentData);
+                    ItemAttributes = new ItemAttributes(_persistentData, itemData);
                 }
                 catch (Exception ex)
                 {
@@ -1962,7 +1963,7 @@ namespace POESKillTree.Views
             try
             {
                 _persistentData.SetBuilds(lvSavedBuilds.Items);
-                _persistentData.SavePersistentDataToFile();
+                _persistentData.SaveToFile();
             }
             catch (Exception e)
             {
@@ -1977,7 +1978,7 @@ namespace POESKillTree.Views
                 userInteraction = true;
                 if (tbSkillURL.Text.Contains("poezone.ru"))
                 {
-                    SkillTreeImporter.LoadBuildFromPoezone(Tree, tbSkillURL.Text);
+                    await SkillTreeImporter.LoadBuildFromPoezone(DialogCoordinator.Instance, Tree, tbSkillURL.Text);
                     tbSkillURL.Text = Tree.SaveToURL();
                 }
                 else if (tbSkillURL.Text.Contains("google.com"))
