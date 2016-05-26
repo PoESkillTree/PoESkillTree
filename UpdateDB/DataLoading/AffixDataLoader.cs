@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 
-namespace UpdateEquipment.DataLoading
+namespace UpdateDB.DataLoading
 {
     /// <summary>
     /// Extracts affix information from exilemods.com as a <see cref="XmlAffixList"/>.

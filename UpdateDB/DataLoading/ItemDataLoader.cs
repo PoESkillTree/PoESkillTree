@@ -11,7 +11,7 @@ using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
 
-namespace UpdateEquipment.DataLoading
+namespace UpdateDB.DataLoading
 {
     /// <summary>
     /// Extracts item bases from the wiki as a <see cref="XmlItemList"/>.

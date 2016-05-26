@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using log4net;
 
-namespace UpdateEquipment.DataLoading
+namespace UpdateDB.DataLoading
 {
     public abstract class MultiDataLoader<T> : DataLoader
     {

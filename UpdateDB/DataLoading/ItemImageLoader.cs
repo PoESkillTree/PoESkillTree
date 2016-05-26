@@ -12,7 +12,7 @@ using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 
-namespace UpdateEquipment.DataLoading
+namespace UpdateDB.DataLoading
 {
     public class ItemImageLoader : MultiDataLoader<Task<byte[]>>
     {

@@ -1484,14 +1484,18 @@ namespace POESKillTree.SkillTreeFiles
         // Writes database to file.
         public static void WriteTo(string file)
         {
+            WriteToCompletePath(AppData.GetFolder(true) + file);
+        }
+        public static void WriteToCompletePath(string file)
+        {
             // Sort gems alphabetically.
-            DB.Gems.Sort(delegate(Gem gem1, Gem gem2) { return String.Compare(gem1.Name, gem2.Name, true, System.Globalization.CultureInfo.InvariantCulture); });
+            DB.Gems.Sort(delegate (Gem gem1, Gem gem2) { return String.Compare(gem1.Name, gem2.Name, true, System.Globalization.CultureInfo.InvariantCulture); });
 
             var serializer = new XmlSerializer(typeof(ItemDB));
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.NewLineChars = "\n";
-            XmlWriter writer = XmlTextWriter.Create(AppData.GetFolder(true) + file, settings);
+            XmlWriter writer = XmlTextWriter.Create(file, settings);
             serializer.Serialize(writer, DB);
             writer.Close();
         }

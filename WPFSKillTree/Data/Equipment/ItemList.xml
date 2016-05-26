@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<ItemList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ItemBase ItemType="OneHandedAxe" Name="Rusted Hatchet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Physical Damage" From="5" To="9" />

@@ -380,7 +380,7 @@ namespace POESKillTree.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ItemDB.Load("Items.xml");
+            ItemDB.Load("Data/Equipment/GemList.xml");
             ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();
 

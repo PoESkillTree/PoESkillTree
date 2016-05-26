@@ -32,7 +32,7 @@ namespace UnitTests
             AppData.SetApplicationData(Environment.CurrentDirectory);
 
             if (ItemDB.IsEmpty())
-                ItemDB.Load("Items.xml", true);
+                ItemDB.Load("Data/Equipment/GemList.xml", true);
             Tree = SkillTree.CreateSkillTree(new PersistentData(false), null,
                 dummy => { Debug.WriteLine("Download started"); }, (dummy1, dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
         }

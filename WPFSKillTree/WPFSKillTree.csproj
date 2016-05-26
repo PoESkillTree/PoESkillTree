@@ -626,6 +626,9 @@
     <None Include="Data\Equipment\Itemlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Data\Equipment\GemList.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Data\PseudoAttributes\Crit.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -700,10 +703,6 @@
     <Resource Include="Images\EquipmentUI\ItemDefaults\Gem.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Unknown.png" />
     <Content Include="release.iss" />
-    <Content Include="Items.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="Tools\isetup\ISCC.exe" />
     <None Include="Tools\isetup\ISCmplr.dll" />
     <None Include="Tools\isetup\islzma.dll" />

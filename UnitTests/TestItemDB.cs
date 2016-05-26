@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
@@ -18,7 +16,7 @@ namespace UnitTests
             AppData.SetApplicationData(Environment.CurrentDirectory);
 
             if (ItemDB.IsEmpty())
-                ItemDB.Load("Items.xml", true);
+                ItemDB.Load("Data/Equipment/GemList.xml", true);
         }
 
         [TestMethod]

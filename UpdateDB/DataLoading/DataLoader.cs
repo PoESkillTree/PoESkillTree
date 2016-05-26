@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace UpdateEquipment.DataLoading
+namespace UpdateDB.DataLoading
 {
     public interface IDataLoader
     {

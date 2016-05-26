@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace UpdateEquipment.DataLoading
+namespace UpdateDB.DataLoading
 {
     /// <summary>
     /// Base class for classes that extract data from the web as the
@@ -20,14 +20,14 @@ namespace UpdateEquipment.DataLoading
             get { return false; }
         }
 
-        protected override async Task CompleteSavingAsync()
+        protected override Task CompleteSavingAsync()
         {
             using (var writer = new StreamWriter(SavePath))
             {
                 var ser = new XmlSerializer(typeof(T));
                 ser.Serialize(writer, Data);
             }
-            await Task.WhenAll();
+            return Task.WhenAll();
         }
     }
 }

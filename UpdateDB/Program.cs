@@ -1,239 +1,84 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using POESKillTree.Model;
-using POESKillTree.SkillTreeFiles;
-using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
-using POESKillTree.Utils;
+using log4net;
+using log4net.Core;
 
 namespace UpdateDB
 {
-    class Program
+    public static class Program
     {
-        // Levels of verbosity.
-        enum VerbosityLevel { Normal, Verbose, Quiet };
-        // The current level of verbosity.
-        static VerbosityLevel Verbosity = VerbosityLevel.Normal;
-
         // Main entry point.
-        static int Main(string[] arguments)
+        public static int Main(string[] arguments)
         {
-            bool exit = false;
-            int argFile = -1;
-            int argGem = -1;
-            int argMerge = -1;
-            string optFileName = null;
-            string optGemName = null;
-            string optMergeName = null;
-            bool assetsDownload = false;
-            bool noBackup = false;
+            var args = new Arguments
+            {
+                CreateBackup = true,
+                ActivatedLoader = LoaderCategories.Any
+            };
 
             // Get options.
-            if (arguments.Length > 0)
+            foreach (var arg in arguments)
             {
-                List<string> args = new List<string>(arguments);
-                int pos = 0;
-
-                for (var i = 0; i < args.Count && !exit;)
+                switch (arg.ToLowerInvariant())
                 {
-                    string arg = args[i];
-
-                    if (arg.Length == 0) args.RemoveAt(0); // Ignore empty argument.
-                    else if (arg[0] == '/') // Decode switch.
-                    {
-                        switch (arg.ToUpperInvariant())
-                        {
-                            case "/?":
-                                Console.WriteLine("Updates item database.\r\n");
-                                Console.WriteLine("UPDATEDB [/F file] [[/G string] | [/M file]] [/N] [/Q | /V]\r\n");
-                                Console.WriteLine("UPDATEDB /A\r\n");
-                                Console.WriteLine("/A\tDownloads skill tree assets into current directory.");
-                                Console.WriteLine("/F\tUpdate specified file instead of default file \"Items.xml\".");
-                                Console.WriteLine("/G\tUpdate single gem specified by string.");
-                                Console.WriteLine("/M\tMerge data of specified file instead of update.");
-                                Console.WriteLine("/N\tDoes not create backup of file being updated before writing changes.");
-                                Console.WriteLine("/Q\tDoes not display any output.");
-                                Console.WriteLine("/V\tEnables verbose output.");
-                                exit = true;
-                                break;
-
-                            case "/A":
-                                assetsDownload = true;
-                                break;
-
-                            case "/F":
-                                argFile = pos++;
-                                break;
-
-                            case "/G":
-                                argGem = pos++;
-                                break;
-
-                            case "/M":
-                                argMerge = pos++;
-                                break;
-
-                            case "/N":
-                                noBackup = true;
-                                break;
-
-                            case "/Q":
-                                Verbosity = VerbosityLevel.Quiet;
-                                break;
-
-                            case "/V":
-                                Verbosity = VerbosityLevel.Verbose;
-                                break;
-
-                            default:
-                                Console.WriteLine("Invalid switch - \"" + (arg.Length > 1 ? arg[1].ToString() : "") + "\"");
-                                exit = true;
-                                break;
-                        }
-
-                        args.RemoveAt(i);
-                    }
-                    else ++i; // Skip non-switch argument.
-                }
-
-                // Download assets if requested.
-                if (assetsDownload)
-                {
-                    try
-                    {
-                        // Download Skill tree assets into current directory.
-                        AppData.SetApplicationData(Environment.CurrentDirectory);
-
-                        Info("Downloading skill tree assets...");
-                        SkillTree.CreateSkillTree(new PersistentData(false), null);
-                        Info("Done.");
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Error: " + e.Message);
-
+                    case "/?":
+                        Console.WriteLine("Updates item database.\r\n");
+                        Console.WriteLine("Flags:\r\n");
+                        Console.WriteLine("/VersionControlledOnly    Only download version controlled files (gem, affix and base item lists).");
+                        Console.WriteLine("/NotVersionControlledOnly Only download not version controlled files (item images and skill tree assets).");
+                        Console.WriteLine("/SourceCodeDir            Save into the WPFSKillTree source code directory instead of the AppData directory.");
+                        Console.WriteLine("/CurrentDir               Save into the current directory instead of the AppData directory.");
+                        Console.WriteLine("/NoBackup                 Do not create backup of files being updated before writing changes.");
+                        Console.WriteLine("/Quiet                    Do not display any output.");
+                        Console.WriteLine("/Verbose                  Enable verbose output.");
                         return 1;
-                    }
 
-                    return 0;
-                }
+                    case "/versioncontrolledonly":
+                        args.ActivatedLoader = LoaderCategories.VersionControlled;
+                        break;
+                    case "/notversioncontrolledonly":
+                        args.ActivatedLoader = LoaderCategories.NotVersionControlled;
+                        break;
 
-                // Consume non-switch arguments in order of their switch appearance.
-                if (argFile >= 0)
-                {
-                    if (args.Count < argFile + 1)
-                    {
-                        Console.WriteLine("Missing name of file to update");
-                        exit = true;
-                    }
-                    else
-                        optFileName = args[argFile];
-                }
-                if (argGem >= 0)
-                {
-                    if (args.Count < argGem + 1)
-                    {
-                        Console.WriteLine("Missing gem name");
-                        exit = true;
-                    }
-                    else
-                        optGemName = args[argGem];
-                }
-                if (argMerge >= 0)
-                {
-                    if (args.Count < argMerge + 1)
-                    {
-                        Console.WriteLine("Missing name of file to merge");
-                        exit = true;
-                    }
-                    else
-                        optMergeName = args[argMerge];
-                }
-            }
-            if (exit) return 1;
+                    case "/sourcecodedir":
+                        args.OutputDirectory = OutputDirectory.SourceCode;
+                        break;
+                    case "/currentdir":
+                        args.OutputDirectory = OutputDirectory.Current;
+                        break;
 
-            string appDataPath = AppData.GetFolder(true);
-            string updateFileName = optFileName == null ? "Items.xml" : optFileName;
-            if (!File.Exists(appDataPath + updateFileName))
-            {
-                Console.WriteLine("File not found: " + appDataPath + updateFileName);
+                    case "/nobackup":
+                        args.CreateBackup = false;
+                        break;
 
-                return 1;
-            }
-            if (optMergeName != null && !File.Exists(appDataPath + optMergeName))
-            {
-                Console.WriteLine("File not found: " + appDataPath + optMergeName);
+                    case "/quiet":
+                        var repo = (log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository();
+                        repo.Root.Level = Level.Off;
+                        repo.RaiseConfigurationChanged(EventArgs.Empty);
+                        break;
+                    case "/verbose":
+                        repo = (log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository();
+                        repo.Root.Level = Level.Debug;
+                        repo.RaiseConfigurationChanged(EventArgs.Empty);
+                        break;
 
-                return 1;
-            }
-
-            ItemDB.Load(updateFileName);
-
-            bool modified = false;
-            Reader reader = new GamepediaReader();
-
-            if (optMergeName != null)
-            {
-                ItemDB.Merge(optMergeName);
-
-                modified = true;
-            }
-            else if (optGemName != null)
-            {
-                Gem fetched = reader.FetchGem(optGemName);
-                if (fetched != null)
-                {
-                    Gem gem = ItemDB.GetGem(optGemName);
-                    if (gem == null)
-                        ItemDB.Add(fetched);
-                    else
-                        gem.Merge(fetched);
-
-                    modified = true;
-                }
-            }
-            else
-            {
-                foreach (Gem gem in ItemDB.GetAllGems())
-                {
-                    Gem fetched = reader.FetchGem(gem.Name);
-                    if (fetched != null)
-                    {
-                        gem.Merge(fetched);
-                        modified = true;
-                    }
+                    default:
+                        Console.WriteLine("Invalid switch - \"" + (arg.Length > 1 ? arg[1].ToString() : "") + "\"");
+                        return 1;
                 }
             }
 
-            if (modified)
-            {
-                if (!noBackup)
-                    File.Copy(appDataPath + updateFileName, appDataPath + updateFileName + ".bak", true);
-                ItemDB.WriteTo(updateFileName);
-            }
+            var exec = new DataLoaderExecutor(args);
+            exec.LoadAllAsync().Wait();
 
             return 0;
         }
 
-        // Prints normal message suppressed by /Q option.
-        public static void Info(string message)
-        {
-            if (Verbosity != VerbosityLevel.Quiet)
-                Console.WriteLine(message);
-        }
 
-        // Prints verbose message if enabled with /V option.
-        public static void Verbose(string message)
+        private class Arguments : IArguments
         {
-            if (Verbosity == VerbosityLevel.Verbose)
-                Console.WriteLine(message);
-        }
-
-        // Prints warning suppressed by /Q option.
-        public static void Warning(string message)
-        {
-            if (Verbosity != VerbosityLevel.Quiet)
-                Console.WriteLine("Warning: " + message);
+            public LoaderCategories ActivatedLoader { get; set; }
+            public OutputDirectory OutputDirectory { get; set; }
+            public bool CreateBackup { get; set; }
         }
     }
 }

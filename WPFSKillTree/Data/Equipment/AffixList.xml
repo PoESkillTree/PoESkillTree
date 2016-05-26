@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AffixList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<AffixList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Affix Name="#% increased Physical Damage, +# to Accuracy Rating" ModType="Prefix" Global="false" ItemType="OneHandedSword">
     <Tier ItemLevel="1" Name="Squire's" Tier="8" IsMasterCrafted="false">
       <Stat Name="#% increased Physical Damage" From="15" To="19" />

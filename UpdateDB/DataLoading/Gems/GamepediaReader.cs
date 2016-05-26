@@ -1,24 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using log4net;
 using Attribute = POESKillTree.SkillTreeFiles.ItemDB.Attribute;
 using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
 using Value = POESKillTree.SkillTreeFiles.ItemDB.Value;
 using ValueAt = POESKillTree.SkillTreeFiles.ItemDB.ValueAt;
 using ValuePerQuality = POESKillTree.SkillTreeFiles.ItemDB.ValuePerQuality;
 
-namespace UpdateDB
+namespace UpdateDB.DataLoading.Gems
 {
     // Reader for Unofficial Path of Exile Wiki @ Gamepedia.
     // TODO: Parse for static modifiers as well (e.g. Spell Echo's "10% less Damage").
-    public class GamepediaReader : Reader
+    public class GamepediaReader : IGemReader
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(GamepediaReader));
+
         // Parsed token.
-        internal class Token
+        private class Token
         {
             internal bool IsAttribute = false;
             internal string Name;
@@ -176,13 +178,13 @@ namespace UpdateDB
         };
 
         // Fetches gem data.
-        override public Gem FetchGem(string name)
+        public Gem FetchGem(string name)
         {
             string html;
+            string url = URL + "/" + PathOf(name);
             try
             {
-                string url = URL + "/" + PathOf(name);
-                Info("Fetching gem: " + name + " (" + url + ")");
+                Log.Debug("Fetching gem: " + name + " (" + url + ")");
 
                 WebClient webClient = new WebClient();
                 webClient.Encoding = Encoding.UTF8;
@@ -190,10 +192,11 @@ namespace UpdateDB
             }
             catch (WebException e)
             {
+                Log.WarnFormat("Web exception for gem {0} ({1}):", name, url);
                 if (e.Status == WebExceptionStatus.ProtocolError)
-                    Warning("HTTP " + ((int)((HttpWebResponse)e.Response).StatusCode) + " " + ((HttpWebResponse)e.Response).StatusDescription);
+                    Log.Warn("HTTP " + ((int)((HttpWebResponse)e.Response).StatusCode) + " " + ((HttpWebResponse)e.Response).StatusDescription);
                 else
-                    Warning(e.ToString());
+                    Log.Warn(e.ToString());
 
                 return null;
             }
@@ -211,7 +214,9 @@ namespace UpdateDB
 
             HtmlNodeCollection found = doc.DocumentNode.SelectNodes("//table[contains(@class,'skill-progression-table')]");
             if (found == null)
-                Warning("Gem level table not found");
+            {
+                Log.WarnFormat("Gem level table not found for {0}", name);
+            }
             else
             {
                 HtmlNode table = found[0];
@@ -226,14 +231,14 @@ namespace UpdateDB
                         HtmlNode cell = row.SelectSingleNode("th[" + (levelColumn + 1) + "]");
                         if (cell == null)
                         {
-                            Warning("Level cell not found");
+                            Log.Warn("Level cell not found");
                             break;
                         }
 
                         int level;
                         if (!int.TryParse(cell.InnerText.Trim(), out level))
                         {
-                            Warning("Level not an integer: " + cell.InnerText);
+                            Log.Warn("Level not an integer: " + cell.InnerText);
                             break;
                         }
 
@@ -272,7 +277,7 @@ namespace UpdateDB
                             if (text == "Level")
                             {
                                 levelColumn = column;
-                                Verbose("  [" + column + "] Level");
+                                Log.Debug("  [" + column + "] Level");
                             }
                             else
                             {
@@ -280,10 +285,10 @@ namespace UpdateDB
                                 if (tokens.Count == 1)
                                 {
                                     if (!tokens[0].IsAttribute)
-                                        Verbose("  [" + column + "] Unknown token: " + text);
+                                        Log.Debug("  [" + column + "] Unknown token: " + text);
                                     else
                                     {
-                                        Verbose("  [" + column + "] " + tokens[0].Name);
+                                        Log.Debug("  [" + column + "] " + tokens[0].Name);
                                         columnAttribute.Add(column, new Attribute { Name = tokens[0].Name, Values = new List<Value>() });
                                     }
                                 }
@@ -298,13 +303,15 @@ namespace UpdateDB
                     attributes.AddRange(columnAttribute.Values);
             }
 
-            found = doc.DocumentNode.SelectNodes("//div[contains(@class,'itembox-gem')]");
-            if (found.Count == 0)
-                Warning("Gem infobox table not found");
+            found = doc.DocumentNode.SelectNodes("//div[contains(@class,'item-box -gem')]");
+            if (found == null || found.Count == 0)
+            {
+                Log.WarnFormat("Gem infobox table not found for {0}", name);
+            }
             else
             {
                 HtmlNode table = found[0];
-                HtmlNode itemboxstats = table.SelectSingleNode("//span[contains(@class, 'itemboxstats')]");
+                HtmlNode itemboxstats = table.SelectSingleNode("//span[contains(@class, 'item-stats')]");
                 HtmlNode td = itemboxstats.SelectSingleNode("//span[contains(@class, 'text-mod')]");
                 if (td != null)
                 {
@@ -320,12 +327,12 @@ namespace UpdateDB
                         {
                             if (token.IsAttribute)
                             {
-                                Verbose("  [Per 1% Quality] " + token.Name);
+                                Log.Debug("  [Per 1% Quality] " + token.Name);
                                 if (token.Value != null)
                                     attributes.Add(new Attribute { Name = token.Name, Values = new List<Value> { new ValuePerQuality { Text = token.Value } } });
                             }
                             else
-                                Verbose("  [Per 1% Quality] Unknown token(s): " + token.Name);
+                                Log.Debug("  [Per 1% Quality] Unknown token(s): " + token.Name);
                         }
                     }
                 }
