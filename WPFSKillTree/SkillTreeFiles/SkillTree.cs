@@ -549,7 +549,7 @@ namespace POESKillTree.SkillTreeFiles
         /// <summary>
         /// This will get all skill points related to the tree both Normal and Ascendancy
         /// </summary>
-        /// <returns>A Dictionary with keys of "NormalUsed", "NormalTotal", "AscendancyUsed", and "AscendancyTotal"</returns>
+        /// <returns>A Dictionary with keys of "NormalUsed", "NormalTotal", "AscendancyUsed", "AscendancyTotal", and "ScionAscendancyChoices"</returns>
         public Dictionary<string, int> GetPointCount()
         {
             Dictionary<string, int> points = new Dictionary<string,int>()
@@ -557,7 +557,8 @@ namespace POESKillTree.SkillTreeFiles
                 {"NormalUsed", 0},
                 {"NormalTotal", 21},
                 {"AscendancyUsed", 0},
-                {"AscendancyTotal", 8}
+                {"AscendancyTotal", 8},
+                {"ScionAscendancyChoices", 0}
             };
 
             points["NormalTotal"] += Level - 1;
@@ -577,6 +578,10 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     points["AscendancyUsed"] += 1;
                     points["NormalTotal"] += nodeInfo.passivePointsGranted;
+                }
+                else if (nodeInfo.IsMultipleChoiceOption)
+                {
+                    points["ScionAscendancyChoices"] += 1;
                 }
             }
             return points;
@@ -1196,7 +1201,7 @@ namespace POESKillTree.SkillTreeFiles
         public string SaveToURL()
         {
             var points = GetPointCount();
-            var count = points["NormalUsed"] + points["AscendancyUsed"];
+            var count = points["NormalUsed"] + points["AscendancyUsed"] + points["ScionAscendancyChoices"];
             var b = new byte[7 + count * 2];
             AscType = AscendancyClasses.GetClassNumber(GetAscendancyClass(SkilledNodes));
             var b2 = GetCharacterBytes((byte)Chartype, (byte) AscType);
