@@ -1196,6 +1196,7 @@ namespace POESKillTree.SkillTreeFiles
             AscType = 0;
             SkilledNodes.Add(node.Value.Id);
             UpdateAscendancyClasses = true;
+            BanditSettings.Reset();
         }
 
         public string SaveToURL()

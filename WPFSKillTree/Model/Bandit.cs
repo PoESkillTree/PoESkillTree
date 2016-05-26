@@ -122,5 +122,10 @@ namespace POESKillTree.Model
                 Merciless = Merciless
             };
         }
+
+        public void Reset()
+        {
+            Normal = Cruel = Merciless = Bandit.None;
+        }
     }
 }
