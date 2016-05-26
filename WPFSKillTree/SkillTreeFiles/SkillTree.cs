@@ -557,7 +557,7 @@ namespace POESKillTree.SkillTreeFiles
                 {"NormalUsed", 0},
                 {"NormalTotal", 21},
                 {"AscendancyUsed", 0},
-                {"AscendancyTotal", 6}
+                {"AscendancyTotal", 8}
             };
 
             points["NormalTotal"] += Level - 1;
