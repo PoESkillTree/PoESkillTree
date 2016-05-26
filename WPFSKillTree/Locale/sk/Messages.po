@@ -929,12 +929,12 @@ msgstr "Postava"
 msgid "Downloading Skill tree assets"
 msgstr "Sťahujem údaje stromu zručností"
 
-#: SkillTreeFiles\SkillTree.cs:1271
+#: SkillTreeFiles\SkillTree.cs:1273
 #, fuzzy
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr "Prosím zvýraznite nevycvičené uzly pomocou kliknutia pravým tlačidlom."
 
-#: SkillTreeFiles\SkillTree.cs:1291
+#: SkillTreeFiles\SkillTree.cs:1293
 msgid "Error while trying to find solution"
 msgstr ""
 

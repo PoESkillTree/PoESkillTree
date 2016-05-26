@@ -894,11 +894,11 @@ msgstr ""
 msgid "Downloading Skill tree assets"
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:1271
+#: SkillTreeFiles\SkillTree.cs:1273
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:1291
+#: SkillTreeFiles\SkillTree.cs:1293
 msgid "Error while trying to find solution"
 msgstr ""
 

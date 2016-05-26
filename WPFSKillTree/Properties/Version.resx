@@ -146,7 +146,7 @@
     <comment>The URL of product website.</comment>
   </data>
   <data name="ProductVersion" xml:space="preserve">
-    <value>2.2.7</value>
+    <value>2.2.8</value>
     <comment>The application version identical to Git release tag. Change each release.</comment>
   </data>
 </root>
