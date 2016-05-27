@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace UpdateDB
 {
@@ -7,7 +8,8 @@ namespace UpdateDB
     {
         Any = 0,
         VersionControlled = 1,
-        NotVersionControlled = 2
+        NotVersionControlled = 2,
+        None = 4
     }
 
     public enum OutputDirectory
@@ -24,5 +26,7 @@ namespace UpdateDB
         OutputDirectory OutputDirectory { get; }
 
         bool CreateBackup { get; }
+
+        IEnumerable<string> LoaderFlags { get; }
     }
 }

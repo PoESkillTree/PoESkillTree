@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using log4net;
 using POESKillTree.Utils;
@@ -18,11 +19,11 @@ namespace UpdateDB
 
         private static readonly LoaderCollection LoaderDefinitions = new LoaderCollection
         {
-            {"affixes", "Equipment/AffixList.xml", new AffixDataLoader(), LoaderCategories.VersionControlled},
-            {"base items", "Equipment/ItemList.xml", new ItemDataLoader(), LoaderCategories.VersionControlled},
-            {"base item images", "Equipment/Assets", new ItemImageLoader(false), LoaderCategories.NotVersionControlled},
-            {"skill tree assets", "", new SkillTreeLoader(), LoaderCategories.NotVersionControlled},
-            {"gems", "Equipment/GemList.xml", new GemLoader(new GamepediaReader()), LoaderCategories.VersionControlled}
+            {"affixes", "Equipment/AffixList.xml", new AffixDataLoader(), LoaderCategories.VersionControlled, "Affixes"},
+            {"base items", "Equipment/ItemList.xml", new ItemDataLoader(), LoaderCategories.VersionControlled, "Items"},
+            {"base item images", "Equipment/Assets", new ItemImageLoader(false), LoaderCategories.NotVersionControlled, "Images"},
+            {"skill tree assets", "", new SkillTreeLoader(), LoaderCategories.NotVersionControlled, "TreeAssets"},
+            {"gems", "Equipment/GemList.xml", new GemLoader(new GamepediaReader()), LoaderCategories.VersionControlled, "Gems"}
         };
 
         private readonly IArguments _arguments;
@@ -40,7 +41,8 @@ namespace UpdateDB
                     _savePath = AppData.GetFolder();
                     break;
                 case OutputDirectory.SourceCode:
-                    _savePath = "../../../WPFSKillTree";
+                    _savePath = Regex.Replace(Directory.GetCurrentDirectory(),
+                        @"PoESkillTree((/|\\).*?)?$", "PoESkillTree/WPFSKillTree");
                     break;
                 case OutputDirectory.Current:
                     _savePath = Directory.GetCurrentDirectory();
@@ -55,13 +57,20 @@ namespace UpdateDB
             _httpClient.Timeout = TimeSpan.FromSeconds(120);
         }
 
+        public bool IsLoaderFlagRecognized(string flag)
+        {
+            return LoaderDefinitions.Any(l => l.Flag.Equals(flag, StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public async Task LoadAllAsync()
         {
             Log.Debug("Test");
             Log.Info("Starting loading ...");
             Directory.CreateDirectory(_savePath);
+            var explicitlyActivated = _arguments.LoaderFlags.ToList();
             var tasks = from loader in LoaderDefinitions
                         where loader.Categories.HasFlag(_arguments.ActivatedLoader)
+                            || explicitlyActivated.Contains(loader.Flag)
                         select LoadAsync(loader.Name, loader.File, loader.DataLoader);
             await Task.WhenAll(tasks);
             Log.Info("Completed loading!");
@@ -142,14 +151,15 @@ namespace UpdateDB
         {
             private readonly List<LoaderDefinition> _loaderDefinitions = new List<LoaderDefinition>();
 
-            public void Add(string name, string file, IDataLoader dataLoader, LoaderCategories categories)
+            public void Add(string name, string file, IDataLoader dataLoader, LoaderCategories categories, string flag)
             {
                 _loaderDefinitions.Add(new LoaderDefinition
                 {
                     Name = name,
                     File = file,
                     DataLoader = dataLoader,
-                    Categories = categories
+                    Categories = categories,
+                    Flag = flag
                 });
             }
 
@@ -171,6 +181,7 @@ namespace UpdateDB
             public string File { get; set; }
             public IDataLoader DataLoader { get; set; }
             public LoaderCategories Categories { get; set; }
+            public string Flag { get; set; }
         }
     }
 }

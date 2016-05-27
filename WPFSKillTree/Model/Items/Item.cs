@@ -239,6 +239,50 @@ namespace POESKillTree.Model.Items
             if (val["name"] != null)
                 NameLine = FilterJsonString(val["name"].Value<string>());
 
+            JToken iconToken;
+            if (val.TryGetValue("icon", out iconToken))
+                _iconUrl = iconToken.Value<string>();
+
+            Frame = (FrameType)val["frameType"].Value<int>();
+            TypeLine = FilterJsonString(val["typeLine"].Value<string>());
+            if (isGem)
+            {
+                // BaseType will be null for socketed gems.
+                _itemGroup = ItemGroup.Gem;
+            }
+            else
+            {
+                if (Frame == FrameType.Magic)
+                {
+                    _baseType = persistentData.EquipmentData.ItemBaseFromTypeline(TypeLine);
+                }
+                else
+                {
+                    persistentData.EquipmentData.BaseDictionary.TryGetValue(TypeLine, out _baseType);
+                }
+                // For known bases, images are only downloaded if the item is unique. All other items should always
+                // have the same image. (except alt art non-uniques that are rare enough to be ignored)
+                var loadImageFromIconUrl = _iconUrl != null && (_baseType == null || Frame == FrameType.Unique);
+                if (_baseType == null)
+                {
+                    _baseType = new ItemBase(persistentData.Options, itemSlot, TypeLine,
+                        _keywords == null ? "" : _keywords.FirstOrDefault(), Frame);
+                }
+                _itemType = BaseType.ItemType;
+                _itemGroup = BaseType.ItemGroup;
+                if (loadImageFromIconUrl)
+                {
+                    _image = new ItemImageFromOfficial(_baseType.Image, _iconUrl);
+                }
+                else
+                {
+                    _image = _baseType.Image;
+                    _image.DownloadMissingImage();
+                }
+
+                FixOldItems();
+            }
+
             if (val["properties"] != null)
             {
                 foreach (var obj in val["properties"])
@@ -331,50 +375,6 @@ namespace POESKillTree.Model.Items
                     var item = new Item(persistentData, obj, isGem: true) {_socketGroup = sockets[socket++]};
                     _gems.Add(item);
                 }
-            }
-
-            JToken iconToken;
-            if (val.TryGetValue("icon", out iconToken))
-                _iconUrl = iconToken.Value<string>();
-
-            Frame = (FrameType)val["frameType"].Value<int>();
-            TypeLine = FilterJsonString(val["typeLine"].Value<string>());
-            if (isGem)
-            {
-                // BaseType will be null for socketed gems.
-                _itemGroup = ItemGroup.Gem;
-            }
-            else
-            {
-                if (Frame == FrameType.Magic)
-                {
-                    _baseType = persistentData.EquipmentData.ItemBaseFromTypeline(TypeLine);
-                }
-                else
-                {
-                    persistentData.EquipmentData.BaseDictionary.TryGetValue(TypeLine, out _baseType);
-                }
-                // For known bases, images are only downloaded if the item is unique. All other items should always
-                // have the same image. (except alt art non-uniques that are rare enough to be ignored)
-                var loadImageFromIconUrl = _iconUrl != null && (_baseType == null || Frame == FrameType.Unique);
-                if (_baseType == null)
-                {
-                    _baseType = new ItemBase(persistentData.Options, itemSlot, TypeLine,
-                        _keywords == null ? "" : _keywords.FirstOrDefault(), Frame);
-                }
-                _itemType = BaseType.ItemType;
-                _itemGroup = BaseType.ItemGroup;
-                if (loadImageFromIconUrl)
-                {
-                    _image = new ItemImageFromOfficial(_baseType.Image, _iconUrl);
-                }
-                else
-                {
-                    _image = _baseType.Image;
-                    _image.DownloadMissingImage();
-                }
-
-                FixOldItems();
             }
         }
 

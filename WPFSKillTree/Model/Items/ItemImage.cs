@@ -92,6 +92,10 @@ namespace POESKillTree.Model.Items
 
         private ImageSource LoadDefaultImage()
         {
+            // This is only for UnitTests. Don't need item not found warnings there.
+            if (Application.Current == null)
+                return ErrorImage;
+
             if (!DefaultImageCache.ContainsKey(_baseGroup))
             {
                 try

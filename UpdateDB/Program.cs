@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using log4net;
 using log4net.Core;
 
@@ -12,12 +14,17 @@ namespace UpdateDB
             var args = new Arguments
             {
                 CreateBackup = true,
-                ActivatedLoader = LoaderCategories.Any
+                ActivatedLoader = LoaderCategories.Any,
+                LoaderFlags = new List<string>()
             };
 
             // Get options.
+            var unrecognizedSwitches = new List<string>();
             foreach (var arg in arguments)
             {
+                if (!arg.StartsWith("/"))
+                    continue;
+
                 switch (arg.ToLowerInvariant())
                 {
                     case "/?":
@@ -30,6 +37,8 @@ namespace UpdateDB
                         Console.WriteLine("/NoBackup                 Do not create backup of files being updated before writing changes.");
                         Console.WriteLine("/Quiet                    Do not display any output.");
                         Console.WriteLine("/Verbose                  Enable verbose output.");
+                        Console.WriteLine("/Affixes, /Items, /Images, /TreeAssets, /Gems");
+                        Console.WriteLine("If at least one is specified, only the specified files are downloaded.");
                         return 1;
 
                     case "/versioncontrolledonly":
@@ -62,12 +71,25 @@ namespace UpdateDB
                         break;
 
                     default:
-                        Console.WriteLine("Invalid switch - \"" + (arg.Length > 1 ? arg[1].ToString() : "") + "\"");
-                        return 1;
+                        unrecognizedSwitches.Add(arg.Substring(1));
+                        break;
                 }
             }
 
             var exec = new DataLoaderExecutor(args);
+
+            var nonFlags = unrecognizedSwitches.Where(s => !exec.IsLoaderFlagRecognized(s)).ToList();
+            if (nonFlags.Any())
+            {
+                Console.WriteLine("Invalid switches - \"" + string.Join("\", \"", nonFlags) + "\"");
+                return 1;
+            }
+            if (unrecognizedSwitches.Any())
+            {
+                args.ActivatedLoader = LoaderCategories.None;
+                args.LoaderFlags = unrecognizedSwitches;
+            }
+
             exec.LoadAllAsync().Wait();
 
             return 0;
@@ -79,6 +101,7 @@ namespace UpdateDB
             public LoaderCategories ActivatedLoader { get; set; }
             public OutputDirectory OutputDirectory { get; set; }
             public bool CreateBackup { get; set; }
+            public IEnumerable<string> LoaderFlags { get; set; }
         }
     }
 }

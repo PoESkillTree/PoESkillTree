@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using log4net;
+using POESKillTree.SkillTreeFiles;
 using Attribute = POESKillTree.SkillTreeFiles.ItemDB.Attribute;
 using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
 using Value = POESKillTree.SkillTreeFiles.ItemDB.Value;
@@ -311,11 +313,17 @@ namespace UpdateDB.DataLoading.Gems
             else
             {
                 HtmlNode table = found[0];
-                HtmlNode itemboxstats = table.SelectSingleNode("//span[contains(@class, 'item-stats')]");
-                HtmlNode td = itemboxstats.SelectSingleNode("//span[contains(@class, 'text-mod')]");
+                // If the mana cost is fixed it is not necessarily part of the level table.
+                var fixedManaAttr = ParseFixedManaCost(table);
+                if (fixedManaAttr != null)
+                    attributes.Add(fixedManaAttr);
+
+                HtmlNode itemboxstats = table.SelectSingleNode("span[contains(@class, 'item-stats')]");
+                var td = itemboxstats.SelectNodes("span[contains(@class, 'text-mod')]");
                 if (td != null)
                 {
-                    HtmlNodeCollection textNodes = td.SelectNodes(".//text()");
+                    // Per 1% Quality
+                    HtmlNodeCollection textNodes = td[0].SelectNodes(".//text()");
                     if (textNodes != null)
                     {
                         List<string> texts = new List<string>();
@@ -335,10 +343,63 @@ namespace UpdateDB.DataLoading.Gems
                                 Log.Debug("  [Per 1% Quality] Unknown token(s): " + token.Name);
                         }
                     }
+
+                    // Values fixed per level
+                    if (td.Count > 1)
+                    {
+                        textNodes = td[1].SelectNodes(".//text()");
+                        if (textNodes != null)
+                        {
+                            attributes.AddRange(
+                                textNodes.Select(n => n.InnerHtml).Select(ParseFixedAttribute).Where(a => a != null));
+                        }
+                    }
                 }
             }
 
             return new Gem { Name = gemName, Attributes = attributes }; ;
+        }
+
+        private static Attribute ParseFixedManaCost(HtmlNode table)
+        {
+            var textDefaults = table.SelectNodes(".//span[contains(@class, 'text-default')]");
+            if (textDefaults == null)
+                return null;
+            foreach (var textDefault in textDefaults)
+            {
+                if (!textDefault.InnerHtml.Contains("Mana Cost"))
+                    continue;
+
+                var textValue = textDefault.NextSibling;
+                var cost = textValue.InnerHtml;
+                if (textValue.GetAttributeValue("class", "") == "text-value"
+                    && Regex.IsMatch(cost, @"^\d+$"))
+                {
+                    return new Attribute
+                    {
+                        Name = "Mana Cost: #",
+                        Values = new List<Value> { new ItemDB.ValueForLevelRange { From = 1, To = 30, Text = cost } }
+                    };
+                }
+            }
+            return null;
+        }
+
+        private static Attribute ParseFixedAttribute(string text)
+        {
+            // todo I don't know enough about this class.
+            //      Someone with more knowledge should check if everything works correctly again.
+
+            var numberMatches = ReNumber.Matches(text);
+            if (numberMatches.Count != 1)
+                return null;
+
+            var valueText = numberMatches[0].Value;
+            return new Attribute
+            {
+                Name = text.Replace(valueText, "#"),
+                Values = new List<Value> {new ItemDB.ValueForLevelRange {From = 1, To = 30, Text = valueText } }
+            };
         }
 
         // Returns attribute names for known tokens, ignored tokens or null if unknown tokens.

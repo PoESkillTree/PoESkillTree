@@ -68,6 +68,12 @@
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Explosion deals Chaos Damage equal to #% of the Monster's maximum Life">
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">6.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Added Chaos Damage Support">
     <Attribute Name="Adds #-# Chaos Damage">
@@ -305,13 +311,34 @@
       <ValueForLevel From="28" To="29">24</ValueForLevel>
       <Value Level="30">25</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Totem Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">12.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Attacks with +# to Melee range">
+      <ValueForLevel From="1" To="30">16</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Totem Placement speed">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Ancestral Warchief">
     <Attribute Name="#% increased Totem Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">12.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% less Attack Speed">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Totem Placement speed">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Anger">
@@ -601,6 +628,9 @@
     <Attribute Name="Minions have #% increased Movement Speed">
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">37.5</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Arc">
     <Attribute Name="Mana Cost: #">
@@ -673,6 +703,9 @@
     <Attribute Name="#% chance to Shock enemies">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% chance to Shock enemies">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Arctic Armour">
     <Attribute Name="#% less Physical Damage taken when Hit">
@@ -729,6 +762,9 @@
     </Attribute>
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Chill Enemy for # seconds when hit">
+      <ValueForLevel From="1" To="30">0.5</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Arctic Breath">
@@ -949,6 +985,9 @@
     <Attribute Name="Cursed enemies have a #% chance to grant a Power Charge when slain">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Cursed enemies take #% increased extra damage from Critical Strikes">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Ball Lightning">
     <Attribute Name="Mana Cost: #">
@@ -1051,6 +1090,9 @@
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="# additional Projectiles">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Bear Trap">
     <Attribute Name="Mana Cost: #">
@@ -1117,6 +1159,9 @@
     <Attribute Name="#% increased Physical Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Trap lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Blade Vortex">
     <Attribute Name="Mana Cost: #">
@@ -1174,6 +1219,12 @@
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">5.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Can have up to # active spinning blades">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Bladefall">
@@ -1234,6 +1285,9 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% less Damage per Volley">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Blasphemy Support">
     <Attribute Name="#% increased Radius of Curse Skills">
@@ -1289,6 +1343,12 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Fire Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Causes # Explosions">
+      <ValueForLevel From="1" To="30">4</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Blind Support">
     <Attribute Name="#% increased Blinding duration">
@@ -1296,6 +1356,9 @@
     </Attribute>
     <Attribute Name="#% increased Blinding duration">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance to Blind enemies on hit">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Blink Arrow">
@@ -1320,6 +1383,12 @@
     </Attribute>
     <Attribute Name="#% increased Arrow Speed">
       <ValuePerQuality>1.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">3.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Minions deal #% more Damage">
+      <ValueForLevel From="1" To="30">75</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Block Chance Reduction Support">
@@ -1462,6 +1531,18 @@
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.25</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% of Physical Damage from Attacks Leeched as Life">
+      <ValueForLevel From="1" To="30">1.2</ValueForLevel>
+    </Attribute>
+    <Attribute Name="You take #% of your Maximum Life per second as Physical Damage">
+      <ValueForLevel From="1" To="30">4.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="You take #% of your Maximum Energy Shield per second as Physical Damage">
+      <ValueForLevel From="1" To="30">4.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% chance to gain a Frenzy Charge on Kill">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Bloodlust Support">
     <Attribute Name="#% more Melee Physical Damage against Bleeding enemies">
@@ -1599,6 +1680,12 @@
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">3.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Additional # seconds Base Duration per extra Corpse consumed">
+      <ValueForLevel From="1" To="30">0.5</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Burning Arrow">
     <Attribute Name="Mana Cost: #">
@@ -1676,6 +1763,12 @@
     <Attribute Name="#% increased Ignite Duration on enemies">
       <ValuePerQuality>3</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% chance to Ignite enemies">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Fire Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Cast on Death Support">
     <Attribute Name="#% more Damage while Dead">
@@ -1683,6 +1776,9 @@
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius while Dead">
       <ValuePerQuality>3</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance to Cast Supported Non-Minion Spells on Death">
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cast on Melee Kill Support">
@@ -1874,6 +1970,9 @@
     </Attribute>
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Chain +# Times">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Chance to Flee Support">
@@ -2087,8 +2186,14 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="When Dual Wielding, Deals -#% Damage from each Weapon combined">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cluster Traps Support">
@@ -2126,6 +2231,12 @@
     </Attribute>
     <Attribute Name="#% increased Trap Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Throw # additional Traps">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Can have up to # additional Traps placed at a time">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cold Penetration Support">
@@ -2225,6 +2336,15 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% chance to Freeze enemies">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Freeze Duration on enemies">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Chill Duration on enemies">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Cold to Fire Support">
     <Attribute Name="Gain #% of Cold Damage as Extra Fire Damage">
@@ -2265,6 +2385,9 @@
     <Attribute Name="#% increased Fire Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% of Cold Damage Converted to Fire Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Concentrated Effect Support">
     <Attribute Name="#% more Area Damage">
@@ -2301,6 +2424,9 @@
     </Attribute>
     <Attribute Name="#% increased Area Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% less Area of Effect radius">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Conductivity">
@@ -2477,6 +2603,9 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">5.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Controlled Destruction Support">
     <Attribute Name="#% more Spell Damage">
@@ -2513,6 +2642,9 @@
     </Attribute>
     <Attribute Name="#% increased Spell Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% reduced Critical Strike Chance">
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Conversion Trap">
@@ -2580,6 +2712,9 @@
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Trap lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Convocation">
     <Attribute Name="Mana Cost: #">
@@ -2629,8 +2764,11 @@
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">2.0</ValueForLevel>
+    </Attribute>
   </Gem>
-  <Gem Name="Culling Strike">
+  <Gem Name="Culling Strike Support">
     <Attribute Name="#% increased Damage">
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
@@ -2639,6 +2777,9 @@
     </Attribute>
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Kills Enemies on #% Life or less when hit by supported Skills">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cyclone">
@@ -2674,8 +2815,20 @@
       <Value Level="29">61.8</Value>
       <Value Level="30">62.4</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">12</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% more Attack Speed">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% less Movement Speed">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
+    </Attribute>
+    <Attribute Name="First Hit deals #% less Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Decoy Totem">
@@ -2709,6 +2862,9 @@
     </Attribute>
     <Attribute Name="#% increased totem life">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Desecrate">
@@ -2788,6 +2944,12 @@
     </Attribute>
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">5.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Creates # Corpses">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Determination">
@@ -2925,6 +3087,9 @@
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Explosion deals base Fire Damage equal to #% of the corpse's maximum Life">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Detonate Mines">
     <Attribute Name="#% increased Cast Speed">
@@ -3026,6 +3191,9 @@
     </Attribute>
     <Attribute Name="#% increased totem life">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Discharge">
@@ -3274,6 +3442,12 @@
     <Attribute Name="Minions deal #% increased Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">20.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Minions deal #% less Damage">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Double Strike">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -3307,6 +3481,9 @@
       <Value Level="28">91.6</Value>
       <Value Level="29">92.4</Value>
       <Value Level="30">93.2</Value>
+    </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -3344,6 +3521,9 @@
       <Value Level="28">112</Value>
       <Value Level="29">113</Value>
       <Value Level="30">114</Value>
+    </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -3414,8 +3594,14 @@
       <Value Level="29">88</Value>
       <Value Level="30">89</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">1.5</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Elemental Focus Support">
@@ -3566,6 +3752,9 @@
     <Attribute Name="#% increased Elemental Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% chance to Freeze, Shock and Ignite">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Elemental Proliferation Support">
     <Attribute Name="Supported skills deal #% less Damage">
@@ -3596,6 +3785,9 @@
     </Attribute>
     <Attribute Name="#% increased Shock Duration on Enemies">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Radius: #">
+      <ValueForLevel From="1" To="30">12</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Elemental Weakness">
@@ -3795,6 +3987,9 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>3</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">0.75</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Enfeeble">
     <Attribute Name="Mana Cost: #">
@@ -3919,10 +4114,33 @@
     <Attribute Name="Cursed enemies have #% reduced Critical Strike Chance">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Cursed enemies have #% reduced Critical Strike Chance">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Cursed enemies have -#% to Critical Strike Multiplier">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Enhance Support">
     <Attribute Name="+#% to Quality of Supported Active Skill Gems">
       <ValuePerLevel>8</ValuePerLevel>
+    </Attribute>
+    <Attribute Name="This Gem gains #% increased Experience">
+      <ValuePerQuality>5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Enlighten Support">
+    <Attribute Name="ManaMultiplier">
+      <Value Level="1">100</Value>
+      <Value Level="2">96</Value>
+      <Value Level="3">92</Value>
+      <Value Level="4">88</Value>
+      <Value Level="5">84</Value>
+      <Value Level="6">80</Value>
+      <Value Level="7">76</Value>
+      <Value Level="8">72</Value>
+      <Value Level="9">68</Value>
+      <Value Level="10">64</Value>
     </Attribute>
     <Attribute Name="This Gem gains #% increased Experience">
       <ValuePerQuality>5</ValuePerQuality>
@@ -4023,6 +4241,12 @@
     <Attribute Name="#% increased Chaos Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Regenerate #% of Debuff Damage as Life">
+      <ValueForLevel From="1" To="30">0.50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">3.8</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Ethereal Knives">
     <Attribute Name="Mana Cost: #">
@@ -4089,6 +4313,9 @@
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="# additional Projectiles">
+      <ValueForLevel From="1" To="30">9</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Explosive Arrow">
     <Attribute Name="Mana Cost: #">
@@ -4140,6 +4367,52 @@
     </Attribute>
     <Attribute Name="#% chance to Ignite enemies">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">1.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="+# to Explosion Radius per Fuse Charge">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #% of Base Attack Damage">
+      <ValueForLevel From="1" To="30">0</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Faster Attacks Support">
+    <Attribute Name="#% increased Attack Speed">
+      <Value Level="1">25</Value>
+      <Value Level="2">26</Value>
+      <Value Level="3">27</Value>
+      <Value Level="4">28</Value>
+      <Value Level="5">29</Value>
+      <Value Level="6">30</Value>
+      <Value Level="7">31</Value>
+      <Value Level="8">32</Value>
+      <Value Level="9">33</Value>
+      <Value Level="10">34</Value>
+      <Value Level="11">35</Value>
+      <Value Level="12">36</Value>
+      <Value Level="13">37</Value>
+      <Value Level="14">38</Value>
+      <Value Level="15">39</Value>
+      <Value Level="16">40</Value>
+      <Value Level="17">41</Value>
+      <Value Level="18">42</Value>
+      <Value Level="19">43</Value>
+      <Value Level="20">44</Value>
+      <Value Level="21">45</Value>
+      <Value Level="22">46</Value>
+      <Value Level="23">47</Value>
+      <Value Level="24">48</Value>
+      <Value Level="25">49</Value>
+      <Value Level="26">50</Value>
+      <Value Level="27">51</Value>
+      <Value Level="28">52</Value>
+      <Value Level="29">53</Value>
+      <Value Level="30">54</Value>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
   </Gem>
   <Gem Name="Faster Casting Support">
@@ -4319,6 +4592,12 @@
     <Attribute Name="#% increased Fire Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Mine lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Spell Repeats # times">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Fire Penetration Support">
     <Attribute Name="Penetrates #% Fire Resistance">
@@ -4449,6 +4728,12 @@
     </Attribute>
     <Attribute Name="#% increased Burning Damage">
       <ValuePerQuality>1.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Trap lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Fireball">
@@ -4609,6 +4894,12 @@
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">2.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="One impact every # seconds">
+      <ValueForLevel From="1" To="30">0.1</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Flame Dash">
     <Attribute Name="Mana Cost: #">
@@ -4707,6 +4998,9 @@
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">4.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Flame Surge">
     <Attribute Name="Mana Cost: #">
@@ -4769,6 +5063,9 @@
     </Attribute>
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% more Damage against Burning enemies">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Flame Totem">
@@ -4850,6 +5147,9 @@
     <Attribute Name="#% increased totem life">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Flameblast">
     <Attribute Name="Mana Cost: #">
@@ -4896,6 +5196,9 @@
     </Attribute>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% more Spell Damage for each stage">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Flammability">
@@ -5097,6 +5400,12 @@
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">3.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Additional # seconds Base Duration per extra Corpse consumed">
+      <ValueForLevel From="1" To="30">0.5</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Flicker Strike">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -5131,8 +5440,17 @@
       <Value Level="29">174.8</Value>
       <Value Level="30">176.4</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% more Attack Speed">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed per Frenzy Charge">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Fork Support">
@@ -5207,6 +5525,9 @@
     </Attribute>
     <Attribute Name="#% increased Fortify duration">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Fortify duration">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Freeze Mine">
@@ -5294,6 +5615,12 @@
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Enemies lose #% Cold Resistance while Frozen">
+      <ValueForLevel From="1" To="30">15</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Mine lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Freezing Pulse">
@@ -5386,8 +5713,17 @@
       <Value Level="29">149.2</Value>
       <Value Level="30">150.6</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Physical Damage per Frenzy Charge">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Attack Speed per Frenzy Charge">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Frost Blades">
@@ -5442,8 +5778,14 @@
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage converted to Cold Damage">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Frost Bomb">
@@ -5502,6 +5844,18 @@
     </Attribute>
     <Attribute Name="#% increased Cold Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">3.5</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base secondary duration is # seconds">
+      <ValueForLevel From="1" To="30">2.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="-#% to Cold Resistance">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% reduced Life Regeneration rate">
+      <ValueForLevel From="1" To="30">75</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Frost Wall">
@@ -5608,6 +5962,9 @@
     </Attribute>
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="# seconds between appearance of Wall sections">
+      <ValueForLevel From="1" To="30">0.15</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Frostbite">
@@ -5890,11 +6247,20 @@
       <Value Level="29">184.8</Value>
       <Value Level="30">186.4</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Chill Duration on enemies">
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
     <Attribute Name="#% increased Freeze Duration on enemies">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Cold Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Chill Duration on enemies">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Grace">
@@ -5990,6 +6356,9 @@
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="# additional Projectiles">
+      <ValueForLevel From="1" To="30">4</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Ground Slam">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -6027,8 +6396,14 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Stun Duration on enemies">
       <ValuePerQuality>1.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% reduced Enemy Stun Threshold">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Haste">
@@ -6194,8 +6569,14 @@
       <Value Level="29">200.4</Value>
       <Value Level="30">202.2</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Stun Duration on enemies">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% reduced Enemy Stun Threshold">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Herald of Ash">
@@ -6233,6 +6614,9 @@
     </Attribute>
     <Attribute Name="#% increased Fire Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Gain #% of your Physical Damage as Extra Fire Damage">
+      <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Herald of Ice">
@@ -6436,6 +6820,9 @@
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">6.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Hypothermia Support">
     <Attribute Name="#% more Damage against Chilled Enemies">
@@ -6472,6 +6859,9 @@
     </Attribute>
     <Attribute Name="#% increased Chill Duration on Enemies">
       <ValuePerQuality>1.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance to Freeze Enemies which are Chilled">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Ice Bite Support">
@@ -6510,6 +6900,9 @@
     <Attribute Name="#% increased Damage against Frozen Enemies">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% chance to Freeze">
+      <ValueForLevel From="1" To="30">15</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Ice Crash">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -6544,8 +6937,23 @@
       <Value Level="29">200.4</Value>
       <Value Level="30">202.2</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Cold Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage converted to Cold Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% less Attack Speed">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Second Stage deals #% less Damage">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Third Stage deals #% less Damage">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Ice Nova">
@@ -6655,6 +7063,12 @@
     <Attribute Name="#% increased Cold Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Cold Damage">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">1.5</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Ice Spear">
     <Attribute Name="Mana Cost: #">
@@ -6751,6 +7165,9 @@
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Second form has #% increased Critical Strike Chance">
+      <ValueForLevel From="1" To="30">600</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Ice Trap">
     <Attribute Name="Mana Cost: #">
@@ -6808,6 +7225,9 @@
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Trap lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Immortal Call">
@@ -6873,6 +7293,9 @@
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">0.4</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Incinerate">
     <Attribute Name="Mana Cost: #">
@@ -6916,6 +7339,9 @@
     </Attribute>
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>2</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% more Damage for each stage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Increased Area of Effect Support">
@@ -7153,8 +7579,20 @@
       <Value Level="29">174.8</Value>
       <Value Level="30">176.4</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Fire Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">0.5</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Explosion deals base Fire Damage equal to #% of the corpse's maximum Life">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Innervate">
@@ -7192,6 +7630,9 @@
     </Attribute>
     <Attribute Name="#% increased Shock Duration on Enemies">
       <ValuePerQuality>1.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance to Shock">
+      <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Iron Grip Support">
@@ -7328,6 +7769,12 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Creates # explosions">
+      <ValueForLevel From="1" To="30">4</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% less Area Damage">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Knockback Support">
     <Attribute Name="#% chance to Knock Enemies Back on hit">
@@ -7364,6 +7811,9 @@
     </Attribute>
     <Attribute Name="#% chance to Knock Enemies Back on hit">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Knockback Distance">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Lacerate">
@@ -7407,8 +7857,14 @@
       <Value Level="29">133.6</Value>
       <Value Level="30">134.8</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">15</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% chance to Knock Enemies Back on hit">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance to Knock Enemies Back on hit">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Less Duration Support">
@@ -7474,6 +7930,9 @@
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="# additional Projectiles">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Life Gain on Hit Support">
     <Attribute Name="+# Life gained for each enemy hit by Supported Attack">
@@ -7519,6 +7978,9 @@
     <Attribute Name="#% increased Life Leeched per second">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% of Damage Leeched as Life">
+      <ValueForLevel From="1" To="30">2.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Lightning Arrow">
     <Attribute Name="Mana Cost: #">
@@ -7563,6 +8025,12 @@
     </Attribute>
     <Attribute Name="#% chance to Shock enemies">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Lightning Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Hits up to # additional enemies near the target">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Lightning Penetration Support">
@@ -7643,8 +8111,17 @@
       <ValueForLevel From="21" To="25">8</ValueForLevel>
       <ValueForLevel From="26" To="30">9</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% chance of Projectiles Piercing">
       <ValuePerQuality>2</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Lightning Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% less Projectile Damage">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Lightning Tendrils">
@@ -7769,6 +8246,12 @@
     </Attribute>
     <Attribute Name="#% increased Trap Throwing Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Trap lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="# additional Projectiles">
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Lightning Warp">
@@ -7907,6 +8390,9 @@
     </Attribute>
     <Attribute Name="#% increased Mana Leeched per second">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Damage Leeched as Mana">
+      <ValueForLevel From="1" To="30">2.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Melee Damage on Full Life Support">
@@ -8058,6 +8544,12 @@
     </Attribute>
     <Attribute Name="#% increased Mine Detonation Radius">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Place # additional Mines">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Can have up to # additional Remote Mines placed at a time">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Minion and Totem Elemental Resistance Support">
@@ -8335,6 +8827,12 @@
     <Attribute Name="#% increased Arrow Speed">
       <ValuePerQuality>1.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">3.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Minions deal #% more Damage">
+      <ValueForLevel From="1" To="30">75</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Molten Shell">
     <Attribute Name="Mana Cost: #">
@@ -8459,6 +8957,9 @@
     <Attribute Name="#% chance to Ignite enemies">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">10.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Molten Strike">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -8493,8 +8994,20 @@
       <Value Level="29">159.2</Value>
       <Value Level="30">160.6</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Fire Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Fire Damage">
+      <ValueForLevel From="1" To="30">60</ValueForLevel>
+    </Attribute>
+    <Attribute Name="# additional Projectiles">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% less Projectile Damage">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Multiple Traps Support">
@@ -8533,6 +9046,12 @@
     <Attribute Name="#% increased Trap Trigger Radius">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Throw # additional Traps">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Can have up to # additional Traps placed at a time">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Multistrike Support">
     <Attribute Name="#% more Melee Attack Speed">
@@ -8569,6 +9088,12 @@
     </Attribute>
     <Attribute Name="#% increased Melee Physical Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Supported Melee Attacks Repeat # additional times">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% less Attack Damage">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Orb of Storms">
@@ -8637,6 +9162,15 @@
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">10.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Chain +# Times">
+      <ValueForLevel From="1" To="30">0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Charged Storm Cloud deals # more Damage">
+      <ValueForLevel From="1" To="30">0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Phase Run">
     <Attribute Name="Mana Cost: #">
@@ -8683,6 +9217,18 @@
     <Attribute Name="#% increased Movement Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% reduced Visibility to Enemies">
+      <ValueForLevel From="1" To="30">80</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">1.8</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base secondary duration is # seconds">
+      <ValueForLevel From="1" To="30">0.2</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Skill Duration per Frenzy Charge">
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Physical Projectile Attack Damage Support">
     <Attribute Name="#% more Physical Projectile Attack Damage">
@@ -8719,6 +9265,9 @@
     </Attribute>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% less Projectile Attack Speed">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Physical to Lightning Support">
@@ -8760,6 +9309,9 @@
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Lightning Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Pierce Support">
     <Attribute Name="#% more Projectile Damage">
@@ -8796,6 +9348,9 @@
     </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance of Projectiles Piercing">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Poacher's Mark">
@@ -8963,6 +9518,9 @@
     <Attribute Name="Cursed enemies have a #% chance to grant a Frenzy Charge when slain">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Cursed enemies grant #% increased Flask Charges">
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Point Blank Support">
     <Attribute Name="#% increased Projectile Damage">
@@ -8970,6 +9528,9 @@
     </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Projectile Attacks deal up to #% more Damage to targets at the start of their movement, dealing less Damage to targets as the projectile travels farther">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Poison Support">
@@ -9127,6 +9688,12 @@
     <Attribute Name="Cursed enemies take #% increased Damage from Projectiles">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Projectiles have an additional #% chance to Pierce Cursed enemies">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Hits on Cursed Enemies have an additional #% chance to Knockback">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Puncture">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -9161,8 +9728,20 @@
       <Value Level="29">133.6</Value>
       <Value Level="30">134.8</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Bleeding targets take #% of the Physical Damage Dealt per second">
+      <ValueForLevel From="1" To="30">10.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Bleeding targets take an additional #% of the Physical Damage Dealt per second while moving">
+      <ValueForLevel From="1" To="30">50.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Causes Bleeding on Hit for # seconds">
+      <ValueForLevel From="1" To="30">5.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Punishment">
@@ -9270,6 +9849,9 @@
     </Attribute>
     <Attribute Name="Cursed enemies grant #% increased Attack Speed on Melee hit">
       <ValuePerQuality>0.25</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Buff is applied for a Base Duration of # seconds">
+      <ValueForLevel From="1" To="30">4.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Purity of Elements">
@@ -9753,6 +10335,12 @@
     <Attribute Name="#% increased Minion Movement Speed">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Can raise up to # Spectre at a time">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% more Minion Movement Speed">
+      <ValueForLevel From="1" To="30">55</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Raise Zombie">
     <Attribute Name="Mana Cost: #">
@@ -9786,6 +10374,9 @@
     </Attribute>
     <Attribute Name="#% increased Minion Movement Speed">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Can raise up to # Zombies at a time">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Rallying Cry">
@@ -9910,6 +10501,9 @@
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>1.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Ranged Attack Totem Support">
     <Attribute Name="#% less Damage">
@@ -9946,6 +10540,12 @@
     </Attribute>
     <Attribute Name="#% increased Totem Placement speed">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Attacks used by Totem have #% less Attack Speed">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Rapid Decay Support">
@@ -9984,6 +10584,9 @@
     <Attribute Name="#% increased Damage over Time">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% reduced Skill Effect Duration">
+      <ValueForLevel From="1" To="30">15</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Reave">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -10018,8 +10621,14 @@
       <Value Level="29">133.6</Value>
       <Value Level="30">134.8</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% more Area of Effect radius for each stage">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Reckoning">
@@ -10144,6 +10753,49 @@
     <Attribute Name="#% increased Aura radius">
       <ValuePerQuality>3</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Remote Mine Support">
+    <Attribute Name="#% more Mine Damage">
+      <Value Level="1">30</Value>
+      <Value Level="2">31</Value>
+      <Value Level="3">32</Value>
+      <Value Level="4">33</Value>
+      <Value Level="5">34</Value>
+      <Value Level="6">35</Value>
+      <Value Level="7">36</Value>
+      <Value Level="8">37</Value>
+      <Value Level="9">38</Value>
+      <Value Level="10">39</Value>
+      <Value Level="11">40</Value>
+      <Value Level="12">41</Value>
+      <Value Level="13">42</Value>
+      <Value Level="14">43</Value>
+      <Value Level="15">44</Value>
+      <Value Level="16">45</Value>
+      <Value Level="17">46</Value>
+      <Value Level="18">47</Value>
+      <Value Level="19">48</Value>
+      <Value Level="20">49</Value>
+      <Value Level="21">50</Value>
+      <Value Level="22">51</Value>
+      <Value Level="23">52</Value>
+      <Value Level="24">53</Value>
+      <Value Level="25">54</Value>
+      <Value Level="26">55</Value>
+      <Value Level="27">56</Value>
+      <Value Level="28">57</Value>
+      <Value Level="29">58</Value>
+      <Value Level="30">59</Value>
+    </Attribute>
+    <Attribute Name="#% increased Mine Laying Speed">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Mine lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Righteous Fire">
     <Attribute Name="#% more Spell Damage">
@@ -10180,6 +10832,18 @@
     </Attribute>
     <Attribute Name="#% increased Spell Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Enemies Burn for #% of your maximum Life per second as Fire Damage">
+      <ValueForLevel From="1" To="30">50.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="You Burn for #% of your maximum Life per second as Fire Damage">
+      <ValueForLevel From="1" To="30">90.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Enemies Burn for #% of your maximum Energy Shield per second as Fire Damage">
+      <ValueForLevel From="1" To="30">50.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="You Burn for #% of your maximum Energy Shield per second as Fire Damage">
+      <ValueForLevel From="1" To="30">70.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Riposte">
@@ -10317,6 +10981,12 @@
     <Attribute Name="#% increased totem life">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Can have up to # additional Totem summoned at a time">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Shield Charge">
     <Attribute Name="#% increased Movement Speed">
@@ -10383,8 +11053,17 @@
       <Value Level="29">536</Value>
       <Value Level="30">548</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Stun Duration on enemies at Maximum charge distance">
+      <ValueForLevel From="1" To="30">200</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Deals #% of Base Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Shock Nova">
@@ -10444,6 +11123,12 @@
     </Attribute>
     <Attribute Name="#% increased Shock Duration on enemies">
       <ValuePerQuality>2</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Ring deals #% less Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% chance to Shock enemies">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Shockwave Totem">
@@ -10508,6 +11193,12 @@
     <Attribute Name="#% increased totem life">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% chance to Knock Enemies Back on hit">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Shrapnel Shot">
     <Attribute Name="Mana Cost: #">
@@ -10553,6 +11244,9 @@
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Lightning Damage">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Siege Ballista">
@@ -10600,6 +11294,12 @@
     </Attribute>
     <Attribute Name="#% increased Totem Placement speed">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% less Attack Speed">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Slower Projectiles Support">
@@ -10704,6 +11404,12 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Mine lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Movement Speed">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Spark">
     <Attribute Name="Mana Cost: #">
@@ -10769,6 +11475,9 @@
     </Attribute>
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>2</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">1.5</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Spectral Throw">
@@ -10850,6 +11559,9 @@
     <Attribute Name="#% increased Spell Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% less Damage">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Spell Totem Support">
     <Attribute Name="#% less Damage">
@@ -10886,6 +11598,12 @@
     </Attribute>
     <Attribute Name="#% increased Totem Placement speed">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Totem lasts # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Spells Cast by Totem have #% less Cast Speed">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Spirit Offering">
@@ -11016,6 +11734,12 @@
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">3.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Additional # seconds Base Duration per extra Corpse consumed">
+      <ValueForLevel From="1" To="30">0.5</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Split Arrow">
     <Attribute Name="Mana Cost: #">
@@ -11103,8 +11827,20 @@
       <Value Level="29">149.2</Value>
       <Value Level="30">150.6</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Lightning Damage">
+      <ValueForLevel From="1" To="30">60</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">0.75</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Explosion deals #% less Damage">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Storm Call">
@@ -11164,8 +11900,11 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">1.5</ValueForLevel>
+    </Attribute>
   </Gem>
-  <Gem Name="Stun">
+  <Gem Name="Stun Support">
     <Attribute Name="#% reduced Enemy Stun Threshold">
       <Value Level="1">30</Value>
       <Value Level="2">31</Value>
@@ -11283,6 +12022,9 @@
     <Attribute Name="#% increased Minion Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Can raise up to # Golem at a time">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Summon Flame Golem">
     <Attribute Name="Mana Cost: #">
@@ -11369,6 +12111,9 @@
     </Attribute>
     <Attribute Name="#% increased Minion Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Can raise up to # Golem at a time">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Summon Ice Golem">
@@ -11483,6 +12228,9 @@
     <Attribute Name="#% increased Minion Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Can raise up to # Golem at a time">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Summon Lightning Golem">
     <Attribute Name="Mana Cost: #">
@@ -11553,6 +12301,9 @@
     <Attribute Name="#% increased Minion Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Can raise up to # Golem at a time">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Summon Raging Spirit">
     <Attribute Name="Mana Cost: #">
@@ -11571,6 +12322,12 @@
     </Attribute>
     <Attribute Name="#% increased Minion Movement Speed">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">5.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Can summon up to # Raging Spirits at a time">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Summon Skeletons">
@@ -11610,6 +12367,12 @@
     </Attribute>
     <Attribute Name="Minions deal #% increased Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Summons # Skeleton Warriors">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">20.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Summon Stone Golem">
@@ -11720,6 +12483,9 @@
     <Attribute Name="#% increased Minion Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Can raise up to # Golem at a time">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Sunder">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -11754,8 +12520,17 @@
       <Value Level="29">128</Value>
       <Value Level="30">129</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Shockwaves deal #% less Damage">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% less Attack Speed">
+      <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Sweep">
@@ -11808,8 +12583,14 @@
       <ValueForLevel From="27" To="28">43</ValueForLevel>
       <ValueForLevel From="29" To="30">44</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% less Attack Speed">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Tempest Shield">
@@ -11856,6 +12637,15 @@
     </Attribute>
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Additional #% Shield Block Chance">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Chain +# Times">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">12.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Temporal Chains">
@@ -11946,6 +12736,12 @@
     <Attribute Name="Cursed enemies are #% slower">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Other effects on Cursed enemies expire #% slower">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% reduced Effect of Curse against Players">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Tornado Shot">
     <Attribute Name="Mana Cost: #">
@@ -11990,6 +12786,9 @@
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="# secondary Tornado Shot Projectiles">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Trap and Mine Damage Support">
     <Attribute Name="#% more Trap and Mine Damage">
@@ -12026,6 +12825,12 @@
     </Attribute>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% reduced Trap Throwing Speed">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% reduced Mine Laying Speed">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Trap Cooldown Support">
@@ -12101,6 +12906,9 @@
     <Attribute Name="#% increased Trap Throwing Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Trap lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Arc">
     <Attribute Name="Deals #-# Lightning Damage">
@@ -12137,6 +12945,12 @@
     </Attribute>
     <Attribute Name="#% increased Shock Duration on enemies">
       <ValuePerQuality>1.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance to Shock enemies">
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Chain +# Times">
+      <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Burning Arrow">
@@ -12206,6 +13020,12 @@
     </Attribute>
     <Attribute Name="#% increased Ignite Duration on enemies">
       <ValuePerQuality>3</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance to Ignite enemies">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Fire Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Clarity">
@@ -12313,6 +13133,9 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">10.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Cyclone">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -12350,6 +13173,15 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% more Attack Speed">
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">5.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Detonate Dead">
     <Attribute Name="Deals #-# Fire Damage">
@@ -12386,6 +13218,9 @@
     </Attribute>
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Explosion deals base Fire Damage equal to #% of the corpse's maximum Life">
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Discipline">
@@ -12455,6 +13290,9 @@
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">3.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Double Strike">
@@ -12562,6 +13400,9 @@
     <Attribute Name="#% chance to Ignite enemies">
       <ValuePerQuality>1.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Flameblast">
     <Attribute Name="Deals #-# Fire Damage">
@@ -12598,6 +13439,9 @@
     </Attribute>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% more Spell Damage for each stage">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Glacial Hammer">
@@ -12642,6 +13486,12 @@
     </Attribute>
     <Attribute Name="#% increased Freeze Duration on enemies">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Cold Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Chill Duration on enemies">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Grace">
@@ -12716,6 +13566,9 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">6.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Ground Slam">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -12752,6 +13605,12 @@
     </Attribute>
     <Attribute Name="#% increased Stun Duration on enemies">
       <ValuePerQuality>1.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Knockback Distance">
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Area of Effect radius">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Haste">
@@ -12828,6 +13687,9 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">6.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Ice Nova">
     <Attribute Name="Deals #-# Cold Damage">
@@ -12865,6 +13727,12 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Causes smaller novas up to # times on enemies hit">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% reduced Area of Effect Radius each repeat">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Immortal Call">
     <Attribute Name="#% increased Buff Duration Per Endurance Charge">
@@ -12901,6 +13769,9 @@
     </Attribute>
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>2</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">0.4</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Lightning Strike">
@@ -12971,6 +13842,12 @@
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Lightning Damage">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% less Damage on beams">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Lightning Trap">
     <Attribute Name="Deals #-# Lightning Damage">
@@ -13007,6 +13884,18 @@
     </Attribute>
     <Attribute Name="#% increased Trap Throwing Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Trap lasts # seconds">
+      <ValueForLevel From="1" To="30">16.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="# additional Projectiles">
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">4.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% chance of Projectiles Piercing">
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Lightning Warp">
@@ -13116,6 +14005,9 @@
     </Attribute>
     <Attribute Name="#% chance to Ignite enemies">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">10.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Power Siphon">
@@ -13260,6 +14152,12 @@
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% more Area of Effect radius for each stage">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% more Attack Speed">
+      <ValueForLevel From="1" To="30">150</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Righteous Fire">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -13334,6 +14232,9 @@
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">2.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vaal Spectral Throw">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -13407,6 +14308,9 @@
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">3.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Summon Skeletons">
@@ -13490,6 +14394,12 @@
     <Attribute Name="Minions deal #% increased Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Summons # Skeleton General">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">20.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vengeance">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -13527,6 +14437,9 @@
     <Attribute Name="#% chance to Counterattack with this Skill when Hit">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% chance to Counterattack with this Skill when Hit">
+      <ValueForLevel From="1" To="30">30</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vigilant Strike">
     <Attribute Name="Deals #% of Base Attack Damage">
@@ -13561,8 +14474,17 @@
       <Value Level="29">221</Value>
       <Value Level="30">223</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Fortify duration">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance to Fortify on Melee hit">
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Fortify duration">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Viper Strike">
@@ -13598,8 +14520,17 @@
       <Value Level="29">174.8</Value>
       <Value Level="30">176.4</Value>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Chaos Damage">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">8.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vitality">
@@ -13707,6 +14638,9 @@
     <Attribute Name="#% increased Chaos Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="#% reduced Elemental Damage">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Vortex">
     <Attribute Name="Deals (# to&amp;##;?)&amp;##;(# to&amp;##;?) Cold Damage">
@@ -13803,6 +14737,9 @@
     </Attribute>
     <Attribute Name="Cursed enemies take #% increased Physical damage">
       <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Cursed enemies take #% increased damage from Damage Over Time effects">
+      <ValueForLevel From="1" To="30">33</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Warlord's Mark">
@@ -13918,8 +14855,46 @@
     <Attribute Name="Cursed enemies have a #% chance to grant an Endurance Charge when slain">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Cursed enemies grant #% Life Leech when Hit">
+      <ValueForLevel From="1" To="30">2.0</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Cursed enemies grant #% Mana Leech when Hit">
+      <ValueForLevel From="1" To="30">2.0</ValueForLevel>
+    </Attribute>
   </Gem>
   <Gem Name="Weapon Elemental Damage Support">
+    <Attribute Name="#% more Weapon Elemental Damage">
+      <Value Level="1">40</Value>
+      <Value Level="2">41</Value>
+      <Value Level="3">42</Value>
+      <Value Level="4">43</Value>
+      <Value Level="5">44</Value>
+      <Value Level="6">45</Value>
+      <Value Level="7">46</Value>
+      <Value Level="8">47</Value>
+      <Value Level="9">48</Value>
+      <Value Level="10">49</Value>
+      <Value Level="11">50</Value>
+      <Value Level="12">51</Value>
+      <Value Level="13">52</Value>
+      <Value Level="14">53</Value>
+      <Value Level="15">54</Value>
+      <Value Level="16">55</Value>
+      <Value Level="17">56</Value>
+      <Value Level="18">57</Value>
+      <Value Level="19">58</Value>
+      <Value Level="20">59</Value>
+      <Value Level="21">60</Value>
+      <Value Level="22">61</Value>
+      <Value Level="23">62</Value>
+      <Value Level="24">63</Value>
+      <Value Level="25">64</Value>
+      <Value Level="26">65</Value>
+      <Value Level="27">66</Value>
+      <Value Level="28">67</Value>
+      <Value Level="29">68</Value>
+      <Value Level="30">69</Value>
+    </Attribute>
     <Attribute Name="#% increased Elemental Damage with Weapons">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -13956,6 +14931,9 @@
       <Value Level="28">107</Value>
       <Value Level="29">108</Value>
       <Value Level="30">109</Value>
+    </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -14001,8 +14979,17 @@
       <ValueForLevel From="19" To="24">7</ValueForLevel>
       <ValueForLevel From="25" To="30">8</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">6</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Elemental Damage">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Fire, Cold or Lightning Damage">
+      <ValueForLevel From="1" To="30">60</ValueForLevel>
+    </Attribute>
+    <Attribute Name="# additional Projectiles">
+      <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Wither">
@@ -14035,6 +15022,15 @@
     </Attribute>
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% increased Chaos Damage taken">
+      <ValueForLevel From="1" To="30">7</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base duration is # seconds">
+      <ValueForLevel From="1" To="30">0.5</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base secondary duration is # seconds">
+      <ValueForLevel From="1" To="30">2.0</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Wrath">

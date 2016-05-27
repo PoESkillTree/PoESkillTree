@@ -525,7 +525,6 @@
     <None Include="app.config" />
     <None Include="build-locale.bat" />
     <None Include="dist-clean.bat" />
-    <None Include="dist-update.bat" />
     <None Include="dist-release.bat" />
     <None Include="Locale\en-US\Help.md" />
     <None Include="Locale\sk\Help.md" />
