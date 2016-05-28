@@ -6,7 +6,7 @@
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:md="clr-namespace:Markdown.Xaml"
     x:Name="Window"
-    WindowStartupLocation="CenterOwner" Width="500" Height="600"
+    WindowStartupLocation="CenterOwner" Width="560" Height="700"
     ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
     Icon="/POESKillTree;component/logo.ico">
     <controls:MetroWindow.Title>
@@ -42,13 +42,13 @@
                      Heading3Style="{StaticResource Heading3Style}"/>
         <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter" Markdown="{StaticResource Markdown}"/>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="550"/>
+            <RowDefinition Height="650"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <FlowDocumentScrollViewer Grid.Row="0" Width="500" Height="550" Document="{Binding Document, ElementName=Window, Converter={StaticResource TextToFlowDocumentConverter}}"/>
-        <Button Grid.Row="1" x:Name="btnPopupClose" Click="btnPopupClose_Click" Height="20" Width="200" Margin="0,20,0,0">
+        <FlowDocumentScrollViewer Grid.Row="0" Width="550" Height="650" Zoom="80" Document="{Binding Document, ElementName=Window, Converter={StaticResource TextToFlowDocumentConverter}}"/>
+        <Button Grid.Row="1" x:Name="btnPopupClose" Click="btnPopupClose_Click" Height="20" Width="200" Margin="0,15,0,0">
             <l:Catalog Message="Close"/>
         </Button>
     </Grid>
