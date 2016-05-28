@@ -380,8 +380,9 @@ namespace POESKillTree.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ItemDB.Load("Data/Equipment/GemList.xml");
-            ItemDB.Merge("ItemsLocal.xml");
+            // GemProperties has to be loaded first as it contains the things that are not merged.
+            ItemDB.Load("Data/Equipment/GemProperties.xml");
+            ItemDB.Merge("Data/Equipment/GemList.xml");
             ItemDB.Index();
 
             var cmHighlight = new MenuItem
