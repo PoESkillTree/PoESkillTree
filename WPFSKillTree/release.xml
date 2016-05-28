@@ -4,7 +4,7 @@
     <Import Project="$(MSBuildProjectDirectory)\Tools\MSBuild.ExtensionPack.tasks" />
 
     <!-- Takes LocaleLanguageDir items and outputs same items with "Locale" metadata set to correct PO locale -->
-    <UsingTask TaskName="PupulateLocale" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <UsingTask TaskName="PupulateLocale" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsTasksPath)">
         <ParameterGroup>
             <Dirs ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
             <Locales ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
@@ -38,7 +38,7 @@
         </Task>
     </UsingTask>
 
-    <UsingTask TaskName="AssemblyInvokeStatic" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <UsingTask TaskName="AssemblyInvokeStatic" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsTasksPath)">
         <ParameterGroup>
             <AssemblyFile ParameterType="System.String" Required="true" />
             <ClassFullName ParameterType="System.String" Required="true" />
@@ -82,6 +82,13 @@
         <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
         <ZipTool>Tools\7z.exe a -tzip</ZipTool>
         <ISCCTool>Tools\isetup\ISCC.exe</ISCCTool>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <MSBuildToolsTasksPathOld>$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll</MSBuildToolsTasksPathOld>
+        <MSBuildToolsTasksPathNew>$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll</MSBuildToolsTasksPathNew>
+        <MSBuildToolsTasksPath Condition="Exists('$(MSBuildToolsTasksPathOld)')">$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll</MSBuildToolsTasksPath>
+        <MSBuildToolsTasksPath Condition="Exists('$(MSBuildToolsTasksPathNew)')">$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll</MSBuildToolsTasksPath>
     </PropertyGroup>
 
     <PropertyGroup>

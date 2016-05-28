@@ -5,6 +5,10 @@ using log4net;
 
 namespace UpdateDB.DataLoading
 {
+    /// <summary>
+    /// Base class for classes that loads multiple data instances of type
+    /// <typeparamref name="T"/>.
+    /// </summary>
     public abstract class MultiDataLoader<T> : DataLoader
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(MultiDataLoader<T>));
@@ -16,7 +20,14 @@ namespace UpdateDB.DataLoading
             get { return true; }
         }
 
-        protected void Save(string fileName, T data)
+        /// <summary>
+        /// Start a task that saves the data instance <paramref name="data"/> to <see cref="fileName"/>.
+        /// This must be called in <see cref="DataLoader.LoadAsync"/> to save the loaded data.
+        /// <para>
+        /// The task calls <see cref="SaveDataToStreamAsync"/>.
+        /// </para>
+        /// </summary>
+        protected void AddSaveTask(string fileName, T data)
         {
             _saveTasks.Add(SaveAsync(fileName, data));
         }
@@ -42,6 +53,11 @@ namespace UpdateDB.DataLoading
             await Task.WhenAll(_saveTasks);
         }
 
+        /// <summary>
+        /// Saves the data instance <paramref name="data"/> to the given stream asynchronously.
+        /// </summary>
+        /// <returns>A task that completes once <paramref name="data"/> is fully written onto
+        /// <paramref name="stream"/></returns>
         protected abstract Task SaveDataToStreamAsync(T data, Stream stream);
     }
 }

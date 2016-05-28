@@ -88,7 +88,7 @@ namespace UpdateDB.DataLoading
             };
         }
 
-        private IEnumerable<XmlItemBase> ParseTable(HtmlNode table, ItemType itemType)
+        private static IEnumerable<XmlItemBase> ParseTable(HtmlNode table, ItemType itemType)
         {
             var isFirstRow = true;
             var nameColumn = -1;
@@ -118,21 +118,20 @@ namespace UpdateDB.DataLoading
                             if (!IgnoredColumns.Contains(cell.InnerHtml))
                                 propertyColumns[i] = cell.InnerHtml;
                         }
-                        else if (cell.FirstChild.GetAttributeValue("title", "") == "Required Level")
+                        else switch (cell.FirstChild.GetAttributeValue("title", ""))
                         {
-                            lvlColumn = i;
-                        }
-                        else if (cell.FirstChild.GetAttributeValue("title", "") == "Required Strength")
-                        {
-                            strColumn = i;
-                        }
-                        else if (cell.FirstChild.GetAttributeValue("title", "") == "Required Dexterity")
-                        {
-                            dexColumn = i;
-                        }
-                        else if (cell.FirstChild.GetAttributeValue("title", "") == "Required Intelligence")
-                        {
-                            intColumn = i;
+                            case "Required Level":
+                                lvlColumn = i;
+                                break;
+                            case "Required Strength":
+                                strColumn = i;
+                                break;
+                            case "Required Dexterity":
+                                dexColumn = i;
+                                break;
+                            case "Required Intelligence":
+                                intColumn = i;
+                                break;
                         }
                         i++;
                     }
@@ -170,7 +169,7 @@ namespace UpdateDB.DataLoading
             }
         }
 
-        private IEnumerable<XmlStat> ParseImplicit(HtmlNode implicitCell)
+        private static IEnumerable<XmlStat> ParseImplicit(HtmlNode implicitCell)
         {
             if (IsNotApplicableCell(implicitCell)) yield break;
 
@@ -213,7 +212,7 @@ namespace UpdateDB.DataLoading
             }
         }
 
-        private IEnumerable<XmlStat> ParseProperties(HtmlNode row, IReadOnlyDictionary<int, string> propertyColumns, float implicitMultiplier)
+        private static IEnumerable<XmlStat> ParseProperties(HtmlNode row, IReadOnlyDictionary<int, string> propertyColumns, float implicitMultiplier)
         {
             foreach (var propertyColumn in propertyColumns)
             {

@@ -13,6 +13,9 @@ using UpdateDB.DataLoading.Gems;
 
 namespace UpdateDB
 {
+    /// <summary>
+    /// Runs <see cref="DataLoader"/> instances as specified via <see cref="IArguments"/>.
+    /// </summary>
     public class DataLoaderExecutor : IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(Program));
@@ -32,6 +35,11 @@ namespace UpdateDB
 
         private readonly HttpClient _httpClient = new HttpClient();
 
+        /// <summary>
+        /// Creates an instance and sets it up using <paramref name="arguments"/>.
+        /// </summary>
+        /// <param name="arguments">The arguments that define how this instance behaves. Only
+        /// <see cref="IArguments.OutputDirectory"/> is consumed in the constructor.</param>
         public DataLoaderExecutor(IArguments arguments)
         {
             _arguments = arguments;
@@ -50,26 +58,33 @@ namespace UpdateDB
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            AppData.SetApplicationData(_savePath); // necessary for SkillTreeLoader
+            // necessary for SkillTreeLoader
+            AppData.SetApplicationData(_savePath);
             _savePath = Path.Combine(_savePath, "Data");
 
             // The Affix file is big enough to be starved by other requests sometimes.
             _httpClient.Timeout = TimeSpan.FromSeconds(120);
         }
 
-        public bool IsLoaderFlagRecognized(string flag)
+        /// <summary>
+        /// Returns true iff the given flag identifies a DataLoader (case-insensitive).
+        /// </summary>
+        public static bool IsLoaderFlagRecognized(string flag)
         {
             return LoaderDefinitions.Any(l => l.Flag.Equals(flag, StringComparison.InvariantCultureIgnoreCase));
         }
 
+        /// <summary>
+        /// Runs all DataLoader instances asynchronously.
+        /// </summary>
+        /// <returns>A task that completes once all DataLoaders completed.</returns>
         public async Task LoadAllAsync()
         {
-            Log.Debug("Test");
             Log.Info("Starting loading ...");
             Directory.CreateDirectory(_savePath);
             var explicitlyActivated = _arguments.LoaderFlags.ToList();
             var tasks = from loader in LoaderDefinitions
-                        where loader.Categories.HasFlag(_arguments.ActivatedLoader)
+                        where loader.Category.HasFlag(_arguments.ActivatedLoaders)
                             || explicitlyActivated.Contains(loader.Flag)
                         select LoadAsync(loader.Name, loader.File, loader.DataLoader);
             await Task.WhenAll(tasks);
@@ -147,18 +162,21 @@ namespace UpdateDB
         }
 
 
+        /// <summary>
+        /// Collection of <see cref="LoaderDefinition"/>s that supports easy initialization.
+        /// </summary>
         private class LoaderCollection : IEnumerable<LoaderDefinition>
         {
             private readonly List<LoaderDefinition> _loaderDefinitions = new List<LoaderDefinition>();
 
-            public void Add(string name, string file, IDataLoader dataLoader, LoaderCategories categories, string flag)
+            public void Add(string name, string file, IDataLoader dataLoader, LoaderCategories category, string flag)
             {
                 _loaderDefinitions.Add(new LoaderDefinition
                 {
                     Name = name,
                     File = file,
                     DataLoader = dataLoader,
-                    Categories = categories,
+                    Category = category,
                     Flag = flag
                 });
             }
@@ -175,12 +193,30 @@ namespace UpdateDB
         }
 
 
+        /// <summary>
+        /// Defines a DataLoader.
+        /// </summary>
         private class LoaderDefinition
         {
+            /// <summary>
+            /// The name that is used for console output.
+            /// </summary>
             public string Name { get; set; }
+            /// <summary>
+            /// The file/folder to which the loader saves its output.
+            /// </summary>
             public string File { get; set; }
+            /// <summary>
+            /// The actual DataLoader instance.
+            /// </summary>
             public IDataLoader DataLoader { get; set; }
-            public LoaderCategories Categories { get; set; }
+            /// <summary>
+            /// The category to which this loader belongs.
+            /// </summary>
+            public LoaderCategories Category { get; set; }
+            /// <summary>
+            /// A flag that identifies this loader.
+            /// </summary>
             public string Flag { get; set; }
         }
     }

@@ -14,6 +14,9 @@ using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
+    /// <summary>
+    /// Loads the images of all base items from the unofficial Wiki at Gamepedia.
+    /// </summary>
     public class ItemImageLoader : MultiDataLoader<Task<byte[]>>
     {
         private static readonly IEnumerable<string> JewelUrls = ItemGroup.Jewel.Types()
@@ -64,7 +67,7 @@ namespace UpdateDB.DataLoading
         private void SaveImage(string fileName, string url)
         {
             if (_overwriteExisting || !File.Exists(Path.Combine(SavePath, fileName)))
-                Save(fileName, _httpClient.GetByteArrayAsync(url));
+                AddSaveTask(fileName, _httpClient.GetByteArrayAsync(url));
         }
 
         protected override async Task SaveDataToStreamAsync(Task<byte[]> data, Stream stream)

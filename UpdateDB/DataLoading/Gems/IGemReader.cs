@@ -2,10 +2,14 @@
 
 namespace UpdateDB.DataLoading.Gems
 {
-    // The base class of gem data reader.
+    /// <summary>
+    /// Interface for classes that extract gems from web sources.
+    /// </summary>
     public interface IGemReader
     {
-        // Returns gem data.
+        /// <summary>
+        /// Extracts and returns the gem with the given name.
+        /// </summary>
         Gem FetchGem(string name);
     }
 }

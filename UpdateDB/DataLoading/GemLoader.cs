@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using POESKillTree.Model.Items.Enums;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
@@ -12,6 +11,10 @@ using UpdateDB.DataLoading.Gems;
 namespace UpdateDB.DataLoading
 {
     // todo ItemDB and GamepediaReader do not really allow async gem loading
+    /// <summary>
+    /// Loads the available Gems from the unofficial Wiki at Gamepedia and loads and saves information about each
+    /// gem using a <see cref="IGemReader"/>.
+    /// </summary>
     public class GemLoader : DataLoader
     {
         private readonly IGemReader _gemReader;
@@ -35,7 +38,7 @@ namespace UpdateDB.DataLoading
                 .ForEach(ItemDB.Add);
         }
 
-        private IEnumerable<ItemDB.Gem> ParseGemTable(HtmlNode table, ItemType itemType)
+        private IEnumerable<ItemDB.Gem> ParseGemTable(HtmlNode table)
         {
             return from row in table.Elements("tr").Skip(1)
                    select row.ChildNodes[0] into cell

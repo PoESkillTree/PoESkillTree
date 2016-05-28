@@ -8,6 +8,9 @@ namespace UpdateDB.DataLoading
 {
     // todo skill tree data loading is too wired into the SkillTree class to be configurable here
     // (it should be properly async, use the provided httpClient and not instantiate an actual SkillTree instance)
+    /// <summary>
+    /// Loads the skill tree assets using <see cref="SkillTree"/>.
+    /// </summary>
     public class SkillTreeLoader : DataLoader
     {
         public override bool SavePathIsFolder
