@@ -6,9 +6,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     xmlns:viewModels="clr-namespace:POESKillTree.ViewModels"
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+    xmlns:model="clr-namespace:POESKillTree.Model"
+    xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
     d:DataContext="{d:DesignInstance viewModels:SettingsMenuViewModel}"
     MaxContentWidth="500">
     <ContentControl.Resources>
+        <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
         <ObjectDataProvider ObjectInstance="{x:Type Brushes}"
                             MethodName="GetProperties"
                             x:Key="Brushes" />
@@ -50,9 +53,13 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        
+
         <Label Style="{StaticResource SectionLabel}"
                Grid.Row="0" Grid.Column="0">
             <Label.Content>
@@ -134,6 +141,40 @@
         </Label>
         <CheckBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Center"
                   IsChecked="{Binding Options.DownloadMissingItemImages}" />
+
+
+        <Label Style="{StaticResource SectionLabel}"
+               Grid.Row="9" Grid.Column="0">
+            <Label.Content>
+                <l:Catalog Message="Reset button preferences:" />
+            </Label.Content>
+        </Label>
+
+        <Label Style="{StaticResource SettingLabel}"
+               Grid.Row="10" Grid.Column="0">
+            <Label.Content>
+                <l:Catalog Message="Reset main skill tree" />
+            </Label.Content>
+        </Label>
+        <CheckBox Grid.Row="10" Grid.Column="1" VerticalAlignment="Center"
+                  IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.MainTree}}" />
+
+        <Label Style="{StaticResource SettingLabel}"
+               Grid.Row="11" Grid.Column="0">
+            <Label.Content>
+                <l:Catalog Message="Reset ascendancy skill tree" />
+            </Label.Content>
+        </Label>
+        <CheckBox Grid.Row="11" Grid.Column="1" VerticalAlignment="Center"
+                  IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.AscendancyTree}}" />
+
+        <Label Style="{StaticResource SettingLabel}"
+               Grid.Row="12" Grid.Column="0">
+            <Label.Content>
+                <l:Catalog Message="Reset selected bandits" />
+            </Label.Content>
+        </Label>
+        <CheckBox Grid.Row="12" Grid.Column="1" VerticalAlignment="Center"
+                  IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.Bandits}}" />
     </Grid>
 </dialogs:CloseableBaseDialog>
-

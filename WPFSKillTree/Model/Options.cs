@@ -16,6 +16,7 @@ namespace POESKillTree.Model
         string NodeAttrHighlightColor { get; set; }
         bool ShowAllAscendancyClasses { get; set; }
         bool DownloadMissingItemImages { get; set; }
+        ResetPreferences ResetPreferences { get; set; }
     }
 
     public class Options : Notifier, IOptions
@@ -100,15 +101,18 @@ namespace POESKillTree.Model
             set { SetProperty(ref _downloadMissingItemImages, value); }
         }
 
+        private ResetPreferences _resetPreferences = ResetPreferences.MainTree | ResetPreferences.AscendancyTree;
+        public ResetPreferences ResetPreferences
+        {
+            get { return _resetPreferences; }
+            set { SetProperty(ref _resetPreferences, value); }
+        }
+
         public Options()
         {
             // Don't set Language property! When not set, L10n.Initialize will try to use OS settings.
             Theme = "Dark";
             Accent = "Steel";
-            NodeSearchHighlightColor = "Red";
-            NodeAttrHighlightColor = "LawnGreen";
-            NodeHoverHighlightColor = "DodgerBlue";
-            ShowAllAscendancyClasses = true;
         }
     }
 }

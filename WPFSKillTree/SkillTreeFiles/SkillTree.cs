@@ -11,7 +11,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using MahApps.Metro.Controls;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model;
 using POESKillTree.TreeGenerator.ViewModels;
@@ -1199,10 +1198,24 @@ namespace POESKillTree.SkillTreeFiles
 
         public void Reset()
         {
-            SkilledNodes.Clear();
-            KeyValuePair<ushort, SkillNode> node = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
-            AscType = 0;
-            SkilledNodes.Add(node.Value.Id);
+            var prefs = _persistentData.Options.ResetPreferences;
+            var ascNodes = SkilledNodes.Where(n => Skillnodes[n].ascendancyName != null).ToList();
+            if (prefs.HasFlag(ResetPreferences.MainTree))
+            {
+                SkilledNodes.Clear();
+                if (!prefs.HasFlag(ResetPreferences.AscendancyTree))
+                    SkilledNodes.UnionWith(ascNodes);
+                var rootNode = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
+                AscType = 0;
+                SkilledNodes.Add(rootNode.Value.Id);
+            }
+            else if (prefs.HasFlag(ResetPreferences.AscendancyTree))
+            {
+                SkilledNodes.ExceptWith(ascNodes);
+                AscType = 0;
+            }
+            if (prefs.HasFlag(ResetPreferences.Bandits))
+                BanditSettings.Reset();
             UpdateAscendancyClasses = true;
         }
 
