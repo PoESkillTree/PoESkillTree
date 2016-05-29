@@ -29,6 +29,8 @@ namespace UpdateDB
     /// </remarks>
     public static class Program
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Program));
+
         // Main entry point.
         public static int Main(string[] arguments)
         {
@@ -38,6 +40,7 @@ namespace UpdateDB
                 ActivatedLoaders = LoaderCategories.Any,
                 LoaderFlags = new List<string>()
             };
+            var loaderArguments = new List<string>();
 
             // Get options.
             var unrecognizedSwitches = new List<string>();
@@ -45,6 +48,12 @@ namespace UpdateDB
             {
                 if (!arg.StartsWith("/"))
                     continue;
+
+                if (arg.Contains("."))
+                {
+                    loaderArguments.Add(arg.Substring(1));
+                    continue;
+                }
 
                 switch (arg.ToLowerInvariant())
                 {
@@ -59,7 +68,12 @@ namespace UpdateDB
                         Console.WriteLine("/Quiet                    Do not display any output.");
                         Console.WriteLine("/Verbose                  Enable verbose output.");
                         Console.WriteLine("/Affixes, /Items, /Images, /TreeAssets, /Gems");
-                        Console.WriteLine("If at least one is specified, only the specified files are downloaded.");
+                        Console.WriteLine("If at least one is specified, only the specified files are downloaded.\r\n");
+
+                        Console.WriteLine("Options for gem loader (only one can be specified):\r\n");
+                        Console.WriteLine("/Gems.Single:gemName      Update the given gem in the current gem file.");
+                        Console.WriteLine("/Gems.Update              Merge changed gems into the gem file instead of overwriting it.");
+                        Console.WriteLine("/Gems.Merge:filePath      Only merge the given file into the current gem file. The file name is relatvie to the execution path.");
                         return 1;
 
                     case "/versioncontrolledonly":
@@ -97,10 +111,12 @@ namespace UpdateDB
                 }
             }
 
-            var nonFlags = unrecognizedSwitches.Where(s => !DataLoaderExecutor.IsLoaderFlagRecognized(s)).ToList();
+            var exec = new DataLoaderExecutor(args);
+
+            var nonFlags = unrecognizedSwitches.Where(s => !exec.IsLoaderFlagRecognized(s)).ToList();
             if (nonFlags.Any())
             {
-                Console.WriteLine("Invalid switches - \"" + string.Join("\", \"", nonFlags) + "\"");
+                Log.Error("Invalid switches - \"" + string.Join("\", \"", nonFlags) + "\"");
                 return 1;
             }
             if (unrecognizedSwitches.Any())
@@ -109,10 +125,21 @@ namespace UpdateDB
                 args.LoaderFlags = unrecognizedSwitches;
             }
 
+            foreach (var loaderArgument in loaderArguments)
+            {
+                var split = loaderArgument.Split(new[] {'.', ':'}, 3);
+                if (split.Length < 2 || !exec.IsArgumentSupported(split[0], split[1]))
+                {
+                    Log.Error("Invalid argument - \"" + loaderArgument + "\"");
+                    return 1;
+                }
+                if (split.Length == 2)
+                    exec.AddArgument(split[0], split[1]);
+                else
+                    exec.AddArgument(split[0], split[1], split[2]);
+            }
 
-            var exec = new DataLoaderExecutor(args);
             exec.LoadAllAsync().Wait();
-
             return 0;
         }
 

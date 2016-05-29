@@ -1400,11 +1400,14 @@ namespace POESKillTree.SkillTreeFiles
         // Loads items from XML file.
         public static void Load(string file, bool index = false)
         {
-            string filePath = AppData.GetFolder(true) + file;
-            if (!File.Exists(filePath))
-                File.Create(filePath);
+            LoadFromCompletePath(AppData.GetFolder(true) + file, index);
+        }
+        public static void LoadFromCompletePath(string file, bool index = false)
+        {
+            if (!File.Exists(file))
+                File.Create(file);
             var serializer = new XmlSerializer(typeof(ItemDB));
-            var reader = new StreamReader(filePath);
+            var reader = new StreamReader(file);
             DB = (ItemDB)serializer.Deserialize(reader);
             reader.Close();
 
@@ -1414,12 +1417,14 @@ namespace POESKillTree.SkillTreeFiles
         // Merges items from XML file.
         public static void Merge(string file)
         {
-            string filePath = AppData.GetFolder(true) + file;
-
-            if (File.Exists(filePath))
+            MergeFromCompletePath(AppData.GetFolder(true) + file);
+        }
+        public static void MergeFromCompletePath(string file)
+        {
+            if (File.Exists(file))
             {
                 var serializer = new XmlSerializer(typeof(ItemDB));
-                var reader = new StreamReader(filePath);
+                var reader = new StreamReader(file);
                 ItemDB merge = (ItemDB)serializer.Deserialize(reader);
                 reader.Close();
 

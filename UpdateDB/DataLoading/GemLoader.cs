@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using log4net;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
@@ -17,6 +19,8 @@ namespace UpdateDB.DataLoading
     /// </summary>
     public class GemLoader : DataLoader
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(GemLoader));
+
         private readonly IGemReader _gemReader;
 
         public override bool SavePathIsFolder
@@ -24,12 +28,81 @@ namespace UpdateDB.DataLoading
             get { return false; }
         }
 
+        public override IEnumerable<string> SupportedArguments
+        {
+            get { return new []{ "single", "update", "merge" }; }
+        }
+
         public GemLoader(IGemReader gemReader)
         {
             _gemReader = gemReader;
         }
 
-        protected override async Task LoadAsync(HttpClient httpClient)
+        protected override Task LoadAsync(HttpClient httpClient)
+        {
+            string singleGemName;
+            if (SuppliedArguments.TryGetValue("single", out singleGemName) && singleGemName != null)
+            {
+                return Task.Run(() => UpdateSingle(singleGemName));
+            }
+            string mergePath;
+            if (SuppliedArguments.TryGetValue("merge", out mergePath) && mergePath != null)
+            {
+                return Task.Run(() => Merge(mergePath));
+            }
+            if (SuppliedArguments.ContainsKey("update"))
+            {
+                return Task.Run(() => Update());
+            }
+            return Overwrite(httpClient);
+        }
+
+        private void UpdateSingle(string singleGemName)
+        {
+            var fetched = _gemReader.FetchGem(singleGemName);
+            if (fetched == null)
+                return;
+            if (!LoadOld())
+                return;
+            var old = ItemDB.GetGem(singleGemName);
+            if (old == null)
+                ItemDB.Add(fetched);
+            else
+                old.Merge(fetched);
+        }
+
+        private void Merge(string mergePath)
+        {
+            if (!LoadOld())
+                return;
+            ItemDB.MergeFromCompletePath(mergePath);
+        }
+
+        private void Update()
+        {
+            if (!LoadOld())
+                return;
+            foreach (var gem in ItemDB.GetAllGems())
+            {
+                var fetched = _gemReader.FetchGem(gem.Name);
+                if (fetched != null)
+                    gem.Merge(fetched);
+            }
+        }
+
+        private bool LoadOld()
+        {
+            var updateSource = SavePath.Replace(".tmp", "");
+            if (!File.Exists(updateSource))
+            {
+                Log.ErrorFormat("There is no gem file that can be updated (path: {0})", updateSource);
+                return false;
+            }
+            ItemDB.LoadFromCompletePath(updateSource);
+            return true;
+        }
+
+        private async Task Overwrite(HttpClient httpClient)
         {
             var wikiUtils = new WikiUtils(httpClient);
             var gems = await wikiUtils.SelectFromGemsAsync(ParseGemTable);

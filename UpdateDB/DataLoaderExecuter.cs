@@ -18,9 +18,9 @@ namespace UpdateDB
     /// </summary>
     public class DataLoaderExecutor : IDisposable
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Program));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(DataLoaderExecutor));
 
-        private static readonly LoaderCollection LoaderDefinitions = new LoaderCollection
+        private readonly LoaderCollection _loaderDefinitions = new LoaderCollection
         {
             {"affixes", "Equipment/AffixList.xml", new AffixDataLoader(), LoaderCategories.VersionControlled, "Affixes"},
             {"base items", "Equipment/ItemList.xml", new ItemDataLoader(), LoaderCategories.VersionControlled, "Items"},
@@ -69,9 +69,41 @@ namespace UpdateDB
         /// <summary>
         /// Returns true iff the given flag identifies a DataLoader (case-insensitive).
         /// </summary>
-        public static bool IsLoaderFlagRecognized(string flag)
+        public bool IsLoaderFlagRecognized(string flag)
         {
-            return LoaderDefinitions.Any(l => l.Flag.Equals(flag, StringComparison.InvariantCultureIgnoreCase));
+            return _loaderDefinitions.Any(l => EqualsInvariantIgnoreCase(l.Flag, flag));
+        }
+
+        /// <summary>
+        /// Returns true iff the given argument is supported by the data loader identifed by
+        /// <paramref name="loaderFlag"/> (both case-insensitive).
+        /// </summary>
+        public bool IsArgumentSupported(string loaderFlag, string argumentKey)
+        {
+            var forFlag = _loaderDefinitions.FirstOrDefault(l => EqualsInvariantIgnoreCase(l.Flag, loaderFlag));
+            return forFlag != null &&
+                   forFlag.DataLoader.SupportedArguments.Any(a => EqualsInvariantIgnoreCase(a, argumentKey));
+        }
+
+        private static bool EqualsInvariantIgnoreCase(string s1, string s2)
+        {
+            return s1.Equals(s2, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Adds the given argument (consisting of a key and an optional value) to the loader
+        /// identified by <paramref name="loaderFlag"/>.
+        /// </summary>
+        /// <exception cref="ArgumentException">If either the loader is unrecognized or the argument is
+        /// unsupported.</exception>
+        public void AddArgument(string loaderFlag, string key, string value = null)
+        {
+            if (!IsLoaderFlagRecognized(loaderFlag))
+                throw new ArgumentException("Unrecognized loader flag", "loaderFlag");
+            if (!IsArgumentSupported(loaderFlag, key))
+                throw new ArgumentException("Unsupported argument for loader", key);
+            _loaderDefinitions.First(l => EqualsInvariantIgnoreCase(l.Flag, loaderFlag))
+                .DataLoader.AddArgument(key, value);
         }
 
         /// <summary>
@@ -83,7 +115,7 @@ namespace UpdateDB
             Log.Info("Starting loading ...");
             Directory.CreateDirectory(_savePath);
             var explicitlyActivated = _arguments.LoaderFlags.ToList();
-            var tasks = from loader in LoaderDefinitions
+            var tasks = from loader in _loaderDefinitions
                         where loader.Category.HasFlag(_arguments.ActivatedLoaders)
                             || explicitlyActivated.Contains(loader.Flag)
                         select LoadAsync(loader.Name, loader.File, loader.DataLoader);

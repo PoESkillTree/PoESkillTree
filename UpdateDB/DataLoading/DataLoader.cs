@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -13,6 +16,18 @@ namespace UpdateDB.DataLoading
         /// Returns true iff this class saves its data into a folder or as a file.
         /// </summary>
         bool SavePathIsFolder { get; }
+
+        /// <summary>
+        /// Returns the argument keys supported by this data loader.
+        /// </summary>
+        IEnumerable<string> SupportedArguments { get; }
+
+        /// <summary>
+        /// Adds an argument which controls this data loader's behaviour.
+        /// key and value are case-insensitive.
+        /// </summary>
+        /// <exception cref="ArgumentException">If <paramref name="key"/> is not supported.</exception>
+        void AddArgument(string key, string value = null);
 
         /// <summary>
         /// Downloads and saves data asynchronously.
@@ -36,6 +51,29 @@ namespace UpdateDB.DataLoading
         protected string SavePath { get; private set; }
 
         public abstract bool SavePathIsFolder { get; }
+
+        public virtual IEnumerable<string> SupportedArguments
+        {
+            get { return Enumerable.Empty<string>(); }
+        }
+
+        private readonly Dictionary<string, string> _suppliedArguments = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Gets a dictionary containing all arguments supplied to this data loader. The key is the name
+        /// of the argument and the value an optional value that may be null if it was not specified.
+        /// </summary>
+        protected IReadOnlyDictionary<string, string> SuppliedArguments
+        {
+            get { return _suppliedArguments; }
+        }
+
+        public void AddArgument(string key, string value = null)
+        {
+            if (!SupportedArguments.Contains(key.ToLowerInvariant()))
+                throw new ArgumentException("Key " + key + " is not supported.", "key");
+            _suppliedArguments[key.ToLowerInvariant()] = value;
+        }
 
         public async Task LoadAndSaveAsync(HttpClient httpClient, string savePath)
         {
