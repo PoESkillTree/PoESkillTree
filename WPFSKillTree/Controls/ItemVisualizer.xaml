@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:cont="clr-namespace:POESKillTree.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="control"
@@ -19,17 +18,19 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#99181895" />
                 </Trigger>
-                <DataTrigger Binding="{Binding Item, ElementName=control}" Value="{x:Null}">
+                <DataTrigger Binding="{Binding}" Value="{x:Null}">
                     <Setter Property="Background" Value="Transparent" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
     </UserControl.Style>
     <Grid>
-        <Popup AllowsTransparency="True" Name="tooltip" IsOpen="{Binding IsMouseOver,ElementName=control, Mode=OneWay}" Placement="RelativePoint" PlacementTarget="{Binding ElementName=control}" IsHitTestVisible="False" >
-            <cont:ItemTooltip Item="{Binding Item, ElementName=control}"/>
+        <Popup AllowsTransparency="True" Name="tooltip" IsOpen="{Binding IsMouseOver,ElementName=control, Mode=OneWay}"
+               Placement="RelativePoint" PlacementTarget="{Binding ElementName=control}" IsHitTestVisible="False" >
+            <!-- This is lazily filled from code behind at the first time it is shown. -->
         </Popup>
-        <Image Source="{Binding Item.Image.ImageSource.Result, ElementName=control}"
-               HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None"/>
+        <Image Source="{Binding Image.ImageSource.Result}"
+               HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None">
+        </Image>
     </Grid>
 </UserControl>

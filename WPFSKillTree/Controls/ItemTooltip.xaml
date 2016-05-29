@@ -8,7 +8,7 @@
              xmlns:enums="clr-namespace:POESKillTree.Model.Items.Enums"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Name="control" FontSize="14" FontWeight="Medium" Background="#7F000000">
+             Name="control" FontSize="14" FontWeight="Medium" Background="#AF000000">
     <Control.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
         <items1:ItemModToInlinesConverter x:Key="itemModToInlinesConverter" />
