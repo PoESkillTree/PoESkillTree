@@ -626,10 +626,10 @@
     <None Include="Data\Equipment\Itemlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Equipment\GemList.xml">
+    <None Include="Data\ItemDB\GemList.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Equipment\GemProperties.xml">
+    <None Include="Data\ItemDB\GemProperties.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Data\PseudoAttributes\Crit.xml">

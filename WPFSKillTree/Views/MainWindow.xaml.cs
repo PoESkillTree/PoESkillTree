@@ -380,9 +380,17 @@ namespace POESKillTree.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // GemProperties has to be loaded first as it contains the things that are not merged.
-            ItemDB.Load("Data/Equipment/GemProperties.xml");
-            ItemDB.Merge("Data/Equipment/GemList.xml");
+            const string itemDBPrefix = "Data/ItemDB/";
+            // First to instantiate the ItemDB.
+            ItemDB.Load(itemDBPrefix + "GemList.xml");
+            // Merge all other files from the ItemDB path.
+            Directory.GetFiles(itemDBPrefix)
+                .Select(Path.GetFileName)
+                .Where(f => f != "GemList.xml")
+                .Select(f => itemDBPrefix + f)
+                .ForEach(ItemDB.Merge);
+            // Merge the user specified things.
+            ItemDB.Merge("ItemsLocal.xml");
             ItemDB.Index();
 
             var cmHighlight = new MenuItem

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ItemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <!-- All non-support gems from http://pathofexile.gamepedia.com/Category:Attack_%28gem_tag%29
-       plus Ranged Attack Totem Support and Tempest Shield
-       Everything that is not an attribute has to be specified here. -->
+       plus Ranged Attack Totem Support and Tempest Shield -->
   <Gem Name="Ancestral Protector" RequiredWeapon="Melee" />
   <Gem Name="Ancestral Warchief" RequiredWeapon="Melee" />
   <Gem Name="Barrage" RequiredWeapon="Ranged" />
@@ -37,7 +36,7 @@
   <Gem Name="Power Siphon" RequiredWeapon="Wand" />
   <Gem Name="Puncture" RequiredWeapon="Bow Claw Dagger OneHandedSword TwoHandedSword" />
   <Gem Name="Rain of Arrows" RequiredWeapon="Bow" />
-  <Gem Name="Ranged Attack totem" RequiredWeapon="Ranged" />
+  <Gem Name="Ranged Attack Totem Support" RequiredWeapon="Ranged" />
   <Gem Name="Reave" RequiredWeapon="Claw Dagger OneHandedSword" />
   <Gem Name="Reckoning" RequiredWeapon="Melee" Unarmed="true" />
   <Gem Name="Riposte" RequiredWeapon="Melee" StrikesWithBothWeapons="true" Unarmed="true" />

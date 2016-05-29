@@ -647,6 +647,28 @@ namespace POESKillTree.SkillTreeFiles
             // Merges attributes of specified gem.
             public void Merge(Gem gem)
             {
+                // Take properties from parameter if they are not specified here.
+                if (!ExcludeFormSpecified && gem.ExcludeFormSpecified)
+                    ExcludeForm = gem.ExcludeForm;
+                if (!ExcludeFormSupportSpecified && gem.ExcludeFormSupportSpecified)
+                    ExcludeFormSupport = gem.ExcludeFormSupport;
+                if (!ExcludeSourceSpecified && gem.ExcludeSourceSpecified)
+                    ExcludeSource = gem.ExcludeSource;
+                if (!HitsPerAttackSpecified && gem.HitsPerAttackSpecified)
+                    HitsPerAttack = gem.HitsPerAttack;
+                if (!IncludeFormSpecified && gem.IncludeFormSpecified)
+                    IncludeForm = gem.IncludeForm;
+                if (!RequiresEquippedShieldSpecified && gem.RequiresEquippedShieldSpecified)
+                    RequiresEquippedShield = gem.RequiresEquippedShield;
+                if (!RequiredHandSpecified && gem.RequiredHandSpecified)
+                    RequiredHand = gem.RequiredHand;
+                if (!RequiredWeaponSpecified && gem.RequiredWeaponSpecified)
+                    RequiredWeapon = gem.RequiredWeapon;
+                if (!StrikesWithBothWeaponsSpecified && gem.StrikesWithBothWeaponsSpecified)
+                    StrikesWithBothWeapons = gem.StrikesWithBothWeapons;
+                if (!UnarmedSpecified && gem.UnarmedSpecified)
+                    Unarmed = gem.Unarmed;
+
                 if (gem.Attributes != null)
                 {
                     if (Attributes == null) Attributes = new List<Attribute>();

@@ -16,7 +16,7 @@ namespace UnitTests
             AppData.SetApplicationData(Environment.CurrentDirectory);
 
             if (ItemDB.IsEmpty())
-                ItemDB.Load("Data/Equipment/GemList.xml", true);
+                ItemDB.Load("Data/ItemDB/GemList.xml", true);
         }
 
         [TestMethod]
