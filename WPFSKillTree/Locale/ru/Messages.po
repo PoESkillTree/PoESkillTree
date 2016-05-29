@@ -1350,12 +1350,8 @@ msgstr "Загрузка активов предметов"
 msgid "Error while downloading assets."
 msgstr "Произошла ошибка при загрузке активов"
 
-#: Views\SettingsMenuWindow.xaml.cs:135
+#: Views\SettingsMenuWindow.xaml.cs:136
 msgid "You will need to restart the program for all changes to take effect."
-msgstr ""
-
-#: Views\SettingsMenuWindow.xaml.cs:135
-msgid "Restart is needed"
 msgstr ""
 
 #~ msgid "Reset"
