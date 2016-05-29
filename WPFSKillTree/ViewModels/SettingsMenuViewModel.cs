@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
@@ -9,11 +8,6 @@ namespace POESKillTree.ViewModels
 {
     public class SettingsMenuViewModel : CloseableViewModel
     {
-        public static IEnumerable<string> Languages
-        {
-            get { return L10n.GetLanguages().Keys; }
-        }
-
         private readonly IDialogCoordinator _dialogCoordinator;
 
         public IOptions Options { get; private set; }
@@ -43,7 +37,7 @@ namespace POESKillTree.ViewModels
                     title: L10n.Message("Restart is needed"));
 
                 if (propertyName == "Language")
-                    L10n.SetLanguage(Options.Language);
+                    L10n.Initialize(Options.Language);
             }
         }
     }

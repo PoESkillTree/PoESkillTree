@@ -80,7 +80,7 @@ namespace POESKillTree.Views
             }
 
             // Initialize localization.
-            L10n.Initialize(PersistentData);
+            L10n.Initialize(PersistentData.Options.Language);
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

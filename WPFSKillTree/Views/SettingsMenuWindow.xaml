@@ -8,10 +8,14 @@
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
     xmlns:model="clr-namespace:POESKillTree.Model"
     xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
+    xmlns:localization="clr-namespace:POESKillTree.Localization"
     d:DataContext="{d:DesignInstance viewModels:SettingsMenuViewModel}"
     MaxContentWidth="500">
     <ContentControl.Resources>
         <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
+        <ObjectDataProvider ObjectType="{x:Type localization:L10n}"
+                            MethodName="GetLanguages"
+                            x:Key="Languages" />
         <ObjectDataProvider ObjectInstance="{x:Type Brushes}"
                             MethodName="GetProperties"
                             x:Key="Brushes" />
@@ -83,8 +87,9 @@
             </Label.Content>
         </Label>
         <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
-                  ItemsSource="{Binding Languages}"
-                  SelectedItem="{Binding Options.Language}" />
+                  ItemsSource="{Binding Source={StaticResource Languages}}"
+                  DisplayMemberPath="Value" SelectedValuePath="Key"
+                  SelectedValue="{Binding Options.Language, TargetNullValue={x:Static localization:L10n.Language}}" />
 
 
         <Label Style="{StaticResource SectionLabel}"
