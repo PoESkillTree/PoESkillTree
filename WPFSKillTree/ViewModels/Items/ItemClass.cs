@@ -23,6 +23,7 @@ namespace POESKillTree.ViewModels.Items
         Gem = 0x200,
         Belt = 0x400,
         TwoHand = 0x800,
+        Jewel = 0x1600,
         Unequipable = 0x800000,
     }
 

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels
 {
@@ -161,20 +162,12 @@ namespace POESKillTree.ViewModels
         public string Message
         {
             get { return _message; }
-            set
-            {
-                _message = value;
-                NotifyPropertyChanged("Message");
-            }
+            set { SetProperty(ref _message, value); }
         }
         public string BoxTitle
         {
             get { return _title; }
-            set
-            {
-                _title = value;
-                NotifyPropertyChanged("BoxTitle");
-            }
+            set { SetProperty(ref _title, value); }
         }
         public MessageBoxResult Result
         {
@@ -185,11 +178,7 @@ namespace POESKillTree.ViewModels
         public ImageSource NotificationImageSource
         {
             get { return _imageSource; }
-            set
-            {
-                _imageSource = value;
-                NotifyPropertyChanged("NotificationImageSource");
-            }
+            set { SetProperty(ref _imageSource, value); }
         }
 
         public string ImageColumnWidth
@@ -202,38 +191,22 @@ namespace POESKillTree.ViewModels
         public bool IsYesVisible
         {
             get { return _isYesVisible; }
-            set
-            {
-                _isYesVisible = value;
-                NotifyPropertyChanged("IsYesVisible");
-            }
+            set { SetProperty(ref _isYesVisible, value); }
         }
         public bool IsNoVisible
         {
             get { return _isNoVisible; }
-            set
-            {
-                _isNoVisible = value;
-                NotifyPropertyChanged("IsNoVisible");
-            }
+            set { SetProperty(ref _isNoVisible, value); }
         }
         public bool IsOKVisible
         {
             get { return _isOKVisible; }
-            set
-            {
-                _isOKVisible = value;
-                NotifyPropertyChanged("IsOKVisible");
-            }
+            set { SetProperty(ref _isOKVisible, value); }
         }
         public bool IsCancelVisible
         {
             get { return _isCancelVisible; }
-            set
-            {
-                _isCancelVisible = value;
-                NotifyPropertyChanged("IsCancelVisible");
-            }
+            set { SetProperty(ref _isCancelVisible, value); }
         }
         #endregion
 
@@ -241,38 +214,22 @@ namespace POESKillTree.ViewModels
         public bool IsYesDefault
         {
             get { return _isYesDefault; }
-            set
-            {
-                _isYesDefault = value;
-                NotifyPropertyChanged("IsYesDefault");
-            }
+            set { SetProperty(ref _isYesDefault, value); }
         }
         public bool IsNoDefault
         {
             get { return _isNoDefault; }
-            set
-            {
-                _isNoDefault = value;
-                NotifyPropertyChanged("IsNoDefault");
-            }
+            set { SetProperty(ref _isNoDefault, value); }
         }
         public bool IsOKDefault
         {
             get { return _isOKDefault; }
-            set
-            {
-                _isOKDefault = value;
-                NotifyPropertyChanged("IsOKDefault");
-            }
+            set { SetProperty(ref _isOKDefault, value); }
         }
         public bool IsCancelDefault
         {
             get { return _isCancelDefault; }
-            set
-            {
-                _isCancelDefault = value;
-                NotifyPropertyChanged("IsCancelDefault");
-            }
+            set { SetProperty(ref _isCancelDefault, value); }
         }
         #endregion
 

@@ -64,11 +64,62 @@ namespace POESKillTree.Model
             }
         }
 
+        private bool _showAllAscendancyClasses = true;
+        public bool ShowAllAscendancyClasses
+        {
+            get { return _showAllAscendancyClasses; }
+            set
+            {
+                _showAllAscendancyClasses = value;
+                OnPropertyChanged("ShowAllAscendancyClasses");
+            }
+        }
+
+        private string _nodeSearchHighlightColor = "Red";
+        public string NodeSearchHighlightColor
+        {
+            get { return _nodeSearchHighlightColor; }
+            set
+            {
+                _nodeSearchHighlightColor = value;
+                OnPropertyChanged("NodeSearchHighlightColor");
+            }
+        }
+
+        private string _nodeAttrHighlightColor = "LawnGreen";
+        public string NodeAttrHighlightColor
+        {
+            get { return _nodeAttrHighlightColor; }
+            set
+            {
+                _nodeAttrHighlightColor = value;
+                OnPropertyChanged("NodeAttrHighlightColor");
+            }
+        }
+
+        private string _nodeHoverHighlightColor = "DodgerBlue";
+        public string NodeHoverHighlightColor
+        {
+            get { return _nodeHoverHighlightColor; }
+            set
+            {
+                _nodeHoverHighlightColor = value;
+                OnPropertyChanged("NodeHoverHighlightColor");
+            }
+        }
+        
+        
+        
+
         public Options()
         {
             // Don't set Language property! When not set, L10n.Initialize will try to use OS settings.
             Theme = "Dark";
             Accent = "Steel";
+            NodeSearchHighlightColor = "Red";
+            NodeAttrHighlightColor = "LawnGreen";
+            NodeHoverHighlightColor = "DodgerBlue";
+            ShowAllAscendancyClasses = true;
         }
 
         private void OnPropertyChanged(string caller)

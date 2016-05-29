@@ -8,9 +8,10 @@
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
-    
+        xmlns:views="clr-namespace:POESKillTree.Views"
+
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
-        Title="Path of Exile - Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
+        Title="Path of Exile: Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp"
         TextOptions.TextFormattingMode="Display"
@@ -18,7 +19,6 @@
         >
     <Window.Resources>
         <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
-
         <Style x:Key="ContainerStyleIsExpanded" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -41,6 +41,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <ControlTemplate x:Key="SettingsIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}"
+                      Data="F1 M 38,23.5C 38.8643,23.5 39.7109,23.5756 40.5337,23.7206L 42.6275,18.5381L 48.1901,20.787L 46.0964,25.9692C 47.6473,27.0149 48.9851,28.3527 50.0308,29.9036L 55.213,27.8099L 57.4619,33.3725L 52.2794,35.4664C 52.4244,36.2891 52.5,37.1357 52.5,38C 52.5,38.8643 52.4244,39.7109 52.2794,40.5337L 57.4619,42.6275L 55.213,48.1901L 50.0308,46.0964C 49.0795,47.5073 47.8865,48.7418 46.5112,49.7405L 48.7844,54.8462L 43.3041,57.2891L 41.0307,52.1828C 40.0533,52.3906 39.0394,52.5 38,52.5C 37.1357,52.5 36.2891,52.4244 35.4664,52.2794L 33.3725,57.462L 27.8099,55.213L 29.9036,50.0309C 28.3527,48.9851 27.0149,47.6473 25.9691,46.0964L 20.787,48.1901L 18.538,42.6275L 23.7206,40.5336C 23.5756,39.7109 23.5,38.8643 23.5,38C 23.5,37.1357 23.5756,36.2891 23.7206,35.4664L 18.538,33.3725L 20.787,27.8099L 25.9691,29.9036C 26.9205,28.4927 28.1135,27.2582 29.4889,26.2594L 27.2157,21.1537L 32.6959,18.7109L 34.9694,23.8172C 35.9468,23.6094 36.9606,23.5 38,23.5 Z M 38,28C 32.4771,28 28,32.4772 28,38C 28,43.5229 32.4771,48 38,48C 43.5228,48 48,43.5229 48,38C 48,32.4772 43.5228,28 38,28 Z "/>
+            </Canvas>
+        </ControlTemplate>
         <ControlTemplate x:Key="SaveIcon">
             <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
                 <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
@@ -161,6 +167,12 @@
                       Data="F1 M 35.5,19C 37.9853,19 40,19.8954 40,21C 40,22.1046 37.9853,23 35.5,23C 33.0147,23 31,22.1046 31,21L 31,25C 31,26.1046 33.0147,27 35.5,27C 37.9853,27 40,26.1046 40,25L 40,21.8296L 45.6494,23.4524C 46.4256,23.1697 47.4182,23 48.5,23C 50.9853,23 53,23.8954 53,25C 53,26.1046 50.9853,27 48.5,27C 46.0147,27 44,26.1046 44,25L 44,29C 44,30.1046 46.0147,31 48.5,31C 50.9853,31 53,30.1046 53,29L 53,25.5638L 58,27L 58,43L 44.5077,56.5295L 18,49L 18,33L 31.5688,19.4077L 32.2677,19.6085C 33.0857,19.2332 34.2316,19 35.5,19 Z M 20,33.5681L 20,47.5681L 43,54.1013L 43,40.1013L 20,33.5681 Z M 56,43L 56,29.0056L 46,39.0331L 46,53.0331L 56.0055,43L 56,43 Z M 46,36L 46,32C 45.9999,33.1046 43.9852,34 41.5,34C 39.0147,34 37,33.1046 37,32L 37,36C 37,37.1046 39.0147,38 41.5,38C 43.9852,38 46,37.1046 46,36 Z M 33,32L 33,28C 32.9999,29.1046 30.9852,30 28.5,30C 26.0147,30 24,29.1046 24,28L 24,32C 24,33.1046 26.0147,34 28.5,34C 30.9853,34 33,33.1046 33,32 Z "/>
             </Canvas>
         </ControlTemplate>
+        <ControlTemplate x:Key="NewIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 51.5487,37.9814L 56.814,41.0534L 50.3383,48.7636L 50.3383,48.8841L 60.0205,46.9565L 60.0205,53.0403L 50.2777,51.414L 50.2777,51.5344L 56.814,59.0037L 51.4882,62.0757L 47.978,52.7994L 47.8569,52.7994L 44.4072,62.0757L 39.2025,59.0037L 45.6782,51.4742L 45.6177,51.3537L 36.1159,53.0403L 36.1159,46.9565L 45.5571,48.8841L 45.5571,48.7636L 39.2025,41.1137L 44.5888,37.9814L 47.9174,47.3179L 48.0385,47.3179L 51.5487,37.9814 Z M 20,17L 43.25,17L 56,29.75L 56,39L 52,36.75L 52,34L 39,34L 39,21L 24,21L 24,55L 41,55L 37.5,59L 20,59L 20,17 Z M 43,22.25L 43,30L 50.75,30L 43,22.25 Z "/>
+            </Canvas>
+        </ControlTemplate>
 
         <ControlTemplate x:Key="TabHeaderControlTemplate" TargetType="{x:Type RadioButton}">
             <Grid>
@@ -193,7 +205,7 @@
                 </Trigger>
                 <Trigger Property="IsKeyboardFocusWithin" Value="True">
                     <Setter Property="BorderThickness" TargetName="Background" Value="2,2,2,0"/>
-                    <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource ButtonMouseOverBorderBrush}"/>
+                    <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource GrayBrush5}"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="0.7"/>
@@ -202,7 +214,7 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
-    
+
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <!-- Making it a disabled button is a lazy way for not having to style it manually. -->
@@ -214,7 +226,7 @@
             </Button>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
-    
+
     <Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="31"/>
@@ -229,13 +241,26 @@
                 <MenuItem.Header>
                     <l:Catalog Message="_File" />
                 </MenuItem.Header>
-                <MenuItem InputGestureText="Ctrl+S" Click="btnSaveNewBuild_Click">
+                <MenuItem InputGestureText="Ctrl+N" Click="Menu_NewBuild">
                     <MenuItem.Header>
-                        <l:Catalog Message="Save _As" />
+                        <l:Catalog Message="_New" />
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource NewIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem InputGestureText="Ctrl+S" Click="btnSaveBuild_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Save" />
                     </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource SaveIcon}" />
                     </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem InputGestureText="Ctrl+Alt+S" Click="btnSaveNewBuild_Click">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Save _As" />
+                    </MenuItem.Header>
                 </MenuItem>
                 <MenuItem Click="Menu_Exit">
                     <MenuItem.Header>
@@ -244,13 +269,20 @@
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ExitIcon}" />
                     </MenuItem.Icon>
-
                 </MenuItem>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
                     <l:Catalog Message="_Edit" />
                 </MenuItem.Header>
+                <MenuItem Click="Menu_OpenSettings">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Settings" />
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <ContentControl Template="{StaticResource SettingsIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem x:Name="mnuUndo" InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click">
                     <MenuItem.Header>
                         <l:Catalog Message="_Undo" />
@@ -276,12 +308,18 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator />
-                <MenuItem Click="Menu_CopyStats" Header="{l:Catalog Message=Copy _Passive Attributes to Clipboard}">
+                <MenuItem Click="Menu_CopyStats">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Copy _Passive Attributes to Clipboard"/>
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Click="btnPoeUrl_Click" Header="{l:Catalog Message=Copy Po_EUrl of Skill tree to Clipboard}" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                <MenuItem Click="btnPoeUrl_Click" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Copy Po_EUrl of Skill tree to Clipboard" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
@@ -309,33 +347,128 @@
                         </MenuItem.Header>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="{l:Catalog Message=Acce_nt}">
+                <MenuItem>
+                    <MenuItem.Header>
+                        <l:Catalog Message="Acce_nt" />
+                    </MenuItem.Header>
                     <MenuItem.Icon>
                         <ContentControl Template="{StaticResource ThemeIcon}" />
                     </MenuItem.Icon>
-                    <MenuItem x:Name="mnuViewAccentAmber" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Amber" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Amber}"/>
-                    <MenuItem x:Name="mnuViewAccentBlue" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Blue" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Blue}"/>
-                    <MenuItem x:Name="mnuViewAccentBrown" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Brown" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Brown}"/>
-                    <MenuItem x:Name="mnuViewAccentCobalt" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cobalt" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Cobalt}"/>
-                    <MenuItem x:Name="mnuViewAccentCrimson" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Crimson" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Crimson}"/>
-                    <MenuItem x:Name="mnuViewAccentCyan" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cyan" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Cyan}"/>
-                    <MenuItem x:Name="mnuViewAccentEmerald" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Emerald" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Emerald}"/>
-                    <MenuItem x:Name="mnuViewAccentGreen" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Green" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Green}"/>
-                    <MenuItem x:Name="mnuViewAccentIndigo" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Indigo" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Indigo}"/>
-                    <MenuItem x:Name="mnuViewAccentLime" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Lime" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Lime}"/>
-                    <MenuItem x:Name="mnuViewAccentMagenta" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Magenta" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Magenta}"/>
-                    <MenuItem x:Name="mnuViewAccentMauve" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Mauve" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Mauve}"/>
-                    <MenuItem x:Name="mnuViewAccentOlive" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Olive" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Olive}"/>
-                    <MenuItem x:Name="mnuViewAccentOrange" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Orange" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Orange}"/>
-                    <MenuItem x:Name="mnuViewAccentPink" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Pink" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Pink}"/>
-                    <MenuItem x:Name="mnuViewAccentPurple" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Purple" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Purple}"/>
-                    <MenuItem x:Name="mnuViewAccentRed" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Red" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Red}"/>
-                    <MenuItem x:Name="mnuViewAccentSienna" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Sienna" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Sienna}"/>
-                    <MenuItem x:Name="mnuViewAccentSteel" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Steel" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Steel}"/>
-                    <MenuItem x:Name="mnuViewAccentTaupe" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Taupe" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Taupe}"/>
-                    <MenuItem x:Name="mnuViewAccentTeal" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Teal" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Teal}"/>
-                    <MenuItem x:Name="mnuViewAccentViolet" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Violet" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Violet}"/>
-                    <MenuItem x:Name="mnuViewAccentYellow" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Yellow" Click="mnuSetAccent_Click" Header="{l:Catalog Context=color, Message=Yellow}"/>
+                    <MenuItem x:Name="mnuViewAccentAmber" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Amber" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Amber"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentBlue" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Blue" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Blue"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentBrown" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Brown" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Brown"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentCobalt" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cobalt" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Cobalt"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentCrimson" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Crimson" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Crimson"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentCyan" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cyan" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Cyan"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentEmerald" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Emerald" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Emerald"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentGreen" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Green" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Green"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentIndigo" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Indigo" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Indigo"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentLime" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Lime" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Lime"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentMagenta" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Magenta" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Magenta"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentMauve" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Mauve" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Mauve"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentOlive" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Olive" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Olive"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentOrange" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Orange" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Orange"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentPink" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Pink" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Pink"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentPurple" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Purple" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Purple"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentRed" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Red" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Red"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentSienna" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Sienna" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Sienna"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentSteel" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Steel" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Steel"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentTaupe" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Taupe" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Taupe"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentTeal" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Teal" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Teal"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentViolet" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Violet" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Violet"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem x:Name="mnuViewAccentYellow" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Yellow" Click="mnuSetAccent_Click" >
+                        <MenuItem.Header>
+                            <l:Catalog Context="color" Message="Yellow"/>
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
                 <Separator />
                 <MenuItem x:Name="mnuViewBuilds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="{Binding PersistentData.Options.BuildsBarOpened,ElementName=window, Mode=TwoWay}">
@@ -395,7 +528,10 @@
                             <ContentControl Template="{StaticResource DownloadIcon}" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="mnuClearItems" Click="Menu_ClearItems" IsEnabled="False" Header="{l:Catalog Message=_Clear Items}">
+                    <MenuItem x:Name="mnuClearItems" Click="Menu_ClearItems" IsEnabled="False">
+                        <MenuItem.Header>
+                            <l:Catalog Message="_Clear Items"/>
+                        </MenuItem.Header>
                         <MenuItem.Icon>
                             <ContentControl Template="{StaticResource ClearIcon}" />
                         </MenuItem.Icon>
@@ -433,6 +569,11 @@
                             <l:Catalog Message="C_ross-tag highlighted Nodes" />
                         </MenuItem.Header>
                     </MenuItem>
+                    <MenuItem Click="Menu_OpenTreeGenerator">
+                        <MenuItem.Header>
+                            <l:Catalog Message="_Skill Tree Generator" />
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
@@ -449,7 +590,10 @@
                             <ContentControl Template="{StaticResource RedownloadIcon}" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="_Redownload Item Assets" Click="Menu_RedownloadItemAssets">
+                    <MenuItem Click="Menu_RedownloadItemAssets">
+                        <MenuItem.Header>
+                            <l:Catalog Message="_Redownload Item Assets" />
+                        </MenuItem.Header>
                         <MenuItem.Icon>
                             <ContentControl Template="{StaticResource RedownloadIcon}" />
                         </MenuItem.Icon>
@@ -472,7 +616,11 @@
                             <l:Catalog Message="_Path of Exile Website" />
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Header="Path of Exile _Wiki" Click="Menu_OpenWiki"/>
+                    <MenuItem Click="Menu_OpenWiki">
+                        <MenuItem.Header>
+                            <l:Catalog Message="Path of Exile _Wiki" />
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Click="Menu_OpenHelp">
                     <MenuItem.Header>
@@ -513,30 +661,62 @@
         <Grid x:Name="BtnGrid" Grid.Row="1" HorizontalAlignment="Stretch" Panel.ZIndex="99" VerticalAlignment="Center">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100*"/>
                     <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <Label Content="Level:" x:Name="lblLevel" />
-                    <TextBox Margin="5,0,0,0" x:Name="tbLevel" TextChanged="tbLevel_TextChanged" MaxLength="3" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                    <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged"></ComboBox>
-                    <Label Content="Used:" Margin="5,0,0,0" x:Name="lblUsedPoints"/>
-                    <TextBox Margin="5,0,0,0" x:Name="tbUsedPoints" IsReadOnly="True" MinWidth="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                    <Button x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0">
-                        <l:Catalog Message="Reset"/>
-                    </Button>
+                    <ToggleButton x:Name="BanditToggle" Width="50">
+                            <l:Catalog Message="Bandits" />
+                    </ToggleButton>
+                    <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-100" VerticalOffset="5">
+                        <Border Background="{DynamicResource WhiteColorBrush}" BorderThickness="1"
+                                BorderBrush="{DynamicResource AccentColorBrush}">
+                            <views:BanditSelection DataContext="{Binding Tree.BanditSettings, ElementName=window}" Margin="5" />
+                        </Border>
+                    </Popup>
+                    <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
+                                            Height="{Binding ActualHeight, ElementName=cbCharType}"
+                                            DataContext="{Binding Tree, ElementName=window}" Value="{Binding Level, ValidatesOnDataErrors=True}"
+                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}">
+                        <controls:NumericUpDown.ToolTip>
+                            <l:Catalog Message="Level"/>
+                        </controls:NumericUpDown.ToolTip>
+                    </controls:NumericUpDown>
+                    <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
+                    <ComboBox Margin="5,0,0,0" x:Name="cbAscType" Width="100" SelectionChanged="cbAscType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
+                    <Label Content="0" Margin="8,0,0,0" x:Name="NormalUsedPoints" FontSize="14">
+                        <Label.ToolTip>
+                            <l:Catalog Message="Used Passive Skill Points"/>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Content="[0]" Margin="-5,0,0,0" x:Name="AscendancyUsedPoints" FontSize="14">
+                        <Label.ToolTip>
+                            <l:Catalog Message="Used Ascendancy Skill Points"/>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Content="/" Margin="-5,0,-5,0" Opacity="0.5" FontSize="14"/>
+                    <Label Content="123" Margin="0,0,0,0" x:Name="NormalTotalPoints" Opacity="0.50" FontSize="14"
+                           Width="34" HorizontalContentAlignment="Right">
+                        <Label.ToolTip>
+                            <l:Catalog Message="Total Passive Skill Points"/>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Content="[6]" Margin="-5,0,0,0" x:Name="AscendancyTotalPoints" Opacity="0.50" FontSize="14">
+                        <Label.ToolTip>
+                            <l:Catalog Message="Total Ascendancy Skill Points"/>
+                        </Label.ToolTip>
+                    </Label>
+                    <Button x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0" Content="{l:Catalog Message=Reset}"/>
                 </StackPanel>
 
-                <Grid Grid.Column="2" HorizontalAlignment="Stretch">
+                <Grid Grid.Column="2" HorizontalAlignment="Stretch" Margin="0,0,0,-4">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="{Binding ActualWidth,ElementName=expSavedBuilds}"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0">
-                        <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}"/>
-                        <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}"/>
-                    </StackPanel>
+                    <RadioButton HorizontalAlignment="Center" IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}" Margin="16,0,102,0"/>
+                    <RadioButton Grid.Column="0" HorizontalAlignment="Center" IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}" Margin="100,0,33,0"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -551,33 +731,41 @@
                         </Style.Setters>
                     </Style>
                 </TabControl.ItemContainerStyle>
-                <TabItem IsSelected="True" Header="{l:Catalog 'PASSIVE TREE'}" Name="tyPAssiveTree">
+                <TabItem IsSelected="True" Name="tyPAssiveTree">
+                    <TabItem.Header>
+                        <l:Catalog Message="PASSIVE TREE"/>
+                    </TabItem.Header>
                     <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
-                        <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="false" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="True" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </local:ZoomBorder>
                 </TabItem>
-                <TabItem Header="{l:Catalog 'EQUIPMENT'}" Name="tyEquipment">
+                <TabItem Name="tyEquipment">
+                    <TabItem.Header>
+                        <l:Catalog Message="EQUIPMENT"/>
+                    </TabItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
-                        <Button  Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40" Content="{l:Catalog 'Craft new item'}" />
-
+                        <Rectangle Grid.ColumnSpan="2" Height="2" Fill="{DynamicResource GrayBrush5}" VerticalAlignment="Top"></Rectangle>
+                        <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,0,0" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
+                        <Button Grid.Column="0" Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">
+                            <l:Catalog Message="Craft new item"/>
+                        </Button>
 
                         <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
 
-                        <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
+                        <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Margin="0,4,0,0" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
                     </Grid>
                 </TabItem>
             </TabControl>
 
             <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">
+                    <Label Margin="-5,0" TextBlock.FontSize="16">
                         <l:Catalog Message="Saved Builds"/>
-                    </TextBlock>
+                    </Label>
                 </Expander.Header>
 
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left"  FlowDirection="LeftToRight" Background="{DynamicResource WhiteColorBrush}">
@@ -615,7 +803,7 @@
                               SelectedIndex="{Binding ElementName=window,Path=PersistentData.Options.SelectedBuildIndex}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Grid x:Name="Grid1" Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -628,6 +816,11 @@
                                         <TextBlock Text="{Binding Description}" MaxHeight="60"/>
                                     </StackPanel>
                                 </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentlyOpen}" Value="True">
+                                        <Setter Property="Background" TargetName="Grid1" Value="{DynamicResource AccentColorBrush4}" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                         <ListBox.ItemContainerStyle>
@@ -645,7 +838,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="85"/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="btnOverwriteBuild" VerticalAlignment="Bottom" Click="btnOverwriteBuild_Click" HorizontalAlignment="Left" Width="82">
+                        <Button x:Name="btnOverwriteBuild" VerticalAlignment="Bottom" Click="btnSaveBuild_Click" HorizontalAlignment="Left" Width="82">
                             <l:Catalog Message="Save"/>
                         </Button>
                         <Button x:Name="btnSaveNewBuild" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnSaveNewBuild_Click" Width="82" Grid.Column="1">
@@ -660,88 +853,109 @@
 
             <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewAttributes}" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}" MouseLeave="expAttributes_MouseLeave">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" FontSize="16">
+                    <Label Margin="-5,0" FontSize="16">
                         <l:Catalog Message="Attributes"/>
-                    </TextBlock>
+                    </Label>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
-                    <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
-                        <TabItem Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
-                            <TabItem.Header>
-                                <l:Catalog Message="Passive Attributes"/>
-                            </TabItem.Header>
-                            <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                                <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <ContentControl Content="{Binding Converter={StaticResource attributeToTextblockConverter}}" MouseRightButtonUp="TextBlock_MouseRightButtonUp"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                    <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
-                                    </ListBox.GroupStyle>
-                                </ListBox>
-                            </Grid>
-                        </TabItem>
-                        <TabItem Margin="0" controls:ControlsHelper.HeaderFontSize="15">
-                            <TabItem.Header>
-                                <l:Catalog Message="Item Attributes"/>
-                            </TabItem.Header>
-                            <Grid>
-                                <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Attributes, ElementName=window, Mode=OneWay}"  Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel>
-                                                <TextBlock><Run Text="{Binding ValuedAttribute, Mode=OneWay}" /><Run Text=" " /></TextBlock>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                    <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
-                                    </ListBox.GroupStyle>
-                                </ListBox>
-                            </Grid>
-                        </TabItem>
-                        <TabItem Margin="0" controls:ControlsHelper.HeaderFontSize="15">
-                            <TabItem.Header>
-                                <l:Catalog Message="Total Attributes"/>
-                            </TabItem.Header>
-                            <Grid>
-                                <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbAllAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                    <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
-                                    </ListBox.GroupStyle>
-                                </ListBox>
-                            </Grid>
-                        </TabItem>
-                        <TabItem Header="ItemList" Margin="0" controls:ControlsHelper.HeaderFontSize="15">
-                            <Grid>
-                                <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Equip, ElementName=window, Mode=OneWay}" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemList" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="items:Item">
-                                            <local:ItemTooltip Item="{Binding}"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                    <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
-                                    </ListBox.GroupStyle>
-                                </ListBox>
-                            </Grid>
-                        </TabItem>
-                    </TabControl>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" x:Name="gAttributesFilter">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0">
+                            <l:Catalog Message="Filter:"/>
+                        </Label>
+                        <TextBox Height="26" x:Name="tbAttributesFilter" Width="auto" Margin="5,0,0,0" Grid.Column="1" TextChanged="tbAttributesFilter_TextChanged" />
+                        <CheckBox Grid.Column="2" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="5,0,0,0" x:Name="cbAttributesFilterRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbAttributesFilterRegEx_Click" />
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.IsUnderlined="True" Focusable="True" SelectionChanged="tabControl1_SelectionChanged">
+                            <TabItem Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
+                                <TabItem.Header>
+                                    <l:Catalog Message="Passive Attributes"/>
+                                </TabItem.Header>
+                                <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                                    <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="listBox1" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <ContentControl Content="{Binding Converter={StaticResource attributeToTextblockConverter}}"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.GroupStyle>
+                                            <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
+                                        </ListBox.GroupStyle>
+                                    </ListBox>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Margin="0" x:Name="tabItem2" controls:ControlsHelper.HeaderFontSize="15">
+                                <TabItem.Header>
+                                    <l:Catalog Message="Item Attributes"/>
+                                </TabItem.Header>
+                                <Grid>
+                                    <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Attributes, ElementName=window, Mode=OneWay}"  Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel>
+                                                    <TextBlock><Run Text="{Binding ValuedAttribute, Mode=OneWay}" /><Run Text=" " /></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.GroupStyle>
+                                            <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
+                                        </ListBox.GroupStyle>
+                                    </ListBox>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Margin="0" x:Name="tabItem3" controls:ControlsHelper.HeaderFontSize="15">
+                                <TabItem.Header>
+                                    <l:Catalog Message="Total Attributes"/>
+                                </TabItem.Header>
+                                <Grid>
+                                    <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbAllAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.GroupStyle>
+                                            <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
+                                        </ListBox.GroupStyle>
+                                    </ListBox>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Margin="0" x:Name="tabItem4" controls:ControlsHelper.HeaderFontSize="15">
+                                <TabItem.Header>
+                                    <l:Catalog Message="ItemList" />
+                                </TabItem.Header>
+                                <Grid>
+                                    <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Equip, ElementName=window, Mode=OneWay}" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemList" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate DataType="items:Item">
+                                                <local:ItemTooltip Item="{Binding}"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.GroupStyle>
+                                            <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
+                                        </ListBox.GroupStyle>
+                                    </ListBox>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
                 </Grid>
             </Expander>
 
             <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}" Expanded="expCharacterSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
                 <Expander.Header>
-                    <TextBlock Margin="6,0" TextAlignment="Left" TextBlock.FontSize="16">
+                    <Label Margin="-5,0" TextBlock.FontSize="16">
                         <l:Catalog Message="Character Sheet"/>
-                    </TextBlock>
+                    </Label>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-109,0,0,-1">
                     <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:TabControlHelper.IsUnderlined="True" Focusable="True">

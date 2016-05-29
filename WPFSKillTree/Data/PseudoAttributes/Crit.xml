@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Crit pseudo attributes -->
+<PseudoAttributes>
+	<PseudoAttribute Name="#% increased Critical Strike Chance" Group="Critical Strike">
+		<Attribute Name="#% increased Critical Strike Chance" />
+		<Attribute Name="#% increased Critical Strike Chance with {0}">
+			<Conditions>
+				<AndComposition>
+					<WeaponClass>{0}</WeaponClass>
+					<Tag>Attack</Tag>
+				</AndComposition>
+				<Tag>{0}</Tag>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Critical Strike Chance while Dual Wielding">
+			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Weapon Critical Strike Chance while Dual Wielding">
+			<Conditions>
+				<AndComposition>
+					<Tag>Attack</Tag>
+                    <OffHand>Dual Wield</OffHand>
+					<Not><WeaponClass>Unarmed</WeaponClass></Not>
+				</AndComposition>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Critical Strike Chance for Spells">
+			<Conditions><Tag>Spell</Tag></Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Melee Critical Strike Chance">
+			<Conditions><Tag>Melee</Tag></Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Global Critical Strike Chance while wielding a Staff">
+			<Conditions><WeaponClass>Staff</WeaponClass></Conditions>
+		</Attribute>
+	</PseudoAttribute>
+	<PseudoAttribute Name="+#% to Critical Strike Multiplier" Group="Critical Strike">
+		<Attribute Name="+#% to Critical Strike Multiplier" />
+		<Attribute Name="+#% to Critical Strike Multiplier with {0}">
+			<Conditions>
+				<AndComposition>
+					<WeaponClass>{0}</WeaponClass>
+					<Tag>Attack</Tag>
+				</AndComposition>
+				<Tag>{0}</Tag>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="+#% to Critical Strike Multiplier while Dual Wielding">
+			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
+		</Attribute>
+		<Attribute Name="+#% to Critical Strike Multiplier for Spells">
+			<Conditions><Tag>Spell</Tag></Conditions>
+		</Attribute>
+		<Attribute Name="+#% to Melee Critical Strike Multiplier">
+			<Conditions><Tag>Melee</Tag></Conditions>
+		</Attribute>
+		<Attribute Name="+#% to Global Critical Strike Multiplier while wielding a Staff">
+			<Conditions><WeaponClass>Staff</WeaponClass></Conditions>
+		</Attribute>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Accuracy Rating" Group="Critical Strike">
+		<Attribute Name="#% increased Accuracy Rating" />
+		<Attribute Name="#% increased Accuracy Rating with {0}">
+			<Conditions><WeaponClass>{0}</WeaponClass></Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Accuracy Rating while Dual Wielding">
+			<Conditions><OffHand>Dual Wield</OffHand></Conditions>
+		</Attribute>
+	</PseudoAttribute>
+</PseudoAttributes>

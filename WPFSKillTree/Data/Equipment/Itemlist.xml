@@ -5261,4 +5261,10 @@
       <stat name="Critical Strike Chance %" from="5" to="5" />
     </properties>
   </ItemBase>
+    <ItemBase group="Jewel" class="Jewel" type="Cobalt Jewel" level="0">
+    </ItemBase>
+    <ItemBase group="Jewel" class="Jewel" type="Crimson Jewel" level="0">
+    </ItemBase>
+    <ItemBase group="Jewel" class="Jewel" type="Viridian Jewel" level="0">
+    </ItemBase>
 </ItemBaseList>

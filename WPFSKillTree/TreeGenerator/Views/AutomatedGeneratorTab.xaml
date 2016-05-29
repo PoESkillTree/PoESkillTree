@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="POESKillTree.TreeGenerator.Views.AutomatedGeneratorTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600">
+    <Grid>
+        <Label Content="Point distribution" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Slider HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="266" Value="60"/>
+        <Label Content="Offense" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top"/>
+        <Label Content="Defense" HorizontalAlignment="Left" Margin="223,64,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="377,33,0,0" VerticalAlignment="Top" Width="120" Text="Phys Crit Bow" IsEditable="True"/>
+        <Label Content="Build:" HorizontalAlignment="Left" Margin="330,33,0,0" VerticalAlignment="Top" FontWeight="Bold" />
+        <Button Content="Customize" HorizontalAlignment="Left" Margin="377,64,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Load from gear" HorizontalAlignment="Left" Margin="377,94,0,0" VerticalAlignment="Top" Width="120"/>
+    </Grid>
+</UserControl>

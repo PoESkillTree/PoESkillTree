@@ -1,0 +1,81 @@
+﻿<controls:MetroWindow
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    x:Class="POESKillTree.Views.SettingsMenuWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+    xmlns:md="clr-namespace:Markdown.Xaml"
+    x:Name="Window"
+    WindowStartupLocation="CenterOwner" Width="500" Height="335.705"
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
+    Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded">
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="Settings"/>
+    </controls:MetroWindow.Title>
+    <Window.Resources>
+    </Window.Resources>
+    <StackPanel>
+        <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
+            <Label.Content>
+                <l:Catalog Message="Colors:" />
+            </Label.Content>
+        </Label>
+        <Grid Margin="25,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+
+            <Label VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto">
+                <Label.Content>
+                    <l:Catalog Message="Node Search Highlight" />
+                </Label.Content>
+            </Label>
+            <Label VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto" Grid.Row="1">
+                <Label.Content>
+                    <l:Catalog Message="Attribute Highlight" />
+                </Label.Content>
+            </Label>
+            <Label VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto" Grid.Row ="2">
+                <Label.Content>
+                    <l:Catalog Message="Node Hover Highlight" />
+                </Label.Content>
+            </Label>
+            <ComboBox Grid.Column="1" Grid.Row="0" x:Name="NodeHoverHighlightColor" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" Width="130" Height="30" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" x:Name="NodeAttrHighlightColor" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" Width="130" Height="30" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1" Grid.Row="2" x:Name="NodeSearchHighlightColor" IsSynchronizedWithCurrentItem="True" Initialized="ColorComboBox_Initialized" DropDownClosed="ColorComboBox_Closed" SelectionChanged="ColorComboBox_SelectionChanged" Width="130" Height="30" VerticalAlignment="Center"/>
+        </Grid>
+        <Label HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top">
+            <Label.Content>
+                <l:Catalog Message="General:" />
+            </Label.Content>
+        </Label>
+        <Grid Margin="25,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+            <Label VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto">
+                <Label.Content>
+                    <l:Catalog Message="Show All Ascendancy Classes" />
+                </Label.Content>
+            </Label>
+            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ShowAllAscendancyClasses" Height="30" VerticalAlignment="Center" Checked="ShowAllAscendancyClasses_Checked" Unchecked="ShowAllAscendancyClasses_Unchecked" Initialized="ShowAllAscendancyClasses_Initialized"/>
+            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="{Binding Path=ActualWidth, ElementName=lblShowAllAscendancyClasses}">
+                <Label.Content>
+                    <l:Catalog Message="Language" />
+                </Label.Content>
+            </Label>
+            <ComboBox Grid.Row="1" Grid.Column="1" x:Name="Languages" Height="30" VerticalAlignment="Center" Initialized="Languages_Initialized" SelectionChanged="Languages_OnSelectionChanged"/>
+        </Grid>
+    </StackPanel>
+</controls:MetroWindow>

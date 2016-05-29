@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.SkillTreeFiles.SteinerTrees;
 using System.Collections.Generic;
-using Priority_Queue;
+using System.Linq;
+using POESKillTree.TreeGenerator.Algorithm;
+using POESKillTree.TreeGenerator.Algorithm.Model;
 
-//namespace UnitTests
 namespace UnitTests
 {
     [TestClass]
@@ -52,7 +52,7 @@ namespace UnitTests
         Dictionary<int, GraphNode> GetGraphNodesIdIndex(SearchGraph graph)
         {
             Dictionary<int, GraphNode> retval = new Dictionary<int, GraphNode>();
-            foreach (GraphNode node in graph.nodeDict.Values)
+            foreach (GraphNode node in graph.NodeDict.Values)
             {
                 retval.Add(node.Id, node);
             }
@@ -62,11 +62,10 @@ namespace UnitTests
         [TestMethod]
         public void TestDijkstra()
         {
-            // TODO: Maybe make the graphs class members.
-            /// 0 -- 1 -- 2 -- 3
-            ///  \        |   /
-            ///    \      | /
-            ///      4 -- 5
+            // 0 -- 1 -- 2 -- 3
+            //  \        |   /
+            //    \      | /
+            //      4 -- 5
             bool[,] graph1 = {
                                  { false, true,  false, false, true,  false },
                                  { true,  false, true,  false, false, false },
@@ -81,19 +80,43 @@ namespace UnitTests
             Dictionary<int, GraphNode> graphNodes = GetGraphNodesIdIndex(searchGraph1);
 
 
-            DistanceLookup distanceLookup = new DistanceLookup();
-            Assert.IsTrue(distanceLookup.GetDistance(graphNodes[0], graphNodes[0]) == 0, "Failed 0 distance test");
-            Assert.IsTrue(distanceLookup.GetDistance(graphNodes[0], graphNodes[5]) == 2, "Wrong distance");
-            Assert.IsTrue(distanceLookup.GetDistance(graphNodes[0], graphNodes[3]) == 3, "Wrong distance");
+            DistanceLookup distanceLookup = new DistanceLookup(graphNodes.Values.ToList());
+            Assert.AreEqual((uint)0, distanceLookup[graphNodes[0].DistancesIndex, graphNodes[0].DistancesIndex], "Failed 0 distance test");
+            Assert.AreEqual((uint)2, distanceLookup[graphNodes[0].DistancesIndex, graphNodes[5].DistancesIndex], "Wrong distance");
+            Assert.AreEqual((uint)3, distanceLookup[graphNodes[0].DistancesIndex, graphNodes[3].DistancesIndex], "Wrong distance");
         }
 
         [TestMethod]
+        public void DijkstraUnconnected()
+        {
+            // 0 -- 1    2 -- 3
+            //           |   /
+            //           | /
+            //      4 -- 5
+            bool[,] graph2 =
+            {
+                {false, true, false, false, false, false},
+                {true, false, false, false, false, false},
+                {false, false, false, true, false, true},
+                {false, false, true, false, false, true},
+                {false, false, false, false, false, true},
+                {false, false, true, true, true, false},
+            };
+            SearchGraph searchGraph2 = SearchGraphFromData(graph2);
+            Dictionary<int, GraphNode> graphNodes2 = GetGraphNodesIdIndex(searchGraph2);
+            var mstNodes2 = new List<GraphNode> { graphNodes2[0], graphNodes2[2], graphNodes2[4], graphNodes2[3] };
+
+            var distances = new DistanceLookup(graphNodes2.Values.ToArray());
+            Assert.IsNull(distances.GetShortestPath(mstNodes2[0].DistancesIndex, mstNodes2[3].DistancesIndex));
+        }
+        
+        [TestMethod]
         public void TestMST()
         {
-            /// 0 -- 1 -- 2 -- 3
-            ///  \        |   /
-            ///    \      | /
-            ///      4 -- 5 -- 6 -- 7
+            // 0 -- 1 -- 2 -- 3
+            //  \        |   /
+            //    \      | /
+            //      4 -- 5 -- 6 -- 7
             bool[,] graph1 = {
                                  { false, true,  false, false, true,  false, false, false },
                                  { true,  false, true,  false, false, false, false, false },
@@ -108,55 +131,27 @@ namespace UnitTests
             SearchGraph searchGraph1 = SearchGraphFromData(graph1);
 
             Dictionary<int, GraphNode> graphNodes1 = GetGraphNodesIdIndex(searchGraph1);
-            DistanceLookup distanceLookup = new DistanceLookup();
 
-            HashSet<GraphNode> mstNodes1 = new HashSet<GraphNode>
-                { graphNodes1[3], graphNodes1[5], graphNodes1[7] };
-            MinimalSpanningTree mst1 = new MinimalSpanningTree(mstNodes1);
-            mst1.Span(startFrom: graphNodes1[0]);
+            var mstNodes1 = new List<GraphNode>
+                { graphNodes1[3], graphNodes1[5], graphNodes1[7], graphNodes1[0] };
+            var distances = new DistanceLookup(mstNodes1);
+            var mst1 = new MinimalSpanningTree(mstNodes1.Select(n => n.DistancesIndex).ToList(), distances);
+            mst1.Span(graphNodes1[0].DistancesIndex);
 
-            Assert.IsTrue(mst1.SpanningEdges.Count == 3, "Wrong amount of spanning edges");
-            /// This can fail even if the mst would be valid! The test only works for
-            /// the current implementation of the mst algorithm, but I can't find a
-            /// better way to do this with the current data structures...
-            Assert.IsTrue(mst1.SpanningEdges[0].inside.Id == 0 && mst1.SpanningEdges[0].outside.Id == 5,
-                "First edge is wrong");
-            Assert.IsTrue(mst1.SpanningEdges[1].inside.Id == 5 && mst1.SpanningEdges[1].outside.Id == 3,
-                "Second edge is wrong");
-            Assert.IsTrue(mst1.SpanningEdges[2].inside.Id == 5 && mst1.SpanningEdges[2].outside.Id == 7,
-                "Third edge is wrong");
-            Assert.IsTrue(mst1.UsedNodeCount == 5, "Wrong MST length");
-
-
-            /// Test unconnected graph
-
-            /// 0 -- 1    2 -- 3
-            ///           |   /
-            ///           | /
-            ///      4 -- 5
-            bool[,] graph2 = {
-                                 { false, true,  false, false, false, false },
-                                 { true,  false, false, false, false, false },
-                                 { false, false, false, true,  false, true  },
-                                 { false, false, true,  false, false, true  },
-                                 { false, false, false, false, false, true  },
-                                 { false, false, true,  true,  true,  false },
-                             };
-            SearchGraph searchGraph2 = SearchGraphFromData(graph2);
-            Dictionary<int, GraphNode> graphNodes2 = GetGraphNodesIdIndex(searchGraph2);
-            HashSet<GraphNode> mstNodes2 = new HashSet<GraphNode> { graphNodes2[0], graphNodes2[2], graphNodes2[4] };
-
-            bool pass = false;
-            try
+            Assert.AreEqual(3, mst1.SpanningEdges.Count, "Wrong amount of spanning edges");
+            var goalEdges = new[]
             {
-                MinimalSpanningTree mst = new MinimalSpanningTree(mstNodes2);
-                mst.Span(graphNodes2[3]);
-            }
-            catch (DistanceLookup.GraphNotConnectedException)
+                new []{0, 5}, new []{5, 3}, new []{5, 7}
+            };
+            foreach (var edge in goalEdges)
             {
-                pass = true;
+                Assert.AreEqual(1,
+                    mst1.SpanningEdges.Select(e => new Tuple<ushort, ushort>(distances.IndexToNode(e.Inside).Id, distances.IndexToNode(e.Outside).Id)).Count(
+                        t =>
+                            (t.Item1 == edge[0] && t.Item2 == edge[1]) ||
+                            (t.Item1 == edge[1] && t.Item2 == edge[0])),
+                    "Edge " + edge + " not contained exactly once.");
             }
-            Assert.IsTrue(pass, "No exception thrown for disconnected graph");
         }
 
         [TestMethod]
@@ -164,30 +159,26 @@ namespace UnitTests
         {
 
             int[] queueTestOrder = { 10, 3, 11, 6, -3, 17, 13, -6, 2, 8, -2, -8 };
-            int nodeCount = 0;
-            for (int i = 0; i < queueTestOrder.Length; i++)
-                nodeCount = Math.Max(queueTestOrder[i] + 1, nodeCount);
 
-            HeapPriorityQueue<TestNode> queue = new HeapPriorityQueue<TestNode>(nodeCount);
+            LinkedListPriorityQueue<TestNode> queue = new LinkedListPriorityQueue<TestNode>(30, queueTestOrder.Length);
 
-
-            TestNode[] testNodes = new TestNode[nodeCount];
-            for (int i = 0; i < nodeCount; i++)
-                testNodes[i] = new TestNode();
-
-            for (int i = 0; i < queueTestOrder.Length; i++)
+            foreach (int t in queueTestOrder)
             {
-                int t = queueTestOrder[i];
-
                 if (t > 0)
-                    queue.Enqueue(testNodes[t], t);
+                    queue.Enqueue(new TestNode((uint)t));
                 if (t < 0)
                     Assert.IsTrue(queue.Dequeue().Priority == -t);
             }
         }
 
-        class TestNode : PriorityQueueNode
+        class TestNode : IWithPriority
         {
+            public uint Priority { get; set; }
+
+            public TestNode(uint priority)
+            {
+                Priority = priority;
+            }
         }
     }
 }

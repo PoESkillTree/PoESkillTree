@@ -42,6 +42,8 @@ SolidCompression=yes
 ; Note: Name cannot contain '-' (minus) character.
 Name: "en_US"; MessagesFile: "compiler:Default.isl"
 Name: "sk"; MessagesFile: "compiler:Languages\Slovak.isl"
+Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"
+Name: "de_DE"; MessagesFile: "compiler:Languages\German.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: CheckStandardMode; Flags: unchecked
@@ -87,6 +89,7 @@ Filename: "{app}\{#AppExeName}"; Flags: nowait skipifnotsilent
 var
 	PortabilityPage: TInputOptionWizardPage;
 	IsPortable: Boolean;
+	IsSilent: Boolean;
 
 function CheckPortableMode: Boolean;
 begin
@@ -99,6 +102,8 @@ begin
 end;
 
 procedure InitializeWizard;
+var 
+	i: Integer;
 begin
 	{ Create custom page }
 	PortabilityPage := CreateInputOptionPage(wpLicense, CustomMessage('InstallationTypeTitle'), CustomMessage('InstallationTypeDesc'),
@@ -110,7 +115,15 @@ begin
 	if (ExpandConstant('{param:portable|0}') = '1') then
 		PortabilityPage.SelectedValueIndex := 1
 	else
-		PortabilityPage.SelectedValueIndex := 0
+		PortabilityPage.SelectedValueIndex := 0;
+
+	IsSilent := False;
+	for i := 1 to ParamCount do
+		if CompareText(ParamStr(i), '/SILENT') = 0 then
+		begin
+			IsSilent := True;
+			Break;
+		end;
 end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
@@ -161,5 +174,13 @@ begin
 	if PageID = wpSelectProgramGroup then
 	begin
 		Result := IsPortable;
+	end;
+
+	if IsSilent then
+	begin
+		if PageID = PortabilityPage.ID then
+		begin
+			result := True;
+		end;
 	end;
 end;

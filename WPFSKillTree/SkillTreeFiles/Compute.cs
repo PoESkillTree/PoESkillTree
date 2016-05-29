@@ -94,12 +94,9 @@ namespace POESKillTree.SkillTreeFiles
                     Damage.Converted conv = Damage.Converted.Create(DamageConversionSource.Equipment, attr);
                     if (conv != null) Converts.Add(conv);
 
-                    // Damage added from equipment is applied only to attacks.
-                    if (Nature.Is(DamageSource.Attack))
-                    {
-                        Damage.Added added = Damage.Added.Create(DamageSource.Attack, attr);
-                        if (added != null) adds.Add(added);
-                    }
+                    // Whether damage added from equipment applies to the current DamageSource is decided in Create().
+                    Damage.Added added = Damage.Added.Create(Nature.Source, attr);
+                    if (added != null) adds.Add(added);
                 }
 
                 foreach (var attr in Tree)
@@ -467,10 +464,10 @@ namespace POESKillTree.SkillTreeFiles
             static Regex ReMoreAttackSpeedType = new Regex("#% (more|less) (.+) Attack Speed$");
             // The form specific increased/reduced critical chance/multiplier patterns.
             static Regex ReIncreasedCriticalChanceForm = new Regex("#% (increased|reduced) (.+) Critical Strike Chance$");
-            static Regex ReIncreasedCriticalMultiplierForm = new Regex("#% (increased|reduced) (.+) Critical Strike Multiplier$");
+            static Regex ReIncreasedCriticalMultiplierForm = new Regex(@"(\+|-)#% to (.+) Critical Strike Multiplier$");
             // The increased/reduced critical chance/multiplier with weapon type patterns.
             static Regex ReIncreasedCriticalChanceWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Chance with (.+)$");
-            static Regex ReIncreasedCriticalMultiplierWithWeaponType = new Regex("#% (increased|reduced) Critical Strike Multiplier with (.+)$");
+            static Regex ReIncreasedCriticalMultiplierWithWeaponType = new Regex(@"(\+|-)#% to Critical Strike Multiplier with (.+)$");
 
             public AttackSource(string name, AttackSkill skill, Weapon weapon)
             {
@@ -764,18 +761,18 @@ namespace POESKillTree.SkillTreeFiles
                         else if (CriticalChance > 95) CriticalChance = 95;
 
                         float incCM = 0;
-                        if (attrs.ContainsKey("#% increased Critical Strike Multiplier"))
-                            incCM += attrs["#% increased Critical Strike Multiplier"][0];
-                        if (attrs.ContainsKey("#% increased Global Critical Strike Multiplier"))
-                            incCM += attrs["#% increased Global Critical Strike Multiplier"][0];
-                        if (IsWieldingStaff && attrs.ContainsKey("#% increased Global Critical Strike Multiplier while wielding a Staff"))
-                            incCM += attrs["#% increased Global Critical Strike Multiplier while wielding a Staff"][0];
+                        if (attrs.ContainsKey("+#% to Critical Strike Multiplier"))
+                            incCM += attrs["+#% to Critical Strike Multiplier"][0];
+                        if (attrs.ContainsKey("+#% to Global Critical Strike Multiplier"))
+                            incCM += attrs["+#% to Global Critical Strike Multiplier"][0];
+                        if (IsWieldingStaff && attrs.ContainsKey("+#% to Global Critical Strike Multiplier while wielding a Staff"))
+                            incCM += attrs["+#% to Global Critical Strike Multiplier while wielding a Staff"][0];
                         if (Nature.Is(DamageSource.Spell))
                         {
-                            if (attrs.ContainsKey("#% increased Critical Strike Multiplier for Spells"))
-                                incCM += attrs["#% increased Critical Strike Multiplier for Spells"][0];
-                            if (attrs.ContainsKey("#% increased Global Critical Strike Multiplier for Spells"))
-                                incCM += attrs["#% increased Global Critical Strike Multiplier for Spells"][0];
+                            if (attrs.ContainsKey("+#% to Critical Strike Multiplier for Spells"))
+                                incCM += attrs["+#% to Critical Strike Multiplier for Spells"][0];
+                            if (attrs.ContainsKey("+#% to Global Critical Strike Multiplier for Spells"))
+                                incCM += attrs["+#% to Global Critical Strike Multiplier for Spells"][0];
                         }
                         else // Attack
                         {
@@ -783,20 +780,21 @@ namespace POESKillTree.SkillTreeFiles
                             {
                                 Match m = ReIncreasedCriticalMultiplierWithWeaponType.Match(attr.Key);
                                 if (WithWeaponType.ContainsKey(m.Groups[2].Value) && Nature.Is(WithWeaponType[m.Groups[2].Value]))
-                                    incCM += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                                    incCM += m.Groups[1].Value == "+" ? attr.Value[0] : -attr.Value[0];
                             }
-                            if (IsDualWielding && attrs.ContainsKey("#% increased Weapon Critical Strike Multiplier while Dual Wielding"))
-                                incCM += attrs["#% increased Weapon Critical Strike Multiplier while Dual Wielding"][0];
+                            if (IsDualWielding && attrs.ContainsKey("+#% to Weapon Critical Strike Multiplier while Dual Wielding"))
+                                incCM += attrs["+#% to Weapon Critical Strike Multiplier while Dual Wielding"][0];
                         }
                         // Form specific.
                         foreach (var attr in attrs.Matches(ReIncreasedCriticalMultiplierForm))
                         {
                             Match m = ReIncreasedCriticalMultiplierForm.Match(attr.Key);
                             if (DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
-                                incCM += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
+                                incCM += m.Groups[1].Value == "+" ? attr.Value[0] : -attr.Value[0];
                         }
-                        if (incCM > 0)
-                            CriticalMultiplier = IncreaseValueByPercentage(CriticalMultiplier, incCM);
+                        CriticalMultiplier += incCM;
+                        if (attrs.ContainsKey("No Critical Strike Multiplier"))
+                            CriticalMultiplier = 100;
                     }
                 }
             }
@@ -999,9 +997,11 @@ namespace POESKillTree.SkillTreeFiles
                 // TODO: Migrate to DamageNature's WeaponHand property.
                 public WeaponHand Hand = WeaponHand.Any;
 
-                static Regex ReAddMod = new Regex("Adds #-# ([^ ]+) Damage$");
-                static Regex ReAddInHandMod = new Regex("Adds #-# ([^ ]+) Damage in (Main|Off) Hand$");
-                static Regex ReAddWithBows = new Regex("Adds #-# ([^ ]+) Damage to attacks with Bows");
+                private static readonly Regex ReAddMod = new Regex("Adds #-# ([^ ]+) Damage$");
+                private static readonly Regex ReAddInHandMod = new Regex("Adds #-# ([^ ]+) Damage in (Main|Off) Hand$");
+                private static readonly Regex ReAddWithBows = new Regex("Adds #-# ([^ ]+) Damage to attacks with Bows");
+                private static readonly Regex ReAddToAttacks = new Regex("Adds #-# ([^ ]+) Damage to Attacks");
+                private static readonly Regex ReAddToSpells = new Regex("Adds #-# ([^ ]+) Damage to Spells");
 
                 public Added(DamageSource source, string type, float min, float max)
                     : base()
@@ -1015,16 +1015,20 @@ namespace POESKillTree.SkillTreeFiles
                 // Creates added damage.
                 public static Added Create(DamageSource source, KeyValuePair<string, List<float>> attr)
                 {
-                    Match m = ReAddMod.Match(attr.Key);
-                    if (m.Success)
-                        return new Added(source, m.Groups[1].Value, attr.Value[0], attr.Value[1]);
-                    else
+                    if (source == DamageSource.Attack)
                     {
+                        var m = ReAddToAttacks.Match(attr.Key);
+                        if (m.Success)
+                            return new Added(source, m.Groups[1].Value, attr.Value[0], attr.Value[1]);
                         m = ReAddWithBows.Match(attr.Key);
                         if (m.Success)
-                        {
-                            return new Added(DamageSource.Attack, m.Groups[1].Value, attr.Value[0], attr.Value[1]) { WeaponType = WeaponType.Bow };
-                        }
+                            return new Added(source, m.Groups[1].Value, attr.Value[0], attr.Value[1]) { WeaponType = WeaponType.Bow };
+                    }
+                    else if (source == DamageSource.Spell)
+                    {
+                        var m = ReAddToSpells.Match(attr.Key);
+                        if (m.Success)
+                            return new Added(source, m.Groups[1].Value, attr.Value[0], attr.Value[1]);
                     }
 
                     return null;
@@ -1069,7 +1073,7 @@ namespace POESKillTree.SkillTreeFiles
                 // The damage type to convert to.
                 DamageType To;
 
-                static Regex ReConvertMod = new Regex("^#% of ([^ ]+) Damage converted to ([^ ]+) Damage$");
+                static Regex ReConvertMod = new Regex("^#% of ([^ ]+) Damage (C|c)onverted to ([^ ]+) Damage$");
 
                 public Converted(DamageConversionSource source, float percent, DamageType from, DamageType to)
                 {
@@ -1085,7 +1089,7 @@ namespace POESKillTree.SkillTreeFiles
                     Match m = ReConvertMod.Match(attr.Key);
                     if (m.Success)
                     {
-                        return new Converted(source, attr.Value[0], DamageNature.Types[m.Groups[1].Value], DamageNature.Types[m.Groups[2].Value]);
+                        return new Converted(source, attr.Value[0], DamageNature.Types[m.Groups[1].Value], DamageNature.Types[m.Groups[3].Value]);
                     }
 
                     return null;
@@ -1768,7 +1772,8 @@ namespace POESKillTree.SkillTreeFiles
         // @see http://pathofexile.gamepedia.com/Accuracy
         public static float ChanceToHit(int level, float accuracyRating)
         {
-            int mae = MonsterAverageEvasion[level - 1]; // XXX: For some reason this works.
+            // TODO: the maximum level considered for this is 80 or 81 if it is the same for estimated physical damage reduction
+            int mae = MonsterAverageEvasion[Math.Min(level, 80) - 1]; // XXX: For some reason this works.
 
             float chance = (float)(accuracyRating / (accuracyRating + Math.Pow(mae / 4, 0.8))) * 100;
             if (chance < 5f) chance = 5f;
@@ -1841,16 +1846,6 @@ namespace POESKillTree.SkillTreeFiles
             bool difficultyNormal = true;
             bool difficultyCruel = false;
             bool difficultyMerciless = false;
-            // Bandits.
-            bool banditNormalKraityn = false; // +8% to all elemental resistances
-            bool banditNormalAlira = false; // +40 Mana
-            bool banditNormalOak = false; // +40 Life
-            bool banditCruelKraityn = false; // +8% Attack Speed
-            bool banditCruelAlira = false; // +4% Cast Speed
-            bool banditCruelOak = false; // +18% Physical Damage
-            bool banditMercilessKraityn = false; // +1 Max Frenzy Charge
-            bool banditMercilessAlira = false; // +1 Max Power Charge
-            bool banditMercilessOak = false; // +1 Max Endurance Charge
 
             float life;
             if (ChaosInoculation)
@@ -1858,8 +1853,6 @@ namespace POESKillTree.SkillTreeFiles
             else
             {
                 life = Global["+# to maximum Life"][0];
-                if (banditNormalOak) // Bandit.
-                    life += 40;
                 if (Global.ContainsKey("#% increased maximum Life"))
                     life = IncreaseValueByPercentage(life, Global["#% increased maximum Life"][0]);
             }
@@ -1867,8 +1860,6 @@ namespace POESKillTree.SkillTreeFiles
 
             float mana = Global["+# to maximum Mana"][0];
             float incMana = 0;
-            if (banditNormalAlira) // Bandit.
-                mana += 40;
             if (Global.ContainsKey("#% increased maximum Mana"))
                 incMana = Global["#% increased maximum Mana"][0];
 
@@ -2140,12 +2131,6 @@ namespace POESKillTree.SkillTreeFiles
                 resistFire = resistCold = resistLightning = resistChaos = -20;
             else if (difficultyMerciless)
                 resistFire = resistCold = resistLightning = resistChaos = -60;
-            if (banditNormalKraityn) // Bandit.
-            {
-                resistFire += 8;
-                resistCold += 8;
-                resistLightning += 8;
-            }
             if (Global.ContainsKey("+#% to Fire Resistance"))
                 resistFire += Global["+#% to Fire Resistance"][0];
             if (Global.ContainsKey("+#% to Cold Resistance"))
@@ -2411,6 +2396,8 @@ namespace POESKillTree.SkillTreeFiles
 
             foreach (Item item in Items)
             {
+                if (item.Gems == null)
+                    continue;
                 foreach (Item gem in item.Gems)
                 {
                     if (AttackSkill.IsAttackSkill(gem))
@@ -2442,7 +2429,7 @@ namespace POESKillTree.SkillTreeFiles
         // @see http://pathofexile.gamepedia.com/Armour
         public static float PhysicalDamageReduction(int level, float armour)
         {
-            float mad = MonsterAverageDamage(level);
+            float mad = MonsterAverageDamage(Math.Min(level, 80) - 1);
             float reduction = RoundValue(armour / (armour + 12 * mad) * 100, 1);
             if (reduction > 90f) reduction = 90f;
 

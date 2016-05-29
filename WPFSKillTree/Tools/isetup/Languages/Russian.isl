@@ -322,3 +322,10 @@ AssocingFileExtension=Связывание %1 с файлами %2...
 AutoStartProgramGroupDescription=Автозапуск:
 AutoStartProgram=Автоматически запускать %1
 AddonHostProgramNotFound=%1 не найден в указанной вами папке.%n%nВы всё равно хотите продолжить?
+
+; *** "Installation Type" dialog messages
+InstallationTypeTitle=Тип установки
+InstallationTypeDesc=Выбрать типип установки
+InstallationTypeLabel=Выберите портативный тип установки только если вы хотите установить приложение на портативный девайс. Пути для деинсталяции созданы не будут.
+InstallationTypeStandardLabel=Обычная - Установить на компьютер (рекомендуется)
+InstallationTypePortableLabel=Портативная - Установить на портативный девайс.

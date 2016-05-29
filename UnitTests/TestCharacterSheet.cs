@@ -32,7 +32,7 @@ namespace UnitTests
 
             if (ItemDB.IsEmpty())
                 ItemDB.Load("Items.xml", true);
-            Tree = SkillTree.CreateSkillTree((string info) => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
+            Tree = SkillTree.CreateSkillTree((string dummy) => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
         }
 
         readonly Regex _backreplace = new Regex("#");

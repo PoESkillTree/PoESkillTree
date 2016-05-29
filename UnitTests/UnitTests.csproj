@@ -86,6 +86,7 @@
     <Compile Include="TestItemDB.cs" />
     <Compile Include="TestMSTAlgorithm.cs" />
     <Compile Include="TestGeneticAlgorithmEasy.cs" />
+    <Compile Include="WeightedSamplerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UpdateDB\UpdateDB.csproj">
@@ -112,7 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TestBuilds\gems\" />
-    <Folder Include="TestGraphs\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TestBuilds\init\Marauder-IceCrash-51.json" />

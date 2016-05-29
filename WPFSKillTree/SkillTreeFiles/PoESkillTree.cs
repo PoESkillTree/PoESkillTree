@@ -62,33 +62,26 @@ namespace POESKillTree.SkillTreeFiles
     internal class Node
     {
         public ushort id { get; set; }
-
-        public string icon { get; set; }
-
+        public string icon { get; set; } 
         public bool ks { get; set; }
-
         public bool not { get; set; }
-
         public string dn { get; set; }
-
         public bool m { get; set; }
-
+        public bool isJewelSocket { get; set; }
+        public bool isMultipleChoice { get; set; }
+        public bool isMultipleChoiceOption { get; set; }
+        public int passivePointsGranted { get; set; }
+        public string ascendancyName { get; set; }
+        public bool isAscendancyStart { get; set; }
         public int[] spc { get; set; }
-
         public string[] sd { get; set; }
-
+        public string[] reminderText { get; set; }
         public int g { get; set; }
-
         public int o { get; set; }
-
         public int oidx { get; set; }
-
         public int sa { get; set; }
-
         public int da { get; set; }
-
         public int ia { get; set; }
-
 
         [JsonProperty("out")]
         public List<int> ot { get; set; }
@@ -151,5 +144,30 @@ namespace POESKillTree.SkillTreeFiles
         public Dictionary<string, SkillSprite[]> skillSprites { get; set; }
 
         public double[] imageZoomLevels { get; set; }
+    }
+
+    internal class Opts
+    {
+        public Dictionary<int, baseToAscClass> ascClasses { get; set; }
+    }
+
+    internal class baseToAscClass
+    {
+        public string name { get; set; }
+        public Dictionary<int, classes> classes { get; set; }
+    }
+
+    internal class classes 
+    {
+        [JsonProperty("name")]
+        public string name { get; set; }
+        [JsonProperty("displayName")]
+        public string displayName { get; set; }
+        [JsonProperty("flavourText")]
+        public string flavourText { get; set; }
+        [JsonProperty("flavourTextRect")]
+        public string flavourTextRect { get; set; }
+        [JsonProperty("flavourTextColour")]
+        public string flavourTextColour { get; set; }
     }
 }

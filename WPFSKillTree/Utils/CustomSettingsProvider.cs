@@ -21,6 +21,14 @@ namespace POESKillTree.Utils
         const string SETTING = "setting";
 
         private readonly string _settingsKey;
+        /// <summary>
+        /// Loads the file into memory.
+        /// </summary>
+        public CustomSettingsProvider()
+        {
+            SettingsDictionary = new Dictionary<string, SettingStruct>();
+            _settingsKey = Settings.Default.SettingsKey;
+        }
 
         /// <summary>
         /// Loads the file into memory.
@@ -138,23 +146,31 @@ namespace POESKillTree.Utils
                 CreateEmptyConfig();
             }
 
-            //load the xml
-            var configXml = XDocument.Load(UserConfigPath);
-
-            //get all of the <setting name="..." serializeAs="..."> elements.
-            var settingElements = configXml.Element(CONFIG).Element(USER_SETTINGS).Element(typeof(Properties.Settings).FullName).Elements(SETTING);
-
-            //iterate through, adding them to the dictionary, (checking for nulls, xml no likey nulls)
-            //using "String" as default serializeAs...just in case, no real good reason.
-            foreach (var element in settingElements)
+            try
             {
-                var newSetting = new SettingStruct()
+                //load the xml
+                var configXml = XDocument.Load(UserConfigPath);
+
+                //get all of the <setting name="..." serializeAs="..."> elements.
+                var settingElements = configXml.Element(CONFIG).Element(USER_SETTINGS).Element(typeof(Properties.Settings).FullName).Elements(SETTING);
+
+                //iterate through, adding them to the dictionary, (checking for nulls, xml no likey nulls)
+                //using "String" as default serializeAs...just in case, no real good reason.
+                foreach (var element in settingElements)
                 {
-                    name = element.Attribute(NAME) == null ? String.Empty : element.Attribute(NAME).Value,
-                    serializeAs = element.Attribute(SERIALIZE_AS) == null ? "String" : element.Attribute(SERIALIZE_AS).Value,
-                    value = element.Value ?? String.Empty
-                };
-                SettingsDictionary.Add(element.Attribute(NAME).Value, newSetting);
+                    var newSetting = new SettingStruct()
+                    {
+                        name = element.Attribute(NAME) == null ? String.Empty : element.Attribute(NAME).Value,
+                        serializeAs = element.Attribute(SERIALIZE_AS) == null ? "String" : element.Attribute(SERIALIZE_AS).Value,
+                        value = element.Value ?? String.Empty
+                    };
+                    SettingsDictionary.Add(element.Attribute(NAME).Value, newSetting);
+                }
+            }
+            catch
+            {
+                if (File.Exists(UserConfigPath))
+                    File.Delete(UserConfigPath);
             }
         }
 
@@ -181,6 +197,12 @@ namespace POESKillTree.Utils
         /// </summary>
         private void SaveValuesToFile()
         {
+            if (!File.Exists(UserConfigPath))
+            {
+                //if the config file is not where it's supposed to be create a new one.
+                CreateEmptyConfig();
+            }
+
             //load the current xml from the file.
             var import = XDocument.Load(UserConfigPath);
 

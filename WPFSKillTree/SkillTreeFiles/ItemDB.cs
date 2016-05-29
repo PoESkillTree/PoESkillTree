@@ -1378,16 +1378,14 @@ namespace POESKillTree.SkillTreeFiles
         public static void Load(string file, bool index = false)
         {
             string filePath = AppData.GetFolder(true) + file;
+            if (!File.Exists(filePath))
+                File.Create(filePath);
+            var serializer = new XmlSerializer(typeof(ItemDB));
+            var reader = new StreamReader(filePath);
+            DB = (ItemDB)serializer.Deserialize(reader);
+            reader.Close();
 
-            if (File.Exists(filePath))
-            {
-                var serializer = new XmlSerializer(typeof(ItemDB));
-                var reader = new StreamReader(filePath);
-                DB = (ItemDB)serializer.Deserialize(reader);
-                reader.Close();
-
-                if (index) Index();
-            }
+            if (index) Index();
         }
 
         // Merges items from XML file.

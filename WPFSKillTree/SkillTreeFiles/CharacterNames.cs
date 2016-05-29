@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -32,6 +33,11 @@ namespace POESKillTree.SkillTreeFiles
             {Duelist, SkillTree.GetCharacterURL(4)},
             {Templar, SkillTree.GetCharacterURL(5)},
             {Shadow, SkillTree.GetCharacterURL(6)},
-        };  
+        };
+
+        public static string GetClassNameFromChartype(int chartype)
+        {
+            return NameToContent.First(x => x.Key == SkillTree.CharName[chartype]).Value;
+        }
     }
 }

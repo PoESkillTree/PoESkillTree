@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using POESKillTree.Localization;
+using POESKillTree.Model;
 
 namespace POESKillTree.ViewModels
 {
@@ -17,9 +19,21 @@ namespace POESKillTree.ViewModels
         public string Note { get; set; }
         public string ItemData { get; set; }
         public DateTime LastUpdated { get; set; }
+        public List<string[]> CustomGroups { get; set; }
+        public bool CurrentlyOpen { get; set; }
+        public BanditSettings Bandits { get; set; }
 
         [XmlIgnoreAttribute]
-        public string Image { get { return "/POESKillTree;component/Images/" + Class + ".jpg"; } }
+        public string Image
+        {
+            get
+            {
+                var imgPath = "/POESKillTree;component/Images/" +  Class;
+                if (CurrentlyOpen)
+                    imgPath += "_Highlighted";
+                return imgPath + ".jpg";
+            }
+        }
         [XmlIgnoreAttribute]
         public string Description
         {
@@ -37,6 +51,8 @@ namespace POESKillTree.ViewModels
         public PoEBuild()
         {
             Visible = true;
+            CustomGroups = new List<string[]>();
+            Bandits = new BanditSettings();
         }
 
         public PoEBuild(string name, string poeClass, string pointsUsed, string url, string note)
@@ -46,6 +62,8 @@ namespace POESKillTree.ViewModels
             PointsUsed = pointsUsed;
             Url = url;
             Note = note;
+            CustomGroups = new List<string[]>();
+            Bandits = new BanditSettings();
         }
 
         public override string ToString()
@@ -60,12 +78,17 @@ namespace POESKillTree.ViewModels
                 Name = build.Name,
                 CharacterName = build.CharacterName,
                 AccountName = build.AccountName,
+                League = build.League,
                 Level = build.Level,
                 Class = build.Class,
                 PointsUsed = build.PointsUsed,
                 Url = build.Url,
                 Note = build.Note,
                 ItemData = build.ItemData,
+                LastUpdated = build.LastUpdated,
+                CustomGroups = new List<string[]>(build.CustomGroups),
+                CurrentlyOpen = build.CurrentlyOpen,
+                Bandits = build.Bandits.Clone()
             };
         }
     }
