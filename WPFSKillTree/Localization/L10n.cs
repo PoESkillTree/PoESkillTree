@@ -50,12 +50,10 @@ namespace POESKillTree.Localization
         }
 
         // Applies current language to application resources.
-        private static void Apply(IOptions options)
+        private static void Apply()
         {
             // Set culture for current thread.
             System.Threading.Thread.CurrentThread.CurrentCulture = Culture;
-
-            options.Language = Culture.ToString();
         }
 
         // Returns available languages.
@@ -80,8 +78,6 @@ namespace POESKillTree.Localization
             string language = null;
             if (!string.IsNullOrEmpty(data.Options.Language))
                 language = data.Options.Language;
-            else
-                data.Options.Language = _Language;
 
             // No language in options, try to match OS language.
             if (language == null)
@@ -89,12 +85,12 @@ namespace POESKillTree.Localization
 
             // Apply default language if no suitable language was found.
             if (language == null)
-                Apply(data.Options);
+                Apply();
             else
             {
                 // Apply default language, if language change fails.
-                if (!SetLanguage(data.Options, language))
-                    Apply(data.Options);
+                if (!SetLanguage(language))
+                    Apply();
             }
         }
 
@@ -234,7 +230,7 @@ namespace POESKillTree.Localization
         }
 
         // Sets current language.
-        public static bool SetLanguage(IOptions options, string language)
+        public static bool SetLanguage(string language)
         {
             // No change.
             if (language == _Language) return true;
@@ -266,7 +262,7 @@ namespace POESKillTree.Localization
             _Culture = CultureInfo.CreateSpecificCulture(language);
 
             // Apply changes.
-            Apply(options);
+            Apply();
 
             return true;
         }

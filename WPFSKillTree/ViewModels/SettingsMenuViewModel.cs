@@ -43,7 +43,7 @@ namespace POESKillTree.ViewModels
                     title: L10n.Message("Restart is needed"));
 
                 if (propertyName == "Language")
-                    L10n.SetLanguage(Options, Options.Language);
+                    L10n.SetLanguage(Options.Language);
             }
         }
     }
