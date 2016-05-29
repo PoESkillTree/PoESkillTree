@@ -1,7 +1,0 @@
-[submodule "RangeTree"]
-	path = RangeTree
-	url = https://github.com/Ttxman/RangeTree.git
-[submodule "WpfRangeControls"]
-	path = WpfRangeControls
-	url = https://github.com/Ttxman/WpfRangeControls
-	branch = NET4_client_profile
