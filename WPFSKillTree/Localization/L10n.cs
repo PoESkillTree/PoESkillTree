@@ -43,6 +43,7 @@ namespace POESKillTree.Localization
             _Language = DefaultLanguage;
             _Culture = CultureInfo.CreateSpecificCulture(_Language);
             _LanguageName = _Culture.NativeName;
+            Apply();
             // The default catalog is current one.
             LocalePath = AppData.GetFolder(LocaleDirName);
             Catalog = DefaultCatalog = Catalog.CreateDefault(Path.Combine(LocalePath, DefaultLanguage), DefaultLanguage, _LanguageName);

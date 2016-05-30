@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -65,7 +67,7 @@ namespace POESKillTree.Model.Items
             get { return _properties.Count > 0; }
         }
 
-        private readonly List<ItemMod> _requirements = new List<ItemMod>();
+        private readonly ObservableCollection<ItemMod> _requirements = new ObservableCollection<ItemMod>();
         public IReadOnlyList<ItemMod> Requirements
         {
             get { return _requirements; }
@@ -222,6 +224,39 @@ namespace POESKillTree.Model.Items
             Height = height;
             RequirementsFromBase();
             _image = itemBase.Image;
+        }
+
+        public Item(Item source)
+        {
+            //_slot, _itemType, _itemGroup, _gems, _keywords, _frame
+            _slot = source._slot;
+            _itemType = source._itemType;
+            _itemGroup = source._itemGroup;
+            if (source._gems != null)
+                _gems = source._gems.ToList();
+            if (source._keywords != null)
+                _keywords = source._keywords.ToList();
+            _frame = source._frame;
+            //_properties, _requirements, _explicit-, _implicit-, _craftetMods
+            _properties = source._properties.ToList();
+            _requirements = new ObservableCollection<ItemMod>(source._requirements);
+            _explicitMods = source._explicitMods.ToList();
+            _implicitMods = source._implicitMods.ToList();
+            _craftedMods = source._craftedMods.ToList();
+            //_flavourText, _nameLine, _typeLine, _socketGroup, _baseType, _iconUrl, _image
+            _flavourText = source.FlavourText;
+            _nameLine = source.NameLine;
+            _typeLine = source.TypeLine;
+            _socketGroup = source._socketGroup;
+            _baseType = source._baseType;
+            _iconUrl = source._iconUrl;
+            _image = source._image;
+            //JsonBase, _x, _y, Width, Height
+            JsonBase = new JObject(source.JsonBase);
+            _x = source._x;
+            _y = source._y;
+            Width = source.Width;
+            Height = source.Height;
         }
 
         public Item(IPersistentData persistentData, JObject val, ItemSlot itemSlot = ItemSlot.Unequipable, bool isGem = false)
@@ -434,38 +469,65 @@ namespace POESKillTree.Model.Items
                 Height = 3;
         }
 
-        private void RequirementsFromBase()
+        [SuppressMessage("ReSharper", "PossibleLossOfFraction", Justification = "Attribute requirements are rounded down")]
+        private void RequirementsFromBase(int minRequiredLevel = 0, int attrRequirementsMultiplier = 100)
         {
             var requirements = new List<string>();
             var values = new List<float>();
-            if (BaseType.Level > 0)
+            var colors = new List<ItemMod.ValueColoring>();
+            var attrColor = attrRequirementsMultiplier == 100
+                ? ItemMod.ValueColoring.White
+                : ItemMod.ValueColoring.LocallyAffected;
+            if (BaseType.Level > 0 || minRequiredLevel > 0)
             {
                 requirements.Add("Level #");
-                values.Add(BaseType.Level);
+                values.Add(Math.Max(BaseType.Level, minRequiredLevel));
+                colors.Add(ItemMod.ValueColoring.White);
             }
             if (BaseType.RequiredStrength > 0)
             {
                 requirements.Add("# Str");
-                values.Add(BaseType.RequiredStrength);
+                values.Add((BaseType.RequiredStrength * attrRequirementsMultiplier) / 100);
+                colors.Add(attrColor);
             }
             if (BaseType.RequiredDexterity > 0)
             {
                 requirements.Add("# Dex");
-                values.Add(BaseType.RequiredDexterity);
+                values.Add((BaseType.RequiredDexterity * attrRequirementsMultiplier) / 100);
+                colors.Add(attrColor);
             }
             if (BaseType.RequiredIntelligence > 0)
             {
                 requirements.Add("# Int");
-                values.Add(BaseType.RequiredIntelligence);
+                values.Add((BaseType.RequiredIntelligence * attrRequirementsMultiplier) / 100);
+                colors.Add(attrColor);
             }
             if (requirements.Any())
             {
                 _requirements.Add(new ItemMod(_itemType, "Requires " + string.Join(", ", requirements))
                 {
                     Value = values,
-                    ValueColor = Enumerable.Repeat(ItemMod.ValueColoring.White, values.Count).ToList()
+                    ValueColor = colors
                 });
             }
+        }
+
+        public void UpdateRequirements()
+        {
+            _requirements.Clear();
+            var minRequiredLevel = Mods
+                .Where(m => m.Parent != null && m.Parent.ParentTier != null)
+                .Select(m => m.Parent.ParentTier)
+                .Select(t => (80 * t.Level) / 100)
+                .DefaultIfEmpty(0)
+                .Max();
+            var attrRequirementsMultiplier = 100 - Mods
+                .Where(m => m.Attribute == "#% reduced Attribute Requirements")
+                .Where(m => m.Value.Any())
+                .Select(m => (int)m.Value[0])
+                .DefaultIfEmpty(0)
+                .Sum();
+            RequirementsFromBase(minRequiredLevel, attrRequirementsMultiplier);
         }
 
         public void SetJsonBase()

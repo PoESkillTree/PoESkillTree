@@ -86,27 +86,21 @@ namespace POESKillTree.Model.Items
         {
             if (!CanEquip(value, slot))
                 return;
-            RemoveItemFromSlot(slot);
+            
+            var old = Equip.FirstOrDefault(i => i.Slot == slot);
+            if (old != null)
+            {
+                Equip.Remove(old);
+                old.Slot = ItemSlot.Unequipable;
+            }
 
             if (value != null)
             {
-                value.Slot = slot;
-                Equip.Add(value);
+                var copy = new Item(value) {Slot = slot};
+                Equip.Add(copy);
             }
             OnPropertyChanged(slot.ToString());
             RefreshItemAttributes();
-        }
-
-        private void RemoveItemFromSlot(ItemSlot slot)
-        {
-            var itm = Equip.FirstOrDefault(i => i.Slot == slot);
-            if (itm != null)
-                Equip.Remove(itm);
-
-            OnPropertyChanged(slot.ToString());
-
-            if (itm != null)
-                itm.Slot = ItemSlot.Unequipable;
         }
 
         public bool CanEquip(Item item, ItemSlot slot)

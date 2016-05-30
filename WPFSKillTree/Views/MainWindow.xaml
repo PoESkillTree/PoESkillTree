@@ -887,7 +887,7 @@
                                 <Grid>
                                     <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Attributes, ElementName=window, Mode=OneWay}"  Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                         <ListBox.ItemTemplate>
-                                            <DataTemplate>
+                                            <DataTemplate DataType="{x:Type items:ItemAttributes+Attribute}">
                                                 <StackPanel>
                                                     <TextBlock><Run Text="{Binding ValuedAttribute, Mode=OneWay}" /><Run Text=" " /></TextBlock>
                                                 </StackPanel>

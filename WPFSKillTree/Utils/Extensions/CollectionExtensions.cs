@@ -5,7 +5,7 @@ using System.Linq;
 namespace POESKillTree.Utils.Extensions
 {
     /// <summary>
-    /// Extensionmethods for collections.
+    /// Extension methods for collections.
     /// </summary>
     public static class CollectionExtensions
     {
@@ -43,6 +43,11 @@ namespace POESKillTree.Utils.Extensions
         public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> enumerable)
         {
             return enumerable.SelectMany(e => e);
+        }
+
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> toAdd)
+        {
+            toAdd.ForEach(collection.Add);
         }
     }
 }

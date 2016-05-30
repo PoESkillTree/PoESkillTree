@@ -89,13 +89,16 @@ namespace POESKillTree.Views
         private ContextMenu _attributeContextMenu;
         private MenuItem cmCreateGroup, cmAddToGroup, cmRemoveFromGroup, cmDeleteGroup;
 
-        private ItemAttributes _itemAttributes = new ItemAttributes();
+        private ItemAttributes _itemAttributes;
         public ItemAttributes ItemAttributes
         {
             get { return _itemAttributes; }
             private set
             {
+                if (value == _itemAttributes)
+                    return;
                 _itemAttributes = value;
+                _itemAttributes.PropertyChanged += (sender, args) => UpdateUI();
                 PropertyChanged.Raise(this, "ItemAttributes");
             }
         }
@@ -381,7 +384,7 @@ namespace POESKillTree.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             const string itemDBPrefix = "Data/ItemDB/";
-            // First to instantiate the ItemDB.
+            // First file instantiates the ItemDB.
             ItemDB.Load(itemDBPrefix + "GemList.xml");
             // Merge all other files from the ItemDB path.
             Directory.GetFiles(itemDBPrefix)
@@ -469,6 +472,7 @@ namespace POESKillTree.Views
 
             _justLoaded = true;
 
+            ItemAttributes = new ItemAttributes();
             // loading last build
             if (_persistentData.CurrentBuild != null)
                 SetCurrentBuild(_persistentData.CurrentBuild);

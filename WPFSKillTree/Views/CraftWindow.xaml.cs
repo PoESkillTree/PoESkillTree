@@ -277,6 +277,7 @@ namespace POESKillTree.Views
             }
 
             Item.FlavourText = "Crafted by PoESkillTree";
+            Item.UpdateRequirements();
         }
 
         private void ApplyLocals()

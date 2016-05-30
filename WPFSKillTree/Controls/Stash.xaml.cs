@@ -160,7 +160,7 @@ namespace POESKillTree.Controls
                         r.MouseDown += R_MouseDown;
 
                         gcontent.Children.Add(r);
-                        Panel.SetZIndex(r, -1000000);
+                        Panel.SetZIndex(r, 10000);
                         _usedBMarks.Add(tab, r);
                     }
                     r.Margin = new Thickness(0, y - 1, 0, gcontent.ActualHeight - y - 1);

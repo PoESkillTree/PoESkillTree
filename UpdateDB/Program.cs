@@ -38,7 +38,8 @@ namespace UpdateDB
             {
                 CreateBackup = true,
                 ActivatedLoaders = LoaderCategories.Any,
-                LoaderFlags = new List<string>()
+                LoaderFlags = new List<string>(),
+                OutputDirectory = OutputDirectory.AppData
             };
             var loaderArguments = new List<string>();
 

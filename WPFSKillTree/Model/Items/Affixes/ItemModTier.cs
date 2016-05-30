@@ -9,7 +9,7 @@ namespace POESKillTree.Model.Items.Affixes
     public class ItemModTier : IEquatable<ItemModTier>
     {
         public string Name { get; private set; }
-        private int Level { get; set; }
+        public int Level { get; private set; }
         public IReadOnlyList<Stat> Stats { get; private set; }
         public bool IsMasterCrafted { get; private set; }
         public int Tier { get; private set; }
