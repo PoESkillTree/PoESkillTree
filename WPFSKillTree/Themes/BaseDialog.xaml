@@ -10,6 +10,7 @@
     
     <!-- The control template can't be partially adjusted so this is mostly copy pasted from
          https://github.com/MahApps/MahApps.Metro/blob/1.2.4/MahApps.Metro/Themes/Dialogs/BaseMetroDialog.xaml
+         (licensed under Microsoft Public License as found on https://github.com/MahApps/MahApps.Metro/blob/1.2.4/LICENSE)
          The button at the bottom and some bindings are new.
          -->
     <ControlTemplate x:Key="BaseDialogTemplate" TargetType="{x:Type controls:BaseDialog}">

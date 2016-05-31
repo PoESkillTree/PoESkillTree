@@ -49,31 +49,31 @@
                     Height="85"
                     HorizontalAlignment="Right" Orientation="Horizontal">
             <Button Margin="5 0" MinWidth="80" Height="35"
-                    Visibility="{Binding Path=IsYesVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                    Command="{Binding Path=YesCommand}"
+                    Visibility="{Binding IsYesVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Command="{Binding YesCommand}"
                     IsDefault="True"
                     Style="{DynamicResource AccentedDialogSquareButton}">
                 <l:Catalog Message="Yes"/>
             </Button>
             <Button Margin="5 0" MinWidth="80" Height="35"
                     IsCancel="{Binding IsCancelVisible, Converter={StaticResource InvertBoolConverter}}"
-                    Visibility="{Binding Path=IsNoVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                    Command="{Binding Path=NoCommand}"
+                    Visibility="{Binding IsNoVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Command="{Binding NoCommand}"
                     Style="{DynamicResource AccentedDialogSquareButton}">
                 <l:Catalog Message="No"/>
             </Button>
             <Button Margin="5 0" MinWidth="80" Height="35"
                     IsCancel="{Binding IsCancelVisible, Converter={StaticResource InvertBoolConverter}}"
-                    Visibility="{Binding Path=IsOKVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                    Command="{Binding Path=OKCommand}"
+                    Visibility="{Binding IsOKVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Command="{Binding OKCommand}"
                     IsDefault="True"
                     Style="{DynamicResource AccentedDialogSquareButton}">
                 <l:Catalog Message="OK"/>
             </Button>
             <Button Margin="5 0" MinWidth="80" Height="35"
                     IsCancel="True"
-                    Visibility="{Binding Path=IsCancelVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                    Command="{Binding Path=CancelCommand}"
+                    Visibility="{Binding IsCancelVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Command="{Binding CancelCommand}"
                     Style="{DynamicResource AccentedDialogSquareButton}">
                 <l:Catalog Message="Cancel"/>
             </Button>

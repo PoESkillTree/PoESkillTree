@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using POESKillTree.Localization;
+using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
 using POESKillTree.Views;
 
@@ -25,6 +29,13 @@ namespace POESKillTree.Controls.Dialogs
         {
             view.DataContext = viewModel;
 
+            // Undefault buttons not in the dialog as they would be pressed instead of a dialog button on enter.
+            var oldDefaults = window.FindVisualChildren<Button>(view).Where(b => b.IsDefault).ToList();
+            oldDefaults.ForEach(b => b.IsDefault = false);
+            // Clear keyboard focus as they focused element is pressed instead of a dialog element on enter.
+            var oldFocus = Keyboard.FocusedElement;
+            Keyboard.ClearFocus();
+
             await window.ShowMetroDialogAsync(view);
             DialogParticipation.SetRegister(view, viewModel);
             if (onShown != null) onShown();
@@ -32,6 +43,10 @@ namespace POESKillTree.Controls.Dialogs
             await viewModel.WaitForCloseAsync();
             await window.HideMetroDialogAsync(view);
             DialogParticipation.SetRegister(view, null);
+
+            // Restore IsDefault and keyboard focus.
+            oldDefaults.ForEach(b => b.IsDefault = true);
+            Keyboard.Focus(oldFocus);
         }
 
         public static Task<MessageBoxResult> ShowQuestionAsync(this MetroWindow window, string message,

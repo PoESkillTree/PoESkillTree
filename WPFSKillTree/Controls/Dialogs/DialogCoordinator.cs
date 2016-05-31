@@ -8,7 +8,8 @@ using POESKillTree.ViewModels;
 
 namespace POESKillTree.Controls.Dialogs
 {
-    // Adjusted version of https://github.com/MahApps/MahApps.Metro/blob/develop/MahApps.Metro/Controls/Dialogs/DialogCoordinator.cs 
+    // Adjusted version of https://github.com/MahApps/MahApps.Metro/blob/1.2.4/MahApps.Metro/Controls/Dialogs/DialogCoordinator.cs 
+    // (licensed under Microsoft Public License as found on https://github.com/MahApps/MahApps.Metro/blob/1.2.4/LICENSE)
     // that uses the methods of ExtendedDialogManager and handles new context registrations if the context is
     // not registrated initially. With that, view models can show dialogs before their view is constructed.
     public class DialogCoordinator : IDialogCoordinator

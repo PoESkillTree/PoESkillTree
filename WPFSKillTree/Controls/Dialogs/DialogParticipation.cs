@@ -6,7 +6,8 @@ namespace POESKillTree.Controls.Dialogs
 {
     public delegate void ContextRegistrationChangedEventHandler(object context, DependencyObject association);
 
-    // This is a copy of https://github.com/MahApps/MahApps.Metro/blob/develop/MahApps.Metro/Controls/Dialogs/DialogParticipation.cs
+    // This is a copy of https://github.com/MahApps/MahApps.Metro/blob/1.2.4/MahApps.Metro/Controls/Dialogs/DialogParticipation.cs
+    // (licensed under Microsoft Public License as found on https://github.com/MahApps/MahApps.Metro/blob/1.2.4/LICENSE)
     // to be able to access its internal methods and to add a changed event.
     public static class DialogParticipation
     {
