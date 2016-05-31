@@ -79,7 +79,7 @@ namespace POESKillTree.Views
         {
             _equipmentData = equipmentData;
             InitializeComponent();
-            GroupList = Enum.GetValues(typeof(ItemGroup)).Cast<ItemGroup>().Except(new[] {ItemGroup.Unknown}).ToArray();
+            GroupList = Enum.GetValues(typeof(ItemGroup)).Cast<ItemGroup>().Except(new[] {ItemGroup.Unknown, ItemGroup.Gem}).ToArray();
         }
 
         private void OnPropertyChanged([CallerMemberName] string prop = null)

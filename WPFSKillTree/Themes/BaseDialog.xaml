@@ -55,7 +55,7 @@
                                         IsDefault="True" IsCancel="True"
                                         Style="{DynamicResource AccentedDialogSquareButton}"
                                         Command="{TemplateBinding CloseCommand}">
-                                    <l:Catalog Message="OK"/>
+                                    <l:Catalog Message="Close"/>
                                 </Button>
                             </StackPanel>
                         </Grid>

@@ -1203,10 +1203,11 @@ namespace POESKillTree.SkillTreeFiles
             if (prefs.HasFlag(ResetPreferences.MainTree))
             {
                 SkilledNodes.Clear();
-                if (!prefs.HasFlag(ResetPreferences.AscendancyTree))
+                if (prefs.HasFlag(ResetPreferences.AscendancyTree))
+                    AscType = 0;
+                else
                     SkilledNodes.UnionWith(ascNodes);
                 var rootNode = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == CharName[_chartype]);
-                AscType = 0;
                 SkilledNodes.Add(rootNode.Value.Id);
             }
             else if (prefs.HasFlag(ResetPreferences.AscendancyTree))
