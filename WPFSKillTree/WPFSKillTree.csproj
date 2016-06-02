@@ -152,6 +152,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="Views\App.xaml">
@@ -166,6 +170,9 @@
     <Compile Include="Contrib\WpfRangeControls\RangeItemsControl.cs" />
     <Compile Include="Contrib\WpfRangeControls\RangePanel.cs" />
     <Compile Include="Contrib\WpfRangeControls\RangeScrollbar.cs" />
+    <Compile Include="Controls\ColorPickerButton.xaml.cs">
+      <DependentUpon>ColorPickerButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
@@ -193,6 +200,25 @@
     <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Bandit.cs" />
+    <Compile Include="Model\ItemFilter\Block.cs" />
+    <Compile Include="Model\ItemFilter\Filter.cs" />
+    <Compile Include="Model\ItemFilter\FilterManager.cs" />
+    <Compile Include="Model\ItemFilter\IMergeableMatch.cs" />
+    <Compile Include="Model\ItemFilter\Match.cs" />
+    <Compile Include="Model\ItemFilter\MatchBaseType.cs" />
+    <Compile Include="Model\ItemFilter\MatchClass.cs" />
+    <Compile Include="Model\ItemFilter\MatchDropLevel.cs" />
+    <Compile Include="Model\ItemFilter\MatchEnum.cs" />
+    <Compile Include="Model\ItemFilter\MatchItemLevel.cs" />
+    <Compile Include="Model\ItemFilter\MatchLinkedSockets.cs" />
+    <Compile Include="Model\ItemFilter\MatchNumber.cs" />
+    <Compile Include="Model\ItemFilter\MatchQuality.cs" />
+    <Compile Include="Model\ItemFilter\MatchRarity.cs" />
+    <Compile Include="Model\ItemFilter\MatchSocketGroup.cs" />
+    <Compile Include="Model\ItemFilter\MatchSockets.cs" />
+    <Compile Include="Model\ItemFilter\MatchStrings.cs" />
+    <Compile Include="Model\ItemFilter\Rule.cs" />
+    <Compile Include="Model\ItemFilter\RuleGroup.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
@@ -270,6 +296,7 @@
       <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\CollectionExtensions.cs" />
+    <Compile Include="Utils\ColorUtils.cs" />
     <Compile Include="Utils\Converter\BoolConverter.cs" />
     <Compile Include="Utils\Converter\EnumConverter.cs" />
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />
@@ -278,6 +305,7 @@
     <Compile Include="Utils\Notifier.cs" />
     <Compile Include="Utils\PropertyExtension.cs" />
     <Compile Include="Utils\RegexTools.cs" />
+    <Compile Include="Utils\Converter\StringBrushConverter.cs" />
     <Compile Include="Utils\ThreadSafeRandom.cs" />
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
@@ -315,6 +343,9 @@
     <Compile Include="Controls\BanditSelection.xaml.cs">
       <DependentUpon>BanditSelection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ColorButtonDialog.xaml.cs">
+      <DependentUpon>ColorButtonDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CraftWindow.xaml.cs">
       <DependentUpon>CraftWindow.xaml</DependentUpon>
     </Compile>
@@ -329,6 +360,12 @@
     </Compile>
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemFilterEditWindow.xaml.cs">
+      <DependentUpon>ItemFilterEditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemFilterOpenWindow.xaml.cs">
+      <DependentUpon>ItemFilterOpenWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
@@ -355,6 +392,14 @@
       <DependentUpon>FormChooseGroupName.xaml</DependentUpon>
     </Compile>
     <Page Include="Contrib\WpfRangeControls\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ExtendedWPFToolkit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -412,6 +457,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ColorButtonDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\CraftWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -429,6 +478,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AboutWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ItemFilterEditWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ItemFilterOpenWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -670,6 +727,8 @@
     <Resource Include="Images\Ranger_Highlighted.jpg" />
     <Resource Include="Images\Marauder_Highlighted.jpg" />
     <Resource Include="Images\Duelist_Highlighted.jpg" />
+    <Resource Include="Libs\README.txt" />
+    <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
     <Content Include="release.iss" />
     <Content Include="Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -715,7 +774,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)
+if $(ConfigurationName) == Debug xcopy /E /I /Q /Y $(ProjectDir)Locale $(TargetDir)Locale</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

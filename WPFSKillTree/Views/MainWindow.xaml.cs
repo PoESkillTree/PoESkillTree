@@ -820,6 +820,12 @@ namespace POESKillTree.Views
             _persistentData.CurrentBuild.AccountName = diw.GetAccountName();
         }
 
+        private void Menu_ItemFilterEditor(object sender, RoutedEventArgs e)
+        {
+            var window = new ItemFilterOpenWindow() { Owner = this };
+            window.ShowDialog();
+        }
+
         private void Menu_ClearItems(object sender, RoutedEventArgs e)
         {
             ClearCurrentItemData();

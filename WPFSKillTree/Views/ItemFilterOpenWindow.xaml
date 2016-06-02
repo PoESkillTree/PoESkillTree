@@ -1,0 +1,96 @@
+﻿<controls:MetroWindow
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    x:Class="POESKillTree.Views.ItemFilterOpenWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+    Icon="/POESKillTree;component/logo.ico"
+    Width="500"
+    WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"
+    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height">
+    <controls:MetroWindow.Title>
+        <l:Catalog Message="Item Filter Editor"/>
+    </controls:MetroWindow.Title>
+    <Window.Resources>
+        <ResourceDictionary>
+            <CollectionViewSource x:Key="FilterCollectionView" Source="{Binding FilterNames}">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top">
+            <TextBlock.Text>
+                <l:Catalog Message="Enter a name for filter you want to create."/>
+            </TextBlock.Text>
+        </TextBlock>
+        <Grid Margin="10,10,10,0" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="NameTextBox" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0"/>
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="New_Click" Margin="0,0,5,0" Grid.Column="1">
+                <Button.Content>
+                    <l:Catalog Message="New Filter"/>
+                </Button.Content>
+            </Button>
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="Copy_Click" Margin="0" Grid.Column="2">
+                <Button.Content>
+                    <l:Catalog Message="Create Copy"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,10,10,0" Grid.Row="2">
+            <TextBlock.Text>
+                <l:Catalog Message="Select a filter you want to edit or create copy of."/>
+            </TextBlock.Text>
+        </TextBlock>
+        <ListBox x:Name="FilterListBox" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 BorderThickness="1" Height="252" Margin="10,10,10,0" Grid.Row="3"
+                 ItemsSource="{Binding Source={StaticResource FilterCollectionView}}"/>
+        <Grid Margin="10,10,10,0" Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="Edit_Click" Margin="0,0,5,0" Grid.Column="1">
+                <Button.Content>
+                    <l:Catalog Message="Edit"/>
+                </Button.Content>
+            </Button>
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="Delete_Click" Margin="0" Grid.Column="2">
+                <Button.Content>
+                    <l:Catalog Message="Delete"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <Button HorizontalAlignment="Center" VerticalAlignment="Top" Click="Close_Click" Margin="10" Grid.Row="5">
+            <Button.Content>
+                <l:Catalog Message="Close"/>
+            </Button.Content>
+        </Button>
+    </Grid>
+</controls:MetroWindow>
