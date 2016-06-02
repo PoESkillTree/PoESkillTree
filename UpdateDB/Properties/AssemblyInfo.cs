@@ -21,5 +21,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("PoESkillTree - Ascendancy")]
 [assembly: AssemblyCopyright("Copyright © 2012-2015 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.2.9.948")]
-[assembly: AssemblyInformationalVersion("2.2.9")]
+[assembly: AssemblyFileVersion("2.2.10.957")]
+[assembly: AssemblyInformationalVersion("2.2.10")]

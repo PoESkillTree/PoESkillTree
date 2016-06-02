@@ -991,15 +991,15 @@ msgstr "Riskovanie"
 msgid "Character"
 msgstr "Postava"
 
-#: SkillTreeFiles\SkillTree.cs:743
+#: SkillTreeFiles\SkillTree.cs:744
 msgid "Downloading Skill tree assets"
 msgstr "Sťahujem údaje stromu zručností"
 
-#: SkillTreeFiles\SkillTree.cs:1278
+#: SkillTreeFiles\SkillTree.cs:1279
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr "Prosím označte nevycvičené uzly pomocou kliknutia pravým tlačidlom."
 
-#: SkillTreeFiles\SkillTree.cs:1298
+#: SkillTreeFiles\SkillTree.cs:1299
 msgid "Error while trying to find solution"
 msgstr "Chyba počas hľadania riešenia"
 

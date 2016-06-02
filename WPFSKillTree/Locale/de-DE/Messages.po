@@ -1009,15 +1009,15 @@ msgstr ""
 msgid "Character"
 msgstr "Charakter"
 
-#: SkillTreeFiles\SkillTree.cs:743
+#: SkillTreeFiles\SkillTree.cs:744
 msgid "Downloading Skill tree assets"
 msgstr "Herunterladen der Fähigkeitenbaum Assets"
 
-#: SkillTreeFiles\SkillTree.cs:1278
+#: SkillTreeFiles\SkillTree.cs:1279
 msgid "Please tag non-skilled nodes by right-clicking them."
 msgstr "Markiere nicht geskillte Knoten durch einen Rechtsklick"
 
-#: SkillTreeFiles\SkillTree.cs:1298
+#: SkillTreeFiles\SkillTree.cs:1299
 msgid "Error while trying to find solution"
 msgstr "Beim Finden der Lösung ist ein Fehler aufgetreten"
 
