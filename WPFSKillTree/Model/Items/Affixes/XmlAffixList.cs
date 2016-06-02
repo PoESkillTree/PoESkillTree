@@ -28,6 +28,9 @@ namespace POESKillTree.Model.Items.Affixes
 
         [XmlAttribute]
         public ItemType ItemType { get; set; }
+
+        [XmlAttribute]
+        public ItemGroup ItemGroup { get; set; }
     }
 
     public class XmlTier

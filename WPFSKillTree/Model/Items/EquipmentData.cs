@@ -42,17 +42,48 @@ namespace POESKillTree.Model.Items
             _root = new WordSetTreeNode(BaseList.Select(m => m.Name));
         }
 
-        private static IEnumerable<Affix> LoadAffixes()
+        private static IEnumerable<XmlAffix> LoadAffixFile(string fileName)
         {
-            var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"AffixList.xml");
+            var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), fileName);
             if (!File.Exists(filename))
-                return new List<Affix>();
+                return Enumerable.Empty<XmlAffix>();
 
             using (var reader = new StreamReader(filename))
             {
                 var ser = new XmlSerializer(typeof(XmlAffixList));
-                var xmlList = (XmlAffixList) ser.Deserialize(reader);
-                return xmlList.Affixes.Select(x => new Affix(x));
+                var xmlList = (XmlAffixList)ser.Deserialize(reader);
+                return xmlList.Affixes;
+            }
+        }
+
+        private static IEnumerable<Affix> LoadAffixes()
+        {
+            return LoadAffixFile("AffixList.xml")
+                    .Union(LoadAffixFile("SignatureAffixList.xml"))
+                    .SelectMany(GroupToTypes)
+                    .Select(x => new Affix(x));
+        }
+
+        private static IEnumerable<XmlAffix> GroupToTypes(XmlAffix affix)
+        {
+            if (affix.ItemGroup == ItemGroup.Unknown)
+            {
+                yield return affix;
+            }
+            else
+            {
+                foreach (var itemType in affix.ItemGroup.Types())
+                {
+                    yield return new XmlAffix
+                    {
+                        Global = affix.Global,
+                        ItemGroup = ItemGroup.Unknown,
+                        ItemType = itemType,
+                        ModType = affix.ModType,
+                        Name = affix.Name,
+                        Tiers = affix.Tiers
+                    };
+                }
             }
         }
 
