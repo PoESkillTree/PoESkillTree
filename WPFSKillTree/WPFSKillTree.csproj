@@ -170,6 +170,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Contrib\RangeTree\Range.cs" />
+    <Compile Include="Contrib\RangeTree\RangeTree.cs" />
+    <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />
+    <Compile Include="Contrib\RangeTree\RangeTreeNode.cs" />
+    <Compile Include="Contrib\WpfRangeControls\RangeAlignment.cs" />
+    <Compile Include="Contrib\WpfRangeControls\RangeItemsControl.cs" />
+    <Compile Include="Contrib\WpfRangeControls\RangePanel.cs" />
+    <Compile Include="Contrib\WpfRangeControls\RangeScrollbar.cs" />
     <Compile Include="Controls\Dialogs\BaseDialog.cs" />
     <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />
     <Compile Include="Controls\Dialogs\DialogParticipation.cs" />
@@ -388,6 +396,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Contrib\WpfRangeControls\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -527,6 +539,10 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="build-locale.bat" />
+    <None Include="Contrib\RangeTree\LICENSE" />
+    <None Include="Contrib\RangeTree\README.md" />
+    <None Include="Contrib\WpfRangeControls\LICENSE" />
+    <None Include="Contrib\WpfRangeControls\README.md" />
     <None Include="dist-clean.bat" />
     <None Include="dist-release.bat" />
     <None Include="Locale\en-US\Help.md" />
@@ -740,16 +756,6 @@
     <None Include="Tools\7z.dll" />
     <None Include="Tools\7z.exe" />
     <None Include="Tools\7z.LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RangeTree\RangeTree\RangeTree.csproj">
-      <Project>{9cc3eb9d-32d2-41e6-96ee-c01dc32a5aed}</Project>
-      <Name>RangeTree</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WpfRangeControls\WpfRangeControls\WpfRangeControls.csproj">
-      <Project>{8bd896f3-4860-4797-9fe5-78e2980b4f75}</Project>
-      <Name>WpfRangeControls</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Assets\" />

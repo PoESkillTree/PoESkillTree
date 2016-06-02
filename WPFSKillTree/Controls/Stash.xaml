@@ -6,7 +6,7 @@
              xmlns:cont="clr-namespace:POESKillTree.Controls"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-             xmlns:WpfRangeControls="clr-namespace:WpfRangeControls;assembly=WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="POESKillTree.Controls.Stash"
+             xmlns:WpfRangeControls="clr-namespace:WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="POESKillTree.Controls.Stash"
              mc:Ignorable="d" 
              d:DesignHeight="351"
              x:Name="control" MouseWheel="control_MouseWheel" Loaded="control_Loaded"

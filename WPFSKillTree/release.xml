@@ -78,7 +78,7 @@
 
     <PropertyGroup>
         <InstallDir>PoESkillTree</InstallDir>
-        <Platform>AnyCPU</Platform>
+        <Platform>x86</Platform>
         <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
         <ZipTool>Tools\7z.exe a -tzip</ZipTool>
         <ISCCTool>Tools\isetup\ISCC.exe</ISCCTool>

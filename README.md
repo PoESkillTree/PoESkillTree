@@ -1,5 +1,6 @@
-PoESkillTree
-===
+#PoESkillTree    
+A Passive Skill Tree Planner for Path of Exile
+
 ![](https://cloud.githubusercontent.com/assets/381657/5123351/e9985f18-70aa-11e4-9cc7-250bade5f481.png)
 ###Features
 ---

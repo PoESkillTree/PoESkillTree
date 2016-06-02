@@ -388,7 +388,8 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         Id = nd.id,
                         Name = nd.dn,
-                        attributes = nd.dn.Contains("Jewel Socket") ? new string[1] { "+1 Jewel Socket" } : SplitMultilineAttributes(nd.sd),
+                        //this value should not be split on '\n' as it causes the attribute list to seperate nodes
+                        attributes = nd.dn.Contains("Jewel Socket") ? new string[1] { "+1 Jewel Socket" } : nd.sd, 
                         Orbit = nd.o,
                         OrbitIndex = nd.oidx,
                         Icon = nd.icon,
