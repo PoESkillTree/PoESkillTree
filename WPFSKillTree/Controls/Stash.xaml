@@ -66,7 +66,8 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True" SizeChanged="gcontent_SizeChanged" DragOver="control_DragOver" AllowDrop="True" Drop="gcontent_Drop" DragLeave="gcontent_DragLeave" DragEnter="gcontent_DragEnter">
+        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True" SizeChanged="gcontent_SizeChanged"
+              DragOver="gcontent_DragOver" AllowDrop="True" Drop="gcontent_Drop" DragLeave="gcontent_DragLeave" DragEnter="gcontent_DragEnter">
             <Grid.Background>
                 <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
                     <DrawingBrush.Drawing>

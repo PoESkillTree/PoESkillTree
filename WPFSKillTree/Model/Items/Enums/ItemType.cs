@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace POESKillTree.Model.Items.Enums
@@ -31,40 +32,71 @@ namespace POESKillTree.Model.Items.Enums
         Ring,
         Quiver,
         // Body armours
+        [Description("Armour")]
         BodyArmourArmour,
-        BodyArmourEnergyShield,
+        [Description("Evasion")]
         BodyArmourEvasion,
-        BodyArmourArmourEvasion,
+        [Description("Energy Shield")]
+        BodyArmourEnergyShield,
+        [Description("Armour and Energy Shield")]
         BodyArmourArmourEnergyShield,
+        [Description("Armour and Evasion")]
+        BodyArmourArmourEvasion,
+        [Description("Evasion and Energy Shield")]
         BodyArmourEvasionEnergyShield,
+        [Description("Armour, Evasion and Energy Shield")]
         BodyArmourArmourEvasionEnergyShield,
         // Boots
+        [Description("Armour")]
         BootsArmour,
+        [Description("Evasion")]
         BootsEvasion,
+        [Description("Energy Shield")]
         BootsEnergyShield,
+        [Description("Armour and Energy Shield")]
         BootsArmourEnergyShield,
+        [Description("Armour and Evasion")]
         BootsArmourEvasion,
+        [Description("Evasion and Energy Shield")]
         BootsEvasionEnergyShield,
         // Gloves
+        [Description("Armour")]
         GlovesArmour,
+        [Description("Evasion")]
         GlovesEvasion,
+        [Description("Energy Shield")]
         GlovesEnergyShield,
+        [Description("Armour and Energy Shield")]
         GlovesArmourEnergyShield,
+        [Description("Armour and Evasion")]
         GlovesArmourEvasion,
+        [Description("Evasion and Energy Shield")]
         GlovesEvasionEnergyShield,
         // Helms
+        [Description("Armour")]
         HelmetArmour,
+        [Description("Evasion")]
         HelmetEvasion,
+        [Description("Energy Shield")]
         HelmetEnergyShield,
+        [Description("Armour and Energy Shield")]
         HelmetArmourEnergyShield,
+        [Description("Armour and Evasion")]
         HelmetArmourEvasion,
+        [Description("Evasion and Energy Shield")]
         HelmetEvasionEnergyShield,
         // Shields
+        [Description("Armour")]
         ShieldArmour,
+        [Description("Evasion")]
         ShieldEvasion,
+        [Description("Energy Shield")]
         ShieldEnergyShield,
+        [Description("Armour and Energy Shield")]
         ShieldArmourEnergyShield,
+        [Description("Armour and Evasion")]
         ShieldArmourEvasion,
+        [Description("Evasion and Energy Shield")]
         ShieldEvasionEnergyShield,
         // Jewels
         CobaltJewel,

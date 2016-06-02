@@ -174,6 +174,7 @@
     <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />
     <Compile Include="Controls\Dialogs\DialogParticipation.cs" />
     <Compile Include="Controls\Dialogs\IDialogCoordinator.cs" />
+    <Compile Include="Controls\DraggedItem.cs" />
     <Compile Include="Controls\Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
@@ -282,10 +283,12 @@
     <Compile Include="TreeGenerator\ViewModels\SettingsDialogCoordinator.cs" />
     <Compile Include="Utils\Converter\StringConverter.cs" />
     <Compile Include="Controls\Dialogs\ExtendedDialogManager.cs" />
+    <Compile Include="Utils\Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Utils\Extensions\ImageExtensions.cs" />
     <Compile Include="Utils\Extensions\TaskExtensions.cs" />
     <Compile Include="Utils\NotifyingTask.cs" />
     <Compile Include="Utils\WikiUtils.cs" />
+    <Compile Include="Utils\Win32.cs" />
     <Compile Include="ViewModels\AttributeToTextblockConverter.cs" />
     <Compile Include="ViewModels\CloseableViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
@@ -314,7 +317,6 @@
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
     <Compile Include="Utils\Extensions\EventHandlerExtensions.cs" />
-    <Compile Include="Utils\Extensions\Helpers.cs" />
     <Compile Include="Utils\Extensions\StringExtension.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />

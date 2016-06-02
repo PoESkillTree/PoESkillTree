@@ -17,6 +17,7 @@ namespace UpdateDB.DataLoading.Gems
 {
     // Reader for Unofficial Path of Exile Wiki @ Gamepedia.
     // TODO: Parse for static modifiers as well (e.g. Spell Echo's "10% less Damage").
+    //       (partly done, someone should check if I missed something)
     public class GamepediaReader : IGemReader
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(GamepediaReader));
@@ -387,9 +388,6 @@ namespace UpdateDB.DataLoading.Gems
 
         private static Attribute ParseFixedAttribute(string text)
         {
-            // todo I don't know enough about this class.
-            //      Someone with more knowledge should check if everything works correctly again.
-
             var numberMatches = ReNumber.Matches(text);
             if (numberMatches.Count != 1)
                 return null;

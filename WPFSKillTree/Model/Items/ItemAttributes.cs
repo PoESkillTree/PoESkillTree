@@ -96,8 +96,8 @@ namespace POESKillTree.Model.Items
 
             if (value != null)
             {
-                var copy = new Item(value) {Slot = slot};
-                Equip.Add(copy);
+                value.Slot = slot;
+                Equip.Add(value);
             }
             OnPropertyChanged(slot.ToString());
             RefreshItemAttributes();

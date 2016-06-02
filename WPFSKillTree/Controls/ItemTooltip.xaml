@@ -218,7 +218,7 @@
         </Grid>
 
         <!--properties values - like armor or weapon damage -->
-        <ItemsControl Margin="3,0" Grid.Row="1" Visibility="{Binding Item.HaveProperties,ElementName=control, Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.Properties,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="1" ItemsSource="{Binding Item.Properties,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
                     <TextBlock  Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}, ConverterParameter=colorNumbers}" />
@@ -237,7 +237,7 @@
                         <DataTrigger Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" >
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" >
+                        <DataTrigger Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" >
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -246,7 +246,7 @@
         </Image>
 
         <!--3requirements -->
-        <ItemsControl Margin="3,0" Grid.Row="3" Visibility="{Binding Item.HaveRequirements,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.Requirements,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="3" ItemsSource="{Binding Item.Requirements,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
                     <TextBlock Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter},ConverterParameter=colorNumbers}"/>
@@ -265,7 +265,7 @@
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
-                                <Condition Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
@@ -279,7 +279,7 @@
         </Image>
 
         <!--5 implicit mods-->
-        <ItemsControl Margin="3,0" Grid.Row="5" Visibility="{Binding Item.HaveImplicitMods,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.ImplicitMods,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="5" ItemsSource="{Binding Item.ImplicitMods,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
                     <TextBlock Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
@@ -299,7 +299,7 @@
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
-                                <Condition Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" />
                                 <Condition Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="false" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -318,7 +318,7 @@
 
 
         <!--7 explicit mods-->
-        <ItemsControl Margin="3,0" Grid.Row="7" Visibility="{Binding Item.HaveExplicitMods,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.ExplicitMods,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="7" ItemsSource="{Binding Item.ExplicitMods,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
                     <TextBlock Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
@@ -326,7 +326,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <!--8 crafted mods-->
-        <ItemsControl Margin="3,0" Grid.Row="8" Visibility="{Binding Item.HaveCraftedMods,ElementName=control,Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding Item.CraftedMods,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="8" ItemsSource="{Binding Item.CraftedMods,ElementName=control}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
                     <TextBlock Foreground="#FFB4B4FF" Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
@@ -345,7 +345,7 @@
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
-                                <Condition Binding="{Binding Item.HaveRequirements, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" />
                                 <Condition Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="false" />
                                 <Condition Binding="{Binding Item.HaveExplicitMods, ElementName=control}" Value="false" />
                                 <Condition Binding="{Binding Item.HaveCraftedMods, ElementName=control}" Value="false" />

@@ -30,7 +30,7 @@ namespace POESKillTree.Controls.Dialogs
             view.DataContext = viewModel;
 
             // Undefault buttons not in the dialog as they would be pressed instead of a dialog button on enter.
-            var oldDefaults = window.FindVisualChildren<Button>(view).Where(b => b.IsDefault).ToList();
+            var oldDefaults = window.FindVisualChildren<Button>().Where(b => b.IsDefault).ToList();
             oldDefaults.ForEach(b => b.IsDefault = false);
             // Clear keyboard focus as they focused element is pressed instead of a dialog element on enter.
             var oldFocus = Keyboard.FocusedElement;

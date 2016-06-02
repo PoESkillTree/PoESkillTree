@@ -11,7 +11,7 @@
         xmlns:items="clr-namespace:POESKillTree.Model.Items"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
-        Title="Path of Exile: Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
+        Title="PoESkillTree" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp"
         TextOptions.TextFormattingMode="Display"
@@ -618,7 +618,7 @@
             <TabItem controls:ControlsHelper.HeaderFontSize="14"
                      IsSelected="{Binding IsSelected, ElementName= tyPAssiveTree}">
                 <TabItem.Header>
-                    <l:Catalog Message="Passive Tree"/>
+                    <l:Catalog Message="Skill Tree"/>
                 </TabItem.Header>
             </TabItem>
             <TabItem controls:ControlsHelper.HeaderFontSize="14"

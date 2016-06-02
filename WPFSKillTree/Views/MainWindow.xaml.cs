@@ -169,7 +169,7 @@ namespace POESKillTree.Views
 
         private SettingsWindow _settingsWindow;
 
-        private const string MainWindowTitle = "Path of Exile: Passive Skill Tree Planner";
+        private const string MainWindowTitle = "PoESkillTree";
 
         public MainWindow()
         {
@@ -2085,7 +2085,7 @@ namespace POESKillTree.Views
         private void BeginDrag(MouseEventArgs e)
         {
             var listView = lvSavedBuilds;
-            var listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
+            var listViewItem = ((DependencyObject)e.OriginalSource).TryFindParent<ListViewItem>();
 
             if (listViewItem == null)
                 return;
@@ -2133,7 +2133,7 @@ namespace POESKillTree.Views
 
             var name = e.Data.GetData("myFormat");
             var listView = lvSavedBuilds;
-            var listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
+            var listViewItem = ((DependencyObject)e.OriginalSource).TryFindParent<ListViewItem>();
 
             if (listViewItem != null)
             {
@@ -2509,39 +2509,52 @@ namespace POESKillTree.Views
             Stash.asBar.Value = item.Y;
         }
 
+        private static DragDropEffects deleteRect_DropEffect(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(DraggedItem)))
+            {
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                var effect = draggedItem.DropOnBinEffect;
+
+                if (e.AllowedEffects.HasFlag(effect))
+                {
+                    return effect;
+                }
+            }
+            return DragDropEffects.None;
+        }
+
         private void deleteRect_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
-            {
-                e.Effects = DragDropEffects.Move;
-                e.Handled = true;
-            }
+            e.Handled = true;
+            e.Effects = deleteRect_DropEffect(e);
         }
 
         private void deleteRect_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            var effect = deleteRect_DropEffect(e);
+            if (effect == DragDropEffects.None)
+                return;
+
+            e.Handled = true;
+            e.Effects = effect;
+            var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+            var visualizer = draggedItem.SourceItemVisualizer;
+            var st = visualizer.TryFindParent<Stash>();
+            if (st != null)
             {
-                e.Effects = DragDropEffects.Move;
-
-                var d = e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer;
-
-                var st = d.FindAnchestor<Stash>();
-                if (st != null)
-                {
-                    st.RemoveItem(d.Item);
-                }
-                else
-                {
-                    d.Item = null;
-                }
-                deleteRect.Opacity = 0.0;
+                st.RemoveItem(visualizer.Item);
             }
+            else
+            {
+                visualizer.Item = null;
+            }
+            deleteRect.Opacity = 0.0;
         }
 
         private void deleteRect_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            if (deleteRect_DropEffect(e) != DragDropEffects.None)
             {
                 deleteRect.Opacity = 0.3;
             }
@@ -2549,7 +2562,7 @@ namespace POESKillTree.Views
 
         private void deleteRect_DragLeave(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            if (deleteRect_DropEffect(e) != DragDropEffects.None)
             {
                 deleteRect.Opacity = 0.0;
             }

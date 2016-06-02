@@ -32,7 +32,6 @@ namespace POESKillTree.Model.Items
 
             BaseList = LoadBases().ToList();
 
-            // todo The other two-stone rings are not selected by this. Needs disambiguation.
             var dict = new Dictionary<string, ItemBase>();
             foreach (var itemBase in BaseList)
             {

@@ -72,10 +72,6 @@ namespace POESKillTree.Model.Items
         {
             get { return _requirements; }
         }
-        public bool HaveRequirements
-        {
-            get { return _requirements.Count > 0; }
-        }
 
         private List<ItemMod> _implicitMods = new List<ItemMod>();
         public List<ItemMod> ImplicitMods

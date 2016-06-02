@@ -10,9 +10,9 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 using MB.Algodat;
 using POESKillTree.Model.Items;
-using POESKillTree.Utils.Extensions;
 using POESKillTree.Views;
 
 namespace POESKillTree.Controls
@@ -204,10 +204,6 @@ namespace POESKillTree.Controls
                     b.Mode = BindingMode.OneWay;
 
                     iv.SetBinding(ContextMenuProperty, b);
-                    
-
-                    if (item == _dndItem)
-                        iv.Opacity = 0.3;
 
                     if (_foundItems.Contains(item))
                         iv.Background = ItemVisualizer.FoundItemBrush;
@@ -238,24 +234,6 @@ namespace POESKillTree.Controls
             ResizeScrollbarThumb();
         }
 
-
-        private void R_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Rectangle r = (Rectangle) sender;
-            _dndStartDrag = Mouse.GetPosition(gcontent);
-            _dndOverlay = new Rectangle
-            {
-                Fill = r.Fill,
-                Height = r.Height,
-                Margin = r.Margin,
-                Opacity = 0.3
-            };
-            gcontent.Children.Add(_dndOverlay);
-            Panel.SetZIndex(_dndOverlay, 52635);
-            DragDrop.DoDragDrop(this, sender, DragDropEffects.Move);
-            gcontent.Children.Remove(_dndOverlay);
-            _dndOverlay = null;
-        }
 
         private void ReloadItem()
         {
@@ -417,242 +395,223 @@ namespace POESKillTree.Controls
                 asBar.Value += 1;
         }
 
-        private ItemVisualizer _dndVis;
         private Rectangle _dndOverlay;
-        private Point _dndStartDrag;
-        private Thickness _dndOriginalMargin;
-        private Item _dndItem;
+
+        private void R_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragDrop.DoDragDrop(this, sender, DragDropEffects.Move);
+        }
+
         private void Iv_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
-            var siv = sender as ItemVisualizer;
-            if (siv != null)
+            var itemVis = sender as ItemVisualizer;
+            if (itemVis == null || itemVis.Item == null)
+                return;
+            using (var dragged = new DraggedItem(itemVis))
             {
-                _dndStartDrag = Mouse.GetPosition(gcontent);// e.GetPosition(gcontent);
-                _dndOverlay = new Rectangle
-                {
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Width = siv.ActualWidth,
-                    Height = siv.ActualHeight,
-                    Fill = Brushes.DarkGreen,
-                    Margin = siv.Margin,
-                    Opacity = 0.3
-                };
-                _dndOriginalMargin = siv.Margin;
-                gcontent.Children.Add(_dndOverlay);
-                Panel.SetZIndex(_dndOverlay, 52635);
-
-                _dndVis = new ItemVisualizer
-                {
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Width = siv.ActualWidth,
-                    Height = siv.ActualHeight,
-                    Item = siv.Item,
-                    Margin = siv.Margin,
-                    Opacity = 0.5,
-                    Background = null
-                };
-                gcontent.Children.Add(_dndVis);
-                Panel.SetZIndex(_dndVis, 52636);
-
-
-                siv.Opacity = 0.3;
-                _dndItem = siv.Item;
-                DragDrop.DoDragDrop(this, sender, DragDropEffects.Link | DragDropEffects.Move);
-                siv.Opacity = 1;
-                gcontent.Children.Remove(_dndOverlay);
-                gcontent.Children.Remove(_dndVis);
-                _dndVis = null;
-                _dndOverlay = null;
-                _dndItem = null;
+                DragDrop.DoDragDrop(itemVis, dragged, dragged.AllowedEffects);
+                itemVis.Opacity = 1;
+                itemVis.IsHitTestVisible = true;
             }
         }
 
-
-        private void control_DragOver(object sender, DragEventArgs e)
+        private static DragDropEffects ItemDropEffect(DragEventArgs e)
         {
-            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this || _dndOverlay == null)
+            if (e.Data.GetDataPresent(typeof(DraggedItem)))
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                var effect = draggedItem.DropOnStashEffect;
+
+                if (e.AllowedEffects.HasFlag(effect))
+                {
+                    return effect;
+                }
+            }
+            return DragDropEffects.None;
+        }
+
+        private static DragDropEffects StashBookmarkDropEffect(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Rectangle))
+                && ((Rectangle)e.Data.GetData(typeof(Rectangle))).Tag is StashBookmark
+                && e.AllowedEffects.HasFlag(DragDropEffects.Move))
+            {
+                return DragDropEffects.Move;
+            }
+            return DragDropEffects.None;
+        }
+
+        private void gcontent_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+
+            var itemDropEffect = ItemDropEffect(e);
+            var stashBookmarkDropEffect = StashBookmarkDropEffect(e);
+            if (itemDropEffect == DragDropEffects.None && stashBookmarkDropEffect == DragDropEffects.None)
+            {
                 return;
             }
 
-
-            var pos = e.GetPosition(gcontent).Y;
-            if (pos > gcontent.ActualHeight - GridSize / 3)
+            var pos = e.GetPosition(gcontent);
+            // Scroll up or down if at upper or lower end of stash grid.
+            if (pos.Y > gcontent.ActualHeight - GridSize / 3)
             {
                 asBar.Value++;
             }
-            else if (pos < GridSize / 3)
+            else if (pos.Y < GridSize / 3)
             {
                 asBar.Value--;
             }
 
-            if ((e.AllowedEffects & DragDropEffects.Move) != 0)
+            if (stashBookmarkDropEffect != DragDropEffects.None)
             {
+                e.Effects = stashBookmarkDropEffect;
 
-                bool line = false;
-                if (e.Data.GetDataPresent(typeof(Rectangle)))
-                {
-                    line = true;
-                    if (!(((Rectangle) e.Data.GetData(typeof(Rectangle))).Tag is StashBookmark))
-                    {
-                        e.Effects = DragDropEffects.None;
-                        return;
-                    }
+                var r = (Rectangle)e.Data.GetData(typeof(Rectangle));
+                pos.Y -= r.Margin.Top;
 
-                }
-                else if (!e.Data.GetDataPresent(typeof(ItemVisualizer)))
+                var y = (int)Math.Round((r.Margin.Top - pos.Y) / GridSize);
+                _dndOverlay.Margin = new Thickness(0, y * GridSize - 1, 0, gcontent.ActualHeight - y * GridSize - 1);
+            }
+            else
+            {
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                pos.X -= draggedItem.DragStart.X;
+                pos.Y -= draggedItem.DragStart.Y;
+
+                var x = (int)Math.Round(pos.X / GridSize);
+                var y = (int)Math.Round(pos.Y / GridSize);
+
+                _dndOverlay.Margin = new Thickness(x * GridSize, y * GridSize, 0, 0);
+
+                y += PageTop;
+
+                var itm = draggedItem.Item;
+                var overlapedy = _stashRange.Query(new Range<int>(y, y + itm.Height - 1));
+
+                var newposr = new Range<int>(x, x + itm.Width - 1);
+
+                if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.Width - 1).Intersects(newposr))
+                    || newposr.To >= 12 || y < 0 || x < 0)
                 {
                     e.Effects = DragDropEffects.None;
-                    return;
-                }
-
-                e.Handled = true;
-                e.Effects = DragDropEffects.Move;
-
-                var newpos = e.GetPosition(gcontent);
-
-                var dx = newpos.X - _dndStartDrag.X;
-                var dy = newpos.Y - _dndStartDrag.Y;
-
-                var newx = _dndOriginalMargin.Left + dx;
-                var newy = _dndOriginalMargin.Top + dy;
-
-                var x = (int)Math.Round((newx / GridSize));
-                var y = (int)Math.Round((newy / GridSize));
-
-                if (line)
-                {
-                    y = (int)Math.Round(newpos.Y / GridSize);
-                    _dndOverlay.Margin = new Thickness(0, y * GridSize - 1, 0, gcontent.ActualHeight - y * GridSize - 1);
+                    _dndOverlay.Fill = Brushes.DarkRed;
                 }
                 else
                 {
-                    _dndOverlay.Margin = new Thickness(x * GridSize, y * GridSize, 0, 0);
+                    e.Effects = itemDropEffect;
+                    _dndOverlay.Fill = Brushes.DarkGreen;
+                }
 
-                    y += PageTop;
-
-                    var itm = _dndVis.Item;
-                    var overlapedy = _stashRange.Query(new Range<int>(y, y + itm.Height - 1));
-
-                    var newposr = new Range<int>(x, x + itm.Width - 1);
-
-                    if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.Width - 1).Intersects(newposr)) || newposr.To >= 12 || y < 0 || x < 0)
-                        _dndOverlay.Fill = Brushes.DarkRed;
-                    else
-                        _dndOverlay.Fill = Brushes.DarkGreen;
-
-                    _dndVis.Margin = new Thickness(newx, newy, 0, 0);
+                var visualizer = draggedItem.SourceItemVisualizer;
+                if (visualizer.TryFindParent<Stash>() != null)
+                {
+                    visualizer.Opacity = 0.3;
+                    visualizer.IsHitTestVisible = false;
                 }
             }
         }
 
         private void gcontent_Drop(object sender, DragEventArgs e)
         {
-            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this)
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+
+            var overlayFill = _dndOverlay.Fill;
+            gcontent_DragLeave(sender, e);
+
+            var itemDropEffect = ItemDropEffect(e);
+            var stashBookmarkDropEffect = StashBookmarkDropEffect(e);
+            if (itemDropEffect == DragDropEffects.None && stashBookmarkDropEffect == DragDropEffects.None)
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
                 return;
             }
 
-            if ((e.AllowedEffects & DragDropEffects.Move) != 0)
+            var pos = e.GetPosition(gcontent);
+            if (stashBookmarkDropEffect != DragDropEffects.None)
             {
+                e.Effects = stashBookmarkDropEffect;
 
-                bool line = false;
-                if (e.Data.GetDataPresent(typeof(Rectangle)))
-                {
-                    line = true;
-                    if (!(((Rectangle) e.Data.GetData(typeof(Rectangle))).Tag is StashBookmark))
-                    {
-                        e.Effects = DragDropEffects.None;
-                        return;
-                    }
+                var r = (Rectangle)e.Data.GetData(typeof(Rectangle));
+                pos.Y -= r.Margin.Top;
 
-                }
-                else if (!e.Data.GetDataPresent(typeof(ItemVisualizer)) || !Equals(_dndOverlay.Fill, Brushes.DarkGreen))
-                {
-                    e.Effects = DragDropEffects.None;
-                    return;
-                }
-
-                e.Handled = true;
-                e.Effects = DragDropEffects.Move;
-
-                var newpos = e.GetPosition(gcontent);
-
-                var dx = newpos.X - _dndStartDrag.X;
-                var dy = newpos.Y - _dndStartDrag.Y;
-
-                var newx = _dndOriginalMargin.Left + dx;
-                var newy = _dndOriginalMargin.Top + dy;
-
-                var x = (int)Math.Round((newx / GridSize));
-                var y = (int)Math.Round((newy / GridSize));
-
+                var y = (int)Math.Round((r.Margin.Top - pos.Y) / GridSize);
                 y += PageTop;
 
-                if (line)
-                {
-                    y = (int)Math.Round(newpos.Y / GridSize + PageTop);
-                    Rectangle r = (Rectangle) e.Data.GetData(typeof(Rectangle));
-                    StashBookmark sb = (StashBookmark) r.Tag;
-                    sb.Position = y;
-                    Bookmarks.Remove(sb);
-                    AddBookmark(sb);
-                    RedrawItems();
-                }
-                else
-                {
-
-                    var itm = _dndItem;
-                    _dndItem = null;
-                    itm.X = x;
-                    itm.Y = y;
-
-                    Items.Remove(itm);
-                    Items.Add(itm);
-                }
-                ResizeScrollbarThumb();
+                var sb = (StashBookmark)r.Tag;
+                sb.Position = y;
+                Bookmarks.Remove(sb);
+                AddBookmark(sb);
+                RedrawItems();
             }
+            else
+            {
+                if (!Equals(overlayFill, Brushes.DarkGreen))
+                {
+                    return;
+                }
+                e.Effects = itemDropEffect;
+
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                pos.X -= draggedItem.DragStart.X;
+                pos.Y -= draggedItem.DragStart.Y;
+
+                var x = (int)Math.Round(pos.X / GridSize);
+                var y = (int)Math.Round(pos.Y / GridSize);
+                y += PageTop;
+
+                var itm = itemDropEffect == DragDropEffects.Move ? draggedItem.Item : new Item(draggedItem.Item);
+                itm.X = x;
+                itm.Y = y;
+                Items.Remove(itm);
+                Items.Add(itm);
+            }
+            ResizeScrollbarThumb();
         }
 
         private void gcontent_DragLeave(object sender, DragEventArgs e)
         {
-            if (e.Source != this)
-            {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-                return;
-            }
-
-            if (_dndVis != null)
-                _dndVis.Visibility = Visibility.Collapsed;
-
             if (_dndOverlay != null)
-                _dndOverlay.Visibility = Visibility.Collapsed;
+            {
+                gcontent.Children.Remove(_dndOverlay);
+                _dndOverlay = null;
+            }
         }
 
         private void gcontent_DragEnter(object sender, DragEventArgs e)
         {
-
-            if (e.Source != this)
+            if (ItemDropEffect(e) != DragDropEffects.None)
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-                return;
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                var vis = draggedItem.SourceItemVisualizer;
+                _dndOverlay = new Rectangle
+                {
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Width = vis.ActualWidth,
+                    Height = vis.ActualHeight,
+                    Fill = Brushes.DarkGreen,
+                    Margin = vis.Margin,
+                    Opacity = 0.3,
+                    IsHitTestVisible = false
+                };
+                gcontent.Children.Add(_dndOverlay);
+                Panel.SetZIndex(_dndOverlay, 52635);
             }
-
-
-            if (_dndVis != null)
-                _dndVis.Visibility = Visibility.Visible;
-
-            if (_dndOverlay != null)
-                _dndOverlay.Visibility = Visibility.Visible;
+            else if (StashBookmarkDropEffect(e) != DragDropEffects.None)
+            {
+                var r = (Rectangle) e.Data.GetData(typeof(Rectangle));
+                _dndOverlay = new Rectangle
+                {
+                    Fill = r.Fill,
+                    Height = r.Height,
+                    Margin = r.Margin,
+                    Opacity = 0.3
+                };
+                gcontent.Children.Add(_dndOverlay);
+                Panel.SetZIndex(_dndOverlay, 52635);
+            }
         }
 
         private void Button_StashTab_Click(object sender, RoutedEventArgs e)
@@ -823,7 +782,7 @@ namespace POESKillTree.Controls
 
             if (mi != null)
             {
-                var menu = mi.FindParent<ContextMenu>();
+                var menu = mi.TryFindParent<ContextMenu>();
                 var vis = menu.PlacementTarget as ItemVisualizer;
                 if (vis != null)
                 {

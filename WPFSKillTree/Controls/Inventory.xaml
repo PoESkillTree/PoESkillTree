@@ -5,12 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cont="clr-namespace:POESKillTree.Controls"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-             xmlns:items="clr-namespace:POESKillTree.Model.Items"
              xmlns:enums="clr-namespace:POESKillTree.Model.Items.Enums"
              mc:Ignorable="d" 
              x:Name="control"
              Width="600" Height="521" Loaded="control_Loaded">
     <Control.Resources>
+        <ContextMenu x:Key="itemContextMenu">
+            <MenuItem Header="{l:Catalog 'Delete'}" Click="MenuItem_Delete_Click" />
+        </ContextMenu>
         <Style x:Key="itemVisualizerStyle" TargetType="{x:Type cont:ItemVisualizer}">
             <Style.Setters>
                 <Setter Property="Background" Value="#FF202051"/>
@@ -18,6 +20,8 @@
                 <EventSetter Event="DragOver" Handler="ItemVisualizer_DragOver" />
                 <EventSetter Event="Drop" Handler="ItemVisualizer_Drop" />
                 <EventSetter Event="DragOver" Handler="ItemVisualizer_DragOver" />
+                <EventSetter Event="MouseLeftButtonDown" Handler="iv_mouseLeftButtonDown" />
+                <Setter Property="ContextMenu" Value="{StaticResource itemContextMenu}"></Setter>
             </Style.Setters>
             <Style.Triggers>
                 <Trigger Property="Item" Value="{x:Null}">
@@ -25,9 +29,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <ContextMenu x:Key="itemContextMenu">
-            <MenuItem Header="{l:Catalog 'Delete'}" Click="MenuItem_Delete_Click" />
-        </ContextMenu>
     </Control.Resources>
     <Grid>
         <Viewbox>
@@ -36,16 +37,16 @@
                     <ImageBrush ImageSource="/POESKillTree;component/Images/EquipmentUI/Inventory.png" Stretch="Uniform"/>
                 </Grid.Background>
                 <TextBlock HorizontalAlignment="Center" FontSize="48" FontWeight="Bold" VerticalAlignment="Top" Foreground="Gray" Text="{l:Catalog 'Inventory'}" />
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="252,206,254,175" x:Name="Armor" Tag="{x:Static enums:ItemSlot.Armor}" Item="{Binding ItemAttributes.Armor,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="66,111,441,222" x:Name="MainHand" Tag="{x:Static enums:ItemSlot.MainHand}" Item="{Binding ItemAttributes.MainHand,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="438,111,69,222" x:Name="OffHand" Tag="{x:Static enums:ItemSlot.OffHand}" Item="{Binding ItemAttributes.OffHand,ElementName=control,Mode=TwoWay}" />
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="182,254,372,222" x:Name="Ring" Tag="{x:Static enums:ItemSlot.Ring}" Item="{Binding ItemAttributes.Ring,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="369,254,185,222" x:Name="Ring2" Tag="{x:Static enums:ItemSlot.Ring2}" Item="{Binding ItemAttributes.Ring2,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="369,194,185,282" x:Name="Amulet" Tag="{x:Static enums:ItemSlot.Amulet}" Item="{Binding ItemAttributes.Amulet,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="252,100,254,329" x:Name="Helm" Tag="{x:Static enums:ItemSlot.Helm}" Item="{Binding ItemAttributes.Helm,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="135,313,372,116" x:Name="Gloves" Tag="{x:Static enums:ItemSlot.Gloves}" Item="{Binding ItemAttributes.Gloves,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="369,313,138,116" x:Name="Boots" Tag="{x:Static enums:ItemSlot.Boots}" Item="{Binding ItemAttributes.Boots,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer MouseLeftButtonDown="iv_mouseLeftButtonDown" ContextMenu="{StaticResource itemContextMenu}" Style="{DynamicResource itemVisualizerStyle}" Margin="252,360,254,116" x:Name="Belt" Tag="{x:Static enums:ItemSlot.Belt}" Item="{Binding ItemAttributes.Belt,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="252,206,254,175" Tag="{x:Static enums:ItemSlot.Armor}" Item="{Binding ItemAttributes.Armor,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="66,111,441,222" Tag="{x:Static enums:ItemSlot.MainHand}" Item="{Binding ItemAttributes.MainHand,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="438,111,69,222" Tag="{x:Static enums:ItemSlot.OffHand}" Item="{Binding ItemAttributes.OffHand,ElementName=control,Mode=TwoWay}" />
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="182,254,372,222" Tag="{x:Static enums:ItemSlot.Ring}" Item="{Binding ItemAttributes.Ring,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="369,254,185,222" Tag="{x:Static enums:ItemSlot.Ring2}" Item="{Binding ItemAttributes.Ring2,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="369,194,185,282" Tag="{x:Static enums:ItemSlot.Amulet}" Item="{Binding ItemAttributes.Amulet,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="252,100,254,329" Tag="{x:Static enums:ItemSlot.Helm}" Item="{Binding ItemAttributes.Helm,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="135,313,372,116" Tag="{x:Static enums:ItemSlot.Gloves}" Item="{Binding ItemAttributes.Gloves,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="369,313,138,116" Tag="{x:Static enums:ItemSlot.Boots}" Item="{Binding ItemAttributes.Boots,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="252,360,254,116" Tag="{x:Static enums:ItemSlot.Belt}" Item="{Binding ItemAttributes.Belt,ElementName=control,Mode=TwoWay}"/>
             </Grid>
         </Viewbox>
     </Grid>
