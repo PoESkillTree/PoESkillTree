@@ -47,21 +47,18 @@ namespace POESKillTree.ItemFilter.Model
                             new Rule
                             {
                                 Id = "Scrap",
-                                IsEnabled = false,
                                 Name = "Armourer's Scrap",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Armourer's Scrap" }) }
                             },
                             new Rule
                             {
                                 Id = "Whetstone",
-                                IsEnabled = false,
                                 Name = "Blacksmith's Whetstone",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Blacksmith's Whetstone" }) }
                             },
                             new Rule
                             {
                                 Id = "Bauble",
-                                IsEnabled = false,
                                 Name = "Glassblower's Bauble",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Glassblower's Bauble" }) }
                             },
