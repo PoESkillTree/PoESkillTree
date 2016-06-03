@@ -24,6 +24,7 @@ using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using POESKillTree.Controls;
+using POESKillTree.ItemFilter.Views;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;

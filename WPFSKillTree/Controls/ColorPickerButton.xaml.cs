@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using POESKillTree.Views;
-using ColorType = POESKillTree.Views.ColorButtonDialog.ColorType;
+using POESKillTree.ItemFilter.Views;
+using ColorType = POESKillTree.ItemFilter.Views.ColorButtonDialog.ColorType;
 
 namespace POESKillTree.Controls
 {

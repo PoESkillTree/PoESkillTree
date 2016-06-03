@@ -9,7 +9,7 @@ using POESKillTree.Localization;
 using POESKillTree.Utils.Converter;
 using NamedColor = POESKillTree.Utils.Converter.ColorUtils.NamedColor;
 
-namespace POESKillTree.Views
+namespace POESKillTree.ItemFilter.Views
 {
     /// <summary>
     /// Interaction logic for ColorButtonDialog.xaml

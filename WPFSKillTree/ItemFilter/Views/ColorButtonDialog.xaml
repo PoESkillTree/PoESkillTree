@@ -1,6 +1,6 @@
 ﻿<controls:MetroWindow
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    x:Class="POESKillTree.Views.ColorButtonDialog"
+    x:Class="POESKillTree.ItemFilter.Views.ColorButtonDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

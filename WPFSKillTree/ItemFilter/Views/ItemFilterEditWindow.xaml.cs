@@ -6,7 +6,7 @@ using MahApps.Metro.Controls;
 using POESKillTree.ItemFilter.Model;
 using POESKillTree.Utils;
 
-namespace POESKillTree.Views
+namespace POESKillTree.ItemFilter.Views
 {
     /// <summary>
     /// Interaction logic for ItemFilterEditWindow.xaml
