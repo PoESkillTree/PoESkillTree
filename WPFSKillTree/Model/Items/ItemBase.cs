@@ -108,6 +108,7 @@ namespace POESKillTree.Model.Items
         public ItemType ItemType { get; private set; }
         public ItemGroup ItemGroup { get; private set; }
 
+        public bool CanHaveQuality { get; private set; }
         public IReadOnlyList<Stat> ImplicitMods { get; private set; }
         private IReadOnlyList<Stat> Properties { get; set; }
 
@@ -129,6 +130,10 @@ namespace POESKillTree.Model.Items
             Properties = xmlBase.Properties != null
                 ? xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList()
                 : new List<Stat>();
+            CanHaveQuality = ItemGroup == ItemGroup.OneHandedWeapon || ItemGroup == ItemGroup.TwoHandedWeapon
+                             || ItemGroup == ItemGroup.BodyArmour || ItemGroup == ItemGroup.Boots
+                             || ItemGroup == ItemGroup.Gloves || ItemGroup == ItemGroup.Helmet
+                             || ItemGroup == ItemGroup.Shield;
 
             Image = new ItemImage(options, Name, ItemGroup);
         }
@@ -157,6 +162,7 @@ namespace POESKillTree.Model.Items
             RequiredIntelligence = 0;
             ImplicitMods = new List<Stat>();
             Properties = new List<Stat>();
+            CanHaveQuality = false;
 
             Name = typeLine;
             ItemGroup = ItemSlotToGroup(itemSlot);
@@ -232,12 +238,20 @@ namespace POESKillTree.Model.Items
             };
         }
 
-        public List<ItemMod> GetRawProperties()
+        public List<ItemMod> GetRawProperties(float quality = 0)
         {
             var props = new List<ItemMod>();
 
             if (ItemGroup == ItemGroup.TwoHandedWeapon || ItemGroup == ItemGroup.OneHandedWeapon)
                 props.Add(new ItemMod(ItemType, Regex.Replace(ItemType.ToString(), @"([a-z])([A-Z])", @"$1 $2")));
+
+            if (quality > 0)
+            {
+                var qProp = new ItemMod(ItemType, "Quality: +#%");
+                qProp.Value.Add(quality);
+                qProp.ValueColor.Add(ItemMod.ValueColoring.LocallyAffected);
+                props.Add(qProp);
+            }
 
             if (Properties != null)
                 props.AddRange(Properties.Select(prop => prop.ToItemMod()));

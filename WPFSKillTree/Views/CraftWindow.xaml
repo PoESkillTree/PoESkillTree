@@ -50,6 +50,17 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <local:ModSelector x:Name="MsQuality" CanDeselect="false" SelectedValuesChanged="ms_SelectedValuesChanged">
+                <local:ModSelector.Style>
+                    <Style TargetType="{x:Type local:ModSelector}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Affixes, ElementName=MsQuality}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </local:ModSelector.Style>
+            </local:ModSelector>
             <local:ModSelector x:Name="msImplicitMods" CanDeselect="false" SelectedValuesChanged="ms_SelectedValuesChanged">
                 <local:ModSelector.Style>
                     <Style TargetType="{x:Type local:ModSelector}">

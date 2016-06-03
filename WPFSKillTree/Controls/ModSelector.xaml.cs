@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 
 namespace POESKillTree.Controls

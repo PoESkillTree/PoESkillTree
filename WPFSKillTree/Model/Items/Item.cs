@@ -598,6 +598,10 @@ namespace POESKillTree.Model.Items
         /// </summary>
         public Dictionary<ItemMod, List<ItemMod>> GetModsAffectingProperties()
         {
+            var qualityMod = Properties.FirstOrDefault(m => m.Attribute == "Quality: +#%");
+            // Quality with "+#%" in name is not recognized as percentage increase.
+            var qIncMod = qualityMod == null ? null
+                : new ItemMod(ItemType, qualityMod.Value[0] + "%", Numberfilter);
             var localmods = Mods.Where(m => m.IsLocal).ToList();
 
             var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds #-# |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");
@@ -614,6 +618,16 @@ namespace POESKillTree.Model.Items
             foreach (var mod in Properties)
             {
                 dict[mod] = localmods.Where((m, i) => localnames[i].Any(n => mod.Attribute.Contains(n))).ToList();
+                // Add quality if this property is affected by quality
+                var name = mod.Attribute;
+                if (qualityMod != null &&
+                    (name.Contains("physical damage", StringComparison.InvariantCultureIgnoreCase)
+                    || name.Contains("evasion rating", StringComparison.InvariantCultureIgnoreCase)
+                    || name.Contains("armour", StringComparison.InvariantCultureIgnoreCase)
+                    || name.Contains("energy shield", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    dict[mod].Add(qIncMod);
+                }
             }
             return dict;
         }

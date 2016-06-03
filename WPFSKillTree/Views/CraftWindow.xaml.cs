@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using MB.Algodat;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
@@ -18,6 +19,8 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class CraftWindow : INotifyPropertyChanged
     {
+        private const string QualityModName = "Quality: +#%";
+
         private ItemGroup[] _groupList;
         public ItemGroup[] GroupList
         {
@@ -138,6 +141,16 @@ namespace POESKillTree.Views
             {
                 msImplicitMods.Affixes = null;
             }
+            if (ibase.CanHaveQuality)
+            {
+                var qualityStat = new Stat(QualityModName, new Range<float>(0, 20), Item.ItemType, null);
+                var qualityAffix = new Affix(new[] {QualityModName}, new[] {new ItemModTier(new[] {qualityStat})});
+                MsQuality.Affixes = new List<Affix>(new[] {qualityAffix});
+            }
+            else
+            {
+                MsQuality.Affixes = null;
+            }
 
             var aaff = _equipmentData.AffixesPerItemType[Item.ItemType].ToArray();
 
@@ -219,7 +232,12 @@ namespace POESKillTree.Views
                 Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
             }
 
-            Item.Properties = Item.BaseType.GetRawProperties();
+            var quality = 0.0;
+            if (MsQuality.Affixes != null && MsQuality.SelectedValues[0] > 0)
+            {
+                quality = MsQuality.SelectedValues[0];
+            }
+            Item.Properties = Item.BaseType.GetRawProperties((float) quality);
             ApplyLocals();
 
             if (Item.IsWeapon)
