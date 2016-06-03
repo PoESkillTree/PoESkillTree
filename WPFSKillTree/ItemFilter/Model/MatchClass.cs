@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace POESKillTree.Model.ItemFilter
+namespace POESKillTree.ItemFilter.Model
 {
     /*
      * Class:

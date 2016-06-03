@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using POESKillTree.Utils.Converter;
 
-namespace POESKillTree.Model.ItemFilter
+namespace POESKillTree.ItemFilter.Model
 {
     public class Filter
     {

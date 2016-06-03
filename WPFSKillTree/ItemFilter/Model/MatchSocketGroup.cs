@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POESKillTree.Model.ItemFilter
+namespace POESKillTree.ItemFilter.Model
 {
     public class MatchSocketGroup : MatchStrings
     {

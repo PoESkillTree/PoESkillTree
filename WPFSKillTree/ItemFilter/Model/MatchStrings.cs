@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.Model.ItemFilter
+namespace POESKillTree.ItemFilter.Model
 {
     public class MatchStrings : Match, IMergeableMatch
     {

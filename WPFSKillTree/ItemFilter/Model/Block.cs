@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using POESKillTree.Utils.Converter;
 using System.Windows.Media;
 
-namespace POESKillTree.Model.ItemFilter
+namespace POESKillTree.ItemFilter.Model
 {
     public class Block : IComparable<Block>
     {

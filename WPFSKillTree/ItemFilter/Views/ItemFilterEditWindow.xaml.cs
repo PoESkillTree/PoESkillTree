@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using MahApps.Metro.Controls;
-using POESKillTree.Model.ItemFilter;
+using POESKillTree.ItemFilter.Model;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Views

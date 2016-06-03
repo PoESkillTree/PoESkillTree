@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 using POESKillTree.Localization;
 using POESKillTree.Utils;
 
-namespace POESKillTree.Model.ItemFilter
+namespace POESKillTree.ItemFilter.Model
 {
     public class FilterManager
     {

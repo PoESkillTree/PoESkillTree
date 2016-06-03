@@ -200,25 +200,25 @@
     <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Bandit.cs" />
-    <Compile Include="Model\ItemFilter\Block.cs" />
-    <Compile Include="Model\ItemFilter\Filter.cs" />
-    <Compile Include="Model\ItemFilter\FilterManager.cs" />
-    <Compile Include="Model\ItemFilter\IMergeableMatch.cs" />
-    <Compile Include="Model\ItemFilter\Match.cs" />
-    <Compile Include="Model\ItemFilter\MatchBaseType.cs" />
-    <Compile Include="Model\ItemFilter\MatchClass.cs" />
-    <Compile Include="Model\ItemFilter\MatchDropLevel.cs" />
-    <Compile Include="Model\ItemFilter\MatchEnum.cs" />
-    <Compile Include="Model\ItemFilter\MatchItemLevel.cs" />
-    <Compile Include="Model\ItemFilter\MatchLinkedSockets.cs" />
-    <Compile Include="Model\ItemFilter\MatchNumber.cs" />
-    <Compile Include="Model\ItemFilter\MatchQuality.cs" />
-    <Compile Include="Model\ItemFilter\MatchRarity.cs" />
-    <Compile Include="Model\ItemFilter\MatchSocketGroup.cs" />
-    <Compile Include="Model\ItemFilter\MatchSockets.cs" />
-    <Compile Include="Model\ItemFilter\MatchStrings.cs" />
-    <Compile Include="Model\ItemFilter\Rule.cs" />
-    <Compile Include="Model\ItemFilter\RuleGroup.cs" />
+    <Compile Include="ItemFilter\Model\Block.cs" />
+    <Compile Include="ItemFilter\Model\Filter.cs" />
+    <Compile Include="ItemFilter\Model\FilterManager.cs" />
+    <Compile Include="ItemFilter\Model\IMergeableMatch.cs" />
+    <Compile Include="ItemFilter\Model\Match.cs" />
+    <Compile Include="ItemFilter\Model\MatchBaseType.cs" />
+    <Compile Include="ItemFilter\Model\MatchClass.cs" />
+    <Compile Include="ItemFilter\Model\MatchDropLevel.cs" />
+    <Compile Include="ItemFilter\Model\MatchEnum.cs" />
+    <Compile Include="ItemFilter\Model\MatchItemLevel.cs" />
+    <Compile Include="ItemFilter\Model\MatchLinkedSockets.cs" />
+    <Compile Include="ItemFilter\Model\MatchNumber.cs" />
+    <Compile Include="ItemFilter\Model\MatchQuality.cs" />
+    <Compile Include="ItemFilter\Model\MatchRarity.cs" />
+    <Compile Include="ItemFilter\Model\MatchSocketGroup.cs" />
+    <Compile Include="ItemFilter\Model\MatchSockets.cs" />
+    <Compile Include="ItemFilter\Model\MatchStrings.cs" />
+    <Compile Include="ItemFilter\Model\Rule.cs" />
+    <Compile Include="ItemFilter\Model\RuleGroup.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Controls\Arrow.cs" />
@@ -343,7 +343,7 @@
     <Compile Include="Controls\BanditSelection.xaml.cs">
       <DependentUpon>BanditSelection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ColorButtonDialog.xaml.cs">
+    <Compile Include="ItemFilter\Views\ColorButtonDialog.xaml.cs">
       <DependentUpon>ColorButtonDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CraftWindow.xaml.cs">
@@ -361,10 +361,10 @@
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ItemFilterEditWindow.xaml.cs">
+    <Compile Include="ItemFilter\Views\ItemFilterEditWindow.xaml.cs">
       <DependentUpon>ItemFilterEditWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ItemFilterOpenWindow.xaml.cs">
+    <Compile Include="ItemFilter\Views\ItemFilterOpenWindow.xaml.cs">
       <DependentUpon>ItemFilterOpenWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoadingWindow.xaml.cs">
@@ -399,7 +399,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\ExtendedWPFToolkit.xaml">
+    <Page Include="Contrib\Monotone\Styles\ExtendedWPFToolkit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -457,7 +457,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ColorButtonDialog.xaml">
+    <Page Include="ItemFilter\Views\ColorButtonDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -481,11 +481,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ItemFilterEditWindow.xaml">
+    <Page Include="ItemFilter\Views\ItemFilterEditWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ItemFilterOpenWindow.xaml">
+    <Page Include="ItemFilter\Views\ItemFilterOpenWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -657,6 +657,8 @@
     <None Include="Data\Equipment\Itemlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Resource Include="Contrib\Monotone\README.txt" />
+    <Resource Include="Contrib\Monotone\LICENSE.txt" />
     <Content Include="Data\PseudoAttributes\Crit.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

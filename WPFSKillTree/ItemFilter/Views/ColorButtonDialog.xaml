@@ -14,7 +14,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Styles/ExtendedWPFToolkit.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Contrib/Monotone/Styles/ExtendedWPFToolkit.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

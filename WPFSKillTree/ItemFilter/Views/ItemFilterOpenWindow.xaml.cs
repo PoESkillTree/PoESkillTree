@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
-using POESKillTree.Model.ItemFilter;
+using POESKillTree.ItemFilter.Model;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Views
@@ -155,6 +155,15 @@ namespace POESKillTree.Views
             catch (Exception ex)
             {
                 Popup.Error("An error occurred while attempting to load item filter.", ex.Message);
+            }
+        }
+
+        private void FilterListBox_DoubleClick(object sender, RoutedEventArgs e)
+        {
+            // XXX: This requires that only elements with TextBlock inside of FilterListBox are ListBoxItem elements.
+            if (e.OriginalSource is TextBlock)
+            {
+                Edit_Click(sender, new RoutedEventArgs(e.RoutedEvent, sender));
             }
         }
 
