@@ -23,8 +23,17 @@ namespace POESKillTree.Model
         PoEBuild CurrentBuild { get; }
         EquipmentData EquipmentData { get; }
         IReadOnlyList<Item> StashItems { get; }
+        IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
 
         void SaveToFile();
+    }
+
+    public class XmlLeagueStash
+    {
+        [XmlAttribute]
+        public string Name { get; set; }
+        [XmlElement]
+        public List<StashBookmark> Bookmarks { get; set; }
     }
 
     public class PersistentData : Notifier, IPersistentData
@@ -77,6 +86,20 @@ namespace POESKillTree.Model
             get { return _stash; }
         }
 
+        private IDictionary<string, IEnumerable<StashBookmark>> _leagueStashes;
+        [XmlIgnore]
+        public IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes
+        {
+            get { return _leagueStashes; }
+            private set { SetProperty(ref _leagueStashes, value);}
+        }
+        /// <summary>
+        /// <see cref="LeagueStashes"/> in a format that can be xml serialized. Only used in <see cref="SaveToFile"/>
+        /// and <see cref="LoadFromFile"/>
+        /// </summary>
+        [XmlArray]
+        public List<XmlLeagueStash> XmlLeagueStashes { get; set; }
+
         private EquipmentData _equipmentData;
         [XmlIgnore]
         public EquipmentData EquipmentData
@@ -101,6 +124,7 @@ namespace POESKillTree.Model
                 Level = "1"
             };
             Builds = new List<PoEBuild>();
+            LeagueStashes = new Dictionary<string, IEnumerable<StashBookmark>>();
             if (loadFromFile)
                 LoadFromFile(AppData.GetFolder(true) + FileName + ".xml");
         }
@@ -120,6 +144,8 @@ namespace POESKillTree.Model
 
         private void SaveToFile(string path)
         {
+            XmlLeagueStashes = new List<XmlLeagueStash>(LeagueStashes.Select(
+                p => new XmlLeagueStash {Name = p.Key, Bookmarks = new List<StashBookmark>(p.Value)}));
             if (File.Exists(path))
             {
                 string pathBak = AppData.GetFolder(true) + FileName + ".bak";
@@ -148,6 +174,11 @@ namespace POESKillTree.Model
                     CurrentBuild = obj.CurrentBuild;
                     StashBookmarks = obj.StashBookmarks;
                     AppVersion = obj.AppVersion;
+                    if (obj.XmlLeagueStashes == null)
+                        LeagueStashes = new Dictionary<string, IEnumerable<StashBookmark>>();
+                    else
+                        LeagueStashes = obj.XmlLeagueStashes.ToDictionary(v => v.Name,
+                            v => (IEnumerable<StashBookmark>) v.Bookmarks);
                     reader.Close();
                 }
                 DeserializeStash();

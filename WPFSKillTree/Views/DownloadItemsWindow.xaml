@@ -51,8 +51,9 @@
             <l:Catalog Message="Item data:"/>
         </Label>
         <TextBox Margin="5" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
-                 AcceptsTab="True" AcceptsReturn="True" MaxHeight="100"
+                 AcceptsTab="True" AcceptsReturn="True" MaxLines="6"
                  metroControls:TextBoxHelper.ClearTextButton="True"
+                 metroControls:TextBoxHelper.SelectAllOnFocus="True"
                  Text="{Binding Build.ItemData}" />
     </StackPanel>
 </dialogs:CloseableBaseDialog>

@@ -80,11 +80,13 @@ namespace POESKillTree.ViewModels
             _persistenData = persistentData;
             _dialogCoordinator = dialogCoordinator;
             DisplayName = L10n.Message("Download & Import Stash");
+            Build = persistentData.CurrentBuild;
 
+            if (Build.League != null && _persistenData.LeagueStashes.ContainsKey(Build.League))
+                _tabs = new List<StashBookmark>(_persistenData.LeagueStashes[Build.League]);
             TabsView = new ListCollectionView(_tabs);
             TabsView.CurrentChanged += (sender, args) => UpdateTabLink();
 
-            Build = persistentData.CurrentBuild;
             Build.PropertyChanged += BuildOnPropertyChanged;
             BuildOnPropertyChanged(this, null);
             RequestsClose += () => Build.PropertyChanged -= BuildOnPropertyChanged;
@@ -109,6 +111,16 @@ namespace POESKillTree.ViewModels
 
         private void BuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
+            if (propertyChangedEventArgs != null && propertyChangedEventArgs.PropertyName == "League")
+            {
+                _tabs.Clear();
+                if (Build.League != null && _persistenData.LeagueStashes.ContainsKey(Build.League))
+                {
+                    _tabs.AddRange(_persistenData.LeagueStashes[Build.League]);
+                }
+                TabsView.Refresh();
+                TabsView.MoveCurrentToFirst();
+            }
             TabsLink =
                 string.Format(
                     "https://www.pathofexile.com/character-window/get-stash-items?tabs=1&tabIndex=0&league={0}&accountName={1}",
@@ -146,6 +158,10 @@ namespace POESKillTree.ViewModels
                     var c = tab["colour"].Value<JObject>();
                     var color = Color.FromArgb(0xFF, c["r"].Value<byte>(), c["g"].Value<byte>(), c["b"].Value<byte>());
                     _tabs.Add(new StashBookmark(name, index, color));
+                }
+                if (Build.League != null)
+                {
+                    _persistenData.LeagueStashes[Build.League] = new List<StashBookmark>(_tabs);
                 }
             }
             catch (Exception e)

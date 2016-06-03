@@ -34,7 +34,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <ComboBox Margin="5,5,2,5" SelectedItem="{Binding Build.League}" IsEditable="True"
+            <ComboBox Margin="5,5,2,5" Text="{Binding Build.League}" IsEditable="True"
                       ItemsSource="{Binding CurrentLeagues.Result}">
                 <metroControls:TextBoxHelper.Watermark>
                     <l:Catalog Message="League"/>
@@ -63,7 +63,8 @@
             </Button>
         </Grid>
         <TextBox Margin="5" TextWrapping="Wrap" Text="{Binding TabsLink}" IsReadOnly="True"
-                 Grid.Column="0" Grid.Row="3"/>
+                 Grid.Column="0" Grid.Row="3" MinLines="4"
+                 metroControls:TextBoxHelper.SelectAllOnFocus="True" />
         <Button Command="{Binding LoadTabsCommand}"
                 HorizontalAlignment="Right" Margin="5,0,5,5"
                 Grid.Column="0" Grid.Row="4">
@@ -110,7 +111,8 @@
             </Button>
         </Grid>
         <TextBox Margin="5" TextWrapping="Wrap" Text="{Binding TabLink}" IsReadOnly="True"
-                 Grid.Column="1" Grid.Row="3"/>
+                 Grid.Column="1" Grid.Row="3" MinLines="4"
+                 metroControls:TextBoxHelper.SelectAllOnFocus="True" />
         <Button Command="{Binding LoadTabContentsCommand}"
                 HorizontalAlignment="Right" Margin="5,0,5,5"
                 Grid.Column="1" Grid.Row="4">

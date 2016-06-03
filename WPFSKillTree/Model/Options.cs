@@ -94,7 +94,7 @@ namespace POESKillTree.Model
             set { SetProperty(ref _nodeHoverHighlightColor, value); }
         }
 
-        private bool _downloadMissingItemImages = true;
+        private bool _downloadMissingItemImages;
         public bool DownloadMissingItemImages
         {
             get { return _downloadMissingItemImages; }
