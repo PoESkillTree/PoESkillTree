@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
@@ -98,7 +99,6 @@ namespace POESKillTree.Views
                 if (value == _itemAttributes)
                     return;
                 _itemAttributes = value;
-                _itemAttributes.PropertyChanged += (sender, args) => UpdateUI();
                 PropertyChanged.Raise(this, "ItemAttributes");
             }
         }
@@ -381,7 +381,7 @@ namespace POESKillTree.Views
 
         #region Window methods
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             const string itemDBPrefix = "Data/ItemDB/";
             // First file instantiates the ItemDB.
@@ -472,12 +472,11 @@ namespace POESKillTree.Views
 
             _justLoaded = true;
 
-            ItemAttributes = new ItemAttributes();
             // loading last build
             if (_persistentData.CurrentBuild != null)
                 SetCurrentBuild(_persistentData.CurrentBuild);
 
-            LoadBuildFromUrl();
+            await LoadBuildFromUrl();
             _justLoaded = false;
             // loading saved build
             lvSavedBuilds.Items.Clear();
@@ -497,7 +496,7 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
@@ -560,7 +559,7 @@ namespace POESKillTree.Views
                         SaveBuild();
                         break;
                     case Key.N:
-                        NewBuild();
+                        await NewBuild();
                         break;
                 }
             }
@@ -653,9 +652,9 @@ namespace POESKillTree.Views
 
         #region Menu
         
-        private void Menu_NewBuild(object sender, RoutedEventArgs e)
+        private async void Menu_NewBuild(object sender, RoutedEventArgs e)
         {
-            NewBuild();
+            await NewBuild();
         }
 
         private async void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
@@ -865,7 +864,7 @@ namespace POESKillTree.Views
                         SkillTree.CreateSkillTree(_persistentData, DialogCoordinator.Instance);//create new skilltree to reinitialize cache
 
 
-                        LoadBuildFromUrl();
+                        await LoadBuildFromUrl();
                         _justLoaded = false;
 
                         if (Directory.Exists(appDataPath + "DataBackup"))
@@ -1700,29 +1699,54 @@ namespace POESKillTree.Views
 
         #region Items
 
+        private bool _pauseLoadItemData;
+
         private void LoadItemData()
         {
+            if (_pauseLoadItemData)
+                return;
+
+            if (ItemAttributes != null)
+            {
+                ItemAttributes.Equip.CollectionChanged -= ItemAttributesEquipCollectionChanged;
+                ItemAttributes.PropertyChanged -= ItemAttributesPropertyChanged;
+            }
+
             var itemData = _persistentData.CurrentBuild.ItemData;
+            ItemAttributes itemAttributes;
             if (!string.IsNullOrEmpty(itemData))
             {
                 try
                 {
-                    ItemAttributes = new ItemAttributes(_persistentData, itemData);
+                    itemAttributes = new ItemAttributes(_persistentData, itemData);
                 }
                 catch (Exception ex)
                 {
-                    // This will call this method again.
-                    _persistentData.CurrentBuild.ItemData = "";
+                    itemAttributes = new ItemAttributes();
                     this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load item data."), ex.Message);
-                    return;
                 }
             }
             else
             {
-                ItemAttributes = new ItemAttributes();
+                itemAttributes = new ItemAttributes();
             }
 
+            itemAttributes.Equip.CollectionChanged += ItemAttributesEquipCollectionChanged;
+            itemAttributes.PropertyChanged += ItemAttributesPropertyChanged;
+            ItemAttributes = itemAttributes;
             UpdateUI();
+        }
+
+        private void ItemAttributesPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            UpdateUI();
+        }
+
+        private void ItemAttributesEquipCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            _pauseLoadItemData = true;
+            _persistentData.CurrentBuild.ItemData = ItemAttributes.ToJsonString();
+            _pauseLoadItemData = false;
         }
 
         #endregion
@@ -1758,13 +1782,13 @@ namespace POESKillTree.Views
             lvSavedBuilds.Items.Refresh();
         }
 
-        private void lvi_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void lvi_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var lvi = ((ListView)sender).SelectedItem;
             if (lvi == null) return;
             var build = ((PoEBuild)lvi);
             SetCurrentBuild(build);
-            LoadBuildFromUrl(); // loading the build
+            await LoadBuildFromUrl(); // loading the build
         }
 
         private void lvi_MouseLeave(object sender, MouseEventArgs e)
@@ -1839,12 +1863,12 @@ namespace POESKillTree.Views
             SaveNewBuild();
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (lvSavedBuilds.SelectedItems.Count <= 0) return;
 
             if(((PoEBuild)lvSavedBuilds.SelectedItem).CurrentlyOpen)
-                NewBuild();
+                await NewBuild();
             lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
             SaveBuildsToFile();
         }
@@ -1898,7 +1922,7 @@ namespace POESKillTree.Views
             SetCustomGroups(build.CustomGroups);
         }
 
-        private void NewBuild()
+        private async Task NewBuild()
         {
             SetCurrentBuild(new PoEBuild
             {
@@ -1906,7 +1930,7 @@ namespace POESKillTree.Views
                 Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3),
                 Level = "1"
             });
-            LoadBuildFromUrl();
+            await LoadBuildFromUrl();
         }
 
         private void SaveBuild()
@@ -1984,7 +2008,7 @@ namespace POESKillTree.Views
             }
         }
 
-        private async void LoadBuildFromUrl()
+        private async Task LoadBuildFromUrl()
         {
             try
             {
@@ -2000,7 +2024,7 @@ namespace POESKillTree.Views
                     if (match.Success)
                     {
                         tbSkillURL.Text = match.ToString().Replace("q=", "").Replace("&", "");
-                        LoadBuildFromUrl();
+                        await LoadBuildFromUrl();
                     }
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
@@ -2022,7 +2046,7 @@ namespace POESKillTree.Views
                         tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
-                    LoadBuildFromUrl();
+                    await LoadBuildFromUrl();
                 }
                 else
                 {
@@ -2208,10 +2232,10 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
-        private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
+        private async void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && NoAsyncTaskRunning)
-                LoadBuildFromUrl();
+                await LoadBuildFromUrl();
         }
 
         private void tbSkillURL_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -2267,9 +2291,9 @@ namespace POESKillTree.Views
             }
         }
 
-        private void btnLoadBuild_Click(object sender, RoutedEventArgs e)
+        private async void btnLoadBuild_Click(object sender, RoutedEventArgs e)
         {
-            LoadBuildFromUrl();
+            await LoadBuildFromUrl();
         }
 
         private void btnPoeUrl_Click(object sender, RoutedEventArgs e)

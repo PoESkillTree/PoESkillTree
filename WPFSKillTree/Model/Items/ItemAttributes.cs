@@ -211,6 +211,52 @@ namespace POESKillTree.Model.Items
             RefreshItemAttributes();
         }
 
+        public string ToJsonString()
+        {
+            var items = new JArray();
+            foreach (var item in Equip)
+            {
+                var jItem = item.JsonBase;
+                switch (item.Slot)
+                {
+                    case ItemSlot.Armor:
+                        jItem["inventoryId"] = "BodyArmour";
+                        break;
+                    case ItemSlot.MainHand:
+                        jItem["inventoryId"] = "Weapon";
+                        break;
+                    case ItemSlot.OffHand:
+                        jItem["inventoryId"] = "OffHand";
+                        break;
+                    case ItemSlot.Ring:
+                        jItem["inventoryId"] = "Ring";
+                        break;
+                    case ItemSlot.Ring2:
+                        jItem["inventoryId"] = "Ring2";
+                        break;
+                    case ItemSlot.Amulet:
+                        jItem["inventoryId"] = "Amulet";
+                        break;
+                    case ItemSlot.Helm:
+                        jItem["inventoryId"] = "Helm";
+                        break;
+                    case ItemSlot.Gloves:
+                        jItem["inventoryId"] = "Gloves";
+                        break;
+                    case ItemSlot.Boots:
+                        jItem["inventoryId"] = "Boots";
+                        break;
+                    case ItemSlot.Belt:
+                        jItem["inventoryId"] = "Belt";
+                        break;
+                }
+                items.Add(jItem);
+            }
+            var jObj = new JObject();
+            jObj["items"] = items;
+            return jObj.ToString();
+        }
+
         private void RefreshItemAttributes()
         {
             NonLocalMods = (from item in Equip
