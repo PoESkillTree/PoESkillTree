@@ -6,9 +6,10 @@ using POESKillTree.Model;
 namespace POESKillTree.ViewModels
 {
     /// <summary>
-    /// Abstract class for ViewModels that can be closed.
+    /// Base class for ViewModels that can be closed.
+    /// Can be used directly for views that don't need a view model.
     /// </summary>
-    public abstract class CloseableViewModel : ViewModelBase
+    public class CloseableViewModel : ViewModelBase
     {
         private readonly RelayCommand _closeCommand;
         /// <summary>
@@ -27,7 +28,7 @@ namespace POESKillTree.ViewModels
         private readonly TaskCompletionSource<object> _closeCompletionSource =
             new TaskCompletionSource<object>();
 
-        protected CloseableViewModel()
+        public CloseableViewModel()
         {
             _closeCommand = new RelayCommand(x =>
             {

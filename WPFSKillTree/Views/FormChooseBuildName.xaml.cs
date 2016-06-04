@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using MahApps.Metro.Controls;
 using POESKillTree.Localization;
 using POESKillTree.ViewModels;
 
@@ -9,18 +8,17 @@ namespace POESKillTree.Views
     /// <summary>
     /// Interaction logic for FormChooseBuildName.xaml
     /// </summary>
-    public partial class FormChooseBuildName : MetroWindow
+    public partial class FormChooseBuildName
     {
         public FormChooseBuildName()
         {
             InitializeComponent();
         }
-        public FormChooseBuildName(string characterName, string accountName, string itemData)
+        public FormChooseBuildName(string characterName, string accountName)
         {
             InitializeComponent();
             txtCharacterName.Text = characterName;
             txtAccountName.Text = accountName;
-            txtItemData.Text = itemData;
         }
         public FormChooseBuildName(PoEBuild selectedBuild)
         {
@@ -29,15 +27,9 @@ namespace POESKillTree.Views
             txtName2.Text = selectedBuild.Note;
             txtCharacterName.Text = selectedBuild.CharacterName;
             txtAccountName.Text = selectedBuild.AccountName;
-            txtItemData.Text = selectedBuild.ItemData;
             string date = selectedBuild.LastUpdated == DateTime.MinValue ? L10n.Message("Not Available") : selectedBuild.LastUpdated.ToString();
             lblLastUpdated.Content = string.Format(L10n.Message("Last updated: {0}"), date);
             txtName.Select(txtName.Text.Length, 0);
-        }
-
-        private void btnOk_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
         }
 
         public string GetBuildName()
@@ -55,10 +47,6 @@ namespace POESKillTree.Views
         public string GetAccountName()
         {
             return txtAccountName.Text;
-        }
-        public string GetItemData()
-        {
-            return txtItemData.Text;
         }
         private void FormChooseBuildName_Loaded(object sender, RoutedEventArgs e)
         {

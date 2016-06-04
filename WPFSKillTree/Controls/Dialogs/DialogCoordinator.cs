@@ -93,5 +93,11 @@ namespace POESKillTree.Controls.Dialogs
 
             await metroWindow.ShowInfoAsync(message, details, title);
         }
+
+        public async Task<string> ShowInputAsync(object context, string title, string message)
+        {
+            var metroWindow = await GetMetroWindowAsync(context);
+            return await metroWindow.ShowInputAsync(title, message);
+        }
     }
 }

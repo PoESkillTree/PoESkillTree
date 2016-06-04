@@ -22,7 +22,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <ContentPresenter Grid.Row="0" Content="{TemplateBinding DialogTop}" />
@@ -84,12 +84,12 @@
 
     <Style TargetType="{x:Type controls:BaseDialog}"
            BasedOn="{StaticResource {x:Type dialogs:BaseMetroDialog}}">
+        <Setter Property="Title" Value="{Binding DisplayName}" />
         <Setter Property="Template" Value="{StaticResource BaseDialogTemplate}" />
     </Style>
 
     <Style TargetType="{x:Type controls:CloseableBaseDialog}"
            BasedOn="{StaticResource {x:Type controls:BaseDialog}}">
-        <Setter Property="Title" Value="{Binding DisplayName}" />
         <Setter Property="CloseButtonVisibility" Value="Visible" />
         <Setter Property="CloseCommand" Value="{Binding CloseCommand}" />
     </Style>

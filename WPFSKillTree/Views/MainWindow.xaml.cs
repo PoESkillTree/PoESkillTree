@@ -273,7 +273,7 @@ namespace POESKillTree.Views
         }
 
         //Adds currently selected attributes to a new group
-        private void CreateGroup(object sender, RoutedEventArgs e)
+        private async void CreateGroup(object sender, RoutedEventArgs e)
         {
             ListBox lb = GetActiveAttributeGroupList();
             if (lb == null)
@@ -285,14 +285,12 @@ namespace POESKillTree.Views
             }
 
             //Build and show form to enter group name
-            var formGroupName = new FormChooseGroupName {Owner = this};
-            var showDialog = formGroupName.ShowDialog();
-            if (showDialog != null && (bool)showDialog)
+            var name = await this.ShowInputAsync(L10n.Message("Create New Attribute Group"), L10n.Message("Group name"));
+            if (!string.IsNullOrEmpty(name))
             {
-                var name = formGroupName.GetGroupName();
                 if (_attributeGroups.AttributeGroups.ContainsKey(name))
                 {
-                    this.ShowInfoAsync(L10n.Message("A group with that name already exists."));
+                    await this.ShowInfoAsync(L10n.Message("A group with that name already exists."));
                     return;
                 }
 
@@ -556,7 +554,7 @@ namespace POESKillTree.Views
                         tbSkillURL_Redo();
                         break;
                     case Key.S:
-                        SaveBuild();
+                        await SaveBuild();
                         break;
                     case Key.N:
                         await NewBuild();
@@ -584,7 +582,7 @@ namespace POESKillTree.Views
                 switch (e.Key)
                 {
                     case Key.S:
-                        SaveNewBuild();
+                        await SaveNewBuild();
                         break;
                 }
             }
@@ -827,7 +825,7 @@ namespace POESKillTree.Views
             }
             try
             {
-                System.Windows.Forms.Clipboard.SetText(sb.ToString());
+                Clipboard.SetText(sb.ToString());
             }
             catch (Exception ex)
             {
@@ -910,10 +908,9 @@ namespace POESKillTree.Views
             Process.Start("http://pathofexile.gamepedia.com/");
         }
 
-        private void Menu_OpenHelp(object sender, RoutedEventArgs e)
+        private async void Menu_OpenHelp(object sender, RoutedEventArgs e)
         {
-            var helpWindow = new HelpWindow() { Owner = this };
-            helpWindow.ShowDialog();
+            await this.ShowDialogAsync(new CloseableViewModel(), new HelpWindow());
         }
 
         private async void Menu_OpenSettings(object sender, RoutedEventArgs e)
@@ -923,16 +920,14 @@ namespace POESKillTree.Views
                 new SettingsMenuWindow());
         }
 
-        private void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
+        private async void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new HotkeysWindow() { Owner = this };
-            aboutWindow.ShowDialog();
+            await this.ShowDialogAsync(new CloseableViewModel(), new HotkeysWindow());
         }
 
-        private void Menu_OpenAbout(object sender, RoutedEventArgs e)
+        private async void Menu_OpenAbout(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new AboutWindow() { Owner = this };
-            aboutWindow.ShowDialog();
+            await this.ShowDialogAsync(new CloseableViewModel(), new AboutWindow());
         }
 
         // Checks for updates.
@@ -1807,24 +1802,20 @@ namespace POESKillTree.Views
             }
         }
 
-        private void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private async void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
             var formBuildName = new FormChooseBuildName(selectedBuild);
-            formBuildName.Owner = this;
-            var show_dialog = formBuildName.ShowDialog();
-            if (show_dialog != null && (bool)show_dialog)
-            {
-                selectedBuild.Name = formBuildName.GetBuildName();
-                selectedBuild.Note = formBuildName.GetNote();
-                selectedBuild.CharacterName = formBuildName.GetCharacterName();
-                selectedBuild.AccountName = formBuildName.GetAccountName();
-                selectedBuild.ItemData = formBuildName.GetItemData();
-                lvSavedBuilds.Items.Refresh();
-                if(selectedBuild.CurrentlyOpen)
-                    SetTitle(selectedBuild.Name);
+            await this.ShowDialogAsync(new CloseableViewModel(), formBuildName);
 
-            }
+            selectedBuild.Name = formBuildName.GetBuildName();
+            selectedBuild.Note = formBuildName.GetNote();
+            selectedBuild.CharacterName = formBuildName.GetCharacterName();
+            selectedBuild.AccountName = formBuildName.GetAccountName();
+            lvSavedBuilds.Items.Refresh();
+            if(selectedBuild.CurrentlyOpen)
+                SetTitle(selectedBuild.Name);
+
             SaveBuildsToFile();
         }
 
@@ -1853,14 +1844,14 @@ namespace POESKillTree.Views
             return listViewItem;
         }
 
-        private void btnSaveBuild_Click(object sender, RoutedEventArgs e)
+        private async void btnSaveBuild_Click(object sender, RoutedEventArgs e)
         {
-            SaveBuild();
+            await SaveBuild();
         }
 
-        private void btnSaveNewBuild_Click(object sender, RoutedEventArgs e)
+        private async void btnSaveNewBuild_Click(object sender, RoutedEventArgs e)
         {
-            SaveNewBuild();
+            await SaveNewBuild();
         }
 
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -1933,7 +1924,7 @@ namespace POESKillTree.Views
             await LoadBuildFromUrl();
         }
 
-        private void SaveBuild()
+        private async Task SaveBuild()
         {
             var currentOpenBuild =
                 (from PoEBuild build in lvSavedBuilds.Items
@@ -1956,35 +1947,32 @@ namespace POESKillTree.Views
             }
             else
             {
-                SaveNewBuild();
+                await SaveNewBuild();
             }
         }
 
-        private void SaveNewBuild()
+        private async Task SaveNewBuild()
         {
-            var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName, _persistentData.CurrentBuild.ItemData);
-            formBuildName.Owner = this;
-            var show_dialog = formBuildName.ShowDialog();
-            if (show_dialog != null && (bool)show_dialog)
+            var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName);
+            await this.ShowDialogAsync(new CloseableViewModel(), formBuildName);
+
+            var newBuild = new PoEBuild
             {
-                var newBuild = new PoEBuild
-                {
-                    Name = formBuildName.GetBuildName(),
-                    Level = GetLevelAsString(),
-                    Class = cbCharType.Text,
-                    PointsUsed = NormalUsedPoints.Content.ToString(),
-                    Url = tbSkillURL.Text,
-                    Note = formBuildName.GetNote(),
-                    CharacterName = formBuildName.GetCharacterName(),
-                    AccountName = formBuildName.GetAccountName(),
-                    ItemData = formBuildName.GetItemData(),
-                    LastUpdated = DateTime.Now,
-                    CustomGroups = _attributeGroups.CopyCustomGroups(),
-                    Bandits = _persistentData.CurrentBuild.Bandits
-                };
-                SetCurrentBuild(newBuild);
-                lvSavedBuilds.Items.Add(newBuild);
-            }
+                Name = formBuildName.GetBuildName(),
+                Level = GetLevelAsString(),
+                Class = cbCharType.Text,
+                PointsUsed = NormalUsedPoints.Content.ToString(),
+                Url = tbSkillURL.Text,
+                Note = formBuildName.GetNote(),
+                CharacterName = formBuildName.GetCharacterName(),
+                AccountName = formBuildName.GetAccountName(),
+                ItemData = _persistentData.CurrentBuild.ItemData,
+                LastUpdated = DateTime.Now,
+                CustomGroups = _attributeGroups.CopyCustomGroups(),
+                Bandits = _persistentData.CurrentBuild.Bandits
+            };
+            SetCurrentBuild(newBuild);
+            lvSavedBuilds.Items.Add(newBuild);
 
             if (lvSavedBuilds.Items.Count > 0)
             {

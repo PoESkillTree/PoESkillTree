@@ -18,7 +18,7 @@ using POESKillTree.Views;
 
 namespace POESKillTree.Controls.Dialogs
 {
-    public static class DialogManager
+    public static class ExtendedDialogManager
     {
         /// <summary>
         /// Sets up the connection between view and viewModel, shows the view as a metro dialog,
@@ -69,6 +69,11 @@ namespace POESKillTree.Controls.Dialogs
         public static Task ShowInfoAsync(this MetroWindow window, string message, string details = null, string title = null)
         {
             return ShowAsync(window, message, details, title ?? L10n.Message("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public static Task<string> ShowInputAsync(this MetroWindow window, string title, string message)
+        {
+            return DialogManager.ShowInputAsync(window, title, message);
         }
 
         private static ImageSource MessageBoxImageToImageSource(MessageBoxImage image)

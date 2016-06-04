@@ -289,6 +289,7 @@
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsDialogCoordinator.cs" />
+    <Compile Include="Utils\Converter\MathConverter.cs" />
     <Compile Include="Utils\Converter\StringConverter.cs" />
     <Compile Include="Controls\Dialogs\ExtendedDialogManager.cs" />
     <Compile Include="Utils\Extensions\DependencyObjectExtensions.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="Utils\NotifyingTask.cs" />
     <Compile Include="Utils\WikiUtils.cs" />
     <Compile Include="Utils\Win32.cs" />
+    <Compile Include="Utils\XamlHelper.cs" />
     <Compile Include="ViewModels\AttributeToTextblockConverter.cs" />
     <Compile Include="ViewModels\CloseableViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
@@ -384,9 +386,6 @@
     </Compile>
     <Compile Include="Views\MetroMessageBoxWindow.xaml.cs">
       <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FormChooseGroupName.xaml.cs">
-      <DependentUpon>FormChooseGroupName.xaml</DependentUpon>
     </Compile>
     <Page Include="Themes\BaseDialog.xaml">
       <SubType>Designer</SubType>
@@ -509,10 +508,6 @@
     <Page Include="Views\TabPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\FormChooseGroupName.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

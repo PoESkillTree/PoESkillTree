@@ -8,7 +8,6 @@
     xmlns:vm="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
     xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
-    Title="{Binding DisplayName}"
     d:DataContext="{d:DesignInstance vm:ControllerViewModel}"
     MaxContentWidth="500">
     <ContentControl.Resources>

@@ -1,13 +1,11 @@
-﻿using System.Windows;
-using MahApps.Metro.Controls;
-using POESKillTree.Localization;
+﻿using POESKillTree.Localization;
 
 namespace POESKillTree.Views
 {
     /// <summary>
     /// Interaction logic for HelpWindow.xaml
     /// </summary>
-    public partial class HelpWindow : MetroWindow
+    public partial class HelpWindow
     {
         public string Document { get; set; }
 
@@ -18,11 +16,6 @@ namespace POESKillTree.Views
                 Document = L10n.Message("Help file not found");
 
             InitializeComponent();
-        }
-
-        private void btnPopupClose_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
         }
     }
 }

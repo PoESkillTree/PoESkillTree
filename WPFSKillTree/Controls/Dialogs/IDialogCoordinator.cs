@@ -13,5 +13,7 @@ namespace POESKillTree.Controls.Dialogs
         Task ShowWarningAsync(object context, string message, string details = null, string title = null);
 
         Task ShowInfoAsync(object context, string message, string details = null, string title = null);
+
+        Task<string> ShowInputAsync(object context, string title, string message);
     }
 }
