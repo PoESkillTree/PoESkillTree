@@ -24,7 +24,7 @@ namespace UpdateDB
         {
             {"affixes", "Equipment/AffixList.xml", new AffixDataLoader(), LoaderCategories.VersionControlled, "Affixes"},
             {"base items", "Equipment/ItemList.xml", new ItemDataLoader(), LoaderCategories.VersionControlled, "Items"},
-            {"base item images", "Equipment/Assets", new ItemImageLoader(false), LoaderCategories.NotVersionControlled, "Images"},
+            {"base item images", "Equipment/Assets", new ItemImageLoader(false), LoaderCategories.NotVersionControlled, "ItemImages"},
             {"skill tree assets", "", new SkillTreeLoader(), LoaderCategories.NotVersionControlled, "TreeAssets"},
             {"gems", "ItemDB/GemList.xml", new GemLoader(new GamepediaReader()), LoaderCategories.VersionControlled, "Gems"}
         };
@@ -39,7 +39,8 @@ namespace UpdateDB
         /// Creates an instance and sets it up using <paramref name="arguments"/>.
         /// </summary>
         /// <param name="arguments">The arguments that define how this instance behaves. Only
-        /// <see cref="IArguments.OutputDirectory"/> is consumed in the constructor.</param>
+        /// <see cref="IArguments.OutputDirectory"/> and <see cref="IArguments.SpecifiedOutputDirectory"/> are
+        /// consumed in the constructor.</param>
         public DataLoaderExecutor(IArguments arguments)
         {
             _arguments = arguments;
@@ -55,9 +56,13 @@ namespace UpdateDB
                 case OutputDirectory.Current:
                     _savePath = Directory.GetCurrentDirectory();
                     break;
+                case OutputDirectory.Specified:
+                    _savePath = arguments.SpecifiedOutputDirectory;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            Log.InfoFormat("Using output directory {0}.", _savePath);
             // necessary for SkillTreeLoader
             AppData.SetApplicationData(_savePath);
             _savePath = Path.Combine(_savePath, "Data");

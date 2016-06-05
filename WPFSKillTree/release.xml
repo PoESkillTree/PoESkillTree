@@ -326,4 +326,15 @@
         <!-- Make regular clean using project defined output path -->
         <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
     </Target>
+
+    <Target Name="UpdateItemImages">
+        <!-- Make regular build using project defined output path -->
+        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
+
+        <!-- Update item images directly in bin/Debug -->
+        <Exec Command="..\UpdateDB\bin\Release\UpdateDB.exe /ItemImages /NoBackup /SpecifiedDir:bin/Debug" />
+
+        <!-- Make regular clean using project defined output path -->
+        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
+    </Target>
 </Project>

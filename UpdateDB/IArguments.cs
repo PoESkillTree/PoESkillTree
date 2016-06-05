@@ -43,7 +43,11 @@ namespace UpdateDB
         /// <summary>
         /// Use the directory from which the executable is called as root output directory.
         /// </summary>
-        Current
+        Current,
+        /// <summary>
+        /// Use the directory that is explicitly specified.
+        /// </summary>
+        Specified
     }
 
     /// <summary>
@@ -60,6 +64,12 @@ namespace UpdateDB
         /// Specifies the root output directory.
         /// </summary>
         OutputDirectory OutputDirectory { get; }
+
+        /// <summary>
+        /// The output directory used if <see cref="OutputDirectory"/> is
+        /// <see cref="UpdateDB.OutputDirectory.Specified"/>.
+        /// </summary>
+        string SpecifiedOutputDirectory { get; }
 
         /// <summary>
         /// True iff files should be backed up before they are overridden.

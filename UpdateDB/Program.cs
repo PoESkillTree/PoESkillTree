@@ -22,9 +22,8 @@ namespace UpdateDB
     /// The other files (base item images and skill tree assets) are not version controlled. They are
     /// packaged into releases via release.xml.
     /// The skill tree assets can be updated through the main program menu. The base item images
-    /// must be manually copied from this project's execution directory (normally UpdateDB/bin/debug/Data/Equipment/Assets)
-    /// into the execution directory of the main program (normally WPFSkillTree/bin/debug/[...]). To generate them,
-    /// use <code>UpdateDB /Images</code>.
+    /// can be updated by running dist-updateItemImages.bat. They are written into the main program's Debug directory.
+    /// If you are in Release mode, copy them from Debug to Release (Debug/Data/Equipment/Assets/).
     /// </para>
     /// </remarks>
     public static class Program
@@ -56,6 +55,12 @@ namespace UpdateDB
                     continue;
                 }
 
+                if (arg.StartsWith("/specifieddir:", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    args.OutputDirectory = OutputDirectory.Specified;
+                    args.SpecifiedOutputDirectory = arg.Substring("/specifieddir:".Length);
+                    continue;
+                }
                 switch (arg.ToLowerInvariant())
                 {
                     case "/?":
@@ -65,10 +70,11 @@ namespace UpdateDB
                         Console.WriteLine("/NotVersionControlledOnly Only download not version controlled files (item images and skill tree assets).");
                         Console.WriteLine("/SourceCodeDir            Save into the WPFSKillTree source code directory instead of the AppData directory.");
                         Console.WriteLine("/CurrentDir               Save into the current directory instead of the AppData directory.");
+                        Console.WriteLine("/SpecifiedDir:dirPath     Save into the specified directory instead of the AppData directory.");
                         Console.WriteLine("/NoBackup                 Do not create backup of files being updated before writing changes.");
                         Console.WriteLine("/Quiet                    Do not display any output.");
                         Console.WriteLine("/Verbose                  Enable verbose output.");
-                        Console.WriteLine("/Affixes, /Items, /Images, /TreeAssets, /Gems");
+                        Console.WriteLine("/Affixes, /Items, /ItemImages, /TreeAssets, /Gems");
                         Console.WriteLine("If at least one is specified, only the specified files are downloaded.\r\n");
 
                         Console.WriteLine("Options for gem loader (only one can be specified):\r\n");
@@ -149,6 +155,7 @@ namespace UpdateDB
         {
             public LoaderCategories ActivatedLoaders { get; set; }
             public OutputDirectory OutputDirectory { get; set; }
+            public string SpecifiedOutputDirectory { get; set; }
             public bool CreateBackup { get; set; }
             public IEnumerable<string> LoaderFlags { get; set; }
         }
