@@ -57,6 +57,18 @@ namespace POESKillTree.Controls.Dialogs
             set { SetValue(CloseCommandProperty, value); }
         }
 
+        public static readonly DependencyProperty DialogLeftProperty =
+            DependencyProperty.Register("DialogLeft", typeof(object), typeof(BaseDialog), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets arbitrary content placed left of the dialog content.
+        /// </summary>
+        public object DialogLeft
+        {
+            get { return GetValue(DialogLeftProperty); }
+            set { SetValue(DialogLeftProperty, value); }
+        }
+
         static BaseDialog()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BaseDialog),

@@ -35,14 +35,14 @@
                            TextWrapping="Wrap"
                            FontSize="{DynamicResource DialogMessageFontSize}" />
             </ScrollViewer>
-            <Expander Visibility="{Binding Details, Converter={StaticResource StringToVisibilityConverter}}"
+            <GroupBox Visibility="{Binding Details, Converter={StaticResource StringToVisibilityConverter}}"
                       Margin="0 5 0 0">
-                <Expander.Header>
+                <GroupBox.Header>
                     <l:Catalog Message="Details" />
-                </Expander.Header>
+                </GroupBox.Header>
                 <TextBlock Text="{Binding Details}"
                            TextWrapping="Wrap"/>
-            </Expander>
+            </GroupBox>
         </StackPanel>
 
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"

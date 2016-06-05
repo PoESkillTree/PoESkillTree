@@ -11,9 +11,21 @@ using MB.Algodat;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.ViewModels;
 
 namespace POESKillTree.Views
 {
+    // Necessary because CraftWindow.Item is not accessable from content in BaseDialog.DialogLeft.
+    public class CraftViewModel : CloseableViewModel
+    {
+        private Item _item;
+        public Item Item
+        {
+            get { return _item; }
+            set { SetProperty(ref _item, value); }
+        }
+    }
+    
     /// <summary>
     /// Interaction logic for CraftWindow.xaml
     /// </summary>
@@ -36,7 +48,6 @@ namespace POESKillTree.Views
             {
                 _typeList = value;
                 OnPropertyChanged();
-                TypeSelection.Visibility = value.Length <= 1 ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 
@@ -47,11 +58,18 @@ namespace POESKillTree.Views
             private set { _blist = value; OnPropertyChanged(); }
         }
 
-        private Item _item;
         public Item Item
         {
-            get { return _item; }
-            private set { _item = value; OnPropertyChanged(); }
+            get
+            {
+                var vm = DataContext as CraftViewModel;
+                return vm == null ? null : ((CraftViewModel) DataContext).Item;
+            }
+            private set
+            {
+                ((CraftViewModel) DataContext).Item = value;
+                OnPropertyChanged();
+            }
         }
 
         private List<Affix> _prefixes = new List<Affix>();
@@ -82,6 +100,11 @@ namespace POESKillTree.Views
         {
             _equipmentData = equipmentData;
             InitializeComponent();
+        }
+
+        protected override void OnLoaded()
+        {
+            base.OnLoaded();
             GroupList = Enum.GetValues(typeof(ItemGroup)).Cast<ItemGroup>().Except(new[] {ItemGroup.Unknown, ItemGroup.Gem}).ToArray();
         }
 
@@ -358,6 +381,8 @@ namespace POESKillTree.Views
             RecalculateItem();
         }
 
+        public bool DialogResult { get; private set; }
+
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
             Item.SetJsonBase();
@@ -365,7 +390,13 @@ namespace POESKillTree.Views
             Item.X = 0;
             Item.Y = 0;
             DialogResult = true;
-            Close();
+            CloseCommand.Execute(null);
+        }
+
+        private void Button_Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            CloseCommand.Execute(null);
         }
     }
 }

@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using MB.Algodat;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Items;
+using POESKillTree.ViewModels;
 using POESKillTree.Views;
 
 namespace POESKillTree.Controls
@@ -399,7 +401,12 @@ namespace POESKillTree.Controls
 
         private void R_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            var r = sender as Rectangle;
+            if (r == null)
+                return;
             DragDrop.DoDragDrop(this, sender, DragDropEffects.Move);
+            r.Opacity = 1;
+            r.IsHitTestVisible = true;
         }
 
         private void Iv_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -468,11 +475,12 @@ namespace POESKillTree.Controls
             {
                 e.Effects = stashBookmarkDropEffect;
 
-                var r = (Rectangle)e.Data.GetData(typeof(Rectangle));
-                pos.Y -= r.Margin.Top;
-
-                var y = (int)Math.Round((r.Margin.Top - pos.Y) / GridSize);
+                var y = (int)Math.Round(pos.Y / GridSize);
                 _dndOverlay.Margin = new Thickness(0, y * GridSize - 1, 0, gcontent.ActualHeight - y * GridSize - 1);
+
+                var r = (Rectangle)e.Data.GetData(typeof(Rectangle));
+                r.Opacity = 0.3;
+                r.IsHitTestVisible = false;
             }
             else
             {
@@ -534,9 +542,8 @@ namespace POESKillTree.Controls
                 e.Effects = stashBookmarkDropEffect;
 
                 var r = (Rectangle)e.Data.GetData(typeof(Rectangle));
-                pos.Y -= r.Margin.Top;
 
-                var y = (int)Math.Round((r.Margin.Top - pos.Y) / GridSize);
+                var y = (int)Math.Round(pos.Y / GridSize);
                 y += PageTop;
 
                 var sb = (StashBookmark)r.Tag;
@@ -607,7 +614,7 @@ namespace POESKillTree.Controls
                     Fill = r.Fill,
                     Height = r.Height,
                     Margin = r.Margin,
-                    Opacity = 0.3
+                    IsHitTestVisible = false
                 };
                 gcontent.Children.Add(_dndOverlay);
                 Panel.SetZIndex(_dndOverlay, 52635);
@@ -622,11 +629,11 @@ namespace POESKillTree.Controls
 
 
 
-        private void Button_AddBookmark(object sender, RoutedEventArgs e)
+        private async void Button_AddBookmark(object sender, RoutedEventArgs e)
         {
-            var picker = new TabPicker { Owner = Window.GetWindow(this) };
-            var ret = picker.ShowDialog();
-            if (ret == true && !picker.Delete)
+            var picker = new TabPicker();
+            await this.ShowDialogAsync(new CloseableViewModel(), picker);
+            if (picker.DialogResult && !picker.Delete)
             {
                 AddBookmark(new StashBookmark(picker.Text, PageTop + 1, picker.SelectedColor));
                 RedrawItems();
@@ -656,14 +663,15 @@ namespace POESKillTree.Controls
             return FindBPos(position, middle, limit);
         }
 
-        private void ButtonStashTabMouseDown(object sender, MouseButtonEventArgs e)
+        private async void ButtonStashTabMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Right)
             {
                 var bm = (StashBookmark) ((Button) sender).DataContext;
 
-                var picker = new TabPicker { Owner = Window.GetWindow(this), SelectedColor = bm.Color, Text = bm.Name };
-                if (picker.ShowDialog() == true)
+                var picker = new TabPicker { SelectedColor = bm.Color, Text = bm.Name };
+                await this.ShowDialogAsync(new CloseableViewModel(), picker);
+                if (picker.DialogResult)
                 {
                     if (picker.Delete)
                     {

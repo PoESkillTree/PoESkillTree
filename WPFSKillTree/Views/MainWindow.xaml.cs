@@ -1942,6 +1942,7 @@ namespace POESKillTree.Views
                 currentOpenBuild.LastUpdated = DateTime.Now;
                 currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
                 currentOpenBuild.Bandits = _persistentData.CurrentBuild.Bandits.Clone();
+                currentOpenBuild.League = _persistentData.CurrentBuild.League;
                 SetCurrentBuild(currentOpenBuild);
                 SaveBuildsToFile();
             }
@@ -1969,7 +1970,8 @@ namespace POESKillTree.Views
                 ItemData = _persistentData.CurrentBuild.ItemData,
                 LastUpdated = DateTime.Now,
                 CustomGroups = _attributeGroups.CopyCustomGroups(),
-                Bandits = _persistentData.CurrentBuild.Bandits
+                Bandits = _persistentData.CurrentBuild.Bandits,
+                League = _persistentData.CurrentBuild.League
             };
             SetCurrentBuild(newBuild);
             lvSavedBuilds.Items.Add(newBuild);
@@ -2506,10 +2508,11 @@ namespace POESKillTree.Views
             lvSavedBuilds_SelectionChanged(null, null);
         }
 
-        private void Button_Craft_Click(object sender, RoutedEventArgs e)
+        private async void Button_Craft_Click(object sender, RoutedEventArgs e)
         {
-            var w = new CraftWindow(PersistentData.EquipmentData) { Owner = this };
-            if (w.ShowDialog() != true) return;
+            var w = new CraftWindow(PersistentData.EquipmentData);
+            await this.ShowDialogAsync(new CraftViewModel(), w);
+            if (!w.DialogResult) return;
 
             var item = w.Item;
             if (PersistentData.StashItems.Count > 0)

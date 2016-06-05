@@ -1,15 +1,6 @@
-﻿using MahApps.Metro.Controls;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace POESKillTree.Views
@@ -17,14 +8,12 @@ namespace POESKillTree.Views
     /// <summary>
     /// Interaction logic for TabPicker.xaml
     /// </summary>
-    public partial class TabPicker : MetroWindow
+    public partial class TabPicker
     {
         public TabPicker()
         {
             InitializeComponent();
         }
-
-
 
         public string Text
         {
@@ -44,8 +33,9 @@ namespace POESKillTree.Views
             set { SetValue(SelectedColorProperty, value); }
         }
 
-        public bool Delete { get; private set; }
+        public bool DialogResult { get; private set; }
 
+        public bool Delete { get; private set; }
 
         // Using a DependencyProperty as the backing store for SelectedColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedColorProperty =
@@ -59,15 +49,21 @@ namespace POESKillTree.Views
 
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-            this.Close();
+            DialogResult = true;
+            CloseCommand.Execute(null);
         }
 
         private void Button_Delete_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-            this.Delete = true;
-            this.Close();
+            DialogResult = true;
+            Delete = true;
+            CloseCommand.Execute(null);
+        }
+
+        private void Button_Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            CloseCommand.Execute(null);
         }
     }
 }

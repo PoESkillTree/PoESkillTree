@@ -87,7 +87,7 @@ namespace POESKillTree.Utils
 
             var binding = new Binding("ActualHeight")
             {
-                Source = Application.Current.MainWindow,
+                Source = Window.GetWindow(dependencyObject),
                 Converter = new SubtractionConverter(),
                 ConverterParameter = value
             };

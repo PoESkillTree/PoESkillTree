@@ -23,6 +23,17 @@ namespace POESKillTree.Controls.Dialogs
         /// <summary>
         /// Sets up the connection between view and viewModel, shows the view as a metro dialog,
         /// calls <paramref name="onShown"/> and waits for the dialog to be closed.
+        /// <paramref name="dependencyObject"/> must be located in a <see cref="MetroWindow"/>.
+        /// </summary>
+        public static Task ShowDialogAsync(this DependencyObject dependencyObject, CloseableViewModel viewModel,
+            BaseMetroDialog view, Action onShown = null)
+        {
+            return ShowDialogAsync((MetroWindow) Window.GetWindow(dependencyObject), viewModel, view, onShown);
+        }
+
+        /// <summary>
+        /// Sets up the connection between view and viewModel, shows the view as a metro dialog,
+        /// calls <paramref name="onShown"/> and waits for the dialog to be closed.
         /// </summary>
         public static async Task ShowDialogAsync(this MetroWindow window, CloseableViewModel viewModel,
             BaseMetroDialog view, Action onShown = null)
