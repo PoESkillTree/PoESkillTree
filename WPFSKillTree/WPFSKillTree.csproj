@@ -182,6 +182,7 @@
     <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />
     <Compile Include="Controls\Dialogs\DialogParticipation.cs" />
     <Compile Include="Controls\Dialogs\IDialogCoordinator.cs" />
+    <Compile Include="Controls\Dialogs\ProgressDialogController.cs" />
     <Compile Include="Controls\DraggedItem.cs" />
     <Compile Include="Controls\Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
@@ -295,6 +296,7 @@
     <Compile Include="Utils\Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Utils\Extensions\ImageExtensions.cs" />
     <Compile Include="Utils\Extensions\TaskExtensions.cs" />
+    <Compile Include="Utils\FileEx.cs" />
     <Compile Include="Utils\NotifyingTask.cs" />
     <Compile Include="Utils\WikiUtils.cs" />
     <Compile Include="Utils\Win32.cs" />
@@ -365,9 +367,6 @@
     </Compile>
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LoadingWindow.xaml.cs">
-      <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\PoEBuild.cs" />
     <Compile Include="SkillTreeFiles\PoESkillTree.cs" />
@@ -472,10 +471,6 @@
     <Page Include="Views\AboutWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\LoadingWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

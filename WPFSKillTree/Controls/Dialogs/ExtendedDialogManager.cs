@@ -84,7 +84,23 @@ namespace POESKillTree.Controls.Dialogs
 
         public static Task<string> ShowInputAsync(this MetroWindow window, string title, string message)
         {
-            return DialogManager.ShowInputAsync(window, title, message);
+            var settings = new MetroDialogSettings
+            {
+                NegativeButtonText = L10n.Message("Cancel"),
+                AffirmativeButtonText = L10n.Message("OK")
+            };
+            return window.ShowInputAsync(title, message, settings);
+        }
+
+        public static async Task<ProgressDialogController> ShowProgressAsync(this MetroWindow window, string title,
+            string message, bool isCancelable = false)
+        {
+            var settings = new MetroDialogSettings
+            {
+                NegativeButtonText = L10n.Message("Cancel")
+            };
+            var controller = await window.ShowProgressAsync(title, message, isCancelable, settings);
+            return new ProgressDialogController(controller);
         }
 
         private static ImageSource MessageBoxImageToImageSource(MessageBoxImage image)

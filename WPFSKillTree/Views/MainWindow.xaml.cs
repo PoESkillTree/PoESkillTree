@@ -7,12 +7,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +19,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.SimpleChildWindow;
@@ -37,17 +34,7 @@ using POESKillTree.Utils;
 using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
-using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
-using Clipboard = System.Windows.Clipboard;
-using DataObject = System.Windows.DataObject;
-using DragDropEffects = System.Windows.DragDropEffects;
-using DragEventArgs = System.Windows.DragEventArgs;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using ListView = System.Windows.Controls.ListView;
-using ListViewItem = System.Windows.Controls.ListViewItem;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using ToolTip = System.Windows.Controls.ToolTip;
 
 namespace POESKillTree.Views
 {
@@ -70,7 +57,6 @@ namespace POESKillTree.Views
             get { return _persistentData; }
         }
 
-        private static readonly Action EmptyDelegate = delegate { };
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
         private readonly List<ListGroupItem> _defenceList = new List<ListGroupItem>();
@@ -113,10 +99,9 @@ namespace POESKillTree.Views
                 PropertyChanged.Raise(this, "Tree");
             }
         }
-        private SkillTree CreateSkillTree()
+        private async Task<SkillTree> CreateSkillTreeAsync(ProgressDialogController controller)
         {
-            var tree = SkillTree.CreateSkillTree(_persistentData, DialogCoordinator.Instance, StartLoadingWindow,
-                UpdateLoadingWindow, CloseLoadingWindow);
+            var tree = await SkillTree.CreateAsync(_persistentData, DialogCoordinator.Instance, controller);
             DialogParticipation.SetRegister(this, tree);
             tree.BanditSettings = _persistentData.CurrentBuild.Bandits;
             return tree;
@@ -126,7 +111,6 @@ namespace POESKillTree.Views
         private bool _justLoaded;
         private string _lasttooltip;
 
-        private LoadingWindow _loadingWindow;
         private Vector2D _multransform;
 
         private List<ushort> _prePath;
@@ -381,18 +365,26 @@ namespace POESKillTree.Views
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            const string itemDBPrefix = "Data/ItemDB/";
-            // First file instantiates the ItemDB.
-            ItemDB.Load(itemDBPrefix + "GemList.xml");
-            // Merge all other files from the ItemDB path.
-            Directory.GetFiles(itemDBPrefix)
-                .Select(Path.GetFileName)
-                .Where(f => f != "GemList.xml")
-                .Select(f => itemDBPrefix + f)
-                .ForEach(ItemDB.Merge);
-            // Merge the user specified things.
-            ItemDB.Merge("ItemsLocal.xml");
-            ItemDB.Index();
+            var controller = await this.ShowProgressAsync(L10n.Message("Initialization"),
+                        L10n.Message("Initalizing window ..."));
+            controller.Maximum = 100;
+            controller.SetIndeterminate();
+
+            await Task.Run(() =>
+            {
+                const string itemDBPrefix = "Data/ItemDB/";
+                // First file instantiates the ItemDB.
+                ItemDB.Load(itemDBPrefix + "GemList.xml");
+                // Merge all other files from the ItemDB path.
+                Directory.GetFiles(itemDBPrefix)
+                    .Select(Path.GetFileName)
+                    .Where(f => f != "GemList.xml")
+                    .Select(f => itemDBPrefix + f)
+                    .ForEach(ItemDB.Merge);
+                // Merge the user specified things.
+                ItemDB.Merge("ItemsLocal.xml");
+                ItemDB.Index();
+            });
 
             var cmHighlight = new MenuItem
             {
@@ -460,7 +452,9 @@ namespace POESKillTree.Views
             SetTheme(_persistentData.Options.Theme);
             SetAccent(_persistentData.Options.Accent);
 
-            Tree = CreateSkillTree();
+            controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
+            Tree = await CreateSkillTreeAsync(controller);
+            await Task.Delay(1); // Give the progress dialog a chance to update
             recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
@@ -468,13 +462,17 @@ namespace POESKillTree.Views
             _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
             _addtransform = SkillTree.TRect.TopLeft;
 
+            controller.SetMessage(L10n.Message("Initalizing window ..."));
+            controller.SetIndeterminate();
+            await Task.Delay(1); // Give the progress dialog a chance to update
+
             _justLoaded = true;
 
             // loading last build
             if (_persistentData.CurrentBuild != null)
                 SetCurrentBuild(_persistentData.CurrentBuild);
 
-            await LoadBuildFromUrl();
+            await LoadBuildFromUrlAsync();
             _justLoaded = false;
             // loading saved build
             lvSavedBuilds.Items.Clear();
@@ -485,6 +483,8 @@ namespace POESKillTree.Views
             _persistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAsendancySelectionList();
             CheckAppVersionAndDoNecessaryChanges();
+
+            await controller.CloseAsync();
         }
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -615,32 +615,6 @@ namespace POESKillTree.Views
 
         #endregion
 
-        #region LoadingWindow
-
-        private void StartLoadingWindow(string infoText)
-        {
-            _loadingWindow = new LoadingWindow() {Owner = this, InfoText = infoText};
-            _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
-            _loadingWindow.Show();
-        }
-
-        private void UpdateLoadingWindow(double c, double max)
-        {
-            _loadingWindow.MaxProgress = max;
-            _loadingWindow.Progress = c;
-            _loadingWindow.UpdateLayout();
-            _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
-            if (Equals(c, max))
-                Thread.Sleep(100);
-        }
-
-        private void CloseLoadingWindow()
-        {
-            _loadingWindow.Close();
-        }
-
-        #endregion
-
         #region Utility
         private void SetTitle(string buildName)
         {
@@ -657,7 +631,7 @@ namespace POESKillTree.Views
 
         private async void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
         {
-            await Tree.SkillAllTaggedNodes();
+            await Tree.SkillAllTaggedNodesAsync();
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToURL();
             Tree.LoadFromURL(tbSkillURL.Text);
@@ -844,6 +818,10 @@ namespace POESKillTree.Views
                 case MessageBoxResult.Yes:
                     string appDataPath = AppData.GetFolder(true);
 
+                    var controller = await this.ShowProgressAsync(L10n.Message("Downloading skill tree assets ..."), null);
+                    controller.Maximum = 100;
+                    controller.SetProgress(0);
+                    Exception catchedEx = null;
                     try
                     {
                         if (Directory.Exists(appDataPath + "Data"))
@@ -854,15 +832,11 @@ namespace POESKillTree.Views
                             Directory.Move(appDataPath + "Data", appDataPath + "DataBackup");
                         }
 
-                        Tree = CreateSkillTree();
+                        SkillTree.ClearAssets();//enable recaching of assets
+                        Tree = await CreateSkillTreeAsync(controller);//create new skilltree to reinitialize cache
                         recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
-
-                        SkillTree.ClearAssets();//enable recaching of assets
-                        SkillTree.CreateSkillTree(_persistentData, DialogCoordinator.Instance);//create new skilltree to reinitialize cache
-
-
-                        await LoadBuildFromUrl();
+                        await LoadBuildFromUrlAsync();
                         _justLoaded = false;
 
                         if (Directory.Exists(appDataPath + "DataBackup"))
@@ -872,19 +846,16 @@ namespace POESKillTree.Views
                     {
                         if (Directory.Exists(appDataPath + "Data") && Directory.Exists(appDataPath + "DataBackup"))
                             Directory.Delete(appDataPath + "Data", true);
-                        try
-                        {
-                            CloseLoadingWindow();
-                        }
-                        catch (Exception)
-                        {
-                            //Nothing
-                        }
+
                         if (Directory.Exists(appDataPath + "DataBackup"))
                             Directory.Move(appDataPath + "DataBackup", appDataPath + "Data");
 
-                        this.ShowErrorAsync(L10n.Message("An error occurred while downloading assets."), ex.Message);
+                        // No await in catch
+                        catchedEx = ex;
                     }
+                    if (catchedEx != null)
+                        await this.ShowErrorAsync(L10n.Message("An error occurred while downloading assets."), catchedEx.Message);
+                    await controller.CloseAsync();
                     break;
 
                 case MessageBoxResult.No:
@@ -968,9 +939,9 @@ namespace POESKillTree.Views
                     var download = await this.ShowQuestionAsync(message, L10n.Message("Continue installation?"),
                         release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
                     if (download == MessageBoxResult.Yes)
-                        btnUpdateInstall();
+                        await InstallUpdateAsync();
                     else
-                        btnUpdateCancel();
+                        Updater.Dispose();
                 }
             }
             catch (UpdaterException ex)
@@ -982,34 +953,37 @@ namespace POESKillTree.Views
         }
 
         // Starts update process.
-        private void btnUpdateInstall()
+        private async Task InstallUpdateAsync()
         {
+            var controller = await this.ShowProgressAsync(L10n.Message("Downloading latest version"), null, true);
+            controller.Maximum = 100;
+            controller.Canceled += (sender, args) => Updater.Cancel();
+            Exception catchedEx = null;
             try
             {
-                StartLoadingWindow(L10n.Message("Downloading latest version"));
-                Updater.Download(UpdateDownloadCompleted, UpdateDownloadProgressChanged);
+                var downloadCs = new TaskCompletionSource<AsyncCompletedEventArgs>();
+                Updater.Download((sender, args) => downloadCs.SetResult(args),
+                    (sender, args) => controller.SetProgress(args.ProgressPercentage));
+
+                var result = await downloadCs.Task;
+                await controller.CloseAsync();
+                UpdateDownloadCompleted(result);
             }
             catch (UpdaterException ex)
             {
-                this.ShowErrorAsync(L10n.Message("An error occurred during the download operation."), ex.Message);
+                catchedEx = ex;
             }
-        }
-
-        // Cancels update download (also invoked when download progress dialog is closed).
-        private void btnUpdateCancel()
-        {
-            if (Updater.IsDownloading)
-                Updater.Cancel();
-            else
+            if (catchedEx != null)
             {
-                Updater.Dispose();
+                await this.ShowErrorAsync(L10n.Message("An error occurred during the download operation."),
+                    catchedEx.Message);
+                await controller.CloseAsync();
             }
         }
 
         // Invoked when update download completes, aborts or fails.
-        private void UpdateDownloadCompleted(Object sender, AsyncCompletedEventArgs e)
+        private void UpdateDownloadCompleted(AsyncCompletedEventArgs e)
         {
-            CloseLoadingWindow();
             if (e.Cancelled) // Check whether download was cancelled.
             {
                 Updater.Dispose();
@@ -1032,13 +1006,6 @@ namespace POESKillTree.Views
                     this.ShowErrorAsync(L10n.Message("An error occurred while attempting to start the installation."), ex.Message);
                 }
             }
-        }
-
-        // Invoked when update download progress changes.
-        private void UpdateDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            // Update download progres bar.
-            UpdateLoadingWindow(e.BytesReceived, e.TotalBytesToReceive);
         }
 
         #endregion
@@ -1783,7 +1750,7 @@ namespace POESKillTree.Views
             if (lvi == null) return;
             var build = ((PoEBuild)lvi);
             SetCurrentBuild(build);
-            await LoadBuildFromUrl(); // loading the build
+            await LoadBuildFromUrlAsync(); // loading the build
         }
 
         private void lvi_MouseLeave(object sender, MouseEventArgs e)
@@ -1921,7 +1888,7 @@ namespace POESKillTree.Views
                 Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3),
                 Level = "1"
             });
-            await LoadBuildFromUrl();
+            await LoadBuildFromUrlAsync();
         }
 
         private async Task SaveBuild()
@@ -1998,7 +1965,7 @@ namespace POESKillTree.Views
             }
         }
 
-        private async Task LoadBuildFromUrl()
+        private async Task LoadBuildFromUrlAsync()
         {
             try
             {
@@ -2014,7 +1981,7 @@ namespace POESKillTree.Views
                     if (match.Success)
                     {
                         tbSkillURL.Text = match.ToString().Replace("q=", "").Replace("&", "");
-                        await LoadBuildFromUrl();
+                        await LoadBuildFromUrlAsync();
                     }
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
@@ -2036,7 +2003,7 @@ namespace POESKillTree.Views
                         tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
-                    await LoadBuildFromUrl();
+                    await LoadBuildFromUrlAsync();
                 }
                 else
                 {
@@ -2225,7 +2192,7 @@ namespace POESKillTree.Views
         private async void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && NoAsyncTaskRunning)
-                await LoadBuildFromUrl();
+                await LoadBuildFromUrlAsync();
         }
 
         private void tbSkillURL_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -2283,7 +2250,7 @@ namespace POESKillTree.Views
 
         private async void btnLoadBuild_Click(object sender, RoutedEventArgs e)
         {
-            await LoadBuildFromUrl();
+            await LoadBuildFromUrlAsync();
         }
 
         private void btnPoeUrl_Click(object sender, RoutedEventArgs e)

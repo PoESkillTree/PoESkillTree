@@ -20,7 +20,7 @@ namespace UpdateDB.DataLoading
 
         protected override Task LoadAsync(HttpClient httpClient)
         {
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 // SkillTree does nothing if the files are already there.
                 // Data/Assets
@@ -37,7 +37,7 @@ namespace UpdateDB.DataLoading
                 if (File.Exists(treeFile))
                     File.Delete(treeFile);
 
-                SkillTree.CreateSkillTree(new PersistentData(false), null);
+                await SkillTree.CreateAsync(new PersistentData(false), null);
             });
         }
 

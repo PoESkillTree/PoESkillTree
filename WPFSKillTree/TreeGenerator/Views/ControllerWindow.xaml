@@ -33,7 +33,11 @@
                Visibility="{Binding IterationText, Converter={StaticResource StringToVisibilityConverter}}"
                Content="{Binding IterationText}"/>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-            <ProgressBar Minimum="1" Maximum="{Binding ProgressbarMax}" Value="{Binding ProgressbarCurrent, Mode=OneWay}" IsEnabled="{Binding ProgressbarEnabled}" Height="20" HorizontalAlignment="Stretch" BorderThickness="0"  Margin="5" Background="{DynamicResource WhiteColorBrush}"/>
+            <ProgressBar Minimum="1" Maximum="{Binding ProgressbarMax}"
+                         Value="{Binding ProgressbarCurrent, Mode=OneWay}"
+                         IsEnabled="{Binding ProgressbarEnabled}"
+                         Height="20" HorizontalAlignment="Stretch" Margin="5"
+                         BorderThickness="0"/>
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding ProgressbarText}"/>
         </Grid>
 
