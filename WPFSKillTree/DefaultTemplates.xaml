@@ -5,8 +5,7 @@
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
 
     <Style TargetType="{x:Type controls:MetroProgressBar}">
-        <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
-        <Setter Property="Background" Value="{DynamicResource GrayBrush9}" />
+        <Setter Property="Background" Value="#1FFFFFFF" />
     </Style>
 
     <ControlTemplate x:Key="HorizontalRangeScrollbar" TargetType="{x:Type WpfRangeControls:RangeScrollbar}">

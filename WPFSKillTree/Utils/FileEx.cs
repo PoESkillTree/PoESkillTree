@@ -28,5 +28,23 @@ namespace POESKillTree.Utils
                 await contents.CopyToAsync(writer).ConfigureAwait(false);
             }
         }
+
+        public static void DeleteIfExists(string path)
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+
+        public static void CopyIfExists(string sourceFileName, string destFileName, bool overwrite = false)
+        {
+            if (File.Exists(sourceFileName))
+                File.Copy(sourceFileName, destFileName, overwrite);
+        }
+
+        public static void MoveOverwriting(string sourceFileName, string destFileName)
+        {
+            DeleteIfExists(destFileName);
+            File.Move(sourceFileName, destFileName);
+        }
     }
 }

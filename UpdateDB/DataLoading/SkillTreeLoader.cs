@@ -7,7 +7,8 @@ using POESKillTree.SkillTreeFiles;
 namespace UpdateDB.DataLoading
 {
     // todo skill tree data loading is too wired into the SkillTree class to be configurable here
-    // (it should be properly async, use the provided httpClient and not instantiate an actual SkillTree instance)
+    // (it should be properly async, use the provided httpClient, not instantiate an actual SkillTree instance
+    //  and use the provided output directory instead of the AppData hack)
     /// <summary>
     /// Loads the skill tree assets using <see cref="SkillTree"/>.
     /// </summary>
@@ -37,7 +38,7 @@ namespace UpdateDB.DataLoading
                 if (File.Exists(treeFile))
                     File.Delete(treeFile);
 
-                await SkillTree.CreateAsync(new PersistentData(false), null);
+                await SkillTree.CreateAsync(new PersistentData(false), null, null, false);
             });
         }
 

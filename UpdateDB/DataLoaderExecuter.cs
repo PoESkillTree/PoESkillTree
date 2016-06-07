@@ -147,7 +147,11 @@ namespace UpdateDB
                     Backup(fullPath, isFolder);
 
                 await task;
-                MoveTmpToTarget(tmpPath, fullPath, isFolder);
+
+                if (isFolder)
+                    DirectoryEx.MoveOverwriting(tmpPath, fullPath);
+                else
+                    FileEx.MoveOverwriting(tmpPath, fullPath);
             }
             else
             {
@@ -162,8 +166,7 @@ namespace UpdateDB
             if (isFolder && Directory.Exists(path))
             {
                 var backupPath = path + "Backup";
-                if (Directory.Exists(backupPath))
-                    Directory.Delete(backupPath, true);
+                DirectoryEx.DeleteIfExists(backupPath, true);
 
                 Directory.CreateDirectory(backupPath);
                 foreach (var filePath in Directory.GetFiles(path))
@@ -174,22 +177,6 @@ namespace UpdateDB
             else if (!isFolder && File.Exists(path))
             {
                 File.Copy(path, path + ".bak", true);
-            }
-        }
-
-        private static void MoveTmpToTarget(string tmpPath, string targetPath, bool isFolder)
-        {
-            if (isFolder)
-            {
-                if (Directory.Exists(targetPath))
-                    Directory.Delete(targetPath, true);
-                Directory.Move(tmpPath, targetPath);
-            }
-            else
-            {
-                if (File.Exists(targetPath))
-                    File.Delete(targetPath);
-                File.Move(tmpPath, targetPath);
             }
         }
 

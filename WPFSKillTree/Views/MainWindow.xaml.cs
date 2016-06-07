@@ -816,7 +816,10 @@ namespace POESKillTree.Views
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    string appDataPath = AppData.GetFolder(true);
+                    var dataPath = AppData.GetFolder("Data", true);
+                    var assetsPath = dataPath + "Assets";
+                    var skillTreePath = dataPath + "Skilltree.txt";
+                    var optsPath = dataPath + "Opts.txt";
 
                     var controller = await this.ShowProgressAsync(L10n.Message("Downloading skill tree assets ..."), null);
                     controller.Maximum = 100;
@@ -824,31 +827,28 @@ namespace POESKillTree.Views
                     Exception catchedEx = null;
                     try
                     {
-                        if (Directory.Exists(appDataPath + "Data"))
-                        {
-                            if (Directory.Exists(appDataPath + "DataBackup"))
-                                Directory.Delete(appDataPath + "DataBackup", true);
+                        if (Directory.Exists(assetsPath))
+                            DirectoryEx.MoveOverwriting(assetsPath, assetsPath + "Backup");
+                        FileEx.CopyIfExists(skillTreePath, skillTreePath + ".bak", true);
+                        FileEx.CopyIfExists(optsPath, optsPath + ".bak", true);
 
-                            Directory.Move(appDataPath + "Data", appDataPath + "DataBackup");
-                        }
-
-                        SkillTree.ClearAssets();//enable recaching of assets
-                        Tree = await CreateSkillTreeAsync(controller);//create new skilltree to reinitialize cache
+                        SkillTree.ClearAssets(); //enable recaching of assets
+                        Tree = await CreateSkillTreeAsync(controller); //create new skilltree to reinitialize cache
                         recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
                         await LoadBuildFromUrlAsync();
                         _justLoaded = false;
 
-                        if (Directory.Exists(appDataPath + "DataBackup"))
-                            Directory.Delete(appDataPath + "DataBackup", true);
+                        DirectoryEx.DeleteIfExists(assetsPath + "Backup", true);
+                        FileEx.DeleteIfExists(skillTreePath + ".bak");
+                        FileEx.DeleteIfExists(optsPath + ".bak");
                     }
                     catch (Exception ex)
                     {
-                        if (Directory.Exists(appDataPath + "Data") && Directory.Exists(appDataPath + "DataBackup"))
-                            Directory.Delete(appDataPath + "Data", true);
-
-                        if (Directory.Exists(appDataPath + "DataBackup"))
-                            Directory.Move(appDataPath + "DataBackup", appDataPath + "Data");
+                        if (Directory.Exists(assetsPath + "Backup"))
+                            DirectoryEx.MoveOverwriting(assetsPath + "Backup", assetsPath);
+                        FileEx.CopyIfExists(skillTreePath + ".bak", skillTreePath, true);
+                        FileEx.CopyIfExists(optsPath + ".bak", optsPath, true);
 
                         // No await in catch
                         catchedEx = ex;

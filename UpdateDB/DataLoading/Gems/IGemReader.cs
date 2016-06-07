@@ -1,4 +1,6 @@
-﻿using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
 
 namespace UpdateDB.DataLoading.Gems
 {
@@ -7,9 +9,11 @@ namespace UpdateDB.DataLoading.Gems
     /// </summary>
     public interface IGemReader
     {
+        HttpClient HttpClient { set; }
+
         /// <summary>
         /// Extracts and returns the gem with the given name.
         /// </summary>
-        Gem FetchGem(string name);
+        Task<Gem> FetchGemAsync(string name);
     }
 }

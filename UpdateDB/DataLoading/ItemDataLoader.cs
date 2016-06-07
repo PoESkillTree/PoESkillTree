@@ -217,7 +217,7 @@ namespace UpdateDB.DataLoading
             foreach (var propertyColumn in propertyColumns)
             {
                 var cell = GetCell(row, propertyColumn.Key);
-                var modified = cell.FirstChild.GetAttributeValue("class", "").Contains("text-mod");
+                var modified = cell.FirstChild.GetAttributeValue("class", "").Contains("-mod");
                 var inner = cell.InnerHtml;
                 var childInner = cell.FirstChild.InnerHtml;
                 float from;
@@ -236,7 +236,7 @@ namespace UpdateDB.DataLoading
                     to = from;
                     name += " %";
                 }
-                else if (cell.FirstChild.GetAttributeValue("class", "").Contains("text-physical"))
+                else if (cell.FirstChild.GetAttributeValue("class", "").Contains("-physical"))
                 {
                     var split = WebUtility.HtmlDecode(cell.FirstChild.InnerHtml).Split('–');
                     success = TryParseFloat(split[0], out from) & TryParseFloat(split[1], out to);

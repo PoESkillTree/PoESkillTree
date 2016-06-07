@@ -62,9 +62,7 @@ namespace POESKillTree.Utils
         private static readonly IReadOnlyDictionary<string, IReadOnlyList<ItemType>> GemTableUrls =
             new Dictionary<string, IReadOnlyList<ItemType>>
         {
-            {"List_of_active_skill_gems", new[] {ItemType.Gem, ItemType.Gem, ItemType.Gem, ItemType.Gem}},
-            // Str, Dex, Int, White
-            {"List_of_support_skill_gems", new[] {ItemType.Gem, ItemType.Gem, ItemType.Gem}} // Str, Dex, Int
+            {"List_of_skill_gems", new[] {ItemType.Gem}}
         };
 
         private readonly HttpClient _httpClient;

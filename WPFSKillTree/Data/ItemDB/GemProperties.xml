@@ -27,7 +27,7 @@
   <Gem Name="Ice Shot" RequiredWeapon="Bow" />
   <Gem Name="Infernal Blow" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Unarmed="true" />
   <Gem Name="Kinetic Blast" RequiredWeapon="Wand" />
-  <Gem Name="Lacerate" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" />
+  <Gem Name="Lacerate" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" HitsPerAttack="2" />
   <Gem Name="Leap Slam" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" />
   <Gem Name="Lightning Arrow" RequiredWeapon="Bow" />
   <Gem Name="Lightning Strike" RequiredWeapon="Melee" />

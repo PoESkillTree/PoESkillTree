@@ -24,7 +24,7 @@ namespace UnitTests
             set { TestContextInstance = value; }
         }
 
-        static Task<SkillTree> TreeTask;
+        private static Task<SkillTree> _treeTask;
 
         [ClassInitialize]
         public static void Initalize(TestContext testContext)
@@ -33,7 +33,7 @@ namespace UnitTests
 
             if (ItemDB.IsEmpty())
                 ItemDB.Load("Data/ItemDB/GemList.xml", true);
-            TreeTask = SkillTree.CreateAsync(new PersistentData(false), null);
+            _treeTask = SkillTree.CreateAsync(new PersistentData(false), null);
         }
 
         readonly Regex _backreplace = new Regex("#");
@@ -85,7 +85,7 @@ namespace UnitTests
                 }
             }
 
-            var tree = await TreeTask;
+            var tree = await _treeTask;
             // Initialize structures.
             tree.LoadFromURL(treeURL);
             tree.Level = level;

@@ -293,6 +293,7 @@
     <Compile Include="Utils\Converter\MathConverter.cs" />
     <Compile Include="Utils\Converter\StringConverter.cs" />
     <Compile Include="Controls\Dialogs\ExtendedDialogManager.cs" />
+    <Compile Include="Utils\DirectoryEx.cs" />
     <Compile Include="Utils\Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Utils\Extensions\ImageExtensions.cs" />
     <Compile Include="Utils\Extensions\TaskExtensions.cs" />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ItemList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ItemBase ItemType="OneHandedAxe" Name="Rusted Hatchet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Physical Damage" From="5" To="9" />
@@ -1311,7 +1311,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Darkwood Sceptre" Level="5" Strength="14" Dexterity="0" Intelligence="14">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="12" To="12" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="7" To="10" />
@@ -1321,7 +1321,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Bronze Sceptre" Level="10" Strength="22" Dexterity="0" Intelligence="22">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="12" To="12" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="10" To="19" />
@@ -1341,7 +1341,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Iron Sceptre" Level="20" Strength="38" Dexterity="0" Intelligence="38">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="14" To="14" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="18" To="27" />
@@ -1351,7 +1351,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Ochre Sceptre" Level="24" Strength="44" Dexterity="0" Intelligence="44">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="16" To="16" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="15" To="28" />
@@ -1361,7 +1361,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Ritual Sceptre" Level="28" Strength="51" Dexterity="0" Intelligence="51">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="16" To="16" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="18" To="41" />
@@ -1371,7 +1371,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Shadow Sceptre" Level="32" Strength="52" Dexterity="0" Intelligence="62">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="15" To="15" />
+      <Stat Name="#% increased Elemental Damage" From="22" To="22" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="25" To="37" />
@@ -1381,7 +1381,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Grinning Fetish" Level="35" Strength="62" Dexterity="0" Intelligence="62">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="21" To="32" />
@@ -1391,7 +1391,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Horned Sceptre" Level="36" Strength="66" Dexterity="0" Intelligence="66">
     <Implicit>
-      <Stat Name="Damage Penetrates #% Elemental Resistances" From="1" To="1" />
+      <Stat Name="Damage Penetrates #% Elemental Resistances" From="4" To="4" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="22" To="42" />
@@ -1401,7 +1401,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Sekhem" Level="38" Strength="67" Dexterity="0" Intelligence="67">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="25" To="46" />
@@ -1411,7 +1411,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Crystal Sceptre" Level="41" Strength="59" Dexterity="0" Intelligence="85">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="20" To="20" />
+      <Stat Name="#% increased Elemental Damage" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="29" To="43" />
@@ -1421,7 +1421,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Lead Sceptre" Level="44" Strength="77" Dexterity="0" Intelligence="77">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="22" To="22" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="32" To="48" />
@@ -1431,7 +1431,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Blood Sceptre" Level="47" Strength="81" Dexterity="0" Intelligence="81">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="24" To="24" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="25" To="47" />
@@ -1441,7 +1441,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Royal Sceptre" Level="50" Strength="86" Dexterity="0" Intelligence="86">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="24" To="24" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="29" To="67" />
@@ -1451,7 +1451,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Abyssal Sceptre" Level="53" Strength="83" Dexterity="0" Intelligence="99">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="15" To="15" />
+      <Stat Name="#% increased Elemental Damage" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="38" To="57" />
@@ -1461,7 +1461,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Stag Sceptre" Level="55" Strength="98" Dexterity="0" Intelligence="98">
     <Implicit>
-      <Stat Name="Damage Penetrates #% Elemental Resistances" From="1" To="1" />
+      <Stat Name="Damage Penetrates #% Elemental Resistances" From="4" To="4" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="32" To="60" />
@@ -1471,7 +1471,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Karui Sceptre" Level="56" Strength="96" Dexterity="0" Intelligence="96">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="26" To="26" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="32" To="47" />
@@ -1481,7 +1481,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Tyrant's Sekhem" Level="58" Strength="99" Dexterity="0" Intelligence="99">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="26" To="26" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="36" To="67" />
@@ -1491,7 +1491,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Opal Sceptre" Level="60" Strength="95" Dexterity="0" Intelligence="131">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="20" To="20" />
+      <Stat Name="#% increased Elemental Damage" From="40" To="40" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="40" To="60" />
@@ -1501,7 +1501,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Platinum Sceptre" Level="62" Strength="113" Dexterity="0" Intelligence="113">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="42" To="63" />
@@ -1511,7 +1511,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Vaal Sceptre" Level="64" Strength="113" Dexterity="0" Intelligence="113">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="32" To="32" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="31" To="58" />
@@ -1521,7 +1521,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Carnal Sceptre" Level="66" Strength="113" Dexterity="0" Intelligence="113">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="10" To="10" />
+      <Stat Name="#% increased Elemental Damage" From="32" To="32" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="34" To="78" />
@@ -1531,7 +1531,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Void Sceptre" Level="68" Strength="104" Dexterity="0" Intelligence="122">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="15" To="15" />
+      <Stat Name="#% increased Elemental Damage" From="40" To="40" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="42" To="63" />
@@ -1541,7 +1541,7 @@
   </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Sambar Sceptre" Level="70" Strength="121" Dexterity="0" Intelligence="112">
     <Implicit>
-      <Stat Name="Damage Penetrates #% Elemental Resistances" From="2" To="2" />
+      <Stat Name="Damage Penetrates #% Elemental Resistances" From="6" To="6" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="35" To="65" />
@@ -2654,7 +2654,7 @@
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="59" To="99" />
+      <Stat Name="Physical Damage" From="57" To="95" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
@@ -2721,7 +2721,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Goat's Horn" Level="6" Strength="0" Dexterity="0" Intelligence="29">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="9" To="12" />
+      <Stat Name="#% increased Spell Damage" From="10" To="14" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="5" To="10" />
@@ -2731,7 +2731,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Carved Wand" Level="12" Strength="0" Dexterity="0" Intelligence="47">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="9" To="13" />
+      <Stat Name="#% increased Spell Damage" From="11" To="15" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="6" To="11" />
@@ -2741,7 +2741,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Quartz Wand" Level="18" Strength="0" Dexterity="0" Intelligence="65">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="11" To="15" />
+      <Stat Name="#% increased Spell Damage" From="18" To="22" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="9" To="17" />
@@ -2751,7 +2751,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Spiraled Wand" Level="24" Strength="0" Dexterity="0" Intelligence="83">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="10" To="14" />
+      <Stat Name="#% increased Spell Damage" From="15" To="19" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="8" To="24" />
@@ -2761,7 +2761,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Sage Wand" Level="30" Strength="0" Dexterity="0" Intelligence="119">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="11" To="14" />
+      <Stat Name="#% increased Spell Damage" From="17" To="21" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="15" To="28" />
@@ -2771,7 +2771,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Pagan Wand" Level="34" Strength="0" Dexterity="0" Intelligence="118">
     <Implicit>
-      <Stat Name="#% increased Cast Speed" From="4" To="4" />
+      <Stat Name="#% increased Cast Speed" From="8" To="8" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="14" To="26" />
@@ -2781,7 +2781,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Faun's Horn" Level="35" Strength="0" Dexterity="0" Intelligence="116">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="12" To="15" />
+      <Stat Name="#% increased Spell Damage" From="20" To="24" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="17" To="32" />
@@ -2791,7 +2791,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Engraved Wand" Level="40" Strength="0" Dexterity="0" Intelligence="131">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="12" To="16" />
+      <Stat Name="#% increased Spell Damage" From="22" To="26" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="14" To="27" />
@@ -2801,7 +2801,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Crystal Wand" Level="45" Strength="0" Dexterity="0" Intelligence="146">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="14" To="18" />
+      <Stat Name="#% increased Spell Damage" From="29" To="33" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="19" To="35" />
@@ -2811,7 +2811,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Serpent Wand" Level="49" Strength="0" Dexterity="0" Intelligence="158">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="13" To="17" />
+      <Stat Name="#% increased Spell Damage" From="26" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="15" To="44" />
@@ -2821,7 +2821,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Omen Wand" Level="53" Strength="0" Dexterity="0" Intelligence="200">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="14" To="17" />
+      <Stat Name="#% increased Spell Damage" From="27" To="31" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="25" To="46" />
@@ -2831,7 +2831,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Heathen Wand" Level="55" Strength="0" Dexterity="0" Intelligence="184">
     <Implicit>
-      <Stat Name="#% increased Cast Speed" From="4" To="4" />
+      <Stat Name="#% increased Cast Speed" From="8" To="8" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="21" To="40" />
@@ -2841,7 +2841,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Demon's Horn" Level="56" Strength="0" Dexterity="0" Intelligence="179">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="15" To="18" />
+      <Stat Name="#% increased Spell Damage" From="31" To="35" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="26" To="48" />
@@ -2851,7 +2851,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Imbued Wand" Level="59" Strength="0" Dexterity="0" Intelligence="188">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="15" To="19" />
+      <Stat Name="#% increased Spell Damage" From="33" To="37" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="20" To="38" />
@@ -2861,7 +2861,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Opal Wand" Level="62" Strength="0" Dexterity="0" Intelligence="212">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="17" To="20" />
+      <Stat Name="#% increased Spell Damage" From="38" To="42" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="24" To="45" />
@@ -2871,7 +2871,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Tornado Wand" Level="65" Strength="0" Dexterity="0" Intelligence="212">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="16" To="19" />
+      <Stat Name="#% increased Spell Damage" From="35" To="39" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="17" To="52" />
@@ -2881,7 +2881,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Prophecy Wand" Level="68" Strength="0" Dexterity="0" Intelligence="245">
     <Implicit>
-      <Stat Name="#% increased Spell Damage" From="16" To="20" />
+      <Stat Name="#% increased Spell Damage" From="36" To="40" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="27" To="51" />
@@ -2891,7 +2891,7 @@
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Profane Wand" Level="70" Strength="0" Dexterity="0" Intelligence="237">
     <Implicit>
-      <Stat Name="#% increased Cast Speed" From="6" To="6" />
+      <Stat Name="#% increased Cast Speed" From="12" To="12" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="23" To="43" />

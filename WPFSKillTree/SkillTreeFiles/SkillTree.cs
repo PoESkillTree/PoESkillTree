@@ -257,7 +257,8 @@ namespace POESKillTree.SkillTreeFiles
             _dialogCoordinator = dialogCoordinator;
         }
 
-        private async Task InitializeAsync(string treestring, string opsstring, [CanBeNull] ProgressDialogController controller)
+        private async Task InitializeAsync(string treestring, string opsstring, [CanBeNull] ProgressDialogController controller,
+            bool initializeDrawing)
         {
             if (!_Initialized)
             {
@@ -534,9 +535,13 @@ namespace POESKillTree.SkillTreeFiles
 
             if (_persistentData.Options.ShowAllAscendancyClasses)
                 drawAscendancy = true;
-            InitializeLayers();
-            DrawInitialLayers();
-            CreateCombineVisual();
+
+            if (initializeDrawing)
+            {
+                InitializeLayers();
+                DrawInitialLayers();
+                CreateCombineVisual();
+            }
 
             if (controller != null)
                 controller.SetProgress(100);
@@ -726,8 +731,16 @@ namespace POESKillTree.SkillTreeFiles
             return temp;
         }
 
+        /// <summary>
+        /// Returns a task that finishes with a SkillTree object once it has been initialized.
+        /// </summary>
+        /// <param name="persistentData"></param>
+        /// <param name="dialogCoordinator">Can be null if the resulting tree is not used.</param>
+        /// <param name="controller">Null if no initialization progress should be displayed.</param>
+        /// <param name="initializeDrawing">Should only be false if the resulting tree is not used.</param>
+        /// <returns></returns>
         public static async Task<SkillTree> CreateAsync(IPersistentData persistentData, IDialogCoordinator dialogCoordinator,
-            ProgressDialogController controller = null)
+            ProgressDialogController controller = null, bool initializeDrawing = true)
         {
             if (controller != null)
                 controller.SetProgress(0);
@@ -744,7 +757,7 @@ namespace POESKillTree.SkillTreeFiles
             if (controller != null)
                 controller.SetProgress(25);
             var tree = new SkillTree(persistentData, dialogCoordinator);
-            await tree.InitializeAsync(skillTreeObj, optsObj, controller);
+            await tree.InitializeAsync(skillTreeObj, optsObj, controller, initializeDrawing);
             return tree;
         }
 

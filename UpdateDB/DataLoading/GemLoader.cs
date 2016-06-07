@@ -7,12 +7,11 @@ using HtmlAgilityPack;
 using log4net;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 using UpdateDB.DataLoading.Gems;
 
 namespace UpdateDB.DataLoading
 {
-    // todo ItemDB and GamepediaReader do not really allow async gem loading
+    // todo ItemDB does not really allow async gem loading
     /// <summary>
     /// Loads the available Gems from the unofficial Wiki at Gamepedia and loads and saves information about each
     /// gem using a <see cref="IGemReader"/>.
@@ -40,10 +39,11 @@ namespace UpdateDB.DataLoading
 
         protected override Task LoadAsync(HttpClient httpClient)
         {
+            _gemReader.HttpClient = httpClient;
             string singleGemName;
             if (SuppliedArguments.TryGetValue("single", out singleGemName) && singleGemName != null)
             {
-                return Task.Run(() => UpdateSingle(singleGemName));
+                return UpdateSingle(singleGemName);
             }
             string mergePath;
             if (SuppliedArguments.TryGetValue("merge", out mergePath) && mergePath != null)
@@ -52,14 +52,14 @@ namespace UpdateDB.DataLoading
             }
             if (SuppliedArguments.ContainsKey("update"))
             {
-                return Task.Run(() => Update());
+                return Update();
             }
             return Overwrite(httpClient);
         }
 
-        private void UpdateSingle(string singleGemName)
+        private async Task UpdateSingle(string singleGemName)
         {
-            var fetched = _gemReader.FetchGem(singleGemName);
+            var fetched = await _gemReader.FetchGemAsync(singleGemName);
             if (fetched == null)
                 return;
             if (!LoadOld())
@@ -78,13 +78,13 @@ namespace UpdateDB.DataLoading
             ItemDB.MergeFromCompletePath(mergePath);
         }
 
-        private void Update()
+        private async Task Update()
         {
             if (!LoadOld())
                 return;
             foreach (var gem in ItemDB.GetAllGems())
             {
-                var fetched = _gemReader.FetchGem(gem.Name);
+                var fetched = await _gemReader.FetchGemAsync(gem.Name);
                 if (fetched != null)
                     gem.Merge(fetched);
             }
@@ -105,18 +105,22 @@ namespace UpdateDB.DataLoading
         private async Task Overwrite(HttpClient httpClient)
         {
             var wikiUtils = new WikiUtils(httpClient);
-            var gems = await wikiUtils.SelectFromGemsAsync(ParseGemTable);
-            gems.Where(g => g != null)
-                .GroupBy(g => g.Name).Select(g => g.First()) // distinct by Gem.Name
-                .ForEach(ItemDB.Add);
+            var gemTasks = await wikiUtils.SelectFromGemsAsync(ParseGemTable);
+            foreach (var task in gemTasks)
+            {
+                var gem = await task;
+                if (gem == null)
+                    continue;
+                ItemDB.Add(gem);
+            }
         }
 
-        private IEnumerable<ItemDB.Gem> ParseGemTable(HtmlNode table)
+        private IEnumerable<Task<ItemDB.Gem>> ParseGemTable(HtmlNode table)
         {
             return from row in table.Elements("tr").Skip(1)
                    select row.ChildNodes[0] into cell
                    select cell.SelectNodes("span/a")[1] into nameNode
-                   select _gemReader.FetchGem(nameNode.InnerHtml);
+                   select _gemReader.FetchGemAsync(nameNode.InnerHtml);
         }
 
         protected override Task CompleteSavingAsync()
