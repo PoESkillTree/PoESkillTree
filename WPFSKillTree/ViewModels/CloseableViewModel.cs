@@ -46,5 +46,13 @@ namespace POESKillTree.ViewModels
         {
             return _closeCompletionSource.Task;
         }
+
+        /// <summary>
+        /// Closes this ViewModel. Equivalent to <c>CloseCommand.Execute(null)</c>
+        /// </summary>
+        protected void Close()
+        {
+            _closeCommand.Execute(null);
+        }
     }
 }

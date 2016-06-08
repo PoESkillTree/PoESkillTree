@@ -1321,7 +1321,8 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (!GetCheckedNodes().Except(SkilledNodes).Any())
             {
-                await _dialogCoordinator.ShowInfoAsync(this, L10n.Message("Please tag non-skilled nodes by right-clicking them."));
+                await _dialogCoordinator.ShowInfoAsync(this,
+                    L10n.Message("Please tag non-skilled nodes by right-clicking them."));
                 return;
             }
 
@@ -1330,7 +1331,8 @@ namespace POESKillTree.SkillTreeFiles
             {
 #endif
                 // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
-                var settingsVm = new SettingsViewModel(this, SettingsDialogCoordinator.Instance, new SteinerTabViewModel(this));
+                var settingsVm = new SettingsViewModel(this, SettingsDialogCoordinator.Instance,
+                    new SteinerTabViewModel(this));
                 var registration = DialogParticipation.GetAssociation(this);
                 DialogParticipation.SetRegister(registration, settingsVm);
                 await settingsVm.RunAsync();

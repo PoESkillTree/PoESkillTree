@@ -153,7 +153,8 @@ namespace POESKillTree.Views
 
         private SettingsWindow _settingsWindow;
 
-        private const string MainWindowTitle = "PoESkillTree";
+        private static readonly string MainWindowTitle =
+            FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).ProductName;
 
         public MainWindow()
         {
@@ -639,7 +640,8 @@ namespace POESKillTree.Views
 
         private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
         {
-            var response = await this.ShowQuestionAsync(L10n.Message("Are you sure?"), L10n.Message("Untag All Skill Nodes"), MessageBoxImage.None);
+            var response = await this.ShowQuestionAsync(L10n.Message("Are you sure?"),
+                L10n.Message("Untag All Skill Nodes"), MessageBoxImage.None);
             if (response == MessageBoxResult.Yes)
                 Tree.UntagAllNodes();
         }

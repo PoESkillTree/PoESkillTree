@@ -54,7 +54,7 @@ namespace POESKillTree.ViewModels
                 return _yesCommand ?? (_yesCommand = new RelayCommand(args =>
                 {
                     Result = MessageBoxResult.Yes;
-                    CloseCommand.Execute(null);
+                    Close();
                 }));
             }
         }
@@ -65,7 +65,7 @@ namespace POESKillTree.ViewModels
                 return _noCommand ?? (_noCommand = new RelayCommand(args =>
                 {
                     Result = MessageBoxResult.No;
-                    CloseCommand.Execute(null);
+                    Close();
                 }));
             }
         }
@@ -76,7 +76,7 @@ namespace POESKillTree.ViewModels
                 return _cancelCommand ?? (_cancelCommand = new RelayCommand(args =>
                 {
                     Result = MessageBoxResult.Cancel;
-                    CloseCommand.Execute(null);
+                    Close();
                 }));
             }
         }
@@ -87,7 +87,7 @@ namespace POESKillTree.ViewModels
                 return _okCommand ?? (_okCommand = new RelayCommand(args =>
                 {
                     Result = MessageBoxResult.OK;
-                    CloseCommand.Execute(null);
+                    Close();
                 }));
             }
         }

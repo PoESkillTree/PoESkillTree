@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
-using MahApps.Metro.Controls.Dialogs;
 
 namespace POESKillTree.Controls.Dialogs
 {
