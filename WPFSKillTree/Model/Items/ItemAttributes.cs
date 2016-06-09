@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
@@ -254,7 +255,7 @@ namespace POESKillTree.Model.Items
             }
             var jObj = new JObject();
             jObj["items"] = items;
-            return jObj.ToString();
+            return jObj.ToString(Formatting.None);
         }
 
         private void RefreshItemAttributes()

@@ -170,10 +170,8 @@ namespace POESKillTree.Model.Items
             {
                 // This might be wrong for Armour slots, but the item will most likely not be edited so this is not important.
                 ItemType = ItemGroup.Types()[0];
-                return;
             }
-
-            if (frameType == FrameType.Gem)
+            else if (frameType == FrameType.Gem)
                 ItemType = ItemType.Gem;
             else if (frameType == FrameType.Currency || frameType == FrameType.DivinationCard
                 || frameType == FrameType.QuestItem || frameType == FrameType.Prophecy)
@@ -194,8 +192,9 @@ namespace POESKillTree.Model.Items
                 if (Enum.TryParse(Regex.Replace(weaponClass.Trim(), "([a-z]) ([A-Z])", "$1$2"), true, out type))
                     ItemType = type;
             }
-            ItemGroup = ItemType.Group();
 
+            if (ItemGroup == ItemGroup.Unknown)
+                ItemGroup = ItemType.Group();
             Image = new ItemImage(options, Name, ItemGroup);
         }
 

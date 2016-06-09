@@ -185,11 +185,11 @@ namespace POESKillTree.Views
             };
         }
 
-        private void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private async void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName == "ItemData")
             {
-                LoadItemData();
+                await LoadItemData();
             }
         }
 
@@ -374,10 +374,11 @@ namespace POESKillTree.Views
             await Task.Run(() =>
             {
                 const string itemDBPrefix = "Data/ItemDB/";
+                Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
                 // First file instantiates the ItemDB.
                 ItemDB.Load(itemDBPrefix + "GemList.xml");
                 // Merge all other files from the ItemDB path.
-                Directory.GetFiles(itemDBPrefix)
+                Directory.GetFiles(AppData.GetFolder(itemDBPrefix))
                     .Select(Path.GetFileName)
                     .Where(f => f != "GemList.xml")
                     .Select(f => itemDBPrefix + f)
@@ -471,7 +472,7 @@ namespace POESKillTree.Views
 
             // loading last build
             if (_persistentData.CurrentBuild != null)
-                SetCurrentBuild(_persistentData.CurrentBuild);
+                await SetCurrentBuild(_persistentData.CurrentBuild);
 
             await LoadBuildFromUrlAsync();
             _justLoaded = false;
@@ -1665,7 +1666,7 @@ namespace POESKillTree.Views
 
         private bool _pauseLoadItemData;
 
-        private void LoadItemData()
+        private async Task LoadItemData()
         {
             if (_pauseLoadItemData)
                 return;
@@ -1680,6 +1681,7 @@ namespace POESKillTree.Views
             ItemAttributes itemAttributes;
             if (!string.IsNullOrEmpty(itemData))
             {
+                Exception catched = null;
                 try
                 {
                     itemAttributes = new ItemAttributes(_persistentData, itemData);
@@ -1687,8 +1689,11 @@ namespace POESKillTree.Views
                 catch (Exception ex)
                 {
                     itemAttributes = new ItemAttributes();
-                    this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load item data."), ex.Message);
+                    catched = ex;
                 }
+                if (catched != null)
+                    await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load item data."),
+                        catched.Message);
             }
             else
             {
@@ -1751,7 +1756,7 @@ namespace POESKillTree.Views
             var lvi = ((ListView)sender).SelectedItem;
             if (lvi == null) return;
             var build = ((PoEBuild)lvi);
-            SetCurrentBuild(build);
+            await SetCurrentBuild(build);
             await LoadBuildFromUrlAsync(); // loading the build
         }
 
@@ -1864,7 +1869,7 @@ namespace POESKillTree.Views
         #endregion
 
         #region Builds - Services
-        private void SetCurrentBuild(PoEBuild build)
+        private async Task SetCurrentBuild(PoEBuild build)
         {
             foreach (PoEBuild item in lvSavedBuilds.Items)
             {
@@ -1878,13 +1883,13 @@ namespace POESKillTree.Views
 
             tbSkillURL.Text = build.Url;
             SetLevelFromString(build.Level);
-            LoadItemData();
+            await LoadItemData();
             SetCustomGroups(build.CustomGroups);
         }
 
         private async Task NewBuild()
         {
-            SetCurrentBuild(new PoEBuild
+            await SetCurrentBuild(new PoEBuild
             {
                 Name = "New Build",
                 Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3),
@@ -1912,7 +1917,7 @@ namespace POESKillTree.Views
                 currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
                 currentOpenBuild.Bandits = _persistentData.CurrentBuild.Bandits.Clone();
                 currentOpenBuild.League = _persistentData.CurrentBuild.League;
-                SetCurrentBuild(currentOpenBuild);
+                await SetCurrentBuild(currentOpenBuild);
                 SaveBuildsToFile();
             }
             else
@@ -1942,7 +1947,7 @@ namespace POESKillTree.Views
                 Bandits = _persistentData.CurrentBuild.Bandits,
                 League = _persistentData.CurrentBuild.League
             };
-            SetCurrentBuild(newBuild);
+            await SetCurrentBuild(newBuild);
             lvSavedBuilds.Items.Add(newBuild);
 
             if (lvSavedBuilds.Items.Count > 0)

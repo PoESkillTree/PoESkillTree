@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
+using log4net;
 using POESKillTree.Model;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
@@ -22,6 +23,8 @@ namespace POESKillTree.SkillTreeFiles
     // TODO: Attributes can have negative value (Cast when Damage Taken L20 has 6% more Damage), AttributesOf should handle transition between less/more.
     public class ItemDB
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDB));
+
         // Maximum level (quality).
         public const int MAX_LEVEL = 30;
 
@@ -1405,7 +1408,11 @@ namespace POESKillTree.SkillTreeFiles
         public static void LoadFromCompletePath(string file, bool index = false)
         {
             if (!File.Exists(file))
-                File.Create(file);
+            {
+                Log.WarnFormat("File {0} does not exist.", file);
+                if (index) Index();
+                return;
+            }
             var serializer = new XmlSerializer(typeof(ItemDB));
             var reader = new StreamReader(file);
             DB = (ItemDB)serializer.Deserialize(reader);
