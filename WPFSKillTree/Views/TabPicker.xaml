@@ -96,13 +96,12 @@
                 <l:Catalog Message="Delete"/>
             </Button>
             <Button Margin="5 0" MinWidth="80" Height="35"
-                    IsDefault="True"
                     Style="{DynamicResource AccentedDialogSquareButton}"
                     Click="Button_OK_Click">
                 <l:Catalog Message="OK"/>
             </Button>
             <Button Margin="5 0" MinWidth="80" Height="35"
-                    IsCancel="True"
+                    IsCancel="True" IsDefault="True"
                     Style="{DynamicResource AccentedDialogSquareButton}"
                     Click="Button_Cancel_Click">
                 <l:Catalog Message="Cancel"/>

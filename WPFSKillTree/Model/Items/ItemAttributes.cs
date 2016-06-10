@@ -227,7 +227,7 @@ namespace POESKillTree.Model.Items
                         jItem["inventoryId"] = "Weapon";
                         break;
                     case ItemSlot.OffHand:
-                        jItem["inventoryId"] = "OffHand";
+                        jItem["inventoryId"] = "Offhand";
                         break;
                     case ItemSlot.Ring:
                         jItem["inventoryId"] = "Ring";

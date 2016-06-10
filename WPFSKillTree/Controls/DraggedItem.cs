@@ -89,8 +89,9 @@ namespace POESKillTree.Controls
             // was initiated.
             // The window position is subtracted because the cursor position is retrieved as an absolute value.
             // The title bar height is subtracted because the content used for the adorner does not include it.
-            _offset.X = -DragStart.X - mainWindow.Left;
-            _offset.Y = -DragStart.Y - mainWindow.Top - mainWindow.TitlebarHeight;
+            var winPos = GetWindowPosition(mainWindow);
+            _offset.X = -DragStart.X - winPos.X;
+            _offset.Y = -DragStart.Y - winPos.Y - mainWindow.TitlebarHeight;
 
             _adornerLayer = AdornerLayer.GetAdornerLayer(dragScope);
             _adornerLayer.Add(_dragAdorner);
@@ -104,6 +105,23 @@ namespace POESKillTree.Controls
             Win32.GetCursorPos(ref w32Mouse);
             _dragAdorner.OffsetLeft = w32Mouse.X + _offset.X;
             _dragAdorner.OffsetTop = w32Mouse.Y + _offset.Y;
+        }
+
+        private static Point GetWindowPosition(Window window)
+        {
+            // Window.Left and Top are incorrect when maximized
+            if (window.WindowState == WindowState.Maximized)
+            {
+                var leftField = typeof(Window).GetField("_actualLeft",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var topField = typeof(Window).GetField("_actualTop",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                return new Point((double) leftField.GetValue(window), (double) topField.GetValue(window));
+            }
+            else
+            {
+                return new Point(window.Left, window.Top);
+            }
         }
 
         public void Dispose()

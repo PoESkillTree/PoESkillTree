@@ -1419,23 +1419,25 @@ namespace POESKillTree.SkillTreeFiles
             return availNodes;
         }
 
-        public static Dictionary<string, List<float>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
+        public static IEnumerable<KeyValuePair<string, List<float>>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
         {
-            foreach (var attribute in attributes.ToList())
-            {
-                List<string> expandedAttributes;
-                if (HybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
-                {
-                    attributes.Remove(attribute.Key);
+            return attributes.SelectMany(ExpandHybridAttributes);
+        }
 
-                    foreach (string expandedAttribute in expandedAttributes)
-                    {
-                        attributes.Add(expandedAttribute, attribute.Value);
-                    }
+        public static IEnumerable<KeyValuePair<string, List<float>>> ExpandHybridAttributes(KeyValuePair<string, List<float>> attribute)
+        {
+            List<string> expandedAttributes;
+            if (HybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
+            {
+                foreach (var expandedAttribute in expandedAttributes)
+                {
+                    yield return new KeyValuePair<string, List<float>>(expandedAttribute, attribute.Value);
                 }
             }
-
-            return attributes;
+            else
+            {
+                yield return attribute;
+            }
         }
 
         public bool CanSwitchClass(string className)

@@ -1123,18 +1123,21 @@ namespace POESKillTree.Views
 
             Dictionary<string, List<float>> attritemp = Tree.SelectedAttributesWithoutImplicit;
 
-            foreach (var mod in _itemAttributes.NonLocalMods)
+            var itemAttris = _itemAttributes.NonLocalMods
+                .Select(m => new KeyValuePair<string, List<float>>(m.Attribute, m.Value))
+                .SelectMany(SkillTree.ExpandHybridAttributes);
+            foreach (var mod in itemAttris)
             {
-                if (attritemp.ContainsKey(mod.Attribute))
+                if (attritemp.ContainsKey(mod.Key))
                 {
                     for (var i = 0; i < mod.Value.Count; i++)
                     {
-                        attritemp[mod.Attribute][i] += mod.Value[i];
+                        attritemp[mod.Key][i] += mod.Value[i];
                     }
                 }
                 else
                 {
-                    attritemp[mod.Attribute] = new List<float>(mod.Value);
+                    attritemp[mod.Key] = new List<float>(mod.Value);
                 }
             }
 
