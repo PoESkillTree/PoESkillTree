@@ -1,27 +1,38 @@
 using System;
 using System.IO;
-using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using POESKillTree.Utils;
 
 namespace POESKillTree.SkillTreeFiles
 {
     public class Asset
     {
-        public string Name;
-        public BitmapImage PImage;
-        public string URL;
+        public BitmapImage PImage { get; private set; }
 
-        public Asset(string name, string url)
+        private Asset()
         {
-            Name = name;
-            URL = url;
-            if (!File.Exists(SkillTree.AssetsFolderPath + Name + ".png"))
-            {
-                var webClient = new WebClient();
-                webClient.DownloadFile(URL, SkillTree.AssetsFolderPath + Name + ".png");
-            }
+            
+        }
 
-            PImage = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree.AssetsFolderPath + Name + ".png", UriKind.Absolute));
+        private async Task InitializeAsync(HttpClient httpClient, string name, string url)
+        {
+            var path = SkillTree.AssetsFolderPath + name + ".png";
+            if (!File.Exists(path))
+            {
+                var stream = await httpClient.GetStreamAsync(url);
+                await FileEx.WriteStreamAsync(path, stream);
+            }
+            PImage = ImageHelper.OnLoadBitmapImage(new Uri(path, UriKind.Absolute));
+
+        }
+
+        public static async Task<Asset> CreateAsync(HttpClient httpClient, string name, string url)
+        {
+            var asset = new Asset();
+            await asset.InitializeAsync(httpClient, name, url);
+            return asset;
         }
     }
 }

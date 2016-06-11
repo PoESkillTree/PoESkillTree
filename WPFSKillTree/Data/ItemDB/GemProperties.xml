@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- All non-support gems from http://pathofexile.gamepedia.com/Category:Attack_%28gem_tag%29
+       plus Ranged Attack Totem Support and Tempest Shield -->
+  <Gem Name="Ancestral Protector" RequiredWeapon="Melee" />
+  <Gem Name="Ancestral Warchief" RequiredWeapon="Melee" />
+  <Gem Name="Barrage" RequiredWeapon="Ranged" />
+  <Gem Name="Blast Rain" RequiredWeapon="Bow" />
+  <Gem Name="Blink Arrow" RequiredWeapon="Bow" />
+  <Gem Name="Burning Arrow" RequiredWeapon="Bow" />
+  <Gem Name="Caustic Arrow" RequiredWeapon="Bow" />
+  <Gem Name="Cleave" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" StrikesWithBothWeapons="true" />
+  <Gem Name="Cyclone" RequiredWeapon="Melee" Unarmed="true" />
+  <Gem Name="Dominating Blow" RequiredWeapon="Melee" Unarmed="true" />
+  <Gem Name="Double Strike" RequiredWeapon="Melee" RequiredHand="Main" HitsPerAttack="2" />
+  <Gem Name="Dual Strike" RequiredWeapon="Melee" StrikesWithBothWeapons="true" />
+  <Gem Name="Earthquake" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" />
+  <Gem Name="Elemental Hit" Unarmed="true" />
+  <Gem Name="Explosive Arrow" RequiredWeapon="Bow" />
+  <Gem Name="Flicker Strike" RequiredWeapon="Melee" />
+  <Gem Name="Frenzy" Unarmed="true" />
+  <Gem Name="Frost Blades" RequiredWeapon="Melee" />
+  <Gem Name="Glacial Hammer" RequiredWeapon="OneHandedMace Staff TwoHandedMace" />
+  <Gem Name="Ground Slam" RequiredWeapon="OneHandedMace Staff TwoHandedMace" />
+  <Gem Name="Heavy Strike" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" />
+  <Gem Name="Ice Crash" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Unarmed="true" />
+  <Gem Name="Ice Shot" RequiredWeapon="Bow" />
+  <Gem Name="Infernal Blow" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Unarmed="true" />
+  <Gem Name="Kinetic Blast" RequiredWeapon="Wand" />
+  <Gem Name="Lacerate" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" HitsPerAttack="2" />
+  <Gem Name="Leap Slam" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" />
+  <Gem Name="Lightning Arrow" RequiredWeapon="Bow" />
+  <Gem Name="Lightning Strike" RequiredWeapon="Melee" />
+  <Gem Name="Mirror Arrow" RequiredWeapon="Bow" />
+  <Gem Name="Molten Strike" RequiredWeapon="Melee" />
+  <Gem Name="Power Siphon" RequiredWeapon="Wand" />
+  <Gem Name="Puncture" RequiredWeapon="Bow Claw Dagger OneHandedSword TwoHandedSword" />
+  <Gem Name="Rain of Arrows" RequiredWeapon="Bow" />
+  <Gem Name="Ranged Attack Totem Support" RequiredWeapon="Ranged" />
+  <Gem Name="Reave" RequiredWeapon="Claw Dagger OneHandedSword" />
+  <Gem Name="Reckoning" RequiredWeapon="Melee" Unarmed="true" />
+  <Gem Name="Riposte" RequiredWeapon="Melee" StrikesWithBothWeapons="true" Unarmed="true" />
+  <Gem Name="Shield Charge" RequiresEquippedShield="true" RequiredWeapon="Melee" Unarmed="true" />
+  <Gem Name="Shrapnel Shot" RequiredWeapon="Bow" />
+  <Gem Name="Siege Ballista" RequiredWeapon="Bow" />
+  <Gem Name="Spectral Throw" RequiredWeapon="Melee" />
+  <Gem Name="Split Arrow" RequiredWeapon="Bow" />
+  <Gem Name="Static Strike" RequiredWeapon="Melee" />
+  <Gem Name="Sunder" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace Staff TwoHandedAxe TwoHandedMace" />
+  <Gem Name="Sweep" RequiredWeapon="TwoHandedMelee" />
+  <Gem Name="Tempest Shield" RequiresEquippedShield="true" />
+  <Gem Name="Tornado Shot" RequiredWeapon="Bow" />
+  <Gem Name="Vaal Burning Arrow" RequiredWeapon="Bow" />
+  <Gem Name="Vaal Cyclone" RequiredWeapon="Melee" Unarmed="true" />
+  <Gem Name="Vaal Double Strike" HitsPerAttack="2" RequiredHand="Main" RequiredWeapon="Melee" />
+  <Gem Name="Vaal Glacial Hammer" RequiredWeapon="OneHandedMace Staff TwoHandedMace" />
+  <Gem Name="Vaal Ground Slam" RequiredWeapon="OneHandedMace Staff TwoHandedMace" />
+  <Gem Name="Vaal Lightning Strike" RequiredWeapon="Melee" />
+  <Gem Name="Vaal Power Siphon" RequiredWeapon="Wand" />
+  <Gem Name="Vaal Rain of Arrows" RequiredWeapon="Bow" />
+  <Gem Name="Vaal Reave" RequiredWeapon="Claw Dagger OneHandedSword" />
+  <Gem Name="Vaal Spectral Throw" RequiredWeapon="Melee" />
+  <Gem Name="Vengeance" RequiredWeapon="Melee" />
+  <Gem Name="Vigilant Strike" RequiredWeapon="Melee" />
+  <Gem Name="Viper Strike" RequiredWeapon="Claw Dagger OneHandedSword TwoHandedSword" />
+  <Gem Name="Whirling Blades" RequiredWeapon="Claw Dagger OneHandedSword" />
+  <Gem Name="Wild Strike" RequiredWeapon="Melee" />
+</ItemDB>

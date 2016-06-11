@@ -1,26 +1,18 @@
-﻿using POESKillTree.ViewModels.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using POESKillTree.Utils;
 using System.ComponentModel;
+using MahApps.Metro.Controls;
+using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Controls
 {
     /// <summary>
     /// Interaction logic for Inventory.xaml
     /// </summary>
-    public partial class Inventory : UserControl
+    public partial class Inventory
     {
         public ItemAttributes ItemAttributes
         {
@@ -36,42 +28,40 @@ namespace POESKillTree.Controls
             InitializeComponent();
         }
 
-        private void ItemVisualizer_DragOver(object sender, DragEventArgs e)
+        private DragDropEffects DropEffect(object sender, DragEventArgs e)
         {
-            if ((e.AllowedEffects & DragDropEffects.Link) != 0 && e.Data.GetDataPresent(typeof(ItemVisualizer)))
+            var target = sender as ItemVisualizer;
+            if (target != null && e.Data.GetDataPresent(typeof(DraggedItem)))
             {
-                var targslot = (ItemSlot)(sender as ItemVisualizer).Tag;
-                var itm = (e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer).Item;
+                var targslot = (ItemSlot)target.Tag;
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                var effect = draggedItem.DropOnInventoryEffect;
 
-                if (itm != null && (((int)itm.Class & (int)targslot) != 0 || (itm.Class == ItemClass.TwoHand && targslot == ItemSlot.MainHand) || (targslot == ItemSlot.OffHand && itm.Class == ItemClass.MainHand)))
+                if (e.AllowedEffects.HasFlag(effect) && ItemAttributes.CanEquip(draggedItem.Item, targslot))
                 {
-                    e.Handled = true;
-                    e.Effects = DragDropEffects.Link;
-                }
-                else
-                {
-                    e.Handled = true;
-                    e.Effects = DragDropEffects.None;
+                    return effect;
                 }
             }
+            return DragDropEffects.None;
+        }
+
+        private void ItemVisualizer_DragOver(object sender, DragEventArgs e)
+        {
+            e.Handled = true;
+            e.Effects = DropEffect(sender, e);
         }
 
         private void ItemVisualizer_Drop(object sender, DragEventArgs e)
         {
-            var target = sender as ItemVisualizer;
-            if (target != null && (e.AllowedEffects & DragDropEffects.Link) != 0 && e.Data.GetDataPresent(typeof(ItemVisualizer)))
-            {
-                var vis = e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer;
-                var targslot = (ItemSlot)(sender as ItemVisualizer).Tag;
-                var itm = (e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer).Item;
+            var effect = DropEffect(sender, e);
+            if (effect == DragDropEffects.None)
+                return;
 
-                if (itm != null && (((int)itm.Class & (int)targslot) != 0 || (itm.Class == ItemClass.TwoHand && targslot == ItemSlot.MainHand) || (targslot == ItemSlot.OffHand && itm.Class == ItemClass.MainHand)))
-                {
-                    e.Handled = true;
-                    e.Effects = DragDropEffects.Link;
-                    target.Item = vis.Item;
-                }
-            }
+            e.Handled = true;
+            e.Effects = effect;
+            var draggedItem = (DraggedItem) e.Data.GetData(typeof(DraggedItem));
+            var visualizer = (ItemVisualizer) sender;
+            visualizer.Item = effect == DragDropEffects.Copy ? new Item(draggedItem.Item) : draggedItem.Item;
         }
 
         private void KeyDownHandler(object sender, KeyEventArgs e)
@@ -91,8 +81,6 @@ namespace POESKillTree.Controls
 
                 if (hh != null)
                     (hh as ItemVisualizer).Item = null;
-
-
             }
         }
 
@@ -110,19 +98,24 @@ namespace POESKillTree.Controls
             var mi = sender as MenuItem;
             if (mi != null)
             {
-                var menu = mi.FindParent<ContextMenu>();
+                var menu = mi.TryFindParent<ContextMenu>();
                 var vis = menu.PlacementTarget as ItemVisualizer;
                 if (vis != null)
                 {
                     vis.Item = null;
-                   
                 }
             }
         }
 
         private void iv_mouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            DragDrop.DoDragDrop(this, sender, DragDropEffects.Link | DragDropEffects.Move);
+            var itemVis = sender as ItemVisualizer;
+            if (itemVis == null || itemVis.Item == null)
+                return;
+            using (var dragged = new DraggedItem(itemVis) {DropOnStashEffect = DragDropEffects.Copy})
+            {
+                DragDrop.DoDragDrop(itemVis, dragged, dragged.AllowedEffects);
+            }
         }
     }
 }

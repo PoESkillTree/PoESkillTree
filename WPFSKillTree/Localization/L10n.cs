@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text;
-using POESKillTree.Model;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Localization
@@ -46,6 +43,7 @@ namespace POESKillTree.Localization
             _Language = DefaultLanguage;
             _Culture = CultureInfo.CreateSpecificCulture(_Language);
             _LanguageName = _Culture.NativeName;
+            Apply();
             // The default catalog is current one.
             LocalePath = AppData.GetFolder(LocaleDirName);
             Catalog = DefaultCatalog = Catalog.CreateDefault(Path.Combine(LocalePath, DefaultLanguage), DefaultLanguage, _LanguageName);
@@ -73,13 +71,13 @@ namespace POESKillTree.Localization
         }
 
         // Initializes localization.
-        public static void Initialize(PersistentData data)
+        public static void Initialize(string optionsLanguage)
         {
             ScanLocaleDirectory();
 
             string language = null;
-            if (!string.IsNullOrEmpty(data.Options.Language))
-                language = data.Options.Language;
+            if (!string.IsNullOrEmpty(optionsLanguage))
+                language = optionsLanguage;
 
             // No language in options, try to match OS language.
             if (language == null)
@@ -232,7 +230,7 @@ namespace POESKillTree.Localization
         }
 
         // Sets current language.
-        public static bool SetLanguage(string language)
+        private static bool SetLanguage(string language)
         {
             // No change.
             if (language == _Language) return true;

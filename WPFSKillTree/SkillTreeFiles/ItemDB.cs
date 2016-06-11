@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
+using log4net;
 using POESKillTree.Model;
+using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Utils;
-using POESKillTree.ViewModels;
 using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
 using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;
 using DamageNature = POESKillTree.SkillTreeFiles.Compute.DamageNature;
@@ -16,13 +17,14 @@ using DamageSource = POESKillTree.SkillTreeFiles.Compute.DamageSource;
 using WeaponHand = POESKillTree.SkillTreeFiles.Compute.WeaponHand;
 using WeaponType = POESKillTree.SkillTreeFiles.Compute.WeaponType;
 using Weapon = POESKillTree.SkillTreeFiles.Compute.Weapon;
-using POESKillTree.ViewModels.Items;
 
 namespace POESKillTree.SkillTreeFiles
 {
     // TODO: Attributes can have negative value (Cast when Damage Taken L20 has 6% more Damage), AttributesOf should handle transition between less/more.
     public class ItemDB
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDB));
+
         // Maximum level (quality).
         public const int MAX_LEVEL = 30;
 
@@ -648,6 +650,28 @@ namespace POESKillTree.SkillTreeFiles
             // Merges attributes of specified gem.
             public void Merge(Gem gem)
             {
+                // Take properties from parameter if they are not specified here.
+                if (!ExcludeFormSpecified && gem.ExcludeFormSpecified)
+                    ExcludeForm = gem.ExcludeForm;
+                if (!ExcludeFormSupportSpecified && gem.ExcludeFormSupportSpecified)
+                    ExcludeFormSupport = gem.ExcludeFormSupport;
+                if (!ExcludeSourceSpecified && gem.ExcludeSourceSpecified)
+                    ExcludeSource = gem.ExcludeSource;
+                if (!HitsPerAttackSpecified && gem.HitsPerAttackSpecified)
+                    HitsPerAttack = gem.HitsPerAttack;
+                if (!IncludeFormSpecified && gem.IncludeFormSpecified)
+                    IncludeForm = gem.IncludeForm;
+                if (!RequiresEquippedShieldSpecified && gem.RequiresEquippedShieldSpecified)
+                    RequiresEquippedShield = gem.RequiresEquippedShield;
+                if (!RequiredHandSpecified && gem.RequiredHandSpecified)
+                    RequiredHand = gem.RequiredHand;
+                if (!RequiredWeaponSpecified && gem.RequiredWeaponSpecified)
+                    RequiredWeapon = gem.RequiredWeapon;
+                if (!StrikesWithBothWeaponsSpecified && gem.StrikesWithBothWeaponsSpecified)
+                    StrikesWithBothWeapons = gem.StrikesWithBothWeapons;
+                if (!UnarmedSpecified && gem.UnarmedSpecified)
+                    Unarmed = gem.Unarmed;
+
                 if (gem.Attributes != null)
                 {
                     if (Attributes == null) Attributes = new List<Attribute>();
@@ -1197,8 +1221,8 @@ namespace POESKillTree.SkillTreeFiles
             AttributeSet attrs = new AttributeSet();
 
             // Collect gem attributes and modifiers at gem level.
-            foreach (var attr in gem.Attributes)
-                attrs.Add(attr.Key, new List<float>(attr.Value));
+            foreach (var prop in gem.Properties)
+                attrs.Add(prop.Attribute, new List<float>(prop.Value));
             foreach (ItemMod mod in gem.Mods)
                 attrs.Add(mod.Attribute, new List<float>(mod.Value));
 
@@ -1369,19 +1393,28 @@ namespace POESKillTree.SkillTreeFiles
         // Returns level of gem.
         public static int LevelOf(Item gem)
         {
-            return gem.Attributes.ContainsKey("Level: #")
-                   ? (int)gem.Attributes["Level: #"][0]
-                   : (gem.Attributes.ContainsKey("Level: # (Max)") ? (int)gem.Attributes["Level: # (Max)"][0] : 1);
+            float ret;
+            if (gem.Properties.TryGetValue("Level: #", 0, out ret))
+                return (int) ret;
+            else
+                return (int) gem.Properties.First("Level: # (Max)", 0, 1);
         }
 
         // Loads items from XML file.
         public static void Load(string file, bool index = false)
         {
-            string filePath = AppData.GetFolder(true) + file;
-            if (!File.Exists(filePath))
-                File.Create(filePath);
+            LoadFromCompletePath(AppData.GetFolder(true) + file, index);
+        }
+        public static void LoadFromCompletePath(string file, bool index = false)
+        {
+            if (!File.Exists(file))
+            {
+                Log.WarnFormat("File {0} does not exist.", file);
+                if (index) Index();
+                return;
+            }
             var serializer = new XmlSerializer(typeof(ItemDB));
-            var reader = new StreamReader(filePath);
+            var reader = new StreamReader(file);
             DB = (ItemDB)serializer.Deserialize(reader);
             reader.Close();
 
@@ -1391,12 +1424,14 @@ namespace POESKillTree.SkillTreeFiles
         // Merges items from XML file.
         public static void Merge(string file)
         {
-            string filePath = AppData.GetFolder(true) + file;
-
-            if (File.Exists(filePath))
+            MergeFromCompletePath(AppData.GetFolder(true) + file);
+        }
+        public static void MergeFromCompletePath(string file)
+        {
+            if (File.Exists(file))
             {
                 var serializer = new XmlSerializer(typeof(ItemDB));
-                var reader = new StreamReader(filePath);
+                var reader = new StreamReader(file);
                 ItemDB merge = (ItemDB)serializer.Deserialize(reader);
                 reader.Close();
 
@@ -1473,22 +1508,28 @@ namespace POESKillTree.SkillTreeFiles
         // Returns quality of gem.
         public static int QualityOf(Item gem)
         {
-            return gem.Attributes.ContainsKey("Quality: +#%")
-                   ? (int)gem.Attributes["Quality: +#%"][0]
-                   : (gem.Attributes.ContainsKey("Quality: +#% (Max)") ? (int)gem.Attributes["Quality: +#% (Max)"][0] : 0);
+            float ret;
+            if (gem.Properties.TryGetValue("Quality: #", 0, out ret))
+                return (int)ret;
+            else
+                return (int)gem.Properties.First("Quality: # (Max)", 0, 0);
         }
 
         // Writes database to file.
         public static void WriteTo(string file)
         {
+            WriteToCompletePath(AppData.GetFolder(true) + file);
+        }
+        public static void WriteToCompletePath(string file)
+        {
             // Sort gems alphabetically.
-            DB.Gems.Sort(delegate(Gem gem1, Gem gem2) { return String.Compare(gem1.Name, gem2.Name, true, System.Globalization.CultureInfo.InvariantCulture); });
+            DB.Gems.Sort(delegate (Gem gem1, Gem gem2) { return String.Compare(gem1.Name, gem2.Name, true, System.Globalization.CultureInfo.InvariantCulture); });
 
             var serializer = new XmlSerializer(typeof(ItemDB));
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.NewLineChars = "\n";
-            XmlWriter writer = XmlTextWriter.Create(AppData.GetFolder(true) + file, settings);
+            XmlWriter writer = XmlTextWriter.Create(file, settings);
             serializer.Serialize(writer, DB);
             writer.Close();
         }

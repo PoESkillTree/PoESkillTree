@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,33 +19,22 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
+using MahApps.Metro.SimpleChildWindow;
 using POESKillTree.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Items;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.TreeGenerator.Views;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Converter;
+using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
-using Application = System.Windows.Application;
 using Attribute = POESKillTree.ViewModels.Attribute;
-using Clipboard = System.Windows.Clipboard;
-using DataObject = System.Windows.DataObject;
-using DragDropEffects = System.Windows.DragDropEffects;
-using DragEventArgs = System.Windows.DragEventArgs;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using ListView = System.Windows.Controls.ListView;
-using ListViewItem = System.Windows.Controls.ListViewItem;
-using MessageBox = POESKillTree.Views.MetroMessageBox;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using ToolTip = System.Windows.Controls.ToolTip;
-using POESKillTree.ViewModels.Items;
-
-using Path = System.IO.Path;
 
 namespace POESKillTree.Views
 {
@@ -64,12 +52,11 @@ namespace POESKillTree.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PersistentData PersistentData
+        public IPersistentData PersistentData
         {
             get { return _persistentData; }
         }
 
-        private static readonly Action EmptyDelegate = delegate { };
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
         private readonly List<ListGroupItem> _defenceList = new List<ListGroupItem>();
@@ -90,38 +77,40 @@ namespace POESKillTree.Views
         private MenuItem cmCreateGroup, cmAddToGroup, cmRemoveFromGroup, cmDeleteGroup;
 
         private ItemAttributes _itemAttributes;
-
         public ItemAttributes ItemAttributes
         {
             get { return _itemAttributes; }
             private set
             {
+                if (value == _itemAttributes)
+                    return;
                 _itemAttributes = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("ItemAttributes"));
+                PropertyChanged.Raise(this, "ItemAttributes");
             }
         }
 
         private SkillTree _tree;
-
         public SkillTree Tree
         {
             get { return _tree; }
             private set
             {
                 _tree = value;
-                _tree.MainWindow = this;
-                _tree.BanditSettings.PropertyChanged += BanditSettings_PropertyChanged;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("Tree"));
+                PropertyChanged.Raise(this, "Tree");
             }
+        }
+        private async Task<SkillTree> CreateSkillTreeAsync(ProgressDialogController controller)
+        {
+            var tree = await SkillTree.CreateAsync(_persistentData, DialogCoordinator.Instance, controller);
+            DialogParticipation.SetRegister(this, tree);
+            tree.BanditSettings = _persistentData.CurrentBuild.Bandits;
+            return tree;
         }
 
         private Vector2D _addtransform;
         private bool _justLoaded;
         private string _lasttooltip;
 
-        private LoadingWindow _loadingWindow;
         private Vector2D _multransform;
 
         private List<ushort> _prePath;
@@ -164,40 +153,44 @@ namespace POESKillTree.Views
 
         private SettingsWindow _settingsWindow;
 
-        private bool _isClosing;
-
-        private const string MainWindowTitle = "Path of Exile: Passive Skill Tree Planner";
+        private static readonly string MainWindowTitle =
+            FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).ProductName;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            // Register handlers
+            PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
+            PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
+            // Re-register handlers when PersistentData.CurrentBuild is set.
             PersistentData.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "CurrentBuild" && Tree != null)
+                if (args.PropertyName == "CurrentBuild")
                 {
-                    Tree.BanditSettings.PropertyChanged -= BanditSettings_PropertyChanged;
-                    Tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
-                    Tree.BanditSettings.PropertyChanged += BanditSettings_PropertyChanged;
+                    PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
+                    PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
+                    if (Tree != null)
+                        Tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
+                }
+            };
+            // This makes sure CurrentBuildOnPropertyChanged is called only
+            // on the PoEBuild instance currently stored in PersistentData.CurrentBuild.
+            PersistentData.PropertyChanging += (sender, args) =>
+            {
+                if (args.PropertyName == "CurrentBuild")
+                {
+                    PersistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
                 }
             };
         }
 
-        private void BanditSettings_PropertyChanged(object sender, PropertyChangedEventArgs args)
+        private async void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            switch (args.PropertyName)
+            if (propertyChangedEventArgs.PropertyName == "ItemData")
             {
-                case "Normal":
-                    PersistentData.CurrentBuild.Bandits.Normal = Tree.BanditSettings.Normal;
-                    break;
-                case "Cruel":
-                    PersistentData.CurrentBuild.Bandits.Cruel = Tree.BanditSettings.Cruel;
-                    break;
-                case "Merciless":
-                    PersistentData.CurrentBuild.Bandits.Merciless = Tree.BanditSettings.Merciless;
-                    break;
+                await LoadItemData();
             }
-            UpdateUI();
         }
 
         //This whole region, along with most of GroupStringConverter, makes up our user-defined attribute group functionality - Sectoidfodder 02/29/16
@@ -265,7 +258,7 @@ namespace POESKillTree.Views
         }
 
         //Adds currently selected attributes to a new group
-        private void CreateGroup(object sender, RoutedEventArgs e)
+        private async void CreateGroup(object sender, RoutedEventArgs e)
         {
             ListBox lb = GetActiveAttributeGroupList();
             if (lb == null)
@@ -277,14 +270,12 @@ namespace POESKillTree.Views
             }
 
             //Build and show form to enter group name
-            var formGroupName = new FormChooseGroupName {Owner = this};
-            var showDialog = formGroupName.ShowDialog();
-            if (showDialog != null && (bool)showDialog)
+            var name = await this.ShowInputAsync(L10n.Message("Create New Attribute Group"), L10n.Message("Group name"));
+            if (!string.IsNullOrEmpty(name))
             {
-                var name = formGroupName.GetGroupName();
                 if (_attributeGroups.AttributeGroups.ContainsKey(name))
                 {
-                    Popup.Info(L10n.Message("A group with that name already exists."));
+                    await this.ShowInfoAsync(L10n.Message("A group with that name already exists."));
                     return;
                 }
 
@@ -373,11 +364,29 @@ namespace POESKillTree.Views
 
         #region Window methods
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ItemDB.Load("Items.xml");
-            ItemDB.Merge("ItemsLocal.xml");
-            ItemDB.Index();
+            var controller = await this.ShowProgressAsync(L10n.Message("Initialization"),
+                        L10n.Message("Initalizing window ..."));
+            controller.Maximum = 100;
+            controller.SetIndeterminate();
+
+            await Task.Run(() =>
+            {
+                const string itemDBPrefix = "Data/ItemDB/";
+                Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
+                // First file instantiates the ItemDB.
+                ItemDB.Load(itemDBPrefix + "GemList.xml");
+                // Merge all other files from the ItemDB path.
+                Directory.GetFiles(AppData.GetFolder(itemDBPrefix))
+                    .Select(Path.GetFileName)
+                    .Where(f => f != "GemList.xml")
+                    .Select(f => itemDBPrefix + f)
+                    .ForEach(ItemDB.Merge);
+                // Merge the user specified things.
+                ItemDB.Merge("ItemsLocal.xml");
+                ItemDB.Index();
+            });
 
             var cmHighlight = new MenuItem
             {
@@ -445,7 +454,9 @@ namespace POESKillTree.Views
             SetTheme(_persistentData.Options.Theme);
             SetAccent(_persistentData.Options.Accent);
 
-            Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+            controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
+            Tree = await CreateSkillTreeAsync(controller);
+            await Task.Delay(1); // Give the progress dialog a chance to update
             recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
@@ -453,15 +464,17 @@ namespace POESKillTree.Views
             _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
             _addtransform = SkillTree.TRect.TopLeft;
 
+            controller.SetMessage(L10n.Message("Initalizing window ..."));
+            controller.SetIndeterminate();
+            await Task.Delay(1); // Give the progress dialog a chance to update
+
             _justLoaded = true;
 
             // loading last build
             if (_persistentData.CurrentBuild != null)
-                SetCurrentBuild(_persistentData.CurrentBuild);
-            else
-                LoadItemData(null);
+                await SetCurrentBuild(_persistentData.CurrentBuild);
 
-            LoadBuildFromUrl();
+            await LoadBuildFromUrlAsync();
             _justLoaded = false;
             // loading saved build
             lvSavedBuilds.Items.Clear();
@@ -472,6 +485,8 @@ namespace POESKillTree.Views
             _persistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAsendancySelectionList();
             CheckAppVersionAndDoNecessaryChanges();
+
+            await controller.CloseAsync();
         }
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -481,7 +496,7 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
@@ -541,10 +556,10 @@ namespace POESKillTree.Views
                         tbSkillURL_Redo();
                         break;
                     case Key.S:
-                        SaveBuild();
+                        await SaveBuild();
                         break;
                     case Key.N:
-                        NewBuild();
+                        await NewBuild();
                         break;
                 }
             }
@@ -569,7 +584,7 @@ namespace POESKillTree.Views
                 switch (e.Key)
                 {
                     case Key.S:
-                        SaveNewBuild();
+                        await SaveNewBuild();
                         break;
                 }
             }
@@ -589,8 +604,6 @@ namespace POESKillTree.Views
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            _isClosing = true;
-
             _persistentData.CurrentBuild.Url = tbSkillURL.Text;
             _persistentData.CurrentBuild.Level = GetLevelAsString();
             _persistentData.SetBuilds(lvSavedBuilds.Items);
@@ -604,32 +617,6 @@ namespace POESKillTree.Views
 
         #endregion
 
-        #region LoadingWindow
-
-        private void StartLoadingWindow(string infoText)
-        {
-            _loadingWindow = new LoadingWindow() {Owner = this, InfoText = infoText};
-            _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
-            _loadingWindow.Show();
-        }
-
-        private void UpdateLoadingWindow(double c, double max)
-        {
-            _loadingWindow.MaxProgress = max;
-            _loadingWindow.Progress = c;
-            _loadingWindow.UpdateLayout();
-            _loadingWindow.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
-            if (Equals(c, max))
-                Thread.Sleep(100);
-        }
-
-        private void CloseLoadingWindow()
-        {
-            _loadingWindow.Close();
-        }
-
-        #endregion
-
         #region Utility
         private void SetTitle(string buildName)
         {
@@ -639,32 +626,24 @@ namespace POESKillTree.Views
 
         #region Menu
         
-        private void Menu_NewBuild(object sender, RoutedEventArgs e)
+        private async void Menu_NewBuild(object sender, RoutedEventArgs e)
         {
-            NewBuild();
+            await NewBuild();
         }
 
-        private void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
+        private async void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
         {
-            var currentCursor = Cursor;
-            try
-            {
-                Cursor = Cursors.Wait;
-                Tree.SkillAllTaggedNodes();
-                UpdateUI();
-                tbSkillURL.Text = Tree.SaveToURL();
-                Tree.LoadFromURL(tbSkillURL.Text);
-            }
-            finally
-            {
-                Cursor = currentCursor;
-            }
+            await Tree.SkillAllTaggedNodesAsync();
+            UpdateUI();
+            tbSkillURL.Text = Tree.SaveToURL();
+            Tree.LoadFromURL(tbSkillURL.Text);
         }
 
-        private void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
+        private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
         {
-            var response = MessageBox.Show(L10n.Message("Are you sure?"), L10n.Message("Untag All Skill Nodes"), MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
-            if(response == MessageBoxResult.Yes)
+            var response = await this.ShowQuestionAsync(L10n.Message("Are you sure?"),
+                L10n.Message("Untag All Skill Nodes"), MessageBoxImage.None);
+            if (response == MessageBoxResult.Yes)
                 Tree.UntagAllNodes();
         }
 
@@ -684,39 +663,27 @@ namespace POESKillTree.Views
             Tree.CrossAllHighlightedNodes();
         }
 
-        private void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
+        private async void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (_settingsWindow == null)
                 {
-                    var vm = new SettingsViewModel(Tree);
+                    var vm = new SettingsViewModel(Tree, SettingsDialogCoordinator.Instance);
                     vm.RunFinished += (o, args) =>
                     {
                         UpdateUI();
                         tbSkillURL.Text = Tree.SaveToURL();
                         Tree.LoadFromURL(tbSkillURL.Text);
                     };
-                    vm.StartController += (o, args) =>
-                    {
-                        var dialog = new ControllerWindow() {Owner = this, DataContext = args.ViewModel};
-                        dialog.ShowDialog();
-                    };
-                    _settingsWindow = new SettingsWindow() {Owner = this, DataContext = vm};
-                    _settingsWindow.Closing += (o, args) =>
-                    {
-                        if (_isClosing) return;
-                        args.Cancel = true;
-                        _settingsWindow.Hide();
-                    };
+                    _settingsWindow = new SettingsWindow { DataContext = vm};
+                    DialogParticipation.SetRegister(_settingsWindow, vm);
                 }
-                _settingsWindow.Show();
+                await this.ShowChildWindowAsync(_settingsWindow);
             }
             catch (Exception ex)
             {
-                Popup.Error(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
-                Debug.WriteLine("Exception in 'Skill Tree Generator':");
-                Debug.WriteLine(ex.Message);
+                this.ShowErrorAsync(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
             }
         }
 
@@ -808,21 +775,22 @@ namespace POESKillTree.Views
             }
             else
             {
-                MessageBox.Show(L10n.Message("Your build must use at least one node to generate a screenshot"), "Screenshot Generator", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.ShowInfoAsync(L10n.Message("Your build must use at least one node to generate a screenshot"), title: "Screenshot Generator");
             }
         }
 
-        private void Menu_ImportItems(object sender, RoutedEventArgs e)
+        private async void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
-            var diw = new DownloadItemsWindow(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName) { Owner = this };
-            diw.ShowDialog();
-            _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
-            _persistentData.CurrentBuild.AccountName = diw.GetAccountName();
+            await this.ShowDialogAsync(
+                new DownloadItemsViewModel(_persistentData.CurrentBuild),
+                new DownloadItemsWindow());
         }
 
-        private void Menu_ClearItems(object sender, RoutedEventArgs e)
+        private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            ClearCurrentItemData();
+            await this.ShowDialogAsync(
+                new DownloadStashViewModel(DialogCoordinator.Instance, _persistentData, Stash),
+                new DownloadStashWindow());
         }
 
         private void Menu_CopyStats(object sender, RoutedEventArgs e)
@@ -834,66 +802,61 @@ namespace POESKillTree.Views
             }
             try
             {
-                System.Windows.Forms.Clipboard.SetText(sb.ToString());
+                Clipboard.SetText(sb.ToString());
             }
             catch (Exception ex)
             {
-                Popup.Error(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
             }
         }
 
-        private void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
+        private async void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
         {
             string sMessageBoxText = L10n.Message("The existing Skill tree assets will be deleted and new assets will be downloaded.")
                                      + "\n\n" + L10n.Message("Do you want to continue?");
 
-            var rsltMessageBox = Popup.Ask(sMessageBoxText, MessageBoxImage.Warning);
+            var rsltMessageBox = await this.ShowQuestionAsync(sMessageBoxText, image: MessageBoxImage.Warning);
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    string appDataPath = AppData.GetFolder(true);
+                    var dataPath = AppData.GetFolder("Data", true);
+                    var assetsPath = dataPath + "Assets";
+                    var skillTreePath = dataPath + "Skilltree.txt";
+                    var optsPath = dataPath + "Opts.txt";
 
+                    var controller = await this.ShowProgressAsync(L10n.Message("Downloading skill tree assets ..."), null);
+                    controller.Maximum = 100;
+                    controller.SetProgress(0);
+                    Exception catchedEx = null;
                     try
                     {
-                        if (Directory.Exists(appDataPath + "Data"))
-                        {
-                            if (Directory.Exists(appDataPath + "DataBackup"))
-                                Directory.Delete(appDataPath + "DataBackup", true);
+                        DirectoryEx.MoveIfExists(assetsPath, assetsPath + "Backup", true);
+                        FileEx.MoveIfExists(skillTreePath, skillTreePath + ".bak", true);
+                        FileEx.MoveIfExists(optsPath, optsPath + ".bak", true);
 
-                            Directory.Move(appDataPath + "Data", appDataPath + "DataBackup");
-                        }
-
-                        Tree = SkillTree.CreateSkillTree(StartLoadingWindow, UpdateLoadingWindow, CloseLoadingWindow);
+                        SkillTree.ClearAssets(); //enable recaching of assets
+                        Tree = await CreateSkillTreeAsync(controller); //create new skilltree to reinitialize cache
                         recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
-
-                        SkillTree.ClearAssets();//enable recaching of assets
-                        SkillTree.CreateSkillTree();//create new skilltree to reinitialize cache
-
-
-                        LoadBuildFromUrl();
+                        await LoadBuildFromUrlAsync();
                         _justLoaded = false;
 
-                        if (Directory.Exists(appDataPath + "DataBackup"))
-                            Directory.Delete(appDataPath + "DataBackup", true);
+                        DirectoryEx.DeleteIfExists(assetsPath + "Backup", true);
+                        FileEx.DeleteIfExists(skillTreePath + ".bak");
+                        FileEx.DeleteIfExists(optsPath + ".bak");
                     }
                     catch (Exception ex)
                     {
-                        if (Directory.Exists(appDataPath + "Data") && Directory.Exists(appDataPath + "DataBackup"))
-                            Directory.Delete(appDataPath + "Data", true);
-                        try
-                        {
-                            CloseLoadingWindow();
-                        }
-                        catch (Exception)
-                        {
-                            //Nothing
-                        }
-                        if (Directory.Exists(appDataPath + "DataBackup"))
-                            Directory.Move(appDataPath + "DataBackup", appDataPath + "Data");
+                        DirectoryEx.MoveIfExists(assetsPath + "Backup", assetsPath, true);
+                        FileEx.MoveIfExists(skillTreePath + ".bak", skillTreePath, true);
+                        FileEx.MoveIfExists(optsPath + ".bak", optsPath, true);
 
-                        Popup.Error(L10n.Message("An error occurred while downloading assets."), ex.Message);
+                        // No await in catch
+                        catchedEx = ex;
                     }
+                    if (catchedEx != null)
+                        await this.ShowErrorAsync(L10n.Message("An error occurred while downloading assets."), catchedEx.Message);
+                    await controller.CloseAsync();
                     break;
 
                 case MessageBoxResult.No:
@@ -917,28 +880,26 @@ namespace POESKillTree.Views
             Process.Start("http://pathofexile.gamepedia.com/");
         }
 
-        private void Menu_OpenHelp(object sender, RoutedEventArgs e)
+        private async void Menu_OpenHelp(object sender, RoutedEventArgs e)
         {
-            var helpWindow = new HelpWindow() { Owner = this };
-            helpWindow.ShowDialog();
+            await this.ShowDialogAsync(new CloseableViewModel(), new HelpWindow());
         }
 
-        private void Menu_OpenSettings(object sender, RoutedEventArgs e)
+        private async void Menu_OpenSettings(object sender, RoutedEventArgs e)
         {
-            var settingsWindows = new SettingsMenuWindow() { Owner = this };
-            settingsWindows.ShowDialog();
+            await this.ShowDialogAsync(
+                new SettingsMenuViewModel(_persistentData, DialogCoordinator.Instance),
+                new SettingsMenuWindow());
         }
 
-        private void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
+        private async void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new HotkeysWindow() { Owner = this };
-            aboutWindow.ShowDialog();
+            await this.ShowDialogAsync(new CloseableViewModel(), new HotkeysWindow());
         }
 
-        private void Menu_OpenAbout(object sender, RoutedEventArgs e)
+        private async void Menu_OpenAbout(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new AboutWindow() { Owner = this };
-            aboutWindow.ShowDialog();
+            await this.ShowDialogAsync(new CloseableViewModel(), new AboutWindow());
         }
 
         // Checks for updates.
@@ -953,7 +914,7 @@ namespace POESKillTree.Views
 
                 if (release == null)
                 {
-                    Popup.Info(L10n.Message("You have the latest version!"));
+                    await this.ShowInfoAsync(L10n.Message("You have the latest version!"));
                 }
                 else
                 {
@@ -976,58 +937,61 @@ namespace POESKillTree.Views
                                    ? L10n.Message("Do you want to download and install the update?")
                                    : L10n.Message("Do you want to download and install the new version?"));
 
-                    MessageBoxResult download = Popup.Ask(message,
+                    var download = await this.ShowQuestionAsync(message, L10n.Message("Continue installation?"),
                         release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
                     if (download == MessageBoxResult.Yes)
-                        btnUpdateInstall();
+                        await InstallUpdateAsync();
                     else
-                        btnUpdateCancel();
+                        Updater.Dispose();
                 }
             }
             catch (UpdaterException ex)
             {
-                Popup.Error(
+                this.ShowErrorAsync(
                     L10n.Message("An error occurred while attempting to contact the update location."),
                     ex.Message);
             }
         }
 
         // Starts update process.
-        private void btnUpdateInstall()
+        private async Task InstallUpdateAsync()
         {
+            var controller = await this.ShowProgressAsync(L10n.Message("Downloading latest version"), null, true);
+            controller.Maximum = 100;
+            controller.Canceled += (sender, args) => Updater.Cancel();
+            Exception catchedEx = null;
             try
             {
-                StartLoadingWindow(L10n.Message("Downloading latest version"));
-                Updater.Download(UpdateDownloadCompleted, UpdateDownloadProgressChanged);
+                var downloadCs = new TaskCompletionSource<AsyncCompletedEventArgs>();
+                Updater.Download((sender, args) => downloadCs.SetResult(args),
+                    (sender, args) => controller.SetProgress(args.ProgressPercentage));
+
+                var result = await downloadCs.Task;
+                await controller.CloseAsync();
+                UpdateDownloadCompleted(result);
             }
             catch (UpdaterException ex)
             {
-                Popup.Error(L10n.Message("An error occurred during the download operation."), ex.Message);
+                catchedEx = ex;
             }
-        }
-
-        // Cancels update download (also invoked when download progress dialog is closed).
-        private void btnUpdateCancel()
-        {
-            if (Updater.IsDownloading)
-                Updater.Cancel();
-            else
+            if (catchedEx != null)
             {
-                Updater.Dispose();
+                await this.ShowErrorAsync(L10n.Message("An error occurred during the download operation."),
+                    catchedEx.Message);
+                await controller.CloseAsync();
             }
         }
 
         // Invoked when update download completes, aborts or fails.
-        private void UpdateDownloadCompleted(Object sender, AsyncCompletedEventArgs e)
+        private void UpdateDownloadCompleted(AsyncCompletedEventArgs e)
         {
-            CloseLoadingWindow();
             if (e.Cancelled) // Check whether download was cancelled.
             {
                 Updater.Dispose();
             }
             else if (e.Error != null) // Check whether error occurred.
             {
-                Popup.Error(L10n.Message("An error occurred during the download operation."), e.Error.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred during the download operation."), e.Error.Message);
             }
             else // Download completed.
             {
@@ -1040,16 +1004,9 @@ namespace POESKillTree.Views
                 catch (UpdaterException ex)
                 {
                     Updater.Dispose();
-                    Popup.Error(L10n.Message("An error occurred while attempting to start the installation."), ex.Message);
+                    this.ShowErrorAsync(L10n.Message("An error occurred while attempting to start the installation."), ex.Message);
                 }
             }
-        }
-
-        // Invoked when update download progress changes.
-        private void UpdateDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            // Update download progres bar.
-            UpdateLoadingWindow(e.BytesReceived, e.TotalBytesToReceive);
         }
 
         #endregion
@@ -1164,18 +1121,21 @@ namespace POESKillTree.Views
 
             Dictionary<string, List<float>> attritemp = Tree.SelectedAttributesWithoutImplicit;
 
-            foreach (ItemAttributes.Attribute mod in _itemAttributes.NonLocalMods)
+            var itemAttris = _itemAttributes.NonLocalMods
+                .Select(m => new KeyValuePair<string, List<float>>(m.Attribute, m.Value))
+                .SelectMany(SkillTree.ExpandHybridAttributes);
+            foreach (var mod in itemAttris)
             {
-                if (attritemp.ContainsKey(mod.TextAttribute))
+                if (attritemp.ContainsKey(mod.Key))
                 {
                     for (var i = 0; i < mod.Value.Count; i++)
                     {
-                        attritemp[mod.TextAttribute][i] += mod.Value[i];
+                        attritemp[mod.Key][i] += mod.Value[i];
                     }
                 }
                 else
                 {
-                    attritemp[mod.TextAttribute] = mod.Value;
+                    attritemp[mod.Key] = new List<float>(mod.Value);
                 }
             }
 
@@ -1705,38 +1665,58 @@ namespace POESKillTree.Views
 
         #region Items
 
-        public void LoadItemData(string itemData)
+        private bool _pauseLoadItemData;
+
+        private async Task LoadItemData()
         {
+            if (_pauseLoadItemData)
+                return;
+
+            if (ItemAttributes != null)
+            {
+                ItemAttributes.Equip.CollectionChanged -= ItemAttributesEquipCollectionChanged;
+                ItemAttributes.PropertyChanged -= ItemAttributesPropertyChanged;
+            }
+
+            var itemData = _persistentData.CurrentBuild.ItemData;
+            ItemAttributes itemAttributes;
             if (!string.IsNullOrEmpty(itemData))
             {
+                Exception catched = null;
                 try
                 {
-                    _persistentData.CurrentBuild.ItemData = itemData;
-                    ItemAttributes = new ItemAttributes(itemData);
-                    mnuClearItems.IsEnabled = true;
+                    itemAttributes = new ItemAttributes(_persistentData, itemData);
                 }
                 catch (Exception ex)
                 {
-                    _persistentData.CurrentBuild.ItemData = "";
-                    ItemAttributes = new ItemAttributes();
-                    ClearCurrentItemData();
-                    Popup.Error(L10n.Message("An error occurred while attempting to load item data."), ex.Message);
+                    itemAttributes = new ItemAttributes();
+                    catched = ex;
                 }
+                if (catched != null)
+                    await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load item data."),
+                        catched.Message);
             }
             else
             {
-                ClearCurrentItemData();
+                itemAttributes = new ItemAttributes();
             }
 
+            itemAttributes.Equip.CollectionChanged += ItemAttributesEquipCollectionChanged;
+            itemAttributes.PropertyChanged += ItemAttributesPropertyChanged;
+            ItemAttributes = itemAttributes;
             UpdateUI();
         }
 
-        public void ClearCurrentItemData()
+        private void ItemAttributesPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            _persistentData.CurrentBuild.ItemData = "";
-            ItemAttributes = new ItemAttributes();
             UpdateUI();
-            mnuClearItems.IsEnabled = false;
+        }
+
+        private void ItemAttributesEquipCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            _pauseLoadItemData = true;
+            _persistentData.CurrentBuild.ItemData = ItemAttributes.ToJsonString();
+            _pauseLoadItemData = false;
         }
 
         #endregion
@@ -1772,13 +1752,13 @@ namespace POESKillTree.Views
             lvSavedBuilds.Items.Refresh();
         }
 
-        private void lvi_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void lvi_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var lvi = ((ListView)sender).SelectedItem;
             if (lvi == null) return;
             var build = ((PoEBuild)lvi);
-            SetCurrentBuild(build);
-            LoadBuildFromUrl(); // loading the build
+            await SetCurrentBuild(build);
+            await LoadBuildFromUrlAsync(); // loading the build
         }
 
         private void lvi_MouseLeave(object sender, MouseEventArgs e)
@@ -1797,24 +1777,20 @@ namespace POESKillTree.Views
             }
         }
 
-        private void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private async void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
             var formBuildName = new FormChooseBuildName(selectedBuild);
-            formBuildName.Owner = this;
-            var show_dialog = formBuildName.ShowDialog();
-            if (show_dialog != null && (bool)show_dialog)
-            {
-                selectedBuild.Name = formBuildName.GetBuildName();
-                selectedBuild.Note = formBuildName.GetNote();
-                selectedBuild.CharacterName = formBuildName.GetCharacterName();
-                selectedBuild.AccountName = formBuildName.GetAccountName();
-                selectedBuild.ItemData = formBuildName.GetItemData();
-                lvSavedBuilds.Items.Refresh();
-                if(selectedBuild.CurrentlyOpen)
-                    SetTitle(selectedBuild.Name);
+            await this.ShowDialogAsync(new CloseableViewModel(), formBuildName);
 
-            }
+            selectedBuild.Name = formBuildName.GetBuildName();
+            selectedBuild.Note = formBuildName.GetNote();
+            selectedBuild.CharacterName = formBuildName.GetCharacterName();
+            selectedBuild.AccountName = formBuildName.GetAccountName();
+            lvSavedBuilds.Items.Refresh();
+            if(selectedBuild.CurrentlyOpen)
+                SetTitle(selectedBuild.Name);
+
             SaveBuildsToFile();
         }
 
@@ -1843,22 +1819,22 @@ namespace POESKillTree.Views
             return listViewItem;
         }
 
-        private void btnSaveBuild_Click(object sender, RoutedEventArgs e)
+        private async void btnSaveBuild_Click(object sender, RoutedEventArgs e)
         {
-            SaveBuild();
+            await SaveBuild();
         }
 
-        private void btnSaveNewBuild_Click(object sender, RoutedEventArgs e)
+        private async void btnSaveNewBuild_Click(object sender, RoutedEventArgs e)
         {
-            SaveNewBuild();
+            await SaveNewBuild();
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (lvSavedBuilds.SelectedItems.Count <= 0) return;
 
             if(((PoEBuild)lvSavedBuilds.SelectedItem).CurrentlyOpen)
-                NewBuild();
+                await NewBuild();
             lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
             SaveBuildsToFile();
         }
@@ -1894,7 +1870,7 @@ namespace POESKillTree.Views
         #endregion
 
         #region Builds - Services
-        private void SetCurrentBuild(PoEBuild build)
+        private async Task SetCurrentBuild(PoEBuild build)
         {
             foreach (PoEBuild item in lvSavedBuilds.Items)
             {
@@ -1908,22 +1884,22 @@ namespace POESKillTree.Views
 
             tbSkillURL.Text = build.Url;
             SetLevelFromString(build.Level);
-            LoadItemData(build.ItemData);
+            await LoadItemData();
             SetCustomGroups(build.CustomGroups);
         }
 
-        private void NewBuild()
+        private async Task NewBuild()
         {
-            SetCurrentBuild(new PoEBuild
+            await SetCurrentBuild(new PoEBuild
             {
                 Name = "New Build",
                 Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3),
                 Level = "1"
             });
-            LoadBuildFromUrl();
+            await LoadBuildFromUrlAsync();
         }
 
-        private void SaveBuild()
+        private async Task SaveBuild()
         {
             var currentOpenBuild =
                 (from PoEBuild build in lvSavedBuilds.Items
@@ -1941,40 +1917,39 @@ namespace POESKillTree.Views
                 currentOpenBuild.LastUpdated = DateTime.Now;
                 currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
                 currentOpenBuild.Bandits = _persistentData.CurrentBuild.Bandits.Clone();
-                SetCurrentBuild(currentOpenBuild);
+                currentOpenBuild.League = _persistentData.CurrentBuild.League;
+                await SetCurrentBuild(currentOpenBuild);
                 SaveBuildsToFile();
             }
             else
             {
-                SaveNewBuild();
+                await SaveNewBuild();
             }
         }
 
-        private void SaveNewBuild()
+        private async Task SaveNewBuild()
         {
-            var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName, _persistentData.CurrentBuild.ItemData);
-            formBuildName.Owner = this;
-            var show_dialog = formBuildName.ShowDialog();
-            if (show_dialog != null && (bool)show_dialog)
+            var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName);
+            await this.ShowDialogAsync(new CloseableViewModel(), formBuildName);
+
+            var newBuild = new PoEBuild
             {
-                var newBuild = new PoEBuild
-                {
-                    Name = formBuildName.GetBuildName(),
-                    Level = GetLevelAsString(),
-                    Class = cbCharType.Text,
-                    PointsUsed = NormalUsedPoints.Content.ToString(),
-                    Url = tbSkillURL.Text,
-                    Note = formBuildName.GetNote(),
-                    CharacterName = formBuildName.GetCharacterName(),
-                    AccountName = formBuildName.GetAccountName(),
-                    ItemData = formBuildName.GetItemData(),
-                    LastUpdated = DateTime.Now,
-                    CustomGroups = _attributeGroups.CopyCustomGroups(),
-                    Bandits = _persistentData.CurrentBuild.Bandits
-                };
-                SetCurrentBuild(newBuild);
-                lvSavedBuilds.Items.Add(newBuild);
-            }
+                Name = formBuildName.GetBuildName(),
+                Level = GetLevelAsString(),
+                Class = cbCharType.Text,
+                PointsUsed = NormalUsedPoints.Content.ToString(),
+                Url = tbSkillURL.Text,
+                Note = formBuildName.GetNote(),
+                CharacterName = formBuildName.GetCharacterName(),
+                AccountName = formBuildName.GetAccountName(),
+                ItemData = _persistentData.CurrentBuild.ItemData,
+                LastUpdated = DateTime.Now,
+                CustomGroups = _attributeGroups.CopyCustomGroups(),
+                Bandits = _persistentData.CurrentBuild.Bandits,
+                League = _persistentData.CurrentBuild.League
+            };
+            await SetCurrentBuild(newBuild);
+            lvSavedBuilds.Items.Add(newBuild);
 
             if (lvSavedBuilds.Items.Count > 0)
             {
@@ -1990,22 +1965,22 @@ namespace POESKillTree.Views
             try
             {
                 _persistentData.SetBuilds(lvSavedBuilds.Items);
-                _persistentData.SavePersistentDataToFile();
+                _persistentData.SaveToFile();
             }
             catch (Exception e)
             {
-                Popup.Error(L10n.Message("An error occurred during a save operation."), e.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred during a save operation."), e.Message);
             }
         }
 
-        private async void LoadBuildFromUrl()
+        private async Task LoadBuildFromUrlAsync()
         {
             try
             {
                 userInteraction = true;
                 if (tbSkillURL.Text.Contains("poezone.ru"))
                 {
-                    SkillTreeImporter.LoadBuildFromPoezone(Tree, tbSkillURL.Text);
+                    await SkillTreeImporter.LoadBuildFromPoezone(DialogCoordinator.Instance, Tree, tbSkillURL.Text);
                     tbSkillURL.Text = Tree.SaveToURL();
                 }
                 else if (tbSkillURL.Text.Contains("google.com"))
@@ -2014,7 +1989,7 @@ namespace POESKillTree.Views
                     if (match.Success)
                     {
                         tbSkillURL.Text = match.ToString().Replace("q=", "").Replace("&", "");
-                        LoadBuildFromUrl();
+                        await LoadBuildFromUrlAsync();
                     }
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
@@ -2036,7 +2011,7 @@ namespace POESKillTree.Views
                         tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
-                    LoadBuildFromUrl();
+                    await LoadBuildFromUrlAsync();
                 }
                 else
                 {
@@ -2069,7 +2044,7 @@ namespace POESKillTree.Views
             {
                 tbSkillURL.Text = Tree.SaveToURL();
                 Tree.LoadFromURL(tbSkillURL.Text);
-                Popup.Error(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }
 
@@ -2099,7 +2074,7 @@ namespace POESKillTree.Views
         private void BeginDrag(MouseEventArgs e)
         {
             var listView = lvSavedBuilds;
-            var listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
+            var listViewItem = ((DependencyObject)e.OriginalSource).TryFindParent<ListViewItem>();
 
             if (listViewItem == null)
                 return;
@@ -2147,7 +2122,7 @@ namespace POESKillTree.Views
 
             var name = e.Data.GetData("myFormat");
             var listView = lvSavedBuilds;
-            var listViewItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
+            var listViewItem = ((DependencyObject)e.OriginalSource).TryFindParent<ListViewItem>();
 
             if (listViewItem != null)
             {
@@ -2222,10 +2197,10 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
-        private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
+        private async void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && NoAsyncTaskRunning)
-                LoadBuildFromUrl();
+                await LoadBuildFromUrlAsync();
         }
 
         private void tbSkillURL_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -2281,9 +2256,9 @@ namespace POESKillTree.Views
             }
         }
 
-        private void btnLoadBuild_Click(object sender, RoutedEventArgs e)
+        private async void btnLoadBuild_Click(object sender, RoutedEventArgs e)
         {
-            LoadBuildFromUrl();
+            await LoadBuildFromUrlAsync();
         }
 
         private void btnPoeUrl_Click(object sender, RoutedEventArgs e)
@@ -2319,7 +2294,7 @@ namespace POESKillTree.Views
                 }
                 catch (Exception ex)
                 {
-                    Popup.Error(L10n.Message("An error occurred while attempting to contact the PoEUrl location."), ex.Message);
+                    this.ShowErrorAsync(L10n.Message("An error occurred while attempting to contact the PoEUrl location."), ex.Message);
                 }
             }
         }
@@ -2329,11 +2304,11 @@ namespace POESKillTree.Views
             try
             {
                 System.Windows.Forms.Clipboard.SetDataObject(poeurl, true);
-                Popup.Info(L10n.Message("The PoEUrl link has been copied to Clipboard.") + "\n\n" + poeurl);
+                this.ShowInfoAsync(L10n.Message("The PoEUrl link has been copied to Clipboard.") + "\n\n" + poeurl);
             }
             catch (Exception ex)
             {
-                Popup.Error(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
             }
         }
 
@@ -2456,7 +2431,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                Popup.Error(L10n.Message("An error occurred while attempting to load saved builds."), ex.Message);
+                this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load saved builds."), ex.Message);
             }
         }
 
@@ -2508,119 +2483,11 @@ namespace POESKillTree.Views
             lvSavedBuilds_SelectionChanged(null, null);
         }
 
-        private void Menu_RedownloadItemAssets(object sender, RoutedEventArgs e)
+        private async void Button_Craft_Click(object sender, RoutedEventArgs e)
         {
-            string sMessageBoxText = L10n.Message("The existing Skill Item assets will be deleted and new assets will be downloaded.")
-                       + "\n\n" + L10n.Message("Do you want to continue?");
-
-            var rsltMessageBox = Popup.Ask(sMessageBoxText, MessageBoxImage.Warning);
-
-            string appDataPath = AppData.GetFolder(true);
-            switch (rsltMessageBox)
-            {
-                case MessageBoxResult.Yes:
-                    if (Directory.Exists(Path.Combine(appDataPath, "Data")))
-                    {
-                        try
-                        {
-                            if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
-                                Directory.Delete("DataBackup", true);
-                            Directory.Move(Path.Combine(appDataPath, "Data"), Path.Combine(appDataPath, "DataBackup"));
-
-
-                            var bases = new List<ItemBase>();
-                            var images = new List<Tuple<string, string>>();
-
-                            StartLoadingWindow(L10n.Message("Downloading Item assets"));
-                            UpdateLoadingWindow(0, 4);
-                            ItemAssetDownloader.ExtractJewelry(bases, images);
-                            UpdateLoadingWindow(1, 4);
-                            ItemAssetDownloader.ExtractArmors(bases, images);
-                            UpdateLoadingWindow(2, 4);
-                            ItemAssetDownloader.ExtractWeapons(bases, images);
-                            UpdateLoadingWindow(3, 4);
-                            ItemAssetDownloader.ExtractJewels(bases, images);
-                            UpdateLoadingWindow(4, 4);
-
-                            new System.Xml.Linq.XElement("ItemBaseList", bases.Select(b => b.Serialize())).Save(Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Itemlist.xml"));
-
-                            var imgroups = images.GroupBy(t => t.Item2).ToArray();
-
-                            UpdateLoadingWindow(0, imgroups.Length);
-
-                            var dir = AppData.GetFolder(@"Data\Equipment\Assets");
-                            using (var client = new WebClient())
-                            {
-                                for (int i = 0; i < imgroups.Length; i++)
-                                {
-                                    using (var ms = new MemoryStream(client.DownloadData(imgroups[i].Key)))
-                                    {
-                                        var dec = new PngBitmapDecoder(ms, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-                                        var image = dec.Frames[0];
-                                        var cropped = new CroppedBitmap(image, new Int32Rect(4, 4, image.PixelWidth - 8, image.PixelHeight - 8));
-                                        var encoder = new PngBitmapEncoder();
-                                        encoder.Frames.Add(BitmapFrame.Create(cropped));
-
-                                        using (var m = new MemoryStream())
-                                        {
-                                            encoder.Save(m);
-
-                                            foreach (var item in imgroups[i])
-                                            {
-                                                using (var f = File.Create(Path.Combine(dir, item.Item1 + ".png")))
-                                                {
-                                                    m.Seek(0, SeekOrigin.Begin);
-                                                    m.CopyTo(f);
-                                                }
-                                            }
-                                        }
-
-                                        UpdateLoadingWindow(i + 1, imgroups.Length);
-                                    }
-                                }
-                            }
-
-                            foreach (var file in new DirectoryInfo(Path.Combine(appDataPath, @"DataBackup")).GetFiles())
-                                file.CopyTo(Path.Combine(Path.Combine(appDataPath, @"Data"), file.Name));
-                            
-                            File.Copy(Path.Combine(AppData.GetFolder(@"DataBackup\Equipment"), "Affixlist.xml"), Path.Combine(AppData.GetFolder(@"Data\Equipment"), "Affixlist.xml"));
-                            
-                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\Assets"), Path.Combine(appDataPath, @"Data\Assets"));
-                            Directory.Move(Path.Combine(appDataPath, @"DataBackup\PseudoAttributes"), Path.Combine(appDataPath, @"Data\PseudoAttributes"));
-                            if (Directory.Exists(Path.Combine(appDataPath, "DataBackup")))
-                                Directory.Delete(Path.Combine(appDataPath, "DataBackup"), true);
-
-                            CloseLoadingWindow();
-                        }
-                        catch (Exception ex)
-                        {
-                            if (Directory.Exists(appDataPath + "Data") && Directory.Exists(appDataPath + "DataBackup"))
-                                Directory.Delete(Path.Combine(appDataPath, "Data"), true);
-                            try
-                            {
-                                CloseLoadingWindow();
-                            }
-                            catch (Exception)
-                            {
-                                //Nothing
-                            }
-                            if (Directory.Exists(appDataPath + "DataBackup"))
-                                Directory.Move(Path.Combine(appDataPath, "DataBackup"), Path.Combine(appDataPath, "Data"));
-                            Popup.Error(L10n.Message("Error while downloading assets."));
-                        }
-                    }
-                    break;
-
-                case MessageBoxResult.No:
-                    //Do nothing
-                    break;
-            }
-        }
-
-        private void Button_Craft_Click(object sender, RoutedEventArgs e)
-        {
-            var w = new CraftWindow() { Owner = this };
-            if (w.ShowDialog() != true) return;
+            var w = new CraftWindow(PersistentData.EquipmentData);
+            await this.ShowDialogAsync(new CraftViewModel(), w);
+            if (!w.DialogResult) return;
 
             var item = w.Item;
             if (PersistentData.StashItems.Count > 0)
@@ -2632,39 +2499,52 @@ namespace POESKillTree.Views
             Stash.asBar.Value = item.Y;
         }
 
+        private static DragDropEffects deleteRect_DropEffect(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(DraggedItem)))
+            {
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                var effect = draggedItem.DropOnBinEffect;
+
+                if (e.AllowedEffects.HasFlag(effect))
+                {
+                    return effect;
+                }
+            }
+            return DragDropEffects.None;
+        }
+
         private void deleteRect_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
-            {
-                e.Effects = DragDropEffects.Move;
-                e.Handled = true;
-            }
+            e.Handled = true;
+            e.Effects = deleteRect_DropEffect(e);
         }
 
         private void deleteRect_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            var effect = deleteRect_DropEffect(e);
+            if (effect == DragDropEffects.None)
+                return;
+
+            e.Handled = true;
+            e.Effects = effect;
+            var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+            var visualizer = draggedItem.SourceItemVisualizer;
+            var st = visualizer.TryFindParent<Stash>();
+            if (st != null)
             {
-                e.Effects = DragDropEffects.Move;
-
-                var d = e.Data.GetData(typeof(ItemVisualizer)) as ItemVisualizer;
-
-                var st = d.FindAnchestor<Stash>();
-                if (st != null)
-                {
-                    st.RemoveItem(d.Item);
-                }
-                else
-                {
-                    d.Item = null;
-                }
-                deleteRect.Opacity = 0.0;
+                st.RemoveItem(visualizer.Item);
             }
+            else
+            {
+                visualizer.Item = null;
+            }
+            deleteRect.Opacity = 0.0;
         }
 
         private void deleteRect_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            if (deleteRect_DropEffect(e) != DragDropEffects.None)
             {
                 deleteRect.Opacity = 0.3;
             }
@@ -2672,18 +2552,10 @@ namespace POESKillTree.Views
 
         private void deleteRect_DragLeave(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ItemVisualizer)) && (e.AllowedEffects & DragDropEffects.Move) != 0)
+            if (deleteRect_DropEffect(e) != DragDropEffects.None)
             {
                 deleteRect.Opacity = 0.0;
             }
-        }
-
-        private void Menu_ImportStash(object sender, RoutedEventArgs e)
-        {
-            var diw = new DownloadStashWindow(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.League) { Owner = this };
-            diw.ShowDialog();
-            _persistentData.CurrentBuild.CharacterName = diw.GetCharacterName();
-            _persistentData.CurrentBuild.League = diw.GetAccountName();
         }
 
         #region Async task helpers

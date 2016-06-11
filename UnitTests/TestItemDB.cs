@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
@@ -18,7 +16,7 @@ namespace UnitTests
             AppData.SetApplicationData(Environment.CurrentDirectory);
 
             if (ItemDB.IsEmpty())
-                ItemDB.Load("Items.xml", true);
+                ItemDB.Load("Data/ItemDB/GemList.xml", true);
         }
 
         [TestMethod]
@@ -64,11 +62,11 @@ namespace UnitTests
              *   <ValuePerQuality>0.5</ValuePerQuality>
              * </Attribute>
              */
-            Assert.AreEqual(5, GetValueOf("Fork", "#% increased Projectile Damage", 5, 10)[0]);
+            Assert.AreEqual(5, GetValueOf("Fork Support", "#% increased Projectile Damage", 5, 10)[0]);
 
             // Test of "Gems in this item are Supported by level 30 Spell Echo" modifier on Pledge of Hands.
-            Assert.AreEqual(10, GetValueOf("Spell Echo", "#% less Damage", 30)[0]);
-            Assert.AreEqual(80, GetValueOf("Spell Echo", "#% more Cast Speed", 30)[0]);
+            Assert.AreEqual(10, GetValueOf("Spell Echo Support", "#% less Damage", 30)[0]);
+            Assert.AreEqual(80, GetValueOf("Spell Echo Support", "#% more Cast Speed", 30)[0]);
         }
 
         List<float> GetValueOf(string gemName, string attr, int level, int quality = 0)

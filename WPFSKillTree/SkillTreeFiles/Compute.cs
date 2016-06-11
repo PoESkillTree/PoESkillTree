@@ -4,8 +4,10 @@ using System.Text.RegularExpressions;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.Items;
 using System.Linq;
+using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -61,7 +63,7 @@ namespace POESKillTree.SkillTreeFiles
                 HitsPerAttack = ItemDB.HitsPerAttackOf(gem);
                 IsStrikingWithBothWeaponsAtOnce = ItemDB.IsStrikingWithBothWeaponsAtOnce(gem);
 
-                Effectiveness = gem.Attributes.ContainsKey("Damage Effectiveness: #%") ? gem.Attributes["Damage Effectiveness: #%"][0] : 100;
+                Effectiveness = gem.Properties.First("Damage Effectiveness: #%", 0, 100);
             }
 
             // Applies item modifiers.
@@ -352,7 +354,7 @@ namespace POESKillTree.SkillTreeFiles
             {
                 // A gem is an attack if it has Attack, Cast or Spell keyword with damage dealing mod.
                 return (gem.Keywords.Contains("Attack") // It's Attack.
-                        || (gem.Keywords.Contains("Spell") || gem.Keywords.Contains("Cast")) && gem.Mods.Exists(mod => mod.Attribute.StartsWith("Deals"))) // It's Spell or Cast buff which deals damage.
+                        || (gem.Keywords.Contains("Spell") || gem.Keywords.Contains("Cast")) && gem.Mods.Any(mod => mod.Attribute.StartsWith("Deals"))) // It's Spell or Cast buff which deals damage.
                        && !gem.Keywords.Contains("Trap") && !gem.Keywords.Contains("Mine") // No traps & mines.
                        && !gem.Keywords.Contains("Support"); // Not a support gem.
             }
@@ -368,7 +370,7 @@ namespace POESKillTree.SkillTreeFiles
             public void Link(List<Item> gems, Item item)
             {
                 // Check for gem support from item modifier.
-                foreach (ItemMod mod in item.Mods.FindAll(m => ReGemSupportFromItem.IsMatch(m.Attribute)))
+                foreach (ItemMod mod in item.Mods.Where(m => ReGemSupportFromItem.IsMatch(m.Attribute)))
                 {
                     Match m = ReGemSupportFromItem.Match(mod.Attribute);
                     string gemName = m.Groups[1].Value;
@@ -479,21 +481,18 @@ namespace POESKillTree.SkillTreeFiles
 
                     foreach (var attr in skill.Local)
                     {
-                        Damage damage = Damage.Create(skill.Nature, attr);
+                        Damage damage = Damage.Create(skill.Nature, attr.Key, attr.Value);
                         if (damage != null) Deals.Add(damage);
                     }
 
-                    if (skill.Gem.Attributes.ContainsKey("Cast Time: # sec"))
+                    if (skill.Gem.Properties.TryGetValue("Cast Time: # sec", 0, out CastTime))
                     {
-                        CastTime = skill.Gem.Attributes["Cast Time: # sec"][0];
                         APS = 1 / CastTime;
                     }
                     else
                         APS = CastTime = 1; // Spell without Cast Time has cast time of 1 second.
 
-                    if (skill.Gem.Attributes.ContainsKey("Critical Strike Chance: #%"))
-                        CriticalChance = skill.Gem.Attributes["Critical Strike Chance: #%"][0];
-                    else
+                    if (!skill.Gem.Properties.TryGetValue("Critical Strike Chance: #%", 0, out CriticalChance))
                         CriticalChance = 0; // Spell without Critical Strike Chance has none.
 
                     Local = new AttributeSet(); // No local weapon attributes.
@@ -921,7 +920,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
-            public DamageNature(List<string> keywords)
+            public DamageNature(IEnumerable<string> keywords)
             {
                 foreach (string word in keywords)
                 {
@@ -1372,16 +1371,16 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // Creates damage from attribute.
-            public static Damage Create(DamageNature nature, KeyValuePair<string, List<float>> attr)
+            public static Damage Create(DamageNature nature, string attrName, IReadOnlyList<float> attrValues)
             {
-                Match m = ReDamageAttribute.Match(attr.Key);
+                Match m = ReDamageAttribute.Match(attrName);
                 if (m.Success)
-                    return new Damage(nature, m.Groups[1].Value, attr.Value[0], attr.Value[1]);
+                    return new Damage(nature, m.Groups[1].Value, attrValues[0], attrValues[1]);
                 else
                 {
-                    m = ReDamageMod.Match(attr.Key);
+                    m = ReDamageMod.Match(attrName);
                     if (m.Success)
-                        return new Damage(nature, m.Groups[1].Value, attr.Value[0], attr.Value[1]);
+                        return new Damage(nature, m.Groups[1].Value, attrValues[0], attrValues[1]);
                 }
 
                 return null;
@@ -1503,23 +1502,31 @@ namespace POESKillTree.SkillTreeFiles
                     Item = item;
 
                     // Get weapon type (damage nature).
-                    if (item.Keywords == null) // Quiver or shield.
+                    if (item.ItemGroup != ItemGroup.OneHandedWeapon && item.ItemGroup != ItemGroup.TwoHandedWeapon)
+                        // Quiver or shield.
                     {
-                        if (item.BaseType.Contains("Quiver"))
-                            Nature = new DamageNature() { WeaponType = WeaponType.Quiver };
+                        if (item.BaseType.Name.Contains("Quiver"))
+                            Nature = new DamageNature() {WeaponType = WeaponType.Quiver};
+                        else if (item.BaseType.Name.Contains("Shield") || item.BaseType.Name.Contains("Buckler") ||
+                                 item.BaseType.Name == "Spiked Bundle")
+                            Nature = new DamageNature() {WeaponType = WeaponType.Shield};
                         else
-                            if (item.BaseType.Contains("Shield") || item.BaseType.Contains("Buckler") || item.BaseType == "Spiked Bundle")
-                                Nature = new DamageNature() { WeaponType = WeaponType.Shield };
-                            else
-                                throw new Exception("Unknown weapon type: " + item.BaseType);
+                            throw new Exception("Unknown weapon type: " + item.BaseType);
                     }
                     else // Regular weapon.
-                        foreach (string keyword in item.Keywords)
-                            if (Types.ContainsKey(keyword))
-                            {
-                                Nature = new DamageNature() { WeaponType = Types[keyword] };
-                                break;
-                            }
+                    {
+                        WeaponType weaponType;
+                        if (!Enum.TryParse(item.ItemType.ToString(), out weaponType))
+                        {
+                            if (item.ItemType == ItemType.ThrustingOneHandedSword)
+                                weaponType = WeaponType.OneHandedSword;
+                            else if (item.ItemType == ItemType.Sceptre)
+                                weaponType = WeaponType.OneHandedMace;
+                            else
+                                throw new Exception("Unknown weapon type: " + item.BaseType);
+                        }
+                        Nature = new DamageNature {WeaponType = weaponType};
+                    }
 
                     // If weapon is melee, it defaults to melee form. If it's ranged then projectile.
                     if (Nature.Is(WeaponType.Melee))
@@ -1529,11 +1536,11 @@ namespace POESKillTree.SkillTreeFiles
                             Nature.Form = DamageForm.Projectile;
 
                     // Copy attributes and create damage dealt.
-                    foreach (var attr in item.Attributes)
+                    foreach (var prop in item.Properties)
                     {
-                        Attributes.Add(attr);
+                        Attributes.Add(prop);
 
-                        Damage damage = Damage.Create(Nature, attr);
+                        Damage damage = Damage.Create(Nature, prop.Attribute, prop.Value);
                         if (damage != null && damage.Type == DamageType.Physical) // Create only physical damage from item properties.
                             Deals.Add(damage);
                     }
@@ -1541,7 +1548,7 @@ namespace POESKillTree.SkillTreeFiles
                     // Copy local and non-local mods and collect added non-physical damage.
                     foreach (var mod in item.Mods)
                     {
-                        if (mod.isLocal)
+                        if (mod.IsLocal)
                         {
                             Damage.Added added = Damage.Added.Create(Nature.Source, mod);
                             if (added != null && added.Type != DamageType.Physical)
@@ -1816,8 +1823,6 @@ namespace POESKillTree.SkillTreeFiles
                 Global.Remove("+# to Dexterity and Intelligence");
             }
 
-            // TODO: Onyx Amulet (when hack in POESKillTree.ViewModels.ItemAttribute.ItemMod.CreateMods will be removed).
-            /*
             if (Global.ContainsKey("+# to all Attributes"))
             {
                 strength += Global["+# to all Attributes"][0];
@@ -1826,7 +1831,6 @@ namespace POESKillTree.SkillTreeFiles
 
                 Global.Remove("+# to all Attributes");
             }
-             */
 
             if (strength != 0)
                 Global["+# to Strength"][0] += strength;
@@ -2302,8 +2306,8 @@ namespace POESKillTree.SkillTreeFiles
         {
             Items = itemAttrs.Equip.ToList();
 
-            MainHand = new Weapon(WeaponHand.Main, Items.Find(i => i.Class == ItemClass.MainHand));
-            OffHand = new Weapon(WeaponHand.Off, Items.Find(i => i.Class == ItemClass.OffHand));
+            MainHand = new Weapon(WeaponHand.Main, itemAttrs.MainHand);
+            OffHand = new Weapon(WeaponHand.Off, itemAttrs.OffHand);
 
             // If main hand weapon has Counts as Dual Wielding modifier, then clone weapon to off hand.
             // @see http://pathofexile.gamepedia.com/Wings_of_Entropy
@@ -2342,8 +2346,8 @@ namespace POESKillTree.SkillTreeFiles
             ZealotsOath = Tree.ContainsKey("Life Regeneration applies to Energy Shield instead of Life");
 
             Equipment = new AttributeSet();
-            foreach (ItemAttributes.Attribute attr in itemAttrs.NonLocalMods)
-                Equipment.Add(attr.TextAttribute, new List<float>(attr.Value));
+            foreach (var attr in itemAttrs.NonLocalMods)
+                Equipment.Add(attr.Attribute, new List<float>(attr.Value));
 
             if (NecromanticAegis && OffHand.IsShield())
             {

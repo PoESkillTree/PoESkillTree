@@ -1,17 +1,18 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows.Media;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Controls
 {
-    public class StashBookmark : INotifyPropertyChanged
+    public class StashBookmark : Notifier
     {
+        private static readonly Color DefaultColor = Color.FromRgb(98, 128, 0);
+
         [Obsolete("only for serialization")]
         public StashBookmark()
         {
 
         }
-        static Color DefaultColor = Color.FromRgb(98, 128, 0);
         public StashBookmark(string name, int positon) : this(name, positon, DefaultColor)
         { }
 
@@ -22,57 +23,26 @@ namespace POESKillTree.Controls
             _position = positon;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string prop)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
-
-        int _position = 0;
-        Color _color = DefaultColor;
-        string _name = "";
+        private int _position;
+        private Color _color;
+        private string _name;
 
         public int Position
         {
-            get
-            {
-                return _position;
-            }
-
-            set
-            {
-                _position = value;
-                OnPropertyChanged("Position");
-            }
+            get { return _position; }
+            set { SetProperty(ref _position, value); }
         }
 
         public Color Color
         {
-            get
-            {
-                return _color;
-            }
-
-            set
-            {
-                _color = value;
-                OnPropertyChanged("Color");
-            }
+            get { return _color; }
+            set { SetProperty(ref _color, value); }
         }
 
         public string Name
         {
-            get
-            {
-                return _name;
-            }
-
-            set
-            {
-                _name = value;
-                OnPropertyChanged("Name");
-            }
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
         }
     }
 }

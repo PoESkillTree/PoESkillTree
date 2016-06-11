@@ -26,7 +26,7 @@
                                                         <Setter Property="Control.Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate>
-                                                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Null}}" StrokeThickness="1" StrokeDashArray="1 2"/>
                                                                 </ControlTemplate>
                                                             </Setter.Value>
                                                         </Setter>
@@ -151,7 +151,7 @@
                                                         <Setter Property="Control.Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate>
-                                                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Null}}" StrokeThickness="1" StrokeDashArray="1 2"/>
                                                                 </ControlTemplate>
                                                             </Setter.Value>
                                                         </Setter>
@@ -251,7 +251,7 @@
                                                         <Setter Property="Control.Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate>
-                                                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Null}}" StrokeThickness="1" StrokeDashArray="1 2"/>
                                                                 </ControlTemplate>
                                                             </Setter.Value>
                                                         </Setter>
@@ -373,7 +373,7 @@
                                                         <Setter Property="Control.Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate>
-                                                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Null}}" StrokeThickness="1" StrokeDashArray="1 2"/>
                                                                 </ControlTemplate>
                                                             </Setter.Value>
                                                         </Setter>

@@ -36,6 +36,9 @@ using System.Windows;
     // app, or any theme specific resource dictionaries)
 )]
 
+// Location of Log4Net configuration file
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "Log4Net.config", Watch = true)]
+
 // Updated by release.xml. DO NOT MODIFY!
 [assembly: AssemblyDescription("Passive skill tree planner for Path of Exile®")]
 [assembly: AssemblyCompany("PoESkillTree Team")]

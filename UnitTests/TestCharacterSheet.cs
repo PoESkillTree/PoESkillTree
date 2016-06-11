@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using POESKillTree.Model;
+using POESKillTree.Model.Items;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.Items;
 
 namespace UnitTests
 {
@@ -23,7 +24,7 @@ namespace UnitTests
             set { TestContextInstance = value; }
         }
 
-        static SkillTree Tree;
+        private static Task<SkillTree> _treeTask;
 
         [ClassInitialize]
         public static void Initalize(TestContext testContext)
@@ -31,8 +32,8 @@ namespace UnitTests
             AppData.SetApplicationData(Environment.CurrentDirectory);
 
             if (ItemDB.IsEmpty())
-                ItemDB.Load("Items.xml", true);
-            Tree = SkillTree.CreateSkillTree((string dummy) => { Debug.WriteLine("Download started"); }, (double dummy1, double dummy2) => { }, () => { Debug.WriteLine("Download finished"); });
+                ItemDB.Load("Data/ItemDB/GemList.xml", true);
+            _treeTask = SkillTree.CreateAsync(new PersistentData(false), null);
         }
 
         readonly Regex _backreplace = new Regex("#");
@@ -48,7 +49,7 @@ namespace UnitTests
 
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"..\..\TestBuilds\Builds.xml", "TestBuild", DataAccessMethod.Sequential)]
         [TestMethod]
-        public void TestBuild()
+        public async Task TestBuild()
         {
             // Read build entry.
             string treeURL = TestContext.DataRow["TreeURL"].ToString();
@@ -84,13 +85,14 @@ namespace UnitTests
                 }
             }
 
+            var tree = await _treeTask;
             // Initialize structures.
-            Tree.LoadFromURL(treeURL);
-            Tree.Level = level;
+            tree.LoadFromURL(treeURL);
+            tree.Level = level;
 
             string itemData = File.ReadAllText(buildFile);
-            ItemAttributes itemAttributes = new ItemAttributes(itemData);
-            Compute.Initialize(Tree, itemAttributes);
+            ItemAttributes itemAttributes = new ItemAttributes(new PersistentData(false), itemData);
+            Compute.Initialize(tree, itemAttributes);
 
             // Compare defense properties.
             Dictionary<string, List<string>> defense = new Dictionary<string, List<string>>();

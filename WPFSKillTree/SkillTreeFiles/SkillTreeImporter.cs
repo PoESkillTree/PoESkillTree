@@ -5,8 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
-using POESKillTree.Utils;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -15,7 +16,7 @@ namespace POESKillTree.SkillTreeFiles
         /// <summary>
         ///     Loads from the unofficial online tool
         /// </summary>
-        public static void LoadBuildFromPoezone(SkillTree tree, string buildUrl)
+        public static async Task LoadBuildFromPoezone(IDialogCoordinator dialogCoordinator, SkillTree tree, string buildUrl)
         {
             if (!buildUrl.Contains('#')) throw new FormatException();
 
@@ -63,7 +64,9 @@ namespace POESKillTree.SkillTreeFiles
 
             if (!buildFile.Contains("["))
             {
-                Popup.Error(string.Format(L10n.Message("An error occured while attempting to load Skill tree from {0} location."), "poezone.ru"));
+                await dialogCoordinator.ShowErrorAsync(tree, string.Format(
+                        L10n.Message("An error occured while attempting to load Skill tree from {0} location."),
+                        "poezone.ru"));
                 return;
             }
 

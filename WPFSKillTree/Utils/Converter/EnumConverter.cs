@@ -1,6 +1,8 @@
 using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows.Data;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Utils.Converter
 {
@@ -15,7 +17,31 @@ namespace POESKillTree.Utils.Converter
             var e = value as Enum;
             if (e != null)
             {
-                return e.GetDescription();
+                return e.GetDescription() ?? e.ToString();
+            }
+            return "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    /// <summary>
+    /// Converts Enum values to their descriptions if they have one.
+    /// If they don't, they are converted to their .toString() with spaces in front
+    /// of each word.
+    /// </summary>
+    [ValueConversion(typeof(Enum), typeof(string))]
+    public class EnumToSpacedStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var e = value as Enum;
+            if (e != null)
+            {
+                return e.GetDescription() ?? Regex.Replace(e.ToString(), @"([a-z])([A-Z])", "$1 $2");
             }
             return "";
         }
