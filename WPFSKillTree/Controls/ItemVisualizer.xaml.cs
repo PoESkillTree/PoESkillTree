@@ -32,12 +32,33 @@ namespace POESKillTree.Controls
             };
         }
 
-        private void control_PreviewMouseMove(object sender, MouseEventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
             var pos = e.GetPosition(this);
+            tooltip.VerticalOffset = pos.Y;
+            tooltip.HorizontalOffset = pos.X;
+            if (pos.X < 0 || pos.Y < 0 || pos.X > ActualWidth || pos.Y > ActualHeight)
+                tooltip.IsOpen = false;
+        }
 
-            tooltip.VerticalOffset = pos.Y + 2;
-            tooltip.HorizontalOffset = pos.X + 2;
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            tooltip.IsOpen = true;
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            tooltip.IsOpen = false;
+        }
+
+        private void Tooltip_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            tooltip.IsOpen = true;
+        }
+
+        private void Tooltip_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            tooltip.IsOpen = false;
         }
     }
 }

@@ -429,7 +429,7 @@ namespace POESKillTree.Model.Items
             var name = jsonMod["name"].Value<string>();
             var mode0Separator = areRequirements ? " " : ": ";
             string attribute;
-            if (values.Any())
+            if (values.Any() && !string.IsNullOrEmpty(name))
             {
                 switch (int.Parse(jsonMod["displayMode"].Value<string>(), CultureInfo.InvariantCulture))
                 {
@@ -448,6 +448,10 @@ namespace POESKillTree.Model.Items
                         throw new NotSupportedException("Unsupported display mode: " +
                                                         jsonMod["displayMode"].Value<string>());
                 }
+            }
+            else if (string.IsNullOrEmpty(name))
+            {
+                attribute = string.Join(", ", values);
             }
             else
             {

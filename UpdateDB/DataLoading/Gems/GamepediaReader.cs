@@ -39,7 +39,7 @@ namespace UpdateDB.DataLoading.Gems
             "Required Level", "Required Strength", "Required Dexterity", "Required Intelligence",
             "Experience Needed to Level Up", "Total experience needed", "Per #% Quality:"
         };
-        // Mapping of tokens to actual attributes.
+        // Mapping of incorrect tokens to the correct ingame form.
         static Dictionary<string, string> Tokens = new Dictionary<string, string>
         {
             { "ManaCost", "Mana Cost: #" },

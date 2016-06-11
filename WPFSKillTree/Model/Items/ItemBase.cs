@@ -242,7 +242,14 @@ namespace POESKillTree.Model.Items
             var props = new List<ItemMod>();
 
             if (ItemGroup == ItemGroup.TwoHandedWeapon || ItemGroup == ItemGroup.OneHandedWeapon)
-                props.Add(new ItemMod(ItemType, Regex.Replace(ItemType.ToString(), @"([a-z])([A-Z])", @"$1 $2")));
+            {
+                var type = ItemType;
+                if (type == ItemType.Sceptre)
+                    type = ItemType.OneHandedMace;
+                else if (type == ItemType.ThrustingOneHandedSword)
+                    type = ItemType.OneHandedSword;
+                props.Add(new ItemMod(ItemType, Regex.Replace(type.ToString(), @"([a-z])([A-Z])", @"$1 $2")));
+            }
 
             if (quality > 0)
             {

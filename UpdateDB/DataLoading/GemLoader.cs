@@ -119,7 +119,7 @@ namespace UpdateDB.DataLoading
         {
             return from row in table.Elements("tr").Skip(1)
                    select row.ChildNodes[0] into cell
-                   select cell.SelectNodes("span/a")[1] into nameNode
+                   select cell.SelectNodes("span/a[not(contains(@class, 'image'))]")[0] into nameNode
                    select _gemReader.FetchGemAsync(nameNode.InnerHtml);
         }
 

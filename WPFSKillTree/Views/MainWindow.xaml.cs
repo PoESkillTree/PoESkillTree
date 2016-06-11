@@ -830,10 +830,9 @@ namespace POESKillTree.Views
                     Exception catchedEx = null;
                     try
                     {
-                        if (Directory.Exists(assetsPath))
-                            DirectoryEx.MoveOverwriting(assetsPath, assetsPath + "Backup");
-                        FileEx.CopyIfExists(skillTreePath, skillTreePath + ".bak", true);
-                        FileEx.CopyIfExists(optsPath, optsPath + ".bak", true);
+                        DirectoryEx.MoveIfExists(assetsPath, assetsPath + "Backup", true);
+                        FileEx.MoveIfExists(skillTreePath, skillTreePath + ".bak", true);
+                        FileEx.MoveIfExists(optsPath, optsPath + ".bak", true);
 
                         SkillTree.ClearAssets(); //enable recaching of assets
                         Tree = await CreateSkillTreeAsync(controller); //create new skilltree to reinitialize cache
@@ -848,10 +847,9 @@ namespace POESKillTree.Views
                     }
                     catch (Exception ex)
                     {
-                        if (Directory.Exists(assetsPath + "Backup"))
-                            DirectoryEx.MoveOverwriting(assetsPath + "Backup", assetsPath);
-                        FileEx.CopyIfExists(skillTreePath + ".bak", skillTreePath, true);
-                        FileEx.CopyIfExists(optsPath + ".bak", optsPath, true);
+                        DirectoryEx.MoveIfExists(assetsPath + "Backup", assetsPath, true);
+                        FileEx.MoveIfExists(skillTreePath + ".bak", skillTreePath, true);
+                        FileEx.MoveIfExists(optsPath + ".bak", optsPath, true);
 
                         // No await in catch
                         catchedEx = ex;

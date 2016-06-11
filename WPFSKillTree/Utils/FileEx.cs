@@ -46,5 +46,14 @@ namespace POESKillTree.Utils
             DeleteIfExists(destFileName);
             File.Move(sourceFileName, destFileName);
         }
+
+        public static void MoveIfExists(string sourceFileName, string destFileName, bool overwrite = false)
+        {
+            if (!File.Exists(sourceFileName))
+                return;
+            if (overwrite)
+                DeleteIfExists(destFileName);
+            File.Move(sourceFileName, destFileName);
+        }
     }
 }

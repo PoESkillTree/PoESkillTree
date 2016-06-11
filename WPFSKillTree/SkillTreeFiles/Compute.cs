@@ -1520,6 +1520,8 @@ namespace POESKillTree.SkillTreeFiles
                         {
                             if (item.ItemType == ItemType.ThrustingOneHandedSword)
                                 weaponType = WeaponType.OneHandedSword;
+                            else if (item.ItemType == ItemType.Sceptre)
+                                weaponType = WeaponType.OneHandedMace;
                             else
                                 throw new Exception("Unknown weapon type: " + item.BaseType);
                         }

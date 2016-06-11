@@ -15,5 +15,14 @@ namespace POESKillTree.Utils
             DeleteIfExists(destDirName, true);
             Directory.Move(sourceDirName, destDirName);
         }
+
+        public static void MoveIfExists(string sourceDirName, string destDirName, bool overwrite = false)
+        {
+            if (!Directory.Exists(sourceDirName))
+                return;
+            if (overwrite)
+                DeleteIfExists(destDirName, true);
+            Directory.Move(sourceDirName, destDirName);
+        }
     }
 }
