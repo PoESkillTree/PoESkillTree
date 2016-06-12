@@ -596,8 +596,8 @@ namespace POESKillTree.Controls
                 {
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
-                    Width = vis.ActualWidth,
-                    Height = vis.ActualHeight,
+                    Width = vis.Item.Width * GridSize,
+                    Height = vis.Item.Height * GridSize,
                     Fill = Brushes.DarkGreen,
                     Margin = vis.Margin,
                     Opacity = 0.3,
