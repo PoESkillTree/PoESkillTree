@@ -49,7 +49,7 @@ namespace POESKillTree.Controls.Dialogs
 
             await window.ShowMetroDialogAsync(view);
             DialogParticipation.SetRegister(view, viewModel);
-            if (onShown != null) onShown();
+            onShown?.Invoke();
 
             await viewModel.WaitForCloseAsync();
             await window.HideMetroDialogAsync(view);

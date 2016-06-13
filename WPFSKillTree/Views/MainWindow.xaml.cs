@@ -85,7 +85,7 @@ namespace POESKillTree.Views
                 if (value == _itemAttributes)
                     return;
                 _itemAttributes = value;
-                PropertyChanged.Raise(this, "ItemAttributes");
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ItemAttributes"));
             }
         }
 
@@ -96,7 +96,7 @@ namespace POESKillTree.Views
             private set
             {
                 _tree = value;
-                PropertyChanged.Raise(this, "Tree");
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Tree"));
             }
         }
         private async Task<SkillTree> CreateSkillTreeAsync(ProgressDialogController controller)
@@ -144,10 +144,7 @@ namespace POESKillTree.Views
             private set
             {
                 _noAsyncTaskRunning = value;
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("NoAsyncTaskRunning"));
-                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NoAsyncTaskRunning"));
             }
         }
 
@@ -484,7 +481,7 @@ namespace POESKillTree.Views
             }
             _persistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAsendancySelectionList();
-            CheckAppVersionAndDoNecessaryChanges();
+            await CheckAppVersionAndDoNecessaryChanges();
 
             await controller.CloseAsync();
         }
@@ -683,11 +680,11 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                this.ShowErrorAsync(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
+                await this.ShowErrorAsync(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
             }
         }
 
-        private void Menu_ScreenShot(object sender, RoutedEventArgs e)
+        private async void Menu_ScreenShot(object sender, RoutedEventArgs e)
         {
             const int maxsize = 3000;
             Rect2D contentBounds = Tree.picActiveLinks.ContentBounds;
@@ -775,7 +772,7 @@ namespace POESKillTree.Views
             }
             else
             {
-                this.ShowInfoAsync(L10n.Message("Your build must use at least one node to generate a screenshot"), title: "Screenshot Generator");
+                await this.ShowInfoAsync(L10n.Message("Your build must use at least one node to generate a screenshot"), title: "Screenshot Generator");
             }
         }
 
@@ -793,7 +790,7 @@ namespace POESKillTree.Views
                 new DownloadStashWindow());
         }
 
-        private void Menu_CopyStats(object sender, RoutedEventArgs e)
+        private async void Menu_CopyStats(object sender, RoutedEventArgs e)
         {
             var sb = new StringBuilder();
             foreach (var at in _attiblist)
@@ -806,7 +803,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
+                await this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
             }
         }
 
@@ -827,7 +824,6 @@ namespace POESKillTree.Views
                     var controller = await this.ShowProgressAsync(L10n.Message("Downloading skill tree assets ..."), null);
                     controller.Maximum = 100;
                     controller.SetProgress(0);
-                    Exception catchedEx = null;
                     try
                     {
                         DirectoryEx.MoveIfExists(assetsPath, assetsPath + "Backup", true);
@@ -851,11 +847,8 @@ namespace POESKillTree.Views
                         FileEx.MoveIfExists(skillTreePath + ".bak", skillTreePath, true);
                         FileEx.MoveIfExists(optsPath + ".bak", optsPath, true);
 
-                        // No await in catch
-                        catchedEx = ex;
+                        await this.ShowErrorAsync(L10n.Message("An error occurred while downloading assets."), ex.Message);
                     }
-                    if (catchedEx != null)
-                        await this.ShowErrorAsync(L10n.Message("An error occurred while downloading assets."), catchedEx.Message);
                     await controller.CloseAsync();
                     break;
 
@@ -947,7 +940,7 @@ namespace POESKillTree.Views
             }
             catch (UpdaterException ex)
             {
-                this.ShowErrorAsync(
+                await this.ShowErrorAsync(
                     L10n.Message("An error occurred while attempting to contact the update location."),
                     ex.Message);
             }
@@ -959,7 +952,6 @@ namespace POESKillTree.Views
             var controller = await this.ShowProgressAsync(L10n.Message("Downloading latest version"), null, true);
             controller.Maximum = 100;
             controller.Canceled += (sender, args) => Updater.Cancel();
-            Exception catchedEx = null;
             try
             {
                 var downloadCs = new TaskCompletionSource<AsyncCompletedEventArgs>();
@@ -968,22 +960,18 @@ namespace POESKillTree.Views
 
                 var result = await downloadCs.Task;
                 await controller.CloseAsync();
-                UpdateDownloadCompleted(result);
+                await UpdateDownloadCompleted(result);
             }
             catch (UpdaterException ex)
             {
-                catchedEx = ex;
-            }
-            if (catchedEx != null)
-            {
                 await this.ShowErrorAsync(L10n.Message("An error occurred during the download operation."),
-                    catchedEx.Message);
+                    ex.Message);
                 await controller.CloseAsync();
             }
         }
 
         // Invoked when update download completes, aborts or fails.
-        private void UpdateDownloadCompleted(AsyncCompletedEventArgs e)
+        private async Task UpdateDownloadCompleted(AsyncCompletedEventArgs e)
         {
             if (e.Cancelled) // Check whether download was cancelled.
             {
@@ -991,7 +979,7 @@ namespace POESKillTree.Views
             }
             else if (e.Error != null) // Check whether error occurred.
             {
-                this.ShowErrorAsync(L10n.Message("An error occurred during the download operation."), e.Error.Message);
+                await this.ShowErrorAsync(L10n.Message("An error occurred during the download operation."), e.Error.Message);
             }
             else // Download completed.
             {
@@ -1004,7 +992,7 @@ namespace POESKillTree.Views
                 catch (UpdaterException ex)
                 {
                     Updater.Dispose();
-                    this.ShowErrorAsync(L10n.Message("An error occurred while attempting to start the installation."), ex.Message);
+                    await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to start the installation."), ex.Message);
                 }
             }
         }
@@ -1682,7 +1670,6 @@ namespace POESKillTree.Views
             ItemAttributes itemAttributes;
             if (!string.IsNullOrEmpty(itemData))
             {
-                Exception catched = null;
                 try
                 {
                     itemAttributes = new ItemAttributes(_persistentData, itemData);
@@ -1690,11 +1677,9 @@ namespace POESKillTree.Views
                 catch (Exception ex)
                 {
                     itemAttributes = new ItemAttributes();
-                    catched = ex;
-                }
-                if (catched != null)
                     await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load item data."),
-                        catched.Message);
+                        ex.Message);
+                }
             }
             else
             {
@@ -1791,7 +1776,7 @@ namespace POESKillTree.Views
             if(selectedBuild.CurrentlyOpen)
                 SetTitle(selectedBuild.Name);
 
-            SaveBuildsToFile();
+            await SaveBuildsToFile();
         }
 
         private ListViewItem FindListViewItem(MouseEventArgs e)
@@ -1836,25 +1821,25 @@ namespace POESKillTree.Views
             if(((PoEBuild)lvSavedBuilds.SelectedItem).CurrentlyOpen)
                 await NewBuild();
             lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
-            SaveBuildsToFile();
+            await SaveBuildsToFile();
         }
 
-        private void lvSavedBuilds_KeyUp(object sender, KeyEventArgs e)
+        private async void lvSavedBuilds_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Up && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) &&
                 lvSavedBuilds.SelectedIndex > 0)
             {
-                MoveBuildInList(-1);
+                await MoveBuildInList(-1);
             }
 
             else if (e.Key == Key.Down && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) &&
                      lvSavedBuilds.SelectedIndex < lvSavedBuilds.Items.Count - 1)
             {
-                MoveBuildInList(1);
+                await MoveBuildInList(1);
             }
         }
 
-        private void MoveBuildInList(int direction)
+        private async Task MoveBuildInList(int direction)
         {
             var obj = lvSavedBuilds.Items[lvSavedBuilds.SelectedIndex];
             var selectedIndex = lvSavedBuilds.SelectedIndex;
@@ -1864,7 +1849,7 @@ namespace POESKillTree.Views
             lvSavedBuilds.SelectedIndex = selectedIndex + direction;
             lvSavedBuilds.Items.Refresh();
 
-            SaveBuildsToFile();
+            await SaveBuildsToFile();
         }
 
         #endregion
@@ -1919,7 +1904,7 @@ namespace POESKillTree.Views
                 currentOpenBuild.Bandits = _persistentData.CurrentBuild.Bandits.Clone();
                 currentOpenBuild.League = _persistentData.CurrentBuild.League;
                 await SetCurrentBuild(currentOpenBuild);
-                SaveBuildsToFile();
+                await SaveBuildsToFile();
             }
             else
             {
@@ -1953,14 +1938,14 @@ namespace POESKillTree.Views
 
             if (lvSavedBuilds.Items.Count > 0)
             {
-                SaveBuildsToFile();
+                await SaveBuildsToFile();
             }
             lvSavedBuilds.SelectedIndex = lvSavedBuilds.Items.Count - 1;
             if(lvSavedBuilds.SelectedIndex != -1)
                 lvSavedBuilds.ScrollIntoView(lvSavedBuilds.Items[lvSavedBuilds.Items.Count - 1]);
         }
 
-        private void SaveBuildsToFile()
+        private async Task SaveBuildsToFile()
         {
             try
             {
@@ -1969,7 +1954,7 @@ namespace POESKillTree.Views
             }
             catch (Exception e)
             {
-                this.ShowErrorAsync(L10n.Message("An error occurred during a save operation."), e.Message);
+                await this.ShowErrorAsync(L10n.Message("An error occurred during a save operation."), e.Message);
             }
         }
 
@@ -2044,7 +2029,7 @@ namespace POESKillTree.Views
             {
                 tbSkillURL.Text = Tree.SaveToURL();
                 Tree.LoadFromURL(tbSkillURL.Text);
-                this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
+                await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }
 
@@ -2057,7 +2042,7 @@ namespace POESKillTree.Views
             _dragAndDropStartPoint = e.GetPosition(lvSavedBuilds);
         }
 
-        private void ListViewPreviewMouseMove(object sender, MouseEventArgs e)
+        private async void ListViewPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -2066,12 +2051,12 @@ namespace POESKillTree.Views
                 if (Math.Abs(position.X - _dragAndDropStartPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
                     Math.Abs(position.Y - _dragAndDropStartPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
                 {
-                    BeginDrag(e);
+                    await BeginDrag(e);
                 }
             }
         }
 
-        private void BeginDrag(MouseEventArgs e)
+        private async Task BeginDrag(MouseEventArgs e)
         {
             var listView = lvSavedBuilds;
             var listViewItem = ((DependencyObject)e.OriginalSource).TryFindParent<ListViewItem>();
@@ -2102,7 +2087,7 @@ namespace POESKillTree.Views
             {
                 AdornerLayer.GetAdornerLayer(listView).Remove(_adorner);
                 _adorner = null;
-                SaveBuildsToFile();
+                await SaveBuildsToFile();
             }
         }
 
@@ -2261,12 +2246,12 @@ namespace POESKillTree.Views
             await LoadBuildFromUrlAsync();
         }
 
-        private void btnPoeUrl_Click(object sender, RoutedEventArgs e)
+        private async void btnPoeUrl_Click(object sender, RoutedEventArgs e)
         {
-            StartDownloadPoeUrl();
+            await DownloadPoeUrlAsync();
         }
 
-        private async void StartDownloadPoeUrl()
+        private async Task DownloadPoeUrlAsync()
         {
             var regx =
                 new Regex(
@@ -2290,25 +2275,25 @@ namespace POESKillTree.Views
                     var result =
                         await AwaitAsyncTask(L10n.Message("Generating PoEUrl of Skill tree"),
                             new HttpClient().GetStringAsync("http://poeurl.com/shrink.php?url=" + url));
-                    ShowPoeUrlMessageAndAddToClipboard("http://poeurl.com/" + result.Trim());
+                    await ShowPoeUrlMessageAndAddToClipboard("http://poeurl.com/" + result.Trim());
                 }
                 catch (Exception ex)
                 {
-                    this.ShowErrorAsync(L10n.Message("An error occurred while attempting to contact the PoEUrl location."), ex.Message);
+                    await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to contact the PoEUrl location."), ex.Message);
                 }
             }
         }
 
-        private void ShowPoeUrlMessageAndAddToClipboard(string poeurl)
+        private async Task ShowPoeUrlMessageAndAddToClipboard(string poeurl)
         {
             try
             {
                 System.Windows.Forms.Clipboard.SetDataObject(poeurl, true);
-                this.ShowInfoAsync(L10n.Message("The PoEUrl link has been copied to Clipboard.") + "\n\n" + poeurl);
+                await this.ShowInfoAsync(L10n.Message("The PoEUrl link has been copied to Clipboard.") + "\n\n" + poeurl);
             }
             catch (Exception ex)
             {
-                this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
+                await this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
             }
         }
 
@@ -2357,7 +2342,7 @@ namespace POESKillTree.Views
         /// Compares the AssemblyVersion against the one in PersistentData and makes
         /// nessary updates when versions don't match.
         /// </summary>
-        private void CheckAppVersionAndDoNecessaryChanges()
+        private async Task CheckAppVersionAndDoNecessaryChanges()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -2366,7 +2351,7 @@ namespace POESKillTree.Views
             if (productVersion == persistentDataVersion)
                 return;
             if(string.IsNullOrEmpty(persistentDataVersion))
-                ImportLegacySavedBuilds();
+                await ImportLegacySavedBuilds();
             if (String.CompareOrdinal("2.2.4", persistentDataVersion) > 0)
                 SetCurrentOpenBuildBasedOnName();
 
@@ -2394,7 +2379,7 @@ namespace POESKillTree.Views
         /// Import builds from legacy build save file "savedBuilds" to PersistentData.xml.
         /// Warning: This will remove the "savedBuilds"
         /// </summary>
-        private void ImportLegacySavedBuilds()
+        private async Task ImportLegacySavedBuilds()
         {
             try
             {
@@ -2426,12 +2411,12 @@ namespace POESKillTree.Views
                         lvSavedBuilds.Items.Add(lvi);
                     }
                     File.Move("savedBuilds", "savedBuilds.old");
-                    SaveBuildsToFile();
+                    await SaveBuildsToFile();
                 }
             }
             catch (Exception ex)
             {
-                this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load saved builds."), ex.Message);
+                await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load saved builds."), ex.Message);
             }
         }
 

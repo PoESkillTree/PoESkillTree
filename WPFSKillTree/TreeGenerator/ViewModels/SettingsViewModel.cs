@@ -7,7 +7,6 @@ using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
-using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
 
 namespace POESKillTree.TreeGenerator.ViewModels
@@ -235,7 +234,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             _tree.DrawHighlights();
             _tree.UpdateAvailNodes();
 
-            RunFinished.Raise(this);
+            RunFinished?.Invoke(this, EventArgs.Empty);
         }
 
         private void Reset()

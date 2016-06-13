@@ -65,7 +65,7 @@ namespace POESKillTree.ViewModels
         private RelayCommand _loadTabsCommand;
         public ICommand LoadTabsCommand
         {
-            get { return _loadTabsCommand ?? (_loadTabsCommand = new RelayCommand(o => LoadTabs())); }
+            get { return _loadTabsCommand ?? (_loadTabsCommand = new RelayCommand(async o => await LoadTabs())); }
         }
 
         private RelayCommand _loadTabContentsCommand;
@@ -142,7 +142,7 @@ namespace POESKillTree.ViewModels
                     Build.League, Build.AccountName, selectedTab.Position);
         }
 
-        private void LoadTabs()
+        private async Task LoadTabs()
         {
             var stashData = Clipboard.GetText();
             _tabs.Clear();
@@ -166,7 +166,7 @@ namespace POESKillTree.ViewModels
             }
             catch (Exception e)
             {
-                _dialogCoordinator.ShowErrorAsync(this,
+                await _dialogCoordinator.ShowErrorAsync(this,
                     L10n.Message("An error occurred while attempting to load stash data."), e.Message);
             }
             TabsView.Refresh();
@@ -212,7 +212,7 @@ namespace POESKillTree.ViewModels
             }
             catch (Exception e)
             {
-                _dialogCoordinator.ShowErrorAsync(this,
+                await _dialogCoordinator.ShowErrorAsync(this,
                     L10n.Message("An error occurred while attempting to load stash data."), e.Message);
             }
             finally

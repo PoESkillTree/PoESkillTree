@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Controls.Dialogs
 {
@@ -17,8 +16,8 @@ namespace POESKillTree.Controls.Dialogs
         public ProgressDialogController(MahApps.Metro.Controls.Dialogs.ProgressDialogController wrapped)
         {
             _wrapped = wrapped;
-            _wrapped.Canceled += (sender, args) => Canceled.Raise(this);
-            _wrapped.Closed += (sender, args) => Closed.Raise(this);
+            _wrapped.Canceled += (sender, args) => Canceled?.Invoke(this, EventArgs.Empty);
+            _wrapped.Closed += (sender, args) => Closed?.Invoke(this, EventArgs.Empty);
             _progress = _wrapped.Minimum;
         }
 

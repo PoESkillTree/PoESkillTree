@@ -17,7 +17,7 @@ namespace POESKillTree.Controls.Dialogs
         /// <summary>
         /// Gets the default instance of the dialog coordinator, which can be injected into a view model.
         /// </summary>
-        public static readonly DialogCoordinator Instance = new DialogCoordinator();
+        public static readonly IDialogCoordinator Instance = new DialogCoordinator();
 
         private static async Task<MetroWindow> GetMetroWindowAsync(object context)
         {
