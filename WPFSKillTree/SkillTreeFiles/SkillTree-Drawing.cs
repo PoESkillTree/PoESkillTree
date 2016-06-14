@@ -151,7 +151,7 @@ namespace POESKillTree.SkillTreeFiles
                     _originalPositions.Add(new Tuple<int, Vector2D>(ascStartNode.G, new Vector2D(ascNodeOriginalPos.ToContainingPoint())));
 
                 var imageName = "Classes" + ascStartNode.ascendancyName;
-                var bitmap = _assets[imageName].PImage;
+                var bitmap = _assets[imageName];
 
                 const int distanceFromStartNodeCenter = 270;
                 var dirX = 0.0;
@@ -213,18 +213,18 @@ namespace POESKillTree.SkillTreeFiles
             {
                 BitmapImage[] iscr =
                 {
-                    _assets["PSGroupBackground1"].PImage, 
-                    _assets["PSGroupBackground2"].PImage,
-                    _assets["PSGroupBackground3"].PImage
+                    _assets["PSGroupBackground1"], 
+                    _assets["PSGroupBackground2"],
+                    _assets["PSGroupBackground3"]
                 };
                 var orbitBrush = new Brush[3];
-                orbitBrush[0] = new ImageBrush(_assets["PSGroupBackground1"].PImage);
-                orbitBrush[1] = new ImageBrush(_assets["PSGroupBackground2"].PImage);
-                orbitBrush[2] = new ImageBrush(_assets["PSGroupBackground3"].PImage);
+                orbitBrush[0] = new ImageBrush(_assets["PSGroupBackground1"]);
+                orbitBrush[1] = new ImageBrush(_assets["PSGroupBackground2"]);
+                orbitBrush[2] = new ImageBrush(_assets["PSGroupBackground3"]);
                 (orbitBrush[2] as ImageBrush).TileMode = TileMode.FlipXY;
                 (orbitBrush[2] as ImageBrush).Viewport = new Rect(0, 0, 1, .5f);
 
-                var backgroundBrush = new ImageBrush(_assets["Background1"].PImage);
+                var backgroundBrush = new ImageBrush(_assets["Background1"]);
                 backgroundBrush.TileMode = TileMode.Tile;
                 backgroundBrush.Viewport = new Rect(0, 0,
                     6 * backgroundBrush.ImageSource.Width / TRect.Width,
@@ -315,7 +315,7 @@ namespace POESKillTree.SkillTreeFiles
                         if(AscendantClassStartRegex.IsMatch(attibute))
                             draw = false;
                     }
-                    if (n1.IsMastery || n2.IsMastery)
+                    if (n1.Type == NodeType.Mastery || n2.Type == NodeType.Mastery)
                         draw = false;
                     if (draw)
                         dc.DrawLine(pen2, n1.Position, n2.Position);
@@ -373,8 +373,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (node.Value.IsAscendancyStart && (_persistentData.Options.ShowAllAscendancyClasses || node.Value.ascendancyName == AscendancyClasses.GetClassName(className, AscType)))
                     {
                         var imageName = "Classes" + node.Value.ascendancyName;
-                        var bitmap = _assets[imageName].PImage; 
-                        var brush = new ImageBrush(_assets[imageName].PImage);
+                        var bitmap = _assets[imageName]; 
+                        var brush = new ImageBrush(_assets[imageName]);
                         var pos = node.Value.Position;
                         dc.DrawRectangle(brush, null,
                             new Rect(
@@ -439,8 +439,8 @@ namespace POESKillTree.SkillTreeFiles
                                 break;
                         }
 
-                        var b = _assets[imageName].PImage;
-                        var brush = new ImageBrush(_assets[imageName].PImage);
+                        var b = _assets[imageName];
+                        var brush = new ImageBrush(_assets[imageName]);
 
                         var worldPos = node.Position;
                         const int distanceFromStartNodeCenter = 325;
@@ -666,7 +666,7 @@ namespace POESKillTree.SkillTreeFiles
                             {
                                 //already drawn, but needs to be here to prevent highlighting
                             }
-                            else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].IsNotable)
+                            else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].Type == NodeType.Notable)
                             {
                                 if (!drawAscendancy) continue;
 
@@ -688,7 +688,7 @@ namespace POESKillTree.SkillTreeFiles
                                             NodeSurroundHighlightBrush[4].Key.Width * 2 * factor,
                                             NodeSurroundHighlightBrush[4].Key.Height * 2 * factor));
                             }
-                            else if (Skillnodes[skillNode].IsNotable)
+                            else if (Skillnodes[skillNode].Type == NodeType.Notable)
                             {
                                 dc.DrawRectangle(NodeSurroundHighlightBrush[1].Value, null,
                                     new Rect((int)pos.X - NodeSurroundHighlightBrush[1].Key.Width * factor,
@@ -696,7 +696,7 @@ namespace POESKillTree.SkillTreeFiles
                                         NodeSurroundHighlightBrush[1].Key.Width * 2 * factor,
                                         NodeSurroundHighlightBrush[1].Key.Height * 2 * factor));
                             }
-                            else if (Skillnodes[skillNode].IsKeyStone)
+                            else if (Skillnodes[skillNode].Type == NodeType.Keystone)
                             {
                                 dc.DrawRectangle(NodeSurroundHighlightBrush[2].Value, null,
                                     new Rect((int)pos.X - NodeSurroundHighlightBrush[2].Key.Width * factor,
@@ -704,11 +704,11 @@ namespace POESKillTree.SkillTreeFiles
                                         NodeSurroundHighlightBrush[2].Key.Width * 2 * factor,
                                         NodeSurroundHighlightBrush[2].Key.Height * 2 * factor));
                             }
-                            else if (Skillnodes[skillNode].IsMastery)
+                            else if (Skillnodes[skillNode].Type == NodeType.Mastery)
                             {
                                 //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
                             }
-                            else if (Skillnodes[skillNode].IsJewelSocket)
+                            else if (Skillnodes[skillNode].Type == NodeType.JewelSocket)
                             {
                                 dc.DrawRectangle(NodeSurroundHighlightBrush[3].Value, null,
                                     new Rect((int)pos.X - NodeSurroundHighlightBrush[3].Key.Width * factor,
@@ -771,7 +771,7 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         //Needs to be here so that Ascendancy nodes don't get anything drawn around them.
                     }
-                    else if (Skillnodes[skillNode].IsNotable)
+                    else if (Skillnodes[skillNode].Type == NodeType.Notable)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[2].Value, null,
                             new Rect((int)pos.X - NodeSurroundBrush[2].Key.Width,
@@ -779,7 +779,7 @@ namespace POESKillTree.SkillTreeFiles
                                 NodeSurroundBrush[2].Key.Width * 2,
                                 NodeSurroundBrush[2].Key.Height * 2));
                     }
-                    else if (Skillnodes[skillNode].IsKeyStone)
+                    else if (Skillnodes[skillNode].Type == NodeType.Keystone)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[4].Value, null,
                             new Rect((int)pos.X - NodeSurroundBrush[4].Key.Width,
@@ -787,11 +787,11 @@ namespace POESKillTree.SkillTreeFiles
                                 NodeSurroundBrush[4].Key.Width * 2,
                                 NodeSurroundBrush[4].Key.Height * 2));
                     }
-                    else if (Skillnodes[skillNode].IsMastery)
+                    else if (Skillnodes[skillNode].Type == NodeType.Mastery)
                     {
                         //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
                     }
-                    else if (Skillnodes[skillNode].IsJewelSocket)
+                    else if (Skillnodes[skillNode].Type == NodeType.JewelSocket)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[6].Value, null,
                             new Rect((int)pos.X - NodeSurroundBrush[6].Key.Width,
@@ -830,8 +830,8 @@ namespace POESKillTree.SkillTreeFiles
                         if (!drawAscendancy) continue;
 
                         const string imageName = "PassiveSkillScreenAscendancyMiddle";
-                        var bitmap = _assets[imageName].PImage;
-                        var brush = new ImageBrush(_assets[imageName].PImage);
+                        var bitmap = _assets[imageName];
+                        var brush = new ImageBrush(_assets[imageName]);
 
                         if (_persistentData.Options.ShowAllAscendancyClasses || Skillnodes[skillNode].ascendancyName == ascendancyClassName)
                             dcAsc.DrawRectangle(brush, null,
@@ -840,7 +840,7 @@ namespace POESKillTree.SkillTreeFiles
                                     new Vector2D(bitmap.PixelWidth, bitmap.PixelHeight),
                                     new Size(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2)));
                     }
-                    else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].IsNotable)
+                    else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].Type == NodeType.Notable)
                     {
                         if (!drawAscendancy) continue;
 
@@ -878,7 +878,7 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         //Needs to be here so that Ascendancy nodes don't get anything drawn around them.
                     }
-                    else if (Skillnodes[skillNode].IsNotable)
+                    else if (Skillnodes[skillNode].Type == NodeType.Notable)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[3].Value, null,
                             new Rect((int)pos.X - NodeSurroundBrush[3].Key.Width,
@@ -886,7 +886,7 @@ namespace POESKillTree.SkillTreeFiles
                                 NodeSurroundBrush[3].Key.Width * 2,
                                 NodeSurroundBrush[3].Key.Height * 2));
                     }
-                    else if (Skillnodes[skillNode].IsKeyStone)
+                    else if (Skillnodes[skillNode].Type == NodeType.Keystone)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[5].Value, null,
                             new Rect((int)pos.X - NodeSurroundBrush[5].Key.Width,
@@ -894,11 +894,11 @@ namespace POESKillTree.SkillTreeFiles
                                 NodeSurroundBrush[5].Key.Width * 2,
                                 NodeSurroundBrush[5].Key.Height * 2));
                     }
-                    else if (Skillnodes[skillNode].IsMastery)
+                    else if (Skillnodes[skillNode].Type == NodeType.Mastery)
                     {
                         //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
                     }
-                    else if (Skillnodes[skillNode].IsJewelSocket)
+                    else if (Skillnodes[skillNode].Type == NodeType.JewelSocket)
                     {
                         dc.DrawRectangle(NodeSurroundBrush[7].Value, null,
                             new Rect((int)pos.X - NodeSurroundBrush[7].Key.Width,
@@ -936,7 +936,7 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         //already drawn, but needs to be here to prevent highlighting
                     }
-                    else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].IsNotable)
+                    else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].Type == NodeType.Notable)
                     {
                         if (!drawAscendancy) continue;
 
@@ -1070,8 +1070,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (skillNode.Value.ascendancyName != null) continue;
 
                     var imageBrush = new ImageBrush();
-                    var rect = IconInActiveSkills.SkillPositions[skillNode.Value.IconKey].Key;
-                    var bitmapImage = IconInActiveSkills.Images[IconInActiveSkills.SkillPositions[skillNode.Value.IconKey].Value];
+                    var rect = IconInActiveSkills.SkillPositions[skillNode.Value.IconKey];
+                    var bitmapImage = IconInActiveSkills.GetSkillImage(skillNode.Value.IconKey);
                     imageBrush.Stretch = Stretch.Uniform;
                     imageBrush.ImageSource = bitmapImage;
 
@@ -1102,8 +1102,8 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (var skillNode in Skillnodes.Where(x => x.Value.ascendancyName != null))
                 {
                     var imageBrush = new ImageBrush();
-                    var rect = IconInActiveSkills.SkillPositions[skillNode.Value.IconKey].Key;
-                    var bitmapImage = IconInActiveSkills.Images[IconInActiveSkills.SkillPositions[skillNode.Value.IconKey].Value];
+                    var rect = IconInActiveSkills.SkillPositions[skillNode.Value.IconKey];
+                    var bitmapImage = IconInActiveSkills.GetSkillImage(skillNode.Value.IconKey);
                     imageBrush.Stretch = Stretch.Uniform;
                     imageBrush.ImageSource = bitmapImage;
                     imageBrush.ViewboxUnits = BrushMappingMode.RelativeToBoundingBox;
@@ -1131,8 +1131,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (Skillnodes[skillNode].ascendancyName != null) continue;
 
                     var imageBrush = new ImageBrush();
-                    var rect = IconActiveSkills.SkillPositions[Skillnodes[skillNode].IconKey].Key;
-                    var bitmapImage = IconActiveSkills.Images[IconActiveSkills.SkillPositions[Skillnodes[skillNode].IconKey].Value];
+                    var rect = IconActiveSkills.SkillPositions[Skillnodes[skillNode].IconKey];
+                    var bitmapImage = IconActiveSkills.GetSkillImage(Skillnodes[skillNode].IconKey);
                     imageBrush.Stretch = Stretch.Uniform;
                     imageBrush.ImageSource = bitmapImage;
 
@@ -1168,8 +1168,8 @@ namespace POESKillTree.SkillTreeFiles
                     if (!_persistentData.Options.ShowAllAscendancyClasses && Skillnodes[skillNode].ascendancyName != ascendancyClassName)  continue;
 
                     var imageBrush = new ImageBrush();
-                    var rect = IconActiveSkills.SkillPositions[Skillnodes[skillNode].IconKey].Key;
-                    var bitmapImage = IconActiveSkills.Images[IconActiveSkills.SkillPositions[Skillnodes[skillNode].IconKey].Value];
+                    var rect = IconActiveSkills.SkillPositions[Skillnodes[skillNode].IconKey];
+                    var bitmapImage = IconActiveSkills.GetSkillImage(Skillnodes[skillNode].IconKey);
                     imageBrush.Stretch = Stretch.Uniform;
                     imageBrush.ImageSource = bitmapImage;
 
@@ -1193,12 +1193,12 @@ namespace POESKillTree.SkillTreeFiles
             {
                 foreach (string faceName in FaceNames)
                 {
-                    var bi = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree.AssetsFolderPath + faceName + ".png", UriKind.Absolute));
+                    var bi = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree._assetsFolderPath + faceName + ".png", UriKind.Absolute));
                     _FacesBrush.Add(new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi.PixelWidth, bi.PixelHeight),
                         new ImageBrush(bi)));
                 }
 
-                var bi2 = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree.AssetsFolderPath + "PSStartNodeBackgroundInactive.png", UriKind.Absolute));
+                var bi2 = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree._assetsFolderPath + "PSStartNodeBackgroundInactive.png", UriKind.Absolute));
                 if (_StartBackgrounds.ContainsKey(false))
                 {
                     if (!_StartBackgrounds[false].Key.Equals(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight)))
@@ -1234,14 +1234,14 @@ namespace POESKillTree.SkillTreeFiles
                         Size normalSize;
                         var normalBrush = new ImageBrush();
                         normalBrush.Stretch = Stretch.Uniform;
-                        BitmapImage normalBrushPImage = _assets[NodeBackgrounds[background.Key]].PImage;
+                        BitmapImage normalBrushPImage = _assets[NodeBackgrounds[background.Key]];
                         normalBrush.ImageSource = normalBrushPImage;
                         normalSize = new Size(normalBrushPImage.PixelWidth, normalBrushPImage.PixelHeight);
 
                         Size activeSize;
                         var activeBrush = new ImageBrush();
                         activeBrush.Stretch = Stretch.Uniform;
-                        BitmapImage activeBrushPImage = _assets[NodeBackgroundsActive[background.Key]].PImage;
+                        BitmapImage activeBrushPImage = _assets[NodeBackgroundsActive[background.Key]];
                         activeBrush.ImageSource = activeBrushPImage;
                         activeSize = new Size(activeBrushPImage.PixelWidth, activeBrushPImage.PixelHeight);
 

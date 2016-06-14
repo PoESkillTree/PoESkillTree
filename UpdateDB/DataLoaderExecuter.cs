@@ -63,8 +63,6 @@ namespace UpdateDB
                     throw new ArgumentOutOfRangeException();
             }
             Log.InfoFormat("Using output directory {0}.", _savePath);
-            // necessary for SkillTreeLoader
-            AppData.SetApplicationData(_savePath);
             _savePath = Path.Combine(_savePath, "Data");
 
             // The Affix file is big enough to be starved by other requests sometimes.
@@ -141,12 +139,8 @@ namespace UpdateDB
                 {
                     Directory.CreateDirectory(tmpPath);
                 }
-                var task = dataLoader.LoadAndSaveAsync(_httpClient, tmpPath);
 
-                if (_arguments.CreateBackup)
-                    Backup(fullPath, isFolder);
-
-                await task;
+                await dataLoader.LoadAndSaveAsync(_httpClient, tmpPath);
 
                 if (isFolder)
                     DirectoryEx.MoveOverwriting(tmpPath, fullPath);
@@ -155,29 +149,10 @@ namespace UpdateDB
             }
             else
             {
-                // This is for SkillTreeLoader which has no dedicated file/folder and can't really be configured
+                // This is for SkillTreeLoader which writes to multiple files/folders and does the tmp stuff itself
                 await dataLoader.LoadAndSaveAsync(_httpClient, fullPath);
             }
             Log.InfoFormat("Loaded {0}!", name);
-        }
-
-        private static void Backup(string path, bool isFolder)
-        {
-            if (isFolder && Directory.Exists(path))
-            {
-                var backupPath = path + "Backup";
-                DirectoryEx.DeleteIfExists(backupPath, true);
-
-                Directory.CreateDirectory(backupPath);
-                foreach (var filePath in Directory.GetFiles(path))
-                {
-                    File.Copy(filePath, filePath.Replace(path, backupPath), true);
-                }
-            }
-            else if (!isFolder && File.Exists(path))
-            {
-                File.Copy(path, path + ".bak", true);
-            }
         }
 
         public void Dispose()

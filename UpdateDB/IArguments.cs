@@ -72,11 +72,6 @@ namespace UpdateDB
         string SpecifiedOutputDirectory { get; }
 
         /// <summary>
-        /// True iff files should be backed up before they are overridden.
-        /// </summary>
-        bool CreateBackup { get; }
-
-        /// <summary>
         /// Specifies which DataLoaders are explicitly activated (independent of <see cref="ActivatedLoaders"/>).
         /// Each string identifies one DataLoader.
         /// </summary>

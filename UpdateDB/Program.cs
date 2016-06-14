@@ -71,7 +71,6 @@ namespace UpdateDB
                         Console.WriteLine("/SourceCodeDir            Save into the WPFSKillTree source code directory instead of the AppData directory.");
                         Console.WriteLine("/CurrentDir               Save into the current directory instead of the AppData directory.");
                         Console.WriteLine("/SpecifiedDir:dirPath     Save into the specified directory instead of the AppData directory.");
-                        Console.WriteLine("/NoBackup                 Do not create backup of files being updated before writing changes.");
                         Console.WriteLine("/Quiet                    Do not display any output.");
                         Console.WriteLine("/Verbose                  Enable verbose output.");
                         Console.WriteLine("/Affixes, /Items, /ItemImages, /TreeAssets, /Gems");
@@ -95,10 +94,6 @@ namespace UpdateDB
                         break;
                     case "/currentdir":
                         args.OutputDirectory = OutputDirectory.Current;
-                        break;
-
-                    case "/nobackup":
-                        args.CreateBackup = false;
                         break;
 
                     case "/quiet":

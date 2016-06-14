@@ -49,5 +49,12 @@ namespace POESKillTree.Utils.Extensions
         {
             toAdd.ForEach(collection.Add);
         }
+
+        public static TValue GetOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key,
+            Func<TValue> defaultValueProvider)
+        {
+            TValue value;
+            return dict.TryGetValue(key, out value) ? value : defaultValueProvider();
+        }
     }
 }

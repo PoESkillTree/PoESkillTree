@@ -1,48 +1,36 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using JetBrains.Annotations;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Utils;
 
 namespace POESKillTree.SkillTreeFiles
 {
     public class SkillIcons
     {
-        public const int NormalIconWidth = 27;
-        public const int NotableIconWidth = 38;
-        public const int KeystoneIconWidth = 53;
-        public const int MasteryIconWidth = 99;
-
-        private const string Urlpath = "http://www.pathofexile.com/image/build-gen/passive-skill-sprite/";
-
+        /// <summary>
+        /// Dictionary that maps sprite image names to the actual image.
+        /// </summary>
         public readonly Dictionary<string, BitmapImage> Images = new Dictionary<string, BitmapImage>();
 
-        public readonly Dictionary<string, KeyValuePair<Rect, string>> SkillPositions =
-            new Dictionary<string, KeyValuePair<Rect, string>>();
+        /// <summary>
+        /// Dictionary that maps the icon name for a skill node (see <see cref="SkillNode.IconKey"/>) to the position
+        /// in its sprite image.
+        /// </summary>
+        public readonly Dictionary<string, Rect> SkillPositions = new Dictionary<string, Rect>();
 
-        public async Task OpenOrDownloadImages(HttpClient httpClient, [CanBeNull] ProgressDialogController controller,
-            double progressRange)
+        /// <summary>
+        /// Dictionary that maps the icon name for a skill node (see <see cref="SkillNode.IconKey"/>) to the sprite
+        /// image name it is contained in.
+        /// </summary>
+        public readonly Dictionary<string, string> SkillImages = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Gets the sprite image that contains the icon for the skill node with the given icon key
+        /// </summary>
+        /// <param name="iconKey"></param>
+        /// <returns></returns>
+        public BitmapImage GetSkillImage(string iconKey)
         {
-            var perImageProgress = progressRange / Images.Count;
-            foreach (var image in Images.Keys.ToArray())
-            {
-                var path = SkillTree.AssetsFolderPath + image;
-                if (!File.Exists(path))
-                {
-                    var stream = await httpClient.GetStreamAsync(Urlpath + image);
-                    await FileEx.WriteStreamAsync(path, stream);
-                }
-                Images[image] =
-                    ImageHelper.OnLoadBitmapImage(new Uri(path, UriKind.Absolute));
-                if (controller != null)
-                    controller.IncreaseProgress(perImageProgress);
-            }
+            return Images[SkillImages[iconKey]];
         }
     }
 }

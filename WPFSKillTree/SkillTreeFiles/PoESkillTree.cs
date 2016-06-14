@@ -87,7 +87,7 @@ namespace POESKillTree.SkillTreeFiles
         public List<int> ot { get; set; }
     }
 
-    internal class Constants
+    internal class JsonConstants
     {
         public Dictionary<string, int> classes { get; set; }
 
@@ -135,9 +135,9 @@ namespace POESKillTree.SkillTreeFiles
 
         public int max_y { get; set; }
 
-        public Dictionary<string, Dictionary<float, string>> assets { get; set; }
+        public Dictionary<string, Dictionary<string, string>> assets { get; set; }
 
-        public Constants constants { get; set; }
+        public JsonConstants constants { get; set; }
 
         public string imageRoot { get; set; }
 

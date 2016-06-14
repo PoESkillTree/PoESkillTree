@@ -197,7 +197,7 @@ namespace POESKillTree.TreeGenerator.Solver
         protected override bool IncludeNodeInSearchGraph(SkillNode node)
         {
             // Keystones can only be included if they are check-tagged.
-            return !(node.IsKeyStone);
+            return node.Type != NodeType.Keystone;
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace POESKillTree.TreeGenerator.Solver
         private List<ConvertedPseudoAttributeConstraint> EvalPseudoAttrConstraints()
         {
             var keystones = from node in Settings.Checked
-                            where SkillTree.Skillnodes[node].IsKeyStone
+                            where SkillTree.Skillnodes[node].Type == NodeType.Keystone
                             select SkillTree.Skillnodes[node].Name;
             var conditionSettings = new ConditionSettings(Settings.Tags, Settings.OffHand, keystones.ToArray(), Settings.WeaponClass);
 

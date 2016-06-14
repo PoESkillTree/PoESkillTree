@@ -3,7 +3,6 @@ using POESKillTree.Localization;
 using POESKillTree.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -11,29 +10,20 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
+using log4net;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model;
 using POESKillTree.TreeGenerator.ViewModels;
-using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
+using static POESKillTree.SkillTreeFiles.Constants;
 
 namespace POESKillTree.SkillTreeFiles
 {
     public partial class SkillTree : Notifier
     {
-        public static readonly float LifePerLevel = 12;
-        public static readonly float AccPerLevel = 2;
-        public static readonly float EvasPerLevel = 3;
-        public static readonly float ManaPerLevel = 6;
-        public static readonly float IntPerMana = 2;
-        public static readonly float IntPerES = 5; //%
-        public static readonly float StrPerLife = 2;
-        public static readonly float StrPerED = 5; //%
-        public static readonly float DexPerAcc = 0.5f;
-        public static readonly float DexPerEvas = 5; //%
-        public static readonly string TreeAddress = "https://www.pathofexile.com/passive-skill-tree/";
-        public static readonly string TreeRegex = @"(http(|s):\/\/|).*?(character(\/|)|passive-skill-tree(\/|)|fullscreen-passive-skill-tree(\/|)|#|poeplanner.com(\/|))";
+        private static readonly ILog Log = LogManager.GetLogger(typeof(SkillTree));
 
         public Vector2D ascedancyButtonPos = new Vector2D();
         /// <summary>
@@ -43,9 +33,7 @@ namespace POESKillTree.SkillTreeFiles
         private static readonly Regex AscendantClassStartRegex = new Regex(@"Can Allocate Passives from the .* starting point");
 
         // The absolute path of Assets folder (contains trailing directory separator).
-        public static string AssetsFolderPath;
-        // The absolute path of Data folder (contains trailing directory separator).
-        public static string DataFolderPath;
+        private static string _assetsFolderPath;
 
         public static readonly Dictionary<string, float> BaseAttributes = new Dictionary<string, float>
         {
@@ -211,9 +199,9 @@ namespace POESKillTree.SkillTreeFiles
             get { return SkillTree._startNodeDictionary; }
         }
 
-        private static readonly Dictionary<string, Asset> _assets = new Dictionary<string, Asset>();
+        private static readonly Dictionary<string, BitmapImage> _assets = new Dictionary<string, BitmapImage>();
 
-        public Dictionary<string, Asset> Assets { get { return _assets; } }
+        public Dictionary<string, BitmapImage> Assets { get { return _assets; } }
 
         private static Dictionary<string, int> _rootNodeClassDictionary = new Dictionary<string, int>();
 
@@ -258,19 +246,15 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         private async Task InitializeAsync(string treestring, string opsstring, [CanBeNull] ProgressDialogController controller,
-            bool initializeDrawing)
+            AssetLoader assetLoader)
         {
             if (!_Initialized)
             {
-                if (controller != null)
-                    controller.SetProgress(25);
-                var httpClient = new HttpClient();
-
                 var jss = new JsonSerializerSettings
                 {
-                    Error = delegate(object sender, ErrorEventArgs args)
+                    Error = (sender, args) =>
                     {
-                        Debug.WriteLine(args.ErrorContext.Error.Message);
+                        Log.Error("Exception while deserializing Json tree", args.ErrorContext.Error);
                         args.ErrorContext.Handled = true;
                     }
                 };
@@ -278,41 +262,50 @@ namespace POESKillTree.SkillTreeFiles
                 var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, jss);
                 var inOpts = JsonConvert.DeserializeObject<Opts>(opsstring, jss);
 
+                controller?.SetProgress(0.25);
+                await assetLoader.DownloadSkillNodeSpritesAsync(inTree, d => controller?.SetProgress(0.25 + d * 0.30));
                 _IconInActiveSkills = new SkillIcons();
                 _IconActiveSkills = new SkillIcons();
                 foreach (var obj in inTree.skillSprites)
                 {
-                    if (obj.Key.Contains("Active"))
+                    SkillIcons icons;
+                    string prefix;
+                    if (obj.Key.EndsWith("Active"))
                     {
-                        //Adds active nodes to IconActiveSkills
-                        _IconActiveSkills.Images[obj.Value[3].filename] = null;
-                        foreach (var o in obj.Value[3].coords)
-                        {
-                            _IconActiveSkills.SkillPositions[o.Key + "_" + o.Value.w] =
-                                new KeyValuePair<Rect, string>(new Rect(o.Value.x, o.Value.y, o.Value.w, o.Value.h),
-                                    obj.Value[3].filename);
-                        }
+                        // Adds active nodes to IconActiveSkills
+                        icons = _IconActiveSkills;
+                        prefix = obj.Key.Substring(0, obj.Key.Length - "Active".Length);
                     }
-                    else 
+                    else if (obj.Key.EndsWith("Inactive"))
                     {
-                        //Adds inactive nodes and masteries to IconInActiveSkills
-                        _IconInActiveSkills.Images[obj.Value[3].filename] = null;
-                        foreach (var o in obj.Value[3].coords)
-                        {
-                            _IconInActiveSkills.SkillPositions[o.Key + "_" + o.Value.w] =
-                                new KeyValuePair<Rect, string>(new Rect(o.Value.x, o.Value.y, o.Value.w, o.Value.h),
-                                    obj.Value[3].filename);
-                        }
+                        // Adds inactive nodes to IconInActiveSkills
+                        icons = _IconInActiveSkills;
+                        prefix = obj.Key.Substring(0, obj.Key.Length - "Inactive".Length);
+                    }
+                    else
+                    {
+                        // Adds masteries to IconInActiveSkills
+                        icons = _IconInActiveSkills;
+                        prefix = obj.Key;
+                    }
+                    var sprite = obj.Value[AssetZoomLevel];
+                    var path = _assetsFolderPath + sprite.filename;
+                    icons.Images[sprite.filename] = ImageHelper.OnLoadBitmapImage(new Uri(path, UriKind.Absolute));
+                    foreach (var o in sprite.coords)
+                    {
+                        var iconKey = prefix + "_" + o.Key;
+                        icons.SkillPositions[iconKey] = new Rect(o.Value.x, o.Value.y, o.Value.w, o.Value.h);
+                        icons.SkillImages[iconKey] = sprite.filename;
                     }
                 }
 
-                var perAssetProgress = 35.0 / inTree.assets.Count;
+                controller?.SetProgress(0.55);
+                // The last percent progress is reserved for rounding errors as progress must not get > 1.
+                await assetLoader.DownloadAssetsAsync(inTree, d => controller?.SetProgress(0.55 + d * 0.44));
                 foreach (var ass in inTree.assets)
                 {
-                    _assets[ass.Key] = await Asset.CreateAsync(httpClient, ass.Key,
-                        ass.Value.ContainsKey(0.3835f) ? ass.Value[0.3835f] : ass.Value.Values.First());
-                    if (controller != null)
-                        controller.IncreaseProgress(perAssetProgress);
+                    var path = _assetsFolderPath + ass.Key + ".png";
+                    _assets[ass.Key] = ImageHelper.OnLoadBitmapImage(new Uri(path, UriKind.Absolute));
                 }
 
                 _rootNodeList = new List<int>();
@@ -356,25 +349,15 @@ namespace POESKillTree.SkillTreeFiles
                     }
                 }
 
-                if (controller != null)
-                    controller.SetProgress(60);
-
-                await _IconActiveSkills.OpenOrDownloadImages(httpClient, controller, 20);
-
-                if (controller != null)
-                    controller.SetProgress(80);
-
-                await _IconInActiveSkills.OpenOrDownloadImages(httpClient, controller, 20);
-
                 _CharBaseAttributes = new Dictionary<string, float>[7];
                 foreach (var c in inTree.characterData)
                 {
                     _CharBaseAttributes[c.Key] = new Dictionary<string, float>
-                {
-                    {"+# to Strength", c.Value.base_str},
-                    {"+# to Dexterity", c.Value.base_dex},
-                    {"+# to Intelligence", c.Value.base_int}
-                };
+                    {
+                        {"+# to Strength", c.Value.base_str},
+                        {"+# to Dexterity", c.Value.base_dex},
+                        {"+# to Intelligence", c.Value.base_int}
+                    };
                 }
 
                 _Skillnodes = new Dictionary<ushort, SkillNode>();
@@ -383,12 +366,12 @@ namespace POESKillTree.SkillTreeFiles
 
                 foreach (Node nd in inTree.nodes)
                 {
-                    _Skillnodes.Add(nd.id, new SkillNode
+                    var skillNode = new SkillNode
                     {
                         Id = nd.id,
                         Name = nd.dn,
                         //this value should not be split on '\n' as it causes the attribute list to seperate nodes
-                        attributes = nd.dn.Contains("Jewel Socket") ? new string[1] { "+1 Jewel Socket" } : nd.sd, 
+                        attributes = nd.dn.Contains("Jewel Socket") ? new string[1] {"+1 Jewel Socket"} : nd.sd,
                         Orbit = nd.o,
                         OrbitIndex = nd.oidx,
                         Icon = nd.icon,
@@ -396,19 +379,40 @@ namespace POESKillTree.SkillTreeFiles
                         G = nd.g,
                         Da = nd.da,
                         Ia = nd.ia,
-                        IsKeyStone = nd.ks,
-                        IsNotable = nd.not,
-                        IsJewelSocket = nd.isJewelSocket,
                         Sa = nd.sa,
-                        IsMastery = nd.m,
-                        Spc = nd.spc.Count() > 0 ? (int?)nd.spc[0] : null,
+                        Spc = nd.spc.Count() > 0 ? (int?) nd.spc[0] : null,
                         IsMultipleChoice = nd.isMultipleChoice,
                         IsMultipleChoiceOption = nd.isMultipleChoiceOption,
                         passivePointsGranted = nd.passivePointsGranted,
                         ascendancyName = nd.ascendancyName,
                         IsAscendancyStart = nd.isAscendancyStart,
                         reminderText = nd.reminderText
-                    });
+                    };
+                    if (nd.ks && !nd.not && !nd.isJewelSocket && !nd.m)
+                    {
+                        skillNode.Type = NodeType.Keystone;
+                    }
+                    else if (!nd.ks && nd.not && !nd.isJewelSocket && !nd.m)
+                    {
+                        skillNode.Type = NodeType.Notable;
+                    }
+                    else if (!nd.ks && !nd.not && nd.isJewelSocket && !nd.m)
+                    {
+                        skillNode.Type = NodeType.JewelSocket;
+                    }
+                    else if (!nd.ks && !nd.not && !nd.isJewelSocket && nd.m)
+                    {
+                        skillNode.Type = NodeType.Mastery;
+                    }
+                    else if (!nd.ks && !nd.not && !nd.isJewelSocket && !nd.m)
+                    {
+                        skillNode.Type = NodeType.Normal;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Invalid node type for node {skillNode.Name}");
+                    }
+                    _Skillnodes.Add(nd.id, skillNode);
                     if (_rootNodeList.Contains(nd.id))
                     {
                         if (!_rootNodeClassDictionary.ContainsKey(nd.dn.ToString().ToUpperInvariant()))
@@ -536,15 +540,11 @@ namespace POESKillTree.SkillTreeFiles
             if (_persistentData.Options.ShowAllAscendancyClasses)
                 drawAscendancy = true;
 
-            if (initializeDrawing)
-            {
-                InitializeLayers();
-                DrawInitialLayers();
-                CreateCombineVisual();
-            }
+            InitializeLayers();
+            DrawInitialLayers();
+            CreateCombineVisual();
 
-            if (controller != null)
-                controller.SetProgress(100);
+            controller?.SetProgress(1);
 
             _Initialized = true;
         }
@@ -737,74 +737,47 @@ namespace POESKillTree.SkillTreeFiles
         /// <param name="persistentData"></param>
         /// <param name="dialogCoordinator">Can be null if the resulting tree is not used.</param>
         /// <param name="controller">Null if no initialization progress should be displayed.</param>
-        /// <param name="initializeDrawing">Should only be false if the resulting tree is not used.</param>
+        /// <param name="assetLoader">Can optionally be provided if the caller wants to backup assets.</param>
         /// <returns></returns>
         public static async Task<SkillTree> CreateAsync(IPersistentData persistentData, IDialogCoordinator dialogCoordinator,
-            ProgressDialogController controller = null, bool initializeDrawing = true)
+            ProgressDialogController controller = null, AssetLoader assetLoader = null)
         {
-            if (controller != null)
-                controller.SetProgress(0);
+            controller?.SetProgress(0);
 
-            AssetsFolderPath = AppData.GetFolder(Path.Combine("Data", "Assets"), true);
-            DataFolderPath = AppData.GetFolder("Data", true);
+            var dataFolderPath = AppData.GetFolder("Data", true);
+            _assetsFolderPath = dataFolderPath + "Assets/";
 
-            var httpClient = new HttpClient();
-            var skillTreeTask = LoadSkillTreeFile(httpClient, controller);
-            var optsTask = LoadOptsFile(httpClient, controller);
+            if (assetLoader == null)
+                assetLoader = new AssetLoader(new HttpClient(), dataFolderPath, false);
+
+            var skillTreeTask = LoadTreeFileAsync(dataFolderPath + "Skilltree.txt",
+                () => assetLoader.DownloadSkillTreeToFileAsync());
+            var optsTask = LoadTreeFileAsync(dataFolderPath + "Opts.txt",
+                () => assetLoader.DownloadOptsToFileAsync());
+            await Task.WhenAny(skillTreeTask, optsTask);
+            controller?.SetProgress(0.1);
+
             var skillTreeObj = await skillTreeTask;
             var optsObj = await optsTask;
+            controller?.SetProgress(0.25);
 
-            if (controller != null)
-                controller.SetProgress(25);
             var tree = new SkillTree(persistentData, dialogCoordinator);
-            await tree.InitializeAsync(skillTreeObj, optsObj, controller, initializeDrawing);
+            await tree.InitializeAsync(skillTreeObj, optsObj, controller, assetLoader);
             return tree;
         }
 
-        private static async Task<string> LoadSkillTreeFile(HttpClient httpClient, ProgressDialogController controller = null)
+        private static async Task<string> LoadTreeFileAsync(string path, Func<Task<string>> downloadFile)
         {
-            var skillTreeFile = DataFolderPath + "Skilltree.txt";
-            var skillTreeObj = "";
-            if (File.Exists(skillTreeFile))
+            var treeObj = "";
+            if (File.Exists(path))
             {
-                skillTreeObj = await FileEx.ReadAllTextAsync(skillTreeFile);
+                treeObj = await FileEx.ReadAllTextAsync(path);
             }
-            if (skillTreeObj == "")
+            if (treeObj == "")
             {
-                var code = await httpClient.GetStringAsync(TreeAddress);
-                var regex = new Regex("var passiveSkillTreeData.*");
-                skillTreeObj = regex.Match(code).Value.Replace("\\/", "/");
-                skillTreeObj = skillTreeObj.Substring(27, skillTreeObj.Length - 27 - 1) + "";
-                await FileEx.WriteAllTextAsync(skillTreeFile, skillTreeObj);
+                treeObj = await downloadFile();
             }
-            if (controller != null)
-            {
-                controller.SetProgress(10);
-            }
-            return skillTreeObj;
-        }
-
-        private static async Task<string> LoadOptsFile(HttpClient httpClient, ProgressDialogController controller = null)
-        {
-            string optsFile = DataFolderPath + "Opts.txt";
-            string optsObj = "";
-            if (File.Exists(optsFile))
-            {
-                optsObj = await FileEx.ReadAllTextAsync(optsFile);
-            }
-            if (optsObj == "")
-            {
-                string code = await httpClient.GetStringAsync(TreeAddress);
-                var regex = new Regex(@"ascClasses:.*");
-                optsObj = regex.Match(code).Value.Replace("ascClasses", "{ \"ascClasses\"");
-                optsObj = optsObj.Substring(0, optsObj.Length - 1) + "}";
-                await FileEx.WriteAllTextAsync(optsFile, optsObj);
-            }
-            if (controller != null)
-            {
-                controller.SetProgress(10);
-            }
-            return optsObj;
+            return treeObj;
         }
 
         public void ForceRefundNode(ushort nodeId)
@@ -919,7 +892,7 @@ namespace POESKillTree.SkillTreeFiles
                         continue;
                     if (Skillnodes[newNode].Spc.HasValue)
                         continue;
-                    if (Skillnodes[newNode].IsMastery)
+                    if (Skillnodes[newNode].Type == NodeType.Mastery)
                         continue;
                     if (IsAscendantClassStartNode(newNode))
                         continue;
@@ -1038,7 +1011,7 @@ namespace POESKillTree.SkillTreeFiles
                     var nodes =
                         Skillnodes.Values.Where(
                             nd => (matchFct(nd.attributes, att => regex.IsMatch(att)) ||
-                                  regex.IsMatch(nd.Name) && !nd.IsMastery) &&
+                                  regex.IsMatch(nd.Name) && nd.Type != NodeType.Mastery) &&
                                   (drawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses ? true : nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null) : nd.ascendancyName == null));
                     _nodeHighlighter.ReplaceHighlights(nodes, flag);
                     DrawHighlights();
@@ -1054,7 +1027,7 @@ namespace POESKillTree.SkillTreeFiles
                 var nodes =
                     Skillnodes.Values.Where(
                         nd => (matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
-                              nd.Name.ToLowerInvariant().Contains(search) && !nd.IsMastery) &&
+                              nd.Name.ToLowerInvariant().Contains(search) && nd.Type != NodeType.Mastery) &&
                               (drawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses ? true : nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null) : nd.ascendancyName == null ));
                 _nodeHighlighter.ReplaceHighlights(nodes, flag);
                 DrawHighlights();
@@ -1341,7 +1314,7 @@ namespace POESKillTree.SkillTreeFiles
             }
             catch (Exception e)
             {
-                _dialogCoordinator.ShowErrorAsync(L10n.Message("Error while trying to find solution"), e.Message);
+                await _dialogCoordinator.ShowErrorAsync(L10n.Message("Error while trying to find solution"), e.Message);
             }
 #endif
         }

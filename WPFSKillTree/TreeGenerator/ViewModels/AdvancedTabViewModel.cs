@@ -117,10 +117,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         private static readonly Dictionary<string, float> AttributesPerLevel = new Dictionary<string, float>()
         {
-            {"+# to maximum Mana", SkillTree.ManaPerLevel},
-            {"+# to maximum Life", SkillTree.LifePerLevel},
-            {"+# Accuracy Rating", SkillTree.AccPerLevel},
-            {"Evasion Rating: #", SkillTree.EvasPerLevel}
+            {"+# to maximum Mana", Constants.ManaPerLevel},
+            {"+# to maximum Life", Constants.LifePerLevel},
+            {"+# Accuracy Rating", Constants.AccPerLevel},
+            {"Evasion Rating: #", Constants.EvasPerLevel}
         };
 
         /// <summary>
@@ -569,7 +569,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         private void ConverteAttributeToPseudoAttributeConstraints()
         {
             var keystones = from id in Tree.GetCheckedNodes()
-                            where SkillTree.Skillnodes[id].IsKeyStone
+                            where SkillTree.Skillnodes[id].Type == NodeType.Keystone
                             select SkillTree.Skillnodes[id].Name;
             var conditionSettings = new ConditionSettings(Tags, OffHand, keystones.ToArray(), WeaponClass);
             var convertedConstraints = new List<AttributeConstraint>();

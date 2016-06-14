@@ -282,7 +282,7 @@ namespace POESKillTree.TreeGenerator.Solver
                             // Only add nodes in the subsettree if one is given.
                             || Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(node.Id)
                             // Mastery nodes are obviously not useful.
-                            || node.IsMastery
+                            || node.Type == NodeType.Mastery
                             // Ignore ascendancies for now
                             || node.ascendancyName != null)
                             continue;

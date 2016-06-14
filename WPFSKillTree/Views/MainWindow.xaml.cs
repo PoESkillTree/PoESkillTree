@@ -99,9 +99,10 @@ namespace POESKillTree.Views
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Tree"));
             }
         }
-        private async Task<SkillTree> CreateSkillTreeAsync(ProgressDialogController controller)
+        private async Task<SkillTree> CreateSkillTreeAsync(ProgressDialogController controller,
+            AssetLoader assetLoader = null)
         {
-            var tree = await SkillTree.CreateAsync(_persistentData, DialogCoordinator.Instance, controller);
+            var tree = await SkillTree.CreateAsync(_persistentData, DialogCoordinator.Instance, controller, assetLoader);
             DialogParticipation.SetRegister(this, tree);
             tree.BanditSettings = _persistentData.CurrentBuild.Bandits;
             return tree;
@@ -365,7 +366,7 @@ namespace POESKillTree.Views
         {
             var controller = await this.ShowProgressAsync(L10n.Message("Initialization"),
                         L10n.Message("Initalizing window ..."));
-            controller.Maximum = 100;
+            controller.Maximum = 1;
             controller.SetIndeterminate();
 
             await Task.Run(() =>
@@ -816,37 +817,26 @@ namespace POESKillTree.Views
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    var dataPath = AppData.GetFolder("Data", true);
-                    var assetsPath = dataPath + "Assets";
-                    var skillTreePath = dataPath + "Skilltree.txt";
-                    var optsPath = dataPath + "Opts.txt";
-
                     var controller = await this.ShowProgressAsync(L10n.Message("Downloading skill tree assets ..."), null);
-                    controller.Maximum = 100;
+                    controller.Maximum = 1;
                     controller.SetProgress(0);
+                    var assetLoader = new AssetLoader(new HttpClient(), AppData.GetFolder("Data", true), false);
                     try
                     {
-                        DirectoryEx.MoveIfExists(assetsPath, assetsPath + "Backup", true);
-                        FileEx.MoveIfExists(skillTreePath, skillTreePath + ".bak", true);
-                        FileEx.MoveIfExists(optsPath, optsPath + ".bak", true);
+                        assetLoader.MoveToBackup();
 
                         SkillTree.ClearAssets(); //enable recaching of assets
-                        Tree = await CreateSkillTreeAsync(controller); //create new skilltree to reinitialize cache
+                        Tree = await CreateSkillTreeAsync(controller, assetLoader); //create new skilltree to reinitialize cache
                         recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
                         await LoadBuildFromUrlAsync();
                         _justLoaded = false;
 
-                        DirectoryEx.DeleteIfExists(assetsPath + "Backup", true);
-                        FileEx.DeleteIfExists(skillTreePath + ".bak");
-                        FileEx.DeleteIfExists(optsPath + ".bak");
+                        assetLoader.DeleteBackup();
                     }
                     catch (Exception ex)
                     {
-                        DirectoryEx.MoveIfExists(assetsPath + "Backup", assetsPath, true);
-                        FileEx.MoveIfExists(skillTreePath + ".bak", skillTreePath, true);
-                        FileEx.MoveIfExists(optsPath + ".bak", optsPath, true);
-
+                        assetLoader.RestoreBackup();
                         await this.ShowErrorAsync(L10n.Message("An error occurred while downloading assets."), ex.Message);
                     }
                     await controller.CloseAsync();
@@ -1392,7 +1382,7 @@ namespace POESKillTree.Views
             if (Tree.drawAscendancy && Tree.AscType > 0)
             {
                 var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
-                var bitmap = Tree.Assets["Classes" + asn.ascendancyName].PImage;
+                var bitmap = Tree.Assets["Classes" + asn.ascendancyName];
 
                 nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
             }
@@ -1414,7 +1404,7 @@ namespace POESKillTree.Views
                 if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
-                if (node.Spc == null && !node.IsMastery)
+                if (node.Spc == null && node.Type != NodeType.Mastery)
                 {
                     if (_lastMouseButton == MouseButton.Right)
                     {
@@ -1512,7 +1502,7 @@ namespace POESKillTree.Views
             if(Tree.drawAscendancy && Tree.AscType > 0)
             {
                 var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
-                var bitmap = Tree.Assets["Classes" + asn.ascendancyName].PImage;
+                var bitmap = Tree.Assets["Classes" + asn.ascendancyName];
 
                 nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
             }
@@ -1534,7 +1524,7 @@ namespace POESKillTree.Views
                     return;
                 if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscendancyClasses.GetClassName(className, Tree.AscType))
                     return;
-                if (node.IsJewelSocket)
+                if (node.Type == NodeType.JewelSocket)
                 {
                     Tree.DrawJewelHighlight(node);
                 }
@@ -1548,7 +1538,7 @@ namespace POESKillTree.Views
                 else
                 {
                     _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
-                    if (!node.IsMastery)
+                    if (node.Type != NodeType.Mastery)
                         Tree.DrawPath(_prePath);
                 }
                 var tooltip = node.Name;
@@ -1566,7 +1556,7 @@ namespace POESKillTree.Views
                         sp.Children.Add(new Separator());
                         sp.Children.Add(new TextBlock { Text = node.reminderText.Aggregate((s1, s2) => s1 + '\n' + s2) });
                     }
-                    if (_prePath != null && !node.IsMastery)
+                    if (_prePath != null && node.Type != NodeType.Mastery)
                     {
                         var points = _prePath.Count;
                         if(_prePath.Any(x => SkillTree.Skillnodes[x].IsAscendancyStart))
@@ -1878,7 +1868,7 @@ namespace POESKillTree.Views
             await SetCurrentBuild(new PoEBuild
             {
                 Name = "New Build",
-                Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3),
+                Url = Constants.TreeAddress + SkillTree.GetCharacterURL(3),
                 Level = "1"
             });
             await LoadBuildFromUrlAsync();
@@ -1992,7 +1982,7 @@ namespace POESKillTree.Views
                         await AwaitAsyncTask(L10n.Message("Resolving shortened tree address"),
                             new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead));
                     response.EnsureSuccessStatusCode();
-                    if (Regex.IsMatch(response.RequestMessage.RequestUri.ToString(), SkillTree.TreeRegex))
+                    if (Regex.IsMatch(response.RequestMessage.RequestUri.ToString(), Constants.TreeRegex))
                         tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
@@ -2002,7 +1992,7 @@ namespace POESKillTree.Views
                 {
                     if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accountName"))
                         tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
-                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, SkillTree.TreeRegex, SkillTree.TreeAddress);
+                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, Constants.TreeRegex, Constants.TreeAddress);
                     Tree.LoadFromURL(tbSkillURL.Text);
                 }
 
@@ -2265,7 +2255,7 @@ namespace POESKillTree.Views
                 try
                 {
                     var url = matches[0].ToString();
-                    if (!url.ToLower().StartsWith(SkillTree.TreeAddress))
+                    if (!url.ToLower().StartsWith(Constants.TreeAddress))
                     {
                         return;
                     }
