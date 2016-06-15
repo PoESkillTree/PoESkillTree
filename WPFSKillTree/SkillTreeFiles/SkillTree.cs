@@ -254,7 +254,9 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Error = (sender, args) =>
                     {
-                        Log.Error("Exception while deserializing Json tree", args.ErrorContext.Error);
+                        // This one is known: "515":{"x":_,"y":_,"oo":[],"n":[]}} has an Array in "oo".
+                        if (args.ErrorContext.Path != "groups.515.oo")
+                            Log.Error("Exception while deserializing Json tree", args.ErrorContext.Error);
                         args.ErrorContext.Handled = true;
                     }
                 };

@@ -1779,7 +1779,7 @@ namespace POESKillTree.SkillTreeFiles
         // @see http://pathofexile.gamepedia.com/Accuracy
         public static float ChanceToHit(int level, float accuracyRating)
         {
-            // TODO: the maximum level considered for this is 80 or 81 if it is the same for estimated physical damage reduction
+            // the maximum level considered for this is 80 if it is the same for estimated physical damage reduction
             int mae = MonsterAverageEvasion[Math.Min(level, 80) - 1]; // XXX: For some reason this works.
 
             float chance = (float)(accuracyRating / (accuracyRating + Math.Pow(mae / 4, 0.8))) * 100;

@@ -51,7 +51,7 @@ namespace UpdateDB
                     break;
                 case OutputDirectory.SourceCode:
                     _savePath = Regex.Replace(Directory.GetCurrentDirectory(),
-                        @"PoESkillTree((/|\\).*?)?$", "PoESkillTree/WPFSKillTree");
+                        @"UpdateDB((/|\\).*?)?$", "WPFSKillTree");
                     break;
                 case OutputDirectory.Current:
                     _savePath = Directory.GetCurrentDirectory();

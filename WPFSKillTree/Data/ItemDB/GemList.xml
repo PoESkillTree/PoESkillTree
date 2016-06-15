@@ -640,7 +640,36 @@
       <ValueForLevel From="20" To="30">100</ValueForLevel>
     </Attribute>
     <Attribute Name="Deals #% of Base Attack Damage">
-      <ValuePerLevel>8</ValuePerLevel>
+      <Value Level="1">100</Value>
+      <Value Level="2">108</Value>
+      <Value Level="3">116</Value>
+      <Value Level="4">124</Value>
+      <Value Level="5">132</Value>
+      <Value Level="6">140</Value>
+      <Value Level="7">148</Value>
+      <Value Level="8">156</Value>
+      <Value Level="9">164</Value>
+      <Value Level="10">172</Value>
+      <Value Level="11">180</Value>
+      <Value Level="12">188</Value>
+      <Value Level="13">196</Value>
+      <Value Level="14">204</Value>
+      <Value Level="15">212</Value>
+      <Value Level="16">220</Value>
+      <Value Level="17">228</Value>
+      <Value Level="18">236</Value>
+      <Value Level="19">244</Value>
+      <Value Level="20">252</Value>
+      <Value Level="21">260</Value>
+      <Value Level="22">268</Value>
+      <Value Level="23">276</Value>
+      <Value Level="24">284</Value>
+      <Value Level="25">292</Value>
+      <Value Level="26">300</Value>
+      <Value Level="27">308</Value>
+      <Value Level="28">316</Value>
+      <Value Level="29">324</Value>
+      <Value Level="30">332</Value>
     </Attribute>
     <Attribute Name="Minions have #% increased Attack Speed">
       <ValuePerLevel>2</ValuePerLevel>
@@ -2003,6 +2032,43 @@
       <Value Level="28">86</Value>
       <Value Level="29">88</Value>
       <Value Level="30">90</Value>
+    </Attribute>
+    <Attribute Name="#% increased Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
+  <Gem Name="Cast when Stunned Support">
+    <Attribute Name="#% chance to Cast Supported Spells when Stunned">
+      <Value Level="1">50</Value>
+      <Value Level="2">51</Value>
+      <Value Level="3">52</Value>
+      <Value Level="4">53</Value>
+      <Value Level="5">54</Value>
+      <Value Level="6">55</Value>
+      <Value Level="7">56</Value>
+      <Value Level="8">57</Value>
+      <Value Level="9">58</Value>
+      <Value Level="10">59</Value>
+      <Value Level="11">60</Value>
+      <Value Level="12">61</Value>
+      <Value Level="13">62</Value>
+      <Value Level="14">63</Value>
+      <Value Level="15">64</Value>
+      <Value Level="16">65</Value>
+      <Value Level="17">66</Value>
+      <Value Level="18">67</Value>
+      <Value Level="19">68</Value>
+      <Value Level="20">69</Value>
+      <Value Level="21">70</Value>
+      <Value Level="22">71</Value>
+      <Value Level="23">72</Value>
+      <Value Level="24">73</Value>
+      <Value Level="25">74</Value>
+      <Value Level="26">75</Value>
+      <Value Level="27">76</Value>
+      <Value Level="28">77</Value>
+      <Value Level="29">78</Value>
+      <Value Level="30">79</Value>
     </Attribute>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -3878,7 +3944,7 @@
       <ValueForLevel From="24" To="27">13</ValueForLevel>
       <ValueForLevel From="28" To="30">14</ValueForLevel>
     </Attribute>
-    <Attribute Name="Can deal #-# base Fire damage">
+    <Attribute Name="Can deal #-# base Fire Damage">
       <Value Level="1">4–8</Value>
       <Value Level="2">5–9</Value>
       <Value Level="3">6–11</Value>
@@ -4083,7 +4149,7 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
-    <Attribute Name="Cursed enemies lose #% Elemental Resistances">
+    <Attribute Name="Cursed enemies have -#% to Elemental Resistances">
       <Value Level="1">20</Value>
       <Value Level="2">21</Value>
       <Value Level="3">22</Value>
@@ -4115,7 +4181,7 @@
       <Value Level="29">48</Value>
       <Value Level="30">49</Value>
     </Attribute>
-    <Attribute Name="Cursed enemies lose #% Elemental Resistances">
+    <Attribute Name="Cursed enemies have -#% to Elemental Resistances">
       <ValuePerQuality>0.25</ValuePerQuality>
     </Attribute>
   </Gem>
@@ -4333,6 +4399,23 @@
       <ValueForLevel From="27" To="28">34</ValueForLevel>
       <ValueForLevel From="29" To="30">35</ValueForLevel>
     </Attribute>
+    <Attribute Name="Cursed enemies have -#% to Critical Strike Multiplier">
+      <ValueForLevel From="1" To="2">-21</ValueForLevel>
+      <ValueForLevel From="3" To="4">-22</ValueForLevel>
+      <ValueForLevel From="5" To="6">-23</ValueForLevel>
+      <ValueForLevel From="7" To="8">-24</ValueForLevel>
+      <ValueForLevel From="9" To="10">-25</ValueForLevel>
+      <ValueForLevel From="11" To="12">-26</ValueForLevel>
+      <ValueForLevel From="13" To="14">-27</ValueForLevel>
+      <ValueForLevel From="15" To="16">-28</ValueForLevel>
+      <ValueForLevel From="17" To="18">-29</ValueForLevel>
+      <ValueForLevel From="19" To="20">-30</ValueForLevel>
+      <ValueForLevel From="21" To="22">-31</ValueForLevel>
+      <ValueForLevel From="23" To="24">-32</ValueForLevel>
+      <ValueForLevel From="25" To="26">-33</ValueForLevel>
+      <ValueForLevel From="27" To="28">-34</ValueForLevel>
+      <ValueForLevel From="29" To="30">-35</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cursed enemies have #% reduced Accuracy Rating">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -4464,7 +4547,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
     <Attribute Name="Regenerate #% of Debuff Damage as Life">
-      <ValueForLevel From="1" To="30">0.50</ValueForLevel>
+      <ValueForLevel From="1" To="30">0.5</ValueForLevel>
     </Attribute>
     <Attribute Name="Base duration is # seconds">
       <ValueForLevel From="1" To="30">3.8</ValueForLevel>
@@ -4597,7 +4680,7 @@
       <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
     <Attribute Name="Deals #% of Base Attack Damage">
-      <ValueForLevel From="1" To="30">0</ValueForLevel>
+      <ValueForLevel From="1" To="30">100</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Faster Attacks Support">
@@ -6534,6 +6617,9 @@
     <Attribute Name="#% of Physical Damage Converted to Cold Damage">
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
+    <Attribute Name="#% chance to Freeze enemies">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Chill Duration on enemies">
       <ValueForLevel From="1" To="30">35</ValueForLevel>
     </Attribute>
@@ -8346,6 +8432,43 @@
       <ValueForLevel From="1" To="30">3</ValueForLevel>
     </Attribute>
   </Gem>
+  <Gem Name="Lightning Penetration Support">
+    <Attribute Name="Penetrates #% Lightning Resistance">
+      <Value Level="1">18</Value>
+      <Value Level="2">19</Value>
+      <Value Level="3">20</Value>
+      <Value Level="4">21</Value>
+      <Value Level="5">22</Value>
+      <Value Level="6">23</Value>
+      <Value Level="7">24</Value>
+      <Value Level="8">25</Value>
+      <Value Level="9">26</Value>
+      <Value Level="10">27</Value>
+      <Value Level="11">28</Value>
+      <Value Level="12">29</Value>
+      <Value Level="13">30</Value>
+      <Value Level="14">31</Value>
+      <Value Level="15">32</Value>
+      <Value Level="16">33</Value>
+      <Value Level="17">34</Value>
+      <Value Level="18">35</Value>
+      <Value Level="19">36</Value>
+      <Value Level="20">37</Value>
+      <Value Level="21">38</Value>
+      <Value Level="22">39</Value>
+      <Value Level="23">40</Value>
+      <Value Level="24">41</Value>
+      <Value Level="25">42</Value>
+      <Value Level="26">43</Value>
+      <Value Level="27">44</Value>
+      <Value Level="28">45</Value>
+      <Value Level="29">46</Value>
+      <Value Level="30">47</Value>
+    </Attribute>
+    <Attribute Name="#% increased Lightning Damage">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+  </Gem>
   <Gem Name="Lightning Strike">
     <Attribute Name="Deals #% of Base Attack Damage">
       <Value Level="1">130</Value>
@@ -9441,7 +9564,7 @@
     <Attribute Name="Base duration is # seconds">
       <ValueForLevel From="1" To="30">10.0</ValueForLevel>
     </Attribute>
-    <Attribute Name="Chain +# Times">
+    <Attribute Name="Chain # Times">
       <ValueForLevel From="1" To="30">0</ValueForLevel>
     </Attribute>
     <Attribute Name="Charged Storm Cloud deals # more Damage">
@@ -11907,8 +12030,7 @@
       <ValueForLevel From="23" To="24">31</ValueForLevel>
       <ValueForLevel From="25" To="26">32</ValueForLevel>
       <ValueForLevel From="27" To="28">33</ValueForLevel>
-      <Value Level="29">34</Value>
-      <Value Level="30">N/A</Value>
+      <ValueForLevel From="29" To="30">34</ValueForLevel>
     </Attribute>
     <Attribute Name="Minions gain +#% to all Elemental Resistances">
       <Value Level="1">20</Value>
@@ -11926,7 +12048,7 @@
       <ValueForLevel From="24" To="25">32</ValueForLevel>
       <ValueForLevel From="26" To="27">33</ValueForLevel>
       <ValueForLevel From="28" To="29">34</ValueForLevel>
-      <Value Level="30">N/A</Value>
+      <Value Level="30">35</Value>
     </Attribute>
     <Attribute Name="#% increased Duration">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -11937,7 +12059,7 @@
     <Attribute Name="Additional # seconds Base Duration per extra Corpse consumed">
       <ValueForLevel From="1" To="30">0.5</ValueForLevel>
     </Attribute>
-    <Attribute Name="Minions gain #% of their Maximum Life as Extra Maximum Energy Shield for each corpse consumed">
+    <Attribute Name="Minions gain #% of their Maximum Life as&#xA;Extra Maximum Energy Shield for each corpse consumed">
       <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
   </Gem>
@@ -13600,6 +13722,9 @@
     <Attribute Name="#% chance to Ignite enemies">
       <ValuePerQuality>1.5</ValuePerQuality>
     </Attribute>
+    <Attribute Name="Fires # Projectile">
+      <ValueForLevel From="1" To="30">0</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
@@ -13689,6 +13814,9 @@
     </Attribute>
     <Attribute Name="#% of Physical Damage Converted to Cold Damage">
       <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% chance to Freeze enemies">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Chill Duration on enemies">
       <ValueForLevel From="1" To="30">35</ValueForLevel>
@@ -14361,36 +14489,36 @@
   </Gem>
   <Gem Name="Vaal Righteous Fire">
     <Attribute Name="Deals #% of Base Attack Damage">
-      <Value Level="1">20</Value>
-      <Value Level="2">21</Value>
-      <Value Level="3">22</Value>
-      <Value Level="4">23</Value>
-      <Value Level="5">24</Value>
-      <Value Level="6">25</Value>
-      <Value Level="7">26</Value>
-      <Value Level="8">27</Value>
-      <Value Level="9">28</Value>
-      <Value Level="10">29</Value>
-      <Value Level="11">30</Value>
-      <Value Level="12">31</Value>
-      <Value Level="13">32</Value>
-      <Value Level="14">33</Value>
-      <Value Level="15">34</Value>
-      <Value Level="16">35</Value>
-      <Value Level="17">36</Value>
-      <Value Level="18">37</Value>
-      <Value Level="19">38</Value>
-      <Value Level="20">39</Value>
-      <Value Level="21">40</Value>
-      <Value Level="22">41</Value>
-      <Value Level="23">42</Value>
-      <Value Level="24">43</Value>
-      <Value Level="25">44</Value>
-      <Value Level="26">45</Value>
-      <Value Level="27">46</Value>
-      <Value Level="28">47</Value>
-      <Value Level="29">48</Value>
-      <Value Level="30">49</Value>
+      <Value Level="1">120</Value>
+      <Value Level="2">121</Value>
+      <Value Level="3">122</Value>
+      <Value Level="4">123</Value>
+      <Value Level="5">124</Value>
+      <Value Level="6">125</Value>
+      <Value Level="7">126</Value>
+      <Value Level="8">127</Value>
+      <Value Level="9">128</Value>
+      <Value Level="10">129</Value>
+      <Value Level="11">130</Value>
+      <Value Level="12">131</Value>
+      <Value Level="13">132</Value>
+      <Value Level="14">133</Value>
+      <Value Level="15">134</Value>
+      <Value Level="16">135</Value>
+      <Value Level="17">136</Value>
+      <Value Level="18">137</Value>
+      <Value Level="19">138</Value>
+      <Value Level="20">139</Value>
+      <Value Level="21">140</Value>
+      <Value Level="22">141</Value>
+      <Value Level="23">142</Value>
+      <Value Level="24">143</Value>
+      <Value Level="25">144</Value>
+      <Value Level="26">145</Value>
+      <Value Level="27">146</Value>
+      <Value Level="28">147</Value>
+      <Value Level="29">148</Value>
+      <Value Level="30">149</Value>
     </Attribute>
     <Attribute Name="#% increased Spell Damage">
       <ValuePerQuality>1</ValuePerQuality>
@@ -14685,6 +14813,9 @@
     </Attribute>
     <Attribute Name="#% chance to Fortify on Melee hit">
       <ValueForLevel From="1" To="30">100</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Fortify duration">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Viper Strike">

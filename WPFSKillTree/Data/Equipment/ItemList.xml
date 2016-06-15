@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<ItemList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ItemBase ItemType="OneHandedAxe" Name="Rusted Hatchet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Physical Damage" From="5" To="9" />
@@ -1581,7 +1581,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Sledgehammer" Level="17" Strength="62" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on enemies" From="40" To="40" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="21" To="32" />

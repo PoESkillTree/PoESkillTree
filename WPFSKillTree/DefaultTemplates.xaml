@@ -4,8 +4,18 @@
                     xmlns:WpfRangeControls="clr-namespace:WpfRangeControls"
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Buttons.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
     <Style TargetType="{x:Type controls:MetroProgressBar}">
         <Setter Property="Background" Value="#1FFFFFFF" />
+    </Style>
+
+    <Style x:Key="AccentedDialogButtonStyle"
+           BasedOn="{StaticResource AccentedSquareButtonStyle}"
+           TargetType="{x:Type Button}">
+        <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
     </Style>
 
     <ControlTemplate x:Key="HorizontalRangeScrollbar" TargetType="{x:Type WpfRangeControls:RangeScrollbar}">

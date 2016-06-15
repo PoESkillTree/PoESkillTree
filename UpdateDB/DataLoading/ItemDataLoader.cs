@@ -140,13 +140,15 @@ namespace UpdateDB.DataLoading
                 else
                 {
                     var implicits = new List<XmlStat>();
-                    var implicitMultiplier = 1F;
+                    var implicitFrom = 1F;
+                    var implicitTo = 1F;
                     if (implicitColumn >= 0)
                     {
                         implicits.AddRange(ParseImplicit(row.ChildNodes[implicitColumn]));
                         if (implicits.Any())
                         {
-                            implicitMultiplier += implicits[0].From / 100;
+                            implicitFrom += implicits[0].From / 100;
+                            implicitTo += implicits[0].To / 100;
                         }
                     }
                     if (HiddenImplicits.ContainsKey(itemType))
@@ -162,7 +164,7 @@ namespace UpdateDB.DataLoading
                         Intelligence = intColumn >= 0 ? ParseCell(row.ChildNodes[intColumn], 0) : 0,
                         ItemType = itemType,
                         Name = WebUtility.HtmlDecode(row.ChildNodes[nameColumn].GetAttributeValue("data-sort-value", "")),
-                        Properties = ParseProperties(row, propertyColumns, implicitMultiplier).ToArray(),
+                        Properties = ParseProperties(row, propertyColumns, implicitFrom, implicitTo).ToArray(),
                         Implicit = implicits.Any() ? implicits.ToArray() : null
                     };
                 }
@@ -212,39 +214,54 @@ namespace UpdateDB.DataLoading
             }
         }
 
-        private static IEnumerable<XmlStat> ParseProperties(HtmlNode row, IReadOnlyDictionary<int, string> propertyColumns, float implicitMultiplier)
+        private static IEnumerable<XmlStat> ParseProperties(HtmlNode row,
+            IReadOnlyDictionary<int, string> propertyColumns, float implicitFrom, float implicitTo)
         {
             foreach (var propertyColumn in propertyColumns)
             {
                 var cell = GetCell(row, propertyColumn.Key);
-                var modified = cell.FirstChild.GetAttributeValue("class", "").Contains("-mod");
-                var inner = cell.InnerHtml;
-                var childInner = cell.FirstChild.InnerHtml;
-                float from;
-                float to;
+                if (IsNotApplicableCell(cell))
+                    continue;
+
                 var name = propertyColumn.Value;
                 if (PropertyRenaming.ContainsKey(name))
                     name = PropertyRenaming[name];
-                var success = true;
-                if (TryParseCell(cell, out from) || (modified && TryParseFloat(childInner, out from)))
+
+                float from;
+                float to;
+                bool success;
+
+                var modified = cell.FirstChild.GetAttributeValue("class", "").Contains("-mod");
+                var content = WebUtility.HtmlDecode(FindContent(cell)).Replace('–', '-');
+                var matches = NumberRegex.Matches(content);
+                var numbersReplaced = NumberRegex.Replace(content, "#");
+                if (matches.Count <= 0)
                 {
+                    Log.Warn($"No floats in property {cell.InnerHtml}");
+                    continue;
+                }
+                else if (matches.Count == 1)
+                {
+                    success = TryParseFloat(matches[0].Value, out from);
                     to = from;
                 }
-                else if ((inner.EndsWith("%") && TryParseFloat(inner.Replace('%', ' '), out from))
-                    || (modified && childInner.EndsWith("%") && TryParseFloat(childInner.Replace('%', ' '), out from)))
+                else if (matches.Count > 2)
                 {
-                    to = from;
-                    name += " %";
+                    Log.Warn($"Too many floats in property {cell.InnerHtml}");
+                    continue;
                 }
-                else if (cell.FirstChild.GetAttributeValue("class", "").Contains("-physical"))
+                else if (numbersReplaced.Contains("#-#") || numbersReplaced.Contains("(# to #)"))
                 {
-                    var split = WebUtility.HtmlDecode(cell.FirstChild.InnerHtml).Split('–');
-                    success = TryParseFloat(split[0], out from) & TryParseFloat(split[1], out to);
+                    success = TryParseFloat(matches[0].Value, out from) & TryParseFloat(matches[1].Value, out to);
                 }
                 else
                 {
-                    to = -1;
-                    success = false;
+                    Log.Warn($"Unknown format in property {cell.InnerHtml}");
+                    continue;
+                }
+                if (content.EndsWith("%"))
+                {
+                    name += " %";
                 }
                 if (!success)
                 {
@@ -253,8 +270,8 @@ namespace UpdateDB.DataLoading
                 }
                 if (modified)
                 {
-                    from /= implicitMultiplier;
-                    to /= implicitMultiplier;
+                    from /= implicitFrom;
+                    to /= implicitTo;
                 }
                 yield return new XmlStat
                 {
