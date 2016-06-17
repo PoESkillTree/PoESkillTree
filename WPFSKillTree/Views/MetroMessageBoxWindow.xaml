@@ -46,35 +46,30 @@
         </StackPanel>
 
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
-                    Height="85"
-                    HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Margin="5 0" MinWidth="80" Height="35"
-                    Visibility="{Binding IsYesVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                    Command="{Binding YesCommand}"
-                    Style="{DynamicResource AccentedDialogSquareButton}">
+                    Style="{StaticResource DialogPanel}">
+            <Button Visibility="{Binding IsYesVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static MessageBoxResult.Yes}"
+                    Style="{StaticResource AccentedDialogPanelButton}">
                 <l:Catalog Message="Yes"/>
             </Button>
-            <Button Margin="5 0" MinWidth="80" Height="35"
-                    IsCancel="{Binding IsCancelVisible, Converter={StaticResource InvertBoolConverter}}"
+            <Button IsCancel="{Binding IsCancelVisible, Converter={StaticResource InvertBoolConverter}}"
                     IsDefault="{Binding IsCancel, RelativeSource={RelativeSource Self}}"
                     Visibility="{Binding IsNoVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                    Command="{Binding NoCommand}"
-                    Style="{DynamicResource AccentedDialogSquareButton}">
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static MessageBoxResult.No}"
+                    Style="{StaticResource AccentedDialogPanelButton}">
                 <l:Catalog Message="No"/>
             </Button>
-            <Button Margin="5 0" MinWidth="80" Height="35"
-                    IsCancel="{Binding IsCancelVisible, Converter={StaticResource InvertBoolConverter}}"
+            <Button IsCancel="{Binding IsCancelVisible, Converter={StaticResource InvertBoolConverter}}"
                     IsDefault="{Binding IsCancel, RelativeSource={RelativeSource Self}}"
                     Visibility="{Binding IsOKVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                    Command="{Binding OKCommand}"
-                    Style="{DynamicResource AccentedDialogSquareButton}">
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static MessageBoxResult.OK}"
+                    Style="{StaticResource AccentedDialogPanelButton}">
                 <l:Catalog Message="OK"/>
             </Button>
-            <Button Margin="5 0" MinWidth="80" Height="35"
-                    IsDefault="True"
+            <Button IsDefault="True" IsCancel="True"
                     Visibility="{Binding IsCancelVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                    Command="{Binding CancelCommand}"
-                    Style="{DynamicResource AccentedDialogSquareButton}">
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static MessageBoxResult.Cancel}"
+                    Style="{StaticResource AccentedDialogPanelButton}">
                 <l:Catalog Message="Cancel"/>
             </Button>
         </StackPanel>

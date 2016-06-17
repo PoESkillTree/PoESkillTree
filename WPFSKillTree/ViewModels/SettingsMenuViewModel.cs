@@ -20,7 +20,7 @@ namespace POESKillTree.ViewModels
 
             PropertyChangedEventHandler handler = async (sender, args) => await OptionsChanged(args.PropertyName);
             Options.PropertyChanged += handler;
-            RequestsClose += () =>
+            RequestsClose += _ =>
             {
                 Options.PropertyChanged -= handler;
                 persistentData.SaveToFile();

@@ -1755,13 +1755,14 @@ namespace POESKillTree.Views
         private async void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
-            var formBuildName = new FormChooseBuildName(selectedBuild);
-            await this.ShowDialogAsync(new CloseableViewModel(), formBuildName);
+            var vm = new EditBuildViewModel(selectedBuild);
+            if (!await this.ShowDialogAsync(vm, new EditBuildWindow()))
+                return;
 
-            selectedBuild.Name = formBuildName.GetBuildName();
-            selectedBuild.Note = formBuildName.GetNote();
-            selectedBuild.CharacterName = formBuildName.GetCharacterName();
-            selectedBuild.AccountName = formBuildName.GetAccountName();
+            selectedBuild.Name = vm.Build.Name;
+            selectedBuild.Note = vm.Build.Note;
+            selectedBuild.CharacterName = vm.Build.CharacterName;
+            selectedBuild.AccountName = vm.Build.AccountName;
             lvSavedBuilds.Items.Refresh();
             if(selectedBuild.CurrentlyOpen)
                 SetTitle(selectedBuild.Name);
@@ -1904,25 +1905,18 @@ namespace POESKillTree.Views
 
         private async Task SaveNewBuild()
         {
-            var formBuildName = new FormChooseBuildName(_persistentData.CurrentBuild.CharacterName, _persistentData.CurrentBuild.AccountName);
-            await this.ShowDialogAsync(new CloseableViewModel(), formBuildName);
+            var vm = new EditBuildViewModel(_persistentData.CurrentBuild);
+            if (!await this.ShowDialogAsync(vm, new EditBuildWindow()))
+                return;
 
-            var newBuild = new PoEBuild
-            {
-                Name = formBuildName.GetBuildName(),
-                Level = GetLevelAsString(),
-                Class = cbCharType.Text,
-                PointsUsed = NormalUsedPoints.Content.ToString(),
-                Url = tbSkillURL.Text,
-                Note = formBuildName.GetNote(),
-                CharacterName = formBuildName.GetCharacterName(),
-                AccountName = formBuildName.GetAccountName(),
-                ItemData = _persistentData.CurrentBuild.ItemData,
-                LastUpdated = DateTime.Now,
-                CustomGroups = _attributeGroups.CopyCustomGroups(),
-                Bandits = _persistentData.CurrentBuild.Bandits,
-                League = _persistentData.CurrentBuild.League
-            };
+            var newBuild = vm.Build;
+            newBuild.LastUpdated = DateTime.Now;
+            newBuild.Level = GetLevelAsString();
+            newBuild.Class = cbCharType.Text;
+            newBuild.PointsUsed = NormalUsedPoints.Content.ToString();
+            newBuild.Url = tbSkillURL.Text;
+            newBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
+
             await SetCurrentBuild(newBuild);
             lvSavedBuilds.Items.Add(newBuild);
 

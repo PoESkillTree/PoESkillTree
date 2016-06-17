@@ -38,7 +38,7 @@ namespace POESKillTree.ViewModels
             Build = build;
             Build.PropertyChanged += BuildOnPropertyChanged;
             BuildOnPropertyChanged(this, null);
-            RequestsClose += () => Build.PropertyChanged -= BuildOnPropertyChanged;
+            RequestsClose += _ => Build.PropertyChanged -= BuildOnPropertyChanged;
         }
 
         private void BuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)

@@ -147,16 +147,13 @@
         </Grid>
 
         <StackPanel Grid.Row="1"
-                    Height="85"
-                    HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Margin="5 0" MinWidth="80" Height="35"
-                    Style="{DynamicResource AccentedDialogButtonStyle}"
+                    Style="{StaticResource DialogPanel}">
+            <Button Style="{StaticResource AccentedDialogPanelButton}"
                     Click="Button_OK_Click">
                 <l:Catalog Message="OK"/>
             </Button>
-            <Button Margin="5 0" MinWidth="80" Height="35"
-                    IsCancel="True" IsDefault="True"
-                    Style="{DynamicResource AccentedDialogButtonStyle}"
+            <Button IsCancel="True" IsDefault="True"
+                    Style="{StaticResource AccentedDialogPanelButton}"
                     Click="Button_Cancel_Click">
                 <l:Catalog Message="Cancel"/>
             </Button>

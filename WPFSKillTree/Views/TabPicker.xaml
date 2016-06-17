@@ -6,6 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+        xmlns:utils="clr-namespace:POESKillTree.Utils"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         x:Name="window" CloseButtonVisibility="Collapsed"
         MaxContentWidth="{Binding ActualWidth, ElementName=ContentGrid}">
@@ -23,7 +25,8 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Label Margin="0,0,4,0" Content="{l:Catalog 'Name'}"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Text,ElementName=window}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Text,ElementName=window}"
+                 utils:XamlHelper.FocusOnLoaded="True" controls:TextBoxHelper.SelectAllOnFocus="True"/>
         <Border Padding="2" Background="#383838" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal">
                 <ItemsControl  Width="316" Height="106" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
@@ -88,20 +91,17 @@
         </Border>
 
         <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
-                    Height="85"
-                    HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Margin="5 0" MinWidth="80" Height="35"
+                    Style="{StaticResource DialogPanel}">
+            <Button Style="{StaticResource DialogPanelButton}"
                     Click="Button_Delete_Click">
                 <l:Catalog Message="Delete"/>
             </Button>
-            <Button Margin="5 0" MinWidth="80" Height="35"
-                    Style="{DynamicResource AccentedDialogButtonStyle}"
+            <Button Style="{StaticResource AccentedDialogPanelButton}"
                     Click="Button_OK_Click">
                 <l:Catalog Message="OK"/>
             </Button>
-            <Button Margin="5 0" MinWidth="80" Height="35"
-                    IsCancel="True" IsDefault="True"
-                    Style="{DynamicResource AccentedDialogButtonStyle}"
+            <Button IsCancel="True" IsDefault="True"
+                    Style="{StaticResource AccentedDialogPanelButton}"
                     Click="Button_Cancel_Click">
                 <l:Catalog Message="Cancel"/>
             </Button>

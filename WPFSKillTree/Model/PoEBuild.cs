@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using POESKillTree.Localization;
-using POESKillTree.Model;
 using POESKillTree.Utils;
 
-namespace POESKillTree.ViewModels
+namespace POESKillTree.Model
 {
     public class PoEBuild : Notifier
     {
@@ -51,7 +51,7 @@ namespace POESKillTree.ViewModels
         public bool CurrentlyOpen { get; set; }
         public BanditSettings Bandits { get; set; }
 
-        [XmlIgnoreAttribute]
+        [XmlIgnore]
         public string Image
         {
             get
@@ -62,7 +62,7 @@ namespace POESKillTree.ViewModels
                 return imgPath + ".jpg";
             }
         }
-        [XmlIgnoreAttribute]
+        [XmlIgnore]
         public string Description
         {
             get
@@ -73,7 +73,7 @@ namespace POESKillTree.ViewModels
                 return string.Format(L10n.Plural("{0}, {1} point used", "{0}, {1} points used", used), Class, used);
             }
         }
-        [XmlIgnoreAttribute]
+        [XmlIgnore]
         public bool Visible { get; set; }
 
         public PoEBuild()
@@ -99,6 +99,11 @@ namespace POESKillTree.ViewModels
             return Name + '\n' + Description;
         }
 
+        public PoEBuild Copy()
+        {
+            return Copy(this);
+        }
+
         public static PoEBuild Copy(PoEBuild build)
         {
             return new PoEBuild
@@ -114,7 +119,7 @@ namespace POESKillTree.ViewModels
                 Note = build.Note,
                 ItemData = build.ItemData,
                 LastUpdated = build.LastUpdated,
-                CustomGroups = new List<string[]>(build.CustomGroups),
+                CustomGroups = build.CustomGroups.Select(a => (string[]) a.Clone()).ToList(),
                 CurrentlyOpen = build.CurrentlyOpen,
                 Bandits = build.Bandits.Clone()
             };

@@ -89,7 +89,7 @@ namespace POESKillTree.ViewModels
 
             Build.PropertyChanged += BuildOnPropertyChanged;
             BuildOnPropertyChanged(this, null);
-            RequestsClose += () => Build.PropertyChanged -= BuildOnPropertyChanged;
+            RequestsClose += _ => Build.PropertyChanged -= BuildOnPropertyChanged;
 
             if (CurrentLeagues == null)
             {

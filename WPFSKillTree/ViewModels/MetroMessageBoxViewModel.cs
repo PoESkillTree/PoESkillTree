@@ -1,11 +1,9 @@
-using POESKillTree.Model;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace POESKillTree.ViewModels
 {
-    public class MetroMessageBoxViewModel : CloseableViewModel
+    public class MetroMessageBoxViewModel : CloseableViewModel<MessageBoxResult>
     {
         #region fields
         private readonly string _message;
@@ -16,11 +14,6 @@ namespace POESKillTree.ViewModels
         private readonly bool _isNoVisible;
         private readonly bool _isOKVisible;
         private readonly bool _isCancelVisible;
-
-        private ICommand _yesCommand;
-        private ICommand _noCommand;
-        private ICommand _okCommand;
-        private ICommand _cancelCommand;
         #endregion
 
         public MetroMessageBoxViewModel(string message, string details, string title, MessageBoxButton buttons, ImageSource imageSource)
@@ -46,53 +39,6 @@ namespace POESKillTree.ViewModels
             _imageSource = imageSource;
         }
 
-        #region commands
-        public ICommand YesCommand
-        {
-            get
-            {
-                return _yesCommand ?? (_yesCommand = new RelayCommand(args =>
-                {
-                    Result = MessageBoxResult.Yes;
-                    Close();
-                }));
-            }
-        }
-        public ICommand NoCommand
-        {
-            get
-            {
-                return _noCommand ?? (_noCommand = new RelayCommand(args =>
-                {
-                    Result = MessageBoxResult.No;
-                    Close();
-                }));
-            }
-        }
-        public ICommand CancelCommand
-        {
-            get
-            {
-                return _cancelCommand ?? (_cancelCommand = new RelayCommand(args =>
-                {
-                    Result = MessageBoxResult.Cancel;
-                    Close();
-                }));
-            }
-        }
-        public ICommand OKCommand
-        {
-            get
-            {
-                return _okCommand ?? (_okCommand = new RelayCommand(args =>
-                {
-                    Result = MessageBoxResult.OK;
-                    Close();
-                }));
-            }
-        }
-        #endregion
-
         #region elements content
         public string Message
         {
@@ -103,8 +49,6 @@ namespace POESKillTree.ViewModels
         {
             get { return _details; }
         }
-
-        public MessageBoxResult Result { get; set; }
 
         public ImageSource NotificationImageSource
         {

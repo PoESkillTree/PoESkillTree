@@ -1,22 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:System="clr-namespace:System;assembly=mscorlib"
                     xmlns:WpfRangeControls="clr-namespace:WpfRangeControls"
-                    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
-
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Buttons.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-    
-    <Style TargetType="{x:Type controls:MetroProgressBar}">
-        <Setter Property="Background" Value="#1FFFFFFF" />
-    </Style>
-
-    <Style x:Key="AccentedDialogButtonStyle"
-           BasedOn="{StaticResource AccentedSquareButtonStyle}"
-           TargetType="{x:Type Button}">
-        <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
-    </Style>
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <ControlTemplate x:Key="HorizontalRangeScrollbar" TargetType="{x:Type WpfRangeControls:RangeScrollbar}">
         <Grid x:Name="Root">
@@ -527,7 +512,7 @@
                        IsDirectionReversed="true"
                        Grid.Row="1">
                     <Track.Resources>
-                        <System:Double x:Key="{x:Static SystemParameters.VerticalScrollBarButtonHeightKey}">50</System:Double>
+                        <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarButtonHeightKey}">50</system:Double>
                     </Track.Resources>
                     <Track.DecreaseRepeatButton>
                         <RepeatButton x:Name="VerticalLargeDecrease"
@@ -547,7 +532,7 @@
                                       Template="{DynamicResource RepeatButtonTemplate}" />
                     </Track.IncreaseRepeatButton>
                 </Track>
-                
+
                 <WpfRangeControls:RangeItemsControl x:Name="PART_RangeOverlay" Grid.Row="1" IsHitTestVisible="False"
                             Minimum="{TemplateBinding Property=Minimum}" 
                             Maximum="{TemplateBinding Property=Maximum}" 
@@ -582,6 +567,5 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
 
 </ResourceDictionary>

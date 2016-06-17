@@ -25,7 +25,7 @@ namespace POESKillTree.Controls.Dialogs
         /// calls <paramref name="onShown"/> and waits for the dialog to be closed.
         /// <paramref name="dependencyObject"/> must be located in a <see cref="MetroWindow"/>.
         /// </summary>
-        public static Task ShowDialogAsync(this DependencyObject dependencyObject, CloseableViewModel viewModel,
+        public static Task<T> ShowDialogAsync<T>(this DependencyObject dependencyObject, CloseableViewModel<T> viewModel,
             BaseMetroDialog view, Action onShown = null)
         {
             return ShowDialogAsync((MetroWindow) Window.GetWindow(dependencyObject), viewModel, view, onShown);
@@ -35,7 +35,7 @@ namespace POESKillTree.Controls.Dialogs
         /// Sets up the connection between view and viewModel, shows the view as a metro dialog,
         /// calls <paramref name="onShown"/> and waits for the dialog to be closed.
         /// </summary>
-        public static async Task ShowDialogAsync(this MetroWindow window, CloseableViewModel viewModel,
+        public static async Task<T> ShowDialogAsync<T>(this MetroWindow window, CloseableViewModel<T> viewModel,
             BaseMetroDialog view, Action onShown = null)
         {
             view.DataContext = viewModel;
@@ -51,20 +51,22 @@ namespace POESKillTree.Controls.Dialogs
             DialogParticipation.SetRegister(view, viewModel);
             onShown?.Invoke();
 
-            await viewModel.WaitForCloseAsync();
+            var result = await viewModel.WaitForCloseAsync();
             await window.HideMetroDialogAsync(view);
             DialogParticipation.SetRegister(view, null);
 
             // Restore IsDefault and keyboard focus.
             oldDefaults.ForEach(b => b.IsDefault = true);
             Keyboard.Focus(oldFocus);
+
+            return result;
         }
 
         public static Task<MessageBoxResult> ShowQuestionAsync(this MetroWindow window, string message,
             string title = null, MessageBoxImage image = MessageBoxImage.Question)
         {
             return ShowAsync(window, message, title: title ?? L10n.Message("Confirmation"), buttons: MessageBoxButton.YesNo,
-                image: image, defaultResult: MessageBoxResult.No);
+                image: image);
         }
 
         public static Task ShowErrorAsync(this MetroWindow window, string message, string details = null, string title = null)
@@ -147,16 +149,14 @@ namespace POESKillTree.Controls.Dialogs
             }
         }
 
-        private static async Task<MessageBoxResult> ShowAsync(this MetroWindow window, string message, string details = null,
+        private static Task<MessageBoxResult> ShowAsync(this MetroWindow window, string message, string details = null,
             string title = "", MessageBoxButton buttons = MessageBoxButton.OK,
-            MessageBoxImage image = MessageBoxImage.None, MessageBoxResult defaultResult = MessageBoxResult.OK)
+            MessageBoxImage image = MessageBoxImage.None)
         {
             var viewModel = new MetroMessageBoxViewModel(message, details, title, buttons,
-                MessageBoxImageToImageSource(image)) {Result = defaultResult};
-            await ShowDialogAsync(window, viewModel, new MetroMessageBoxView(),
+                MessageBoxImageToImageSource(image));
+            return ShowDialogAsync(window, viewModel, new MetroMessageBoxView(),
                     () => MessageBoxImageToSystemSound(image).Play());
-
-            return viewModel.Result;
         }
     }
 }

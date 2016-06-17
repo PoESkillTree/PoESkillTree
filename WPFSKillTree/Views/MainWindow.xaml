@@ -7,8 +7,8 @@
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
-        xmlns:views="clr-namespace:POESKillTree.Views"
         xmlns:items="clr-namespace:POESKillTree.Model.Items"
+        xmlns:model="clr-namespace:POESKillTree.Model"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="PoESkillTree" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
@@ -645,7 +645,7 @@
                     <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-100" VerticalOffset="5">
                         <Border Background="{DynamicResource WhiteColorBrush}" BorderThickness="1"
                                 BorderBrush="{DynamicResource AccentColorBrush}">
-                            <views:BanditSelection DataContext="{Binding Tree.BanditSettings, ElementName=window}" Margin="5" />
+                            <local:BanditSelection DataContext="{Binding Tree.BanditSettings, ElementName=window}" Margin="5" />
                         </Border>
                     </Popup>
                     <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
@@ -758,7 +758,7 @@
                               MouseDoubleClick="lvi_MouseDoubleClick" SelectionChanged="lvSavedBuilds_SelectionChanged"
                               SelectedIndex="{Binding ElementName=window,Path=PersistentData.Options.SelectedBuildIndex}">
                         <ListView.ItemTemplate>
-                            <DataTemplate DataType="conv:PoEBuild">
+                            <DataTemplate DataType="model:PoEBuild">
                                 <Grid x:Name="Grid1" Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>

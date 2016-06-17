@@ -193,7 +193,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             _progress = new Progress<Tuple<int, int, IEnumerable<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2, tuple.Item3));
             _reportStopwatch.Start();
 
-            RequestsClose += CancelClose;
+            RequestsClose += _ => CancelClose();
         }
 
         /// <summary>

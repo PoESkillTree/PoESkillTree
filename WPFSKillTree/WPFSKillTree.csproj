@@ -309,6 +309,7 @@
     <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
     <Compile Include="ViewModels\DownloadStashViewModel.cs" />
+    <Compile Include="ViewModels\EditBuildViewModel.cs" />
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
@@ -359,6 +360,9 @@
     <Compile Include="Views\DownloadStashWindow.xaml.cs">
       <DependentUpon>DownloadStashWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditBuildWindow.xaml.cs">
+      <DependentUpon>EditBuildWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
@@ -368,7 +372,7 @@
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\PoEBuild.cs" />
+    <Compile Include="Model\PoEBuild.cs" />
     <Compile Include="SkillTreeFiles\PoESkillTree.cs" />
     <Compile Include="SkillTreeFiles\Point2D.cs" />
     <Compile Include="SkillTreeFiles\Rect2D.cs" />
@@ -376,9 +380,6 @@
     <Compile Include="SkillTreeFiles\SkillTree.cs" />
     <Compile Include="SkillTreeFiles\SkillTreeImporter.cs" />
     <Compile Include="SkillTreeFiles\Vector2D.cs" />
-    <Compile Include="Views\FormChooseBuildName.xaml.cs">
-      <DependentUpon>FormChooseBuildName.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Views\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
@@ -386,6 +387,18 @@
     <Compile Include="Views\MetroMessageBoxWindow.xaml.cs">
       <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Styles\Dialogs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Other.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\RangeScrollbars.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\BaseDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -444,10 +457,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DefaultTemplates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\BanditSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -459,6 +468,10 @@
     <Page Include="Views\DownloadStashWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EditBuildWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -484,10 +497,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\FormChooseBuildName.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\DownloadItemsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

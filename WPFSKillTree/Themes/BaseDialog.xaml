@@ -6,6 +6,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/Dialogs/BaseMetroDialog.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/PoESkillTree;component/Styles/Dialogs.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <!-- The control template can't be partially adjusted so this is mostly copy pasted from
@@ -22,7 +23,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <ContentPresenter Grid.Row="0" Content="{TemplateBinding DialogTop}" />
@@ -47,15 +48,10 @@
                                        Text="{TemplateBinding Title}" />
                             <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
                             <StackPanel Grid.Row="2"
-                                        Height="85"
-                                        HorizontalAlignment="Right"
-                                        Orientation="Horizontal"
+                                        Style="{StaticResource DialogPanel}"
                                         Visibility="{TemplateBinding CloseButtonVisibility}">
-                                <Button Height="35"
-                                        MinWidth="80"
-                                        Margin="0 0 5 0"
-                                        IsDefault="True" IsCancel="True"
-                                        Style="{DynamicResource AccentedDialogSquareButton}"
+                                <Button IsDefault="True" IsCancel="True"
+                                        Style="{StaticResource AccentedDialogPanelButton}"
                                         Command="{TemplateBinding CloseCommand}">
                                     <l:Catalog Message="Close"/>
                                 </Button>

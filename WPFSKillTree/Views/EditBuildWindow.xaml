@@ -1,0 +1,67 @@
+﻿<dialogs:CloseableBaseDialog 
+    x:Class="POESKillTree.Views.EditBuildWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+    xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+    xmlns:utils="clr-namespace:POESKillTree.Utils" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:POESKillTree.ViewModels"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:views="clr-namespace:POESKillTree.Views"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance viewModels:EditBuildViewModel}"
+    CloseButtonVisibility="Collapsed">
+    <dialogs:CloseableBaseDialog.Title>
+        <l:Catalog Message="Build Information"/>
+    </dialogs:CloseableBaseDialog.Title>
+    <Control.Resources>
+        <views:LastUpdatedStringConverter x:Key="LastUpdatedStringConverter"/>
+    </Control.Resources>
+    <StackPanel>
+        <Label Margin="4,4,4,2">
+            <l:Catalog Message="Build name"/>
+        </Label>
+        <TextBox Margin="4,2,4,4" MaxLength="255"
+                 Text="{Binding Build.Name}"
+                 controls:TextBoxHelper.SelectAllOnFocus="True"
+                 utils:XamlHelper.FocusOnLoaded="True"/>
+        <Label Margin="4,4,4,2">
+            <l:Catalog Message="Build note"/>
+        </Label>
+        <TextBox Margin="4,2,4,4" TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto" AcceptsReturn="True" AcceptsTab="True"
+                 utils:XamlHelper.MainWindowRelativeMaxHeight="500"
+                 Text="{Binding Build.Note}"/>
+        <GroupBox Margin="4">
+            <GroupBox.Header>
+                <l:Catalog Message="Character Information"/>
+            </GroupBox.Header>
+            <StackPanel Margin="0">
+                <Label Margin="4,4,4,2">
+                    <l:Catalog Message="Character name"/>
+                </Label>
+                <TextBox Height="23" Margin="4,2,4,4" MaxLength="24"
+                         Text="{Binding Build.CharacterName}"/>
+                <Label Margin="4,4,4,2">
+                    <l:Catalog Message="Account name"/>
+                </Label>
+                <TextBox Height="23" Margin="4,2,4,4" MaxLength="24"
+                         Text="{Binding Build.AccountName}"/>
+            </StackPanel>
+        </GroupBox>
+        <Label Content="{Binding Build.LastUpdated, Converter={StaticResource LastUpdatedStringConverter}}" />
+
+        <StackPanel Style="{StaticResource DialogPanel}">
+            <Button Style="{StaticResource AccentedDialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource True}">
+                <l:Catalog Message="OK"/>
+            </Button>
+            <Button Style="{StaticResource AccentedDialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource False}">
+                <l:Catalog Message="Cancel"/>
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</dialogs:CloseableBaseDialog>
+
