@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using log4net;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.Utils.Extensions;
 using Attribute = POESKillTree.SkillTreeFiles.ItemDB.Attribute;
 using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
 using Value = POESKillTree.SkillTreeFiles.ItemDB.Value;
@@ -42,9 +44,17 @@ namespace UpdateDB.DataLoading.Gems
         // Mapping of incorrect tokens to the correct ingame form.
         static Dictionary<string, string> Tokens = new Dictionary<string, string>
         {
-            { "ManaCost", "Mana Cost: #" },
-            { "Deals #% of Base Damage", "Deals #% of Base Attack Damage"}
+            { "ManaCost", "Mana Cost: #" }
         };
+        // Mapping of incorrect tokens to the correct ingame form.
+        private static readonly Dictionary<string, Tuple<string, IReadOnlyList<string>>> TagSpecificTokens =
+            new Dictionary<string, Tuple<string, IReadOnlyList<string>>>
+            {
+                {
+                    "Deals #% of Base Damage",
+                    new Tuple<string, IReadOnlyList<string>>("Deals #% of Base Attack Damage", new[] {"Attack"})
+                }
+            };
         // The Wiki URL.
         static string URL = "http://pathofexile.gamepedia.com";
         // Translates gem name to actual Wiki page (e.g. Iron Grip (support gem)).
@@ -96,141 +106,146 @@ namespace UpdateDB.DataLoading.Gems
             string gemName = span == null ? name : span.InnerText.Trim();
 
             List<Attribute> attributes = new List<Attribute>();
+            var tags = new List<string>();
+            attributes.AddRange(ParseInfobox(doc, name, tags));
+            attributes.AddRange(ParseProgressionTable(doc, name, tags));
 
+            return new Gem { Name = gemName, Attributes = attributes };
+        }
+
+        private static IEnumerable<Attribute> ParseProgressionTable(HtmlDocument doc, string name, IReadOnlyCollection<string> tags)
+        {
             HtmlNodeCollection found = doc.DocumentNode.SelectNodes("//table[contains(@class,'skill-progression-table')]");
             if (found == null)
             {
                 Log.WarnFormat("Gem level table not found for {0}", name);
+                return Enumerable.Empty<Attribute>();
             }
-            else
+
+            HtmlNode table = found[0];
+            bool hasHead = false;
+            int levelColumn = 0;
+            Dictionary<int, Attribute> columnAttribute = new Dictionary<int, Attribute>();
+
+            foreach (HtmlNode row in table.Elements("tr"))
             {
-                HtmlNode table = found[0];
-                bool hasHead = false;
-                int levelColumn = 0;
-                Dictionary<int, Attribute> columnAttribute = new Dictionary<int, Attribute>();
-
-                foreach (HtmlNode row in table.Elements("tr"))
+                if (hasHead)
                 {
-                    if (hasHead)
+                    HtmlNode cell = row.SelectSingleNode("th[" + (levelColumn + 1) + "]");
+                    if (cell == null)
                     {
-                        HtmlNode cell = row.SelectSingleNode("th[" + (levelColumn + 1) + "]");
-                        if (cell == null)
-                        {
-                            Log.Warn("Level cell not found");
-                            break;
-                        }
-
-                        int level;
-                        if (!int.TryParse(cell.InnerText.Trim(), out level))
-                        {
-                            Log.Warn("Level not an integer: " + cell.InnerText);
-                            break;
-                        }
-
-                        foreach (int column in columnAttribute.Keys)
-                        {
-                            cell = row.SelectSingleNode("td[" + column + "]");
-                            if (cell != null)
-                            {
-                                string text = WebUtility.HtmlDecode(cell.InnerText).Trim();
-                                text = text.Replace("%", "");
-                                if (text.Length > 0)
-                                    columnAttribute[column].Values.Add(new ValueAt { Level = level, Text = text });
-                            }
-                        }
+                        Log.Warn("Level cell not found");
+                        break;
                     }
-                    else
+
+                    int level;
+                    if (!int.TryParse(cell.InnerText.Trim(), out level))
                     {
-                        hasHead = true;
-                        string text;
-                        int column = 0;
+                        Log.Warn("Level not an integer: " + cell.InnerText);
+                        break;
+                    }
 
-                        foreach (HtmlNode cell in row.SelectNodes("td|th"))
+                    foreach (int column in columnAttribute.Keys)
+                    {
+                        cell = row.SelectSingleNode("td[" + column + "]");
+                        if (cell != null)
                         {
-                            HtmlNode abbr = cell.SelectSingleNode("abbr");
-                            if (abbr != null)
-                            {
-                                text = abbr.Attributes["title"].Value;
-                            }
-                            else
-                            {
-                                text = cell.InnerText;
-                            }
-
-                            text = WebUtility.HtmlDecode(text);
-
-                            if (text == "Level")
-                            {
-                                levelColumn = column;
-                                Log.Debug("  [" + column + "] Level");
-                            }
-                            else
-                            {
-                                List<Token> tokens = ParseTokens(new List<string> { text });
-                                if (tokens.Count == 1)
-                                {
-                                    Log.Debug("  [" + column + "] " + tokens[0].Name);
-                                    columnAttribute.Add(column, new Attribute { Name = tokens[0].Name, Values = new List<Value>() });
-                                }
-                            }
-
-                            ++column;
+                            string text = WebUtility.HtmlDecode(cell.InnerText).Trim();
+                            text = text.Replace("%", "");
+                            if (text.Length > 0)
+                                columnAttribute[column].Values.Add(new ValueAt { Level = level, Text = text });
                         }
                     }
                 }
+                else
+                {
+                    hasHead = true;
+                    int column = 0;
 
-                if (columnAttribute.Count > 0)
-                    attributes.AddRange(columnAttribute.Values);
+                    foreach (HtmlNode cell in row.SelectNodes("td|th"))
+                    {
+                        HtmlNode abbr = cell.SelectSingleNode("abbr");
+                        var text = abbr != null ? abbr.Attributes["title"].Value : cell.InnerText;
+
+                        text = WebUtility.HtmlDecode(text);
+
+                        if (text == "Level")
+                        {
+                            levelColumn = column;
+                            Log.Debug("  [" + column + "] Level");
+                        }
+                        else
+                        {
+                            List<Token> tokens = ParseTokens(new List<string> { text }, tags);
+                            if (tokens.Count == 1)
+                            {
+                                Log.Debug("  [" + column + "] " + tokens[0].Name);
+                                columnAttribute.Add(column, new Attribute { Name = tokens[0].Name, Values = new List<Value>() });
+                            }
+                        }
+
+                        ++column;
+                    }
+                }
             }
 
-            found = doc.DocumentNode.SelectNodes("//div[contains(@class,'item-box -gem')]");
+            return columnAttribute.Values;
+        }
+
+        private static IEnumerable<Attribute> ParseInfobox(HtmlDocument doc, string name, ICollection<string> tags)
+        {
+            var found = doc.DocumentNode.SelectNodes("//div[contains(@class,'item-box -gem')]");
             if (found == null || found.Count == 0)
             {
                 Log.WarnFormat("Gem infobox table not found for {0}", name);
+                yield break;
             }
-            else
+
+            var table = found[0];
+            // If the mana cost is fixed it is not necessarily part of the level table.
+            var fixedManaAttr = ParseFixedManaCost(table);
+            if (fixedManaAttr != null)
+                yield return fixedManaAttr;
+
+            var itemboxstats = table.SelectSingleNode("span[contains(@class, 'item-stats')]");
+
+            var tagNodes = itemboxstats.SelectNodes("span/a[contains(@title, '(gem tag)')]");
+            tagNodes?.Select(n => n.InnerHtml).ForEach(tags.Add);
+
+            var td = itemboxstats.SelectNodes("span[contains(@class, '-mod')]");
+            if (td == null) yield break;
+
+            // Per 1% Quality
+            var textNodes = td[0].SelectNodes(".//text()");
+            if (textNodes != null)
             {
-                HtmlNode table = found[0];
-                // If the mana cost is fixed it is not necessarily part of the level table.
-                var fixedManaAttr = ParseFixedManaCost(table);
-                if (fixedManaAttr != null)
-                    attributes.Add(fixedManaAttr);
+                List<string> texts = new List<string>();
+                foreach (HtmlNode node in textNodes)
+                    texts.Add(node.InnerText);
 
-                HtmlNode itemboxstats = table.SelectSingleNode("span[contains(@class, 'item-stats')]");
-                var td = itemboxstats.SelectNodes("span[contains(@class, '-mod')]");
-                if (td != null)
+                List<Token> tokens = ParseTokens(texts);
+                foreach (Token token in tokens)
                 {
-                    // Per 1% Quality
-                    HtmlNodeCollection textNodes = td[0].SelectNodes(".//text()");
-                    if (textNodes != null)
+                    Log.Debug("  [Per 1% Quality] " + token.Name);
+                    if (token.Value != null)
                     {
-                        List<string> texts = new List<string>();
-                        foreach (HtmlNode node in textNodes)
-                            texts.Add(node.InnerText);
-
-                        List<Token> tokens = ParseTokens(texts);
-                        foreach (Token token in tokens)
+                        yield return new Attribute
                         {
-                            Log.Debug("  [Per 1% Quality] " + token.Name);
-                            if (token.Value != null)
-                                attributes.Add(new Attribute { Name = token.Name, Values = new List<Value> { new ValuePerQuality { Text = token.Value } } });
-                        }
-                    }
-
-                    // Values fixed per level
-                    if (td.Count > 1)
-                    {
-                        textNodes = td[1].SelectNodes(".//text()");
-                        if (textNodes != null)
-                        {
-                            attributes.AddRange(
-                                textNodes.Select(n => n.InnerHtml).Select(ParseFixedAttribute).Where(a => a != null));
-                        }
+                            Name = token.Name,
+                            Values = new List<Value> {new ValuePerQuality {Text = token.Value}}
+                        };
                     }
                 }
             }
 
-            return new Gem { Name = gemName, Attributes = attributes };
+            // Values fixed per level
+            if (td.Count <= 1) yield break;
+            textNodes = td[1].SelectNodes(".//text()");
+            if (textNodes == null) yield break;
+            foreach (var attr in textNodes.Select(n => n.InnerHtml).Select(ParseFixedAttribute).Where(a => a != null))
+            {
+                yield return attr;
+            }
         }
 
         private static Attribute ParseFixedManaCost(HtmlNode table)
@@ -267,17 +282,17 @@ namespace UpdateDB.DataLoading.Gems
             var valueText = numberMatches[0].Value;
             return new Attribute
             {
-                Name = text.Replace(valueText, "#"),
+                Name = text.Replace(valueText, "#").Replace("\n", " "),
                 Values = new List<Value> {new ItemDB.ValueForLevelRange {From = 1, To = 30, Text = valueText } }
             };
         }
 
         // Returns attribute names for known tokens, ignored tokens or null if unknown tokens.
-        static List<Token> ParseTokens(List<string> texts)
+        static List<Token> ParseTokens(IEnumerable<string> texts, IReadOnlyCollection<string> tags = null)
         {
             List<Token> tokens = new List<Token>();
 
-            foreach (string text in new List<string>(texts))
+            foreach (string text in texts)
             {
                 // Parse values.
                 string value = "";
@@ -294,9 +309,13 @@ namespace UpdateDB.DataLoading.Gems
                 token = token.Replace("x ", "# ");
                 token = token.Replace(" x", " #");
 
-                texts.Remove(text);
                 if (IgnoreTokens.Contains(token))
                     continue;
+                if (tags != null && TagSpecificTokens.ContainsKey(token)
+                    && TagSpecificTokens[token].Item2.Intersect(tags).Any())
+                {
+                    token = TagSpecificTokens[token].Item1;
+                }
                 var name = Tokens.ContainsKey(token) ? Tokens[token] : token;
                 tokens.Add(new Token { Name = name, Value = value.Length == 0 ? null : value });
             }
