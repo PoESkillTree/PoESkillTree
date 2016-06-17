@@ -9,9 +9,6 @@
              >
     <Application.Resources>
         <ResourceDictionary>
-            <system:Boolean x:Key="True">True</system:Boolean>
-            <system:Boolean x:Key="False">False</system:Boolean>
-            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
@@ -23,6 +20,10 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/Dialogs.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Other.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <system:Boolean x:Key="True">True</system:Boolean>
+            <system:Boolean x:Key="False">False</system:Boolean>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
     <JumpList.JumpList>

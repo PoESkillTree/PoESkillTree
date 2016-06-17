@@ -631,11 +631,14 @@ namespace POESKillTree.Controls
 
         private async void Button_AddBookmark(object sender, RoutedEventArgs e)
         {
-            var picker = new TabPicker();
-            await this.ShowDialogAsync(new CloseableViewModel(), picker);
-            if (picker.DialogResult && !picker.Delete)
+            var vm = new TabPickerViewModel
             {
-                AddBookmark(new StashBookmark(picker.Text, PageTop + 1, picker.SelectedColor));
+                IsDeletable = false
+            };
+            var result = await this.ShowDialogAsync(vm, new TabPicker());
+            if (result == TabPickerResult.Affirmative)
+            {
+                AddBookmark(new StashBookmark(vm.Name, PageTop + 1, vm.Color));
                 RedrawItems();
             }
         }
@@ -669,12 +672,15 @@ namespace POESKillTree.Controls
             {
                 var bm = (StashBookmark) ((Button) sender).DataContext;
 
-                var picker = new TabPicker { SelectedColor = bm.Color, Text = bm.Name };
-                await this.ShowDialogAsync(new CloseableViewModel(), picker);
-                if (picker.DialogResult)
+                var vm = new TabPickerViewModel
                 {
-                    if (picker.Delete)
-                    {
+                    Name = bm.Name,
+                    Color = bm.Color
+                };
+                var result = await this.ShowDialogAsync(vm, new TabPicker());
+                switch (result)
+                {
+                    case TabPickerResult.Delete:
                         Bookmarks.Remove(bm);
                         RedrawItems();
                         if (_usedBMarks.ContainsKey(bm))
@@ -683,16 +689,15 @@ namespace POESKillTree.Controls
                             _usedBMarks.Remove(bm);
                         }
                         ResizeScrollbarThumb();
-                    }
-                    else
-                    {
-                        bm.Name = picker.Text;
-                        bm.Color = picker.SelectedColor;
+                        break;
+                    case TabPickerResult.Affirmative:
+                        bm.Name = vm.Name;
+                        bm.Color = vm.Color;
                         if (_usedBMarks.ContainsKey(bm))
                         {
                             _usedBMarks[bm].Fill = new SolidColorBrush(bm.Color);
                         }
-                    }
+                        break;
                 }
             }
         }

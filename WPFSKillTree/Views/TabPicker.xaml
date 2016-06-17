@@ -1,4 +1,4 @@
-﻿<dialogs:CloseableBaseDialog
+﻿<dialogs:BaseDialog
         x:Class="POESKillTree.Views.TabPicker"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,9 +8,12 @@
         xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
         xmlns:utils="clr-namespace:POESKillTree.Utils"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:viewModels="clr-namespace:POESKillTree.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        x:Name="window" CloseButtonVisibility="Collapsed"
-        MaxContentWidth="{Binding ActualWidth, ElementName=ContentGrid}">
+        x:Name="Dialog"
+        MaxContentWidth="{Binding ActualWidth, ElementName=ContentGrid}"
+        d:DataContext="{d:DesignInstance viewModels:TabPickerViewModel}">
     <dialogs:BaseDialog.Title>
         <l:Catalog Message="Stash Bookmark" />
     </dialogs:BaseDialog.Title>
@@ -24,8 +27,12 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Label Margin="0,0,4,0" Content="{l:Catalog 'Name'}"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Text,ElementName=window}"
+        <Label Margin="0,0,4,0">
+            <Label.Content>
+                <l:Catalog Message="Name"></l:Catalog>
+            </Label.Content>
+        </Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}"
                  utils:XamlHelper.FocusOnLoaded="True" controls:TextBoxHelper.SelectAllOnFocus="True"/>
         <Border Padding="2" Background="#383838" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal">
@@ -33,10 +40,16 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border Background="Black" Margin="1,1,0,0">
-                                <Rectangle Width="32" Height="32" Margin="1" MouseDown="Rectangle_MouseDown">
+                                <Rectangle Width="32" Height="32" Margin="1">
                                     <Rectangle.Fill>
                                         <SolidColorBrush Color="{Binding}"/>
                                     </Rectangle.Fill>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <utils:Setter Property="{Binding DataContext.Color, ElementName=Dialog}"
+                                                          Value="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                 </Rectangle>
                             </Border>
                         </DataTemplate>
@@ -81,9 +94,9 @@
                     </ItemsControl.ItemsSource>
                 </ItemsControl>
                 <Border Background="Black"  Height="104" Padding="1" Margin="1">
-                    <Rectangle Width="32" Height="102" Name="reSelectedColor">
+                    <Rectangle Width="32" Height="102">
                         <Rectangle.Fill>
-                            <SolidColorBrush Color="{Binding SelectedColor,ElementName=window}"></SolidColorBrush>
+                            <SolidColorBrush Color="{Binding Color}"></SolidColorBrush>
                         </Rectangle.Fill>
                     </Rectangle>
                 </Border>
@@ -93,18 +106,19 @@
         <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
                     Style="{StaticResource DialogPanel}">
             <Button Style="{StaticResource DialogPanelButton}"
-                    Click="Button_Delete_Click">
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Delete}"
+                    Visibility="{Binding IsDeletable, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <l:Catalog Message="Delete"/>
             </Button>
             <Button Style="{StaticResource AccentedDialogPanelButton}"
-                    Click="Button_OK_Click">
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Affirmative}">
                 <l:Catalog Message="OK"/>
             </Button>
             <Button IsCancel="True" IsDefault="True"
                     Style="{StaticResource AccentedDialogPanelButton}"
-                    Click="Button_Cancel_Click">
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Negative}">
                 <l:Catalog Message="Cancel"/>
             </Button>
         </StackPanel>
     </Grid>
-</dialogs:CloseableBaseDialog>
+</dialogs:BaseDialog>
