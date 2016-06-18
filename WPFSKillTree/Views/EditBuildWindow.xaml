@@ -54,11 +54,13 @@
 
         <StackPanel Style="{StaticResource DialogPanel}">
             <Button Style="{StaticResource AccentedDialogPanelButton}"
-                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource True}">
+                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource True}"
+                    IsDefault="True">
                 <l:Catalog Message="OK"/>
             </Button>
             <Button Style="{StaticResource AccentedDialogPanelButton}"
-                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource False}">
+                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource False}"
+                    IsCancel="True">
                 <l:Catalog Message="Cancel"/>
             </Button>
         </StackPanel>

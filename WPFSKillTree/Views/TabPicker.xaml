@@ -111,10 +111,11 @@
                 <l:Catalog Message="Delete"/>
             </Button>
             <Button Style="{StaticResource AccentedDialogPanelButton}"
-                    Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Affirmative}">
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Affirmative}"
+                    IsDefault="True">
                 <l:Catalog Message="OK"/>
             </Button>
-            <Button IsCancel="True" IsDefault="True"
+            <Button IsDefault="True"
                     Style="{StaticResource AccentedDialogPanelButton}"
                     Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Negative}">
                 <l:Catalog Message="Cancel"/>

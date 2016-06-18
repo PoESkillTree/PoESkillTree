@@ -13,9 +13,9 @@
     MaxContentWidth="500"
     Title="{Binding DisplayName}">
     <ContentControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converter:InvertBoolConverter x:Key="InvertBoolConverter" />
         <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+        <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     </ContentControl.Resources>
     <Grid Margin="0 10 0 0">
         <Grid.RowDefinitions>
@@ -23,11 +23,12 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding ImageColumnWidth}" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Image Margin="0 5 10 0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Height="32"
-               Grid.Column="0" Grid.Row="0" Source="{Binding NotificationImageSource}"/>
+               Grid.Column="0" Grid.Row="0" Source="{Binding NotificationImageSource}"
+               Visibility="{Binding NotificationImageSource, Converter={StaticResource NullToVisibilityConverter}}"/>
         <StackPanel Grid.Column="1" Grid.Row="0">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <TextBlock Margin="0 5 0 0"

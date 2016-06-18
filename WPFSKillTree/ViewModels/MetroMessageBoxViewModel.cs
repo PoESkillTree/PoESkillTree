@@ -5,79 +5,45 @@ namespace POESKillTree.ViewModels
 {
     public class MetroMessageBoxViewModel : CloseableViewModel<MessageBoxResult>
     {
-        #region fields
-        private readonly string _message;
-        private readonly string _details;
-        private readonly ImageSource _imageSource;
-
-        private readonly bool _isYesVisible;
-        private readonly bool _isNoVisible;
-        private readonly bool _isOKVisible;
-        private readonly bool _isCancelVisible;
-        #endregion
-
         public MetroMessageBoxViewModel(string message, string details, string title, MessageBoxButton buttons, ImageSource imageSource)
         {
-            _message = message;
-            _details = details;
+            Message = message;
+            Details = details;
             DisplayName = title;
             switch (buttons)
             {
                 case MessageBoxButton.YesNo:
-                    _isYesVisible = _isNoVisible = true;
+                    IsYesVisible = IsNoVisible = true;
                     break;
                 case MessageBoxButton.YesNoCancel:
-                    _isYesVisible = _isNoVisible = _isCancelVisible = true;
+                    IsYesVisible = IsNoVisible = IsCancelVisible = true;
                     break;
                 case MessageBoxButton.OK:
-                    _isOKVisible = true;
+                    IsOKVisible = true;
                     break;
                 case MessageBoxButton.OKCancel:
-                    _isOKVisible = _isCancelVisible = true;
+                    IsOKVisible = IsCancelVisible = true;
                     break;
             }
-            _imageSource = imageSource;
+            NotificationImageSource = imageSource;
         }
 
         #region elements content
-        public string Message
-        {
-            get { return _message; }
-        }
+        public string Message { get; }
 
-        public string Details
-        {
-            get { return _details; }
-        }
+        public string Details { get; }
 
-        public ImageSource NotificationImageSource
-        {
-            get { return _imageSource; }
-        }
-
-        public string ImageColumnWidth
-        {
-            get { return _imageSource == null ? "0" : "Auto"; }
-        }
+        public ImageSource NotificationImageSource { get; }
         #endregion
 
         #region buttons visibility
-        public bool IsYesVisible
-        {
-            get { return _isYesVisible; }
-        }
-        public bool IsNoVisible
-        {
-            get { return _isNoVisible; }
-        }
-        public bool IsOKVisible
-        {
-            get { return _isOKVisible; }
-        }
-        public bool IsCancelVisible
-        {
-            get { return _isCancelVisible; }
-        }
+        public bool IsYesVisible { get; }
+
+        public bool IsNoVisible { get; }
+
+        public bool IsOKVisible { get; }
+
+        public bool IsCancelVisible { get; }
         #endregion
     }
 }

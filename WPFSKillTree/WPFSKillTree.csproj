@@ -290,8 +290,9 @@
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsDialogCoordinator.cs" />
-    <Compile Include="Utils\Converter\MathConverter.cs" />
-    <Compile Include="Utils\Converter\StringConverter.cs" />
+    <Compile Include="Utils\Converter\SubtractionConverter.cs" />
+    <Compile Include="Utils\Converter\NullToVisibilityConverter.cs" />
+    <Compile Include="Utils\Converter\StringToVisibilityConverter.cs" />
     <Compile Include="Controls\Dialogs\ExtendedDialogManager.cs" />
     <Compile Include="Utils\DirectoryEx.cs" />
     <Compile Include="Utils\Extensions\DependencyObjectExtensions.cs" />
@@ -321,10 +322,9 @@
       <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Extensions\CollectionExtensions.cs" />
-    <Compile Include="Utils\Converter\BoolConverter.cs" />
+    <Compile Include="Utils\Converter\InvertBoolConverter.cs" />
     <Compile Include="Utils\Converter\EnumConverter.cs" />
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />
-    <Compile Include="Utils\Converter\NumberLessStringComparer.cs" />
     <Compile Include="Utils\Extensions\EnumExtensions.cs" />
     <Compile Include="Utils\Notifier.cs" />
     <Compile Include="Utils\Extensions\PropertyExtension.cs" />
