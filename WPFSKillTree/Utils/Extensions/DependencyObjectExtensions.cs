@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using MahApps.Metro.Controls;
 
 namespace POESKillTree.Utils.Extensions
 {
@@ -23,6 +25,19 @@ namespace POESKillTree.Utils.Extensions
                     yield return childOfChild;
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the MetroWindow this dependency object is located in.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">If this dependency object is not located in a MetroWindow
+        /// </exception>
+        public static MetroWindow GetMetroWindow(this DependencyObject dependencyObject)
+        {
+            var window = Window.GetWindow(dependencyObject) as MetroWindow;
+            if (window == null)
+                throw new InvalidOperationException("This dependency object is not located in a MetroWindow");
+            return window;
         }
     }
 }

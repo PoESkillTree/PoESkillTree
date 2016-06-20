@@ -20,23 +20,22 @@
     <Grid x:Name="ContentGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Label Margin="0,0,4,0">
-            <Label.Content>
-                <l:Catalog Message="Name"></l:Catalog>
-            </Label.Content>
-        </Label>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}"
-                 utils:XamlHelper.FocusOnLoaded="True" controls:TextBoxHelper.SelectAllOnFocus="True"/>
-        <Border Padding="2" Background="#383838" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <TextBox Grid.Row="0" Text="{Binding Name}"
+                 utils:XamlHelper.FocusOnLoaded="True" controls:TextBoxHelper.SelectAllOnFocus="True">
+            <controls:TextBoxHelper.Watermark>
+                <l:Catalog Message="Name" />
+            </controls:TextBoxHelper.Watermark>
+        </TextBox>
+        <Border Padding="2" Background="#383838" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal">
-                <ItemsControl  Width="316" Height="106" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+                <ItemsControl  Width="316" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border Background="Black" Margin="1,1,0,0">
@@ -93,7 +92,7 @@
                         </x:Array>
                     </ItemsControl.ItemsSource>
                 </ItemsControl>
-                <Border Background="Black"  Height="104" Padding="1" Margin="1">
+                <Border Background="Black" Padding="1" Margin="1">
                     <Rectangle Width="32" Height="102">
                         <Rectangle.Fill>
                             <SolidColorBrush Color="{Binding Color}"></SolidColorBrush>
@@ -103,13 +102,20 @@
             </StackPanel>
         </Border>
 
-        <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
-                    Style="{StaticResource DialogPanel}">
-            <Button Style="{StaticResource DialogPanelButton}"
-                    Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Delete}"
+        <StackPanel Grid.Row="2" Height="50"
+                    Style="{StaticResource DialogPanel}"
                     Visibility="{Binding IsDeletable, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <l:Catalog Message="Delete"/>
+            <Button Style="{StaticResource DialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.DeleteIncludingItems}">
+                <l:Catalog Message="Delete bookmark and items"/>
             </Button>
+            <Button Style="{StaticResource DialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Delete}">
+                <l:Catalog Message="Delete bookmark"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="3"
+                    Style="{StaticResource DialogPanel}">
             <Button Style="{StaticResource AccentedDialogPanelButton}"
                     Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Affirmative}"
                     IsDefault="True">

@@ -13,7 +13,9 @@ using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using MB.Algodat;
 using POESKillTree.Controls.Dialogs;
+using POESKillTree.Localization;
 using POESKillTree.Model.Items;
+using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
 using POESKillTree.Views;
 
@@ -635,7 +637,7 @@ namespace POESKillTree.Controls
             {
                 IsDeletable = false
             };
-            var result = await this.ShowDialogAsync(vm, new TabPicker());
+            var result = await this.GetMetroWindow().ShowDialogAsync(vm, new TabPicker());
             if (result == TabPickerResult.Affirmative)
             {
                 AddBookmark(new StashBookmark(vm.Name, PageTop + 1, vm.Color));
@@ -677,7 +679,7 @@ namespace POESKillTree.Controls
                     Name = bm.Name,
                     Color = bm.Color
                 };
-                var result = await this.ShowDialogAsync(vm, new TabPicker());
+                var result = await this.GetMetroWindow().ShowDialogAsync(vm, new TabPicker());
                 switch (result)
                 {
                     case TabPickerResult.Delete:
@@ -690,6 +692,17 @@ namespace POESKillTree.Controls
                         }
                         ResizeScrollbarThumb();
                         break;
+
+                    case TabPickerResult.DeleteIncludingItems:
+                        if (await this.GetMetroWindow().ShowQuestionAsync(
+                                L10n.Message("This will delete all items between this and the next bookmark and can not be undone.\nDo you want to continue?"),
+                                L10n.Message("Delete items"))
+                            == MessageBoxResult.Yes)
+                        {
+                            DeleteBookmarkAndItems(bm);
+                        }
+                        break;
+
                     case TabPickerResult.Affirmative:
                         bm.Name = vm.Name;
                         bm.Color = vm.Color;
@@ -700,6 +713,45 @@ namespace POESKillTree.Controls
                         break;
                 }
             }
+        }
+
+        private void DeleteBookmarkAndItems(StashBookmark bm)
+        {
+            var from = bm.Position;
+            var to =
+                Bookmarks.Where(b => b.Position > from)
+                    .Select(b => b.Position)
+                    .DefaultIfEmpty(LastLine)
+                    .Min();
+            var diff = to - from;
+
+            foreach (var item in Items.ToList())
+            {
+                if (item.Y >= from && item.Y < to)
+                {
+                    Items.Remove(item);
+                }
+                else if (item.Y >= to)
+                {
+                    item.Y -= diff;
+                    Items.Remove(item);
+                    Items.Add(item);
+                }
+            }
+
+            Bookmarks.Remove(bm);
+            _usedBMarks.Values.ForEach(gcontent.Children.Remove);
+            _usedBMarks.Clear();
+            foreach (var bookmark in Bookmarks.ToList())
+            {
+                if (bookmark.Position >= to)
+                {
+                    bookmark.Position -= diff;
+                    Bookmarks.Remove(bookmark);
+                    AddBookmark(bookmark);
+                }
+            }
+            ResizeScrollbarThumb();
         }
 
         private void control_Loaded(object sender, RoutedEventArgs e)

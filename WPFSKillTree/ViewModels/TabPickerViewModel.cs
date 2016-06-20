@@ -6,7 +6,8 @@ namespace POESKillTree.ViewModels
     {
         Affirmative,
         Negative,
-        Delete
+        Delete,
+        DeleteIncludingItems
     }
 
     public class TabPickerViewModel : CloseableViewModel<TabPickerResult>
