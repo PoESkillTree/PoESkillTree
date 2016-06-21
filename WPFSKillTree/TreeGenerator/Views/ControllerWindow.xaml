@@ -37,7 +37,8 @@
                          Value="{Binding ProgressbarCurrent, Mode=OneWay}"
                          IsEnabled="{Binding ProgressbarEnabled}"
                          Height="20" HorizontalAlignment="Stretch" Margin="5"
-                         BorderThickness="0"/>
+                         BorderThickness="0"
+                         Background="#1FFFFFFF"/>
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding ProgressbarText}"/>
         </Grid>
 

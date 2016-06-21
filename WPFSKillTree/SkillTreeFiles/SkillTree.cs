@@ -1307,7 +1307,7 @@ namespace POESKillTree.SkillTreeFiles
 #endif
                 // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
                 var settingsVm = new SettingsViewModel(this, SettingsDialogCoordinator.Instance,
-                    new SteinerTabViewModel(this));
+                    new SteinerTabViewModel(this)) {Iterations = 1};
                 var registration = DialogParticipation.GetAssociation(this);
                 DialogParticipation.SetRegister(registration, settingsVm);
                 await settingsVm.RunAsync();

@@ -122,7 +122,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set { SetProperty(ref _selectedTabIndex, value); }
         }
 
-        private int _iterations = 1;
+        private int _iterations = 3;
         /// <summary>
         /// Gets or sets number of iterations this solver will run.
         /// </summary>

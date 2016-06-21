@@ -590,6 +590,12 @@ namespace POESKillTree.Model.Items
             return Regex.Replace(json, @"<<[a-zA-Z0-9:]+>>", "");
         }
 
+        public void CopyGemsFrom(Item source)
+        {
+            _gems.Clear();
+            _gems.AddRange(source.Gems);
+        }
+
         // Returns gems linked to specified gem.
         public List<Item> GetLinkedGems(Item gem)
         {

@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
+using System.Linq;
 using MahApps.Metro.Controls;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
@@ -61,7 +62,24 @@ namespace POESKillTree.Controls
             e.Effects = effect;
             var draggedItem = (DraggedItem) e.Data.GetData(typeof(DraggedItem));
             var visualizer = (ItemVisualizer) sender;
-            visualizer.Item = effect == DragDropEffects.Copy ? new Item(draggedItem.Item) : draggedItem.Item;
+            if (effect == DragDropEffects.Copy)
+            {
+                var newItem = new Item(draggedItem.Item);
+                var oldItem = visualizer.Item;
+                // Copy gems from old item if the old item has gems, this item doesn't have gems and is not
+                // from this Inventory (but from the Stash).
+                if (oldItem?.Gems != null && oldItem.Gems.Any()
+                    && (newItem.Gems == null || !newItem.Gems.Any())
+                    && draggedItem.SourceItemVisualizer.TryFindParent<Inventory>() != this)
+                {
+                    newItem.CopyGemsFrom(oldItem);
+                }
+                visualizer.Item = newItem;
+            }
+            else
+            {
+                visualizer.Item = draggedItem.Item;
+            }
         }
 
         private void KeyDownHandler(object sender, KeyEventArgs e)

@@ -677,6 +677,11 @@ namespace POESKillTree.Views
                     _settingsWindow = new SettingsWindow { DataContext = vm};
                     DialogParticipation.SetRegister(_settingsWindow, vm);
                 }
+                if (_settingsWindow.IsVisible)
+                {
+                    await this.ShowInfoAsync(L10n.Message("The Skill Tree Generator is already open"));
+                    return;
+                }
                 await this.ShowChildWindowAsync(_settingsWindow);
             }
             catch (Exception ex)

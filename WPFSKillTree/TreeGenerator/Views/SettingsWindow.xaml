@@ -12,7 +12,7 @@
     d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
     Title="{Binding DisplayName}"
     AllowMove="True" IsModal="False" ShowCloseButton="True">
-    <Grid Height="550" Margin="-4 0 -4 -4">
+    <Grid Height="600" Margin="-4 0 -4 -4">
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -46,7 +46,7 @@
             <l:Catalog Message="Total points:" />
         </Label>
         <TextBox Grid.Row="2" Grid.Column="1" x:Name="TotalPoints" Text="{Binding TotalPoints, Mode=OneWay}" IsReadOnly="True"
-                 Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,40,0"/>
+                 Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,45,0"/>
 
         <Label Grid.Row="3" Grid.Column="0" Margin="5" Target="{Binding ElementName=Iterations}">
             <l:Catalog Message="Iterations:" />

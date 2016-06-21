@@ -298,7 +298,8 @@
                 <TabItem.Header>
                     <l:Catalog Message="Settings"/>
                 </TabItem.Header>
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
+                      Margin="0 15 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
