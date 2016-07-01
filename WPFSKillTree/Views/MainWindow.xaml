@@ -9,6 +9,7 @@
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         xmlns:items="clr-namespace:POESKillTree.Model.Items"
         xmlns:model="clr-namespace:POESKillTree.Model"
+        xmlns:views="clr-namespace:POESKillTree.Views"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Title="PoESkillTree" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
@@ -185,6 +186,14 @@
         </ControlTemplate>
     </Window.Resources>
 
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout x:Name="BuildsFlyout">
+                <views:BuildsControl />
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+    
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <!-- Making it a disabled button is a lazy way for not having to style it manually. -->

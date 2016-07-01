@@ -73,12 +73,13 @@ namespace POESKillTree.Controls.Dialogs
             return ShowAsync(window, message, details, title ?? L10n.Message("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        public static Task<string> ShowInputAsync(this MetroWindow window, string title, string message)
+        public static Task<string> ShowInputAsync(this MetroWindow window, string title, string message, string defaultText = "")
         {
             var settings = new MetroDialogSettings
             {
                 NegativeButtonText = L10n.Message("Cancel"),
-                AffirmativeButtonText = L10n.Message("OK")
+                AffirmativeButtonText = L10n.Message("OK"),
+                DefaultText = defaultText
             };
             return window.ShowInputAsync(title, message, settings);
         }

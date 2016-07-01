@@ -14,7 +14,7 @@ namespace POESKillTree.Controls.Dialogs
 
         Task ShowInfoAsync(object context, string message, string details = null, string title = null);
 
-        Task<string> ShowInputAsync(object context, string title, string message);
+        Task<string> ShowInputAsync(object context, string title, string message, string defaultText = "");
 
         Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message,
             bool isCancelable = false);

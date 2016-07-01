@@ -5,7 +5,7 @@
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:md="clr-namespace:Markdown.Xaml"
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
-    xmlns:utils="clr-namespace:POESKillTree.Utils"
+    xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
     x:Name="Window">
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="Help"/>
@@ -41,6 +41,6 @@
         <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter" Markdown="{StaticResource Markdown}"/>
     </dialogs:CloseableBaseDialog.Resources>
     <FlowDocumentScrollViewer Zoom="80" Document="{Binding Document, ElementName=Window, Converter={StaticResource TextToFlowDocumentConverter}}"
-                              utils:XamlHelper.MainWindowRelativeMaxHeight="300"/>
+                              wpf:Helper.MainWindowRelativeMaxHeight="300"/>
 </dialogs:CloseableBaseDialog>
 

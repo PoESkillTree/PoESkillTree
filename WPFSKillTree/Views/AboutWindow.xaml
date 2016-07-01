@@ -5,7 +5,7 @@
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:properties="clr-namespace:POESKillTree.Properties"
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
-    xmlns:utils="clr-namespace:POESKillTree.Utils"
+    xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
     MaxContentWidth="500">
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="About PoESkillTree"/>
@@ -13,7 +13,7 @@
     <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type Hyperlink}">
-                <Setter Property="utils:XamlHelper.NavigateExternally" Value="True" />
+                <Setter Property="wpf:Helper.NavigateExternally" Value="True" />
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>

@@ -6,10 +6,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
-        xmlns:utils="clr-namespace:POESKillTree.Utils"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:viewModels="clr-namespace:POESKillTree.ViewModels"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
         mc:Ignorable="d"
         x:Name="Dialog"
         MaxContentWidth="{Binding ActualWidth, ElementName=ContentGrid}"
@@ -28,7 +28,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0" Text="{Binding Name}"
-                 utils:XamlHelper.FocusOnLoaded="True" controls:TextBoxHelper.SelectAllOnFocus="True">
+                 wpf:Helper.FocusOnLoaded="True" controls:TextBoxHelper.SelectAllOnFocus="True">
             <controls:TextBoxHelper.Watermark>
                 <l:Catalog Message="Name" />
             </controls:TextBoxHelper.Watermark>
@@ -45,7 +45,7 @@
                                     </Rectangle.Fill>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseDown">
-                                            <utils:Setter Property="{Binding DataContext.Color, ElementName=Dialog}"
+                                            <wpf:Setter Property="{Binding DataContext.Color, ElementName=Dialog}"
                                                           Value="{Binding}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>

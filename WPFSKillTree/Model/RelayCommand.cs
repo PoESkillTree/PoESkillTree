@@ -31,7 +31,7 @@ namespace POESKillTree.Model
         {
             if (_canExecute == null)
             {
-                return true;
+                return Equals(parameter, default(T)) || parameter is T;
             }
             // Null or other defaults *are* valid input but are not considered
             // of correct type ("parameter is T" is false if it's null).

@@ -101,6 +101,10 @@
     <Reference Include="ExpressionEvaluator">
       <HintPath>.\ExpressionEvaluator.dll</HintPath>
     </Reference>
+    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.1.0.0-ALPHA013\lib\net40\GongSolutions.Wpf.DragDrop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
@@ -210,6 +214,7 @@
     <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Bandit.cs" />
+    <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\Items\Affixes\Affix.cs" />
     <Compile Include="Model\Items\Affixes\ItemMod.cs" />
     <Compile Include="Model\Items\Affixes\ItemModTier.cs" />
@@ -290,6 +295,7 @@
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsDialogCoordinator.cs" />
+    <Compile Include="Utils\Converter\BooleanToStringConverter.cs" />
     <Compile Include="Utils\Converter\SubtractionConverter.cs" />
     <Compile Include="Utils\Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Utils\Converter\StringToVisibilityConverter.cs" />
@@ -300,11 +306,13 @@
     <Compile Include="Utils\Extensions\TaskExtensions.cs" />
     <Compile Include="Utils\FileEx.cs" />
     <Compile Include="Utils\NotifyingTask.cs" />
-    <Compile Include="Utils\Setter.cs" />
     <Compile Include="Utils\WikiUtils.cs" />
     <Compile Include="Utils\Win32.cs" />
-    <Compile Include="Utils\XamlHelper.cs" />
+    <Compile Include="Utils\Wpf\BindingProxy.cs" />
+    <Compile Include="Utils\Wpf\Setter.cs" />
+    <Compile Include="Utils\Wpf\Helper.cs" />
     <Compile Include="ViewModels\AttributeToTextblockConverter.cs" />
+    <Compile Include="ViewModels\BuildsViewModel.cs" />
     <Compile Include="ViewModels\CloseableViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
@@ -313,6 +321,7 @@
     <Compile Include="ViewModels\DownloadStashViewModel.cs" />
     <Compile Include="ViewModels\EditBuildViewModel.cs" />
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
+    <Compile Include="Utils\Wpf\StyleSelectorByType.cs" />
     <Compile Include="ViewModels\TabPickerViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
@@ -355,6 +364,9 @@
     </Compile>
     <Compile Include="Controls\BanditSelection.xaml.cs">
       <DependentUpon>BanditSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BuildsControl.xaml.cs">
+      <DependentUpon>BuildsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CraftWindow.xaml.cs">
       <DependentUpon>CraftWindow.xaml</DependentUpon>
@@ -460,6 +472,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\BanditSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BuildsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

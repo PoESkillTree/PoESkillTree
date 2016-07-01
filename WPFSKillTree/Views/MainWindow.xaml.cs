@@ -647,6 +647,10 @@ namespace POESKillTree.Views
 
         private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
         {
+            BuildsFlyout.DataContext = new BuildsViewModel(DialogCoordinator.Instance);
+            DialogParticipation.SetRegister(BuildsFlyout, BuildsFlyout.DataContext);
+            BuildsFlyout.IsOpen = true;
+
             Tree.UnhighlightAllNodes();
             ClearSearch();
         }

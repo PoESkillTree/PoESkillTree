@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Serialization;
-using POESKillTree.ViewModels;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using JetBrains.Annotations;

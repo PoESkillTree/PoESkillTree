@@ -94,10 +94,10 @@ namespace POESKillTree.Controls.Dialogs
             await metroWindow.ShowInfoAsync(message, details, title);
         }
 
-        public async Task<string> ShowInputAsync(object context, string title, string message)
+        public async Task<string> ShowInputAsync(object context, string title, string message, string defaultText = "")
         {
             var metroWindow = await GetMetroWindowAsync(context);
-            return await metroWindow.ShowInputAsync(title, message);
+            return await metroWindow.ShowInputAsync(title, message, defaultText);
         }
 
         public async Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message, bool isCancelable = false)
