@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Controls;
 using System.Xml.Serialization;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,7 +18,9 @@ namespace POESKillTree.Model
     public interface IPersistentData : INotifyPropertyChanged, INotifyPropertyChanging
     {
         IOptions Options { get; }
-        PoEBuild CurrentBuild { get; }
+        PoEBuild CurrentBuild { get; set; }
+        PoEBuild SelectedBuild { get; set; }
+        BuildFolder RootBuild { get; }
         EquipmentData EquipmentData { get; }
         IReadOnlyList<Item> StashItems { get; }
         IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
@@ -46,7 +47,7 @@ namespace POESKillTree.Model
             set { SetProperty(ref _appVersion, value); }
         }
 
-        private Options _options;
+        private Options _options = new Options();
         public Options Options
         {
             get { return _options; }
@@ -62,6 +63,13 @@ namespace POESKillTree.Model
             set { SetProperty(ref _currentBuild, value); }
         }
 
+        private PoEBuild _selectedBuild;
+        public PoEBuild SelectedBuild
+        {
+            get { return _selectedBuild; }
+            set { SetProperty(ref _selectedBuild, value); }
+        }
+
         private List<StashBookmark> _stashBookmarks;
         public List<StashBookmark> StashBookmarks
         {
@@ -69,12 +77,10 @@ namespace POESKillTree.Model
             set { SetProperty(ref _stashBookmarks, value); }
         }
 
-        private List<PoEBuild> _builds;
-        public List<PoEBuild> Builds
-        {
-            get { return _builds; }
-            set { SetProperty(ref _builds, value); }
-        }
+        [XmlArray("Builds")]
+        public List<PoEBuild> XmlBuilds { get; set; }
+
+        public BuildFolder RootBuild { get; } = new BuildFolder {Name = "Root"};
 
         private const string FileName = "PersistentData";
 
@@ -85,7 +91,8 @@ namespace POESKillTree.Model
             get { return _stash; }
         }
 
-        private IDictionary<string, IEnumerable<StashBookmark>> _leagueStashes;
+        private IDictionary<string, IEnumerable<StashBookmark>> _leagueStashes =
+            new Dictionary<string, IEnumerable<StashBookmark>>();
         [XmlIgnore]
         public IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes
         {
@@ -115,17 +122,29 @@ namespace POESKillTree.Model
 
         public PersistentData(bool loadFromFile)
         {
-            Options = new Options();
-            CurrentBuild = new PoEBuild
-            {
-                Name = "New Build",
-                Url = Constants.TreeAddress + SkillTree.GetCharacterURL(3, 0),
-                Level = "1"
-            };
-            Builds = new List<PoEBuild>();
-            LeagueStashes = new Dictionary<string, IEnumerable<StashBookmark>>();
             if (loadFromFile)
                 LoadFromFile(AppData.GetFolder(true) + FileName + ".xml");
+            if (CurrentBuild == null)
+            {
+                CurrentBuild = new PoEBuild
+                {
+                    Name = "New Build",
+                    TreeUrl = Constants.TreeAddress + SkillTree.GetCharacterURL(3),
+                    Level = 1
+                };
+            }
+            var buildNameMatch =
+                (from PoEBuild build in RootBuild.BuildsPreorder()
+                 where build.Name == CurrentBuild.Name
+                 select build).FirstOrDefault();
+            if (buildNameMatch != null)
+            {
+                CurrentBuild = buildNameMatch;
+            }
+            else
+            {
+                RootBuild.Builds.Add(CurrentBuild); // todo Might not be what we want
+            }
         }
 
         // Creates empty file with language option set.
@@ -145,6 +164,7 @@ namespace POESKillTree.Model
         {
             XmlLeagueStashes = new List<XmlLeagueStash>(LeagueStashes.Select(
                 p => new XmlLeagueStash {Name = p.Key, Bookmarks = new List<StashBookmark>(p.Value)}));
+            XmlBuilds = RootBuild.Builds.SelectMany(b => FlattenBuilds(b)).ToList();
             if (File.Exists(path))
             {
                 string pathBak = AppData.GetFolder(true) + FileName + ".bak";
@@ -159,6 +179,54 @@ namespace POESKillTree.Model
             SerializeStash();
         }
 
+        private static IEnumerable<PoEBuild> FlattenBuilds(IBuild build, string parentNames = null)
+        {
+            var list = new List<PoEBuild>();
+            var prefix = string.IsNullOrEmpty(parentNames) ? "" : parentNames + "/";
+            var b = build as PoEBuild;
+            if (b != null)
+            {
+                b = b.DeepClone();
+                b.Name = prefix + b.Name;
+                list.Add(b);
+            }
+            else
+            {
+                var folder = (BuildFolder) build;
+                foreach (var child in folder.Builds)
+                {
+                    list.AddRange(FlattenBuilds(child, prefix + folder.Name));
+                }
+            }
+            return list;
+        }
+
+        private void InitializeRootBuild(IEnumerable<PoEBuild> builds)
+        {
+            var folderDict = new Dictionary<string, BuildFolder>();
+            foreach (var build in builds)
+            {
+                var parts = build.Name.Split('/');
+                var prefix = "";
+                var folder = RootBuild;
+                for (var i = 0; i < parts.Length - 1; i++)
+                {
+                    var upperFolder = folder;
+                    prefix += "/" + parts[i];
+                    if (!folderDict.TryGetValue(prefix, out folder))
+                    {
+                        folder = new BuildFolder {Name = parts[i]};
+                        upperFolder.Builds.Add(folder);
+                        folderDict[prefix] = folder;
+                    }
+                }
+                var b = build.DeepClone();
+                b.Name = parts[parts.Length - 1];
+                b.KeepChanges();
+                folder.Builds.Add(b);
+            }
+        }
+
         private void LoadFromFile(string filePath)
         {
             try
@@ -169,7 +237,7 @@ namespace POESKillTree.Model
                     var ser = new XmlSerializer(typeof(PersistentData));
                     var obj = (PersistentData)ser.Deserialize(reader);
                     Options = obj.Options;
-                    Builds = obj.Builds;
+                    InitializeRootBuild(obj.XmlBuilds);
                     CurrentBuild = obj.CurrentBuild;
                     StashBookmarks = obj.StashBookmarks;
                     AppVersion = obj.AppVersion;
@@ -240,11 +308,6 @@ namespace POESKillTree.Model
             {
                 Log.Error("Could not deserialize stash", e);
             }
-        }
-
-        public void SetBuilds(ItemCollection items)
-        {
-            Builds = (from PoEBuild item in items select item).ToList();
         }
     }
 }

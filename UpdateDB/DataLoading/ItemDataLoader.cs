@@ -10,6 +10,7 @@ using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
@@ -187,14 +188,14 @@ namespace UpdateDB.DataLoading
                     Log.Warn("Could not parse implicit " + FindContent(implicitCell));
                     yield break;
                 }
-                var from = ParseFloat(matches[0].Value);
+                var from = matches[0].Value.ParseFloat();
                 yield return new XmlStat
                 {
                     From = from,
                     To = from,
                     Name = mod.Replace("#-#", "# minimum")
                 };
-                from = ParseFloat(matches[1].Value);
+                from = matches[1].Value.ParseFloat();
                 yield return new XmlStat
                 {
                     From = from,
@@ -204,11 +205,11 @@ namespace UpdateDB.DataLoading
             }
             else
             {
-                var from = ParseFloat(matches[0].Value);
+                var from = matches[0].Value.ParseFloat();
                 yield return new XmlStat
                 {
                     From = from,
-                    To = matches.Count > 1 ? ParseFloat(matches[1].Value) : from,
+                    To = matches.Count > 1 ? matches[1].Value.ParseFloat() : from,
                     Name = mod.Replace("(# to #)", "#")
                 };
             }
@@ -242,7 +243,7 @@ namespace UpdateDB.DataLoading
                 }
                 else if (matches.Count == 1)
                 {
-                    success = TryParseFloat(matches[0].Value, out from);
+                    success = matches[0].Value.TryParseFloat(out from);
                     to = from;
                 }
                 else if (matches.Count > 2)
@@ -252,7 +253,7 @@ namespace UpdateDB.DataLoading
                 }
                 else if (numbersReplaced.Contains("#-#") || numbersReplaced.Contains("(# to #)"))
                 {
-                    success = TryParseFloat(matches[0].Value, out from) & TryParseFloat(matches[1].Value, out to);
+                    success = matches[0].Value.TryParseFloat(out from) & matches[1].Value.TryParseFloat(out to);
                 }
                 else
                 {
@@ -301,17 +302,7 @@ namespace UpdateDB.DataLoading
             if (IsNotApplicableCell(cell))
                 return @default;
             int value;
-            return TryParseInt(cell.InnerHtml, out value) ? value : @default;
-        }
-
-        private static bool TryParseCell(HtmlNode cell, out float value)
-        {
-            if (IsNotApplicableCell(cell))
-            {
-                value = 0;
-                return false;
-            }
-            return TryParseFloat(cell.InnerHtml, out value);
+            return cell.InnerHtml.TryParseInt(out value) ? value : @default;
         }
 
         private static HtmlNode GetCell(HtmlNode row, int index)

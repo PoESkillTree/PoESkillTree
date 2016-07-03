@@ -214,6 +214,7 @@
     <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Bandit.cs" />
+    <Compile Include="Model\IDeepCloneable.cs" />
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\Items\Affixes\Affix.cs" />
     <Compile Include="Model\Items\Affixes\ItemMod.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsDialogCoordinator.cs" />
     <Compile Include="Utils\Converter\BooleanToStringConverter.cs" />
+    <Compile Include="Utils\Converter\EmptyStringConverter.cs" />
     <Compile Include="Utils\Converter\SubtractionConverter.cs" />
     <Compile Include="Utils\Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Utils\Converter\StringToVisibilityConverter.cs" />
@@ -312,7 +314,11 @@
     <Compile Include="Utils\Wpf\Setter.cs" />
     <Compile Include="Utils\Wpf\Helper.cs" />
     <Compile Include="ViewModels\AttributeToTextblockConverter.cs" />
-    <Compile Include="ViewModels\BuildsViewModel.cs" />
+    <Compile Include="ViewModels\BuildsControlViewModel.cs" />
+    <Compile Include="ViewModels\Builds\AbstractBuildViewModel.cs" />
+    <Compile Include="ViewModels\Builds\BuildFolderViewModel.cs" />
+    <Compile Include="ViewModels\Builds\BuildViewModel.cs" />
+    <Compile Include="ViewModels\Builds\IBuildViewModel.cs" />
     <Compile Include="ViewModels\CloseableViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
@@ -320,6 +326,7 @@
     <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
     <Compile Include="ViewModels\DownloadStashViewModel.cs" />
     <Compile Include="ViewModels\EditBuildViewModel.cs" />
+    <Compile Include="ViewModels\ExtendedDialogCoordinator.cs" />
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
     <Compile Include="Utils\Wpf\StyleSelectorByType.cs" />
     <Compile Include="ViewModels\TabPickerViewModel.cs" />

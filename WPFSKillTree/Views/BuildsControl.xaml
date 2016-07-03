@@ -10,15 +10,21 @@
              xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:builds="clr-namespace:POESKillTree.ViewModels.Builds"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:BuildsViewModel}"
+             d:DataContext="{d:DesignInstance viewModels:BuildsControlViewModel}"
              x:Name="Control">
     <UserControl.Resources>
-        <l:Catalog Message="Right click to edit" x:Key="NullNoteText" />
         <viewModels:BuildsViewModelProxy x:Key="VmProxy" Data="{Binding}" />
         <converter:BooleanToStringConverter x:Key="DirtyBooleanConverter" TrueString="*" FalseString="" />
+        <converter:EmptyStringConverter x:Key="NoteStringConverter">
+            <converter:EmptyStringConverter.EmptyStringRepresentation>
+                <l:Catalog Message="Right click to edit"/>
+            </converter:EmptyStringConverter.EmptyStringRepresentation>
+        </converter:EmptyStringConverter>
     </UserControl.Resources>
-    <Grid Width="300">
+    <Grid Width="300"
+          Background="{DynamicResource WhiteColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -55,7 +61,7 @@
                   Grid.Row="1"
                   x:Name="TreeView">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type viewModels:BuildFolderViewModel}"
+                <HierarchicalDataTemplate DataType="{x:Type builds:BuildFolderViewModel}"
                                           ItemsSource="{Binding Children}">
                     <TextBlock Text="{Binding Build.Name}">
                         <TextBlock.ContextMenu>
@@ -112,7 +118,7 @@
                         </TextBlock.ContextMenu>
                     </TextBlock>
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type viewModels:BuildViewModel}">
+                <DataTemplate DataType="{x:Type builds:BuildViewModel}">
                     <Grid x:Name="Grid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -131,7 +137,7 @@
                         </StackPanel>
                         
                         <Grid.ToolTip>
-                            <TextBlock Text="{Binding Build.Note, TargetNullValue={StaticResource NullNoteText}}" />
+                            <TextBlock Text="{Binding Build.Note, Converter={StaticResource NoteStringConverter}}" />
                         </Grid.ToolTip>
 
                         <Grid.ContextMenu>
@@ -205,7 +211,7 @@
             </TreeView.Resources>
             
             <TreeView.ItemContainerStyleSelector>
-                <wpf:StyleSelectorByType Type="{x:Type viewModels:BuildFolderViewModel}">
+                <wpf:StyleSelectorByType Type="{x:Type builds:BuildFolderViewModel}">
                     <wpf:StyleSelectorByType.Style>
                         <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                             <Setter Property="IsExpanded" Value="{Binding Build.IsExpanded, Mode=TwoWay}" />
@@ -257,7 +263,7 @@
         </TreeView>
 
         <controls:ToggleSwitch Grid.Row="2" Margin="0 0 5 0"
-                               IsChecked="{Binding IsSkillTreeComparisionEnabled}"
+                               IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled}"
                                ContentDirection="RightToLeft"
                                HorizontalContentAlignment="Left">
             <controls:ToggleSwitch.OnLabel>

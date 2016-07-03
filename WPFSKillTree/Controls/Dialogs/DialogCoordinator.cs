@@ -58,11 +58,11 @@ namespace POESKillTree.Controls.Dialogs
             return metroWindow;
         }
 
-        protected async Task ShowDialogAsync(object context, CloseableViewModel viewModel, BaseMetroDialog view, Action onShown = null)
+        protected async Task<T> ShowDialogAsync<T>(object context, CloseableViewModel<T> viewModel, BaseMetroDialog view, Action onShown = null)
         {
             var metroWindow = await GetMetroWindowAsync(context);
 
-            await metroWindow.ShowDialogAsync(viewModel, view, onShown);
+            return await metroWindow.ShowDialogAsync(viewModel, view, onShown);
         }
 
         public async Task<MessageBoxResult> ShowQuestionAsync(object context, string message, string title = null,

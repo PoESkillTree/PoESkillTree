@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -65,7 +64,6 @@ namespace POESKillTree.Views
         private readonly Dictionary<string, AttributeGroup> _offenceListGroups = new Dictionary<string, AttributeGroup>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
-        private readonly ToolTip _noteTip = new ToolTip();
         private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attributeCollection;
         private ListCollectionView _defenceCollection;
@@ -95,6 +93,8 @@ namespace POESKillTree.Views
             get { return _tree; }
             private set
             {
+                if (_tree != null)
+                    _tree.PropertyChanged -= Tree_PropertyChanged;
                 _tree = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Tree"));
             }
@@ -105,7 +105,19 @@ namespace POESKillTree.Views
             var tree = await SkillTree.CreateAsync(_persistentData, DialogCoordinator.Instance, controller, assetLoader);
             DialogParticipation.SetRegister(this, tree);
             tree.BanditSettings = _persistentData.CurrentBuild.Bandits;
+            tree.PropertyChanged += Tree_PropertyChanged;
             return tree;
+        }
+
+        private BuildsControlViewModel _buildsControlViewModel;
+        public BuildsControlViewModel BuildsControlViewModel
+        {
+            get { return _buildsControlViewModel; }
+            set
+            {
+                _buildsControlViewModel = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BuildsControlViewModel)));
+            }
         }
 
         private Vector2D _addtransform;
@@ -151,7 +163,7 @@ namespace POESKillTree.Views
 
         private SettingsWindow _settingsWindow;
 
-        private static readonly string MainWindowTitle =
+        public string MainWindowTitle { get; } =
             FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).ProductName;
 
         public MainWindow()
@@ -162,21 +174,23 @@ namespace POESKillTree.Views
             PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
             PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
             // Re-register handlers when PersistentData.CurrentBuild is set.
-            PersistentData.PropertyChanged += (sender, args) =>
+            PersistentData.PropertyChanged += async (sender, args) =>
             {
-                if (args.PropertyName == "CurrentBuild")
+                switch (args.PropertyName)
                 {
-                    PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
-                    PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
-                    if (Tree != null)
-                        Tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
+                    case nameof(PersistentData.CurrentBuild):
+                        await CurrentBuildChanged();
+                        break;
+                    case nameof(PersistentData.SelectedBuild):
+                        UpdateTreeComparision();
+                        break;
                 }
             };
             // This makes sure CurrentBuildOnPropertyChanged is called only
             // on the PoEBuild instance currently stored in PersistentData.CurrentBuild.
             PersistentData.PropertyChanging += (sender, args) =>
             {
-                if (args.PropertyName == "CurrentBuild")
+                if (args.PropertyName == nameof(PersistentData.CurrentBuild))
                 {
                     PersistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
                 }
@@ -185,9 +199,16 @@ namespace POESKillTree.Views
 
         private async void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            if (propertyChangedEventArgs.PropertyName == "ItemData")
+            PoEBuild build;
+            switch (propertyChangedEventArgs.PropertyName)
             {
-                await LoadItemData();
+                case nameof(build.ItemData):
+                    await LoadItemData();
+                    break;
+                case nameof(build.TreeUrl):
+                    if (Tree != null)
+                        PersistentData.CurrentBuild.PointsUsed = (uint) Tree.GetPointCount()["NormalUsed"];
+                    break;
             }
         }
 
@@ -469,29 +490,39 @@ namespace POESKillTree.Views
             _justLoaded = true;
 
             // loading last build
-            if (_persistentData.CurrentBuild != null)
-                await SetCurrentBuild(_persistentData.CurrentBuild);
+            await CurrentBuildChanged();
 
-            await LoadBuildFromUrlAsync();
             _justLoaded = false;
             // loading saved build
-            lvSavedBuilds.Items.Clear();
-            foreach (var build in _persistentData.Builds)
-            {
-                lvSavedBuilds.Items.Add(build);
-            }
             _persistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAsendancySelectionList();
             await CheckAppVersionAndDoNecessaryChanges();
+            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData);
+            UpdateTreeComparision();
 
             await controller.CloseAsync();
         }
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == _persistentData.Options.Name(x => x.ShowAllAscendancyClasses))
+            if (e.PropertyName == nameof(_persistentData.Options.ShowAllAscendancyClasses))
                 Tree.ToggleAscendancyTree(_persistentData.Options.ShowAllAscendancyClasses);
+            else if (e.PropertyName == nameof(_persistentData.Options.TreeComparisonEnabled))
+                UpdateTreeComparision();
             SearchUpdate();
+        }
+
+        private void Tree_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Tree.Level):
+                    PersistentData.CurrentBuild.Level = Tree.Level;
+                    break;
+                case nameof(Tree.Chartype):
+                    PersistentData.CurrentBuild.Class = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
+                    break;
+            }
         }
 
         private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -554,10 +585,10 @@ namespace POESKillTree.Views
                         tbSkillURL_Redo();
                         break;
                     case Key.S:
-                        await SaveBuild();
+                        await BuildsControlViewModel.SaveBuild(BuildsControlViewModel.CurrentBuild);
                         break;
                     case Key.N:
-                        await NewBuild();
+                        await BuildsControlViewModel.NewBuild(BuildsControlViewModel.BuildRoot);
                         break;
                 }
             }
@@ -582,7 +613,7 @@ namespace POESKillTree.Views
                 switch (e.Key)
                 {
                     case Key.S:
-                        await SaveNewBuild();
+                        await BuildsControlViewModel.SaveBuildAs(BuildsControlViewModel.CurrentBuild);
                         break;
                 }
             }
@@ -602,9 +633,6 @@ namespace POESKillTree.Views
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            _persistentData.CurrentBuild.Url = tbSkillURL.Text;
-            _persistentData.CurrentBuild.Level = GetLevelAsString();
-            _persistentData.SetBuilds(lvSavedBuilds.Items);
             _persistentData.StashBookmarks = Stash.Bookmarks.ToList();
 
             if (_settingsWindow != null)
@@ -615,26 +643,13 @@ namespace POESKillTree.Views
 
         #endregion
 
-        #region Utility
-        private void SetTitle(string buildName)
-        {
-            Title = buildName + " - " + MainWindowTitle;
-        }
-        #endregion
-
         #region Menu
-        
-        private async void Menu_NewBuild(object sender, RoutedEventArgs e)
-        {
-            await NewBuild();
-        }
 
         private async void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
         {
             await Tree.SkillAllTaggedNodesAsync();
             UpdateUI();
-            tbSkillURL.Text = Tree.SaveToURL();
-            Tree.LoadFromURL(tbSkillURL.Text);
+            LoadBuildFromTree();
         }
 
         private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
@@ -647,10 +662,6 @@ namespace POESKillTree.Views
 
         private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
         {
-            BuildsFlyout.DataContext = new BuildsViewModel(DialogCoordinator.Instance);
-            DialogParticipation.SetRegister(BuildsFlyout, BuildsFlyout.DataContext);
-            BuildsFlyout.IsOpen = true;
-
             Tree.UnhighlightAllNodes();
             ClearSearch();
         }
@@ -675,8 +686,7 @@ namespace POESKillTree.Views
                     vm.RunFinished += (o, args) =>
                     {
                         UpdateUI();
-                        tbSkillURL.Text = Tree.SaveToURL();
-                        Tree.LoadFromURL(tbSkillURL.Text);
+                        LoadBuildFromTree();
                     };
                     _settingsWindow = new SettingsWindow { DataContext = vm};
                     DialogParticipation.SetRegister(_settingsWindow, vm);
@@ -1015,8 +1025,7 @@ namespace POESKillTree.Views
             Tree.Chartype = cbCharType.SelectedIndex;
             
             UpdateUI();
-            tbSkillURL.Text = Tree.SaveToURL();
-            Tree.LoadFromURL(tbSkillURL.Text);
+            LoadBuildFromTree();
             userInteraction = false;
             PopulateAsendancySelectionList();
             cbAscType.SelectedIndex = Tree.AscType = 0;
@@ -1032,8 +1041,7 @@ namespace POESKillTree.Views
             Tree.AscType = cbAscType.SelectedIndex;
 
             UpdateUI();
-            tbSkillURL.Text = Tree.SaveToURL();
-            Tree.LoadFromURL(tbSkillURL.Text);
+            LoadBuildFromTree();
             userInteraction = false;
         }
 
@@ -1048,29 +1056,6 @@ namespace POESKillTree.Views
             cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
         }
 
-        private string GetLevelAsString()
-        {
-            string level_string;
-            try
-            {
-                level_string = Tree.Level.ToString(CultureInfo.CurrentCulture);
-            }
-            catch
-            {
-                level_string = "0";
-            }
-            return level_string;
-        }
-
-        private void SetLevelFromString(string s)
-        {
-            int lvl;
-            if (int.TryParse(s, out lvl))
-            {
-                Tree.Level = lvl;
-            }
-        }
-
         private void Level_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> args)
         {
             UpdateUI();
@@ -1082,8 +1067,7 @@ namespace POESKillTree.Views
                 return;
             Tree.Reset();
             UpdateUI();
-            tbSkillURL.Text = Tree.SaveToURL();
-            Tree.LoadFromURL(tbSkillURL.Text);
+            LoadBuildFromTree();
         }
 
         #endregion
@@ -1470,8 +1454,7 @@ namespace POESKillTree.Views
                         }
                     }
                 }
-                tbSkillURL.Text = Tree.SaveToURL();
-                Tree.LoadFromURL(tbSkillURL.Text);
+                LoadBuildFromTree();
                 UpdateUI();
             }
             else if ((Tree.ascedancyButtonPos - v).Length < 150)
@@ -1705,276 +1688,55 @@ namespace POESKillTree.Views
 
         #endregion
 
-        #region Builds - Event Handlers
-
-        private void SavedBuildFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SavedBuildFilterChanged();
-        }
-
-        private void SavedBuildFilter_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            SavedBuildFilterChanged();
-        }
-
-        private void SavedBuildFilterChanged()
-        {
-            if (lvSavedBuilds == null) return;
-
-            var selectedItem = (ComboBoxItem)cbCharTypeSavedBuildFilter.SelectedItem;
-            var className = selectedItem.Content.ToString();
-            var filterText = tbSavedBuildFilter.Text;
-
-            foreach (PoEBuild item in lvSavedBuilds.Items)
-            {
-                item.Visible = (className.Equals("All", StringComparison.InvariantCultureIgnoreCase) ||
-                                item.Class.Equals(className, StringComparison.InvariantCultureIgnoreCase)) &&
-                               (item.Name.Contains(filterText, StringComparison.InvariantCultureIgnoreCase) ||
-                                item.Note.Contains(filterText, StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            lvSavedBuilds.Items.Refresh();
-        }
-
-        private async void lvi_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            var lvi = ((ListView)sender).SelectedItem;
-            if (lvi == null) return;
-            var build = ((PoEBuild)lvi);
-            await SetCurrentBuild(build);
-            await LoadBuildFromUrlAsync(); // loading the build
-        }
-
-        private void lvi_MouseLeave(object sender, MouseEventArgs e)
-        {
-            _noteTip.IsOpen = false;
-        }
-
-        private void lvi_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var highlightedItem = FindListViewItem(e);
-            if (highlightedItem != null)
-            {
-                var build = (PoEBuild)highlightedItem.Content;
-                _noteTip.Content = build.Note == @"" ? L10n.Message("Right click to edit") : build.Note;
-                _noteTip.IsOpen = true;
-            }
-        }
-
-        private async void lvi_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            var selectedBuild = (PoEBuild)lvSavedBuilds.SelectedItem;
-            var vm = new EditBuildViewModel(selectedBuild);
-            if (!await this.ShowDialogAsync(vm, new EditBuildWindow()))
-                return;
-
-            selectedBuild.Name = vm.Build.Name;
-            selectedBuild.Note = vm.Build.Note;
-            selectedBuild.CharacterName = vm.Build.CharacterName;
-            selectedBuild.AccountName = vm.Build.AccountName;
-            lvSavedBuilds.Items.Refresh();
-            if(selectedBuild.CurrentlyOpen)
-                SetTitle(selectedBuild.Name);
-
-            await SaveBuildsToFile();
-        }
-
-        private ListViewItem FindListViewItem(MouseEventArgs e)
-        {
-            var visualHitTest = VisualTreeHelper.HitTest(lvSavedBuilds, e.GetPosition(lvSavedBuilds)).VisualHit;
-
-            ListViewItem listViewItem = null;
-
-            while (visualHitTest != null)
-            {
-                if (visualHitTest is ListViewItem)
-                {
-                    listViewItem = visualHitTest as ListViewItem;
-
-                    break;
-                }
-                if (Equals(visualHitTest, lvSavedBuilds))
-                {
-                    return null;
-                }
-
-                visualHitTest = VisualTreeHelper.GetParent(visualHitTest);
-            }
-
-            return listViewItem;
-        }
-
-        private async void btnSaveBuild_Click(object sender, RoutedEventArgs e)
-        {
-            await SaveBuild();
-        }
-
-        private async void btnSaveNewBuild_Click(object sender, RoutedEventArgs e)
-        {
-            await SaveNewBuild();
-        }
-
-        private async void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            if (lvSavedBuilds.SelectedItems.Count <= 0) return;
-
-            if(((PoEBuild)lvSavedBuilds.SelectedItem).CurrentlyOpen)
-                await NewBuild();
-            lvSavedBuilds.Items.Remove(lvSavedBuilds.SelectedItem);
-            await SaveBuildsToFile();
-        }
-
-        private async void lvSavedBuilds_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Up && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) &&
-                lvSavedBuilds.SelectedIndex > 0)
-            {
-                await MoveBuildInList(-1);
-            }
-
-            else if (e.Key == Key.Down && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) &&
-                     lvSavedBuilds.SelectedIndex < lvSavedBuilds.Items.Count - 1)
-            {
-                await MoveBuildInList(1);
-            }
-        }
-
-        private async Task MoveBuildInList(int direction)
-        {
-            var obj = lvSavedBuilds.Items[lvSavedBuilds.SelectedIndex];
-            var selectedIndex = lvSavedBuilds.SelectedIndex;
-            lvSavedBuilds.Items.RemoveAt(selectedIndex);
-            lvSavedBuilds.Items.Insert(selectedIndex + direction, obj);
-            lvSavedBuilds.SelectedItem = lvSavedBuilds.Items[selectedIndex + direction];
-            lvSavedBuilds.SelectedIndex = selectedIndex + direction;
-            lvSavedBuilds.Items.Refresh();
-
-            await SaveBuildsToFile();
-        }
-
-        #endregion
-
         #region Builds - Services
-        private async Task SetCurrentBuild(PoEBuild build)
+
+        private async Task CurrentBuildChanged()
         {
-            foreach (PoEBuild item in lvSavedBuilds.Items)
+            var build = PersistentData.CurrentBuild;
+            build.PropertyChanged += CurrentBuildOnPropertyChanged;
+            build.Bandits.PropertyChanged += (o, a) => UpdateUI();
+            if (Tree != null)
             {
-                item.CurrentlyOpen = false;
+                Tree.BanditSettings = build.Bandits;
+                Tree.Level = build.Level;
             }
-            build.CurrentlyOpen = true;
-            lvSavedBuilds.Items.Refresh();
-            SetTitle(build.Name);
-
-            _persistentData.CurrentBuild = PoEBuild.Copy(build);
-
-            tbSkillURL.Text = build.Url;
-            SetLevelFromString(build.Level);
             await LoadItemData();
             SetCustomGroups(build.CustomGroups);
-        }
-
-        private async Task NewBuild()
-        {
-            await SetCurrentBuild(new PoEBuild
-            {
-                Name = "New Build",
-                Url = Constants.TreeAddress + SkillTree.GetCharacterURL(3),
-                Level = "1"
-            });
             await LoadBuildFromUrlAsync();
         }
 
-        private async Task SaveBuild()
+        private void LoadBuildFromTree()
         {
-            var currentOpenBuild =
-                (from PoEBuild build in lvSavedBuilds.Items
-                 where build.CurrentlyOpen
-                 select build).FirstOrDefault();
-            if (currentOpenBuild != null)
-            {
-                currentOpenBuild.Class = cbCharType.Text;
-                currentOpenBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
-                currentOpenBuild.AccountName = _persistentData.CurrentBuild.AccountName;
-                currentOpenBuild.Level = GetLevelAsString();
-                currentOpenBuild.PointsUsed = NormalUsedPoints.Content.ToString();
-                currentOpenBuild.Url = tbSkillURL.Text;
-                currentOpenBuild.ItemData = _persistentData.CurrentBuild.ItemData;
-                currentOpenBuild.LastUpdated = DateTime.Now;
-                currentOpenBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
-                currentOpenBuild.Bandits = _persistentData.CurrentBuild.Bandits.Clone();
-                currentOpenBuild.League = _persistentData.CurrentBuild.League;
-                await SetCurrentBuild(currentOpenBuild);
-                await SaveBuildsToFile();
-            }
-            else
-            {
-                await SaveNewBuild();
-            }
-        }
-
-        private async Task SaveNewBuild()
-        {
-            var vm = new EditBuildViewModel(_persistentData.CurrentBuild);
-            if (!await this.ShowDialogAsync(vm, new EditBuildWindow()))
-                return;
-
-            var newBuild = vm.Build;
-            newBuild.LastUpdated = DateTime.Now;
-            newBuild.Level = GetLevelAsString();
-            newBuild.Class = cbCharType.Text;
-            newBuild.PointsUsed = NormalUsedPoints.Content.ToString();
-            newBuild.Url = tbSkillURL.Text;
-            newBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
-
-            await SetCurrentBuild(newBuild);
-            lvSavedBuilds.Items.Add(newBuild);
-
-            if (lvSavedBuilds.Items.Count > 0)
-            {
-                await SaveBuildsToFile();
-            }
-            lvSavedBuilds.SelectedIndex = lvSavedBuilds.Items.Count - 1;
-            if(lvSavedBuilds.SelectedIndex != -1)
-                lvSavedBuilds.ScrollIntoView(lvSavedBuilds.Items[lvSavedBuilds.Items.Count - 1]);
-        }
-
-        private async Task SaveBuildsToFile()
-        {
-            try
-            {
-                _persistentData.SetBuilds(lvSavedBuilds.Items);
-                _persistentData.SaveToFile();
-            }
-            catch (Exception e)
-            {
-                await this.ShowErrorAsync(L10n.Message("An error occurred during a save operation."), e.Message);
-            }
+            PersistentData.CurrentBuild.TreeUrl = Tree.SaveToURL();
+            Tree.LoadFromURL(PersistentData.CurrentBuild.TreeUrl);
         }
 
         private async Task LoadBuildFromUrlAsync()
         {
             try
             {
+                var currentBuild = PersistentData.CurrentBuild;
+                var treeUrl = currentBuild.TreeUrl;
                 userInteraction = true;
-                if (tbSkillURL.Text.Contains("poezone.ru"))
+                if (treeUrl.Contains("poezone.ru"))
                 {
-                    await SkillTreeImporter.LoadBuildFromPoezone(DialogCoordinator.Instance, Tree, tbSkillURL.Text);
-                    tbSkillURL.Text = Tree.SaveToURL();
+                    await SkillTreeImporter.LoadBuildFromPoezone(DialogCoordinator.Instance, Tree, treeUrl);
+                    currentBuild.TreeUrl = Tree.SaveToURL();
                 }
-                else if (tbSkillURL.Text.Contains("google.com"))
+                else if (treeUrl.Contains("google.com"))
                 {
-                    Match match = Regex.Match(tbSkillURL.Text, @"q=(.*?)&");
+                    Match match = Regex.Match(treeUrl, @"q=(.*?)&");
                     if (match.Success)
                     {
-                        tbSkillURL.Text = match.ToString().Replace("q=", "").Replace("&", "");
+                        currentBuild.TreeUrl = match.ToString().Replace("q=", "").Replace("&", "");
                         await LoadBuildFromUrlAsync();
                     }
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
                 }
-                else if (tbSkillURL.Text.Contains("tinyurl.com") || tbSkillURL.Text.Contains("poeurl.com"))
+                else if (treeUrl.Contains("tinyurl.com") || treeUrl.Contains("poeurl.com"))
                 {
-                    var skillUrl = tbSkillURL.Text.Replace("preview.", "");
+                    var skillUrl = treeUrl.Replace("preview.", "");
                     if (skillUrl.Contains("poeurl.com") && !skillUrl.Contains("redirect.php"))
                     {
                         skillUrl = skillUrl.Replace("http://poeurl.com/",
@@ -1986,17 +1748,17 @@ namespace POESKillTree.Views
                             new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead));
                     response.EnsureSuccessStatusCode();
                     if (Regex.IsMatch(response.RequestMessage.RequestUri.ToString(), Constants.TreeRegex))
-                        tbSkillURL.Text = response.RequestMessage.RequestUri.ToString();
+                        currentBuild.TreeUrl = response.RequestMessage.RequestUri.ToString();
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
                     await LoadBuildFromUrlAsync();
                 }
                 else
                 {
-                    if (tbSkillURL.Text.Contains("characterName") || tbSkillURL.Text.Contains("accountName"))
-                        tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, @"\?.*", "");
-                    tbSkillURL.Text = Regex.Replace(tbSkillURL.Text, Constants.TreeRegex, Constants.TreeAddress);
-                    Tree.LoadFromURL(tbSkillURL.Text);
+                    if (treeUrl.Contains("characterName") || treeUrl.Contains("accountName"))
+                        currentBuild.TreeUrl = Regex.Replace(treeUrl, @"\?.*", "");
+                    currentBuild.TreeUrl = Regex.Replace(treeUrl, Constants.TreeRegex, Constants.TreeAddress);
+                    Tree.LoadFromURL(currentBuild.TreeUrl);
                 }
 
                 if (_justLoaded)
@@ -2020,133 +1782,8 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                tbSkillURL.Text = Tree.SaveToURL();
-                Tree.LoadFromURL(tbSkillURL.Text);
+                LoadBuildFromTree();
                 await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region Builds - DragAndDrop
-
-        private void ListViewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _dragAndDropStartPoint = e.GetPosition(lvSavedBuilds);
-        }
-
-        private async void ListViewPreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                Point position = e.GetPosition(lvSavedBuilds);
-
-                if (Math.Abs(position.X - _dragAndDropStartPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(position.Y - _dragAndDropStartPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
-                {
-                    await BeginDrag(e);
-                }
-            }
-        }
-
-        private async Task BeginDrag(MouseEventArgs e)
-        {
-            var listView = lvSavedBuilds;
-            var listViewItem = ((DependencyObject)e.OriginalSource).TryFindParent<ListViewItem>();
-
-            if (listViewItem == null)
-                return;
-
-            // get the data for the ListViewItem
-            var item = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-
-            //setup the drag adorner.
-            InitialiseAdorner(listViewItem);
-
-            //add handles to update the adorner.
-            listView.PreviewDragOver += ListViewDragOver;
-            listView.DragLeave += ListViewDragLeave;
-            listView.DragEnter += ListViewDragEnter;
-
-            var data = new DataObject("myFormat", item);
-            DragDrop.DoDragDrop(lvSavedBuilds, data, DragDropEffects.Move);
-
-            //cleanup 
-            listView.PreviewDragOver -= ListViewDragOver;
-            listView.DragLeave -= ListViewDragLeave;
-            listView.DragEnter -= ListViewDragEnter;
-
-            if (_adorner != null)
-            {
-                AdornerLayer.GetAdornerLayer(listView).Remove(_adorner);
-                _adorner = null;
-                await SaveBuildsToFile();
-            }
-        }
-
-        private void ListViewDragEnter(object sender, DragEventArgs e)
-        {
-            if (!e.Data.GetDataPresent("myFormat") ||
-                sender == e.Source)
-            {
-                e.Effects = DragDropEffects.None;
-            }
-        }
-
-
-        private void ListViewDrop(object sender, DragEventArgs e)
-        {
-            if (!e.Data.GetDataPresent("myFormat")) return;
-
-            var name = e.Data.GetData("myFormat");
-            var listView = lvSavedBuilds;
-            var listViewItem = ((DependencyObject)e.OriginalSource).TryFindParent<ListViewItem>();
-
-            if (listViewItem != null)
-            {
-                var itemToReplace = listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-                int index = listView.Items.IndexOf(itemToReplace);
-
-                if (index >= 0)
-                {
-                    listView.Items.Remove(name);
-                    listView.Items.Insert(index, name);
-                }
-            }
-            else
-            {
-                listView.Items.Remove(name);
-                listView.Items.Add(name);
-            }
-        }
-
-        private void InitialiseAdorner(UIElement listViewItem)
-        {
-            var brush = new VisualBrush(listViewItem);
-            _adorner = new DragAdorner(listViewItem, listViewItem.RenderSize, brush) { Opacity = 0.5 };
-            _layer = AdornerLayer.GetAdornerLayer(lvSavedBuilds);
-            _layer.Add(_adorner);
-        }
-
-        void ListViewDragLeave(object sender, DragEventArgs e)
-        {
-            if (Equals(e.OriginalSource, lvSavedBuilds))
-            {
-                var p = e.GetPosition(lvSavedBuilds);
-                var r = VisualTreeHelper.GetContentBounds(lvSavedBuilds);
-                if (!r.Contains(p))
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
-        void ListViewDragOver(object sender, DragEventArgs args)
-        {
-            if (_adorner != null)
-            {
-                _adorner.OffsetLeft = args.GetPosition(lvSavedBuilds).X - _dragAndDropStartPoint.X;
-                _adorner.OffsetTop = args.GetPosition(lvSavedBuilds).Y - _dragAndDropStartPoint.Y;
             }
         }
 
@@ -2181,14 +1818,9 @@ namespace POESKillTree.Views
                 await LoadBuildFromUrlAsync();
         }
 
-        private void tbSkillURL_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            tbSkillURL.SelectAll();
-        }
-
         private void tbSkillURL_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _undoList.Push(tbSkillURL.Text);
+            _undoList.Push(PersistentData.CurrentBuild.TreeUrl);
         }
 
         private void tbSkillURL_Undo_Click(object sender, RoutedEventArgs e)
@@ -2199,16 +1831,16 @@ namespace POESKillTree.Views
         private void tbSkillURL_Undo()
         {
             if (_undoList.Count <= 0) return;
-            if (_undoList.Peek() == tbSkillURL.Text && _undoList.Count > 1)
+            if (_undoList.Peek() == PersistentData.CurrentBuild.TreeUrl && _undoList.Count > 1)
             {
                 _undoList.Pop();
                 tbSkillURL_Undo();
             }
-            else if (_undoList.Peek() != tbSkillURL.Text)
+            else if (_undoList.Peek() != PersistentData.CurrentBuild.TreeUrl)
             {
-                _redoList.Push(tbSkillURL.Text);
-                tbSkillURL.Text = _undoList.Pop();
-                Tree.LoadFromURL(tbSkillURL.Text);
+                _redoList.Push(PersistentData.CurrentBuild.TreeUrl);
+                PersistentData.CurrentBuild.TreeUrl = _undoList.Pop();
+                Tree.LoadFromURL(PersistentData.CurrentBuild.TreeUrl);
                 UpdateUI();
             }
         }
@@ -2221,15 +1853,15 @@ namespace POESKillTree.Views
         private void tbSkillURL_Redo()
         {
             if (_redoList.Count <= 0) return;
-            if (_redoList.Peek() == tbSkillURL.Text && _redoList.Count > 1)
+            if (_redoList.Peek() == PersistentData.CurrentBuild.TreeUrl && _redoList.Count > 1)
             {
                 _redoList.Pop();
                 tbSkillURL_Redo();
             }
-            else if (_redoList.Peek() != tbSkillURL.Text)
+            else if (_redoList.Peek() != PersistentData.CurrentBuild.TreeUrl)
             {
-                tbSkillURL.Text = _redoList.Pop();
-                Tree.LoadFromURL(tbSkillURL.Text);
+                PersistentData.CurrentBuild.TreeUrl = _redoList.Pop();
+                Tree.LoadFromURL(PersistentData.CurrentBuild.TreeUrl);
                 UpdateUI();
             }
         }
@@ -2251,7 +1883,7 @@ namespace POESKillTree.Views
                     "https?://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*)?",
                     RegexOptions.IgnoreCase);
 
-            var matches = regx.Matches(tbSkillURL.Text);
+            var matches = regx.Matches(PersistentData.CurrentBuild.TreeUrl);
 
             if (matches.Count == 1)
             {
@@ -2345,27 +1977,8 @@ namespace POESKillTree.Views
                 return;
             if(string.IsNullOrEmpty(persistentDataVersion))
                 await ImportLegacySavedBuilds();
-            if (String.CompareOrdinal("2.2.4", persistentDataVersion) > 0)
-                SetCurrentOpenBuildBasedOnName();
 
             _persistentData.AppVersion = productVersion;
-        }
-
-        private void SetCurrentOpenBuildBasedOnName()
-        {
-            var buildNameMatch =
-                (from PoEBuild build in lvSavedBuilds.Items
-                    where build.Name == _persistentData.CurrentBuild.Name
-                    select build).FirstOrDefault();
-            if (buildNameMatch != null)
-            {
-                foreach (PoEBuild item in lvSavedBuilds.Items)
-                {
-                    item.CurrentlyOpen = false;
-                }
-                buildNameMatch.CurrentlyOpen = true;
-                lvSavedBuilds.Items.Refresh();
-            }
         }
 
         /// <summary>
@@ -2386,25 +1999,29 @@ namespace POESKillTree.Views
                         var poeClass = description.Split(',')[0].Trim();
                         var pointsUsed = description.Split(',')[1].Trim().Split(' ')[0].Trim();
 
+                        var build = new PoEBuild
+                        {
+                            Name = b.Split(';')[0].Split('|')[0],
+                            Class = poeClass
+                        };
+                        uint points;
+                        pointsUsed.TryParseUint(out points);
+                        build.PointsUsed = points;
                         if (HasBuildNote(b))
                         {
-
-                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], poeClass, pointsUsed,
-                                b.Split(';')[1].Split('|')[0], b.Split(';')[1].Split('|')[1]));
+                            build.TreeUrl = b.Split(';')[1].Split('|')[0];
+                            build.Note = b.Split(';')[1].Split('|')[1];
                         }
                         else
                         {
-                            saved_builds.Add(new PoEBuild(b.Split(';')[0].Split('|')[0], poeClass, pointsUsed,
-                                b.Split(';')[1], ""));
+                            build.TreeUrl = b.Split(';')[1];
                         }
+                        saved_builds.Add(build);
                     }
-                    lvSavedBuilds.Items.Clear();
-                    foreach (var lvi in saved_builds)
-                    {
-                        lvSavedBuilds.Items.Add(lvi);
-                    }
+                    PersistentData.RootBuild.Builds.Clear();
+                    PersistentData.RootBuild.Builds.AddRange(saved_builds);
                     File.Move("savedBuilds", "savedBuilds.old");
-                    await SaveBuildsToFile();
+                    PersistentData.SaveToFile();
                 }
             }
             catch (Exception ex)
@@ -2421,30 +2038,21 @@ namespace POESKillTree.Views
 
         #endregion
 
-        private void lvSavedBuilds_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void UpdateTreeComparision()
         {
             if (Tree == null)
                 return;
 
-            var build = lvSavedBuilds.SelectedItem as PoEBuild;
+            var build = _persistentData.SelectedBuild as PoEBuild;
             if (build != null && _persistentData.Options.TreeComparisonEnabled)
             {
                 HashSet<ushort> nodes;
                 int ctype;
                 int atype;
-                SkillTree.DecodeURL(build.Url, out nodes, out ctype, out atype);
+                SkillTree.DecodeURL(build.TreeUrl, out nodes, out ctype, out atype);
 
                 Tree.HighlightedNodes = nodes;
-                int level = 0;
-                try
-                {
-                    level = int.Parse(build.Level);
-                }
-                catch
-                {
-                    level = 0;
-                }
-                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, level, build.Bandits);
+                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, build.Level, build.Bandits);
             }
             else
             {
@@ -2455,11 +2063,7 @@ namespace POESKillTree.Views
             Tree.DrawTreeComparisonHighlight();
             UpdateUI();
         }
-
-        private void ToggleTreeComparison_Click(object sender, RoutedEventArgs e)
-        {
-            lvSavedBuilds_SelectionChanged(null, null);
-        }
+        
 
         private async void Button_Craft_Click(object sender, RoutedEventArgs e)
         {

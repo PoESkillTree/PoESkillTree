@@ -10,7 +10,6 @@ namespace POESKillTree.Model
         bool CharacterSheetBarOpened { get; set; }
         bool BuildsBarOpened { get; set; }
         bool TreeComparisonEnabled { get; set; }
-        int SelectedBuildIndex { get; set; }
         string NodeSearchHighlightColor { get; set; }
         string NodeHoverHighlightColor { get; set; }
         string NodeAttrHighlightColor { get; set; }
@@ -57,13 +56,6 @@ namespace POESKillTree.Model
         {
             get { return _treeComparisonEnabled; }
             set { SetProperty(ref _treeComparisonEnabled, value); }
-        }
-
-        private int _selectedBuildIndex = -1;
-        public int SelectedBuildIndex
-        {
-            get { return _selectedBuildIndex; }
-            set { SetProperty(ref _selectedBuildIndex, value); }
         }
 
         private bool _showAllAscendancyClasses = true;

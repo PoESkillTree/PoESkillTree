@@ -59,7 +59,7 @@ namespace POESKillTree.Model
     /// <summary>
     /// Stores the bandit choice for each difficulty.
     /// </summary>
-    public class BanditSettings : Notifier
+    public class BanditSettings : Notifier, IDeepCloneable<BanditSettings>
     {
         private Bandit _normal;
         private Bandit _cruel;
@@ -113,19 +113,19 @@ namespace POESKillTree.Model
             get { return Enum.GetValues(typeof(Bandit)).Cast<Bandit>(); }
         }
 
-        public BanditSettings Clone()
-        {
-            return new BanditSettings
-            {
-                Normal = Normal,
-                Cruel = Cruel,
-                Merciless = Merciless
-            };
-        }
-
         public void Reset()
         {
             Normal = Cruel = Merciless = Bandit.None;
+        }
+
+        public BanditSettings DeepClone()
+        {
+            return (BanditSettings) SafeMemberwiseClone();
+        }
+
+        object IDeepCloneable.DeepClone()
+        {
+            return DeepClone();
         }
     }
 }

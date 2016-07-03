@@ -8,16 +8,23 @@
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         xmlns:items="clr-namespace:POESKillTree.Model.Items"
-        xmlns:model="clr-namespace:POESKillTree.Model"
         xmlns:views="clr-namespace:POESKillTree.Views"
+        xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
-        Title="PoESkillTree" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
+        Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp"
         TextOptions.TextFormattingMode="Display"
         x:Name="window" SaveWindowPosition="True"
-        >
+        DataContext="{Binding ElementName=window}">
+    <controls:MetroWindow.Title>
+        <MultiBinding StringFormat="{}{0} - {1}">
+            <Binding Path="PersistentData.CurrentBuild.Name" ElementName="window" />
+            <Binding Path="MainWindowTitle" ElementName="window" />
+        </MultiBinding>
+    </controls:MetroWindow.Title>
+
     <Window.Resources>
         <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
         <Style x:Key="ContainerStyleIsExpanded" TargetType="{x:Type GroupItem}">
@@ -186,14 +193,6 @@
         </ControlTemplate>
     </Window.Resources>
 
-    <controls:MetroWindow.Flyouts>
-        <controls:FlyoutsControl>
-            <controls:Flyout x:Name="BuildsFlyout">
-                <views:BuildsControl />
-            </controls:Flyout>
-        </controls:FlyoutsControl>
-    </controls:MetroWindow.Flyouts>
-    
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <!-- Making it a disabled button is a lazy way for not having to style it manually. -->
@@ -220,7 +219,9 @@
                 <MenuItem.Header>
                     <l:Catalog Message="_File" />
                 </MenuItem.Header>
-                <MenuItem InputGestureText="Ctrl+N" Click="Menu_NewBuild">
+                <MenuItem InputGestureText="Ctrl+N"
+                          Command="{Binding BuildsControlViewModel.NewBuildCommand}"
+                          CommandParameter="{Binding BuildsControlViewModel.BuildRoot}">
                     <MenuItem.Header>
                         <l:Catalog Message="_New" />
                     </MenuItem.Header>
@@ -228,7 +229,9 @@
                         <ContentControl Template="{StaticResource NewIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem InputGestureText="Ctrl+S" Click="btnSaveBuild_Click">
+                <MenuItem InputGestureText="Ctrl+S"
+                          Command="{Binding BuildsControlViewModel.SaveBuildCommand}"
+                          CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}">
                     <MenuItem.Header>
                         <l:Catalog Message="_Save" />
                     </MenuItem.Header>
@@ -236,7 +239,9 @@
                         <ContentControl Template="{StaticResource SaveIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem InputGestureText="Ctrl+Alt+S" Click="btnSaveNewBuild_Click">
+                <MenuItem InputGestureText="Ctrl+Alt+S"
+                          Command="{Binding BuildsControlViewModel.SaveBuildAsCommand}"
+                          CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}">
                     <MenuItem.Header>
                         <l:Catalog Message="Save _As" />
                     </MenuItem.Header>
@@ -468,7 +473,7 @@
                     </MenuItem.Header>
                 </MenuItem>
                 <MenuItem x:Name="mnuViewComparison" IsCheckable="true"
-                          IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click">
+                          IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}">
                     <MenuItem.Header>
                         <l:Catalog Message="Skill _Tree Comparison" />
                     </MenuItem.Header>
@@ -646,10 +651,10 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="100*"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
                     <ToggleButton x:Name="BanditToggle" Width="50">
-                            <l:Catalog Message="Bandits" />
+                        <l:Catalog Message="Bandits" />
                     </ToggleButton>
                     <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-100" VerticalOffset="5">
                         <Border Background="{DynamicResource WhiteColorBrush}" BorderThickness="1"
@@ -693,7 +698,7 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        
+
         <!-- grid row 2 - center part, tree and editors -->
         <Grid Grid.Row="2">
             <TabControl Background="Transparent" Name="tcMainArea">
@@ -733,87 +738,9 @@
                     <l:Catalog Message="Saved Builds"/>
                 </Expander.Header>
 
-                <Grid x:Name="gridBuildManager" HorizontalAlignment="Left"  FlowDirection="LeftToRight" Background="{DynamicResource WhiteColorBrush}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="110"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0">
-                            <l:Catalog Message="Filter:"/>
-                        </Label>
-                        <ComboBox Grid.Column="1" Height="26" x:Name="cbCharTypeSavedBuildFilter" VerticalAlignment="Top" Width="100" SelectionChanged="SavedBuildFilter_SelectionChanged">
-                            <ComboBoxItem Content="All" IsSelected="True" />
-                            <ComboBoxItem Content="Scion"/>
-                            <ComboBoxItem Content="Marauder"/>
-                            <ComboBoxItem Content="Ranger"/>
-                            <ComboBoxItem Content="Witch"/>
-                            <ComboBoxItem Content="Duelist"/>
-                            <ComboBoxItem Content="Templar"/>
-                            <ComboBoxItem Content="Shadow"/>
-                        </ComboBox>
-                        <TextBox Height="26" x:Name="tbSavedBuildFilter" Width="105" Margin="5,0,0,0" TextChanged="SavedBuildFilter_TextChanged" Grid.Column="2" />
-                    </Grid>
-                    <ListView x:Name="lvSavedBuilds" Margin="0,0,0,2.476" HorizontalAlignment="Left" Width="255" Grid.Row="1"
-                              ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"
-                              AllowDrop="True" DragEnter="ListViewDragEnter" Drop="ListViewDrop" PreviewMouseMove="ListViewPreviewMouseMove" PreviewMouseLeftButtonDown="ListViewMouseLeftButtonDown"
-                              MouseDoubleClick="lvi_MouseDoubleClick" SelectionChanged="lvSavedBuilds_SelectionChanged"
-                              SelectedIndex="{Binding ElementName=window,Path=PersistentData.Options.SelectedBuildIndex}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate DataType="model:PoEBuild">
-                                <Grid x:Name="Grid1" Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Border Width="40" Height="38">
-                                        <Image Source="{Binding Image}" Stretch="Uniform"/>
-                                    </Border>
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" TextWrapping="NoWrap"/>
-                                        <TextBlock Text="{Binding Description}" MaxHeight="60"/>
-                                    </StackPanel>
-                                </Grid>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentlyOpen}" Value="True">
-                                        <Setter Property="Background" TargetName="Grid1" Value="{DynamicResource AccentColorBrush4}" />
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MetroListViewItem}">
-                                <Setter Property="MinHeight" Value="0" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                    </ListView>
-                    <CheckBox Grid.Row="2" Margin="2" IsChecked="{Binding IsChecked,ElementName=mnuViewComparison}">
-                        <l:Catalog Message="Skill tree comparison"/>
-                    </CheckBox>
-                    <Grid Grid.Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="85"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="85"/>
-                        </Grid.ColumnDefinitions>
-                        <Button x:Name="btnOverwriteBuild" VerticalAlignment="Bottom" Click="btnSaveBuild_Click" HorizontalAlignment="Left" Width="82">
-                            <l:Catalog Message="Save"/>
-                        </Button>
-                        <Button x:Name="btnSaveNewBuild" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnSaveNewBuild_Click" Width="82" Grid.Column="1">
-                            <l:Catalog Message="Save As"/>
-                        </Button>
-                        <Button x:Name="btnDelete" VerticalAlignment="Bottom" Click="btnDelete_Click" HorizontalAlignment="Right" Width="82" Grid.Column="2">
-                            <l:Catalog Message="Delete"/>
-                        </Button>
-                    </Grid>
-                </Grid>
+                <views:BuildsControl FlowDirection="LeftToRight"
+                                     DataContext="{Binding ElementName=window, Path=BuildsControlViewModel}"
+                                     dialogs:DialogParticipation.Register="{Binding}" />
             </Expander>
 
             <Expander Style="{StaticResource TopRowExpander}"
@@ -986,8 +913,10 @@
             <Label Grid.Column="4" x:Name="lblSkillURL" HorizontalAlignment="Left" Margin="1,1,4,1" Height="28" VerticalAlignment="Bottom" VerticalContentAlignment="Center" >
                 <l:Catalog Message="Skill tree link:"/>
             </Label>
-            <TextBox Grid.Column="5" Height="24" Margin="1,0,2.854,2" x:Name="tbSkillURL" VerticalAlignment="Bottom" Text="https://www.pathofexile.com/passive-skill-tree/AAAAAgMA"
-                     VerticalContentAlignment="Center" MouseDoubleClick="tbSkillURL_MouseDoubleClick" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp" />
+            <TextBox Grid.Column="5" Height="24" Margin="1,0,2.854,2" VerticalAlignment="Bottom"
+                     Text="{Binding PersistentData.CurrentBuild.TreeUrl, ElementName=window}"
+                     VerticalContentAlignment="Center" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp"
+                     controls:TextBoxHelper.SelectAllOnFocus="True" />
 
             <Button Grid.Column="6" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2">
                 <l:Catalog Message="Load Tree"/>

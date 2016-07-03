@@ -272,23 +272,9 @@ namespace POESKillTree.Utils.Converter
             AttributeGroups.Add(MiscLabel, new AttributeGroup(MiscLabel));
         }
 
-        public List<string[]> CopyCustomGroups()
-        {
-            List<string[]> deepcopy = new List<string[]>();
-            foreach (var gp in CustomGroups)
-            {
-                deepcopy.Add((string[])gp.Clone());
-            }
-            return deepcopy;
-        }
-
         public void ResetGroups(List<string[]> newgroups)
         {
-            CustomGroups = new List<string[]>();
-            foreach (var gp in newgroups)
-            {
-                CustomGroups.Add((string[])gp.Clone());
-            }
+            CustomGroups = newgroups;
 
             AttributeGroups = new Dictionary<string, AttributeGroup>();
             foreach (var group in DefaultGroups)

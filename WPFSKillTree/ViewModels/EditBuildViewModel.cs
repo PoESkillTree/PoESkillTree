@@ -8,7 +8,7 @@ namespace POESKillTree.ViewModels
 
         public EditBuildViewModel(PoEBuild build)
         {
-            Build = build.Copy();
+            Build = build.DeepClone();
         }
     }
 }

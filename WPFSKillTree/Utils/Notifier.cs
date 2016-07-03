@@ -57,5 +57,17 @@ namespace POESKillTree.Utils
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        /// <summary>
+        /// Equivalent to <c>o.MemberwiseClone()</c> except that events are set to null.
+        /// Override if your subclass has events or if you need to reregister handlers.
+        /// </summary>
+        protected virtual Notifier SafeMemberwiseClone()
+        {
+            var t = (Notifier) MemberwiseClone();
+            t.PropertyChanged = null;
+            t.PropertyChanging = null;
+            return t;
+        }
     }
 }
