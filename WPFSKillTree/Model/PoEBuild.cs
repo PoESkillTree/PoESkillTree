@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
+using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Model
@@ -95,8 +96,8 @@ namespace POESKillTree.Model
         private string _characterName;
         private string _accountName;
         private string _league;
-        private int _level;
-        private string _treeUrl; // todo Default URL for new builds
+        private int _level = 1;
+        private string _treeUrl = Constants.DefaultTree;
         private string _itemData;
         private DateTime _lastUpdated = DateTime.Now;
         private List<string[]> _customGroups = new List<string[]>();
@@ -165,7 +166,6 @@ namespace POESKillTree.Model
             set { SetProperty(ref _lastUpdated, value); }
         }
 
-        // todo These should be used better
         public List<string[]> CustomGroups
         {
             get { return _customGroups; }
@@ -187,17 +187,17 @@ namespace POESKillTree.Model
 
         public PoEBuild()
         {
-            PropertyChanged += (sender, args) => PropertyChangedHandler(args.PropertyName);
+            PropertyChanged += PropertyChangedHandler;
         }
 
-        private void PropertyChangedHandler(string propertyName)
+        private void PropertyChangedHandler(object sender, PropertyChangedEventArgs args)
         {
-            switch (propertyName)
+            switch (args.PropertyName)
             {
                 case nameof(IsDirty):
                     break;
                 default:
-                    IsDirty = true; // todo Visual for dirty state in BuildsControl doesn't update
+                    IsDirty = true;
                     break;
             }
         }
@@ -226,8 +226,8 @@ namespace POESKillTree.Model
 
         protected override Notifier SafeMemberwiseClone()
         {
-            var o = base.SafeMemberwiseClone();
-            o.PropertyChanged += (sender, args) => PropertyChangedHandler(args.PropertyName);
+            var o = (PoEBuild) base.SafeMemberwiseClone();
+            o.PropertyChanged += o.PropertyChangedHandler;
             return o;
         }
 

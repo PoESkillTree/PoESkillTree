@@ -234,6 +234,7 @@
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Model\RelayCommand.cs" />
     <Compile Include="Model\ResetPreferences.cs" />
+    <Compile Include="Model\Serialization\XmlPersistentData.cs" />
     <Compile Include="Properties\Version.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

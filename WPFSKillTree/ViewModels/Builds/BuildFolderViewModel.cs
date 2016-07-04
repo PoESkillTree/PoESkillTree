@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using POESKillTree.Model;
 using POESKillTree.Utils.Extensions;
@@ -13,6 +12,8 @@ namespace POESKillTree.ViewModels.Builds
     {
         public ObservableCollection<IBuildViewModel> Children { get; } =
             new ObservableCollection<IBuildViewModel>();
+
+        private bool _isInCollectionChanged;
 
         public BuildFolderViewModel(BuildFolder buildFolder, Predicate<IBuildViewModel> filterPredicate)
             : base(buildFolder, filterPredicate)
@@ -93,29 +94,37 @@ namespace POESKillTree.ViewModels.Builds
 
         private void ChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-            var newBuilds = notifyCollectionChangedEventArgs.NewItems?.Cast<IBuildViewModel>();
-            var oldBuilds = notifyCollectionChangedEventArgs.OldItems?.Cast<IBuildViewModel>();
-            switch (notifyCollectionChangedEventArgs.Action)
+            if (_isInCollectionChanged)
+                return;
+            _isInCollectionChanged = true;
+            if (notifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Reset)
             {
-                case NotifyCollectionChangedAction.Add:
-                    SetParents(newBuilds);
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    UnsetParents(oldBuilds);
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                    SetParents(newBuilds);
-                    UnsetParents(oldBuilds);
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    // Can't access the old items here so they may have invalid Parent values.
-                    SetParents();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                SetParents();
+                Build.Builds.Clear();
+                Children.Select(c => c.Build).ForEach(b => Build.Builds.Add(b));
             }
+            else
+            {
+                CollectionChanged<IBuildViewModel, IBuild>(notifyCollectionChangedEventArgs, Build.Builds, b => b.Build);
+            }
+            _isInCollectionChanged = false;
+        }
+        
+        private void BuildsOnCollectionChanged(object sender,
+            NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            if (_isInCollectionChanged)
+                return;
+            _isInCollectionChanged = true;
+            if (notifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Reset)
+            {
+                RecreateChildren();
+            }
+            else
+            {
+                CollectionChanged<IBuild, IBuildViewModel>(notifyCollectionChangedEventArgs, Children, GetChildForBuild);
+            }
+            _isInCollectionChanged = false;
         }
 
         private IBuildViewModel GetChildForBuild(IBuild build)
@@ -130,28 +139,34 @@ namespace POESKillTree.ViewModels.Builds
             return null;
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException", Justification = "Only null when not accessed")]
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute", Justification = "Only null when not accessed")]
-        private void BuildsOnCollectionChanged(object sender,
-            NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        private void CollectionChanged<TSource, TTarget>(
+            NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs,
+            ObservableCollection<TTarget> targetCollection, Func<TSource, TTarget> toTargetFunc)
         {
-            var newBuilds = notifyCollectionChangedEventArgs.NewItems?.Cast<IBuild>();
-            var oldBuilds = notifyCollectionChangedEventArgs.OldItems?.Cast<IBuild>();
+            Func<TSource, IBuildViewModel> toVmFunc;
+            if (typeof(TSource) == typeof(IBuildViewModel))
+                toVmFunc = o => (IBuildViewModel) o;
+            else if (typeof(TTarget) == typeof(IBuildViewModel))
+                toVmFunc = o => (IBuildViewModel) toTargetFunc(o);
+            else
+                throw new ArgumentException("One type parameter must be IBuildViewModel");
+            var newBuilds = notifyCollectionChangedEventArgs.NewItems?.Cast<TSource>() ?? new TSource[0];
+            var oldBuilds = notifyCollectionChangedEventArgs.OldItems?.Cast<TSource>() ?? new TSource[0];
             switch (notifyCollectionChangedEventArgs.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     var i = notifyCollectionChangedEventArgs.NewStartingIndex;
                     foreach (var newBuild in newBuilds)
                     {
-                        var vm = GetChildForBuild(newBuild);
-                        SetParent(vm);
+                        var t = toTargetFunc(newBuild);
+                        SetParent(toVmFunc(newBuild));
                         if (i < 0)
                         {
-                            Children.Add(vm);
+                            targetCollection.Add(t);
                         }
                         else
                         {
-                            Children.Insert(i, vm);
+                            targetCollection.Insert(i, t);
                             i++;
                         }
                     }
@@ -159,9 +174,8 @@ namespace POESKillTree.ViewModels.Builds
                 case NotifyCollectionChangedAction.Remove:
                     foreach (var oldBuild in oldBuilds)
                     {
-                        var vm = GetChildForBuild(oldBuild);
-                        UnsetParent(vm);
-                        Children.Remove(vm);
+                        UnsetParent(toVmFunc(oldBuild));
+                        targetCollection.Remove(toTargetFunc(oldBuild));
                     }
                     break;
                 case NotifyCollectionChangedAction.Replace:
@@ -169,17 +183,14 @@ namespace POESKillTree.ViewModels.Builds
                     {
                         foreach (var oldBuild in oldBuilds)
                         {
-                            var vm = GetChildForBuild(oldBuild);
-                            UnsetParent(vm);
-                            Children.Remove(vm);
+                            UnsetParent(toVmFunc(oldBuild));
+                            targetCollection.Remove(toTargetFunc(oldBuild));
                         }
                         foreach (var newBuild in newBuilds)
                         {
-                            var vm = GetChildForBuild(newBuild);
-                            SetParent(vm);
-                            Children.Add(vm);
+                            SetParent(toVmFunc(newBuild));
+                            targetCollection.Add(toTargetFunc(newBuild));
                         }
-
                     }
                     else
                     {
@@ -188,29 +199,26 @@ namespace POESKillTree.ViewModels.Builds
                         var newList = newBuilds.ToList();
                         for (var j = 0; j < newList.Count; j++)
                         {
-                            var oldVm = GetChildForBuild(oldList[j]);
-                            var newVm = GetChildForBuild(newList[j]);
-                            UnsetParent(oldVm);
-                            SetParent(newVm);
-                            Children.RemoveAt(start + j);
-                            Children.Insert(start + j, newVm);
+                            UnsetParent(toVmFunc(oldList[j]));
+                            SetParent(toVmFunc(newList[j]));
+                            targetCollection.RemoveAt(start + j);
+                            targetCollection.Insert(start + j, toTargetFunc(newList[j]));
                         }
                     }
                     break;
                 case NotifyCollectionChangedAction.Move:
                     foreach (var oldBuild in oldBuilds)
                     {
-                        Children.Remove(GetChildForBuild(oldBuild));
+                        targetCollection.Remove(toTargetFunc(oldBuild));
                     }
                     i = notifyCollectionChangedEventArgs.NewStartingIndex;
                     foreach (var newBuild in newBuilds)
                     {
-                        Children.Insert(i, GetChildForBuild(newBuild));
+                        targetCollection.Insert(i, toTargetFunc(newBuild));
                         i++;
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    RecreateChildren();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

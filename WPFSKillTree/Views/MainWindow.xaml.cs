@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -132,10 +131,6 @@ namespace POESKillTree.Views
         readonly Stack<string> _undoList = new Stack<string>();
         readonly Stack<string> _redoList = new Stack<string>();
 
-        private Point _dragAndDropStartPoint;
-        private DragAdorner _adorner;
-        private AdornerLayer _layer;
-
         private MouseButton _lastMouseButton;
         private bool userInteraction = false;
         /// <summary>
@@ -179,6 +174,8 @@ namespace POESKillTree.Views
                 switch (args.PropertyName)
                 {
                     case nameof(PersistentData.CurrentBuild):
+                        PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
+                        PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
                         await CurrentBuildChanged();
                         break;
                     case nameof(PersistentData.SelectedBuild):
@@ -199,13 +196,12 @@ namespace POESKillTree.Views
 
         private async void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            PoEBuild build;
             switch (propertyChangedEventArgs.PropertyName)
             {
-                case nameof(build.ItemData):
+                case nameof(PoEBuild.ItemData):
                     await LoadItemData();
                     break;
-                case nameof(build.TreeUrl):
+                case nameof(PoEBuild.TreeUrl):
                     if (Tree != null)
                         PersistentData.CurrentBuild.PointsUsed = (uint) Tree.GetPointCount()["NormalUsed"];
                     break;
@@ -466,8 +462,7 @@ namespace POESKillTree.Views
                     x => new ComboBoxItem {Name = x.Key, Content = x.Value});
             cbAscType.SelectedIndex = 0;
 
-            if (_persistentData.StashBookmarks != null)
-                Stash.Bookmarks = new System.Collections.ObjectModel.ObservableCollection<StashBookmark>(_persistentData.StashBookmarks);
+            Stash.Bookmarks = _persistentData.StashBookmarks;
 
             // Set theme & accent.
             SetTheme(_persistentData.Options.Theme);
@@ -505,9 +500,9 @@ namespace POESKillTree.Views
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_persistentData.Options.ShowAllAscendancyClasses))
+            if (e.PropertyName == nameof(Options.ShowAllAscendancyClasses))
                 Tree.ToggleAscendancyTree(_persistentData.Options.ShowAllAscendancyClasses);
-            else if (e.PropertyName == nameof(_persistentData.Options.TreeComparisonEnabled))
+            else if (e.PropertyName == nameof(Options.TreeComparisonEnabled))
                 UpdateTreeComparision();
             SearchUpdate();
         }
@@ -516,10 +511,10 @@ namespace POESKillTree.Views
         {
             switch (e.PropertyName)
             {
-                case nameof(Tree.Level):
+                case nameof(SkillTree.Level):
                     PersistentData.CurrentBuild.Level = Tree.Level;
                     break;
-                case nameof(Tree.Chartype):
+                case nameof(SkillTree.Chartype):
                     PersistentData.CurrentBuild.Class = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
                     break;
             }
@@ -633,8 +628,6 @@ namespace POESKillTree.Views
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            _persistentData.StashBookmarks = Stash.Bookmarks.ToList();
-
             if (_settingsWindow != null)
             {
                 _settingsWindow.Close();
@@ -1693,8 +1686,6 @@ namespace POESKillTree.Views
         private async Task CurrentBuildChanged()
         {
             var build = PersistentData.CurrentBuild;
-            build.PropertyChanged += CurrentBuildOnPropertyChanged;
-            build.Bandits.PropertyChanged += (o, a) => UpdateUI();
             if (Tree != null)
             {
                 Tree.BanditSettings = build.Bandits;
@@ -2043,7 +2034,7 @@ namespace POESKillTree.Views
             if (Tree == null)
                 return;
 
-            var build = _persistentData.SelectedBuild as PoEBuild;
+            var build = _persistentData.SelectedBuild;
             if (build != null && _persistentData.Options.TreeComparisonEnabled)
             {
                 HashSet<ushort> nodes;

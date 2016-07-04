@@ -117,7 +117,7 @@ namespace POESKillTree.ViewModels
             BuildRoot = new BuildFolderViewModel(persistentData.RootBuild, Filter);
 
             CurrentBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.CurrentBuild, BuildRoot);
-            SelectedBuild = TreeFind<IBuildViewModel>(b => b.Build == PersistentData.SelectedBuild, BuildRoot);
+            SelectedBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.SelectedBuild, BuildRoot);
 
             NewFolderCommand = new RelayCommand<IBuildFolderViewModel>(
                 async b => await NewFolder(b));
