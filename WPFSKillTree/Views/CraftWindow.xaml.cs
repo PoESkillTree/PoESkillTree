@@ -11,6 +11,7 @@ using MB.Algodat;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Utils;
 using POESKillTree.ViewModels;
 
 namespace POESKillTree.Views
@@ -75,21 +76,7 @@ namespace POESKillTree.Views
         private List<Affix> _prefixes = new List<Affix>();
         private List<Affix> _suffixes = new List<Affix>();
 
-        private int _skipRedraw;
-        private bool SkipRedraw
-        {
-            get { return _skipRedraw > 0; }
-            set
-            {
-                if (value)
-                    _skipRedraw++;
-                else
-                    _skipRedraw--;
-
-                if (_skipRedraw == 0)
-                    RecalculateItem();
-            }
-        }
+        private readonly SimpleMonitor _monitor = new SimpleMonitor();
 
         private ModSelector[] _selectedPreff = new ModSelector[0];
         private ModSelector[] _selectedSuff = new ModSelector[0];
@@ -98,6 +85,7 @@ namespace POESKillTree.Views
 
         public CraftWindow(EquipmentData equipmentData)
         {
+            _monitor.Freed += (sender, args) => RecalculateItem();
             _equipmentData = equipmentData;
             InitializeComponent();
         }
@@ -118,11 +106,11 @@ namespace POESKillTree.Views
 
         private void GroupSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SkipRedraw = true;
+            var d = _monitor.Enter();
             var val = (ItemGroup) GroupSelection.SelectedItem;
             TypeList = Enum.GetValues(typeof(ItemType)).Cast<ItemType>().Where(t => t.Group() == val).ToArray();
             TypeSelection.SelectedIndex = 0;
-            SkipRedraw = false;
+            d.Dispose();
         }
 
         private void ClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -130,11 +118,11 @@ namespace POESKillTree.Views
             // Happens if called in GroupSelection_SelectionChanged
             if (TypeSelection.SelectedItem == null) return;
 
-            SkipRedraw = true;
+            var d = _monitor.Enter();
             var val = (ItemType) TypeSelection.SelectedItem;
             BaseList = _equipmentData.BaseList.Where(b => b.ItemType == val).ToArray();
             BaseSelection.SelectedIndex = 0;
-            SkipRedraw = false;
+            d.Dispose();
         }
 
         private void BaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -145,7 +133,7 @@ namespace POESKillTree.Views
                 return;
             }
 
-            SkipRedraw = true;
+            var d = _monitor.Enter();
             msp1.Affixes = msp2.Affixes = msp3.Affixes = mss1.Affixes = mss1.Affixes = mss2.Affixes = mss3.Affixes = null;
 
             var ibase = (ItemBase)BaseSelection.SelectedItem;
@@ -185,12 +173,12 @@ namespace POESKillTree.Views
             msp3.Visibility = Item.ItemGroup == ItemGroup.Jewel ? Visibility.Hidden : Visibility.Visible;
             mss3.Visibility = Item.ItemGroup == ItemGroup.Jewel ? Visibility.Hidden : Visibility.Visible;
 
-            SkipRedraw = false;
+            d.Dispose();
         }
 
         private void msp_SelectedAffixChanged(object sender, Affix aff)
         {
-            SkipRedraw = true;
+            var d = _monitor.Enter();
             var ms = sender as ModSelector;
 
             if (msp1 != ms)
@@ -202,12 +190,12 @@ namespace POESKillTree.Views
             if (msp3 != ms)
                 msp3.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp1.SelectedAffix }).ToList();
             _selectedPreff = new[] { msp1, msp2, msp3 }.Where(s => s.SelectedAffix != null).ToArray();
-            SkipRedraw = false;
+            d.Dispose();
         }
 
         private void RecalculateItem()
         {
-            if (SkipRedraw)
+            if (_monitor.IsBusy)
                 return;
             if (Item == null)
                 return;
