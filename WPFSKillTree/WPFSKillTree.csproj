@@ -216,6 +216,7 @@
     <Compile Include="Model\Bandit.cs" />
     <Compile Include="Model\IDeepCloneable.cs" />
     <Compile Include="Model\IMemento.cs" />
+    <Compile Include="Model\IPersistentData.cs" />
     <Compile Include="Model\Items\Affixes\Affix.cs" />
     <Compile Include="Model\Items\Affixes\ItemMod.cs" />
     <Compile Include="Model\Items\Affixes\ItemModTier.cs" />
@@ -234,7 +235,15 @@
     <Compile Include="Model\PersistentData.cs" />
     <Compile Include="Model\RelayCommand.cs" />
     <Compile Include="Model\ResetPreferences.cs" />
+    <Compile Include="Model\Serialization\AbstractPersistentDataDeserializer.cs" />
+    <Compile Include="Model\Serialization\IPersistentDataDeserializer.cs" />
+    <Compile Include="Model\Serialization\PersistentDataDeserializerCurrent.cs" />
+    <Compile Include="Model\Serialization\PersistentDataDeserializerUpTo2210.cs" />
+    <Compile Include="Model\Serialization\PersistentDataSerializationService.cs" />
+    <Compile Include="Model\Serialization\PersistentDataSerializer.cs" />
+    <Compile Include="Model\Serialization\SerializationUtils.cs" />
     <Compile Include="Model\Serialization\XmlPersistentData.cs" />
+    <Compile Include="Model\Serialization\XmlPersistentDataVersion.cs" />
     <Compile Include="Properties\Version.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -344,7 +353,6 @@
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />
     <Compile Include="Utils\Extensions\EnumExtensions.cs" />
     <Compile Include="Utils\Notifier.cs" />
-    <Compile Include="Utils\Extensions\PropertyExtension.cs" />
     <Compile Include="Utils\RegexTools.cs" />
     <Compile Include="Utils\ThreadSafeRandom.cs" />
     <Compile Include="Utils\AppData.cs" />

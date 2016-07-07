@@ -46,14 +46,9 @@ namespace POESKillTree.Views
         /// </summary>
         private static readonly Key[] HighlightByHoverKeys = { Key.LeftShift, Key.RightShift };
 
-        private readonly PersistentData _persistentData = App.PersistentData;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public IPersistentData PersistentData
-        {
-            get { return _persistentData; }
-        }
+        public IPersistentData PersistentData { get; } = App.PersistentData;
 
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
@@ -101,9 +96,9 @@ namespace POESKillTree.Views
         private async Task<SkillTree> CreateSkillTreeAsync(ProgressDialogController controller,
             AssetLoader assetLoader = null)
         {
-            var tree = await SkillTree.CreateAsync(_persistentData, DialogCoordinator.Instance, controller, assetLoader);
+            var tree = await SkillTree.CreateAsync(PersistentData, DialogCoordinator.Instance, controller, assetLoader);
             DialogParticipation.SetRegister(this, tree);
-            tree.BanditSettings = _persistentData.CurrentBuild.Bandits;
+            tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
             tree.PropertyChanged += Tree_PropertyChanged;
             return tree;
         }
@@ -462,11 +457,11 @@ namespace POESKillTree.Views
                     x => new ComboBoxItem {Name = x.Key, Content = x.Value});
             cbAscType.SelectedIndex = 0;
 
-            Stash.Bookmarks = _persistentData.StashBookmarks;
+            Stash.Bookmarks = PersistentData.StashBookmarks;
 
             // Set theme & accent.
-            SetTheme(_persistentData.Options.Theme);
-            SetAccent(_persistentData.Options.Accent);
+            SetTheme(PersistentData.Options.Theme);
+            SetAccent(PersistentData.Options.Accent);
 
             controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
             Tree = await CreateSkillTreeAsync(controller);
@@ -489,9 +484,8 @@ namespace POESKillTree.Views
 
             _justLoaded = false;
             // loading saved build
-            _persistentData.Options.PropertyChanged += Options_PropertyChanged;
+            PersistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAsendancySelectionList();
-            await CheckAppVersionAndDoNecessaryChanges();
             BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData);
             UpdateTreeComparision();
 
@@ -501,7 +495,7 @@ namespace POESKillTree.Views
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Options.ShowAllAscendancyClasses))
-                Tree.ToggleAscendancyTree(_persistentData.Options.ShowAllAscendancyClasses);
+                Tree.ToggleAscendancyTree(PersistentData.Options.ShowAllAscendancyClasses);
             else if (e.PropertyName == nameof(Options.TreeComparisonEnabled))
                 UpdateTreeComparision();
             SearchUpdate();
@@ -792,14 +786,14 @@ namespace POESKillTree.Views
         private async void Menu_ImportItems(object sender, RoutedEventArgs e)
         {
             await this.ShowDialogAsync(
-                new DownloadItemsViewModel(_persistentData.CurrentBuild),
+                new DownloadItemsViewModel(PersistentData.CurrentBuild),
                 new DownloadItemsWindow());
         }
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
             await this.ShowDialogAsync(
-                new DownloadStashViewModel(DialogCoordinator.Instance, _persistentData, Stash),
+                new DownloadStashViewModel(DialogCoordinator.Instance, PersistentData, Stash),
                 new DownloadStashWindow());
         }
 
@@ -883,7 +877,7 @@ namespace POESKillTree.Views
         private async void Menu_OpenSettings(object sender, RoutedEventArgs e)
         {
             await this.ShowDialogAsync(
-                new SettingsMenuViewModel(_persistentData, DialogCoordinator.Instance),
+                new SettingsMenuViewModel(PersistentData, DialogCoordinator.Instance),
                 new SettingsMenuWindow());
         }
 
@@ -1258,22 +1252,22 @@ namespace POESKillTree.Views
 
         private void ToggleAttributes()
         {
-            _persistentData.Options.AttributesBarOpened = !_persistentData.Options.AttributesBarOpened;
+            PersistentData.Options.AttributesBarOpened = !PersistentData.Options.AttributesBarOpened;
         }
 
         private void ToggleAttributes(bool expanded)
         {
-            _persistentData.Options.AttributesBarOpened = expanded;
+            PersistentData.Options.AttributesBarOpened = expanded;
         }
 
         private void ToggleCharacterSheet()
         {
-            _persistentData.Options.CharacterSheetBarOpened = !_persistentData.Options.CharacterSheetBarOpened;
+            PersistentData.Options.CharacterSheetBarOpened = !PersistentData.Options.CharacterSheetBarOpened;
         }
 
         private void ToggleCharacterSheet(bool expanded)
         {
-            _persistentData.Options.CharacterSheetBarOpened = expanded;
+            PersistentData.Options.CharacterSheetBarOpened = expanded;
         }
 
         private void expAttributes_Expanded(object sender, RoutedEventArgs e)
@@ -1317,7 +1311,7 @@ namespace POESKillTree.Views
 
         private void ToggleBuilds()
         {
-            _persistentData.Options.BuildsBarOpened = !_persistentData.Options.BuildsBarOpened;
+            PersistentData.Options.BuildsBarOpened = !PersistentData.Options.BuildsBarOpened;
         }
 
         private void tbAttributesFilter_TextChanged(object sender, TextChangedEventArgs e)
@@ -1387,7 +1381,7 @@ namespace POESKillTree.Views
                 if (node.ascendancyName != null && !Tree.drawAscendancy)
                     return;
                 var ascendancyClassName = Tree.AscendancyClasses.GetClassName(className, Tree.AscType);
-                if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
+                if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
                 if (node.Spc == null && node.Type != NodeType.Mastery)
@@ -1507,7 +1501,7 @@ namespace POESKillTree.Views
             {         
                 if (!Tree.drawAscendancy && node.ascendancyName != null)
                     return;
-                if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscendancyClasses.GetClassName(className, Tree.AscType))
+                if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscendancyClasses.GetClassName(className, Tree.AscType))
                     return;
                 if (node.Type == NodeType.JewelSocket)
                 {
@@ -1641,13 +1635,13 @@ namespace POESKillTree.Views
                 ItemAttributes.PropertyChanged -= ItemAttributesPropertyChanged;
             }
 
-            var itemData = _persistentData.CurrentBuild.ItemData;
+            var itemData = PersistentData.CurrentBuild.ItemData;
             ItemAttributes itemAttributes;
             if (!string.IsNullOrEmpty(itemData))
             {
                 try
                 {
-                    itemAttributes = new ItemAttributes(_persistentData, itemData);
+                    itemAttributes = new ItemAttributes(PersistentData, itemData);
                 }
                 catch (Exception ex)
                 {
@@ -1675,7 +1669,7 @@ namespace POESKillTree.Views
         private void ItemAttributesEquipCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             _pauseLoadItemData = true;
-            _persistentData.CurrentBuild.ItemData = ItemAttributes.ToJsonString();
+            PersistentData.CurrentBuild.ItemData = ItemAttributes.ToJsonString();
             _pauseLoadItemData = false;
         }
 
@@ -1927,11 +1921,11 @@ namespace POESKillTree.Views
 
         private void SetTheme(string sTheme)
         {
-            var accent = ThemeManager.Accents.First(x => Equals(x.Name, _persistentData.Options.Accent));
+            var accent = ThemeManager.Accents.First(x => Equals(x.Name, PersistentData.Options.Accent));
             var theme = ThemeManager.GetAppTheme("Base" + sTheme);
             ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
             ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewTheme" + sTheme)).IsChecked = true;
-            _persistentData.Options.Theme = sTheme;
+            PersistentData.Options.Theme = sTheme;
         }
 
         private void mnuSetAccent_Click(object sender, RoutedEventArgs e)
@@ -1945,88 +1939,11 @@ namespace POESKillTree.Views
         private void SetAccent(string sAccent)
         {
             var accent = ThemeManager.Accents.First(x => Equals(x.Name, sAccent));
-            var theme = ThemeManager.GetAppTheme("Base" + _persistentData.Options.Theme);
+            var theme = ThemeManager.GetAppTheme("Base" + PersistentData.Options.Theme);
             ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
             ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewAccent" + sAccent)).IsChecked = true;
-            _persistentData.Options.Accent = sAccent;
+            PersistentData.Options.Accent = sAccent;
         }
-        #endregion
-
-        #region Legacy
-
-        /// <summary>
-        /// Compares the AssemblyVersion against the one in PersistentData and makes
-        /// nessary updates when versions don't match.
-        /// </summary>
-        private async Task CheckAppVersionAndDoNecessaryChanges()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            var productVersion = fvi.ProductVersion;
-            var persistentDataVersion = _persistentData.AppVersion;
-            if (productVersion == persistentDataVersion)
-                return;
-            if(string.IsNullOrEmpty(persistentDataVersion))
-                await ImportLegacySavedBuilds();
-
-            _persistentData.AppVersion = productVersion;
-        }
-
-        /// <summary>
-        /// Import builds from legacy build save file "savedBuilds" to PersistentData.xml.
-        /// Warning: This will remove the "savedBuilds"
-        /// </summary>
-        private async Task ImportLegacySavedBuilds()
-        {
-            try
-            {
-                if (File.Exists("savedBuilds"))
-                {
-                    var saved_builds = new List<PoEBuild>();
-                    var builds = File.ReadAllText("savedBuilds").Split('\n');
-                    foreach (var b in builds)
-                    {
-                        var description = b.Split(';')[0].Split('|')[1];
-                        var poeClass = description.Split(',')[0].Trim();
-                        var pointsUsed = description.Split(',')[1].Trim().Split(' ')[0].Trim();
-
-                        var build = new PoEBuild
-                        {
-                            Name = b.Split(';')[0].Split('|')[0],
-                            Class = poeClass
-                        };
-                        uint points;
-                        pointsUsed.TryParseUint(out points);
-                        build.PointsUsed = points;
-                        if (HasBuildNote(b))
-                        {
-                            build.TreeUrl = b.Split(';')[1].Split('|')[0];
-                            build.Note = b.Split(';')[1].Split('|')[1];
-                        }
-                        else
-                        {
-                            build.TreeUrl = b.Split(';')[1];
-                        }
-                        saved_builds.Add(build);
-                    }
-                    PersistentData.RootBuild.Builds.Clear();
-                    PersistentData.RootBuild.Builds.AddRange(saved_builds);
-                    File.Move("savedBuilds", "savedBuilds.old");
-                    PersistentData.SaveToFile();
-                }
-            }
-            catch (Exception ex)
-            {
-                await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load saved builds."), ex.Message);
-            }
-        }
-
-        private static bool HasBuildNote(string b)
-        {
-            var buildNoteTest = b.Split(';')[1].Split('|');
-            return buildNoteTest.Length > 1;
-        }
-
         #endregion
 
         private void UpdateTreeComparision()
@@ -2034,8 +1951,8 @@ namespace POESKillTree.Views
             if (Tree == null)
                 return;
 
-            var build = _persistentData.SelectedBuild;
-            if (build != null && _persistentData.Options.TreeComparisonEnabled)
+            var build = PersistentData.SelectedBuild;
+            if (build != null && PersistentData.Options.TreeComparisonEnabled)
             {
                 HashSet<ushort> nodes;
                 int ctype;

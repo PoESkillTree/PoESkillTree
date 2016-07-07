@@ -4,6 +4,7 @@ using System.Threading;
 using System.Windows;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Serialization;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Views
@@ -18,7 +19,8 @@ namespace POESKillTree.Views
         // The flag whether it is safe to exit application.
         bool IsSafeToExit = false;
         // Single instance of persistent data.
-        public static PersistentData PersistentData { get; private set; }
+        public static IPersistentData PersistentData { get; private set; }
+        private PersistentDataSerializationService _persistentDataSerializationService;
         // The Mutex for detecting running application instance.
         private Mutex RunningInstanceMutex;
         // The name of RunningInstanceMutex.
@@ -35,7 +37,7 @@ namespace POESKillTree.Views
                 // Try to aquire mutex.
                 if (RunningInstanceMutex.WaitOne(0))
                 {
-                    PersistentData.SaveToFile();
+                    _persistentDataSerializationService.Serialize(PersistentData);
 
                     IsSafeToExit = true;
 
@@ -72,7 +74,8 @@ namespace POESKillTree.Views
             // Load persistent data.
             try
             {
-                PersistentData = new PersistentData(true);
+                _persistentDataSerializationService = new PersistentDataSerializationService();
+                PersistentData = _persistentDataSerializationService.Deserialize();
             }
             catch (Exception ex)
             {

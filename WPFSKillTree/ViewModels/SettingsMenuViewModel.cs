@@ -10,7 +10,7 @@ namespace POESKillTree.ViewModels
     {
         private readonly IDialogCoordinator _dialogCoordinator;
 
-        public IOptions Options { get; private set; }
+        public Options Options { get; }
 
         public SettingsMenuViewModel(IPersistentData persistentData, IDialogCoordinator dialogCoordinator)
         {
@@ -29,14 +29,14 @@ namespace POESKillTree.ViewModels
 
         private async Task OptionsChanged(string propertyName)
         {
-            if (propertyName == "Language" ||
-                (propertyName == "DownloadMissingItemImages" && !Options.DownloadMissingItemImages))
+            if (propertyName == nameof(Options.Language) ||
+                (propertyName == nameof(Options.DownloadMissingItemImages) && !Options.DownloadMissingItemImages))
             {
                 await _dialogCoordinator.ShowInfoAsync(this,
                     L10n.Message("You will need to restart the program for all changes to take effect."),
                     title: L10n.Message("Restart is needed"));
 
-                if (propertyName == "Language")
+                if (propertyName == nameof(Options.Language))
                     L10n.Initialize(Options.Language);
             }
         }

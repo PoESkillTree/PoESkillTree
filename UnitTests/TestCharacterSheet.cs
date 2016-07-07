@@ -24,6 +24,7 @@ namespace UnitTests
             set { TestContextInstance = value; }
         }
 
+        private static PersistentData _persistentData;
         private static Task<SkillTree> _treeTask;
 
         [ClassInitialize]
@@ -33,7 +34,9 @@ namespace UnitTests
 
             if (ItemDB.IsEmpty())
                 ItemDB.Load("Data/ItemDB/GemList.xml", true);
-            _treeTask = SkillTree.CreateAsync(new PersistentData(false), null);
+            _persistentData = new PersistentData();
+            _persistentData.EquipmentData = new EquipmentData(_persistentData.Options);
+            _treeTask = SkillTree.CreateAsync(_persistentData, null);
         }
 
         readonly Regex _backreplace = new Regex("#");
@@ -91,7 +94,7 @@ namespace UnitTests
             tree.Level = level;
 
             string itemData = File.ReadAllText(buildFile);
-            ItemAttributes itemAttributes = new ItemAttributes(new PersistentData(false), itemData);
+            ItemAttributes itemAttributes = new ItemAttributes(_persistentData, itemData);
             Compute.Initialize(tree, itemAttributes);
 
             // Compare defense properties.

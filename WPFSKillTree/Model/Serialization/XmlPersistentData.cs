@@ -22,10 +22,10 @@ namespace POESKillTree.Model.Serialization
         public Options Options { get; set; }
 
         [XmlElement]
-        public PoEBuild CurrentBuild { get; set; }
+        public string CurrentBuildPath { get; set; }
 
         [XmlElement]
-        public PoEBuild SelectedBuild { get; set; } // todo this is new
+        public string SelectedBuildPath { get; set; }
 
         [XmlArray]
         public List<StashBookmark> StashBookmarks { get; set; }
@@ -34,6 +34,6 @@ namespace POESKillTree.Model.Serialization
         public List<PoEBuild> Builds { get; set; }
 
         [XmlArray]
-        public List<XmlLeagueStash> XmlLeagueStashes { get; set; }
+        public List<XmlLeagueStash> LeagueStashes { get; set; }
     }
 }

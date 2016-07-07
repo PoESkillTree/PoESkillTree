@@ -197,11 +197,22 @@ namespace POESKillTree.ViewModels.Builds
                         var start = notifyCollectionChangedEventArgs.NewStartingIndex;
                         var oldList = oldBuilds.ToList();
                         var newList = newBuilds.ToList();
-                        for (var j = 0; j < newList.Count; j++)
+                        var minCount = Math.Min(newList.Count, oldList.Count);
+                        for (var j = 0; j < minCount; j++)
                         {
                             UnsetParent(toVmFunc(oldList[j]));
                             SetParent(toVmFunc(newList[j]));
                             targetCollection.RemoveAt(start + j);
+                            targetCollection.Insert(start + j, toTargetFunc(newList[j]));
+                        }
+                        for (var j = minCount; j < oldList.Count; j++)
+                        {
+                            UnsetParent(toVmFunc(oldList[j]));
+                            targetCollection.Remove(toTargetFunc(oldList[j]));
+                        }
+                        for (var j = minCount; j < newList.Count; j++)
+                        {
+                            SetParent(toVmFunc(newList[j]));
                             targetCollection.Insert(start + j, toTargetFunc(newList[j]));
                         }
                     }

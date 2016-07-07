@@ -11,17 +11,17 @@ namespace POESKillTree.Model.Items
 {
     public class EquipmentData
     {
-        private readonly IOptions _options;
+        private readonly Options _options;
 
         public IReadOnlyDictionary<ItemType, IReadOnlyList<Affix>> AffixesPerItemType { get; private set; }
 
-        public IReadOnlyList<ItemBase> BaseList { get; private set; }
+        public IReadOnlyList<ItemBase> BaseList { get; }
 
-        public IReadOnlyDictionary<string, ItemBase> BaseDictionary { get; private set; }
+        public IReadOnlyDictionary<string, ItemBase> BaseDictionary { get; }
 
         private readonly WordSetTreeNode _root;
 
-        public EquipmentData(IOptions options)
+        public EquipmentData(Options options)
         {
             _options = options;
             AffixesPerItemType =
