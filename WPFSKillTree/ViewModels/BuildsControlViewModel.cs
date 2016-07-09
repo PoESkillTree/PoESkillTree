@@ -173,7 +173,7 @@ namespace POESKillTree.ViewModels
                 L10n.Message("Enter the name of the new build"));
             if (string.IsNullOrWhiteSpace(name))
                 return;
-            var build = new BuildViewModel(new PoEBuild { Name = name, Class = "Ranger" }, Filter);
+            var build = new BuildViewModel(new PoEBuild { Name = name }, Filter);
             folder.Children.Add(build);
             CurrentBuild = build;
         }
@@ -351,17 +351,15 @@ namespace POESKillTree.ViewModels
 
         private async Task SaveBuildToFile(IBuildViewModel build)
         {
-            // todo Use single file saving
             // todo Call on all folder changes
-            // todo Should maybe be done in PersistentData
             try
             {
-                PersistentData.SaveToFile();
-                (build.Build as PoEBuild)?.KeepChanges();
+                PersistentData.SaveBuild(build.Build);
             }
             catch (Exception e)
             {
-                await _dialogCoordinator.ShowErrorAsync(this, L10n.Message("An error occurred during a save operation."), e.Message);
+                await _dialogCoordinator.ShowErrorAsync(this,
+                    L10n.Message("An error occurred during a save operation."), e.Message);
             }
         }
 

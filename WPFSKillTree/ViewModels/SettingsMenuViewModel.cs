@@ -23,7 +23,7 @@ namespace POESKillTree.ViewModels
             RequestsClose += _ =>
             {
                 Options.PropertyChanged -= handler;
-                persistentData.SaveToFile();
+                persistentData.Save();
             };
         }
 

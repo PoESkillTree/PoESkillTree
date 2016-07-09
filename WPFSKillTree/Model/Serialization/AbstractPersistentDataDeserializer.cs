@@ -31,7 +31,7 @@ namespace POESKillTree.Model.Serialization
                 MaximumDeserializableVersion = new Version(maximumConvertableVersion);
         }
 
-        public IPersistentData Deserialize(string xmlString)
+        public PersistentData Deserialize(string xmlString)
         {
             PersistentData = new PersistentData();
             DeserializePersistentDataFile(xmlString);

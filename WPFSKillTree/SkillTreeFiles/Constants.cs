@@ -18,6 +18,7 @@
             @"(http(|s):\/\/|).*?(character(\/|)|passive-skill-tree(\/|)|fullscreen-passive-skill-tree(\/|)|#|poeplanner.com(\/|))";
 
         public const string DefaultTree = "https://www.pathofexile.com/passive-skill-tree/AAAABAMAAA==";
+        public const string DefaultTreeClass = "Witch";
 
         /// <summary>
         /// The image files (node sprites and assets) come in 4 sizes.

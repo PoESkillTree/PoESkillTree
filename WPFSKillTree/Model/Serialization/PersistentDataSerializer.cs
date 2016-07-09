@@ -21,11 +21,9 @@ namespace POESKillTree.Model.Serialization
 
             var stashes = new List<XmlLeagueStash>(persistentData.LeagueStashes.Select(
                 p => new XmlLeagueStash { Name = p.Key, Bookmarks = new List<StashBookmark>(p.Value) }));
-            var builds = persistentData.RootBuild.Builds.SelectMany(b => FlattenBuilds(b)).ToList();
             var xmlPersistentData = new XmlPersistentData
             {
                 AppVersion = SerializationUtils.GetAssemblyFileVersion(),
-                Builds = builds,
                 CurrentBuildPath = PathFor(persistentData.CurrentBuild),
                 Options = persistentData.Options,
                 SelectedBuildPath = PathFor(persistentData.SelectedBuild),
@@ -34,28 +32,6 @@ namespace POESKillTree.Model.Serialization
             };
             SerializationUtils.Serialize(xmlPersistentData, filePath);
             SerializeStash();
-        }
-
-        private static IEnumerable<PoEBuild> FlattenBuilds(IBuild build, string parentNames = null)
-        {
-            var list = new List<PoEBuild>();
-            var prefix = string.IsNullOrEmpty(parentNames) ? "" : parentNames + "/";
-            var b = build as PoEBuild;
-            if (b != null)
-            {
-                b = b.DeepClone();
-                b.Name = prefix + b.Name;
-                list.Add(b);
-            }
-            else
-            {
-                var folder = (BuildFolder)build;
-                foreach (var child in folder.Builds)
-                {
-                    list.AddRange(FlattenBuilds(child, prefix + folder.Name));
-                }
-            }
-            return list;
         }
 
         private string PathFor(IBuild build)
@@ -96,6 +72,59 @@ namespace POESKillTree.Model.Serialization
             {
                 Log.Error("Could not serialize stash", e);
             }
+        }
+
+        public void SerializeBuild(IBuild build, IPersistentData persistentData)
+        {
+            _persistentData = persistentData;
+            // todo
+            SerializeAllBuilds(persistentData);
+        }
+
+        public void SerializeAllBuilds(IPersistentData persistentData)
+        {
+            _persistentData = persistentData;
+
+            var path = persistentData.Options.BuildsSavePath;
+            var tmpPath = path + "Tmp";
+            try
+            {
+                DirectoryEx.DeleteIfExists(tmpPath, true);
+                SerializeFolder(tmpPath, persistentData.RootBuild);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Could not save builds to {tmpPath}", e);
+                DirectoryEx.DeleteIfExists(tmpPath, true);
+                return;
+            }
+            DirectoryEx.MoveOverwriting(tmpPath, path);
+        }
+
+        private static void SerializeFolder(string path, BuildFolder folder)
+        {
+            var xmlFolder = new XmlBuildFolder
+            {
+                IsExpanded = folder.IsExpanded,
+                Builds = folder.Builds.Select(b => b.Name).ToList()
+            };
+            Directory.CreateDirectory(path);
+            SerializationUtils.Serialize(xmlFolder, Path.Combine(path, SerializationConstants.BuildFolderFileName));
+            foreach (var build in folder.Builds)
+            {
+                var buildPath = Path.Combine(path, SerializationUtils.EncodeFileName(build.Name));
+                var b = build as PoEBuild;
+                if (b != null)
+                    SerializeBuild(buildPath, b);
+                else
+                    SerializeFolder(buildPath, (BuildFolder) build);
+            }
+        }
+
+        private static void SerializeBuild(string path, PoEBuild build)
+        {
+            SerializationUtils.Serialize(build, path + SerializationConstants.BuildFileExtension);
+            build.KeepChanges();
         }
     }
 }

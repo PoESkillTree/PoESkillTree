@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using log4net;
 
 namespace POESKillTree.Model.Serialization
 {
@@ -8,6 +11,8 @@ namespace POESKillTree.Model.Serialization
     /// </summary>
     public class PersistentDataDeserializerCurrent : AbstractPersistentDataDeserializer
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentDataDeserializerCurrent));
+
         // 2.2.10 was released as 2.2.10.957, this is for everything after that version
         public PersistentDataDeserializerCurrent()
             : base("2.2.10.958", "999.0")
@@ -20,7 +25,7 @@ namespace POESKillTree.Model.Serialization
             PersistentData.Options = obj.Options;
             obj.StashBookmarks?.ForEach(PersistentData.StashBookmarks.Add);
             obj.LeagueStashes?.ForEach(l => PersistentData.LeagueStashes[l.Name] = l.Bookmarks);
-            InitializeRootBuild(obj.Builds);
+            DeserializeBuilds();
 
             var current = BuildForPath(obj.CurrentBuildPath) as PoEBuild;
             if (current == null)
@@ -32,29 +37,99 @@ namespace POESKillTree.Model.Serialization
             PersistentData.SelectedBuild = BuildForPath(obj.SelectedBuildPath) as PoEBuild;
         }
 
-        private void InitializeRootBuild(IEnumerable<PoEBuild> builds)
+        private void DeserializeBuilds()
         {
-            var folderDict = new Dictionary<string, BuildFolder>();
-            foreach (var build in builds)
+            var path = PersistentData.Options.BuildsSavePath;
+            if (!Directory.Exists(path))
+                return;
+            var folder = PersistentData.RootBuild;
+            var xmlFolder = Deserialize<XmlBuildFolder>(Path.Combine(path, SerializationConstants.BuildFolderFileName));
+            if (xmlFolder != null)
             {
-                var parts = build.Name.Split('/');
-                var prefix = "";
-                var folder = PersistentData.RootBuild;
-                for (var i = 0; i < parts.Length - 1; i++)
+                folder.IsExpanded = xmlFolder.IsExpanded;
+                DeserializeBuilds(path, folder, xmlFolder.Builds);
+            }
+            else
+            {
+                DeserializeBuilds(path, folder, Enumerable.Empty<string>());
+            }
+        }
+
+        private static void DeserializeBuilds(string buildFolderPath, BuildFolder folder, IEnumerable<string> buildNames)
+        {
+            var builds = new Dictionary<string, IBuild>();
+            foreach (var directoryPath in Directory.EnumerateDirectories(buildFolderPath))
+            {
+                var build = DeserializeFolder(directoryPath, Path.GetFileName(directoryPath));
+                if (build != null)
+                    builds[build.Name] = build;
+            }
+            foreach (var filePath in Directory.EnumerateFiles(buildFolderPath))
+            {
+                if (Path.GetExtension(filePath) != SerializationConstants.BuildFileExtension)
+                    continue;
+
+                var build = DeserializeBuild(filePath);
+                if (build != null)
+                    builds[build.Name] = build;
+            }
+
+            // Add the builds ordered by buildNames
+            foreach (var buildName in buildNames)
+            {
+                if (builds.ContainsKey(buildName))
                 {
-                    var upperFolder = folder;
-                    prefix += "/" + parts[i];
-                    if (!folderDict.TryGetValue(prefix, out folder))
-                    {
-                        folder = new BuildFolder { Name = parts[i] };
-                        upperFolder.Builds.Add(folder);
-                        folderDict[prefix] = folder;
-                    }
+                    folder.Builds.Add(builds[buildName]);
+                    builds.Remove(buildName);
                 }
-                var b = build.DeepClone();
-                b.Name = parts[parts.Length - 1];
-                b.KeepChanges();
-                folder.Builds.Add(b);
+            }
+            // Add builds not in buildNames last
+            foreach (var build in builds.Values)
+            {
+                folder.Builds.Add(build);
+            }
+        }
+
+        private static BuildFolder DeserializeFolder(string path, string fileName)
+        {
+            var folder = new BuildFolder {Name = SerializationUtils.DecodeFileName(fileName)};
+            var xmlFolder = Deserialize<XmlBuildFolder>(Path.Combine(path, SerializationConstants.BuildFolderFileName));
+            if (xmlFolder != null)
+            {
+                folder.IsExpanded = xmlFolder.IsExpanded;
+                DeserializeBuilds(path, folder, xmlFolder.Builds);
+            }
+            else
+            {
+                DeserializeBuilds(path, folder, Enumerable.Empty<string>());
+            }
+            return folder;
+        }
+
+        private static PoEBuild DeserializeBuild(string path)
+        {
+            var build = Deserialize<PoEBuild>(path);
+            if (build != null) return build;
+
+            var backupPath = path + ".bad";
+            if (!File.Exists(backupPath))
+            {
+                Log.Warn($"Moving build file {path} to {backupPath} as it could not be deserialized");
+                File.Move(path, backupPath);
+            }
+            return null;
+        }
+
+        private static T Deserialize<T>(string path)
+        {
+            try
+            {
+                return SerializationUtils.DeserializeFileAs<T>(path);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Could not deserialize file from {path} as type {typeof(T)}", e);
+                return default(T);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Xml.Serialization;
 
@@ -43,6 +44,17 @@ namespace POESKillTree.Model.Serialization
             var assembly = Assembly.GetExecutingAssembly();
             var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             return fvi.FileVersion;
+        }
+
+        public static string DecodeFileName(string fileName)
+        {
+            return WebUtility.UrlDecode(fileName);
+        }
+
+        public static string EncodeFileName(string fileName)
+        {
+            // * (asterisk) is not encoded but is not allowed in Windows file names
+            return WebUtility.UrlEncode(fileName)?.Replace("*", "%2a");
         }
     }
 }

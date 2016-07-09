@@ -31,9 +31,6 @@ namespace POESKillTree.Model.Serialization
         public List<StashBookmark> StashBookmarks { get; set; }
 
         [XmlArray]
-        public List<PoEBuild> Builds { get; set; }
-
-        [XmlArray]
         public List<XmlLeagueStash> LeagueStashes { get; set; }
     }
 }

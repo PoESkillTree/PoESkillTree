@@ -49,8 +49,11 @@ namespace POESKillTree.ViewModels.Builds
                 switch (args.PropertyName)
                 {
                     case nameof(PoEBuild.PointsUsed):
+                        OnPropertyChanged(nameof(Description));
+                        break;
                     case nameof(PoEBuild.Class):
                         OnPropertyChanged(nameof(Description));
+                        OnPropertyChanged(nameof(Image));
                         break;
                 }
                 ApplyFilter();

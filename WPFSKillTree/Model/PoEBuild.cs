@@ -43,7 +43,6 @@ namespace POESKillTree.Model
     public class BuildFolder : AbstractBuild<BuildFolder>
     {
         private bool _isExpanded = true;
-        private ObservableCollection<IBuild> _builds = new ObservableCollection<IBuild>();
 
         public bool IsExpanded
         {
@@ -51,11 +50,7 @@ namespace POESKillTree.Model
             set { SetProperty(ref _isExpanded, value); }
         }
 
-        public ObservableCollection<IBuild> Builds
-        {
-            get { return _builds; }
-            set { SetProperty(ref _builds, value); }
-        }
+        public ObservableCollection<IBuild> Builds { get; } = new ObservableCollection<IBuild>();
 
         public override BuildFolder DeepClone()
         {
@@ -90,7 +85,7 @@ namespace POESKillTree.Model
 
     public class PoEBuild : AbstractBuild<PoEBuild>
     {
-        private string _class;
+        private string _class = Constants.DefaultTreeClass;
         private uint _pointsUsed;
         private string _note;
         private string _characterName;

@@ -9,18 +9,23 @@ namespace POESKillTree.Model
 {
     public class PersistentData : Notifier, IPersistentData
     {
-        // Only stuff that has a setter in IPersistentData needs to notify property changes.
-
-        public Options Options { get; set; } = new Options();
-
+        private Options _options = new Options();
         private PoEBuild _currentBuild;
+        private PoEBuild _selectedBuild;
+        private EquipmentData _equipmentData;
+
+        public Options Options
+        {
+            get { return _options; }
+            set { SetProperty(ref _options, value); }
+        }
+
         public PoEBuild CurrentBuild
         {
             get { return _currentBuild; }
             set { SetProperty(ref _currentBuild, value); }
         }
 
-        private PoEBuild _selectedBuild;
         public PoEBuild SelectedBuild
         {
             get { return _selectedBuild; }
@@ -36,13 +41,24 @@ namespace POESKillTree.Model
         public IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; } =
             new Dictionary<string, IEnumerable<StashBookmark>>();
 
-        public EquipmentData EquipmentData { get; set; }
-
-        public event EventHandler RequestsSave;
-
-        public void SaveToFile()
+        public EquipmentData EquipmentData
         {
-            RequestsSave?.Invoke(this, EventArgs.Empty);
+            get { return _equipmentData; }
+            set { SetProperty(ref _equipmentData, value); }
+        }
+
+        public event Action SaveHandler;
+
+        public void Save()
+        {
+            SaveHandler?.Invoke();
+        }
+
+        public event Action<IBuild> SaveBuildHandler;
+
+        public void SaveBuild(IBuild build)
+        {
+            SaveBuildHandler?.Invoke(build);
         }
     }
 }

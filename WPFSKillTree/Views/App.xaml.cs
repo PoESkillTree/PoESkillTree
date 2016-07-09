@@ -72,15 +72,19 @@ namespace POESKillTree.Views
             }
 
             // Load persistent data.
+#if !DEBUG
             try
             {
+#endif
                 _persistentDataSerializationService = new PersistentDataSerializationService();
                 PersistentData = _persistentDataSerializationService.Deserialize();
+#if !DEBUG
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred during a load operation.\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+#endif
 
             // Initialize localization.
             L10n.Initialize(PersistentData.Options.Language);

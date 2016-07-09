@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using POESKillTree.Controls;
@@ -19,9 +18,13 @@ namespace POESKillTree.Model
         IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
 
         /// <summary>
-        /// Triggers when <see cref="SaveToFile"/> is called.
+        /// Saves everything but the builds to the filesystem.
         /// </summary>
-        event EventHandler RequestsSave;
-        void SaveToFile();
+        void Save();
+
+        /// <summary>
+        /// Saves the given build to the filesystem.
+        /// </summary>
+        void SaveBuild(IBuild build);
     }
 }

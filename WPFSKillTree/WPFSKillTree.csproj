@@ -241,7 +241,9 @@
     <Compile Include="Model\Serialization\PersistentDataDeserializerUpTo2210.cs" />
     <Compile Include="Model\Serialization\PersistentDataSerializationService.cs" />
     <Compile Include="Model\Serialization\PersistentDataSerializer.cs" />
+    <Compile Include="Model\Serialization\SerializationConstants.cs" />
     <Compile Include="Model\Serialization\SerializationUtils.cs" />
+    <Compile Include="Model\Serialization\XmlBuildFolder.cs" />
     <Compile Include="Model\Serialization\XmlPersistentData.cs" />
     <Compile Include="Model\Serialization\XmlPersistentDataVersion.cs" />
     <Compile Include="Properties\Version.Designer.cs">

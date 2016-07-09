@@ -32,11 +32,13 @@ namespace POESKillTree.Model.Serialization
         public IPersistentData Deserialize()
         {
             var data = DeserializeCore();
-            data.RequestsSave += (sender, args) => Serialize(data);
+            data.SaveHandler += () => Serialize(data);
+            data.SaveBuildHandler += b => _serializer.SerializeBuild(b, data);
+            _serializer.SerializeAllBuilds(data);
             return data;
         }
 
-        private IPersistentData DeserializeCore()
+        private PersistentData DeserializeCore()
         {
             if (!File.Exists(_filePath))
                 return new PersistentData();
@@ -63,7 +65,7 @@ namespace POESKillTree.Model.Serialization
             }
         }
 
-        private IPersistentData Deserialize(string filePath)
+        private PersistentData Deserialize(string filePath)
         {
             string xmlString;
             using (var reader = new StreamReader(filePath))
