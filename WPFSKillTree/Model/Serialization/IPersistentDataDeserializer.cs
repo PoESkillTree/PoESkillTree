@@ -23,11 +23,17 @@ namespace POESKillTree.Model.Serialization
         Version MaximumDeserializableVersion { get; }
 
         /// <summary>
-        /// Deserializes and creates an <see cref="PersistentData"/> instance.
+        /// Deserializes and creates a <see cref="PersistentData"/> instance.
         /// </summary>
         /// <param name="xmlString">The contents of the PersistentData.xml file. Other files than this may be
         /// used additionally.</param>
         /// <returns>The deserialized, fully initialized <see cref="PersistentData"/> instance.</returns>
         PersistentData Deserialize(string xmlString);
+
+        /// <summary>
+        /// Creates a <see cref="PersistentData"/> instance not based on a PersistentData.xml file.
+        /// </summary>
+        /// <returns></returns>
+        PersistentData CreateDefaultPersistentData();
     }
 }

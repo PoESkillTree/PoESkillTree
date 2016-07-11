@@ -1,88 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 
-namespace POESKillTree.Model
+namespace POESKillTree.Model.Builds
 {
-    public interface IBuild : INotifyPropertyChanged, INotifyPropertyChanging, IDeepCloneable
-    {
-        string Name { get; }
-
-        new IBuild DeepClone();
-    }
-
-    public abstract class AbstractBuild<T> : Notifier, IBuild, IDeepCloneable<T>
-        where T : IBuild
-    {
-        private string _name;
-
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
-        }
-
-        public abstract T DeepClone();
-
-        IBuild IBuild.DeepClone()
-        {
-            return DeepClone();
-        }
-
-        object IDeepCloneable.DeepClone()
-        {
-            return DeepClone();
-        }
-    }
-
-    public class BuildFolder : AbstractBuild<BuildFolder>
-    {
-        private bool _isExpanded = true;
-
-        public bool IsExpanded
-        {
-            get { return _isExpanded; }
-            set { SetProperty(ref _isExpanded, value); }
-        }
-
-        public ObservableCollection<IBuild> Builds { get; } = new ObservableCollection<IBuild>();
-
-        public override BuildFolder DeepClone()
-        {
-            var o = (BuildFolder) SafeMemberwiseClone();
-            o.Builds.Clear();
-            foreach (var build in Builds)
-            {
-                o.Builds.Add(build.DeepClone());
-            }
-            return o;
-        }
-
-        public IEnumerable<PoEBuild> BuildsPreorder()
-        {
-            foreach (var build in Builds)
-            {
-                var b = build as PoEBuild;
-                if (b != null)
-                {
-                    yield return b;
-                }
-                else
-                {
-                    foreach (var child in ((BuildFolder) build).BuildsPreorder())
-                    {
-                        yield return child;
-                    }
-                }
-            }
-        }
-    }
-
     public class PoEBuild : AbstractBuild<PoEBuild>
     {
         private string _class = Constants.DefaultTreeClass;

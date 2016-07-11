@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using log4net;
+using POESKillTree.Model.Builds;
 
 namespace POESKillTree.Model.Serialization
 {
@@ -19,6 +20,19 @@ namespace POESKillTree.Model.Serialization
         {
         }
 
+        protected override void DeserializeWithoutPersistentDataFile()
+        {
+            DeserializeBuilds();
+            // If there are builds saved, take the first one, if not, create a new one.
+            var current = PersistentData.RootBuild.BuildsPreorder().FirstOrDefault();
+            if (current == null)
+            {
+                current = CreateDefaultCurrentBuild();
+                PersistentData.RootBuild.Builds.Add(current);
+            }
+            PersistentData.CurrentBuild = current;
+        }
+
         protected override void DeserializePersistentDataFile(string xmlString)
         {
             var obj = SerializationUtils.DeserializeStringAs<XmlPersistentData>(xmlString);
@@ -30,8 +44,12 @@ namespace POESKillTree.Model.Serialization
             var current = BuildForPath(obj.CurrentBuildPath) as PoEBuild;
             if (current == null)
             {
-                current = CreateDefaultCurrentBuild();
-                PersistentData.RootBuild.Builds.Add(current);
+                current = PersistentData.RootBuild.BuildsPreorder().FirstOrDefault();
+                if (current == null)
+                {
+                    current = CreateDefaultCurrentBuild();
+                    PersistentData.RootBuild.Builds.Add(current);
+                }
             }
             PersistentData.CurrentBuild = current;
             PersistentData.SelectedBuild = BuildForPath(obj.SelectedBuildPath) as PoEBuild;

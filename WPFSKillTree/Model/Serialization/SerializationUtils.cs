@@ -39,7 +39,9 @@ namespace POESKillTree.Model.Serialization
             }
         }
 
-        public static string GetAssemblyFileVersion()
+        public static string AssembylFileVersion { get; } = GetAssemblyFileVersion();
+
+        private static string GetAssemblyFileVersion()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);

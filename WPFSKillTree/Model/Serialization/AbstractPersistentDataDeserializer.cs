@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using log4net;
 using Newtonsoft.Json.Linq;
+using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
@@ -29,6 +30,22 @@ namespace POESKillTree.Model.Serialization
                 MinimumDeserializableVersion = new Version(minimumConvertableVersion);
             if (maximumConvertableVersion != null)
                 MaximumDeserializableVersion = new Version(maximumConvertableVersion);
+        }
+
+        public PersistentData CreateDefaultPersistentData()
+        {
+            PersistentData = new PersistentData();
+            DeserializeWithoutPersistentDataFile();
+            PersistentData.EquipmentData = DeserializeEquipmentData();
+            PersistentData.StashItems.AddRange(DeserializeStashItems());
+            return PersistentData;
+        }
+
+        protected virtual void DeserializeWithoutPersistentDataFile()
+        {
+            var current = CreateDefaultCurrentBuild();
+            PersistentData.RootBuild.Builds.Add(current);
+            PersistentData.CurrentBuild = current;
         }
 
         public PersistentData Deserialize(string xmlString)

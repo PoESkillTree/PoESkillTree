@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
-using POESKillTree.Model;
+using POESKillTree.Model.Builds;
 using POESKillTree.Views;
 
 namespace POESKillTree.ViewModels

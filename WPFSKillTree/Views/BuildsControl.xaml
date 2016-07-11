@@ -277,7 +277,8 @@
         <UniformGrid Grid.Row="3" Rows="1" Margin="5 0">
             <Button Command="{Binding SaveBuildCommand}"
                     CommandParameter="{Binding CurrentBuild}"
-                    Margin="0 0 5 0" Height="30" MinWidth="55">
+                    Margin="0 0 5 0" Height="30" MinWidth="55"
+                    ToolTipService.ShowOnDisabled="True">
                 <l:Catalog Message="Save" />
                 <Button.ToolTip>
                     <l:Catalog Message="Saves the currently opened build" />
@@ -285,7 +286,8 @@
             </Button>
             <Button Command="{Binding SaveBuildAsCommand}"
                     CommandParameter="{Binding CurrentBuild}"
-                    Margin="0 0 5 0" Height="30" MinWidth="55">
+                    Margin="0 0 5 0" Height="30" MinWidth="55"
+                    ToolTipService.ShowOnDisabled="True">
                 <l:Catalog Message="Save As" />
                 <Button.ToolTip>
                     <l:Catalog Message="Saves the currently opened build as a new build" />

@@ -1,5 +1,5 @@
 using System;
-using POESKillTree.Model;
+using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Builds

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using POESKillTree.Controls;
+using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
 
@@ -59,6 +60,13 @@ namespace POESKillTree.Model
         public void SaveBuild(IBuild build)
         {
             SaveBuildHandler?.Invoke(build);
+        }
+
+        public event Action<IBuild> DeleteBuildHandler;
+
+        public void DeleteBuild(IBuild build)
+        {
+            DeleteBuildHandler?.Invoke(build);
         }
     }
 }

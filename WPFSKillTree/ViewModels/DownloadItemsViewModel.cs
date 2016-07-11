@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Builds;
 
 namespace POESKillTree.ViewModels
 {

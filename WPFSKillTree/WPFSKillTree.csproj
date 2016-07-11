@@ -214,6 +214,9 @@
     <Compile Include="Localization\XAML.cs" />
     <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\Bandit.cs" />
+    <Compile Include="Model\Builds\AbstractBuild.cs" />
+    <Compile Include="Model\Builds\BuildFolder.cs" />
+    <Compile Include="Model\Builds\IBuild.cs" />
     <Compile Include="Model\IDeepCloneable.cs" />
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\IPersistentData.cs" />
@@ -404,7 +407,7 @@
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\PoEBuild.cs" />
+    <Compile Include="Model\Builds\PoEBuild.cs" />
     <Compile Include="SkillTreeFiles\PoESkillTree.cs" />
     <Compile Include="SkillTreeFiles\Point2D.cs" />
     <Compile Include="SkillTreeFiles\Rect2D.cs" />

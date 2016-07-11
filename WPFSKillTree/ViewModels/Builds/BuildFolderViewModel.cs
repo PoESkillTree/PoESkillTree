@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using POESKillTree.Model;
+using POESKillTree.Model.Builds;
 using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.ViewModels.Builds
 {
     public class BuildFolderViewModel : AbstractBuildViewModel<BuildFolder>, IBuildFolderViewModel
     {
+        private readonly Action<IBuildFolderViewModel> _collectionChangedCallback;
+
         public ObservableCollection<IBuildViewModel> Children { get; } =
             new ObservableCollection<IBuildViewModel>();
 
         private bool _isInCollectionChanged;
 
-        public BuildFolderViewModel(BuildFolder buildFolder, Predicate<IBuildViewModel> filterPredicate)
+        public BuildFolderViewModel(BuildFolder buildFolder, Predicate<IBuildViewModel> filterPredicate,
+            Action<IBuildFolderViewModel> collectionChangedCallback)
             : base(buildFolder, filterPredicate)
         {
+            _collectionChangedCallback = collectionChangedCallback;
             CreateChildren();
 
             Build.PropertyChanging += (sender, args) =>
@@ -50,7 +54,7 @@ namespace POESKillTree.ViewModels.Builds
                 if (build is PoEBuild)
                     Children.Add(new BuildViewModel((PoEBuild)build, FilterPredicate));
                 else if (build is BuildFolder)
-                    Children.Add(new BuildFolderViewModel((BuildFolder)build, FilterPredicate));
+                    Children.Add(new BuildFolderViewModel((BuildFolder)build, FilterPredicate, _collectionChangedCallback));
                 else
                     throw new InvalidOperationException($"Unknown IBuild implementation {build.GetType()}");
             }
@@ -95,7 +99,10 @@ namespace POESKillTree.ViewModels.Builds
         private void ChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             if (_isInCollectionChanged)
+            {
+                _collectionChangedCallback(this);
                 return;
+            }
             _isInCollectionChanged = true;
             if (notifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Reset)
             {
@@ -108,6 +115,7 @@ namespace POESKillTree.ViewModels.Builds
                 CollectionChanged<IBuildViewModel, IBuild>(notifyCollectionChangedEventArgs, Build.Builds, b => b.Build);
             }
             _isInCollectionChanged = false;
+            _collectionChangedCallback(this);
         }
         
         private void BuildsOnCollectionChanged(object sender,
@@ -135,7 +143,7 @@ namespace POESKillTree.ViewModels.Builds
             if (build is PoEBuild)
                 return new BuildViewModel((PoEBuild)build, FilterPredicate);
             if (build is BuildFolder)
-                return new BuildFolderViewModel((BuildFolder)build, FilterPredicate);
+                return new BuildFolderViewModel((BuildFolder)build, FilterPredicate, _collectionChangedCallback);
             return null;
         }
 

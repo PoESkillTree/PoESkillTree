@@ -24,6 +24,7 @@ using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.ViewModels;

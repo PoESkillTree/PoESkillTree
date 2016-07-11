@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using POESKillTree.Model;
+using POESKillTree.Model.Builds;
 
 namespace POESKillTree.ViewModels.Builds
 {

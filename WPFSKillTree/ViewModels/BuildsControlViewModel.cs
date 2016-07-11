@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
+using log4net;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.Wpf;
@@ -19,6 +21,8 @@ namespace POESKillTree.ViewModels
 
     public class BuildsControlViewModel : Notifier
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(BuildsControlViewModel));
+
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
 
         public IBuildFolderViewModel BuildRoot { get; }
@@ -114,7 +118,7 @@ namespace POESKillTree.ViewModels
         {
             _dialogCoordinator = dialogCoordinator;
             PersistentData = persistentData;
-            BuildRoot = new BuildFolderViewModel(persistentData.RootBuild, Filter);
+            BuildRoot = new BuildFolderViewModel(persistentData.RootBuild, Filter, BuildOnCollectionChanged);
 
             CurrentBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.CurrentBuild, BuildRoot);
             SelectedBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.SelectedBuild, BuildRoot);
@@ -134,7 +138,7 @@ namespace POESKillTree.ViewModels
             SaveBuildAsCommand = new RelayCommand<BuildViewModel>(
                 async b => await SaveBuildAs(b));
             SaveAllBuildsCommand = new RelayCommand(
-                _ => TreeTraverse<BuildViewModel>(async build => await SaveBuildToFile(build), BuildRoot),
+                async _ => await SaveAllBuilds(),
                 _ => TreeFind<BuildViewModel>(b => b.Build.IsDirty, BuildRoot) != null);
             RevertBuildCommand = new RelayCommand<BuildViewModel>(
                 build => build.Build.RevertChanges(),
@@ -148,7 +152,7 @@ namespace POESKillTree.ViewModels
             EditCommand = new RelayCommand<IBuildViewModel>(
                 async build => await Edit(build));
             CutCommand = new RelayCommand<IBuildViewModel>(
-                Cut,
+                async build => await Cut(build),
                 b => b != BuildRoot);
             CopyCommand = new RelayCommand<IBuildViewModel>(
                 Copy);
@@ -163,8 +167,9 @@ namespace POESKillTree.ViewModels
                 L10n.Message("Enter the name of the new folder"));
             if (string.IsNullOrWhiteSpace(name))
                 return;
-            var newFolder = new BuildFolderViewModel(new BuildFolder { Name = name }, Filter);
+            var newFolder = new BuildFolderViewModel(new BuildFolder { Name = name }, Filter, BuildOnCollectionChanged);
             folder.Children.Add(newFolder);
+            await SaveBuildToFile(newFolder);
         }
 
         public async Task NewBuild(IBuildFolderViewModel folder)
@@ -197,6 +202,7 @@ namespace POESKillTree.ViewModels
             build.IsSelected = false;
             build.Parent.IsSelected = true;
             build.Parent.Children.Remove(build);
+            await DeleteBuildFile(build);
         }
 
         public async Task SaveBuild(BuildViewModel build)
@@ -216,7 +222,6 @@ namespace POESKillTree.ViewModels
             newBuild.Name = name;
             newBuild.LastUpdated = DateTime.Now;
             var newVm = new BuildViewModel(newBuild, Filter);
-            await SaveBuildToFile(newVm);
 
             var builds = vm.Parent.Children;
             if (build.CanRevert)
@@ -233,7 +238,18 @@ namespace POESKillTree.ViewModels
                 builds.RemoveAt(i);
                 builds.Insert(i, newVm);
             }
+
             CurrentBuild = newVm;
+            await SaveBuildToFile(newVm);
+        }
+
+        private async Task SaveAllBuilds()
+        {
+            await TreeTraverse<BuildViewModel>(async build =>
+            {
+                if (build.Build.IsDirty)
+                    await SaveBuildToFile(build);
+            }, BuildRoot);
         }
 
         private void MoveUp(IBuildViewModel build)
@@ -250,11 +266,12 @@ namespace POESKillTree.ViewModels
             list.Move(i, i + 1);
         }
 
-        private void Cut(IBuildViewModel build)
+        private async Task Cut(IBuildViewModel build)
         {
             build.IsSelected = false;
             build.Parent.IsSelected = true;
             build.Parent.Children.Remove(build);
+            await DeleteBuildFile(build);
             _buildClipboard = build;
             _clipboardIsCopy = false;
         }
@@ -278,7 +295,7 @@ namespace POESKillTree.ViewModels
                 }
                 else
                 {
-                    pasted = new BuildFolderViewModel(folder.Build.DeepClone(), Filter);
+                    pasted = new BuildFolderViewModel(folder.Build.DeepClone(), Filter, BuildOnCollectionChanged);
                 }
             }
             else
@@ -303,7 +320,10 @@ namespace POESKillTree.ViewModels
             }
             else if (folderVm != null)
             {
-                await _dialogCoordinator.EditFolderAsync(this, folderVm.Build);
+                if (await _dialogCoordinator.EditFolderAsync(this, folderVm.Build))
+                {
+                    await SaveBuildToFile(build);
+                }
             }
             else
             {
@@ -340,26 +360,52 @@ namespace POESKillTree.ViewModels
             return folder?.Children.Select(build => TreeFind(predicate, build)).FirstOrDefault(r => r != null);
         }
 
-        private static void TreeTraverse<T>(Action<T> action, IBuildViewModel current) where T : class, IBuildViewModel
+        private static async Task TreeTraverse<T>(Func<T, Task> action, IBuildViewModel current) where T : class, IBuildViewModel
         {
             var t = current as T;
             if (t != null)
-                action(t);
+                await action(t);
             var folder = current as BuildFolderViewModel;
-            folder?.Children.ForEach(build => TreeTraverse(action, build));
+            if (folder == null)
+                return;
+            foreach (var build in folder.Children)
+            {
+                await TreeTraverse(action, build);
+            }
+        }
+
+        private async void BuildOnCollectionChanged(IBuildFolderViewModel build)
+        {
+            await SaveBuildToFile(build);
+            // It's ok that this method doesn't return Task as it is used like an event handler and the
+            // async action in SaveBuildToFile does not require to be waited upon.
         }
 
         private async Task SaveBuildToFile(IBuildViewModel build)
         {
-            // todo Call on all folder changes
             try
             {
                 PersistentData.SaveBuild(build.Build);
             }
             catch (Exception e)
             {
+                Log.Error($"Build save failed for '{build.Build.Name}'", e);
                 await _dialogCoordinator.ShowErrorAsync(this,
                     L10n.Message("An error occurred during a save operation."), e.Message);
+            }
+        }
+
+        private async Task DeleteBuildFile(IBuildViewModel build)
+        {
+            try
+            {
+                PersistentData.DeleteBuild(build.Build);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Build deletion failed for '{build.Build.Name}'", e);
+                await _dialogCoordinator.ShowErrorAsync(this,
+                    L10n.Message("An error occurred during a delete operation."), e.Message);
             }
         }
 

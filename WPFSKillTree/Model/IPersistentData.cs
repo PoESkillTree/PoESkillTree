@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using POESKillTree.Controls;
+using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 
 namespace POESKillTree.Model
@@ -26,5 +27,12 @@ namespace POESKillTree.Model
         /// Saves the given build to the filesystem.
         /// </summary>
         void SaveBuild(IBuild build);
+
+        /// <summary>
+        /// Deletes the given build from the filesystem.
+        /// This has to be called after its folder has been saved as it can't be known if it was moved or
+        /// deleted when saving the folder.
+        /// </summary>
+        void DeleteBuild(IBuild build);
     }
 }

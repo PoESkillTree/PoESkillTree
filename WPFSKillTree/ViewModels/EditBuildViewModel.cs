@@ -1,4 +1,4 @@
-﻿using POESKillTree.Model;
+﻿using POESKillTree.Model.Builds;
 
 namespace POESKillTree.ViewModels
 {

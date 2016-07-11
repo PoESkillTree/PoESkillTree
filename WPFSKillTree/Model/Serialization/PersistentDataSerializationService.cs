@@ -24,7 +24,8 @@ namespace POESKillTree.Model.Serialization
             new PersistentDataDeserializerUpTo2210(),
             new PersistentDataDeserializerCurrent()
         };
-        private readonly PersistentDataSerializer _serializer = new PersistentDataSerializer();
+        private readonly Dictionary<IPersistentData, PersistentDataSerializer> _serializerDict =
+            new Dictionary<IPersistentData, PersistentDataSerializer>();
 
         private readonly string _filePath = AppData.GetFolder(true) + FileName + ".xml";
         private readonly string _backupPath = AppData.GetFolder(true) + FileName + ".bak";
@@ -32,16 +33,19 @@ namespace POESKillTree.Model.Serialization
         public IPersistentData Deserialize()
         {
             var data = DeserializeCore();
+            var serializer = new PersistentDataSerializer(data);
+            _serializerDict[data] = serializer;
             data.SaveHandler += () => Serialize(data);
-            data.SaveBuildHandler += b => _serializer.SerializeBuild(b, data);
-            _serializer.SerializeAllBuilds(data);
+            data.SaveBuildHandler += serializer.SerializeBuild;
+            data.DeleteBuildHandler += serializer.DeleteBuild;
+            serializer.SerializeAllBuilds();
             return data;
         }
 
         private PersistentData DeserializeCore()
         {
             if (!File.Exists(_filePath))
-                return new PersistentData();
+                return _deserializer.Last().CreateDefaultPersistentData();
 
             try
             {
@@ -96,7 +100,7 @@ namespace POESKillTree.Model.Serialization
         public void Serialize(IPersistentData persistentData)
         {
             FileEx.MoveIfExists(_filePath, _backupPath, true);
-            _serializer.Serialize(persistentData, _filePath);
+            _serializerDict[persistentData].Serialize(_filePath);
         }
 
         // Creates empty file with language option set.
@@ -104,8 +108,7 @@ namespace POESKillTree.Model.Serialization
         public static void CreateSetupTemplate(string path, string language)
         {
             var data = new PersistentData { Options = { Language = language } };
-            var manager = new PersistentDataSerializationService();
-            manager._serializer.Serialize(data, Path.Combine(path, FileName + ".xml"));
+            new PersistentDataSerializer(data).Serialize(Path.Combine(path, FileName + ".xml"));
         }
     }
 }
