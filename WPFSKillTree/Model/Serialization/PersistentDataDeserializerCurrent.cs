@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using log4net;
 using POESKillTree.Model.Builds;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Model.Serialization
 {
@@ -112,7 +113,7 @@ namespace POESKillTree.Model.Serialization
         {
             var folder = new BuildFolder {Name = SerializationUtils.DecodeFileName(fileName)};
             var xmlFolder = Deserialize<XmlBuildFolder>(Path.Combine(path, SerializationConstants.BuildFolderFileName));
-            if (xmlFolder != null)
+            if (xmlFolder != null && CheckVersion(xmlFolder.Version))
             {
                 folder.IsExpanded = xmlFolder.IsExpanded;
                 DeserializeBuilds(path, folder, xmlFolder.Builds);
@@ -127,15 +128,32 @@ namespace POESKillTree.Model.Serialization
         private static PoEBuild DeserializeBuild(string path)
         {
             var build = Deserialize<PoEBuild>(path);
-            if (build != null) return build;
+            if (build != null && CheckVersion(build.Version))
+                return build;
 
             var backupPath = path + ".bad";
-            if (!File.Exists(backupPath))
-            {
-                Log.Warn($"Moving build file {path} to {backupPath} as it could not be deserialized");
-                File.Move(path, backupPath);
-            }
+            Log.Warn($"Moving build file {path} to {backupPath} as it could not be deserialized");
+            FileEx.DeleteIfExists(backupPath);
+            File.Move(path, backupPath);
             return null;
+        }
+
+        private static bool CheckVersion(string buildVersion)
+        {
+            var version = new Version(buildVersion);
+            var compare = SerializationConstants.BuildVersion.CompareTo(version);
+            if (compare > 0)
+            {
+                throw new InvalidOperationException("Build of old version found, a converter needs to be implemented.");
+            }
+            if (compare < 0)
+            {
+                Log.Error(
+                    "Build has higher version than supported "
+                    + $"(version {buildVersion}, supported is {SerializationConstants.BuildVersion})\n");
+                return false;
+            }
+            return true;
         }
 
         private static T Deserialize<T>(string path)

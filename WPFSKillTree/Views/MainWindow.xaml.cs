@@ -621,11 +621,64 @@ namespace POESKillTree.Views
         {
         }
 
-        private void Window_Closing(object sender, CancelEventArgs e)
+        private bool? _canClose;
+
+        private async void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (_settingsWindow != null)
+            if (!_canClose.HasValue)
             {
-                _settingsWindow.Close();
+                // We want to close later
+                e.Cancel = true;
+                // Stop close calls while async processing from closing
+                _canClose = false;
+                if (await CloseAsync())
+                {
+                    // User wants to close
+                    _canClose = true;
+                    // Here goes the close handling that happens synchronously.
+                    _settingsWindow?.Close();
+                    // Calling Close() here again is not possible as the Closing event might still be handled
+                    // (Close() is not allowed while a previous one is not completely processed)
+                    Application.Current.Shutdown();
+                }
+                else
+                {
+                    // User doesn't want to close. Reset _canClose.
+                    _canClose = null;
+                }
+            }
+            else if (!_canClose.Value)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private async Task<bool> CloseAsync()
+        {
+            var dirtyBuilds = BuildsControlViewModel.GetDirtyBuilds().ToList();
+            if (!dirtyBuilds.Any())
+                return true;
+            var title = L10n.Message("Unsaved Builds");
+            var message = L10n.Message("There are unsaved builds. Do you want to save them before closing?\n\n"
+                + "Canceling stops the program from closing and does not save any builds.");
+            var details = L10n.Message("These builds are not saved:\n");
+            foreach (var build in dirtyBuilds)
+            {
+                details += "\n - " + build.Build.Name;
+            }
+            var result = await this.ShowQuestionAsync(message, details, title, MessageBoxButton.YesNoCancel);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    foreach (var build in dirtyBuilds)
+                    {
+                        await BuildsControlViewModel.SaveBuild(build);
+                    }
+                    return true;
+                case MessageBoxResult.No:
+                    return true;
+                default:
+                    return false;
             }
         }
 
@@ -643,7 +696,7 @@ namespace POESKillTree.Views
         private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
         {
             var response = await this.ShowQuestionAsync(L10n.Message("Are you sure?"),
-                L10n.Message("Untag All Skill Nodes"), MessageBoxImage.None);
+                title: L10n.Message("Untag All Skill Nodes"), image: MessageBoxImage.None);
             if (response == MessageBoxResult.Yes)
                 Tree.UntagAllNodes();
         }
@@ -927,8 +980,8 @@ namespace POESKillTree.Views
                                    ? L10n.Message("Do you want to download and install the update?")
                                    : L10n.Message("Do you want to download and install the new version?"));
 
-                    var download = await this.ShowQuestionAsync(message, L10n.Message("Continue installation?"),
-                        release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
+                    var download = await this.ShowQuestionAsync(message, title: L10n.Message("Continue installation?"),
+                        image: release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
                     if (download == MessageBoxResult.Yes)
                         await InstallUpdateAsync();
                     else

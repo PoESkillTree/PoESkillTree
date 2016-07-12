@@ -22,6 +22,7 @@ namespace POESKillTree.Model.Builds
         private DateTime _lastUpdated = DateTime.Now;
         private List<string[]> _customGroups = new List<string[]>();
         private BanditSettings _bandits = new BanditSettings();
+        private string _version;
         private bool _isDirty;
         private IMemento<PoEBuild> _memento;
 
@@ -98,11 +99,22 @@ namespace POESKillTree.Model.Builds
             set { SetProperty(ref _bandits, value); }
         }
 
+        public string Version
+        {
+            get { return _version; }
+            set { SetProperty(ref _version, value); }
+        }
+
         [XmlIgnore]
         public bool IsDirty
         {
             get { return _isDirty; }
             private set { SetProperty(ref _isDirty, value); }
+        }
+
+        public bool CanRevert
+        {
+            get { return _memento != null; }
         }
 
         public PoEBuild()
@@ -137,11 +149,6 @@ namespace POESKillTree.Model.Builds
         public IMemento<PoEBuild> SaveToMemento()
         {
             return new Memento(this);
-        }
-
-        public bool CanRevert
-        {
-            get { return _memento != null; }
         }
 
         protected override Notifier SafeMemberwiseClone()

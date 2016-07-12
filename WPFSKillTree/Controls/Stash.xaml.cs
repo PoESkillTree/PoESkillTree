@@ -696,7 +696,7 @@ namespace POESKillTree.Controls
                     case TabPickerResult.DeleteIncludingItems:
                         if (await this.GetMetroWindow().ShowQuestionAsync(
                                 L10n.Message("This will delete all items between this and the next bookmark and can not be undone.\nDo you want to continue?"),
-                                L10n.Message("Delete items"))
+                                title: L10n.Message("Delete items"))
                             == MessageBoxResult.Yes)
                         {
                             DeleteBookmarkAndItems(bm);

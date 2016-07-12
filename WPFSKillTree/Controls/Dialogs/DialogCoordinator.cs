@@ -65,12 +65,13 @@ namespace POESKillTree.Controls.Dialogs
             return await metroWindow.ShowDialogAsync(viewModel, view, onShown);
         }
 
-        public async Task<MessageBoxResult> ShowQuestionAsync(object context, string message, string title = null,
+        public async Task<MessageBoxResult> ShowQuestionAsync(object context, string message, string details = null,
+            string title = null, MessageBoxButton buttons = MessageBoxButton.YesNo,
             MessageBoxImage image = MessageBoxImage.Question)
         {
             var metroWindow = await GetMetroWindowAsync(context);
 
-            return await metroWindow.ShowQuestionAsync(message, title, image);
+            return await metroWindow.ShowQuestionAsync(message, details, title, buttons, image);
         }
 
         public async Task ShowErrorAsync(object context, string message, string details = null, string title = null)

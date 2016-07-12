@@ -5,7 +5,8 @@ namespace POESKillTree.Controls.Dialogs
 {
     public interface IDialogCoordinator
     {
-        Task<MessageBoxResult> ShowQuestionAsync(object context, string message, string title = null,
+        Task<MessageBoxResult> ShowQuestionAsync(object context, string message, string details = null,
+            string title = null, MessageBoxButton buttons = MessageBoxButton.YesNo,
             MessageBoxImage image = MessageBoxImage.Question);
 
         Task ShowErrorAsync(object context, string message, string details = null, string title = null);

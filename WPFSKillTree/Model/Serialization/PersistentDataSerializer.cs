@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using log4net;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Controls;
@@ -192,6 +191,7 @@ namespace POESKillTree.Model.Serialization
 
                 var xmlFolder = new XmlBuildFolder
                 {
+                    Version = BuildVersion.ToString(),
                     IsExpanded = folder.IsExpanded,
                     Builds = folder.Builds.Select(b => b.Name).ToList()
                 };
@@ -249,6 +249,7 @@ namespace POESKillTree.Model.Serialization
         {
             var xmlFolder = new XmlBuildFolder
             {
+                Version = BuildVersion.ToString(),
                 IsExpanded = folder.IsExpanded,
                 Builds = folder.Builds.Select(b => b.Name).ToList()
             };
@@ -268,6 +269,7 @@ namespace POESKillTree.Model.Serialization
 
         private static void SerializeBuild(string path, PoEBuild build)
         {
+            build.Version = BuildVersion.ToString();
             SerializationUtils.Serialize(build, path + BuildFileExtension);
             build.KeepChanges();
         }

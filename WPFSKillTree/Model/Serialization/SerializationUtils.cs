@@ -24,7 +24,7 @@ namespace POESKillTree.Model.Serialization
             }
         }
 
-        public static T DeserializeAs<T>(TextReader reader)
+        private static T DeserializeAs<T>(TextReader reader)
         {
             var serializer = new XmlSerializer(typeof(T));
             return (T)serializer.Deserialize(reader);

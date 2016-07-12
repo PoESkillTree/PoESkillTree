@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -209,6 +210,8 @@ namespace POESKillTree.ViewModels
         {
             build.Build.LastUpdated = DateTime.Now;
             await SaveBuildToFile(build);
+            // Save parent folder to retain ordering information when renaming
+            await SaveBuildToFile(build.Parent);
         }
 
         public async Task SaveBuildAs(BuildViewModel vm)
@@ -245,10 +248,10 @@ namespace POESKillTree.ViewModels
 
         private async Task SaveAllBuilds()
         {
-            await TreeTraverse<BuildViewModel>(async build =>
+            await TreeTraverseAsync<BuildViewModel>(async build =>
             {
                 if (build.Build.IsDirty)
-                    await SaveBuildToFile(build);
+                    await SaveBuild(build);
             }, BuildRoot);
         }
 
@@ -313,10 +316,7 @@ namespace POESKillTree.ViewModels
             var folderVm = build as IBuildViewModel<BuildFolder>;
             if (buildVm != null)
             {
-                if (await _dialogCoordinator.EditBuildAsync(this, buildVm.Build))
-                {
-                    buildVm.Build.LastUpdated = DateTime.Now;
-                }
+                await _dialogCoordinator.EditBuildAsync(this, buildVm.Build);
             }
             else if (folderVm != null)
             {
@@ -349,6 +349,17 @@ namespace POESKillTree.ViewModels
             return true;
         }
 
+        public IEnumerable<BuildViewModel> GetDirtyBuilds()
+        {
+            var dirty = new List<BuildViewModel>();
+            TreeTraverse<BuildViewModel>(vm =>
+            {
+                if (vm.Build.IsDirty)
+                    dirty.Add(vm);
+            }, BuildRoot);
+            return dirty;
+        }
+
         private static T TreeFind<T>(Predicate<T> predicate, IBuildViewModel current) where T : class, IBuildViewModel
         {
             var t = current as T;
@@ -360,7 +371,7 @@ namespace POESKillTree.ViewModels
             return folder?.Children.Select(build => TreeFind(predicate, build)).FirstOrDefault(r => r != null);
         }
 
-        private static async Task TreeTraverse<T>(Func<T, Task> action, IBuildViewModel current) where T : class, IBuildViewModel
+        private static async Task TreeTraverseAsync<T>(Func<T, Task> action, IBuildViewModel current) where T : class, IBuildViewModel
         {
             var t = current as T;
             if (t != null)
@@ -370,8 +381,17 @@ namespace POESKillTree.ViewModels
                 return;
             foreach (var build in folder.Children)
             {
-                await TreeTraverse(action, build);
+                await TreeTraverseAsync(action, build);
             }
+        }
+
+        private static void TreeTraverse<T>(Action<T> action, IBuildViewModel current) where T : class, IBuildViewModel
+        {
+            var t = current as T;
+            if (t != null)
+                action(t);
+            var folder = current as BuildFolderViewModel;
+            folder?.Children.ForEach(b => TreeTraverse(action, b));
         }
 
         private async void BuildOnCollectionChanged(IBuildFolderViewModel build)

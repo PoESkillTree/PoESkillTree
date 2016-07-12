@@ -7,6 +7,9 @@ namespace POESKillTree.Model.Serialization
     public class XmlBuildFolder
     {
         [XmlElement]
+        public string Version { get; set; }
+
+        [XmlElement]
         public bool IsExpanded { get; set; }
 
         [XmlArray]

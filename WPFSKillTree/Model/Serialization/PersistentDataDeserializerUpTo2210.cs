@@ -53,6 +53,7 @@ namespace POESKillTree.Model.Serialization
                 PersistentData.RootBuild.Builds.Add(PersistentData.CurrentBuild);
             }
             PersistentData.RootBuild.Builds.Select(b => b as PoEBuild).Where(b => b != null).ForEach(b => b.KeepChanges());
+            RenameBuilds();
 
             ImportLegacySavedBuilds();
         }
@@ -67,6 +68,24 @@ namespace POESKillTree.Model.Serialization
                 return false;
             PersistentData.CurrentBuild = buildNameMatch;
             return true;
+        }
+
+        private void RenameBuilds()
+        {
+            var names = new Dictionary<string, int>();
+            foreach (var build in PersistentData.RootBuild.Builds)
+            {
+                int count;
+                if (names.TryGetValue(build.Name, out count))
+                {
+                    names[build.Name]++;
+                    build.Name += $" ({count - 1})";
+                }
+                else
+                {
+                    names[build.Name] = 1;
+                }
+            }
         }
 
         /// <summary>

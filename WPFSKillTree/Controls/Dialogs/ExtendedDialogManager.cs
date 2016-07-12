@@ -52,10 +52,10 @@ namespace POESKillTree.Controls.Dialogs
         }
 
         public static Task<MessageBoxResult> ShowQuestionAsync(this MetroWindow window, string message,
-            string title = null, MessageBoxImage image = MessageBoxImage.Question)
+            string details = null, string title = null, MessageBoxButton buttons = MessageBoxButton.YesNo,
+            MessageBoxImage image = MessageBoxImage.Question)
         {
-            return ShowAsync(window, message, title: title ?? L10n.Message("Confirmation"), buttons: MessageBoxButton.YesNo,
-                image: image);
+            return ShowAsync(window, message, details, title ?? L10n.Message("Confirmation"), buttons, image);
         }
 
         public static Task ShowErrorAsync(this MetroWindow window, string message, string details = null, string title = null)
