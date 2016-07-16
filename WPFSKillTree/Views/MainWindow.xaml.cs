@@ -607,10 +607,7 @@ namespace POESKillTree.Views
             _persistentData.SetBuilds(lvSavedBuilds.Items);
             _persistentData.StashBookmarks = Stash.Bookmarks.ToList();
 
-            if (_settingsWindow != null)
-            {
-                _settingsWindow.Close();
-            }
+            _settingsWindow?.Close();
         }
 
         #endregion
@@ -693,7 +690,7 @@ namespace POESKillTree.Views
         private async void Menu_ScreenShot(object sender, RoutedEventArgs e)
         {
             const int maxsize = 3000;
-            Rect2D contentBounds = Tree.picActiveLinks.ContentBounds;
+            Rect2D contentBounds = Tree.ActivePaths.ContentBounds;
             contentBounds *= 1.2;
             if (!double.IsNaN(contentBounds.Width) && !double.IsNaN(contentBounds.Height))
             {
@@ -1036,7 +1033,6 @@ namespace POESKillTree.Views
         private void PopulateAsendancySelectionList()
         {
             if (!Tree.UpdateAscendancyClasses) return;
-
             Tree.UpdateAscendancyClasses = false;
             var ascendancyItems = new List<string> { "None" };
             foreach (var name in Tree.AscClasses.GetClasses(((ComboBoxItem)cbCharType.SelectedItem).Content.ToString()))

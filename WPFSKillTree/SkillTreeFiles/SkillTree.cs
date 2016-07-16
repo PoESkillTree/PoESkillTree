@@ -472,10 +472,7 @@ namespace POESKillTree.SkillTreeFiles
             if (_persistentData.Options.ShowAllAscendancyClasses)
                 drawAscendancy = true;
 
-            InitializeLayers();
-            DrawInitialLayers();
-            CreateCombineVisual();
-
+            InitialSkillTreeDrawing();
             controller?.SetProgress(1);
 
             _initialized = true;

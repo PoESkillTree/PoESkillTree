@@ -13,116 +13,364 @@ namespace POESKillTree.SkillTreeFiles
     public partial class SkillTree
     {
         #region Members
-        private static readonly Color _treeComparisonColor = Colors.RoyalBlue;
+        private static readonly Color TreeComparisonColor = Colors.RoyalBlue;
 
-        private static List<KeyValuePair<Rect, ImageBrush>> _FacesBrush = new List<KeyValuePair<Rect, ImageBrush>>();
+        private readonly List<KeyValuePair<Rect, ImageBrush>> _faceBrushes = new List<KeyValuePair<Rect, ImageBrush>>();
+        private readonly List<KeyValuePair<Size, ImageBrush>> _nodeSurroundBrush = new List<KeyValuePair<Size, ImageBrush>>();
+        private readonly List<KeyValuePair<Size, ImageBrush>> _nodeSurroundHighlightBrush = new List<KeyValuePair<Size, ImageBrush>>();
+        private readonly Dictionary<bool, KeyValuePair<Rect, ImageBrush>> _startBackgrounds = new Dictionary<bool, KeyValuePair<Rect, ImageBrush>>();
 
-        public static List<KeyValuePair<Rect, ImageBrush>> FacesBrush
-        {
-            get { return _FacesBrush; }
-        }
-
-        private static List<KeyValuePair<Size, ImageBrush>> _NodeSurroundBrush = new List<KeyValuePair<Size, ImageBrush>>();
-
-        public static List<KeyValuePair<Size, ImageBrush>> NodeSurroundBrush
-        {
-            get { return SkillTree._NodeSurroundBrush; }
-        }
-
-        private List<KeyValuePair<Size, ImageBrush>> _NodeSurroundHighlightBrush = new List<KeyValuePair<Size, ImageBrush>>();
-
-        public List<KeyValuePair<Size, ImageBrush>> NodeSurroundHighlightBrush
-        {
-            get { return _NodeSurroundHighlightBrush; }
-        }
-
-        private static Dictionary<bool, KeyValuePair<Rect, ImageBrush>> _StartBackgrounds = new Dictionary<bool, KeyValuePair<Rect, ImageBrush>>();
-
-        public static Dictionary<bool, KeyValuePair<Rect, ImageBrush>> StartBackgrounds
-        {
-            get { return SkillTree._StartBackgrounds; }
-        }
-        
         private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
         private readonly IPersistentData _persistentData;
-        private List<Tuple<int, Vector2D>> _originalPositions = new List<Tuple<int, Vector2D>>();
+        private readonly List<Tuple<int, Vector2D>> _originalPositions = new List<Tuple<int, Vector2D>>();
         public bool drawAscendancy = false;
 
         public DrawingVisual SkillTreeVisual;
-        public DrawingVisual picBackground;
-        public DrawingVisual picNodeTreeComparisonHighlight;
-        public DrawingVisual picPathTreeComparisonHighlight;
-        public DrawingVisual picLinks;
-        public DrawingVisual picActiveLinks;
-        public DrawingVisual picPathOverlay;
-        public DrawingVisual picSkillIconLayer;
-        public DrawingVisual picActiveSkillIconLayer;
-        public DrawingVisual picNodeNormalSurround;
-        public DrawingVisual picNodeHighlightSurround;
-        public DrawingVisual picFaces;
-        public DrawingVisual picHighlights;
-        public DrawingVisual picJewelHighlight;
+        private DrawingVisual Background;
+        private DrawingVisual NodeComparisonHighlight;
+        private DrawingVisual PathComparisonHighlight;
+        private DrawingVisual Paths;
+        public DrawingVisual ActivePaths;
+        private DrawingVisual PathOverlay;
+        private DrawingVisual SkillIcons;
+        private DrawingVisual AsctiveSkillIcons;
+        private DrawingVisual NodeSurround;
+        private DrawingVisual ActiveNodeSurround;
+        private DrawingVisual CharacterFaces;
+        private DrawingVisual Highlights;
+        private DrawingVisual JewelHighlight;
 
-        public DrawingVisual AscSkilltreeVisual;
-        public DrawingVisual picAscendancyClasses;
-        public DrawingVisual picAscendancyButton;
-        public DrawingVisual picAscNodeTreeComparisonHighlight;
-        public DrawingVisual picAscPathTreeComparisonHighlight;
-        public DrawingVisual picAscLinks;
-        public DrawingVisual picAscActiveLinks;
-        public DrawingVisual picAscPathOverlay;
-        public DrawingVisual picAscSkillIconLayer;
-        public DrawingVisual picAscActiveSkillIconLayer;
-        public DrawingVisual picAscNodeNormalSurround;
-        public DrawingVisual picAscNodeHighlightSurround;
-
-
-        public void CreateCombineVisual()
+        private DrawingVisual AscSkillTreeVisual;
+        private DrawingVisual AscClassFaces;
+        private DrawingVisual AscButtons;
+        private DrawingVisual AscNodeComparisonHighlight;
+        private DrawingVisual AscPathComparisonHighlight;
+        public DrawingVisual AscPaths;
+        private DrawingVisual AscActivePaths;
+        private DrawingVisual AscPathOverlay;
+        private DrawingVisual AscSkillIcons;
+        private DrawingVisual AscActiveSkillIcons;
+        private DrawingVisual AscNodeSurround;
+        private DrawingVisual AscActiveNodeSurround;
+        #endregion
+        public void InitialSkillTreeDrawing()
+        {
+            if (_initialized) return;
+            InitializeDrawingVisuals();
+            InitializeNodeSurroundBrushes();
+            InitializeFaceBrushes();
+            DrawInitialLayers();
+            //drawing
+            CreateCombineVisuals();
+        }
+        /// <summary>
+        /// This will initialize all drawing visuals. If a new drawing visual is added then it should be initialized here as well.
+        /// </summary>
+        private void InitializeDrawingVisuals()
         {
             SkillTreeVisual = new DrawingVisual();
-            AscSkilltreeVisual = new DrawingVisual();
-            SkillTreeVisual.Children.Add(picBackground);
-            SkillTreeVisual.Children.Add(picPathTreeComparisonHighlight);
-            SkillTreeVisual.Children.Add(picNodeTreeComparisonHighlight);
-            SkillTreeVisual.Children.Add(picLinks);
-            SkillTreeVisual.Children.Add(picActiveLinks);
-            SkillTreeVisual.Children.Add(picPathOverlay);
-            SkillTreeVisual.Children.Add(picSkillIconLayer);
-            SkillTreeVisual.Children.Add(picActiveSkillIconLayer);
-            SkillTreeVisual.Children.Add(picNodeNormalSurround);
-            SkillTreeVisual.Children.Add(picNodeHighlightSurround);
-            SkillTreeVisual.Children.Add(picFaces);
+            Background = new DrawingVisual();
+            NodeComparisonHighlight = new DrawingVisual();
+            PathComparisonHighlight = new DrawingVisual();
+            Paths = new DrawingVisual();
+            ActivePaths = new DrawingVisual();
+            PathOverlay = new DrawingVisual();
+            SkillIcons = new DrawingVisual();
+            AsctiveSkillIcons = new DrawingVisual();
+            NodeSurround = new DrawingVisual();
+            ActiveNodeSurround = new DrawingVisual();
+            CharacterFaces = new DrawingVisual();
+            Highlights = new DrawingVisual();
+            JewelHighlight = new DrawingVisual();
 
-            //Draw Ascendancy stuff on top of the normal tree
-            AscSkilltreeVisual.Children.Add(picAscendancyClasses);
-            AscSkilltreeVisual.Children.Add(picAscPathTreeComparisonHighlight);
-            AscSkilltreeVisual.Children.Add(picAscNodeTreeComparisonHighlight);
-            AscSkilltreeVisual.Children.Add(picAscLinks);
-            AscSkilltreeVisual.Children.Add(picAscActiveLinks);
-            AscSkilltreeVisual.Children.Add(picAscPathOverlay);
-            AscSkilltreeVisual.Children.Add(picAscSkillIconLayer);
-            AscSkilltreeVisual.Children.Add(picAscActiveSkillIconLayer);
-            AscSkilltreeVisual.Children.Add(picAscNodeNormalSurround);
-            AscSkilltreeVisual.Children.Add(picAscNodeHighlightSurround);
-            SkillTreeVisual.Children.Add(AscSkilltreeVisual);
-
-            //These need to drawn on top of all other elements
-            SkillTreeVisual.Children.Add(picAscendancyButton);
-            SkillTreeVisual.Children.Add(picHighlights);
-            SkillTreeVisual.Children.Add(picJewelHighlight);
+            AscSkillTreeVisual = new DrawingVisual();
+            AscClassFaces = new DrawingVisual();
+            AscButtons = new DrawingVisual();
+            AscNodeComparisonHighlight = new DrawingVisual();
+            AscPathComparisonHighlight = new DrawingVisual();
+            AscPaths = new DrawingVisual();
+            AscActivePaths = new DrawingVisual();
+            AscPathOverlay = new DrawingVisual();
+            AscSkillIcons = new DrawingVisual();
+            AscActiveSkillIcons = new DrawingVisual();
+            AscNodeSurround = new DrawingVisual();
+            AscActiveNodeSurround = new DrawingVisual();
         }
 
-        #endregion
+        private void DrawInitialLayers()
+        {
+            DrawBackgroundLayer();
+            DrawNodeSurroundLayer();
+            DrawNodeSkillIcons();
+            //stopped here
+            DrawLinkBackgroundLayer(Links);
+            DrawAscendancyLinkBackgroundLayer(Links);
+            DrawAscendancyClasses();
+            DrawDynamicLayers();
+        }
+        private void DrawDynamicLayers()
+        {
+            DrawActiveNodeIcons();
+            DrawNodeHighlightSurround();
+            DrawFaces();
 
+            DrawAscendancyActiveNodeIcons();
+            DrawAscendancyNodeHighlightSurround();
+        }
+
+        private void CreateCombineVisuals()
+        {
+            //Top most add will be the bottom most element drawn
+            SkillTreeVisual.Children.Add(Background);
+            SkillTreeVisual.Children.Add(NodeComparisonHighlight);
+            SkillTreeVisual.Children.Add(PathComparisonHighlight);
+            SkillTreeVisual.Children.Add(Paths);
+            SkillTreeVisual.Children.Add(ActivePaths);
+            SkillTreeVisual.Children.Add(PathOverlay);
+            SkillTreeVisual.Children.Add(SkillIcons);
+            SkillTreeVisual.Children.Add(AsctiveSkillIcons);
+            SkillTreeVisual.Children.Add(NodeSurround);
+            SkillTreeVisual.Children.Add(ActiveNodeSurround);
+            SkillTreeVisual.Children.Add(CharacterFaces);
+
+            AscSkillTreeVisual.Children.Add(AscClassFaces);
+            AscSkillTreeVisual.Children.Add(AscNodeComparisonHighlight);
+            AscSkillTreeVisual.Children.Add(AscPathComparisonHighlight);
+            AscSkillTreeVisual.Children.Add(AscPaths);
+            AscSkillTreeVisual.Children.Add(AscActivePaths);
+            AscSkillTreeVisual.Children.Add(AscPathOverlay);
+            AscSkillTreeVisual.Children.Add(AscSkillIcons);
+            AscSkillTreeVisual.Children.Add(AscActiveSkillIcons);
+            AscSkillTreeVisual.Children.Add(AscNodeSurround);
+            AscSkillTreeVisual.Children.Add(AscActiveNodeSurround);
+
+            SkillTreeVisual.Children.Add(AscSkillTreeVisual);
+            SkillTreeVisual.Children.Add(AscButtons);
+            SkillTreeVisual.Children.Add(Highlights);
+            SkillTreeVisual.Children.Add(JewelHighlight);
+        }
+
+        private void InitializeNodeSurroundBrushes()
+        {
+            if (_initialized) return;
+            foreach (var background in NodeBackgrounds)
+            {
+                if (NodeBackgroundsActive.ContainsKey(background.Key))
+                {
+                    var normalBrush = new ImageBrush {Stretch = Stretch.Uniform};
+                    BitmapImage normalBrushPImage = _assets[NodeBackgrounds[background.Key]];
+                    normalBrush.ImageSource = normalBrushPImage;
+                    var normalSize = new Size(normalBrushPImage.PixelWidth, normalBrushPImage.PixelHeight);
+
+                    var activeBrush = new ImageBrush {Stretch = Stretch.Uniform};
+                    BitmapImage activeBrushPImage = _assets[NodeBackgroundsActive[background.Key]];
+                    activeBrush.ImageSource = activeBrushPImage;
+                    var activeSize = new Size(activeBrushPImage.PixelWidth, activeBrushPImage.PixelHeight);
+
+                    _nodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(normalSize, normalBrush));
+                    _nodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(activeSize, activeBrush));
+
+                    //tree comparison highlight generator
+                    var outlinecolor = TreeComparisonColor;
+                    var omask = outlinecolor.B | (uint)outlinecolor.G << 8 | (uint)outlinecolor.R << 16;
+
+                    var bitmap = (BitmapImage)normalBrush.ImageSource;
+                    var wb = new WriteableBitmap(bitmap.PixelWidth, bitmap.PixelHeight, bitmap.DpiX, bitmap.DpiY, PixelFormats.Bgra32, null);
+                    if (wb.Format == PixelFormats.Bgra32)//BGRA is byte order .. little endian in uint reverse it
+                    {
+                        uint[] pixeldata = new uint[wb.PixelHeight * wb.PixelWidth];
+                        bitmap.CopyPixels(pixeldata, wb.PixelWidth * 4, 0);
+                        for (int i = 0; i < pixeldata.Length; i++)
+                        {
+                            pixeldata[i] = pixeldata[i] & 0xFF000000 | omask;
+                        }
+                        wb.WritePixels(new Int32Rect(0, 0, wb.PixelWidth, wb.PixelHeight), pixeldata, wb.PixelWidth * 4, 0);
+
+                        var ibr = new ImageBrush
+                        {
+                            Stretch = Stretch.Uniform,
+                            ImageSource = wb
+                        };
+
+                        _nodeSurroundHighlightBrush.Add(new KeyValuePair<Size, ImageBrush>(normalSize, ibr));
+                    }
+                    else
+                    {
+                        throw new Exception("Highlight Generator did not generate with the correct byte order");
+                    }
+                }
+            }
+        }
+        private void DrawSkillNodeIcon(DrawingContext dc, DrawingContext adc, SkillNode skillNode, bool onlyAscendancy = false, bool isActive = false)
+        {
+            if (onlyAscendancy && skillNode.ascendancyName == null) return;
+
+            Rect rect;
+            BitmapImage bitmapImage;
+
+            if (isActive)
+            {
+                rect = IconActiveSkills.SkillPositions[skillNode.IconKey];
+                bitmapImage = IconActiveSkills.GetSkillImage(skillNode.IconKey);
+            }
+            else
+            {
+                rect = IconInActiveSkills.SkillPositions[skillNode.IconKey];
+                bitmapImage = IconInActiveSkills.GetSkillImage(skillNode.IconKey);
+            }
+
+            var imageBrush = new ImageBrush()
+            {
+                Stretch = Stretch.Uniform,
+                ImageSource = bitmapImage,
+                ViewboxUnits = BrushMappingMode.RelativeToBoundingBox,
+                Viewbox = new Rect(rect.X / bitmapImage.PixelWidth, rect.Y / bitmapImage.PixelHeight,
+                       rect.Width / bitmapImage.PixelWidth, rect.Height / bitmapImage.PixelHeight)
+            };
+
+            if (skillNode.ascendancyName != null)
+            {
+                var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+                if (drawAscendancy && (_persistentData.Options.ShowAllAscendancyClasses || skillNode.ascendancyName == ascendancyClassName))
+                    adc.DrawEllipse(imageBrush, null, skillNode.Position, rect.Width, rect.Height);
+            }
+            else
+                dc.DrawEllipse(imageBrush, null, skillNode.Position, rect.Width, rect.Height);
+        }
+
+        private void DrawSurround(DrawingContext dc, SkillNode node, bool onlyAscendancy = false, bool isActive = false, bool isHighlight = false)
+        {
+            if (onlyAscendancy && node.ascendancyName == null) return;
+            var surroundBrush = _nodeSurroundBrush;
+            var factor = 1f;
+            var activeOffset = 0;
+            if (isActive)
+                activeOffset = 1;
+            if (isHighlight)
+            {
+                surroundBrush = _nodeSurroundHighlightBrush;
+                factor = 1.2f;
+            }
+            var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+
+            if (node.IsAscendancyStart)
+            {
+                if (!drawAscendancy || isHighlight) return;
+
+                const string ascStartName = "PassiveSkillScreenAscendancyMiddle";
+                var bitmap = Assets[ascStartName];
+                var brush = new ImageBrush(Assets[ascStartName]);
+                if (_persistentData.Options.ShowAllAscendancyClasses || node.ascendancyName == ascendancyClassName)
+                    dc.DrawRectangle(brush, null,
+                        new Rect(node.Position - new Vector2D(bitmap.PixelWidth, bitmap.PixelHeight),
+                                new Size(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2)));
+            }
+            else if (node.ascendancyName != null && node.Type == NodeType.Notable)
+            {
+                if (!drawAscendancy) return;
+
+                if (_persistentData.Options.ShowAllAscendancyClasses || node.ascendancyName == ascendancyClassName)
+                    dc.DrawRectangle(surroundBrush[10 + activeOffset].Value, null,
+                        new Rect((int)node.Position.X - surroundBrush[10 + activeOffset].Key.Width * .875 * factor,
+                            (int)node.Position.Y - surroundBrush[10 + activeOffset].Key.Height * .875 * factor,
+                            surroundBrush[10 + activeOffset].Key.Width * 1.75 * factor,
+                            surroundBrush[10 + activeOffset].Key.Height * 1.75 * factor));
+            }
+            else if (node.ascendancyName != null && node.Type == NodeType.Normal)
+            {
+                if (!drawAscendancy) return;
+
+                if (_persistentData.Options.ShowAllAscendancyClasses || node.ascendancyName == ascendancyClassName)
+                    dc.DrawRectangle(surroundBrush[8 + activeOffset].Value, null,
+                        new Rect((int)node.Position.X - surroundBrush[8 + activeOffset].Key.Width * factor,
+                            (int)node.Position.Y - surroundBrush[8 + activeOffset].Key.Height * factor,
+                            surroundBrush[8 + activeOffset].Key.Width * 2 * factor,
+                            surroundBrush[8 + activeOffset].Key.Height * 2 * factor));
+            }
+            else if (node.Type == NodeType.Notable)
+            {
+                dc.DrawRectangle(surroundBrush[2 + activeOffset].Value, null,
+                    new Rect((int)node.Position.X - surroundBrush[2 + activeOffset].Key.Width * factor,
+                        (int)node.Position.Y - surroundBrush[2 + activeOffset].Key.Height * factor,
+                        surroundBrush[2 + activeOffset].Key.Width * 2 * factor,
+                        surroundBrush[2 + activeOffset].Key.Height * 2 * factor));
+            }
+            else if (node.Type == NodeType.Keystone)
+            {
+                dc.DrawRectangle(surroundBrush[4 + activeOffset].Value, null,
+                    new Rect((int)node.Position.X - surroundBrush[4 + activeOffset].Key.Width * factor,
+                        (int)node.Position.Y - surroundBrush[4 + activeOffset].Key.Height * factor,
+                        surroundBrush[4 + activeOffset].Key.Width * 2 * factor,
+                        surroundBrush[4 + activeOffset].Key.Height * 2 * factor));
+            }
+            else if (node.Type == NodeType.Mastery)
+            {
+                //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
+            }
+            else if (node.Type == NodeType.JewelSocket)
+            {
+                dc.DrawRectangle(surroundBrush[6 + activeOffset].Value, null,
+                    new Rect((int)node.Position.X - surroundBrush[6 + activeOffset].Key.Width * factor,
+                        (int)node.Position.Y - surroundBrush[6 + activeOffset].Key.Height * factor,
+                        surroundBrush[6 + activeOffset].Key.Width * 2 * factor,
+                        surroundBrush[6 + activeOffset].Key.Height * 2 * factor));
+            }
+            else
+            {
+                dc.DrawRectangle(surroundBrush[0 + activeOffset].Value, null,
+                    new Rect((int)node.Position.X - surroundBrush[0 + activeOffset].Key.Width * factor,
+                        (int)node.Position.Y - surroundBrush[0 + activeOffset].Key.Height * factor,
+                        surroundBrush[0 + activeOffset].Key.Width * 2 * factor,
+                        surroundBrush[0 + activeOffset].Key.Height * 2 * factor));
+            }
+        }
+
+        private void DrawNodeSkillIcons()
+        {
+            var pen = new Pen(Brushes.Black, 5);
+            Geometry g = new RectangleGeometry(SkillTreeRect);
+            using (var dc = SkillIcons.RenderOpen())
+            {
+                dc.DrawGeometry(null, pen, g);
+                using (var adc = AscSkillIcons.RenderOpen())
+                {
+                    adc.DrawGeometry(null, pen, g);
+                    foreach (var skillNode in Skillnodes)
+                    {
+                        DrawSkillNodeIcon(dc, adc, skillNode.Value);
+                    }
+                    adc.Close();
+                }
+                dc.Close();
+            }
+        }
+
+        
+
+        private void DrawNodeSurroundLayer()
+        {
+            using (DrawingContext dc = NodeSurround.RenderOpen())
+            {
+                using (DrawingContext adc = AscNodeSurround.RenderOpen())
+                {
+                    foreach (var n in Skillnodes)
+                    {
+                        DrawSurround(n.Value.ascendancyName != null ? adc : dc, n.Value);
+                    }
+                    adc.Close();
+                }
+                dc.Close();
+            }
+        }
         public void ClearPath()
         {
-            picPathOverlay.RenderOpen().Close();
-            picAscPathOverlay.RenderOpen().Close();
+            PathOverlay.RenderOpen().Close();
+            AscPathOverlay.RenderOpen().Close();
         }
 
         public void ClearJewelHighlight()
         {
-            picJewelHighlight.RenderOpen().Close();
+            JewelHighlight.RenderOpen().Close();
         }
 
         public void ToggleAscendancyTree()
@@ -146,7 +394,7 @@ namespace POESKillTree.SkillTreeFiles
                 var worldPos = Skillnodes.First(x => x.Value.Name.ToUpperInvariant() == CharName[_chartype]).Value.Position;
                 var ascStartNode = Skillnodes.First(x => x.Value.ascendancyName == AscClasses.GetClassName(className, AscType) && x.Value.IsAscendancyStart).Value;
                 var ascNodeOriginalPos = ascStartNode.SkillNodeGroup.Position;
-                if (!_originalPositions.Any(x => x.Item1 == ascStartNode.G))
+                if (_originalPositions.All(x => x.Item1 != ascStartNode.G))
                     _originalPositions.Add(new Tuple<int, Vector2D>(ascStartNode.G, new Vector2D(ascNodeOriginalPos.ToContainingPoint())));
 
                 var imageName = "Classes" + ascStartNode.ascendancyName;
@@ -163,31 +411,23 @@ namespace POESKillTree.SkillTreeFiles
                     dirY = -worldPos.Y / distToCentre;
                 }
                 var ascButtonRot = Math.Atan2(dirX, dirY);
-                var imageCX = worldPos.X + (distanceFromStartNodeCenter + bitmap.Height * 1.25) * Math.Cos(ascButtonRot + Math.PI / 2);
-                var imageCY = worldPos.Y + (distanceFromStartNodeCenter + bitmap.Width * 1.25) * Math.Sin(ascButtonRot + Math.PI / 2);
+                var imageCx = worldPos.X + (distanceFromStartNodeCenter + bitmap.Height * 1.25) * Math.Cos(ascButtonRot + Math.PI / 2);
+                var imageCy = worldPos.Y + (distanceFromStartNodeCenter + bitmap.Width * 1.25) * Math.Sin(ascButtonRot + Math.PI / 2);
 
-                ascStartNode.SkillNodeGroup.Position = new Vector2D(imageCX, imageCY);
+                ascStartNode.SkillNodeGroup.Position = new Vector2D(imageCx, imageCy);
                 var done = new List<SkillNodeGroup> { ascStartNode.SkillNodeGroup };
                 
                 foreach (var n in nodeList)
                 {
                     if (done.Contains(n.Value.SkillNodeGroup))
                         continue;
-                    if (!_originalPositions.Any(x => x.Item1 == n.Value.G))
+                    if (_originalPositions.All(x => x.Item1 != n.Value.G))
                         _originalPositions.Add(new Tuple<int, Vector2D>(n.Value.G, new Vector2D(n.Value.SkillNodeGroup.Position.ToContainingPoint())));
                     var diffDist = ascNodeOriginalPos - n.Value.SkillNodeGroup.Position;
-                    distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
-                    isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
-                    if (!isCentered)
-                    {
-                        dirX = worldPos.X / distToCentre;
-                        dirY = -worldPos.Y / distToCentre;
-                    }
-                    ascButtonRot = Math.Atan2(dirX, dirY);
-                    imageCX = ascStartNode.SkillNodeGroup.Position.X - diffDist.X;
-                    imageCY = ascStartNode.SkillNodeGroup.Position.Y - diffDist.Y;
+                    imageCx = ascStartNode.SkillNodeGroup.Position.X - diffDist.X;
+                    imageCy = ascStartNode.SkillNodeGroup.Position.Y - diffDist.Y;
 
-                    n.Value.SkillNodeGroup.Position = new Vector2D(imageCX, imageCY);
+                    n.Value.SkillNodeGroup.Position = new Vector2D(imageCx, imageCy);
                     done.Add(n.Value.SkillNodeGroup);
                 }
             }
@@ -207,63 +447,59 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawBackgroundLayer()
         {
-            picBackground = new DrawingVisual();
-            using (var drawingContext = picBackground.RenderOpen())
+            if (_initialized) return;
+            using (var dc = Background.RenderOpen())
             {
-                BitmapImage[] iscr =
+                //These are the images around the groups of nodes 
+                BitmapImage[] groupBackgrounds =
                 {
-                    Assets["PSGroupBackground1"], 
+                    Assets["PSGroupBackground1"],
                     Assets["PSGroupBackground2"],
                     Assets["PSGroupBackground3"]
                 };
-                var orbitBrush = new Brush[3];
-                orbitBrush[0] = new ImageBrush(Assets["PSGroupBackground1"]);
-                orbitBrush[1] = new ImageBrush(Assets["PSGroupBackground2"]);
-                orbitBrush[2] = new ImageBrush(Assets["PSGroupBackground3"]);
-                (orbitBrush[2] as ImageBrush).TileMode = TileMode.FlipXY;
-                (orbitBrush[2] as ImageBrush).Viewport = new Rect(0, 0, 1, .5f);
+                Brush[] groupOrbitBrush =
+                {
+                    new ImageBrush(Assets["PSGroupBackground1"]),
+                    new ImageBrush(Assets["PSGroupBackground2"]),
+                    new ImageBrush(Assets["PSGroupBackground3"])
+                };
+                var imageBrush = groupOrbitBrush[2] as ImageBrush;
+                if (imageBrush != null)
+                {
+                    imageBrush.TileMode = TileMode.FlipXY;
+                    imageBrush.Viewport = new Rect(0, 0, 1, .5f);
+                }
 
-                var backgroundBrush = new ImageBrush(Assets["Background1"]);
-                backgroundBrush.TileMode = TileMode.Tile;
+                #region Background Drawing
+                var backgroundBrush = new ImageBrush(Assets["Background1"]) {TileMode = TileMode.Tile};
                 backgroundBrush.Viewport = new Rect(0, 0,
                     6 * backgroundBrush.ImageSource.Width / SkillTreeRect.Width,
                     6 * backgroundBrush.ImageSource.Height / SkillTreeRect.Height);
-                drawingContext.DrawRectangle(backgroundBrush, null, SkillTreeRect);
+                dc.DrawRectangle(backgroundBrush, null, SkillTreeRect);
 
-                var topGradient = new LinearGradientBrush();
-                topGradient.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
-                topGradient.GradientStops.Add(new GradientStop(new Color(), 0.0));
-                topGradient.StartPoint = new Point(0, 1);
-                topGradient.EndPoint = new Point(0, 0);
+                LinearGradientBrush[] linearGradientBrushes =
+                {
+                    new LinearGradientBrush(new Color(), Colors.Black, new Point(0, 1), new Point(0, 0)), //top
+                    new LinearGradientBrush(new Color(), Colors.Black, new Point(0, 0), new Point(1, 0)), //right
+                    new LinearGradientBrush(new Color(), Colors.Black, new Point(0, 0), new Point(0, 1)), //bottom
+                    new LinearGradientBrush(new Color(), Colors.Black, new Point(1, 0), new Point(0, 0))  //left
+                };
+                var GradientSize = 250;
+                Rect2D[] gradientRect =
+                {
+                    new Rect2D(SkillTreeRect.Left, SkillTreeRect.Top, SkillTreeRect.Width, GradientSize), //top
+                    new Rect2D(SkillTreeRect.Right - GradientSize, SkillTreeRect.Top, GradientSize, SkillTreeRect.Height), //right
+                    new Rect2D(SkillTreeRect.Left, SkillTreeRect.Bottom - GradientSize, SkillTreeRect.Width, GradientSize), //bottom
+                    new Rect2D(SkillTreeRect.Left, SkillTreeRect.Top, GradientSize, SkillTreeRect.Height) //left
+                };
 
-                var leftGradient = new LinearGradientBrush();
-                leftGradient.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
-                leftGradient.GradientStops.Add(new GradientStop(new Color(), 0.0));
-                leftGradient.StartPoint = new Point(1, 0);
-                leftGradient.EndPoint = new Point(0, 0);
+                if (linearGradientBrushes.Length != gradientRect.Length)
+                    throw new Exception("Gradient must have a Rectangle for each Brush");
+                for (var i = 0; i < linearGradientBrushes.Length; i++)
+                    dc.DrawRectangle(linearGradientBrushes[i], null, gradientRect[i]);
+                #endregion
+                #region SkillNodeGroup Background Drawing
 
-                var bottomGradient = new LinearGradientBrush();
-                bottomGradient.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
-                bottomGradient.GradientStops.Add(new GradientStop(new Color(), 0.0));
-                bottomGradient.StartPoint = new Point(0, 0);
-                bottomGradient.EndPoint = new Point(0, 1);
-
-                var rightGradient = new LinearGradientBrush();
-                rightGradient.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
-                rightGradient.GradientStops.Add(new GradientStop(new Color(), 0.0));
-                rightGradient.StartPoint = new Point(0, 0);
-                rightGradient.EndPoint = new Point(1, 0);
-
-                const int gradientWidth = 200;
-                var topRect = new Rect2D(SkillTreeRect.Left, SkillTreeRect.Top, SkillTreeRect.Width, gradientWidth);
-                var leftRect = new Rect2D(SkillTreeRect.Left, SkillTreeRect.Top, gradientWidth, SkillTreeRect.Height);
-                var bottomRect = new Rect2D(SkillTreeRect.Left, SkillTreeRect.Bottom - gradientWidth, SkillTreeRect.Width, gradientWidth);
-                var rightRect = new Rect2D(SkillTreeRect.Right - gradientWidth, SkillTreeRect.Top, gradientWidth, SkillTreeRect.Height);
-
-                drawingContext.DrawRectangle(topGradient, null, topRect);
-                drawingContext.DrawRectangle(leftGradient, null, leftRect);
-                drawingContext.DrawRectangle(bottomGradient, null, bottomRect);
-                drawingContext.DrawRectangle(rightGradient, null, rightRect);
                 foreach (var skillNodeGroup in NodeGroups)
                 {
                     if (skillNodeGroup.Nodes.Where(n => n.ascendancyName != null).ToArray().Length > 0)
@@ -271,22 +507,24 @@ namespace POESKillTree.SkillTreeFiles
                     if (skillNodeGroup.OcpOrb == null)
                         skillNodeGroup.OcpOrb = new Dictionary<int, bool>();
                     var cgrp = skillNodeGroup.OcpOrb.Keys.Where(ng => ng <= 3);
-                    if (!cgrp.Any()) continue;
-                    var maxr = cgrp.Max(ng => ng);
+                    var enumerable = cgrp as IList<int> ?? cgrp.ToList();
+                    if (!enumerable.Any()) continue;
+                    var maxr = enumerable.Max(ng => ng);
                     if (maxr == 0) continue;
                     maxr = maxr > 3 ? 2 : maxr - 1;
                     var maxfac = maxr == 2 ? 2 : 1;
-                    drawingContext.DrawRectangle(orbitBrush[maxr], null,
+                    dc.DrawRectangle(groupOrbitBrush[maxr], null,
                         new Rect(
                             skillNodeGroup.Position -
-                            new Vector2D(iscr[maxr].PixelWidth * 1.25, iscr[maxr].PixelHeight * 1.25 * maxfac),
-                            new Size(iscr[maxr].PixelWidth * 2.5, iscr[maxr].PixelHeight * 2.5 * maxfac)));
+                            new Vector2D(groupBackgrounds[maxr].PixelWidth * 1.25, groupBackgrounds[maxr].PixelHeight * 1.25 * maxfac),
+                            new Size(groupBackgrounds[maxr].PixelWidth * 2.5, groupBackgrounds[maxr].PixelHeight * 2.5 * maxfac)));
                 }
-                drawingContext.Close();
+                #endregion
+                dc.Close();
             }
         }
 
-        private void DrawConnection(DrawingContext dc, Pen pen2, SkillNode n1, SkillNode n2)
+        private static void DrawConnection(DrawingContext dc, Pen pen2, SkillNode n1, SkillNode n2)
         {
             if (n1.VisibleNeighbors.Contains(n2) && n2.VisibleNeighbors.Contains(n1))
             {
@@ -322,33 +560,33 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        public void DrawFaces()
+        private void DrawFaces()
         {
-            using (DrawingContext dc = picFaces.RenderOpen())
+            using (DrawingContext dc = CharacterFaces.RenderOpen())
             {
                 for (int i = 0; i < CharName.Count; i++)
                 {
                     string s = CharName[i];
                     Vector2D pos = Skillnodes.First(nd => nd.Value.Name.ToUpperInvariant() == s).Value.Position;
-                    dc.DrawRectangle(StartBackgrounds[false].Value, null,
+                    dc.DrawRectangle(_startBackgrounds[false].Value, null,
                         new Rect(
-                            pos - new Vector2D(StartBackgrounds[false].Key.Width, StartBackgrounds[false].Key.Height),
-                            pos + new Vector2D(StartBackgrounds[false].Key.Width, StartBackgrounds[false].Key.Height)));
+                            pos - new Vector2D(_startBackgrounds[false].Key.Width, _startBackgrounds[false].Key.Height),
+                            pos + new Vector2D(_startBackgrounds[false].Key.Width, _startBackgrounds[false].Key.Height)));
                     if (_chartype == i)
                     {
-                        dc.DrawRectangle(FacesBrush[i].Value, null,
-                            new Rect(pos - new Vector2D(FacesBrush[i].Key.Width, FacesBrush[i].Key.Height),
-                                pos + new Vector2D(FacesBrush[i].Key.Width, FacesBrush[i].Key.Height)));
+                        dc.DrawRectangle(_faceBrushes[i].Value, null,
+                            new Rect(pos - new Vector2D(_faceBrushes[i].Key.Width, _faceBrushes[i].Key.Height),
+                                pos + new Vector2D(_faceBrushes[i].Key.Width, _faceBrushes[i].Key.Height)));
 
                         var charBaseAttr = CharBaseAttributes[Chartype];
 
-                        var text = CreateAttributeText(charBaseAttr["+# to Intelligence"].ToString(), Brushes.DodgerBlue);
+                        var text = CreateAttributeText(charBaseAttr["+# to Intelligence"].ToString(CultureInfo.InvariantCulture), Brushes.DodgerBlue);
                         dc.DrawText(text, pos - new Vector2D(19, 117));
 
-                        text = CreateAttributeText(charBaseAttr["+# to Strength"].ToString(), Brushes.IndianRed);
+                        text = CreateAttributeText(charBaseAttr["+# to Strength"].ToString(CultureInfo.InvariantCulture), Brushes.IndianRed);
                         dc.DrawText(text, pos - new Vector2D(102, -32));
 
-                        text = CreateAttributeText(charBaseAttr["+# to Dexterity"].ToString(), Brushes.MediumSeaGreen);
+                        text = CreateAttributeText(charBaseAttr["+# to Dexterity"].ToString(CultureInfo.InvariantCulture), Brushes.MediumSeaGreen);
                         dc.DrawText(text, pos - new Vector2D(-69, -32));
 
                     }
@@ -357,9 +595,9 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        public void DrawAscendancyClasses()
+        private void DrawAscendancyClasses()
         {
-            using (DrawingContext dc = picAscendancyClasses.RenderOpen())
+            using (DrawingContext dc = AscClassFaces.RenderOpen())
             {
                 if (!drawAscendancy)
                 {
@@ -413,7 +651,7 @@ namespace POESKillTree.SkillTreeFiles
         /// <param name="type">"Normal", "Highlight", and "Pressed"</param>
         public void DrawAscendancyButton(string type = "Normal")
         {
-            using (DrawingContext dc = picAscendancyButton.RenderOpen())
+            using (DrawingContext dc = AscButtons.RenderOpen())
             {
                 if (AscType != 0 && !_persistentData.Options.ShowAllAscendancyClasses)
                 {
@@ -421,7 +659,6 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         if (!SkilledNodes.Contains(Skillnodes[(ushort) i]))
                             continue;
-                        var x = SkilledNodes;
                         var node = Skillnodes[(ushort)i];
                         string imageName;
                         switch (type)
@@ -432,7 +669,6 @@ namespace POESKillTree.SkillTreeFiles
                             case "Pressed":
                                 imageName = "PassiveSkillScreenAscendancyButtonPressed";
                                 break;
-                            case "Normal":
                             default:
                                 imageName = "PassiveSkillScreenAscendancyButton";
                                 break;
@@ -454,12 +690,12 @@ namespace POESKillTree.SkillTreeFiles
                         }
 
                         var ascButtonRot = Math.Atan2(dirX, dirY);
-                        var buttonCX = worldPos.X + distanceFromStartNodeCenter * Math.Cos(ascButtonRot + Math.PI / 2);
-                        var buttonCY = worldPos.Y + distanceFromStartNodeCenter * Math.Sin(ascButtonRot + Math.PI / 2);
-                        var buttonPoint = new Vector2D(buttonCX, buttonCY);
+                        var buttonCx = worldPos.X + distanceFromStartNodeCenter * Math.Cos(ascButtonRot + Math.PI / 2);
+                        var buttonCy = worldPos.Y + distanceFromStartNodeCenter * Math.Sin(ascButtonRot + Math.PI / 2);
+                        var buttonPoint = new Vector2D(buttonCx, buttonCy);
 
-                        var rect = new Rect(buttonCX - b.Height * 1.75, buttonCY - b.Width * 1.75, b.Width * 2.5, b.Height * 2.5);
-                        dc.PushTransform(new RotateTransform(ascButtonRot * (180 / Math.PI), buttonCX, buttonCY));
+                        var rect = new Rect(buttonCx - b.Height * 1.75, buttonCy - b.Width * 1.75, b.Width * 2.5, b.Height * 2.5);
+                        dc.PushTransform(new RotateTransform(ascButtonRot * (180 / Math.PI), buttonCx, buttonCy));
                         dc.DrawRectangle(brush, null, rect);
 
                         AscButtonPosition = buttonPoint;
@@ -484,7 +720,7 @@ namespace POESKillTree.SkillTreeFiles
             var nh = _nodeHighlighter;
             var crossPen = new Pen(Brushes.Red, 20);
             var checkPen = new Pen(Brushes.Lime, 20);
-            using (DrawingContext dc = picHighlights.RenderOpen())
+            using (DrawingContext dc = Highlights.RenderOpen())
             {
                 foreach (var pair in nh.nodeHighlights)
                 {
@@ -554,9 +790,8 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawLinkBackgroundLayer(List<ushort[]> links)
         {
-            picLinks = new DrawingVisual();
             var pen2 = new Pen(Brushes.DarkSlateGray, 20f);
-            using (DrawingContext dc = picLinks.RenderOpen())
+            using (DrawingContext dc = Paths.RenderOpen())
             {
                 foreach (var nid in links)
                 {
@@ -573,7 +808,7 @@ namespace POESKillTree.SkillTreeFiles
         private void DrawAscendancyLinkBackgroundLayer(List<ushort[]> links)
         {
             var pen2 = new Pen(Brushes.DarkSlateGray, 20f);
-            using (DrawingContext dcAsc = picAscLinks.RenderOpen())
+            using (DrawingContext dcAsc = AscPaths.RenderOpen())
             {
                 if (!drawAscendancy)
                 {
@@ -606,7 +841,7 @@ namespace POESKillTree.SkillTreeFiles
         private void DrawActiveLinks()
         {
             var pen2 = new Pen(Brushes.DarkKhaki, 15f);
-            using (DrawingContext dc = picActiveLinks.RenderOpen())
+            using (DrawingContext dc = ActivePaths.RenderOpen())
             {
                 foreach (var n1 in SkilledNodes)
                 {
@@ -623,7 +858,7 @@ namespace POESKillTree.SkillTreeFiles
         private void DrawAscendancyActiveLinks()
         {
             var pen2 = new Pen(Brushes.DarkKhaki, 15f);
-            using (DrawingContext dcAsc = picAscActiveLinks.RenderOpen())
+            using (DrawingContext dcAsc = AscActivePaths.RenderOpen())
             {
                 if (!drawAscendancy)
                 {
@@ -652,9 +887,9 @@ namespace POESKillTree.SkillTreeFiles
             const float factor = 1.2f;
             var className = CharacterNames.GetClassNameFromChartype(_chartype);
             var ascendancyClassName = AscClasses.GetClassName(className, AscType);
-            using (DrawingContext dc = picNodeTreeComparisonHighlight.RenderOpen())
+            using (DrawingContext dc = NodeComparisonHighlight.RenderOpen())
             {
-                using (DrawingContext dcAsc = picAscNodeTreeComparisonHighlight.RenderOpen())
+                using (DrawingContext dcAsc = AscNodeComparisonHighlight.RenderOpen())
                 {
                     if (HighlightedNodes != null)
                     {
@@ -670,38 +905,38 @@ namespace POESKillTree.SkillTreeFiles
                                 if (!drawAscendancy) continue;
 
                                 if (_persistentData.Options.ShowAllAscendancyClasses || skillNode.ascendancyName == ascendancyClassName)
-                                    dcAsc.DrawRectangle(NodeSurroundHighlightBrush[5].Value, null,
-                                        new Rect((int)pos.X - NodeSurroundHighlightBrush[5].Key.Width * .875 * factor,
-                                            (int)pos.Y - NodeSurroundHighlightBrush[5].Key.Height * .875 * factor,
-                                            NodeSurroundHighlightBrush[5].Key.Width * 1.75 * factor,
-                                            NodeSurroundHighlightBrush[5].Key.Height * 1.75 * factor));
+                                    dcAsc.DrawRectangle(_nodeSurroundHighlightBrush[5].Value, null,
+                                        new Rect((int)pos.X - _nodeSurroundHighlightBrush[5].Key.Width * .875 * factor,
+                                            (int)pos.Y - _nodeSurroundHighlightBrush[5].Key.Height * .875 * factor,
+                                            _nodeSurroundHighlightBrush[5].Key.Width * 1.75 * factor,
+                                            _nodeSurroundHighlightBrush[5].Key.Height * 1.75 * factor));
                             }
                             else if (skillNode.ascendancyName != null)
                             {
                                 if (!drawAscendancy) continue;
 
                                 if (_persistentData.Options.ShowAllAscendancyClasses || skillNode.ascendancyName == ascendancyClassName)
-                                    dcAsc.DrawRectangle(NodeSurroundHighlightBrush[4].Value, null,
-                                        new Rect((int)pos.X - NodeSurroundHighlightBrush[4].Key.Width * factor,
-                                            (int)pos.Y - NodeSurroundHighlightBrush[4].Key.Height * factor,
-                                            NodeSurroundHighlightBrush[4].Key.Width * 2 * factor,
-                                            NodeSurroundHighlightBrush[4].Key.Height * 2 * factor));
+                                    dcAsc.DrawRectangle(_nodeSurroundHighlightBrush[4].Value, null,
+                                        new Rect((int)pos.X - _nodeSurroundHighlightBrush[4].Key.Width * factor,
+                                            (int)pos.Y - _nodeSurroundHighlightBrush[4].Key.Height * factor,
+                                            _nodeSurroundHighlightBrush[4].Key.Width * 2 * factor,
+                                            _nodeSurroundHighlightBrush[4].Key.Height * 2 * factor));
                             }
                             else if (skillNode.Type == NodeType.Notable)
                             {
-                                dc.DrawRectangle(NodeSurroundHighlightBrush[1].Value, null,
-                                    new Rect((int)pos.X - NodeSurroundHighlightBrush[1].Key.Width * factor,
-                                        (int)pos.Y - NodeSurroundHighlightBrush[1].Key.Height * factor,
-                                        NodeSurroundHighlightBrush[1].Key.Width * 2 * factor,
-                                        NodeSurroundHighlightBrush[1].Key.Height * 2 * factor));
+                                dc.DrawRectangle(_nodeSurroundHighlightBrush[1].Value, null,
+                                    new Rect((int)pos.X - _nodeSurroundHighlightBrush[1].Key.Width * factor,
+                                        (int)pos.Y - _nodeSurroundHighlightBrush[1].Key.Height * factor,
+                                        _nodeSurroundHighlightBrush[1].Key.Width * 2 * factor,
+                                        _nodeSurroundHighlightBrush[1].Key.Height * 2 * factor));
                             }
                             else if (skillNode.Type == NodeType.Keystone)
                             {
-                                dc.DrawRectangle(NodeSurroundHighlightBrush[2].Value, null,
-                                    new Rect((int)pos.X - NodeSurroundHighlightBrush[2].Key.Width * factor,
-                                        (int)pos.Y - NodeSurroundHighlightBrush[2].Key.Height * factor,
-                                        NodeSurroundHighlightBrush[2].Key.Width * 2 * factor,
-                                        NodeSurroundHighlightBrush[2].Key.Height * 2 * factor));
+                                dc.DrawRectangle(_nodeSurroundHighlightBrush[2].Value, null,
+                                    new Rect((int)pos.X - _nodeSurroundHighlightBrush[2].Key.Width * factor,
+                                        (int)pos.Y - _nodeSurroundHighlightBrush[2].Key.Height * factor,
+                                        _nodeSurroundHighlightBrush[2].Key.Width * 2 * factor,
+                                        _nodeSurroundHighlightBrush[2].Key.Height * 2 * factor));
                             }
                             else if (skillNode.Type == NodeType.Mastery)
                             {
@@ -709,18 +944,18 @@ namespace POESKillTree.SkillTreeFiles
                             }
                             else if (skillNode.Type == NodeType.JewelSocket)
                             {
-                                dc.DrawRectangle(NodeSurroundHighlightBrush[3].Value, null,
-                                    new Rect((int)pos.X - NodeSurroundHighlightBrush[3].Key.Width * factor,
-                                        (int)pos.Y - NodeSurroundHighlightBrush[3].Key.Height * factor,
-                                        NodeSurroundHighlightBrush[3].Key.Width * 2 * factor,
-                                        NodeSurroundHighlightBrush[3].Key.Height * 2 * factor));
+                                dc.DrawRectangle(_nodeSurroundHighlightBrush[3].Value, null,
+                                    new Rect((int)pos.X - _nodeSurroundHighlightBrush[3].Key.Width * factor,
+                                        (int)pos.Y - _nodeSurroundHighlightBrush[3].Key.Height * factor,
+                                        _nodeSurroundHighlightBrush[3].Key.Width * 2 * factor,
+                                        _nodeSurroundHighlightBrush[3].Key.Height * 2 * factor));
                             }
                             else
-                                dc.DrawRectangle(NodeSurroundHighlightBrush[0].Value, null,
-                                    new Rect((int)pos.X - NodeSurroundHighlightBrush[0].Key.Width * factor,
-                                        (int)pos.Y - NodeSurroundHighlightBrush[0].Key.Height * factor,
-                                        NodeSurroundHighlightBrush[0].Key.Width * 2 * factor,
-                                        NodeSurroundHighlightBrush[0].Key.Height * 2 * factor));
+                                dc.DrawRectangle(_nodeSurroundHighlightBrush[0].Value, null,
+                                    new Rect((int)pos.X - _nodeSurroundHighlightBrush[0].Key.Width * factor,
+                                        (int)pos.Y - _nodeSurroundHighlightBrush[0].Key.Height * factor,
+                                        _nodeSurroundHighlightBrush[0].Key.Width * 2 * factor,
+                                        _nodeSurroundHighlightBrush[0].Key.Height * 2 * factor));
                         }
                     }
                     dcAsc.Close();
@@ -728,10 +963,10 @@ namespace POESKillTree.SkillTreeFiles
                 dc.Close();
             }
 
-            var pen2 = new Pen(new SolidColorBrush(_treeComparisonColor), 25 * factor);
-            using (DrawingContext dc = picPathTreeComparisonHighlight.RenderOpen())
+            var pen2 = new Pen(new SolidColorBrush(TreeComparisonColor), 25 * factor);
+            using (DrawingContext dc = PathComparisonHighlight.RenderOpen())
             {
-                using (DrawingContext dcAsc = picAscPathTreeComparisonHighlight.RenderOpen())
+                using (DrawingContext dcAsc = AscPathComparisonHighlight.RenderOpen())
                 {
                     if (HighlightedNodes != null)
                     {
@@ -759,116 +994,9 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        private void DrawNodeNormalSurround()
-        {
-            using (DrawingContext dc = picNodeNormalSurround.RenderOpen())
-            {
-                foreach (var skillNode in Skillnodes.Keys)
-                {
-                    var pos = (Skillnodes[skillNode].Position);
-                    if (Skillnodes[skillNode].IsAscendancyStart || Skillnodes[skillNode].ascendancyName != null)
-                    {
-                        //Needs to be here so that Ascendancy nodes don't get anything drawn around them.
-                    }
-                    else if (Skillnodes[skillNode].Type == NodeType.Notable)
-                    {
-                        dc.DrawRectangle(NodeSurroundBrush[2].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[2].Key.Width,
-                                (int)pos.Y - NodeSurroundBrush[2].Key.Height,
-                                NodeSurroundBrush[2].Key.Width * 2,
-                                NodeSurroundBrush[2].Key.Height * 2));
-                    }
-                    else if (Skillnodes[skillNode].Type == NodeType.Keystone)
-                    {
-                        dc.DrawRectangle(NodeSurroundBrush[4].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[4].Key.Width,
-                                (int)pos.Y - NodeSurroundBrush[4].Key.Height,
-                                NodeSurroundBrush[4].Key.Width * 2,
-                                NodeSurroundBrush[4].Key.Height * 2));
-                    }
-                    else if (Skillnodes[skillNode].Type == NodeType.Mastery)
-                    {
-                        //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
-                    }
-                    else if (Skillnodes[skillNode].Type == NodeType.JewelSocket)
-                    {
-                        dc.DrawRectangle(NodeSurroundBrush[6].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[6].Key.Width,
-                                (int)pos.Y - NodeSurroundBrush[6].Key.Height,
-                                NodeSurroundBrush[6].Key.Width * 2,
-                                NodeSurroundBrush[6].Key.Height * 2));
-                    }
-                    else
-                        dc.DrawRectangle(NodeSurroundBrush[0].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[0].Key.Width,
-                                (int)pos.Y - NodeSurroundBrush[0].Key.Height,
-                                NodeSurroundBrush[0].Key.Width * 2,
-                                NodeSurroundBrush[0].Key.Height * 2));
-                }
-                dc.Close();
-            }
-        }
-
-        private void DrawAscendancyNodeNormalSurround()
-        {
-            using (DrawingContext dcAsc = picAscNodeNormalSurround.RenderOpen())
-            {
-                if (!drawAscendancy)
-                {
-                    dcAsc.Close();
-                    return;
-                }
-
-                var className = CharacterNames.GetClassNameFromChartype(_chartype);
-                var ascendancyClassName = AscClasses.GetClassName(className, AscType);
-                foreach (ushort skillNode in Skillnodes.Keys)
-                {
-                    var pos = (Skillnodes[skillNode].Position);
-                    if (Skillnodes[skillNode].IsAscendancyStart)
-                    {
-                        if (!drawAscendancy) continue;
-
-                        const string imageName = "PassiveSkillScreenAscendancyMiddle";
-                        var bitmap = Assets[imageName];
-                        var brush = new ImageBrush(Assets[imageName]);
-
-                        if (_persistentData.Options.ShowAllAscendancyClasses || Skillnodes[skillNode].ascendancyName == ascendancyClassName)
-                            dcAsc.DrawRectangle(brush, null,
-                                new Rect(
-                                    pos -
-                                    new Vector2D(bitmap.PixelWidth, bitmap.PixelHeight),
-                                    new Size(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2)));
-                    }
-                    else if (Skillnodes[skillNode].ascendancyName != null && Skillnodes[skillNode].Type == NodeType.Notable)
-                    {
-                        if (!drawAscendancy) continue;
-
-                        if (_persistentData.Options.ShowAllAscendancyClasses || Skillnodes[skillNode].ascendancyName == ascendancyClassName)
-                            dcAsc.DrawRectangle(NodeSurroundBrush[10].Value, null,
-                                new Rect((int)pos.X - NodeSurroundBrush[10].Key.Width * .875,
-                                    (int)pos.Y - NodeSurroundBrush[10].Key.Height * .875,
-                                    NodeSurroundBrush[10].Key.Width * 1.75,
-                                    NodeSurroundBrush[10].Key.Height * 1.75));
-                    }
-                    else if (Skillnodes[skillNode].ascendancyName != null)
-                    {
-                        if (!drawAscendancy) continue;
-
-                        if (_persistentData.Options.ShowAllAscendancyClasses || Skillnodes[skillNode].ascendancyName == ascendancyClassName)
-                            dcAsc.DrawRectangle(NodeSurroundBrush[8].Value, null,
-                                new Rect((int)pos.X - NodeSurroundBrush[8].Key.Width,
-                                    (int)pos.Y - NodeSurroundBrush[8].Key.Height,
-                                    NodeSurroundBrush[8].Key.Width * 2,
-                                    NodeSurroundBrush[8].Key.Height * 2));
-                    }
-                }
-                dcAsc.Close();
-            }
-        }
-
         private void DrawNodeHighlightSurround()
         {
-            using (DrawingContext dc = picNodeHighlightSurround.RenderOpen())
+            using (DrawingContext dc = ActiveNodeSurround.RenderOpen())
             {
                 foreach (var skillNode in SkilledNodes)
                 {
@@ -879,19 +1007,19 @@ namespace POESKillTree.SkillTreeFiles
                     }
                     else if (skillNode.Type == NodeType.Notable)
                     {
-                        dc.DrawRectangle(NodeSurroundBrush[3].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[3].Key.Width,
-                                (int)pos.Y - NodeSurroundBrush[3].Key.Height,
-                                NodeSurroundBrush[3].Key.Width * 2,
-                                NodeSurroundBrush[3].Key.Height * 2));
+                        dc.DrawRectangle(_nodeSurroundBrush[3].Value, null,
+                            new Rect((int)pos.X - _nodeSurroundBrush[3].Key.Width,
+                                (int)pos.Y - _nodeSurroundBrush[3].Key.Height,
+                                _nodeSurroundBrush[3].Key.Width * 2,
+                                _nodeSurroundBrush[3].Key.Height * 2));
                     }
                     else if (skillNode.Type == NodeType.Keystone)
                     {
-                        dc.DrawRectangle(NodeSurroundBrush[5].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[5].Key.Width,
-                                (int)pos.Y - NodeSurroundBrush[5].Key.Height,
-                                NodeSurroundBrush[5].Key.Width * 2,
-                                NodeSurroundBrush[5].Key.Height * 2));
+                        dc.DrawRectangle(_nodeSurroundBrush[5].Value, null,
+                            new Rect((int)pos.X - _nodeSurroundBrush[5].Key.Width,
+                                (int)pos.Y - _nodeSurroundBrush[5].Key.Height,
+                                _nodeSurroundBrush[5].Key.Width * 2,
+                                _nodeSurroundBrush[5].Key.Height * 2));
                     }
                     else if (skillNode.Type == NodeType.Mastery)
                     {
@@ -899,18 +1027,18 @@ namespace POESKillTree.SkillTreeFiles
                     }
                     else if (skillNode.Type == NodeType.JewelSocket)
                     {
-                        dc.DrawRectangle(NodeSurroundBrush[7].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[7].Key.Width,
-                                (int)pos.Y - NodeSurroundBrush[7].Key.Height,
-                                NodeSurroundBrush[7].Key.Width * 2,
-                                NodeSurroundBrush[7].Key.Height * 2));
+                        dc.DrawRectangle(_nodeSurroundBrush[7].Value, null,
+                            new Rect((int)pos.X - _nodeSurroundBrush[7].Key.Width,
+                                (int)pos.Y - _nodeSurroundBrush[7].Key.Height,
+                                _nodeSurroundBrush[7].Key.Width * 2,
+                                _nodeSurroundBrush[7].Key.Height * 2));
                     }
                     else
-                        dc.DrawRectangle(NodeSurroundBrush[1].Value, null,
-                            new Rect((int)pos.X - NodeSurroundBrush[1].Key.Width,
-                                (int)pos.Y - NodeSurroundBrush[1].Key.Height,
-                                NodeSurroundBrush[1].Key.Width * 2,
-                                NodeSurroundBrush[1].Key.Height * 2));
+                        dc.DrawRectangle(_nodeSurroundBrush[1].Value, null,
+                            new Rect((int)pos.X - _nodeSurroundBrush[1].Key.Width,
+                                (int)pos.Y - _nodeSurroundBrush[1].Key.Height,
+                                _nodeSurroundBrush[1].Key.Width * 2,
+                                _nodeSurroundBrush[1].Key.Height * 2));
                 }
                 dc.Close();
             }
@@ -918,7 +1046,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawAscendancyNodeHighlightSurround()
         {
-            using (DrawingContext dcAsc = picAscNodeHighlightSurround.RenderOpen())
+            using (DrawingContext dcAsc = AscActiveNodeSurround.RenderOpen())
             {
                 if (!drawAscendancy)
                 {
@@ -940,22 +1068,22 @@ namespace POESKillTree.SkillTreeFiles
                         if (!drawAscendancy) continue;
 
                         if (_persistentData.Options.ShowAllAscendancyClasses || skillNode.ascendancyName == ascendancyClassName)
-                            dcAsc.DrawRectangle(NodeSurroundBrush[11].Value, null,
-                                new Rect((int)pos.X - NodeSurroundBrush[11].Key.Width * .875,
-                                    (int)pos.Y - NodeSurroundBrush[11].Key.Height * .875,
-                                    NodeSurroundBrush[11].Key.Width * 1.75,
-                                    NodeSurroundBrush[11].Key.Height * 1.75));
+                            dcAsc.DrawRectangle(_nodeSurroundBrush[11].Value, null,
+                                new Rect((int)pos.X - _nodeSurroundBrush[11].Key.Width * .875,
+                                    (int)pos.Y - _nodeSurroundBrush[11].Key.Height * .875,
+                                    _nodeSurroundBrush[11].Key.Width * 1.75,
+                                    _nodeSurroundBrush[11].Key.Height * 1.75));
                     }
                     else if (skillNode.ascendancyName != null)
                     {
                         if (!drawAscendancy) continue;
 
                         if (_persistentData.Options.ShowAllAscendancyClasses || skillNode.ascendancyName == ascendancyClassName)
-                            dcAsc.DrawRectangle(NodeSurroundBrush[9].Value, null,
-                                new Rect((int)pos.X - NodeSurroundBrush[9].Key.Width,
-                                    (int)pos.Y - NodeSurroundBrush[9].Key.Height,
-                                    NodeSurroundBrush[9].Key.Width * 2,
-                                    NodeSurroundBrush[9].Key.Height * 2));
+                            dcAsc.DrawRectangle(_nodeSurroundBrush[9].Value, null,
+                                new Rect((int)pos.X - _nodeSurroundBrush[9].Key.Width,
+                                    (int)pos.Y - _nodeSurroundBrush[9].Key.Height,
+                                    _nodeSurroundBrush[9].Key.Width * 2,
+                                    _nodeSurroundBrush[9].Key.Height * 2));
                     }
                 }
                 dcAsc.Close();
@@ -964,12 +1092,11 @@ namespace POESKillTree.SkillTreeFiles
 
         public void DrawPath(IEnumerable<SkillNode> path)
         {
-            var pen2 = new Pen(Brushes.LawnGreen, 15f);
-            pen2.DashStyle = new DashStyle(new DoubleCollection { 2 }, 2);
+            var pen2 = new Pen(Brushes.LawnGreen, 15f) {DashStyle = new DashStyle(new DoubleCollection {2}, 2)};
 
-            using (DrawingContext dc = picPathOverlay.RenderOpen())
+            using (DrawingContext dc = PathOverlay.RenderOpen())
             {
-                using (DrawingContext dcAsc = picAscPathOverlay.RenderOpen())
+                using (DrawingContext dcAsc = AscPathOverlay.RenderOpen())
                 {
                     // Draw a connection from a skilled node to the first path node.
                     var skilledNeighbors = new List<SkillNode>();
@@ -1022,17 +1149,17 @@ namespace POESKillTree.SkillTreeFiles
         {
             var pen2 = new Pen(Brushes.Red, 15f) {DashStyle = new DashStyle(new DoubleCollection {2}, 2)};
 
-            using (DrawingContext dc = picPathOverlay.RenderOpen())
+            using (var dc = PathOverlay.RenderOpen())
             {
-                using (DrawingContext dcAsc = picAscPathOverlay.RenderOpen())
+                using (var dcAsc = AscPathOverlay.RenderOpen())
                 {
-                    var className = CharacterNames.GetClassNameFromChartype(_chartype);
-                    var ascendancyClassName = AscClasses.GetClassName(className, AscType);
-                    foreach (var node in nodes)
+                    var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+                    var skillNodes = nodes as IList<SkillNode> ?? nodes.ToList();
+                    foreach (var node in skillNodes)
                     {
                         foreach (var n2 in node.VisibleNeighbors)
                         {
-                            if (!SkilledNodes.Contains(n2) || (node.Id >= n2.Id && nodes.Contains(n2))) continue;
+                            if (!SkilledNodes.Contains(n2) || (node.Id >= n2.Id && skillNodes.Contains(n2))) continue;
                             if (node.ascendancyName != null && n2.ascendancyName != null)
                             {
                                 if (!drawAscendancy) continue;
@@ -1052,77 +1179,11 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        private void InitSkillIconLayers()
-        {
-            picActiveSkillIconLayer = new DrawingVisual();
-            picSkillIconLayer = new DrawingVisual();
-        }
-
-        private void DrawSkillIconLayer()
-        {
-            var pen = new Pen(Brushes.Black, 5);
-            Geometry g = new RectangleGeometry(SkillTreeRect);
-            using (DrawingContext dc = picSkillIconLayer.RenderOpen())
-            {
-                dc.DrawGeometry(null, pen, g);
-                foreach (var skillNode in Skillnodes)
-                {
-                    if (skillNode.Value.ascendancyName != null) continue;
-
-                    var imageBrush = new ImageBrush();
-                    var rect = IconInActiveSkills.SkillPositions[skillNode.Value.IconKey];
-                    var bitmapImage = IconInActiveSkills.GetSkillImage(skillNode.Value.IconKey);
-                    imageBrush.Stretch = Stretch.Uniform;
-                    imageBrush.ImageSource = bitmapImage;
-
-                    imageBrush.ViewboxUnits = BrushMappingMode.RelativeToBoundingBox;
-                    imageBrush.Viewbox = new Rect(rect.X / bitmapImage.PixelWidth, rect.Y / bitmapImage.PixelHeight, rect.Width / bitmapImage.PixelWidth,
-                        rect.Height / bitmapImage.PixelHeight);
-                    var pos = (skillNode.Value.Position);
-                    dc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
-                }
-            }
-        }
-
-        private void DrawAscendancySkillIconLayer()
-        {
-            var pen = new Pen(Brushes.Black, 5);
-            Geometry g = new RectangleGeometry(SkillTreeRect);
-            using (DrawingContext dcAsc = picAscSkillIconLayer.RenderOpen())
-            {
-                if (!drawAscendancy)
-                {
-                    dcAsc.Close();
-                    return;
-                }
-
-                dcAsc.DrawGeometry(null, pen, g);
-                var className = CharacterNames.GetClassNameFromChartype(_chartype);
-                var ascendancyClassName = AscClasses.GetClassName(className, AscType);
-                foreach (var skillNode in Skillnodes.Where(x => x.Value.ascendancyName != null))
-                {
-                    var imageBrush = new ImageBrush();
-                    var rect = IconInActiveSkills.SkillPositions[skillNode.Value.IconKey];
-                    var bitmapImage = IconInActiveSkills.GetSkillImage(skillNode.Value.IconKey);
-                    imageBrush.Stretch = Stretch.Uniform;
-                    imageBrush.ImageSource = bitmapImage;
-                    imageBrush.ViewboxUnits = BrushMappingMode.RelativeToBoundingBox;
-                    imageBrush.Viewbox = new Rect(rect.X / bitmapImage.PixelWidth, rect.Y / bitmapImage.PixelHeight, rect.Width / bitmapImage.PixelWidth,
-                        rect.Height / bitmapImage.PixelHeight);
-                    var pos = (skillNode.Value.Position);
-
-                    if (_persistentData.Options.ShowAllAscendancyClasses || skillNode.Value.ascendancyName == ascendancyClassName)
-                        dcAsc.DrawEllipse(imageBrush, null, pos, rect.Width, rect.Height);
-                }
-                dcAsc.Close();
-            }
-        }
-
         private void DrawActiveNodeIcons()
         {
             var pen = new Pen(Brushes.Black, 5);
             Geometry g = new RectangleGeometry(SkillTreeRect);
-            using (DrawingContext dc = picActiveSkillIconLayer.RenderOpen())
+            using (DrawingContext dc = AsctiveSkillIcons.RenderOpen())
             {
                 dc.DrawGeometry(null, pen, g);
 
@@ -1151,7 +1212,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             var pen = new Pen(Brushes.Black, 5);
             Geometry g = new RectangleGeometry(SkillTreeRect);
-            using (DrawingContext dcAsc = picAscActiveSkillIconLayer.RenderOpen())
+            using (DrawingContext dcAsc = AscActiveSkillIcons.RenderOpen())
             {
                 if (!drawAscendancy)
                 {
@@ -1185,144 +1246,32 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        private void InitFaceBrushesAndLayer()
+        private void InitializeFaceBrushes()
         {
-            picFaces = new DrawingVisual();
-
-            if (!_initialized)
+            if (_initialized) return;
+            foreach (var faceName in CharacterFaceNames)
             {
-                foreach (string faceName in CharacterFaceNames)
-                {
-                    var bi = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree._assetsFolderPath + faceName + ".png", UriKind.Absolute));
-                    _FacesBrush.Add(new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi.PixelWidth, bi.PixelHeight),
-                        new ImageBrush(bi)));
-                }
-
-                var bi2 = ImageHelper.OnLoadBitmapImage(new Uri(SkillTree._assetsFolderPath + "PSStartNodeBackgroundInactive.png", UriKind.Absolute));
-                if (_StartBackgrounds.ContainsKey(false))
-                {
-                    if (!_StartBackgrounds[false].Key.Equals(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight)))
-                    {
-                        _StartBackgrounds.Add(false,
-                            (new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight),
-                                new ImageBrush(bi2))));
-                    }
-                }
-                else
-                {
-                    _StartBackgrounds.Add(false,
-                            (new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight),
-                                new ImageBrush(bi2))));
-                }
+                var bi = ImageHelper.OnLoadBitmapImage(new Uri(_assetsFolderPath + faceName + ".png", UriKind.Absolute));
+                _faceBrushes.Add(new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi.PixelWidth, bi.PixelHeight),
+                    new ImageBrush(bi)));
             }
 
-        }
-
-        private void InitNodeSurround()
-        {
-            picNodeHighlightSurround = new DrawingVisual();
-            picNodeNormalSurround = new DrawingVisual();
-            picAscNodeHighlightSurround = new DrawingVisual();
-            picAscNodeNormalSurround = new DrawingVisual();
-
-            if (!_initialized)
+            var bi2 = ImageHelper.OnLoadBitmapImage(new Uri(_assetsFolderPath + "PSStartNodeBackgroundInactive.png", UriKind.Absolute));
+            if (_startBackgrounds.ContainsKey(false))
             {
-                foreach(var background in NodeBackgrounds)
+                if (!_startBackgrounds[false].Key.Equals(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight)))
                 {
-                    if (NodeBackgroundsActive.ContainsKey(background.Key))
-                    {
-                        Size normalSize;
-                        var normalBrush = new ImageBrush();
-                        normalBrush.Stretch = Stretch.Uniform;
-                        BitmapImage normalBrushPImage = Assets[NodeBackgrounds[background.Key]];
-                        normalBrush.ImageSource = normalBrushPImage;
-                        normalSize = new Size(normalBrushPImage.PixelWidth, normalBrushPImage.PixelHeight);
-
-                        Size activeSize;
-                        var activeBrush = new ImageBrush();
-                        activeBrush.Stretch = Stretch.Uniform;
-                        BitmapImage activeBrushPImage = Assets[NodeBackgroundsActive[background.Key]];
-                        activeBrush.ImageSource = activeBrushPImage;
-                        activeSize = new Size(activeBrushPImage.PixelWidth, activeBrushPImage.PixelHeight);
-
-                        NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(normalSize, normalBrush));
-                        NodeSurroundBrush.Add(new KeyValuePair<Size, ImageBrush>(activeSize, activeBrush));
-
-                        //tree comparison highlight generator
-                        var outlinecolor = _treeComparisonColor;
-                        uint omask = (uint)outlinecolor.B | (uint)outlinecolor.G << 8 | (uint)outlinecolor.R << 16;
-
-                        var bitmap = (BitmapImage)normalBrush.ImageSource;
-                        var wb = new WriteableBitmap(bitmap.PixelWidth, bitmap.PixelHeight, bitmap.DpiX, bitmap.DpiY, PixelFormats.Bgra32, null);
-                        if (wb.Format == PixelFormats.Bgra32)//BGRA is byte order .. little endian in uint reverse it
-                        {
-                            uint[] pixeldata = new uint[wb.PixelHeight * wb.PixelWidth];
-                            bitmap.CopyPixels(pixeldata, wb.PixelWidth * 4, 0);
-                            for (int i = 0; i < pixeldata.Length; i++)
-                            {
-                                pixeldata[i] = pixeldata[i] & 0xFF000000 | omask;
-                            }
-                            wb.WritePixels(new Int32Rect(0, 0, wb.PixelWidth, wb.PixelHeight), pixeldata, wb.PixelWidth * 4, 0);
-
-                            var ibr = new ImageBrush();
-                            ibr.Stretch = Stretch.Uniform;
-                            ibr.ImageSource = wb;
-
-                            NodeSurroundHighlightBrush.Add(new KeyValuePair<Size, ImageBrush>(normalSize, ibr));
-                        }
-                        else
-                        {
-                            //throw??
-                        }
-                    }
+                    _startBackgrounds.Add(false,
+                        (new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight),
+                            new ImageBrush(bi2))));
                 }
             }
-        }
-
-        private void InitializeLayers()
-        {
-            InitNodeSurround();
-            InitSkillIconLayers();
-            InitFaceBrushesAndLayer();
-            
-            picActiveLinks = new DrawingVisual();
-            picPathOverlay = new DrawingVisual();
-            picHighlights = new DrawingVisual();
-            picNodeTreeComparisonHighlight = new DrawingVisual();
-            picPathTreeComparisonHighlight = new DrawingVisual();
-            picJewelHighlight = new DrawingVisual();
-            picAscendancyButton = new DrawingVisual();
-            picAscendancyClasses = new DrawingVisual();
-            picAscLinks = new DrawingVisual();
-            picAscActiveLinks = new DrawingVisual();
-            picAscPathOverlay = new DrawingVisual();
-            picAscSkillIconLayer = new DrawingVisual();
-            picAscActiveSkillIconLayer = new DrawingVisual();
-            picAscNodeTreeComparisonHighlight = new DrawingVisual();
-            picAscPathTreeComparisonHighlight = new DrawingVisual();
-        }
-
-        private void DrawInitialLayers()
-        {
-            DrawNodeNormalSurround();
-            DrawSkillIconLayer();
-            DrawBackgroundLayer();
-            DrawLinkBackgroundLayer(Links);
-            DrawAscendancyNodeNormalSurround();
-            DrawAscendancySkillIconLayer();
-            DrawAscendancyLinkBackgroundLayer(Links);
-            DrawAscendancyClasses();
-            DrawDynamicLayers();
-        }
-
-        private void DrawDynamicLayers()
-        {
-            DrawActiveNodeIcons();
-            DrawNodeHighlightSurround();
-            DrawFaces();
-
-            DrawAscendancyActiveNodeIcons();
-            DrawAscendancyNodeHighlightSurround();
+            else
+            {
+                _startBackgrounds.Add(false,
+                    (new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight),
+                        new ImageBrush(bi2))));
+            }
         }
 
         /// <summary>
@@ -1333,8 +1282,6 @@ namespace POESKillTree.SkillTreeFiles
             if (drawAscendancy)
             {
                 UpdateAscendancyClassPositions();
-                DrawAscendancyNodeNormalSurround();
-                DrawAscendancySkillIconLayer();
                 DrawAscendancyLinkBackgroundLayer(Links);
                 DrawAscendancyClasses();
                 DrawAscendancyActiveLinks();
@@ -1343,16 +1290,16 @@ namespace POESKillTree.SkillTreeFiles
             }
             else
             {
-                picAscendancyClasses.RenderOpen().Close();
-                picAscPathTreeComparisonHighlight.RenderOpen().Close();
-                picAscNodeTreeComparisonHighlight.RenderOpen().Close();
-                picAscLinks.RenderOpen().Close();
-                picAscActiveLinks.RenderOpen().Close();
-                picAscPathOverlay.RenderOpen().Close();
-                picAscSkillIconLayer.RenderOpen().Close();
-                picAscActiveSkillIconLayer.RenderOpen().Close();
-                picAscNodeNormalSurround.RenderOpen().Close();
-                picAscNodeHighlightSurround.RenderOpen().Close();   
+                AscClassFaces.RenderOpen().Close();
+                AscPathComparisonHighlight.RenderOpen().Close();
+                AscNodeComparisonHighlight.RenderOpen().Close();
+                AscPaths.RenderOpen().Close();
+                AscActivePaths.RenderOpen().Close();
+                AscPathOverlay.RenderOpen().Close();
+                AscSkillIcons.RenderOpen().Close();
+                AscActiveSkillIcons.RenderOpen().Close();
+                AscNodeSurround.RenderOpen().Close();
+                AscActiveNodeSurround.RenderOpen().Close();   
             }
         }
 
@@ -1370,7 +1317,7 @@ namespace POESKillTree.SkillTreeFiles
             const int mediumRadius = 1200 - thickness / 2;
             const int largeRadius = 1500 - thickness / 2;
 
-            using (DrawingContext dc = picJewelHighlight.RenderOpen())
+            using (DrawingContext dc = JewelHighlight.RenderOpen())
             {
                 dc.DrawEllipse(null, radiusPen, node.Position, smallRadius, smallRadius);
                 dc.DrawEllipse(null, radiusPen, node.Position, mediumRadius, mediumRadius);
