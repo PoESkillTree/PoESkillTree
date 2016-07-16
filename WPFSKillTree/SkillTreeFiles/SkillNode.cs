@@ -30,7 +30,7 @@ namespace POESKillTree.SkillTreeFiles
         public string Icon; // icon "icon": "Art/2DArt/SkillIcons/passives/tempint.png",
         public UInt16 Id; // "id": -28194677,
         public NodeType Type; // "ks", "not", "m", "isJewelSocket"
-        public List<int> LinkId = new List<int>(); // "out": []
+        public List<ushort> LinkId = new List<ushort>(); // "out": []
         public string Name; //"dn": "Block Recovery",
         public int Orbit; //  "o": 1,
         public int OrbitIndex; // "oidx": 3,

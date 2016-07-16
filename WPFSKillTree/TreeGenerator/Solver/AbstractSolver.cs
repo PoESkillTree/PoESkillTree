@@ -208,7 +208,7 @@ namespace POESKillTree.TreeGenerator.Solver
             }
             else
             {
-                StartNode = searchGraph.SetStartNodes(_tree.SkilledNodes);
+                StartNode = searchGraph.SetStartNodes(new HashSet<ushort>(_tree.SkilledNodes.Select(n => n.Id)));
             }
         }
 
@@ -218,9 +218,9 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private void CreateTargetNodes(SearchGraph searchGraph)
         {
-            TargetNodes = (from nodeId in Settings.Checked
-                           where !searchGraph.NodeDict.ContainsKey(SkillTree.Skillnodes[nodeId])
-                           select searchGraph.AddNodeId(nodeId))
+            TargetNodes = (from node in Settings.Checked
+                           where !searchGraph.NodeDict.ContainsKey(node)
+                           select searchGraph.AddNodeId(node.Id))
                           .Union(new[] {StartNode}).ToList();
         }
 
@@ -273,14 +273,14 @@ namespace POESKillTree.TreeGenerator.Solver
                     foreach (var node in ng.Nodes)
                     {
                         // Can't path through class starts.
-                        if (SkillTree.rootNodeList.Contains(node.Id)
+                        if (SkillTree.RootNodeList.Contains(node.Id)
                             // Don't add nodes that are already in the graph (as
                             // target or start nodes).
                             || searchGraph.NodeDict.ContainsKey(node)
                             // Don't add nodes that should not be skilled.
-                            || Settings.Crossed.Contains(node.Id)
+                            || Settings.Crossed.Contains(node)
                             // Only add nodes in the subsettree if one is given.
-                            || Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(node.Id)
+                            || Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(node)
                             // Mastery nodes are obviously not useful.
                             || node.Type == NodeType.Mastery
                             // Ignore ascendancies for now

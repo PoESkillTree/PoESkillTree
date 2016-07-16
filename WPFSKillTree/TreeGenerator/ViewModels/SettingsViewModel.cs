@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
+using POESKillTree.Utils;
 using POESKillTree.ViewModels;
 
 namespace POESKillTree.TreeGenerator.ViewModels
@@ -227,7 +229,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 .ShowControllerDialogAsync(this, solver, Tabs[_selectedTabIndex].DisplayName, _tree);
             if (controllerResult != null)
             {
-                _tree.SkilledNodes = new HashSet<ushort>(controllerResult);
+                _tree.SkilledNodes = new ObservableSet<SkillNode>(controllerResult.Select(n => SkillTree.Skillnodes[n]));
             }
             _tree.HighlightedNodes = savedHighlights;
             _tree.DrawTreeComparisonHighlight();

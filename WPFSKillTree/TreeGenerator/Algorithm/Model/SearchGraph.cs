@@ -34,10 +34,10 @@ namespace POESKillTree.TreeGenerator.Algorithm.Model
             return AddNode(SkillTree.Skillnodes[nodeId]);
         }
 
-        public GraphNode SetStartNodes(HashSet<ushort> startNodes)
+        public GraphNode SetStartNodes(IEnumerable<ushort> startNodes)
         {
             var supernode = new GraphNode(startNodes);
-            foreach (ushort nodeId in startNodes)
+            foreach (var nodeId in startNodes)
             {
                 SkillNode node = SkillTree.Skillnodes[nodeId];
                 NodeDict.Add(node, supernode);

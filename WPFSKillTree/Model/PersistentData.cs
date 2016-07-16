@@ -120,7 +120,7 @@ namespace POESKillTree.Model
             CurrentBuild = new PoEBuild
             {
                 Name = "New Build",
-                Url = Constants.TreeAddress + SkillTree.GetCharacterURL(3, 0),
+                Url = Constants.TreeAddress + SkillTree.GetCharacterUrl(3, 0),
                 Level = "1"
             };
             Builds = new List<PoEBuild>();

@@ -76,6 +76,16 @@ namespace POESKillTree.SkillTreeFiles
             }
             return null;
         }
+        /// <summary>
+        /// Returns a class name based on starting class and 0, 1, or 2 asc class
+        /// </summary>
+        /// <param name="charType"></param>
+        /// <param name="ascOrder">Get this from the tree decoding</param>
+        /// <returns></returns>
+        public string GetClassName(int charType, int ascOrder)
+        {
+            return GetClassName(CharacterNames.GetClassNameFromChartype(charType), ascOrder);
+        }
 
         /// <summary>
         /// Gets all Ascendancy classes associated with a starting class 
