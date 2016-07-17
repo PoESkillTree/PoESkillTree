@@ -339,8 +339,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var nodeCount = _bestSoFar.Count - _solver.UncountedNodes;
             BestResultText = string.Format(L10n.Plural("Best result so far: {0} point spent",
                 "Best result so far: {0} points spent", (uint)nodeCount), nodeCount);
-            _tree.HighlightedNodes = new ObservableSet<SkillNode>(_bestSoFar.Select(n => SkillTree.Skillnodes[n]));
-            _tree.DrawTreeComparisonHighlight();
+            _tree.HighlightedNodes.Clear();
+            _tree.HighlightedNodes.UnionWith(_bestSoFar.Select(n => SkillTree.Skillnodes[n]));
+            //_tree.DrawTreeComparisonHighlight();
         }
 
         /// <summary>

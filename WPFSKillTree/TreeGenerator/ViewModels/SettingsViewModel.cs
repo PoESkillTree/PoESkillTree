@@ -229,12 +229,13 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 .ShowControllerDialogAsync(this, solver, Tabs[_selectedTabIndex].DisplayName, _tree);
             if (controllerResult != null)
             {
-                _tree.SkilledNodes = new ObservableSet<SkillNode>(controllerResult.Select(n => SkillTree.Skillnodes[n]));
+                _tree.SkilledNodes.Clear();
+                _tree.AllocateSkillNodes(controllerResult.Select(n => SkillTree.Skillnodes[n]));
             }
-            _tree.HighlightedNodes = savedHighlights;
-            _tree.DrawTreeComparisonHighlight();
+            _tree.HighlightedNodes.Clear();
+            _tree.HighlightedNodes.UnionWith(savedHighlights);
+            //_tree.DrawTreeComparisonHighlight();
             _tree.DrawHighlights();
-            _tree.UpdateAvailNodes();
 
             RunFinished?.Invoke(this, EventArgs.Empty);
         }

@@ -145,10 +145,10 @@ namespace POESKillTree.SkillTreeFiles
         private static Dictionary<int, int> StartNodeDictionary { get; set; }
 
         private static readonly Dictionary<string, BitmapImage> _assets = new Dictionary<string, BitmapImage>();
-        public Dictionary<string, BitmapImage> Assets => _assets;
+        public static Dictionary<string, BitmapImage> Assets => _assets;
         private static readonly List<ushort[]> Links = new List<ushort[]>();
-        public ObservableSet<SkillNode> SkilledNodes = new ObservableSet<SkillNode>(); 
-        public ObservableSet<SkillNode> HighlightedNodes = new ObservableSet<SkillNode>();
+        public readonly ObservableSet<SkillNode> SkilledNodes = new ObservableSet<SkillNode>(); 
+        public readonly ObservableSet<SkillNode> HighlightedNodes = new ObservableSet<SkillNode>();
         private static AscendancyClasses _ascClasses;
         public AscendancyClasses AscClasses => _ascClasses;
 
@@ -470,7 +470,7 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             if (_persistentData.Options.ShowAllAscendancyClasses)
-                drawAscendancy = true;
+                DrawAscendancy = true;
 
             InitialSkillTreeDrawing();
             controller?.SetProgress(1);
@@ -576,12 +576,11 @@ namespace POESKillTree.SkillTreeFiles
                     add.Add(n);
                 }
             }
-            SkilledNodes.Clear();
+            add.ExceptWith(SkilledNodes);
+            //SkilledNodes.Clear();
+            //add.Add(GetCharNode());
             AllocateSkillNodes(add);
-            AllocateSkillNode(GetCharNode());
-            drawAscendancy = _persistentData.Options.ShowAllAscendancyClasses;
-            DrawAscendancyLayers();
-            UpdateAscendancyClasses = true;
+            DrawAscendancy = _persistentData.Options.ShowAllAscendancyClasses;
         }
 
         public Dictionary<string, List<float>> HighlightedAttributes;
@@ -701,7 +700,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             var nodes =
               SkillTree.Skillnodes.Where(n => ((n.Value.Position - mousePointer).Length < range)).ToList();
-            if (!drawAscendancy || AscType <= 0) return nodes;
+            if (!DrawAscendancy || AscType <= 0) return nodes;
             var asn = GetAscNode();
             var bitmap = Assets["Classes" + asn.ascendancyName];
             nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - mousePointer).Length < range)).ToList();
@@ -714,7 +713,7 @@ namespace POESKillTree.SkillTreeFiles
             var nodeList = nodes as IList<KeyValuePair<ushort, SkillNode>> ?? nodes.ToList();
             if (!nodeList.Any()) return null;
 
-            if (drawAscendancy)
+            if (DrawAscendancy)
             {
                 var dnode = nodeList.First();
                 return
@@ -729,11 +728,12 @@ namespace POESKillTree.SkillTreeFiles
         public void AllocateSkillNodes(IEnumerable<SkillNode> nodes)
         {
             if (nodes == null) return;
-            foreach (SkillNode i in nodes)
+            var skillNodes = nodes as IList<SkillNode> ?? nodes.ToList();
+            foreach (var i in skillNodes)
             {
                 AllocateSkillNode(i, true);
             }
-            SkilledNodes.UnionWith(nodes);
+            SkilledNodes.UnionWith(skillNodes);
         }
 
         public void AllocateSkillNode(SkillNode node, bool bulk = false)
@@ -742,14 +742,12 @@ namespace POESKillTree.SkillTreeFiles
             if (node.IsAscendancyStart)
             {
                 var remove = SkilledNodes.Where(x => x.ascendancyName != null && x.ascendancyName != node.ascendancyName).ToArray();
-                foreach (var n in remove)
-                    SkilledNodes.Remove(n);
+                SkilledNodes.ExceptWith(remove);
             }
             else if (node.IsMultipleChoiceOption)
             {
                 var remove = SkilledNodes.Where(x => x.IsMultipleChoiceOption && AscClasses.GetStartingClass(node.Name) == AscClasses.GetStartingClass(x.Name)).ToArray();
-                foreach (var n in remove)
-                    SkilledNodes.Remove(n);
+                SkilledNodes.ExceptWith(remove);
             }
             if (!bulk)
                 SkilledNodes.Add(node);
@@ -758,11 +756,10 @@ namespace POESKillTree.SkillTreeFiles
         public void ForceRefundNode(SkillNode node)
         {
             if (!SkilledNodes.Contains(node)) return;
-            SkilledNodes.Remove(node);
             var charStartNode = GetCharNode();
             var front = new HashSet<SkillNode>() {charStartNode};
             foreach(var i in charStartNode.Neighbor)
-                if (SkilledNodes.Contains(i))
+                if (SkilledNodes.Contains(i) && i != node)
                     front.Add(i);
             var reachable = new HashSet<SkillNode>(front);
 
@@ -773,15 +770,15 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     foreach (var j in i.Neighbor)
                     {
-                        if (reachable.Contains(j) || !SkilledNodes.Contains(j)) continue;
+                        if (reachable.Contains(j) || !SkilledNodes.Contains(j) || j == node) continue;
                         newFront.Add(j);
                         reachable.Add(j);
                     }
                 }
                 front = newFront;
             }
-            SkilledNodes.Clear();
-            SkilledNodes.UnionWith(reachable);
+            var removable = SkilledNodes.Except(reachable).ToList();
+            SkilledNodes.ExceptWith(removable);
         }
 
         public HashSet<SkillNode> ForceRefundNodePreview(SkillNode node)
@@ -977,7 +974,7 @@ namespace POESKillTree.SkillTreeFiles
                         Skillnodes.Values.Where(
                             nd => (matchFct(nd.attributes, att => regex.IsMatch(att)) ||
                                   regex.IsMatch(nd.Name) && nd.Type != NodeType.Mastery) &&
-                                  (drawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null)) : nd.ascendancyName == null));
+                                  (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null)) : nd.ascendancyName == null));
                     _nodeHighlighter.ReplaceHighlights(nodes, flag);
                     DrawHighlights();
                 }
@@ -993,7 +990,7 @@ namespace POESKillTree.SkillTreeFiles
                     Skillnodes.Values.Where(
                         nd => (matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
                               nd.Name.ToLowerInvariant().Contains(search) && nd.Type != NodeType.Mastery) &&
-                              (drawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null)) : nd.ascendancyName == null ));
+                              (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null)) : nd.ascendancyName == null ));
                 _nodeHighlighter.ReplaceHighlights(nodes, flag);
                 DrawHighlights();
             }
@@ -1158,7 +1155,6 @@ namespace POESKillTree.SkillTreeFiles
             AscType = asc;
             SkilledNodes.Clear();
             AllocateSkillNodes(snodes);
-            UpdateAvailNodes();
         }
 
         public void Reset()
@@ -1343,12 +1339,6 @@ namespace POESKillTree.SkillTreeFiles
                 split.AddRange(attrs[i].Split('\n'));
 
             return split.ToArray();
-        }
-
-        public void UpdateAvailNodes(bool draw = true)
-        {
-            if (draw)
-                UpdateAvailNodesDraw();
         }
 
         private HashSet<SkillNode> GetAvailableNodes(IEnumerable<SkillNode> skilledNodes)

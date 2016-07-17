@@ -41,7 +41,7 @@ namespace POESKillTree.Views
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow, INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged
     {
         /// <summary>
         /// The set of keys of which one needs to be pressed to highlight similar nodes on hover.
@@ -125,7 +125,7 @@ namespace POESKillTree.Views
         private AdornerLayer _layer;
 
         private MouseButton _lastMouseButton;
-        private bool userInteraction = false;
+        private bool _userInteraction = false;
         /// <summary>
         /// The node of the SkillTree that currently has the mouse over it.
         /// Null if no node is under the mouse.
@@ -208,15 +208,9 @@ namespace POESKillTree.Views
         //Necessary to update the summed numbers in group names before every refresh
         private void RefreshAttributeLists()
         {
-            if (GetActiveAttributeGroupList()==lbAllAttr)
-            {
-                _attributeGroups.UpdateGroupNames(_allAttributesList);
-            }
-            //use passive attribute list as a default so nothing breaks if neither tab is actually active
-            else
-            {
-                _attributeGroups.UpdateGroupNames(_attiblist);
-            }
+            _attributeGroups.UpdateGroupNames(Equals(GetActiveAttributeGroupList(), lbAllAttr)
+                ? _allAttributesList
+                : _attiblist);
             _attributeCollection.Refresh();
             _allAttributeCollection.Refresh();
         }
@@ -396,17 +390,19 @@ namespace POESKillTree.Views
                 Header = L10n.Message("Remove highlights by attribute")
             };
             cmRemoveHighlight.Click += UnhighlightNodesByAttribute;
-            cmCreateGroup = new MenuItem();
-            cmCreateGroup.Header = "Create new group";
+            cmCreateGroup = new MenuItem {Header = "Create new group"};
             cmCreateGroup.Click += CreateGroup;
-            cmAddToGroup = new MenuItem();
-            cmAddToGroup.Header = "Add to group...";
-            cmAddToGroup.IsEnabled = false;
-            cmDeleteGroup = new MenuItem();
-            cmDeleteGroup.Header = "Delete group...";
-            cmDeleteGroup.IsEnabled = false;
-            cmRemoveFromGroup = new MenuItem();
-            cmRemoveFromGroup.Header = "Remove from group";
+            cmAddToGroup = new MenuItem
+            {
+                Header = "Add to group...",
+                IsEnabled = false
+            };
+            cmDeleteGroup = new MenuItem
+            {
+                Header = "Delete group...",
+                IsEnabled = false
+            };
+            cmRemoveFromGroup = new MenuItem {Header = "Remove from group"};
             cmRemoveFromGroup.Click += RemoveFromGroup;
 
             _attributeGroups = new GroupStringConverter();
@@ -419,25 +415,34 @@ namespace POESKillTree.Views
             _attributeContextMenu.Items.Add(cmRemoveFromGroup);
 
             _attributeCollection = new ListCollectionView(_attiblist);
-            _attributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
-            _attributeCollection.CustomSort = _attributeGroups;
-            listBox1.ItemsSource = _attributeCollection;
-            listBox1.SelectionMode = SelectionMode.Extended;
-            listBox1.ContextMenu = _attributeContextMenu;
+            if (_attributeCollection.GroupDescriptions != null)
+            {
+                _attributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
+                _attributeCollection.CustomSort = _attributeGroups;
+                listBox1.ItemsSource = _attributeCollection;
+                listBox1.SelectionMode = SelectionMode.Extended;
+                listBox1.ContextMenu = _attributeContextMenu;
 
-            _allAttributeCollection = new ListCollectionView(_allAttributesList);
-            _allAttributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
-            _allAttributeCollection.CustomSort = _attributeGroups;
-            lbAllAttr.ItemsSource = _allAttributeCollection;
-            lbAllAttr.SelectionMode = SelectionMode.Extended;
-            lbAllAttr.ContextMenu = _attributeContextMenu;
+                _allAttributeCollection = new ListCollectionView(_allAttributesList);
+                if (_allAttributeCollection.GroupDescriptions != null)
+                {
+                    _allAttributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
+                    _allAttributeCollection.CustomSort = _attributeGroups;
+                    lbAllAttr.ItemsSource = _allAttributeCollection;
+                    lbAllAttr.SelectionMode = SelectionMode.Extended;
+                    lbAllAttr.ContextMenu = _attributeContextMenu;
 
-            _defenceCollection = new ListCollectionView(_defenceList);
-            _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
-            listBoxDefence.ItemsSource = _defenceCollection;
+                    _defenceCollection = new ListCollectionView(_defenceList);
+                    if (_defenceCollection.GroupDescriptions != null)
+                    {
+                        _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
+                        listBoxDefence.ItemsSource = _defenceCollection;
 
-            _offenceCollection = new ListCollectionView(_offenceList);
-            _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
+                        _offenceCollection = new ListCollectionView(_offenceList);
+                        _offenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
+                    }
+                }
+            }
             listBoxOffence.ItemsSource = _offenceCollection;
 
             cbCharType.ItemsSource =
@@ -513,37 +518,37 @@ namespace POESKillTree.Views
                         btnPoeUrl_Click(sender, e);
                         break;
                     case Key.D1:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 0;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D2:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 1;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D3:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 2;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D4:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 3;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D5:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 4;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D6:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 5;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D7:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 6;
                         cbAscType.SelectedIndex = 0;
                         break;
@@ -709,12 +714,14 @@ namespace POESKillTree.Views
                 }
 
                 _clipboardBmp = new RenderTargetBitmap((int)xmax, (int)ymax, 96, 96, PixelFormats.Pbgra32);
-                var db = new VisualBrush(Tree.SkillTreeVisual);
-                db.ViewboxUnits = BrushMappingMode.Absolute;
-                db.Viewbox = contentBounds;
+                var db = new VisualBrush(Tree.SkillTreeVisual)
+                {
+                    ViewboxUnits = BrushMappingMode.Absolute,
+                    Viewbox = contentBounds
+                };
                 var dw = new DrawingVisual();
 
-                using (DrawingContext dc = dw.RenderOpen())
+                using (var dc = dw.RenderOpen())
                 {
                     dc.DrawRectangle(db, null, new Rect(0, 0, xmax, ymax));
                 }
@@ -730,14 +737,13 @@ namespace POESKillTree.Views
                 encoder.Frames.Add(BitmapFrame.Create(_clipboardBmp));
                 encoder.Save(stream);
 
-                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(stream);
-                System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
+                var image = System.Drawing.Image.FromStream(stream);
 
                 // Configure save file dialog box
-                Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+                var dialog = new Microsoft.Win32.SaveFileDialog();
 
                 // Default file name -- current build name ("buildname - xxx points used")
-                uint skilledNodes = (uint) Tree.GetPointCount()["NormalUsed"];
+                var skilledNodes = (uint) Tree.GetPointCount()["NormalUsed"];
                 dialog.FileName = PersistentData.CurrentBuild.Name + " - " + string.Format(L10n.Plural("{0} point", "{0} points", skilledNodes), skilledNodes);
 
                 dialog.DefaultExt = ".jpg"; // Default file extension
@@ -745,13 +751,13 @@ namespace POESKillTree.Views
                 dialog.OverwritePrompt = true;
 
                 // Show save file dialog box
-                bool? result = dialog.ShowDialog();
+                var result = dialog.ShowDialog();
 
                 // Continue if the user did select a path
                 if (result.HasValue && result == true)
                 {
                     System.Drawing.Imaging.ImageFormat format;
-                    string fileExtension = System.IO.Path.GetExtension(dialog.FileName);
+                    var fileExtension = Path.GetExtension(dialog.FileName);
 
                     //set the selected data type
                     switch (fileExtension)
@@ -759,9 +765,6 @@ namespace POESKillTree.Views
                         case ".png":
                             format = System.Drawing.Imaging.ImageFormat.Png;
                             break;
-
-                        case ".jpg":
-                        case ".jpeg":
                         default:
                             format = System.Drawing.Imaging.ImageFormat.Jpeg;
                             break;
@@ -994,30 +997,28 @@ namespace POESKillTree.Views
         #region  Character Selection
         private void userInteraction_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            userInteraction = true;
+            _userInteraction = true;
         }
 
         private void cbCharType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
              if (Tree == null)
                 return;
-             if (!userInteraction)
+             if (!_userInteraction)
                  return;
              if (Tree.Chartype == cbCharType.SelectedIndex) return;
 
             Tree.Chartype = cbCharType.SelectedIndex;
-            
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToUrl();
-            Tree.LoadFromUrl(tbSkillURL.Text);
-            userInteraction = false;
+            _userInteraction = false;
             PopulateAsendancySelectionList();
             cbAscType.SelectedIndex = Tree.AscType = 0;
         }
 
         private void cbAscType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!userInteraction)
+            if (!_userInteraction)
                 return;
             if (cbAscType.SelectedIndex < 0 || cbAscType.SelectedIndex > 3)
                 return;
@@ -1026,8 +1027,7 @@ namespace POESKillTree.Views
 
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToUrl();
-            Tree.LoadFromUrl(tbSkillURL.Text);
-            userInteraction = false;
+            _userInteraction = false;
         }
 
         private void PopulateAsendancySelectionList()
@@ -1042,16 +1042,16 @@ namespace POESKillTree.Views
 
         private string GetLevelAsString()
         {
-            string level_string;
+            string levelString;
             try
             {
-                level_string = Tree.Level.ToString(CultureInfo.CurrentCulture);
+                levelString = Tree.Level.ToString(CultureInfo.CurrentCulture);
             }
             catch
             {
-                level_string = "0";
+                levelString = "0";
             }
-            return level_string;
+            return levelString;
         }
 
         private void SetLevelFromString(string s)
@@ -1075,7 +1075,6 @@ namespace POESKillTree.Views
             Tree.Reset();
             UpdateUI();
             tbSkillURL.Text = Tree.SaveToUrl();
-            Tree.LoadFromUrl(tbSkillURL.Text);
         }
 
         #endregion
@@ -1380,17 +1379,17 @@ namespace POESKillTree.Views
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            if (Tree.drawAscendancy && Tree.AscType > 0)
+            if (Tree.DrawAscendancy && Tree.AscType > 0)
             {
                 var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
-                var bitmap = Tree.Assets["Classes" + asn.ascendancyName];
+                var bitmap = SkillTree.Assets["Classes" + asn.ascendancyName];
 
                 nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
             }
             SkillNode node = Tree.FindNodeInRange(v, 50);
             if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
             {
-                if (node.ascendancyName != null && !Tree.drawAscendancy)
+                if (node.ascendancyName != null && !Tree.DrawAscendancy)
                     return;
                 var ascendancyClassName = Tree.AscClasses.GetClassName(Tree.Chartype, Tree.AscType);
                 if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
@@ -1431,7 +1430,6 @@ namespace POESKillTree.Views
                     }
                 }
                 tbSkillURL.Text = Tree.SaveToUrl();
-                Tree.LoadFromUrl(tbSkillURL.Text);
                 UpdateUI();
             }
             else if ((Tree.AscButtonPosition - v).Length < 150)
@@ -1468,10 +1466,10 @@ namespace POESKillTree.Views
 
             IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
                 SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            if(Tree.drawAscendancy && Tree.AscType > 0)
+            if(Tree.DrawAscendancy && Tree.AscType > 0)
             {
                 var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
-                var bitmap = Tree.Assets["Classes" + asn.ascendancyName];
+                var bitmap = SkillTree.Assets["Classes" + asn.ascendancyName];
 
                 nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
             }
@@ -1479,7 +1477,7 @@ namespace POESKillTree.Views
             _hoveredNode = node;
             if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
             {         
-                if (!Tree.drawAscendancy && node.ascendancyName != null)
+                if (!Tree.DrawAscendancy && node.ascendancyName != null)
                     return;
                 if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscClasses.GetClassName(Tree.Chartype, Tree.AscType))
                     return;
@@ -1905,7 +1903,7 @@ namespace POESKillTree.Views
         {
             try
             {
-                userInteraction = true;
+                _userInteraction = true;
                 if (tbSkillURL.Text.Contains("poezone.ru"))
                 {
                     await SkillTreeImporter.LoadBuildFromPoezone(DialogCoordinator.Instance, Tree, tbSkillURL.Text);
@@ -2383,8 +2381,6 @@ namespace POESKillTree.Views
                 int ctype;
                 int atype;
                 SkillTree.DecodeUrl(build.Url, out nodes, out ctype, out atype);
-                if(Tree.HighlightedNodes == null)
-                    Tree.HighlightedNodes = new ObservableSet<SkillNode>();
                 Tree.HighlightedNodes.Clear();
                 Tree.HighlightedNodes.UnionWith(nodes);
                 var level = 0;
@@ -2400,11 +2396,9 @@ namespace POESKillTree.Views
             }
             else
             {
-                Tree.HighlightedNodes = null;
-                Tree.HighlightedAttributes = null;
+                Tree.HighlightedNodes.Clear();
+                Tree.HighlightedAttributes?.Clear();
             }
-
-            Tree.DrawTreeComparisonHighlight();
             UpdateUI();
         }
 
