@@ -234,7 +234,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
             _tree.HighlightedNodes.Clear();
             _tree.HighlightedNodes.UnionWith(savedHighlights);
-            //_tree.DrawTreeComparisonHighlight();
             _tree.DrawHighlights();
 
             RunFinished?.Invoke(this, EventArgs.Empty);
