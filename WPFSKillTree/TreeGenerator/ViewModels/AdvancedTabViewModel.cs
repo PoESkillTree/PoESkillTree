@@ -283,7 +283,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             get
             {
                 return _addAttributeConstraintCommand ?? (_addAttributeConstraintCommand = new RelayCommand(
-                    param =>
+                    () =>
                     {
                         var newConstraint = (AttributeConstraint)NewAttributeConstraint.Clone();
                         _addedAttributes.Add(newConstraint.Data);
@@ -293,11 +293,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         NewAttributeConstraint.Data = AttributesView.CurrentItem as string;
                         AttributeConstraints.Add(newConstraint);
                     },
-                    param => _addedAttributes.Count < _attributes.Count));
+                    () => _addedAttributes.Count < _attributes.Count));
             }
         }
 
-        private RelayCommand _removeAttributeConstraintCommand;
+        private ICommand _removeAttributeConstraintCommand;
         /// <summary>
         /// Gets the command to remove an AttributeConstraint from the collection.
         /// </summary>
@@ -305,17 +305,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             get
             {
-                return _removeAttributeConstraintCommand ?? (_removeAttributeConstraintCommand = new RelayCommand(
+                return _removeAttributeConstraintCommand ?? (_removeAttributeConstraintCommand = new RelayCommand<AttributeConstraint>(
                     param =>
                     {
-                        var oldConstraint = (AttributeConstraint) param;
+                        var oldConstraint = param;
                         _addedAttributes.Remove(oldConstraint.Data);
                         AttributesView.Refresh();
 
                         NewAttributeConstraint = oldConstraint;
                         AttributeConstraints.Remove(oldConstraint);
-                    },
-                    param => param is AttributeConstraint));
+                    }));
             }
         }
 
@@ -328,7 +327,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             get
             {
                 return _loadAttributesFromTreeCommand ??
-                       (_loadAttributesFromTreeCommand = new RelayCommand(param => LoadAttributesFromTree()));
+                       (_loadAttributesFromTreeCommand = new RelayCommand(LoadAttributesFromTree));
             }
         }
 
@@ -341,7 +340,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             get
             {
                 return _addPseudoConstraintCommand ?? (_addPseudoConstraintCommand = new RelayCommand(
-                    param =>
+                    () =>
                     {
                         var newConstraint = (PseudoAttributeConstraint) NewPseudoAttributeConstraint.Clone();
                         _addedPseudoAttributes.Add(newConstraint.Data);
@@ -351,11 +350,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         NewPseudoAttributeConstraint.Data = PseudoAttributesView.CurrentItem as PseudoAttribute;
                         PseudoAttributeConstraints.Add(newConstraint);
                     },
-                    param => _addedPseudoAttributes.Count < _pseudoAttributes.Count));
+                    () => _addedPseudoAttributes.Count < _pseudoAttributes.Count));
             }
         }
 
-        private RelayCommand _removePseudoConstraintCommand;
+        private ICommand _removePseudoConstraintCommand;
         /// <summary>
         /// Gets the command to remove a PseudoAttributeConstraint from the collection.
         /// </summary>
@@ -363,17 +362,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             get
             {
-                return _removePseudoConstraintCommand ?? (_removePseudoConstraintCommand = new RelayCommand(
+                return _removePseudoConstraintCommand ?? (_removePseudoConstraintCommand = new RelayCommand<PseudoAttributeConstraint>(
                     param =>
                     {
-                        var oldConstraint = (PseudoAttributeConstraint) param;
+                        var oldConstraint = param;
                         _addedPseudoAttributes.Remove(oldConstraint.Data);
                         PseudoAttributesView.Refresh();
 
                         NewPseudoAttributeConstraint = oldConstraint;
                         PseudoAttributeConstraints.Remove(oldConstraint);
-                    },
-                    param => param is PseudoAttributeConstraint));
+                    }));
             }
         }
 
@@ -386,8 +384,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             get
             {
-                return _reloadPseudoAttributesCommand ?? (_reloadPseudoAttributesCommand = new RelayCommand(
-                    o => ReloadPseudoAttributes()));
+                return _reloadPseudoAttributesCommand ??
+                       (_reloadPseudoAttributesCommand = new RelayCommand(ReloadPseudoAttributes));
             }
         }
 
@@ -401,8 +399,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 return _convertAttributeToPseudoConstraintsCommand ??
                        (_convertAttributeToPseudoConstraintsCommand = new RelayCommand(
-                           param => ConverteAttributeToPseudoAttributeConstraints(),
-                           param => AttributeConstraints.Count > 0));
+                           ConverteAttributeToPseudoAttributeConstraints,
+                           () => AttributeConstraints.Count > 0));
             }
         }
 

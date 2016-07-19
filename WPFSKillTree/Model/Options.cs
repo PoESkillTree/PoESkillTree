@@ -18,7 +18,7 @@ namespace POESKillTree.Model
         private string _nodeHoverHighlightColor = "DodgerBlue";
         private bool _downloadMissingItemImages;
         private ResetPreferences _resetPreferences = ResetPreferences.MainTree | ResetPreferences.AscendancyTree;
-        private string _buildSavePath = AppData.GetFolder("Builds");
+        private string _buildSavePath;
 
         public string Language
         {

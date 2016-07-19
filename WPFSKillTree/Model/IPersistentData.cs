@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using POESKillTree.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 
@@ -17,6 +19,8 @@ namespace POESKillTree.Model
         ObservableCollection<Item> StashItems { get; }
         ObservableCollection<StashBookmark> StashBookmarks { get; }
         IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
+
+        Task InitializeAsync(IDialogCoordinator dialogCoordinator);
 
         /// <summary>
         /// Saves everything but the builds to the filesystem.

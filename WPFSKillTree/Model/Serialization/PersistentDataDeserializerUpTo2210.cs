@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using log4net;
 using POESKillTree.Controls;
 using POESKillTree.Model.Builds;
+using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Serialization
@@ -42,7 +44,7 @@ namespace POESKillTree.Model.Serialization
 
         protected override void DeserializePersistentDataFile(string xmlString)
         {
-            var obj = SerializationUtils.DeserializeStringAs<XmlPersistentData>(xmlString);
+            var obj = SerializationUtils.DeserializeString<XmlPersistentData>(xmlString);
             PersistentData.Options = obj.Options;
             PersistentData.CurrentBuild = obj.CurrentBuild ?? CreateDefaultCurrentBuild();
             obj.StashBookmarks?.ForEach(PersistentData.StashBookmarks.Add);
@@ -54,8 +56,18 @@ namespace POESKillTree.Model.Serialization
             }
             PersistentData.RootBuild.Builds.Select(b => b as PoEBuild).Where(b => b != null).ForEach(b => b.KeepChanges());
             RenameBuilds();
+        }
 
-            ImportLegacySavedBuilds();
+        protected override void DeserializeWithoutPersistentDataFile()
+        {
+            var current = CreateDefaultCurrentBuild();
+            PersistentData.RootBuild.Builds.Add(current);
+            PersistentData.CurrentBuild = current;
+        }
+
+        protected override Task DeserializeAdditionalFilesAsync()
+        {
+            return ImportLegacySavedBuilds();
         }
 
         private bool SelectCurrentBuildByName(string name)
@@ -92,14 +104,14 @@ namespace POESKillTree.Model.Serialization
         /// Import builds from legacy build save file "savedBuilds" to PersistentData.xml.
         /// Warning: This will remove the "savedBuilds"
         /// </summary>
-        private void ImportLegacySavedBuilds()
+        private async Task ImportLegacySavedBuilds()
         {
             if (!File.Exists("savedBuilds"))
                 return;
             try
             {
-                var builds = File.ReadAllText("savedBuilds").Split('\n');
-                foreach (var b in builds)
+                var text = await FileEx.ReadAllTextAsync("savedBuilds");
+                foreach (var b in text.Split('\n'))
                 {
                     var description = b.Split(';')[0].Split('|')[1];
                     var poeClass = description.Split(',')[0].Trim();

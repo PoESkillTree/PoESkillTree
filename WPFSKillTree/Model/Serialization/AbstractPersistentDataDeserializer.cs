@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json.Linq;
+using POESKillTree.Controls.Dialogs;
+using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
@@ -34,43 +37,59 @@ namespace POESKillTree.Model.Serialization
 
         public PersistentData CreateDefaultPersistentData()
         {
-            PersistentData = new PersistentData();
+            PersistentData = new PersistentData(InitializePersistentDataAsync);
             DeserializeWithoutPersistentDataFile();
-            PersistentData.EquipmentData = DeserializeEquipmentData();
-            PersistentData.StashItems.AddRange(DeserializeStashItems());
             return PersistentData;
         }
 
-        protected virtual void DeserializeWithoutPersistentDataFile()
-        {
-            var current = CreateDefaultCurrentBuild();
-            PersistentData.RootBuild.Builds.Add(current);
-            PersistentData.CurrentBuild = current;
-        }
+        protected abstract void DeserializeWithoutPersistentDataFile();
 
         public PersistentData Deserialize(string xmlString)
         {
-            PersistentData = new PersistentData();
+            PersistentData = new PersistentData(InitializePersistentDataAsync);
             DeserializePersistentDataFile(xmlString);
-            PersistentData.EquipmentData = DeserializeEquipmentData();
-            PersistentData.StashItems.AddRange(DeserializeStashItems());
             return PersistentData;
         }
 
         protected abstract void DeserializePersistentDataFile(string xmlString);
 
-        private EquipmentData DeserializeEquipmentData()
+        private async Task InitializePersistentDataAsync(IDialogCoordinator dialogCoordinator)
         {
-            return new EquipmentData(PersistentData.Options);
+            if (PersistentData.Options.BuildsSavePath == null)
+            {
+                if (AppData.IsPortable)
+                {
+                    PersistentData.Options.BuildsSavePath = AppData.GetFolder("Builds");
+                }
+                else
+                {
+                    // Ask user for path. Default: AppData.GetFolder("Builds")
+                    PersistentData.Options.BuildsSavePath = await dialogCoordinator.ShowFileSelectorAsync(PersistentData,
+                        L10n.Message("Select build directory"),
+                        L10n.Message("Select the directory where builds will be stored.\n" +
+                                     "It will be created if it does not yet exist."),
+                        AppData.GetFolder("Builds"), true);
+                }
+            }
+            await DeserializeAdditionalFilesAsync();
+            PersistentData.EquipmentData = await DeserializeEquipmentData();
+            PersistentData.StashItems.AddRange(await DeserializeStashItemsAsync());
         }
 
-        private IEnumerable<Item> DeserializeStashItems()
+        protected abstract Task DeserializeAdditionalFilesAsync();
+
+        private Task<EquipmentData> DeserializeEquipmentData()
+        {
+            return EquipmentData.CreateAsync(PersistentData.Options);
+        }
+
+        private async Task<IEnumerable<Item>> DeserializeStashItemsAsync()
         {
             try
             {
                 var file = Path.Combine(AppData.GetFolder(), "stash.json");
                 if (File.Exists(file))
-                    return JArray.Parse(File.ReadAllText(file)).Select(item => new Item(PersistentData, (JObject) item));
+                    return JArray.Parse(await FileEx.ReadAllTextAsync(file)).Select(item => new Item(PersistentData, (JObject) item));
             }
             catch (Exception e)
             {

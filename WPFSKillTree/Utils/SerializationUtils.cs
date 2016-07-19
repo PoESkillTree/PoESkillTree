@@ -2,32 +2,25 @@
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace POESKillTree.Model.Serialization
+namespace POESKillTree.Utils
 {
     public static class SerializationUtils
     {
-        public static T DeserializeStringAs<T>(string xmlString)
+        public static async Task<T> DeserializeFileAsync<T>(string filePath)
+        {
+            return DeserializeString<T>(await FileEx.ReadAllTextAsync(filePath));
+        }
+
+        public static T DeserializeString<T>(string xmlString)
         {
             using (var reader = new StringReader(xmlString))
             {
-                return DeserializeAs<T>(reader);
+                var serializer = new XmlSerializer(typeof(T));
+                return (T)serializer.Deserialize(reader);
             }
-        }
-
-        public static T DeserializeFileAs<T>(string filePath)
-        {
-            using (var reader = new StreamReader(filePath))
-            {
-                return DeserializeAs<T>(reader);
-            }
-        }
-
-        private static T DeserializeAs<T>(TextReader reader)
-        {
-            var serializer = new XmlSerializer(typeof(T));
-            return (T)serializer.Deserialize(reader);
         }
 
         public static void Serialize<T>(T obj, string filePath)
@@ -39,7 +32,7 @@ namespace POESKillTree.Model.Serialization
             }
         }
 
-        public static string AssembylFileVersion { get; } = GetAssemblyFileVersion();
+        public static string AssemblyFileVersion { get; } = GetAssemblyFileVersion();
 
         private static string GetAssemblyFileVersion()
         {

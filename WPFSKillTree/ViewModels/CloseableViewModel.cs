@@ -16,14 +16,14 @@ namespace POESKillTree.ViewModels
             Close(null);
         }
 
-        protected virtual bool CanExecute()
+        protected virtual bool CanClose()
         {
             return true;
         }
 
-        protected override bool CanExecute(object param)
+        protected override bool CanClose(object param)
         {
-            return CanExecute();
+            return CanClose();
         }
     }
 
@@ -53,7 +53,7 @@ namespace POESKillTree.ViewModels
             {
                 RequestsClose?.Invoke(param);
                 _closeCompletionSource.TrySetResult(param);
-            }, CanExecute);
+            }, CanClose);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace POESKillTree.ViewModels
         /// <summary>
         /// Returns true iff the close command can currently be executed with the given parameter.
         /// </summary>
-        protected virtual bool CanExecute(T param)
+        protected virtual bool CanClose(T param)
         {
             return true;
         }

@@ -57,6 +57,18 @@ namespace POESKillTree.Controls.Dialogs
             set { SetValue(CloseCommandProperty, value); }
         }
 
+        public static readonly DependencyProperty CloseCommandParameterProperty = DependencyProperty.Register(
+            "CloseCommandParameter", typeof(object), typeof(BaseDialog), new PropertyMetadata(default(object)));
+
+        /// <summary>
+        /// Gets or sets the parameter <see cref="CloseCommand"/> is executed with.
+        /// </summary>
+        public object CloseCommandParameter
+        {
+            get { return GetValue(CloseCommandParameterProperty); }
+            set { SetValue(CloseCommandParameterProperty, value); }
+        }
+
         public static readonly DependencyProperty DialogLeftProperty =
             DependencyProperty.Register("DialogLeft", typeof(object), typeof(BaseDialog), new PropertyMetadata(null));
 

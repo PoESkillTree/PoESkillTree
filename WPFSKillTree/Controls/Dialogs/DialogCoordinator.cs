@@ -5,6 +5,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
+using POESKillTree.Views;
 
 namespace POESKillTree.Controls.Dialogs
 {
@@ -105,6 +106,12 @@ namespace POESKillTree.Controls.Dialogs
         {
             var metroWindow = await GetMetroWindowAsync(context);
             return await metroWindow.ShowProgressAsync(title, message, isCancelable);
+        }
+
+        public Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultFile, bool isFolderPicker)
+        {
+            return ShowDialogAsync(context, new FileSelectorViewModel(title, message, defaultFile, isFolderPicker),
+                new FileSelectorView());
         }
     }
 }

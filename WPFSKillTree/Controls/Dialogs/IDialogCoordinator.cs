@@ -19,5 +19,7 @@ namespace POESKillTree.Controls.Dialogs
 
         Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message,
             bool isCancelable = false);
+
+        Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultFile, bool isFolderPicker);
     }
 }

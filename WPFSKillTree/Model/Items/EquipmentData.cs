@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
+using System.Threading.Tasks;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
@@ -15,22 +15,26 @@ namespace POESKillTree.Model.Items
 
         public IReadOnlyDictionary<ItemType, IReadOnlyList<Affix>> AffixesPerItemType { get; private set; }
 
-        public IReadOnlyList<ItemBase> BaseList { get; }
+        public IReadOnlyList<ItemBase> BaseList { get; private set; }
 
-        public IReadOnlyDictionary<string, ItemBase> BaseDictionary { get; }
+        public IReadOnlyDictionary<string, ItemBase> BaseDictionary { get; private set; }
 
-        private readonly WordSetTreeNode _root;
+        private WordSetTreeNode _root;
 
-        public EquipmentData(Options options)
+        private EquipmentData(Options options)
         {
             _options = options;
+        }
+
+        private async Task InitializeAsync()
+        {
             AffixesPerItemType =
-                (from a in LoadAffixes()
+                (from a in await LoadAffixes()
                  group a by a.ItemType into types
                  select types)
                  .ToDictionary(g => g.Key, g => (IReadOnlyList<Affix>)new List<Affix>(g));
 
-            BaseList = LoadBases().ToList();
+            BaseList = (await LoadBases()).ToList();
 
             var dict = new Dictionary<string, ItemBase>();
             foreach (var itemBase in BaseList)
@@ -42,24 +46,27 @@ namespace POESKillTree.Model.Items
             _root = new WordSetTreeNode(BaseList.Select(m => m.Name));
         }
 
-        private static IEnumerable<XmlAffix> LoadAffixFile(string fileName)
+        public static async Task<EquipmentData> CreateAsync(Options options)
+        {
+            var o = new EquipmentData(options);
+            await o.InitializeAsync();
+            return o;
+        }
+
+        private static async Task<IEnumerable<XmlAffix>> LoadAffixFile(string fileName)
         {
             var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), fileName);
             if (!File.Exists(filename))
                 return Enumerable.Empty<XmlAffix>();
 
-            using (var reader = new StreamReader(filename))
-            {
-                var ser = new XmlSerializer(typeof(XmlAffixList));
-                var xmlList = (XmlAffixList)ser.Deserialize(reader);
-                return xmlList.Affixes;
-            }
+            var affixList = await SerializationUtils.DeserializeFileAsync<XmlAffixList>(filename);
+            return affixList.Affixes;
         }
 
-        private static IEnumerable<Affix> LoadAffixes()
+        private static async Task<IEnumerable<Affix>> LoadAffixes()
         {
-            return LoadAffixFile("AffixList.xml")
-                    .Union(LoadAffixFile("SignatureAffixList.xml"))
+            return (await LoadAffixFile("AffixList.xml"))
+                    .Union(await LoadAffixFile("SignatureAffixList.xml"))
                     .SelectMany(GroupToTypes)
                     .Select(x => new Affix(x));
         }
@@ -87,18 +94,14 @@ namespace POESKillTree.Model.Items
             }
         }
 
-        private IEnumerable<ItemBase> LoadBases()
+        private async Task<IEnumerable<ItemBase>> LoadBases()
         {
             var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"ItemList.xml");
             if (!File.Exists(filename))
                 return new List<ItemBase>();
 
-            using (var reader = new StreamReader(filename))
-            {
-                var ser = new XmlSerializer(typeof(XmlItemList));
-                var xmlList = (XmlItemList) ser.Deserialize(reader);
-                return xmlList.ItemBases.Select(x => new ItemBase(_options, x));
-            }
+            var xmlList = await SerializationUtils.DeserializeFileAsync<XmlItemList>(filename);
+            return xmlList.ItemBases.Select(x => new ItemBase(_options, x));
         }
 
         public ItemBase ItemBaseFromTypeline(string typeline)

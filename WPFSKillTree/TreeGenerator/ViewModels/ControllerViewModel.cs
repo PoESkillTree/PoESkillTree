@@ -165,7 +165,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         public ICommand PauseResumeCommand
         {
-            get { return _pauseResumeCommand ?? (_pauseResumeCommand = new RelayCommand(param => PauseResume())); }
+            get { return _pauseResumeCommand ?? (_pauseResumeCommand = new RelayCommand(PauseResume)); }
         }
 
 #endregion

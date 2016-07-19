@@ -144,7 +144,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         public ICommand RunCommand
         {
-            get { return _runCommand ?? (_runCommand = new RelayCommand(async o => await RunAsync())); }
+            get { return _runCommand ?? (_runCommand = new RelayCommand(async () => await RunAsync())); }
         }
 
         private RelayCommand _resetCommand;
@@ -154,7 +154,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         public ICommand ResetCommand
         {
-            get { return _resetCommand ?? (_resetCommand = new RelayCommand(o => Reset()));}
+            get { return _resetCommand ?? (_resetCommand = new RelayCommand(Reset));}
         }
 
         #endregion

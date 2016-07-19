@@ -25,7 +25,6 @@ namespace UnitTests
         }
 
         private static PersistentData _persistentData;
-        private static Task<SkillTree> _treeTask;
 
         [ClassInitialize]
         public static void Initalize(TestContext testContext)
@@ -35,8 +34,6 @@ namespace UnitTests
             if (ItemDB.IsEmpty())
                 ItemDB.Load("Data/ItemDB/GemList.xml", true);
             _persistentData = new PersistentData();
-            _persistentData.EquipmentData = new EquipmentData(_persistentData.Options);
-            _treeTask = SkillTree.CreateAsync(_persistentData, null);
         }
 
         readonly Regex _backreplace = new Regex("#");
@@ -88,7 +85,8 @@ namespace UnitTests
                 }
             }
 
-            var tree = await _treeTask;
+            _persistentData.EquipmentData = await EquipmentData.CreateAsync(_persistentData.Options);
+            var tree = await SkillTree.CreateAsync(_persistentData, null);
             // Initialize structures.
             tree.LoadFromURL(treeURL);
             tree.Level = level;

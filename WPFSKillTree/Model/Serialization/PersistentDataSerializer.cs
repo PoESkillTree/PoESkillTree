@@ -62,7 +62,7 @@ namespace POESKillTree.Model.Serialization
                 p => new XmlLeagueStash { Name = p.Key, Bookmarks = new List<StashBookmark>(p.Value) }));
             var xmlPersistentData = new XmlPersistentData
             {
-                AppVersion = SerializationUtils.AssembylFileVersion,
+                AppVersion = SerializationUtils.AssemblyFileVersion,
                 CurrentBuildPath = PathFor(_persistentData.CurrentBuild, false),
                 Options = _persistentData.Options,
                 SelectedBuildPath = PathFor(_persistentData.SelectedBuild, false),

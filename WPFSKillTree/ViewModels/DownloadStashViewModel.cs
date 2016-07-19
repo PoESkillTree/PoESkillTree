@@ -66,13 +66,13 @@ namespace POESKillTree.ViewModels
         private RelayCommand _loadTabsCommand;
         public ICommand LoadTabsCommand
         {
-            get { return _loadTabsCommand ?? (_loadTabsCommand = new RelayCommand(async o => await LoadTabs())); }
+            get { return _loadTabsCommand ?? (_loadTabsCommand = new RelayCommand(async () => await LoadTabs())); }
         }
 
         private RelayCommand _loadTabContentsCommand;
         public ICommand LoadTabContentsCommand
         {
-            get { return _loadTabContentsCommand ?? (_loadTabContentsCommand = new RelayCommand(async o => await LoadTabContents())); }
+            get { return _loadTabContentsCommand ?? (_loadTabContentsCommand = new RelayCommand(async () => await LoadTabContents())); }
         }
 
         public DownloadStashViewModel(IDialogCoordinator dialogCoordinator, IPersistentData persistentData, Stash stash)

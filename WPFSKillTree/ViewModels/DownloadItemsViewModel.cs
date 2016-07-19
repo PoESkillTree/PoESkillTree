@@ -29,7 +29,7 @@ namespace POESKillTree.ViewModels
             get
             {
                 return _openInBrowserCommand ??
-                       (_openInBrowserCommand = new RelayCommand(param => Process.Start(ItemsLink)));
+                       (_openInBrowserCommand = new RelayCommand(() => Process.Start(ItemsLink)));
             }
         }
 

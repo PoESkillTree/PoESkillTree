@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using POESKillTree.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
@@ -46,6 +48,26 @@ namespace POESKillTree.Model
         {
             get { return _equipmentData; }
             set { SetProperty(ref _equipmentData, value); }
+        }
+
+        private readonly Func<IDialogCoordinator, Task> _initializer;
+
+        public PersistentData()
+        {
+        }
+
+        public PersistentData(Func<IDialogCoordinator, Task> initializer)
+        {
+            _initializer = initializer;
+        }
+
+        public event Action Initialized;
+
+        public async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
+        {
+            if (_initializer != null)
+                await _initializer(dialogCoordinator);
+            Initialized?.Invoke();
         }
 
         public event Action SaveHandler;

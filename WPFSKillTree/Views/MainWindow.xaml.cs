@@ -160,7 +160,10 @@ namespace POESKillTree.Views
         public MainWindow()
         {
             InitializeComponent();
+        }
 
+        private void RegisterPersistentDataHandlers()
+        {
             // Register handlers
             PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
             PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
@@ -382,7 +385,7 @@ namespace POESKillTree.Views
             controller.Maximum = 1;
             controller.SetIndeterminate();
 
-            await Task.Run(() =>
+            var itemDBTask = Task.Run(() =>
             {
                 const string itemDBPrefix = "Data/ItemDB/";
                 Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
@@ -398,6 +401,12 @@ namespace POESKillTree.Views
                 ItemDB.Merge("ItemsLocal.xml");
                 ItemDB.Index();
             });
+            // We can use this now as setting the context for this to the SkillTree instance happens later
+            DialogParticipation.SetRegister(this, PersistentData);
+            var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance);
+            await itemDBTask;
+            await persistentDataTask;
+            RegisterPersistentDataHandlers();
 
             var cmHighlight = new MenuItem
             {

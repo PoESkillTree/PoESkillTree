@@ -6,8 +6,6 @@ using JetBrains.Annotations;
 using log4net;
 using POESKillTree.Utils;
 
-using static POESKillTree.Model.Serialization.SerializationUtils;
-
 namespace POESKillTree.Model.Serialization
 {
     /// <summary>
@@ -38,7 +36,7 @@ namespace POESKillTree.Model.Serialization
             data.SaveHandler += () => Serialize(data);
             data.SaveBuildHandler += serializer.SerializeBuild;
             data.DeleteBuildHandler += serializer.DeleteBuild;
-            serializer.SerializeAllBuilds();
+            data.Initialized += () => serializer.SerializeAllBuilds();
             return data;
         }
 
@@ -71,12 +69,8 @@ namespace POESKillTree.Model.Serialization
 
         private PersistentData Deserialize(string filePath)
         {
-            string xmlString;
-            using (var reader = new StreamReader(filePath))
-            {
-                xmlString = reader.ReadToEnd();
-            }
-            var version = DeserializeStringAs<XmlPersistentDataVersion>(xmlString).AppVersion;
+            var xmlString = File.ReadAllText(filePath);
+            var version = SerializationUtils.DeserializeString<XmlPersistentDataVersion>(xmlString).AppVersion;
             IPersistentDataDeserializer suitableDeserializer;
             if (version == null)
             {

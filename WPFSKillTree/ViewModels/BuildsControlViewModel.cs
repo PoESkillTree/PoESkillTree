@@ -139,8 +139,8 @@ namespace POESKillTree.ViewModels
             SaveBuildAsCommand = new RelayCommand<BuildViewModel>(
                 async b => await SaveBuildAs(b));
             SaveAllBuildsCommand = new RelayCommand(
-                async _ => await SaveAllBuilds(),
-                _ => TreeFind<BuildViewModel>(b => b.Build.IsDirty, BuildRoot) != null);
+                async () => await SaveAllBuilds(),
+                () => TreeFind<BuildViewModel>(b => b.Build.IsDirty, BuildRoot) != null);
             RevertBuildCommand = new RelayCommand<BuildViewModel>(
                 build => build.Build.RevertChanges(),
                 b => b != null && b.Build.IsDirty && b.Build.CanRevert);

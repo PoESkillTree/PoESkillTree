@@ -245,7 +245,7 @@
     <Compile Include="Model\Serialization\PersistentDataSerializationService.cs" />
     <Compile Include="Model\Serialization\PersistentDataSerializer.cs" />
     <Compile Include="Model\Serialization\SerializationConstants.cs" />
-    <Compile Include="Model\Serialization\SerializationUtils.cs" />
+    <Compile Include="Utils\SerializationUtils.cs" />
     <Compile Include="Model\Serialization\XmlBuildFolder.cs" />
     <Compile Include="Model\Serialization\XmlPersistentData.cs" />
     <Compile Include="Model\Serialization\XmlPersistentDataVersion.cs" />
@@ -342,6 +342,7 @@
     <Compile Include="ViewModels\DownloadStashViewModel.cs" />
     <Compile Include="ViewModels\EditBuildViewModel.cs" />
     <Compile Include="ViewModels\ExtendedDialogCoordinator.cs" />
+    <Compile Include="ViewModels\FileSelectorViewModel.cs" />
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
     <Compile Include="Utils\Wpf\StyleSelectorByType.cs" />
     <Compile Include="ViewModels\TabPickerViewModel.cs" />
@@ -397,6 +398,9 @@
     </Compile>
     <Compile Include="Views\EditBuildWindow.xaml.cs">
       <DependentUpon>EditBuildWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FileSelectorView.xaml.cs">
+      <DependentUpon>FileSelectorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
@@ -509,6 +513,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\EditBuildWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FileSelectorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
