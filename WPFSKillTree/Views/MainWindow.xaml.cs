@@ -1450,7 +1450,7 @@ namespace POESKillTree.Views
                 tbSkillURL.Text = Tree.SaveToUrl();
                 UpdateUI();
             }
-            else if ((Tree.AscButtonPosition - v).Length < 150)
+            else if ((Tree.AscButtonPosition - v).Length < 150 && Tree.DrawAscendancy)
             {
                 Tree.DrawAscendancyButton("Pressed");
                 Tree.ToggleAscendancyTree();

@@ -554,6 +554,7 @@ namespace POESKillTree.SkillTreeFiles
             if (toType == 0)
             {
                 remove = SkilledNodes.Where(n => n.ascendancyName != null).ToList();
+                DrawAscendancy = false;
             }
             else
             {
@@ -576,7 +577,7 @@ namespace POESKillTree.SkillTreeFiles
 
             SkilledNodes.ExceptWith(remove);
             AllocateSkillNodes(add);
-            DrawAscendancy = _persistentData.Options.ShowAllAscendancyClasses;
+            DrawAscendancyLayers();
         }
 
         public void SwitchClass(int classType)

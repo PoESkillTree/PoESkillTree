@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using POESKillTree.Model;
 
@@ -222,7 +222,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
         }
-        private void DrawSkillNodeIcon(DrawingContext dc, DrawingContext adc, SkillNode skillNode, bool onlyAscendancy = false, bool isActive = false)
+        private void DrawSkillNodeIcon(DrawingContext dc, SkillNode skillNode, bool onlyAscendancy = false, bool isActive = false)
         {
             if (onlyAscendancy && skillNode.ascendancyName == null) return;
 
@@ -249,14 +249,7 @@ namespace POESKillTree.SkillTreeFiles
                        rect.Width / bitmapImage.PixelWidth, rect.Height / bitmapImage.PixelHeight)
             };
 
-            if (skillNode.ascendancyName != null)
-            {
-                var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
-                if (DrawAscendancy && (_persistentData.Options.ShowAllAscendancyClasses || skillNode.ascendancyName == ascendancyClassName))
-                    adc.DrawEllipse(imageBrush, null, skillNode.Position, rect.Width, rect.Height);
-            }
-            else
-                dc.DrawEllipse(imageBrush, null, skillNode.Position, rect.Width, rect.Height);
+            dc.DrawEllipse(imageBrush, null, skillNode.Position, rect.Width, rect.Height);
         }
 
         private void DrawSurround(DrawingContext dc, SkillNode node, bool onlyAscendancy = false, bool isActive = false, bool isHighlight = false)
@@ -348,58 +341,80 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawSkillIconsAndSurrounds(bool onlyAscendancy = false)
         {
-            using (DrawingContext
-                      dcSkillSurrounds = _nodeSurround.RenderOpen(),
-                      adcSkillSurrounds = _ascNodeSurround.RenderOpen(),
-                      dcSkillIcons = _skillIcons.RenderOpen(),
-                      adcSkillIcons = _ascSkillIcons.RenderOpen())
+            DrawingContext dcSkillIcons = null;
+            DrawingContext dcSkillSurround = null;
+            var ascSkillIcons = _ascSkillIcons.RenderOpen();
+            var adcAsctiveSkillSurround = _ascNodeSurround.RenderOpen();
+
+            if (!onlyAscendancy)
             {
-                if (onlyAscendancy)
+                dcSkillIcons = _skillIcons.RenderOpen();
+                dcSkillSurround = _nodeSurround.RenderOpen();
+                dcSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
+            }
+            
+            ascSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
+
+            foreach (var n in Skillnodes)
+            {
+                if (n.Value.ascendancyName != null)
                 {
-                    dcSkillIcons.DrawDrawing(_skillIcons.Drawing);
-                    dcSkillSurrounds.DrawDrawing(_nodeSurround.Drawing);
+                    if (!DrawAscendancy) continue;
+                    var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+                    if ((!_persistentData.Options.ShowAllAscendancyClasses &&
+                            n.Value.ascendancyName != ascendancyClassName)) continue;
+                    DrawSkillNodeIcon(ascSkillIcons, n.Value, onlyAscendancy);
+                    DrawSurround(adcAsctiveSkillSurround, n.Value, onlyAscendancy);
                 }
                 else
-                    dcSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
-                adcSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
-                foreach (var n in Skillnodes)
                 {
-                    DrawSkillNodeIcon(dcSkillIcons, adcSkillIcons, n.Value);
-                    DrawSurround(n.Value.ascendancyName != null ? adcSkillSurrounds : dcSkillSurrounds, n.Value);
+                    if (onlyAscendancy) continue;
+                    DrawSkillNodeIcon(dcSkillIcons, n.Value);
+                    DrawSurround(dcSkillSurround, n.Value);
                 }
-                adcSkillSurrounds.Close();
-                dcSkillSurrounds.Close();
-                adcSkillIcons.Close();
-                dcSkillIcons.Close();
             }
+            ascSkillIcons.Close();
+            adcAsctiveSkillSurround.Close();
+            dcSkillIcons?.Close();
+            dcSkillSurround?.Close();
         }
 
         private void DrawActiveSkillIconsAndSurrounds(bool onlyAscendancy = false)
         {
-            using (DrawingContext
-                    dcSkillIcons = _activeSkillIcons.RenderOpen(),
-                    ascSkillIcons = _ascActiveSkillIcons.RenderOpen(),
-                    dcActiveSkillSurround = _activeNodeSurround.RenderOpen(),
-                    adcAsctiveSkillSurround = _ascActiveNodeSurround.RenderOpen())
+            DrawingContext dcSkillIcons = null;
+            DrawingContext dcActiveSkillSurround = null;
+            if (!onlyAscendancy)
             {
-                if (onlyAscendancy)
+                dcSkillIcons = _activeSkillIcons.RenderOpen();
+                dcActiveSkillSurround = _activeNodeSurround.RenderOpen();
+                dcSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
+            }
+            var ascSkillIcons = _ascActiveSkillIcons.RenderOpen();
+            var adcAsctiveSkillSurround = _ascActiveNodeSurround.RenderOpen();
+            ascSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
+
+            foreach (var skillNode in SkilledNodes)
+            {
+                if (skillNode.ascendancyName != null)
                 {
-                    dcSkillIcons.DrawDrawing(_activeSkillIcons.Drawing);
-                    dcActiveSkillSurround.DrawDrawing(_activeNodeSurround.Drawing);
+                    if (!DrawAscendancy) continue;
+                    var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+                    if ((!_persistentData.Options.ShowAllAscendancyClasses &&
+                            skillNode.ascendancyName != ascendancyClassName)) continue;
+                    DrawSkillNodeIcon(ascSkillIcons, skillNode, onlyAscendancy, true);
+                    DrawSurround(adcAsctiveSkillSurround, skillNode, onlyAscendancy, true);
                 }
                 else
-                    dcSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
-                ascSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
-                foreach (var skillNode in SkilledNodes)
                 {
-                    DrawSkillNodeIcon(dcSkillIcons, ascSkillIcons, skillNode, onlyAscendancy, true);
-                    DrawSurround(skillNode.ascendancyName != null ? adcAsctiveSkillSurround : dcActiveSkillSurround, skillNode, onlyAscendancy, true);
+                    if(onlyAscendancy) continue;
+                    DrawSkillNodeIcon(dcSkillIcons, skillNode, false, true);
+                    DrawSurround(dcActiveSkillSurround, skillNode, false, true);
                 }
-                ascSkillIcons.Close();
-                dcSkillIcons.Close();
-                dcActiveSkillSurround.Close();
-                adcAsctiveSkillSurround.Close();
             }
+            ascSkillIcons.Close();
+            adcAsctiveSkillSurround.Close();
+            dcSkillIcons?.Close();
+            dcActiveSkillSurround?.Close();
         }
 
         public void ClearPath()
@@ -883,7 +898,7 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        internal void DrawTreeComparisonHighlight()
+        private void DrawTreeComparisonHighlight()
         {
             var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
             var pen2 = new Pen(new SolidColorBrush(TreeComparisonColor), 25 * HighlightFactor);
@@ -1042,12 +1057,18 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (DrawAscendancy)
             {
+                var start = DateTime.Now;
                 UpdateAscendancyClassPositions();
                 DrawAscendancyClasses();
                 DrawActiveSkillIconsAndSurrounds(true);
                 DrawActiveLinks(true);
-                DrawInitialPaths(Links, true);
                 DrawSkillIconsAndSurrounds(true);
+                
+                DrawInitialPaths(Links, true);
+                var end = DateTime.Now;
+                Debug.WriteLine($"{end - start}");
+
+
             }
             else
             {
