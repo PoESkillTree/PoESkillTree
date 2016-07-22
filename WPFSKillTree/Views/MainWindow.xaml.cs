@@ -1395,15 +1395,6 @@ namespace POESKillTree.Views
 
             v = v * _multransform + _addtransform;
 
-            IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
-                SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            if (Tree.DrawAscendancy && Tree.AscType > 0)
-            {
-                var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
-                var bitmap = SkillTree.Assets["Classes" + asn.ascendancyName];
-
-                nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
-            }
             var node = Tree.FindNodeInRange(v, 50);
             if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
             {
@@ -1482,15 +1473,6 @@ namespace POESKillTree.Views
             var v = new Vector2D(p.X, p.Y);
             v = v * _multransform + _addtransform;
 
-            IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
-                SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            if(Tree.DrawAscendancy && Tree.AscType > 0)
-            {
-                var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
-                var bitmap = SkillTree.Assets["Classes" + asn.ascendancyName];
-
-                nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
-            }
             var node = Tree.FindNodeInRange(v, 50);
             _hoveredNode = node;
             if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
@@ -1558,12 +1540,9 @@ namespace POESKillTree.Views
                 _sToolTip.IsOpen = false;
                 _prePath = null;
                 _toRemove = null;
-                if (Tree != null)
-                {
-                    Tree.ClearPath();
-                    Tree.ClearJewelHighlight();
-                    Tree.DrawAscendancyButton();
-                }
+                Tree?.ClearPath();
+                Tree?.ClearJewelHighlight();
+                Tree?.DrawAscendancyButton();
             }
         }
 

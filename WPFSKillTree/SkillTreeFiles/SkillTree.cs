@@ -588,7 +588,9 @@ namespace POESKillTree.SkillTreeFiles
         public void SwitchClass(int classType)
         {
             if (classType < 0 || classType > 6) return;
-            if (!CanSwitchClass(CharName[classType]) || classType == _chartype) return;
+            if (classType == _chartype) return;
+            if(!CanSwitchClass(CharName[classType]))
+                SkilledNodes.Clear();
             Chartype = classType;
             var remove = SkilledNodes.Where(n => n.ascendancyName != null || RootNodeList.Contains(n.Id)).ToList();
             var add = Skillnodes[(ushort)RootNodeClassDictionary[CharName[classType]]];
