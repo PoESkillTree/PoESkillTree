@@ -93,7 +93,7 @@ namespace POESKillTree.SkillTreeFiles
             if (e.NewItems == null && e.OldItems == null) return;
             var start = DateTime.Now;
             DrawActiveSkillIconsAndSurrounds();
-            DrawActiveLinks();
+            DrawActivePaths();
             DrawCharacterFaces();
             var end = DateTime.Now;
             Debug.WriteLine($"{end - start}");
@@ -444,10 +444,10 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (!_persistentData.Options.ShowAllAscendancyClasses)
             {
-                var className = CharacterNames.GetClassNameFromChartype(_chartype);
-                var nodeList = Skillnodes.Where(x => x.Value.ascendancyName == AscClasses.GetClassName(className, AscType) && !x.Value.IsAscendancyStart);
+                var ascName = AscClasses.GetClassName(_chartype, AscType);
+                var nodeList = Skillnodes.Where(x => x.Value.ascendancyName == ascName && !x.Value.IsAscendancyStart);
                 var worldPos = Skillnodes.First(x => x.Value.Name.ToUpperInvariant() == CharName[_chartype]).Value.Position;
-                var ascStartNode = Skillnodes.First(x => x.Value.ascendancyName == AscClasses.GetClassName(className, AscType) && x.Value.IsAscendancyStart).Value;
+                var ascStartNode = AscRootNodeList.First(x => x.ascendancyName == ascName);
                 var ascNodeOriginalPos = ascStartNode.SkillNodeGroup.Position;
                 if (_originalPositions.All(x => x.Item1 != ascStartNode.G))
                     _originalPositions.Add(new Tuple<int, Vector2D>(ascStartNode.G, new Vector2D(ascNodeOriginalPos.ToContainingPoint())));
@@ -575,7 +575,6 @@ namespace POESKillTree.SkillTreeFiles
                             new Size(groupBackgrounds[maxr].PixelWidth * 2.5, groupBackgrounds[maxr].PixelHeight * 2.5 * maxfac)));
                 }
                 #endregion
-                dc.Close();
             }
         }
 
@@ -615,27 +614,34 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawInitialPaths(IEnumerable<ushort[]> links, bool onlyAscendancy = false)
         {
-            using (DrawingContext
-                    dc = _paths.RenderOpen(),
-                    adc = _ascPaths.RenderOpen())
+            var start = DateTime.Now;
+            DrawingContext dc = null;
+            var adc = _ascPaths.RenderOpen();
+
+            if (!onlyAscendancy)
+                dc = _paths.RenderOpen();
+            foreach (var nodeid in links)
             {
-                if (onlyAscendancy)
-                    dc.DrawDrawing(_paths.Drawing);
-                foreach (var nodeid in links)
+                var n1 = Skillnodes[nodeid[0]];
+                var n2 = Skillnodes[nodeid[1]];
+
+                if (n2.ascendancyName != null)
                 {
-                    var n1 = Skillnodes[nodeid[0]];
-                    var n2 = Skillnodes[nodeid[1]];
-                    if (n1.ascendancyName == null && n2.ascendancyName == null && !onlyAscendancy)
-                        DrawConnection(dc, _basePathPen, n1, n2);
-                    else if (DrawAscendancy && (n1.ascendancyName != null || n2.ascendancyName != null))
-                    {
-                        if (_persistentData.Options.ShowAllAscendancyClasses || (n1.ascendancyName == AscClasses.GetClassName(_chartype, AscType) && n2.ascendancyName == AscClasses.GetClassName(_chartype, AscType)))
-                            DrawConnection(adc, _basePathPen, n1, n2);
-                    }
+                    if (!DrawAscendancy) continue;
+                    if (_persistentData.Options.ShowAllAscendancyClasses ||
+                        n2.ascendancyName == AscClasses.GetClassName(_chartype, AscType))
+                        DrawConnection(adc, _basePathPen, n2, n1);
                 }
-                adc.Close();
-                dc.Close();
+                else
+                {
+                    if (onlyAscendancy) continue;
+                    DrawConnection(dc, _basePathPen, n2, n1);
+                }
             }
+            adc.Close();
+            dc?.Close();
+            var end = DateTime.Now;
+            Debug.WriteLine($"{end - start}");
         }
 
         private void DrawCharacterFaces()
@@ -669,7 +675,6 @@ namespace POESKillTree.SkillTreeFiles
 
                     }
                 }
-                dc.Close();
             }
         }
 
@@ -677,26 +682,21 @@ namespace POESKillTree.SkillTreeFiles
         {
             using (var dc = _ascClassFaces.RenderOpen())
             {
-                if (!DrawAscendancy)
+                if (!DrawAscendancy) return;
+                var ascName = AscClasses.GetClassName(_chartype, AscType);
+                foreach (var node in AscRootNodeList)
                 {
-                    dc.Close();
-                    return;
-                }
-                foreach (var node in Skillnodes)
-                {
-                    if (!node.Value.IsAscendancyStart ||
-                        (!_persistentData.Options.ShowAllAscendancyClasses &&
-                         node.Value.ascendancyName != AscClasses.GetClassName(_chartype, AscType))) continue;
-                    var imageName = "Classes" + node.Value.ascendancyName;
+                    if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != ascName) continue;
+                    var imageName = "Classes" + node.ascendancyName;
                     var bitmap = Assets[imageName];
                     var brush = new ImageBrush(Assets[imageName]);
-                    var pos = node.Value.Position;
+                    var pos = node.Position;
                     dc.DrawRectangle(brush, null,
                         new Rect(
                             pos -
                             new Vector2D(bitmap.PixelWidth * 1.25, bitmap.PixelHeight * 1.25),
                             new Size(bitmap.PixelWidth * 2.5, bitmap.PixelHeight * 2.5)));
-                    var currentClass = AscClasses.GetClass(node.Value.ascendancyName);
+                    var currentClass = AscClasses.GetClass(node.ascendancyName);
                     if (currentClass == null) continue;
                     var textBrush = new SolidColorBrush(Color.FromRgb(
                         (byte)currentClass.FlavourTextColour[0],
@@ -716,7 +716,6 @@ namespace POESKillTree.SkillTreeFiles
                     text.TextAlignment = TextAlignment.Left;
                     dc.DrawText(text, textPos);
                 }
-                dc.Close();
             }
         }
 
@@ -776,7 +775,6 @@ namespace POESKillTree.SkillTreeFiles
                         AscButtonPosition = buttonPoint;
                     }
                 }
-                dc.Close();
             }
         }
 
@@ -859,43 +857,39 @@ namespace POESKillTree.SkillTreeFiles
                         dc.DrawLine(crossPen, new Point(x + 50, y - 70), new Point(x - 50, y + 70));
                     }
                 }
-                dc.Close();
             }
         }
 
-        private void DrawActiveLinks(bool onlyAscendancy = false)
+        private void DrawActivePaths(bool onlyAscendancy = false)
         {
-            using (DrawingContext
-                    dc = ActivePaths.RenderOpen(),
-                    dcAsc = _ascActivePaths.RenderOpen())
+            DrawingContext dc = null;
+            var adc = _ascActivePaths.RenderOpen();
+            if (!onlyAscendancy)
+                dc = ActivePaths.RenderOpen();
+            var seen = new HashSet<SkillNode>();
+            var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+            foreach (var n1 in SkilledNodes)
             {
-                if (onlyAscendancy)
-                    dc.DrawDrawing(ActivePaths.Drawing);
-                var seen = new HashSet<SkillNode>();
-                var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
-                foreach (var n1 in SkilledNodes)
+                seen.Add(n1);
+                foreach (var n2 in n1.VisibleNeighbors)
                 {
-                    seen.Add(n1);
-                    foreach (var n2 in n1.VisibleNeighbors)
+                    if (!SkilledNodes.Contains(n2) || seen.Contains(n2)) continue;
+                    if (n2.ascendancyName != null)
                     {
-                        if (!SkilledNodes.Contains(n2) || seen.Contains(n2)) continue;
-                        if (n2.ascendancyName != null)
-                        {
-                            if (!DrawAscendancy) continue;
-                            if (_persistentData.Options.ShowAllAscendancyClasses ||
-                                n2.ascendancyName == ascendancyClassName)
-                                DrawConnection(dcAsc, _activePathPen, n2, n1);
-                        }
-                        else
-                        {
-                            if (onlyAscendancy) continue;
-                            DrawConnection(dc, _activePathPen, n2, n1);
-                        }
+                        if (!DrawAscendancy) continue;
+                        if (_persistentData.Options.ShowAllAscendancyClasses ||
+                            n2.ascendancyName == ascendancyClassName)
+                            DrawConnection(adc, _activePathPen, n2, n1);
+                    }
+                    else
+                    {
+                        if (onlyAscendancy) continue;
+                        DrawConnection(dc, _activePathPen, n2, n1);
                     }
                 }
-                dcAsc.Close();
-                dc.Close();
             }
+            adc.Close();
+            dc?.Close();
         }
 
         private void DrawTreeComparisonHighlight()
@@ -931,10 +925,6 @@ namespace POESKillTree.SkillTreeFiles
                         }   
                     }
                 }
-                dcAsc.Close();
-                dc.Close();
-                adcPath.Close();
-                dcPath.Close();
             }
         }
 
@@ -986,8 +976,6 @@ namespace POESKillTree.SkillTreeFiles
                     else
                         DrawConnection(dc, _skillOverlayPen, n1, n2);
                 }
-                dcAsc.Close();
-                dc.Close();
             }
         }
 
@@ -1017,8 +1005,6 @@ namespace POESKillTree.SkillTreeFiles
                             DrawConnection(dc, _refundOverlayPen, node, n2);
                     }
                 }
-                dcAsc.Close();
-                dc.Close();
             }
         }
 
@@ -1058,16 +1044,17 @@ namespace POESKillTree.SkillTreeFiles
             if (DrawAscendancy)
             {
                 var start = DateTime.Now;
+                
                 UpdateAscendancyClassPositions();
                 DrawAscendancyClasses();
                 DrawActiveSkillIconsAndSurrounds(true);
-                DrawActiveLinks(true);
+                DrawActivePaths(true);
                 DrawSkillIconsAndSurrounds(true);
-                
+                var end2 = DateTime.Now;
+                Debug.WriteLine($"DrawAscendancy 1 - {end2 - start}");
                 DrawInitialPaths(Links, true);
                 var end = DateTime.Now;
-                Debug.WriteLine($"{end - start}");
-
+                Debug.WriteLine($"DrawAscendancy 2 - {end - start}");
 
             }
             else
@@ -1104,7 +1091,6 @@ namespace POESKillTree.SkillTreeFiles
                 dc.DrawEllipse(null, radiusPen, node.Position, smallRadius, smallRadius);
                 dc.DrawEllipse(null, radiusPen, node.Position, mediumRadius, mediumRadius);
                 dc.DrawEllipse(null, radiusPen, node.Position, largeRadius, largeRadius);
-                dc.Close();
             }
         }
     }

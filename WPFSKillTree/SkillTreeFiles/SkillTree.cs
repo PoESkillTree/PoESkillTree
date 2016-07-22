@@ -138,6 +138,7 @@ namespace POESKillTree.SkillTreeFiles
 
         public static Dictionary<string, float>[] CharBaseAttributes { get; private set; }
         public static List<int> RootNodeList { get; private set; }
+        public static HashSet<SkillNode> AscRootNodeList { get; private set; }
         public static List<SkillNodeGroup> NodeGroups { get; private set; }
         public static Rect2D SkillTreeRect { get; private set; }
         private static Dictionary<string, int> RootNodeClassDictionary { get; set; }
@@ -295,6 +296,7 @@ namespace POESKillTree.SkillTreeFiles
                 Skillnodes = new Dictionary<ushort, SkillNode>();
                 RootNodeClassDictionary = new Dictionary<string, int>();
                 StartNodeDictionary = new Dictionary<int, int>();
+                AscRootNodeList = new HashSet<SkillNode>();
 
                 foreach (var nd in inTree.nodes)
                 {
@@ -345,6 +347,9 @@ namespace POESKillTree.SkillTreeFiles
                         throw new InvalidOperationException($"Invalid node type for node {skillNode.Name}");
                     }
                     Skillnodes.Add(nd.id, skillNode);
+                    if(skillNode.IsAscendancyStart)
+                        if(!AscRootNodeList.Contains(skillNode))
+                            AscRootNodeList.Add(skillNode);
                     if (RootNodeList.Contains(nd.id))
                     {
                         if (!RootNodeClassDictionary.ContainsKey(nd.dn.ToUpperInvariant()))
