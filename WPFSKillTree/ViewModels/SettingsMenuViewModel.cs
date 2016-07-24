@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
@@ -8,15 +9,23 @@ namespace POESKillTree.ViewModels
 {
     public class SettingsMenuViewModel : CloseableViewModel
     {
+        private readonly IPersistentData _persistentData;
         private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly BuildsControlViewModel _buildsControlViewModel;
 
         public Options Options { get; }
 
-        public SettingsMenuViewModel(IPersistentData persistentData, IDialogCoordinator dialogCoordinator)
+        public ICommand ChangeBuildsSavePathCommand { get; }
+
+        public SettingsMenuViewModel(IPersistentData persistentData, IDialogCoordinator dialogCoordinator,
+            BuildsControlViewModel buildsControlViewModel)
         {
+            _persistentData = persistentData;
             _dialogCoordinator = dialogCoordinator;
+            _buildsControlViewModel = buildsControlViewModel;
             Options = persistentData.Options;
             DisplayName = L10n.Message("Settings");
+            ChangeBuildsSavePathCommand = new AsyncRelayCommand(ChangeBuildsSavePath);
 
             PropertyChangedEventHandler handler = async (sender, args) => await OptionsChanged(args.PropertyName);
             Options.PropertyChanged += handler;
@@ -39,6 +48,22 @@ namespace POESKillTree.ViewModels
                 if (propertyName == nameof(Options.Language))
                     L10n.Initialize(Options.Language);
             }
+        }
+
+        private async Task ChangeBuildsSavePath()
+        {
+            var newPath = await _dialogCoordinator.ShowFileSelectorAsync(this,
+                L10n.Message("Select build directory"),
+                L10n.Message("Select the directory where builds will be stored.\n" +
+                             "It will be created if it does not yet exist."),
+                Options.BuildsSavePath, true);
+            var message = L10n.Message("There are unsaved builds. Do you want to save them before changing build directory?\n\n"
+                                       + "If you cancel, the build directory will not be changed.");
+            if (!await _buildsControlViewModel.HandleUnsavedBuilds(message))
+                return;
+
+            Options.BuildsSavePath = newPath;
+            await _persistentData.ReloadBuildsAsync();
         }
     }
 }

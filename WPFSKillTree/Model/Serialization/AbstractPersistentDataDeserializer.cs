@@ -25,7 +25,7 @@ namespace POESKillTree.Model.Serialization
         public Version MinimumDeserializableVersion { get; }
         public Version MaximumDeserializableVersion { get; }
 
-        protected PersistentData PersistentData { get; private set; }
+        public AbstractPersistentData PersistentData { protected get; set; }
 
         protected AbstractPersistentDataDeserializer(string minimumConvertableVersion, string maximumConvertableVersion)
         {
@@ -35,25 +35,9 @@ namespace POESKillTree.Model.Serialization
                 MaximumDeserializableVersion = new Version(maximumConvertableVersion);
         }
 
-        public PersistentData CreateDefaultPersistentData()
-        {
-            PersistentData = new PersistentData(InitializePersistentDataAsync);
-            DeserializeWithoutPersistentDataFile();
-            return PersistentData;
-        }
+        public abstract void DeserializePersistentDataFile(string xmlString);
 
-        protected abstract void DeserializeWithoutPersistentDataFile();
-
-        public PersistentData Deserialize(string xmlString)
-        {
-            PersistentData = new PersistentData(InitializePersistentDataAsync);
-            DeserializePersistentDataFile(xmlString);
-            return PersistentData;
-        }
-
-        protected abstract void DeserializePersistentDataFile(string xmlString);
-
-        private async Task InitializePersistentDataAsync(IDialogCoordinator dialogCoordinator)
+        public async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
         {
             if (PersistentData.Options.BuildsSavePath == null)
             {

@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using JetBrains.Annotations;
 
 namespace POESKillTree.Model
 {
@@ -12,17 +14,20 @@ namespace POESKillTree.Model
         }
     }
 
-    public class RelayCommand<T> : ICommand
+    public class AsyncRelayCommand : AsyncRelayCommand<object>
     {
-        private readonly Action<T> _execute;
+        public AsyncRelayCommand(Func<Task> execute, Func<bool> canExecute = null)
+            : base(_ => execute(), canExecute == null ? null : (Predicate<object>) (_ => canExecute()))
+        {
+        }
+    }
+
+    public abstract class AbstractRelayCommand<T> : ICommand
+    {
         private readonly Predicate<T> _canExecute;
 
-        public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
+        protected AbstractRelayCommand([CanBeNull] Predicate<T> canExecute)
         {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-
-            _execute = execute;
             _canExecute = canExecute;
         }
 
@@ -39,7 +44,7 @@ namespace POESKillTree.Model
             {
                 return _canExecute(default(T));
             }
-            return parameter is T && _canExecute((T) parameter);
+            return parameter is T && _canExecute((T)parameter);
         }
 
         public event EventHandler CanExecuteChanged
@@ -50,7 +55,45 @@ namespace POESKillTree.Model
 
         public void Execute(object parameter)
         {
-            _execute((T) parameter);
+            Execute((T) parameter);
+        }
+
+        protected abstract void Execute(T parameter);
+    }
+
+    public class RelayCommand<T> : AbstractRelayCommand<T>
+    {
+        private readonly Action<T> _execute;
+
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
+            : base(canExecute)
+        {
+            _execute = execute;
+        }
+
+        protected override void Execute(T parameter)
+        {
+            _execute(parameter);
+        }
+    }
+
+    public class AsyncRelayCommand<T> : AbstractRelayCommand<T>
+    {
+        private readonly Func<T, Task> _execute;
+
+        public AsyncRelayCommand(Func<T, Task> execute, Predicate<T> canExecute = null) : base(canExecute)
+        {
+            _execute = execute;
+        }
+
+        protected override async void Execute(T parameter)
+        {
+            await _execute(parameter);
+        }
+
+        public async Task ExecuteAsync(T parameter)
+        {
+            await _execute(parameter);
         }
     }
 }

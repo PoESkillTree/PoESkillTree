@@ -136,7 +136,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
 #region Commands
 
-        private RelayCommand _runCommand;
+        private ICommand _runCommand;
         /// <summary>
         /// Starts a <see cref="ControllerViewModel"/> with the solver returned by the
         /// <see cref="GeneratorTabViewModel"/> at the currently selected <see cref="Tabs"/> index
@@ -144,7 +144,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         public ICommand RunCommand
         {
-            get { return _runCommand ?? (_runCommand = new RelayCommand(async () => await RunAsync())); }
+            get { return _runCommand ?? (_runCommand = new AsyncRelayCommand(RunAsync)); }
         }
 
         private RelayCommand _resetCommand;

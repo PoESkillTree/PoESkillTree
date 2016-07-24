@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
+using POESKillTree.Controls.Dialogs;
 
 namespace POESKillTree.Model.Serialization
 {
@@ -23,17 +25,21 @@ namespace POESKillTree.Model.Serialization
         Version MaximumDeserializableVersion { get; }
 
         /// <summary>
-        /// Deserializes and creates a <see cref="PersistentData"/> instance.
+        /// Sets the <see cref="AbstractPersistentData"/> this deserializer works on. Should not be set after
+        /// <see cref="DeserializePersistentDataFile"/> or <see cref="InitializeAsync"/> has been called.
         /// </summary>
-        /// <param name="xmlString">The contents of the PersistentData.xml file. Other files than this may be
-        /// used additionally.</param>
-        /// <returns>The deserialized, fully initialized <see cref="PersistentData"/> instance.</returns>
-        PersistentData Deserialize(string xmlString);
+        AbstractPersistentData PersistentData { set; }
 
         /// <summary>
-        /// Creates a <see cref="PersistentData"/> instance not based on a PersistentData.xml file.
+        /// Deserializes PersistentData.xml and sets it in <see cref="PersistentData"/>
         /// </summary>
-        /// <returns></returns>
-        PersistentData CreateDefaultPersistentData();
+        /// <param name="xmlString">The contents of PersistentData.xml.</param>
+        void DeserializePersistentDataFile(string xmlString);
+
+        /// <summary>
+        /// Asynchronously initializes all properties of <see cref="PersistentData"/> not contained in
+        /// PersistentData.xml.
+        /// </summary>
+        Task InitializeAsync(IDialogCoordinator dialogCoordinator);
     }
 }

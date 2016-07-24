@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using POESKillTree.Controls;
@@ -8,9 +7,9 @@ using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
 
-namespace POESKillTree.Model
+namespace POESKillTree.Model.Serialization
 {
-    public class PersistentData : Notifier, IPersistentData
+    public abstract class AbstractPersistentData : Notifier, IPersistentData
     {
         private Options _options = new Options();
         private PoEBuild _currentBuild;
@@ -50,45 +49,46 @@ namespace POESKillTree.Model
             set { SetProperty(ref _equipmentData, value); }
         }
 
-        private readonly Func<IDialogCoordinator, Task> _initializer;
+        public abstract Task InitializeAsync(IDialogCoordinator dialogCoordinator);
 
-        public PersistentData()
+        public abstract void Save();
+
+        public abstract void SaveBuild(IBuild build);
+
+        public abstract void DeleteBuild(IBuild build);
+
+        public abstract Task ReloadBuildsAsync();
+    }
+
+    /// <summary>
+    /// Implements all abstract methods of <see cref="AbstractPersistentData"/> by throwing exceptions on call.
+    /// Only use this class in tests or if the instance is immediately serialized and not used any further.
+    /// </summary>
+    public class BarePersistentData : AbstractPersistentData
+    {
+        public override Task InitializeAsync(IDialogCoordinator dialogCoordinator)
         {
+            throw new System.NotSupportedException();
         }
 
-        public PersistentData(Func<IDialogCoordinator, Task> initializer)
+        public override void Save()
         {
-            _initializer = initializer;
+            throw new System.NotSupportedException();
         }
 
-        public event Action Initialized;
-
-        public async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
+        public override void SaveBuild(IBuild build)
         {
-            if (_initializer != null)
-                await _initializer(dialogCoordinator);
-            Initialized?.Invoke();
+            throw new System.NotSupportedException();
         }
 
-        public event Action SaveHandler;
-
-        public void Save()
+        public override void DeleteBuild(IBuild build)
         {
-            SaveHandler?.Invoke();
+            throw new System.NotSupportedException();
         }
 
-        public event Action<IBuild> SaveBuildHandler;
-
-        public void SaveBuild(IBuild build)
+        public override Task ReloadBuildsAsync()
         {
-            SaveBuildHandler?.Invoke(build);
-        }
-
-        public event Action<IBuild> DeleteBuildHandler;
-
-        public void DeleteBuild(IBuild build)
-        {
-            DeleteBuildHandler?.Invoke(build);
+            throw new System.NotSupportedException();
         }
     }
 }

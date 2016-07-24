@@ -42,7 +42,7 @@ namespace POESKillTree.Model.Serialization
         {
         }
 
-        protected override void DeserializePersistentDataFile(string xmlString)
+        public override void DeserializePersistentDataFile(string xmlString)
         {
             var obj = SerializationUtils.DeserializeString<XmlPersistentData>(xmlString);
             PersistentData.Options = obj.Options;
@@ -56,13 +56,6 @@ namespace POESKillTree.Model.Serialization
             }
             PersistentData.RootBuild.Builds.Select(b => b as PoEBuild).Where(b => b != null).ForEach(b => b.KeepChanges());
             RenameBuilds();
-        }
-
-        protected override void DeserializeWithoutPersistentDataFile()
-        {
-            var current = CreateDefaultCurrentBuild();
-            PersistentData.RootBuild.Builds.Add(current);
-            PersistentData.CurrentBuild = current;
         }
 
         protected override Task DeserializeAdditionalFilesAsync()

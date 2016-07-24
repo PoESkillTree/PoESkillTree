@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using POESKillTree.Model;
 using POESKillTree.Model.Items;
+using POESKillTree.Model.Serialization;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
@@ -24,7 +24,7 @@ namespace UnitTests
             set { TestContextInstance = value; }
         }
 
-        private static PersistentData _persistentData;
+        private static AbstractPersistentData _persistentData;
 
         [ClassInitialize]
         public static void Initalize(TestContext testContext)
@@ -33,7 +33,7 @@ namespace UnitTests
 
             if (ItemDB.IsEmpty())
                 ItemDB.Load("Data/ItemDB/GemList.xml", true);
-            _persistentData = new PersistentData();
+            _persistentData = new BarePersistentData();
         }
 
         readonly Regex _backreplace = new Regex("#");

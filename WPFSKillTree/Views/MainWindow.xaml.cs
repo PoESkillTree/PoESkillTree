@@ -504,10 +504,15 @@ namespace POESKillTree.Views
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Options.ShowAllAscendancyClasses))
-                Tree.ToggleAscendancyTree(PersistentData.Options.ShowAllAscendancyClasses);
-            else if (e.PropertyName == nameof(Options.TreeComparisonEnabled))
-                UpdateTreeComparision();
+            switch (e.PropertyName)
+            {
+                case nameof(Options.ShowAllAscendancyClasses):
+                    Tree.ToggleAscendancyTree(PersistentData.Options.ShowAllAscendancyClasses);
+                    break;
+                case nameof(Options.TreeComparisonEnabled):
+                    UpdateTreeComparision();
+                    break;
+            }
             SearchUpdate();
         }
 
@@ -640,7 +645,9 @@ namespace POESKillTree.Views
                 e.Cancel = true;
                 // Stop close calls while async processing from closing
                 _canClose = false;
-                if (await CloseAsync())
+                var message = L10n.Message("There are unsaved builds. Do you want to save them before closing?\n\n"
+                                           + "Canceling stops the program from closing and does not save any builds.");
+                if (await BuildsControlViewModel.HandleUnsavedBuilds(message))
                 {
                     // User wants to close
                     _canClose = true;
@@ -659,35 +666,6 @@ namespace POESKillTree.Views
             else if (!_canClose.Value)
             {
                 e.Cancel = true;
-            }
-        }
-
-        private async Task<bool> CloseAsync()
-        {
-            var dirtyBuilds = BuildsControlViewModel.GetDirtyBuilds().ToList();
-            if (!dirtyBuilds.Any())
-                return true;
-            var title = L10n.Message("Unsaved Builds");
-            var message = L10n.Message("There are unsaved builds. Do you want to save them before closing?\n\n"
-                + "Canceling stops the program from closing and does not save any builds.");
-            var details = L10n.Message("These builds are not saved:\n");
-            foreach (var build in dirtyBuilds)
-            {
-                details += "\n - " + build.Build.Name;
-            }
-            var result = await this.ShowQuestionAsync(message, details, title, MessageBoxButton.YesNoCancel);
-            switch (result)
-            {
-                case MessageBoxResult.Yes:
-                    foreach (var build in dirtyBuilds)
-                    {
-                        await BuildsControlViewModel.SaveBuild(build);
-                    }
-                    return true;
-                case MessageBoxResult.No:
-                    return true;
-                default:
-                    return false;
             }
         }
 
@@ -940,7 +918,7 @@ namespace POESKillTree.Views
         private async void Menu_OpenSettings(object sender, RoutedEventArgs e)
         {
             await this.ShowDialogAsync(
-                new SettingsMenuViewModel(PersistentData, DialogCoordinator.Instance),
+                new SettingsMenuViewModel(PersistentData, DialogCoordinator.Instance, BuildsControlViewModel),
                 new SettingsMenuWindow());
         }
 

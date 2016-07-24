@@ -124,22 +124,18 @@ namespace POESKillTree.ViewModels
             CurrentBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.CurrentBuild, BuildRoot);
             SelectedBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.SelectedBuild, BuildRoot);
 
-            NewFolderCommand = new RelayCommand<IBuildFolderViewModel>(
-                async b => await NewFolder(b));
-            NewBuildCommand = new RelayCommand<IBuildFolderViewModel>(
-                async b => await NewBuild(b));
-            DeleteCommand = new RelayCommand<IBuildViewModel>(
-                async b => await Delete(b),
+            NewFolderCommand = new AsyncRelayCommand<IBuildFolderViewModel>(NewFolder);
+            NewBuildCommand = new AsyncRelayCommand<IBuildFolderViewModel>(NewBuild);
+            DeleteCommand = new AsyncRelayCommand<IBuildViewModel>(
+                Delete,
                 o => o != BuildRoot);
-            OpenBuildCommand = new RelayCommand<BuildViewModel>(
-                build => CurrentBuild = build);
-            SaveBuildCommand = new RelayCommand<BuildViewModel>(
-                async b => await SaveBuild(b),
+            OpenBuildCommand = new RelayCommand<BuildViewModel>(build => CurrentBuild = build);
+            SaveBuildCommand = new AsyncRelayCommand<BuildViewModel>(
+                SaveBuild,
                 b => b != null && b.Build.IsDirty);
-            SaveBuildAsCommand = new RelayCommand<BuildViewModel>(
-                async b => await SaveBuildAs(b));
-            SaveAllBuildsCommand = new RelayCommand(
-                async () => await SaveAllBuilds(),
+            SaveBuildAsCommand = new AsyncRelayCommand<BuildViewModel>(SaveBuildAs);
+            SaveAllBuildsCommand = new AsyncRelayCommand(
+                SaveAllBuilds,
                 () => TreeFind<BuildViewModel>(b => b.Build.IsDirty, BuildRoot) != null);
             RevertBuildCommand = new RelayCommand<BuildViewModel>(
                 build => build.Build.RevertChanges(),
@@ -150,13 +146,11 @@ namespace POESKillTree.ViewModels
             MoveDownCommand = new RelayCommand<IBuildViewModel>(
                 MoveDown,
                 o => o != BuildRoot && o.Parent.Children.IndexOf(o) < o.Parent.Children.Count - 1);
-            EditCommand = new RelayCommand<IBuildViewModel>(
-                async build => await Edit(build));
-            CutCommand = new RelayCommand<IBuildViewModel>(
-                async build => await Cut(build),
+            EditCommand = new AsyncRelayCommand<IBuildViewModel>(Edit);
+            CutCommand = new AsyncRelayCommand<IBuildViewModel>(
+                Cut,
                 b => b != BuildRoot);
-            CopyCommand = new RelayCommand<IBuildViewModel>(
-                Copy);
+            CopyCommand = new RelayCommand<IBuildViewModel>(Copy);
             PasteCommand = new RelayCommand<IBuildFolderViewModel>(
                 Paste,
                 _ => _buildClipboard != null);
@@ -426,6 +420,39 @@ namespace POESKillTree.ViewModels
                 Log.Error($"Build deletion failed for '{build.Build.Name}'", e);
                 await _dialogCoordinator.ShowErrorAsync(this,
                     L10n.Message("An error occurred during a delete operation."), e.Message);
+            }
+        }
+
+        /// <summary>
+        /// If there are any unsaved builds the user will be asked if they should be saved. They will be saved if
+        /// the user wants to.
+        /// </summary>
+        /// <param name="message">The message the dialog will show.</param>
+        /// <returns>False if the dialog was canceled by the user, true if he clicked Yes or No.</returns>
+        public async Task<bool> HandleUnsavedBuilds(string message)
+        {
+            var dirtyBuilds = GetDirtyBuilds().ToList();
+            if (!dirtyBuilds.Any())
+                return true;
+            var title = L10n.Message("Unsaved Builds");
+            var details = L10n.Message("These builds are not saved:\n");
+            foreach (var build in dirtyBuilds)
+            {
+                details += "\n - " + build.Build.Name;
+            }
+            var result = await _dialogCoordinator.ShowQuestionAsync(this, message, details, title, MessageBoxButton.YesNoCancel);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    foreach (var build in dirtyBuilds)
+                    {
+                        await SaveBuild(build);
+                    }
+                    return true;
+                case MessageBoxResult.No:
+                    return true;
+                default:
+                    return false;
             }
         }
 

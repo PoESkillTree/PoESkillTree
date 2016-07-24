@@ -20,6 +20,9 @@ namespace POESKillTree.Model
         ObservableCollection<StashBookmark> StashBookmarks { get; }
         IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
 
+        /// <summary>
+        /// Initializes all fiels that require asnychronous actions like dialogs.
+        /// </summary>
         Task InitializeAsync(IDialogCoordinator dialogCoordinator);
 
         /// <summary>
@@ -38,5 +41,10 @@ namespace POESKillTree.Model
         /// deleted when saving the folder.
         /// </summary>
         void DeleteBuild(IBuild build);
+
+        /// <summary>
+        /// Asynchronously reloads all builds from the BuildsSavePath. All current builds are discarded.
+        /// </summary>
+        Task ReloadBuildsAsync();
     }
 }

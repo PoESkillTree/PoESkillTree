@@ -235,7 +235,7 @@
     <Compile Include="Model\Items\ItemImageFromOfficial.cs" />
     <Compile Include="Model\Items\XmlItemList.cs" />
     <Compile Include="Model\Options.cs" />
-    <Compile Include="Model\PersistentData.cs" />
+    <Compile Include="Model\Serialization\AbstractPersistentData.cs" />
     <Compile Include="Model\RelayCommand.cs" />
     <Compile Include="Model\ResetPreferences.cs" />
     <Compile Include="Model\Serialization\AbstractPersistentDataDeserializer.cs" />

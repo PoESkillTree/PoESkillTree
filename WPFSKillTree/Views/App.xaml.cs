@@ -20,7 +20,6 @@ namespace POESKillTree.Views
         bool IsSafeToExit = false;
         // Single instance of persistent data.
         public static IPersistentData PersistentData { get; private set; }
-        private PersistentDataSerializationService _persistentDataSerializationService;
         // The Mutex for detecting running application instance.
         private Mutex RunningInstanceMutex;
         // The name of RunningInstanceMutex.
@@ -37,7 +36,7 @@ namespace POESKillTree.Views
                 // Try to aquire mutex.
                 if (RunningInstanceMutex.WaitOne(0))
                 {
-                    _persistentDataSerializationService.Serialize(PersistentData);
+                    PersistentData.Save();
 
                     IsSafeToExit = true;
 
@@ -76,8 +75,7 @@ namespace POESKillTree.Views
             try
             {
 #endif
-                _persistentDataSerializationService = new PersistentDataSerializationService();
-                PersistentData = _persistentDataSerializationService.Deserialize();
+                PersistentData = PersistentDataSerializationService.CreatePersistentData();
 #if !DEBUG
             }
             catch (Exception ex)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using log4net;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Serialization
 {
@@ -25,13 +26,7 @@ namespace POESKillTree.Model.Serialization
         {
         }
 
-        protected override void DeserializeWithoutPersistentDataFile()
-        {
-            _currentBuildPath = null;
-            _selectedBuildPath = null;
-        }
-
-        protected override void DeserializePersistentDataFile(string xmlString)
+        public override void DeserializePersistentDataFile(string xmlString)
         {
             var obj = SerializationUtils.DeserializeString<XmlPersistentData>(xmlString);
             PersistentData.Options = obj.Options;
@@ -57,6 +52,20 @@ namespace POESKillTree.Model.Serialization
             }
             PersistentData.CurrentBuild = current;
             PersistentData.SelectedBuild = BuildForPath(_selectedBuildPath) as PoEBuild;
+        }
+
+        public async Task ReloadBuildsAsync()
+        {
+            PersistentData.RootBuild.Builds.Clear();
+            await DeserializeBuildsAsync();
+            var current = PersistentData.RootBuild.BuildsPreorder().FirstOrDefault();
+            if (current == null)
+            {
+                current = CreateDefaultCurrentBuild();
+                PersistentData.RootBuild.Builds.Add(current);
+            }
+            PersistentData.CurrentBuild = current;
+            PersistentData.SelectedBuild = current;
         }
 
         private async Task DeserializeBuildsAsync()
@@ -132,7 +141,10 @@ namespace POESKillTree.Model.Serialization
         {
             var build = await DeserializeAsync<PoEBuild>(path);
             if (build != null && CheckVersion(build.Version))
+            {
+                build.KeepChanges();
                 return build;
+            }
 
             var backupPath = path + ".bad";
             Log.Warn($"Moving build file {path} to {backupPath} as it could not be deserialized");
