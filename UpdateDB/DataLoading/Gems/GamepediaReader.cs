@@ -248,6 +248,12 @@ namespace UpdateDB.DataLoading.Gems
             if (textNodes == null) yield break;
             foreach (var attr in textNodes.Select(n => n.InnerHtml).Select(ParseFixedAttribute).Where(a => a != null))
             {
+                if (attr.Name == "Radius: #" && infoBoxDefaults?.Any(x => x.Name == "Radius: #") == true)
+                {
+                    // Skip double "Radius: #" attributes as found on Elemental Profileration Support
+                    continue;
+                }
+
                 yield return attr;
             }
         }
@@ -276,6 +282,15 @@ namespace UpdateDB.DataLoading.Gems
                     attributes.Add(new Attribute
                     {
                         Name = "Mana Cost: #",
+                        Values = new List<Value> { new ItemDB.ValueForLevelRange { From = 1, To = 30, Text = value } }
+                    });
+                }
+
+                if (textDefault.InnerHtml.Contains("Radius") && Regex.IsMatch(value, @"^\d+$"))
+                {
+                    attributes.Add(new Attribute
+                    {
+                        Name = "Radius: #",
                         Values = new List<Value> { new ItemDB.ValueForLevelRange { From = 1, To = 30, Text = value } }
                     });
                 }
