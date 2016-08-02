@@ -517,6 +517,10 @@ namespace POESKillTree.SkillTreeFiles
             [XmlIgnore]
             public bool UnarmedSpecified { get { return Unarmed; } }
 
+            // Skill tags (Spell, AoE, Fire, etc)
+            [XmlAttribute]
+            public string Tags { get; set; }
+
             // Returns all attributes of gem with defined values for specified level.
             internal AttributeSet AttributesAtLevel(int level)
             {

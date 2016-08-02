@@ -110,7 +110,7 @@ namespace UpdateDB.DataLoading.Gems
             attributes.AddRange(ParseInfobox(doc, name, tags));
             attributes.AddRange(ParseProgressionTable(doc, name, tags));
 
-            return new Gem { Name = gemName, Attributes = attributes };
+            return new Gem { Name = gemName, Attributes = attributes, Tags = string.Join(", ", tags) };
         }
 
         private static IEnumerable<Attribute> ParseProgressionTable(HtmlDocument doc, string name, IReadOnlyCollection<string> tags)
@@ -194,7 +194,7 @@ namespace UpdateDB.DataLoading.Gems
 
         private static IEnumerable<Attribute> ParseInfobox(HtmlDocument doc, string name, ICollection<string> tags)
         {
-            var found = doc.DocumentNode.SelectNodes("//div[contains(@class,'item-box -gem')]");
+            var found = doc.DocumentNode.SelectNodes("//span[contains(@class,'item-box -gem')]");
             if (found == null || found.Count == 0)
             {
                 Log.WarnFormat("Gem infobox table not found for {0}", name);
@@ -202,10 +202,14 @@ namespace UpdateDB.DataLoading.Gems
             }
 
             var table = found[0];
-            // If the mana cost is fixed it is not necessarily part of the level table.
-            var fixedManaAttr = ParseFixedManaCost(table);
-            if (fixedManaAttr != null)
-                yield return fixedManaAttr;
+            var infoBoxDefaults = ParseInfoBoxDefaults(table);
+            if (infoBoxDefaults != null)
+            {
+                foreach (Attribute attribute in infoBoxDefaults)
+                {
+                    yield return attribute;
+                }
+            }
 
             var itemboxstats = table.SelectSingleNode("span[contains(@class, 'item-stats')]");
 
@@ -244,33 +248,110 @@ namespace UpdateDB.DataLoading.Gems
             if (textNodes == null) yield break;
             foreach (var attr in textNodes.Select(n => n.InnerHtml).Select(ParseFixedAttribute).Where(a => a != null))
             {
+                if (attr.Name == "Radius: #" && infoBoxDefaults?.Any(x => x.Name == "Radius: #") == true)
+                {
+                    // Skip double "Radius: #" attributes as found on Elemental Profileration Support
+                    continue;
+                }
+
                 yield return attr;
             }
         }
 
-        private static Attribute ParseFixedManaCost(HtmlNode table)
+        private static Attribute[] ParseInfoBoxDefaults(HtmlNode table)
         {
+            var attributes = new List<Attribute>();
+
             var textDefaults = table.SelectNodes(".//span[contains(@class, '-default')]");
             if (textDefaults == null)
                 return null;
             foreach (var textDefault in textDefaults)
             {
-                if (!textDefault.InnerHtml.Contains("Mana Cost"))
-                    continue;
-
                 var textValue = textDefault.NextSibling;
-                var cost = textValue.InnerHtml;
-                if (textValue.GetAttributeValue("class", "").Contains("-value")
-                    && Regex.IsMatch(cost, @"^\d+$"))
+
+                if (!textValue.GetAttributeValue("class", "").Contains("-value"))
                 {
-                    return new Attribute
+                    continue;
+                }
+
+                var value = textValue.InnerHtml;
+
+                // If the mana cost is fixed it is not necessarily part of the level table.
+                if (textDefault.InnerHtml.Contains("Mana Cost") && Regex.IsMatch(value, @"^\d+$"))
+                {
+                    attributes.Add(new Attribute
                     {
                         Name = "Mana Cost: #",
-                        Values = new List<Value> { new ItemDB.ValueForLevelRange { From = 1, To = 30, Text = cost } }
-                    };
+                        Values = new List<Value> { new ItemDB.ValueForLevelRange { From = 1, To = 30, Text = value } }
+                    });
+                }
+
+                if (textDefault.InnerHtml.Contains("Radius") && Regex.IsMatch(value, @"^\d+$"))
+                {
+                    attributes.Add(new Attribute
+                    {
+                        Name = "Radius: #",
+                        Values = new List<Value> { new ItemDB.ValueForLevelRange { From = 1, To = 30, Text = value } }
+                    });
+                }
+
+                if (textDefault.InnerHtml.Contains("Cast Time"))
+                {
+                    Match match = Regex.Match(value, @"^(?<val>\d+(\.\d+)?) sec$");
+
+                    if (match.Success)
+                    {
+                        attributes.Add(new Attribute
+                        {
+                            Name = "Cast Time: # sec",
+                            Values = new List<Value> {new ItemDB.ValueForLevelRange {From = 1, To = 30, Text = match.Groups["val"].Value}}
+                        });
+                    }
+                }
+
+                if (textDefault.InnerHtml.Contains("Cooldown Time"))
+                {
+                    Match match = Regex.Match(value, @"^(?<val>\d+(\.\d+)?) sec$");
+
+                    if (match.Success)
+                    {
+                        attributes.Add(new Attribute
+                        {
+                            Name = "Cooldown Time: # sec",
+                            Values = new List<Value> {new ItemDB.ValueForLevelRange {From = 1, To = 30, Text = match.Groups["val"].Value}}
+                        });
+                    }
+                }
+
+                if (textDefault.InnerHtml.Contains("Critical Strike Chance"))
+                {
+                    Match match = Regex.Match(value, @"^(?<val>\d+(\.\d+)?)%$");
+
+                    if (match.Success)
+                    {
+                        attributes.Add(new Attribute
+                        {
+                            Name = "Critical Strike Chance: #%",
+                            Values = new List<Value> {new ItemDB.ValueForLevelRange {From = 1, To = 30, Text = match.Groups["val"].Value}}
+                        });
+                    }
+                }
+
+                if (textDefault.InnerHtml.Contains("Damage Effectiveness"))
+                {
+                    Match match = Regex.Match(value, @"^(?<val>\d+)%$");
+
+                    if (match.Success)
+                    {
+                        attributes.Add(new Attribute
+                        {
+                            Name = "Damage Effectiveness: #%",
+                            Values = new List<Value> {new ItemDB.ValueForLevelRange {From = 1, To = 30, Text = match.Groups["val"].Value}}
+                        });
+                    }
                 }
             }
-            return null;
+            return attributes.ToArray();
         }
 
         private static Attribute ParseFixedAttribute(string text)
