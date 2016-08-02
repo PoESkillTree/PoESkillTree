@@ -406,9 +406,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Anger" Tags="Aura, Spell, AoE, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -984,9 +981,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Assassin's Mark" Tags="Curse, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -1125,9 +1119,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Ball Lightning" Tags="Projectile, Spell, AoE, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.80</ValueForLevel>
     </Attribute>
@@ -1326,9 +1317,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Blade Vortex" Tags="Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">14</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -1484,9 +1472,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Blast Rain" Tags="Fire, Attack, AoE, Bow">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">20</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -2213,9 +2198,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Caustic Arrow" Tags="Attack, AoE, Duration, Chaos, Bow">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">20</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -2450,9 +2432,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Clarity" Tags="Aura, Spell, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -2560,9 +2539,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Cleave" Tags="Attack, AoE, Melee">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">20</ValueForLevel>
-    </Attribute>
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -2692,9 +2668,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Cold Snap" Tags="Spell, AoE, Cold">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">4.00</ValueForLevel>
     </Attribute>
@@ -2860,9 +2833,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Conductivity" Tags="Curse, Spell, AoE, Duration, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -3321,9 +3291,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Decoy Totem" Tags="Totem, Spell, Duration, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">60</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -3454,9 +3421,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Determination" Tags="Aura, Spell, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -3532,9 +3496,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Detonate Dead" Tags="Cast, AoE, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.80</ValueForLevel>
     </Attribute>
@@ -3722,9 +3683,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Discharge" Tags="Spell, AoE, Fire, Cold, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">30</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -3867,9 +3825,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Discipline" Tags="Aura, Spell, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -4318,9 +4273,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Elemental Proliferation Support" Tags="Cold, Fire, Lightning, Support, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
-    </Attribute>
     <Attribute Name="#% increased Ignite Duration on Enemies">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -4355,9 +4307,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Elemental Weakness" Tags="Curse, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -4481,9 +4430,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Enduring Cry" Tags="Warcry, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">60</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">4.00</ValueForLevel>
     </Attribute>
@@ -4571,9 +4517,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Enfeeble" Tags="Curse, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -4932,9 +4875,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Explosive Arrow" Tags="Fire, Attack, AoE, Duration, Bow">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">15</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -5133,9 +5073,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Fire Nova Mine" Tags="AoE, Mine, Spell, Fire, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">30</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.40</ValueForLevel>
     </Attribute>
@@ -5272,9 +5209,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Fire Trap" Tags="Trap, Spell, Duration, AoE, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">15</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">3.00</ValueForLevel>
     </Attribute>
@@ -5384,9 +5318,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Fireball" Tags="Projectile, Spell, AoE, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">9</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.85</ValueForLevel>
     </Attribute>
@@ -5677,9 +5608,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Flame Surge" Tags="Spell, AoE, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">30</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -5903,9 +5831,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Flammability" Tags="Curse, Spell, AoE, Duration, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -6723,9 +6648,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Frostbite" Tags="Curse, Spell, AoE, Duration, Cold">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -7099,9 +7021,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Grace" Tags="Aura, Spell, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -7205,9 +7124,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Ground Slam" Tags="Attack, AoE, Melee">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">35</ValueForLevel>
-    </Attribute>
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -7257,9 +7173,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Haste" Tags="Aura, Spell, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -7341,9 +7254,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Hatred" Tags="Aura, Spell, AoE, Cold">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -7451,9 +7361,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Herald of Ash" Tags="Spell, AoE, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">10</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -7610,9 +7517,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Herald of Thunder" Tags="Cast, AoE, Duration, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">32</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -7861,9 +7765,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Ice Nova" Tags="Spell, AoE, Cold">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">30</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.80</ValueForLevel>
     </Attribute>
@@ -8499,9 +8400,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Infernal Blow" Tags="Attack, AoE, Melee, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">15</ValueForLevel>
-    </Attribute>
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -8830,9 +8728,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Leap Slam" Tags="Attack, AoE, Movement, Melee">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">15</ValueForLevel>
-    </Attribute>
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
@@ -9142,9 +9037,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Lightning Tendrils" Tags="Spell, AoE, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.80</ValueForLevel>
     </Attribute>
@@ -9296,9 +9188,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Lightning Warp" Tags="Spell, AoE, Duration, Movement, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -9532,9 +9421,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Melee Splash Support" Tags="Support, Melee, Attack, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">14</ValueForLevel>
-    </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -9906,9 +9792,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Molten Shell" Tags="Spell, AoE, Duration, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">15</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -10458,9 +10341,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Poacher's Mark" Tags="Curse, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -10743,9 +10623,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Projectile Weakness" Tags="Curse, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -10911,9 +10788,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Punishment" Tags="Curse, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -11027,9 +10901,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Purity of Elements" Tags="Aura, Spell, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -11098,9 +10969,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Purity of Fire" Tags="Aura, Spell, AoE, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -11187,9 +11055,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Purity of Ice" Tags="Aura, Spell, AoE, Cold">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -11276,9 +11141,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Purity of Lightning" Tags="Aura, Spell, AoE, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -11365,9 +11227,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Rain of Arrows" Tags="Attack, AoE, Bow">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">24</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -11796,9 +11655,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Reave" Tags="Attack, AoE, Melee">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">14</ValueForLevel>
-    </Attribute>
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -11910,9 +11766,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Rejuvenation Totem" Tags="Totem, Aura, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">10</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.60</ValueForLevel>
     </Attribute>
@@ -12023,9 +11876,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Righteous Fire" Tags="Spell, AoE, Fire">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">14</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -12326,9 +12176,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Shockwave Totem" Tags="Totem, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">20</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.60</ValueForLevel>
     </Attribute>
@@ -12955,9 +12802,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Static Strike" Tags="Attack, Melee, AoE, Duration, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
-    </Attribute>
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -13010,9 +12854,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Storm Call" Tags="Spell, AoE, Duration, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">20</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -13751,9 +13592,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Sweep" Tags="Attack, AoE, Melee">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">26</ValueForLevel>
-    </Attribute>
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -13881,9 +13719,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Temporal Chains" Tags="Curse, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -14285,9 +14120,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Vaal Clarity" Tags="Aura, Vaal, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.60</ValueForLevel>
     </Attribute>
@@ -14504,9 +14336,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Vaal Discipline" Tags="Aura, Vaal, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.60</ValueForLevel>
     </Attribute>
@@ -14811,9 +14640,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Vaal Grace" Tags="Aura, Vaal, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.60</ValueForLevel>
     </Attribute>
@@ -14939,9 +14765,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Vaal Haste" Tags="Aura, Vaal, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.60</ValueForLevel>
     </Attribute>
@@ -15499,9 +15322,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Vaal Reave" Tags="Vaal, Attack, AoE, Melee">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">12</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -15970,9 +15790,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Vitality" Tags="Aura, Spell, AoE">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -16184,9 +16001,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Vulnerability" Tags="Curse, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -16282,9 +16096,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Warlord's Mark" Tags="Curse, Spell, AoE, Duration">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">22</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -16583,9 +16394,6 @@
     </Attribute>
   </Gem>
   <Gem Name="Wrath" Tags="Aura, Spell, AoE, Lightning">
-    <Attribute Name="Radius: #">
-      <ValueForLevel From="1" To="30">36</ValueForLevel>
-    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>

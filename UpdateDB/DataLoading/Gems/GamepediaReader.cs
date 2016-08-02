@@ -280,15 +280,6 @@ namespace UpdateDB.DataLoading.Gems
                     });
                 }
 
-                if (textDefault.InnerHtml.Contains("Radius") && Regex.IsMatch(value, @"^\d+$"))
-                {
-                    attributes.Add(new Attribute
-                    {
-                        Name = "Radius: #",
-                        Values = new List<Value> { new ItemDB.ValueForLevelRange { From = 1, To = 30, Text = value } }
-                    });
-                }
-
                 if (textDefault.InnerHtml.Contains("Cast Time"))
                 {
                     Match match = Regex.Match(value, @"^(?<val>\d+(\.\d+)?) sec$");
