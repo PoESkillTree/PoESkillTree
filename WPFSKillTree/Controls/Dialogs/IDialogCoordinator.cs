@@ -20,6 +20,17 @@ namespace POESKillTree.Controls.Dialogs
         Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message,
             bool isCancelable = false);
 
-        Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultFile, bool isFolderPicker);
+        /// <summary>
+        /// Asynchronously shows a dialog where the user can select a file path.
+        /// </summary>
+        /// <param name="context">The context object that is registered by the view</param>
+        /// <param name="title">The title of the dialog</param>
+        /// <param name="message">A message shown in the dialog</param>
+        /// <param name="defaultFile">The path that is initially selected</param>
+        /// <param name="isFolderPicker">True, if the path is intepreted as a directory and not afile</param>
+        /// <param name="isCancelable">True if the user can cancel the dialog</param>
+        /// <returns>The selected path or <c>null</c> if the dialog is cancelable and was canceled</returns>
+        Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultFile,
+            bool isFolderPicker, bool isCancelable = true);
     }
 }

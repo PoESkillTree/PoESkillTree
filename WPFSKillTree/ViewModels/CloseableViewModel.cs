@@ -16,12 +16,15 @@ namespace POESKillTree.ViewModels
             Close(null);
         }
 
+        /// <summary>
+        /// Returns true iff the close command can currently be executed.
+        /// </summary>
         protected virtual bool CanClose()
         {
             return true;
         }
 
-        protected override bool CanClose(object param)
+        protected sealed override bool CanClose(object param)
         {
             return CanClose();
         }

@@ -52,17 +52,18 @@ namespace POESKillTree.ViewModels
 
         private async Task ChangeBuildsSavePath()
         {
-            var newPath = await _dialogCoordinator.ShowFileSelectorAsync(this,
-                L10n.Message("Select build directory"),
-                L10n.Message("Select the directory where builds will be stored.\n" +
-                             "It will be created if it does not yet exist."),
-                Options.BuildsSavePath, true);
             var message = L10n.Message("There are unsaved builds. Do you want to save them before changing build directory?\n\n"
                                        + "If you cancel, the build directory will not be changed.");
             if (!await _buildsControlViewModel.HandleUnsavedBuilds(message))
                 return;
-
-            Options.BuildsSavePath = newPath;
+            var path = await _dialogCoordinator.ShowFileSelectorAsync(this,
+                L10n.Message("Select build directory"),
+                L10n.Message("Select the directory where builds will be stored.\n" +
+                             "It will be created if it does not yet exist."),
+                Options.BuildsSavePath, true);
+            if (path == null)
+                return;
+            Options.BuildsSavePath = path;
             await _persistentData.ReloadBuildsAsync();
         }
     }

@@ -52,7 +52,7 @@ namespace POESKillTree.Model.Serialization
                         L10n.Message("Select build directory"),
                         L10n.Message("Select the directory where builds will be stored.\n" +
                                      "It will be created if it does not yet exist."),
-                        AppData.GetFolder("Builds"), true);
+                        AppData.GetFolder("Builds"), isFolderPicker: true, isCancelable: false);
                 }
             }
             await DeserializeAdditionalFilesAsync();

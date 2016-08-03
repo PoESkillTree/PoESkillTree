@@ -108,9 +108,11 @@ namespace POESKillTree.Controls.Dialogs
             return await metroWindow.ShowProgressAsync(title, message, isCancelable);
         }
 
-        public Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultFile, bool isFolderPicker)
+        public Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultFile,
+            bool isFolderPicker, bool isCancelable = true)
         {
-            return ShowDialogAsync(context, new FileSelectorViewModel(title, message, defaultFile, isFolderPicker),
+            return ShowDialogAsync(context,
+                new FileSelectorViewModel(title, message, defaultFile, isFolderPicker) {IsCancelable = isCancelable},
                 new FileSelectorView());
         }
     }
