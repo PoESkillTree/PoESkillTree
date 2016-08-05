@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;
-using POESKillTree.Model;
 using POESKillTree.Model.Builds;
 
 namespace POESKillTree.ViewModels

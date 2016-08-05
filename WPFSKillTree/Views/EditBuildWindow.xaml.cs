@@ -12,7 +12,9 @@ namespace POESKillTree.Views
             var dateTime = value as DateTime?;
             if (dateTime == null)
                 return null;
-            var str = dateTime == DateTime.MinValue ? L10n.Message("Not Available") : dateTime.ToString();
+            var str = dateTime == DateTime.MinValue
+                ? L10n.Message("Not Available")
+                : dateTime.Value.ToString(CultureInfo.CurrentCulture);
             return string.Format(L10n.Message("Last updated: {0}"), str);
         }
 

@@ -116,13 +116,13 @@
         </StackPanel>
         <StackPanel Grid.Row="3"
                     Style="{StaticResource DialogPanel}">
-            <Button Style="{StaticResource AccentedDialogPanelButton}"
+            <Button Style="{StaticResource DynamicDialogPanelButton}"
                     Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Affirmative}"
                     IsDefault="True">
                 <l:Catalog Message="OK"/>
             </Button>
-            <Button IsDefault="True"
-                    Style="{StaticResource AccentedDialogPanelButton}"
+            <Button IsCancel="True"
+                    Style="{StaticResource DynamicDialogPanelButton}"
                     Command="{Binding CloseCommand}" CommandParameter="{x:Static viewModels:TabPickerResult.Negative}">
                 <l:Catalog Message="Cancel"/>
             </Button>

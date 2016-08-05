@@ -11,10 +11,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using POESKillTree.Common.ViewModels;
+using POESKillTree.Controls.Dialogs.ViewModels;
+using POESKillTree.Controls.Dialogs.Views;
 using POESKillTree.Localization;
 using POESKillTree.Utils.Extensions;
-using POESKillTree.ViewModels;
-using POESKillTree.Views;
 
 namespace POESKillTree.Controls.Dialogs
 {

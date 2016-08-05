@@ -1,41 +1,33 @@
 ﻿using System.Threading.Tasks;
 using POESKillTree.Controls.Dialogs;
-using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
+using POESKillTree.ViewModels.Builds;
 using POESKillTree.Views;
 
 namespace POESKillTree.ViewModels
 {
     public interface IExtendedDialogCoordinator : IDialogCoordinator
     {
-        Task<bool> EditBuildAsync(object context, PoEBuild build);
-
-        Task<bool> EditFolderAsync(object context, BuildFolder folder);
+        Task<bool> EditBuildAsync(object context, IBuildViewModel<PoEBuild> buildVm, BuildValidator buildValidator);
     }
 
     public class ExtendedDialogCoordinator : DialogCoordinator, IExtendedDialogCoordinator
     {
         public new static readonly IExtendedDialogCoordinator Instance = new ExtendedDialogCoordinator();
 
-        public async Task<bool> EditBuildAsync(object context, PoEBuild build)
+        public async Task<bool> EditBuildAsync(object context, IBuildViewModel<PoEBuild> buildVm,
+            BuildValidator buildValidator)
         {
-            var vm = new EditBuildViewModel(build);
+            var vm = new EditBuildViewModel(buildVm, buildValidator);
             if (!await ShowDialogAsync(context, vm, new EditBuildWindow()))
             {
                 return false;
             }
-            vm.Build.SaveToMemento().Restore(build);
-            return true;
-        }
-
-        public async Task<bool> EditFolderAsync(object context, BuildFolder folder)
-        {
-            var name = await ShowInputAsync(context, L10n.Message("Edit Folder"),
-                L10n.Message("Enter the new name for this folder below."),
-                folder.Name);
-            if (string.IsNullOrWhiteSpace(name))
-                return false;
-            folder.Name = name;
+            var build = buildVm.Build;
+            build.Name = vm.Name;
+            build.Note = vm.Note;
+            build.AccountName = vm.AccountName;
+            build.CharacterName = vm.CharacterName;
             return true;
         }
     }

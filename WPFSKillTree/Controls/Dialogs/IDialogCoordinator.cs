@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace POESKillTree.Controls.Dialogs
@@ -32,5 +33,8 @@ namespace POESKillTree.Controls.Dialogs
         /// <returns>The selected path or <c>null</c> if the dialog is cancelable and was canceled</returns>
         Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultFile,
             bool isFolderPicker, bool isCancelable = true);
+
+        Task<string> ShowValidatingInputDialogAsync(object context, string title, string message,
+            string defaultText, Func<string, string> inputValidationFunc);
     }
 }

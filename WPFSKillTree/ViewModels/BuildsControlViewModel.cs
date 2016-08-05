@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
 using log4net;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Builds;
@@ -26,9 +27,11 @@ namespace POESKillTree.ViewModels
 
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
 
+        private readonly BuildValidator _buildValidator;
+
         public IBuildFolderViewModel BuildRoot { get; }
 
-        public IDropTarget DropHandler { get; } = new CustomDropHandler();
+        public IDropTarget DropHandler { get; }
 
         public ICommand NewFolderCommand { get; }
 
@@ -119,12 +122,16 @@ namespace POESKillTree.ViewModels
         {
             _dialogCoordinator = dialogCoordinator;
             PersistentData = persistentData;
+            DropHandler = new CustomDropHandler(this);
+            _buildValidator = new BuildValidator(PersistentData.Options);
             BuildRoot = new BuildFolderViewModel(persistentData.RootBuild, Filter, BuildOnCollectionChanged);
 
             CurrentBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.CurrentBuild, BuildRoot);
             SelectedBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.SelectedBuild, BuildRoot);
 
-            NewFolderCommand = new AsyncRelayCommand<IBuildFolderViewModel>(NewFolder);
+            NewFolderCommand = new AsyncRelayCommand<IBuildFolderViewModel>(
+                NewFolder,
+                vm => vm != null && _buildValidator.CanHaveSubfolder(vm));
             NewBuildCommand = new AsyncRelayCommand<IBuildFolderViewModel>(NewBuild);
             DeleteCommand = new AsyncRelayCommand<IBuildViewModel>(
                 Delete,
@@ -149,28 +156,34 @@ namespace POESKillTree.ViewModels
             EditCommand = new AsyncRelayCommand<IBuildViewModel>(Edit);
             CutCommand = new AsyncRelayCommand<IBuildViewModel>(
                 Cut,
-                b => b != BuildRoot);
-            CopyCommand = new RelayCommand<IBuildViewModel>(Copy);
-            PasteCommand = new RelayCommand<IBuildFolderViewModel>(
-                Paste,
-                _ => _buildClipboard != null);
+                b => b != BuildRoot && b != CurrentBuild);
+            CopyCommand = new RelayCommand<IBuildViewModel<PoEBuild>>(Copy);
+            PasteCommand = new AsyncRelayCommand<IBuildFolderViewModel>(Paste, CanPaste);
         }
+
+        #region Command methods
 
         private async Task NewFolder(IBuildFolderViewModel folder)
         {
-            var name = await _dialogCoordinator.ShowInputAsync(this, L10n.Message("New Folder"),
-                L10n.Message("Enter the name of the new folder"));
+            var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this,
+                L10n.Message("New Folder"),
+                L10n.Message("Enter the name of the new folder."),
+                "",
+                s => _buildValidator.ValidateNewFolderName(s, folder));
             if (string.IsNullOrWhiteSpace(name))
                 return;
-            var newFolder = new BuildFolderViewModel(new BuildFolder { Name = name }, Filter, BuildOnCollectionChanged);
+            var newFolder = new BuildFolderViewModel(new BuildFolder {Name = name}, Filter, BuildOnCollectionChanged);
             folder.Children.Add(newFolder);
             await SaveBuildToFile(newFolder);
         }
 
         public async Task NewBuild(IBuildFolderViewModel folder)
         {
-            var name = await _dialogCoordinator.ShowInputAsync(this, L10n.Message("New Build"),
-                L10n.Message("Enter the name of the new build"));
+            var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this,
+                L10n.Message("New Build"),
+                L10n.Message("Enter the name of the new build."),
+                "",
+                s => _buildValidator.ValidateNewBuildName(s, folder));
             if (string.IsNullOrWhiteSpace(name))
                 return;
             var build = new BuildViewModel(new PoEBuild { Name = name }, Filter);
@@ -217,7 +230,6 @@ namespace POESKillTree.ViewModels
                 return;
             var newBuild = build.DeepClone();
             newBuild.Name = name;
-            newBuild.LastUpdated = DateTime.Now;
             var newVm = new BuildViewModel(newBuild, Filter);
 
             var builds = vm.Parent.Children;
@@ -237,7 +249,7 @@ namespace POESKillTree.ViewModels
             }
 
             CurrentBuild = newVm;
-            await SaveBuildToFile(newVm);
+            await SaveBuild(newVm);
         }
 
         private async Task SaveAllBuilds()
@@ -273,49 +285,65 @@ namespace POESKillTree.ViewModels
             _clipboardIsCopy = false;
         }
 
-        private void Copy(IBuildViewModel build)
+        private void Copy(IBuildViewModel<PoEBuild> build)
         {
             _buildClipboard = build;
             _clipboardIsCopy = true;
         }
 
-        private void Paste(IBuildFolderViewModel build)
+        private bool CanPaste(IBuildFolderViewModel target)
+        {
+            if (target == null || _buildClipboard == null)
+                return false;
+            var allowDuplicateNames = _clipboardIsCopy && _buildClipboard.Parent == target;
+            return _buildValidator.CanMoveTo(_buildClipboard, target, allowDuplicateNames);
+        }
+
+        private async Task Paste(IBuildFolderViewModel target)
         {
             IBuildViewModel pasted;
             if (_clipboardIsCopy)
             {
-                var folder = _buildClipboard as IBuildViewModel<BuildFolder>;
-                if (folder == null)
-                {
-                    var vm = (IBuildViewModel<PoEBuild>)_buildClipboard;
-                    pasted = new BuildViewModel(vm.Build.DeepClone(), Filter);
-                }
-                else
-                {
-                    pasted = new BuildFolderViewModel(folder.Build.DeepClone(), Filter, BuildOnCollectionChanged);
-                }
+                var newBuild = _buildClipboard.Build.DeepClone() as PoEBuild;
+                if (newBuild == null)
+                    throw new InvalidOperationException("Can only copy builds, not folders.");
+                newBuild.Name = Util.FindDistinctName(newBuild.Name, target.Children.Select(b => b.Build.Name));
+                pasted = new BuildViewModel(newBuild, Filter);
             }
             else
             {
                 pasted = _buildClipboard;
                 _buildClipboard = null;
             }
-            build.Children.Add(pasted);
+            target.Children.Add(pasted);
+
+            // Folders and non-dirty builds need to be saved to create the new file.
+            var build = pasted.Build as PoEBuild;
+            if (build == null || !build.IsDirty)
+            {
+                await SaveBuildToFile(pasted);
+            }
         }
 
         private async Task Edit(IBuildViewModel build)
         {
-
+            var nameBefore = build.Build.Name;
             var buildVm = build as IBuildViewModel<PoEBuild>;
             var folderVm = build as IBuildViewModel<BuildFolder>;
             if (buildVm != null)
             {
-                await _dialogCoordinator.EditBuildAsync(this, buildVm.Build);
+                await _dialogCoordinator.EditBuildAsync(this, buildVm, _buildValidator);
             }
             else if (folderVm != null)
             {
-                if (await _dialogCoordinator.EditFolderAsync(this, folderVm.Build))
+                var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this,
+                    L10n.Message("Edit Folder"),
+                    L10n.Message("Enter the new name for this folder below."),
+                    folderVm.Build.Name,
+                    s => _buildValidator.ValidateExistingFolderName(s, folderVm));
+                if (!string.IsNullOrWhiteSpace(name))
                 {
+                    folderVm.Build.Name = name;
                     await SaveBuildToFile(build);
                 }
             }
@@ -323,7 +351,13 @@ namespace POESKillTree.ViewModels
             {
                 throw new ArgumentException("Argument's IBuild implementation is not supported");
             }
+            if (build.Build.Name != nameBefore)
+            {
+                await SaveBuildToFile(build.Parent);
+            }
         }
+
+        #endregion
 
         private bool Filter(IBuildViewModel b)
         {
@@ -343,16 +377,7 @@ namespace POESKillTree.ViewModels
             return true;
         }
 
-        public IEnumerable<BuildViewModel> GetDirtyBuilds()
-        {
-            var dirty = new List<BuildViewModel>();
-            TreeTraverse<BuildViewModel>(vm =>
-            {
-                if (vm.Build.IsDirty)
-                    dirty.Add(vm);
-            }, BuildRoot);
-            return dirty;
-        }
+        #region Traverse helper methods
 
         private static T TreeFind<T>(Predicate<T> predicate, IBuildViewModel current) where T : class, IBuildViewModel
         {
@@ -387,6 +412,10 @@ namespace POESKillTree.ViewModels
             var folder = current as BuildFolderViewModel;
             folder?.Children.ForEach(b => TreeTraverse(action, b));
         }
+
+        #endregion
+
+        #region Saving and related methods
 
         private async void BuildOnCollectionChanged(IBuildFolderViewModel build)
         {
@@ -456,12 +485,61 @@ namespace POESKillTree.ViewModels
             }
         }
 
+        private IEnumerable<BuildViewModel> GetDirtyBuilds()
+        {
+            var dirty = new List<BuildViewModel>();
+            TreeTraverse<BuildViewModel>(vm =>
+            {
+                if (vm.Build.IsDirty)
+                    dirty.Add(vm);
+            }, BuildRoot);
+            return dirty;
+        }
+
+        #endregion
+
         private class CustomDropHandler : DefaultDropHandler
         {
+            private readonly BuildsControlViewModel _outer;
+
+            public CustomDropHandler(BuildsControlViewModel outer)
+            {
+                _outer = outer;
+            }
+
             public override void DragOver(IDropInfo dropInfo)
             {
                 base.DragOver(dropInfo);
-                if (dropInfo.TargetItem is BuildViewModel && dropInfo.DropTargetAdorner == DropTargetAdorners.Highlight)
+
+                // Highlight: insert at TargetItem
+                // Insert: insert at TargetItem's parent
+                var isHighlight = dropInfo.DropTargetAdorner == DropTargetAdorners.Highlight;
+
+                // Can't drop onto builds
+                if (dropInfo.TargetItem is BuildViewModel && isHighlight)
+                {
+                    dropInfo.Effects = DragDropEffects.None;
+                }
+
+                // Ask BuildValidator if drop is possible
+                var source = dropInfo.Data as IBuildViewModel;
+                if (source == null)
+                    return;
+                IBuildFolderViewModel target;
+                if (isHighlight)
+                {
+                    target = dropInfo.TargetItem as IBuildFolderViewModel;
+                }
+                else
+                {
+                    var targetChild = dropInfo.TargetItem as IBuildViewModel;
+                    if (targetChild == null)
+                        return;
+                    target = targetChild.Parent;
+                }
+                if (target == null)
+                    return;
+                if (!_outer._buildValidator.CanMoveTo(source, target, source.Parent == target))
                 {
                     dropInfo.Effects = DragDropEffects.None;
                 }

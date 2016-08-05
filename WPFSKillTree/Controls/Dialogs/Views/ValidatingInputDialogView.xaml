@@ -1,0 +1,53 @@
+﻿<dialogs:BaseDialog x:Class="POESKillTree.Controls.Dialogs.Views.ValidatingInputDialogView"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+                    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+                    xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
+                    xmlns:viewModels="clr-namespace:POESKillTree.Controls.Dialogs.ViewModels"
+                    mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:ValidatingInputDialogViewModel}">
+    <!-- Based on https://github.com/MahApps/MahApps.Metro/blob/1.2.4/MahApps.Metro/Themes/Dialogs/InputDialog.xaml
+         Has a ViewModel that supports input validation. -->
+    <Grid Margin="0 10 0 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"
+                           MinHeight="20" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Margin="0 5 0 0"
+                   FontSize="{DynamicResource DialogMessageFontSize}"
+                   Text="{Binding Message}"
+                   TextWrapping="Wrap" />
+        <TextBox Grid.Row="1"
+                 Margin="0 5 0 0"
+                 FontSize="{DynamicResource DialogMessageFontSize}"
+                 controls:ControlsHelper.FocusBorderBrush="{DynamicResource AccentColorBrush}"
+                 controls:TextBoxHelper.SelectAllOnFocus="True"
+                 wpf:Helper.FocusOnLoaded="True"
+                 Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                 TextWrapping="Wrap" />
+
+        <StackPanel Grid.Row="2"
+                    Style="{StaticResource DialogPanel}">
+            <Button Style="{StaticResource DynamicDialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{Binding Input}"
+                    IsDefault="True">
+                <Button.Content>
+                    <l:Catalog Message="OK" />
+                </Button.Content>
+            </Button>
+            <Button Style="{StaticResource DynamicDialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{x:Null}"
+                    IsCancel="True">
+                <Button.Content>
+                    <l:Catalog Message="Cancel" />
+                </Button.Content>
+            </Button>
+        </StackPanel>
+    </Grid>
+</dialogs:BaseDialog>

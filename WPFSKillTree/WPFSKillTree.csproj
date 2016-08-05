@@ -173,6 +173,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\ViewModels\CloseableViewModel.cs" />
+    <Compile Include="Common\ViewModels\ErrorInfoViewModel.cs" />
+    <Compile Include="Common\ViewModels\RelayCommand.cs" />
+    <Compile Include="Common\ViewModels\ViewModelBase.cs" />
     <Compile Include="Contrib\RangeTree\Range.cs" />
     <Compile Include="Contrib\RangeTree\RangeTree.cs" />
     <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />
@@ -186,6 +190,18 @@
     <Compile Include="Controls\Dialogs\DialogParticipation.cs" />
     <Compile Include="Controls\Dialogs\IDialogCoordinator.cs" />
     <Compile Include="Controls\Dialogs\ProgressDialogController.cs" />
+    <Compile Include="Controls\Dialogs\ViewModels\FileSelectorViewModel.cs" />
+    <Compile Include="Controls\Dialogs\ViewModels\MetroMessageBoxViewModel.cs" />
+    <Compile Include="Controls\Dialogs\ViewModels\ValidatingInputDialogViewModel.cs" />
+    <Compile Include="Controls\Dialogs\Views\FileSelectorView.xaml.cs">
+      <DependentUpon>FileSelectorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\Views\MetroMessageBoxWindow.xaml.cs">
+      <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\Views\ValidatingInputDialogView.xaml.cs">
+      <DependentUpon>ValidatingInputDialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DraggedItem.cs" />
     <Compile Include="Controls\Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
@@ -236,7 +252,6 @@
     <Compile Include="Model\Items\XmlItemList.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\Serialization\AbstractPersistentData.cs" />
-    <Compile Include="Model\RelayCommand.cs" />
     <Compile Include="Model\ResetPreferences.cs" />
     <Compile Include="Model\Serialization\AbstractPersistentDataDeserializer.cs" />
     <Compile Include="Model\Serialization\IPersistentDataDeserializer.cs" />
@@ -245,6 +260,8 @@
     <Compile Include="Model\Serialization\PersistentDataSerializationService.cs" />
     <Compile Include="Model\Serialization\PersistentDataSerializer.cs" />
     <Compile Include="Model\Serialization\SerializationConstants.cs" />
+    <Compile Include="Utils\Helper.cs" />
+    <Compile Include="Utils\PathEx.cs" />
     <Compile Include="Utils\SerializationUtils.cs" />
     <Compile Include="Model\Serialization\XmlBuildFolder.cs" />
     <Compile Include="Model\Serialization\XmlPersistentData.cs" />
@@ -332,9 +349,9 @@
     <Compile Include="ViewModels\BuildsControlViewModel.cs" />
     <Compile Include="ViewModels\Builds\AbstractBuildViewModel.cs" />
     <Compile Include="ViewModels\Builds\BuildFolderViewModel.cs" />
+    <Compile Include="ViewModels\Builds\BuildValidator.cs" />
     <Compile Include="ViewModels\Builds\BuildViewModel.cs" />
     <Compile Include="ViewModels\Builds\IBuildViewModel.cs" />
-    <Compile Include="ViewModels\CloseableViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
@@ -342,11 +359,9 @@
     <Compile Include="ViewModels\DownloadStashViewModel.cs" />
     <Compile Include="ViewModels\EditBuildViewModel.cs" />
     <Compile Include="ViewModels\ExtendedDialogCoordinator.cs" />
-    <Compile Include="ViewModels\FileSelectorViewModel.cs" />
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
     <Compile Include="Utils\Wpf\StyleSelectorByType.cs" />
     <Compile Include="ViewModels\TabPickerViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
       <DependentUpon>AdvancedGeneratorTab.xaml</DependentUpon>
     </Compile>
@@ -376,7 +391,6 @@
     <Compile Include="Controls\DragAdorner.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
-    <Compile Include="ViewModels\MetroMessageBoxViewModel.cs" />
     <Compile Include="Model\Items\ItemConverter.cs" />
     <Compile Include="TreeGenerator\Views\ControllerWindow.xaml.cs">
       <DependentUpon>ControllerWindow.xaml</DependentUpon>
@@ -399,9 +413,6 @@
     <Compile Include="Views\EditBuildWindow.xaml.cs">
       <DependentUpon>EditBuildWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FileSelectorView.xaml.cs">
-      <DependentUpon>FileSelectorView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
@@ -423,9 +434,18 @@
     <Compile Include="Views\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MetroMessageBoxWindow.xaml.cs">
-      <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
-    </Compile>
+    <Page Include="Controls\Dialogs\Views\FileSelectorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dialogs\Views\MetroMessageBoxWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dialogs\Views\ValidatingInputDialogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\Dialogs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -516,10 +536,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FileSelectorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -547,10 +563,6 @@
     <Page Include="Views\DownloadItemsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MetroMessageBoxWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SettingsMenuWindow.xaml">
       <SubType>Designer</SubType>

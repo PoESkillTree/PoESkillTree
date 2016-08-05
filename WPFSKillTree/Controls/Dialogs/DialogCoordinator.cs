@@ -3,9 +3,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using POESKillTree.Common.ViewModels;
+using POESKillTree.Controls.Dialogs.Views;
+using POESKillTree.Controls.Dialogs.ViewModels;
 using POESKillTree.Utils.Extensions;
-using POESKillTree.ViewModels;
-using POESKillTree.Views;
 
 namespace POESKillTree.Controls.Dialogs
 {
@@ -114,6 +115,14 @@ namespace POESKillTree.Controls.Dialogs
             return ShowDialogAsync(context,
                 new FileSelectorViewModel(title, message, defaultFile, isFolderPicker) {IsCancelable = isCancelable},
                 new FileSelectorView());
+        }
+
+        public async Task<string> ShowValidatingInputDialogAsync(object context, string title, string message,
+            string defaultText, Func<string, string> inputValidationFunc)
+        {
+            return await ShowDialogAsync(context,
+                new ValidatingInputDialogViewModel(title, message, defaultText, inputValidationFunc),
+                new ValidatingInputDialogView());
         }
     }
 }

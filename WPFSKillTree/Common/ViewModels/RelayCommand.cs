@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using JetBrains.Annotations;
 
-namespace POESKillTree.Model
+namespace POESKillTree.Common.ViewModels
 {
     public class RelayCommand : RelayCommand<object>
     {

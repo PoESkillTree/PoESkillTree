@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Views
+﻿namespace POESKillTree.Controls.Dialogs.Views
 {
     /// <summary>
     /// Interaction logic for FileSelectorView.xaml

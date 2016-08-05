@@ -56,5 +56,10 @@ namespace POESKillTree.Utils.Extensions
             TValue value;
             return dict.TryGetValue(key, out value) ? value : defaultValueProvider();
         }
+
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
+        {
+            return new HashSet<T>(source);
+        }
     }
 }

@@ -6,13 +6,13 @@ namespace POESKillTree.Controls.Dialogs
 {
     /// <summary>
     /// Subclass of <see cref="BaseMetroDialog"/> that has a few additional bindings to adjust
-    /// the appearance. The style is set up for a view model of type <see cref="ViewModels.ViewModelBase"/>.
+    /// the appearance. The style is set up for a view model of type <see cref="Common.ViewModels.ViewModelBase"/>.
     /// <para/>
-    /// This dialog's title is bound to <see cref="ViewModels.ViewModelBase.DisplayName"/> per default. It
+    /// This dialog's title is bound to <see cref="Common.ViewModels.ViewModelBase.DisplayName"/> per default. It
     /// can alternatively set explicitly through xaml.
     /// <para/>
     /// If you want to make the close button visible and have a view model that is a subclass of
-    /// <see cref="ViewModels.CloseableViewModel"/>, use <see cref="CloseableBaseDialog"/> instead.
+    /// <see cref="Common.ViewModels.CloseableViewModel"/>, use <see cref="CloseableBaseDialog"/> instead.
     /// </summary>
     public class BaseDialog : BaseMetroDialog
     {
@@ -89,7 +89,7 @@ namespace POESKillTree.Controls.Dialogs
     }
 
     /// <summary>
-    /// Subclass of <see cref="BaseDialog"/> that uses a DataContext of type <see cref="ViewModels.CloseableViewModel"/>
+    /// Subclass of <see cref="BaseDialog"/> that uses a DataContext of type <see cref="Common.ViewModels.CloseableViewModel"/>
     /// to set <see cref="BaseDialog.CloseCommand"/>
     /// to CloseCommand of the view model. The close button is visible by default.
     /// </summary>

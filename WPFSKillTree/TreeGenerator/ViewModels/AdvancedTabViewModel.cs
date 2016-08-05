@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using log4net;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Serialization
 {
@@ -40,16 +39,7 @@ namespace POESKillTree.Model.Serialization
         protected override async Task DeserializeAdditionalFilesAsync()
         {
             await DeserializeBuildsAsync();
-            var current = BuildForPath(_currentBuildPath) as PoEBuild;
-            if (current == null)
-            {
-                current = PersistentData.RootBuild.BuildsPreorder().FirstOrDefault();
-                if (current == null)
-                {
-                    current = CreateDefaultCurrentBuild();
-                    PersistentData.RootBuild.Builds.Add(current);
-                }
-            }
+            var current = BuildForPath(_currentBuildPath) as PoEBuild ?? SelectOrCreateCurrentBuild();
             PersistentData.CurrentBuild = current;
             PersistentData.SelectedBuild = BuildForPath(_selectedBuildPath) as PoEBuild;
         }
@@ -58,14 +48,21 @@ namespace POESKillTree.Model.Serialization
         {
             PersistentData.RootBuild.Builds.Clear();
             await DeserializeBuildsAsync();
+            var current = SelectOrCreateCurrentBuild();
+            PersistentData.CurrentBuild = current;
+            PersistentData.SelectedBuild = current;
+        }
+
+        private PoEBuild SelectOrCreateCurrentBuild()
+        {
             var current = PersistentData.RootBuild.BuildsPreorder().FirstOrDefault();
             if (current == null)
             {
                 current = CreateDefaultCurrentBuild();
+                current.Name = Util.FindDistinctName(current.Name, PersistentData.RootBuild.Builds.Select(b => b.Name));
                 PersistentData.RootBuild.Builds.Add(current);
             }
-            PersistentData.CurrentBuild = current;
-            PersistentData.SelectedBuild = current;
+            return current;
         }
 
         private async Task DeserializeBuildsAsync()

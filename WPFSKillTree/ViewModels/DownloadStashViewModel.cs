@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;

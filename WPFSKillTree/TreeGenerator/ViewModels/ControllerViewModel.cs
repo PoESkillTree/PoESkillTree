@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;

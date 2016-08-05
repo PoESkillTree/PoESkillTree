@@ -163,7 +163,6 @@ namespace POESKillTree.Model.Builds
             var o = (PoEBuild) SafeMemberwiseClone();
             o.CustomGroups = CustomGroups.Select(a => (string[])a.Clone()).ToList();
             o.Bandits = Bandits.DeepClone();
-            o.IsDirty = false;
             return o;
         }
 

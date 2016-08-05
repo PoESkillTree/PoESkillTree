@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.SimpleChildWindow;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;

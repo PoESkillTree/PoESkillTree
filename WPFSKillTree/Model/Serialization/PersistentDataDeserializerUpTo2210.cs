@@ -77,19 +77,14 @@ namespace POESKillTree.Model.Serialization
 
         private void RenameBuilds()
         {
-            var names = new Dictionary<string, int>();
-            foreach (var build in PersistentData.RootBuild.Builds)
+            var builds = PersistentData.RootBuild.Builds;
+            var names = builds.ToDictionary(b => b.Name);
+            foreach (var build in builds)
             {
-                int count;
-                if (names.TryGetValue(build.Name, out count))
-                {
-                    names[build.Name]++;
-                    build.Name += $" ({count - 1})";
-                }
-                else
-                {
-                    names[build.Name] = 1;
-                }
+                if (names[build.Name] == build)
+                    continue;
+                build.Name = Util.FindDistinctName(build.Name, names.Keys);
+                names[build.Name] = build;
             }
         }
 

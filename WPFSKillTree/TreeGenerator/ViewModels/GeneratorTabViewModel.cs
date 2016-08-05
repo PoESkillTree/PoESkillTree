@@ -1,4 +1,5 @@
 ﻿using System;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;

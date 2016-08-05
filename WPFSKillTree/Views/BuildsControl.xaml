@@ -87,13 +87,6 @@
                                         <l:Catalog Message="Cut" />
                                     </MenuItem.Header>
                                 </MenuItem>
-                                <MenuItem Command="{Binding Data.CopyCommand, Source={StaticResource VmProxy}}"
-                                          CommandParameter="{Binding}"
-                                          InputGestureText="Ctrl+C">
-                                    <MenuItem.Header>
-                                        <l:Catalog Message="Copy" />
-                                    </MenuItem.Header>
-                                </MenuItem>
                                 <MenuItem Command="{Binding Data.PasteCommand, Source={StaticResource VmProxy}}"
                                           CommandParameter="{Binding}"
                                           InputGestureText="Ctrl+V">

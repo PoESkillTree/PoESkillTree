@@ -148,12 +148,12 @@
 
         <StackPanel Grid.Row="1"
                     Style="{StaticResource DialogPanel}">
-            <Button Style="{StaticResource AccentedDialogPanelButton}"
+            <Button Style="{StaticResource DynamicDialogPanelButton}"
                     Click="Button_OK_Click">
-                <l:Catalog Message="OK"/>
+                <l:Catalog Message="Create Item"/>
             </Button>
             <Button IsCancel="True" IsDefault="True"
-                    Style="{StaticResource AccentedDialogPanelButton}"
+                    Style="{StaticResource DynamicDialogPanelButton}"
                     Click="Button_Cancel_Click">
                 <l:Catalog Message="Cancel"/>
             </Button>

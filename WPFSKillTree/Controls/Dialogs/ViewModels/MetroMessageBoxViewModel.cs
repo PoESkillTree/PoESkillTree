@@ -1,7 +1,8 @@
 using System.Windows;
 using System.Windows.Media;
+using POESKillTree.Common.ViewModels;
 
-namespace POESKillTree.ViewModels
+namespace POESKillTree.Controls.Dialogs.ViewModels
 {
     public class MetroMessageBoxViewModel : CloseableViewModel<MessageBoxResult>
     {

@@ -32,5 +32,16 @@
         <Setter Property="Height" Value="35" />
         <Setter Property="Padding" Value="10" />
     </Style>
+    
+    <Style x:Key="DynamicDialogPanelButton"
+           BasedOn="{StaticResource DialogPanelButton}"
+           TargetType="Button">
+        <Style.Triggers>
+            <Trigger Property="IsDefault" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
+                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 </ResourceDictionary>

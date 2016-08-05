@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using POESKillTree.Common.ViewModels;
 
 namespace POESKillTree.ViewModels
 {

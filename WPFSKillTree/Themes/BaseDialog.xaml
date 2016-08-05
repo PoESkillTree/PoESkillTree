@@ -51,7 +51,7 @@
                                         Style="{StaticResource DialogPanel}"
                                         Visibility="{TemplateBinding CloseButtonVisibility}">
                                 <Button IsDefault="True" IsCancel="True"
-                                        Style="{StaticResource AccentedDialogPanelButton}"
+                                        Style="{StaticResource DynamicDialogPanelButton}"
                                         Command="{TemplateBinding CloseCommand}"
                                         CommandParameter="{TemplateBinding CloseCommandParameter}">
                                     <l:Catalog Message="Close"/>
