@@ -54,8 +54,18 @@ namespace POESKillTree.Model.Serialization
             {
                 PersistentData.RootBuild.Builds.Add(PersistentData.CurrentBuild);
             }
-            PersistentData.RootBuild.Builds.Select(b => b as PoEBuild).Where(b => b != null).ForEach(b => b.KeepChanges());
+            PersistentData.RootBuild.Builds
+                .Select(b => b as PoEBuild)
+                .Where(b => b != null)
+                .ForEach(b => b.KeepChanges());
             RenameBuilds();
+        }
+
+        protected override string GetLongestRequiredSubpath()
+        {
+            return PersistentData.RootBuild.Builds
+                .Select(b => SerializationUtils.EncodeFileName(b.Name) + SerializationConstants.BuildFileExtension)
+                .Aggregate((s1, s2) => s1.Length > s2.Length ? s1 : s2);
         }
 
         protected override Task DeserializeAdditionalFilesAsync()
@@ -78,6 +88,13 @@ namespace POESKillTree.Model.Serialization
         private void RenameBuilds()
         {
             var builds = PersistentData.RootBuild.Builds;
+            // Rename empty builds
+            foreach (var build in builds)
+            {
+                if (string.IsNullOrEmpty(build.Name))
+                    build.Name = " ";
+            }
+            // Rename duplicates
             var names = builds.ToDictionary(b => b.Name);
             foreach (var build in builds)
             {

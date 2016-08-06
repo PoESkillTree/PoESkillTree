@@ -27,12 +27,14 @@ namespace POESKillTree.Controls.Dialogs
         /// <param name="context">The context object that is registered by the view</param>
         /// <param name="title">The title of the dialog</param>
         /// <param name="message">A message shown in the dialog</param>
-        /// <param name="defaultFile">The path that is initially selected</param>
+        /// <param name="defaultPath">The path that is initially selected</param>
         /// <param name="isFolderPicker">True, if the path is intepreted as a directory and not afile</param>
+        /// <param name="validationSubPath">Relative sub path of the selected path that is required to be creatable.
+        /// Only allowed to be non-null if <paramref name="isFolderPicker"/> is true.</param>
         /// <param name="isCancelable">True if the user can cancel the dialog</param>
         /// <returns>The selected path or <c>null</c> if the dialog is cancelable and was canceled</returns>
-        Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultFile,
-            bool isFolderPicker, bool isCancelable = true);
+        Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultPath,
+            bool isFolderPicker, string validationSubPath = null, bool isCancelable = true);
 
         Task<string> ShowValidatingInputDialogAsync(object context, string title, string message,
             string defaultText, Func<string, string> inputValidationFunc);

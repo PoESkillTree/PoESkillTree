@@ -37,6 +37,11 @@ namespace POESKillTree.Model.Serialization
 
         public abstract void DeserializePersistentDataFile(string xmlString);
 
+        protected virtual string GetLongestRequiredSubpath()
+        {
+            return SerializationConstants.EncodedDefaultBuildName;
+        }
+
         public async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
         {
             if (PersistentData.Options.BuildsSavePath == null)
@@ -51,8 +56,8 @@ namespace POESKillTree.Model.Serialization
                     PersistentData.Options.BuildsSavePath = await dialogCoordinator.ShowFileSelectorAsync(PersistentData,
                         L10n.Message("Select build directory"),
                         L10n.Message("Select the directory where builds will be stored.\n" +
-                                     "It will be created if it does not yet exist."),
-                        AppData.GetFolder("Builds"), isFolderPicker: true, isCancelable: false);
+                                     "It will be created if it does not yet exist. You can change it in the settings later."),
+                        AppData.GetFolder("Builds"), true, GetLongestRequiredSubpath(), false);
                 }
             }
             await DeserializeAdditionalFilesAsync();
@@ -84,7 +89,7 @@ namespace POESKillTree.Model.Serialization
 
         protected static PoEBuild CreateDefaultCurrentBuild()
         {
-            return new PoEBuild { Name = "New Build" };
+            return new PoEBuild { Name = SerializationConstants.DefaultBuildName };
         }
     }
 }

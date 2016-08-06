@@ -1,4 +1,6 @@
 ﻿using System;
+using POESKillTree.Localization;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Model.Serialization
 {
@@ -7,6 +9,11 @@ namespace POESKillTree.Model.Serialization
         public const string BuildFolderFileName = ".buildfolder";
 
         public const string BuildFileExtension = ".pbuild";
+
+        public static readonly string DefaultBuildName = L10n.Message("New build");
+
+        public static readonly string EncodedDefaultBuildName = SerializationUtils.EncodeFileName(DefaultBuildName) +
+                                                                BuildFileExtension;
 
         /// <summary>
         /// Current version of the file format used for .buildfolder and .pbuild files.

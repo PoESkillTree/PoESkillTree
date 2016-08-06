@@ -151,89 +151,97 @@ namespace POESKillTree.ViewModels.Builds
             NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs,
             ObservableCollection<TTarget> targetCollection, Func<TSource, TTarget> toTargetFunc)
         {
-            Func<TSource, IBuildViewModel> toVmFunc;
+            Func<TSource, TTarget, IBuildViewModel> toVmFunc;
             if (typeof(TSource) == typeof(IBuildViewModel))
-                toVmFunc = o => (IBuildViewModel) o;
+                toVmFunc = (s, t) => (IBuildViewModel) s;
             else if (typeof(TTarget) == typeof(IBuildViewModel))
-                toVmFunc = o => (IBuildViewModel) toTargetFunc(o);
+                toVmFunc = (s, t) => (IBuildViewModel) t;
             else
                 throw new ArgumentException("One type parameter must be IBuildViewModel");
-            var newBuilds = notifyCollectionChangedEventArgs.NewItems?.Cast<TSource>() ?? new TSource[0];
-            var oldBuilds = notifyCollectionChangedEventArgs.OldItems?.Cast<TSource>() ?? new TSource[0];
+            var news = (notifyCollectionChangedEventArgs.NewItems?.Cast<TSource>() ?? new TSource[0]).Select(b =>
+            {
+                var target = toTargetFunc(b);
+                return new { Target = target, ViewModel = toVmFunc(b, target)};
+            });
+            var olds = (notifyCollectionChangedEventArgs.OldItems?.Cast<TSource>() ?? new TSource[0]).Select(b =>
+            {
+                var target = toTargetFunc(b);
+                return new { Target = target, ViewModel = toVmFunc(b, target) };
+            });
+
             switch (notifyCollectionChangedEventArgs.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     var i = notifyCollectionChangedEventArgs.NewStartingIndex;
-                    foreach (var newBuild in newBuilds)
+                    foreach (var n in news)
                     {
-                        var t = toTargetFunc(newBuild);
-                        SetParent(toVmFunc(newBuild));
+                        SetParent(n.ViewModel);
                         if (i < 0)
                         {
-                            targetCollection.Add(t);
+                            targetCollection.Add(n.Target);
                         }
                         else
                         {
-                            targetCollection.Insert(i, t);
+                            targetCollection.Insert(i, n.Target);
                             i++;
                         }
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (var oldBuild in oldBuilds)
+                    foreach (var o in olds)
                     {
-                        UnsetParent(toVmFunc(oldBuild));
-                        targetCollection.Remove(toTargetFunc(oldBuild));
+                        UnsetParent(o.ViewModel);
+                        targetCollection.Remove(o.Target);
                     }
                     break;
                 case NotifyCollectionChangedAction.Replace:
                     if (notifyCollectionChangedEventArgs.NewStartingIndex < 0)
                     {
-                        foreach (var oldBuild in oldBuilds)
+                        foreach (var o in olds)
                         {
-                            UnsetParent(toVmFunc(oldBuild));
-                            targetCollection.Remove(toTargetFunc(oldBuild));
+                            UnsetParent(o.ViewModel);
+                            targetCollection.Remove(o.Target);
                         }
-                        foreach (var newBuild in newBuilds)
+                        foreach (var n in news)
                         {
-                            SetParent(toVmFunc(newBuild));
-                            targetCollection.Add(toTargetFunc(newBuild));
+                            SetParent(n.ViewModel);
+                            targetCollection.Add(n.Target);
                         }
                     }
                     else
                     {
                         var start = notifyCollectionChangedEventArgs.NewStartingIndex;
-                        var oldList = oldBuilds.ToList();
-                        var newList = newBuilds.ToList();
+                        var oldList = olds.ToList();
+                        var newList = news.ToList();
                         var minCount = Math.Min(newList.Count, oldList.Count);
                         for (var j = 0; j < minCount; j++)
                         {
-                            UnsetParent(toVmFunc(oldList[j]));
-                            SetParent(toVmFunc(newList[j]));
+                            UnsetParent(oldList[j].ViewModel);
+                            SetParent(newList[j].ViewModel);
                             targetCollection.RemoveAt(start + j);
-                            targetCollection.Insert(start + j, toTargetFunc(newList[j]));
+                            targetCollection.Insert(start + j, newList[j].Target);
                         }
                         for (var j = minCount; j < oldList.Count; j++)
                         {
-                            UnsetParent(toVmFunc(oldList[j]));
-                            targetCollection.Remove(toTargetFunc(oldList[j]));
+                            UnsetParent(oldList[j].ViewModel);
+                            targetCollection.Remove(oldList[j].Target);
                         }
                         for (var j = minCount; j < newList.Count; j++)
                         {
-                            SetParent(toVmFunc(newList[j]));
-                            targetCollection.Insert(start + j, toTargetFunc(newList[j]));
+                            SetParent(newList[j].ViewModel);
+                            targetCollection.Insert(start + j, newList[j].Target);
                         }
                     }
                     break;
                 case NotifyCollectionChangedAction.Move:
-                    foreach (var oldBuild in oldBuilds)
+                    foreach (var o in olds)
                     {
-                        targetCollection.Remove(toTargetFunc(oldBuild));
+                        targetCollection.Remove(o.Target);
                     }
                     i = notifyCollectionChangedEventArgs.NewStartingIndex;
-                    foreach (var newBuild in newBuilds)
+                    foreach (var n in news)
                     {
-                        targetCollection.Insert(i, toTargetFunc(newBuild));
+                        targetCollection.Insert(i, n.Target);
                         i++;
                     }
                     break;

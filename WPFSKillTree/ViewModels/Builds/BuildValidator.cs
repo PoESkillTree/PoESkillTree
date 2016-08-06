@@ -110,7 +110,7 @@ namespace POESKillTree.ViewModels.Builds
         private static string ValidateName(string name, string fullPath, IBuildViewModel build,
             IBuildFolderViewModel parent)
         {
-            if (IsNameUnique(name, build, parent))
+            if (!IsNameUnique(name, build, parent))
             {
                 return L10n.Message("A build or folder with this name already exists.");
             }
@@ -164,7 +164,7 @@ namespace POESKillTree.ViewModels.Builds
         {
             var fileName = SerializationUtils.EncodeFileName(build.Build.Name);
             return build.Parent == null
-                ? Path.Combine(_options.BuildsSavePath, fileName)
+                ? _options.BuildsSavePath // Root folder is not directly part of the path
                 : Path.Combine(BasePathFor(build.Parent), fileName);
         }
     }

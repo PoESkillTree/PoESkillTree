@@ -126,8 +126,28 @@ namespace POESKillTree.ViewModels
             _buildValidator = new BuildValidator(PersistentData.Options);
             BuildRoot = new BuildFolderViewModel(persistentData.RootBuild, Filter, BuildOnCollectionChanged);
 
-            CurrentBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.CurrentBuild, BuildRoot);
-            SelectedBuild = TreeFind<BuildViewModel>(b => b.Build == PersistentData.SelectedBuild, BuildRoot);
+            CurrentBuild = TreeFindBuildViewModel(PersistentData.CurrentBuild);
+            SelectedBuild = TreeFindBuildViewModel(PersistentData.SelectedBuild);
+            PersistentData.PropertyChanged += (sender, args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(PersistentData.CurrentBuild):
+                        if (CurrentBuild?.Build == PersistentData.CurrentBuild)
+                            return;
+                        CurrentBuild = PersistentData.CurrentBuild == null
+                            ? null
+                            : TreeFindBuildViewModel(PersistentData.CurrentBuild);
+                        break;
+                    case nameof(PersistentData.SelectedBuild):
+                        if (SelectedBuild?.Build == PersistentData.SelectedBuild)
+                            return;
+                        SelectedBuild = PersistentData.SelectedBuild == null
+                            ? null
+                            : TreeFindBuildViewModel(PersistentData.SelectedBuild);
+                        break;
+                }
+            };
 
             NewFolderCommand = new AsyncRelayCommand<IBuildFolderViewModel>(
                 NewFolder,
@@ -378,6 +398,11 @@ namespace POESKillTree.ViewModels
         }
 
         #region Traverse helper methods
+
+        private BuildViewModel TreeFindBuildViewModel(PoEBuild build)
+        {
+            return TreeFind<BuildViewModel>(b => b.Build == build, BuildRoot);
+        }
 
         private static T TreeFind<T>(Predicate<T> predicate, IBuildViewModel current) where T : class, IBuildViewModel
         {

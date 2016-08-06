@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -12,7 +13,7 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
         private string _filePath;
         private string _sanitizedFilePath;
         private readonly bool _isFolderPicker;
-        private bool _isCancelable = true;
+        private readonly string _validationSubPath;
 
         public string Message { get; }
 
@@ -30,18 +31,20 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
 
         public ICommand SelectFileCommand { get; }
 
-        public bool IsCancelable
-        {
-            get { return _isCancelable; }
-            set { SetProperty(ref _isCancelable, value); }
-        }
+        public bool IsCancelable { get; }
 
-        public FileSelectorViewModel(string title, string message, string defaultFile, bool isFolderPicker)
+        public FileSelectorViewModel(string title, string message, string defaultPath, bool isCancelable,
+            bool isFolderPicker, string validationSubPath = null)
         {
+            if (!isFolderPicker && !string.IsNullOrEmpty(validationSubPath))
+                throw new ArgumentException("validationSubPath may only be given if isFolderPicker is true",
+                    nameof(validationSubPath));
             DisplayName = title;
             Message = message;
-            FilePath = defaultFile;
+            FilePath = defaultPath;
+            IsCancelable = isCancelable;
             _isFolderPicker = isFolderPicker;
+            _validationSubPath = validationSubPath;
             SelectFileCommand = new RelayCommand(SelectFile);
         }
 
@@ -65,8 +68,12 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
                 return null;
             string message;
             var trimmed = PathEx.TrimTrailingDirectorySeparators(FilePath);
-            if (PathEx.IsPathValid(trimmed, out message, mustBeDirectory: true))
+            if (PathEx.IsPathValid(trimmed, out message, mustBeDirectory: _isFolderPicker, mustBeFile: !_isFolderPicker))
             {
+                if (!string.IsNullOrEmpty(_validationSubPath))
+                {
+                    PathEx.IsPathValid(Path.Combine(trimmed, _validationSubPath), out message);
+                }
                 SanitizedFilePath = trimmed;
             }
             return new[] {message};

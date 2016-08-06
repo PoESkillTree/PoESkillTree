@@ -5,6 +5,7 @@ using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Serialization;
 
 namespace POESKillTree.ViewModels
 {
@@ -61,7 +62,7 @@ namespace POESKillTree.ViewModels
                 L10n.Message("Select build directory"),
                 L10n.Message("Select the directory where builds will be stored.\n" +
                              "It will be created if it does not yet exist."),
-                Options.BuildsSavePath, true);
+                Options.BuildsSavePath, true, SerializationConstants.EncodedDefaultBuildName);
             if (path == null)
                 return;
             Options.BuildsSavePath = path;
