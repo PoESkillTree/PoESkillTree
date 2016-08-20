@@ -75,7 +75,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -86,6 +88,7 @@
     <Compile Include="TestItemDB.cs" />
     <Compile Include="TestMSTAlgorithm.cs" />
     <Compile Include="TestGeneticAlgorithmEasy.cs" />
+    <Compile Include="ObservableSetTest.cs" />
     <Compile Include="WeightedSamplerTests.cs" />
   </ItemGroup>
   <ItemGroup>
