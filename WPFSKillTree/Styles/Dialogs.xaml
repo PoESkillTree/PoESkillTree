@@ -37,10 +37,16 @@
            BasedOn="{StaticResource DialogPanelButton}"
            TargetType="Button">
         <Style.Triggers>
-            <Trigger Property="IsDefault" Value="True">
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsDefault" Value="True" />
+                    <!-- Both IsMouseOver True and IsPressed True have Setters that would be overridden. -->
+                    <Condition Property="IsMouseOver" Value="False" />
+                    <Condition Property="IsPressed" Value="False" />
+                </MultiTrigger.Conditions>
                 <Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
                 <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
-            </Trigger>
+            </MultiTrigger>
         </Style.Triggers>
     </Style>
 

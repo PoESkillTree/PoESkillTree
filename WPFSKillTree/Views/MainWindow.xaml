@@ -205,6 +205,20 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control" Key="S"
+                    Command="{Binding BuildsControlViewModel.SaveBuildCommand}"
+                    CommandParameter="{Binding PersistentData.CurrentBuild}"/>
+        <KeyBinding Modifiers="Control+Shift" Key="S"
+                    Command="{Binding BuildsControlViewModel.SaveAllBuildsCommand}"/>
+        <KeyBinding Modifiers="Control+Alt" Key="S"
+                    Command="{Binding BuildsControlViewModel.SaveBuildAsCommand}"
+                    CommandParameter="{Binding PersistentData.CurrentBuild}"/>
+        <KeyBinding Modifiers="Control" Key="N"
+                    Command="{Binding BuildsControlViewModel.NewBuildCommand}"
+                    CommandParameter="{Binding PersistentData.RootBuild}"/>
+    </Window.InputBindings>
+
     <Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="31"/>
@@ -246,6 +260,19 @@
                         <l:Catalog Message="Save _As" />
                     </MenuItem.Header>
                 </MenuItem>
+                <MenuItem InputGestureText="Ctrl+Shift+S"
+                          Command="{Binding BuildsControlViewModel.SaveAllBuildsCommand}">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Save A_ll" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Command="{Binding BuildsControlViewModel.ReloadCommand}">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Reload builds from filesystem" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <Separator/>
                 <MenuItem Click="Menu_Exit">
                     <MenuItem.Header>
                         <l:Catalog Message="E_xit" />

@@ -23,6 +23,8 @@ namespace POESKillTree.Utils
         /// </summary>
         public IDisposable Enter()
         {
+            if (_count == 0)
+                Entered?.Invoke(this, EventArgs.Empty);
             _count++;
             return this;
         }
@@ -34,6 +36,11 @@ namespace POESKillTree.Utils
             if (_count == 0)
                 Freed?.Invoke(this, EventArgs.Empty);
         }
+
+        /// <summary>
+        /// Event that is invoked every time <see cref="Enter"/> is called when <see cref="IsBusy"/> is false.
+        /// </summary>
+        public event EventHandler Entered;
 
         /// <summary>
         /// Event that is invoked every time all <see cref="Enter"/> calls are disposed.

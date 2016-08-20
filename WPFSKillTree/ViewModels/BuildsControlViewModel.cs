@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -28,6 +31,11 @@ namespace POESKillTree.ViewModels
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
 
         private readonly BuildValidator _buildValidator;
+
+        private readonly FileSystemWatcher _fileSystemWatcher;
+        private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
+        private readonly SimpleMonitor _changingFileSystemMonitor = new SimpleMonitor();
+        private int _changingFileSystemCounter;
 
         public IBuildFolderViewModel BuildRoot { get; }
 
@@ -60,6 +68,8 @@ namespace POESKillTree.ViewModels
         public ICommand CopyCommand { get; }
 
         public ICommand PasteCommand { get; }
+
+        public ICommand ReloadCommand { get; }
 
         public IPersistentData PersistentData { get; }
 
@@ -126,28 +136,35 @@ namespace POESKillTree.ViewModels
             _buildValidator = new BuildValidator(PersistentData.Options);
             BuildRoot = new BuildFolderViewModel(persistentData.RootBuild, Filter, BuildOnCollectionChanged);
 
+            _fileSystemWatcher = new FileSystemWatcher
+            {
+                Path = PersistentData.Options.BuildsSavePath,
+                IncludeSubdirectories = true,
+                NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastWrite
+            };
+            _fileSystemWatcher.Error += FileSystemWatcherOnError;
+            _fileSystemWatcher.Changed += FileSystemWatcherOnChanged;
+            _fileSystemWatcher.Created += FileSystemWatcherOnChanged;
+            _fileSystemWatcher.Deleted += FileSystemWatcherOnChanged;
+            _fileSystemWatcher.Renamed += FileSystemWatcherOnChanged;
+            _fileSystemWatcher.EnableRaisingEvents = true;
+
+            // The monitor alone is not enough because delays are necessary and those shouldn't block other save
+            // operations, which would happen if delays are awaited directly in the save method.
+            // It could be done awaited .ConfigureAwait(false) if SimpleMonitor would be thread safe.
+            _changingFileSystemMonitor.Entered += (sender, args) => _changingFileSystemCounter++;
+            _changingFileSystemMonitor.Freed += async (sender, args) =>
+            {
+                // Wait because FileSystemWatcherOnChanged calls are delayed a bit.
+                await Task.Delay(100);
+                // This is a counter and not boolean because other save operations may happen while waiting on delay.
+                _changingFileSystemCounter--;
+            };
+
             CurrentBuild = TreeFindBuildViewModel(PersistentData.CurrentBuild);
             SelectedBuild = TreeFindBuildViewModel(PersistentData.SelectedBuild);
-            PersistentData.PropertyChanged += (sender, args) =>
-            {
-                switch (args.PropertyName)
-                {
-                    case nameof(PersistentData.CurrentBuild):
-                        if (CurrentBuild?.Build == PersistentData.CurrentBuild)
-                            return;
-                        CurrentBuild = PersistentData.CurrentBuild == null
-                            ? null
-                            : TreeFindBuildViewModel(PersistentData.CurrentBuild);
-                        break;
-                    case nameof(PersistentData.SelectedBuild):
-                        if (SelectedBuild?.Build == PersistentData.SelectedBuild)
-                            return;
-                        SelectedBuild = PersistentData.SelectedBuild == null
-                            ? null
-                            : TreeFindBuildViewModel(PersistentData.SelectedBuild);
-                        break;
-                }
-            };
+            PersistentData.PropertyChanged += PersistentDataOnPropertyChanged;
+            PersistentData.Options.PropertyChanged += OptionsOnPropertyChanged;
 
             NewFolderCommand = new AsyncRelayCommand<IBuildFolderViewModel>(
                 NewFolder,
@@ -179,7 +196,76 @@ namespace POESKillTree.ViewModels
                 b => b != BuildRoot && b != CurrentBuild);
             CopyCommand = new RelayCommand<IBuildViewModel<PoEBuild>>(Copy);
             PasteCommand = new AsyncRelayCommand<IBuildFolderViewModel>(Paste, CanPaste);
+            ReloadCommand = new AsyncRelayCommand(Reload);
         }
+
+        #region Event handlers
+
+        private void PersistentDataOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            switch (args.PropertyName)
+            {
+                case nameof(IPersistentData.CurrentBuild):
+                    if (CurrentBuild?.Build == PersistentData.CurrentBuild)
+                        return;
+                    CurrentBuild = PersistentData.CurrentBuild == null
+                        ? null
+                        : TreeFindBuildViewModel(PersistentData.CurrentBuild);
+                    break;
+                case nameof(IPersistentData.SelectedBuild):
+                    if (SelectedBuild?.Build == PersistentData.SelectedBuild)
+                        return;
+                    SelectedBuild = PersistentData.SelectedBuild == null
+                        ? null
+                        : TreeFindBuildViewModel(PersistentData.SelectedBuild);
+                    break;
+            }
+        }
+
+        private void OptionsOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            switch (args.PropertyName)
+            {
+                case nameof(Options.BuildsSavePath):
+                    _fileSystemWatcher.Path = PersistentData.Options.BuildsSavePath;
+                    break;
+            }
+        }
+
+        private void FileSystemWatcherOnError(object sender, ErrorEventArgs errorEventArgs)
+        {
+            Log.Error($"File system watcher for {_fileSystemWatcher.Path} stopped working",
+                errorEventArgs.GetException());
+        }
+
+        private void FileSystemWatcherOnChanged(object sender, EventArgs fileSystemEventArgs)
+        {
+            // Only continue if all operations done by ourselves and the delay periods after them are finished.
+            if (_changingFileSystemCounter > 0)
+                return;
+            _synchronizationContext.Post(async _ => await FileSystemWatcherOnChanged(), null);
+        }
+
+        private async Task FileSystemWatcherOnChanged()
+        {
+            // There might be multiple changes, only react to the first one.
+            // Events for changes that take some time should occur before they are reenabled.
+            _fileSystemWatcher.EnableRaisingEvents = false;
+            var message = L10n.Message("Files in your build save directory have been changed.\n" +
+                                       "Do you want to reload all builds from the file system?");
+            if (GetDirtyBuilds().Any())
+            {
+                message += L10n.Message("\nAll unsaved changes will be lost.");
+            }
+            var result = await _dialogCoordinator.ShowQuestionAsync(this, message, title: L10n.Message("Builds changed"));
+            if (result == MessageBoxResult.Yes)
+            {
+                await PersistentData.ReloadBuildsAsync();
+            }
+            _fileSystemWatcher.EnableRaisingEvents = true;
+        }
+
+        #endregion
 
         #region Command methods
 
@@ -197,7 +283,7 @@ namespace POESKillTree.ViewModels
             await SaveBuildToFile(newFolder);
         }
 
-        public async Task NewBuild(IBuildFolderViewModel folder)
+        private async Task NewBuild(IBuildFolderViewModel folder)
         {
             var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this,
                 L10n.Message("New Build"),
@@ -233,7 +319,7 @@ namespace POESKillTree.ViewModels
             await DeleteBuildFile(build);
         }
 
-        public async Task SaveBuild(BuildViewModel build)
+        private async Task SaveBuild(BuildViewModel build)
         {
             build.Build.LastUpdated = DateTime.Now;
             await SaveBuildToFile(build);
@@ -241,7 +327,7 @@ namespace POESKillTree.ViewModels
             await SaveBuildToFile(build.Parent);
         }
 
-        public async Task SaveBuildAs(BuildViewModel vm)
+        private async Task SaveBuildAs(BuildViewModel vm)
         {
             var build = vm.Build;
             var name = await _dialogCoordinator.ShowInputAsync(this, L10n.Message("Save as"),
@@ -377,6 +463,18 @@ namespace POESKillTree.ViewModels
             }
         }
 
+        private async Task Reload()
+        {
+            if (GetDirtyBuilds().Any())
+            {
+                var result = await _dialogCoordinator.ShowQuestionAsync(this,
+                    L10n.Message("Any unsaved changes will be lost.\nAre you sure?"));
+                if (result != MessageBoxResult.Yes)
+                    return;
+            }
+            await PersistentData.ReloadBuildsAsync();
+        }
+
         #endregion
 
         private bool Filter(IBuildViewModel b)
@@ -453,7 +551,10 @@ namespace POESKillTree.ViewModels
         {
             try
             {
-                PersistentData.SaveBuild(build.Build);
+                using (_changingFileSystemMonitor.Enter())
+                {
+                    PersistentData.SaveBuild(build.Build);
+                }
             }
             catch (Exception e)
             {
@@ -467,7 +568,10 @@ namespace POESKillTree.ViewModels
         {
             try
             {
-                PersistentData.DeleteBuild(build.Build);
+                using (_changingFileSystemMonitor.Enter())
+                {
+                    PersistentData.DeleteBuild(build.Build);
+                }
             }
             catch (Exception e)
             {

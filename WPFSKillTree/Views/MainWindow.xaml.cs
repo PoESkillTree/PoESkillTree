@@ -530,7 +530,7 @@ namespace POESKillTree.Views
             }
         }
 
-        private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
@@ -589,12 +589,6 @@ namespace POESKillTree.Views
                     case Key.Y:
                         tbSkillURL_Redo();
                         break;
-                    case Key.S:
-                        await BuildsControlViewModel.SaveBuild(BuildsControlViewModel.CurrentBuild);
-                        break;
-                    case Key.N:
-                        await BuildsControlViewModel.NewBuild(BuildsControlViewModel.BuildRoot);
-                        break;
                 }
             }
 
@@ -609,16 +603,6 @@ namespace POESKillTree.Views
                 {
                     case Key.Q:
                         ToggleCharacterSheet();
-                        break;
-                }
-            }
-
-            if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) == (ModifierKeys.Control | ModifierKeys.Alt))
-            {
-                switch (e.Key)
-                {
-                    case Key.S:
-                        await BuildsControlViewModel.SaveBuildAs(BuildsControlViewModel.CurrentBuild);
                         break;
                 }
             }
