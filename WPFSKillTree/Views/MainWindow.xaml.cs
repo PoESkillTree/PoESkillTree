@@ -52,10 +52,7 @@ namespace POESKillTree.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public IPersistentData PersistentData
-        {
-            get { return _persistentData; }
-        }
+        public IPersistentData PersistentData => _persistentData;
 
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
@@ -506,7 +503,6 @@ namespace POESKillTree.Views
                 default:
                     break;
             }
-            Debug.WriteLine(e.PropertyName);
         }
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -1390,9 +1386,7 @@ namespace POESKillTree.Views
         private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
             var p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
-            var size = zbSkillTreeBackground.Child.DesiredSize;
             var v = new Vector2D(p.X, p.Y);
-
             v = v * _multransform + _addtransform;
 
             var node = Tree.FindNodeInRange(v, 50);
@@ -1449,12 +1443,11 @@ namespace POESKillTree.Views
             }
             else
             {
+                var size = zbSkillTreeBackground.Child.DesiredSize;
                 if (p.X < 0 || p.Y < 0 || p.X > size.Width || p.Y > size.Height)
                 {
                     if (_lastMouseButton == MouseButton.Right)
-                    {
                         zbSkillTreeBackground.Reset();
-                    }
                 }
             }
         }
@@ -1544,11 +1537,6 @@ namespace POESKillTree.Views
                 Tree?.ClearJewelHighlight();
                 Tree?.DrawAscendancyButton();
             }
-        }
-
-        private void zbSkillTreeBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //zbSkillTreeBackground.Child.RaiseEvent(e);
         }
 
         private void HighlightNodesByHover()

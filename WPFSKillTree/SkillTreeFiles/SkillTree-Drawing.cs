@@ -85,20 +85,14 @@ namespace POESKillTree.SkillTreeFiles
         private void HighlightedNodes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             DrawTreeComparisonHighlight();
-            Debug.WriteLine($"New Items: {e.NewItems?.Count} | Old Items: {e.OldItems?.Count}");
         }
 
         private void SkilledNodes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems == null && e.OldItems == null) return;
-            var start = DateTime.Now;
             DrawActiveSkillIconsAndSurrounds();
             DrawActivePaths();
             DrawCharacterFaces();
-            var end = DateTime.Now;
-            Debug.WriteLine($"{end - start}");
-            Debug.WriteLine($"New Items: {e.NewItems?.Count} | Old Items: {e.OldItems?.Count}");
-
         }
         /// <summary>
         /// This will initialize all drawing visuals. If a new drawing visual is added then it should be initialized here as well.
@@ -727,53 +721,51 @@ namespace POESKillTree.SkillTreeFiles
         {
             using (var dc = _ascButtons.RenderOpen())
             {
-                if (AscType != 0 && !_persistentData.Options.ShowAllAscendancyClasses)
+                if (AscType == 0 || _persistentData.Options.ShowAllAscendancyClasses) return;
+                foreach (var i in RootNodeList)
                 {
-                    foreach (var i in RootNodeList)
+                    if (!SkilledNodes.Contains(Skillnodes[(ushort)i]))
+                        continue;
+                    var node = Skillnodes[(ushort)i];
+                    string imageName;
+                    switch (type)
                     {
-                        if (!SkilledNodes.Contains(Skillnodes[(ushort)i]))
-                            continue;
-                        var node = Skillnodes[(ushort)i];
-                        string imageName;
-                        switch (type)
-                        {
-                            case "Highlight":
-                                imageName = "PassiveSkillScreenAscendancyButtonHighlight";
-                                break;
-                            case "Pressed":
-                                imageName = "PassiveSkillScreenAscendancyButtonPressed";
-                                break;
-                            default:
-                                imageName = "PassiveSkillScreenAscendancyButton";
-                                break;
-                        }
-
-                        var b = Assets[imageName];
-                        var brush = new ImageBrush(Assets[imageName]);
-
-                        var worldPos = node.Position;
-                        const int distanceFromStartNodeCenter = 325;
-                        var dirX = 0.0;
-                        var dirY = 1.0;
-                        var distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
-                        var isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
-                        if (!isCentered)
-                        {
-                            dirX = worldPos.X / distToCentre;
-                            dirY = -worldPos.Y / distToCentre;
-                        }
-
-                        var ascButtonRot = Math.Atan2(dirX, dirY);
-                        var buttonCx = worldPos.X + distanceFromStartNodeCenter * Math.Cos(ascButtonRot + Math.PI / 2);
-                        var buttonCy = worldPos.Y + distanceFromStartNodeCenter * Math.Sin(ascButtonRot + Math.PI / 2);
-                        var buttonPoint = new Vector2D(buttonCx, buttonCy);
-
-                        var rect = new Rect(buttonCx - b.Height * 1.75, buttonCy - b.Width * 1.75, b.Width * 2.5, b.Height * 2.5);
-                        dc.PushTransform(new RotateTransform(ascButtonRot * (180 / Math.PI), buttonCx, buttonCy));
-                        dc.DrawRectangle(brush, null, rect);
-
-                        AscButtonPosition = buttonPoint;
+                        case "Highlight":
+                            imageName = "PassiveSkillScreenAscendancyButtonHighlight";
+                            break;
+                        case "Pressed":
+                            imageName = "PassiveSkillScreenAscendancyButtonPressed";
+                            break;
+                        default:
+                            imageName = "PassiveSkillScreenAscendancyButton";
+                            break;
                     }
+
+                    var b = Assets[imageName];
+                    var brush = new ImageBrush(Assets[imageName]);
+
+                    var worldPos = node.Position;
+                    const int distanceFromStartNodeCenter = 325;
+                    var dirX = 0.0;
+                    var dirY = 1.0;
+                    var distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
+                    var isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
+                    if (!isCentered)
+                    {
+                        dirX = worldPos.X / distToCentre;
+                        dirY = -worldPos.Y / distToCentre;
+                    }
+
+                    var ascButtonRot = Math.Atan2(dirX, dirY);
+                    var buttonCx = worldPos.X + distanceFromStartNodeCenter * Math.Cos(ascButtonRot + Math.PI / 2);
+                    var buttonCy = worldPos.Y + distanceFromStartNodeCenter * Math.Sin(ascButtonRot + Math.PI / 2);
+                    var buttonPoint = new Vector2D(buttonCx, buttonCy);
+
+                    var rect = new Rect(buttonCx - b.Height * 1.75, buttonCy - b.Width * 1.75, b.Width * 2.5, b.Height * 2.5);
+                    dc.PushTransform(new RotateTransform(ascButtonRot * (180 / Math.PI), buttonCx, buttonCy));
+                    dc.DrawRectangle(brush, null, rect);
+
+                    AscButtonPosition = buttonPoint;
                 }
             }
         }
@@ -1043,19 +1035,12 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (DrawAscendancy)
             {
-                var start = DateTime.Now;
-                
                 UpdateAscendancyClassPositions();
                 DrawAscendancyClasses();
                 DrawActiveSkillIconsAndSurrounds(true);
                 DrawActivePaths(true);
                 DrawSkillIconsAndSurrounds(true);
-                var end2 = DateTime.Now;
-                Debug.WriteLine($"DrawAscendancy 1 - {end2 - start}");
                 DrawInitialPaths(Links, true);
-                var end = DateTime.Now;
-                Debug.WriteLine($"DrawAscendancy 2 - {end - start}");
-
             }
             else
             {

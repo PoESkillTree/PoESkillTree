@@ -714,11 +714,11 @@ namespace POESKillTree.SkillTreeFiles
         public IEnumerable<KeyValuePair<ushort, SkillNode>> FindNodesInRange(Vector2D mousePointer, int range = 50)
         {
             var nodes =
-              SkillTree.Skillnodes.Where(n => ((n.Value.Position - mousePointer).Length < range)).ToList();
+              Skillnodes.Where(n => ((n.Value.Position - mousePointer).Length < range)).ToList();
             if (!DrawAscendancy || AscType <= 0) return nodes;
             var asn = GetAscNode();
             var bitmap = Assets["Classes" + asn.ascendancyName];
-            nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - mousePointer).Length < range)).ToList();
+            nodes = Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - mousePointer).Length < range)).ToList();
             return nodes;
         }
 
@@ -898,14 +898,6 @@ namespace POESKillTree.SkillTreeFiles
             }
             result.Reverse();
             return result;
-        }
-
-        /// <summary>
-        /// Returns true iff node is a Ascendant "Path of the ..." node.
-        /// </summary>
-        private static bool IsAscendantClassStartNode(ushort node)
-        {
-            return IsAscendantClassStartNode(Skillnodes[node]);
         }
 
         /// <summary>
@@ -1135,7 +1127,7 @@ namespace POESKillTree.SkillTreeFiles
             byte asc = decbuff[5];
             if (decbuff.Length >= 7)
                 j = decbuff[6];
-            var nodes = new List<UInt16>();
+            var nodes = new List<ushort>();
             for (int k = (i > 3 ? 7 : 6); k < decbuff.Length; k += 2)
             {
                 byte[] dbff = { decbuff[k + 1], decbuff[k + 0] };
@@ -1225,7 +1217,7 @@ namespace POESKillTree.SkillTreeFiles
             return Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
-        public static byte[] GetCharacterBytes(byte charTypeByte = 0, byte ascTypeByte = 0)
+        private static byte[] GetCharacterBytes(byte charTypeByte = 0, byte ascTypeByte = 0)
         {
             var b = new byte[7];
             byte[] b2 = BitConverter.GetBytes(4); //skilltree version
@@ -1350,7 +1342,7 @@ namespace POESKillTree.SkillTreeFiles
             if (attrs == null || attrs.Length == 0)
                 return attrs;
 
-            List<string> split = new List<string>();
+            var split = new List<string>();
             for (int i = 0; i < attrs.Length; ++i)
                 split.AddRange(attrs[i].Split('\n'));
 
