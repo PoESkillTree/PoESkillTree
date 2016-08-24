@@ -257,6 +257,7 @@ namespace POESKillTree.ViewModels
             {
                 message += L10n.Message("\nAll unsaved changes will be lost.");
             }
+            message += L10n.Message("\n\nYou can also reload through the 'File' menu.");
             var result = await _dialogCoordinator.ShowQuestionAsync(this, message, title: L10n.Message("Builds changed"));
             if (result == MessageBoxResult.Yes)
             {

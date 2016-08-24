@@ -27,6 +27,8 @@ namespace POESKillTree.Model.Serialization
 
         public AbstractPersistentData PersistentData { protected get; set; }
 
+        protected IDialogCoordinator DialogCoordinator { get; private set; }
+
         protected AbstractPersistentDataDeserializer(string minimumConvertableVersion, string maximumConvertableVersion)
         {
             if (minimumConvertableVersion != null)
@@ -44,6 +46,7 @@ namespace POESKillTree.Model.Serialization
 
         public async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
         {
+            DialogCoordinator = dialogCoordinator;
             if (PersistentData.Options.BuildsSavePath == null)
             {
                 if (AppData.IsPortable)

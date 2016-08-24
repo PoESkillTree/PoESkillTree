@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
+using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
 
@@ -51,6 +52,100 @@ namespace POESKillTree.Model.Serialization
             var current = SelectOrCreateCurrentBuild();
             PersistentData.CurrentBuild = current;
             PersistentData.SelectedBuild = current;
+        }
+
+        /// <summary>
+        /// Imports the build located at <paramref name="buildPath"/>.
+        /// </summary>
+        /// <returns>The BuildFolder the imported build will be saved to. Null if no new build was created.</returns>
+        public async Task<BuildFolder> ImportBuildAsync(string buildPath)
+        {
+            const string extension = SerializationConstants.BuildFileExtension;
+            if (!File.Exists(buildPath) || Path.GetExtension(buildPath) != extension)
+            {
+                Log.Error($"Could not import build file from {buildPath}");
+                var message = string.Format(
+                    L10n.Message(
+                        "Could not import build file, only existing files with the extension {0} can be imported."),
+                    extension);
+                await DialogCoordinator.ShowErrorAsync(PersistentData, message, title: L10n.Message("Import failed"));
+                return null;
+            }
+
+            var unifiedBuildsSavePath = PersistentData.Options.BuildsSavePath.Replace(Path.AltDirectorySeparatorChar,
+                Path.DirectorySeparatorChar);
+            var unifiedPath = buildPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+
+            if (unifiedPath.StartsWith(unifiedBuildsSavePath))
+            {
+                // If BuildsSavePath is part of buildPath, just set it as current and selected build
+                var relativePath = unifiedPath.Remove(0, unifiedBuildsSavePath.Length + 1);
+                // Remove extension, split by path separator, decode each part and join parts
+                var parts = relativePath.Remove(relativePath.Length - extension.Length)
+                    .Split(Path.DirectorySeparatorChar)
+                    .Select(SerializationUtils.DecodeFileName);
+                var path = string.Join("/", parts);
+                var build = BuildForPath(path) as PoEBuild;
+                if (build == null)
+                {
+                    Log.Warn($"Import failed, build with path {path} not found");
+                    return null;
+                }
+
+                PersistentData.CurrentBuild = build;
+                PersistentData.SelectedBuild = build;
+                return null;
+            }
+            else
+            {
+                // Else, proper import
+                PoEBuild build;
+                try
+                {
+                    build = await DeserializeAsync<PoEBuild>(buildPath);
+                    if (!CheckVersion(build.Version))
+                    {
+                        Log.Warn($"Build is of an old version and can't be imported (version {build.Version})");
+                        await DialogCoordinator.ShowWarningAsync(PersistentData,
+                            L10n.Message("Build is of an old version and can't be imported"),
+                            title: L10n.Message("Import failed"));
+                        return null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Error while importing build", e);
+                    await DialogCoordinator.ShowErrorAsync(PersistentData, L10n.Message("Could not import build"),
+                            e.Message, L10n.Message("Import failed"));
+                    return null;
+                }
+                var message = L10n.Message("Enter the name for the imported build.\n\n")
+                    + L10n.Message("This build can be saved to your build directory after this dialog.\n")
+                    + L10n.Message("The originally imported file will not be modified.");
+                var newName = await DialogCoordinator.ShowValidatingInputDialogAsync(PersistentData,
+                    L10n.Message("Import build"), message, build.Name, ValidateImportedBuildName);
+                if (string.IsNullOrEmpty(newName))
+                    return null;
+                build.Name = newName;
+                PersistentData.RootBuild.Builds.Add(build);
+
+                PersistentData.CurrentBuild = build;
+                PersistentData.SelectedBuild = build;
+                return PersistentData.RootBuild;
+            }
+        }
+
+        private string ValidateImportedBuildName(string name)
+        {
+            if (PersistentData.RootBuild.Builds.Any(b => b.Name == name))
+                return L10n.Message("A build or folder with this name already exists.");
+            if (string.IsNullOrEmpty(name))
+                return L10n.Message("Value is required.");
+            string message;
+            var fullPath = Path.Combine(PersistentData.Options.BuildsSavePath,
+                SerializationUtils.EncodeFileName(name) + SerializationConstants.BuildFileExtension);
+            PathEx.IsPathValid(fullPath, out message, mustBeFile: true);
+            return message;
         }
 
         private PoEBuild SelectOrCreateCurrentBuild()

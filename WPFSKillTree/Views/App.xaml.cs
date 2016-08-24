@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using POESKillTree.Localization;
@@ -75,7 +76,9 @@ namespace POESKillTree.Views
             try
             {
 #endif
-                PersistentData = PersistentDataSerializationService.CreatePersistentData();
+                // Take the first not-switch argument as path to the build that will be imported
+                var importedBuildPath = e.Args.FirstOrDefault(s => !s.StartsWith("/"));
+                PersistentData = PersistentDataSerializationService.CreatePersistentData(importedBuildPath);
 #if !DEBUG
             }
             catch (Exception ex)

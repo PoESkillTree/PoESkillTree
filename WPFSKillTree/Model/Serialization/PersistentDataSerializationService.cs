@@ -22,24 +22,24 @@ namespace POESKillTree.Model.Serialization
         private static readonly string FilePath = AppData.GetFolder(true) + FileName + ".xml";
         private static readonly string BackupPath = AppData.GetFolder(true) + FileName + ".bak";
 
-        public static IPersistentData CreatePersistentData()
+        public static IPersistentData CreatePersistentData(string importedBuildPath)
         {
             if (!File.Exists(FilePath))
             {
                 var deserializer = new PersistentDataDeserializerCurrent();
-                var data = new PersistentData(deserializer);
+                var data = new PersistentData(deserializer, importedBuildPath);
                 deserializer.PersistentData = data;
                 return data;
             }
 
             try
             {
-                return Deserialize(FilePath);
+                return Deserialize(FilePath, importedBuildPath);
             }
             catch (Exception ex)
             {
                 if (File.Exists(BackupPath))
-                    return Deserialize(BackupPath);
+                    return Deserialize(BackupPath, importedBuildPath);
 
                 var badFilePath = AppData.GetFolder(true) + FileName + "_Bad.xml";
                 File.Copy(FilePath, badFilePath, true);
@@ -54,7 +54,7 @@ namespace POESKillTree.Model.Serialization
             }
         }
 
-        private static AbstractPersistentData Deserialize(string filePath)
+        private static AbstractPersistentData Deserialize(string filePath, string importedBuildPath)
         {
             var deserializer = new IPersistentDataDeserializer[]
             {
@@ -79,7 +79,7 @@ namespace POESKillTree.Model.Serialization
                 throw new Exception(
                     $"No converter available that can deserialize a PersistentData file with version {version}");
             }
-            var data = new PersistentData(suitableDeserializer);
+            var data = new PersistentData(suitableDeserializer, importedBuildPath);
             suitableDeserializer.PersistentData = data;
             suitableDeserializer.DeserializePersistentDataFile(xmlString);
             return data;
@@ -89,7 +89,7 @@ namespace POESKillTree.Model.Serialization
         [UsedImplicitly]
         public static void CreateSetupTemplate(string path, string language)
         {
-            var data = new BarePersistentData { Options = { Language = language } };
+            var data = new BarePersistentData {Options = {Language = language}};
             new PersistentDataSerializer(data).Serialize(Path.Combine(path, FileName + ".xml"));
         }
 
@@ -98,11 +98,13 @@ namespace POESKillTree.Model.Serialization
         {
             private PersistentDataSerializer _serializer;
             private readonly IPersistentDataDeserializer _deserializer;
+            private readonly string _importedBuildPath;
             private readonly PersistentDataDeserializerCurrent _currentDeserializer;
 
-            public PersistentData(IPersistentDataDeserializer deserializer)
+            public PersistentData(IPersistentDataDeserializer deserializer, string importedBuildPath)
             {
                 _deserializer = deserializer;
+                _importedBuildPath = importedBuildPath;
                 _currentDeserializer = deserializer as PersistentDataDeserializerCurrent ??
                                        new PersistentDataDeserializerCurrent {PersistentData = this};
             }
@@ -112,12 +114,30 @@ namespace POESKillTree.Model.Serialization
                 await _deserializer.InitializeAsync(dialogCoordinator);
                 _serializer = new PersistentDataSerializer(this);
                 _serializer.SerializeAllBuilds();
+                if (!string.IsNullOrEmpty(_importedBuildPath))
+                {
+                    // This has to be done after SerializeAllBuilds() because imported builds should not be saved automatically.
+                    var changedFolder = await _currentDeserializer.ImportBuildAsync(_importedBuildPath);
+                    // Save the folder the build was imported to.
+                    // This is required so the serializer knows the imported build's parent when it is saved.
+                    if (changedFolder != null)
+                        SaveBuild(changedFolder);
+                }
             }
 
             public override void Save()
             {
                 FileEx.MoveIfExists(FilePath, BackupPath, true);
-                _serializer.Serialize(FilePath);
+                try
+                {
+                    _serializer.Serialize(FilePath);
+                }
+                catch (Exception e)
+                {
+                    FileEx.MoveIfExists(BackupPath, FilePath);
+                    Log.Error(
+                        "Exception while saving PersistentData. Backup file was restored and changes may be lost.", e);
+                }
             }
 
             public override void SaveBuild(IBuild build)
