@@ -63,9 +63,14 @@ namespace POESKillTree.Model.Serialization
                         AppData.GetFolder("Builds"), true, GetLongestRequiredSubpath(), false);
                 }
             }
+            Directory.CreateDirectory(PersistentData.Options.BuildsSavePath);
             await DeserializeAdditionalFilesAsync();
             PersistentData.EquipmentData = await DeserializeEquipmentData();
             PersistentData.StashItems.AddRange(await DeserializeStashItemsAsync());
+        }
+
+        public virtual void SaveBuildChanges()
+        {
         }
 
         protected abstract Task DeserializeAdditionalFilesAsync();

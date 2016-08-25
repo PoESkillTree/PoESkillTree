@@ -40,7 +40,9 @@
             <ComboBox Width="90" Margin="5 0"
                       SelectedValue="{Binding ClassFilter}"
                       SelectedValuePath="Content">
-                <ComboBoxItem Content="All" />
+                <ComboBoxItem>
+                    <ComboBoxItem.Content><l:Catalog>All</l:Catalog></ComboBoxItem.Content>
+                </ComboBoxItem>
                 <ComboBoxItem Content="Scion"/>
                 <ComboBoxItem Content="Marauder"/>
                 <ComboBoxItem Content="Ranger"/>

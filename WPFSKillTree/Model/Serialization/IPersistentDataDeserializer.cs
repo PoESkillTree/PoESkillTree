@@ -26,7 +26,8 @@ namespace POESKillTree.Model.Serialization
 
         /// <summary>
         /// Sets the <see cref="AbstractPersistentData"/> this deserializer works on. Should not be set after
-        /// <see cref="DeserializePersistentDataFile"/> or <see cref="InitializeAsync"/> has been called.
+        /// <see cref="DeserializePersistentDataFile"/> has been called. <see cref="IPersistentData.SaveBuild"/>
+        /// may only be called after <see cref="InitializeAsync"/>.
         /// </summary>
         AbstractPersistentData PersistentData { set; }
 
@@ -41,5 +42,10 @@ namespace POESKillTree.Model.Serialization
         /// PersistentData.xml.
         /// </summary>
         Task InitializeAsync(IDialogCoordinator dialogCoordinator);
+
+        /// <summary>
+        /// Must be called after <see cref="InitializeAsync"/> to save all build changes done before.
+        /// </summary>
+        void SaveBuildChanges();
     }
 }

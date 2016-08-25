@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -71,6 +72,8 @@ namespace POESKillTree.ViewModels
 
         public ICommand ReloadCommand { get; }
 
+        public ICommand OpenBuildsSavePathCommand { get; }
+
         public IPersistentData PersistentData { get; }
 
         private BuildViewModel _currentBuild;
@@ -111,7 +114,7 @@ namespace POESKillTree.ViewModels
             }
         }
 
-        private string _classFilter = "All";
+        private string _classFilter = L10n.Message("All");
         public string ClassFilter
         {
             get { return _classFilter; }
@@ -197,6 +200,7 @@ namespace POESKillTree.ViewModels
             CopyCommand = new RelayCommand<IBuildViewModel<PoEBuild>>(Copy);
             PasteCommand = new AsyncRelayCommand<IBuildFolderViewModel>(Paste, CanPaste);
             ReloadCommand = new AsyncRelayCommand(Reload);
+            OpenBuildsSavePathCommand = new RelayCommand(() => Process.Start(PersistentData.Options.BuildsSavePath));
         }
 
         #region Event handlers

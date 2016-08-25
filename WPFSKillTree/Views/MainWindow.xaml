@@ -272,6 +272,14 @@
                         <l:Catalog Message="Reload builds from filesystem" />
                     </MenuItem.Header>
                 </MenuItem>
+                <MenuItem Command="{Binding BuildsControlViewModel.OpenBuildsSavePathCommand}">
+                    <MenuItem.Header>
+                        <l:Catalog>Open build directory</l:Catalog>
+                    </MenuItem.Header>
+                    <MenuItem.ToolTip>
+                        <l:Catalog Message="Opens the directory your builds are saved to so you can share those builds.&#x0a;The directory can be changed in the settings." />
+                    </MenuItem.ToolTip>
+                </MenuItem>
                 <Separator/>
                 <MenuItem Click="Menu_Exit">
                     <MenuItem.Header>

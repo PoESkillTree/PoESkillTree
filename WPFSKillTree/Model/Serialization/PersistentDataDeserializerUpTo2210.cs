@@ -54,10 +54,6 @@ namespace POESKillTree.Model.Serialization
             {
                 PersistentData.RootBuild.Builds.Add(PersistentData.CurrentBuild);
             }
-            PersistentData.RootBuild.Builds
-                .Select(b => b as PoEBuild)
-                .Where(b => b != null)
-                .ForEach(b => b.KeepChanges());
             RenameBuilds();
         }
 
@@ -71,6 +67,12 @@ namespace POESKillTree.Model.Serialization
         protected override Task DeserializeAdditionalFilesAsync()
         {
             return ImportLegacySavedBuilds();
+        }
+
+        public override void SaveBuildChanges()
+        {
+            PersistentData.SaveBuild(PersistentData.RootBuild);
+            PersistentData.RootBuild.Builds.ForEach(PersistentData.SaveBuild);
         }
 
         private bool SelectCurrentBuildByName(string name)

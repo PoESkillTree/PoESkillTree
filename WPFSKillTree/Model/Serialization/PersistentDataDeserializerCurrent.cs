@@ -55,10 +55,10 @@ namespace POESKillTree.Model.Serialization
         }
 
         /// <summary>
-        /// Imports the build located at <paramref name="buildPath"/>.
+        /// Imports the build located at <paramref name="buildPath"/>. <see cref="IPersistentData.SaveBuild"/> may be
+        /// called by this method.
         /// </summary>
-        /// <returns>The BuildFolder the imported build will be saved to. Null if no new build was created.</returns>
-        public async Task<BuildFolder> ImportBuildAsync(string buildPath)
+        public async Task ImportBuildAsync(string buildPath)
         {
             const string extension = SerializationConstants.BuildFileExtension;
             if (!File.Exists(buildPath) || Path.GetExtension(buildPath) != extension)
@@ -69,7 +69,7 @@ namespace POESKillTree.Model.Serialization
                         "Could not import build file, only existing files with the extension {0} can be imported."),
                     extension);
                 await DialogCoordinator.ShowErrorAsync(PersistentData, message, title: L10n.Message("Import failed"));
-                return null;
+                return;
             }
 
             var unifiedBuildsSavePath = PersistentData.Options.BuildsSavePath.Replace(Path.AltDirectorySeparatorChar,
@@ -79,22 +79,19 @@ namespace POESKillTree.Model.Serialization
             if (unifiedPath.StartsWith(unifiedBuildsSavePath))
             {
                 // If BuildsSavePath is part of buildPath, just set it as current and selected build
+                // Remove BuildsSavePath
                 var relativePath = unifiedPath.Remove(0, unifiedBuildsSavePath.Length + 1);
-                // Remove extension, split by path separator, decode each part and join parts
-                var parts = relativePath.Remove(relativePath.Length - extension.Length)
-                    .Split(Path.DirectorySeparatorChar)
-                    .Select(SerializationUtils.DecodeFileName);
-                var path = string.Join("/", parts);
+                // Remove extension
+                var path = relativePath.Remove(relativePath.Length - extension.Length);
                 var build = BuildForPath(path) as PoEBuild;
                 if (build == null)
                 {
                     Log.Warn($"Import failed, build with path {path} not found");
-                    return null;
+                    return;
                 }
 
                 PersistentData.CurrentBuild = build;
                 PersistentData.SelectedBuild = build;
-                return null;
             }
             else
             {
@@ -109,7 +106,7 @@ namespace POESKillTree.Model.Serialization
                         await DialogCoordinator.ShowWarningAsync(PersistentData,
                             L10n.Message("Build is of an old version and can't be imported"),
                             title: L10n.Message("Import failed"));
-                        return null;
+                        return;
                     }
                 }
                 catch (Exception e)
@@ -117,7 +114,7 @@ namespace POESKillTree.Model.Serialization
                     Log.Error("Error while importing build", e);
                     await DialogCoordinator.ShowErrorAsync(PersistentData, L10n.Message("Could not import build"),
                             e.Message, L10n.Message("Import failed"));
-                    return null;
+                    return ;
                 }
                 var message = L10n.Message("Enter the name for the imported build.\n\n")
                     + L10n.Message("This build can be saved to your build directory after this dialog.\n")
@@ -125,13 +122,13 @@ namespace POESKillTree.Model.Serialization
                 var newName = await DialogCoordinator.ShowValidatingInputDialogAsync(PersistentData,
                     L10n.Message("Import build"), message, build.Name, ValidateImportedBuildName);
                 if (string.IsNullOrEmpty(newName))
-                    return null;
+                    return;
                 build.Name = newName;
                 PersistentData.RootBuild.Builds.Add(build);
 
                 PersistentData.CurrentBuild = build;
                 PersistentData.SelectedBuild = build;
-                return PersistentData.RootBuild;
+                PersistentData.SaveBuild(PersistentData.RootBuild);
             }
         }
 
@@ -281,12 +278,13 @@ namespace POESKillTree.Model.Serialization
             if (path == null)
                 return null;
             IBuild build = PersistentData.RootBuild;
-            foreach (var part in path.Split('/'))
+            foreach (var part in path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
             {
                 var folder = build as BuildFolder;
                 if (folder == null)
                     return null;
-                build = folder.Builds.FirstOrDefault(child => child.Name == part);
+                var name = SerializationUtils.DecodeFileName(part);
+                build = folder.Builds.FirstOrDefault(child => child.Name == name);
                 if (build == null)
                     return null;
             }

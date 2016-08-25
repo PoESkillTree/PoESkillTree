@@ -77,16 +77,17 @@ namespace POESKillTree.Model.Serialization
         {
             if (build == null)
                 return null;
+            // Happens for current/selected builds that are not saved when Serialize is called
+            if (!_names.ContainsKey(build))
+                return null;
             if (build == _persistentData.RootBuild)
-                return asFilePath ? Path.Combine(_persistentData.Options.BuildsSavePath) : "";
+                return asFilePath ? _persistentData.Options.BuildsSavePath : "";
 
-            var path = asFilePath ? SerializationUtils.EncodeFileName(_names[build]) : _names[build];
+            var path = SerializationUtils.EncodeFileName(_names[build]);
             var parent = _parents[build];
             while (parent != _persistentData.RootBuild)
             {
-                path = asFilePath
-                    ? Path.Combine(SerializationUtils.EncodeFileName(_names[parent]), path)
-                    : _names[parent] + "/" + path;
+                path = Path.Combine(SerializationUtils.EncodeFileName(_names[parent]), path);
                 parent = _parents[parent];
             }
             return asFilePath ? Path.Combine(_persistentData.Options.BuildsSavePath, path) : path;
@@ -203,28 +204,6 @@ namespace POESKillTree.Model.Serialization
             InitParents();
         }
 
-        public void SerializeAllBuilds()
-        {
-            InitParents();
-            InitNames();
-            _markedForDeletion.Clear();
-
-            var path = _persistentData.Options.BuildsSavePath;
-            var tmpPath = path + "Tmp";
-            try
-            {
-                DirectoryEx.DeleteIfExists(tmpPath, true);
-                SerializeRecursive(tmpPath, _persistentData.RootBuild);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Could not save builds to {tmpPath}", e);
-                DirectoryEx.DeleteIfExists(tmpPath, true);
-                return;
-            }
-            DirectoryEx.MoveOverwriting(tmpPath, path);
-        }
-
         public void DeleteBuild(IBuild build)
         {
             // Return if build was not yet saved to the filesystem.
@@ -243,28 +222,6 @@ namespace POESKillTree.Model.Serialization
                 Directory.Delete(path, true);
             _markedForDeletion.Remove(build);
             _names.Remove(build);
-        }
-
-        private static void SerializeRecursive(string path, BuildFolder folder)
-        {
-            var xmlFolder = new XmlBuildFolder
-            {
-                Version = BuildVersion.ToString(),
-                IsExpanded = folder.IsExpanded,
-                Builds = folder.Builds.Select(b => b.Name).ToList()
-            };
-            Directory.CreateDirectory(path);
-            SerializationUtils.Serialize(xmlFolder, Path.Combine(path, BuildFolderFileName));
-
-            foreach (var build in folder.Builds)
-            {
-                var buildPath = Path.Combine(path, SerializationUtils.EncodeFileName(build.Name));
-                var b = build as PoEBuild;
-                if (b != null)
-                    SerializeBuild(buildPath, b);
-                else
-                    SerializeRecursive(buildPath, (BuildFolder) build);
-            }
         }
 
         private static void SerializeBuild(string path, PoEBuild build)
