@@ -23,7 +23,7 @@ namespace POESKillTree.Controls.Dialogs
 
         private static async Task<MetroWindow> GetMetroWindowAsync(object context)
         {
-            if (context == null) throw new ArgumentNullException("context");
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
             if (!DialogParticipation.IsRegistered(context))
             {
@@ -110,13 +110,10 @@ namespace POESKillTree.Controls.Dialogs
             return await metroWindow.ShowProgressAsync(title, message, isCancelable);
         }
 
-        public Task<string> ShowFileSelectorAsync(object context, string title, string message, string defaultPath,
-            bool isFolderPicker, string validationSubPath = null, bool isCancelable = true)
+        public Task<string> ShowFileSelectorAsync(object context, string title, string message,
+            FileSelectorDialogSettings settings)
         {
-            return ShowDialogAsync(context,
-                new FileSelectorViewModel(title, message, defaultPath, isCancelable, isFolderPicker,
-                    validationSubPath),
-                new FileSelectorView());
+            return ShowDialogAsync(context, new FileSelectorViewModel(title, message, settings), new FileSelectorView());
         }
 
         public async Task<string> ShowValidatingInputDialogAsync(object context, string title, string message,

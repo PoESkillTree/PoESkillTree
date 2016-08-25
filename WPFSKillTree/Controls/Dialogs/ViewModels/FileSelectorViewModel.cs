@@ -14,6 +14,7 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
         private string _sanitizedFilePath;
         private readonly bool _isFolderPicker;
         private readonly string _validationSubPath;
+        private readonly Func<string, string> _additionalValidationFunc;
 
         public string Message { get; }
 
@@ -33,18 +34,18 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
 
         public bool IsCancelable { get; }
 
-        public FileSelectorViewModel(string title, string message, string defaultPath, bool isCancelable,
-            bool isFolderPicker, string validationSubPath = null)
+        public FileSelectorViewModel(string title, string message, FileSelectorDialogSettings settings)
         {
-            if (!isFolderPicker && !string.IsNullOrEmpty(validationSubPath))
-                throw new ArgumentException("validationSubPath may only be given if isFolderPicker is true",
-                    nameof(validationSubPath));
+            if (!settings.IsFolderPicker && !string.IsNullOrEmpty(settings.ValidationSubPath))
+                throw new ArgumentException("ValidationSubPath may only be given if IsFolderPicker is true",
+                    nameof(settings));
             DisplayName = title;
             Message = message;
-            FilePath = defaultPath;
-            IsCancelable = isCancelable;
-            _isFolderPicker = isFolderPicker;
-            _validationSubPath = validationSubPath;
+            IsCancelable = settings.IsCancelable;
+            _isFolderPicker = settings.IsFolderPicker;
+            _validationSubPath = settings.ValidationSubPath;
+            _additionalValidationFunc = settings.AdditionalValidationFunc;
+            FilePath = settings.DefaultPath;
             SelectFileCommand = new RelayCommand(SelectFile);
         }
 
@@ -73,6 +74,10 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
                 if (!string.IsNullOrEmpty(_validationSubPath))
                 {
                     PathEx.IsPathValid(Path.Combine(trimmed, _validationSubPath), out message);
+                }
+                if (message == null)
+                {
+                    message = _additionalValidationFunc(trimmed);
                 }
                 SanitizedFilePath = trimmed;
             }

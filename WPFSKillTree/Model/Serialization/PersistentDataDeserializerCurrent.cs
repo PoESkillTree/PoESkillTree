@@ -24,6 +24,7 @@ namespace POESKillTree.Model.Serialization
         public PersistentDataDeserializerCurrent()
             : base("2.2.10.958", "999.0")
         {
+            DeserializesBuildsSavePath = true;
         }
 
         public override void DeserializePersistentDataFile(string xmlString)

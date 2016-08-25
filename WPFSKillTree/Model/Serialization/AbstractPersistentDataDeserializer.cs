@@ -29,6 +29,8 @@ namespace POESKillTree.Model.Serialization
 
         protected IDialogCoordinator DialogCoordinator { get; private set; }
 
+        protected bool DeserializesBuildsSavePath { private get; set; }
+
         protected AbstractPersistentDataDeserializer(string minimumConvertableVersion, string maximumConvertableVersion)
         {
             if (minimumConvertableVersion != null)
@@ -56,11 +58,25 @@ namespace POESKillTree.Model.Serialization
                 else
                 {
                     // Ask user for path. Default: AppData.GetFolder("Builds")
+                    var dialogSettings = new FileSelectorDialogSettings
+                    {
+                        DefaultPath = AppData.GetFolder("Builds"),
+                        IsFolderPicker = true,
+                        ValidationSubPath = GetLongestRequiredSubpath(),
+                        IsCancelable = false
+                    };
+                    if (!DeserializesBuildsSavePath)
+                    {
+                        dialogSettings.AdditionalValidationFunc =
+                            path => Directory.Exists(path) && Directory.EnumerateFileSystemEntries(path).Any()
+                                ? L10n.Message("Directory must be empty.")
+                                : null;
+                    }
                     PersistentData.Options.BuildsSavePath = await dialogCoordinator.ShowFileSelectorAsync(PersistentData,
                         L10n.Message("Select build directory"),
                         L10n.Message("Select the directory where builds will be stored.\n" +
                                      "It will be created if it does not yet exist. You can change it in the settings later."),
-                        AppData.GetFolder("Builds"), true, GetLongestRequiredSubpath(), false);
+                        dialogSettings);
                 }
             }
             Directory.CreateDirectory(PersistentData.Options.BuildsSavePath);

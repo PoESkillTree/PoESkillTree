@@ -66,7 +66,7 @@ namespace POESKillTree.Model.Serialization
 
         protected override Task DeserializeAdditionalFilesAsync()
         {
-            return ImportLegacySavedBuilds();
+            return ImportLegacySavedBuildsAsync();
         }
 
         public override void SaveBuildChanges()
@@ -111,7 +111,7 @@ namespace POESKillTree.Model.Serialization
         /// Import builds from legacy build save file "savedBuilds" to PersistentData.xml.
         /// Warning: This will remove the "savedBuilds"
         /// </summary>
-        private async Task ImportLegacySavedBuilds()
+        private async Task ImportLegacySavedBuildsAsync()
         {
             if (!File.Exists("savedBuilds"))
                 return;
