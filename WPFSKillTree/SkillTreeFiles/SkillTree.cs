@@ -555,11 +555,13 @@ namespace POESKillTree.SkillTreeFiles
         {
             var remove = new List<SkillNode>();
             var add = new HashSet<SkillNode>();
-
+            var changedType = _asctype != toType;
             if (toType == 0)
             {
                 remove = SkilledNodes.Where(n => n.ascendancyName != null).ToList();
-                DrawAscendancy = false;
+                if (!_persistentData.Options.ShowAllAscendancyClasses)
+                    DrawAscendancy = false;
+                changedType = true;
             }
             else
             {
@@ -574,6 +576,7 @@ namespace POESKillTree.SkillTreeFiles
                             remove.Add(n);
                         add.Add(n);
                     }
+                    DrawAscendancy = true;
                 }
             }
 
@@ -582,7 +585,8 @@ namespace POESKillTree.SkillTreeFiles
 
             SkilledNodes.ExceptWith(remove);
             AllocateSkillNodes(add);
-            DrawAscendancyLayers();
+            if (changedType)
+                DrawAscendancyLayers();
         }
 
         public void SwitchClass(int classType)

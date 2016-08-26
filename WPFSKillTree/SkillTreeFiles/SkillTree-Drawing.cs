@@ -263,7 +263,7 @@ namespace POESKillTree.SkillTreeFiles
 
             if (node.IsAscendancyStart)
             {
-                if (!DrawAscendancy || isHighlight) return;
+                if (!DrawAscendancy || isHighlight || isActive) return;
 
                 const string ascStartName = "PassiveSkillScreenAscendancyMiddle";
                 var bitmap = Assets[ascStartName];
@@ -375,17 +375,17 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawActiveSkillIconsAndSurrounds(bool onlyAscendancy = false)
         {
-            DrawingContext dcSkillIcons = null;
+            DrawingContext dcActiveSkillIcons = null;
             DrawingContext dcActiveSkillSurround = null;
             if (!onlyAscendancy)
             {
-                dcSkillIcons = _activeSkillIcons.RenderOpen();
+                dcActiveSkillIcons = _activeSkillIcons.RenderOpen();
                 dcActiveSkillSurround = _activeNodeSurround.RenderOpen();
-                dcSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
+                dcActiveSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
             }
-            var ascSkillIcons = _ascActiveSkillIcons.RenderOpen();
-            var adcAsctiveSkillSurround = _ascActiveNodeSurround.RenderOpen();
-            ascSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
+            var ascActiveSkillIcons = _ascActiveSkillIcons.RenderOpen();
+            var ascActiveSkillSurround = _ascActiveNodeSurround.RenderOpen();
+            ascActiveSkillIcons.DrawGeometry(null, _skillIconPen, _skillTreeRectGeometry);
 
             foreach (var skillNode in SkilledNodes)
             {
@@ -395,19 +395,19 @@ namespace POESKillTree.SkillTreeFiles
                     var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
                     if ((!_persistentData.Options.ShowAllAscendancyClasses &&
                             skillNode.ascendancyName != ascendancyClassName)) continue;
-                    DrawSkillNodeIcon(ascSkillIcons, skillNode, onlyAscendancy, true);
-                    DrawSurround(adcAsctiveSkillSurround, skillNode, onlyAscendancy, true);
+                    DrawSkillNodeIcon(ascActiveSkillIcons, skillNode, onlyAscendancy, true);
+                    DrawSurround(ascActiveSkillSurround, skillNode, onlyAscendancy, true);
                 }
                 else
                 {
                     if(onlyAscendancy) continue;
-                    DrawSkillNodeIcon(dcSkillIcons, skillNode, false, true);
+                    DrawSkillNodeIcon(dcActiveSkillIcons, skillNode, false, true);
                     DrawSurround(dcActiveSkillSurround, skillNode, false, true);
                 }
             }
-            ascSkillIcons.Close();
-            adcAsctiveSkillSurround.Close();
-            dcSkillIcons?.Close();
+            ascActiveSkillIcons.Close();
+            ascActiveSkillSurround.Close();
+            dcActiveSkillIcons?.Close();
             dcActiveSkillSurround?.Close();
         }
 
@@ -608,7 +608,6 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawInitialPaths(IEnumerable<ushort[]> links, bool onlyAscendancy = false)
         {
-            var start = DateTime.Now;
             DrawingContext dc = null;
             var adc = _ascPaths.RenderOpen();
 
@@ -634,8 +633,6 @@ namespace POESKillTree.SkillTreeFiles
             }
             adc.Close();
             dc?.Close();
-            var end = DateTime.Now;
-            Debug.WriteLine($"{end - start}");
         }
 
         private void DrawCharacterFaces()
@@ -1041,6 +1038,7 @@ namespace POESKillTree.SkillTreeFiles
                 DrawActivePaths(true);
                 DrawSkillIconsAndSurrounds(true);
                 DrawInitialPaths(Links, true);
+                DrawAscendancyButton();
             }
             else
             {
@@ -1054,6 +1052,7 @@ namespace POESKillTree.SkillTreeFiles
                 _ascActiveSkillIcons.RenderOpen().Close();
                 _ascNodeSurround.RenderOpen().Close();
                 _ascActiveNodeSurround.RenderOpen().Close();
+                _ascButtons.RenderOpen().Close();
             }
         }
 

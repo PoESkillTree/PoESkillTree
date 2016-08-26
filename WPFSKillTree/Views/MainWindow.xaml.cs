@@ -1046,7 +1046,6 @@ namespace POESKillTree.Views
         private void PopulateAsendancySelectionList()
         {
             if (!Tree.UpdateAscendancyClasses) return;
-            Debug.WriteLine("Populating Ascendancy Classes");
             Tree.UpdateAscendancyClasses = false;
             var ascendancyItems = new List<string> { "None" };
             foreach (var name in Tree.AscClasses.GetClasses(Tree.Chartype))
