@@ -1,6 +1,7 @@
 ﻿using POESKillTree.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -248,7 +249,7 @@ namespace POESKillTree.Views
             {
                 quality = MsQuality.SelectedValues[0];
             }
-            Item.Properties = Item.BaseType.GetRawProperties((float) quality);
+            Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties((float) quality));
             ApplyLocals();
 
             if (Item.IsWeapon)
