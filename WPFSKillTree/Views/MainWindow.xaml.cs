@@ -1436,6 +1436,7 @@ namespace POESKillTree.Views
             }
             else if ((Tree.AscButtonPosition - v).Length < 150 && Tree.AscType != 0)
             {
+                if (_persistentData.Options.ShowAllAscendancyClasses) return;
                 Tree.DrawAscendancyButton("Pressed");
                 Tree.ToggleAscendancyTree();
                 SearchUpdate();

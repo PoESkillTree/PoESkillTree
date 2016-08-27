@@ -562,6 +562,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (!_persistentData.Options.ShowAllAscendancyClasses)
                     DrawAscendancy = false;
                 changedType = true;
+                _asctype = toType;
             }
             else
             {
@@ -576,7 +577,6 @@ namespace POESKillTree.SkillTreeFiles
                             remove.Add(n);
                         add.Add(n);
                     }
-                    DrawAscendancy = true;
                 }
             }
 
