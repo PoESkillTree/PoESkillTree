@@ -87,7 +87,7 @@ namespace UnitTests
 
             var tree = await _treeTask;
             // Initialize structures.
-            tree.LoadFromURL(treeURL);
+            tree.LoadFromUrl(treeURL);
             tree.Level = level;
 
             string itemData = File.ReadAllText(buildFile);

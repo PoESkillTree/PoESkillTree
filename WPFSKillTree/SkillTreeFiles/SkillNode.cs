@@ -30,7 +30,7 @@ namespace POESKillTree.SkillTreeFiles
         public string Icon; // icon "icon": "Art/2DArt/SkillIcons/passives/tempint.png",
         public UInt16 Id; // "id": -28194677,
         public NodeType Type; // "ks", "not", "m", "isJewelSocket"
-        public List<int> LinkId = new List<int>(); // "out": []
+        public List<ushort> LinkId = new List<ushort>(); // "out": []
         public string Name; //"dn": "Block Recovery",
         public int Orbit; //  "o": 1,
         public int OrbitIndex; // "oidx": 3,
@@ -53,10 +53,7 @@ namespace POESKillTree.SkillTreeFiles
                 return (SkillNodeGroup.Position - new Vector2D(d * Math.Sin(-Arc), d * Math.Cos(-Arc)));
             }
         }
-        public double Arc
-        {
-            get { return GetOrbitAngle(OrbitIndex, (int) SkillsPerOrbit[Orbit]); }
-        }
+        public double Arc => GetOrbitAngle(OrbitIndex, (int) SkillsPerOrbit[Orbit]);
 
         public string IconKey
         {
@@ -85,7 +82,7 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        double GetOrbitAngle(int orbit_index, int max_node_positions)
+        private static double GetOrbitAngle(int orbitIndex, int maxNodePositions)
         {
             // An orbit with 40 node placements has specific angles for certain orbit indices.
             /*if( max_node_positions == 40 )
@@ -135,7 +132,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }*/
 
-            return 2 * Math.PI * orbit_index / max_node_positions;
+            return 2 * Math.PI * orbitIndex / maxNodePositions;
         }
     }
 }

@@ -26,13 +26,13 @@ namespace POESKillTree.SkillTreeFiles
 
         public static Dictionary<string, string> NameToLink = new Dictionary<string, string>
         {
-            {Scion, SkillTree.GetCharacterURL(0)},
-            {Marauder, SkillTree.GetCharacterURL(1)},
-            {Ranger, SkillTree.GetCharacterURL(2)},
-            {Witch, SkillTree.GetCharacterURL(3)},
-            {Duelist, SkillTree.GetCharacterURL(4)},
-            {Templar, SkillTree.GetCharacterURL(5)},
-            {Shadow, SkillTree.GetCharacterURL(6)},
+            {Scion, SkillTree.GetCharacterUrl(0)},
+            {Marauder, SkillTree.GetCharacterUrl(1)},
+            {Ranger, SkillTree.GetCharacterUrl(2)},
+            {Witch, SkillTree.GetCharacterUrl(3)},
+            {Duelist, SkillTree.GetCharacterUrl(4)},
+            {Templar, SkillTree.GetCharacterUrl(5)},
+            {Shadow, SkillTree.GetCharacterUrl(6)},
         };
 
         public static string GetClassNameFromChartype(int chartype)

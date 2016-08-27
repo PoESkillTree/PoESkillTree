@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,6 +11,7 @@ using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Algorithm;
 using POESKillTree.TreeGenerator.Solver;
+using POESKillTree.Utils;
 using POESKillTree.ViewModels;
 
 namespace POESKillTree.TreeGenerator.ViewModels
@@ -337,8 +339,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var nodeCount = _bestSoFar.Count - _solver.UncountedNodes;
             BestResultText = string.Format(L10n.Plural("Best result so far: {0} point spent",
                 "Best result so far: {0} points spent", (uint)nodeCount), nodeCount);
-            _tree.HighlightedNodes = new HashSet<ushort>(_bestSoFar);
-            _tree.DrawTreeComparisonHighlight();
+            _tree.HighlightedNodes.Clear();
+            _tree.HighlightedNodes.UnionWith(_bestSoFar.Select(n => SkillTree.Skillnodes[n]));
         }
 
         /// <summary>

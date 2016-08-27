@@ -5,7 +5,7 @@ namespace POESKillTree.SkillTreeFiles
 {
     public class AscendancyClasses
     {
-        public Dictionary<string, List<Class>> Classes;
+        public readonly Dictionary<string, List<Class>> Classes;
 
         public AscendancyClasses()
         {
@@ -29,15 +29,7 @@ namespace POESKillTree.SkillTreeFiles
         /// <returns></returns>
         public string GetStartingClass(string ascClass)
         {
-            foreach(KeyValuePair<string, List<Class>> entry in Classes)
-            {
-                foreach(Class item in entry.Value)
-                {
-                    if (item.Name == ascClass)
-                        return entry.Key;
-                }
-            }
-            return null;
+            return (from entry in Classes where entry.Value.Any(item => item.Name == ascClass) select entry.Key).FirstOrDefault();
         }
 
         /// <summary>
@@ -48,7 +40,7 @@ namespace POESKillTree.SkillTreeFiles
         public int GetClassNumber(string ascClass)
         {
             var resClass = GetClass(ascClass);
-            return resClass == null ? 0 : resClass.Order;
+            return resClass?.Order ?? 0;
         }
 
         /// <summary>
@@ -61,12 +53,12 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (ascOrder > 0)
                 ascOrder -= 1;
-            foreach(KeyValuePair<string, string> pair in CharacterNames.NameToContent)
+            foreach(var pair in CharacterNames.NameToContent)
             {
                 if (pair.Key == startingClass)
                     startingClass = pair.Value;
             }
-            foreach (KeyValuePair<string, List<Class>> entry in Classes)
+            foreach (var entry in Classes)
             {
                 if (entry.Key == startingClass)
                 {
@@ -76,24 +68,39 @@ namespace POESKillTree.SkillTreeFiles
             }
             return null;
         }
+        /// <summary>
+        /// Returns a class name based on starting class and 0, 1, or 2 asc class
+        /// </summary>
+        /// <param name="charType"></param>
+        /// <param name="ascOrder">Get this from the tree decoding</param>
+        /// <returns></returns>
+        public string GetClassName(int charType, int ascOrder)
+        {
+            return GetClassName(CharacterNames.GetClassNameFromChartype(charType), ascOrder);
+        }
 
         /// <summary>
         /// Gets all Ascendancy classes associated with a starting class 
         /// </summary>
         /// <param name="startingClass"></param>
         /// <returns>A Class list or null if nothing was found</returns>
-        public List<Class> GetClasses(string startingClass)
+        public IEnumerable<Class> GetClasses(string startingClass)
         {
             List<Class> classes;
             Classes.TryGetValue(startingClass, out classes);
             return classes;
         }
 
+        public IEnumerable<Class> GetClasses(int startingClass)
+        {
+            return GetClasses(CharacterNames.GetClassNameFromChartype(startingClass));
+        }
+
         /// <summary>
         /// Gets all Ascedancy classes
         /// </summary>
         /// <returns>A combined list of all Ascendancy classes</returns>
-        public List<Class> GetClasses()
+        public IEnumerable<Class> GetClasses()
         {
             return Classes.Values.SelectMany(x => x).ToList();
         }
@@ -101,6 +108,11 @@ namespace POESKillTree.SkillTreeFiles
         public Class GetClass(string ascClass)
         {
             return GetClasses().FirstOrDefault(x => x.Name == ascClass);
+        }
+
+        public Class GetClass(int ascClass)
+        {
+            return GetClasses().FirstOrDefault(x => x.Name == CharacterNames.GetClassNameFromChartype(ascClass));
         }
     }    
 }

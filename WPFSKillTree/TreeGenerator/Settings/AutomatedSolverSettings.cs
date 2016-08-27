@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.TreeGenerator.Settings
 {
@@ -7,8 +8,8 @@ namespace POESKillTree.TreeGenerator.Settings
     /// </summary>
     public class AutomatedSolverSettings : SolverSettings
     {
-        public AutomatedSolverSettings(int level, int totalPoints, HashSet<ushort> @checked,
-            HashSet<ushort> crossed, HashSet<ushort> subsetTree, HashSet<ushort> initialTree, int iterations)
+        public AutomatedSolverSettings(int level, int totalPoints, ISet<SkillNode> @checked,
+            ISet<SkillNode> crossed, ISet<SkillNode> subsetTree, ISet<SkillNode> initialTree, int iterations)
             : base(level, totalPoints, @checked, crossed, subsetTree, initialTree, iterations)
         {
         }
