@@ -77,6 +77,7 @@ namespace POESKillTree.SkillTreeFiles
             DrawSkillIconsAndSurrounds();
             DrawCharacterFaces();
             DrawAscendancyClasses();
+            DrawAscendancyButton();
 
             //Add all the drawings on one layer
             CreateCombineVisuals();
@@ -1030,6 +1031,7 @@ namespace POESKillTree.SkillTreeFiles
         /// </summary>
         private void DrawAscendancyLayers()
         {
+            DrawAscendancyButton();
             if (DrawAscendancy)
             {
                 UpdateAscendancyClassPositions();
@@ -1038,7 +1040,6 @@ namespace POESKillTree.SkillTreeFiles
                 DrawActivePaths(true);
                 DrawSkillIconsAndSurrounds(true);
                 DrawInitialPaths(Links, true);
-                DrawAscendancyButton();
             }
             else
             {
@@ -1052,7 +1053,6 @@ namespace POESKillTree.SkillTreeFiles
                 _ascActiveSkillIcons.RenderOpen().Close();
                 _ascNodeSurround.RenderOpen().Close();
                 _ascActiveNodeSurround.RenderOpen().Close();
-                _ascButtons.RenderOpen().Close();
             }
         }
 
