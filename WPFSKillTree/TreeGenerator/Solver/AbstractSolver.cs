@@ -204,11 +204,11 @@ namespace POESKillTree.TreeGenerator.Solver
             if (Settings.SubsetTree.Count > 0 || Settings.InitialTree.Count > 0)
             {
                 // if the current tree does not need to be part of the result, only skill the character node
-                StartNode = searchGraph.SetStartNodes(new HashSet<ushort> { _tree.GetCharNodeId() });
+                StartNode = searchGraph.SetStartNodes(new[] {_tree.GetCharNode()});
             }
             else
             {
-                StartNode = searchGraph.SetStartNodes(new HashSet<ushort>(_tree.SkilledNodes.Select(n => n.Id)));
+                StartNode = searchGraph.SetStartNodes(_tree.SkilledNodes);
             }
         }
 

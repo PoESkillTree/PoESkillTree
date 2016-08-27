@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Model.PseudoAttributes;
-using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Settings
 {
@@ -49,8 +48,8 @@ namespace POESKillTree.TreeGenerator.Settings
         /// </summary>
         public readonly Dictionary<string, float> InitialAttributes;
 
-        private AdvancedSolverSettings(int level, int totalPoints, HashSet<SkillNode> @checked, HashSet<SkillNode> crossed,
-            ObservableSet<SkillNode> subsetTree, ObservableSet<SkillNode> initialTree, int iterations,
+        private AdvancedSolverSettings(int level, int totalPoints, ISet<SkillNode> @checked, ISet<SkillNode> crossed,
+            ISet<SkillNode> subsetTree, ISet<SkillNode> initialTree, int iterations,
             Dictionary<string, float> initialAttributes,
             Dictionary<string, Tuple<float, double>> attributeConstraints, Dictionary<PseudoAttribute, Tuple<float, double>> pseudoAttributeConstraints,
             WeaponClass weaponClass, Tags tags, OffHand offHand)

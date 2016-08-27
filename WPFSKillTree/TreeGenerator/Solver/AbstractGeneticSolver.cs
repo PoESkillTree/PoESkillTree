@@ -158,10 +158,11 @@ namespace POESKillTree.TreeGenerator.Solver
 
         private BitArray TreeToDna(IEnumerable<SkillNode> nodes)
         {
+            var set = new HashSet<ushort>(nodes.Select(n => n.Id));
             var dna = new BitArray(SearchSpace.Count);
             for (var i = 0; i < SearchSpace.Count; i++)
             {
-                if (nodes.Contains(SkillTree.Skillnodes[SearchSpace[i].Id]))
+                if (set.Contains(SearchSpace[i].Id))
                 {
                     dna[i] = true;
                 }
