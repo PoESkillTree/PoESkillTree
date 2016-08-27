@@ -129,7 +129,7 @@ namespace POESKillTree.Model.Items
             {
                 var wikiUtils = new WikiUtils(client);
                 var imgTuple = await wikiUtils.LoadItemBoxImageAsync(_baseName).ConfigureAwait(false);
-                var imgData = await client.GetByteArrayAsync(imgTuple.Item2).ConfigureAwait(false);
+                var imgData = await client.GetByteArrayAsync(imgTuple).ConfigureAwait(false);
                 var fileName = string.Format(AssetPathFormat, _baseName);
                 CreateDirectories(fileName);
                 using (var ms = new MemoryStream(imgData))
@@ -147,10 +147,7 @@ namespace POESKillTree.Model.Items
 
         protected void NewImageSourceTask(Task<ImageSource> task, string errorMessage, ImageSource defaultValue)
         {
-            ImageSource = new NotifyingTask<ImageSource>(task, e =>
-            {
-                Log.Error(errorMessage, e);
-            })
+            ImageSource = new NotifyingTask<ImageSource>(task, e => Log.Error(errorMessage, e))
             {
                 Default = defaultValue
             };

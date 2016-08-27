@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -147,7 +148,7 @@ namespace POESKillTree.Utils
 
             var tables =
                 doc.DocumentNode.SelectNodes("//table[contains(@class, 'wikitable')]")
-                    .Where(node => node.SelectNodes("tr[1]/th[1 and (. = \"Name\" or . = \"Skill gem\")]") != null)
+                    .Where(node => node.SelectNodes("tr[1]/th[1 and (. = \"Item\" or . = \"Skill gem\")]") != null)
                     .ToList();
             if (itemTypes.Count > tables.Count)
             {
@@ -164,16 +165,82 @@ namespace POESKillTree.Utils
         /// Loads the name and url of the item image in the first item box of the given wiki page url asynchronously.
         /// </summary>
         /// <param name="urlSuffix">The non-host part of the wiki url that should be loaded.</param>
-        /// <returns>A tuple containing the name and the url of the item image.</returns>
-        public async Task<Tuple<string, Uri>> LoadItemBoxImageAsync(string urlSuffix)
+        /// <returns>The url of the item image.</returns>
+        public async Task<string> LoadItemBoxImageAsync(string urlSuffix)
         {
             var doc = new HtmlDocument();
             var file = await _httpClient.GetStringAsync(WikiUrlPrefix + urlSuffix).ConfigureAwait(false);
             doc.LoadHtml(file);
             var nodes =
-                doc.DocumentNode.SelectNodes("//div[contains(@class, 'item-box')]/div[contains(@class, 'image')]/a/img");
+                doc.DocumentNode.SelectNodes("//span[contains(@class, 'item-box')]/a[contains(@class, 'image')]/img");
             var node = nodes[0];
-            return Tuple.Create(node.GetAttributeValue("alt", ""), new Uri(node.GetAttributeValue("src", "")));
+            return node.GetAttributeValue("src", "");
+        }
+
+        /// <summary>
+        /// Parses a item info box.
+        /// </summary>
+        /// <param name="itemBox">A <see cref="HtmlNode"/> with the item-box class.</param>
+        /// <returns>The information contained in the item info box</returns>
+        public static WikiItemBox ParseItemBox(HtmlNode itemBox)
+        {
+            var wikiItemBox = new WikiItemBox();
+            var header = itemBox.SelectSingleNode("*[contains(@class, 'header')]");
+            if (header.GetAttributeValue("class", "").Contains("-double"))
+            {
+                wikiItemBox.NameLine = WebUtility.HtmlDecode(header.FirstChild.InnerText);
+                wikiItemBox.TypeLine = WebUtility.HtmlDecode(header.LastChild.InnerText);
+            }
+            else
+            {
+                wikiItemBox.TypeLine = WebUtility.HtmlDecode(header.InnerText);
+            }
+
+            var statGroups = new List<WikiItemStat[]>();
+            foreach (var statGroup in itemBox.SelectNodes("*[contains(@class, 'item-stats')]/*[contains(@class, 'group')]"))
+            {
+                var stats = new List<WikiItemStat>();
+
+                var groupColor = WikiStatColor.Default;
+                if (statGroup.GetAttributeValue("class", "").Contains("-value"))
+                    groupColor = WikiStatColor.Value;
+                else if (statGroup.GetAttributeValue("class", "").Contains("-mod"))
+                    groupColor = WikiStatColor.Mod;
+
+                var currentStats = new List<Tuple<string, WikiStatColor>>();
+                foreach (var childNode in statGroup.ChildNodes)
+                {
+                    if (childNode.Name == "br" && currentStats.Any())
+                    {
+                        stats.Add(new WikiItemStat(currentStats));
+                        currentStats.Clear();
+                        continue;
+                    }
+
+                    var color = groupColor;
+                    if (childNode.GetAttributeValue("class", "").Contains("-value"))
+                        color = WikiStatColor.Value;
+                    else if (childNode.GetAttributeValue("class", "").Contains("-mod"))
+                        color = WikiStatColor.Mod;
+                    else if (childNode.GetAttributeValue("class", "").Contains("-default"))
+                        color = WikiStatColor.Default;
+                    var text = WebUtility.HtmlDecode(childNode.InnerText);
+
+                    var last = currentStats.LastOrDefault();
+                    if (last != null && last.Item2 == color)
+                        currentStats[currentStats.Count - 1] = Tuple.Create(last.Item1 + text, color);
+                    else
+                        currentStats.Add(Tuple.Create(text, color));
+                }
+
+                if (currentStats.Any())
+                {
+                    stats.Add(new WikiItemStat(currentStats));
+                }
+                statGroups.Add(stats.ToArray());
+            }
+            wikiItemBox.StatGroups = statGroups.ToArray();
+            return wikiItemBox;
         }
 
 
@@ -194,5 +261,69 @@ namespace POESKillTree.Utils
                 };
             }
         }
+    }
+
+    public class WikiItemBox
+    {
+        /// <summary>
+        /// Gets the text shown on the first line of the item box.
+        /// May be null, e.g. for base items, gems and magic items.
+        /// </summary>
+        public string NameLine { get; internal set; }
+
+        /// <summary>
+        /// Gets the text shown on the second line of the item box.
+        /// </summary>
+        public string TypeLine { get; internal set; }
+
+        /// <summary>
+        /// Gets the stats shown in the item box. First index selects the group (each group is
+        /// separated), second index the stat line in that group.
+        /// </summary>
+        public WikiItemStat[][] StatGroups { get; internal set; }
+    }
+
+    /// <summary>
+    /// Specifies one stat line in a item info box.
+    /// </summary>
+    public class WikiItemStat
+    {
+        /// <summary>
+        /// Gets the parts of text of this line with their corresponding colors.
+        /// Two successive tuples always have different colors.
+        /// </summary>
+        public Tuple<string, WikiStatColor>[] Stats { get; }
+
+        /// <summary>
+        /// Gets the text of this line.
+        /// </summary>
+        public string StatsCombined { get; }
+
+        internal WikiItemStat(IEnumerable<Tuple<string, WikiStatColor>> stats)
+        {
+            Stats = stats.ToArray();
+            StatsCombined = string.Join("", Stats.Select(t => t.Item1));
+        }
+    }
+
+    /// <summary>
+    /// Specifies the color with which a part of text is shown.
+    /// </summary>
+    public enum WikiStatColor
+    {
+        /// <summary>
+        /// Default text color.
+        /// </summary>
+        Default,
+        /// <summary>
+        /// Text color for values.
+        /// </summary>
+        Value,
+        /// <summary>
+        /// Text color for modifiers. Normally a whole group has this color.
+        /// If values surrounded by <see cref="Default"/> colored text have this color,
+        /// they are affected by modifiers.
+        /// </summary>
+        Mod
     }
 }

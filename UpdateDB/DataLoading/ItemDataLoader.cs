@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -20,12 +20,12 @@ namespace UpdateDB.DataLoading
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDataLoader));
 
-        /// <summary>
-        /// Contains all property columns in wiki tables that must be ignored because they contain redundant information.
-        /// </summary>
-        private static readonly HashSet<string> IgnoredColumns = new HashSet<string> { "Damage per Second" };
-
         private static readonly Regex NumberRegex = new Regex(@"\d+(\.\d+)?");
+
+        private static readonly Regex LevelRegex = new Regex(@"Level (\d+)");
+        private static readonly Regex DexRegex = new Regex(@"(\d+) Dex");
+        private static readonly Regex StrRegex = new Regex(@"(\d+) Str");
+        private static readonly Regex IntRegex = new Regex(@"(\d+) Int");
 
         /// <summary>
         /// Contains all item types that have hidden implicits that are not listed in the wiki tables.
@@ -34,15 +34,6 @@ namespace UpdateDB.DataLoading
 
         private static readonly IEnumerable<XmlItemBase> Jewels =
             ItemGroup.Jewel.Types().Select(t => new XmlItemBase { ItemType = t, Name = t.ToString().Replace("Jewel", " Jewel") }).ToList();
-
-        /// <summary>
-        /// Contains properties that have to be renamed because the Wiki's naming is incorrect.
-        /// </summary>
-        private static readonly IReadOnlyDictionary<string, string> PropertyRenaming = new Dictionary<string, string>
-        {
-            {"Damage", "Physical Damage"},
-            {"Armour Rating", "Armour"}
-        };
 
         static ItemDataLoader()
         {
@@ -90,101 +81,81 @@ namespace UpdateDB.DataLoading
 
         private static IEnumerable<XmlItemBase> ParseTable(HtmlNode table, ItemType itemType)
         {
-            var isFirstRow = true;
-            var nameColumn = -1;
-            var lvlColumn = -1;
-            var implicitColumn = -1;
-            var strColumn = -1;
-            var dexColumn = -1;
-            var intColumn = -1;
-            var propertyColumns = new Dictionary<int, string>();
-            foreach (var row in table.Elements("tr"))
+            // Select the item box in the first cell of each (non-header) row
+            foreach (var cell in table.SelectNodes("tr/td[1]//*[contains(@class, 'item-box')]"))
             {
-                if (isFirstRow)
-                {
-                    var i = 0;
-                    foreach (var cell in row.Elements("th"))
-                    {
-                        if (cell.InnerHtml == "Name")
-                        {
-                            nameColumn = i;
-                        }
-                        else if (cell.InnerHtml == "Modifiers")
-                        {
-                            implicitColumn = i;
-                        }
-                        else if (!cell.InnerHtml.Contains("<"))
-                        {
-                            if (!IgnoredColumns.Contains(cell.InnerHtml))
-                                propertyColumns[i] = cell.InnerHtml;
-                        }
-                        else switch (cell.FirstChild.GetAttributeValue("title", ""))
-                        {
-                            case "Required Level":
-                                lvlColumn = i;
-                                break;
-                            case "Required Strength":
-                                strColumn = i;
-                                break;
-                            case "Required Dexterity":
-                                dexColumn = i;
-                                break;
-                            case "Required Intelligence":
-                                intColumn = i;
-                                break;
-                        }
-                        i++;
-                    }
-                    isFirstRow = false;
-                }
-                else
-                {
-                    var implicits = new List<XmlStat>();
-                    var implicitFrom = 1F;
-                    var implicitTo = 1F;
-                    if (implicitColumn >= 0)
-                    {
-                        implicits.AddRange(ParseImplicit(row.ChildNodes[implicitColumn]));
-                        if (implicits.Any())
-                        {
-                            implicitFrom += implicits[0].From / 100;
-                            implicitTo += implicits[0].To / 100;
-                        }
-                    }
-                    if (HiddenImplicits.ContainsKey(itemType))
-                    {
-                        implicits.Add(HiddenImplicits[itemType]);
-                    }
+                var itemBox = WikiUtils.ParseItemBox(cell);
+                var statGroups = itemBox.StatGroups;
 
-                    yield return new XmlItemBase
+                var implicits = new List<XmlStat>();
+                var implicitFrom = 1F;
+                var implicitTo = 1F;
+                if (statGroups.Length > 2)
+                {
+                    foreach (var wikiItemStat in statGroups[2])
                     {
-                        Level = ParseCell(row.ChildNodes[lvlColumn], 0),
-                        Strength = strColumn >= 0 ? ParseCell(row.ChildNodes[strColumn], 0) : 0,
-                        Dexterity = dexColumn >= 0 ? ParseCell(row.ChildNodes[dexColumn], 0) : 0,
-                        Intelligence = intColumn >= 0 ? ParseCell(row.ChildNodes[intColumn], 0) : 0,
-                        ItemType = itemType,
-                        Name = WebUtility.HtmlDecode(row.ChildNodes[nameColumn].GetAttributeValue("data-sort-value", "")),
-                        Properties = ParseProperties(row, propertyColumns, implicitFrom, implicitTo).ToArray(),
-                        Implicit = implicits.Any() ? implicits.ToArray() : null
-                    };
+                        implicits.AddRange(ParseImplicit(wikiItemStat));
+                    }
+                    if (implicits.Any())
+                    {
+                        implicitFrom += implicits[0].From / 100;
+                        implicitTo += implicits[0].To / 100;
+                    }
                 }
+                if (HiddenImplicits.ContainsKey(itemType))
+                {
+                    implicits.Add(HiddenImplicits[itemType]);
+                }
+
+                var itemBase = new XmlItemBase
+                {
+                    ItemType = itemType,
+                    Name = itemBox.TypeLine,
+                    Implicit = implicits.Any() ? implicits.ToArray() : null,
+                    Properties = ParseProperties(statGroups[0], implicitFrom, implicitTo).ToArray()
+                };
+                ParseRequirements(statGroups[1], itemBase);
+                yield return itemBase;
             }
         }
 
-        private static IEnumerable<XmlStat> ParseImplicit(HtmlNode implicitCell)
+        private static void ParseRequirements(IEnumerable<WikiItemStat> requirements, XmlItemBase itemBase)
         {
-            if (IsNotApplicableCell(implicitCell)) yield break;
+            var requirementLine =
+                requirements.Select(s => s.StatsCombined).FirstOrDefault(s => s.StartsWith("Requires "));
+            if (requirementLine == null)
+                return;
 
-            var mod = WebUtility.HtmlDecode(FindContent(implicitCell));
+            int i;
+            if (TryParseFirstMatchToInt(LevelRegex, requirementLine, out i))
+                itemBase.Level = i;
+            if (TryParseFirstMatchToInt(StrRegex, requirementLine, out i))
+                itemBase.Strength = i;
+            if (TryParseFirstMatchToInt(DexRegex, requirementLine, out i))
+                itemBase.Dexterity = i;
+            if (TryParseFirstMatchToInt(IntRegex, requirementLine, out i))
+                itemBase.Intelligence = i;
+        }
+
+        private static bool TryParseFirstMatchToInt(Regex regex, string input, out int i)
+        {
+            i = 0;
+            var match = regex.Match(input);
+            return match.Success && TryParseInt(match.Groups[1].Value, out i);
+        }
+
+        private static IEnumerable<XmlStat> ParseImplicit(WikiItemStat wikiItemStat)
+        {
+            var mod = wikiItemStat.StatsCombined;
             var matches = NumberRegex.Matches(mod);
             if (matches.Count <= 0) yield break;
 
-            mod = NumberRegex.Replace(mod, "#").Replace("–", "-");
-            if (mod.Contains("#-#"))
+            mod = NumberRegex.Replace(mod, "#").Replace("–", "-").Replace("#-#", "# to #");
+            if (mod.Contains("# to # "))
             {
                 if (matches.Count != 2)
                 {
-                    Log.Warn("Could not parse implicit " + FindContent(implicitCell));
+                    Log.Warn("Could not parse implicit " + wikiItemStat.StatsCombined);
                     yield break;
                 }
                 var from = ParseFloat(matches[0].Value);
@@ -214,64 +185,58 @@ namespace UpdateDB.DataLoading
             }
         }
 
-        private static IEnumerable<XmlStat> ParseProperties(HtmlNode row,
-            IReadOnlyDictionary<int, string> propertyColumns, float implicitFrom, float implicitTo)
+        private static IEnumerable<XmlStat> ParseProperties(IEnumerable<WikiItemStat> properties,
+            float implicitFrom, float implicitTo)
         {
-            foreach (var propertyColumn in propertyColumns)
+            foreach (var wikiItemStat in properties)
             {
-                var cell = GetCell(row, propertyColumn.Key);
-                if (IsNotApplicableCell(cell))
+                if (wikiItemStat.Stats.Length <= 1)
                     continue;
 
-                var name = propertyColumn.Value;
-                if (PropertyRenaming.ContainsKey(name))
-                    name = PropertyRenaming[name];
+                var stats = wikiItemStat.Stats;
+                var combined = wikiItemStat.StatsCombined;
+                if (stats[0].Item2 != WikiStatColor.Default)
+                {
+                    Log.Warn($"Property {combined} begins with wrong color {stats[0].Item2}");
+                    continue;
+                }
+                var name = wikiItemStat.Stats[0].Item1.TrimEnd(':', ' ');
+                if (combined.Contains("%"))
+                    name += " %";
 
                 float from;
                 float to;
                 bool success;
 
-                var modified = cell.FirstChild.GetAttributeValue("class", "").Contains("-mod");
-                var content = WebUtility.HtmlDecode(FindContent(cell)).Replace('–', '-');
-                var matches = NumberRegex.Matches(content);
-                var numbersReplaced = NumberRegex.Replace(content, "#");
-                if (matches.Count <= 0)
+                var modified = stats.Any(s => s.Item2 == WikiStatColor.Mod);
+                var matches = NumberRegex.Matches(combined);
+                switch (matches.Count)
                 {
-                    Log.Warn($"No floats in property {cell.InnerHtml}");
-                    continue;
+                    case 0:
+                        Log.Warn($"No floats in property {combined}");
+                        continue;
+                    case 1:
+                        success = TryParseFloat(matches[0].Value, out from);
+                        to = from;
+                        break;
+                    case 2:
+                        success = TryParseFloat(matches[0].Value, out from) &
+                                  TryParseFloat(matches[1].Value, out to);
+                        break;
+                    default:
+                        Log.Warn($"Too many floats in property {combined}");
+                        continue;
                 }
-                else if (matches.Count == 1)
-                {
-                    success = TryParseFloat(matches[0].Value, out from);
-                    to = from;
-                }
-                else if (matches.Count > 2)
-                {
-                    Log.Warn($"Too many floats in property {cell.InnerHtml}");
-                    continue;
-                }
-                else if (numbersReplaced.Contains("#-#") || numbersReplaced.Contains("(# to #)"))
-                {
-                    success = TryParseFloat(matches[0].Value, out from) & TryParseFloat(matches[1].Value, out to);
-                }
-                else
-                {
-                    Log.Warn($"Unknown format in property {cell.InnerHtml}");
-                    continue;
-                }
-                if (content.EndsWith("%"))
-                {
-                    name += " %";
-                }
+
                 if (!success)
                 {
-                    Log.Warn("Could not parse floats from cell " + cell.InnerHtml);
+                    Log.Warn($"Could not parse floats from cell {combined}");
                     continue;
                 }
                 if (modified)
                 {
-                    from /= implicitFrom;
-                    to /= implicitTo;
+                    from = (float) Math.Round(from / implicitFrom, 2);
+                    to = (float)Math.Round(to / implicitTo, 2);
                 }
                 yield return new XmlStat
                 {
@@ -280,43 +245,6 @@ namespace UpdateDB.DataLoading
                     Name = name
                 };
             }
-        }
-
-        private static string FindContent(HtmlNode cell)
-        {
-            while (cell.InnerHtml.Contains("<"))
-            {
-                cell = cell.FirstChild;
-            }
-            return cell.InnerHtml;
-        }
-
-        private static bool IsNotApplicableCell(HtmlNode cell)
-        {
-            return cell.GetAttributeValue("class", "").Contains("table-na");
-        }
-
-        private static int ParseCell(HtmlNode cell, int @default)
-        {
-            if (IsNotApplicableCell(cell))
-                return @default;
-            int value;
-            return TryParseInt(cell.InnerHtml, out value) ? value : @default;
-        }
-
-        private static bool TryParseCell(HtmlNode cell, out float value)
-        {
-            if (IsNotApplicableCell(cell))
-            {
-                value = 0;
-                return false;
-            }
-            return TryParseFloat(cell.InnerHtml, out value);
-        }
-
-        private static HtmlNode GetCell(HtmlNode row, int index)
-        {
-            return row.ChildNodes[index];
         }
     }
 }
