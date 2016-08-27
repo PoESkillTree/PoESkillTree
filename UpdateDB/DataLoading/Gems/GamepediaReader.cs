@@ -385,8 +385,9 @@ namespace UpdateDB.DataLoading.Gems
                 string token = ReNumber.Replace(text, "#");
                 token = token.Replace("+x", "+#");
                 token = token.Replace("x%", "#%");
-                token = token.Replace("x-y", "#-#");
-                token = token.Replace("x–y", "#-#"); //weird dash
+                token = token.Replace("x-y", "# to #");
+                token = token.Replace("x–y", "# to #"); //weird dash
+                token = token.Replace("x to y", "# to #");
                 token = token.Replace("x ", "# ");
                 token = token.Replace(" x", " #");
 

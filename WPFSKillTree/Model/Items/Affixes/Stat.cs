@@ -32,7 +32,7 @@ namespace POESKillTree.Model.Items.Affixes
             ItemType = itemType;
         }
 
-        public ItemMod ToItemMod(params float[] values)
+        public ItemMod ToItemMod(bool isProperty, params float[] values)
         {
             if (values.Length != 0 && values.All(v => Math.Abs(v - values[0]) < 1e-5))
             {
@@ -47,11 +47,7 @@ namespace POESKillTree.Model.Items.Affixes
                 throw new ArgumentException();
 
             string attribute;
-            if (Name.Contains("#") || ParentTier != null)
-            {
-                attribute = Name;
-            }
-            else if (char.IsUpper(Name[0]))
+            if (isProperty)
             {
                 if (Name.EndsWith(" %"))
                     attribute = Name.Substring(0, Name.Length - 2) + ": #%";
@@ -60,9 +56,10 @@ namespace POESKillTree.Model.Items.Affixes
             }
             else
             {
-                throw new NotSupportedException();
+                attribute = Name;
             }
-            return new ItemMod(ItemType, values.Length == 1 ? attribute : attribute.Replace("#", "#-#"), this)
+            var rangedToken = isProperty ? "#-#" : "# to #";
+            return new ItemMod(ItemType, values.Length == 1 ? attribute : attribute.Replace("#", rangedToken), this)
             {
                 Value = values.ToList(),
                 ValueColor = values.Select(_ => ItemMod.ValueColoring.White).ToList()

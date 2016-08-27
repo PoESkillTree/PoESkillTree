@@ -260,7 +260,7 @@ namespace POESKillTree.Model.Items
             }
 
             if (Properties != null)
-                props.AddRange(Properties.Select(prop => prop.ToItemMod()));
+                props.AddRange(Properties.Select(prop => prop.ToItemMod(true)));
             return props;
         }
 

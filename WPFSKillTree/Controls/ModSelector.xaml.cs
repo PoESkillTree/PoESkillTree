@@ -185,10 +185,10 @@ namespace POESKillTree.Controls
 
                 if (aff.IsRangeMod)
                 {
-                    return new[] { aff.RangeCombinedStat.ToItemMod(_sliders.Select(s => (float)s.Value).ToArray()) };
+                    return new[] { aff.RangeCombinedStat.ToItemMod(false, _sliders.Select(s => (float)s.Value).ToArray()) };
                 }
 
-                return aff.Stats.Select((s, i) => s.ToItemMod((float)_sliders[i].Value));
+                return aff.Stats.Select((s, i) => s.ToItemMod(false, (float)_sliders[i].Value));
             }
 
             return new ItemMod[0];

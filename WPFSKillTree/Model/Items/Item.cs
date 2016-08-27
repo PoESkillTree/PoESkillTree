@@ -353,17 +353,17 @@ namespace POESKillTree.Model.Items
             if (val["implicitMods"] != null)
                 foreach (var s in val["implicitMods"].Values<string>())
                 {
-                    _implicitMods.Add(new ItemMod(_itemType, s, Numberfilter));
+                    _implicitMods.Add(new ItemMod(_itemType, FixOldRanges(s), Numberfilter));
                 }
             if (val["explicitMods"] != null)
                 foreach (var s in val["explicitMods"].Values<string>())
                 {
-                    ExplicitMods.Add(new ItemMod(_itemType, s, Numberfilter));
+                    ExplicitMods.Add(new ItemMod(_itemType, FixOldRanges(s), Numberfilter));
                 }
             if (val["craftedMods"] != null)
                 foreach (var s in val["craftedMods"].Values<string>())
                 {
-                    CraftedMods.Add(new ItemMod(_itemType, s, Numberfilter));
+                    CraftedMods.Add(new ItemMod(_itemType, FixOldRanges(s), Numberfilter));
                 }
 
             if (val["flavourText"] != null)
@@ -459,6 +459,12 @@ namespace POESKillTree.Model.Items
             }
 
             return new ItemMod(_itemType, attribute, Numberfilter, valueColors);
+        }
+
+        private static readonly Regex OldRangeRegex = new Regex(@"(\d+)-(\d+) ");
+        private static string FixOldRanges(string range)
+        {
+            return OldRangeRegex.Replace(range, "$1 to $2 ");
         }
 
         private void FixOldItems()
@@ -614,7 +620,7 @@ namespace POESKillTree.Model.Items
                 : new ItemMod(ItemType, qualityMod.Value[0] + "%", Numberfilter);
             var localmods = Mods.Where(m => m.IsLocal).ToList();
 
-            var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds #-# |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");
+            var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds # to # |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");
 
             var localnames = localmods.Select(m =>
                 r.Replace(m.Attribute.Replace("to maximum", "to"), "")

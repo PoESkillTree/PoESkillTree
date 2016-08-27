@@ -996,11 +996,11 @@ namespace POESKillTree.SkillTreeFiles
                 // TODO: Migrate to DamageNature's WeaponHand property.
                 public WeaponHand Hand = WeaponHand.Any;
 
-                private static readonly Regex ReAddMod = new Regex("Adds #-# ([^ ]+) Damage$");
-                private static readonly Regex ReAddInHandMod = new Regex("Adds #-# ([^ ]+) Damage in (Main|Off) Hand$");
-                private static readonly Regex ReAddWithBows = new Regex("Adds #-# ([^ ]+) Damage to attacks with Bows");
-                private static readonly Regex ReAddToAttacks = new Regex("Adds #-# ([^ ]+) Damage to Attacks");
-                private static readonly Regex ReAddToSpells = new Regex("Adds #-# ([^ ]+) Damage to Spells");
+                private static readonly Regex ReAddMod = new Regex("Adds # to # ([^ ]+) Damage$");
+                private static readonly Regex ReAddInHandMod = new Regex("Adds # to # ([^ ]+) Damage in (Main|Off) Hand$");
+                private static readonly Regex ReAddWithBows = new Regex("Adds # to # ([^ ]+) Damage to attacks with Bows");
+                private static readonly Regex ReAddToAttacks = new Regex("Adds # to # ([^ ]+) Damage to Attacks");
+                private static readonly Regex ReAddToSpells = new Regex("Adds # to # ([^ ]+) Damage to Spells");
 
                 public Added(DamageSource source, string type, float min, float max)
                     : base()
@@ -1302,7 +1302,7 @@ namespace POESKillTree.SkillTreeFiles
             float Max;
 
             static Regex ReDamageAttribute = new Regex("([^ ]+) Damage: #-#");
-            static Regex ReDamageMod = new Regex("Deals #-# ([^ ]+) Damage$");
+            static Regex ReDamageMod = new Regex("Deals # to # ([^ ]+) Damage$");
 
             // Copy constructor.
             public Damage(Damage damage)
