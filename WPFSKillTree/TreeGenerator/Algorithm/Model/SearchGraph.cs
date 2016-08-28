@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.TreeGenerator.Algorithm.Model
@@ -34,12 +35,11 @@ namespace POESKillTree.TreeGenerator.Algorithm.Model
             return AddNode(SkillTree.Skillnodes[nodeId]);
         }
 
-        public GraphNode SetStartNodes(HashSet<ushort> startNodes)
+        public GraphNode SetStartNodes(IReadOnlyCollection<SkillNode> startNodes)
         {
-            var supernode = new GraphNode(startNodes);
-            foreach (ushort nodeId in startNodes)
+            var supernode = new GraphNode(startNodes.Select(n => n.Id));
+            foreach (var node in startNodes)
             {
-                SkillNode node = SkillTree.Skillnodes[nodeId];
                 NodeDict.Add(node, supernode);
                 CheckLinks(node);
             }

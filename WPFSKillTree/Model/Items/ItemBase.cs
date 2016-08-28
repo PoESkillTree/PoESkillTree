@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using POESKillTree.Model.Items.Affixes;
@@ -233,7 +234,7 @@ namespace POESKillTree.Model.Items
             Image.DownloadMissingImage();
             return new Item(this, GetWidthForItem(ItemType, ItemGroup, Name), GetHeightForItem(ItemType, ItemGroup, Name))
             {
-                Properties = GetRawProperties()
+                Properties = new ObservableCollection<ItemMod>(GetRawProperties())
             };
         }
 
@@ -260,7 +261,7 @@ namespace POESKillTree.Model.Items
             }
 
             if (Properties != null)
-                props.AddRange(Properties.Select(prop => prop.ToItemMod()));
+                props.AddRange(Properties.Select(prop => prop.ToItemMod(true)));
             return props;
         }
 

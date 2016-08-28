@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -19,9 +18,6 @@ namespace UpdateDB.DataLoading
     /// </summary>
     public class ItemImageLoader : MultiDataLoader<Task<byte[]>>
     {
-        private static readonly IEnumerable<string> JewelUrls = ItemGroup.Jewel.Types()
-            .Select(t => t.ToString().Replace("Jewel", "_Jewel")).ToList();
-
         private readonly bool _overwriteExisting;
 
         private HttpClient _httpClient;
@@ -41,25 +37,26 @@ namespace UpdateDB.DataLoading
 
             _httpClient = httpClient;
             _wikiUtils = new WikiUtils(httpClient);
-            var jewelTask = Task.WhenAll(JewelUrls.Select(LoadJewelAsync));
+            var jewelTask = Task.WhenAll(ItemGroup.Jewel.Types().Select(LoadJewelAsync));
             await _wikiUtils.ForEachBaseItemAsync(ParseTable);
             await jewelTask;
         }
 
-        private async Task LoadJewelAsync(string url)
+        private async Task LoadJewelAsync(ItemType jewel)
         {
-            var tuple = await _wikiUtils.LoadItemBoxImageAsync(url);
-            SaveImage(tuple.Item1, tuple.Item2.ToString());
+            var jewelName = jewel.ToString();
+            var url = await _wikiUtils.LoadItemBoxImageAsync(jewelName.Replace("Jewel", "_Jewel"));
+            SaveImage(jewelName.Replace("Jewel", " Jewel"), url);
         }
 
         private void ParseTable(HtmlNode table, ItemType itemType)
         {
-            foreach (var row in table.Elements("tr").Skip(1))
+            // Go through the first cell for each row
+            foreach (var cell in table.SelectNodes("tr/td[1]/span"))
             {
-                var cell = row.ChildNodes[0];
                 var imgNode = cell.SelectSingleNode("a/img");
                 var url = Regex.Match(imgNode.Attributes["srcset"].Value, @"1\.5x, (.*) 2x").Groups[1].Value;
-                var fileName = WebUtility.HtmlDecode(cell.GetAttributeValue("data-sort-value", "")) + ".png";
+                var fileName = WebUtility.HtmlDecode(cell.SelectNodes("a")[0].InnerHtml) + ".png";
                 SaveImage(fileName, url);
             }
         }

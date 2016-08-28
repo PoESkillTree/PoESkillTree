@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AffixList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<AffixList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Affix Name="#% increased Physical Damage, +# to Accuracy Rating" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Squire's" Tier="8" IsMasterCrafted="false">
       <Stat Name="#% increased Physical Damage" From="15" To="19" />
@@ -651,30 +651,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="OneHandedSword" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="OneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
@@ -1359,30 +1359,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="TwoHandedMace" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="TwoHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
@@ -2107,30 +2107,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="TwoHandedAxe" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="TwoHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
@@ -2860,30 +2860,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="OneHandedAxe" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="OneHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
@@ -3573,30 +3573,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="OneHandedMace" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="OneHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
@@ -4324,30 +4324,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="TwoHandedSword" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="TwoHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
@@ -6073,7 +6073,7 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Elreon lvl: 6" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Chance" From="27" To="32" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Rupturing" Tier="3" IsMasterCrafted="false">
       <Stat Name="#% increased Global Critical Strike Chance" From="25" To="29" />
@@ -6221,24 +6221,24 @@
       <Stat Name="+#% to all Elemental Resistances" From="15" To="16" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="8" To="12" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="8" To="12" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="13" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="13" To="19" />
     </Tier>
     <Tier ItemLevel="31" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="45" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="74" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# Life gained for each Enemy hit by your Attacks" ModType="Suffix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
@@ -13169,30 +13169,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Bow" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Bow" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Tora lvl: 4" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Tora lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="Bow" ItemGroup="Unknown">
@@ -13401,19 +13401,19 @@
       <Stat Name="#% increased Critical Strike Chance with Lightning Skills" From="14" To="18" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Fire Skills" ModType="Prefix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Fire Skills" ModType="Prefix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Infernal" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Fire Skills" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Fire Skills" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Cold Skills" ModType="Prefix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Cold Skills" ModType="Prefix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Arctic" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Cold Skills" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Cold Skills" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Lightning Skills" ModType="Prefix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Lightning Skills" ModType="Prefix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Surging" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Lightning Skills" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Lightning Skills" From="12" To="15" />
     </Tier>
   </Affix>
   <Affix Name="#% additional Block Chance while Dual Wielding" ModType="Prefix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
@@ -13566,9 +13566,9 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="8" To="12" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="of Potency" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="6" To="8" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="9" To="12" />
     </Tier>
   </Affix>
   <Affix Name="#% increased Critical Strike Chance for Spells" ModType="Suffix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
@@ -13581,14 +13581,14 @@
       <Stat Name="#% increased Critical Strike Chance with Elemental Skills" From="10" To="14" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier for Spells" ModType="Suffix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier for Spells" ModType="Suffix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="of Unmaking" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier for Spells" From="8" To="10" />
+      <Stat Name="+#% to Critical Strike Multiplier for Spells" From="15" To="18" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Elemental Skills" ModType="Suffix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Elemental Skills" ModType="Suffix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="of the Elements" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Elemental Skills" From="8" To="10" />
+      <Stat Name="+#% to Critical Strike Multiplier with Elemental Skills" From="15" To="18" />
     </Tier>
   </Affix>
   <Affix Name="#% to Fire Resistance" ModType="Suffix" Global="true" ItemType="CobaltJewel" ItemGroup="Unknown">
@@ -13844,34 +13844,34 @@
       <Stat Name="#% increased Critical Strike Chance with Lightning Skills" From="14" To="18" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with One Handed Melee Weapons" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with One Handed Melee Weapons" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Piercing" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with One Handed Melee Weapons" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with One Handed Melee Weapons" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Two Handed Melee Weapons" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Two Handed Melee Weapons" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Rupturing" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Two Handed Melee Weapons" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Two Handed Melee Weapons" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier while Dual Wielding" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier while Dual Wielding" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Puncturing" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier while Dual Wielding" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier while Dual Wielding" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Fire Skills" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Fire Skills" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Infernal" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Fire Skills" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Fire Skills" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Cold Skills" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Cold Skills" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Arctic" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Cold Skills" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Cold Skills" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Lightning Skills" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Lightning Skills" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Surging" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Lightning Skills" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Lightning Skills" From="12" To="15" />
     </Tier>
   </Affix>
   <Affix Name="#% additional Block Chance while Dual Wielding" ModType="Prefix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
@@ -14004,9 +14004,9 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="8" To="12" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="of Potency" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="6" To="8" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="9" To="12" />
     </Tier>
   </Affix>
   <Affix Name="#% increased Melee Critical Strike Chance" ModType="Suffix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
@@ -14019,14 +14019,14 @@
       <Stat Name="#% increased Critical Strike Chance with Elemental Skills" From="10" To="14" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Melee Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Melee Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="of Demolishing" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Melee Critical Strike Multiplier" From="8" To="10" />
+      <Stat Name="+#% to Melee Critical Strike Multiplier" From="15" To="18" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Elemental Skills" ModType="Suffix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Elemental Skills" ModType="Suffix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="of the Elements" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Elemental Skills" From="8" To="10" />
+      <Stat Name="+#% to Critical Strike Multiplier with Elemental Skills" From="15" To="18" />
     </Tier>
   </Affix>
   <Affix Name="#% to Fire Resistance" ModType="Suffix" Global="true" ItemType="CrimsonJewel" ItemGroup="Unknown">
@@ -15106,30 +15106,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Dagger" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Dagger" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
@@ -15942,30 +15942,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Claw" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Claw" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="Claw" ItemGroup="Unknown">
@@ -24575,30 +24575,30 @@
       <Stat Name="+#% to Chaos Resistance" From="31" To="35" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="8" To="12" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="8" To="12" />
     </Tier>
     <Tier ItemLevel="20" Name="Tora lvl: 4" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="13" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="13" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="Tora lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="31" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="45" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="74" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="#% increased Stun Duration on Enemies" ModType="Suffix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
@@ -25782,30 +25782,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Sceptre" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Sceptre" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
@@ -29974,30 +29974,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Staff" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Staff" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="Staff" ItemGroup="Unknown">
@@ -30916,34 +30916,34 @@
       <Stat Name="#% increased Critical Strike Chance with Lightning Skills" From="14" To="18" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with One Handed Melee Weapons" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with One Handed Melee Weapons" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Piercing" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with One Handed Melee Weapons" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with One Handed Melee Weapons" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Two Handed Melee Weapons" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Two Handed Melee Weapons" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Rupturing" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Two Handed Melee Weapons" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Two Handed Melee Weapons" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier while Dual Wielding" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier while Dual Wielding" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Puncturing" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier while Dual Wielding" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier while Dual Wielding" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Fire Skills" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Fire Skills" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Infernal" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Fire Skills" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Fire Skills" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Cold Skills" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Cold Skills" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Arctic" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Cold Skills" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Cold Skills" From="12" To="15" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Lightning Skills" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Lightning Skills" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Surging" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Lightning Skills" From="10" To="12" />
+      <Stat Name="+#% to Critical Strike Multiplier with Lightning Skills" From="12" To="15" />
     </Tier>
   </Affix>
   <Affix Name="#% additional Block Chance while Dual Wielding" ModType="Prefix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
@@ -31072,9 +31072,9 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="8" To="12" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="of Potency" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="6" To="8" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="9" To="12" />
     </Tier>
   </Affix>
   <Affix Name="#% increased Melee Critical Strike Chance" ModType="Suffix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
@@ -31087,14 +31087,14 @@
       <Stat Name="#% increased Critical Strike Chance with Elemental Skills" From="10" To="14" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Melee Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Melee Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="of Demolishing" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Melee Critical Strike Multiplier" From="8" To="10" />
+      <Stat Name="+#% to Melee Critical Strike Multiplier" From="15" To="18" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Critical Strike Multiplier with Elemental Skills" ModType="Suffix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
+  <Affix Name="+#% to Critical Strike Multiplier with Elemental Skills" ModType="Suffix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="of the Elements" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Critical Strike Multiplier with Elemental Skills" From="8" To="10" />
+      <Stat Name="+#% to Critical Strike Multiplier with Elemental Skills" From="15" To="18" />
     </Tier>
   </Affix>
   <Affix Name="#% to Fire Resistance" ModType="Suffix" Global="true" ItemType="ViridianJewel" ItemGroup="Unknown">
@@ -32217,30 +32217,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Wand" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="Wand" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Tora lvl: 4" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Tora lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="Wand" ItemGroup="Unknown">
@@ -32945,30 +32945,30 @@
       <Stat Name="#% increased Critical Strike Chance" From="35" To="38" />
     </Tier>
   </Affix>
-  <Affix Name="#% increased Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
+  <Affix Name="+#% to Global Critical Strike Multiplier" ModType="Suffix" Global="true" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="8" Name="of Ire" Tier="6" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="10" To="14" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="10" To="14" />
     </Tier>
     <Tier ItemLevel="20" Name="Vagan lvl: 3" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="17" To="21" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="17" To="21" />
     </Tier>
     <Tier ItemLevel="21" Name="of Anger" Tier="5" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="15" To="19" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="15" To="19" />
     </Tier>
     <Tier ItemLevel="30" Name="of Rage" Tier="4" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="20" To="24" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="20" To="24" />
     </Tier>
     <Tier ItemLevel="30" Name="Vagan lvl: 5" Tier="0" IsMasterCrafted="true">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="22" To="27" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="22" To="27" />
     </Tier>
     <Tier ItemLevel="44" Name="of Fury" Tier="3" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="25" To="29" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="29" />
     </Tier>
     <Tier ItemLevel="59" Name="of Ferocity" Tier="2" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="30" To="34" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="34" />
     </Tier>
     <Tier ItemLevel="73" Name="of Destruction" Tier="1" IsMasterCrafted="false">
-      <Stat Name="#% increased Global Critical Strike Multiplier" From="35" To="38" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="38" />
     </Tier>
   </Affix>
   <Affix Name="+# to Accuracy Rating" ModType="Suffix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">

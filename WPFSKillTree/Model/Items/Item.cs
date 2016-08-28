@@ -56,15 +56,11 @@ namespace POESKillTree.Model.Items
             set { SetProperty(ref _frame, value); }
         }
 
-        private List<ItemMod> _properties = new List<ItemMod>();
-        public List<ItemMod> Properties
+        private ObservableCollection<ItemMod> _properties = new ObservableCollection<ItemMod>();
+        public ObservableCollection<ItemMod> Properties
         {
             get { return _properties; }
-            set { SetProperty(ref _properties, value, () => OnPropertyChanged("HaveProperties")); }
-        }
-        public bool HaveProperties
-        {
-            get { return _properties.Count > 0; }
+            set { SetProperty(ref _properties, value); }
         }
 
         private readonly ObservableCollection<ItemMod> _requirements = new ObservableCollection<ItemMod>();
@@ -77,33 +73,21 @@ namespace POESKillTree.Model.Items
         public List<ItemMod> ImplicitMods
         {
             get { return _implicitMods; }
-            set { SetProperty(ref _implicitMods, value, () => OnPropertyChanged("HaveImplicitMods")); }
-        }
-        public bool HaveImplicitMods
-        {
-            get { return _implicitMods.Count > 0; }
+            set { SetProperty(ref _implicitMods, value); }
         }
 
         private List<ItemMod> _explicitMods = new List<ItemMod>();
         public List<ItemMod> ExplicitMods
         {
             get { return _explicitMods; }
-            set { SetProperty(ref _explicitMods, value, () => OnPropertyChanged("HaveExplicitMods")); }
-        }
-        public bool HaveExplicitMods
-        {
-            get { return _explicitMods.Count > 0; }
+            set { SetProperty(ref _explicitMods, value); }
         }
 
         private List<ItemMod> _craftedMods = new List<ItemMod>();
         public List<ItemMod> CraftedMods
         {
             get { return _craftedMods; }
-            set { SetProperty(ref _craftedMods, value, () => OnPropertyChanged("HaveCraftedMods")); }
-        }
-        public bool HaveCraftedMods
-        {
-            get { return _craftedMods.Count > 0; }
+            set { SetProperty(ref _craftedMods, value); }
         }
 
         private string _flavourText;
@@ -234,7 +218,7 @@ namespace POESKillTree.Model.Items
                 _keywords = source._keywords.ToList();
             _frame = source._frame;
             //_properties, _requirements, _explicit-, _implicit-, _craftetMods
-            _properties = source._properties.ToList();
+            _properties = new ObservableCollection<ItemMod>(source._properties);
             _requirements = new ObservableCollection<ItemMod>(source._requirements);
             _explicitMods = source._explicitMods.ToList();
             _implicitMods = source._implicitMods.ToList();
@@ -353,17 +337,17 @@ namespace POESKillTree.Model.Items
             if (val["implicitMods"] != null)
                 foreach (var s in val["implicitMods"].Values<string>())
                 {
-                    _implicitMods.Add(new ItemMod(_itemType, s, Numberfilter));
+                    _implicitMods.Add(new ItemMod(_itemType, FixOldRanges(s), Numberfilter));
                 }
             if (val["explicitMods"] != null)
                 foreach (var s in val["explicitMods"].Values<string>())
                 {
-                    ExplicitMods.Add(new ItemMod(_itemType, s, Numberfilter));
+                    ExplicitMods.Add(new ItemMod(_itemType, FixOldRanges(s), Numberfilter));
                 }
             if (val["craftedMods"] != null)
                 foreach (var s in val["craftedMods"].Values<string>())
                 {
-                    CraftedMods.Add(new ItemMod(_itemType, s, Numberfilter));
+                    CraftedMods.Add(new ItemMod(_itemType, FixOldRanges(s), Numberfilter));
                 }
 
             if (val["flavourText"] != null)
@@ -459,6 +443,12 @@ namespace POESKillTree.Model.Items
             }
 
             return new ItemMod(_itemType, attribute, Numberfilter, valueColors);
+        }
+
+        private static readonly Regex OldRangeRegex = new Regex(@"(\d+)-(\d+) ");
+        private static string FixOldRanges(string range)
+        {
+            return OldRangeRegex.Replace(range, "$1 to $2 ");
         }
 
         private void FixOldItems()
@@ -614,7 +604,7 @@ namespace POESKillTree.Model.Items
                 : new ItemMod(ItemType, qualityMod.Value[0] + "%", Numberfilter);
             var localmods = Mods.Where(m => m.IsLocal).ToList();
 
-            var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds #-# |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");
+            var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds # to # |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");
 
             var localnames = localmods.Select(m =>
                 r.Replace(m.Attribute.Replace("to maximum", "to"), "")

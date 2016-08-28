@@ -51,7 +51,7 @@ namespace UnitTests
             };
             for (int level = 1; level < expectPair.Count; ++level)
             {
-                var pair = GetValuePairOf("Fireball", "Deals #-# Fire Damage", level);
+                var pair = GetValuePairOf("Fireball", "Deals # to # Fire Damage", level);
                 Assert.AreEqual(expectPair[level][0], pair[0]);
                 Assert.AreEqual(expectPair[level][1], pair[1]);
             }

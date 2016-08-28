@@ -20,7 +20,7 @@ namespace POESKillTree.SkillTreeFiles
         public double y { get; set; }
         public Dictionary<int, bool> oo { get; set; }
 
-        public List<int> n { get; set; }
+        public List<ushort> n { get; set; }
     }
 
 
@@ -84,7 +84,7 @@ namespace POESKillTree.SkillTreeFiles
         public int ia { get; set; }
 
         [JsonProperty("out")]
-        public List<int> ot { get; set; }
+        public List<ushort> ot { get; set; }
     }
 
     internal class JsonConstants

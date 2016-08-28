@@ -156,12 +156,13 @@ namespace POESKillTree.TreeGenerator.Solver
             _bestSolution = Extend(DnaToUsedNodes(_bestDna));
         }
 
-        private BitArray TreeToDna(HashSet<ushort> nodes)
+        private BitArray TreeToDna(IEnumerable<SkillNode> nodes)
         {
+            var set = new HashSet<ushort>(nodes.Select(n => n.Id));
             var dna = new BitArray(SearchSpace.Count);
             for (var i = 0; i < SearchSpace.Count; i++)
             {
-                if (nodes.Contains(SearchSpace[i].Id))
+                if (set.Contains(SearchSpace[i].Id))
                 {
                     dna[i] = true;
                 }

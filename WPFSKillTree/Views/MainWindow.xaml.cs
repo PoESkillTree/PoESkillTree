@@ -41,7 +41,7 @@ namespace POESKillTree.Views
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow, INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged
     {
         /// <summary>
         /// The set of keys of which one needs to be pressed to highlight similar nodes on hover.
@@ -122,14 +122,14 @@ namespace POESKillTree.Views
 
         private Vector2D _multransform;
 
-        private List<ushort> _prePath;
-        private HashSet<ushort> _toRemove;
+        private List<SkillNode> _prePath;
+        private HashSet<SkillNode> _toRemove;
 
-        readonly Stack<string> _undoList = new Stack<string>();
-        readonly Stack<string> _redoList = new Stack<string>();
+        private readonly Stack<string> _undoList = new Stack<string>();
+        private readonly Stack<string> _redoList = new Stack<string>();
 
         private MouseButton _lastMouseButton;
-        private bool userInteraction = false;
+        private bool _userInteraction = false;
         /// <summary>
         /// The node of the SkillTree that currently has the mouse over it.
         /// Null if no node is under the mouse.
@@ -192,6 +192,7 @@ namespace POESKillTree.Views
                     PersistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
                 }
             };
+            
         }
 
         private async void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -225,15 +226,9 @@ namespace POESKillTree.Views
         //Necessary to update the summed numbers in group names before every refresh
         private void RefreshAttributeLists()
         {
-            if (GetActiveAttributeGroupList()==lbAllAttr)
-            {
-                _attributeGroups.UpdateGroupNames(_allAttributesList);
-            }
-            //use passive attribute list as a default so nothing breaks if neither tab is actually active
-            else
-            {
-                _attributeGroups.UpdateGroupNames(_attiblist);
-            }
+            _attributeGroups.UpdateGroupNames(Equals(GetActiveAttributeGroupList(), lbAllAttr)
+                ? _allAttributesList
+                : _attiblist);
             _attributeCollection.Refresh();
             _allAttributeCollection.Refresh();
         }
@@ -275,11 +270,11 @@ namespace POESKillTree.Views
         //Adds currently selected attributes to a new group
         private async void CreateGroup(object sender, RoutedEventArgs e)
         {
-            ListBox lb = GetActiveAttributeGroupList();
+            var lb = GetActiveAttributeGroupList();
             if (lb == null)
                 return;
             var attributelist = new List<string>();
-            foreach (object o in lb.SelectedItems)
+            foreach (var o in lb.SelectedItems)
             {
                 attributelist.Add(o.ToString());
             }
@@ -313,11 +308,11 @@ namespace POESKillTree.Views
         //Removes currently selected attributes from their custom groups, restoring them to their default groups
         private void RemoveFromGroup(object sender, RoutedEventArgs e)
         {
-            ListBox lb = GetActiveAttributeGroupList();
+            var lb = GetActiveAttributeGroupList();
             if (lb == null)
                 return;
             var attributelist = new List<string>();
-            foreach (object o in lb.SelectedItems)
+            foreach (var o in lb.SelectedItems)
             {
                 attributelist.Add(o.ToString());
             }
@@ -331,11 +326,11 @@ namespace POESKillTree.Views
         //Adds currently selected attributes to an existing custom group named by sender.Header
         private void AddToGroup(object sender, RoutedEventArgs e)
         {
-            ListBox lb = GetActiveAttributeGroupList();
+            var lb = GetActiveAttributeGroupList();
             if (lb == null)
                 return;
             var attributelist = new List<string>();
-            foreach (object o in lb.SelectedItems)
+            foreach (var o in lb.SelectedItems)
             {
                 attributelist.Add(o.ToString());
             }
@@ -350,7 +345,7 @@ namespace POESKillTree.Views
         private void DeleteGroup(object sender, RoutedEventArgs e)
         {
             //Remove submenus that work with the group
-            for (int i = 0; i < cmAddToGroup.Items.Count; i++)
+            for (var i = 0; i < cmAddToGroup.Items.Count; i++)
             {
                 if (((MenuItem)cmAddToGroup.Items[i]).Header.ToString().ToLower().Equals(((MenuItem)sender).Header.ToString().ToLower()))
                 {
@@ -360,7 +355,7 @@ namespace POESKillTree.Views
                     break;
                 }
             }
-            for (int i = 0; i < cmDeleteGroup.Items.Count; i++)
+            for (var i = 0; i < cmDeleteGroup.Items.Count; i++)
             {
                 if (((MenuItem)cmDeleteGroup.Items[i]).Header.ToString().ToLower().Equals(((MenuItem)sender).Header.ToString().ToLower()))
                 {
@@ -419,17 +414,19 @@ namespace POESKillTree.Views
                 Header = L10n.Message("Remove highlights by attribute")
             };
             cmRemoveHighlight.Click += UnhighlightNodesByAttribute;
-            cmCreateGroup = new MenuItem();
-            cmCreateGroup.Header = "Create new group";
+            cmCreateGroup = new MenuItem {Header = "Create new group"};
             cmCreateGroup.Click += CreateGroup;
-            cmAddToGroup = new MenuItem();
-            cmAddToGroup.Header = "Add to group...";
-            cmAddToGroup.IsEnabled = false;
-            cmDeleteGroup = new MenuItem();
-            cmDeleteGroup.Header = "Delete group...";
-            cmDeleteGroup.IsEnabled = false;
-            cmRemoveFromGroup = new MenuItem();
-            cmRemoveFromGroup.Header = "Remove from group";
+            cmAddToGroup = new MenuItem
+            {
+                Header = "Add to group...",
+                IsEnabled = false
+            };
+            cmDeleteGroup = new MenuItem
+            {
+                Header = "Delete group...",
+                IsEnabled = false
+            };
+            cmRemoveFromGroup = new MenuItem {Header = "Remove from group"};
             cmRemoveFromGroup.Click += RemoveFromGroup;
 
             _attributeGroups = new GroupStringConverter();
@@ -442,25 +439,25 @@ namespace POESKillTree.Views
             _attributeContextMenu.Items.Add(cmRemoveFromGroup);
 
             _attributeCollection = new ListCollectionView(_attiblist);
-            _attributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
+            _attributeCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Text", _attributeGroups));
             _attributeCollection.CustomSort = _attributeGroups;
             listBox1.ItemsSource = _attributeCollection;
             listBox1.SelectionMode = SelectionMode.Extended;
             listBox1.ContextMenu = _attributeContextMenu;
 
             _allAttributeCollection = new ListCollectionView(_allAttributesList);
-            _allAttributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
+            _allAttributeCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Text", _attributeGroups));
             _allAttributeCollection.CustomSort = _attributeGroups;
             lbAllAttr.ItemsSource = _allAttributeCollection;
             lbAllAttr.SelectionMode = SelectionMode.Extended;
             lbAllAttr.ContextMenu = _attributeContextMenu;
 
             _defenceCollection = new ListCollectionView(_defenceList);
-            _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
+            _defenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
             listBoxDefence.ItemsSource = _defenceCollection;
 
             _offenceCollection = new ListCollectionView(_offenceList);
-            _offenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
+            _offenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
             listBoxOffence.ItemsSource = _offenceCollection;
 
             cbCharType.ItemsSource =
@@ -477,12 +474,12 @@ namespace POESKillTree.Views
             controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
             Tree = await CreateSkillTreeAsync(controller);
             await Task.Delay(1); // Give the progress dialog a chance to update
-            recSkillTree.Width = SkillTree.TRect.Width / SkillTree.TRect.Height * recSkillTree.Height;
+            recSkillTree.Width = SkillTree.SkillTreeRect.Width / SkillTree.SkillTreeRect.Height * recSkillTree.Height;
             recSkillTree.UpdateLayout();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
-            _multransform = SkillTree.TRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
-            _addtransform = SkillTree.TRect.TopLeft;
+            _multransform = SkillTree.SkillTreeRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
+            _addtransform = SkillTree.SkillTreeRect.TopLeft;
 
             controller.SetMessage(L10n.Message("Initalizing window ..."));
             controller.SetIndeterminate();
@@ -526,6 +523,11 @@ namespace POESKillTree.Views
                     break;
                 case nameof(SkillTree.Chartype):
                     PersistentData.CurrentBuild.Class = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
+                    Tree.UpdateAscendancyClasses = true;
+                    PopulateAsendancySelectionList();
+                    break;
+                case nameof(SkillTree.AscType):
+                    cbAscType.SelectedIndex = Tree.AscType;
                     break;
             }
         }
@@ -549,37 +551,38 @@ namespace POESKillTree.Views
                         btnPoeUrl_Click(sender, e);
                         break;
                     case Key.D1:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 0;
                         cbAscType.SelectedIndex = 0;
+                        Tree.SwitchClass(0);
                         break;
                     case Key.D2:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 1;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D3:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 2;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D4:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 3;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D5:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 4;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D6:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 5;
                         cbAscType.SelectedIndex = 0;
                         break;
                     case Key.D7:
-                        userInteraction = true;
+                        _userInteraction = true;
                         cbCharType.SelectedIndex = 6;
                         cbAscType.SelectedIndex = 0;
                         break;
@@ -720,13 +723,13 @@ namespace POESKillTree.Views
         private async void Menu_ScreenShot(object sender, RoutedEventArgs e)
         {
             const int maxsize = 3000;
-            Rect2D contentBounds = Tree.picActiveLinks.ContentBounds;
+            Rect2D contentBounds = Tree.ActivePaths.ContentBounds;
             contentBounds *= 1.2;
             if (!double.IsNaN(contentBounds.Width) && !double.IsNaN(contentBounds.Height))
             {
-                double aspect = contentBounds.Width / contentBounds.Height;
-                double xmax = contentBounds.Width;
-                double ymax = contentBounds.Height;
+                var aspect = contentBounds.Width / contentBounds.Height;
+                var xmax = contentBounds.Width;
+                var ymax = contentBounds.Height;
                 if (aspect > 1 && xmax > maxsize)
                 {
                     xmax = maxsize;
@@ -739,12 +742,14 @@ namespace POESKillTree.Views
                 }
 
                 _clipboardBmp = new RenderTargetBitmap((int)xmax, (int)ymax, 96, 96, PixelFormats.Pbgra32);
-                var db = new VisualBrush(Tree.SkillTreeVisual);
-                db.ViewboxUnits = BrushMappingMode.Absolute;
-                db.Viewbox = contentBounds;
+                var db = new VisualBrush(Tree.SkillTreeVisual)
+                {
+                    ViewboxUnits = BrushMappingMode.Absolute,
+                    Viewbox = contentBounds
+                };
                 var dw = new DrawingVisual();
 
-                using (DrawingContext dc = dw.RenderOpen())
+                using (var dc = dw.RenderOpen())
                 {
                     dc.DrawRectangle(db, null, new Rect(0, 0, xmax, ymax));
                 }
@@ -755,19 +760,18 @@ namespace POESKillTree.Views
                 Clipboard.SetImage(_clipboardBmp);
 
                 //Convert renderTargetBitmap to bitmap
-                MemoryStream stream = new MemoryStream();
+                var stream = new MemoryStream();
                 BitmapEncoder encoder = new BmpBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(_clipboardBmp));
                 encoder.Save(stream);
 
-                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(stream);
-                System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
+                var image = System.Drawing.Image.FromStream(stream);
 
                 // Configure save file dialog box
-                Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+                var dialog = new Microsoft.Win32.SaveFileDialog();
 
                 // Default file name -- current build name ("buildname - xxx points used")
-                uint skilledNodes = (uint) Tree.GetPointCount()["NormalUsed"];
+                var skilledNodes = (uint) Tree.GetPointCount()["NormalUsed"];
                 dialog.FileName = PersistentData.CurrentBuild.Name + " - " + string.Format(L10n.Plural("{0} point", "{0} points", skilledNodes), skilledNodes);
 
                 dialog.DefaultExt = ".jpg"; // Default file extension
@@ -775,13 +779,13 @@ namespace POESKillTree.Views
                 dialog.OverwritePrompt = true;
 
                 // Show save file dialog box
-                bool? result = dialog.ShowDialog();
+                var result = dialog.ShowDialog();
 
                 // Continue if the user did select a path
                 if (result.HasValue && result == true)
                 {
                     System.Drawing.Imaging.ImageFormat format;
-                    string fileExtension = System.IO.Path.GetExtension(dialog.FileName);
+                    var fileExtension = Path.GetExtension(dialog.FileName);
 
                     //set the selected data type
                     switch (fileExtension)
@@ -789,9 +793,6 @@ namespace POESKillTree.Views
                         case ".png":
                             format = System.Drawing.Imaging.ImageFormat.Png;
                             break;
-
-                        case ".jpg":
-                        case ".jpeg":
                         default:
                             format = System.Drawing.Imaging.ImageFormat.Jpeg;
                             break;
@@ -842,7 +843,7 @@ namespace POESKillTree.Views
 
         private async void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
         {
-            string sMessageBoxText = L10n.Message("The existing Skill tree assets will be deleted and new assets will be downloaded.")
+            var sMessageBoxText = L10n.Message("The existing Skill tree assets will be deleted and new assets will be downloaded.")
                                      + "\n\n" + L10n.Message("Do you want to continue?");
 
             var rsltMessageBox = await this.ShowQuestionAsync(sMessageBoxText, image: MessageBoxImage.Warning);
@@ -933,7 +934,7 @@ namespace POESKillTree.Views
                 }
                 else
                 {
-                    string message = release.IsUpdate
+                    var message = release.IsUpdate
                         ? string.Format(L10n.Message("An update for {0} ({1}) is available!"),
                             Properties.Version.ProductName, release.Version)
                           + "\n\n" +
@@ -1024,29 +1025,27 @@ namespace POESKillTree.Views
         #region  Character Selection
         private void userInteraction_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            userInteraction = true;
+            _userInteraction = true;
         }
 
         private void cbCharType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
              if (Tree == null)
                 return;
-             if (!userInteraction)
+             if (!_userInteraction)
                  return;
              if (Tree.Chartype == cbCharType.SelectedIndex) return;
 
-            Tree.Chartype = cbCharType.SelectedIndex;
-            
+            Tree.SwitchClass(cbCharType.SelectedIndex);
             UpdateUI();
             LoadBuildFromTree();
-            userInteraction = false;
-            PopulateAsendancySelectionList();
-            cbAscType.SelectedIndex = Tree.AscType = 0;
+            _userInteraction = false;
+            cbAscType.SelectedIndex = 0;
         }
 
         private void cbAscType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!userInteraction)
+            if (!_userInteraction)
                 return;
             if (cbAscType.SelectedIndex < 0 || cbAscType.SelectedIndex > 3)
                 return;
@@ -1055,16 +1054,15 @@ namespace POESKillTree.Views
 
             UpdateUI();
             LoadBuildFromTree();
-            userInteraction = false;
+            _userInteraction = false;
         }
 
         private void PopulateAsendancySelectionList()
         {
             if (!Tree.UpdateAscendancyClasses) return;
-
             Tree.UpdateAscendancyClasses = false;
             var ascendancyItems = new List<string> { "None" };
-            foreach (var name in Tree.AscendancyClasses.GetClasses(((ComboBoxItem)cbCharType.SelectedItem).Content.ToString()))
+            foreach (var name in Tree.AscClasses.GetClasses(Tree.Chartype))
                 ascendancyItems.Add(name.DisplayName);
             cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
         }
@@ -1103,7 +1101,7 @@ namespace POESKillTree.Views
 
             if (_itemAttributes == null) return;
 
-            Dictionary<string, List<float>> attritemp = Tree.SelectedAttributesWithoutImplicit;
+            var attritemp = Tree.SelectedAttributesWithoutImplicit;
 
             var itemAttris = _itemAttributes.NonLocalMods
                 .Select(m => new KeyValuePair<string, List<float>>(m.Attribute, m.Value))
@@ -1131,7 +1129,7 @@ namespace POESKillTree.Views
 
                 if (!attritemp.ContainsKey(key))
                     attritemp[key] = new List<float>();
-                for (int i = 0; i < a.Value.Count; i++)
+                for (var i = 0; i < a.Value.Count; i++)
                 {
                     if (attritemp.ContainsKey(key) && attritemp[key].Count > i)
                         attritemp[key][i] += a.Value[i];
@@ -1194,7 +1192,7 @@ namespace POESKillTree.Views
 
         public void UpdatePoints()
         {
-            Dictionary<string, int> points = Tree.GetPointCount();
+            var points = Tree.GetPointCount();
             NormalUsedPoints.Content = points["NormalUsed"].ToString();
             NormalTotalPoints.Content = points["NormalTotal"].ToString();
             AscendancyUsedPoints.Content = "[" + points["AscendancyUsed"].ToString() + "]";
@@ -1210,7 +1208,7 @@ namespace POESKillTree.Views
             {
                 Compute.Initialize(Tree, _itemAttributes);
 
-                foreach (ListGroup group in Compute.Defense())
+                foreach (var group in Compute.Defense())
                 {
                     foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
                     {
@@ -1224,7 +1222,7 @@ namespace POESKillTree.Views
                     }
                 }
 
-                foreach (ListGroup group in Compute.Offense())
+                foreach (var group in Compute.Offense())
                 {
                     foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
                     {
@@ -1245,8 +1243,8 @@ namespace POESKillTree.Views
 
         private string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
         {
-            string s = attrib.Key;
-            foreach (float f in attrib.Value)
+            var s = attrib.Key;
+            foreach (var f in attrib.Value)
             {
                 s = _backreplace.Replace(s, f + "", 1);
             }
@@ -1377,36 +1375,16 @@ namespace POESKillTree.Views
 
         private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
-            Point p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
-            Size size = zbSkillTreeBackground.Child.DesiredSize;
+            var p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
-
             v = v * _multransform + _addtransform;
 
-            IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
-                SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            if (Tree.drawAscendancy && Tree.AscType > 0)
+            var node = Tree.FindNodeInRange(v, 50);
+            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
             {
-                var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
-                var bitmap = Tree.Assets["Classes" + asn.ascendancyName];
-
-                nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
-            }
-            var className = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
-            SkillNode node = null;
-            if (nodes.Count() != 0 && !Tree.drawAscendancy)
-                node = nodes.First().Value;
-            else if (nodes.Count() != 0)
-            {
-                var dnode = nodes.First();
-                node = nodes.Where(x => x.Value.ascendancyName == Tree.AscendancyClasses.GetClassName(className, Tree.AscType)).DefaultIfEmpty(dnode).First().Value;
-            }
-
-            if (node != null && !SkillTree.rootNodeList.Contains(node.Id))
-            {
-                if (node.ascendancyName != null && !Tree.drawAscendancy)
+                if (node.ascendancyName != null && !Tree.DrawAscendancy)
                     return;
-                var ascendancyClassName = Tree.AscendancyClasses.GetClassName(className, Tree.AscType);
+                var ascendancyClassName = Tree.AscClasses.GetClassName(Tree.Chartype, Tree.AscType);
                 if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
@@ -1429,39 +1407,16 @@ namespace POESKillTree.Views
                     else
                     {
                         // Toggle whether the node is included in the tree
-                        if (Tree.SkilledNodes.Contains(node.Id))
+                        if (Tree.SkilledNodes.Contains(node))
                         {
-                            Tree.ForceRefundNode(node.Id);
-                            _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
+                            Tree.ForceRefundNode(node);
+                            _prePath = Tree.GetShortestPathTo(node, Tree.SkilledNodes);
                             Tree.DrawPath(_prePath);
                         }
                         else if (_prePath != null)
                         {
-                            foreach (ushort i in _prePath)
-                            {
-                                var temp = SkillTree.Skillnodes[i];
-                                if (temp.IsMultipleChoiceOption)
-                                {
-                                    //Emmitt 20160401: This is for Scion Ascendancy MultipleChoice nodes
-                                    foreach(var j in Tree.SkilledNodes)
-                                    {
-                                        if (SkillTree.Skillnodes[j].IsMultipleChoiceOption && Tree.AscendancyClasses.GetStartingClass(SkillTree.Skillnodes[i].Name) == Tree.AscendancyClasses.GetStartingClass(SkillTree.Skillnodes[j].Name))
-                                        {
-                                            Tree.SkilledNodes.Remove(j);
-                                            break;
-                                        }
-                                    }
-                                }
-                                else if (temp.IsAscendancyStart)
-                                {
-                                    var remove = Tree.SkilledNodes.Where(x => SkillTree.Skillnodes[x].ascendancyName != null && SkillTree.Skillnodes[x].ascendancyName != temp.ascendancyName).ToArray();
-                                    foreach (var n in remove)
-                                        Tree.SkilledNodes.Remove(n);
-                                }
-                                Tree.SkilledNodes.Add(i);
-                            }
-
-                            _toRemove = Tree.ForceRefundNodePreview(node.Id);
+                            Tree.AllocateSkillNodes(_prePath);
+                            _toRemove = Tree.ForceRefundNodePreview(node);
                             if (_toRemove != null)
                                 Tree.DrawRefundPreview(_toRemove);
                         }
@@ -1470,20 +1425,20 @@ namespace POESKillTree.Views
                 LoadBuildFromTree();
                 UpdateUI();
             }
-            else if ((Tree.ascedancyButtonPos - v).Length < 150)
+            else if ((Tree.AscButtonPosition - v).Length < 150 && Tree.AscType != 0)
             {
+                if (PersistentData.Options.ShowAllAscendancyClasses) return;
                 Tree.DrawAscendancyButton("Pressed");
                 Tree.ToggleAscendancyTree();
                 SearchUpdate();
             }
             else
             {
+                var size = zbSkillTreeBackground.Child.DesiredSize;
                 if (p.X < 0 || p.Y < 0 || p.X > size.Width || p.Y > size.Height)
                 {
                     if (_lastMouseButton == MouseButton.Right)
-                    {
                         zbSkillTreeBackground.Reset();
-                    }
                 }
             }
         }
@@ -1502,47 +1457,28 @@ namespace POESKillTree.Views
             var v = new Vector2D(p.X, p.Y);
             v = v * _multransform + _addtransform;
 
-            IEnumerable<KeyValuePair<ushort, SkillNode>> nodes =
-                SkillTree.Skillnodes.Where(n => ((n.Value.Position - v).Length < 50)).ToList();
-            if(Tree.drawAscendancy && Tree.AscType > 0)
-            {
-                var asn = SkillTree.Skillnodes[Tree.GetAscNodeId()];
-                var bitmap = Tree.Assets["Classes" + asn.ascendancyName];
-
-                nodes = SkillTree.Skillnodes.Where(n => (n.Value.ascendancyName != null || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - v).Length < 50)).ToList();
-            }
-            var className = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
-            SkillNode node = null;
-            if (nodes.Count() != 0 && !Tree.drawAscendancy)
-                node = nodes.First().Value;
-            else if (nodes.Count() != 0)
-            {
-                var dnode = nodes.First();
-                node = nodes.Where(x => x.Value.ascendancyName == Tree.AscendancyClasses.GetClassName(className, Tree.AscType)).DefaultIfEmpty(dnode).First().Value;
-            }
-
-
+            var node = Tree.FindNodeInRange(v, 50);
             _hoveredNode = node;
-            if (node != null && !SkillTree.rootNodeList.Contains(node.Id))
+            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
             {         
-                if (!Tree.drawAscendancy && node.ascendancyName != null)
+                if (!Tree.DrawAscendancy && node.ascendancyName != null)
                     return;
-                if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscendancyClasses.GetClassName(className, Tree.AscType))
+                if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscClasses.GetClassName(Tree.Chartype, Tree.AscType))
                     return;
                 if (node.Type == NodeType.JewelSocket)
                 {
                     Tree.DrawJewelHighlight(node);
                 }
                 
-                if (Tree.SkilledNodes.Contains(node.Id))
+                if (Tree.SkilledNodes.Contains(node))
                 {
-                    _toRemove = Tree.ForceRefundNodePreview(node.Id);
+                    _toRemove = Tree.ForceRefundNodePreview(node);
                     if (_toRemove != null)
                         Tree.DrawRefundPreview(_toRemove);
                 }
                 else
                 {
-                    _prePath = Tree.GetShortestPathTo(node.Id, Tree.SkilledNodes);
+                    _prePath = Tree.GetShortestPathTo(node, Tree.SkilledNodes);
                     if (node.Type != NodeType.Mastery)
                         Tree.DrawPath(_prePath);
                 }
@@ -1564,7 +1500,7 @@ namespace POESKillTree.Views
                     if (_prePath != null && node.Type != NodeType.Mastery)
                     {
                         var points = _prePath.Count;
-                        if(_prePath.Any(x => SkillTree.Skillnodes[x].IsAscendancyStart))
+                        if(_prePath.Any(x => x.IsAscendancyStart))
                             points--;
                         sp.Children.Add(new Separator());
                         sp.Children.Add(new TextBlock { Text = "Points to skill node: " + points });
@@ -1578,7 +1514,7 @@ namespace POESKillTree.Views
                     _lasttooltip = tooltip;
                 }
             }
-            else if ((Tree.ascedancyButtonPos - v).Length < 150)
+            else if ((Tree.AscButtonPosition - v).Length < 150)
             {
                 Tree.DrawAscendancyButton("Highlight");
             }
@@ -1588,18 +1524,10 @@ namespace POESKillTree.Views
                 _sToolTip.IsOpen = false;
                 _prePath = null;
                 _toRemove = null;
-                if (Tree != null)
-                {
-                    Tree.ClearPath();
-                    Tree.ClearJewelHighlight();
-                    Tree.DrawAscendancyButton();
-                }
+                Tree?.ClearPath();
+                Tree?.ClearJewelHighlight();
+                Tree?.DrawAscendancyButton();
             }
-        }
-
-        private void zbSkillTreeBackground_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //zbSkillTreeBackground.Child.RaiseEvent(e);
         }
 
         private void HighlightNodesByHover()
@@ -1718,8 +1646,7 @@ namespace POESKillTree.Views
 
         private void LoadBuildFromTree()
         {
-            PersistentData.CurrentBuild.TreeUrl = Tree.SaveToURL();
-            Tree.LoadFromURL(PersistentData.CurrentBuild.TreeUrl);
+            PersistentData.CurrentBuild.TreeUrl = Tree.SaveToUrl();
         }
 
         private async Task LoadBuildFromUrlAsync()
@@ -1728,15 +1655,15 @@ namespace POESKillTree.Views
             {
                 var currentBuild = PersistentData.CurrentBuild;
                 var treeUrl = currentBuild.TreeUrl;
-                userInteraction = true;
+                _userInteraction = true;
                 if (treeUrl.Contains("poezone.ru"))
                 {
                     await SkillTreeImporter.LoadBuildFromPoezone(DialogCoordinator.Instance, Tree, treeUrl);
-                    currentBuild.TreeUrl = Tree.SaveToURL();
+                    currentBuild.TreeUrl = Tree.SaveToUrl();
                 }
                 else if (treeUrl.Contains("google.com"))
                 {
-                    Match match = Regex.Match(treeUrl, @"q=(.*?)&");
+                    var match = Regex.Match(treeUrl, @"q=(.*?)&");
                     if (match.Success)
                     {
                         currentBuild.TreeUrl = match.ToString().Replace("q=", "").Replace("&", "");
@@ -1769,14 +1696,14 @@ namespace POESKillTree.Views
                     if (treeUrl.Contains("characterName") || treeUrl.Contains("accountName"))
                         currentBuild.TreeUrl = Regex.Replace(treeUrl, @"\?.*", "");
                     currentBuild.TreeUrl = Regex.Replace(treeUrl, Constants.TreeRegex, Constants.TreeAddress);
-                    Tree.LoadFromURL(currentBuild.TreeUrl);
+                    Tree.LoadFromUrl(currentBuild.TreeUrl);
                 }
 
                 if (_justLoaded)
                 {
                     if (_undoList.Count > 1)
                     {
-                        string holder = _undoList.Pop();
+                        var holder = _undoList.Pop();
                         while (_undoList.Count != 0)
                             _undoList.Pop();
                         _undoList.Push(holder);
@@ -1851,7 +1778,7 @@ namespace POESKillTree.Views
             {
                 _redoList.Push(PersistentData.CurrentBuild.TreeUrl);
                 PersistentData.CurrentBuild.TreeUrl = _undoList.Pop();
-                Tree.LoadFromURL(PersistentData.CurrentBuild.TreeUrl);
+                Tree.LoadFromUrl(PersistentData.CurrentBuild.TreeUrl);
                 UpdateUI();
             }
         }
@@ -1872,7 +1799,7 @@ namespace POESKillTree.Views
             else if (_redoList.Peek() != PersistentData.CurrentBuild.TreeUrl)
             {
                 PersistentData.CurrentBuild.TreeUrl = _redoList.Pop();
-                Tree.LoadFromURL(PersistentData.CurrentBuild.TreeUrl);
+                Tree.LoadFromUrl(PersistentData.CurrentBuild.TreeUrl);
                 UpdateUI();
             }
         }
@@ -1980,21 +1907,20 @@ namespace POESKillTree.Views
             var build = PersistentData.SelectedBuild;
             if (build != null && PersistentData.Options.TreeComparisonEnabled)
             {
-                HashSet<ushort> nodes;
+                HashSet<SkillNode> nodes;
                 int ctype;
                 int atype;
-                SkillTree.DecodeURL(build.TreeUrl, out nodes, out ctype, out atype);
+                SkillTree.DecodeUrl(build.TreeUrl, out nodes, out ctype, out atype);
 
-                Tree.HighlightedNodes = nodes;
+                Tree.HighlightedNodes.Clear();
+                Tree.HighlightedNodes.UnionWith(nodes);
                 Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, build.Level, build.Bandits);
             }
             else
             {
-                Tree.HighlightedNodes = null;
-                Tree.HighlightedAttributes = null;
+                Tree.HighlightedNodes.Clear();
+                Tree.HighlightedAttributes?.Clear();
             }
-
-            Tree.DrawTreeComparisonHighlight();
             UpdateUI();
         }
         

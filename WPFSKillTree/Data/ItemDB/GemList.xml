@@ -82,10 +82,13 @@
     </Attribute>
   </Gem>
   <Gem Name="Added Chaos Damage Support" Tags="Chaos, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Chaos Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
-    <Attribute Name="Adds #-# Chaos Damage">
+    <Attribute Name="Adds # to # Chaos Damage">
       <Value Level="1">18–26</Value>
       <Value Level="2">21–32</Value>
       <Value Level="3">24–36</Value>
@@ -119,10 +122,13 @@
     </Attribute>
   </Gem>
   <Gem Name="Added Cold Damage Support" Tags="Cold, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Cold Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
-    <Attribute Name="Adds #-# Cold Damage">
+    <Attribute Name="Adds # to # Cold Damage">
       <Value Level="1">4–6</Value>
       <Value Level="2">5–7</Value>
       <Value Level="3">6–9</Value>
@@ -156,6 +162,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Added Fire Damage Support" Tags="Fire, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">120</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Fire Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -193,10 +202,13 @@
     </Attribute>
   </Gem>
   <Gem Name="Added Lightning Damage Support" Tags="Lightning, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
-    <Attribute Name="Adds #-# Lightning Damage">
+    <Attribute Name="Adds # to # Lightning Damage">
       <Value Level="1">1–8</Value>
       <Value Level="2">1–9</Value>
       <Value Level="3">1–12</Value>
@@ -409,6 +421,9 @@
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -418,7 +433,7 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
-    <Attribute Name="You and nearby allies deal #-# additional Fire Damage with Attacks">
+    <Attribute Name="You and nearby allies deal # to # additional Fire Damage with Attacks">
       <Value Level="1">12–21</Value>
       <Value Level="2">14–24</Value>
       <Value Level="3">17–28</Value>
@@ -482,7 +497,7 @@
       <Value Level="29">49</Value>
       <Value Level="30">50</Value>
     </Attribute>
-    <Attribute Name="You and nearby allies deal #-# additional Fire Damage with Spells">
+    <Attribute Name="You and nearby allies deal # to # additional Fire Damage with Spells">
       <Value Level="1">10–16</Value>
       <Value Level="2">12–19</Value>
       <Value Level="3">14–22</Value>
@@ -578,7 +593,7 @@
     <Attribute Name="Minions deal #% increased Physical Damage with Melee Attacks">
       <ValuePerLevel>4</ValuePerLevel>
     </Attribute>
-    <Attribute Name="Minions' Attacks deal #-# additional Physical Damage">
+    <Attribute Name="Minions' Attacks deal # to # additional Physical Damage">
       <Value Level="1">22–34</Value>
       <Value Level="2">25–37</Value>
       <Value Level="3">27–41</Value>
@@ -707,7 +722,7 @@
     <Attribute Name="Minions have #% increased Attack Speed">
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
-    <Attribute Name="Minions' Attacks deal #-# additional Physical Damage">
+    <Attribute Name="Minions' Attacks deal # to # additional Physical Damage">
       <Value Level="1">4–6</Value>
       <Value Level="2">5–8</Value>
       <Value Level="3">7–10</Value>
@@ -781,7 +796,7 @@
       <Value Level="29">31</Value>
       <Value Level="30">32</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">2–35</Value>
       <Value Level="2">2–44</Value>
       <Value Level="3">3–58</Value>
@@ -825,6 +840,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Arctic Armour" Tags="Spell, Duration, Cold">
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -891,11 +909,17 @@
     </Attribute>
   </Gem>
   <Gem Name="Arctic Breath" Tags="Projectile, Spell, Duration, AoE, Cold">
+    <Attribute Name="Radius: #">
+      <ValueForLevel From="1" To="30">12</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.80</ValueForLevel>
     </Attribute>
     <Attribute Name="Critical Strike Chance: #%">
       <ValueForLevel From="1" To="30">5.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">844</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -950,7 +974,7 @@
       <Value Level="29">2.15</Value>
       <Value Level="30">2.2</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">46–70</Value>
       <Value Level="2">56–84</Value>
       <Value Level="3">67–100</Value>
@@ -1137,6 +1161,9 @@
     <Attribute Name="Damage Effectiveness: #%">
       <ValueForLevel From="1" To="30">20</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">400</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -1160,7 +1187,7 @@
       <ValueForLevel From="25" To="28">30</ValueForLevel>
       <ValueForLevel From="29" To="30">31</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">2–32</Value>
       <Value Level="2">2–38</Value>
       <Value Level="3">2–45</Value>
@@ -1292,7 +1319,7 @@
       <Value Level="28">53</Value>
       <ValueForLevel From="29" To="30">54</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Physical Damage">
+    <Attribute Name="Deals # to # Physical Damage">
       <Value Level="1">16–22</Value>
       <Value Level="2">20–28</Value>
       <Value Level="3">27–38</Value>
@@ -1368,7 +1395,7 @@
       <ValueForLevel From="26" To="28">23</ValueForLevel>
       <ValueForLevel From="29" To="30">24</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Physical Damage">
+    <Attribute Name="Deals # to # Physical Damage">
       <Value Level="1">9–14</Value>
       <Value Level="2">11–17</Value>
       <Value Level="3">14–21</Value>
@@ -1439,7 +1466,7 @@
       <ValueForLevel From="28" To="29">31</ValueForLevel>
       <Value Level="30">32</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Physical Damage">
+    <Attribute Name="Deals # to # Physical Damage">
       <Value Level="1">44–65</Value>
       <Value Level="2">52–78</Value>
       <Value Level="3">62–93</Value>
@@ -1473,6 +1500,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Blasphemy Support" Tags="Support, Curse, Aura">
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">0.50</ValueForLevel>
     </Attribute>
@@ -1749,6 +1779,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Bloodlust Support" Tags="Attack, Support, Melee">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">125</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Melee Damage against Bleeding Enemies">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -1898,6 +1931,9 @@
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">3260</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Ignite Duration on enemies">
       <ValuePerQuality>3</ValuePerQuality>
     </Attribute>
@@ -1981,6 +2017,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Cast On Critical Strike Support" Tags="Support, Spell, Trigger">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">0.05</ValueForLevel>
     </Attribute>
@@ -2032,6 +2071,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Cast on Melee Kill Support" Tags="Support, Melee, Attack, Spell, Trigger">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -2219,6 +2261,9 @@
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">3260</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -2336,6 +2381,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Chain Support" Tags="Support, Chaining, Projectile">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">150</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -2413,6 +2461,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Chance to Ignite Support" Tags="Fire, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Burning Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -2612,6 +2663,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Cluster Traps Support" Tags="Trap, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">150</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Trap Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -2655,6 +2709,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Cold Penetration Support" Tags="Cold, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Cold Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -2743,7 +2800,7 @@
       <ValueForLevel From="28" To="29">31</ValueForLevel>
       <Value Level="30">32</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">9–13</Value>
       <Value Level="2">11–16</Value>
       <Value Level="3">14–21</Value>
@@ -2777,6 +2834,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Cold to Fire Support" Tags="Cold, Fire, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Cold Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -2820,6 +2880,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Concentrated Effect Support" Tags="Support, AoE">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Area Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -2980,6 +3043,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Contagion" Tags="Spell, AoE, Duration, Chaos">
+    <Attribute Name="Radius: #">
+      <ValueForLevel From="1" To="30">20</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">0.85</ValueForLevel>
     </Attribute>
@@ -3047,6 +3113,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Controlled Destruction Support" Tags="Spell, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Spell Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -3220,6 +3289,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Culling Strike Support" Tags="Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -3457,6 +3529,9 @@
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -3577,7 +3652,7 @@
       <Value Level="28">37</Value>
       <ValueForLevel From="29" To="30">38</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">4–5</Value>
       <Value Level="2">5–8</Value>
       <Value Level="3">8–11</Value>
@@ -3769,7 +3844,7 @@
       <Value Level="29">57</Value>
       <Value Level="30">58</Value>
     </Attribute>
-    <Attribute Name="Deals #-# base Lightning Damage per Power Charge">
+    <Attribute Name="Deals # to # base Lightning Damage per Power Charge">
       <Value Level="1">4–77</Value>
       <Value Level="2">5–92</Value>
       <Value Level="3">6–108</Value>
@@ -3801,7 +3876,7 @@
       <Value Level="29">66–1251</Value>
       <Value Level="30">71–1357</Value>
     </Attribute>
-    <Attribute Name="Deals #-# base Fire Damage per Endurance Charge">
+    <Attribute Name="Deals # to # base Fire Damage per Endurance Charge">
       <Value Level="1">29–43</Value>
       <Value Level="2">34–51</Value>
       <Value Level="3">40–60</Value>
@@ -3833,7 +3908,7 @@
       <Value Level="29">468–702</Value>
       <Value Level="30">508–762</Value>
     </Attribute>
-    <Attribute Name="Deals #-# base Cold Damage per Frenzy Charge">
+    <Attribute Name="Deals # to # base Cold Damage per Frenzy Charge">
       <Value Level="1">24–36</Value>
       <Value Level="2">28–42</Value>
       <Value Level="3">33–49</Value>
@@ -3869,6 +3944,9 @@
   <Gem Name="Discipline" Tags="Aura, Spell, AoE">
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
     </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
@@ -4163,6 +4241,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Elemental Focus Support" Tags="Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Elemental Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -4220,7 +4301,7 @@
       <ValueForLevel From="24" To="27">13</ValueForLevel>
       <ValueForLevel From="28" To="30">14</ValueForLevel>
     </Attribute>
-    <Attribute Name="Can deal #-# base Fire Damage">
+    <Attribute Name="Can deal # to # base Fire Damage">
       <Value Level="1">4–8</Value>
       <Value Level="2">5–9</Value>
       <Value Level="3">6–11</Value>
@@ -4252,7 +4333,7 @@
       <Value Level="29">323–600</Value>
       <Value Level="30">346–643</Value>
     </Attribute>
-    <Attribute Name="Can deal #-# Cold Damage">
+    <Attribute Name="Can deal # to # Cold Damage">
       <Value Level="1">3–6</Value>
       <Value Level="2">4–7</Value>
       <Value Level="3">5–9</Value>
@@ -4284,7 +4365,7 @@
       <Value Level="29">264–491</Value>
       <Value Level="30">283–526</Value>
     </Attribute>
-    <Attribute Name="Can deal #-# Lightning Damage">
+    <Attribute Name="Can deal # to # Lightning Damage">
       <Value Level="1">1–13</Value>
       <Value Level="2">1–14</Value>
       <Value Level="3">1–17</Value>
@@ -4320,6 +4401,9 @@
   <Gem Name="Elemental Proliferation Support" Tags="Cold, Fire, Lightning, Support, AoE">
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">16</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Ignite Duration on Enemies">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -4462,6 +4546,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Empower Support" Tags="Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">125</ValueForLevel>
+    </Attribute>
     <Attribute Name="This Gem gains #% increased Experience">
       <ValuePerQuality>5</ValuePerQuality>
     </Attribute>
@@ -4470,6 +4557,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Endurance Charge on Melee Stun Support" Tags="Support, Melee, Attack">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Stun Duration on Enemies">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -4718,6 +4808,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Enhance Support" Tags="Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">115</ValueForLevel>
+    </Attribute>
     <Attribute Name="This Gem gains #% increased Experience">
       <ValuePerQuality>5</ValuePerQuality>
     </Attribute>
@@ -4860,6 +4953,9 @@
     <Attribute Name="Critical Strike Chance: #%">
       <ValueForLevel From="1" To="30">6.00</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">1300</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -4892,7 +4988,7 @@
       <Value Level="29">28</Value>
       <Value Level="30">29</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Physical Damage">
+    <Attribute Name="Deals # to # Physical Damage">
       <Value Level="1">4–6</Value>
       <Value Level="2">5–7</Value>
       <Value Level="3">6–9</Value>
@@ -4938,6 +5034,9 @@
     <Attribute Name="Critical Strike Chance: #%">
       <ValueForLevel From="1" To="30">6.00</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">3260</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% chance to Ignite enemies">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -4965,7 +5064,7 @@
       <ValueForLevel From="25" To="28">30</ValueForLevel>
       <ValueForLevel From="29" To="30">31</ValueForLevel>
     </Attribute>
-    <Attribute Name="Explosion deals #-# Base Fire damage per Fuse Charge">
+    <Attribute Name="Explosion deals # to # Base Fire damage per Fuse Charge">
       <Value Level="1">44–66</Value>
       <Value Level="2">54–81</Value>
       <Value Level="3">66–99</Value>
@@ -4999,6 +5098,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Faster Attacks Support" Tags="Attack, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">115</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -5036,6 +5138,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Faster Casting Support" Tags="Support, Spell">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">120</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -5073,6 +5178,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Faster Projectiles Support" Tags="Support, Projectile">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -5181,7 +5289,7 @@
       <Value Level="29">44</Value>
       <Value Level="30">45</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">6–9</Value>
       <Value Level="2">7–11</Value>
       <Value Level="3">10–14</Value>
@@ -5232,6 +5340,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Fire Penetration Support" Tags="Fire, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Fire Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -5315,7 +5426,7 @@
       <Value Level="27">29</Value>
       <ValueForLevel From="28" To="30">30</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">2–4</Value>
       <Value Level="2">3–5</Value>
       <Value Level="3">4–6</Value>
@@ -5390,6 +5501,9 @@
     <Attribute Name="Critical Strike Chance: #%">
       <ValueForLevel From="1" To="30">6.00</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">1040</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% chance to Ignite enemies">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -5420,7 +5534,7 @@
       <ValueForLevel From="28" To="29">31</ValueForLevel>
       <Value Level="30">32</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">7–10</Value>
       <Value Level="2">8–11</Value>
       <Value Level="3">9–14</Value>
@@ -5530,7 +5644,7 @@
       <Value Level="29">31</Value>
       <Value Level="30">32</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">4–10</Value>
       <Value Level="2">9–13</Value>
       <Value Level="3">11–17</Value>
@@ -5608,7 +5722,7 @@
       <Value Level="28">37</Value>
       <ValueForLevel From="29" To="30">38</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">6–9</Value>
       <Value Level="2">8–11</Value>
       <Value Level="3">11–16</Value>
@@ -5715,7 +5829,7 @@
       <Value Level="29">31</Value>
       <Value Level="30">32</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">21–31</Value>
       <Value Level="2">26–39</Value>
       <Value Level="3">35–52</Value>
@@ -5758,6 +5872,9 @@
     <Attribute Name="Damage Effectiveness: #%">
       <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">750</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased totem life">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -5796,7 +5913,7 @@
       <Value Level="29">51</Value>
       <Value Level="30">52</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">1–2</Value>
       <Value Level="2">1–3</Value>
       <Value Level="3">2–4</Value>
@@ -5866,7 +5983,7 @@
       <ValueForLevel From="27" To="29">12</ValueForLevel>
       <Value Level="30">13</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">32–48</Value>
       <Value Level="2">38–57</Value>
       <Value Level="3">45–67</Value>
@@ -6167,6 +6284,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Fork Support" Tags="Support, Projectile">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -6204,6 +6324,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Fortify Support" Tags="Attack, Support, Melee">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Fortify duration">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -6277,7 +6400,7 @@
       <ValueForLevel From="25" To="28">24</ValueForLevel>
       <ValueForLevel From="29" To="30">25</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">7–10</Value>
       <Value Level="2">9–13</Value>
       <Value Level="3">12–17</Value>
@@ -6352,6 +6475,9 @@
     <Attribute Name="Damage Effectiveness: #%">
       <ValueForLevel From="1" To="30">125</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">1800</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
@@ -6375,7 +6501,7 @@
       <ValueForLevel From="25" To="27">20</ValueForLevel>
       <ValueForLevel From="28" To="30">21</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">7–11</Value>
       <Value Level="2">8–13</Value>
       <Value Level="3">11–16</Value>
@@ -6463,6 +6589,9 @@
     </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">2250</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>1</ValuePerQuality>
@@ -6571,7 +6700,7 @@
       <ValueForLevel From="26" To="28">23</ValueForLevel>
       <ValueForLevel From="29" To="30">24</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">10–14</Value>
       <Value Level="2">12–18</Value>
       <Value Level="3">15–23</Value>
@@ -6686,7 +6815,7 @@
       <ValueForLevel From="25" To="28">70</ValueForLevel>
       <ValueForLevel From="29" To="30">77</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">8–12</Value>
       <Value Level="2">9–16</Value>
       <Value Level="3">14–23</Value>
@@ -6846,6 +6975,9 @@
     <Attribute Name="Critical Strike Chance: #%">
       <ValueForLevel From="1" To="30">5.00</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">375</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Cold Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -6870,7 +7002,7 @@
       <ValueForLevel From="26" To="28">23</ValueForLevel>
       <ValueForLevel From="29" To="30">24</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">6–10</Value>
       <Value Level="2">7–11</Value>
       <Value Level="3">9–14</Value>
@@ -6975,7 +7107,7 @@
       <ValueForLevel From="28" To="29">31</ValueForLevel>
       <Value Level="30">32</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Physical Damage">
+    <Attribute Name="Deals # to # Physical Damage">
       <Value Level="1">12–19</Value>
       <Value Level="2">15–23</Value>
       <Value Level="3">18–27</Value>
@@ -7007,7 +7139,7 @@
       <Value Level="29">248–382</Value>
       <Value Level="30">271–417</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">23–35</Value>
       <Value Level="2">28–42</Value>
       <Value Level="3">33–50</Value>
@@ -7099,6 +7231,9 @@
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -7174,6 +7309,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Greater Multiple Projectiles Support" Tags="Support, Projectile">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">165</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -7256,6 +7394,9 @@
   <Gem Name="Haste" Tags="Aura, Spell, AoE">
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
@@ -7340,6 +7481,9 @@
   <Gem Name="Hatred" Tags="Aura, Spell, AoE, Cold">
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
@@ -7451,6 +7595,9 @@
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -7497,6 +7644,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Herald of Ice" Tags="Cast, AoE, Cold">
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -7509,7 +7659,7 @@
     <Attribute Name="#% increased Cold Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
-    <Attribute Name="Adds #-# Cold Damage to Spells">
+    <Attribute Name="Adds # to # Cold Damage to Spells">
       <Value Level="1">4–5</Value>
       <Value Level="2">5–7</Value>
       <Value Level="3">6–8</Value>
@@ -7541,7 +7691,7 @@
       <Value Level="29">69–104</Value>
       <Value Level="30">74–111</Value>
     </Attribute>
-    <Attribute Name="Adds #-# Cold Damage to Attacks">
+    <Attribute Name="Adds # to # Cold Damage to Attacks">
       <Value Level="1">4–5</Value>
       <Value Level="2">5–7</Value>
       <Value Level="3">6–8</Value>
@@ -7573,7 +7723,7 @@
       <Value Level="29">69–104</Value>
       <Value Level="30">74–111</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">18–26</Value>
       <Value Level="2">23–35</Value>
       <Value Level="3">30–45</Value>
@@ -7610,6 +7760,9 @@
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">32</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
@@ -7625,7 +7778,7 @@
     <Attribute Name="Base duration is # seconds">
       <ValueForLevel From="1" To="30">6.0</ValueForLevel>
     </Attribute>
-    <Attribute Name="Adds #-# Lightning Damage to Spells">
+    <Attribute Name="Adds # to # Lightning Damage to Spells">
       <Value Level="1">2–7</Value>
       <Value Level="2">2–9</Value>
       <Value Level="3">3–11</Value>
@@ -7657,7 +7810,7 @@
       <Value Level="29">35–140</Value>
       <Value Level="30">37–150</Value>
     </Attribute>
-    <Attribute Name="Adds #-# Lightning Damage to Attacks">
+    <Attribute Name="Adds # to # Lightning Damage to Attacks">
       <Value Level="1">2–7</Value>
       <Value Level="2">2–9</Value>
       <Value Level="3">3–11</Value>
@@ -7689,7 +7842,7 @@
       <Value Level="29">35–140</Value>
       <Value Level="30">37–150</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">1–34</Value>
       <Value Level="2">1–47</Value>
       <Value Level="3">1–65</Value>
@@ -7723,6 +7876,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Hypothermia Support" Tags="Cold, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">120</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Chill Duration on Enemies">
       <ValuePerQuality>1.5</ValuePerQuality>
     </Attribute>
@@ -7763,6 +7919,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Ice Bite Support" Tags="Cold, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Damage against Frozen Enemies">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -7898,7 +8057,7 @@
       <ValueForLevel From="23" To="26">34</ValueForLevel>
       <ValueForLevel From="27" To="30">35</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">14–21</Value>
       <Value Level="2">17–26</Value>
       <Value Level="3">22–35</Value>
@@ -7934,6 +8093,9 @@
   <Gem Name="Ice Shot" Tags="Attack, AoE, Duration, Cold, Bow">
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">3260</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Cold Damage">
       <ValuePerQuality>1</ValuePerQuality>
@@ -7996,6 +8158,9 @@
     <Attribute Name="Damage Effectiveness: #%">
       <ValueForLevel From="1" To="30">80</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">1000</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
@@ -8029,7 +8194,7 @@
       <ValueForLevel From="28" To="29">33</ValueForLevel>
       <Value Level="30">34</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">16–24</Value>
       <Value Level="2">19–28</Value>
       <Value Level="3">24–36</Value>
@@ -8134,7 +8299,7 @@
       <ValueForLevel From="28" To="29">30</ValueForLevel>
       <Value Level="30">31</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">60–90</Value>
       <Value Level="2">72–108</Value>
       <Value Level="3">85–128</Value>
@@ -8247,6 +8412,9 @@
     <Attribute Name="Damage Effectiveness: #%">
       <ValueForLevel From="1" To="30">30</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">700</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>2</ValuePerQuality>
     </Attribute>
@@ -8260,7 +8428,7 @@
       <ValueForLevel From="20" To="25">9</ValueForLevel>
       <ValueForLevel From="26" To="30">10</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">6–9</Value>
       <Value Level="2">7–11</Value>
       <Value Level="3">10–15</Value>
@@ -8294,6 +8462,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Increased Area of Effect Support" Tags="Support, AoE">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Area Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -8331,6 +8502,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Increased Burning Damage Support" Tags="Fire, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">120</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Burning Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -8368,6 +8542,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Increased Critical Damage Support" Tags="Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="+#% to Critical Strike Multiplier">
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
@@ -8405,6 +8582,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Increased Critical Strikes Support" Tags="Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">115</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Critical Strike Chance">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -8459,6 +8639,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Increased Duration Support" Tags="Support, Duration">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Skill Effect Duration">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -8554,6 +8737,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Innervate Support" Tags="Lightning, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Shock Duration on Enemies">
       <ValuePerQuality>1.5</ValuePerQuality>
     </Attribute>
@@ -8876,6 +9062,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Less Duration Support" Tags="Support, Duration">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">120</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% reduced Skill Effect Duration">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -8915,6 +9104,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Lesser Multiple Projectiles Support" Tags="Support, Projectile">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -8943,6 +9135,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Life Gain on Hit Support" Tags="Attack, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">150</ValueForLevel>
+    </Attribute>
     <Attribute Name="+# Life gained for each enemy hit by Supported Attack">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -8980,6 +9175,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Life Leech Support" Tags="Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Life Leeched per second">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -8993,6 +9191,9 @@
   <Gem Name="Lightning Arrow" Tags="Attack, AoE, Lightning, Bow">
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">3260</ValueForLevel>
     </Attribute>
     <Attribute Name="#% chance to Shock enemies">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -9045,6 +9246,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Lightning Penetration Support" Tags="Lightning, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Lightning Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -9180,7 +9384,7 @@
       <ValueForLevel From="27" To="28">30</ValueForLevel>
       <ValueForLevel From="29" To="30">31</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">1–3</Value>
       <Value Level="2">1–4</Value>
       <Value Level="3">1–5</Value>
@@ -9226,6 +9430,9 @@
     <Attribute Name="Damage Effectiveness: #%">
       <ValueForLevel From="1" To="30">90</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">960</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Trap Throwing Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -9259,7 +9466,7 @@
       <Value Level="27">29</Value>
       <ValueForLevel From="28" To="30">30</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">3–62</Value>
       <Value Level="2">4–77</Value>
       <Value Level="3">5–98</Value>
@@ -9331,7 +9538,7 @@
       <Value Level="27">36</Value>
       <ValueForLevel From="28" To="30">37</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">1–19</Value>
       <Value Level="2">1–24</Value>
       <Value Level="3">2–33</Value>
@@ -9405,7 +9612,7 @@
       <ValueForLevel From="28" To="29">27</ValueForLevel>
       <Value Level="30">28</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">6–9</Value>
       <Value Level="2">7–10</Value>
       <Value Level="3">8–12</Value>
@@ -9455,6 +9662,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Melee Damage on Full Life Support" Tags="Melee, Support, Attack">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Melee Physical Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -9492,6 +9702,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Melee Physical Damage Support" Tags="Melee, Support, Attack">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Melee Physical Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -9531,6 +9744,9 @@
   <Gem Name="Melee Splash Support" Tags="Support, Melee, Attack, AoE">
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">14</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">160</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -9572,6 +9788,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Minefield Support" Tags="Support, Mine">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">160</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Mine Detonation Radius">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -9615,6 +9834,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Minion and Totem Elemental Resistance Support" Tags="Support, Minion">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="Totems and Minions summoned by Supported Skills have +#% Fire Resistance">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -9722,6 +9944,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Minion Damage Support" Tags="Support, Minion">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="Minions deal #% increased Damage">
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
@@ -9759,6 +9984,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Minion Life Support" Tags="Support, Minion">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="Minions have #% increased maximum Life">
       <ValuePerQuality>0.75</ValuePerQuality>
     </Attribute>
@@ -9796,6 +10024,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Minion Speed Support" Tags="Movement, Support, Minion">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="Minions have #% increased Movement Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -9944,7 +10175,7 @@
       <ValueForLevel From="26" To="28">31</ValueForLevel>
       <ValueForLevel From="29" To="30">32</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">14–20</Value>
       <Value Level="2">17–26</Value>
       <Value Level="3">24–35</Value>
@@ -10048,6 +10279,9 @@
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">750</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Fire Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -10094,6 +10328,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Multiple Traps Support" Tags="Support, Trap">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">160</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Trap Trigger Radius">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -10137,6 +10374,12 @@
     </Attribute>
   </Gem>
   <Gem Name="Multistrike Support" Tags="Attack, Melee, Support">
+    <Attribute Name="Icon: #">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">180</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Melee Physical Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -10228,7 +10471,7 @@
       <ValueForLevel From="28" To="29">31</ValueForLevel>
       <Value Level="30">32</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">1–3</Value>
       <Value Level="2">1–3</Value>
       <Value Level="3">1–4</Value>
@@ -10332,6 +10575,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Physical Projectile Attack Damage Support" Tags="Projectile, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">120</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -10372,6 +10618,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Physical to Lightning Support" Tags="Lightning, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Physical Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -10415,6 +10664,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Pierce Support" Tags="Support, Projectile">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -10630,6 +10882,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Point Blank Support" Tags="Projectile, Attack, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">120</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -10641,6 +10896,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Poison Support" Tags="Chaos, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">135</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Poison Duration">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -10657,6 +10915,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Power Charge On Critical Support" Tags="Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Critical Strike Chance">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -10696,6 +10957,9 @@
   <Gem Name="Power Siphon" Tags="Attack, Projectile">
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">750</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>1</ValuePerQuality>
@@ -11027,6 +11291,9 @@
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -11097,6 +11364,9 @@
   <Gem Name="Purity of Fire" Tags="Aura, Spell, AoE, Fire">
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
     </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
@@ -11187,6 +11457,9 @@
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -11275,6 +11548,9 @@
   <Gem Name="Purity of Lightning" Tags="Aura, Spell, AoE, Lightning">
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
     </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
@@ -11710,6 +11986,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Ranged Attack Totem Support" Tags="Bow, Projectile, Support, Totem, Attack, Duration">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">200</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Totem Placement speed">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -11753,6 +12032,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Rapid Decay Support" Tags="Support, Duration">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">125</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Damage over Time">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -11980,6 +12262,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Remote Mine Support" Tags="Support, Mine, Duration">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">150</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Mine Laying Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -12289,7 +12574,7 @@
       <ValueForLevel From="28" To="29">31</ValueForLevel>
       <Value Level="30">32</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">20–59</Value>
       <Value Level="2">24–71</Value>
       <Value Level="3">28–84</Value>
@@ -12370,7 +12655,7 @@
       <Value Level="28">65</Value>
       <ValueForLevel From="29" To="30">66</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Physical Damage">
+    <Attribute Name="Deals # to # Physical Damage">
       <Value Level="1">23–46</Value>
       <Value Level="2">28–51</Value>
       <Value Level="3">33–62</Value>
@@ -12406,6 +12691,9 @@
   <Gem Name="Shrapnel Shot" Tags="Lightning, Attack, AoE, Bow">
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">3260</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -12458,6 +12746,9 @@
   <Gem Name="Siege Ballista" Tags="Totem, Attack, Duration, Bow">
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">3260</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Totem Placement speed">
       <ValuePerQuality>1</ValuePerQuality>
@@ -12512,6 +12803,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Slower Projectiles Support" Tags="Support, Projectile">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -12633,6 +12927,9 @@
     <Attribute Name="Damage Effectiveness: #%">
       <ValueForLevel From="1" To="30">70</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">560</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Speed">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -12662,7 +12959,7 @@
       <ValueForLevel From="26" To="29">26</ValueForLevel>
       <Value Level="30">27</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">1–20</Value>
       <Value Level="2">1–22</Value>
       <Value Level="3">1–27</Value>
@@ -12704,6 +13001,9 @@
   <Gem Name="Spectral Throw" Tags="Projectile, Attack">
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">1000</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -12748,6 +13048,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Spell Echo Support" Tags="Spell, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Spell Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -12788,6 +13091,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Spell Totem Support" Tags="Support, Totem, Duration">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">200</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Totem Placement speed">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -12898,6 +13204,9 @@
   <Gem Name="Split Arrow" Tags="Attack, Bow">
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">3260</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Attack Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
@@ -13046,7 +13355,7 @@
       <ValueForLevel From="26" To="28">23</ValueForLevel>
       <ValueForLevel From="29" To="30">24</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">13–24</Value>
       <Value Level="2">16–30</Value>
       <Value Level="3">22–40</Value>
@@ -13844,7 +14153,7 @@
       <ValueForLevel From="21" To="25">22</ValueForLevel>
       <ValueForLevel From="26" To="30">23</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">24–36</Value>
       <Value Level="2">31–46</Value>
       <Value Level="3">39–58</Value>
@@ -13982,6 +14291,9 @@
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
     </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">2173</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Projectile Damage">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
@@ -14029,6 +14341,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Trap and Mine Damage Support" Tags="Support, Trap, Mine">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">130</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -14072,6 +14387,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Trap Cooldown Support" Tags="Trap, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Trap Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -14109,6 +14427,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Trap Support" Tags="Support, Trap, Duration">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">4.00</ValueForLevel>
     </Attribute>
@@ -14170,7 +14491,7 @@
     <Attribute Name="Chain +# Times">
       <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">2–35</Value>
       <Value Level="2">2–44</Value>
       <Value Level="3">3–59</Value>
@@ -14206,6 +14527,9 @@
   <Gem Name="Vaal Burning Arrow" Tags="Vaal, Attack, AoE, Fire, Bow">
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">3260</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Ignite Duration on enemies">
       <ValuePerQuality>3</ValuePerQuality>
@@ -14372,7 +14696,7 @@
     <Attribute Name="Base duration is # seconds">
       <ValueForLevel From="1" To="30">10.0</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">11–17</Value>
       <Value Level="2">14–21</Value>
       <Value Level="3">18–28</Value>
@@ -14467,7 +14791,7 @@
     <Attribute Name="Explosion deals base Fire Damage equal to #% of the corpse's maximum Life">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">3–5</Value>
       <Value Level="2">5–7</Value>
       <Value Level="3">7–10</Value>
@@ -14669,7 +14993,7 @@
     <Attribute Name="#% increased Area of Effect radius">
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">8–11</Value>
       <Value Level="2">9–13</Value>
       <Value Level="3">11–16</Value>
@@ -14718,7 +15042,7 @@
     <Attribute Name="#% more Spell Damage for each stage">
       <ValueForLevel From="1" To="30">110</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">39–58</Value>
       <Value Level="2">46–68</Value>
       <Value Level="3">53–80</Value>
@@ -15038,7 +15362,7 @@
     <Attribute Name="#% reduced Area of Effect Radius each repeat">
       <ValueForLevel From="1" To="30">20</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">11–17</Value>
       <Value Level="2">14–22</Value>
       <Value Level="3">18–29</Value>
@@ -15220,7 +15544,7 @@
     <Attribute Name="#% chance of Projectiles Piercing">
       <ValueForLevel From="1" To="30">100</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">3–62</Value>
       <Value Level="2">4–77</Value>
       <Value Level="3">5–98</Value>
@@ -15266,7 +15590,7 @@
     <Attribute Name="#% increased Cast Speed">
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">1–18</Value>
       <Value Level="2">1–24</Value>
       <Value Level="3">2–32</Value>
@@ -15318,7 +15642,7 @@
     <Attribute Name="Base duration is # seconds">
       <ValueForLevel From="1" To="30">5.0</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Fire Damage">
+    <Attribute Name="Deals # to # Fire Damage">
       <Value Level="1">9–14</Value>
       <Value Level="2">11–17</Value>
       <Value Level="3">15–23</Value>
@@ -15606,7 +15930,7 @@
     <Attribute Name="Fires # Projectiles in a random direction">
       <ValueForLevel From="1" To="30">100</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">1–11</Value>
       <Value Level="2">1–12</Value>
       <Value Level="3">1–15</Value>
@@ -15695,7 +16019,7 @@
     <Attribute Name="Base duration is # seconds">
       <ValueForLevel From="1" To="30">3.0</ValueForLevel>
     </Attribute>
-    <Attribute Name="Deals #-# Lightning Damage">
+    <Attribute Name="Deals # to # Lightning Damage">
       <Value Level="1">13–25</Value>
       <Value Level="2">17–31</Value>
       <Value Level="3">22–41</Value>
@@ -15970,6 +16294,9 @@
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">35</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -16045,6 +16372,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Void Manipulation Support" Tags="Chaos, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">120</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Chaos Damage">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -16115,7 +16445,7 @@
       <ValueForLevel From="28" To="29">25</ValueForLevel>
       <Value Level="30">26</Value>
     </Attribute>
-    <Attribute Name="Deals #-# Cold Damage">
+    <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">50–75</Value>
       <Value Level="2">60–90</Value>
       <Value Level="3">71–107</Value>
@@ -16400,6 +16730,9 @@
     </Attribute>
   </Gem>
   <Gem Name="Weapon Elemental Damage Support" Tags="Attack, Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">140</ValueForLevel>
+    </Attribute>
     <Attribute Name="#% increased Elemental Damage with Weapons">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
@@ -16485,6 +16818,9 @@
     </Attribute>
     <Attribute Name="Cast Time: # sec">
       <ValueForLevel From="1" To="30">1.00</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Projectile Speed: #">
+      <ValueForLevel From="1" To="30">1800</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Elemental Damage">
       <ValuePerQuality>1</ValuePerQuality>
@@ -16583,6 +16919,9 @@
     <Attribute Name="Radius: #">
       <ValueForLevel From="1" To="30">36</ValueForLevel>
     </Attribute>
+    <Attribute Name="Mana Reserved: #%">
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
+    </Attribute>
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.20</ValueForLevel>
     </Attribute>
@@ -16624,7 +16963,7 @@
       <Value Level="29">49</Value>
       <Value Level="30">50</Value>
     </Attribute>
-    <Attribute Name="You and nearby allies deal #-# additional Lightning Damage with Attacks">
+    <Attribute Name="You and nearby allies deal # to # additional Lightning Damage with Attacks">
       <Value Level="1">2–37</Value>
       <Value Level="2">3–43</Value>
       <Value Level="3">3–50</Value>

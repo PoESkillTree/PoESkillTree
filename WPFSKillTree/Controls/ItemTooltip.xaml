@@ -186,7 +186,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Grid.Row="0" Name="ItemName" Text="{Binding Item.NameLine,ElementName=control}" Visibility="{Binding Item.HaveName,ElementName=control, Converter={StaticResource BoolToVisConverter}}"/>
-                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Margin="0,0,0,4" Grid.Row="2" Name="ItemType" Text="{Binding Item.TypeLine,ElementName=control}"/>
+                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Margin="0,0,0,4" Grid.Row="1" Name="ItemType" Text="{Binding Item.TypeLine,ElementName=control}"/>
                 </Grid>
             </Grid>
             <Image Grid.Column="2">
@@ -230,11 +230,8 @@
         <Image Grid.Row="2">
             <Image.Style>
                 <Style TargetType="{x:Type Image}" BasedOn="{StaticResource spacerBase}">
-                    <Style.Setters>
-                        <Setter Property="Visibility" Value="Visible"/>
-                    </Style.Setters>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" >
+                        <DataTrigger Binding="{Binding Item.Properties.Count, ElementName=control}" Value="0" >
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" >
@@ -258,19 +255,16 @@
         <Image Grid.Row="4">
             <Image.Style>
                 <Style TargetType="{x:Type Image}" BasedOn="{StaticResource spacerBase}">
-                    <Style.Setters>
-                        <Setter Property="Visibility" Value="Visible"/>
-                    </Style.Setters>
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.Properties.Count, ElementName=control}" Value="0" />
                                 <Condition Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
 
-                        <DataTrigger Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="false">
+                        <DataTrigger Binding="{Binding Item.ImplicitMods.Count, ElementName=control}" Value="0">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -292,22 +286,19 @@
         <Image Grid.Row="6">
             <Image.Style>
                 <Style TargetType="{x:Type Image}" BasedOn="{StaticResource spacerBase}">
-                    <Style.Setters>
-                        <Setter Property="Visibility" Value="Visible"/>
-                    </Style.Setters>
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.Properties.Count, ElementName=control}" Value="0" />
                                 <Condition Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.ImplicitMods.Count, ElementName=control}" Value="0" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Item.HaveExplicitMods, ElementName=control}" Value="false" />
-                                <Condition Binding="{Binding Item.HaveCraftedMods, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.ExplicitMods.Count, ElementName=control}" Value="0" />
+                                <Condition Binding="{Binding Item.CraftedMods.Count, ElementName=control}" Value="0" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
@@ -338,17 +329,14 @@
         <Image Grid.Row="9" Visibility="{Binding Item.HaveFlavourText,ElementName=control, Converter={StaticResource BoolToVisConverter}}">
             <Image.Style>
                 <Style TargetType="{x:Type Image}" BasedOn="{StaticResource spacerBase}">
-                    <Style.Setters>
-                        <Setter Property="Visibility" Value="Visible"/>
-                    </Style.Setters>
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Item.HaveProperties, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.Properties.Count, ElementName=control}" Value="0" />
                                 <Condition Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.HaveImplicitMods, ElementName=control}" Value="false" />
-                                <Condition Binding="{Binding Item.HaveExplicitMods, ElementName=control}" Value="false" />
-                                <Condition Binding="{Binding Item.HaveCraftedMods, ElementName=control}" Value="false" />
+                                <Condition Binding="{Binding Item.ImplicitMods.Count, ElementName=control}" Value="0" />
+                                <Condition Binding="{Binding Item.ExplicitMods.Count, ElementName=control}" Value="0" />
+                                <Condition Binding="{Binding Item.CraftedMods.Count, ElementName=control}" Value="0" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>

@@ -514,9 +514,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var attributes = new Dictionary<string, float>();
             foreach (var node in Tree.SkilledNodes)
             {
-                var skillNode = SkillTree.Skillnodes[node];
                 var hasUniqueAttribute = false;
-                foreach (var attribute in SkillTree.ExpandHybridAttributes(skillNode.Attributes))
+                foreach (var attribute in SkillTree.ExpandHybridAttributes(node.Attributes))
                 {
                     var attr = attribute.Key;
                     if (_attributes.Contains(attr))
@@ -541,7 +540,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 }
                 if (hasUniqueAttribute)
                 {
-                    Tree.CycleNodeTagForward(skillNode);
+                    Tree.CycleNodeTagForward(node);
                 }
             }
 
@@ -567,9 +566,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         private void ConverteAttributeToPseudoAttributeConstraints()
         {
-            var keystones = from id in Tree.GetCheckedNodes()
-                            where SkillTree.Skillnodes[id].Type == NodeType.Keystone
-                            select SkillTree.Skillnodes[id].Name;
+            var keystones = from node in Tree.GetCheckedNodes()
+                            where node.Type == NodeType.Keystone
+                            select node.Name;
             var conditionSettings = new ConditionSettings(Tags, OffHand, keystones.ToArray(), WeaponClass);
             var convertedConstraints = new List<AttributeConstraint>();
             foreach (var attributeConstraint in AttributeConstraints)

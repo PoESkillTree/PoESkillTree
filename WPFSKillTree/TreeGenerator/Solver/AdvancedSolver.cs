@@ -190,7 +190,7 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             // If the node has stats and is not a travel node and is part of the subtree,
             // the group is included.
-            return (Settings.SubsetTree.Count == 0 || Settings.SubsetTree.Contains(node.Id))
+            return (Settings.SubsetTree.Count == 0 || Settings.SubsetTree.Contains(node))
                    && _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id];
         }
 
@@ -207,7 +207,7 @@ namespace POESKillTree.TreeGenerator.Solver
         private void ExtractNodeAttributes()
         {
             var skillNodes = Settings.SubsetTree.Count > 0
-                ? Settings.SubsetTree.ToDictionary(id => id, id => SkillTree.Skillnodes[id])
+                ? Settings.SubsetTree.ToDictionary(n => n.Id, n => n)
                 : SkillTree.Skillnodes;
             _nodeAttributes = new List<Tuple<int, float>>[ushort.MaxValue];
             _areTravelNodes = new Dictionary<ushort, bool>(skillNodes.Count);
@@ -250,8 +250,8 @@ namespace POESKillTree.TreeGenerator.Solver
         private List<ConvertedPseudoAttributeConstraint> EvalPseudoAttrConstraints()
         {
             var keystones = from node in Settings.Checked
-                            where SkillTree.Skillnodes[node].Type == NodeType.Keystone
-                            select SkillTree.Skillnodes[node].Name;
+                            where node.Type == NodeType.Keystone
+                            select node.Name;
             var conditionSettings = new ConditionSettings(Settings.Tags, Settings.OffHand, keystones.ToArray(), Settings.WeaponClass);
 
             var resolvedWildcardNames = new Dictionary<string, List<Tuple<string, string[]>>>();

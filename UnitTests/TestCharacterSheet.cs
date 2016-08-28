@@ -88,7 +88,7 @@ namespace UnitTests
             _persistentData.EquipmentData = await EquipmentData.CreateAsync(_persistentData.Options);
             var tree = await SkillTree.CreateAsync(_persistentData, null);
             // Initialize structures.
-            tree.LoadFromURL(treeURL);
+            tree.LoadFromUrl(treeURL);
             tree.Level = level;
 
             string itemData = File.ReadAllText(buildFile);

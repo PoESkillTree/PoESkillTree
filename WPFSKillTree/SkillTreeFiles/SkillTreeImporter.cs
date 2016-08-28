@@ -138,7 +138,7 @@ namespace POESKillTree.SkillTreeFiles
             tree.SkilledNodes.Clear();
             SkillNode startnode =
                 SkillTree.Skillnodes.First(nd => nd.Value.Name == SkillTree.CharName[tree.Chartype].ToUpper()).Value;
-            tree.SkilledNodes.Add(startnode.Id);
+            tree.AllocateSkillNode(startnode);
 
             for (int i = 1; i < buildResp.Length; ++i)
             {
@@ -160,9 +160,8 @@ namespace POESKillTree.SkillTreeFiles
                     }
                 }
 
-                tree.SkilledNodes.Add(minNode.Key);
+                tree.AllocateSkillNode(minNode.Value);
             }
-            tree.UpdateAvailNodes();
         }
     }
 }
