@@ -36,6 +36,7 @@ VersionInfoVersion={#FileVersion}
 SetupIconFile={#ProjectDir}\logo.ico
 Compression=lzma
 SolidCompression=yes
+ChangesAssociations=yes
 
 [Languages]
 ; Name must be set to supported culture name with all '-' characters replaced with '_'.
@@ -82,6 +83,12 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#ProductName}"; F
 Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(ProductName, '&', '&&')}}"; Flags: unchecked nowait postinstall skipifsilent
 ; Run application once silent update finished
 Filename: "{app}\{#AppExeName}"; Flags: nowait skipifnotsilent
+
+[Registry]
+Root: HKCR; Subkey: ".pbuild";                      ValueData: "{#AppId}";          Flags: uninsdeletevalue; ValueType: string;  ValueName: "" Check: CheckStandardMode;
+Root: HKCR; Subkey: "{#AppId}";                     ValueData: "Program {#AppId}";  Flags: uninsdeletekey;   ValueType: string;  ValueName: "" Check: CheckStandardMode;
+Root: HKCR; Subkey: "{#AppId}\DefaultIcon";         ValueData: "{app}\{#AppExeName},0";                      ValueType: string;  ValueName: "" Check: CheckStandardMode;
+Root: HKCR; Subkey: "{#AppId}\shell\open\command";  ValueData: """{app}\{#AppExeName}"" ""%1""";             ValueType: string;  ValueName: "" Check: CheckStandardMode;
 
 [Code]
 var
