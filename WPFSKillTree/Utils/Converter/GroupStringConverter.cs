@@ -135,6 +135,7 @@ namespace POESKillTree.Utils.Converter
             new[] {"reduced Extra Damage from Critical Strikes", Defense},
             new[] {"Armour", Defense},
             new[] {"Fortify", Defense},
+            new[] {"Damage with Weapons Penetrate", Weapon}, //needs to be before resistances
             new[] {"all Elemental Resistances", Defense},
             new[] {"Chaos Resistance", Defense},
             new[] {"Evasion Rating", Defense},
