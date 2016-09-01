@@ -106,7 +106,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PoESkillTree - Ascendancy.
+        ///   Looks up a localized string similar to PoESkillTree - Atlas of Worlds.
         /// </summary>
         public static string ProductName {
             get {
@@ -124,7 +124,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.2.10.
+        ///   Looks up a localized string similar to 2.3.0.
         /// </summary>
         public static string ProductVersion {
             get {
