@@ -24,7 +24,6 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.SimpleChildWindow;
 using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
-using POESKillTree.ItemFilter.Views;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Items;
@@ -809,12 +808,6 @@ namespace POESKillTree.Views
             await this.ShowDialogAsync(
                 new DownloadStashViewModel(DialogCoordinator.Instance, _persistentData, Stash),
                 new DownloadStashWindow());
-        }
-
-        private void Menu_ItemFilterEditor(object sender, RoutedEventArgs e)
-        {
-            var window = new ItemFilterOpenWindow() { Owner = this };
-            window.ShowDialog();
         }
 
         private async void Menu_CopyStats(object sender, RoutedEventArgs e)
