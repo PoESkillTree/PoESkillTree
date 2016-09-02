@@ -477,7 +477,10 @@
     <Compile Include="Views\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
     </Compile>
-<<<<<<< HEAD
+    <Page Include="Contrib\Monotone\Styles\ExtendedWPFToolkit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\Dialogs\Views\FileSelectorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -487,11 +490,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Dialogs\Views\ValidatingInputDialogView.xaml">
-=======
-    <Compile Include="Views\MetroMessageBoxWindow.xaml.cs">
-      <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Contrib\Monotone\Styles\ExtendedWPFToolkit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -508,7 +506,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ItemFilter\Views\ItemFilterOpenWindow.xaml">
->>>>>>> master
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
