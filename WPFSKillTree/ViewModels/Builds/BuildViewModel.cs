@@ -4,23 +4,35 @@ using POESKillTree.Model.Builds;
 
 namespace POESKillTree.ViewModels.Builds
 {
+    /// <summary>
+    /// <see cref="IBuildViewModel"/> that wraps a <see cref="PoEBuild"/> and therefore represents a leaf build.
+    /// </summary>
     public class BuildViewModel : AbstractBuildViewModel<PoEBuild>
     {
         private bool _currentlyOpen;
         private bool _isVisible;
 
+        /// <summary>
+        /// Gets or sets whether this is the currently opened build.
+        /// </summary>
         public bool CurrentlyOpen
         {
             get { return _currentlyOpen; }
             set { SetProperty(ref _currentlyOpen, value, () => OnPropertyChanged(nameof(Image))); }
         }
 
+        /// <summary>
+        /// Gets whether this build should be visible in the UI.
+        /// </summary>
         public bool IsVisible
         {
             get { return _isVisible; }
             private set { SetProperty(ref _isVisible, value); }
         }
 
+        /// <summary>
+        /// Gets the path to a image describing this build.
+        /// </summary>
         public string Image
         {
             get
@@ -32,6 +44,9 @@ namespace POESKillTree.ViewModels.Builds
             }
         }
 
+        /// <summary>
+        /// Gets a description of this build.
+        /// </summary>
         public string Description
         {
             get
@@ -41,6 +56,9 @@ namespace POESKillTree.ViewModels.Builds
             }
         }
 
+        /// <param name="poEBuild">The wrapped build.</param>
+        /// <param name="filterPredicate">A predicate that returns whether the given <see cref="IBuildViewModel"/>
+        /// should be filtered or not.</param>
         public BuildViewModel(PoEBuild poEBuild, Predicate<IBuildViewModel> filterPredicate) : base(poEBuild, filterPredicate)
         {
             IsVisible = FilterPredicate(this);

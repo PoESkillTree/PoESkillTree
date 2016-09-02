@@ -4,13 +4,29 @@ using POESKillTree.Localization;
 
 namespace POESKillTree.Utils
 {
+    /// <summary>
+    /// Static class containing useful methods on path strings not in <see cref="Path"/>.
+    /// </summary>
     public static class PathEx
     {
+        /// <summary>
+        /// Removes traling directory separator characters from the given string.
+        /// </summary>
         public static string TrimTrailingDirectorySeparators(string path)
         {
             return path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         }
 
+        /// <summary>
+        /// Validates a given path.
+        /// </summary>
+        /// <param name="path">Path to validate.</param>
+        /// <param name="errorMessage">Out parameter that the error message is assigned to.
+        /// Only null or empty if false is returned.</param>
+        /// <param name="canExist">True if the path is allowed to already exist.</param>
+        /// <param name="mustBeFile">True if the path must point to a file if it already exists.</param>
+        /// <param name="mustBeDirectory">True if the path must point to a directory if it already exists.</param>
+        /// <returns></returns>
         public static bool IsPathValid(string path, out string errorMessage, bool canExist = true,
             bool mustBeFile = false, bool mustBeDirectory = false)
         {

@@ -12,6 +12,9 @@ namespace POESKillTree.Model.Serialization
         public List<StashBookmark> Bookmarks { get; set; }
     }
 
+    /// <summary>
+    /// Represents the information of <see cref="IPersistentData"/> as stored in PersistentData.xml
+    /// </summary>
     [XmlRoot("PersistentData")]
     public class XmlPersistentData
     {

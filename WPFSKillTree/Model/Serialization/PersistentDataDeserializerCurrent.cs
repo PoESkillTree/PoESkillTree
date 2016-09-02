@@ -29,7 +29,7 @@ namespace POESKillTree.Model.Serialization
 
         public override void DeserializePersistentDataFile(string xmlString)
         {
-            var obj = SerializationUtils.DeserializeString<XmlPersistentData>(xmlString);
+            var obj = SerializationUtils.XmlDeserializeString<XmlPersistentData>(xmlString);
             PersistentData.Options = obj.Options;
             obj.StashBookmarks?.ForEach(PersistentData.StashBookmarks.Add);
             obj.LeagueStashes?.ForEach(l => PersistentData.LeagueStashes[l.Name] = l.Bookmarks);
@@ -46,6 +46,10 @@ namespace POESKillTree.Model.Serialization
             PersistentData.SelectedBuild = BuildForPath(_selectedBuildPath) as PoEBuild;
         }
 
+        /// <summary>
+        /// Clears all builds and deserializes them again.
+        /// </summary>
+        /// <returns></returns>
         public async Task ReloadBuildsAsync()
         {
             PersistentData.RootBuild.Builds.Clear();
@@ -265,7 +269,7 @@ namespace POESKillTree.Model.Serialization
         {
             try
             {
-                return await SerializationUtils.DeserializeFileAsync<T>(path);
+                return await SerializationUtils.XmlDeserializeFileAsync<T>(path);
             }
             catch (Exception e)
             {

@@ -27,8 +27,17 @@ namespace POESKillTree.Model.Serialization
 
         public AbstractPersistentData PersistentData { protected get; set; }
 
+        /// <summary>
+        /// Gets a <see cref="IDialogCoordinator"/> instance that can be used for showing dialogs. Only set after
+        /// (or while) <see cref="InitializeAsync"/> has been called. <see cref="PersistentData"/> is used as context
+        /// instance.
+        /// </summary>
         protected IDialogCoordinator DialogCoordinator { get; private set; }
 
+        /// <summary>
+        /// Gets or sets whether this <see cref="AbstractPersistentDataDeserializer"/> subclass deserializes files
+        /// located under BuildsSavePath.
+        /// </summary>
         protected bool DeserializesBuildsSavePath { private get; set; }
 
         protected AbstractPersistentDataDeserializer(string minimumConvertableVersion, string maximumConvertableVersion)
@@ -41,6 +50,9 @@ namespace POESKillTree.Model.Serialization
 
         public abstract void DeserializePersistentDataFile(string xmlString);
 
+        /// <summary>
+        /// Gets the longest subpath of BuildsSavePath that must be serializable.
+        /// </summary>
         protected virtual string GetLongestRequiredSubpath()
         {
             return SerializationConstants.EncodedDefaultBuildName;
@@ -89,6 +101,9 @@ namespace POESKillTree.Model.Serialization
         {
         }
 
+        /// <summary>
+        /// Deserializes files other than PersistentData.xml asynchronously. Called in <see cref="InitializeAsync"/>.
+        /// </summary>
         protected abstract Task DeserializeAdditionalFilesAsync();
 
         private Task<EquipmentData> DeserializeEquipmentData()
@@ -111,6 +126,10 @@ namespace POESKillTree.Model.Serialization
             return Enumerable.Empty<Item>();
         }
 
+        /// <summary>
+        /// Creates and returns a <see cref="PoEBuild"/> instance with the default build name.
+        /// </summary>
+        /// <returns></returns>
         protected static PoEBuild CreateDefaultCurrentBuild()
         {
             return new PoEBuild { Name = SerializationConstants.DefaultBuildName };

@@ -526,9 +526,6 @@ namespace POESKillTree.Views
                     Tree.UpdateAscendancyClasses = true;
                     PopulateAsendancySelectionList();
                     break;
-                case nameof(SkillTree.AscType):
-                    cbAscType.SelectedIndex = Tree.AscType;
-                    break;
             }
         }
 
@@ -554,7 +551,6 @@ namespace POESKillTree.Views
                         _userInteraction = true;
                         cbCharType.SelectedIndex = 0;
                         cbAscType.SelectedIndex = 0;
-                        Tree.SwitchClass(0);
                         break;
                     case Key.D2:
                         _userInteraction = true;
@@ -1655,7 +1651,6 @@ namespace POESKillTree.Views
             {
                 var currentBuild = PersistentData.CurrentBuild;
                 var treeUrl = currentBuild.TreeUrl;
-                _userInteraction = true;
                 if (treeUrl.Contains("poezone.ru"))
                 {
                     await SkillTreeImporter.LoadBuildFromPoezone(DialogCoordinator.Instance, Tree, treeUrl);
@@ -1923,7 +1918,6 @@ namespace POESKillTree.Views
             }
             UpdateUI();
         }
-        
 
         private async void Button_Craft_Click(object sender, RoutedEventArgs e)
         {

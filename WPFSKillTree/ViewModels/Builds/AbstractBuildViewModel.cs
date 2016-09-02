@@ -4,6 +4,9 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Builds
 {
+    /// <summary>
+    /// Abstract implementation of <see cref="IBuildViewModel{T}"/> that extends <see cref="Notifier"/>.
+    /// </summary>
     public abstract class AbstractBuildViewModel<T> : Notifier, IBuildViewModel<T>
         where T : IBuild
     {
@@ -26,11 +29,17 @@ namespace POESKillTree.ViewModels.Builds
 
         IBuild IBuildViewModel.Build { get { return Build; } }
 
+        /// <summary>
+        /// Gets a predicate that returns whether the given <see cref="IBuildViewModel"/> should be filtered or not.
+        /// </summary>
         protected Predicate<IBuildViewModel> FilterPredicate { get; }
 
-        protected AbstractBuildViewModel(T poEBuild, Predicate<IBuildViewModel> filterPredicate)
+        /// <param name="build">The wrapped build.</param>
+        /// <param name="filterPredicate">A predicate that returns whether the given <see cref="IBuildViewModel"/>
+        /// should be filtered or not.</param>
+        protected AbstractBuildViewModel(T build, Predicate<IBuildViewModel> filterPredicate)
         {
-            Build = poEBuild;
+            Build = build;
             FilterPredicate = filterPredicate;
         }
 

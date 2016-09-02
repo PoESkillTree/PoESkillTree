@@ -13,6 +13,9 @@ using static POESKillTree.Model.Serialization.SerializationConstants;
 
 namespace POESKillTree.Model.Serialization
 {
+    /// <summary>
+    /// Serializes persistent data back to the file system.
+    /// </summary>
     public class PersistentDataSerializer
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentDataSerializer));
@@ -23,6 +26,7 @@ namespace POESKillTree.Model.Serialization
         private readonly Dictionary<IBuild, string> _names = new Dictionary<IBuild, string>();
         private readonly Dictionary<IBuild, string> _markedForDeletion = new Dictionary<IBuild, string>();
 
+        /// <param name="persistentData">Instance to operate on</param>
         public PersistentDataSerializer(IPersistentData persistentData)
         {
             _persistentData = persistentData;
@@ -56,6 +60,9 @@ namespace POESKillTree.Model.Serialization
             folder?.Builds.ForEach(b => TreeTraverse(action, b));
         }
 
+        /// <summary>
+        /// Serializes all files except builds to <paramref name="filePath"/>.
+        /// </summary>
         public void Serialize(string filePath)
         {
             var stashes = new List<XmlLeagueStash>(_persistentData.LeagueStashes.Select(
@@ -69,7 +76,7 @@ namespace POESKillTree.Model.Serialization
                 StashBookmarks = _persistentData.StashBookmarks.ToList(),
                 LeagueStashes = stashes
             };
-            SerializationUtils.Serialize(xmlPersistentData, filePath);
+            SerializationUtils.XmlSerialize(xmlPersistentData, filePath);
             SerializeStash();
         }
 
@@ -111,8 +118,14 @@ namespace POESKillTree.Model.Serialization
             }
         }
 
-        // Folders have to be serialized right after being changed. Else _parents gets incorrect.
-        // The folder builds are moved to has to be serialized before their old folder.
+        /// <summary>
+        /// Serializes the given build.
+        /// </summary>
+        /// <remarks>
+        /// Folders have to be serialized right after being changed to update parent information in time.
+        /// 
+        /// The folder builds are moved to has to be serialized before their old folder.
+        /// </remarks>
         public void SerializeBuild(IBuild build)
         {
             string oldName;
@@ -197,13 +210,19 @@ namespace POESKillTree.Model.Serialization
                     Builds = folder.Builds.Select(b => b.Name).ToList()
                 };
                 Directory.CreateDirectory(path);
-                SerializationUtils.Serialize(xmlFolder, Path.Combine(path, BuildFolderFileName));
+                SerializationUtils.XmlSerialize(xmlFolder, Path.Combine(path, BuildFolderFileName));
             }
 
             // Just recreate these. Easier than handling all edge cases.
             InitParents();
         }
 
+        /// <summary>
+        /// Deletes the given build from the filesystem.
+        /// </summary>
+        /// <remarks>
+        /// The build's parent folder must have been saved beforehand.
+        /// </remarks>
         public void DeleteBuild(IBuild build)
         {
             // Return if build was not yet saved to the filesystem.
@@ -227,7 +246,7 @@ namespace POESKillTree.Model.Serialization
         private static void SerializeBuild(string path, PoEBuild build)
         {
             build.Version = BuildVersion.ToString();
-            SerializationUtils.Serialize(build, path + BuildFileExtension);
+            SerializationUtils.XmlSerialize(build, path + BuildFileExtension);
             build.KeepChanges();
         }
     }

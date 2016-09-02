@@ -9,6 +9,9 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.Model.Serialization
 {
+    /// <summary>
+    /// Abstract implementation of <see cref="IPersistentData"/> implementing all properties and the notify interfaces.
+    /// </summary>
     public abstract class AbstractPersistentData : Notifier, IPersistentData
     {
         private Options _options = new Options();
@@ -58,37 +61,5 @@ namespace POESKillTree.Model.Serialization
         public abstract void DeleteBuild(IBuild build);
 
         public abstract Task ReloadBuildsAsync();
-    }
-
-    /// <summary>
-    /// Implements all abstract methods of <see cref="AbstractPersistentData"/> by throwing exceptions on call.
-    /// Only use this class in tests or if the instance is immediately serialized and not used any further.
-    /// </summary>
-    public class BarePersistentData : AbstractPersistentData
-    {
-        public override Task InitializeAsync(IDialogCoordinator dialogCoordinator)
-        {
-            throw new System.NotSupportedException();
-        }
-
-        public override void Save()
-        {
-            throw new System.NotSupportedException();
-        }
-
-        public override void SaveBuild(IBuild build)
-        {
-            throw new System.NotSupportedException();
-        }
-
-        public override void DeleteBuild(IBuild build)
-        {
-            throw new System.NotSupportedException();
-        }
-
-        public override Task ReloadBuildsAsync()
-        {
-            throw new System.NotSupportedException();
-        }
     }
 }

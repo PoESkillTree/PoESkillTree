@@ -4,6 +4,9 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.Model.Serialization
 {
+    /// <summary>
+    /// Contains constants used for serialization of build files.
+    /// </summary>
     public static class SerializationConstants
     {
         public const string BuildFolderFileName = ".buildfolder";

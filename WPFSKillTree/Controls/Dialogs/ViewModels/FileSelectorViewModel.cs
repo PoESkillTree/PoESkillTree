@@ -8,6 +8,9 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.Controls.Dialogs.ViewModels
 {
+    /// <summary>
+    /// View model used for selecting a path to a file or directory.
+    /// </summary>
     public class FileSelectorViewModel : ErrorInfoViewModel<string>
     {
         private string _filePath;
@@ -24,10 +27,14 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
             set { SetProperty(ref _filePath, value); }
         }
 
+        /// <summary>
+        /// Gets a variant of the last <see cref="FilePath"/> that was valid that does not end with a directory
+        /// separator.
+        /// </summary>
         public string SanitizedFilePath
         {
             get { return _sanitizedFilePath; }
-            set { SetProperty(ref _sanitizedFilePath, value); }
+            private set { SetProperty(ref _sanitizedFilePath, value); }
         }
 
         public ICommand SelectFileCommand { get; }

@@ -8,6 +8,9 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.ViewModels.Builds
 {
+    /// <summary>
+    /// <see cref="IBuildFolderViewModel"/> implementation.
+    /// </summary>
     public class BuildFolderViewModel : AbstractBuildViewModel<BuildFolder>, IBuildFolderViewModel
     {
         private readonly Action<IBuildFolderViewModel> _collectionChangedCallback;
@@ -17,6 +20,11 @@ namespace POESKillTree.ViewModels.Builds
 
         private bool _isInCollectionChanged;
 
+        /// <param name="buildFolder">The wrapped build.</param>
+        /// <param name="filterPredicate">A predicate that returns whether the given <see cref="IBuildViewModel"/>
+        /// should be filtered or not.</param>
+        /// <param name="collectionChangedCallback">Action that is called whenever <see cref="Children"/> changes. This
+        /// instance is passed as parameter.</param>
         public BuildFolderViewModel(BuildFolder buildFolder, Predicate<IBuildViewModel> filterPredicate,
             Action<IBuildFolderViewModel> collectionChangedCallback)
             : base(buildFolder, filterPredicate)
@@ -95,6 +103,9 @@ namespace POESKillTree.ViewModels.Builds
         {
             build.Parent = this;
         }
+
+        // Everything from here on is used to keep Children and Build.Builds synchronized. Changes in one of them have
+        // to be passed to the other.
 
         private void ChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {

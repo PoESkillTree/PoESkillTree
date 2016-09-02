@@ -59,7 +59,7 @@ namespace POESKillTree.Model
     /// <summary>
     /// Stores the bandit choice for each difficulty.
     /// </summary>
-    public class BanditSettings : Notifier, IDeepCloneable<BanditSettings>
+    public class BanditSettings : Notifier
     {
         private Bandit _normal;
         private Bandit _cruel;
@@ -121,11 +121,6 @@ namespace POESKillTree.Model
         public BanditSettings DeepClone()
         {
             return (BanditSettings) SafeMemberwiseClone();
-        }
-
-        object IDeepCloneable.DeepClone()
-        {
-            return DeepClone();
         }
     }
 }

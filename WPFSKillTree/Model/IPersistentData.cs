@@ -9,6 +9,9 @@ using POESKillTree.Model.Items;
 
 namespace POESKillTree.Model
 {
+    /// <summary>
+    /// Enables access to all data that persists between program executions.
+    /// </summary>
     public interface IPersistentData : INotifyPropertyChanged, INotifyPropertyChanging
     {
         Options Options { get; }
@@ -21,7 +24,7 @@ namespace POESKillTree.Model
         IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
 
         /// <summary>
-        /// Initializes all fiels that require asnychronous actions like dialogs.
+        /// Initializes all fields that require asnychronous actions like dialogs.
         /// </summary>
         Task InitializeAsync(IDialogCoordinator dialogCoordinator);
 

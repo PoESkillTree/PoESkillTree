@@ -197,8 +197,8 @@
     <Compile Include="Controls\Dialogs\Views\FileSelectorView.xaml.cs">
       <DependentUpon>FileSelectorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dialogs\Views\MetroMessageBoxWindow.xaml.cs">
-      <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
+    <Compile Include="Controls\Dialogs\Views\MetroMessageBoxView.xaml.cs">
+      <DependentUpon>MetroMessageBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dialogs\Views\ValidatingInputDialogView.xaml.cs">
       <DependentUpon>ValidatingInputDialogView.xaml</DependentUpon>
@@ -234,7 +234,6 @@
     <Compile Include="Model\Builds\AbstractBuild.cs" />
     <Compile Include="Model\Builds\BuildFolder.cs" />
     <Compile Include="Model\Builds\IBuild.cs" />
-    <Compile Include="Model\IDeepCloneable.cs" />
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\IPersistentData.cs" />
     <Compile Include="Model\Items\Affixes\Affix.cs" />
@@ -255,6 +254,7 @@
     <Compile Include="Model\Serialization\AbstractPersistentData.cs" />
     <Compile Include="Model\ResetPreferences.cs" />
     <Compile Include="Model\Serialization\AbstractPersistentDataDeserializer.cs" />
+    <Compile Include="Model\Serialization\BarePersistentData.cs" />
     <Compile Include="Model\Serialization\IPersistentDataDeserializer.cs" />
     <Compile Include="Model\Serialization\PersistentDataDeserializerCurrent.cs" />
     <Compile Include="Model\Serialization\PersistentDataDeserializerUpTo2210.cs" />
@@ -441,7 +441,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Dialogs\Views\MetroMessageBoxWindow.xaml">
+    <Page Include="Controls\Dialogs\Views\MetroMessageBoxView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

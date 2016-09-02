@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Data;
+﻿using System.Windows;
 using System.Windows.Interactivity;
 
 namespace POESKillTree.Utils.Wpf

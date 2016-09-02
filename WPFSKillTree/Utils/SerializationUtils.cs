@@ -7,14 +7,24 @@ using System.Xml.Serialization;
 
 namespace POESKillTree.Utils
 {
+    /// <summary>
+    /// Contains utility methods for serialization and deserialization.
+    /// </summary>
     public static class SerializationUtils
     {
-        public static async Task<T> DeserializeFileAsync<T>(string filePath)
+        /// <summary>
+        /// Deserializes an object of type <typeparamref name="T"/> from <paramref name="filePath"/>
+        /// asynchronously using XmlSerializer.
+        /// </summary>
+        public static async Task<T> XmlDeserializeFileAsync<T>(string filePath)
         {
-            return DeserializeString<T>(await FileEx.ReadAllTextAsync(filePath));
+            return XmlDeserializeString<T>(await FileEx.ReadAllTextAsync(filePath));
         }
 
-        public static T DeserializeString<T>(string xmlString)
+        /// <summary>
+        /// Deserializes an object of type <typeparamref name="T"/> from the given string using XmlSerializer.
+        /// </summary>
+        public static T XmlDeserializeString<T>(string xmlString)
         {
             using (var reader = new StringReader(xmlString))
             {
@@ -23,7 +33,10 @@ namespace POESKillTree.Utils
             }
         }
 
-        public static void Serialize<T>(T obj, string filePath)
+        /// <summary>
+        /// Serializes <paramref name="obj"/> to <paramref name="filePath"/> using XmlSerializer.
+        /// </summary>
+        public static void XmlSerialize<T>(T obj, string filePath)
         {
             using (var writer = new StreamWriter(filePath))
             {
@@ -32,7 +45,10 @@ namespace POESKillTree.Utils
             }
         }
 
-        public static string AssemblyFileVersion { get; } = GetAssemblyFileVersion();
+        /// <summary>
+        /// The <see cref="FileVersionInfo.FileVersion"/> of the containing assembly.
+        /// </summary>
+        public static readonly string AssemblyFileVersion = GetAssemblyFileVersion();
 
         private static string GetAssemblyFileVersion()
         {
@@ -41,11 +57,17 @@ namespace POESKillTree.Utils
             return fvi.FileVersion;
         }
 
+        /// <summary>
+        /// Decodes the given file name that was encoded with <see cref="EncodeFileName"/>.
+        /// </summary>
         public static string DecodeFileName(string fileName)
         {
             return WebUtility.UrlDecode(fileName);
         }
 
+        /// <summary>
+        /// Encodes the given file name so that it contains no characters that are invalid as file names.
+        /// </summary>
         public static string EncodeFileName(string fileName)
         {
             // * (asterisk) is not encoded but is not allowed in Windows file names

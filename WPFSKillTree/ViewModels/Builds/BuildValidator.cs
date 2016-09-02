@@ -7,6 +7,10 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Builds
 {
+    /// <summary>
+    /// Used to validate build names and to decide whether builds can be moved into a folder or whether
+    /// a folder can have subfolders.
+    /// </summary>
     public class BuildValidator
     {
         /// <summary>
@@ -21,12 +25,19 @@ namespace POESKillTree.ViewModels.Builds
             _options = options;
         }
 
+        /// <summary>
+        /// Returns true iff the <paramref name="folder"/> can have subfolders. There can only be a constant number
+        /// of folders nested into each other.
+        /// </summary>
         public bool CanHaveSubfolder(IBuildFolderViewModel folder)
         {
             return GetDepthOfFolder(folder) < MaxBuildDepth;
         }
 
-        public bool CanMoveTo(IBuildViewModel build, IBuildFolderViewModel parent, bool allowDuplicateNames)
+        /// <summary>
+        /// Returns true iff <paramref name="build"/> can be moved to <paramref name="parent"/>.
+        /// </summary>
+        public bool CanMoveTo(IBuildViewModel build, IBuildFolderViewModel parent)
         {
             if (!IsNameUnique(build.Build.Name, build, parent))
                 return false;
@@ -87,21 +98,37 @@ namespace POESKillTree.ViewModels.Builds
             return folder.Parent == null ? 1 : 1 + GetDepthOfFolder(folder.Parent);
         }
 
+        /// <summary>
+        /// Returns an string that contains an error message if it is not null or empty that describes
+        /// why <paramref name="name"/> is not allowed as a name for <paramref name="folder"/>.
+        /// </summary>
         public string ValidateExistingFolderName(string name, IBuildViewModel folder)
         {
             return ValidateName(name, PathForFolder(name, folder.Parent), folder, folder.Parent);
         }
 
+        /// <summary>
+        /// Returns an string that contains an error message if it is not null or empty that describes
+        /// why <paramref name="name"/> is not allowed as a name for a new subfolder of <paramref name="parent"/>.
+        /// </summary>
         public string ValidateNewFolderName(string name, IBuildFolderViewModel parent)
         {
             return ValidateName(name, PathForFolder(name, parent), null, parent);
         }
 
+        /// <summary>
+        /// Returns an string that contains an error message if it is not null or empty that describes
+        /// why <paramref name="name"/> is not allowed as a name for <paramref name="build"/>.
+        /// </summary>
         public string ValidateExistingFileName(string name, IBuildViewModel build)
         {
             return ValidateName(name, PathForBuild(name, build.Parent), build, build.Parent);
         }
 
+        /// <summary>
+        /// Returns an string that contains an error message if it is not null or empty that describes
+        /// why <paramref name="name"/> is not allowed as a name for a new build located in <paramref name="parent"/>.
+        /// </summary>
         public string ValidateNewBuildName(string name, IBuildFolderViewModel parent)
         {
             return ValidateName(name, PathForBuild(name, parent), null, parent);

@@ -19,6 +19,9 @@ namespace POESKillTree.Model.Serialization
     /// </summary>
     public class PersistentDataDeserializerUpTo2210 : AbstractPersistentDataDeserializer
     {
+        /// <summary>
+        /// XML format used in these versions. Public as it's used for deserialization.
+        /// </summary>
         [XmlRoot("PersistentData")]
         public class XmlPersistentData
         {
@@ -44,7 +47,7 @@ namespace POESKillTree.Model.Serialization
 
         public override void DeserializePersistentDataFile(string xmlString)
         {
-            var obj = SerializationUtils.DeserializeString<XmlPersistentData>(xmlString);
+            var obj = SerializationUtils.XmlDeserializeString<XmlPersistentData>(xmlString);
             PersistentData.Options = obj.Options;
             PersistentData.CurrentBuild = obj.CurrentBuild ?? CreateDefaultCurrentBuild();
             obj.StashBookmarks?.ForEach(PersistentData.StashBookmarks.Add);

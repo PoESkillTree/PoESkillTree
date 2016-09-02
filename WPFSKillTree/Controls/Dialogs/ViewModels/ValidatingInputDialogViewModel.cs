@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using POESKillTree.Common.ViewModels;
 
 namespace POESKillTree.Controls.Dialogs.ViewModels
 {
+    /// <summary>
+    /// View model for a input dialog that validates the input.
+    /// </summary>
     public class ValidatingInputDialogViewModel : ErrorInfoViewModel<string>
     {
         private readonly Func<string, string> _inputValidationFunc;

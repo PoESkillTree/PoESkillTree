@@ -2,10 +2,20 @@ using System.ComponentModel;
 
 namespace POESKillTree.Model.Builds
 {
-    public interface IBuild : INotifyPropertyChanged, INotifyPropertyChanging, IDeepCloneable
+    /// <summary>
+    /// Interface for builds. Builds have a name, can be deep cloned and implement both
+    /// <see cref="INotifyPropertyChanged"/> and <see cref="INotifyPropertyChanging"/>.
+    /// </summary>
+    public interface IBuild : INotifyPropertyChanged, INotifyPropertyChanging
     {
+        /// <summary>
+        /// Gets or sets the name of this build.
+        /// </summary>
         string Name { get; set; }
 
-        new IBuild DeepClone();
+        /// <summary>
+        /// Returns a deep copy of this build.
+        /// </summary>
+        IBuild DeepClone();
     }
 }

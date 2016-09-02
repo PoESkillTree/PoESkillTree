@@ -25,6 +25,9 @@ namespace POESKillTree.ViewModels
     {
     }
 
+    /// <summary>
+    /// View model providing access to and operations on builds.
+    /// </summary>
     public class BuildsControlViewModel : Notifier
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(BuildsControlViewModel));
@@ -38,8 +41,14 @@ namespace POESKillTree.ViewModels
         private readonly SimpleMonitor _changingFileSystemMonitor = new SimpleMonitor();
         private int _changingFileSystemCounter;
 
+        /// <summary>
+        /// Gets the root folder of the build folder tree.
+        /// </summary>
         public IBuildFolderViewModel BuildRoot { get; }
 
+        /// <summary>
+        /// Gets the drop handler that handles drag and drop for the build tree.
+        /// </summary>
         public IDropTarget DropHandler { get; }
 
         public ICommand NewFolderCommand { get; }
@@ -77,6 +86,9 @@ namespace POESKillTree.ViewModels
         public IPersistentData PersistentData { get; }
 
         private BuildViewModel _currentBuild;
+        /// <summary>
+        /// Gets or sets the currently opened build.
+        /// </summary>
         public BuildViewModel CurrentBuild
         {
             get { return _currentBuild; }
@@ -96,6 +108,9 @@ namespace POESKillTree.ViewModels
         }
 
         private IBuildViewModel _selectedBuild;
+        /// <summary>
+        /// Gets or sets the currently selected build.
+        /// </summary>
         public IBuildViewModel SelectedBuild
         {
             get { return _selectedBuild; }
@@ -115,6 +130,10 @@ namespace POESKillTree.ViewModels
         }
 
         private string _classFilter = L10n.Message("All");
+        /// <summary>
+        /// Gets or sets the class builds must be of to be visible
+        /// (L10n("All") shows everything).
+        /// </summary>
         public string ClassFilter
         {
             get { return _classFilter; }
@@ -122,6 +141,9 @@ namespace POESKillTree.ViewModels
         }
 
         private string _textFilter;
+        /// <summary>
+        /// Gets or sets a string build names must contain to be visible.
+        /// </summary>
         public string TextFilter
         {
             get { return _textFilter; }
@@ -406,8 +428,7 @@ namespace POESKillTree.ViewModels
         {
             if (target == null || _buildClipboard == null)
                 return false;
-            var allowDuplicateNames = _clipboardIsCopy && _buildClipboard.Parent == target;
-            return _buildValidator.CanMoveTo(_buildClipboard, target, allowDuplicateNames);
+            return _buildValidator.CanMoveTo(_buildClipboard, target);
         }
 
         private async Task Paste(IBuildFolderViewModel target)
@@ -673,7 +694,7 @@ namespace POESKillTree.ViewModels
                 }
                 if (target == null)
                     return;
-                if (!_outer._buildValidator.CanMoveTo(source, target, source.Parent == target))
+                if (!_outer._buildValidator.CanMoveTo(source, target))
                 {
                     dropInfo.Effects = DragDropEffects.None;
                 }

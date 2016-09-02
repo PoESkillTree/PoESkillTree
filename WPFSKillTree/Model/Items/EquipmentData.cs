@@ -59,7 +59,7 @@ namespace POESKillTree.Model.Items
             if (!File.Exists(filename))
                 return Enumerable.Empty<XmlAffix>();
 
-            var affixList = await SerializationUtils.DeserializeFileAsync<XmlAffixList>(filename);
+            var affixList = await SerializationUtils.XmlDeserializeFileAsync<XmlAffixList>(filename);
             return affixList.Affixes;
         }
 
@@ -100,7 +100,7 @@ namespace POESKillTree.Model.Items
             if (!File.Exists(filename))
                 return new List<ItemBase>();
 
-            var xmlList = await SerializationUtils.DeserializeFileAsync<XmlItemList>(filename);
+            var xmlList = await SerializationUtils.XmlDeserializeFileAsync<XmlItemList>(filename);
             return xmlList.ItemBases.Select(x => new ItemBase(_options, x));
         }
 

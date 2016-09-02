@@ -11,7 +11,7 @@ using POESKillTree.Utils;
 namespace POESKillTree.Model.Serialization
 {
     /// <summary>
-    /// Provides services for loading and saving <see cref="IPersistentData"/> instances from/to the file system.
+    /// Provides services for creating <see cref="IPersistentData"/> instances from the file system.
     /// </summary>
     public static class PersistentDataSerializationService
     {
@@ -22,6 +22,10 @@ namespace POESKillTree.Model.Serialization
         private static readonly string FilePath = AppData.GetFolder(true) + FileName + ".xml";
         private static readonly string BackupPath = AppData.GetFolder(true) + FileName + ".bak";
 
+        /// <summary>
+        /// Creates and returns an uninitialized <see cref="IPersistentData"/> instance.
+        /// </summary>
+        /// <param name="importedBuildPath">Optional path to a build file that should be imported.</param>
         public static IPersistentData CreatePersistentData(string importedBuildPath)
         {
             if (!File.Exists(FilePath))
@@ -59,7 +63,7 @@ namespace POESKillTree.Model.Serialization
                 new PersistentDataDeserializerUpTo2210(), new PersistentDataDeserializerCurrent()
             };
             var xmlString = File.ReadAllText(filePath);
-            var version = SerializationUtils.DeserializeString<XmlPersistentDataVersion>(xmlString).AppVersion;
+            var version = SerializationUtils.XmlDeserializeString<XmlPersistentDataVersion>(xmlString).AppVersion;
             IPersistentDataDeserializer suitableDeserializer;
             if (version == null)
             {
@@ -81,8 +85,11 @@ namespace POESKillTree.Model.Serialization
             suitableDeserializer.DeserializePersistentDataFile(xmlString);
             return data;
         }
-
-        // Creates empty file with language option set.
+        
+        /// <summary>
+        /// Creates an empty PersistentData file that only has the language option set.
+        /// Used by the installation script.
+        /// </summary>
         [UsedImplicitly]
         public static void CreateSetupTemplate(string path, string language)
         {
