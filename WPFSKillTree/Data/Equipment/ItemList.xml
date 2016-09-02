@@ -2889,298 +2889,269 @@
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Agate Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="20" To="20" />
-      <Stat Name="Requires Level" From="16" To="16" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Agate Amulet" Level="16" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to Strength and Intelligence" From="16" To="24" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Amber Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="7" To="7" />
-      <Stat Name="Requires Level" From="5" To="5" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Amber Amulet" Level="5" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to Strength" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Blue Pearl Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="77" To="77" />
-      <Stat Name="Requires Level" From="77" To="77" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Blue Pearl Amulet" Level="77" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Mana Regeneration Rate" From="48" To="56" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Citrine Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="20" To="20" />
-      <Stat Name="Requires Level" From="16" To="16" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Citrine Amulet" Level="16" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to Strength and Dexterity" From="16" To="24" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Amulet" Name="Coral Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="3" To="3" />
-    </Properties>
+    <Implicit>
+      <Stat Name="# Life Regenerated per second" From="2" To="4" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Gold Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="15" To="15" />
-      <Stat Name="Requires Level" From="8" To="8" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Gold Amulet" Level="8" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Rarity of Items found" From="12" To="20" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Jade Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="7" To="7" />
-      <Stat Name="Requires Level" From="5" To="5" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Jade Amulet" Level="5" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to Dexterity" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Lapis Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="7" To="7" />
-      <Stat Name="Requires Level" From="5" To="5" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Lapis Amulet" Level="5" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to Intelligence" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Marble Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="74" To="74" />
-      <Stat Name="Requires Level" From="74" To="74" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Marble Amulet" Level="74" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% of Life Regenerated per second" From="1.2" To="1.6" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Onyx Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="25" To="25" />
-      <Stat Name="Requires Level" From="20" To="20" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Onyx Amulet" Level="20" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to all Attributes" From="10" To="16" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Amulet" Name="Paua Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="3" To="3" />
-    </Properties>
+    <Implicit>
+      <Stat Name="#% increased Mana Regeneration Rate" From="20" To="30" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Amulet" Name="Ruby Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="50" To="50" />
-    </Properties>
+    <Implicit>
+      <Stat Name="+#% to Fire Resistance" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Turquoise Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="20" To="20" />
-      <Stat Name="Requires Level" From="16" To="16" />
-    </Properties>
+  <ItemBase ItemType="Amulet" Name="Turquoise Amulet" Level="16" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to Dexterity and Intelligence" From="16" To="24" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Belt" Name="Chain Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="2" To="2" />
-    </Properties>
+    <Implicit>
+      <Stat Name="+# to maximum Energy Shield" From="9" To="20" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Belt" Name="Cloth Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="20" To="20" />
-      <Stat Name="Requires Level" From="16" To="16" />
-    </Properties>
+  <ItemBase ItemType="Belt" Name="Cloth Belt" Level="16" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Stun and Block Recovery" From="15" To="25" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Belt" Name="Crystal Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="79" To="79" />
-      <Stat Name="Requires Level" From="79" To="79" />
-    </Properties>
+  <ItemBase ItemType="Belt" Name="Crystal Belt" Level="79" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to maximum Energy Shield" From="60" To="80" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Belt" Name="Heavy Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="10" To="10" />
-      <Stat Name="Requires Level" From="8" To="8" />
-    </Properties>
+  <ItemBase ItemType="Belt" Name="Heavy Belt" Level="8" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to Strength" From="25" To="35" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Belt" Name="Leather Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="10" To="10" />
-      <Stat Name="Requires Level" From="8" To="8" />
-    </Properties>
+  <ItemBase ItemType="Belt" Name="Leather Belt" Level="8" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to maximum Life" From="25" To="40" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Belt" Name="Rustic Sash" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="2" To="2" />
-    </Properties>
+    <Implicit>
+      <Stat Name="#% increased Physical Damage" From="12" To="24" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Belt" Name="Studded Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="20" To="20" />
-      <Stat Name="Requires Level" From="16" To="16" />
-    </Properties>
+  <ItemBase ItemType="Belt" Name="Studded Belt" Level="16" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Belt" Name="Vanguard Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="78" To="78" />
-      <Stat Name="Requires Level" From="78" To="78" />
-    </Properties>
+  <ItemBase ItemType="Belt" Name="Vanguard Belt" Level="78" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to Armour and Evasion Rating" From="260" To="320" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Blunt Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="16" To="16" />
-      <Stat Name="Requires Level" From="16" To="16" />
-    </Properties>
+  <ItemBase ItemType="Quiver" Name="Blunt Arrow Quiver" Level="16" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Stun Duration on Enemies" From="25" To="35" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Broadhead Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="28" To="28" />
-      <Stat Name="Requires Level" From="28" To="28" />
-    </Properties>
+  <ItemBase ItemType="Quiver" Name="Broadhead Arrow Quiver" Level="28" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="Adds # minimum Physical Damage to Attacks with Bows" From="6" To="6" />
+      <Stat Name="Adds # maximum Physical Damage to Attacks with Bows" From="12" To="12" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Fire Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="22" To="22" />
-      <Stat Name="Requires Level" From="22" To="22" />
-    </Properties>
+  <ItemBase ItemType="Quiver" Name="Fire Arrow Quiver" Level="22" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="Adds # minimum Fire Damage to Attacks with Bows" From="4" To="4" />
+      <Stat Name="Adds # maximum Fire Damage to Attacks with Bows" From="8" To="8" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Penetrating Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="36" To="36" />
-      <Stat Name="Requires Level" From="36" To="36" />
-    </Properties>
+  <ItemBase ItemType="Quiver" Name="Penetrating Arrow Quiver" Level="36" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% chance of Arrows Piercing" From="10" To="10" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Serrated Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="1" To="1" />
-    </Properties>
+    <Implicit>
+      <Stat Name="Adds # minimum Physical Damage to Attacks with Bows" From="1" To="1" />
+      <Stat Name="Adds # maximum Physical Damage to Attacks with Bows" From="4" To="4" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Sharktooth Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="10" To="10" />
-      <Stat Name="Requires Level" From="10" To="10" />
-    </Properties>
+  <ItemBase ItemType="Quiver" Name="Sharktooth Arrow Quiver" Level="10" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# Life gained for each Enemy hit by your Attacks" From="3" To="4" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Spike-Point Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="45" To="45" />
-      <Stat Name="Requires Level" From="45" To="45" />
-    </Properties>
+  <ItemBase ItemType="Quiver" Name="Spike-Point Arrow Quiver" Level="45" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Global Critical Strike Chance" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Two-Point Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="5" To="5" />
-      <Stat Name="Requires Level" From="4" To="4" />
-    </Properties>
+  <ItemBase ItemType="Quiver" Name="Two-Point Arrow Quiver" Level="4" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Accuracy Rating" From="20" To="30" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Conductive Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="2" To="2" />
-    </Properties>
+    <Implicit>
+      <Stat Name="Adds # minimum Lightning Damage to Attacks" From="1" To="1" />
+      <Stat Name="Adds # maximum Lightning Damage to Attacks" From="5" To="5" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Cured Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="2" To="2" />
-    </Properties>
+    <Implicit>
+      <Stat Name="Adds # minimum Fire Damage to Attacks" From="2" To="2" />
+      <Stat Name="Adds # maximum Fire Damage to Attacks" From="4" To="4" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Heavy Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="7" To="7" />
-      <Stat Name="Requires Level" From="5" To="5" />
-    </Properties>
+  <ItemBase ItemType="Quiver" Name="Heavy Quiver" Level="5" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="Adds # minimum Physical Damage to Attacks" From="1" To="1" />
+      <Stat Name="Adds # maximum Physical Damage to Attacks" From="4" To="4" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Light Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="15" To="15" />
-      <Stat Name="Requires Level" From="12" To="12" />
-    </Properties>
+  <ItemBase ItemType="Quiver" Name="Light Quiver" Level="12" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to Dexterity" From="30" To="40" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Rugged Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="2" To="2" />
-    </Properties>
+    <Implicit>
+      <Stat Name="Adds # minimum Cold Damage to Attacks" From="2" To="2" />
+      <Stat Name="Adds # maximum Cold Damage to Attacks" From="3" To="3" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Amethyst Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="38" To="38" />
-      <Stat Name="Requires Level" From="30" To="30" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Amethyst Ring" Level="30" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+#% to Chaos Resistance" From="9" To="13" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Coral Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="4" To="4" />
-    </Properties>
+    <Implicit>
+      <Stat Name="+# to maximum Life" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Diamond Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="25" To="25" />
-      <Stat Name="Requires Level" From="20" To="20" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Diamond Ring" Level="20" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Global Critical Strike Chance" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Gold Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="20" To="20" />
-      <Stat Name="Requires Level" From="20" To="20" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Gold Ring" Level="20" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Rarity of Items found" From="6" To="15" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Iron Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="2" To="2" />
-    </Properties>
+    <Implicit>
+      <Stat Name="Adds # minimum Physical Damage to Attacks" From="1" To="1" />
+      <Stat Name="Adds # maximum Physical Damage to Attacks" From="4" To="4" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Moonstone Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="25" To="25" />
-      <Stat Name="Requires Level" From="20" To="20" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Moonstone Ring" Level="20" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+# to maximum Energy Shield" From="15" To="25" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Opal Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="80" To="80" />
-    </Properties>
+    <Implicit>
+      <Stat Name="#% increased Elemental Damage" From="15" To="25" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Paua Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="5" To="5" />
-    </Properties>
+    <Implicit>
+      <Stat Name="+# to maximum Mana" From="20" To="25" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Prismatic Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="30" To="30" />
-      <Stat Name="Requires Level" From="30" To="30" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Prismatic Ring" Level="30" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+#% to all Elemental Resistances" From="8" To="10" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Ruby Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="16" To="16" />
-      <Stat Name="Requires Level" From="16" To="16" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Ruby Ring" Level="16" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+#% to Fire Resistance" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Sapphire Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="8" To="8" />
-      <Stat Name="Requires Level" From="8" To="8" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Sapphire Ring" Level="8" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+#% to Cold Resistance" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Steel Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="80" To="80" />
-      <Stat Name="Requires Level" From="80" To="80" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Steel Ring" Level="80" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="Adds # minimum Physical Damage to Attacks" From="3" To="4" />
+      <Stat Name="Adds # maximum Physical Damage to Attacks" From="10" To="14" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Topaz Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="12" To="12" />
-      <Stat Name="Requires Level" From="12" To="12" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Topaz Ring" Level="12" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+#% to Lightning Resistance" From="20" To="30" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Two-Stone Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="20" To="20" />
-      <Stat Name="Requires Level" From="20" To="20" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Two-Stone Ring" Level="20" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+#% to Cold and Lightning Resistances" From="12" To="16" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Two-Stone Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="20" To="20" />
-      <Stat Name="Requires Level" From="20" To="20" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Two-Stone Ring" Level="20" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+#% to Fire and Cold Resistances" From="12" To="16" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Two-Stone Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="20" To="20" />
-      <Stat Name="Requires Level" From="20" To="20" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Two-Stone Ring" Level="20" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="+#% to Fire and Lightning Resistances" From="12" To="16" />
+    </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Unset Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Properties>
-      <Stat Name="Drop Level" From="45" To="45" />
-      <Stat Name="Requires Level" From="5" To="5" />
-    </Properties>
+  <ItemBase ItemType="Ring" Name="Unset Ring" Level="5" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="Has # Socket" From="1" To="1" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Plate Vest" Level="0" Strength="12" Dexterity="0" Intelligence="0">
     <Implicit>
