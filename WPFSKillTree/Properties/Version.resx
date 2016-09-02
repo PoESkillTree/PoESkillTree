@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppId" xml:space="preserve">
-    <value>{B5012C21-ECA4-41AF-ABD1-F549D019B7A9}</value>
+    <value>{DC22AC48-5C37-4F50-9D1F-27487B1A384A}</value>
     <comment>The application identifier also used as AppUserModelId and running application instance Mutex. Change only when release is not an update of previous release, but should be installed alongside it.</comment>
   </data>
   <data name="AssemblyCompany" xml:space="preserve">
