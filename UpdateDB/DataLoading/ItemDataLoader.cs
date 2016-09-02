@@ -28,47 +28,18 @@ namespace UpdateDB.DataLoading
         private static readonly Regex StrRegex = new Regex(@"(\d+) Str");
         private static readonly Regex IntRegex = new Regex(@"(\d+) Int");
 
-        /// <summary>
-        /// Contains all item types that have hidden implicits that are not listed in the wiki tables.
-        /// </summary>
-        private static readonly IReadOnlyDictionary<ItemType, XmlStat> HiddenImplicits;
+        private static readonly IReadOnlyDictionary<string, string> PropertyRenames = new Dictionary<string, string>
+        {
+            {"Evasion", "Evasion Rating"}
+        };
+
+        private static readonly IReadOnlyDictionary<string, string> ImplicitRenames = new Dictionary<string, string>
+        {
+            {"#% reduced Movement Speed (Hidden)", "#% reduced Movement Speed"}
+        };
 
         private static readonly IEnumerable<XmlItemBase> Jewels =
             ItemGroup.Jewel.Types().Select(t => new XmlItemBase { ItemType = t, Name = t.ToString().Replace("Jewel", " Jewel") }).ToList();
-
-        static ItemDataLoader()
-        {
-            var penalty3 = new XmlStat
-            {
-                Name = "#% reduced Movement Speed",
-                From = 3,
-                To = 3
-            };
-            var penalty4 = new XmlStat
-            {
-                Name = "#% reduced Movement Speed",
-                From = 4,
-                To = 4
-            };
-            var penalty8 = new XmlStat
-            {
-                Name = "#% reduced Movement Speed",
-                From = 8,
-                To = 8
-            };
-            var dict = new Dictionary<ItemType, XmlStat>();
-            foreach (var itemType in ItemGroup.BodyArmour.Types())
-            {
-                dict[itemType] = penalty4;
-            }
-            dict[ItemType.BodyArmourArmour] = penalty8;
-            dict[ItemType.BodyArmourArmourEnergyShield] = penalty8;
-            foreach (var itemType in ItemGroup.Shield.Types())
-            {
-                dict[itemType] = penalty3;
-            }
-            HiddenImplicits = dict;
-        }
 
         protected override async Task LoadAsync(HttpClient httpClient)
         {
@@ -102,10 +73,6 @@ namespace UpdateDB.DataLoading
                         implicitFrom += implicits[0].From / 100;
                         implicitTo += implicits[0].To / 100;
                     }
-                }
-                if (HiddenImplicits.ContainsKey(itemType))
-                {
-                    implicits.Add(HiddenImplicits[itemType]);
                 }
 
                 var itemBase = new XmlItemBase
@@ -152,6 +119,8 @@ namespace UpdateDB.DataLoading
             if (matches.Count <= 0) yield break;
 
             mod = NumberRegex.Replace(mod, "#").Replace("–", "-").Replace("#-#", "# to #");
+            if (ImplicitRenames.ContainsKey(mod))
+                mod = ImplicitRenames[mod];
             if (mod.Contains("# to # "))
             {
                 if (matches.Count != 2)
@@ -204,6 +173,8 @@ namespace UpdateDB.DataLoading
                 var name = wikiItemStat.Stats[0].Item1.TrimEnd(':', ' ');
                 if (combined.Contains("%"))
                     name += " %";
+                if (PropertyRenames.ContainsKey(name))
+                    name = PropertyRenames[name];
 
                 float from;
                 float to;

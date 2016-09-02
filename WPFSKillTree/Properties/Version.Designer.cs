@@ -61,7 +61,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {B5012C21-ECA4-41AF-ABD1-F549D019B7A9}.
+        ///   Looks up a localized string similar to {DC22AC48-5C37-4F50-9D1F-27487B1A384A}.
         /// </summary>
         public static string AppId {
             get {
@@ -79,7 +79,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copyright © 2012-2015 PoESkillTree Team.
+        ///   Looks up a localized string similar to Copyright © 2012-2016 PoESkillTree Team.
         /// </summary>
         public static string AssemblyCopyright {
             get {
@@ -106,7 +106,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PoESkillTree - Ascendancy.
+        ///   Looks up a localized string similar to PoESkillTree - Atlas of Worlds.
         /// </summary>
         public static string ProductName {
             get {
@@ -124,7 +124,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.2.10.
+        ///   Looks up a localized string similar to 2.3.0.
         /// </summary>
         public static string ProductVersion {
             get {
