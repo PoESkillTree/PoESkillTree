@@ -7,11 +7,11 @@
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
-        xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
-        xmlns:views="clr-namespace:POESKillTree.Views"
+        xmlns:items="clr-namespace:POESKillTree.Model.Items"
+        xmlns:model="clr-namespace:POESKillTree.Model"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
-        Title="Path of Exile: Passive Skill Tree Planner" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
+        Title="PoESkillTree" Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing" Icon="/POESKillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp"
         TextOptions.TextFormattingMode="Display"
@@ -40,6 +40,16 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        <Style x:Key="TopRowExpander" TargetType="Expander" BasedOn="{StaticResource {x:Type Expander}}">
+            <Setter Property="Margin" Value="0 -30 0 0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="ExpandDirection" Value="Down" />
+            <Setter Property="Background" Value="{DynamicResource WhiteColorBrush}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
+            <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="16" />
         </Style>
         <ControlTemplate x:Key="SettingsIcon">
             <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
@@ -172,46 +182,6 @@
                 <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
                       Data="F1 M 51.5487,37.9814L 56.814,41.0534L 50.3383,48.7636L 50.3383,48.8841L 60.0205,46.9565L 60.0205,53.0403L 50.2777,51.414L 50.2777,51.5344L 56.814,59.0037L 51.4882,62.0757L 47.978,52.7994L 47.8569,52.7994L 44.4072,62.0757L 39.2025,59.0037L 45.6782,51.4742L 45.6177,51.3537L 36.1159,53.0403L 36.1159,46.9565L 45.5571,48.8841L 45.5571,48.7636L 39.2025,41.1137L 44.5888,37.9814L 47.9174,47.3179L 48.0385,47.3179L 51.5487,37.9814 Z M 20,17L 43.25,17L 56,29.75L 56,39L 52,36.75L 52,34L 39,34L 39,21L 24,21L 24,55L 41,55L 37.5,59L 20,59L 20,17 Z M 43,22.25L 43,30L 50.75,30L 43,22.25 Z "/>
             </Canvas>
-        </ControlTemplate>
-
-        <ControlTemplate x:Key="TabHeaderControlTemplate" TargetType="{x:Type RadioButton}">
-            <Grid>
-                <Border x:Name="Background" BorderThickness="2,2,2,0" CornerRadius="3,3,0,0" Background="{DynamicResource WhiteBrush}" BorderBrush="{TemplateBinding BorderBrush}"/>
-                <Rectangle x:Name="DisabledVisualElement" Fill="{DynamicResource WhiteBrush}" IsHitTestVisible="False" Opacity="0" RadiusY="3" RadiusX="3"/>
-                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-            </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="BorderThickness" TargetName="Background" Value="2,2,2,0"/>
-                    <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush2}"/>
-                    <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource GrayBrush5}"/>
-                </Trigger>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsMouseOver" Value="True"/>
-                        <Condition Property="IsChecked" Value="False"/>
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush8}"/>
-                </MultiTrigger>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsMouseOver" Value="True"/>
-                        <Condition Property="IsChecked" Value="True"/>
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush3}"/>
-                </MultiTrigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush7}"/>
-                </Trigger>
-                <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                    <Setter Property="BorderThickness" TargetName="Background" Value="2,2,2,0"/>
-                    <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource GrayBrush5}"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="0.7"/>
-                    <Setter Property="Opacity" TargetName="contentPresenter" Value="0.3"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
 
@@ -476,17 +446,20 @@
                         <l:Catalog Message="Saved _Builds" />
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem x:Name="mnuViewAttributes" InputGestureText="Ctrl+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.AttributesBarOpened,ElementName=window, Mode=TwoWay}">
+                <MenuItem x:Name="mnuViewAttributes" InputGestureText="Ctrl+Q" IsCheckable="true"
+                          IsChecked="{Binding PersistentData.Options.AttributesBarOpened,ElementName=window, Mode=TwoWay}">
                     <MenuItem.Header>
                         <l:Catalog Message="_Attributes" />
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem x:Name="mnuViewCharacterSheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true" IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}">
+                <MenuItem x:Name="mnuViewCharacterSheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true"
+                          IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}">
                     <MenuItem.Header>
                         <l:Catalog Message="_Character Sheet" />
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem x:Name="mnuViewComparison" IsCheckable="true" IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click">
+                <MenuItem x:Name="mnuViewComparison" IsCheckable="true"
+                          IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}" Checked="ToggleTreeComparison_Click" Unchecked="ToggleTreeComparison_Click">
                     <MenuItem.Header>
                         <l:Catalog Message="Skill _Tree Comparison" />
                     </MenuItem.Header>
@@ -526,14 +499,6 @@
                         </MenuItem.Header>
                         <MenuItem.Icon>
                             <ContentControl Template="{StaticResource DownloadIcon}" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuClearItems" Click="Menu_ClearItems" IsEnabled="False">
-                        <MenuItem.Header>
-                            <l:Catalog Message="_Clear Items"/>
-                        </MenuItem.Header>
-                        <MenuItem.Icon>
-                            <ContentControl Template="{StaticResource ClearIcon}" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -585,14 +550,6 @@
                     <MenuItem Click="Menu_RedownloadTreeAssets">
                         <MenuItem.Header>
                             <l:Catalog Message="_Redownload Skill Tree Assets" />
-                        </MenuItem.Header>
-                        <MenuItem.Icon>
-                            <ContentControl Template="{StaticResource RedownloadIcon}" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Click="Menu_RedownloadItemAssets">
-                        <MenuItem.Header>
-                            <l:Catalog Message="_Redownload Item Assets" />
                         </MenuItem.Header>
                         <MenuItem.Icon>
                             <ContentControl Template="{StaticResource RedownloadIcon}" />
@@ -662,6 +619,21 @@
             </MenuItem>
         </Menu>
 
+        <TabControl Grid.Row="0" HorizontalAlignment="Right">
+            <TabItem controls:ControlsHelper.HeaderFontSize="14"
+                     IsSelected="{Binding IsSelected, ElementName= tyPAssiveTree}">
+                <TabItem.Header>
+                    <l:Catalog Message="Skill Tree"/>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem controls:ControlsHelper.HeaderFontSize="14"
+                     IsSelected="{Binding IsSelected, ElementName= tyEquipment}">
+                <TabItem.Header>
+                    <l:Catalog Message="Equipment"/>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
         <Grid x:Name="BtnGrid" Grid.Row="1" HorizontalAlignment="Stretch" Panel.ZIndex="99" VerticalAlignment="Center">
             <Grid>
@@ -670,6 +642,7 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="100*"/>
                 </Grid.ColumnDefinitions>
+                
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
                     <ToggleButton x:Name="BanditToggle" Width="50">
                             <l:Catalog Message="Bandits" />
@@ -677,7 +650,7 @@
                     <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-100" VerticalOffset="5">
                         <Border Background="{DynamicResource WhiteColorBrush}" BorderThickness="1"
                                 BorderBrush="{DynamicResource AccentColorBrush}">
-                            <views:BanditSelection DataContext="{Binding Tree.BanditSettings, ElementName=window}" Margin="5" />
+                            <local:BanditSelection DataContext="{Binding Tree.BanditSettings, ElementName=window}" Margin="5" />
                         </Border>
                     </Popup>
                     <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
@@ -714,19 +687,10 @@
                     </Label>
                     <Button x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0" Content="{l:Catalog Message=Reset}"/>
                 </StackPanel>
-
-                <Grid Grid.Column="2" HorizontalAlignment="Stretch" Margin="0,0,0,-4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <RadioButton HorizontalAlignment="Center" IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyPAssiveTree}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}" Margin="16,0,102,0"/>
-                    <RadioButton Grid.Column="0" HorizontalAlignment="Center" IsChecked="{Binding IsSelected}" Content="{Binding Header}" DataContext="{Binding ElementName=tyEquipment}" Style="{StaticResource {x:Type ToggleButton}}" Template="{DynamicResource TabHeaderControlTemplate}" Margin="100,0,33,0"/>
-                </Grid>
             </Grid>
         </Grid>
-        <!-- grid row 1 - center part, tree and editors -->
-
+        
+        <!-- grid row 2 - center part, tree and editors -->
         <Grid Grid.Row="2">
             <TabControl Background="Transparent" Name="tcMainArea">
                 <TabControl.ItemContainerStyle>
@@ -737,23 +701,17 @@
                     </Style>
                 </TabControl.ItemContainerStyle>
                 <TabItem IsSelected="True" Name="tyPAssiveTree">
-                    <TabItem.Header>
-                        <l:Catalog Message="PASSIVE TREE"/>
-                    </TabItem.Header>
                     <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
                         <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="True" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </local:ZoomBorder>
                 </TabItem>
                 <TabItem Name="tyEquipment">
-                    <TabItem.Header>
-                        <l:Catalog Message="EQUIPMENT"/>
-                    </TabItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Rectangle Grid.ColumnSpan="2" Height="2" Fill="{DynamicResource GrayBrush5}" VerticalAlignment="Top"></Rectangle>
+                        <Rectangle Grid.ColumnSpan="2" Height="2" Fill="{DynamicResource GrayNormalBrush}" VerticalAlignment="Top" />
                         <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,0,0" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
                         <Button Grid.Column="0" Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">
                             <l:Catalog Message="Craft new item"/>
@@ -766,11 +724,9 @@
                 </TabItem>
             </TabControl>
 
-            <Expander x:Name="expSavedBuilds" HorizontalAlignment="Right" ExpandDirection="Down" Margin="0,-30,0,0" Background="{DynamicResource WhiteColorBrush}" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
+            <Expander Style="{StaticResource TopRowExpander}" HorizontalAlignment="Right" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}">
                 <Expander.Header>
-                    <Label Margin="-5,0" TextBlock.FontSize="16">
-                        <l:Catalog Message="Saved Builds"/>
-                    </Label>
+                    <l:Catalog Message="Saved Builds"/>
                 </Expander.Header>
 
                 <Grid x:Name="gridBuildManager" HorizontalAlignment="Left"  FlowDirection="LeftToRight" Background="{DynamicResource WhiteColorBrush}">
@@ -807,7 +763,7 @@
                               MouseDoubleClick="lvi_MouseDoubleClick" SelectionChanged="lvSavedBuilds_SelectionChanged"
                               SelectedIndex="{Binding ElementName=window,Path=PersistentData.Options.SelectedBuildIndex}">
                         <ListView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="model:PoEBuild">
                                 <Grid x:Name="Grid1" Margin="1" MouseRightButtonUp="lvi_MouseRightButtonUp" MouseEnter="lvi_MouseEnter" MouseLeave="lvi_MouseLeave" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -856,11 +812,11 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="0,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewAttributes}" Expanded="expAttributes_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}" MouseLeave="expAttributes_MouseLeave">
+            <Expander Style="{StaticResource TopRowExpander}"
+                      IsExpanded="{Binding IsChecked,ElementName=mnuViewAttributes}"
+                      Expanded="expAttributes_Expanded" MouseLeave="expAttributes_MouseLeave">
                 <Expander.Header>
-                    <Label Margin="-5,0" FontSize="16">
-                        <l:Catalog Message="Attributes"/>
-                    </Label>
+                    <l:Catalog Message="Attributes"/>
                 </Expander.Header>
                 <Grid Background="{DynamicResource WhiteColorBrush}">
                     <Grid.RowDefinitions>
@@ -905,7 +861,7 @@
                                 <Grid>
                                     <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Attributes, ElementName=window, Mode=OneWay}"  Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemAttr" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                         <ListBox.ItemTemplate>
-                                            <DataTemplate>
+                                            <DataTemplate DataType="{x:Type items:ItemAttributes+Attribute}">
                                                 <StackPanel>
                                                     <TextBlock><Run Text="{Binding ValuedAttribute, Mode=OneWay}" /><Run Text=" " /></TextBlock>
                                                 </StackPanel>
@@ -956,13 +912,13 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="108,-30,0,0" HorizontalAlignment="Left" Background="{DynamicResource WhiteColorBrush}" ExpandDirection="Down" IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}" Expanded="expCharacterSheet_Expanded" Padding="0" BorderBrush="{DynamicResource WhiteColorBrush}">
+            <Expander Margin="108 -30 0 0" Style="{StaticResource TopRowExpander}"
+                      IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}"
+                      Expanded="expCharacterSheet_Expanded">
                 <Expander.Header>
-                    <Label Margin="-5,0" TextBlock.FontSize="16">
-                        <l:Catalog Message="Character Sheet"/>
-                    </Label>
+                    <l:Catalog Message="Character Sheet"/>
                 </Expander.Header>
-                <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-109,0,0,-1">
+                <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-109,0,0,0">
                     <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Margin="0" x:Name="tabItemDefence" controls:ControlsHelper.HeaderFontSize="15">
                             <TabItem.Header>
@@ -1004,7 +960,7 @@
 
         </Grid>
 
-        <!-- grid row 2 - bottom part, search and tree -->
+        <!-- grid row 3 - bottom part, search and tree -->
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>

@@ -1,29 +1,19 @@
-﻿<controls:MetroWindow 
+﻿<dialogs:BaseDialog
     x:Class="POESKillTree.TreeGenerator.Views.ControllerWindow"
-    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-    Width="400" WindowStartupLocation="CenterOwner" Title="{Binding DisplayName}"
-    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
     xmlns:vm="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
+    xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+    xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
     d:DataContext="{d:DesignInstance vm:ControllerViewModel}"
-    xmlns:utils="clr-namespace:POESKillTree.Utils"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    utils:DialogCloser.DialogResult="{Binding Result}"
-    BorderBrush="{DynamicResource AccentColorBrush}"
-    BorderThickness="1">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding CloseCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-    <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </Window.Resources>
-    <Grid Background="{DynamicResource WhiteColorBrush}">
+    MaxContentWidth="500">
+    <ContentControl.Resources>
+        <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    </ContentControl.Resources>
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -40,15 +30,25 @@
             <l:Catalog Message="Finding optimal Skill tree..."/>
         </Label>
         <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
-               Visibility="{Binding IterationTextVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+               Visibility="{Binding IterationText, Converter={StaticResource StringToVisibilityConverter}}"
                Content="{Binding IterationText}"/>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-            <ProgressBar Minimum="1" Maximum="{Binding ProgressbarMax}" Value="{Binding ProgressbarCurrent, Mode=OneWay}" IsEnabled="{Binding ProgressbarEnabled}" Height="20" HorizontalAlignment="Stretch" BorderThickness="0"  Margin="5" Background="{DynamicResource WhiteColorBrush}"/>
+            <ProgressBar Minimum="1" Maximum="{Binding ProgressbarMax}"
+                         Value="{Binding ProgressbarCurrent, Mode=OneWay}"
+                         IsEnabled="{Binding ProgressbarEnabled}"
+                         Height="20" HorizontalAlignment="Stretch" Margin="5"
+                         BorderThickness="0"
+                         Background="#1FFFFFFF"/>
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding ProgressbarText}"/>
         </Grid>
 
         <Label Content="{Binding BestResultText}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"/>
         <Button Grid.Row="4" Grid.Column="0" Content="{Binding PauseResumeText}" IsEnabled="{Binding PauseResumeEnabled}" Margin="5" Command="{Binding PauseResumeCommand}"/>
-        <Button Grid.Row="4" Grid.Column="1" Content="{Binding CancelCloseText}" IsEnabled="{Binding CancelCloseEnabled}" Margin="5" Command="{Binding CloseCommand}"/>
+        <Button Grid.Row="4" Grid.Column="1" Margin="5"
+                IsCancel="True" IsDefault="True"
+                Content="{Binding CancelCloseText}"
+                IsEnabled="{Binding CancelCloseEnabled}"
+                Command="{Binding CloseCommand}"/>
     </Grid>
-</controls:MetroWindow>
+</dialogs:BaseDialog>
+

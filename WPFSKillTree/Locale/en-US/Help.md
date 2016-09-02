@@ -23,7 +23,7 @@ Lets create a build from scratch!
 
 ### Ascendancy
 
-In **File->Settings** you can choose to show all the ascendancy trees or just the one you have choosen (this adds a button at the startpoint just like in game).
+In **Edit->Settings** you can choose to show all the ascendancy trees or just the one you have choosen (this adds a button at the startpoint just like in game).
 To change ascendancy class use the drop-down next to the class drop-down. If you show all ascendancy trees it will change automatically when skilling points.
 
 ## Load Saved Build

@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
 using POESKillTree.Localization;
 using POESKillTree.ViewModels;
+using Attribute = POESKillTree.ViewModels.Attribute;
 
 namespace POESKillTree.Utils.Converter
 {
@@ -15,7 +15,7 @@ namespace POESKillTree.Utils.Converter
     public class GroupStringConverter : IValueConverter, IComparer
     {
         public Dictionary<string, AttributeGroup> AttributeGroups = new Dictionary<string, AttributeGroup>();
-        private List<string[]> CustomGroups = new List<string[]>();
+        private List<string[]> CustomGroups;
         private static readonly string Keystone = L10n.Message("Keystone");
         private static readonly string Weapon = L10n.Message("Weapon");
         private static readonly string Charges = L10n.Message("Charges");
@@ -34,7 +34,7 @@ namespace POESKillTree.Utils.Converter
         private static readonly string CoreAttributes = L10n.Message("Core Attributes");
         private static readonly string MiscLabel = L10n.Message("Everything Else");
         private static readonly string DecimalRegex = "\\d+(\\.\\d*)?";
-        private static readonly List<string[]> DefaultGroups = new List<string[]>
+        private static readonly IReadOnlyList<string[]> DefaultGroups = new List<string[]>
         {
             new[] {"Share Endurance, Frenzy and Power Charges with nearby party members", Keystone},
             new[] {"Critical Strike Chance with Claws", CriticalStrike},
@@ -135,6 +135,7 @@ namespace POESKillTree.Utils.Converter
             new[] {"reduced Extra Damage from Critical Strikes", Defense},
             new[] {"Armour", Defense},
             new[] {"Fortify", Defense},
+            new[] {"Damage with Weapons Penetrate", Weapon}, //needs to be before resistances
             new[] {"all Elemental Resistances", Defense},
             new[] {"Chaos Resistance", Defense},
             new[] {"Evasion Rating", Defense},
@@ -249,6 +250,9 @@ namespace POESKillTree.Utils.Converter
             new[] {"Dexterity", CoreAttributes},
         };
 
+        private static readonly Regex NumberRegex = new Regex(@"[0-9]*\.?[0-9]+");
+        private static readonly Dictionary<string, string> AttributeToDefaultGroup = new Dictionary<string, string>();
+
         public GroupStringConverter()
         {
             CustomGroups = new List<string[]>();
@@ -331,7 +335,7 @@ namespace POESKillTree.Utils.Converter
             {
                 foreach (var gp in CustomGroups)
                 {
-                    if (new NumberLessStringComparer().Compare(attr.ToLower(), gp[0].ToLower()) == 0)
+                    if (NumberRegex.Replace(attr.ToLowerInvariant(), "") == NumberRegex.Replace(gp[0].ToLowerInvariant(), ""))
                     {
                         linesToRemove.Add(gp);
                     }
@@ -360,7 +364,7 @@ namespace POESKillTree.Utils.Converter
             AttributeGroups.Remove(groupname);
         }
 
-        public void UpdateGroupNames(List<POESKillTree.ViewModels.Attribute> attrlist)
+        public void UpdateGroupNames(List<Attribute> attrlist)
         {
             Dictionary<string, float> groupTotals = new Dictionary<string, float>();
             Dictionary<string, float> groupDeltas = new Dictionary<string, float>();
@@ -369,9 +373,9 @@ namespace POESKillTree.Utils.Converter
                 //only sum for the groups that need it
                 if (!gp[1].Contains("#"))
                     continue;
-                foreach (POESKillTree.ViewModels.Attribute attr in attrlist)
+                foreach (Attribute attr in attrlist)
                 {
-                    if (new NumberLessStringComparer().Compare(attr.Text.ToLower(), gp[0].ToLower()) == 0)
+                    if (NumberRegex.Replace(attr.Text.ToLowerInvariant(), "") == NumberRegex.Replace(gp[0].ToLowerInvariant(), ""))
                     {
                         Match matchResult = Regex.Match(attr.Text, DecimalRegex);
                         if (matchResult.Success)
@@ -412,10 +416,32 @@ namespace POESKillTree.Utils.Converter
             return Convert(value.ToString());
         }
 
+        private static bool TryGetDefaultGroup(string attribute, out string group)
+        {
+            if (AttributeToDefaultGroup.TryGetValue(attribute, out group))
+            {
+                return group != null;
+            }
+
+            foreach (var gp in DefaultGroups)
+            {
+                if (attribute.Contains(gp[0].ToLowerInvariant()))
+                {
+                    group = gp[1];
+                    AttributeToDefaultGroup[attribute] = gp[1];
+                    return true;
+                }
+            }
+            AttributeToDefaultGroup[attribute] = null;
+            return false;
+        }
+
         public int Compare(object a, object b)
         {
-            string attr1 = ((POESKillTree.ViewModels.Attribute)a).ToString();
-            string attr2 = ((POESKillTree.ViewModels.Attribute)b).ToString();
+            string attr1 = ((Attribute)a).Text;
+            string attr2 = ((Attribute)b).Text;
+            var attr1Lower = attr1.ToLowerInvariant();
+            var attr2Lower = attr2.ToLowerInvariant();
             //find the group names and types that the attributes belong in
             //2 = misc group, 1 = default group, 0 = custom group
             int group1 = 2;
@@ -424,27 +450,25 @@ namespace POESKillTree.Utils.Converter
             string attrgroup2 = MiscLabel;
             foreach (var gp in CustomGroups)
             {
-                if (new NumberLessStringComparer().Compare(attr1.ToLower(), gp[0].ToLower()) == 0)
+                if (NumberRegex.Replace(attr1Lower, "") == NumberRegex.Replace(gp[0].ToLowerInvariant(), ""))
                 {
                     attrgroup1 = gp[1];
                     group1 = 0;
                     break;
                 }
             }
-            if (group1 == 2) {
-                foreach (var gp in DefaultGroups)
+            if (group1 == 2)
+            {
+                string group;
+                if (TryGetDefaultGroup(attr1Lower, out group))
                 {
-                    if (attr1.ToLower().Contains(gp[0].ToLower()))
-                    {
-                        attrgroup1 = gp[1];
-                        group1 = 1;
-                        break;
-                    }
+                    attrgroup1 = group;
+                    group1 = 1;
                 }
             }
             foreach (var gp in CustomGroups)
             {
-                if (new NumberLessStringComparer().Compare(attr2.ToLower(), gp[0].ToLower()) == 0)
+                if (NumberRegex.Replace(attr2Lower, "") == NumberRegex.Replace(gp[0].ToLowerInvariant(), ""))
                 {
                     attrgroup2 = gp[1];
                     group2 = 0;
@@ -453,14 +477,11 @@ namespace POESKillTree.Utils.Converter
             }
             if (group2 == 2)
             {
-                foreach (var gp in DefaultGroups)
+                string group;
+                if (TryGetDefaultGroup(attr1Lower, out group))
                 {
-                    if (attr2.ToLower().Contains(gp[0].ToLower()))
-                    {
-                        attrgroup2 = gp[1];
-                        group2 = 1;
-                        break;
-                    }
+                    attrgroup2 = group;
+                    group2 = 1;
                 }
             }
 
@@ -486,17 +507,15 @@ namespace POESKillTree.Utils.Converter
         {
             foreach (var gp in CustomGroups)
             {
-                if (new NumberLessStringComparer().Compare(s.ToLower(), gp[0].ToLower()) == 0)
+                if (NumberRegex.Replace(s.ToLowerInvariant(), "") == NumberRegex.Replace(gp[0].ToLowerInvariant(), ""))
                 {
                     return AttributeGroups[gp[1]];
                 }
             }
-            foreach (var gp in DefaultGroups)
+            string group;
+            if (TryGetDefaultGroup(s.ToLowerInvariant(), out group))
             {
-                if (s.ToLower().Contains(gp[0].ToLower()))
-                {
-                    return AttributeGroups[gp[1]];
-                }
+                return AttributeGroups[group];
             }
             return AttributeGroups[MiscLabel];
         }

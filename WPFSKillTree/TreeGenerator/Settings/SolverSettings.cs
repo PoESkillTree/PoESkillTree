@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.TreeGenerator.Settings
 {
@@ -23,22 +24,22 @@ namespace POESKillTree.TreeGenerator.Settings
         /// <summary>
         /// Set of Nodes that must be included in the result tree.
         /// </summary>
-        public readonly HashSet<ushort> Checked;
+        public readonly ISet<SkillNode> Checked;
 
         /// <summary>
         /// Set of Nodes that must not be included in the result tree.
         /// </summary>
-        public readonly HashSet<ushort> Crossed;
+        public readonly ISet<SkillNode> Crossed;
 
         /// <summary>
         /// Nodes the result tree must be a subset of. (empty means no restriction)
         /// </summary>
-        public readonly HashSet<ushort> SubsetTree;
+        public readonly ISet<SkillNode> SubsetTree;
 
         /// <summary>
         /// Tree for the initial configuration. (empty means starting from scratch)
         /// </summary>
-        public readonly HashSet<ushort> InitialTree;
+        public readonly ISet<SkillNode> InitialTree;
 
         /// <summary>
         /// The number of iterations the solver should run. Each iteration is independent of each other
@@ -56,8 +57,8 @@ namespace POESKillTree.TreeGenerator.Settings
         /// <param name="subsetTree">Nodes the result tree must be a subset of. (empty means no restriction)</param>
         /// <param name="initialTree">Tree for the initial configuration. (empty means starting from scratch)</param>
         /// <param name="iterations">The number of iterations the solver should run. (>= 1)</param>
-        public SolverSettings(int level, int totalPoints, HashSet<ushort> @checked, HashSet<ushort> crossed,
-            HashSet<ushort> subsetTree, HashSet<ushort> initialTree, int iterations)
+        public SolverSettings(int level, int totalPoints, ISet<SkillNode> @checked, ISet<SkillNode> crossed,
+            ISet<SkillNode> subsetTree, ISet<SkillNode> initialTree, int iterations)
         {
             if (level < 0) throw new ArgumentOutOfRangeException("level", level, "must be >= 0");
             if (totalPoints < 0) throw new ArgumentOutOfRangeException("totalPoints", totalPoints, "must be >= 0");
@@ -65,10 +66,10 @@ namespace POESKillTree.TreeGenerator.Settings
 
             Level = level;
             TotalPoints = totalPoints;
-            Checked = @checked ?? new HashSet<ushort>();
-            Crossed = crossed ?? new HashSet<ushort>();
-            SubsetTree = subsetTree ?? new HashSet<ushort>();
-            InitialTree = initialTree ?? new HashSet<ushort>();
+            Checked = @checked ?? new HashSet<SkillNode>();
+            Crossed = crossed ?? new HashSet<SkillNode>();
+            SubsetTree = subsetTree ?? new HashSet<SkillNode>();
+            InitialTree = initialTree ?? new HashSet<SkillNode>();
             Iterations = iterations;
         }
     }

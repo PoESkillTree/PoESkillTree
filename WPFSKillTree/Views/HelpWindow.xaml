@@ -1,18 +1,16 @@
-﻿<controls:MetroWindow
-    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+﻿<dialogs:CloseableBaseDialog
     x:Class="POESKillTree.Views.HelpWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:md="clr-namespace:Markdown.Xaml"
-    x:Name="Window"
-    WindowStartupLocation="CenterOwner" Width="560" Height="700"
-    ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height" WindowStyle="ToolWindow"
-    Icon="/POESKillTree;component/logo.ico">
-    <controls:MetroWindow.Title>
+    xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+    xmlns:utils="clr-namespace:POESKillTree.Utils"
+    x:Name="Window">
+    <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="Help"/>
-    </controls:MetroWindow.Title>
-    <Window.Resources>
+    </dialogs:CloseableBaseDialog.Title>
+    <dialogs:CloseableBaseDialog.Resources>
         <Style x:Key="DocumentStyle" TargetType="FlowDocument">
             <Setter Property="TextAlignment" Value="Left" />
         </Style>
@@ -41,15 +39,8 @@
                      Heading2Style="{StaticResource Heading2Style}"
                      Heading3Style="{StaticResource Heading3Style}"/>
         <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter" Markdown="{StaticResource Markdown}"/>
-    </Window.Resources>
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="650"/>
-            <RowDefinition Height="50"/>
-        </Grid.RowDefinitions>
-        <FlowDocumentScrollViewer Grid.Row="0" Width="550" Height="650" Zoom="80" Document="{Binding Document, ElementName=Window, Converter={StaticResource TextToFlowDocumentConverter}}"/>
-        <Button Grid.Row="1" x:Name="btnPopupClose" Click="btnPopupClose_Click" Height="20" Width="200" Margin="0,15,0,0">
-            <l:Catalog Message="Close"/>
-        </Button>
-    </Grid>
-</controls:MetroWindow>
+    </dialogs:CloseableBaseDialog.Resources>
+    <FlowDocumentScrollViewer Zoom="80" Document="{Binding Document, ElementName=Window, Converter={StaticResource TextToFlowDocumentConverter}}"
+                              utils:XamlHelper.MainWindowRelativeMaxHeight="300"/>
+</dialogs:CloseableBaseDialog>
+

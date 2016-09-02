@@ -62,12 +62,10 @@ Source: "{#BuildOutputDir}\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; Application Data (Standard mode)
 Source: "{#BuildOutputDir}\Data\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Data"; Check: CheckStandardMode; Flags: ignoreversion recursesubdirs
 Source: "{#BuildOutputDir}\Locale\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Locale"; Check: CheckStandardMode; Flags: ignoreversion recursesubdirs
-Source: "{#BuildOutputDir}\Items.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; Check: CheckStandardMode; Flags: ignoreversion
 Source: "{#BuildOutputDir}\PersistentData.xml"; DestDir: "{userappdata}\{#AppDataFolderName}"; Check: CheckStandardMode; AfterInstall: SetLanguage; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
 ; Application Data (Portable mode)
 Source: "{#BuildOutputDir}\Data\*"; DestDir: "{app}\Data"; Check: CheckPortableMode; Flags: ignoreversion recursesubdirs
 Source: "{#BuildOutputDir}\Locale\*"; DestDir: "{app}\Locale"; Check: CheckPortableMode; Flags: ignoreversion recursesubdirs
-Source: "{#BuildOutputDir}\Items.xml"; DestDir: "{app}"; Check: CheckPortableMode; Flags: ignoreversion
 Source: "{#BuildOutputDir}\PersistentData.xml"; DestDir: "{app}"; Check: CheckPortableMode; AfterInstall: SetLanguage; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
 
 [INI]

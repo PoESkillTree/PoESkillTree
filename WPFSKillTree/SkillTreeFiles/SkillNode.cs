@@ -3,6 +3,15 @@ using System.Collections.Generic;
 
 namespace POESKillTree.SkillTreeFiles
 {
+    public enum NodeType
+    {
+        Normal,
+        Notable,
+        Keystone,
+        Mastery,
+        JewelSocket
+    }
+
     public class SkillNode
     {
         public static float[] SkillsPerOrbit = {1, 6, 12, 12, 40};
@@ -20,11 +29,8 @@ namespace POESKillTree.SkillTreeFiles
         public int Ia; //"ia": 0,
         public string Icon; // icon "icon": "Art/2DArt/SkillIcons/passives/tempint.png",
         public UInt16 Id; // "id": -28194677,
-        public bool IsKeyStone; //"ks": false,
-        public bool IsNotable; // not": false,
-        public bool IsMastery; // m: false,
-        public bool IsJewelSocket; //"isJewelSocket": false
-        public List<int> LinkId = new List<int>(); // "out": []
+        public NodeType Type; // "ks", "not", "m", "isJewelSocket"
+        public List<ushort> LinkId = new List<ushort>(); // "out": []
         public string Name; //"dn": "Block Recovery",
         public int Orbit; //  "o": 1,
         public int OrbitIndex; // "oidx": 3,
@@ -47,37 +53,36 @@ namespace POESKillTree.SkillTreeFiles
                 return (SkillNodeGroup.Position - new Vector2D(d * Math.Sin(-Arc), d * Math.Cos(-Arc)));
             }
         }
-        public double Arc
-        {
-            get { return GetOrbitAngle(OrbitIndex, (int) SkillsPerOrbit[Orbit]); }
-        }
+        public double Arc => GetOrbitAngle(OrbitIndex, (int) SkillsPerOrbit[Orbit]);
 
         public string IconKey
         {
             get
             {
-                //TODO: Change The tree bools to an enum instead
-                int iconWidth;
-                if (IsMastery)
+                string iconPrefix;
+                switch (Type)
                 {
-                    iconWidth = SkillIcons.MasteryIconWidth;
+                    case NodeType.JewelSocket:
+                    case NodeType.Normal:
+                        iconPrefix = "normal";
+                        break;
+                    case NodeType.Notable:
+                        iconPrefix = "notable";
+                        break;
+                    case NodeType.Keystone:
+                        iconPrefix = "keystone";
+                        break;
+                    case NodeType.Mastery:
+                        iconPrefix = "mastery";
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
-                else if(IsKeyStone)
-                {
-                    iconWidth = SkillIcons.KeystoneIconWidth;
-                }
-                else if (IsNotable)
-                {
-                    iconWidth = SkillIcons.NotableIconWidth;
-                }
-                else
-                {
-                    iconWidth = SkillIcons.NormalIconWidth;
-                }
-                return Icon + "_" + iconWidth;
+                return iconPrefix + "_" + Icon;
             }
         }
-        double GetOrbitAngle(int orbit_index, int max_node_positions )
+
+        private static double GetOrbitAngle(int orbitIndex, int maxNodePositions)
         {
             // An orbit with 40 node placements has specific angles for certain orbit indices.
             /*if( max_node_positions == 40 )
@@ -127,7 +132,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }*/
 
-            return 2 * Math.PI * orbit_index / max_node_positions;
+            return 2 * Math.PI * orbitIndex / maxNodePositions;
         }
     }
 }

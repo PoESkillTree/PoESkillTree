@@ -29,12 +29,12 @@ namespace POESKillTree.Utils
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value)) return;
 
-            if (onChanging != null) onChanging(value);
+            onChanging?.Invoke(value);
             OnPropertyChanging(propertyName);
 
             backingStore = value;
 
-            if (onChanged != null) onChanged();
+            onChanged?.Invoke();
             OnPropertyChanged(propertyName);
         }
 
@@ -45,8 +45,7 @@ namespace POESKillTree.Utils
 
         private void OnPropertyChanging(string propertyName)
         {
-            var handler = PropertyChanging;
-            if (handler != null) handler(this, new PropertyChangingEventArgs(propertyName));
+            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }
 
         /// <summary>
@@ -54,10 +53,9 @@ namespace POESKillTree.Utils
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -1,26 +1,23 @@
-﻿using MB.Algodat;
-using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
-using POESKillTree.ViewModels.Items;
-using POESKillTree.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using POESKillTree.Utils;
+using MahApps.Metro.Controls;
+using MB.Algodat;
+using POESKillTree.Controls.Dialogs;
+using POESKillTree.Localization;
+using POESKillTree.Model.Items;
+using POESKillTree.Utils.Extensions;
+using POESKillTree.ViewModels;
+using POESKillTree.Views;
 
 namespace POESKillTree.Controls
 {
@@ -34,7 +31,7 @@ namespace POESKillTree.Controls
     /// <summary>
     /// Interaction logic for Stash.xaml
     /// </summary>
-    public partial class Stash : UserControl, INotifyPropertyChanged
+    public partial class Stash : INotifyPropertyChanged
     {
 
         public ObservableCollection<Item> Items
@@ -48,7 +45,7 @@ namespace POESKillTree.Controls
 
         private static void ItemsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var stash = d as Stash;
+            var stash = (Stash) d;
 
             if (e.OldValue != null)
             {
@@ -90,64 +87,56 @@ namespace POESKillTree.Controls
             DependencyProperty.Register("NewlyAddedRanges", typeof(ObservableCollection<IntRange>), typeof(Stash), new PropertyMetadata(null));
 
 
+        private readonly Dictionary<Item, ItemVisualizer> _usedVisualizers = new Dictionary<Item, ItemVisualizer>();
+        private readonly Dictionary<StashBookmark, Rectangle> _usedBMarks = new Dictionary<StashBookmark, Rectangle>();
 
-
-        Dictionary<Item, ItemVisualizer> _usedVisualizers = new Dictionary<Item, ItemVisualizer>();
-        Dictionary<StashBookmark, Rectangle> _usedBMarks = new Dictionary<StashBookmark, Rectangle>();
-
-        void items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
 
             if (e.OldItems != null)
             {
                 foreach (Item i in e.OldItems)
-                    _StashRange.Remove(i);
+                    _stashRange.Remove(i);
             }
 
             if (e.NewItems != null)
             {
                 foreach (Item i in e.NewItems)
-                    _StashRange.Add(i);
+                    _stashRange.Add(i);
 
             }
 
             if (!_supressrebuild)
             {
-                _StashRange.Rebuild();
+                _stashRange.Rebuild();
                 OnPropertyChanged("LastLine");
             }
 
             RedrawItems();
         }
 
-        private double getValueForTop(double top)
+        private double GetValueForTop(double top)
         {
-            var d = (asBar.Maximum - asBar.Minimum);
+            var d = asBar.Maximum - asBar.Minimum;
             if (d == StashGridHeight)
                 return 0;
 
             return top * d / (d - StashGridHeight);
         }
 
-        private double getTopForValue(double value)
+        private double GetTopForValue(double value)
         {
             return value - value / (asBar.Maximum - asBar.Minimum) * StashGridHeight;
         }
 
-        public int PageTop
+        private int PageTop
         {
-            get
-            {
-                return (int)Math.Round(getTopForValue(asBar.Value));
-            }
+            get { return (int) Math.Round(GetTopForValue(asBar.Value)); }
         }
 
-        public int PageBottom
+        private int PageBottom
         {
-            get
-            {
-                return PageTop + StashGridHeight + 1;
-            }
+            get { return PageTop + StashGridHeight + 1; }
         }
 
         private void RedrawItems()
@@ -165,15 +154,17 @@ namespace POESKillTree.Controls
 
                     if (!_usedBMarks.TryGetValue(tab, out r))
                     {
-                        r = new Rectangle();
-                        r.Fill = new SolidColorBrush(tab.Color);
-                        r.Height = 2;
-                        r.Tag = tab;
-                        r.Cursor = Cursors.SizeNS;
+                        r = new Rectangle
+                        {
+                            Fill = new SolidColorBrush(tab.Color),
+                            Height = 2,
+                            Tag = tab,
+                            Cursor = Cursors.SizeNS
+                        };
                         r.MouseDown += R_MouseDown;
 
                         gcontent.Children.Add(r);
-                        Grid.SetZIndex(r, -1000000);
+                        Panel.SetZIndex(r, 10000);
                         _usedBMarks.Add(tab, r);
                     }
                     r.Margin = new Thickness(0, y - 1, 0, gcontent.ActualHeight - y - 1);
@@ -189,7 +180,7 @@ namespace POESKillTree.Controls
             }
 
 
-            var items = new HashSet<Item>(_StashRange.Query(new Range<int>(from, to)));
+            var items = new HashSet<Item>(_stashRange.Query(new Range<int>(from, to)));
             var toremove = _usedVisualizers.Where(p => !items.Contains(p.Key)).ToArray();
             foreach (var item in toremove)
             {
@@ -199,30 +190,26 @@ namespace POESKillTree.Controls
 
             foreach (var item in items)
             {
-                ItemVisualizer iv = null;
+                ItemVisualizer iv;
 
                 if (!_usedVisualizers.TryGetValue(item, out iv))
                 {
-                    iv = new ItemVisualizer()
+                    iv = new ItemVisualizer
                     {
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
-                        Item = item,
+                        Item = item
                     };
 
                     Binding b = new Binding();
-                    var menu = this.Resources["itemContextMenu"] as ContextMenu;
+                    var menu = Resources["itemContextMenu"] as ContextMenu;
 
                     b.Source = menu;
                     b.Mode = BindingMode.OneWay;
 
-                    iv.SetBinding(ItemVisualizer.ContextMenuProperty, b);
-                    
+                    iv.SetBinding(ContextMenuProperty, b);
 
-                    if (item == _dnd_item)
-                        iv.Opacity = 0.3;
-
-                    if (_FoundItems.Contains(item))
+                    if (_foundItems.Contains(item))
                         iv.Background = ItemVisualizer.FoundItemBrush;
 
                     iv.MouseLeftButtonDown += Iv_MouseLeftButtonDown;
@@ -247,56 +234,27 @@ namespace POESKillTree.Controls
         {
             NewlyAddedRanges.Clear();
             _supressrebuild = false;
-            _StashRange.Rebuild();
+            _stashRange.Rebuild();
             ResizeScrollbarThumb();
         }
 
-
-        private void R_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Rectangle r = sender as Rectangle;
-            StashBookmark sb = r.Tag as StashBookmark;
-            _dnd_startDrag = Mouse.GetPosition(gcontent);
-            _dnd_overlay = new Rectangle()
-            {
-                Fill = r.Fill,
-                Height = r.Height,
-                Margin = r.Margin,
-                Opacity = 0.3,
-            };
-            gcontent.Children.Add(_dnd_overlay);
-            Grid.SetZIndex(_dnd_overlay, 52635);
-            DragDrop.DoDragDrop(this, sender, DragDropEffects.Move);
-            gcontent.Children.Remove(_dnd_overlay);
-            _dnd_overlay = null;
-        }
 
         private void ReloadItem()
         {
             _supressrebuild = true;
             foreach (var i in Items)
             {
-                _StashRange.Add(i);
+                _stashRange.Add(i);
             }
             _supressrebuild = false;
 
-            _StashRange.Rebuild();
+            _stashRange.Rebuild();
             OnPropertyChanged("LastLine");
 
         }
 
 
-
-
-        public double GridSize
-        {
-            get { return (double)GetValue(GridSizeProperty); }
-            set { SetValue(GridSizeProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for GridSize.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty GridSizeProperty =
-            DependencyProperty.Register("GridSize", typeof(double), typeof(Stash), new PropertyMetadata(47.0));
+        private const double GridSize = 47.0;
 
 
 
@@ -308,7 +266,7 @@ namespace POESKillTree.Controls
 
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                this.SetValue(BookmarksProperty, new ObservableCollection<StashBookmark>()
+                SetValue(BookmarksProperty, new ObservableCollection<StashBookmark>
                 {
                     new StashBookmark("0",0, Colors.Blue),
                     new StashBookmark("1",12, Colors.Maroon),
@@ -318,7 +276,7 @@ namespace POESKillTree.Controls
                     new StashBookmark("50000",60, Colors.Purple),
                     new StashBookmark("600000",72, Colors.Violet),
                     new StashBookmark("7000000",84, Colors.SteelBlue),
-                    new StashBookmark("0",96),
+                    new StashBookmark("0",96)
                 });
             }
 
@@ -339,7 +297,7 @@ namespace POESKillTree.Controls
 
         private static void BookmarksPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var stash = d as Stash;
+            var stash = (Stash) d;
 
             if (d == null)
                 return;
@@ -359,46 +317,6 @@ namespace POESKillTree.Controls
             OnPropertyChanged("LastLine");
         }
 
-        public void AddItems(IEnumerable<Item> items, string tabname = null)
-        {
-
-            int y = LastOccupiedLine + 2;
-            if (tabname != null)
-            {
-                StashBookmark sb = new StashBookmark(tabname, y);
-                AddBookmark(sb);
-            }
-
-            int x = 0;
-            int maxh = 0;
-            var y2 = y;
-            var y3 = y;
-            foreach (var item in items)
-            {
-                if (x + item.Width > 12) //next line
-                {
-                    x = 0;
-                    y += maxh;
-                    maxh = 0;
-                }
-
-                item.X = x;
-                x += item.Width;
-
-                if (maxh < item.Height)
-                    maxh = item.Height;
-
-                item.Y = y;
-                Items.Add(item);
-
-                if (y3 < item.Y + item.Height)
-                    y3 = item.Y + item.Height;
-            }
-
-            AddHighlightRange(new IntRange() { From = y2, Range = y3 - y2 });
-            ResizeScrollbarThumb();
-        }
-
         internal void AddHighlightRange(IntRange range)
         {
             while (NewlyAddedRanges.Count > 5)
@@ -409,7 +327,8 @@ namespace POESKillTree.Controls
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string prop)
+
+        private void OnPropertyChanged(string prop)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
@@ -424,40 +343,33 @@ namespace POESKillTree.Controls
             }
         }
 
-        private RangeTree<int, Item> _StashRange = new RangeTree<int, Item>(new ItemModComparer());
+        private readonly RangeTree<int, Item> _stashRange = new RangeTree<int, Item>(new ItemModComparer());
 
 
-
-        public int StashGridHeight
+        private int StashGridHeight
         {
             get { return (int)(gcontent.ActualHeight / GridSize); }
         }
 
         public int LastLine
         {
-            get
-            {
-                return LastOccupiedLine + StashGridHeight;
-            }
+            get { return LastOccupiedLine + StashGridHeight; }
         }
 
 
         public int LastOccupiedLine
         {
-            get
-            {
-                return Math.Max(_StashRange.Max, Bookmarks.Count > 0 ? Bookmarks.Max(b => b.Position) : 0);
-            }
+            get { return Math.Max(_stashRange.Max, Bookmarks.Count > 0 ? Bookmarks.Max(b => b.Position) : 0); }
         }
 
-        bool _supressrebuild = false;
+        private bool _supressrebuild;
 
         private void asBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             RedrawItems();
         }
 
-        void ResizeScrollbarThumb()
+        private void ResizeScrollbarThumb()
         {
             OnPropertyChanged("LastLine");
             asBar.LargeChange = StashGridHeight;
@@ -487,269 +399,258 @@ namespace POESKillTree.Controls
                 asBar.Value += 1;
         }
 
-        ItemVisualizer _dndVis = null;
-        Rectangle _dnd_overlay = null;
-        Point _dnd_startDrag;
-        Thickness _dnd_original_Margin;
-        Item _dnd_item = null;
+        private Rectangle _dndOverlay;
+
+        private void R_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var r = sender as Rectangle;
+            if (r == null)
+                return;
+            DragDrop.DoDragDrop(this, sender, DragDropEffects.Move);
+            r.Opacity = 1;
+            r.IsHitTestVisible = true;
+        }
+
         private void Iv_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
-            var siv = sender as ItemVisualizer;
-            if (siv != null)
+            var itemVis = sender as ItemVisualizer;
+            if (itemVis == null || itemVis.Item == null)
+                return;
+            using (var dragged = new DraggedItem(itemVis))
             {
-                _dnd_startDrag = Mouse.GetPosition(gcontent);// e.GetPosition(gcontent);
-                _dnd_overlay = new Rectangle()
-                {
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Width = siv.ActualWidth,
-                    Height = siv.ActualHeight,
-                    Fill = Brushes.DarkGreen,
-                    Margin = siv.Margin,
-                    Opacity = 0.3,
-                };
-                _dnd_original_Margin = siv.Margin;
-                gcontent.Children.Add(_dnd_overlay);
-                Grid.SetZIndex(_dnd_overlay, 52635);
-
-                _dndVis = new ItemVisualizer()
-                {
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Width = siv.ActualWidth,
-                    Height = siv.ActualHeight,
-                    Item = siv.Item,
-                    Margin = siv.Margin,
-                    Opacity = 0.5,
-                    Background = null,
-                };
-                gcontent.Children.Add(_dndVis);
-                Grid.SetZIndex(_dndVis, 52636);
-
-
-                siv.Opacity = 0.3;
-                _dnd_item = siv.Item;
-                DragDrop.DoDragDrop(this, sender, DragDropEffects.Link | DragDropEffects.Move);
-                siv.Opacity = 1;
-                gcontent.Children.Remove(_dnd_overlay);
-                gcontent.Children.Remove(_dndVis);
-                _dndVis = null;
-                _dnd_overlay = null;
-                _dnd_item = null;
+                DragDrop.DoDragDrop(itemVis, dragged, dragged.AllowedEffects);
+                itemVis.Opacity = 1;
+                itemVis.IsHitTestVisible = true;
             }
         }
 
-
-        private void control_DragOver(object sender, DragEventArgs e)
+        private static DragDropEffects ItemDropEffect(DragEventArgs e)
         {
-            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this || _dnd_overlay == null)
+            if (e.Data.GetDataPresent(typeof(DraggedItem)))
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                var effect = draggedItem.DropOnStashEffect;
+
+                if (e.AllowedEffects.HasFlag(effect))
+                {
+                    return effect;
+                }
+            }
+            return DragDropEffects.None;
+        }
+
+        private static DragDropEffects StashBookmarkDropEffect(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Rectangle))
+                && ((Rectangle)e.Data.GetData(typeof(Rectangle))).Tag is StashBookmark
+                && e.AllowedEffects.HasFlag(DragDropEffects.Move))
+            {
+                return DragDropEffects.Move;
+            }
+            return DragDropEffects.None;
+        }
+
+        private void gcontent_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+
+            var itemDropEffect = ItemDropEffect(e);
+            var stashBookmarkDropEffect = StashBookmarkDropEffect(e);
+            if (itemDropEffect == DragDropEffects.None && stashBookmarkDropEffect == DragDropEffects.None)
+            {
                 return;
             }
 
-
-            var pos = e.GetPosition(gcontent).Y;
-            if (pos > gcontent.ActualHeight - GridSize / 3)
+            var pos = e.GetPosition(gcontent);
+            // Scroll up or down if at upper or lower end of stash grid.
+            if (pos.Y > gcontent.ActualHeight - GridSize / 3)
             {
                 asBar.Value++;
             }
-            else if (pos < GridSize / 3)
+            else if (pos.Y < GridSize / 3)
             {
                 asBar.Value--;
             }
 
-            if ((e.AllowedEffects & DragDropEffects.Move) != 0)
+            if (stashBookmarkDropEffect != DragDropEffects.None)
             {
+                e.Effects = stashBookmarkDropEffect;
 
-                bool line = false;
-                if (e.Data.GetDataPresent(typeof(Rectangle)))
-                {
-                    line = true;
-                    if (!((e.Data.GetData(typeof(Rectangle)) as Rectangle).Tag is StashBookmark))
-                    {
-                        e.Effects = DragDropEffects.None;
-                        return;
-                    }
+                var y = (int)Math.Round(pos.Y / GridSize);
+                _dndOverlay.Margin = new Thickness(0, y * GridSize - 1, 0, gcontent.ActualHeight - y * GridSize - 1);
 
-                }
-                else if (!e.Data.GetDataPresent(typeof(ItemVisualizer)))
+                var r = (Rectangle)e.Data.GetData(typeof(Rectangle));
+                r.Opacity = 0.3;
+                r.IsHitTestVisible = false;
+            }
+            else
+            {
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                pos.X -= draggedItem.DragStart.X;
+                pos.Y -= draggedItem.DragStart.Y;
+
+                var x = (int)Math.Round(pos.X / GridSize);
+                var y = (int)Math.Round(pos.Y / GridSize);
+
+                _dndOverlay.Margin = new Thickness(x * GridSize, y * GridSize, 0, 0);
+
+                y += PageTop;
+
+                var itm = draggedItem.Item;
+                var overlapedy = _stashRange.Query(new Range<int>(y, y + itm.Height - 1));
+
+                var newposr = new Range<int>(x, x + itm.Width - 1);
+
+                if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.Width - 1).Intersects(newposr))
+                    || newposr.To >= 12 || y < 0 || x < 0)
                 {
                     e.Effects = DragDropEffects.None;
-                    return;
-                }
-
-                e.Handled = true;
-                e.Effects = DragDropEffects.Move;
-
-                var newpos = e.GetPosition(gcontent);
-
-                var dx = newpos.X - _dnd_startDrag.X;
-                var dy = newpos.Y - _dnd_startDrag.Y;
-
-                var newx = _dnd_original_Margin.Left + dx;
-                var newy = _dnd_original_Margin.Top + dy;
-
-                var x = (int)Math.Round((newx / GridSize));
-                var y = (int)Math.Round((newy / GridSize));
-
-                if (line)
-                {
-                    y = (int)Math.Round(newpos.Y / GridSize);
-                    _dnd_overlay.Margin = new Thickness(0, y * GridSize - 1, 0, gcontent.ActualHeight - y * GridSize - 1);
+                    _dndOverlay.Fill = Brushes.DarkRed;
                 }
                 else
                 {
-                    _dnd_overlay.Margin = new Thickness(x * GridSize, y * GridSize, 0, 0);
+                    e.Effects = itemDropEffect;
+                    _dndOverlay.Fill = Brushes.DarkGreen;
+                }
 
-                    y += (int)PageTop;
-
-                    var itm = _dndVis.Item;
-                    var overlapedy = _StashRange.Query(new Range<int>(y, y + itm.Height - 1));
-
-                    var newposr = new Range<int>(x, x + itm.Width - 1);
-
-                    if (overlapedy.Where(i => i != itm).Any(i => new Range<int>(i.X, i.X + i.Width - 1).Intersects(newposr)) || newposr.To >= 12 || y < 0 || x < 0)
-                        _dnd_overlay.Fill = Brushes.DarkRed;
-                    else
-                        _dnd_overlay.Fill = Brushes.DarkGreen;
-
-                    _dndVis.Margin = new Thickness(newx, newy, 0, 0);
+                var visualizer = draggedItem.SourceItemVisualizer;
+                if (visualizer.TryFindParent<Stash>() != null)
+                {
+                    visualizer.Opacity = 0.3;
+                    visualizer.IsHitTestVisible = false;
                 }
             }
         }
 
         private void gcontent_Drop(object sender, DragEventArgs e)
         {
-            if (e.Source == null || (e.Source as FrameworkElement).FindAnchestor<Stash>() != this)
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+
+            var overlayFill = _dndOverlay.Fill;
+            gcontent_DragLeave(sender, e);
+
+            var itemDropEffect = ItemDropEffect(e);
+            var stashBookmarkDropEffect = StashBookmarkDropEffect(e);
+            if (itemDropEffect == DragDropEffects.None && stashBookmarkDropEffect == DragDropEffects.None)
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
                 return;
             }
 
-            if ((e.AllowedEffects & DragDropEffects.Move) != 0)
+            var pos = e.GetPosition(gcontent);
+            if (stashBookmarkDropEffect != DragDropEffects.None)
             {
+                e.Effects = stashBookmarkDropEffect;
 
-                bool line = false;
-                if (e.Data.GetDataPresent(typeof(Rectangle)))
-                {
-                    line = true;
-                    if (!((e.Data.GetData(typeof(Rectangle)) as Rectangle).Tag is StashBookmark))
-                    {
-                        e.Effects = DragDropEffects.None;
-                        return;
-                    }
+                var r = (Rectangle)e.Data.GetData(typeof(Rectangle));
 
-                }
-                else if (!e.Data.GetDataPresent(typeof(ItemVisualizer)) || _dnd_overlay.Fill != Brushes.DarkGreen)
+                var y = (int)Math.Round(pos.Y / GridSize);
+                y += PageTop;
+
+                var sb = (StashBookmark)r.Tag;
+                sb.Position = y;
+                Bookmarks.Remove(sb);
+                AddBookmark(sb);
+                RedrawItems();
+            }
+            else
+            {
+                if (!Equals(overlayFill, Brushes.DarkGreen))
                 {
-                    e.Effects = DragDropEffects.None;
                     return;
                 }
+                e.Effects = itemDropEffect;
 
-                e.Handled = true;
-                e.Effects = DragDropEffects.Move;
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                pos.X -= draggedItem.DragStart.X;
+                pos.Y -= draggedItem.DragStart.Y;
 
-                var newpos = e.GetPosition(gcontent);
+                var x = (int)Math.Round(pos.X / GridSize);
+                var y = (int)Math.Round(pos.Y / GridSize);
+                y += PageTop;
 
-                var dx = newpos.X - _dnd_startDrag.X;
-                var dy = newpos.Y - _dnd_startDrag.Y;
-
-                var newx = _dnd_original_Margin.Left + dx;
-                var newy = _dnd_original_Margin.Top + dy;
-
-                var x = (int)Math.Round((newx / GridSize));
-                var y = (int)Math.Round((newy / GridSize));
-
-                y += (int)PageTop;
-
-                if (line)
-                {
-                    y = (int)Math.Round(newpos.Y / GridSize + PageTop);
-                    Rectangle r = e.Data.GetData(typeof(Rectangle)) as Rectangle;
-                    StashBookmark sb = r.Tag as StashBookmark;
-                    sb.Position = y;
-                    Bookmarks.Remove(sb);
-                    AddBookmark(sb);
-                    RedrawItems();
-                }
-                else
-                {
-
-                    var itm = _dnd_item;
-                    _dnd_item = null;
-                    itm.X = x;
-                    itm.Y = y;
-
-                    Items.Remove(itm);
-                    Items.Add(itm);
-                }
-                ResizeScrollbarThumb();
+                var itm = itemDropEffect == DragDropEffects.Move ? draggedItem.Item : new Item(draggedItem.Item);
+                itm.X = x;
+                itm.Y = y;
+                Items.Remove(itm);
+                Items.Add(itm);
             }
+            ResizeScrollbarThumb();
         }
 
         private void gcontent_DragLeave(object sender, DragEventArgs e)
         {
-            if (e.Source != this)
+            if (_dndOverlay != null)
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-                return;
+                gcontent.Children.Remove(_dndOverlay);
+                _dndOverlay = null;
             }
-
-            if (_dndVis != null)
-                _dndVis.Visibility = Visibility.Collapsed;
-
-            if (_dnd_overlay != null)
-                _dnd_overlay.Visibility = Visibility.Collapsed;
         }
 
         private void gcontent_DragEnter(object sender, DragEventArgs e)
         {
-
-            if (e.Source != this)
+            if (ItemDropEffect(e) != DragDropEffects.None)
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-                return;
+                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
+                var vis = draggedItem.SourceItemVisualizer;
+                _dndOverlay = new Rectangle
+                {
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Width = vis.Item.Width * GridSize,
+                    Height = vis.Item.Height * GridSize,
+                    Fill = Brushes.DarkGreen,
+                    Margin = vis.Margin,
+                    Opacity = 0.3,
+                    IsHitTestVisible = false
+                };
+                gcontent.Children.Add(_dndOverlay);
+                Panel.SetZIndex(_dndOverlay, 52635);
             }
-
-
-            if (_dndVis != null)
-                _dndVis.Visibility = Visibility.Visible;
-
-            if (_dnd_overlay != null)
-                _dnd_overlay.Visibility = Visibility.Visible;
+            else if (StashBookmarkDropEffect(e) != DragDropEffects.None)
+            {
+                var r = (Rectangle) e.Data.GetData(typeof(Rectangle));
+                _dndOverlay = new Rectangle
+                {
+                    Fill = r.Fill,
+                    Height = r.Height,
+                    Margin = r.Margin,
+                    IsHitTestVisible = false
+                };
+                gcontent.Children.Add(_dndOverlay);
+                Panel.SetZIndex(_dndOverlay, 52635);
+            }
         }
 
         private void Button_StashTab_Click(object sender, RoutedEventArgs e)
         {
-            var bm = (sender as Button).DataContext as StashBookmark;
-            asBar.Value = getValueForTop(bm.Position);
+            var bm = (StashBookmark) ((Button) sender).DataContext;
+            asBar.Value = GetValueForTop(bm.Position);
         }
 
 
 
-        private void Button_AddBookmark(object sender, RoutedEventArgs e)
+        private async void Button_AddBookmark(object sender, RoutedEventArgs e)
         {
-            var picker = new TabPicker() { Owner = Window.GetWindow(this) };
-            var ret = picker.ShowDialog();
-            if (ret == true && !picker.Delete)
+            var vm = new TabPickerViewModel
             {
-                AddBookmark(new StashBookmark(picker.Text, PageTop + 1, picker.SelectedColor));
+                IsDeletable = false
+            };
+            var result = await this.GetMetroWindow().ShowDialogAsync(vm, new TabPicker());
+            if (result == TabPickerResult.Affirmative)
+            {
+                AddBookmark(new StashBookmark(vm.Name, PageTop + 1, vm.Color));
                 RedrawItems();
             }
         }
 
         public void AddBookmark(StashBookmark stashBookmark)
         {
-            Bookmarks.Insert(findbpos(stashBookmark.Position, 0, Bookmarks.Count), stashBookmark);
+            Bookmarks.Insert(FindBPos(stashBookmark.Position, 0, Bookmarks.Count), stashBookmark);
         }
 
-        private int findbpos(int position, int from, int limit)
+        private int FindBPos(int position, int from, int limit)
         {
             if (Bookmarks.Count == 0)
                 return 0;
@@ -763,22 +664,25 @@ namespace POESKillTree.Controls
                 return limit + 1;
 
             if (Bookmarks[middle].Position > position)
-                return findbpos(position, from, middle);
-            else
-                return findbpos(position, middle, limit);
+                return FindBPos(position, from, middle);
+            return FindBPos(position, middle, limit);
         }
 
-        private void ButtonStashTabMouseDown(object sender, MouseButtonEventArgs e)
+        private async void ButtonStashTabMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Right)
             {
-                var bm = (sender as Button).DataContext as StashBookmark;
+                var bm = (StashBookmark) ((Button) sender).DataContext;
 
-                var picker = new TabPicker() { Owner = Window.GetWindow(this), SelectedColor = bm.Color, Text = bm.Name };
-                if (picker.ShowDialog() == true)
+                var vm = new TabPickerViewModel
                 {
-                    if (picker.Delete)
-                    {
+                    Name = bm.Name,
+                    Color = bm.Color
+                };
+                var result = await this.GetMetroWindow().ShowDialogAsync(vm, new TabPicker());
+                switch (result)
+                {
+                    case TabPickerResult.Delete:
                         Bookmarks.Remove(bm);
                         RedrawItems();
                         if (_usedBMarks.ContainsKey(bm))
@@ -787,18 +691,67 @@ namespace POESKillTree.Controls
                             _usedBMarks.Remove(bm);
                         }
                         ResizeScrollbarThumb();
-                    }
-                    else
-                    {
-                        bm.Name = picker.Text;
-                        bm.Color = picker.SelectedColor;
+                        break;
+
+                    case TabPickerResult.DeleteIncludingItems:
+                        if (await this.GetMetroWindow().ShowQuestionAsync(
+                                L10n.Message("This will delete all items between this and the next bookmark and can not be undone.\nDo you want to continue?"),
+                                L10n.Message("Delete items"))
+                            == MessageBoxResult.Yes)
+                        {
+                            DeleteBookmarkAndItems(bm);
+                        }
+                        break;
+
+                    case TabPickerResult.Affirmative:
+                        bm.Name = vm.Name;
+                        bm.Color = vm.Color;
                         if (_usedBMarks.ContainsKey(bm))
                         {
                             _usedBMarks[bm].Fill = new SolidColorBrush(bm.Color);
                         }
-                    }
+                        break;
                 }
             }
+        }
+
+        private void DeleteBookmarkAndItems(StashBookmark bm)
+        {
+            var from = bm.Position;
+            var to =
+                Bookmarks.Where(b => b.Position > from)
+                    .Select(b => b.Position)
+                    .DefaultIfEmpty(LastLine)
+                    .Min();
+            var diff = to - from;
+
+            foreach (var item in Items.ToList())
+            {
+                if (item.Y >= from && item.Y < to)
+                {
+                    Items.Remove(item);
+                }
+                else if (item.Y >= to)
+                {
+                    item.Y -= diff;
+                    Items.Remove(item);
+                    Items.Add(item);
+                }
+            }
+
+            Bookmarks.Remove(bm);
+            _usedBMarks.Values.ForEach(gcontent.Children.Remove);
+            _usedBMarks.Clear();
+            foreach (var bookmark in Bookmarks.ToList())
+            {
+                if (bookmark.Position >= to)
+                {
+                    bookmark.Position -= diff;
+                    Bookmarks.Remove(bookmark);
+                    AddBookmark(bookmark);
+                }
+            }
+            ResizeScrollbarThumb();
         }
 
         private void control_Loaded(object sender, RoutedEventArgs e)
@@ -842,61 +795,50 @@ namespace POESKillTree.Controls
 
             foreach (var item in _usedVisualizers)
             {
-                if (_FoundItems.Contains(item.Key))
-                    item.Value.ClearValue(ItemVisualizer.BackgroundProperty);
+                if (_foundItems.Contains(item.Key))
+                    item.Value.ClearValue(BackgroundProperty);
             }
 
             if (string.IsNullOrWhiteSpace(txt))
             {
                 SearchMatches.Clear();
-                _FoundItems.Clear();
+                _foundItems.Clear();
                 return;
             }
 
             if (txt.Length < 3)
                 return;
 
-            _FoundItems = new HashSet<Item>(Items.Where(i => IsSearchMatch(i, txt)));
+            _foundItems = new HashSet<Item>(Items.Where(i => IsSearchMatch(i, txt)));
 
             foreach (var item in _usedVisualizers)
             {
-                if (_FoundItems.Contains(item.Key))
+                if (_foundItems.Contains(item.Key))
                 {
                     item.Value.Background = ItemVisualizer.FoundItemBrush;
                 }
             }
 
-            SearchMatches = new ObservableCollection<int>(_FoundItems.Select(i => i.Y).Distinct());
+            SearchMatches = new ObservableCollection<int>(_foundItems.Select(i => i.Y).Distinct());
         }
 
-        HashSet<Item> _FoundItems = new HashSet<Item>();
+        private HashSet<Item> _foundItems = new HashSet<Item>();
 
-        private bool IsSearchMatch(Item i, string txt)
+        private static bool IsSearchMatch(Item i, string txt)
         {
-            var local = new List<ItemAttributes.Attribute>();
-            var nonlocal = new List<ItemAttributes.Attribute>();
-
-            ItemAttributes.LoadItem(i, local, nonlocal);
-
-            List<string> modstrings = new List<string>()
-            {
-                i.BaseType,
+            var modstrings = new [] {
+                i.BaseType.Name,
                 i.FlavourText,
-                i.Name,
-            };
+                i.Name
+            }.Union(i.Properties.Select(p => p.Attribute)).Union(i.Mods.Select(m => m.Attribute));
 
-            modstrings.AddRange( local.Select(a => a.ValuedAttribute));
-            modstrings.AddRange(nonlocal.Select(a => a.ValuedAttribute));
-
-            modstrings = modstrings.Distinct().ToList();
-
-            return modstrings.Any(s =>s!=null && s.ToLower().Contains(txt));
+            return modstrings.Any(s => s != null && s.ToLower().Contains(txt));
         }
 
         private void Button_DragEnter(object sender, DragEventArgs e)
         {
-            var sb = (sender as Button).DataContext as StashBookmark;
-            asBar.Value = getValueForTop(sb.Position);
+            var sb = (StashBookmark) ((Button)sender).DataContext;
+            asBar.Value = GetValueForTop(sb.Position);
         }
 
         private void MenuItem_Delete_Click(object sender, RoutedEventArgs e)
@@ -905,7 +847,7 @@ namespace POESKillTree.Controls
 
             if (mi != null)
             {
-                var menu = mi.FindParent<ContextMenu>();
+                var menu = mi.TryFindParent<ContextMenu>();
                 var vis = menu.PlacementTarget as ItemVisualizer;
                 if (vis != null)
                 {

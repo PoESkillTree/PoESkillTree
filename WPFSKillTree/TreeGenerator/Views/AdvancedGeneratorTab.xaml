@@ -146,25 +146,27 @@
                                     <l:Catalog Message="Attribute"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}" MinWidth="80">
+                            <DataGridTemplateColumn MinWidth="80">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Target"/>
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <metroControls:NumericUpDown BorderThickness="0" Minimum="0.01" StringFormat="{}{0:#0.##}"
+                                                                     d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}"
                                                                      Value="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}"
                                                                      Background="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridCell}}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}" MinWidth="150">
+                            <DataGridTemplateColumn MinWidth="150">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Weight"/>
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal"
+                                                    d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}">
                                             <Slider IsEnabled="True" Width="100" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,2"
                                                     Value="{Binding Weight, UpdateSourceTrigger=PropertyChanged}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
                                             <Label Content="{Binding Weight}" Width="50" ContentStringFormat="{}{0}%"/>
@@ -237,25 +239,27 @@
                                     <l:Catalog Message="Pseudo attribute"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}" MinWidth="80">
+                            <DataGridTemplateColumn MinWidth="80">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Target"/>
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <metroControls:NumericUpDown BorderThickness="0" Minimum="0.01" StringFormat="{}{0:#0.##}"
+                                                                     d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}"
                                                                      Value="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}"
                                                                      Background="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridCell}}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}" MinWidth="150">
+                            <DataGridTemplateColumn MinWidth="150">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Weight"/>
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal"
+                                                    d:DataContext="{d:DesignInstance model:NonGenericTargetWeightConstraint}">
                                             <Slider IsEnabled="True" Width="100" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,2"
                                                     Value="{Binding Weight, UpdateSourceTrigger=PropertyChanged}" Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}"/>
                                             <Label Content="{Binding Weight}" Width="50" ContentStringFormat="{}{0}%"/>
@@ -294,7 +298,8 @@
                 <TabItem.Header>
                     <l:Catalog Message="Settings"/>
                 </TabItem.Header>
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
+                      Margin="0 15 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />

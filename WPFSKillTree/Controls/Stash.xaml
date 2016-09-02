@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cont="clr-namespace:POESKillTree.Controls"
-             xmlns:items ="clr-namespace:POESKillTree.ViewModels.Items"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:WpfRangeControls="clr-namespace:WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="POESKillTree.Controls.Stash"
@@ -67,7 +66,8 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True" SizeChanged="gcontent_SizeChanged" DragOver="control_DragOver" AllowDrop="True" Drop="gcontent_Drop" DragLeave="gcontent_DragLeave" DragEnter="gcontent_DragEnter">
+        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True" SizeChanged="gcontent_SizeChanged"
+              DragOver="gcontent_DragOver" AllowDrop="True" Drop="gcontent_Drop" DragLeave="gcontent_DragLeave" DragEnter="gcontent_DragEnter">
             <Grid.Background>
                 <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
                     <DrawingBrush.Drawing>

@@ -5,8 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
-using POESKillTree.Utils;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -15,7 +16,7 @@ namespace POESKillTree.SkillTreeFiles
         /// <summary>
         ///     Loads from the unofficial online tool
         /// </summary>
-        public static void LoadBuildFromPoezone(SkillTree tree, string buildUrl)
+        public static async Task LoadBuildFromPoezone(IDialogCoordinator dialogCoordinator, SkillTree tree, string buildUrl)
         {
             if (!buildUrl.Contains('#')) throw new FormatException();
 
@@ -63,7 +64,9 @@ namespace POESKillTree.SkillTreeFiles
 
             if (!buildFile.Contains("["))
             {
-                Popup.Error(string.Format(L10n.Message("An error occured while attempting to load Skill tree from {0} location."), "poezone.ru"));
+                await dialogCoordinator.ShowErrorAsync(tree, string.Format(
+                        L10n.Message("An error occured while attempting to load Skill tree from {0} location."),
+                        "poezone.ru"));
                 return;
             }
 
@@ -135,7 +138,7 @@ namespace POESKillTree.SkillTreeFiles
             tree.SkilledNodes.Clear();
             SkillNode startnode =
                 SkillTree.Skillnodes.First(nd => nd.Value.Name == SkillTree.CharName[tree.Chartype].ToUpper()).Value;
-            tree.SkilledNodes.Add(startnode.Id);
+            tree.AllocateSkillNode(startnode);
 
             for (int i = 1; i < buildResp.Length; ++i)
             {
@@ -157,9 +160,8 @@ namespace POESKillTree.SkillTreeFiles
                     }
                 }
 
-                tree.SkilledNodes.Add(minNode.Key);
+                tree.AllocateSkillNode(minNode.Value);
             }
-            tree.UpdateAvailNodes();
         }
     }
 }

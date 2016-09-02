@@ -18,9 +18,7 @@ namespace POESKillTree.Views
         // The flag whether it is safe to exit application.
         bool IsSafeToExit = false;
         // Single instance of persistent data.
-        private static readonly PersistentData PrivatePersistentData = new PersistentData();
-        // Expose persistent data.
-        public static PersistentData PersistentData { get { return PrivatePersistentData; } }
+        public static PersistentData PersistentData { get; private set; }
         // The Mutex for detecting running application instance.
         private Mutex RunningInstanceMutex;
         // The name of RunningInstanceMutex.
@@ -37,7 +35,7 @@ namespace POESKillTree.Views
                 // Try to aquire mutex.
                 if (RunningInstanceMutex.WaitOne(0))
                 {
-                    PrivatePersistentData.SavePersistentDataToFile();
+                    PersistentData.SaveToFile();
 
                     IsSafeToExit = true;
 
@@ -74,7 +72,7 @@ namespace POESKillTree.Views
             // Load persistent data.
             try
             {
-                PrivatePersistentData.LoadPersistentDataFromFile();
+                PersistentData = new PersistentData(true);
             }
             catch (Exception ex)
             {
@@ -82,7 +80,7 @@ namespace POESKillTree.Views
             }
 
             // Initialize localization.
-            L10n.Initialize(PrivatePersistentData);
+            L10n.Initialize(PersistentData.Options.Language);
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

@@ -1,82 +1,162 @@
-﻿<controls:MetroWindow
-    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+﻿<dialogs:CloseableBaseDialog
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:POESKillTree.Controls"
-        xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
-        xmlns:items="clr-namespace:POESKillTree.ViewModels.Items"
         xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-    
-    
-        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:items="clr-namespace:POESKillTree.Model.Items"
+        xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
+        xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+        xmlns:views="clr-namespace:POESKillTree.Views" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         x:Class="POESKillTree.Views.CraftWindow"
-    
-        WindowStartupLocation="CenterOwner"
-        x:Name="window" Width="600"
-        SizeToContent="Height"
-        >
-    <controls:MetroWindow.Title>
+        x:Name="Window" CloseButtonVisibility="Collapsed" d:DataContext="{d:DesignInstance views:CraftViewModel}">
+    <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="Craft Window"/>
-    </controls:MetroWindow.Title>
-    <controls:MetroWindow.Resources>
-        <conv:ItemTypeToImageConverter x:Key="ItemTypeToImageConverter"/>
-    </controls:MetroWindow.Resources>
-    <Grid Margin="5">
+    </dialogs:CloseableBaseDialog.Title>
+    <dialogs:CloseableBaseDialog.DialogLeft>
+        <local:ItemTooltip HorizontalAlignment="Center" VerticalAlignment="Top"
+                           Margin="10 52"
+                           Item="{Binding Item}" />
+    </dialogs:CloseableBaseDialog.DialogLeft>
+    <Grid MinWidth="400" Margin="0 5 0 0">
+        <Grid.Resources>
+            <converter:EnumToSpacedStringConverter x:Key="EnumToSpacedStringConverter" />
+        </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
-            <ComboBox x:Name="cbClassSelection" ItemsSource="{Binding ClassList, ElementName=window}" SelectedIndex="0" SelectionChanged="cbClassSelection_SelectionChanged" />
-            <ComboBox x:Name="cbBaseSelection" ItemsSource="{Binding BaseList, ElementName=window}" SelectedIndex="0" SelectionChanged="cbBaseSelection_SelectionChanged" >
-                <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type items:ItemBase}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Height="20" VerticalAlignment="Center" Source="{Binding ItemType, Converter={StaticResource ItemTypeToImageConverter}}" StretchDirection="DownOnly" Margin="0,0,3,0"/>
-                            <TextBlock VerticalAlignment="Center" ><Run Text="{Binding ItemType}"/><Run Text=" (ilvl "/><Run Text="{Binding Level}"/><Run Text=")"/></TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <local:ModSelector x:Name="msImplicitMods" CanDeselect="false" SelectedValuesChanged="ms_SelectedValuesChanged">
-                <local:ModSelector.Style>
-                    <Style TargetType="{x:Type local:ModSelector}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Affixes, ElementName=msImplicitMods}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </local:ModSelector.Style>
-            </local:ModSelector>
-        </StackPanel>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <Label Content="Prefixes"/>
-                <local:ModSelector x:Name="msp1" SelectedAffixChanged="msp1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
-                <local:ModSelector x:Name="msp2" SelectedAffixChanged="msp1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
-                <local:ModSelector x:Name="msp3" SelectedAffixChanged="msp1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="GroupSelection" ItemsSource="{Binding GroupList, ElementName=Window}" SelectedIndex="0" SelectionChanged="GroupSelection_SelectionChanged"
+                              Grid.Column="0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TypeList.Length, ElementName=Window}" Value="1">
+                                        <Setter Property="Grid.ColumnSpan" Value="2" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+                    <ComboBox x:Name="TypeSelection" ItemsSource="{Binding TypeList, ElementName=Window}" SelectedIndex="0" SelectionChanged="ClassSelection_SelectionChanged"
+                              Grid.Column="1">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TypeList.Length, ElementName=Window}" Value="1">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+                </Grid>
+                <ComboBox x:Name="BaseSelection" ItemsSource="{Binding BaseList, ElementName=Window}" SelectedIndex="0" SelectionChanged="BaseSelection_SelectionChanged" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type items:ItemBase}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Height="20" VerticalAlignment="Center" Source="{Binding Image.ImageSource.Result}"
+                                   StretchDirection="DownOnly" Margin="0,0,3,0"/>
+                                <TextBlock VerticalAlignment="Center" ><Run Text="{Binding Name, Mode=OneWay}"/><Run Text=" (ilvl "/><Run Text="{Binding Level, Mode=OneWay}"/><Run Text=")"/></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <local:ModSelector x:Name="MsQuality" CanDeselect="false" SelectedValuesChanged="ms_SelectedValuesChanged"
+                                   Height="25">
+                    <local:ModSelector.Style>
+                        <Style TargetType="{x:Type local:ModSelector}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Affixes, ElementName=MsQuality}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </local:ModSelector.Style>
+                </local:ModSelector>
+                <local:ModSelector x:Name="msImplicitMods" CanDeselect="false" SelectedValuesChanged="ms_SelectedValuesChanged"
+                                   Height="50">
+                    <local:ModSelector.Style>
+                        <Style TargetType="{x:Type local:ModSelector}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Affixes, ElementName=msImplicitMods}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </local:ModSelector.Style>
+                </local:ModSelector>
             </StackPanel>
-            <StackPanel Grid.Column="2">
-                <Label Content="Suffixes"/>
-                <local:ModSelector x:Name="mss1" SelectedAffixChanged="mss1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
-                <local:ModSelector x:Name="mss2" SelectedAffixChanged="mss1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
-                <local:ModSelector x:Name="mss3" SelectedAffixChanged="mss1_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged" />
-            </StackPanel>
-            <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=window}" Width="94" Height="188" Grid.Row="0" Margin="5"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="90" />
+                    <RowDefinition Height="90" />
+                    <RowDefinition Height="90" />
+                </Grid.RowDefinitions>
+
+                <Label Content="Prefixes"
+                       Grid.Column="0" Grid.Row="0"/>
+                <local:ModSelector x:Name="msp1" SelectedAffixChanged="msp_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                       Grid.Column="0" Grid.Row="1" />
+                <local:ModSelector x:Name="msp2" SelectedAffixChanged="msp_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                       Grid.Column="0" Grid.Row="2" />
+                <local:ModSelector x:Name="msp3" SelectedAffixChanged="msp_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                       Grid.Column="0" Grid.Row="3" />
+
+                <Label Content="Suffixes"
+                       Grid.Column="2" Grid.Row="0"/>
+                <local:ModSelector x:Name="mss1" SelectedAffixChanged="mss_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                       Grid.Column="2" Grid.Row="1" />
+                <local:ModSelector x:Name="mss2" SelectedAffixChanged="mss_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                       Grid.Column="2" Grid.Row="2" />
+                <local:ModSelector x:Name="mss3" SelectedAffixChanged="mss_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                       Grid.Column="2" Grid.Row="3" />
+
+                <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=Window}" Width="94" Height="188"
+                                      Grid.Row="0" Grid.RowSpan="4" Margin="5"
+                                      VerticalAlignment="Top"/>
+            </Grid>
         </Grid>
-        <Border Padding="4" Grid.Row="2" Background="{DynamicResource GrayBrush8}" Margin="0,4">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Click="Button_OK_Click" Content="{l:Catalog 'OK'}" MinWidth="80"/>
-            </StackPanel>
-        </Border>
-        <local:ItemTooltip Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Item="{Binding Item, ElementName=window}" />
+
+        <StackPanel Grid.Row="1"
+                    Style="{StaticResource DialogPanel}">
+            <Button Style="{StaticResource AccentedDialogPanelButton}"
+                    Click="Button_OK_Click">
+                <l:Catalog Message="OK"/>
+            </Button>
+            <Button IsCancel="True" IsDefault="True"
+                    Style="{StaticResource AccentedDialogPanelButton}"
+                    Click="Button_Cancel_Click">
+                <l:Catalog Message="Cancel"/>
+            </Button>
+        </StackPanel>
     </Grid>
-</controls:MetroWindow>
+</dialogs:CloseableBaseDialog>

@@ -117,10 +117,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         private static readonly Dictionary<string, float> AttributesPerLevel = new Dictionary<string, float>()
         {
-            {"+# to maximum Mana", SkillTree.ManaPerLevel},
-            {"+# to maximum Life", SkillTree.LifePerLevel},
-            {"+# Accuracy Rating", SkillTree.AccPerLevel},
-            {"Evasion Rating: #", SkillTree.EvasPerLevel}
+            {"+# to maximum Mana", Constants.ManaPerLevel},
+            {"+# to maximum Life", Constants.LifePerLevel},
+            {"+# Accuracy Rating", Constants.AccPerLevel},
+            {"Evasion Rating: #", Constants.EvasPerLevel}
         };
 
         /// <summary>
@@ -515,9 +515,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var attributes = new Dictionary<string, float>();
             foreach (var node in Tree.SkilledNodes)
             {
-                var skillNode = SkillTree.Skillnodes[node];
                 var hasUniqueAttribute = false;
-                foreach (var attribute in SkillTree.ExpandHybridAttributes(skillNode.Attributes))
+                foreach (var attribute in SkillTree.ExpandHybridAttributes(node.Attributes))
                 {
                     var attr = attribute.Key;
                     if (_attributes.Contains(attr))
@@ -542,7 +541,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 }
                 if (hasUniqueAttribute)
                 {
-                    Tree.CycleNodeTagForward(skillNode);
+                    Tree.CycleNodeTagForward(node);
                 }
             }
 
@@ -568,9 +567,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         private void ConverteAttributeToPseudoAttributeConstraints()
         {
-            var keystones = from id in Tree.GetCheckedNodes()
-                            where SkillTree.Skillnodes[id].IsKeyStone
-                            select SkillTree.Skillnodes[id].Name;
+            var keystones = from node in Tree.GetCheckedNodes()
+                            where node.Type == NodeType.Keystone
+                            select node.Name;
             var conditionSettings = new ConditionSettings(Tags, OffHand, keystones.ToArray(), WeaponClass);
             var convertedConstraints = new List<AttributeConstraint>();
             foreach (var attributeConstraint in AttributeConstraints)

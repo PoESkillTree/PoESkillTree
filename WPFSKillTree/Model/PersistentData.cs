@@ -6,28 +6,45 @@ using System.Windows.Controls;
 using System.Xml.Serialization;
 using POESKillTree.ViewModels;
 using System.Collections.ObjectModel;
-using POESKillTree.ViewModels.Items;
+using System.ComponentModel;
+using JetBrains.Annotations;
+using log4net;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Controls;
+using POESKillTree.Model.Items;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
-    public class PersistentData : Notifier
+    public interface IPersistentData : INotifyPropertyChanged, INotifyPropertyChanging
     {
+        IOptions Options { get; }
+        PoEBuild CurrentBuild { get; }
+        EquipmentData EquipmentData { get; }
+        IReadOnlyList<Item> StashItems { get; }
+        IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
+
+        void SaveToFile();
+    }
+
+    public class XmlLeagueStash
+    {
+        [XmlAttribute]
+        public string Name { get; set; }
+        [XmlElement]
+        public List<StashBookmark> Bookmarks { get; set; }
+    }
+
+    public class PersistentData : Notifier, IPersistentData
+    {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentData));
+
         private string _appVersion;
         public string AppVersion
         {
             get { return _appVersion; }
             set { SetProperty(ref _appVersion, value); }
-        }
-
-        private List<StashBookmark> _stashBookmarks;
-        public List<StashBookmark> StashBookmarks
-        {
-            get { return _stashBookmarks; }
-            set { SetProperty(ref _stashBookmarks, value); }
         }
 
         private Options _options;
@@ -36,12 +53,21 @@ namespace POESKillTree.Model
             get { return _options; }
             set { SetProperty(ref _options, value); }
         }
+        [XmlIgnore]
+        IOptions IPersistentData.Options { get { return _options; } }
 
         private PoEBuild _currentBuild;
         public PoEBuild CurrentBuild
         {
             get { return _currentBuild; }
             set { SetProperty(ref _currentBuild, value); }
+        }
+
+        private List<StashBookmark> _stashBookmarks;
+        public List<StashBookmark> StashBookmarks
+        {
+            get { return _stashBookmarks; }
+            set { SetProperty(ref _stashBookmarks, value); }
         }
 
         private List<PoEBuild> _builds;
@@ -53,41 +79,73 @@ namespace POESKillTree.Model
 
         private const string FileName = "PersistentData";
 
-        [XmlIgnore]
         private readonly ObservableCollection<Item> _stash = new ObservableCollection<Item>();
-        
         [XmlIgnore]
-        public ObservableCollection<Item> StashItems
+        public IReadOnlyList<Item> StashItems
         {
             get { return _stash; }
         }
 
+        private IDictionary<string, IEnumerable<StashBookmark>> _leagueStashes;
+        [XmlIgnore]
+        public IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes
+        {
+            get { return _leagueStashes; }
+            private set { SetProperty(ref _leagueStashes, value);}
+        }
+        /// <summary>
+        /// <see cref="LeagueStashes"/> in a format that can be xml serialized. Only used in <see cref="SaveToFile"/>
+        /// and <see cref="LoadFromFile"/>
+        /// </summary>
+        [XmlArray]
+        public List<XmlLeagueStash> XmlLeagueStashes { get; set; }
+
+        private EquipmentData _equipmentData;
+        [XmlIgnore]
+        public EquipmentData EquipmentData
+        {
+            get { return _equipmentData ?? (_equipmentData = new EquipmentData(Options)); }
+        }
+
+        [Obsolete("Only for serialization")]
+        [UsedImplicitly]
         public PersistentData()
+            : this(false)
+        {
+        }
+
+        public PersistentData(bool loadFromFile)
         {
             Options = new Options();
             CurrentBuild = new PoEBuild
             {
                 Name = "New Build",
-                Url = SkillTree.TreeAddress + SkillTree.GetCharacterURL(3, 0),
+                Url = Constants.TreeAddress + SkillTree.GetCharacterUrl(3, 0),
                 Level = "1"
             };
             Builds = new List<PoEBuild>();
+            LeagueStashes = new Dictionary<string, IEnumerable<StashBookmark>>();
+            if (loadFromFile)
+                LoadFromFile(AppData.GetFolder(true) + FileName + ".xml");
         }
 
         // Creates empty file with language option set.
+        [UsedImplicitly]
         public static void CreateSetupTemplate(string path, string language)
         {
-            var data = new PersistentData {Options = {Language = language}};
-            data.SavePersistentDataToFileEx(Path.Combine(path, FileName + ".xml"));
+            var data = new PersistentData(false) {Options = {Language = language}};
+            data.SaveToFile(Path.Combine(path, FileName + ".xml"));
         }
 
-        public void SavePersistentDataToFile()
+        public void SaveToFile()
         {
-            SavePersistentDataToFileEx(AppData.GetFolder(true) + FileName + ".xml");
+            SaveToFile(AppData.GetFolder(true) + FileName + ".xml");
         }
 
-        private void SavePersistentDataToFileEx(string path)
+        private void SaveToFile(string path)
         {
+            XmlLeagueStashes = new List<XmlLeagueStash>(LeagueStashes.Select(
+                p => new XmlLeagueStash {Name = p.Key, Bookmarks = new List<StashBookmark>(p.Value)}));
             if (File.Exists(path))
             {
                 string pathBak = AppData.GetFolder(true) + FileName + ".bak";
@@ -102,12 +160,7 @@ namespace POESKillTree.Model
             SerializeStash();
         }
 
-        public void LoadPersistentDataFromFile()
-        {
-            LoadPersistenDataFromFileEx(AppData.GetFolder(true) + FileName + ".xml");
-        }
-
-        private void LoadPersistenDataFromFileEx(string filePath)
+        private void LoadFromFile(string filePath)
         {
             try
             {
@@ -121,6 +174,11 @@ namespace POESKillTree.Model
                     CurrentBuild = obj.CurrentBuild;
                     StashBookmarks = obj.StashBookmarks;
                     AppVersion = obj.AppVersion;
+                    if (obj.XmlLeagueStashes == null)
+                        LeagueStashes = new Dictionary<string, IEnumerable<StashBookmark>>();
+                    else
+                        LeagueStashes = obj.XmlLeagueStashes.ToDictionary(v => v.Name,
+                            v => (IEnumerable<StashBookmark>) v.Bookmarks);
                     reader.Close();
                 }
                 DeserializeStash();
@@ -129,7 +187,7 @@ namespace POESKillTree.Model
             {
                 string pathBak = AppData.GetFolder(true) + FileName + ".bak";
                 if (!filePath.Contains(FileName + ".bak") && File.Exists(pathBak))
-                    LoadPersistenDataFromFileEx(pathBak);
+                    LoadFromFile(pathBak);
                 else 
                 {
                     string pathBad = AppData.GetFolder(true) + FileName + "_Bad.xml";
@@ -153,32 +211,36 @@ namespace POESKillTree.Model
                 var arr = new JArray();
                 foreach (var item in StashItems)
                 {
-                    arr.Add(item.JSONBase);
+                    arr.Add(item.JsonBase);
                 }
 
                 File.WriteAllText(Path.Combine(AppData.GetFolder(), "stash.json"), arr.ToString());
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Log.Error("Could not serialize stash", e);
+            }
         }
 
         private void DeserializeStash()
         {
             try
             {
-                StashItems.Clear();
+                _stash.Clear();
                 var file = Path.Combine(AppData.GetFolder(), "stash.json");
                 if (!File.Exists(file))
                     return;
                 var arr = JArray.Parse(File.ReadAllText(file));
                 foreach (var item in arr)
                 {
-                    var itm = new Item((JObject)item);
-                    StashItems.Add(itm);
+                    var itm = new Item(this, (JObject)item);
+                    _stash.Add(itm);
                 }
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Log.Error("Could not deserialize stash", e);
+            }
         }
 
         public void SetBuilds(ItemCollection items)

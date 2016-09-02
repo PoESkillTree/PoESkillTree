@@ -13,9 +13,17 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Contrib/WpfRangeControls/Themes/Generic.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/DefaultTemplates.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/RangeScrollbars.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/Dialogs.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/Other.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <system:Boolean x:Key="True">True</system:Boolean>
+            <system:Boolean x:Key="False">False</system:Boolean>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
     <JumpList.JumpList>

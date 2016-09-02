@@ -1,5 +1,5 @@
 @ECHO OFF
-@REM Updates Items.xml file using UpdateDB tool.
+@REM Updates Data/ItemsDB/GemList.xml, Data/Equipment/ItemList.xml and Data/Equipment/AffixList.xml using UpdateDB tool.
 
 @REM Check whether Git is found in PATH
 WHERE /Q git

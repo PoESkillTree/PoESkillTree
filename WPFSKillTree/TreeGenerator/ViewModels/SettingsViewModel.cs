@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.Utils;
+using POESKillTree.ViewModels;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
@@ -14,10 +17,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
     /// ViewModel that enables setting up and running <see cref="Solver.ISolver"/> through
     /// contained <see cref="GeneratorTabViewModel"/>s.
     /// </summary>
-    public sealed class SettingsViewModel : CloseableViewModel
+    public sealed class SettingsViewModel : ViewModelBase
     {
 
         private readonly SkillTree _tree;
+
+        private readonly ISettingsDialogCoordinator _dialogCoordinator;
 
         public SkillTree Tree { get { return _tree; } }
 
@@ -119,7 +124,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             set { SetProperty(ref _selectedTabIndex, value); }
         }
 
-        private int _iterations = 1;
+        private int _iterations = 3;
         /// <summary>
         /// Gets or sets number of iterations this solver will run.
         /// </summary>
@@ -141,7 +146,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         public ICommand RunCommand
         {
-            get { return _runCommand ?? (_runCommand = new RelayCommand(o => Run())); }
+            get { return _runCommand ?? (_runCommand = new RelayCommand(async o => await RunAsync())); }
         }
 
         private RelayCommand _resetCommand;
@@ -160,17 +165,19 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Constructs a new SettingsViewModel that operates on the given skill tree.
         /// </summary>
         /// <param name="tree">The skill tree to operate on. (not null)</param>
+        /// <param name="dialogCoordinator"></param>
         /// <param name="generator">Optional <see cref="GeneratorTabViewModel"/> initialize
         /// <see cref="Tabs"/> with. If non is provided, <see cref="AdvancedTabViewModel"/>,
         /// <see cref="AutomatedTabViewModel"/> and <see cref="SteinerTabViewModel"/> will be
         /// added to <see cref="Tabs"/>.</param>
-        public SettingsViewModel(SkillTree tree, GeneratorTabViewModel generator = null)
+        public SettingsViewModel(SkillTree tree, ISettingsDialogCoordinator dialogCoordinator, GeneratorTabViewModel generator = null)
         {
             if (tree == null) throw new ArgumentNullException("tree");
 
-            DisplayName = L10n.Message("Skill tree Generator");
+            DisplayName = L10n.Message("Skill tree Generator").ToUpper();
 
             _tree = tree;
+            _dialogCoordinator = dialogCoordinator;
             AdditionalPoints = CalculateAdditionalPointsNeeded(tree);
             
             tree.PropertyChanged += (sender, args) =>
@@ -211,30 +218,25 @@ namespace POESKillTree.TreeGenerator.ViewModels
             };
         }
 
-        private void Run()
+        public async Task RunAsync()
         {
-            if (StartController == null) return;
-
             var savedHighlights = _tree.HighlightedNodes;
 
             var settings = CreateSettings();
             var solver = Tabs[_selectedTabIndex].CreateSolver(settings);
-            var controllerVm = new ControllerViewModel(solver, Tabs[_selectedTabIndex].DisplayName, _tree);
 
-            controllerVm.StartSolverAsync();
-            // Kinda crude, but I'm not going to write a framework for a few popups.
-            StartController.Raise(this, new StartControllerEventArgs(controllerVm));
-
-            if (controllerVm.Result == true)
+            var controllerResult = await _dialogCoordinator
+                .ShowControllerDialogAsync(this, solver, Tabs[_selectedTabIndex].DisplayName, _tree);
+            if (controllerResult != null)
             {
-                _tree.SkilledNodes = new HashSet<ushort>(controllerVm.BestSoFar);
+                _tree.SkilledNodes.Clear();
+                _tree.AllocateSkillNodes(controllerResult.Select(n => SkillTree.Skillnodes[n]));
             }
-            _tree.HighlightedNodes = savedHighlights;
-            _tree.DrawTreeComparisonHighlight();
+            _tree.HighlightedNodes.Clear();
+            _tree.HighlightedNodes.UnionWith(savedHighlights);
             _tree.DrawHighlights();
-            _tree.UpdateAvailNodes();
 
-            RunFinished.Raise(this);
+            RunFinished?.Invoke(this, EventArgs.Empty);
         }
 
         private void Reset()
@@ -260,27 +262,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var initialTree = _treeAsInitial ? _tree.SkilledNodes : null;
             var iterations = _iterations;
             return new SolverSettings(level, totalPoints, @checked, crossed, subsetTree, initialTree, iterations);
-        }
-
-        /// <summary>
-        /// Event raised when <see cref="RunCommand"/> is executed and a
-        /// <see cref="ControllerViewModel"/> got created that may need to
-        /// be visualized to the user by connecting it to a View.
-        /// </summary>
-        public event EventHandler<StartControllerEventArgs> StartController;
-
-        /// <summary>
-        /// EventArgs belonging to <see cref="StartController"/> storing
-        /// the started <see cref="ControllerViewModel"/>
-        /// </summary>
-        public class StartControllerEventArgs : EventArgs
-        {
-            public ControllerViewModel ViewModel { get; private set; }
-
-            public StartControllerEventArgs(ControllerViewModel viewModel)
-            {
-                ViewModel = viewModel;
-            }
         }
 
         /// <summary>

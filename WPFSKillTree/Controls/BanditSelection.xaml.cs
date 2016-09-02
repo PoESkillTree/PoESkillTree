@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Views
+﻿namespace POESKillTree.Controls
 {
     /// <summary>
     /// Interaction logic for BanditSelection.xaml

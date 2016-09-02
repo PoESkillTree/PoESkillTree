@@ -1,61 +1,103 @@
-﻿using MahApps.Metro.Controls;
-using POESKillTree.Controls;
-using POESKillTree.Utils;
-using POESKillTree.ViewModels.Items;
+﻿using POESKillTree.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using MB.Algodat;
+using POESKillTree.Model.Items;
+using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
+using POESKillTree.Utils;
+using POESKillTree.ViewModels;
 
 namespace POESKillTree.Views
 {
-    /// <summary>
-    /// Interaction logic for CraftWindow.xaml
-    /// </summary>
-    public partial class CraftWindow : MetroWindow, INotifyPropertyChanged
+    // Necessary because CraftWindow.Item is not accessable from content in BaseDialog.DialogLeft.
+    public class CraftViewModel : CloseableViewModel
     {
-
-        string[] _clist;
-
-        public string[] ClassList
-        {
-            get { return _clist; }
-            set { _clist = value; OnpropertyChanged("ClassList"); }
-        }
-
-        ItemBase[] _blist;
-        public ItemBase[] BaseList
-        {
-            get { return _blist; }
-            set { _blist = value; OnpropertyChanged("BaseList"); }
-        }
-
-        Item _item;
-
+        private Item _item;
         public Item Item
         {
             get { return _item; }
-            set { _item = value; OnpropertyChanged("Item"); }
+            set { SetProperty(ref _item, value); }
         }
+    }
+    
+    /// <summary>
+    /// Interaction logic for CraftWindow.xaml
+    /// </summary>
+    public partial class CraftWindow : INotifyPropertyChanged
+    {
+        private const string QualityModName = "Quality: +#%";
 
-        public CraftWindow()
+        private ItemGroup[] _groupList;
+        public ItemGroup[] GroupList
         {
-            InitializeComponent();
-            ClassList = Enum.GetNames(typeof(ItemClass)).Except(new[] { "" + ItemClass.Unequipable, "" + ItemClass.Invalid, "" + ItemClass.Gem, }).ToArray();
+            get { return _groupList; }
+            private set { _groupList = value; OnPropertyChanged(); }
         }
 
+        private ItemType[] _typeList;
+        public ItemType[] TypeList
+        {
+            get { return _typeList; }
+            private set
+            {
+                _typeList = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public void OnpropertyChanged(string prop)
+        private ItemBase[] _blist;
+        public ItemBase[] BaseList
+        {
+            get { return _blist; }
+            private set { _blist = value; OnPropertyChanged(); }
+        }
+
+        public Item Item
+        {
+            get
+            {
+                var vm = DataContext as CraftViewModel;
+                return vm == null ? null : ((CraftViewModel) DataContext).Item;
+            }
+            private set
+            {
+                ((CraftViewModel) DataContext).Item = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<Affix> _prefixes = new List<Affix>();
+        private List<Affix> _suffixes = new List<Affix>();
+
+        private readonly SimpleMonitor _monitor = new SimpleMonitor();
+
+        private ModSelector[] _selectedPreff = new ModSelector[0];
+        private ModSelector[] _selectedSuff = new ModSelector[0];
+
+        private readonly EquipmentData _equipmentData;
+
+        public CraftWindow(EquipmentData equipmentData)
+        {
+            _monitor.Freed += (sender, args) => RecalculateItem();
+            _equipmentData = equipmentData;
+            InitializeComponent();
+        }
+
+        protected override void OnLoaded()
+        {
+            base.OnLoaded();
+            GroupList = Enum.GetValues(typeof(ItemGroup)).Cast<ItemGroup>().Except(new[] {ItemGroup.Unknown, ItemGroup.Gem}).ToArray();
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string prop = null)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
@@ -63,100 +105,83 @@ namespace POESKillTree.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        List<Affix> _prefixes = new List<Affix>();
-        List<Affix> _suffixes = new List<Affix>();
-
-        int _SkipRedraw = 0;
-
-        public bool SkipRedraw
+        private void GroupSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            get { return _SkipRedraw > 0; }
-            set
-            {
-                if (value)
-                    _SkipRedraw++;
-                else
-                    _SkipRedraw--;
-
-                if (_SkipRedraw == 0)
-                    RecalculateItem();
-            }
+            var d = _monitor.Enter();
+            var val = (ItemGroup) GroupSelection.SelectedItem;
+            TypeList = Enum.GetValues(typeof(ItemType)).Cast<ItemType>().Where(t => t.Group() == val).ToArray();
+            TypeSelection.SelectedIndex = 0;
+            d.Dispose();
         }
 
-        private void cbClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SkipRedraw = true;
-            var val = (ItemClass)Enum.Parse(typeof(ItemClass), (string)cbClassSelection.SelectedItem);
-            BaseList = ItemBase.BaseList.Where(b => (b.Class & val) == val).ToArray();
-            cbBaseSelection.SelectedIndex = 0;
-            SkipRedraw = false;
+            // Happens if called in GroupSelection_SelectionChanged
+            if (TypeSelection.SelectedItem == null) return;
+
+            var d = _monitor.Enter();
+            var val = (ItemType) TypeSelection.SelectedItem;
+            BaseList = _equipmentData.BaseList.Where(b => b.ItemType == val).ToArray();
+            BaseSelection.SelectedIndex = 0;
+            d.Dispose();
         }
 
-        private void cbBaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbBaseSelection.SelectedItem == null)
+            if (BaseSelection.SelectedItem == null)
             {
                 Item = null;
                 return;
             }
 
-            SkipRedraw = true;
+            var d = _monitor.Enter();
             msp1.Affixes = msp2.Affixes = msp3.Affixes = mss1.Affixes = mss1.Affixes = mss2.Affixes = mss3.Affixes = null;
 
-            var ibase = ((ItemBase)cbBaseSelection.SelectedItem);
-            var itm = ibase.CreateItem();
-            Item = itm;
+            var ibase = (ItemBase)BaseSelection.SelectedItem;
+            Item = ibase.CreateItem();
 
-            if (ibase.ImplicitMods != null)
+            if (ibase.ImplicitMods.Any())
             {
-                Affix implaff = new Affix(ibase.ImplicitMods.Select(s => s.Name).ToArray(), new[] { new ItemModTier("implicits", 0, ibase.ImplicitMods) });
-
-                List<string> aliases = new List<string>();
-
-                foreach (var mn in ibase.ImplicitMods)
+                msImplicitMods.Affixes = new List<Affix>
                 {
-                    string mname = mn.Name.Replace("-", "").Replace("+", "");
-                    var afm = Affix.AllAffixes.FirstOrDefault(a => a.Mod.Contains(mname));
-                    if (afm != null)
-                    {
-                        var indx = afm.Mod.IndexOf(mname);
-                        var al = afm.Aliases[indx].First();
-                        aliases.Add(al);
-                    }
-                    else
-                        aliases.Add(mn.Name);
-                }
-
-                implaff.Aliases = aliases.Select(a => new HashSet<string>() { a }).ToArray();
-
-
-                msImplicitMods.Affixes = new List<Affix>() { implaff };
+                    new Affix(ibase.ImplicitMods.Select(s => s.Name).ToArray(), new[] { new ItemModTier(ibase.ImplicitMods) })
+                };
+                Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
+                ApplyLocals();
             }
             else
             {
                 msImplicitMods.Affixes = null;
             }
+            if (ibase.CanHaveQuality)
+            {
+                var qualityStat = new Stat(QualityModName, new Range<float>(0, 20), Item.ItemType, null);
+                var qualityAffix = new Affix(new[] {QualityModName}, new[] {new ItemModTier(new[] {qualityStat})});
+                MsQuality.Affixes = new List<Affix>(new[] {qualityAffix});
+            }
+            else
+            {
+                MsQuality.Affixes = null;
+            }
 
-            var aaff = Affix.AllAffixes.Where(a => a.ApplicableGear.Contains(itm.GearGroup)).ToArray();
+            var aaff = _equipmentData.AffixesPerItemType[Item.ItemType].ToArray();
 
-            _prefixes = aaff.Where(a => a.IsPrefix).ToList();
-            _suffixes = aaff.Where(a => a.IsSuffix).ToList();
+            _prefixes = aaff.Where(a => a.ModType == ModType.Prefix).ToList();
+            _suffixes = aaff.Where(a => a.ModType == ModType.Suffix).ToList();
 
             msp1.Affixes = msp2.Affixes = msp3.Affixes = _prefixes;
             mss1.Affixes = mss2.Affixes = mss3.Affixes = _suffixes;
-            msp3.Visibility = Item.Class == ItemClass.Jewel ? Visibility.Hidden : Visibility.Visible;
-            mss3.Visibility = Item.Class == ItemClass.Jewel ? Visibility.Hidden : Visibility.Visible;
+            msp3.Visibility = Item.ItemGroup == ItemGroup.Jewel ? Visibility.Hidden : Visibility.Visible;
+            mss3.Visibility = Item.ItemGroup == ItemGroup.Jewel ? Visibility.Hidden : Visibility.Visible;
 
-            SkipRedraw = false;
-
+            d.Dispose();
         }
 
-        ModSelector[] _selectedPreff = new ModSelector[0];
-        private void msp1_SelectedAffixChanged(object sender, Affix aff)
+        private void msp_SelectedAffixChanged(object sender, Affix aff)
         {
-            SkipRedraw = true;
+            var d = _monitor.Enter();
             var ms = sender as ModSelector;
-            List<Affix> exc = new List<Affix>();
+
             if (msp1 != ms)
                 msp1.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp3.SelectedAffix }).ToList();
 
@@ -166,18 +191,18 @@ namespace POESKillTree.Views
             if (msp3 != ms)
                 msp3.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp1.SelectedAffix }).ToList();
             _selectedPreff = new[] { msp1, msp2, msp3 }.Where(s => s.SelectedAffix != null).ToArray();
-            SkipRedraw = false;
+            d.Dispose();
         }
 
         private void RecalculateItem()
         {
-            if (SkipRedraw)
+            if (_monitor.IsBusy)
                 return;
             if (Item == null)
                 return;
 
             Item.NameLine = "";
-            Item.TypeLine = Item.BaseType;
+            Item.TypeLine = Item.BaseType.Name;
 
             if (_selectedPreff.Length + _selectedSuff.Length == 0)
             {
@@ -186,24 +211,23 @@ namespace POESKillTree.Views
             else if (_selectedPreff.Length <= 1 && _selectedSuff.Length <= 1)
             {
                 Item.Frame = FrameType.Magic;
-                string typeline = "";
+                var typeline = "";
 
                 if (_selectedPreff.Length > 0)
-                    typeline = _selectedPreff[0].SelectedAffix.Query(_selectedPreff[0].SelectedValues.Select(v => (_selectedPreff[0].SelectedAffix.Name.Contains(" per second")) ? (float)v * 60f : (float)v).ToArray()).First().Name + " ";
+                    typeline = _selectedPreff[0].SelectedAffix.Query(_selectedPreff[0].SelectedValues.Select(v => (float)v).ToArray()).First().Name + " ";
 
                 typeline += Item.BaseType;
 
                 if (_selectedSuff.Length > 0)
-                    typeline += " " + _selectedSuff[0].SelectedAffix.Query(_selectedSuff[0].SelectedValues.Select(v => (_selectedSuff[0].SelectedAffix.Name.Contains(" per second")) ? (float)v * 60f : (float)v).ToArray()).First().Name;
+                    typeline += " " + _selectedSuff[0].SelectedAffix.Query(_selectedSuff[0].SelectedValues.Select(v => (float)v).ToArray()).First().Name;
 
-                Item.TypeLine = typeline.Replace(" (Master Crafted)", "");
+                Item.TypeLine = typeline;
             }
             else
             {
                 Item.Frame = FrameType.Rare;
                 Item.NameLine = "Crafted " + Item.BaseType;
             }
-
 
             var prefixes = _selectedPreff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
             var suffixes = _selectedSuff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
@@ -212,85 +236,32 @@ namespace POESKillTree.Views
                 .Select(g => g.Aggregate((m1, m2) => m1.Sum(m2)))
                 .ToList();
 
-
-            Item.ExplicitMods = allmods.Where(m => m.Parent == null || m.Parent.ParentTier == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
-            Item.CraftedMods = allmods.Where(m => m.Parent != null && m.Parent.ParentTier != null && m.Parent.ParentTier.IsMasterCrafted).ToList();
+            Item.ExplicitMods = allmods.Where(m => m.Parent == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
+            Item.CraftedMods = allmods.Where(m => m.Parent != null && m.Parent.ParentTier.IsMasterCrafted).ToList();
 
             if (msImplicitMods.Affixes != null)
             {
                 Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
             }
 
-            var ibase = ((ItemBase)cbBaseSelection.SelectedItem);
-            var plist = ibase.GetRawProperties();
-
-
-            var localmods = allmods.Where(m => m.DetermineLocalFor(Item)).ToList();
-
-            var r = new Regex(@"(?<!\B)(?:to |increased |decreased |more |less |Adds #-# )(?!\B)|(?:#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$", RegexOptions.IgnoreCase);
-
-            var localnames = localmods.Select(m =>
-                r.Replace(m.Attribute, "")
-                    .Split(new[] { "and", "," }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(s =>
-                        s.Trim().Replace("Attack Speed", "Atacks Per Second"))
-                        .ToList())
-                .ToList();
-
-            if (localmods.Count > 0)
+            var quality = 0.0;
+            if (MsQuality.Affixes != null && MsQuality.SelectedValues[0] > 0)
             {
-                for (int j = 0; j < plist.Count; j++)
-                {
-
-                    var applymods = localmods.Where((m, i) => localnames[i].Any(n => plist[j].Attribute.Contains(n))).ToList();
-                    var percm = applymods.Where(m => m.Attribute.Contains('%')).ToList();
-                    var valuem = applymods.Except(percm).ToList();
-
-                    if (valuem.Count > 0)
-                    {
-                        var val = valuem.Select(m => m.Value).Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2).ToList());
-                        var nval = plist[j].Value.Zip(val, (f1, f2) => f1 + f2).ToList();
-                        plist[j].ValueColor = plist[j].ValueColor.Select((c, i) => ((val[i] == nval[i]) ? plist[j].ValueColor[i] : ItemMod.ValueColoring.LocallyAffected)).ToList();
-                        plist[j].Value = nval;
-
-                    }
-
-                    Func<float, float> roundf = (float val) => (float)Math.Round(val);
-
-                    if (plist[j].Attribute.Contains("Critical"))
-                    {
-                        roundf = (f) => (float)(Math.Round(f * 10) / 10);
-                    }
-                    else if (plist[j].Attribute.Contains("Per Second"))
-                    {
-                        roundf = (f) => (float)(Math.Round(f * 100) / 100);
-                    }
-
-
-                    if (percm.Count > 0)
-                    {
-                        var perc = 1f + percm.Select(m => m.Value[0]).Sum() / 100f;
-                        plist[j].ValueColor = plist[j].ValueColor.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
-                        plist[j].Value = plist[j].Value.Select(v => roundf(v * perc)).ToList();
-                    }
-                }
-
+                quality = MsQuality.SelectedValues[0];
             }
+            Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties((float) quality));
+            ApplyLocals();
 
             if (Item.IsWeapon)
             {
                 var elementalmods = allmods.Where(m => m.Attribute.StartsWith("Adds") && (m.Attribute.Contains("Fire") || m.Attribute.Contains("Cold") || m.Attribute.Contains("Lightning"))).ToList();
                 if (elementalmods.Count > 0)
                 {
-                    List<float> values = new List<float>();
+                    var values = new List<float>();
+                    var mods = new List<string>();
+                    var cols = new List<ItemMod.ValueColoring>();
 
                     var fmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Fire"));
-                    var cmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
-                    var lmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
-
-                    List<string> mods = new List<string>();
-                    List<ItemMod.ValueColoring> cols = new List<ItemMod.ValueColoring>();
-
                     if (fmod != null)
                     {
                         values.AddRange(fmod.Value);
@@ -299,6 +270,7 @@ namespace POESKillTree.Views
                         cols.Add(ItemMod.ValueColoring.Fire);
                     }
 
+                    var cmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
                     if (cmod != null)
                     {
                         values.AddRange(cmod.Value);
@@ -307,6 +279,7 @@ namespace POESKillTree.Views
                         cols.Add(ItemMod.ValueColoring.Cold);
                     }
 
+                    var lmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
                     if (lmod != null)
                     {
                         values.AddRange(lmod.Value);
@@ -315,28 +288,69 @@ namespace POESKillTree.Views
                         cols.Add(ItemMod.ValueColoring.Lightning);
                     }
 
-                    string mname = "Elemental Damage: ";
-                    ItemMod mod = new ItemMod()
+                    Item.Properties.Add(new ItemMod(Item.ItemType, "Elemental Damage: " + string.Join(", ", mods))
                     {
-                        Attribute = mname + string.Join(", ", mods),
                         Value = values,
                         ValueColor = cols,
-                    };
+                    });
+                }
 
-                    plist.Add(mod);
+                var chaosMods = allmods.Where(m => m.Attribute.StartsWith("Adds") && m.Attribute.Contains("Chaos")).ToList();
+                if (chaosMods.Count > 0)
+                {
+                    Item.Properties.Add(new ItemMod(Item.ItemType, "Chaos Damage: #-#")
+                    {
+                        Value = new List<float>(chaosMods[0].Value),
+                        ValueColor = new List<ItemMod.ValueColoring> { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos },
+                    });
                 }
             }
 
-            Item.Properties = plist;
-
             Item.FlavourText = "Crafted by PoESkillTree";
+            Item.UpdateRequirements();
         }
 
-        ModSelector[] _selectedSuff = new ModSelector[0];
-        private void mss1_SelectedAffixChanged(object sender, Affix aff)
+        private void ApplyLocals()
+        {
+            foreach (var pair in Item.GetModsAffectingProperties())
+            {
+                var prop = pair.Key;
+                var applymods = pair.Value;
+
+                var percm = applymods.Where(m => Regex.IsMatch(m.Attribute, @"(?<!\+)#%")).ToList();
+                var valuem = applymods.Except(percm).ToList();
+
+                if (valuem.Count > 0)
+                {
+                    var val = valuem.Select(m => m.Value).Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2).ToList());
+                    var nval = prop.Value.Zip(val, (f1, f2) => f1 + f2).ToList();
+                    prop.ValueColor = prop.ValueColor.Select((c, i) => val[i] == nval[i] ? prop.ValueColor[i] : ItemMod.ValueColoring.LocallyAffected).ToList();
+                    prop.Value = nval;
+                }
+
+                Func<float, float> roundf = val => (float)Math.Round(val);
+
+                if (prop.Attribute.Contains("Critical"))
+                {
+                    roundf = f => (float)(Math.Round(f * 10) / 10);
+                }
+                else if (prop.Attribute.Contains("per Second"))
+                {
+                    roundf = f => (float)(Math.Round(f * 100) / 100);
+                }
+
+                if (percm.Count > 0)
+                {
+                    var perc = 1f + percm.Select(m => m.Value[0]).Sum() / 100f;
+                    prop.ValueColor = prop.ValueColor.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
+                    prop.Value = prop.Value.Select(v => roundf(v * perc)).ToList();
+                }
+            }
+        }
+
+        private void mss_SelectedAffixChanged(object sender, Affix aff)
         {
             var ms = sender as ModSelector;
-            List<Affix> exc = new List<Affix>();
             if (mss1 != ms)
                 mss1.Affixes = _suffixes.Except(new[] { mss2.SelectedAffix, mss3.SelectedAffix }).ToList();
 
@@ -356,28 +370,22 @@ namespace POESKillTree.Views
             RecalculateItem();
         }
 
+        public bool DialogResult { get; private set; }
+
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
-            Item.JSONBase = Item.GenerateJson();
-
-            Item.Attributes = Item.Properties.ToDictionary(k => k.Attribute, v => v.Value);
-
-            Item.Mods = new List<ItemMod>();
-
-            if (Item.HaveImplicitMods)
-                Item.Mods.AddRange(Item.ImplicitMods);
-
-            if (Item.HaveCraftedMods)
-                Item.Mods.AddRange(Item.CraftedMods);
-
-            if (Item.HaveExplicitMods)
-                Item.Mods.AddRange(Item.ExplicitMods);
-
+            Item.SetJsonBase();
 
             Item.X = 0;
             Item.Y = 0;
             DialogResult = true;
-            Close();
+            CloseCommand.Execute(null);
+        }
+
+        private void Button_Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            CloseCommand.Execute(null);
         }
     }
 }
