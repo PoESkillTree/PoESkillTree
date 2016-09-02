@@ -126,7 +126,7 @@
     <comment>The name of company or community group providing this product.</comment>
   </data>
   <data name="AssemblyCopyright" xml:space="preserve">
-    <value>Copyright © 2012-2015 PoESkillTree Team</value>
+    <value>Copyright © 2012-2016 PoESkillTree Team</value>
     <comment>The assymbly copyright also used as setup package copyright.</comment>
   </data>
   <data name="AssemblyDescription" xml:space="preserve">

@@ -79,7 +79,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copyright © 2012-2015 PoESkillTree Team.
+        ///   Looks up a localized string similar to Copyright © 2012-2016 PoESkillTree Team.
         /// </summary>
         public static string AssemblyCopyright {
             get {
