@@ -1419,16 +1419,6 @@
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="Sceptre" Name="Lead Sceptre" Level="44" Strength="77" Dexterity="0" Intelligence="77">
-    <Implicit>
-      <Stat Name="#% increased Elemental Damage" From="22" To="22" />
-    </Implicit>
-    <Properties>
-      <Stat Name="Physical Damage" From="32" To="48" />
-      <Stat Name="Critical Strike Chance %" From="6" To="6" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
-    </Properties>
-  </ItemBase>
   <ItemBase ItemType="Sceptre" Name="Blood Sceptre" Level="47" Strength="81" Dexterity="0" Intelligence="81">
     <Implicit>
       <Stat Name="#% increased Elemental Damage" From="24" To="24" />
@@ -2911,6 +2901,12 @@
       <Stat Name="Requires Level" From="5" To="5" />
     </Properties>
   </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Blue Pearl Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+    <Properties>
+      <Stat Name="Drop Level" From="77" To="77" />
+      <Stat Name="Requires Level" From="77" To="77" />
+    </Properties>
+  </ItemBase>
   <ItemBase ItemType="Amulet" Name="Citrine Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Drop Level" From="20" To="20" />
@@ -2938,6 +2934,12 @@
     <Properties>
       <Stat Name="Drop Level" From="7" To="7" />
       <Stat Name="Requires Level" From="5" To="5" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Marble Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+    <Properties>
+      <Stat Name="Drop Level" From="74" To="74" />
+      <Stat Name="Requires Level" From="74" To="74" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Amulet" Name="Onyx Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
@@ -2973,6 +2975,12 @@
       <Stat Name="Requires Level" From="16" To="16" />
     </Properties>
   </ItemBase>
+  <ItemBase ItemType="Belt" Name="Crystal Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+    <Properties>
+      <Stat Name="Drop Level" From="79" To="79" />
+      <Stat Name="Requires Level" From="79" To="79" />
+    </Properties>
+  </ItemBase>
   <ItemBase ItemType="Belt" Name="Heavy Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Drop Level" From="10" To="10" />
@@ -2994,6 +3002,12 @@
     <Properties>
       <Stat Name="Drop Level" From="20" To="20" />
       <Stat Name="Requires Level" From="16" To="16" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="Belt" Name="Vanguard Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+    <Properties>
+      <Stat Name="Drop Level" From="78" To="78" />
+      <Stat Name="Requires Level" From="78" To="78" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Blunt Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
@@ -3104,6 +3118,11 @@
       <Stat Name="Requires Level" From="20" To="20" />
     </Properties>
   </ItemBase>
+  <ItemBase ItemType="Ring" Name="Opal Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+    <Properties>
+      <Stat Name="Drop Level" From="80" To="80" />
+    </Properties>
+  </ItemBase>
   <ItemBase ItemType="Ring" Name="Paua Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Drop Level" From="5" To="5" />
@@ -3125,6 +3144,12 @@
     <Properties>
       <Stat Name="Drop Level" From="8" To="8" />
       <Stat Name="Requires Level" From="8" To="8" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="Ring" Name="Steel Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+    <Properties>
+      <Stat Name="Drop Level" From="80" To="80" />
+      <Stat Name="Requires Level" From="80" To="80" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Topaz Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
@@ -4217,6 +4242,15 @@
       <Stat Name="Evasion Rating" From="105" To="105" />
     </Properties>
   </ItemBase>
+  <ItemBase ItemType="BootsArmourEvasion" Name="Two-Toned Boots" Level="72" Strength="62" Dexterity="62" Intelligence="0">
+    <Implicit>
+      <Stat Name="+#% to Fire and Cold Resistances" From="15" To="20" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Armour" From="109" To="109" />
+      <Stat Name="Evasion Rating" From="109" To="109" />
+    </Properties>
+  </ItemBase>
   <ItemBase ItemType="BootsArmourEnergyShield" Name="Chain Boots" Level="5" Strength="8" Dexterity="0" Intelligence="8">
     <Properties>
       <Stat Name="Armour" From="9" To="9" />
@@ -4263,6 +4297,15 @@
     <Properties>
       <Stat Name="Armour" From="105" To="105" />
       <Stat Name="Energy Shield" From="31" To="31" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="BootsArmourEnergyShield" Name="Two-Toned Boots" Level="72" Strength="62" Dexterity="0" Intelligence="62">
+    <Implicit>
+      <Stat Name="+#% to Fire and Lightning Resistances" From="15" To="20" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Armour" From="109" To="109" />
+      <Stat Name="Energy Shield" From="32" To="32" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="BootsEvasionEnergyShield" Name="Wrapped Boots" Level="6" Strength="0" Dexterity="9" Intelligence="9">
@@ -4319,6 +4362,15 @@
       <Stat Name="Energy Shield" From="22" To="22" />
     </Properties>
   </ItemBase>
+  <ItemBase ItemType="BootsEvasionEnergyShield" Name="Two-Toned Boots" Level="72" Strength="0" Dexterity="62" Intelligence="62">
+    <Implicit>
+      <Stat Name="+#% to Cold and Lightning Resistances" From="15" To="20" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Evasion Rating" From="109" To="109" />
+      <Stat Name="Energy Shield" From="32" To="32" />
+    </Properties>
+  </ItemBase>
   <ItemBase ItemType="GlovesArmour" Name="Iron Gauntlets" Level="0" Strength="6" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Armour" From="6" To="6" />
@@ -4362,6 +4414,14 @@
   <ItemBase ItemType="GlovesArmour" Name="Titan Gauntlets" Level="69" Strength="98" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Armour" From="210" To="210" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="GlovesArmour" Name="Spiked Gloves" Level="73" Strength="95" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Melee Damage" From="16" To="20" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Armour" From="191" To="191" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="GlovesEvasion" Name="Rawhide Gloves" Level="3" Strength="0" Dexterity="9" Intelligence="0">
@@ -4409,6 +4469,14 @@
       <Stat Name="Evasion Rating" From="210" To="210" />
     </Properties>
   </ItemBase>
+  <ItemBase ItemType="GlovesEvasion" Name="Gripped Gloves" Level="73" Strength="0" Dexterity="95" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Projectile Attack Damage" From="14" To="18" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Evasion Rating" From="191" To="191" />
+    </Properties>
+  </ItemBase>
   <ItemBase ItemType="GlovesEnergyShield" Name="Wool Gloves" Level="3" Strength="0" Dexterity="0" Intelligence="9">
     <Properties>
       <Stat Name="Energy Shield" From="4" To="4" />
@@ -4452,6 +4520,14 @@
   <ItemBase ItemType="GlovesEnergyShield" Name="Sorcerer Gloves" Level="69" Strength="0" Dexterity="0" Intelligence="97">
     <Properties>
       <Stat Name="Energy Shield" From="61" To="61" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="GlovesEnergyShield" Name="Fingerless Silk Gloves" Level="73" Strength="0" Dexterity="0" Intelligence="95">
+    <Implicit>
+      <Stat Name="#% increased Spell Damage" From="12" To="16" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Energy Shield" From="56" To="56" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="GlovesArmourEvasion" Name="Fishscale Gauntlets" Level="4" Strength="5" Dexterity="5" Intelligence="0">
@@ -4876,6 +4952,15 @@
     <Properties>
       <Stat Name="Armour" From="140" To="140" />
       <Stat Name="Energy Shield" From="63" To="63" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="HelmetArmourEnergyShield" Name="Bone Helmet" Level="75" Strength="76" Dexterity="0" Intelligence="76">
+    <Implicit>
+      <Stat Name="Minions deal #% increased Damage" From="30" To="40" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Armour" From="172" To="172" />
+      <Stat Name="Energy Shield" From="50" To="50" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="HelmetEvasionEnergyShield" Name="Scare Mask" Level="4" Strength="0" Dexterity="8" Intelligence="8">
