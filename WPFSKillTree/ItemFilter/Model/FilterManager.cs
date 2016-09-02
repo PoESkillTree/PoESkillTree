@@ -195,12 +195,40 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Mirror of Kalandra",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Mirror of Kalandra" }) }
                             },
-                            new Rule // XXX: Prophecy league
+                            new Rule
                             {
                                 Id = "SilverCoin",
                                 IsEnabled = false,
                                 Name = "Silver Coin",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Silver Coin" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "CartographersSeal",
+                                IsEnabled = false,
+                                Name = "Cartographer's Seal",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Cartographer's Seal" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "CartographersSextant",
+                                IsEnabled = false,
+                                Name = "Cartographer's Sextant",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Cartographer's Sextant" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "UnshapingOrb",
+                                IsEnabled = false,
+                                Name = "Unshaping Orb",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Unshaping Orb" }) }
+                            },
+                            new Rule // XXX: Essence league
+                            {
+                                Id = "Essence",
+                                IsEnabled = false,
+                                Name = "Essence",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Essence of", "Remnant of Corruption" }) }
                             }
                         }
                     },
@@ -270,24 +298,23 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Cartographer's Chisel",
                                 Set = new List<Match>[]
                                 {
-                                    // XXX: 3 or less whetstones to be spent to bring an item to quality of 20 for a recipe.
+                                    // XXX: 4 or less whetstones to be spent to bring an item to quality of 20 for a recipe.
                                     new List<Match>
                                     {
                                         new MatchBaseType(new string[]{ "Stone Hammer", "Rock Breaker", "Gavel" }),
-                                        new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal),
-                                        new MatchQuality(MatchNumber.Operator.GreaterOrEqual, 5)
+                                        new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                     },
                                     new List<Match>
                                     {
                                         new MatchBaseType(new string[]{ "Stone Hammer", "Rock Breaker", "Gavel" }),
                                         new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Magic),
-                                        new MatchQuality(MatchNumber.Operator.GreaterOrEqual, 14)
+                                        new MatchQuality(MatchNumber.Operator.GreaterOrEqual, 12)
                                     },
                                     new List<Match>
                                     {
                                         new MatchBaseType(new string[]{ "Stone Hammer", "Rock Breaker", "Gavel" }),
                                         new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Rare),
-                                        new MatchQuality(MatchNumber.Operator.GreaterOrEqual, 17)
+                                        new MatchQuality(MatchNumber.Operator.GreaterOrEqual, 16)
                                     }
                                 }
                             },
@@ -600,7 +627,7 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Labyrinth Key",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Golden Key", "Silver Key", "Treasure Key" }) }
                             },
-                            new Rule // XXX: Prophecy league
+                            new Rule
                             {
                                 Id = "LabyrinthMap",
                                 IsEnabled = false,
