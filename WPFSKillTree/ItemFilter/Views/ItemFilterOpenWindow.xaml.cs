@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.ItemFilter.Model;
-using POESKillTree.Utils;
 
 namespace POESKillTree.ItemFilter.Views
 {
@@ -38,28 +29,28 @@ namespace POESKillTree.ItemFilter.Views
             DialogResult = true;
         }
 
-        private void Copy_Click(object sender, RoutedEventArgs e)
+        private async void Copy_Click(object sender, RoutedEventArgs e)
         {
             string name = NameTextBox.Text;
             string selected = FilterListBox.SelectedItem as string;
 
             if (string.IsNullOrEmpty(selected))
             {
-                Popup.Error("No filter selected!");
+                await this.ShowErrorAsync("No filter selected!");
 
                 return;
             }
 
             if (!FilterManager.IsValidFilterName(name))
             {
-                Popup.Error(string.Format("'{0}' is incorrect item filter name.", name));
+                await this.ShowErrorAsync(string.Format("'{0}' is incorrect item filter name.", name));
 
                 return;
             }
 
             if (FilterNames.Contains(name))
             {
-                Popup.Error(string.Format("Item filter '{0}' already exists.", name));
+                await this.ShowErrorAsync(string.Format("Item filter '{0}' already exists.", name));
 
                 return;
             }
@@ -68,7 +59,7 @@ namespace POESKillTree.ItemFilter.Views
             if (FilterManager.GameFilterExists(name))
             {
                 string msg = string.Format("Item filter '{0}.filter' already exists in game folder.\nAre you sure you want to overwrite it?", name);
-                if (Popup.Ask(msg, MessageBoxImage.Warning) == MessageBoxResult.No)
+                if (await this.ShowQuestionAsync(msg) == MessageBoxResult.No)
                     return;
             }
 
@@ -94,26 +85,24 @@ namespace POESKillTree.ItemFilter.Views
                     }
                     catch (Exception ex)
                     {
-                        if (saved)
-                            Popup.Error("An error occurred while attempting to create game filter.", ex.Message);
-                        else
-                            Popup.Error("An error occurred while attempting to save item filter.", ex.Message);
+                        string msg = saved ? "An error occurred while attempting to create game filter." : "An error occurred while attempting to save item filter.";
+                        await this.ShowErrorAsync(msg, ex.Message);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Popup.Error("An error occurred while attempting to load item filter.", ex.Message);
+                await this.ShowErrorAsync("An error occurred while attempting to load item filter.", ex.Message);
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private async void Delete_Click(object sender, RoutedEventArgs e)
         {
             string name = FilterListBox.SelectedItem as string;
 
             if (name == null) return; // No selection.
 
-            if (Popup.Ask("Are you sure you want to delete this item filter?", MessageBoxImage.Warning) == MessageBoxResult.No)
+            if (await this.ShowQuestionAsync("Are you sure you want to delete this item filter?") == MessageBoxResult.No)
                 return;
 
             try
@@ -127,11 +116,11 @@ namespace POESKillTree.ItemFilter.Views
                 // Check whether deletion of filter definition failed, or only game filter file.
                 if (!FilterManager.Exists(name)) FilterNames.Remove(name);
 
-                Popup.Error("An error occurred while attempting to delete item filter.", ex.Message);
+                await this.ShowErrorAsync("An error occurred while attempting to delete item filter.", ex.Message);
             }
         }
 
-        private void Edit_Click(object sender, RoutedEventArgs e)
+        private async void Edit_Click(object sender, RoutedEventArgs e)
         {
             if (FilterListBox.SelectedItem == null) return; // No selection.
 
@@ -148,13 +137,13 @@ namespace POESKillTree.ItemFilter.Views
                         FilterManager.Enable(filter);
                     } catch (Exception ex)
                     {
-                        Popup.Error("An error occurred while attempting to save item filter.", ex.Message);
+                        await this.ShowErrorAsync("An error occurred while attempting to save item filter.", ex.Message);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Popup.Error("An error occurred while attempting to load item filter.", ex.Message);
+                await this.ShowErrorAsync("An error occurred while attempting to load item filter.", ex.Message);
             }
         }
 
@@ -167,20 +156,20 @@ namespace POESKillTree.ItemFilter.Views
             }
         }
 
-        private void New_Click(object sender, RoutedEventArgs e)
+        private async void New_Click(object sender, RoutedEventArgs e)
         {
             string name = NameTextBox.Text;
 
             if (!FilterManager.IsValidFilterName(name))
             {
-                Popup.Error(string.Format("'{0}' is incorrect item filter name.", name));
+                await this.ShowErrorAsync(string.Format("'{0}' is incorrect item filter name.", name));
 
                 return;
             }
 
             if (FilterNames.Contains(name))
             {
-                Popup.Error(string.Format("Item filter '{0}' already exists.", name));
+                await this.ShowErrorAsync(string.Format("Item filter '{0}' already exists.", name));
 
                 return;
             }
@@ -189,7 +178,7 @@ namespace POESKillTree.ItemFilter.Views
             if (FilterManager.GameFilterExists(name))
             {
                 string msg = string.Format("Item filter '{0}.filter' already exists in game folder.\nAre you sure you want to overwrite it?", name);
-                if (Popup.Ask(msg, MessageBoxImage.Warning) == MessageBoxResult.No)
+                if (await this.ShowQuestionAsync(msg) == MessageBoxResult.No)
                     return;
             }
 
@@ -211,10 +200,8 @@ namespace POESKillTree.ItemFilter.Views
                 }
                 catch (Exception ex)
                 {
-                    if (saved)
-                        Popup.Error("An error occurred while attempting to create game filter.", ex.Message);
-                    else
-                        Popup.Error("An error occurred while attempting to save item filter.", ex.Message);
+                    string msg = saved ? "An error occurred while attempting to create game filter." : "An error occurred while attempting to save item filter.";
+                    await this.ShowErrorAsync(msg, ex.Message);
                 }
             }
         }

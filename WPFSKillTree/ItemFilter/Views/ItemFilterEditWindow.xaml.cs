@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using MahApps.Metro.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.ItemFilter.Model;
-using POESKillTree.Utils;
 
 namespace POESKillTree.ItemFilter.Views
 {
@@ -31,11 +29,11 @@ namespace POESKillTree.ItemFilter.Views
             DialogResult = false;
         }
 
-        private void Description_Click(object sender, RoutedEventArgs e)
+        private async void Description_Click(object sender, RoutedEventArgs e)
         {
             string description = (sender as Button).Tag.ToString();
 
-            Popup.Info(description);
+            await this.ShowInfoAsync(description);
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
