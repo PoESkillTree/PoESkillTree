@@ -166,10 +166,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.Toolkit, Version=2.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="Views\App.xaml">
@@ -184,9 +180,6 @@
     <Compile Include="Contrib\WpfRangeControls\RangeItemsControl.cs" />
     <Compile Include="Contrib\WpfRangeControls\RangePanel.cs" />
     <Compile Include="Contrib\WpfRangeControls\RangeScrollbar.cs" />
-    <Compile Include="Controls\ColorPickerButton.xaml.cs">
-      <DependentUpon>ColorPickerButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Dialogs\BaseDialog.cs" />
     <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />
     <Compile Include="Controls\Dialogs\DialogParticipation.cs" />
@@ -213,34 +206,6 @@
       <DependentUpon>Stash.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\StashBookmark.cs" />
-    <Compile Include="ItemFilter\Model\Block.cs" />
-    <Compile Include="ItemFilter\Model\Filter.cs" />
-    <Compile Include="ItemFilter\Model\FilterManager.cs" />
-    <Compile Include="ItemFilter\Model\IMergeableMatch.cs" />
-    <Compile Include="ItemFilter\Model\Match.cs" />
-    <Compile Include="ItemFilter\Model\MatchBaseType.cs" />
-    <Compile Include="ItemFilter\Model\MatchClass.cs" />
-    <Compile Include="ItemFilter\Model\MatchDropLevel.cs" />
-    <Compile Include="ItemFilter\Model\MatchEnum.cs" />
-    <Compile Include="ItemFilter\Model\MatchItemLevel.cs" />
-    <Compile Include="ItemFilter\Model\MatchLinkedSockets.cs" />
-    <Compile Include="ItemFilter\Model\MatchNumber.cs" />
-    <Compile Include="ItemFilter\Model\MatchQuality.cs" />
-    <Compile Include="ItemFilter\Model\MatchRarity.cs" />
-    <Compile Include="ItemFilter\Model\MatchSocketGroup.cs" />
-    <Compile Include="ItemFilter\Model\MatchSockets.cs" />
-    <Compile Include="ItemFilter\Model\MatchStrings.cs" />
-    <Compile Include="ItemFilter\Model\Rule.cs" />
-    <Compile Include="ItemFilter\Model\RuleGroup.cs" />
-    <Compile Include="ItemFilter\Views\ColorButtonDialog.xaml.cs">
-      <DependentUpon>ColorButtonDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ItemFilter\Views\ItemFilterEditWindow.xaml.cs">
-      <DependentUpon>ItemFilterEditWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ItemFilter\Views\ItemFilterOpenWindow.xaml.cs">
-      <DependentUpon>ItemFilterOpenWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Localization\Catalog.cs" />
     <Compile Include="Localization\L10n.cs" />
     <Compile Include="Localization\Markdown\Markdown.cs" />
@@ -328,8 +293,6 @@
     <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsDialogCoordinator.cs" />
-    <Compile Include="Utils\ColorUtils.cs" />
-    <Compile Include="Utils\Converter\StringBrushConverter.cs" />
     <Compile Include="Utils\Converter\SubtractionConverter.cs" />
     <Compile Include="Utils\Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Utils\Converter\StringToVisibilityConverter.cs" />
@@ -431,26 +394,6 @@
     <Compile Include="Views\MetroMessageBoxWindow.xaml.cs">
       <DependentUpon>MetroMessageBoxWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Contrib\Monotone\Styles\ExtendedWPFToolkit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ColorPickerButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ItemFilter\Views\ColorButtonDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ItemFilter\Views\ItemFilterEditWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ItemFilter\Views\ItemFilterOpenWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Styles\Dialogs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -608,11 +551,7 @@
     <None Include="Contrib\WpfRangeControls\README.md" />
     <None Include="dist-clean.bat" />
     <None Include="dist-release.bat" />
-    <None Include="Locale\de-DE\Help.md" />
-    <None Include="Locale\de-DE\Messages.po" />
     <None Include="Locale\en-US\Help.md" />
-    <None Include="Locale\ru\Help.md" />
-    <None Include="Locale\ru\Messages.po" />
     <None Include="Locale\sk\Help.md" />
     <None Include="Localization\Markdown\Readme.md" />
     <None Include="Log4Net.config">
@@ -720,8 +659,6 @@
     <None Include="Data\Equipment\SignatureAffixList.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Resource Include="Contrib\Monotone\LICENSE.txt" />
-    <Resource Include="Contrib\Monotone\README.txt" />
     <Content Include="Data\PseudoAttributes\Crit.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -795,8 +732,6 @@
     <Resource Include="Images\EquipmentUI\ItemDefaults\Quiver.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Gem.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Unknown.png" />
-    <Resource Include="Libs\README.txt" />
-    <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
     <Content Include="release.iss" />
     <None Include="Tools\isetup\ISCC.exe" />
     <None Include="Tools\isetup\ISCmplr.dll" />

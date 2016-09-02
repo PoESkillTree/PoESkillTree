@@ -556,11 +556,6 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Click="Menu_ItemFilterEditor">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Item _Filter Editor" />
-                    </MenuItem.Header>
-                </MenuItem>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
