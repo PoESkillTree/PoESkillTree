@@ -34,6 +34,7 @@ namespace POESKillTree.Model
 
         public string Level { get; set; }
         public string Class { get; set; }
+        public string AscendancyClass { get; set; }
         public string PointsUsed { get; set; }
         public string Url { get; set; }
         public string Note { get; set; }
@@ -51,12 +52,14 @@ namespace POESKillTree.Model
         public bool CurrentlyOpen { get; set; }
         public BanditSettings Bandits { get; set; }
 
+        private string GetClassName => AscendancyClass != "None" ? AscendancyClass : Class;
+
         [XmlIgnore]
         public string Image
         {
             get
             {
-                var imgPath = "/POESKillTree;component/Images/" +  Class;
+                var imgPath = "/POESKillTree;component/Images/" + GetClassName;
                 if (CurrentlyOpen)
                     imgPath += "_Highlighted";
                 return imgPath + ".jpg";
@@ -70,7 +73,7 @@ namespace POESKillTree.Model
                 uint used = 0;
                 if (!string.IsNullOrEmpty(PointsUsed)) uint.TryParse(PointsUsed, out used);
 
-                return string.Format(L10n.Plural("{0}, {1} point used", "{0}, {1} points used", used), Class, used);
+                return string.Format(L10n.Plural("{0}, {1} point used", "{0}, {1} points used", used), GetClassName, used);
             }
         }
         [XmlIgnore]

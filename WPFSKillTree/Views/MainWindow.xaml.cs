@@ -35,6 +35,7 @@ using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
 using Attribute = POESKillTree.ViewModels.Attribute;
+using static POESKillTree.SkillTreeFiles.Constants;
 
 namespace POESKillTree.Views
 {
@@ -1826,6 +1827,7 @@ namespace POESKillTree.Views
             if (currentOpenBuild != null)
             {
                 currentOpenBuild.Class = cbCharType.Text;
+                currentOpenBuild.AscendancyClass = cbAscType.Text;
                 currentOpenBuild.CharacterName = _persistentData.CurrentBuild.CharacterName;
                 currentOpenBuild.AccountName = _persistentData.CurrentBuild.AccountName;
                 currentOpenBuild.Level = GetLevelAsString();
@@ -1855,6 +1857,7 @@ namespace POESKillTree.Views
             newBuild.LastUpdated = DateTime.Now;
             newBuild.Level = GetLevelAsString();
             newBuild.Class = cbCharType.Text;
+            newBuild.AscendancyClass = cbAscType.Text;
             newBuild.PointsUsed = NormalUsedPoints.Content.ToString();
             newBuild.Url = tbSkillURL.Text;
             newBuild.CustomGroups = _attributeGroups.CopyCustomGroups();
@@ -2280,8 +2283,23 @@ namespace POESKillTree.Views
                 await ImportLegacySavedBuilds();
             if (String.CompareOrdinal("2.2.4", persistentDataVersion) > 0)
                 SetCurrentOpenBuildBasedOnName();
+            if (String.CompareOrdinal("2.3.1", persistentDataVersion) > 0)
+                SetAscendancyClassFromUrl();
 
             _persistentData.AppVersion = productVersion;
+        }
+
+        private void SetAscendancyClassFromUrl()
+        {
+            foreach (PoEBuild item in lvSavedBuilds.Items)
+            {
+                string s =
+                    item.Url.Substring(TreeAddress.Length + (item.Url.StartsWith("https") ? 0 : -1))
+                        .Replace("-", "+")
+                        .Replace("_", "/");
+                byte[] decbuff = Convert.FromBase64String(s);
+                item.AscendancyClass = Tree.AscClasses.GetClassName(decbuff[4], decbuff[5]);
+            }
         }
 
         private void SetCurrentOpenBuildBasedOnName()
