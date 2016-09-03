@@ -57,13 +57,24 @@ namespace UpdateDB.DataLoading
             {
                 var itemBox = WikiUtils.ParseItemBox(cell);
                 var statGroups = itemBox.StatGroups;
+                var itemBase = new XmlItemBase
+                {
+                    ItemType = itemType,
+                    Name = itemBox.TypeLine
+                };
 
-                var implicits = new List<XmlStat>();
+                var requirementsGroup =
+                    statGroups.FirstOrDefault(stats => stats.Any(s => s.StatsCombined.StartsWith("Requires ") || s.StatsCombined.StartsWith("Drop Level: ")));
+                var implicitsGroup =
+                    statGroups.FirstOrDefault(stats => stats.All(s => s.Stats.All(t => t.Item2 == WikiStatColor.Mod)));
+                var propertiesGroup = statGroups[0] == requirementsGroup ? null : statGroups[0];
+
                 var implicitFrom = 1F;
                 var implicitTo = 1F;
-                if (statGroups.Length > 2)
+                if (implicitsGroup != null)
                 {
-                    foreach (var wikiItemStat in statGroups[2])
+                    var implicits = new List<XmlStat>();
+                    foreach (var wikiItemStat in implicitsGroup)
                     {
                         implicits.AddRange(ParseImplicit(wikiItemStat));
                     }
@@ -72,16 +83,16 @@ namespace UpdateDB.DataLoading
                         implicitFrom += implicits[0].From / 100;
                         implicitTo += implicits[0].To / 100;
                     }
+                    itemBase.Implicit = implicits.ToArray();
                 }
-
-                var itemBase = new XmlItemBase
+                if (propertiesGroup != null)
                 {
-                    ItemType = itemType,
-                    Name = itemBox.TypeLine,
-                    Implicit = implicits.Any() ? implicits.ToArray() : null,
-                    Properties = ParseProperties(statGroups[0], implicitFrom, implicitTo).ToArray()
-                };
-                ParseRequirements(statGroups[1], itemBase);
+                    itemBase.Properties = ParseProperties(propertiesGroup, implicitFrom, implicitTo).ToArray();
+                }
+                if (requirementsGroup != null)
+                {
+                    ParseRequirements(requirementsGroup, itemBase);
+                }
                 yield return itemBase;
             }
         }
@@ -117,10 +128,13 @@ namespace UpdateDB.DataLoading
             var matches = NumberRegex.Matches(mod);
             if (matches.Count <= 0) yield break;
 
-            mod = NumberRegex.Replace(mod, "#").Replace("–", "-").Replace("#-#", "# to #");
+            mod = NumberRegex.Replace(mod, "#").Replace("–", "-");
             if (ImplicitRenames.ContainsKey(mod))
                 mod = ImplicitRenames[mod];
-            if (mod.Contains("# to # "))
+            const string range = "(#-#)";
+            const string addNoRange = "# to #";
+            const string addRange = range + " to " + range;
+            if (mod.Contains(addNoRange))
             {
                 if (matches.Count != 2)
                 {
@@ -132,14 +146,34 @@ namespace UpdateDB.DataLoading
                 {
                     From = from,
                     To = from,
-                    Name = mod.Replace("#-#", "# minimum")
+                    Name = mod.Replace(addNoRange, "# minimum")
                 };
                 from = ParseFloat(matches[1].Value);
                 yield return new XmlStat
                 {
                     From = from,
                     To = from,
-                    Name = mod.Replace("#-#", "# maximum")
+                    Name = mod.Replace(addNoRange, "# maximum")
+                };
+            }
+            else if (mod.Contains(addRange))
+            {
+                if (matches.Count != 4)
+                {
+                    Log.Warn("Could not parse implicit " + wikiItemStat.StatsCombined);
+                    yield break;
+                }
+                yield return new XmlStat
+                {
+                    From = ParseFloat(matches[0].Value),
+                    To = ParseFloat(matches[1].Value),
+                    Name = mod.Replace(addRange, "# minimum")
+                };
+                yield return new XmlStat
+                {
+                    From = ParseFloat(matches[2].Value),
+                    To = ParseFloat(matches[3].Value),
+                    Name = mod.Replace(addRange, "# maximum")
                 };
             }
             else
@@ -149,7 +183,7 @@ namespace UpdateDB.DataLoading
                 {
                     From = from,
                     To = matches.Count > 1 ? ParseFloat(matches[1].Value) : from,
-                    Name = mod.Replace("(# to #)", "#")
+                    Name = mod.Replace(range, "#")
                 };
             }
         }
