@@ -292,7 +292,7 @@
                         <ContentControl Template="{StaticResource CopyToClipboardIcon}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Click="btnPoeUrl_Click" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                <MenuItem InputGestureText="Ctrl+E" Click="btnPoeUrl_Click" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
                     <MenuItem.Header>
                         <l:Catalog Message="Copy Po_EUrl of Skill tree to Clipboard" />
                     </MenuItem.Header>
