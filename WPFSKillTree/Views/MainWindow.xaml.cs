@@ -486,6 +486,22 @@ namespace POESKillTree.Views
             _persistentData.Options.PropertyChanged += Options_PropertyChanged;
             Tree.PropertyChanged += Tree_PropertyChanged;
             PopulateAsendancySelectionList();
+
+            var classesForFilter = new List<ComboBoxItem> {new ComboBoxItem {Content = "All", IsSelected = true}};
+            foreach (var nameToContent in CharacterNames.NameToContent)
+            {
+                classesForFilter.Add(new ComboBoxItem { Name = nameToContent.Value, Content = nameToContent.Value });
+                classesForFilter.AddRange(Tree.AscClasses.GetClasses(nameToContent.Value)
+                    .Select(x =>
+                        new ComboBoxItem
+                        {
+                            Content = x.DisplayName,
+                            FontStyle = FontStyles.Italic,
+                            Margin = new Thickness(10,0,0,0)
+                        }));
+            }
+            cbCharTypeSavedBuildFilter.ItemsSource = classesForFilter;
+
             await CheckAppVersionAndDoNecessaryChanges();
 
             await controller.CloseAsync();
@@ -1669,7 +1685,8 @@ namespace POESKillTree.Views
             foreach (PoEBuild item in lvSavedBuilds.Items)
             {
                 item.Visible = (className.Equals("All", StringComparison.InvariantCultureIgnoreCase) ||
-                                item.Class.Equals(className, StringComparison.InvariantCultureIgnoreCase)) &&
+                                item.Class.Equals(className, StringComparison.InvariantCultureIgnoreCase) ||
+                                item.AscendancyClass.Equals(className, StringComparison.InvariantCultureIgnoreCase)) &&
                                (item.Name.Contains(filterText, StringComparison.InvariantCultureIgnoreCase) ||
                                 item.Note.Contains(filterText, StringComparison.InvariantCultureIgnoreCase));
             }

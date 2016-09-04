@@ -183,6 +183,12 @@
                       Data="F1 M 51.5487,37.9814L 56.814,41.0534L 50.3383,48.7636L 50.3383,48.8841L 60.0205,46.9565L 60.0205,53.0403L 50.2777,51.414L 50.2777,51.5344L 56.814,59.0037L 51.4882,62.0757L 47.978,52.7994L 47.8569,52.7994L 44.4072,62.0757L 39.2025,59.0037L 45.6782,51.4742L 45.6177,51.3537L 36.1159,53.0403L 36.1159,46.9565L 45.5571,48.8841L 45.5571,48.7636L 39.2025,41.1137L 44.5888,37.9814L 47.9174,47.3179L 48.0385,47.3179L 51.5487,37.9814 Z M 20,17L 43.25,17L 56,29.75L 56,39L 52,36.75L 52,34L 39,34L 39,21L 24,21L 24,55L 41,55L 37.5,59L 20,59L 20,17 Z M 43,22.25L 43,30L 50.75,30L 43,22.25 Z "/>
             </Canvas>
         </ControlTemplate>
+        <ControlTemplate x:Key="FilterIcon">
+            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
+                      Data="F1 M 34.8333,61.75L 34.8333,42.75L 19,20.5833L 57,20.5833L 41.1667,42.75L 41.1667,58.5833L 34.8333,61.75 Z "/>
+            </Canvas>
+        </ControlTemplate>
     </Window.Resources>
 
     <controls:MetroWindow.RightWindowCommands>
@@ -738,24 +744,17 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="25"/>
                             <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="115"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0">
-                            <l:Catalog Message="Filter:"/>
-                        </Label>
-                        <ComboBox Grid.Column="1" Height="26" x:Name="cbCharTypeSavedBuildFilter" VerticalAlignment="Top" Width="100" SelectionChanged="SavedBuildFilter_SelectionChanged">
-                            <ComboBoxItem Content="All" IsSelected="True" />
-                            <ComboBoxItem Content="Scion"/>
-                            <ComboBoxItem Content="Marauder"/>
-                            <ComboBoxItem Content="Ranger"/>
-                            <ComboBoxItem Content="Witch"/>
-                            <ComboBoxItem Content="Duelist"/>
-                            <ComboBoxItem Content="Templar"/>
-                            <ComboBoxItem Content="Shadow"/>
-                        </ComboBox>
-                        <TextBox Height="26" x:Name="tbSavedBuildFilter" Width="105" Margin="5,0,0,0" TextChanged="SavedBuildFilter_TextChanged" Grid.Column="2" />
+                        <ContentControl Grid.Column="0" Template="{StaticResource FilterIcon}">
+                            <ContentControl.ToolTip>
+                                <l:Catalog Message="Filter"/>
+                            </ContentControl.ToolTip>
+                        </ContentControl>
+                        <ComboBox Grid.Column="1" Height="26" x:Name="cbCharTypeSavedBuildFilter" VerticalAlignment="Top" Width="110" SelectionChanged="SavedBuildFilter_SelectionChanged"/>
+                        <TextBox Height="26" x:Name="tbSavedBuildFilter" Width="Auto" Margin="5,0,0,0" TextChanged="SavedBuildFilter_TextChanged" Grid.Column="2" />
                     </Grid>
                     <ListView x:Name="lvSavedBuilds" Margin="0,0,0,2.476" HorizontalAlignment="Left" Width="255" Grid.Row="1"
                               ForceCursor="True" KeyUp="lvSavedBuilds_KeyUp" IsSynchronizedWithCurrentItem="True" BorderThickness="0"
@@ -825,13 +824,15 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" x:Name="gAttributesFilter">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="295"/>
                             <ColumnDefinition Width="60"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0">
-                            <l:Catalog Message="Filter:"/>
-                        </Label>
+                        <ContentControl Grid.Column="0" Template="{StaticResource FilterIcon}">
+                            <ContentControl.ToolTip>
+                                <l:Catalog Message="Filter"/>
+                            </ContentControl.ToolTip>
+                        </ContentControl>
                         <TextBox Height="26" x:Name="tbAttributesFilter" Width="auto" Margin="5,0,0,0" Grid.Column="1" TextChanged="tbAttributesFilter_TextChanged" />
                         <CheckBox Grid.Column="2" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="5,0,0,0" x:Name="cbAttributesFilterRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbAttributesFilterRegEx_Click" />
                     </Grid>
