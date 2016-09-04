@@ -36,12 +36,12 @@ namespace POESKillTree.Controls.Dialogs
             var oldFocus = Keyboard.FocusedElement;
             Keyboard.ClearFocus();
 
-            await window.ShowMetroDialogAsync(view);
+            await window.ShowMetroDialogAsync(view, new MetroDialogSettings {AnimateShow = false});
             DialogParticipation.SetRegister(view, viewModel);
             onShown?.Invoke();
 
             var result = await viewModel.WaitForCloseAsync();
-            await window.HideMetroDialogAsync(view);
+            await window.HideMetroDialogAsync(view, new MetroDialogSettings {AnimateHide = false});
             DialogParticipation.SetRegister(view, null);
 
             // Restore IsDefault and keyboard focus.
