@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Xml.Serialization;
-using JetBrains.Annotations;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 
@@ -16,8 +16,6 @@ namespace POESKillTree.Model.Builds
     /// </summary>
     public class PoEBuild : AbstractBuild<PoEBuild>
     {
-        private string _class = Constants.DefaultTreeClass;
-        private uint _pointsUsed;
         private string _note;
         private string _characterName;
         private string _accountName;
@@ -26,29 +24,10 @@ namespace POESKillTree.Model.Builds
         private string _treeUrl = Constants.DefaultTree;
         private string _itemData;
         private DateTime _lastUpdated = DateTime.Now;
-        private List<string[]> _customGroups = new List<string[]>();
+        private ObservableCollection<string[]> _customGroups = new ObservableCollection<string[]>();
         private BanditSettings _bandits = new BanditSettings();
-        private string _version;
         private bool _isDirty;
         private IMemento<PoEBuild> _memento;
-
-        /// <summary>
-        /// Gets or sets the ingame class of this build (e.g. "Witch").
-        /// </summary>
-        public string Class
-        {
-            get { return _class; }
-            set { SetProperty(ref _class, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the number of points this build uses.
-        /// </summary>
-        public uint PointsUsed
-        {
-            get { return _pointsUsed; }
-            set { SetProperty(ref _pointsUsed, value); }
-        }
 
         /// <summary>
         /// Gets or sets a arbitrary note.
@@ -98,7 +77,6 @@ namespace POESKillTree.Model.Builds
         /// <summary>
         /// Gets or sets the build defining skill tree URL.
         /// </summary>
-        [XmlElement("Url")]
         public string TreeUrl
         {
             get { return _treeUrl; }
@@ -126,7 +104,7 @@ namespace POESKillTree.Model.Builds
         /// <summary>
         /// Gets the custom attribute grouping of this build.
         /// </summary>
-        public List<string[]> CustomGroups
+        public ObservableCollection<string[]> CustomGroups
         {
             get { return _customGroups; }
             private set { SetProperty(ref _customGroups, value); }
@@ -134,30 +112,16 @@ namespace POESKillTree.Model.Builds
 
         /// <summary>
         /// Gets the bandit settings of this build.
-        /// Setter only visible for XML serialization.
         /// </summary>
         public BanditSettings Bandits
         {
             get { return _bandits; }
-            [UsedImplicitly]
-            set { SetProperty(ref _bandits, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the build version. (current one is
-        /// <see cref="Serialization.SerializationConstants.BuildVersion"/>). Only used for
-        /// serialization.
-        /// </summary>
-        public string Version
-        {
-            get { return _version; }
-            set { SetProperty(ref _version, value); }
+            private set { SetProperty(ref _bandits, value); }
         }
 
         /// <summary>
         /// Gets whether this build was changed since the last <see cref="KeepChanges"/> call.
         /// </summary>
-        [XmlIgnore]
         public bool IsDirty
         {
             get { return _isDirty; }
@@ -175,19 +139,53 @@ namespace POESKillTree.Model.Builds
 
         public PoEBuild()
         {
+            PropertyChanging += PropertyChangingHandler;
             PropertyChanged += PropertyChangedHandler;
+        }
+
+        public PoEBuild(BanditSettings bandits, IEnumerable<string[]> customGroups)
+            : this()
+        {
+            Bandits = bandits;
+            CustomGroups = new ObservableCollection<string[]>(customGroups);
+        }
+
+        private void PropertyChangingHandler(object sender, PropertyChangingEventArgs args)
+        {
+            switch (args.PropertyName)
+            {
+                case nameof(CustomGroups):
+                    CustomGroups.CollectionChanged -= CustomGroupsCollectionChangedHandler;
+                    break;
+                case nameof(Bandits):
+                    Bandits.PropertyChanged -= BanditsPropertyChangedHandler;
+                    break;
+            }
         }
 
         private void PropertyChangedHandler(object sender, PropertyChangedEventArgs args)
         {
             switch (args.PropertyName)
             {
-                case nameof(IsDirty):
+                case nameof(CustomGroups):
+                    CustomGroups.CollectionChanged += CustomGroupsCollectionChangedHandler;
                     break;
-                default:
-                    IsDirty = true;
+                case nameof(Bandits):
+                    Bandits.PropertyChanged += BanditsPropertyChangedHandler;
                     break;
             }
+            if (args.PropertyName != nameof(IsDirty))
+                IsDirty = true;
+        }
+
+        private void CustomGroupsCollectionChangedHandler(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            IsDirty = true;
+        }
+
+        private void BanditsPropertyChangedHandler(object sender, PropertyChangedEventArgs args)
+        {
+            IsDirty = true;
         }
 
         /// <summary>
@@ -213,13 +211,14 @@ namespace POESKillTree.Model.Builds
         {
             var o = (PoEBuild) base.SafeMemberwiseClone();
             o.PropertyChanged += o.PropertyChangedHandler;
+            o.PropertyChanging += o.PropertyChangingHandler;
             return o;
         }
 
         public override PoEBuild DeepClone()
         {
             var o = (PoEBuild) SafeMemberwiseClone();
-            o.CustomGroups = CustomGroups.Select(a => (string[])a.Clone()).ToList();
+            o.CustomGroups = new ObservableCollection<string[]>(CustomGroups.Select(a => (string[])a.Clone()));
             o.Bandits = Bandits.DeepClone();
             return o;
         }
@@ -237,8 +236,6 @@ namespace POESKillTree.Model.Builds
             public void Restore(PoEBuild target)
             {
                 target.Name = _build.Name;
-                target.Class = _build.Class;
-                target.PointsUsed = _build.PointsUsed;
                 target.Note = _build.Note;
                 target.CharacterName = _build.CharacterName;
                 target.AccountName = _build.AccountName;
@@ -247,7 +244,8 @@ namespace POESKillTree.Model.Builds
                 target.TreeUrl = _build.TreeUrl;
                 target.ItemData = _build.ItemData;
                 target.LastUpdated = _build.LastUpdated;
-                target.CustomGroups = _build.CustomGroups.Select(a => (string[])a.Clone()).ToList();
+                target.CustomGroups =
+                    new ObservableCollection<string[]>(_build.CustomGroups.Select(a => (string[]) a.Clone()));
                 target.Bandits = _build.Bandits.DeepClone();
             }
         }

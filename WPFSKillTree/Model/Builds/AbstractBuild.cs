@@ -19,7 +19,7 @@ namespace POESKillTree.Model.Builds
         }
 
         /// <summary>
-        /// Returns a deep copy of this build.
+        /// Returns a deep copy of this build. (event handlers are NOT cloned)
         /// </summary>
         public abstract T DeepClone();
 

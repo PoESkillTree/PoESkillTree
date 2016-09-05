@@ -103,6 +103,8 @@ namespace POESKillTree.Views
             DialogParticipation.SetRegister(this, tree);
             tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
             tree.PropertyChanged += Tree_PropertyChanged;
+            if (BuildsControlViewModel != null)
+                BuildsControlViewModel.BuildRoot.SkillTree = tree;
             return tree;
         }
 
@@ -159,6 +161,12 @@ namespace POESKillTree.Views
         public string MainWindowTitle { get; } =
             FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).ProductName;
 
+        /// <summary>
+        /// Set to true when CurrentBuild.TreeUrl was set after direct SkillTree changes so the SkillTree
+        /// doesn't need to be reloaded.
+        /// </summary>
+        private bool _skipLoadOnCurrentBuildTreeChange;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -204,8 +212,8 @@ namespace POESKillTree.Views
                     await LoadItemData();
                     break;
                 case nameof(PoEBuild.TreeUrl):
-                    if (Tree != null)
-                        PersistentData.CurrentBuild.PointsUsed = (uint) Tree.GetPointCount()["NormalUsed"];
+                    if (!_skipLoadOnCurrentBuildTreeChange)
+                        Tree.LoadFromUrl(PersistentData.CurrentBuild.TreeUrl);
                     break;
             }
         }
@@ -234,7 +242,7 @@ namespace POESKillTree.Views
             _allAttributeCollection.Refresh();
         }
 
-        private void SetCustomGroups(List<string[]> customgroups)
+        private void SetCustomGroups(IList<string[]> customgroups)
         {
             cmAddToGroup.Items.Clear();
             cmDeleteGroup.Items.Clear();
@@ -496,6 +504,7 @@ namespace POESKillTree.Views
             PersistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAsendancySelectionList();
             BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData);
+            BuildsControlViewModel.BuildRoot.SkillTree = Tree;
             UpdateTreeComparision();
 
             await controller.CloseAsync();
@@ -523,7 +532,6 @@ namespace POESKillTree.Views
                     PersistentData.CurrentBuild.Level = Tree.Level;
                     break;
                 case nameof(SkillTree.Chartype):
-                    PersistentData.CurrentBuild.Class = CharacterNames.GetClassNameFromChartype(Tree.Chartype);
                     Tree.UpdateAscendancyClasses = true;
                     PopulateAsendancySelectionList();
                     break;
@@ -662,7 +670,7 @@ namespace POESKillTree.Views
         {
             await Tree.SkillAllTaggedNodesAsync();
             UpdateUI();
-            LoadBuildFromTree();
+            SetCurrentBuildUrlFromTree();
         }
 
         private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
@@ -699,7 +707,7 @@ namespace POESKillTree.Views
                     vm.RunFinished += (o, args) =>
                     {
                         UpdateUI();
-                        LoadBuildFromTree();
+                        SetCurrentBuildUrlFromTree();
                     };
                     _settingsWindow = new SettingsWindow { DataContext = vm};
                     DialogParticipation.SetRegister(_settingsWindow, vm);
@@ -1041,7 +1049,7 @@ namespace POESKillTree.Views
 
             Tree.SwitchClass(cbCharType.SelectedIndex);
             UpdateUI();
-            LoadBuildFromTree();
+            SetCurrentBuildUrlFromTree();
             _userInteraction = false;
             cbAscType.SelectedIndex = 0;
         }
@@ -1056,7 +1064,7 @@ namespace POESKillTree.Views
             Tree.AscType = cbAscType.SelectedIndex;
 
             UpdateUI();
-            LoadBuildFromTree();
+            SetCurrentBuildUrlFromTree();
             _userInteraction = false;
         }
 
@@ -1081,7 +1089,7 @@ namespace POESKillTree.Views
                 return;
             Tree.Reset();
             UpdateUI();
-            LoadBuildFromTree();
+            SetCurrentBuildUrlFromTree();
         }
 
         #endregion
@@ -1425,7 +1433,7 @@ namespace POESKillTree.Views
                         }
                     }
                 }
-                LoadBuildFromTree();
+                SetCurrentBuildUrlFromTree();
                 UpdateUI();
             }
             else if ((Tree.AscButtonPosition - v).Length < 150 && Tree.AscType != 0)
@@ -1647,29 +1655,38 @@ namespace POESKillTree.Views
             await LoadBuildFromUrlAsync();
         }
 
-        private void LoadBuildFromTree()
+        /// <summary>
+        /// Call this to set CurrentBuild.TreeUrl when there were direct SkillTree changes.
+        /// </summary>
+        private void SetCurrentBuildUrlFromTree()
         {
+            _skipLoadOnCurrentBuildTreeChange = true;
             PersistentData.CurrentBuild.TreeUrl = Tree.SaveToUrl();
+            _skipLoadOnCurrentBuildTreeChange = false;
         }
 
-        private async Task LoadBuildFromUrlAsync()
+        private Task LoadBuildFromUrlAsync()
+        {
+            return LoadBuildFromUrlAsync(PersistentData.CurrentBuild.TreeUrl);
+        }
+
+        private async Task LoadBuildFromUrlAsync(string treeUrl)
         {
             try
             {
-                var currentBuild = PersistentData.CurrentBuild;
-                var treeUrl = currentBuild.TreeUrl;
                 if (treeUrl.Contains("poezone.ru"))
                 {
                     await SkillTreeImporter.LoadBuildFromPoezone(DialogCoordinator.Instance, Tree, treeUrl);
-                    currentBuild.TreeUrl = Tree.SaveToUrl();
+                    SetCurrentBuildUrlFromTree();
                 }
                 else if (treeUrl.Contains("google.com"))
                 {
                     var match = Regex.Match(treeUrl, @"q=(.*?)&");
                     if (match.Success)
                     {
-                        currentBuild.TreeUrl = match.ToString().Replace("q=", "").Replace("&", "");
-                        await LoadBuildFromUrlAsync();
+                        var newUrl = match.ToString().Replace("q=", "").Replace("&", "");
+                        await LoadBuildFromUrlAsync(newUrl);
+                        return;
                     }
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
@@ -1688,17 +1705,25 @@ namespace POESKillTree.Views
                             new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead));
                     response.EnsureSuccessStatusCode();
                     if (Regex.IsMatch(response.RequestMessage.RequestUri.ToString(), Constants.TreeRegex))
-                        currentBuild.TreeUrl = response.RequestMessage.RequestUri.ToString();
+                    {
+                        var newUrl = response.RequestMessage.RequestUri.ToString();
+                        await LoadBuildFromUrlAsync(newUrl);
+                        return;
+                    }
                     else
                         throw new Exception("The URL you are trying to load is invalid.");
-                    await LoadBuildFromUrlAsync();
                 }
                 else
                 {
-                    if (treeUrl.Contains("characterName") || treeUrl.Contains("accountName"))
-                        currentBuild.TreeUrl = Regex.Replace(treeUrl, @"\?.*", "");
-                    currentBuild.TreeUrl = Regex.Replace(treeUrl, Constants.TreeRegex, Constants.TreeAddress);
-                    Tree.LoadFromUrl(currentBuild.TreeUrl);
+                    var newUrl = treeUrl;
+                    if (newUrl.Contains("characterName") || newUrl.Contains("accountName"))
+                        newUrl = Regex.Replace(newUrl, @"\?.*", "");
+                    newUrl = Regex.Replace(newUrl, Constants.TreeRegex, Constants.TreeAddress);
+                    // If the url didn't change but this is the first load, we still want to load something.
+                    if (PersistentData.CurrentBuild.TreeUrl == newUrl)
+                        Tree.LoadFromUrl(newUrl);
+                    else
+                        PersistentData.CurrentBuild.TreeUrl = newUrl;
                 }
 
                 if (_justLoaded)
@@ -1722,7 +1747,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                LoadBuildFromTree();
+                PersistentData.CurrentBuild.TreeUrl = Tree.SaveToUrl();
                 await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }
@@ -1780,7 +1805,6 @@ namespace POESKillTree.Views
             {
                 _redoList.Push(PersistentData.CurrentBuild.TreeUrl);
                 PersistentData.CurrentBuild.TreeUrl = _undoList.Pop();
-                Tree.LoadFromUrl(PersistentData.CurrentBuild.TreeUrl);
                 UpdateUI();
             }
         }
@@ -1801,7 +1825,6 @@ namespace POESKillTree.Views
             else if (_redoList.Peek() != PersistentData.CurrentBuild.TreeUrl)
             {
                 PersistentData.CurrentBuild.TreeUrl = _redoList.Pop();
-                Tree.LoadFromUrl(PersistentData.CurrentBuild.TreeUrl);
                 UpdateUI();
             }
         }

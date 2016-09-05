@@ -1,4 +1,5 @@
 using System;
+using POESKillTree.Common;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
 
@@ -12,6 +13,7 @@ namespace POESKillTree.ViewModels.Builds
     {
         private IBuildFolderViewModel _parent;
         private bool _isSelected;
+        private ISkillTree _skillTree;
 
         public IBuildFolderViewModel Parent
         {
@@ -26,6 +28,12 @@ namespace POESKillTree.ViewModels.Builds
         }
 
         public T Build { get; }
+
+        public ISkillTree SkillTree
+        {
+            protected get { return _skillTree; }
+            set { SetProperty(ref _skillTree, value); }
+        }
 
         IBuild IBuildViewModel.Build { get { return Build; } }
 

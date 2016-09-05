@@ -48,6 +48,16 @@ namespace POESKillTree.ViewModels.Builds
                 }
             };
             Build.Builds.CollectionChanged += BuildsOnCollectionChanged;
+
+            PropertyChanged += (sender, args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(SkillTree):
+                        Children.ForEach(c => c.SkillTree = SkillTree);
+                        break;
+                }
+            };
         }
 
         public override void ApplyFilter()
@@ -102,6 +112,7 @@ namespace POESKillTree.ViewModels.Builds
         private void SetParent(IBuildViewModel build)
         {
             build.Parent = this;
+            build.SkillTree = SkillTree;
         }
 
         // Everything from here on is used to keep Children and Build.Builds synchronized. Changes in one of them have

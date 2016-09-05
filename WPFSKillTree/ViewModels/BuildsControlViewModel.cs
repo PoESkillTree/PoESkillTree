@@ -509,7 +509,7 @@ namespace POESKillTree.ViewModels
             if (build == null)
                 return true;
             if (!string.IsNullOrEmpty(ClassFilter) && ClassFilter != "All"
-                && build.Build.Class != ClassFilter)
+                && build.Class != ClassFilter)
             {
                 return false;
             }

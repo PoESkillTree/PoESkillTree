@@ -118,6 +118,9 @@ namespace POESKillTree.Model
             Normal = Cruel = Merciless = Bandit.None;
         }
 
+        /// <summary>
+        /// Returns a deep copy of this instance. (event handlers are NOT cloned)
+        /// </summary>
         public BanditSettings DeepClone()
         {
             return (BanditSettings) SafeMemberwiseClone();

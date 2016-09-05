@@ -245,8 +245,22 @@ namespace POESKillTree.Model.Serialization
 
         private static void SerializeBuild(string path, PoEBuild build)
         {
-            build.Version = BuildVersion.ToString();
-            SerializationUtils.XmlSerialize(build, path + BuildFileExtension);
+            var xmlBuild = new XmlBuild
+            {
+                AccountName = build.AccountName,
+                Bandits = build.Bandits,
+                CharacterName = build.CharacterName,
+                CustomGroups = build.CustomGroups.ToList(),
+                ItemData = build.ItemData,
+                LastUpdated = build.LastUpdated,
+                League = build.League,
+                Level = build.Level,
+                Name = build.Name,
+                Note = build.Note,
+                TreeUrl = build.TreeUrl,
+                Version = BuildVersion.ToString()
+            };
+            SerializationUtils.XmlSerialize(xmlBuild, path + BuildFileExtension);
             build.KeepChanges();
         }
     }

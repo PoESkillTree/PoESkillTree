@@ -14,7 +14,7 @@ namespace POESKillTree.Model.Builds
         string Name { get; set; }
 
         /// <summary>
-        /// Returns a deep copy of this build.
+        /// Returns a deep copy of this build. (event handlers are NOT cloned)
         /// </summary>
         IBuild DeepClone();
     }

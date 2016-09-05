@@ -20,9 +20,9 @@ namespace POESKillTree.Model.Serialization
         private string _currentBuildPath;
         private string _selectedBuildPath;
 
-        // 2.2.10 was released as 2.2.10.957, this is for everything after that version
+        // 2.3.0 was released as 2.3.0.1052, this is for everything after that version
         public PersistentDataDeserializerCurrent()
-            : base("2.2.10.958", "999.0")
+            : base("2.3.0.1053", "999.0")
         {
             DeserializesBuildsSavePath = true;
         }
@@ -104,10 +104,11 @@ namespace POESKillTree.Model.Serialization
                 PoEBuild build;
                 try
                 {
-                    build = await DeserializeAsync<PoEBuild>(buildPath);
-                    if (!CheckVersion(build.Version))
+                    var xmlBuild = await SerializationUtils.XmlDeserializeFileAsync<XmlBuild>(buildPath);
+                    build = ConvertFromXmlBuild(xmlBuild);
+                    if (!CheckVersion(xmlBuild.Version))
                     {
-                        Log.Warn($"Build is of an old version and can't be imported (version {build.Version})");
+                        Log.Warn($"Build is of an old version and can't be imported (version {xmlBuild.Version})");
                         await DialogCoordinator.ShowWarningAsync(PersistentData,
                             L10n.Message("Build is of an old version and can't be imported"),
                             title: L10n.Message("Import failed"));
@@ -119,7 +120,7 @@ namespace POESKillTree.Model.Serialization
                     Log.Error("Error while importing build", e);
                     await DialogCoordinator.ShowErrorAsync(PersistentData, L10n.Message("Could not import build"),
                             e.Message, L10n.Message("Import failed"));
-                    return ;
+                    return;
                 }
                 var message = L10n.Message("Enter the name for the imported build.\n\n")
                     + L10n.Message("This build can be saved to your build directory after this dialog.\n")
@@ -233,8 +234,9 @@ namespace POESKillTree.Model.Serialization
 
         private static async Task<PoEBuild> DeserializeBuildAsync(string path)
         {
-            var build = await DeserializeAsync<PoEBuild>(path);
-            if (build != null && CheckVersion(build.Version))
+            var xmlBuild = await DeserializeAsync<XmlBuild>(path);
+            var build = ConvertFromXmlBuild(xmlBuild);
+            if (build != null && CheckVersion(xmlBuild.Version))
             {
                 build.KeepChanges();
                 return build;

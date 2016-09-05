@@ -134,5 +134,27 @@ namespace POESKillTree.Model.Serialization
         {
             return new PoEBuild { Name = SerializationConstants.DefaultBuildName };
         }
+
+        /// <summary>
+        /// Creates a new <see cref="PoEBuild"/> instance from the given <see cref="XmlBuild"/> instance.
+        /// Will return null if null is given.
+        /// </summary>
+        protected static PoEBuild ConvertFromXmlBuild(XmlBuild build)
+        {
+            if (build == null)
+                return null;
+            return new PoEBuild(build.Bandits, build.CustomGroups)
+            {
+                AccountName = build.AccountName,
+                CharacterName = build.CharacterName,
+                ItemData = build.ItemData,
+                LastUpdated = build.LastUpdated,
+                League = build.League,
+                Level = build.Level,
+                Name = build.Name,
+                Note = build.Note,
+                TreeUrl = build.TreeUrl
+            };
+        }
     }
 }

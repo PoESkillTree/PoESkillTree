@@ -14,10 +14,10 @@ namespace POESKillTree.Model.Serialization
 {
     /// <summary>
     /// Deserializes PersistentData using the old build saving structure and created without the versioning refactoring.
-    /// Latest applicable release is 2.2.10. All commits after the release and before the versioning refactoring have
-    /// used 2.2.10 as AppVersion.
+    /// Latest applicable release is 2.3.0. All commits after the release and before the versioning refactoring have
+    /// used 2.3.0 as AppVersion.
     /// </summary>
-    public class PersistentDataDeserializerUpTo2210 : AbstractPersistentDataDeserializer
+    public class PersistentDataDeserializerUpTo230 : AbstractPersistentDataDeserializer
     {
         /// <summary>
         /// XML format used in these versions. Public as it's used for deserialization.
@@ -29,19 +29,20 @@ namespace POESKillTree.Model.Serialization
             public Options Options { get; set; }
 
             [XmlElement]
-            public PoEBuild CurrentBuild { get; set; }
+            public XmlBuild CurrentBuild { get; set; }
 
             [XmlArray]
             public List<StashBookmark> StashBookmarks { get; set; }
 
             [XmlArray]
-            public List<PoEBuild> Builds { get; set; }
+            [XmlArrayItem("PoEBuild")]
+            public List<XmlBuild> Builds { get; set; }
         }
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentDataDeserializerUpTo2210));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentDataDeserializerUpTo230));
 
-        public PersistentDataDeserializerUpTo2210()
-            : base(null, "2.2.10")
+        public PersistentDataDeserializerUpTo230()
+            : base(null, "2.3.0")
         {
         }
 
@@ -49,9 +50,9 @@ namespace POESKillTree.Model.Serialization
         {
             var obj = SerializationUtils.XmlDeserializeString<XmlPersistentData>(xmlString);
             PersistentData.Options = obj.Options;
-            PersistentData.CurrentBuild = obj.CurrentBuild ?? CreateDefaultCurrentBuild();
+            PersistentData.CurrentBuild = ConvertFromXmlBuild(obj.CurrentBuild) ?? CreateDefaultCurrentBuild();
             obj.StashBookmarks?.ForEach(PersistentData.StashBookmarks.Add);
-            PersistentData.RootBuild.Builds.AddRange(obj.Builds);
+            PersistentData.RootBuild.Builds.AddRange(obj.Builds.Select(ConvertFromXmlBuild));
 
             if (!SelectCurrentBuildByName(PersistentData.CurrentBuild.Name))
             {
@@ -123,18 +124,10 @@ namespace POESKillTree.Model.Serialization
                 var text = await FileEx.ReadAllTextAsync("savedBuilds");
                 foreach (var b in text.Split('\n'))
                 {
-                    var description = b.Split(';')[0].Split('|')[1];
-                    var poeClass = description.Split(',')[0].Trim();
-                    var pointsUsed = description.Split(',')[1].Trim().Split(' ')[0].Trim();
-
                     var build = new PoEBuild
                     {
-                        Name = b.Split(';')[0].Split('|')[0],
-                        Class = poeClass
+                        Name = b.Split(';')[0].Split('|')[0]
                     };
-                    uint points;
-                    pointsUsed.TryParseUint(out points);
-                    build.PointsUsed = points;
                     if (HasBuildNote(b))
                     {
                         build.TreeUrl = b.Split(';')[1].Split('|')[0];

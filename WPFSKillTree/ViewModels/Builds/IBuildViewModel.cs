@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using POESKillTree.Common;
 using POESKillTree.Model.Builds;
 
 namespace POESKillTree.ViewModels.Builds
@@ -25,6 +26,12 @@ namespace POESKillTree.ViewModels.Builds
         /// Gets the build wrapped by this view model.
         /// </summary>
         IBuild Build { get; }
+
+        /// <summary>
+        /// Sets the skill tree necessary to update <see cref="PoEBuild.TreeUrl"/> based properties.
+        /// Will also set the property on all child nodes.
+        /// </summary>
+        ISkillTree SkillTree { set; }
 
         /// <summary>
         /// Applies the filter function to this view model and any children.

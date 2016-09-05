@@ -72,20 +72,9 @@ namespace POESKillTree.Views
             }
 
             // Load persistent data.
-#if !DEBUG
-            try
-            {
-#endif
-                // Take the first not-switch argument as path to the build that will be imported
-                var importedBuildPath = e.Args.FirstOrDefault(s => !s.StartsWith("/"));
-                PersistentData = PersistentDataSerializationService.CreatePersistentData(importedBuildPath);
-#if !DEBUG
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred during a load operation.\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-#endif
+            // Take the first not-switch argument as path to the build that will be imported
+            var importedBuildPath = e.Args.FirstOrDefault(s => !s.StartsWith("/"));
+            PersistentData = PersistentDataSerializationService.CreatePersistentData(importedBuildPath);
 
             // Initialize localization.
             L10n.Initialize(PersistentData.Options.Language);

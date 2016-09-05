@@ -60,7 +60,7 @@ namespace POESKillTree.Model.Serialization
         {
             var deserializer = new IPersistentDataDeserializer[]
             {
-                new PersistentDataDeserializerUpTo2210(), new PersistentDataDeserializerCurrent()
+                new PersistentDataDeserializerUpTo230(), new PersistentDataDeserializerCurrent()
             };
             var xmlString = File.ReadAllText(filePath);
             var version = SerializationUtils.XmlDeserializeString<XmlPersistentDataVersion>(xmlString).AppVersion;

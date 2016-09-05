@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
 using log4net;
+using POESKillTree.Common;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model;
 using POESKillTree.TreeGenerator.ViewModels;
@@ -21,7 +22,7 @@ using static POESKillTree.SkillTreeFiles.Constants;
 
 namespace POESKillTree.SkillTreeFiles
 {
-    public partial class SkillTree : Notifier
+    public partial class SkillTree : Notifier, ISkillTree
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(SkillTree));
 
@@ -1398,5 +1399,36 @@ namespace POESKillTree.SkillTreeFiles
 
             return (from nodeId in classSpecificStartNodes let temp = GetShortestPathTo(Skillnodes[(ushort)nodeId], SkilledNodes) where !temp.Any() && Skillnodes[(ushort)nodeId].ascendancyName == null select nodeId).Any();
         }
+
+        #region ISkillTree members
+
+        public uint PointsUsed(string treeUrl)
+        {
+            int b;
+            int asc;
+            HashSet<SkillNode> nodes;
+            DecodeUrl(treeUrl, out nodes, out b, out asc);
+            return (uint) nodes.Count(n => n.ascendancyName == null && !RootNodeList.Contains(n.Id));
+        }
+
+        public string CharacterClass(string treeUrl)
+        {
+            var s = treeUrl.Substring(TreeAddress.Length + (treeUrl.StartsWith("https") ? 0 : -1))
+                .Replace("-", "+")
+                .Replace("_", "/");
+            byte[] decbuff = Convert.FromBase64String(s);
+            return CharacterNames.GetClassNameFromChartype(decbuff[4]);
+        }
+
+        public string AscendancyClass(string treeUrl)
+        {
+            var s = treeUrl.Substring(TreeAddress.Length + (treeUrl.StartsWith("https") ? 0 : -1))
+                .Replace("-", "+")
+                .Replace("_", "/");
+            byte[] decbuff = Convert.FromBase64String(s);
+            return AscClasses.GetClassName(decbuff[4], decbuff[5]);
+        }
+
+        #endregion
     }
 }

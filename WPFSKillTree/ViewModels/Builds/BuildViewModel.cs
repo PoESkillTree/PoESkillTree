@@ -11,6 +11,8 @@ namespace POESKillTree.ViewModels.Builds
     {
         private bool _currentlyOpen;
         private bool _isVisible;
+        private string _class;
+        private uint _pointsUsed;
 
         /// <summary>
         /// Gets or sets whether this is the currently opened build.
@@ -31,13 +33,31 @@ namespace POESKillTree.ViewModels.Builds
         }
 
         /// <summary>
+        /// Gets the character class of the represented tree.
+        /// </summary>
+        public string Class
+        {
+            get { return _class; }
+            private set { SetProperty(ref _class, value); }
+        }
+
+        /// <summary>
+        /// Gets the number of points the represented tree uses.
+        /// </summary>
+        private uint PointsUsed
+        {
+            get { return _pointsUsed; }
+            set { SetProperty(ref _pointsUsed, value); }
+        }
+
+        /// <summary>
         /// Gets the path to a image describing this build.
         /// </summary>
         public string Image
         {
             get
             {
-                var imgPath = "/POESKillTree;component/Images/" + Build.Class;
+                var imgPath = "/POESKillTree;component/Images/" + Class;
                 if (CurrentlyOpen)
                     imgPath += "_Highlighted";
                 return imgPath + ".jpg";
@@ -51,8 +71,8 @@ namespace POESKillTree.ViewModels.Builds
         {
             get
             {
-                return string.Format(L10n.Plural("{0}, {1} point used", "{0}, {1} points used", Build.PointsUsed),
-                    Build.Class, Build.PointsUsed);
+                return string.Format(L10n.Plural("{0}, {1} point used", "{0}, {1} points used", PointsUsed),
+                    Class, PointsUsed);
             }
         }
 
@@ -66,21 +86,38 @@ namespace POESKillTree.ViewModels.Builds
             {
                 switch (args.PropertyName)
                 {
-                    case nameof(PoEBuild.PointsUsed):
-                        OnPropertyChanged(nameof(Description));
-                        break;
-                    case nameof(PoEBuild.Class):
-                        OnPropertyChanged(nameof(Description));
-                        OnPropertyChanged(nameof(Image));
+                    case nameof(PoEBuild.TreeUrl):
+                        UpdateTreeDependingProperties();
                         break;
                 }
                 ApplyFilter();
             };
             PropertyChanged += (sender, args) =>
             {
+                switch (args.PropertyName)
+                {
+                    case nameof(PointsUsed):
+                        OnPropertyChanged(nameof(Description));
+                        break;
+                    case nameof(Class):
+                        OnPropertyChanged(nameof(Description));
+                        OnPropertyChanged(nameof(Image));
+                        break;
+                    case nameof(SkillTree):
+                        UpdateTreeDependingProperties();
+                        break;
+                }
                 if (args.PropertyName != nameof(IsVisible))
                     ApplyFilter();
             };
+        }
+
+        private void UpdateTreeDependingProperties()
+        {
+            if (SkillTree == null)
+                return;
+            PointsUsed = SkillTree.PointsUsed(Build.TreeUrl);
+            Class = SkillTree.CharacterClass(Build.TreeUrl);
         }
 
         public override void ApplyFilter()
