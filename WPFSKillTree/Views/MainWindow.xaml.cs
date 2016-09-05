@@ -198,7 +198,7 @@ namespace POESKillTree.Views
             if (tabControl1.SelectedIndex == 2)
                 return lbAllAttr;
             else if (tabControl1.SelectedIndex == 0)
-                return listBox1;
+                return lbAttr;
             else
                 return null;
         }
@@ -417,31 +417,31 @@ namespace POESKillTree.Views
             {
                 _attributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
                 _attributeCollection.CustomSort = _attributeGroups;
-                listBox1.ItemsSource = _attributeCollection;
-                listBox1.SelectionMode = SelectionMode.Extended;
-                listBox1.ContextMenu = _attributeContextMenu;
-
-                _allAttributeCollection = new ListCollectionView(_allAttributesList);
-                if (_allAttributeCollection.GroupDescriptions != null)
-                {
-                    _allAttributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
-                    _allAttributeCollection.CustomSort = _attributeGroups;
-                    lbAllAttr.ItemsSource = _allAttributeCollection;
-                    lbAllAttr.SelectionMode = SelectionMode.Extended;
-                    lbAllAttr.ContextMenu = _attributeContextMenu;
-
-                    _defenceCollection = new ListCollectionView(_defenceList);
-                    if (_defenceCollection.GroupDescriptions != null)
-                    {
-                        _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
-                        listBoxDefence.ItemsSource = _defenceCollection;
-
-                        _offenceCollection = new ListCollectionView(_offenceList);
-                        _offenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
-                    }
-                }
+                lbAttr.ItemsSource = _attributeCollection;
+                lbAttr.SelectionMode = SelectionMode.Extended;
+                lbAttr.ContextMenu = _attributeContextMenu;
             }
-            listBoxOffence.ItemsSource = _offenceCollection;
+            _allAttributeCollection = new ListCollectionView(_allAttributesList);
+            if (_allAttributeCollection.GroupDescriptions != null)
+            {
+                _allAttributeCollection.GroupDescriptions.Add(new PropertyGroupDescription("Text", _attributeGroups));
+                _allAttributeCollection.CustomSort = _attributeGroups;
+                lbAllAttr.ItemsSource = _allAttributeCollection;
+                lbAllAttr.SelectionMode = SelectionMode.Extended;
+                lbAllAttr.ContextMenu = _attributeContextMenu;
+            }
+            _defenceCollection = new ListCollectionView(_defenceList);
+            if (_defenceCollection.GroupDescriptions != null)
+            {
+                _defenceCollection.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
+                listBoxDefence.ItemsSource = _defenceCollection;
+            }
+            _offenceCollection = new ListCollectionView(_offenceList);
+            if (_defenceCollection.GroupDescriptions != null)
+            {
+                listBoxOffence.ItemsSource = _offenceCollection;
+                _offenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
+            }
 
             cbCharType.ItemsSource =
                 CharacterNames.NameToContent.Select(
@@ -1130,6 +1130,7 @@ namespace POESKillTree.Views
 
         public void UpdateAllAttributeList()
         {
+            lbAllAttr.SelectedIndex = -1;
             _allAttributesList.Clear();
 
             if (_itemAttributes == null) return;
@@ -1189,6 +1190,7 @@ namespace POESKillTree.Views
 
         public void UpdateAttributeList()
         {
+            lbAttr.SelectedIndex = -1;
             _attiblist.Clear();
             var copy = Tree.HighlightedAttributes == null
                 ? null
