@@ -1190,7 +1190,9 @@ namespace POESKillTree.Views
         public void UpdateAttributeList()
         {
             _attiblist.Clear();
-            var copy = (Tree.HighlightedAttributes == null) ? null : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
+            var copy = Tree.HighlightedAttributes == null
+                ? null
+                : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
             
             foreach (var item in Tree.SelectedAttributes)
             {
@@ -1204,7 +1206,7 @@ namespace POESKillTree.Views
                 }
                 else
                 {
-                    a.Deltas = (copy != null) ? item.Value.ToArray() : item.Value.Select(v => 0f).ToArray();
+                    a.Deltas = copy != null ? item.Value.ToArray() : item.Value.Select(v => 0f).ToArray();
                 }
                 _attiblist.Add(a);
             }
@@ -1215,8 +1217,7 @@ namespace POESKillTree.Views
                 {
                     var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<float>>(item.Key, item.Value.Select(v => 0f).ToList())));
                     if (!CheckIfAttributeMatchesFilter(a)) continue;
-                    a.Deltas = item.Value.Select((h) => 0 - h).ToArray();
-                    // if(item.Value.Count == 0)
+                    a.Deltas = item.Value.Select(h => 0 - h).ToArray();
                     a.Missing = true;
                     _attiblist.Add(a);
                 }
@@ -2425,6 +2426,7 @@ namespace POESKillTree.Views
             {
                 Tree.HighlightedNodes.Clear();
                 Tree.HighlightedAttributes?.Clear();
+                Tree.HighlightedAttributes = null;
             }
             UpdateUI();
         }
