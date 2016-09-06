@@ -742,6 +742,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\Champion.jpg" />
+    <Resource Include="Images\Gladiator.jpg" />
     <Resource Include="Images\Marauder.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -757,6 +759,7 @@
     <Resource Include="Images\Shadow.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\Slayer.jpg" />
     <Resource Include="Images\Templar.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -855,6 +858,41 @@
     <Resource Include="Images\EquipmentUI\ItemDefaults\Quiver.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Gem.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Unknown.png" />
+    <Resource Include="Images\Slayer_Highlighted.jpg" />
+    <Resource Include="Images\Champion_Highlighted.jpg" />
+    <Resource Include="Images\Gladiator_Highlighted.jpg" />
+    <Resource Include="Images\Assassin.jpg" />
+    <Resource Include="Images\Assassin_Highlighted.jpg" />
+    <Resource Include="Images\Berserker.jpg" />
+    <Resource Include="Images\Berserker_Highlighted.jpg" />
+    <Resource Include="Images\Chieftain.jpg" />
+    <Resource Include="Images\Chieftain_Highlighted.jpg" />
+    <Resource Include="Images\Juggernaut.jpg" />
+    <Resource Include="Images\Juggernaut_Highlighted.jpg" />
+    <Resource Include="Images\Saboteur.jpg" />
+    <Resource Include="Images\Saboteur_Highlighted.jpg" />
+    <Resource Include="Images\Trickster.jpg" />
+    <Resource Include="Images\Trickster_Highlighted.jpg" />
+    <Resource Include="Images\Ascendant.jpg" />
+    <Resource Include="Images\Ascendant_Highlighted.jpg" />
+    <Resource Include="Images\Deadeye.jpg" />
+    <Resource Include="Images\Deadeye_Highlighted.jpg" />
+    <Resource Include="Images\Elementalist.jpg" />
+    <Resource Include="Images\Elementalist_Highlighted.jpg" />
+    <Resource Include="Images\Guardian.jpg" />
+    <Resource Include="Images\Guardian_Highlighted.jpg" />
+    <Resource Include="Images\Hierophant.jpg" />
+    <Resource Include="Images\Hierophant_Highlighted.jpg" />
+    <Resource Include="Images\Inquisitor.jpg" />
+    <Resource Include="Images\Inquisitor_Highlighted.jpg" />
+    <Resource Include="Images\Necromancer.jpg" />
+    <Resource Include="Images\Necromancer_Highlighted.jpg" />
+    <Resource Include="Images\Occultist.jpg" />
+    <Resource Include="Images\Occultist_Highlighted.jpg" />
+    <Resource Include="Images\Pathfinder.jpg" />
+    <Resource Include="Images\Pathfinder_Highlighted.jpg" />
+    <Resource Include="Images\Raider.jpg" />
+    <Resource Include="Images\Raider_Highlighted.jpg" />
     <Resource Include="Libs\README.txt" />
     <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
     <Content Include="release.iss" />

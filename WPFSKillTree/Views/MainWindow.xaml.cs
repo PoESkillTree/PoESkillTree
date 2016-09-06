@@ -36,6 +36,7 @@ using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
 using Attribute = POESKillTree.ViewModels.Attribute;
+using static POESKillTree.SkillTreeFiles.Constants;
 
 namespace POESKillTree.Views
 {
@@ -227,7 +228,7 @@ namespace POESKillTree.Views
             if (tabControl1.SelectedIndex == 2)
                 return lbAllAttr;
             else if (tabControl1.SelectedIndex == 0)
-                return listBox1;
+                return lbAttr;
             else
                 return null;
         }
@@ -450,9 +451,9 @@ namespace POESKillTree.Views
             _attributeCollection = new ListCollectionView(_attiblist);
             _attributeCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Text", _attributeGroups));
             _attributeCollection.CustomSort = _attributeGroups;
-            listBox1.ItemsSource = _attributeCollection;
-            listBox1.SelectionMode = SelectionMode.Extended;
-            listBox1.ContextMenu = _attributeContextMenu;
+            lbAttr.ItemsSource = _attributeCollection;
+            lbAttr.SelectionMode = SelectionMode.Extended;
+            lbAttr.ContextMenu = _attributeContextMenu;
 
             _allAttributeCollection = new ListCollectionView(_allAttributesList);
             _allAttributeCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Text", _attributeGroups));
@@ -1108,6 +1109,7 @@ namespace POESKillTree.Views
 
         public void UpdateAllAttributeList()
         {
+            lbAllAttr.SelectedIndex = -1;
             _allAttributesList.Clear();
 
             if (_itemAttributes == null) return;
@@ -1167,8 +1169,11 @@ namespace POESKillTree.Views
 
         public void UpdateAttributeList()
         {
+            lbAttr.SelectedIndex = -1;
             _attiblist.Clear();
-            var copy = (Tree.HighlightedAttributes == null) ? null : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
+            var copy = Tree.HighlightedAttributes == null
+                ? null
+                : new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
             
             foreach (var item in Tree.SelectedAttributes)
             {
@@ -1182,7 +1187,7 @@ namespace POESKillTree.Views
                 }
                 else
                 {
-                    a.Deltas = (copy != null) ? item.Value.ToArray() : item.Value.Select(v => 0f).ToArray();
+                    a.Deltas = copy != null ? item.Value.ToArray() : item.Value.Select(v => 0f).ToArray();
                 }
                 _attiblist.Add(a);
             }
@@ -1193,8 +1198,7 @@ namespace POESKillTree.Views
                 {
                     var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<float>>(item.Key, item.Value.Select(v => 0f).ToList())));
                     if (!CheckIfAttributeMatchesFilter(a)) continue;
-                    a.Deltas = item.Value.Select((h) => 0 - h).ToArray();
-                    // if(item.Value.Count == 0)
+                    a.Deltas = item.Value.Select(h => 0 - h).ToArray();
                     a.Missing = true;
                     _attiblist.Add(a);
                 }
@@ -1944,7 +1948,7 @@ namespace POESKillTree.Views
             else
             {
                 Tree.HighlightedNodes.Clear();
-                Tree.HighlightedAttributes?.Clear();
+                Tree.HighlightedAttributes = null;
             }
             UpdateUI();
         }
