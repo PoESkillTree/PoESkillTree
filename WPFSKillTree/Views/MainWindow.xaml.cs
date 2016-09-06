@@ -487,7 +487,7 @@ namespace POESKillTree.Views
             Tree.PropertyChanged += Tree_PropertyChanged;
             PopulateAsendancySelectionList();
 
-            var classesForFilter = new List<ComboBoxItem> {new ComboBoxItem {Content = "All", IsSelected = true}};
+            var classesForFilter = new List<ComboBoxItem> {new ComboBoxItem {Content = "All"}};
             foreach (var nameToContent in CharacterNames.NameToContent)
             {
                 classesForFilter.Add(new ComboBoxItem { Name = nameToContent.Value, Content = nameToContent.Value });
@@ -501,6 +501,7 @@ namespace POESKillTree.Views
                         }));
             }
             cbCharTypeSavedBuildFilter.ItemsSource = classesForFilter;
+            cbCharTypeSavedBuildFilter.SelectedIndex = 0;
 
             await CheckAppVersionAndDoNecessaryChanges();
 
