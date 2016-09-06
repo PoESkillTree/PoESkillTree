@@ -120,8 +120,8 @@
                         <ComboBox.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.HeaderTemplate>
-                                    <DataTemplate>
-                                        <TextBlock d:DataContext="{d:DesignInstance CollectionViewGroup}" Foreground="{StaticResource AccentColorBrush}" Text="{Binding Name}"/>
+                                    <DataTemplate DataType="CollectionViewGroup">
+                                        <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding Name}"/>
                                     </DataTemplate>
                                 </GroupStyle.HeaderTemplate>
                             </GroupStyle>

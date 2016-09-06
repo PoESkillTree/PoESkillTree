@@ -1,4 +1,6 @@
-﻿namespace POESKillTree.Common
+﻿using System.Collections.Generic;
+
+namespace POESKillTree.Common
 {
     /// <summary>
     /// Interface for the main SkillTree class to reduce dependencies on the SkillTreeFiles namespace.
@@ -17,7 +19,13 @@
 
         /// <summary>
         /// Returns the ascendancy class of the given tree url.
+        /// Returns null if the tree has no ascendancy class selected.
         /// </summary>
         string AscendancyClass(string treeUrl);
+
+        /// <summary>
+        /// Returns all ascendancy class names for the given character class.
+        /// </summary>
+        IEnumerable<string> AscendancyClassesForCharacter(string characterClass);
     }
 }

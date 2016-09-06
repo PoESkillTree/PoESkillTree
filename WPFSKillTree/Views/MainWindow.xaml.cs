@@ -105,7 +105,7 @@ namespace POESKillTree.Views
             tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
             tree.PropertyChanged += Tree_PropertyChanged;
             if (BuildsControlViewModel != null)
-                BuildsControlViewModel.BuildRoot.SkillTree = tree;
+                BuildsControlViewModel.SkillTree = tree;
             return tree;
         }
 
@@ -504,8 +504,7 @@ namespace POESKillTree.Views
             // loading saved build
             PersistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAsendancySelectionList();
-            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData);
-            BuildsControlViewModel.BuildRoot.SkillTree = Tree;
+            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
             UpdateTreeComparision();
 
             await controller.CloseAsync();

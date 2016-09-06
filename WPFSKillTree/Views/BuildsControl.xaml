@@ -34,26 +34,40 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <Label >
-                <l:Catalog Message="Filter:"/>
-            </Label>
-            <ComboBox Width="90" Margin="5 0"
-                      SelectedValue="{Binding ClassFilter}"
-                      SelectedValuePath="Content">
-                <ComboBoxItem>
-                    <ComboBoxItem.Content><l:Catalog>All</l:Catalog></ComboBoxItem.Content>
-                </ComboBoxItem>
-                <ComboBoxItem Content="Scion"/>
-                <ComboBoxItem Content="Marauder"/>
-                <ComboBoxItem Content="Ranger"/>
-                <ComboBoxItem Content="Witch"/>
-                <ComboBoxItem Content="Duelist"/>
-                <ComboBoxItem Content="Templar"/>
-                <ComboBoxItem Content="Shadow"/>
+            <DockPanel.Resources>
+                <CollectionViewSource x:Key="ClassFilterItemsView"
+                                      Source="{Binding ClassFilterItems}">
+                    <CollectionViewSource.GroupDescriptions>
+                        <PropertyGroupDescription PropertyName="CharacterClass"></PropertyGroupDescription>
+                    </CollectionViewSource.GroupDescriptions>
+                </CollectionViewSource>
+            </DockPanel.Resources>
+            <ComboBox Width="110" Margin="5 0"
+                      SelectedItem="{Binding ClassFilter}"
+                      SelectedIndex="0"
+                      ItemsSource="{Binding Source={StaticResource ClassFilterItemsView}}">
+                <ComboBox.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate DataType="CollectionViewGroup">
+                                <TextBlock Foreground="{StaticResource AccentColorBrush}"
+                                           Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ComboBox.GroupStyle>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="viewModels:ClassFilterItem">
+                        <TextBlock Text="{Binding ShownClass}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <TextBox VerticalContentAlignment="Center"
                      controls:TextBoxHelper.ClearTextButton="True"
-                     Text="{Binding TextFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                     controls:TextBoxHelper.SelectAllOnFocus="True"
+                     Text="{Binding TextFilter, UpdateSourceTrigger=PropertyChanged}">
+                <controls:TextBoxHelper.Watermark><l:Catalog>Filter</l:Catalog></controls:TextBoxHelper.Watermark>
+            </TextBox>
         </DockPanel>
 
         <TreeView ItemsSource="{Binding BuildRoot.Children}"

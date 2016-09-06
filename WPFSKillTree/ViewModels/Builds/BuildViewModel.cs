@@ -11,7 +11,8 @@ namespace POESKillTree.ViewModels.Builds
     {
         private bool _currentlyOpen;
         private bool _isVisible;
-        private string _class;
+        private string _characterClass;
+        private string _ascendancyClass;
         private uint _pointsUsed;
 
         /// <summary>
@@ -35,10 +36,19 @@ namespace POESKillTree.ViewModels.Builds
         /// <summary>
         /// Gets the character class of the represented tree.
         /// </summary>
-        public string Class
+        public string CharacterClass
         {
-            get { return _class; }
-            private set { SetProperty(ref _class, value); }
+            get { return _characterClass; }
+            private set { SetProperty(ref _characterClass, value); }
+        }
+
+        /// <summary>
+        /// Gets the ascendancy class of the represented tree.
+        /// </summary>
+        public string AscendancyClass
+        {
+            get { return _ascendancyClass; }
+            private set { SetProperty(ref _ascendancyClass, value); }
         }
 
         /// <summary>
@@ -50,6 +60,8 @@ namespace POESKillTree.ViewModels.Builds
             set { SetProperty(ref _pointsUsed, value); }
         }
 
+        private string ClassName => AscendancyClass ?? CharacterClass;
+
         /// <summary>
         /// Gets the path to a image describing this build.
         /// </summary>
@@ -57,7 +69,7 @@ namespace POESKillTree.ViewModels.Builds
         {
             get
             {
-                var imgPath = "/POESKillTree;component/Images/" + Class;
+                var imgPath = "/POESKillTree;component/Images/" + ClassName;
                 if (CurrentlyOpen)
                     imgPath += "_Highlighted";
                 return imgPath + ".jpg";
@@ -72,7 +84,7 @@ namespace POESKillTree.ViewModels.Builds
             get
             {
                 return string.Format(L10n.Plural("{0}, {1} point used", "{0}, {1} points used", PointsUsed),
-                    Class, PointsUsed);
+                    ClassName, PointsUsed);
             }
         }
 
@@ -99,7 +111,11 @@ namespace POESKillTree.ViewModels.Builds
                     case nameof(PointsUsed):
                         OnPropertyChanged(nameof(Description));
                         break;
-                    case nameof(Class):
+                    case nameof(CharacterClass):
+                        OnPropertyChanged(nameof(Description));
+                        OnPropertyChanged(nameof(Image));
+                        break;
+                    case nameof(AscendancyClass):
                         OnPropertyChanged(nameof(Description));
                         OnPropertyChanged(nameof(Image));
                         break;
@@ -117,7 +133,8 @@ namespace POESKillTree.ViewModels.Builds
             if (SkillTree == null)
                 return;
             PointsUsed = SkillTree.PointsUsed(Build.TreeUrl);
-            Class = SkillTree.CharacterClass(Build.TreeUrl);
+            CharacterClass = SkillTree.CharacterClass(Build.TreeUrl);
+            AscendancyClass = SkillTree.AscendancyClass(Build.TreeUrl);
         }
 
         public override void ApplyFilter()

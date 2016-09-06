@@ -10,10 +10,12 @@ using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
 using log4net;
+using POESKillTree.Common;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Builds;
+using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.Wpf;
@@ -21,6 +23,22 @@ using POESKillTree.ViewModels.Builds;
 
 namespace POESKillTree.ViewModels
 {
+    public class ClassFilterItem
+    {
+        public string CharacterClass { get; }
+
+        public string AscendancyClass { get; }
+
+        public string ShownClass { get; }
+
+        public ClassFilterItem(string characterClass, string ascendancyClass)
+        {
+            CharacterClass = characterClass;
+            AscendancyClass = ascendancyClass;
+            ShownClass = AscendancyClass ?? CharacterClass;
+        }
+    }
+
     public class BuildsViewModelProxy : BindingProxy<BuildsControlViewModel>
     {
     }
@@ -31,6 +49,8 @@ namespace POESKillTree.ViewModels
     public class BuildsControlViewModel : Notifier
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(BuildsControlViewModel));
+
+        private static readonly ClassFilterItem NoFilterItem = new ClassFilterItem(L10n.Message("All"), null);
 
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
 
@@ -129,12 +149,12 @@ namespace POESKillTree.ViewModels
             }
         }
 
-        private string _classFilter = L10n.Message("All");
+        private ClassFilterItem _classFilter;
         /// <summary>
         /// Gets or sets the class builds must be of to be visible
         /// (L10n("All") shows everything).
         /// </summary>
-        public string ClassFilter
+        public ClassFilterItem ClassFilter
         {
             get { return _classFilter; }
             set { SetProperty(ref _classFilter, value, () => BuildRoot.ApplyFilter()); }
@@ -153,7 +173,19 @@ namespace POESKillTree.ViewModels
         private IBuildViewModel _buildClipboard;
         private bool _clipboardIsCopy;
 
-        public BuildsControlViewModel(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData)
+        private ISkillTree _skillTree;
+        /// <summary>
+        /// Sets the <see cref="ISkillTree"/> instance.
+        /// </summary>
+        public ISkillTree SkillTree
+        {
+            private get { return _skillTree; }
+            set { SetProperty(ref _skillTree, value, () => BuildRoot.SkillTree = SkillTree); }
+        }
+
+        public IReadOnlyList<ClassFilterItem> ClassFilterItems { get; }
+
+        public BuildsControlViewModel(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData, ISkillTree skillTree)
         {
             _dialogCoordinator = dialogCoordinator;
             PersistentData = persistentData;
@@ -223,6 +255,24 @@ namespace POESKillTree.ViewModels
             PasteCommand = new AsyncRelayCommand<IBuildFolderViewModel>(Paste, CanPaste);
             ReloadCommand = new AsyncRelayCommand(Reload);
             OpenBuildsSavePathCommand = new RelayCommand(() => Process.Start(PersistentData.Options.BuildsSavePath));
+
+            SkillTree = skillTree;
+            ClassFilterItems = GenerateAscendancyClassItems().ToList();
+            ClassFilter = NoFilterItem;
+        }
+
+        private IEnumerable<ClassFilterItem> GenerateAscendancyClassItems()
+        {
+            yield return NoFilterItem;
+            foreach (var nameToContent in CharacterNames.NameToContent)
+            {
+                var charClass = nameToContent.Value;
+                yield return new ClassFilterItem(charClass, null);
+                foreach (var ascClass in SkillTree.AscendancyClassesForCharacter(charClass))
+                {
+                    yield return new ClassFilterItem(charClass, ascClass);
+                }
+            }
         }
 
         #region Event handlers
@@ -505,20 +555,23 @@ namespace POESKillTree.ViewModels
 
         private bool Filter(IBuildViewModel b)
         {
+            if (ClassFilter == null)
+                return true;
             var build = b as BuildViewModel;
             if (build == null)
                 return true;
-            if (!string.IsNullOrEmpty(ClassFilter) && ClassFilter != "All"
-                && build.Class != ClassFilter)
+            if (ClassFilter != NoFilterItem)
             {
-                return false;
+                if (ClassFilter.CharacterClass != build.CharacterClass)
+                    return false;
+                if (ClassFilter.AscendancyClass != null
+                    && ClassFilter.AscendancyClass != build.AscendancyClass)
+                {
+                    return false;
+                }
             }
-            if (!string.IsNullOrEmpty(TextFilter)
-                && !build.Build.Name.Contains(TextFilter, StringComparison.InvariantCultureIgnoreCase))
-            {
-                return false;
-            }
-            return true;
+            return string.IsNullOrEmpty(TextFilter)
+                || build.Build.Name.Contains(TextFilter, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #region Traverse helper methods

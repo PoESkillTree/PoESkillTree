@@ -1426,7 +1426,15 @@ namespace POESKillTree.SkillTreeFiles
                 .Replace("-", "+")
                 .Replace("_", "/");
             byte[] decbuff = Convert.FromBase64String(s);
+            // No Ascendancy class selected.
+            if (decbuff[5] == 0)
+                return null;
             return AscClasses.GetClassName(decbuff[4], decbuff[5]);
+        }
+
+        public IEnumerable<string> AscendancyClassesForCharacter(string characterClass)
+        {
+            return AscClasses.GetClasses(characterClass).Select(c => c.DisplayName);
         }
 
         #endregion
