@@ -34,6 +34,12 @@ namespace POESKillTree.Model.Serialization
 
         public BanditSettings Bandits { get; set; }
 
+        public List<ushort> CheckedNodeIds { get; set; }
+
+        public List<ushort> CrossedNodeIds { get; set; }
+
+        public string AdditionalData { get; set; }
+
         public string Version { get; set; }
     }
 }

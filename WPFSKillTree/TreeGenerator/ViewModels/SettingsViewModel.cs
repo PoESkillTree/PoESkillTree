@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;
-using POESKillTree.Model;
+using POESKillTree.Model.JsonSettings;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
-using POESKillTree.Utils;
-using POESKillTree.ViewModels;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
@@ -18,14 +16,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
     /// ViewModel that enables setting up and running <see cref="Solver.ISolver"/> through
     /// contained <see cref="GeneratorTabViewModel"/>s.
     /// </summary>
-    public sealed class SettingsViewModel : ViewModelBase
+    public sealed class SettingsViewModel : AbstractCompositeSetting
     {
-
-        private readonly SkillTree _tree;
-
         private readonly ISettingsDialogCoordinator _dialogCoordinator;
 
-        public SkillTree Tree { get { return _tree; } }
+        public SkillTree Tree { get; }
 
         /// <summary>
         /// Gets or sets the observable collection of <see cref="GeneratorTabViewModel"/> contained in
@@ -33,33 +28,21 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         public ObservableCollection<GeneratorTabViewModel> Tabs { get; private set; }
 
-#region Presentation
+        protected override string Key { get; } = "TreeGenerator";
 
-        // Default values for the properties to use on construction and on reset.
-        private const int AdditionalPointsDefaultValue = 21;
-        private const bool IncludeCheckedDefaultValue = true;
-        private const bool ExcludeCrossedDefaultValue = true;
-        private const bool TreeAsSubsetDefaultValue = false;
-        private const bool TreeAsInitialDefaultValue = false;
+        protected override IReadOnlyList<ISetting> SubSettings { get; }
 
-        private int _additionalPoints = -1;
+        #region Presentation
+
         /// <summary>
-        /// Gets or sets the number of points on top of those provided by level that
+        /// The number of points on top of those provided by level that
         /// the solver can use.
         /// </summary>
-        public int AdditionalPoints
-        {
-            get { return _additionalPoints; }
-            set
-            {
-                SetProperty(ref _additionalPoints, value,
-                    () => TotalPoints = _tree.Level - 1 + _additionalPoints);
-            }
-        }
+        public LeafSetting<int> AdditionalPoints { get; }
 
         private int _totalPoints;
         /// <summary>
-        /// Gets or sets total number of points the solver can use.
+        /// Gets the total number of points the solver can use.
         /// Equals <see cref="SkillTree.Level"/> - 1 + <see cref="AdditionalPoints"/>.
         /// </summary>
         public int TotalPoints
@@ -68,76 +51,46 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private set { SetProperty(ref _totalPoints, value); }
         }
 
-        private bool _includeChecked = IncludeCheckedDefaultValue;
         /// <summary>
-        /// Gets or sets whether checked nodes need to be skilled by the solver.
+        /// Whether checked nodes need to be skilled by the solver.
         /// </summary>
-        public bool IncludeChecked
-        {
-            get { return _includeChecked; }
-            set { SetProperty(ref _includeChecked, value); }
-        }
+        public LeafSetting<bool> IncludeChecked { get; }
 
-        private bool _excludeCrossed = ExcludeCrossedDefaultValue;
         /// <summary>
-        /// Gets or sets whether crossed nodes must not be skilled by the solver.
+        /// Whether crossed nodes must not be skilled by the solver.
         /// </summary>
-        public bool ExcludeCrossed
-        {
-            get { return _excludeCrossed; }
-            set { SetProperty(ref _excludeCrossed, value); }
-        }
+        public LeafSetting<bool> ExcludeCrossed { get; }
 
-        private bool _treeAsSubset = TreeAsSubsetDefaultValue;
         /// <summary>
-        /// Gets or set whether the nodes skilled by the solver need to be
+        /// Whether the nodes skilled by the solver need to be
         /// a subset of the currently skilled nodes.
         /// If <see cref="TreeAsSubset"/> and <see cref="TreeAsInitial"/> are false,
         /// the nodes currently skilled will stay skilled in the solution given by the solver.
         /// </summary>
-        public bool TreeAsSubset
-        {
-            get { return _treeAsSubset; }
-            set { SetProperty(ref _treeAsSubset, value); }
-        }
+        public LeafSetting<bool> TreeAsSubset { get; }
 
-        private bool _treeAsInitial = TreeAsInitialDefaultValue;
         /// <summary>
-        /// Gets or sets whether the currently skilled nodes should be provided
+        /// Whether the currently skilled nodes should be provided
         /// to the solver as an initial solution.
         /// If <see cref="TreeAsSubset"/> and <see cref="TreeAsInitial"/> are false,
         /// the nodes currently skilled will stay skilled in the solution given by the solver.
         /// </summary>
-        public bool TreeAsInitial
-        {
-            get { return _treeAsInitial; }
-            set { SetProperty(ref _treeAsInitial, value); }
-        }
+        public LeafSetting<bool> TreeAsInitial { get; }
 
-        private int _selectedTabIndex;
         /// <summary>
-        /// Gets or sets the currently selected <see cref="GeneratorTabViewModel"/> which will
-        /// be provide the solver once <see cref="RunCommand"/> is executed.
+        /// The currently selected <see cref="GeneratorTabViewModel"/> which will
+        /// provide the solver once <see cref="RunCommand"/> is executed.
         /// </summary>
-        public int SelectedTabIndex
-        {
-            get { return _selectedTabIndex; }
-            set { SetProperty(ref _selectedTabIndex, value); }
-        }
+        public LeafSetting<int> SelectedTabIndex { get; }
 
-        private int _iterations = 3;
         /// <summary>
-        /// Gets or sets number of iterations this solver will run.
+        /// The number of iterations this solver will run.
         /// </summary>
-        public int Iterations
-        {
-            get { return _iterations; }
-            set { SetProperty(ref _iterations, value);}
-        }
+        public LeafSetting<int> Iterations { get; }
 
         #endregion
 
-#region Commands
+        #region Commands
 
         private ICommand _runCommand;
         /// <summary>
@@ -173,19 +126,24 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// added to <see cref="Tabs"/>.</param>
         public SettingsViewModel(SkillTree tree, ISettingsDialogCoordinator dialogCoordinator, GeneratorTabViewModel generator = null)
         {
-            if (tree == null) throw new ArgumentNullException("tree");
-
-            DisplayName = L10n.Message("Skill tree Generator").ToUpper();
-
-            _tree = tree;
+            Tree = tree;
             _dialogCoordinator = dialogCoordinator;
-            AdditionalPoints = CalculateAdditionalPointsNeeded(tree);
-            
+
+            AdditionalPoints = new LeafSetting<int>(nameof(AdditionalPoints), 21,
+                () => TotalPoints = Tree.Level - 1 + AdditionalPoints.Value);
+            TotalPoints = Tree.Level - 1 + AdditionalPoints.Value;
+            IncludeChecked = new LeafSetting<bool>(nameof(IncludeChecked), true);
+            ExcludeCrossed = new LeafSetting<bool>(nameof(ExcludeCrossed), true);
+            TreeAsSubset = new LeafSetting<bool>(nameof(TreeAsSubset), false);
+            TreeAsInitial = new LeafSetting<bool>(nameof(TreeAsInitial), false);
+            SelectedTabIndex = new LeafSetting<int>(nameof(SelectedTabIndex), 0);
+            Iterations = new LeafSetting<int>(nameof(Iterations), 3);
+
             tree.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "Level")
+                if (args.PropertyName == nameof(SkillTree.Level))
                 {
-                    TotalPoints = _tree.Level - 1 + _additionalPoints;
+                    TotalPoints = Tree.Level - 1 + AdditionalPoints.Value;
                 }
             };
 
@@ -197,71 +155,53 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 Tabs = new ObservableCollection<GeneratorTabViewModel> { generator };
             }
-        }
-
-        private static int CalculateAdditionalPointsNeeded(SkillTree tree)
-        {
-            if (tree.Level != SkillTree.UndefinedLevel && tree.SkilledNodes.Count > 1
-                && tree.SkilledNodes.Count - tree.Level >= 0)
+            SubSettings = new ISetting[]
             {
-                return tree.SkilledNodes.Count - tree.Level;
-            }
-            return AdditionalPointsDefaultValue;
+                AdditionalPoints, IncludeChecked, ExcludeCrossed, TreeAsSubset, TreeAsInitial,
+                SelectedTabIndex, Iterations
+            }.Union(Tabs).ToArray();
         }
 
         private void CreateTabs()
         {
             Tabs = new ObservableCollection<GeneratorTabViewModel>
             {
-                new AdvancedTabViewModel(_tree),
-                new AutomatedTabViewModel(_tree),
-                new SteinerTabViewModel(_tree)
+                new AdvancedTabViewModel(Tree),
+                new AutomatedTabViewModel(Tree),
+                new SteinerTabViewModel(Tree)
             };
         }
 
         public async Task RunAsync()
         {
-            var savedHighlights = _tree.HighlightedNodes;
+            var savedHighlights = Tree.HighlightedNodes;
 
             var settings = CreateSettings();
-            var solver = Tabs[_selectedTabIndex].CreateSolver(settings);
+            var solver = Tabs[SelectedTabIndex.Value].CreateSolver(settings);
 
             var controllerResult = await _dialogCoordinator
-                .ShowControllerDialogAsync(this, solver, Tabs[_selectedTabIndex].DisplayName, _tree);
+                .ShowControllerDialogAsync(this, solver, Tabs[SelectedTabIndex.Value].DisplayName, Tree);
             if (controllerResult != null)
             {
-                _tree.SkilledNodes.Clear();
-                _tree.AllocateSkillNodes(controllerResult.Select(n => SkillTree.Skillnodes[n]));
+                Tree.SkilledNodes.Clear();
+                Tree.AllocateSkillNodes(controllerResult.Select(n => SkillTree.Skillnodes[n]));
             }
-            _tree.HighlightedNodes.Clear();
-            _tree.HighlightedNodes.UnionWith(savedHighlights);
-            _tree.DrawHighlights();
+            Tree.HighlightedNodes.Clear();
+            Tree.HighlightedNodes.UnionWith(savedHighlights);
+            Tree.DrawHighlights();
 
             RunFinished?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Reset()
-        {
-            AdditionalPoints = CalculateAdditionalPointsNeeded(_tree);
-            IncludeChecked = IncludeCheckedDefaultValue;
-            ExcludeCrossed = ExcludeCrossedDefaultValue;
-            TreeAsSubset = TreeAsSubsetDefaultValue;
-            TreeAsInitial = TreeAsInitialDefaultValue;
-            foreach (var tab in Tabs)
-            {
-                tab.Reset();
-            }
         }
 
         private SolverSettings CreateSettings()
         {
             var level = Tree.Level;
             var totalPoints = _totalPoints;
-            var @checked = _includeChecked ? _tree.GetCheckedNodes() : null;
-            var crossed = _excludeCrossed ? _tree.GetCrossedNodes() : null;
-            var subsetTree = _treeAsSubset ? _tree.SkilledNodes : null;
-            var initialTree = _treeAsInitial ? _tree.SkilledNodes : null;
-            var iterations = _iterations;
+            var @checked = IncludeChecked.Value ? Tree.GetCheckedNodes() : null;
+            var crossed = ExcludeCrossed.Value ? Tree.GetCrossedNodes() : null;
+            var subsetTree = TreeAsSubset.Value ? Tree.SkilledNodes : null;
+            var initialTree = TreeAsInitial.Value ? Tree.SkilledNodes : null;
+            var iterations = Iterations.Value;
             return new SolverSettings(level, totalPoints, @checked, crossed, subsetTree, initialTree, iterations);
         }
 

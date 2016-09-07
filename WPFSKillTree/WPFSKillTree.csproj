@@ -301,6 +301,9 @@
     <Compile Include="Model\Serialization\PersistentDataSerializer.cs" />
     <Compile Include="Model\Serialization\SerializationConstants.cs" />
     <Compile Include="Model\Serialization\XmlBuild.cs" />
+    <Compile Include="Model\JsonSettings\AbstractCompositeSetting.cs" />
+    <Compile Include="Model\JsonSettings\ISetting.cs" />
+    <Compile Include="Model\JsonSettings\LeafSetting.cs" />
     <Compile Include="Utils\Helper.cs" />
     <Compile Include="Utils\PathEx.cs" />
     <Compile Include="Utils\SerializationUtils.cs" />

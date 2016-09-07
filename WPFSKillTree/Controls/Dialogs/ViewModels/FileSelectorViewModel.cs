@@ -76,7 +76,8 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
                 return null;
             string message;
             var trimmed = PathEx.TrimTrailingDirectorySeparators(FilePath);
-            if (PathEx.IsPathValid(trimmed, out message, mustBeDirectory: _isFolderPicker, mustBeFile: !_isFolderPicker))
+            if (PathEx.IsPathValid(trimmed, out message, mustBeDirectory: _isFolderPicker, mustBeFile: !_isFolderPicker,
+                mustBeAbsolute: true))
             {
                 if (!string.IsNullOrEmpty(_validationSubPath))
                 {

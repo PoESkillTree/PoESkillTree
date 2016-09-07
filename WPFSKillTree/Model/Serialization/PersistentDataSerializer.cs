@@ -248,8 +248,11 @@ namespace POESKillTree.Model.Serialization
             var xmlBuild = new XmlBuild
             {
                 AccountName = build.AccountName,
+                AdditionalData = build.AdditionalData.ToString(),
                 Bandits = build.Bandits,
                 CharacterName = build.CharacterName,
+                CheckedNodeIds = build.CheckedNodeIds.ToList(),
+                CrossedNodeIds = build.CrossedNodeIds.ToList(),
                 CustomGroups = build.CustomGroups.ToList(),
                 ItemData = build.ItemData,
                 LastUpdated = build.LastUpdated,

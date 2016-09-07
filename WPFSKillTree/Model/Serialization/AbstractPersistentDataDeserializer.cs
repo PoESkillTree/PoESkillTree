@@ -143,7 +143,8 @@ namespace POESKillTree.Model.Serialization
         {
             if (build == null)
                 return null;
-            return new PoEBuild(build.Bandits, build.CustomGroups)
+            return new PoEBuild(build.Bandits, build.CustomGroups, build.CheckedNodeIds, build.CrossedNodeIds,
+                build.AdditionalData)
             {
                 AccountName = build.AccountName,
                 CharacterName = build.CharacterName,

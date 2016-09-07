@@ -1,9 +1,8 @@
 ﻿using System;
-using POESKillTree.Common.ViewModels;
+using POESKillTree.Model.JsonSettings;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
 using POESKillTree.TreeGenerator.Solver;
-using POESKillTree.ViewModels;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
@@ -11,8 +10,18 @@ namespace POESKillTree.TreeGenerator.ViewModels
     /// Base class for tabs in SettingsViewModel that specify which solver
     /// to use and offer settings to customize the solver execution.
     /// </summary>
-    public abstract class GeneratorTabViewModel : ViewModelBase
+    public abstract class GeneratorTabViewModel : AbstractCompositeSetting
     {
+        private string _displayName;
+        /// <summary>
+        /// Returns the user-friendly name of this object.
+        /// </summary>
+        public string DisplayName
+        {
+            get { return _displayName; }
+            protected set { SetProperty(ref _displayName, value); }
+        }
+
         /// <summary>
         /// The SkillTree instance to operate on.
         /// </summary>
@@ -24,14 +33,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
         protected GeneratorTabViewModel(SkillTree tree)
         {
-            if (tree == null) throw new ArgumentNullException("tree");
+            if (tree == null) throw new ArgumentNullException(nameof(tree));
             Tree = tree;
         }
-
-        /// <summary>
-        /// Resets all changes done by the user.
-        /// </summary>
-        public abstract void Reset();
 
         /// <summary>
         /// Creates a solver that uses the settings defined by the user in this ViewModel.

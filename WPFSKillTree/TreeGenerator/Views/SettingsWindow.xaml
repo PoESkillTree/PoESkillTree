@@ -10,8 +10,10 @@
     xmlns:vm="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
     xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
     d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
-    Title="{Binding DisplayName}"
     AllowMove="True" IsModal="False" ShowCloseButton="True">
+    <simpleChildWindow:ChildWindow.Title>
+        <l:Catalog>Skill Tree Generator</l:Catalog>
+    </simpleChildWindow:ChildWindow.Title>
     <Grid Height="600" Margin="-4 0 -4 -4">
         
         <Grid.ColumnDefinitions>
@@ -40,7 +42,7 @@
             <l:Catalog Message="Additional points:" />
         </Label>
         <controls:NumericUpDown Grid.Row="1" Grid.Column="1" x:Name="AddPoints" Minimum="0" Margin="0,5"
-                                Value="{Binding AdditionalPoints, ValidatesOnDataErrors=True}"/>
+                                Value="{Binding AdditionalPoints.Value, ValidatesOnDataErrors=True}"/>
 
         <Label Grid.Row="2" Grid.Column="0" Margin="5" Target="{Binding ElementName=TotalPoints}">
             <l:Catalog Message="Total points:" />
@@ -59,18 +61,18 @@
             </Label.ToolTip>
         </Label>
         <controls:NumericUpDown Grid.Row="3" Grid.Column="1" x:Name="Iterations" Minimum="1" Margin="0,5"
-                                Value="{Binding Iterations, ValidatesOnDataErrors=True}"/>
+                                Value="{Binding Iterations.Value, ValidatesOnDataErrors=True}"/>
 
-        <CheckBox Grid.Row="0" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding IncludeChecked}">
+        <CheckBox Grid.Row="0" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding IncludeChecked.Value}">
             <l:Catalog Message="include Check-tagged nodes"/>
         </CheckBox>
-        <CheckBox Grid.Row="1" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding ExcludeCrossed}">
+        <CheckBox Grid.Row="1" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding ExcludeCrossed.Value}">
             <l:Catalog Message="exclude Cross-tagged nodes"/>
         </CheckBox>
-        <CheckBox Grid.Row="0" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsSubset}">
+        <CheckBox Grid.Row="0" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsSubset.Value}">
             <l:Catalog Message="only search in current tree"/>
         </CheckBox>
-        <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsInitial}">
+        <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsInitial.Value}">
             <l:Catalog Message="current tree as initial solution"/>
         </CheckBox>
 
@@ -80,8 +82,8 @@
         <Button Grid.Row="3" Grid.Column="2" Margin="20,5,10,5" Command="{Binding ResetCommand}">
             <l:Catalog Message="Reset settings"/>
         </Button>
-        
-        <TabControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex}">
+
+        <TabControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex.Value}">
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
                 <local:AdvancedGeneratorTab/>
             </TabItem>

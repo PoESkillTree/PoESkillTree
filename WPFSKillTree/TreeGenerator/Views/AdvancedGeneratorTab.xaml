@@ -320,7 +320,7 @@
                     <!-- 'Tree + gear' mode not yet implemented -->
                     <metroControls:ToggleSwitch Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,0,5"
                                                 HorizontalAlignment="Center"
-                                                IsChecked="{Binding TreePlusItemsMode}"
+                                                IsChecked="{Binding TreePlusItemsMode.Value}"
                                                 Visibility="Collapsed">
                         <metroControls:ToggleSwitch.OnLabel>
                             <l:Catalog Message="Tree + Items"/>
@@ -342,7 +342,7 @@
                             <l:Catalog Message="Weapon class"/>
                         </GroupBox.Header>
                         <ComboBox HorizontalAlignment="Left" MinWidth="130" Margin="5,0" VerticalAlignment="Center"
-                              SelectedValue="{Binding WeaponClass}" ItemsSource="{Binding WeaponClassValues}">
+                              SelectedValue="{Binding WeaponClass.Value}" ItemsSource="{Binding WeaponClassValues}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
@@ -364,13 +364,13 @@
                             </Grid.RowDefinitions>
                             <RadioButton Grid.Row="0" Content="Shield" GroupName="OffHand"
                                  IsEnabled="{Binding WeaponClassIsTwoHanded, Converter={StaticResource InvertBoolConverter}}"
-                                 IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.Shield}}" />
+                                 IsChecked="{Binding OffHand.Value, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.Shield}}" />
                             <RadioButton Grid.Row="1" Content="Dual wield" GroupName="OffHand"
                                  IsEnabled="{Binding WeaponClassIsTwoHanded, Converter={StaticResource InvertBoolConverter}}"
-                                 IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.DualWield}}" />
+                                 IsChecked="{Binding OffHand.Value, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.DualWield}}" />
                             <RadioButton Grid.Row="2" Content="Two handed" GroupName="OffHand"
                                  IsEnabled="{Binding WeaponClassIsTwoHanded}"
-                                 IsChecked="{Binding OffHand, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.TwoHanded}}" />
+                                 IsChecked="{Binding OffHand.Value, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:OffHand.TwoHanded}}" />
                         </Grid>
                     </GroupBox>
 
@@ -392,25 +392,25 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <CheckBox Grid.Row="0" Grid.Column="0" Content="Attack"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Attack}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Attack}}"/>
                             <CheckBox Grid.Row="1" Grid.Column="0" Content="Melee"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Melee}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Melee}}"/>
                             <CheckBox Grid.Row="2" Grid.Column="0" Content="Duration"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Duration}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Duration}}"/>
                             <CheckBox Grid.Row="3" Grid.Column="0" Content="Projectile"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Projectile}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Projectile}}"/>
                             <CheckBox Grid.Row="0" Grid.Column="1" Content="Spell" Margin="10,0"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Spell}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Spell}}"/>
                             <CheckBox Grid.Row="1" Grid.Column="1" Content="Trap" Margin="10,0"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Trap}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Trap}}"/>
                             <CheckBox Grid.Row="2" Grid.Column="1" Content="Mine" Margin="10,0"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Mine}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Mine}}"/>
                             <CheckBox Grid.Row="3" Grid.Column="1" Content="Totem" Margin="10,0"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Totem}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Totem}}"/>
                             <CheckBox Grid.Row="0" Grid.Column="2" Content="Area"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Area}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Area}}"/>
                             <CheckBox Grid.Row="1" Grid.Column="2" Content="Cast"
-                              IsChecked="{Binding Tags, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Cast}}"/>
+                              IsChecked="{Binding Tags.Value, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static pseudoAttributes:Tags.Cast}}"/>
                         </Grid>
                     </GroupBox>
                 </Grid>

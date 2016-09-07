@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -16,7 +15,10 @@ namespace POESKillTree.SkillTreeFiles
             All = FromSearch | FromAttrib | Checked | Crossed | FromHover
         }
 
-        public Dictionary<SkillNode, HighlightState> nodeHighlights = new Dictionary<SkillNode, HighlightState>();
+        private readonly Dictionary<SkillNode, HighlightState> _nodeHighlights =
+            new Dictionary<SkillNode, HighlightState>();
+
+        public IReadOnlyDictionary<SkillNode, HighlightState> NodeHighlights => _nodeHighlights;
 
         /// <summary>
         /// Returns flags without HighlightState.Tags if the node is an ascendancy node.
@@ -30,9 +32,9 @@ namespace POESKillTree.SkillTreeFiles
 
         public bool NodeHasHighlights(SkillNode node, HighlightState flags)
         {
-            if (nodeHighlights.ContainsKey(node))
+            if (_nodeHighlights.ContainsKey(node))
             {
-                return nodeHighlights[node].HasFlag(flags);
+                return _nodeHighlights[node].HasFlag(flags);
             }
             return false;
         }
@@ -41,19 +43,19 @@ namespace POESKillTree.SkillTreeFiles
         {
             var flags = CleanFlags(node, newFlags);
             if (flags == 0) return;
-            if (nodeHighlights.ContainsKey(node))
-                nodeHighlights[node] |= flags;
-            else nodeHighlights.Add(node, flags);
+            if (_nodeHighlights.ContainsKey(node))
+                _nodeHighlights[node] |= flags;
+            else _nodeHighlights.Add(node, flags);
         }
 
         public void UnhighlightNode(SkillNode node, HighlightState removeFlags)
         {
-            if (nodeHighlights.ContainsKey(node))
+            if (_nodeHighlights.ContainsKey(node))
             {
                 // Each flag only remains set if it's not one of the flags to be removed.
-                HighlightState newState = nodeHighlights[node] & ~removeFlags;
-                if (newState == 0) nodeHighlights.Remove(node);
-                else nodeHighlights[node] = newState;
+                HighlightState newState = _nodeHighlights[node] & ~removeFlags;
+                if (newState == 0) _nodeHighlights.Remove(node);
+                else _nodeHighlights[node] = newState;
             }
         }
 
@@ -67,12 +69,16 @@ namespace POESKillTree.SkillTreeFiles
         public void UnhighlightAllNodes(HighlightState removeFlags)
         {
             // Kludge cast to avoid a "Collection was modified" exception.
-            var keys = nodeHighlights.Keys.ToArray();
+            var keys = _nodeHighlights.Keys.ToArray();
             foreach (SkillNode node in keys)
                 UnhighlightNode(node, removeFlags);
         }
 
-        public void ReplaceHighlights(IEnumerable<SkillNode> newNodes, HighlightState replaceFlags)
+        /// <summary>
+        /// Removes <paramref name="replaceFlags"/> from all nodes and then adds them to all nodes
+        /// in <paramref name="newNodes"/>.
+        /// </summary>
+        public void ResetHighlights(IEnumerable<SkillNode> newNodes, HighlightState replaceFlags)
         {
             UnhighlightAllNodes(replaceFlags);
             HighlightNodes(newNodes, replaceFlags);
@@ -82,14 +88,16 @@ namespace POESKillTree.SkillTreeFiles
         /// For all nodes that have at least one of the ifFlags:
         /// Removes flags not in ifFlags, adds newFlags.
         /// </summary>
-        public void HighlightNodesIf(HighlightState newFlags, HighlightState ifFlags)
+        /// <returns>All affected nodes.</returns>
+        public IEnumerable<SkillNode> HighlightNodesIf(HighlightState newFlags, HighlightState ifFlags)
         {
-            var pairs = nodeHighlights.Where(pair => (pair.Value & ifFlags) > 0).ToArray();
+            var pairs = _nodeHighlights.Where(pair => (pair.Value & ifFlags) > 0).ToArray();
             foreach (var pair in pairs)
             {
-                nodeHighlights[pair.Key] &= ifFlags;
-                nodeHighlights[pair.Key] |= CleanFlags(pair.Key, newFlags);
+                _nodeHighlights[pair.Key] &= ifFlags;
+                _nodeHighlights[pair.Key] |= CleanFlags(pair.Key, newFlags);
             }
+            return pairs.Select(p => p.Key);
         }
     }
 }

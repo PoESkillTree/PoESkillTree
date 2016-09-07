@@ -102,7 +102,6 @@ namespace POESKillTree.Views
         {
             var tree = await SkillTree.CreateAsync(PersistentData, DialogCoordinator.Instance, controller, assetLoader);
             DialogParticipation.SetRegister(this, tree);
-            tree.BanditSettings = PersistentData.CurrentBuild.Bandits;
             tree.PropertyChanged += Tree_PropertyChanged;
             if (BuildsControlViewModel != null)
                 BuildsControlViewModel.SkillTree = tree;
@@ -157,7 +156,8 @@ namespace POESKillTree.Views
             }
         }
 
-        private SettingsWindow _settingsWindow;
+        private SettingsWindow _treeGeneratorWindow;
+        private SettingsViewModel _treeGeneratorViewModel;
 
         public string MainWindowTitle { get; } =
             FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).ProductName;
@@ -199,6 +199,7 @@ namespace POESKillTree.Views
             {
                 if (args.PropertyName == nameof(PersistentData.CurrentBuild))
                 {
+                    SaveTreeGeneratorSettings();
                     PersistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
                 }
             };
@@ -215,6 +216,13 @@ namespace POESKillTree.Views
                 case nameof(PoEBuild.TreeUrl):
                     if (!_skipLoadOnCurrentBuildTreeChange)
                         Tree.LoadFromUrl(PersistentData.CurrentBuild.TreeUrl);
+                    break;
+                case nameof(PoEBuild.CheckedNodeIds):
+                case nameof(PoEBuild.CrossedNodeIds):
+                    Tree.ResetTaggedNodes();
+                    break;
+                case nameof(PoEBuild.AdditionalData):
+                    _treeGeneratorViewModel?.LoadFrom(PersistentData.CurrentBuild.AdditionalData);
                     break;
             }
         }
@@ -640,12 +648,14 @@ namespace POESKillTree.Views
                 _canClose = false;
                 var message = L10n.Message("There are unsaved builds. Do you want to save them before closing?\n\n"
                                            + "Canceling stops the program from closing and does not save any builds.");
+                // Might affect unsaved builds state, so needs to be done here.
+                SaveTreeGeneratorSettings();
                 if (await BuildsControlViewModel.HandleUnsavedBuilds(message))
                 {
                     // User wants to close
                     _canClose = true;
                     // Here goes the close handling that happens synchronously.
-                    _settingsWindow?.Close();
+                    _treeGeneratorWindow?.Close();
                     // Calling Close() here again is not possible as the Closing event might still be handled
                     // (Close() is not allowed while a previous one is not completely processed)
                     Application.Current.Shutdown();
@@ -699,29 +709,34 @@ namespace POESKillTree.Views
 
         private async void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
         {
+            if (_treeGeneratorWindow != null && _treeGeneratorWindow.IsOpen)
+            {
+                await this.ShowInfoAsync(L10n.Message("The Skill Tree Generator is already open"));
+                return;
+            }
             try
             {
-                if (_settingsWindow == null)
+                if (_treeGeneratorWindow == null)
                 {
-                    var vm = new SettingsViewModel(Tree, SettingsDialogCoordinator.Instance);
-                    vm.RunFinished += (o, args) =>
+                    _treeGeneratorViewModel = new SettingsViewModel(Tree, SettingsDialogCoordinator.Instance);
+                    _treeGeneratorViewModel.LoadFrom(PersistentData.CurrentBuild.AdditionalData);
+                    _treeGeneratorViewModel.RunFinished += (o, args) =>
                     {
                         UpdateUI();
                         SetCurrentBuildUrlFromTree();
                     };
-                    _settingsWindow = new SettingsWindow { DataContext = vm};
-                    DialogParticipation.SetRegister(_settingsWindow, vm);
+                    _treeGeneratorWindow = new SettingsWindow {DataContext = _treeGeneratorViewModel};
+                    _treeGeneratorWindow.Closing += (o, args) => SaveTreeGeneratorSettings();
+                    DialogParticipation.SetRegister(_treeGeneratorWindow, _treeGeneratorViewModel);
                 }
-                if (_settingsWindow.IsOpen)
-                {
-                    await this.ShowInfoAsync(L10n.Message("The Skill Tree Generator is already open"));
-                    return;
-                }
-                await this.ShowChildWindowAsync(_settingsWindow);
+                await this.ShowChildWindowAsync(_treeGeneratorWindow);
             }
             catch (Exception ex)
             {
                 await this.ShowErrorAsync(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
+#if DEBUG
+                throw;
+#endif
             }
         }
 
@@ -1031,9 +1046,9 @@ namespace POESKillTree.Views
             }
         }
 
-        #endregion
+#endregion
 
-        #region  Character Selection
+#region  Character Selection
         private void userInteraction_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _userInteraction = true;
@@ -1092,9 +1107,9 @@ namespace POESKillTree.Views
             SetCurrentBuildUrlFromTree();
         }
 
-        #endregion
+#endregion
 
-        #region Update Attribute and Character lists
+#region Update Attribute and Character lists
 
         public void UpdateUI()
         {
@@ -1284,9 +1299,9 @@ namespace POESKillTree.Views
             return true;
         }
 
-        #endregion
+#endregion
 
-        #region Attribute and Character lists - Event Handlers
+#region Attribute and Character lists - Event Handlers
 
         private void ToggleAttributes()
         {
@@ -1378,9 +1393,9 @@ namespace POESKillTree.Views
                 gAttributesFilter.Visibility = Visibility.Collapsed;
         }
 
-        #endregion
+#endregion
 
-        #region zbSkillTreeBackground
+#region zbSkillTreeBackground
 
         private void zbSkillTreeBackground_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -1586,9 +1601,9 @@ namespace POESKillTree.Views
             }
         }
 
-        #endregion
+#endregion
 
-        #region Items
+#region Items
 
         private bool _pauseLoadItemData;
 
@@ -1641,18 +1656,25 @@ namespace POESKillTree.Views
             _pauseLoadItemData = false;
         }
 
-        #endregion
+#endregion
 
-        #region Builds - Services
+#region Builds - Services
+
+        private void SaveTreeGeneratorSettings()
+        {
+            if (_treeGeneratorViewModel != null
+                && _treeGeneratorViewModel.SaveTo(PersistentData.CurrentBuild.AdditionalData))
+            {
+                PersistentData.CurrentBuild.FlagDirty();
+            }
+        }
 
         private async Task CurrentBuildChanged()
         {
             var build = PersistentData.CurrentBuild;
-            if (Tree != null)
-            {
-                Tree.BanditSettings = build.Bandits;
-                Tree.Level = build.Level;
-            }
+            Tree.Level = build.Level;
+            Tree.ResetTaggedNodes();
+            _treeGeneratorViewModel?.LoadFrom(build.AdditionalData);
             await LoadItemData();
             SetCustomGroups(build.CustomGroups);
             await LoadBuildFromUrlAsync();
@@ -1755,9 +1777,9 @@ namespace POESKillTree.Views
             }
         }
 
-        #endregion
+#endregion
 
-        #region Bottom Bar (Build URL etc)
+#region Bottom Bar (Build URL etc)
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -1888,9 +1910,9 @@ namespace POESKillTree.Views
             }
         }
 
-        #endregion
+#endregion
 
-        #region Theme
+#region Theme
 
         private void mnuSetTheme_Click(object sender, RoutedEventArgs e)
         {
@@ -1925,7 +1947,7 @@ namespace POESKillTree.Views
             ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewAccent" + sAccent)).IsChecked = true;
             PersistentData.Options.Accent = sAccent;
         }
-        #endregion
+#endregion
 
         private void UpdateTreeComparision()
         {
@@ -2027,7 +2049,7 @@ namespace POESKillTree.Views
             }
         }
 
-        #region Async task helpers
+#region Async task helpers
 
         private void AsyncTaskStarted(string infoText)
         {
@@ -2069,7 +2091,7 @@ namespace POESKillTree.Views
             }
         }
 
-        #endregion
+#endregion
 
         public override IWindowPlacementSettings GetWindowPlacementSettings()
         {

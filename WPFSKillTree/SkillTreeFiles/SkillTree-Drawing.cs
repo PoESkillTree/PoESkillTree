@@ -785,7 +785,7 @@ namespace POESKillTree.SkillTreeFiles
             var checkPen = new Pen(Brushes.Lime, 20);
             using (var dc = _highlights.RenderOpen())
             {
-                foreach (var pair in nh.nodeHighlights)
+                foreach (var pair in nh.NodeHighlights)
                 {
                     if (pair.Key.ascendancyName != null && !DrawAscendancy || pair.Key.Spc != null)
                         continue;
