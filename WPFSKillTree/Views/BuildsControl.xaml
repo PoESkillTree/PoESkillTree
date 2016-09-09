@@ -34,31 +34,43 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <DockPanel.Resources>
-                <CollectionViewSource x:Key="ClassFilterItemsView"
-                                      Source="{Binding ClassFilterItems}">
-                    <CollectionViewSource.GroupDescriptions>
-                        <PropertyGroupDescription PropertyName="CharacterClass"></PropertyGroupDescription>
-                    </CollectionViewSource.GroupDescriptions>
-                </CollectionViewSource>
-            </DockPanel.Resources>
             <ComboBox Width="110" Margin="5 0"
                       SelectedItem="{Binding ClassFilter}"
                       SelectedIndex="0"
-                      ItemsSource="{Binding Source={StaticResource ClassFilterItemsView}}">
-                <ComboBox.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate DataType="CollectionViewGroup">
-                                <TextBlock Foreground="{StaticResource AccentColorBrush}"
-                                           Text="{Binding Name}"/>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </ComboBox.GroupStyle>
+                      ItemsSource="{Binding ClassFilterItems}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="viewModels:ClassFilterItem">
-                        <TextBlock Text="{Binding ShownClass}" />
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <!-- This style imitates group headers when AscendancyClass == null.
+                                     Actual groupings are not used as their headers can not be selected. -->
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding AscendancyClass}" />
+                                    <Setter Property="Margin" Value="10 0 0 0" />
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                    <Style.Triggers>
+                                        <!-- AscendancyClass == null -->
+                                        <DataTrigger Binding="{Binding AscendancyClass}" Value="{x:Null}">
+                                            <Setter Property="Text" Value="{Binding CharacterClass}" />
+                                            <Setter Property="Margin" Value="0" />
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                        </DataTrigger>
+                                        <!-- SelectedItem -->
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="{x:Null}">
+                                            <Setter Property="Margin" Value="0" />
+                                        </DataTrigger>
+                                        <!-- SelectedItem, AscendancyClass == null -->
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="{x:Null}" />
+                                                <Condition Binding="{Binding AscendancyClass}" Value="{x:Null}" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>

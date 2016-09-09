@@ -29,13 +29,10 @@ namespace POESKillTree.ViewModels
 
         public string AscendancyClass { get; }
 
-        public string ShownClass { get; }
-
         public ClassFilterItem(string characterClass, string ascendancyClass)
         {
             CharacterClass = characterClass;
             AscendancyClass = ascendancyClass;
-            ShownClass = AscendancyClass ?? CharacterClass;
         }
     }
 
