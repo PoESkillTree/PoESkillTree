@@ -9,6 +9,7 @@
              xmlns:model="clr-namespace:POESKillTree.TreeGenerator.Model"
              xmlns:pseudoAttributes="clr-namespace:POESKillTree.TreeGenerator.Model.PseudoAttributes"
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              x:Name="Control"
              d:DesignHeight="400" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
@@ -75,12 +76,6 @@
             <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
             <converter:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
-            <ControlTemplate x:Key="ExitIcon">
-                <Canvas Width="10" Height="10" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
-                    <Path Width="10" Height="10" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
-                      Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z "/>
-                </Canvas>
-            </ControlTemplate>
         </Grid.Resources>
 
         <TabControl metroControls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}">
@@ -180,7 +175,7 @@
                                         <Button Command="{Binding DataContext.RemoveAttributeConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}" Width="30" Height="30"
                                                 Style="{DynamicResource MetroCircleButtonStyle}">
-                                            <ContentControl Template="{StaticResource ExitIcon}" />
+                                            <iconPacks:PackIconModern Kind="Close" Height="10" Width="10"/>
                                         </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -273,7 +268,7 @@
                                         <Button Command="{Binding DataContext.RemovePseudoConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}" Width="30" Height="30"
                                                 Style="{DynamicResource MetroCircleButtonStyle}">
-                                            <ContentControl Template="{StaticResource ExitIcon}" />
+                                            <iconPacks:PackIconModern Kind="Close" Height="10" Width="10"/>
                                         </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

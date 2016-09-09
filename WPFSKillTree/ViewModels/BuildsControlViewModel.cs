@@ -141,7 +141,7 @@ namespace POESKillTree.ViewModels
                 {
                     if (SelectedBuild != null)
                         SelectedBuild.IsSelected = true;
-                    PersistentData.SelectedBuild = SelectedBuild?.Build as PoEBuild;
+                    PersistentData.SelectedBuild = SelectedBuild?.Build;
                 }, b =>
                 {
                     if (SelectedBuild != null)
@@ -594,6 +594,12 @@ namespace POESKillTree.ViewModels
         private BuildViewModel TreeFindBuildViewModel(PoEBuild build)
         {
             return TreeFind<BuildViewModel>(b => b.Build == build, BuildRoot);
+        }
+
+        private IBuildViewModel<T> TreeFindBuildViewModel<T>(T build)
+            where T : class, IBuild
+        {
+            return TreeFind<IBuildViewModel<T>>(b => b.Build == build, BuildRoot);
         }
 
         private static T TreeFind<T>(Predicate<T> predicate, IBuildViewModel current) where T : class, IBuildViewModel

@@ -16,7 +16,7 @@ namespace POESKillTree.Model.Serialization
     {
         private Options _options = new Options();
         private PoEBuild _currentBuild;
-        private PoEBuild _selectedBuild;
+        private IBuild _selectedBuild;
         private EquipmentData _equipmentData;
 
         public Options Options
@@ -31,7 +31,7 @@ namespace POESKillTree.Model.Serialization
             set { SetProperty(ref _currentBuild, value); }
         }
 
-        public PoEBuild SelectedBuild
+        public IBuild SelectedBuild
         {
             get { return _selectedBuild; }
             set { SetProperty(ref _selectedBuild, value); }

@@ -16,7 +16,7 @@ namespace POESKillTree.Model
     {
         Options Options { get; }
         PoEBuild CurrentBuild { get; set; }
-        PoEBuild SelectedBuild { get; set; }
+        IBuild SelectedBuild { get; set; }
         BuildFolder RootBuild { get; }
         EquipmentData EquipmentData { get; }
         ObservableCollection<Item> StashItems { get; }

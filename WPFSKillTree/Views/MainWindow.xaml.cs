@@ -1954,7 +1954,7 @@ namespace POESKillTree.Views
             if (Tree == null)
                 return;
 
-            var build = PersistentData.SelectedBuild;
+            var build = PersistentData.SelectedBuild as PoEBuild;
             if (build != null && PersistentData.Options.TreeComparisonEnabled)
             {
                 HashSet<SkillNode> nodes;

@@ -11,6 +11,7 @@
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:builds="clr-namespace:POESKillTree.ViewModels.Builds"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:BuildsControlViewModel}"
              x:Name="Control">
@@ -91,54 +92,69 @@
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type builds:BuildFolderViewModel}"
                                           ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Build.Name}"
-                               FontWeight="Bold">
-                        <TextBlock.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
-                                          CommandParameter="{Binding}">
-                                    <MenuItem.Header>
-                                        <l:Catalog Message="Edit" />
-                                    </MenuItem.Header>
-                                </MenuItem>
-                                <MenuItem Command="{Binding Data.DeleteCommand, Source={StaticResource VmProxy}}"
-                                          CommandParameter="{Binding}"
-                                          InputGestureText="Delete">
-                                    <MenuItem.Header>
-                                        <l:Catalog Message="Delete" />
-                                    </MenuItem.Header>
-                                </MenuItem>
-                                <Separator />
-                                <MenuItem Command="{Binding Data.CutCommand, Source={StaticResource VmProxy}}"
-                                          CommandParameter="{Binding}"
-                                          InputGestureText="Ctrl+X">
-                                    <MenuItem.Header>
-                                        <l:Catalog Message="Cut" />
-                                    </MenuItem.Header>
-                                </MenuItem>
-                                <MenuItem Command="{Binding Data.PasteCommand, Source={StaticResource VmProxy}}"
-                                          CommandParameter="{Binding}"
-                                          InputGestureText="Ctrl+V">
-                                    <MenuItem.Header>
-                                        <l:Catalog Message="Paste" />
-                                    </MenuItem.Header>
-                                </MenuItem>
-                                <Separator />
-                                <MenuItem Command="{Binding Data.NewBuildCommand, Source={StaticResource VmProxy}}"
-                                          CommandParameter="{Binding}">
-                                    <MenuItem.Header>
-                                        <l:Catalog Message="New Build" />
-                                    </MenuItem.Header>
-                                </MenuItem>
-                                <MenuItem Command="{Binding Data.NewFolderCommand, Source={StaticResource VmProxy}}"
-                                          CommandParameter="{Binding}">
-                                    <MenuItem.Header>
-                                        <l:Catalog Message="New Folder" />
-                                    </MenuItem.Header>
-                                </MenuItem>
-                            </ContextMenu>
-                        </TextBlock.ContextMenu>
-                    </TextBlock>
+                    <StackPanel Orientation="Horizontal" Height="16">
+                        <iconPacks:PackIconModern Height="16" Width="16" Margin="0 0 4 0">
+                            <iconPacks:PackIconModern.Style>
+                                <Style TargetType="iconPacks:PackIconModern">
+                                    <Setter Property="Kind" Value="Folder" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Build.IsExpanded}" Value="True">
+                                            <Setter Property="Kind" Value="FolderOpen" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </iconPacks:PackIconModern.Style>
+                        </iconPacks:PackIconModern>
+                        <TextBlock Text="{Binding Build.Name}"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center">
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
+                                              CommandParameter="{Binding}">
+                                        <MenuItem.Header>
+                                            <l:Catalog Message="Edit" />
+                                        </MenuItem.Header>
+                                    </MenuItem>
+                                    <MenuItem Command="{Binding Data.DeleteCommand, Source={StaticResource VmProxy}}"
+                                              CommandParameter="{Binding}"
+                                              InputGestureText="Delete">
+                                        <MenuItem.Header>
+                                            <l:Catalog Message="Delete" />
+                                        </MenuItem.Header>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Command="{Binding Data.CutCommand, Source={StaticResource VmProxy}}"
+                                              CommandParameter="{Binding}"
+                                              InputGestureText="Ctrl+X">
+                                        <MenuItem.Header>
+                                            <l:Catalog Message="Cut" />
+                                        </MenuItem.Header>
+                                    </MenuItem>
+                                    <MenuItem Command="{Binding Data.PasteCommand, Source={StaticResource VmProxy}}"
+                                              CommandParameter="{Binding}"
+                                              InputGestureText="Ctrl+V">
+                                        <MenuItem.Header>
+                                            <l:Catalog Message="Paste" />
+                                        </MenuItem.Header>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Command="{Binding Data.NewBuildCommand, Source={StaticResource VmProxy}}"
+                                              CommandParameter="{Binding}">
+                                        <MenuItem.Header>
+                                            <l:Catalog Message="New Build" />
+                                        </MenuItem.Header>
+                                    </MenuItem>
+                                    <MenuItem Command="{Binding Data.NewFolderCommand, Source={StaticResource VmProxy}}"
+                                              CommandParameter="{Binding}">
+                                        <MenuItem.Header>
+                                            <l:Catalog Message="New Folder" />
+                                        </MenuItem.Header>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
+                    </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type builds:BuildViewModel}">
                     <Grid x:Name="Grid">
