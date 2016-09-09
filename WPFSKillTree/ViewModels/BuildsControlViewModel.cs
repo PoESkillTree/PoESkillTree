@@ -103,6 +103,10 @@ namespace POESKillTree.ViewModels
 
         public ICommand OpenBuildsSavePathCommand { get; }
 
+        public ICommand ExpandAllCommand { get; }
+
+        public ICommand CollapseAllCommand { get; }
+
         public IPersistentData PersistentData { get; }
 
         private BuildViewModel _currentBuild;
@@ -208,12 +212,12 @@ namespace POESKillTree.ViewModels
 
             // The monitor alone is not enough because delays are necessary and those shouldn't block other save
             // operations, which would happen if delays are awaited directly in the save method.
-            // It could be done awaited .ConfigureAwait(false) if SimpleMonitor would be thread safe.
+            // It could be done awaited with .ConfigureAwait(false) if SimpleMonitor would be thread safe.
             _changingFileSystemMonitor.Entered += (sender, args) => _changingFileSystemCounter++;
             _changingFileSystemMonitor.Freed += async (sender, args) =>
             {
                 // Wait because FileSystemWatcherOnChanged calls are delayed a bit.
-                await Task.Delay(100);
+                await Task.Delay(200);
                 // This is a counter and not boolean because other save operations may happen while waiting on delay.
                 _changingFileSystemCounter--;
             };
@@ -252,9 +256,11 @@ namespace POESKillTree.ViewModels
                 Cut,
                 b => b != BuildRoot && b != CurrentBuild);
             CopyCommand = new RelayCommand<IBuildViewModel<PoEBuild>>(Copy);
-            PasteCommand = new AsyncRelayCommand<IBuildFolderViewModel>(Paste, CanPaste);
+            PasteCommand = new AsyncRelayCommand<IBuildViewModel>(Paste, CanPaste);
             ReloadCommand = new AsyncRelayCommand(Reload);
             OpenBuildsSavePathCommand = new RelayCommand(() => Process.Start(PersistentData.Options.BuildsSavePath));
+            ExpandAllCommand = new RelayCommand(ExpandAll);
+            CollapseAllCommand = new RelayCommand(CollapseAll);
 
             SkillTree = skillTree;
             ClassFilterItems = GenerateAscendancyClassItems().ToList();
@@ -474,22 +480,24 @@ namespace POESKillTree.ViewModels
             _clipboardIsCopy = true;
         }
 
-        private bool CanPaste(IBuildFolderViewModel target)
+        private bool CanPaste(IBuildViewModel target)
         {
             if (target == null || _buildClipboard == null)
                 return false;
-            return _buildValidator.CanMoveTo(_buildClipboard, target);
+            var targetFolder = target as IBuildFolderViewModel ?? target.Parent;
+            return _buildValidator.CanMoveTo(_buildClipboard, targetFolder);
         }
 
-        private async Task Paste(IBuildFolderViewModel target)
+        private async Task Paste(IBuildViewModel target)
         {
+            var targetFolder = target as IBuildFolderViewModel ?? target.Parent;
             IBuildViewModel pasted;
             if (_clipboardIsCopy)
             {
                 var newBuild = _buildClipboard.Build.DeepClone() as PoEBuild;
                 if (newBuild == null)
                     throw new InvalidOperationException("Can only copy builds, not folders.");
-                newBuild.Name = Util.FindDistinctName(newBuild.Name, target.Children.Select(b => b.Build.Name));
+                newBuild.Name = Util.FindDistinctName(newBuild.Name, targetFolder.Children.Select(b => b.Build.Name));
                 pasted = new BuildViewModel(newBuild, Filter);
             }
             else
@@ -497,7 +505,7 @@ namespace POESKillTree.ViewModels
                 pasted = _buildClipboard;
                 _buildClipboard = null;
             }
-            target.Children.Add(pasted);
+            targetFolder.Children.Add(pasted);
 
             // Folders and non-dirty builds need to be saved to create the new file.
             var build = pasted.Build as PoEBuild;
@@ -549,6 +557,16 @@ namespace POESKillTree.ViewModels
                     return;
             }
             await PersistentData.ReloadBuildsAsync();
+        }
+
+        private void ExpandAll()
+        {
+            TreeTraverse<IBuildFolderViewModel>(b => b.Build.IsExpanded = true, BuildRoot);
+        }
+
+        private void CollapseAll()
+        {
+            TreeTraverse<IBuildFolderViewModel>(b => b.Build.IsExpanded = false, BuildRoot);
         }
 
         #endregion

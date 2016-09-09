@@ -79,7 +79,8 @@
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type builds:BuildFolderViewModel}"
                                           ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Build.Name}">
+                    <TextBlock Text="{Binding Build.Name}"
+                               FontWeight="Bold">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"

@@ -513,6 +513,17 @@
                         <l:Catalog Message="Skill _Tree Comparison" />
                     </MenuItem.Header>
                 </MenuItem>
+                <Separator/>
+                <MenuItem Command="{Binding BuildsControlViewModel.ExpandAllCommand}">
+                    <MenuItem.Header>
+                        <l:Catalog>Expand all build folders</l:Catalog>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding BuildsControlViewModel.CollapseAllCommand}">
+                    <MenuItem.Header>
+                        <l:Catalog>Collapse all build folders</l:Catalog>
+                    </MenuItem.Header>
+                </MenuItem>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
