@@ -214,7 +214,7 @@ namespace POESKillTree.ViewModels
             _changingFileSystemMonitor.Freed += async (sender, args) =>
             {
                 // Wait because FileSystemWatcherOnChanged calls are delayed a bit.
-                await Task.Delay(200);
+                await Task.Delay(2000);
                 // This is a counter and not boolean because other save operations may happen while waiting on delay.
                 _changingFileSystemCounter--;
             };
