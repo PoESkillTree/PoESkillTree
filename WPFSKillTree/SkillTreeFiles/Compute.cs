@@ -164,6 +164,12 @@ namespace POESKillTree.SkillTreeFiles
                                 inc += increase.Percent;
                         if (IsDualWielding && damage.Matches(PhysicalWeaponDamage) && attrs.ContainsKey("#% increased Physical Weapon Damage while Dual Wielding"))
                             inc += attrs["#% increased Physical Weapon Damage while Dual Wielding"][0];
+                        if (OffHand.IsShield() && damage.Matches(PhysicalWeaponDamage) && attrs.ContainsKey("#% increased Physical Weapon Damage while holding a Shield"))
+                            inc += attrs["#% increased Physical Weapon Damage while holding a Shield"][0];
+                        if (OffHand.IsShield() && source.Nature.Is(DamageSource.Attack) && attrs.ContainsKey("#% increased Physical Attack Damage while holding a Shield"))
+                            inc += attrs["#% increased Physical Attack Damage while holding a Shield"][0];
+                        if (OffHand.IsShield() && source.Nature.Is(DamageForm.Melee) && attrs.ContainsKey("#% increased Melee Physical Damage while holding a Shield"))
+                            inc += attrs["#% increased Melee Physical Damage while holding a Shield"][0];
                         if (source.Nature.Is(DamageSource.Spell) && attrs.ContainsKey("Supported Triggered Spells have #% increased Spell Damage")) // Cast on Melee Kill.
                             inc += attrs["Supported Triggered Spells have #% increased Spell Damage"][0];
                         if (inc != 0)
@@ -612,6 +618,8 @@ namespace POESKillTree.SkillTreeFiles
                     }
                     if (IsDualWielding && attrs.ContainsKey("#% increased Attack Speed while Dual Wielding"))
                         incAS += attrs["#% increased Attack Speed while Dual Wielding"][0];
+                    if (OffHand.IsShield() && attrs.ContainsKey("#% increased Attack Speed while holding a Shield"))
+                        incAS += attrs["#% increased Attack Speed while holding a Shield"][0];
                     if (incAS != 0)
                         APS = IncreaseValueByPercentage(APS, incAS);
 
@@ -2219,10 +2227,10 @@ namespace POESKillTree.SkillTreeFiles
                 chanceBlockAttacks += Global["#% additional Chance to Block with Shields"][0];
             if (IsWieldingStaff && Global.ContainsKey("#% additional Block Chance With Staves"))
                 chanceBlockAttacks += Global["#% additional Block Chance With Staves"][0];
-            if (IsDualWielding && Global.ContainsKey("#% additional Chance to Block while Dual Wielding"))
-                chanceBlockAttacks += Global["#% additional Chance to Block while Dual Wielding"][0];
-            if ((IsDualWielding || hasShield) && Global.ContainsKey("#% additional Chance to Block while Dual Wielding or holding a Shield"))
-                chanceBlockAttacks += Global["#% additional Chance to Block while Dual Wielding or holding a Shield"][0];
+            if (IsDualWielding && Global.ContainsKey("#% additional Block Chance while Dual Wielding"))
+                chanceBlockAttacks += Global["#% additional Block Chance while Dual Wielding"][0];
+            if ((IsDualWielding || hasShield) && Global.ContainsKey("#% additional Block Chance while Dual Wielding or holding a Shield"))
+                chanceBlockAttacks += Global["#% additional Block Chance while Dual Wielding or holding a Shield"][0];
             if (Global.ContainsKey("#% of Block Chance applied to Spells"))
                 chanceBlockSpells = PercentOfValue(chanceBlockAttacks, Global["#% of Block Chance applied to Spells"][0]);
             if (hasShield && Global.ContainsKey("#% additional Chance to Block Spells with Shields"))
