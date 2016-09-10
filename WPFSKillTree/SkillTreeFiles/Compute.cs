@@ -2369,6 +2369,16 @@ namespace POESKillTree.SkillTreeFiles
 
             Global.Add(Equipment);
 
+            if (Global.ContainsKey("Armour received from Body Armour is doubled")
+                && itemAttrs.Armor != null)
+            {
+                var armorProp = itemAttrs.Armor.Properties.FirstOrDefault(m => m.Attribute == "Armour: #");
+                if (armorProp != null && armorProp.Value.Any())
+                {
+                    Global["Armour: #"][0] += armorProp.Value[0];
+                }
+            }
+
             CoreAttributes();
 
             Implicit = new AttributeSet(SkillTree.ImplicitAttributes(Global, Level));
