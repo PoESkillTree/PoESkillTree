@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
@@ -148,7 +149,7 @@ namespace UpdateDB.DataLoading
                         }
                         tierList.Add(new XmlTier
                         {
-                            ItemLevel = ParseInt(columns[0]),
+                            ItemLevel = columns[0].ParseInt(),
                             Stats = ExtractStats(columns[1], affixName, rangeRenameFunc).ToArray(),
                             Name = tierName,
                             IsMasterCrafted = MasterCraftedRegex.IsMatch(columns[2]),
@@ -236,8 +237,8 @@ namespace UpdateDB.DataLoading
                 yield return new XmlStat
                 {
                     Name = affix,
-                    From = ParseFloat(fromTo[0]),
-                    To = fromTo.Length > 1 ? ParseFloat(fromTo[1]) : ParseFloat(fromTo[0])
+                    From = fromTo[0].ParseFloat(),
+                    To = fromTo.Length > 1 ? fromTo[1].ParseFloat() : fromTo[0].ParseFloat()
                 };
             }
         }

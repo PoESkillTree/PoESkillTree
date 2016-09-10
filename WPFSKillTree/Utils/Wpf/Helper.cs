@@ -4,26 +4,26 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using POESKillTree.Utils.Converter;
 
-namespace POESKillTree.Utils
+namespace POESKillTree.Utils.Wpf
 {
     /// <summary>
     /// Contains attached properties usable on Xaml classes.
     /// </summary>
-    public static class XamlHelper
+    public static class Helper
     {
         public static readonly DependencyProperty NavigateExternallyProperty =
             DependencyProperty.RegisterAttached(
-                "NavigateExternally", typeof(bool), typeof(XamlHelper),
+                "NavigateExternally", typeof(bool), typeof(Helper),
                 new FrameworkPropertyMetadata(false, NavigateExternallyPropertyChangedCallback));
 
         public static readonly DependencyProperty MainWindowRelativeMaxHeightProperty =
             DependencyProperty.RegisterAttached(
-                "MainWindowRelativeMaxHeight", typeof(double), typeof(XamlHelper),
+                "MainWindowRelativeMaxHeight", typeof(double), typeof(Helper),
                 new FrameworkPropertyMetadata(0.0, MainWindowRelativeMaxHeightPropertyChangedCallback));
 
         public static readonly DependencyProperty FocusOnLoadedProperty =
             DependencyProperty.RegisterAttached(
-                "FocusOnLoaded", typeof(bool), typeof(XamlHelper),
+                "FocusOnLoaded", typeof(bool), typeof(Helper),
                 new PropertyMetadata(false, FocusOnLoadedPropertyChangedCallback));
 
         /// <summary>

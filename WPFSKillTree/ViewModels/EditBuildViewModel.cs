@@ -1,14 +1,73 @@
-﻿using POESKillTree.Model;
+﻿using System;
+using System.Collections.Generic;
+using POESKillTree.Common.ViewModels;
+using POESKillTree.Model.Builds;
+using POESKillTree.ViewModels.Builds;
 
 namespace POESKillTree.ViewModels
 {
-    public class EditBuildViewModel : CloseableViewModel<bool>
+    public class EditBuildViewModel : ErrorInfoViewModel<bool>
     {
-        public PoEBuild Build { get; }
+        private readonly IBuildViewModel<PoEBuild> _buildVm;
+        private readonly BuildValidator _buildValidator;
+        private string _name;
+        private string _note;
+        private string _characterName;
+        private string _accountName;
 
-        public EditBuildViewModel(PoEBuild build)
+        public string Name
         {
-            Build = build.Copy();
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
+        }
+
+        public string Note
+        {
+            get { return _note; }
+            set { SetProperty(ref _note, value); }
+        }
+
+        public string CharacterName
+        {
+            get { return _characterName; }
+            set { SetProperty(ref _characterName, value); }
+        }
+
+        public string AccountName
+        {
+            get { return _accountName; }
+            set { SetProperty(ref _accountName, value); }
+        }
+
+        public DateTime LastUpdated { get; }
+
+        public EditBuildViewModel(IBuildViewModel<PoEBuild> buildVm, BuildValidator buildValidator)
+        {
+            _buildVm = buildVm;
+            _buildValidator = buildValidator;
+            var build = buildVm.Build;
+            Name = build.Name;
+            Note = build.Note;
+            CharacterName = build.CharacterName;
+            AccountName = build.AccountName;
+            LastUpdated = build.LastUpdated;
+        }
+
+        protected override IEnumerable<string> ValidateProperty(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case nameof(Name):
+                    return new[] {_buildValidator.ValidateExistingFileName(Name, _buildVm)};
+                default:
+                    return null;
+            }
+        }
+
+        protected override bool CanClose(bool param)
+        {
+            // Always allow canceling
+            return !param || !HasErrors;
         }
     }
 }

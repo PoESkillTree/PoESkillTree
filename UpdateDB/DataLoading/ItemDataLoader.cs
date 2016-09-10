@@ -10,6 +10,7 @@ using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
@@ -119,7 +120,7 @@ namespace UpdateDB.DataLoading
         {
             i = 0;
             var match = regex.Match(input);
-            return match.Success && TryParseInt(match.Groups[1].Value, out i);
+            return match.Success && match.Groups[1].Value.TryParseInt(out i);
         }
 
         private static IEnumerable<XmlStat> ParseImplicit(WikiItemStat wikiItemStat)
@@ -141,14 +142,14 @@ namespace UpdateDB.DataLoading
                     Log.Warn("Could not parse implicit " + wikiItemStat.StatsCombined);
                     yield break;
                 }
-                var from = ParseFloat(matches[0].Value);
+                var from = matches[0].Value.ParseFloat();
                 yield return new XmlStat
                 {
                     From = from,
                     To = from,
                     Name = mod.Replace(addNoRange, "# minimum")
                 };
-                from = ParseFloat(matches[1].Value);
+                from = matches[1].Value.ParseFloat();
                 yield return new XmlStat
                 {
                     From = from,
@@ -165,24 +166,24 @@ namespace UpdateDB.DataLoading
                 }
                 yield return new XmlStat
                 {
-                    From = ParseFloat(matches[0].Value),
-                    To = ParseFloat(matches[1].Value),
+                    From = matches[0].Value.ParseFloat(),
+                    To = matches[1].Value.ParseFloat(),
                     Name = mod.Replace(addRange, "# minimum")
                 };
                 yield return new XmlStat
                 {
-                    From = ParseFloat(matches[2].Value),
-                    To = ParseFloat(matches[3].Value),
+                    From = matches[2].Value.ParseFloat(),
+                    To = matches[3].Value.ParseFloat(),
                     Name = mod.Replace(addRange, "# maximum")
                 };
             }
             else
             {
-                var from = ParseFloat(matches[0].Value);
+                var from = matches[0].Value.ParseFloat();
                 yield return new XmlStat
                 {
                     From = from,
-                    To = matches.Count > 1 ? ParseFloat(matches[1].Value) : from,
+                    To = matches.Count > 1 ? matches[1].Value.ParseFloat() : from,
                     Name = mod.Replace(range, "#")
                 };
             }
@@ -221,12 +222,12 @@ namespace UpdateDB.DataLoading
                         Log.Warn($"No floats in property {combined}");
                         continue;
                     case 1:
-                        success = TryParseFloat(matches[0].Value, out from);
+                        success = matches[0].Value.TryParseFloat(out from);
                         to = from;
                         break;
                     case 2:
-                        success = TryParseFloat(matches[0].Value, out from) &
-                                  TryParseFloat(matches[1].Value, out to);
+                        success = matches[0].Value.TryParseFloat(out from) &
+                                  matches[1].Value.TryParseFloat(out to);
                         break;
                     default:
                         Log.Warn($"Too many floats in property {combined}");

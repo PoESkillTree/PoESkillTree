@@ -1,118 +1,107 @@
-﻿using System.ComponentModel;
-using POESKillTree.Utils;
+﻿using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
-    public interface IOptions : INotifyPropertyChanged, INotifyPropertyChanging
+    public class Options : Notifier
     {
-        string Language { get; set; }
-        bool AttributesBarOpened { get; set; }
-        bool CharacterSheetBarOpened { get; set; }
-        bool BuildsBarOpened { get; set; }
-        bool TreeComparisonEnabled { get; set; }
-        int SelectedBuildIndex { get; set; }
-        string NodeSearchHighlightColor { get; set; }
-        string NodeHoverHighlightColor { get; set; }
-        string NodeAttrHighlightColor { get; set; }
-        bool ShowAllAscendancyClasses { get; set; }
-        bool DownloadMissingItemImages { get; set; }
-        ResetPreferences ResetPreferences { get; set; }
-    }
-
-    public class Options : Notifier, IOptions
-    {
+        // Don't set language property! When not set, L10n.Initialize will try to use OS settings.
         private string _language;
+        private string _theme = "Dark";
+        private string _accent = "Steel";
+        private bool _attributesBarOpened;
+        private bool _characterSheetBarOpened;
+        private bool _buildsBarOpened;
+        private bool _treeComparisonEnabled;
+        private bool _showAllAscendancyClasses = true;
+        private string _nodeSearchHighlightColor = "Red";
+        private string _nodeAttrHighlightColor = "LawnGreen";
+        private string _nodeHoverHighlightColor = "DodgerBlue";
+        private bool _downloadMissingItemImages;
+        private ResetPreferences _resetPreferences = ResetPreferences.MainTree | ResetPreferences.AscendancyTree;
+        private string _buildSavePath;
+
         public string Language
         {
             get { return _language; }
             set { SetProperty(ref _language, value); }
         }
 
-        public string Theme { get; set; }
-        public string Accent { get; set; } //Controlled by Menu Accent Headers
+        public string Theme
+        {
+            get { return _theme; }
+            set { SetProperty(ref _theme, value); }
+        }
 
-        private bool _attributesBarOpened;
+        public string Accent
+        {
+            get { return _accent; }
+            set { SetProperty(ref _accent, value); }
+        }
+
         public bool AttributesBarOpened
         {
             get { return _attributesBarOpened; }
             set { SetProperty(ref _attributesBarOpened, value); }
         }
 
-        private bool _characterSheetBarOpened;
         public bool CharacterSheetBarOpened
         {
             get { return _characterSheetBarOpened; }
             set { SetProperty(ref _characterSheetBarOpened, value); }
         }
 
-        private bool _buildsBarOpened;
         public bool BuildsBarOpened
         {
             get { return _buildsBarOpened; }
             set { SetProperty(ref _buildsBarOpened, value); }
         }
 
-        private bool _treeComparisonEnabled;
         public bool TreeComparisonEnabled
         {
             get { return _treeComparisonEnabled; }
             set { SetProperty(ref _treeComparisonEnabled, value); }
         }
 
-        private int _selectedBuildIndex = -1;
-        public int SelectedBuildIndex
-        {
-            get { return _selectedBuildIndex; }
-            set { SetProperty(ref _selectedBuildIndex, value); }
-        }
-
-        private bool _showAllAscendancyClasses = true;
         public bool ShowAllAscendancyClasses
         {
             get { return _showAllAscendancyClasses; }
             set { SetProperty(ref _showAllAscendancyClasses, value); }
         }
 
-        private string _nodeSearchHighlightColor = "Red";
         public string NodeSearchHighlightColor
         {
             get { return _nodeSearchHighlightColor; }
             set { SetProperty(ref _nodeSearchHighlightColor, value); }
         }
 
-        private string _nodeAttrHighlightColor = "LawnGreen";
         public string NodeAttrHighlightColor
         {
             get { return _nodeAttrHighlightColor; }
             set { SetProperty(ref _nodeAttrHighlightColor, value); }
         }
 
-        private string _nodeHoverHighlightColor = "DodgerBlue";
         public string NodeHoverHighlightColor
         {
             get { return _nodeHoverHighlightColor; }
             set { SetProperty(ref _nodeHoverHighlightColor, value); }
         }
 
-        private bool _downloadMissingItemImages;
         public bool DownloadMissingItemImages
         {
             get { return _downloadMissingItemImages; }
             set { SetProperty(ref _downloadMissingItemImages, value); }
         }
-
-        private ResetPreferences _resetPreferences = ResetPreferences.MainTree | ResetPreferences.AscendancyTree;
+        
         public ResetPreferences ResetPreferences
         {
             get { return _resetPreferences; }
             set { SetProperty(ref _resetPreferences, value); }
         }
 
-        public Options()
+        public string BuildsSavePath
         {
-            // Don't set Language property! When not set, L10n.Initialize will try to use OS settings.
-            Theme = "Dark";
-            Accent = "Steel";
+            get { return _buildSavePath; }
+            set { SetProperty(ref _buildSavePath, value); }
         }
     }
 }

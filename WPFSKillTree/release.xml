@@ -110,7 +110,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <CSFile Include="**\*.cs" Exclude="$(ObjDir)\**" />
+        <!-- All of these in one list produces too long command line arguments. This partition should be enough for a while. -->
+        <CSFiles1 Include="Controls\**\*.cs" Exclude="$(ObjDir)\**" />
+        <CSFiles2 Include="Model\**\*.cs" Exclude="$(ObjDir)\**" />
+        <CSFiles3 Include="SkillTreeFiles\**\*.cs" Exclude="$(ObjDir)\**" />
+        <CSFiles4 Include="TreeGenerator\**\*.cs" Exclude="$(ObjDir)\**" />
+        <CSFiles5 Include="Utils\**\*.cs" Exclude="$(ObjDir)\**" />
+        <CSFiles6 Include="**\*.cs" Exclude="$(ObjDir)\**;Controls\**\*.cs;Model\**\*.cs;SkillTreeFiles\**\*.cs;TreeGenerator\**\*.cs;Utils\**\*.cs" />
         <XAMLFile Include="**\*.xaml" Exclude="$(LocaleWorkDir)\**" />
         <LocaleLanguageDir Include="$([System.IO.Directory]::GetDirectories(&quot;$(LocaleDir)&quot;))" Exclude="$(LocaleDir)\$(DefaultCatalogDir)">
             <MessageFile>%(Identity)\$(LocaleMessageFilename)</MessageFile>
@@ -127,7 +133,7 @@
         </PortableIniLines>
     </ItemGroup>
 
-    <Target Name="Build" DependsOnTargets="Clean;Identity">
+    <Target Name="UpdateAssemblyInfo" DependsOnTargets="Clean;Identity">
         <!-- Files updated by this target -->
         <ItemGroup>
             <ApplicationManifest Include="Properties\app.manifest" />
@@ -149,7 +155,9 @@
         <!-- Generate app.manifest -->
         <GenerateApplicationManifest ManifestType="Native" InputManifest="@(ApplicationManifest -> '%(Identity).i')" OutputManifest="@(ApplicationManifest)"
                                      AssemblyName="$(AssemblyName).exe" AssemblyVersion="$(AssemblyVersion)" />
+    </Target>
 
+    <Target Name="Build" DependsOnTargets="Clean;Identity;UpdateAssemblyInfo">
         <!-- Build projects (OutputPath=$(DistDir) => No copying needed) -->
         <MSBuild Projects="WPFSKillTree.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
         <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
@@ -180,7 +188,12 @@
         <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -o $(LocaleWorkTemplateFile) -D $(LocaleWorkDir) $(LocaleXAMLFileList)" />
 
         <!-- Extract messages from source C# files -->
-        <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -j -o $(LocaleWorkTemplateFile) @(CSFile, ' ')" />
+        <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -j -o $(LocaleWorkTemplateFile) @(CSFiles1, ' ')" />
+        <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -j -o $(LocaleWorkTemplateFile) @(CSFiles2, ' ')" />
+        <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -j -o $(LocaleWorkTemplateFile) @(CSFiles3, ' ')" />
+        <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -j -o $(LocaleWorkTemplateFile) @(CSFiles4, ' ')" />
+        <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -j -o $(LocaleWorkTemplateFile) @(CSFiles5, ' ')" />
+        <Exec Command="Tools\gettext\xgettext -L C# --from-code=UTF-8 --omit-header --no-wrap -k $(LocaleXGettextKeywords) -j -o $(LocaleWorkTemplateFile) @(CSFiles6, ' ')" />
 
         <!-- Remove BOM from template messages -->
         <Exec Command="Tools\DeBOM $(LocaleWorkTemplateFile)" />
@@ -253,16 +266,6 @@
         <!-- Create working directory for temporary files -->
         <MakeDir Directories="$(WorkDir)" />
 
-        <!-- Compare ProductVersion with recent Git tag (version) -->
-        <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
-        <ReadLinesFromFile File="$(TagFile)">
-            <Output PropertyName="GitVersion" TaskParameter="Lines" />
-        </ReadLinesFromFile>
-        <Message Text="%09Release product version: $(ProductVersion)" />
-        <Message Text="%09Recent Git version: $(GitVersion)" />
-        <Error Text="Release product version and recent Git version are identical!%0APlease, edit ProductVersion of Properties\Version.resx file to reflect a new release."
-               Condition="'$(ProductVersion)' == '$(GitVersion)'" />
-
         <!-- Create FileVersion from ProductVersion using Git revision count as build number -->
         <Exec Command="git rev-list --count HEAD >$(RevisionCountFile)" />
         <ReadLinesFromFile File="$(RevisionCountFile)">
@@ -278,12 +281,22 @@
     </Target>
 
     <Target Name="Release" DependsOnTargets="Test">
+        <!-- Compare ProductVersion with recent Git tag (version) -->
+        <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
+        <ReadLinesFromFile File="$(TagFile)">
+            <Output PropertyName="GitVersion" TaskParameter="Lines" />
+        </ReadLinesFromFile>
+        <Message Text="%09Release product version: $(ProductVersion)" />
+        <Message Text="%09Recent Git version: $(GitVersion)" />
+        <Error Text="Release product version and recent Git version are identical!%0APlease, edit ProductVersion of Properties\Version.resx file to reflect a new release."
+               Condition="'$(ProductVersion)' == '$(GitVersion)'" />
+  
         <!-- Download skill tree assets -->
         <Exec Command="$(DistDir)\UpdateDB.exe /NotVersionControlledOnly /CurrentDir" WorkingDirectory="$(DistDir)" />
 
         <!-- Create empty PersistentData template file -->
         <AssemblyInvokeStatic AssemblyFile="$(DistDir)\$(AssemblyName).exe"
-                              ClassFullName="POESKillTree.Model.PersistentData"
+                              ClassFullName="POESKillTree.Model.Serialization.PersistentDataSerializationService"
                               Method="CreateSetupTemplate"
                               Input1="$(DistDir)"
                               Input2="%LANGUAGE%" />

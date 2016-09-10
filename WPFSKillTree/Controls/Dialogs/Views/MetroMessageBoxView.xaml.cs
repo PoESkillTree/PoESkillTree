@@ -1,7 +1,7 @@
-namespace POESKillTree.Views
+namespace POESKillTree.Controls.Dialogs.Views
 {
     /// <summary>
-    /// Interaction logic for MetroMessageBox.xaml
+    /// Interaction logic for MetroMessageView.xaml
     /// </summary>
     public partial class MetroMessageBoxView
     {

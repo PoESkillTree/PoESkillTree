@@ -15,7 +15,7 @@ namespace POESKillTree.Utils.Converter
     public class GroupStringConverter : IValueConverter, IComparer
     {
         public Dictionary<string, AttributeGroup> AttributeGroups = new Dictionary<string, AttributeGroup>();
-        private List<string[]> CustomGroups;
+        private IList<string[]> CustomGroups;
         private static readonly string Keystone = L10n.Message("Keystone");
         private static readonly string Weapon = L10n.Message("Weapon");
         private static readonly string Charges = L10n.Message("Charges");
@@ -273,23 +273,9 @@ namespace POESKillTree.Utils.Converter
             AttributeGroups.Add(MiscLabel, new AttributeGroup(MiscLabel));
         }
 
-        public List<string[]> CopyCustomGroups()
+        public void ResetGroups(IList<string[]> newgroups)
         {
-            List<string[]> deepcopy = new List<string[]>();
-            foreach (var gp in CustomGroups)
-            {
-                deepcopy.Add((string[])gp.Clone());
-            }
-            return deepcopy;
-        }
-
-        public void ResetGroups(List<string[]> newgroups)
-        {
-            CustomGroups = new List<string[]>();
-            foreach (var gp in newgroups)
-            {
-                CustomGroups.Add((string[])gp.Clone());
-            }
+            CustomGroups = newgroups;
 
             AttributeGroups = new Dictionary<string, AttributeGroup>();
             foreach (var group in DefaultGroups)

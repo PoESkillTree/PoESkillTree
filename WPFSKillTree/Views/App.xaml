@@ -15,6 +15,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro.IconPacks.Modern;component/Themes/PackIconModern.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Contrib/WpfRangeControls/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Styles/RangeScrollbars.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Dialogs.xaml" />

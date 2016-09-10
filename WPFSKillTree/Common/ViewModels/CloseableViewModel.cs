@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using POESKillTree.Model;
 
-namespace POESKillTree.ViewModels
+namespace POESKillTree.Common.ViewModels
 {
     /// <summary>
     /// Base class for ViewModels that can be closed.
@@ -16,14 +15,18 @@ namespace POESKillTree.ViewModels
             Close(null);
         }
 
-        protected virtual bool CanExecute()
+        /// <summary>
+        /// Returns true iff the close command can currently be executed.
+        /// This implementation always returns true.
+        /// </summary>
+        protected virtual bool CanClose()
         {
             return true;
         }
 
-        protected override bool CanExecute(object param)
+        protected sealed override bool CanClose(object param)
         {
-            return CanExecute();
+            return CanClose();
         }
     }
 
@@ -53,7 +56,7 @@ namespace POESKillTree.ViewModels
             {
                 RequestsClose?.Invoke(param);
                 _closeCompletionSource.TrySetResult(param);
-            }, CanExecute);
+            }, CanClose);
         }
 
         /// <summary>
@@ -76,8 +79,9 @@ namespace POESKillTree.ViewModels
 
         /// <summary>
         /// Returns true iff the close command can currently be executed with the given parameter.
+        /// This implementation always returns true.
         /// </summary>
-        protected virtual bool CanExecute(T param)
+        protected virtual bool CanClose(T param)
         {
             return true;
         }

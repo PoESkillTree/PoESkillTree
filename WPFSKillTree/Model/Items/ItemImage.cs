@@ -34,7 +34,7 @@ namespace POESKillTree.Model.Items
             Int32Rect.Empty,
             BitmapSizeOptions.FromEmptyOptions());
 
-        protected IOptions Options { get; private set; }
+        protected Options Options { get; }
 
         private readonly string _baseName;
         private readonly ItemGroup _baseGroup;
@@ -49,7 +49,7 @@ namespace POESKillTree.Model.Items
         private bool _isDefaultImage = true;
         private readonly ImageSource _defaultImage;
 
-        public ItemImage(IOptions options, string baseName, ItemGroup baseGroup)
+        public ItemImage(Options options, string baseName, ItemGroup baseGroup)
         {
             _baseName = baseName;
             _baseGroup = baseGroup;

@@ -35,7 +35,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private readonly string _skillTreePath;
         private readonly string _optsPath;
-        private readonly string AssetsPath;
+        private readonly string _assetsPath;
 
         private readonly string _tempSkillTreePath;
         private readonly string _tempOptsPath;
@@ -54,7 +54,7 @@ namespace POESKillTree.SkillTreeFiles
             _useTempDir = useTempDir;
             _skillTreePath = _path + SkillTreeFile;
             _optsPath = _path + OptsFile;
-            AssetsPath = _path + AssetsFolder;
+            _assetsPath = _path + AssetsFolder;
             var tempPath = _useTempDir ? _path + TempFolder : _path;
             _tempSkillTreePath = tempPath + SkillTreeFile;
             _tempOptsPath = tempPath + OptsFile;
@@ -182,7 +182,7 @@ namespace POESKillTree.SkillTreeFiles
             var backupPath = _path + BackupFolder;
             DirectoryEx.DeleteIfExists(backupPath, true);
             Directory.CreateDirectory(backupPath);
-            DirectoryEx.MoveIfExists(AssetsPath, backupPath + AssetsFolder, true);
+            DirectoryEx.MoveIfExists(_assetsPath, backupPath + AssetsFolder, true);
             FileEx.MoveIfExists(_skillTreePath, backupPath + SkillTreeFile, true);
             FileEx.MoveIfExists(_optsPath, backupPath + OptsFile, true);
         }
@@ -194,7 +194,7 @@ namespace POESKillTree.SkillTreeFiles
         public void RestoreBackup()
         {
             var backupPath = _path + BackupFolder;
-            DirectoryEx.MoveIfExists(backupPath + AssetsFolder, AssetsPath, true);
+            DirectoryEx.MoveIfExists(backupPath + AssetsFolder, _assetsPath, true);
             FileEx.MoveIfExists(backupPath + SkillTreeFile, _skillTreePath, true);
             FileEx.MoveIfExists(backupPath + OptsFile, _optsPath, true);
             DirectoryEx.DeleteIfExists(backupPath);
@@ -227,7 +227,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (!_useTempDir)
                 throw new InvalidOperationException("This instance doesn't use temp directories");
-            DirectoryEx.MoveIfExists(_tempAssetsPath, AssetsPath, true);
+            DirectoryEx.MoveIfExists(_tempAssetsPath, _assetsPath, true);
             FileEx.MoveIfExists(_tempSkillTreePath, _skillTreePath, true);
             FileEx.MoveIfExists(_tempOptsPath, _optsPath, true);
             DirectoryEx.DeleteIfExists(_path + TempFolder);

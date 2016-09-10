@@ -115,7 +115,7 @@ namespace POESKillTree.Model.Items
 
         public ItemImage Image { get; private set; }
 
-        public ItemBase(IOptions options, XmlItemBase xmlBase)
+        public ItemBase(Options options, XmlItemBase xmlBase)
         {
             Level = xmlBase.Level;
             RequiredStrength = xmlBase.Strength;
@@ -154,7 +154,7 @@ namespace POESKillTree.Model.Items
         /// <param name="weaponClass">A string representing the weapon class of the parent <see cref="Item"/>.
         /// Can be null or empty if that item is not a weapon. The weapon class generally is a property without value.</param>
         /// <param name="frameType">The frame type of the item.</param>
-        public ItemBase(IOptions options, ItemSlot itemSlot, string typeLine, string weaponClass, FrameType frameType)
+        public ItemBase(Options options, ItemSlot itemSlot, string typeLine, string weaponClass, FrameType frameType)
         {
             // These don't matter as we won't create new items from this base.
             Level = 0;

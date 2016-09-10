@@ -113,19 +113,17 @@ namespace POESKillTree.Model
             get { return Enum.GetValues(typeof(Bandit)).Cast<Bandit>(); }
         }
 
-        public BanditSettings Clone()
-        {
-            return new BanditSettings
-            {
-                Normal = Normal,
-                Cruel = Cruel,
-                Merciless = Merciless
-            };
-        }
-
         public void Reset()
         {
             Normal = Cruel = Merciless = Bandit.None;
+        }
+
+        /// <summary>
+        /// Returns a deep copy of this instance. (event handlers are NOT cloned)
+        /// </summary>
+        public BanditSettings DeepClone()
+        {
+            return (BanditSettings) SafeMemberwiseClone();
         }
     }
 }

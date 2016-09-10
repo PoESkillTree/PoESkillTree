@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
@@ -167,7 +168,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         public ICommand PauseResumeCommand
         {
-            get { return _pauseResumeCommand ?? (_pauseResumeCommand = new RelayCommand(param => PauseResume())); }
+            get { return _pauseResumeCommand ?? (_pauseResumeCommand = new RelayCommand(PauseResume)); }
         }
 
 #endregion

@@ -13,15 +13,17 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
 using log4net;
+using POESKillTree.Common;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model;
 using POESKillTree.TreeGenerator.ViewModels;
+using POESKillTree.Utils.Extensions;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using static POESKillTree.SkillTreeFiles.Constants;
 
 namespace POESKillTree.SkillTreeFiles
 {
-    public partial class SkillTree : Notifier
+    public partial class SkillTree : Notifier, ISkillTree
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(SkillTree));
 
@@ -158,13 +160,6 @@ namespace POESKillTree.SkillTreeFiles
         public static int UndefinedLevel => 0;
         public static int MaximumLevel => 100;
         private int _level = UndefinedLevel;
-
-        private BanditSettings _banditSettings = new BanditSettings();
-        public BanditSettings BanditSettings
-        {
-            get { return _banditSettings; }
-            set { SetProperty(ref _banditSettings, value); }
-        }
 
         private readonly IDialogCoordinator _dialogCoordinator;
 
@@ -504,12 +499,13 @@ namespace POESKillTree.SkillTreeFiles
                 {"ScionAscendancyChoices", 0}
             };
 
+            var bandits = _persistentData.CurrentBuild.Bandits;
             points["NormalTotal"] += Level - 1;
-            if (BanditSettings.Normal == Bandit.None)
+            if (bandits.Normal == Bandit.None)
                 points["NormalTotal"]++;
-            if (BanditSettings.Cruel == Bandit.None)
+            if (bandits.Cruel == Bandit.None)
                 points["NormalTotal"]++;
-            if (BanditSettings.Merciless == Bandit.None)
+            if (bandits.Merciless == Bandit.None)
                 points["NormalTotal"]++;
 
             foreach (var node in SkilledNodes)
@@ -605,7 +601,7 @@ namespace POESKillTree.SkillTreeFiles
         public Dictionary<string, List<float>> HighlightedAttributes;
 
         public Dictionary<string, List<float>> SelectedAttributes
-            => GetAttributes(SkilledNodes, Chartype, Level, BanditSettings);
+            => GetAttributes(SkilledNodes, Chartype, Level, _persistentData.CurrentBuild.Bandits);
 
         public static Dictionary<string, List<float>> GetAttributes(IEnumerable<SkillNode> skilledNodes, int chartype, int level, BanditSettings banditSettings)
         {
@@ -631,7 +627,7 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         public Dictionary<string, List<float>> SelectedAttributesWithoutImplicit
-            => GetAttributesWithoutImplicit(SkilledNodes, Chartype, BanditSettings);
+            => GetAttributesWithoutImplicit(SkilledNodes, Chartype, _persistentData.CurrentBuild.Bandits);
 
         public static Dictionary<string, List<float>> GetAttributesWithoutImplicit(IEnumerable<SkillNode> skilledNodes, int chartype, BanditSettings banditSettings)
         {
@@ -844,7 +840,7 @@ namespace POESKillTree.SkillTreeFiles
             var parent = new Dictionary<SkillNode, SkillNode>();
             var newOnes = new Queue<SkillNode>();
             var toOmit = new HashSet<SkillNode>(
-                         from entry in _nodeHighlighter.nodeHighlights
+                         from entry in _nodeHighlighter.NodeHighlights
                          where entry.Value.HasFlag(HighlightState.Crossed)
                          select entry.Key);
 
@@ -920,43 +916,74 @@ namespace POESKillTree.SkillTreeFiles
         /// <param name="node">Node to change the HighlightState for</param>
         public void CycleNodeTagForward(SkillNode node)
         {
+            var id = node.Id;
+            var build = _persistentData.CurrentBuild;
             if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Checked))
             {
                 _nodeHighlighter.UnhighlightNode(node, HighlightState.Checked);
                 _nodeHighlighter.HighlightNode(node, HighlightState.Crossed);
+                build.CheckedNodeIds.Remove(id);
+                build.CrossedNodeIds.Add(id);
             }
             else if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Crossed))
             {
                 _nodeHighlighter.UnhighlightNode(node, HighlightState.Crossed);
+                build.CrossedNodeIds.Remove(id);
             }
             else
             {
                 _nodeHighlighter.HighlightNode(node, HighlightState.Checked);
+                build.CheckedNodeIds.Add(id);
             }
             DrawHighlights();
         }
 
         /// <summary>
         /// Changes the HighlightState of the node:
-        /// ... <- None <- Checked <- Crossed <- None
+        /// ... &lt;- None &lt;- Checked &lt;- Crossed &lt;- None
         /// (preserves other HighlightStates than Checked and Crossed)
         /// </summary>
         /// <param name="node">Node to change the HighlightState for</param>
         public void CycleNodeTagBackward(SkillNode node)
         {
+            var id = node.Id;
+            var build = _persistentData.CurrentBuild;
             if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Crossed))
             {
                 _nodeHighlighter.UnhighlightNode(node, HighlightState.Crossed);
                 _nodeHighlighter.HighlightNode(node, HighlightState.Checked);
+                build.CrossedNodeIds.Remove(id);
+                build.CheckedNodeIds.Add(id);
             }
             else if (_nodeHighlighter.NodeHasHighlights(node, HighlightState.Checked))
             {
                 _nodeHighlighter.UnhighlightNode(node, HighlightState.Checked);
+                build.CheckedNodeIds.Remove(id);
             }
             else
             {
                 _nodeHighlighter.HighlightNode(node, HighlightState.Crossed);
+                build.CrossedNodeIds.Add(id);
             }
+            DrawHighlights();
+        }
+
+        /// <summary>
+        /// Resets check and cross tagged node from <see cref="IPersistentData.CurrentBuild"/>.
+        /// </summary>
+        public void ResetTaggedNodes()
+        {
+            var build = _persistentData.CurrentBuild;
+            _nodeHighlighter.ResetHighlights(build.CheckedNodeIds.Select(i => Skillnodes[i]), HighlightState.Checked);
+            _nodeHighlighter.ResetHighlights(build.CrossedNodeIds.Select(i => Skillnodes[i]), HighlightState.Crossed);
+            DrawHighlights();
+        }
+
+        public void SetCheckTaggedNodes(IReadOnlyList<SkillNode> checkTagged)
+        {
+            _nodeHighlighter.ResetHighlights(checkTagged, HighlightState.Checked);
+            _persistentData.CurrentBuild.CheckedNodeIds.Clear();
+            _persistentData.CurrentBuild.CheckedNodeIds.UnionWith(checkTagged.Select(n => n.Id));
             DrawHighlights();
         }
 
@@ -986,7 +1013,7 @@ namespace POESKillTree.SkillTreeFiles
                             nd => (matchFct(nd.attributes, att => regex.IsMatch(att)) ||
                                   regex.IsMatch(nd.Name) && nd.Type != NodeType.Mastery) &&
                                   (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null)) : nd.ascendancyName == null));
-                    _nodeHighlighter.ReplaceHighlights(nodes, flag);
+                    _nodeHighlighter.ResetHighlights(nodes, flag);
                     DrawHighlights();
                 }
                 catch (Exception)
@@ -1002,7 +1029,7 @@ namespace POESKillTree.SkillTreeFiles
                         nd => (matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
                               nd.Name.ToLowerInvariant().Contains(search) && nd.Type != NodeType.Mastery) &&
                               (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null)) : nd.ascendancyName == null));
-                _nodeHighlighter.ReplaceHighlights(nodes, flag);
+                _nodeHighlighter.ResetHighlights(nodes, flag);
                 DrawHighlights();
             }
         }
@@ -1015,18 +1042,26 @@ namespace POESKillTree.SkillTreeFiles
         public void UntagAllNodes()
         {
             _nodeHighlighter.UnhighlightAllNodes(HighlightState.Tags);
+            _persistentData.CurrentBuild.CheckedNodeIds.Clear();
+            _persistentData.CurrentBuild.CrossedNodeIds.Clear();
             DrawHighlights();
         }
 
         public void CheckAllHighlightedNodes()
         {
-            _nodeHighlighter.HighlightNodesIf(HighlightState.Checked, HighlightState.Highlights);
+            var newlyChecked = _nodeHighlighter.HighlightNodesIf(HighlightState.Checked, HighlightState.Highlights)
+                .Select(n => n.Id).ToList();
+            _persistentData.CurrentBuild.CheckedNodeIds.UnionWith(newlyChecked);
+            _persistentData.CurrentBuild.CrossedNodeIds.ExceptWith(newlyChecked);
             DrawHighlights();
         }
 
         public void CrossAllHighlightedNodes()
         {
-            _nodeHighlighter.HighlightNodesIf(HighlightState.Crossed, HighlightState.Highlights);
+            var newlyCrossed = _nodeHighlighter.HighlightNodesIf(HighlightState.Crossed, HighlightState.Highlights)
+                .Select(n => n.Id).ToList();
+            _persistentData.CurrentBuild.CrossedNodeIds.UnionWith(newlyCrossed);
+            _persistentData.CurrentBuild.CheckedNodeIds.ExceptWith(newlyCrossed);
             DrawHighlights();
         }
 
@@ -1188,7 +1223,7 @@ namespace POESKillTree.SkillTreeFiles
                 AscType = 0;
             }
             if (prefs.HasFlag(ResetPreferences.Bandits))
-                BanditSettings.Reset();
+                _persistentData.CurrentBuild.Bandits.Reset();
             UpdateAscendancyClasses = true;
         }
 
@@ -1239,7 +1274,7 @@ namespace POESKillTree.SkillTreeFiles
         public HashSet<SkillNode> GetCheckedNodes()
         {
             var nodes = new HashSet<SkillNode>();
-            foreach (var entry in _nodeHighlighter.nodeHighlights)
+            foreach (var entry in _nodeHighlighter.NodeHighlights)
             {
                 if (!RootNodeList.Contains(entry.Key.Id) && entry.Value.HasFlag(HighlightState.Checked))
                 {
@@ -1255,7 +1290,7 @@ namespace POESKillTree.SkillTreeFiles
         public HashSet<SkillNode> GetCrossedNodes()
         {
             var nodes = new HashSet<SkillNode>();
-            foreach (var entry in _nodeHighlighter.nodeHighlights)
+            foreach (var entry in _nodeHighlighter.NodeHighlights)
             {
                 if (!RootNodeList.Contains(entry.Key.Id) && entry.Value.HasFlag(HighlightState.Crossed))
                 {
@@ -1280,8 +1315,8 @@ namespace POESKillTree.SkillTreeFiles
 #endif
             // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
             var settingsVm = new SettingsViewModel(this, SettingsDialogCoordinator.Instance,
-                new SteinerTabViewModel(this))
-            { Iterations = 1 };
+                new SteinerTabViewModel(this));
+            settingsVm.Iterations.Value = 1;
             var registration = DialogParticipation.GetAssociation(this);
             DialogParticipation.SetRegister(registration, settingsVm);
             await settingsVm.RunAsync();
@@ -1398,5 +1433,44 @@ namespace POESKillTree.SkillTreeFiles
 
             return (from nodeId in classSpecificStartNodes let temp = GetShortestPathTo(Skillnodes[(ushort)nodeId], SkilledNodes) where !temp.Any() && Skillnodes[(ushort)nodeId].ascendancyName == null select nodeId).Any();
         }
+
+        #region ISkillTree members
+
+        public uint PointsUsed(string treeUrl)
+        {
+            int b;
+            int asc;
+            HashSet<SkillNode> nodes;
+            DecodeUrl(treeUrl, out nodes, out b, out asc);
+            return (uint) nodes.Count(n => n.ascendancyName == null && !RootNodeList.Contains(n.Id));
+        }
+
+        public string CharacterClass(string treeUrl)
+        {
+            var s = treeUrl.Substring(TreeAddress.Length + (treeUrl.StartsWith("https") ? 0 : -1))
+                .Replace("-", "+")
+                .Replace("_", "/");
+            byte[] decbuff = Convert.FromBase64String(s);
+            return CharacterNames.GetClassNameFromChartype(decbuff[4]);
+        }
+
+        public string AscendancyClass(string treeUrl)
+        {
+            var s = treeUrl.Substring(TreeAddress.Length + (treeUrl.StartsWith("https") ? 0 : -1))
+                .Replace("-", "+")
+                .Replace("_", "/");
+            byte[] decbuff = Convert.FromBase64String(s);
+            // No Ascendancy class selected.
+            if (decbuff[5] == 0)
+                return null;
+            return AscClasses.GetClassName(decbuff[4], decbuff[5]);
+        }
+
+        public IEnumerable<string> AscendancyClassesForCharacter(string characterClass)
+        {
+            return AscClasses.GetClasses(characterClass).Select(c => c.DisplayName);
+        }
+
+        #endregion
     }
 }

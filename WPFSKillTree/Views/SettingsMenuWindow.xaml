@@ -10,7 +10,7 @@
     xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
     xmlns:localization="clr-namespace:POESKillTree.Localization"
     d:DataContext="{d:DesignInstance viewModels:SettingsMenuViewModel}"
-    MaxContentWidth="500">
+    MaxContentWidth="550">
     <ContentControl.Resources>
         <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
         <ObjectDataProvider ObjectType="{x:Type localization:L10n}"
@@ -27,7 +27,7 @@
             <Setter Property="Foreground" Value="{Binding SelectedValue, RelativeSource={RelativeSource Self}}" />
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
-                    <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MetroComboBoxItem}">
+                    <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
                         <Setter Property="Foreground" Value="{Binding Name}" />
                     </Style>
                 </Setter.Value>
@@ -35,151 +35,188 @@
         </Style>
         <Style x:Key="SectionLabel" TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Grid.ColumnSpan" Value="2" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="FontSize" Value="{DynamicResource DialogMessageFontSize}"></Setter>
         </Style>
         <Style x:Key="SettingLabel" TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Margin" Value="20 0 5 0" />
         </Style>
     </ContentControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="200"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-        </Grid.RowDefinitions>
-
-
-        <Label Style="{StaticResource SectionLabel}"
-               Grid.Row="0" Grid.Column="0">
+    <StackPanel Orientation="Vertical">
+        <Label Style="{StaticResource SectionLabel}">
             <Label.Content>
                 <l:Catalog Message="General:" />
             </Label.Content>
         </Label>
+        <Grid Margin="20 0 5 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
 
-        <Label Style="{StaticResource SettingLabel}"
-               Grid.Row="1" Grid.Column="0">
-            <Label.Content>
-                <l:Catalog Message="Show All Ascendancy Classes" />
-            </Label.Content>
-        </Label>
-        <CheckBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
-                  IsChecked="{Binding Options.ShowAllAscendancyClasses}" />
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="0" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Show All Ascendancy Classes" />
+                </Label.Content>
+            </Label>
+            <CheckBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                      IsChecked="{Binding Options.ShowAllAscendancyClasses}" />
 
-        <Label Style="{StaticResource SettingLabel}"
-               Grid.Row="2" Grid.Column="0">
-            <Label.Content>
-                <l:Catalog Message="Language" />
-            </Label.Content>
-        </Label>
-        <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
-                  ItemsSource="{Binding Source={StaticResource Languages}}"
-                  DisplayMemberPath="Value" SelectedValuePath="Key"
-                  SelectedValue="{Binding Options.Language, TargetNullValue={x:Static localization:L10n.Language}}" />
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="1" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Language" />
+                </Label.Content>
+            </Label>
+            <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                      ItemsSource="{Binding Source={StaticResource Languages}}"
+                      DisplayMemberPath="Value" SelectedValuePath="Key"
+                      SelectedValue="{Binding Options.Language, TargetNullValue={x:Static localization:L10n.Language}}" />
 
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="2" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Build save path" />
+                </Label.Content>
+            </Label>
+            <Grid Grid.Row="2" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Options.BuildsSavePath}"
+                           VerticalAlignment="Center"
+                           Margin="0 0 5 0"
+                           ToolTip="{Binding Options.BuildsSavePath}"/>
+                <Button Grid.Column="1"
+                        Command="{Binding ChangeBuildsSavePathCommand}">
+                    <Button.Content>
+                        <l:Catalog Message="Change..." />
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </Grid>
 
-        <Label Style="{StaticResource SectionLabel}"
-               Grid.Row="3" Grid.Column="0">
+        <Label Style="{StaticResource SectionLabel}">
             <Label.Content>
                 <l:Catalog Message="Colors:" />
             </Label.Content>
         </Label>
+        <Grid Margin="20 0 5 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
 
-        <Label Style="{StaticResource SettingLabel}"
-               Grid.Row="4" Grid.Column="0">
-            <Label.Content>
-                <l:Catalog Message="Node Search Highlight" />
-            </Label.Content>
-        </Label>
-        <ComboBox Grid.Row="4" Grid.Column="1"
-                  Style="{StaticResource BrushComboBox}"
-                  SelectedValue="{Binding Options.NodeSearchHighlightColor}">
-        </ComboBox>
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="0" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Node Search Highlight" />
+                </Label.Content>
+            </Label>
+            <ComboBox Grid.Row="0" Grid.Column="1"
+                      Style="{StaticResource BrushComboBox}"
+                      SelectedValue="{Binding Options.NodeSearchHighlightColor}">
+            </ComboBox>
 
-        <Label Style="{StaticResource SettingLabel}"
-               Grid.Row="5" Grid.Column="0">
-            <Label.Content>
-                <l:Catalog Message="Attribute Highlight" />
-            </Label.Content>
-        </Label>
-        <ComboBox Grid.Row="5" Grid.Column="1"
-                  Style="{StaticResource BrushComboBox}"
-                  SelectedValue="{Binding Options.NodeAttrHighlightColor}" />
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="1" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Attribute Highlight" />
+                </Label.Content>
+            </Label>
+            <ComboBox Grid.Row="1" Grid.Column="1"
+                      Style="{StaticResource BrushComboBox}"
+                      SelectedValue="{Binding Options.NodeAttrHighlightColor}" />
 
-        <Label Style="{StaticResource SettingLabel}"
-               Grid.Row="6" Grid.Column="0">
-            <Label.Content>
-                <l:Catalog Message="Node Hover Highlight" />
-            </Label.Content>
-        </Label>
-        <ComboBox Grid.Row="6" Grid.Column="1"
-                  Style="{StaticResource BrushComboBox}"
-                  SelectedValue="{Binding Options.NodeHoverHighlightColor}" />
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="2" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Node Hover Highlight" />
+                </Label.Content>
+            </Label>
+            <ComboBox Grid.Row="2" Grid.Column="1"
+                      Style="{StaticResource BrushComboBox}"
+                      SelectedValue="{Binding Options.NodeHoverHighlightColor}" />
+        </Grid>
 
-
-        <Label Style="{StaticResource SectionLabel}"
-               Grid.Row="7" Grid.Column="0">
+        <Label Style="{StaticResource SectionLabel}">
             <Label.Content>
                 <l:Catalog Message="Equipment:" />
             </Label.Content>
         </Label>
+        <Grid Margin="20 0 5 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
 
-        <Label Style="{StaticResource SettingLabel}"
-               Grid.Row="8" Grid.Column="0">
-            <Label.Content>
-                <l:Catalog Message="Automatically download missing item images" />
-            </Label.Content>
-        </Label>
-        <CheckBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Center"
-                  IsChecked="{Binding Options.DownloadMissingItemImages}" />
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="0" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Automatically download missing item images" />
+                </Label.Content>
+            </Label>
+            <CheckBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                      IsChecked="{Binding Options.DownloadMissingItemImages}" />
+        </Grid>
 
-
-        <Label Style="{StaticResource SectionLabel}"
-               Grid.Row="9" Grid.Column="0">
+        <Label Style="{StaticResource SectionLabel}">
             <Label.Content>
                 <l:Catalog Message="Reset button preferences:" />
             </Label.Content>
         </Label>
+        <Grid Margin="20 0 5 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
 
-        <Label Style="{StaticResource SettingLabel}"
-               Grid.Row="10" Grid.Column="0">
-            <Label.Content>
-                <l:Catalog Message="Reset main skill tree" />
-            </Label.Content>
-        </Label>
-        <CheckBox Grid.Row="10" Grid.Column="1" VerticalAlignment="Center"
-                  IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.MainTree}}" />
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="0" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Reset main skill tree" />
+                </Label.Content>
+            </Label>
+            <CheckBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                      IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.MainTree}}" />
 
-        <Label Style="{StaticResource SettingLabel}"
-               Grid.Row="11" Grid.Column="0">
-            <Label.Content>
-                <l:Catalog Message="Reset ascendancy skill tree" />
-            </Label.Content>
-        </Label>
-        <CheckBox Grid.Row="11" Grid.Column="1" VerticalAlignment="Center"
-                  IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.AscendancyTree}}" />
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="1" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Reset ascendancy skill tree" />
+                </Label.Content>
+            </Label>
+            <CheckBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                      IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.AscendancyTree}}" />
 
-        <Label Style="{StaticResource SettingLabel}"
-               Grid.Row="12" Grid.Column="0">
-            <Label.Content>
-                <l:Catalog Message="Reset selected bandits" />
-            </Label.Content>
-        </Label>
-        <CheckBox Grid.Row="12" Grid.Column="1" VerticalAlignment="Center"
-                  IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.Bandits}}" />
-    </Grid>
+            <Label Style="{StaticResource SettingLabel}"
+                   Grid.Row="2" Grid.Column="0">
+                <Label.Content>
+                    <l:Catalog Message="Reset selected bandits" />
+                </Label.Content>
+            </Label>
+            <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
+                      IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.Bandits}}" />
+        </Grid>
+    </StackPanel>
 </dialogs:CloseableBaseDialog>

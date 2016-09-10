@@ -1,13 +1,13 @@
 <dialogs:BaseDialog
-    x:Class="POESKillTree.Views.MetroMessageBoxView"
+    x:Class="POESKillTree.Controls.Dialogs.Views.MetroMessageBoxView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="clr-namespace:POESKillTree.ViewModels"
     xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+    xmlns:viewModels="clr-namespace:POESKillTree.Controls.Dialogs.ViewModels"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModels:MetroMessageBoxViewModel}"
     MaxContentWidth="500"
@@ -50,27 +50,27 @@
                     Style="{StaticResource DialogPanel}">
             <Button Visibility="{Binding IsYesVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                     Command="{Binding CloseCommand}" CommandParameter="{x:Static MessageBoxResult.Yes}"
-                    Style="{StaticResource AccentedDialogPanelButton}">
+                    Style="{StaticResource DynamicDialogPanelButton}">
                 <l:Catalog Message="Yes"/>
             </Button>
             <Button IsCancel="{Binding IsCancelVisible, Converter={StaticResource InvertBoolConverter}}"
                     IsDefault="{Binding IsCancel, RelativeSource={RelativeSource Self}}"
                     Visibility="{Binding IsNoVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                     Command="{Binding CloseCommand}" CommandParameter="{x:Static MessageBoxResult.No}"
-                    Style="{StaticResource AccentedDialogPanelButton}">
+                    Style="{StaticResource DynamicDialogPanelButton}">
                 <l:Catalog Message="No"/>
             </Button>
             <Button IsCancel="{Binding IsCancelVisible, Converter={StaticResource InvertBoolConverter}}"
                     IsDefault="{Binding IsCancel, RelativeSource={RelativeSource Self}}"
                     Visibility="{Binding IsOKVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                     Command="{Binding CloseCommand}" CommandParameter="{x:Static MessageBoxResult.OK}"
-                    Style="{StaticResource AccentedDialogPanelButton}">
+                    Style="{StaticResource DynamicDialogPanelButton}">
                 <l:Catalog Message="OK"/>
             </Button>
             <Button IsDefault="True" IsCancel="True"
                     Visibility="{Binding IsCancelVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                     Command="{Binding CloseCommand}" CommandParameter="{x:Static MessageBoxResult.Cancel}"
-                    Style="{StaticResource AccentedDialogPanelButton}">
+                    Style="{StaticResource DynamicDialogPanelButton}">
                 <l:Catalog Message="Cancel"/>
             </Button>
         </StackPanel>

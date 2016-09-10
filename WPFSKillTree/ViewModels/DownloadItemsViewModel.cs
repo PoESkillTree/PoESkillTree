@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;
-using POESKillTree.Model;
+using POESKillTree.Model.Builds;
 
 namespace POESKillTree.ViewModels
 {
@@ -28,7 +29,7 @@ namespace POESKillTree.ViewModels
             get
             {
                 return _openInBrowserCommand ??
-                       (_openInBrowserCommand = new RelayCommand(param => Process.Start(ItemsLink)));
+                       (_openInBrowserCommand = new RelayCommand(() => Process.Start(ItemsLink)));
             }
         }
 

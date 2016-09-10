@@ -10,10 +10,12 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
 
@@ -62,16 +64,16 @@ namespace POESKillTree.ViewModels
             }
         }
 
-        private RelayCommand _loadTabsCommand;
+        private ICommand _loadTabsCommand;
         public ICommand LoadTabsCommand
         {
-            get { return _loadTabsCommand ?? (_loadTabsCommand = new RelayCommand(async o => await LoadTabs())); }
+            get { return _loadTabsCommand ?? (_loadTabsCommand = new AsyncRelayCommand(LoadTabs)); }
         }
 
-        private RelayCommand _loadTabContentsCommand;
+        private ICommand _loadTabContentsCommand;
         public ICommand LoadTabContentsCommand
         {
-            get { return _loadTabContentsCommand ?? (_loadTabContentsCommand = new RelayCommand(async o => await LoadTabContents())); }
+            get { return _loadTabContentsCommand ?? (_loadTabContentsCommand = new AsyncRelayCommand(LoadTabContents)); }
         }
 
         public DownloadStashViewModel(IDialogCoordinator dialogCoordinator, IPersistentData persistentData, Stash stash)

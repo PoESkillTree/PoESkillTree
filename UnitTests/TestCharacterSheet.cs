@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using POESKillTree.Model;
 using POESKillTree.Model.Items;
+using POESKillTree.Model.Serialization;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
@@ -24,7 +24,7 @@ namespace UnitTests
             set { TestContextInstance = value; }
         }
 
-        private static Task<SkillTree> _treeTask;
+        private static AbstractPersistentData _persistentData;
 
         [ClassInitialize]
         public static void Initalize(TestContext testContext)
@@ -33,7 +33,7 @@ namespace UnitTests
 
             if (ItemDB.IsEmpty())
                 ItemDB.Load("Data/ItemDB/GemList.xml", true);
-            _treeTask = SkillTree.CreateAsync(new PersistentData(false), null);
+            _persistentData = new BarePersistentData();
         }
 
         readonly Regex _backreplace = new Regex("#");
@@ -85,13 +85,14 @@ namespace UnitTests
                 }
             }
 
-            var tree = await _treeTask;
+            _persistentData.EquipmentData = await EquipmentData.CreateAsync(_persistentData.Options);
+            var tree = await SkillTree.CreateAsync(_persistentData, null);
             // Initialize structures.
             tree.LoadFromUrl(treeURL);
             tree.Level = level;
 
             string itemData = File.ReadAllText(buildFile);
-            ItemAttributes itemAttributes = new ItemAttributes(new PersistentData(false), itemData);
+            ItemAttributes itemAttributes = new ItemAttributes(_persistentData, itemData);
             Compute.Initialize(tree, itemAttributes);
 
             // Compare defense properties.

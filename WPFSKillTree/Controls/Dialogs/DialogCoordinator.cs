@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using POESKillTree.Common.ViewModels;
+using POESKillTree.Controls.Dialogs.Views;
+using POESKillTree.Controls.Dialogs.ViewModels;
 using POESKillTree.Utils.Extensions;
-using POESKillTree.ViewModels;
 
 namespace POESKillTree.Controls.Dialogs
 {
@@ -21,7 +23,7 @@ namespace POESKillTree.Controls.Dialogs
 
         private static async Task<MetroWindow> GetMetroWindowAsync(object context)
         {
-            if (context == null) throw new ArgumentNullException("context");
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
             if (!DialogParticipation.IsRegistered(context))
             {
@@ -58,19 +60,20 @@ namespace POESKillTree.Controls.Dialogs
             return metroWindow;
         }
 
-        protected async Task ShowDialogAsync(object context, CloseableViewModel viewModel, BaseMetroDialog view, Action onShown = null)
+        protected async Task<T> ShowDialogAsync<T>(object context, CloseableViewModel<T> viewModel, BaseMetroDialog view, Action onShown = null)
         {
             var metroWindow = await GetMetroWindowAsync(context);
 
-            await metroWindow.ShowDialogAsync(viewModel, view, onShown);
+            return await metroWindow.ShowDialogAsync(viewModel, view, onShown);
         }
 
-        public async Task<MessageBoxResult> ShowQuestionAsync(object context, string message, string title = null,
+        public async Task<MessageBoxResult> ShowQuestionAsync(object context, string message, string details = null,
+            string title = null, MessageBoxButton buttons = MessageBoxButton.YesNo,
             MessageBoxImage image = MessageBoxImage.Question)
         {
             var metroWindow = await GetMetroWindowAsync(context);
 
-            return await metroWindow.ShowQuestionAsync(message, title, image);
+            return await metroWindow.ShowQuestionAsync(message, details, title, buttons, image);
         }
 
         public async Task ShowErrorAsync(object context, string message, string details = null, string title = null)
@@ -94,16 +97,31 @@ namespace POESKillTree.Controls.Dialogs
             await metroWindow.ShowInfoAsync(message, details, title);
         }
 
-        public async Task<string> ShowInputAsync(object context, string title, string message)
+        public async Task<string> ShowInputAsync(object context, string title, string message, string defaultText = "")
         {
             var metroWindow = await GetMetroWindowAsync(context);
-            return await metroWindow.ShowInputAsync(title, message);
+            return await metroWindow.ShowInputAsync(title, message, defaultText);
         }
 
-        public async Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message, bool isCancelable = false)
+        public async Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message,
+            bool isCancelable = false)
         {
             var metroWindow = await GetMetroWindowAsync(context);
             return await metroWindow.ShowProgressAsync(title, message, isCancelable);
+        }
+
+        public Task<string> ShowFileSelectorAsync(object context, string title, string message,
+            FileSelectorDialogSettings settings)
+        {
+            return ShowDialogAsync(context, new FileSelectorViewModel(title, message, settings), new FileSelectorView());
+        }
+
+        public async Task<string> ShowValidatingInputDialogAsync(object context, string title, string message,
+            string defaultText, Func<string, string> inputValidationFunc)
+        {
+            return await ShowDialogAsync(context,
+                new ValidatingInputDialogViewModel(title, message, defaultText, inputValidationFunc),
+                new ValidatingInputDialogView());
         }
     }
 }

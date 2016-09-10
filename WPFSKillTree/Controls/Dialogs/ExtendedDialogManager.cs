@@ -11,10 +11,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using POESKillTree.Common.ViewModels;
+using POESKillTree.Controls.Dialogs.ViewModels;
+using POESKillTree.Controls.Dialogs.Views;
 using POESKillTree.Localization;
 using POESKillTree.Utils.Extensions;
-using POESKillTree.ViewModels;
-using POESKillTree.Views;
 
 namespace POESKillTree.Controls.Dialogs
 {
@@ -52,10 +53,10 @@ namespace POESKillTree.Controls.Dialogs
         }
 
         public static Task<MessageBoxResult> ShowQuestionAsync(this MetroWindow window, string message,
-            string title = null, MessageBoxImage image = MessageBoxImage.Question)
+            string details = null, string title = null, MessageBoxButton buttons = MessageBoxButton.YesNo,
+            MessageBoxImage image = MessageBoxImage.Question)
         {
-            return ShowAsync(window, message, title: title ?? L10n.Message("Confirmation"), buttons: MessageBoxButton.YesNo,
-                image: image);
+            return ShowAsync(window, message, details, title ?? L10n.Message("Confirmation"), buttons, image);
         }
 
         public static Task ShowErrorAsync(this MetroWindow window, string message, string details = null, string title = null)
@@ -73,12 +74,13 @@ namespace POESKillTree.Controls.Dialogs
             return ShowAsync(window, message, details, title ?? L10n.Message("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        public static Task<string> ShowInputAsync(this MetroWindow window, string title, string message)
+        public static Task<string> ShowInputAsync(this MetroWindow window, string title, string message, string defaultText = "")
         {
             var settings = new MetroDialogSettings
             {
                 NegativeButtonText = L10n.Message("Cancel"),
-                AffirmativeButtonText = L10n.Message("OK")
+                AffirmativeButtonText = L10n.Message("OK"),
+                DefaultText = defaultText
             };
             return window.ShowInputAsync(title, message, settings);
         }

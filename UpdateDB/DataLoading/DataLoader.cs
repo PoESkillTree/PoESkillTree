@@ -92,37 +92,5 @@ namespace UpdateDB.DataLoading
         /// Returns a task that completes once all data has been saved.
         /// </summary>
         protected abstract Task CompleteSavingAsync();
-
-        /// <summary>
-        /// Equal to <code>int.Parse(s, CultureInfo.InvariantCulture)</code>
-        /// </summary>
-        protected static int ParseInt(string s)
-        {
-            return int.Parse(s, CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Equal to <code>int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out i)</code>
-        /// </summary>
-        protected static bool TryParseInt(string s, out int i)
-        {
-            return int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out i);
-        }
-
-        /// <summary>
-        /// Equal to <code>float.Parse(s, CultureInfo.InvariantCulture)</code>
-        /// </summary>
-        protected static float ParseFloat(string s)
-        {
-            return float.Parse(s, CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Equal to <code>float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out f)</code>
-        /// </summary>
-        protected static bool TryParseFloat(string s, out float f)
-        {
-            return float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out f);
-        }
     }
 }

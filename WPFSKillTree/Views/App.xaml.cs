@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using POESKillTree.Localization;
 using POESKillTree.Model;
+using POESKillTree.Model.Serialization;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Views
@@ -18,7 +20,7 @@ namespace POESKillTree.Views
         // The flag whether it is safe to exit application.
         bool IsSafeToExit = false;
         // Single instance of persistent data.
-        public static PersistentData PersistentData { get; private set; }
+        public static IPersistentData PersistentData { get; private set; }
         // The Mutex for detecting running application instance.
         private Mutex RunningInstanceMutex;
         // The name of RunningInstanceMutex.
@@ -35,7 +37,7 @@ namespace POESKillTree.Views
                 // Try to aquire mutex.
                 if (RunningInstanceMutex.WaitOne(0))
                 {
-                    PersistentData.SaveToFile();
+                    PersistentData.Save();
 
                     IsSafeToExit = true;
 
@@ -70,14 +72,9 @@ namespace POESKillTree.Views
             }
 
             // Load persistent data.
-            try
-            {
-                PersistentData = new PersistentData(true);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred during a load operation.\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            // Take the first not-switch argument as path to the build that will be imported
+            var importedBuildPath = e.Args.FirstOrDefault(s => !s.StartsWith("/"));
+            PersistentData = PersistentDataSerializationService.CreatePersistentData(importedBuildPath);
 
             // Initialize localization.
             L10n.Initialize(PersistentData.Options.Language);
