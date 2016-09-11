@@ -3,6 +3,7 @@ using POESKillTree.Localization;
 using POESKillTree.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -546,6 +547,8 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
+        [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument", 
+            Justification = "Would notify changes for the not existing property 'ChangeAscClass'")]
         private void ChangeAscClass(int toType)
         {
             var remove = new List<SkillNode>();
@@ -556,11 +559,11 @@ namespace POESKillTree.SkillTreeFiles
                 remove = SkilledNodes.Where(n => n.ascendancyName != null).ToList();
                 if (!_persistentData.Options.ShowAllAscendancyClasses)
                     DrawAscendancy = false;
-                SetProperty(ref _asctype, toType);
+                SetProperty(ref _asctype, toType, propertyName: nameof(AscType));
             }
             else
             {
-                SetProperty(ref _asctype, toType);
+                SetProperty(ref _asctype, toType, propertyName: nameof(AscType));
                 var sn = GetAscNode();
                 if (sn != null)
                 {
