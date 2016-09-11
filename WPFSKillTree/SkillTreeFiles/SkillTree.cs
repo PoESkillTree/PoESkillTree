@@ -543,7 +543,6 @@ namespace POESKillTree.SkillTreeFiles
             {
                 if (value < 0 || value > 3) return;
                 ChangeAscClass(value);
-                SetProperty(ref _asctype, value);
             }
         }
 
@@ -557,12 +556,11 @@ namespace POESKillTree.SkillTreeFiles
                 remove = SkilledNodes.Where(n => n.ascendancyName != null).ToList();
                 if (!_persistentData.Options.ShowAllAscendancyClasses)
                     DrawAscendancy = false;
-                changedType = true;
-                _asctype = toType;
+                SetProperty(ref _asctype, toType);
             }
             else
             {
-                _asctype = toType;
+                SetProperty(ref _asctype, toType);
                 var sn = GetAscNode();
                 if (sn != null)
                 {
@@ -1232,7 +1230,6 @@ namespace POESKillTree.SkillTreeFiles
             var points = GetPointCount();
             var count = points["NormalUsed"] + points["AscendancyUsed"] + points["ScionAscendancyChoices"];
             var b = new byte[7 + count * 2];
-            AscType = AscClasses.GetClassNumber(GetAscendancyClass(SkilledNodes));
             var b2 = GetCharacterBytes((byte)Chartype, (byte)AscType);
             for (var i = 0; i < b2.Length; i++)
                 b[i] = b2[i];
