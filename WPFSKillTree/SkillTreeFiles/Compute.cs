@@ -560,7 +560,8 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (var attr in attrs.Matches(ReIncreasedAccuracyRatingWithWeaponType))
                 {
                     Match m = ReIncreasedAccuracyRatingWithWeaponType.Match(attr.Key);
-                    if (Nature.Is(WithWeaponType[m.Groups[2].Value]))
+                    WeaponType weaponType;
+                    if (WithWeaponType.TryGetValue(m.Groups[2].Value, out weaponType) && Nature.Is(weaponType))
                         incAcc += m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0];
                 }
                 if (IsDualWielding && attrs.ContainsKey("#% increased Accuracy Rating while Dual Wielding"))

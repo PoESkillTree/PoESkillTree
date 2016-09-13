@@ -154,11 +154,11 @@ namespace POESKillTree.Utils
             {
                 Log.WarnFormat("Not enough tables found in {0} for the number of item types that should be there.",
                     urlSuffix);
-                Log.WarnFormat("Skipping item types {{{0}}}", string.Join(", ", itemTypes));
-                return new List<BaseItemTable>();
+                Log.WarnFormat("Skipping item types {{{0}}}", string.Join(", ", itemTypes.Skip(tables.Count)));
             }
             // Only the first itemType.Count tables are parsed.
-            return tables.Take(itemTypes.Count).Zip(itemTypes, BaseItemTable.Create).ToList();
+            var count = Math.Min(itemTypes.Count, tables.Count);
+            return tables.Take(count).Zip(itemTypes, BaseItemTable.Create).ToList();
         }
 
         /// <summary>

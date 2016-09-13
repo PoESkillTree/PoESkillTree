@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using POESKillTree.Model.Items.Enums;
@@ -46,7 +45,7 @@ namespace UpdateDB.DataLoading
         {
             var jewelName = jewel.ToString();
             var url = await _wikiUtils.LoadItemBoxImageAsync(jewelName.Replace("Jewel", "_Jewel"));
-            SaveImage(jewelName.Replace("Jewel", " Jewel"), url);
+            SaveImage(jewelName.Replace("Jewel", " Jewel") + ".png", url);
         }
 
         private void ParseTable(HtmlNode table, ItemType itemType)
@@ -54,8 +53,7 @@ namespace UpdateDB.DataLoading
             // Go through the first cell for each row
             foreach (var cell in table.SelectNodes("tr/td[1]/span"))
             {
-                var imgNode = cell.SelectSingleNode("a/img");
-                var url = Regex.Match(imgNode.Attributes["srcset"].Value, @"1\.5x, (.*) 2x").Groups[1].Value;
+                var url = cell.SelectSingleNode("span/a/img").Attributes["src"].Value;
                 var fileName = WebUtility.HtmlDecode(cell.SelectNodes("a")[0].InnerHtml) + ".png";
                 SaveImage(fileName, url);
             }
