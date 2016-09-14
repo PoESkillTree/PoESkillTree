@@ -130,7 +130,7 @@ namespace POESKillTree.ViewModels.Builds
 
         private void UpdateTreeDependingProperties()
         {
-            if (SkillTree == null)
+            if (SkillTree == null || string.IsNullOrEmpty(Build.TreeUrl))
                 return;
             PointsUsed = SkillTree.PointsUsed(Build.TreeUrl);
             CharacterClass = SkillTree.CharacterClass(Build.TreeUrl);
