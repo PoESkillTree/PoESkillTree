@@ -47,6 +47,13 @@ namespace POESKillTree.TreeGenerator.Settings
         /// </summary>
         public readonly int Iterations;
 
+        /// <param name="settings">The settings to create a (shallow) copy of.</param>
+        protected SolverSettings(SolverSettings settings)
+            : this(settings.Level, settings.TotalPoints, settings.Checked, settings.Crossed,
+                settings.SubsetTree, settings.InitialTree, settings.Iterations)
+        {
+        }
+
         /// <summary>
         /// Creates new SolverSettings.
         /// </summary>
@@ -60,9 +67,9 @@ namespace POESKillTree.TreeGenerator.Settings
         public SolverSettings(int level, int totalPoints, ISet<SkillNode> @checked, ISet<SkillNode> crossed,
             ISet<SkillNode> subsetTree, ISet<SkillNode> initialTree, int iterations)
         {
-            if (level < 0) throw new ArgumentOutOfRangeException("level", level, "must be >= 0");
-            if (totalPoints < 0) throw new ArgumentOutOfRangeException("totalPoints", totalPoints, "must be >= 0");
-            if (iterations < 1) throw new ArgumentOutOfRangeException("iterations", iterations, "must be >= 1");
+            if (level < 0) throw new ArgumentOutOfRangeException(nameof(level), level, "must be >= 0");
+            if (totalPoints < 0) throw new ArgumentOutOfRangeException(nameof(totalPoints), totalPoints, "must be >= 0");
+            if (iterations < 1) throw new ArgumentOutOfRangeException(nameof(iterations), iterations, "must be >= 1");
 
             Level = level;
             TotalPoints = totalPoints;

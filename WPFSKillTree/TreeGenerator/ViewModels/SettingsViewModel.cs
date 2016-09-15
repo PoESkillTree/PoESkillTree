@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using POESKillTree.Common.ViewModels;
-using POESKillTree.Localization;
 using POESKillTree.Model.JsonSettings;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
@@ -34,13 +33,15 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         #region Presentation
 
+        private int _totalPoints;
+        private GeneratorTabViewModel _selectedTab;
+
         /// <summary>
         /// The number of points on top of those provided by level that
         /// the solver can use.
         /// </summary>
         public LeafSetting<int> AdditionalPoints { get; }
 
-        private int _totalPoints;
         /// <summary>
         /// Gets the total number of points the solver can use.
         /// Equals <see cref="SkillTree.Level"/> - 1 + <see cref="AdditionalPoints"/>.
@@ -82,6 +83,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// provide the solver once <see cref="RunCommand"/> is executed.
         /// </summary>
         public LeafSetting<int> SelectedTabIndex { get; }
+
+        public GeneratorTabViewModel SelectedTab
+        {
+            get { return _selectedTab; }
+            private set { SetProperty(ref _selectedTab, value); }
+        }
 
         /// <summary>
         /// The number of iterations this solver will run.
@@ -136,7 +143,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             ExcludeCrossed = new LeafSetting<bool>(nameof(ExcludeCrossed), true);
             TreeAsSubset = new LeafSetting<bool>(nameof(TreeAsSubset), false);
             TreeAsInitial = new LeafSetting<bool>(nameof(TreeAsInitial), false);
-            SelectedTabIndex = new LeafSetting<int>(nameof(SelectedTabIndex), 0);
+            SelectedTabIndex = new LeafSetting<int>(nameof(SelectedTabIndex), 0,
+                () => SelectedTab = Tabs[SelectedTabIndex.Value]);
             Iterations = new LeafSetting<int>(nameof(Iterations), 3);
 
             tree.PropertyChanged += (sender, args) =>
@@ -155,6 +163,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 Tabs = new ObservableCollection<GeneratorTabViewModel> { generator };
             }
+            SelectedTab = Tabs[SelectedTabIndex.Value];
             SubSettings = new ISetting[]
             {
                 AdditionalPoints, IncludeChecked, ExcludeCrossed, TreeAsSubset, TreeAsInitial,
@@ -166,18 +175,20 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             Tabs = new ObservableCollection<GeneratorTabViewModel>
             {
-                new AdvancedTabViewModel(Tree),
-                new AutomatedTabViewModel(Tree),
-                new SteinerTabViewModel(Tree)
+                new SteinerTabViewModel(Tree, _dialogCoordinator),
+                new AdvancedTabViewModel(Tree, _dialogCoordinator),
+                new AutomatedTabViewModel(Tree, _dialogCoordinator)
             };
         }
 
-        public async Task RunAsync()
+        private async Task RunAsync()
         {
-            var savedHighlights = Tree.HighlightedNodes;
+            var savedHighlights = Tree.HighlightedNodes.ToList();
 
             var settings = CreateSettings();
             var solver = Tabs[SelectedTabIndex.Value].CreateSolver(settings);
+            if (solver == null)
+                return;
 
             var controllerResult = await _dialogCoordinator
                 .ShowControllerDialogAsync(this, solver, Tabs[SelectedTabIndex.Value].DisplayName, Tree);

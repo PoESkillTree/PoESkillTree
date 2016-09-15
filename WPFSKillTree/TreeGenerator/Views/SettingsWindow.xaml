@@ -9,12 +9,43 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     xmlns:vm="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
     xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
+    xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
     d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
-    AllowMove="True" IsModal="False" ShowCloseButton="True">
+    AllowMove="True" IsModal="False" ShowCloseButton="True"
+    dialogs:DialogParticipation.Register="{Binding}">
     <simpleChildWindow:ChildWindow.Title>
         <l:Catalog>Skill Tree Generator</l:Catalog>
     </simpleChildWindow:ChildWindow.Title>
-    <Grid Height="600" Margin="-4 0 -4 -4">
+    <Control.Resources>
+        <Style x:Key="NumericUpDownStyle"
+               TargetType="controls:NumericUpDown"
+               BasedOn="{StaticResource {x:Type controls:NumericUpDown}}">
+            <Setter Property="IsEnabled" Value="{Binding SelectedTab.UsesFullSettingsSet}" />
+            <Setter Property="controls:ControlsHelper.DisabledVisualElementVisibility" Value="Collapsed" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource DisabledWhiteBrush}" />
+                    <Setter Property="Foreground" Value="{DynamicResource DisabledMenuItemForeground}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource DisabledMenuItemForeground}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TextBoxStyle"
+               TargetType="TextBox"
+               BasedOn="{StaticResource MetroTextBox}">
+            <Setter Property="IsEnabled" Value="{Binding SelectedTab.UsesFullSettingsSet}" />
+            <Setter Property="controls:ControlsHelper.DisabledVisualElementVisibility" Value="Collapsed" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource DisabledWhiteBrush}" />
+                    <Setter Property="Foreground" Value="{DynamicResource DisabledMenuItemForeground}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource DisabledMenuItemForeground}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Control.Resources>
+    <Grid Height="600" Width="600"
+          Margin="-4 0 -4 -4">
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -31,53 +62,80 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Margin="5" Target="{Binding ElementName=Level}">
+        <Label Grid.Row="0" Grid.Column="0" Margin="5" Target="{Binding ElementName=Level}"
+               IsEnabled="{Binding SelectedTab.UsesFullSettingsSet}">
             <l:Catalog Message="Level:" />
         </Label>
         <controls:NumericUpDown Grid.Row="0" Grid.Column="1" x:Name="Level" Margin="0,5"
                                 Minimum="{Binding Tree.UndefinedLevel}" Maximum="{Binding Tree.MaximumLevel}"
-                                Value="{Binding Tree.Level}"/>
+                                Value="{Binding Tree.Level}"
+                                Style="{StaticResource NumericUpDownStyle}" />
 
-        <Label Grid.Row="1" Grid.Column="0" Margin="5" Target="{Binding ElementName=AddPoints}">
+        <Label Grid.Row="1" Grid.Column="0" Margin="5" Target="{Binding ElementName=AddPoints}"
+               IsEnabled="{Binding SelectedTab.UsesFullSettingsSet}">
             <l:Catalog Message="Additional points:" />
         </Label>
         <controls:NumericUpDown Grid.Row="1" Grid.Column="1" x:Name="AddPoints" Minimum="0" Margin="0,5"
-                                Value="{Binding AdditionalPoints.Value, ValidatesOnDataErrors=True}"/>
+                                Value="{Binding AdditionalPoints.Value, ValidatesOnDataErrors=True}"
+                                Style="{StaticResource NumericUpDownStyle}" />
 
-        <Label Grid.Row="2" Grid.Column="0" Margin="5" Target="{Binding ElementName=TotalPoints}">
+        <Label Grid.Row="2" Grid.Column="0" Margin="5" Target="{Binding ElementName=TotalPoints}"
+               IsEnabled="{Binding SelectedTab.UsesFullSettingsSet}">
             <l:Catalog Message="Total points:" />
         </Label>
         <TextBox Grid.Row="2" Grid.Column="1" x:Name="TotalPoints" Text="{Binding TotalPoints, Mode=OneWay}" IsReadOnly="True"
-                 Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,45,0"/>
+                 Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,45,0"
+                 Style="{StaticResource TextBoxStyle}" />
 
-        <Label Grid.Row="3" Grid.Column="0" Margin="5" Target="{Binding ElementName=Iterations}">
+        <Label Grid.Row="3" Grid.Column="0" Margin="5" Target="{Binding ElementName=Iterations}"
+               IsEnabled="{Binding SelectedTab.UsesFullSettingsSet}">
             <l:Catalog Message="Iterations:" />
             <Label.ToolTip>
                 <TextBlock>
-                    <l:Catalog Message="Determines how often the generator is run. The best result from all runs is kept." />
+                    <Run><l:Catalog Message="Determines how often the generator is run. The best result from all runs is kept." /></Run>
                     <LineBreak/>
-                    <l:Catalog Message="Pause and then Close it at any point to keep the current solution."></l:Catalog>
+                    <Run><l:Catalog Message="Pause and then Close it at any point to keep the current solution." /></Run>
                 </TextBlock>
             </Label.ToolTip>
         </Label>
         <controls:NumericUpDown Grid.Row="3" Grid.Column="1" x:Name="Iterations" Minimum="1" Margin="0,5"
-                                Value="{Binding Iterations.Value, ValidatesOnDataErrors=True}"/>
+                                Value="{Binding Iterations.Value, ValidatesOnDataErrors=True}"
+                                Style="{StaticResource NumericUpDownStyle}" />
 
         <CheckBox Grid.Row="0" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding IncludeChecked.Value}">
             <l:Catalog Message="include Check-tagged nodes"/>
+            <CheckBox.ToolTip>
+                <l:Catalog>Select if Check-taged nodes must be skilled by possible solutions.</l:Catalog>
+            </CheckBox.ToolTip>
         </CheckBox>
         <CheckBox Grid.Row="1" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding ExcludeCrossed.Value}">
             <l:Catalog Message="exclude Cross-tagged nodes"/>
+            <CheckBox.ToolTip>
+                <l:Catalog>Select if Cross-taged nodes must not be skilled by possible solutions.</l:Catalog>
+            </CheckBox.ToolTip>
         </CheckBox>
         <CheckBox Grid.Row="0" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsSubset.Value}">
             <l:Catalog Message="only search in current tree"/>
+            <CheckBox.ToolTip>
+                <l:Catalog>Select if only nodes in the current tree must be skilled by possible solutions.</l:Catalog>
+            </CheckBox.ToolTip>
         </CheckBox>
         <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsInitial.Value}">
             <l:Catalog Message="current tree as initial solution"/>
+            <CheckBox.ToolTip>
+                <TextBlock>
+                    <Run><l:Catalog>Select if the current tree should be provided to the generator as an initial solution.</l:Catalog></Run>
+                    <LineBreak/>
+                    <Run><l:Catalog>This helps to guide the generator to better solutions if they can easily be derived from the current tree.</l:Catalog></Run>
+                </TextBlock>
+            </CheckBox.ToolTip>
         </CheckBox>
 
         <Button Grid.Row="3" Grid.Column="3" Margin="10,5" Command="{Binding RunCommand}">
             <l:Catalog Message="Run"/>
+            <Button.ToolTip>
+                <l:Catalog>Run the generator belonging to the currently opened tab.</l:Catalog>
+            </Button.ToolTip>
         </Button>
         <Button Grid.Row="3" Grid.Column="2" Margin="20,5,10,5" Command="{Binding ResetCommand}">
             <l:Catalog Message="Reset settings"/>
@@ -85,16 +143,19 @@
 
         <TabControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex.Value}">
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
+                <local:SteinerTabView />
+            </TabItem>
+            <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}">
                 <local:AdvancedGeneratorTab/>
             </TabItem>
             <!-- 'Automated' Solver is not yet implemented. -->
             <!-- <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}">
                 <local:AutomatedGeneratorTab/>
             </TabItem> -->
-            <!-- TODO find a not confusing way to integrate this tab and move the old one entirely -->
-            <!--<TabItem DataContext="{Binding Tabs[2]}" Header="{Binding DisplayName}" />-->
         </TabControl>
 
     </Grid>
 </simpleChildWindow:ChildWindow>
+
+
 

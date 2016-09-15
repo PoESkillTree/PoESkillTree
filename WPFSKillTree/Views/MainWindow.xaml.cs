@@ -676,13 +676,6 @@ namespace POESKillTree.Views
 
         #region Menu
 
-        private async void Menu_SkillTaggedNodes(object sender, RoutedEventArgs e)
-        {
-            await Tree.SkillAllTaggedNodesAsync();
-            UpdateUI();
-            SetCurrentBuildUrlFromTree();
-        }
-
         private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
         {
             var response = await this.ShowQuestionAsync(L10n.Message("Are you sure?"),
@@ -727,7 +720,6 @@ namespace POESKillTree.Views
                     };
                     _treeGeneratorWindow = new SettingsWindow {DataContext = _treeGeneratorViewModel};
                     _treeGeneratorWindow.Closing += (o, args) => SaveTreeGeneratorSettings();
-                    DialogParticipation.SetRegister(_treeGeneratorWindow, _treeGeneratorViewModel);
                 }
                 await this.ShowChildWindowAsync(_treeGeneratorWindow);
             }

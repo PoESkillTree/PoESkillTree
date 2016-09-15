@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="POESKillTree.TreeGenerator.Views.SteinerTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600"
+             dialogs:DialogParticipation.Register="{Binding}">
+    <TextBlock TextWrapping="Wrap"
+               FontSize="{StaticResource ContentFontSize}"
+               Padding="5">
+        <Run>
+            <l:Catalog>This generator connects all Check-tagged nodes to the current tree with the least amount of
+                nodes possible. Cross-tagged nodes will not be skilled (if the corresponding checkboxes is
+                checked).</l:Catalog>
+        </Run>
+        <LineBreak /><LineBreak />
+        <Run>
+            <l:Catalog>The selected level, number of points and iterations are ignored by this generator. It should
+                always generate the optimal solution.</l:Catalog>
+        </Run>
+        <LineBreak /><LineBreak />
+        <Run>
+            <l:Catalog>For more complex generation, select the 'Advanced' tab. It allows you to add constraints,
+                like a specific amount of '#% increased maximum Life', to the generated trees while keeping the amount
+                of points spent under the specified number. However, do not expect optimal solutions from the 'Advanced'
+                generator, as the problems that are solved are much more complex.</l:Catalog>
+        </Run>
+    </TextBlock>
+</UserControl>
+

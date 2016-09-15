@@ -136,12 +136,12 @@
                             ItemsSource="{Binding AttributeConstraints}" AutoGenerateColumns="False"
                             CanUserAddRows="False" CanUserDeleteRows="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" MinWidth="300">
+                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" Width="320">
                                 <DataGridTextColumn.Header>
                                     <l:Catalog Message="Attribute"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn MinWidth="80">
+                            <DataGridTemplateColumn Width="80">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Target"/>
                                 </DataGridTemplateColumn.Header>
@@ -154,7 +154,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn MinWidth="150">
+                            <DataGridTemplateColumn Width="150">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Weight"/>
                                 </DataGridTemplateColumn.Header>
@@ -169,7 +169,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn>
+                            <DataGridTemplateColumn MinWidth="33">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding DataContext.RemoveAttributeConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
@@ -229,12 +229,12 @@
                               ItemsSource="{Binding PseudoAttributeConstraints}"
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" MinWidth="300">
+                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" Width="320">
                                 <DataGridTextColumn.Header>
                                     <l:Catalog Message="Pseudo attribute"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn MinWidth="80">
+                            <DataGridTemplateColumn Width="80">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Target"/>
                                 </DataGridTemplateColumn.Header>
@@ -247,7 +247,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn MinWidth="150">
+                            <DataGridTemplateColumn Width="150">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Weight"/>
                                 </DataGridTemplateColumn.Header>
@@ -262,7 +262,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn>
+                            <DataGridTemplateColumn MinWidth="33">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding DataContext.RemovePseudoConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"

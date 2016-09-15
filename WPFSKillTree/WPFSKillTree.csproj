@@ -308,6 +308,9 @@
     <Compile Include="Model\JsonSettings\AbstractCompositeSetting.cs" />
     <Compile Include="Model\JsonSettings\ISetting.cs" />
     <Compile Include="Model\JsonSettings\LeafSetting.cs" />
+    <Compile Include="TreeGenerator\Views\SteinerTabView.xaml.cs">
+      <DependentUpon>SteinerTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Helper.cs" />
     <Compile Include="Utils\PathEx.cs" />
     <Compile Include="Utils\SerializationUtils.cs" />
@@ -589,6 +592,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\BanditSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeGenerator\Views\SteinerTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

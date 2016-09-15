@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Common.ViewModels;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model.JsonSettings;
 using POESKillTree.SkillTreeFiles;
@@ -517,7 +518,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Instantiates a new AdvancedTabViewModel.
         /// </summary>
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
-        public AdvancedTabViewModel(SkillTree tree) : base(tree)
+        /// <param name="dialogCoordinator">The <see cref="IDialogCoordinator"/> used to display dialogs.</param>
+        public AdvancedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator)
+            : base(tree, dialogCoordinator)
         {
             TreePlusItemsMode = new LeafSetting<bool>(nameof(TreePlusItemsMode), false);
             WeaponClass = new LeafSetting<WeaponClass>(nameof(WeaponClass), Model.PseudoAttributes.WeaponClass.Unarmed,

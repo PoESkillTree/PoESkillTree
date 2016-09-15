@@ -1,4 +1,4 @@
-﻿using System;
+﻿using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.JsonSettings;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Settings;
@@ -23,6 +23,17 @@ namespace POESKillTree.TreeGenerator.ViewModels
         }
 
         /// <summary>
+        /// Gets the <see cref="IDialogCoordinator"/> used to display dialogs.
+        /// </summary>
+        protected IDialogCoordinator DialogCoordinator { get; }
+
+        /// <summary>
+        /// Gets or sets whether the solver of this tab uses all settings or if it ignores level, points and
+        /// iterations settings.
+        /// </summary>
+        public bool UsesFullSettingsSet { get; protected set; } = true;
+
+        /// <summary>
         /// The SkillTree instance to operate on.
         /// </summary>
         protected readonly SkillTree Tree;
@@ -31,17 +42,17 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Instantiates a new GeneratorTabViewModel.
         /// </summary>
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
-        protected GeneratorTabViewModel(SkillTree tree)
+        /// <param name="dialogCoordinator">The <see cref="IDialogCoordinator"/> used to display dialogs.</param>
+        protected GeneratorTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator)
         {
-            if (tree == null) throw new ArgumentNullException(nameof(tree));
             Tree = tree;
+            DialogCoordinator = dialogCoordinator;
         }
 
         /// <summary>
         /// Creates a solver that uses the settings defined by the user in this ViewModel.
         /// </summary>
         /// <param name="settings">(not null) Base settings specified in SettingsViewModel.</param>
-        /// <returns></returns>
         public abstract ISolver CreateSolver(SolverSettings settings);
     }
 }

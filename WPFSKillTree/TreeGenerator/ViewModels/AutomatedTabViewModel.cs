@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model.JsonSettings;
 using POESKillTree.SkillTreeFiles;
@@ -13,8 +14,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         protected override IReadOnlyList<ISetting> SubSettings { get; } = new ISetting[0];
 
-        public AutomatedTabViewModel(SkillTree tree)
-            : base(tree)
+        public AutomatedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator)
+            : base(tree, dialogCoordinator)
         {
             DisplayName = L10n.Message("Automated");
         }

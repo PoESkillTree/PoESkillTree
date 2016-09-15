@@ -49,12 +49,6 @@
             <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="16" />
         </Style>
-        <ControlTemplate x:Key="SkillIcon">
-            <Canvas Width="15" Height="15" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
-                <Path Width="14.3333" Height="14.3333" Canvas.Left="0.8333" Canvas.Top="0.8333" Stretch="Fill" Fill="{DynamicResource BlackColorBrush}" 
-                      Data="F1 M 38,27.1542C 43.99,27.1542 48.8458,32.01 48.8458,38C 48.8458,43.99 43.99,48.8458 38,48.8458C 32.01,48.8458 27.1542,43.99 27.1542,38C 27.1542,32.01 32.01,27.1542 38,27.1542 Z M 38,16.625C 49.8051,16.625 59.375,26.1949 59.375,38C 59.375,49.8051 49.8051,59.375 38,59.375C 26.1949,59.375 16.625,49.8051 16.625,38C 16.625,26.1949 26.1949,16.625 38,16.625 Z M 38,20.5833C 28.381,20.5833 20.5833,28.381 20.5833,38C 20.5833,47.619 28.381,55.4167 38,55.4167C 47.6189,55.4167 55.4167,47.619 55.4167,38C 55.4167,28.381 47.619,20.5833 38,20.5833 Z "/>
-            </Canvas>
-        </ControlTemplate>
     </Window.Resources>
 
     <controls:MetroWindow.RightWindowCommands>
@@ -427,68 +421,23 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator />
-                <MenuItem>
+                <MenuItem Click="Menu_ImportItems">
                     <MenuItem.Header>
-                        <l:Catalog Message="_Equipment"/>
+                        <l:Catalog Message="_Download &amp; Import Items…"/>
                     </MenuItem.Header>
                     <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Ring" HorizontalAlignment="Center" />
+                        <iconPacks:PackIconModern Kind="CloudDownload" HorizontalAlignment="Center" />
                     </MenuItem.Icon>
-                    <MenuItem Click="Menu_ImportItems">
-                        <MenuItem.Header>
-                            <l:Catalog Message="_Download &amp; Import Items…"/>
-                        </MenuItem.Header>
-                        <MenuItem.Icon>
-                            <iconPacks:PackIconModern Kind="CloudDownload" HorizontalAlignment="Center" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Click="Menu_ImportStash">
-                        <MenuItem.Header>
-                            <l:Catalog Message="_Download &amp; Import Stash…"/>
-                        </MenuItem.Header>
-                        <MenuItem.Icon>
-                            <iconPacks:PackIconModern Kind="CloudDownload" HorizontalAlignment="Center" />
-                        </MenuItem.Icon>
-                    </MenuItem>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem Click="Menu_ImportStash">
                     <MenuItem.Header>
-                        <l:Catalog Message="_Nodes"/>
+                        <l:Catalog Message="_Download &amp; Import Stash…"/>
                     </MenuItem.Header>
                     <MenuItem.Icon>
-                        <ContentControl Template="{StaticResource SkillIcon}" />
+                        <iconPacks:PackIconModern Kind="CloudDownload" HorizontalAlignment="Center" />
                     </MenuItem.Icon>
-                    <MenuItem Click="Menu_SkillTaggedNodes" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
-                        <MenuItem.Header>
-                            <l:Catalog Message="Skill _Tagged Nodes" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Click="Menu_UntagAllNodes">
-                        <MenuItem.Header>
-                            <l:Catalog Message="Un_tag All Nodes" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Click="Menu_UnhighlightAllNodes">
-                        <MenuItem.Header>
-                            <l:Catalog Message="_Unhighlight All Nodes" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Click="Menu_CheckAllHighlightedNodes">
-                        <MenuItem.Header>
-                            <l:Catalog Message="_Check-tag highlighted Nodes" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Click="Menu_CrossAllHighlightedNodes">
-                        <MenuItem.Header>
-                            <l:Catalog Message="C_ross-tag highlighted Nodes" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Click="Menu_OpenTreeGenerator">
-                        <MenuItem.Header>
-                            <l:Catalog Message="_Skill Tree Generator…" />
-                        </MenuItem.Header>
-                    </MenuItem>
                 </MenuItem>
+                <Separator />
                 <MenuItem Click="Menu_RedownloadTreeAssets">
                     <MenuItem.Header>
                         <l:Catalog Message="_Redownload Skill Tree Assets" />
@@ -504,6 +453,36 @@
                     <MenuItem.Icon>
                         <iconPacks:PackIconModern Kind="Filter" HorizontalAlignment="Center" />
                     </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem>
+                <MenuItem.Header>
+                    <l:Catalog Message="_Nodes"/>
+                </MenuItem.Header>
+                <MenuItem Click="Menu_OpenTreeGenerator">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Skill Tree Generator…" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Click="Menu_UntagAllNodes">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Un_tag All Nodes" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Click="Menu_UnhighlightAllNodes">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Unhighlight All Nodes" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Click="Menu_CheckAllHighlightedNodes">
+                    <MenuItem.Header>
+                        <l:Catalog Message="_Check-tag highlighted Nodes" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Click="Menu_CrossAllHighlightedNodes">
+                    <MenuItem.Header>
+                        <l:Catalog Message="C_ross-tag highlighted Nodes" />
+                    </MenuItem.Header>
                 </MenuItem>
             </MenuItem>
             <MenuItem>
