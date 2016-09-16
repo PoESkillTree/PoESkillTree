@@ -85,10 +85,10 @@ Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(
 Filename: "{app}\{#AppExeName}"; Flags: nowait skipifnotsilent
 
 [Registry]
-Root: HKCR; Subkey: ".pbuild";                      ValueData: "{#AppId}";          Flags: uninsdeletevalue; ValueType: string;  ValueName: "" Check: CheckStandardMode;
-Root: HKCR; Subkey: "{#AppId}";                     ValueData: "Program {#AppId}";  Flags: uninsdeletekey;   ValueType: string;  ValueName: "" Check: CheckStandardMode;
-Root: HKCR; Subkey: "{#AppId}\DefaultIcon";         ValueData: "{app}\{#AppExeName},0";                      ValueType: string;  ValueName: "" Check: CheckStandardMode;
-Root: HKCR; Subkey: "{#AppId}\shell\open\command";  ValueData: """{app}\{#AppExeName}"" ""%1""";             ValueType: string;  ValueName: "" Check: CheckStandardMode;
+Root: HKCR; Subkey: ".pbuild";                      ValueData: "{#AppId}";          Flags: uninsdeletevalue; ValueType: string; Check: CheckStandardMode;
+Root: HKCR; Subkey: "{#AppId}";                     ValueData: "Program {#AppId}";  Flags: uninsdeletekey;   ValueType: string; Check: CheckStandardMode;
+Root: HKCR; Subkey: "{#AppId}\DefaultIcon";         ValueData: "{app}\{#AppExeName},0";                      ValueType: string; Check: CheckStandardMode;
+Root: HKCR; Subkey: "{#AppId}\shell\open\command";  ValueData: """{app}\{#AppExeName}"" ""%1""";             ValueType: string; Check: CheckStandardMode;
 
 [Code]
 var
@@ -186,6 +186,24 @@ begin
 		if PageID = PortabilityPage.ID then
 		begin
 			result := True;
+		end;
+	end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+	if CurUninstallStep = usPostUninstall then
+	begin
+		{ Ask user if program created files in AppData should be removed. }
+		if MsgBox(CustomMessage('UninstallAskForPersistentDataRemove'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES then
+		begin
+			DeleteFile(ExpandConstant('{userappdata}\{#AppDataFolderName}\PersistentData.xml'))
+			DeleteFile(ExpandConstant('{userappdata}\{#AppDataFolderName}\PersistentData.bak'))
+			DeleteFile(ExpandConstant('{userappdata}\{#AppDataFolderName}\stash.json'))
+			DelTree(ExpandConstant('{userappdata}\{#AppDataFolderName}\Builds'), True, True, True);
+			DelTree(ExpandConstant('{userappdata}\{#AppDataFolderName}\Data'), True, True, True);
+			DelTree(ExpandConstant('{userappdata}\{#AppDataFolderName}\Filters'), True, True, True);
+			DelTree(ExpandConstant('{userappdata}\{#AppDataFolderName}\Settings'), True, True, True);
 		end;
 	end;
 end;

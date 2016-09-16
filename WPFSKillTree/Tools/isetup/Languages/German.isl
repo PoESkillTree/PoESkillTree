@@ -350,3 +350,5 @@ InstallationTypeDesc=Wählen Sie die Art der Installation aus
 InstallationTypeLabel=Wählen Sie die portable Installtion nur, wenn Sie dieses Programm und dessen Einstellungen auf einem Wechseldatenträger transportieren wollen. Es werden keine Verknüpfungen erstellt und es wird keine Option zum Deinstallieren geben.
 InstallationTypeStandardLabel=Standard - Auf diesem Computer installieren (empfohlen)
 InstallationTypePortableLabel=Portabel - Auf einem Wechseldatenträger installieren
+
+UninstallAskForPersistentDataRemove=Möchten Sie auch Ihre Builds, Einstellungen und andere persistente Daten entfernen? Dies kann nicht rückgängig gemacht werden! Nur Builds im standardmäßig eingestellten Verzeichnis werden gelöscht.

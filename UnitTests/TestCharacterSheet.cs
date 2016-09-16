@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Serialization;
 using POESKillTree.SkillTreeFiles;
@@ -33,7 +34,7 @@ namespace UnitTests
 
             if (ItemDB.IsEmpty())
                 ItemDB.Load("Data/ItemDB/GemList.xml", true);
-            _persistentData = new BarePersistentData();
+            _persistentData = new BarePersistentData {CurrentBuild = new PoEBuild()};
         }
 
         readonly Regex _backreplace = new Regex("#");

@@ -341,3 +341,5 @@ InstallationTypeDesc=Select Installation Type
 InstallationTypeLabel=Choose portable installation only if you want to carry this program and its settings on removable device (for example USB drive). No shortcuts will be created and uninstall option will not be available.
 InstallationTypeStandardLabel=Standard - Install on this computer (recommended)
 InstallationTypePortableLabel=Portable - Install on removable device
+
+UninstallAskForPersistentDataRemove=Do you want the uninstaller to remove your builds, settings and other persistent data? This can not be undone! Only builds stored in the default location will be removed.
