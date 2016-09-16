@@ -293,27 +293,35 @@
                 <TabItem.Header>
                     <l:Catalog Message="Settings"/>
                 </TabItem.Header>
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
-                      Margin="0 15 0 0">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="200" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
-                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" TextWrapping="Wrap" MaxWidth="600" Margin="5">
-                        <TextBlock.Text>
-                            <l:Catalog Message="These settings define which attributes influence pseudo attributes.&#10;For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected."/>
-                        </TextBlock.Text>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" TextWrapping="Wrap" MaxWidth="600" Margin="5"
+                               FontSize="{DynamicResource NormalFontSize}">
+                        <Run>
+                            <l:Catalog>These settings define which attributes influence pseudo attributes.</l:Catalog>
+                        </Run>
+                        <LineBreak/><LineBreak/>
+                        <Run>
+                            <l:Catalog>For example, '#% increased Melee Physical Damage' will only influence the 
+                                pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected.</l:Catalog>
+                        </Run>
                     </TextBlock>
                     
                     <!-- 'Tree + gear' mode not yet implemented -->
-                    <metroControls:ToggleSwitch Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,0,5"
+                    <metroControls:ToggleSwitch Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Margin="5,0,0,5"
                                                 HorizontalAlignment="Center"
                                                 IsChecked="{Binding TreePlusItemsMode.Value}"
                                                 Visibility="Collapsed">
@@ -325,19 +333,19 @@
                         </metroControls:ToggleSwitch.OffLabel>
                     </metroControls:ToggleSwitch>
 
-                    <Button Grid.Column="1" Grid.Row="2" Margin="4,4,4,4"
+                    <Button Grid.Column="0" Grid.Row="3" Margin="4,4,4,4" Grid.ColumnSpan="5"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             Command="{Binding ReloadPseudoAttributesCommand}">
                         <l:Catalog Message="Reload Pseudo Attributes from filesystem"/>
                     </Button>
 
                     <!-- WeaponClass -->
-                    <GroupBox Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">
+                    <GroupBox Grid.Row="2" Grid.Column="0" VerticalAlignment="Stretch">
                         <GroupBox.Header>
                             <l:Catalog Message="Weapon class"/>
                         </GroupBox.Header>
                         <ComboBox HorizontalAlignment="Left" MinWidth="130" Margin="5,0" VerticalAlignment="Center"
-                              SelectedValue="{Binding WeaponClass.Value}" ItemsSource="{Binding WeaponClassValues}">
+                                  SelectedValue="{Binding WeaponClass.Value}" ItemsSource="{Binding WeaponClassValues}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
@@ -347,7 +355,7 @@
                     </GroupBox>
 
                     <!-- OffHand -->
-                    <GroupBox Grid.Row="3" Grid.Column="0">
+                    <GroupBox Grid.Row="2" Grid.Column="2">
                         <GroupBox.Header>
                             <l:Catalog Message="Off hand"/>
                         </GroupBox.Header>
@@ -370,7 +378,7 @@
                     </GroupBox>
 
                     <!-- Tags -->
-                    <GroupBox Grid.Row="3" Grid.Column="1">
+                    <GroupBox Grid.Row="2" Grid.Column="4">
                         <GroupBox.Header>
                             <l:Catalog Message="Tags"/>
                         </GroupBox.Header>

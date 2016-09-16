@@ -9,7 +9,7 @@
              d:DesignHeight="400" d:DesignWidth="600"
              dialogs:DialogParticipation.Register="{Binding}">
     <TextBlock TextWrapping="Wrap"
-               FontSize="{StaticResource ContentFontSize}"
+               FontSize="{StaticResource NormalFontSize}"
                Padding="5">
         <Run>
             <l:Catalog>This generator connects all Check-tagged nodes to the current tree with the least amount of
