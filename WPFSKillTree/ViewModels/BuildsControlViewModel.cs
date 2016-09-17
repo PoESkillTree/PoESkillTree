@@ -306,6 +306,7 @@ namespace POESKillTree.ViewModels
             switch (args.PropertyName)
             {
                 case nameof(Options.BuildsSavePath):
+                    Directory.CreateDirectory(PersistentData.Options.BuildsSavePath);
                     _fileSystemWatcher.Path = PersistentData.Options.BuildsSavePath;
                     break;
             }
