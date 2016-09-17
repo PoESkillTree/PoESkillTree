@@ -9,48 +9,15 @@
     xmlns:vm="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
     xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
-    xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
     d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
     AllowMove="True" IsModal="False" ShowCloseButton="True"
     dialogs:DialogParticipation.Register="{Binding}">
     <simpleChildWindow:ChildWindow.Title>
         <l:Catalog>Skill Tree Generator</l:Catalog>
     </simpleChildWindow:ChildWindow.Title>
-    <Grid Height="600" Width="600"
+    <Grid Height="510" Width="600"
           Margin="-4 0 -4 -4">
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <DockPanel Grid.Row="0" Margin="10">
-            <CheckBox Margin="0 0 10 0"
-                      IsChecked="{Binding IncludeChecked.Value}">
-                <l:Catalog Message="include Check-tagged nodes"/>
-                <CheckBox.ToolTip>
-                    <l:Catalog>Select if Check-tagged nodes must be skilled by possible solutions.</l:Catalog>
-                </CheckBox.ToolTip>
-            </CheckBox>
-            <CheckBox IsChecked="{Binding ExcludeCrossed.Value}">
-                <l:Catalog Message="exclude Cross-tagged nodes"/>
-                <CheckBox.ToolTip>
-                    <l:Catalog>Select if Cross-tagged nodes must not be skilled by possible solutions.</l:Catalog>
-                </CheckBox.ToolTip>
-            </CheckBox>
-
-            <Button MinWidth="100"
-                    HorizontalAlignment="Right" VerticalAlignment="Center"
-                    Command="{Binding RunCommand}"
-                    wpf:Helper.FocusOnLoaded="True">
-                <l:Catalog Message="Run"/>
-                <Button.ToolTip>
-                    <l:Catalog>Run the generator belonging to the currently opened tab.</l:Catalog>
-                </Button.ToolTip>
-            </Button>
-        </DockPanel>
-
-        <TabControl Grid.Row="1" SelectedIndex="{Binding SelectedTabIndex.Value}">
+        <TabControl SelectedIndex="{Binding SelectedTabIndex.Value}">
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
                 <local:SteinerTabView />
             </TabItem>

@@ -547,8 +547,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
         /// <param name="dialogCoordinator">The <see cref="IDialogCoordinator"/> used to display dialogs.</param>
-        public AdvancedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator)
-            : base(tree, dialogCoordinator, 3)
+        /// <param name="runCallback">The action that is called when RunCommand is executed.</param>
+        public AdvancedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator,
+            Action<GeneratorTabViewModel> runCallback)
+            : base(tree, dialogCoordinator, 3, runCallback)
         {
             AdditionalPoints = new LeafSetting<int>(nameof(AdditionalPoints), 21,
                 () => TotalPoints = Tree.Level - 1 + AdditionalPoints.Value);
@@ -599,7 +601,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             SubSettings = new ISetting[]
             {
-                AdditionalPoints, Iterations, TreePlusItemsMode, WeaponClass, OffHand, Tags,
+                AdditionalPoints, Iterations, IncludeChecked, ExcludeCrossed,
+                TreePlusItemsMode, WeaponClass, OffHand, Tags,
                 new ConstraintsSetting(this)
             };
         }
@@ -790,7 +793,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
-        public override ISolver CreateSolver(SolverSettings settings)
+        protected override ISolver CreateSolver(SolverSettings settings)
         {
             var attributeConstraints = AttributeConstraints.ToDictionary(
                 constraint => constraint.Data,

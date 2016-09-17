@@ -5,47 +5,71 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+             xmlns:viewModels="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="600"
-             dialogs:DialogParticipation.Register="{Binding}">
-    <TextBlock TextWrapping="Wrap"
-               FontSize="{StaticResource NormalFontSize}"
-               Padding="5">
-        <Run>
-            <l:Catalog>This generator connects all Check-tagged nodes to the current tree with the least amount of
-                nodes possible. Cross-tagged nodes will not be skilled (if the corresponding checkbox is
-                checked). It should always generate the optimal solution.</l:Catalog>
-        </Run>
-        <LineBreak /><LineBreak />
-        <Run>
-            <l:Catalog>Nodes can be Check-tagged by right-clicking them. They can be Cross-tagged by right-clicking
-                twice or shift-right-clicking once.</l:Catalog>
-        </Run>
-        <LineBreak /><LineBreak />
-        <Run FontSize="{StaticResource FlyoutHeaderFontSize}"><l:Catalog>The 'Advanced' tab</l:Catalog></Run>
-        <LineBreak /><LineBreak />
-        <Run>
-            <l:Catalog>For more complex generation, select the 'Advanced' tab. It allows you to add constraints,
-                like a specific amount of '#% increased maximum Life', to the generated trees while keeping the amount
-                of points spent under the specified number.</l:Catalog>
-        </Run>
-        <LineBreak /><LineBreak />
-        <Run>
-            <l:Catalog>The 'Advanced' generator also allows constraints that combine multiple attributes into one.
-                These are called 'Pseudo Attributes' and what influences them can be adjusted under
-                'Advanced - Settings'.</l:Catalog>
-        </Run>
-        <LineBreak /><LineBreak />
-        <Run>
-            <l:Catalog>Constraints consist of three parts: the attribute name, the target value you want solutions to
-                achieve and a weight. Reaching the target value of constraints with higher weights will be prioritized
-                over reaching the target value of those with lower weights.</l:Catalog>
-        </Run>
-        <LineBreak /><LineBreak />
-        <Run>
-            <l:Catalog>However, the resulting solutions may deviate slightly from
-                the optimum, as the problems that are solved are much more complex.</l:Catalog>
-        </Run>
-    </TextBlock>
+             d:DesignHeight="460" d:DesignWidth="600"
+             dialogs:DialogParticipation.Register="{Binding}"
+             d:DataContext="{d:DesignInstance viewModels:SteinerTabViewModel}">
+    <StackPanel Orientation="Vertical">
+        <DockPanel Margin="10">
+            <CheckBox IsChecked="{Binding ExcludeCrossed.Value}">
+                <l:Catalog Message="exclude Cross-tagged nodes"/>
+                <CheckBox.ToolTip>
+                    <l:Catalog>Select if Cross-tagged nodes must not be skilled by possible solutions.</l:Catalog>
+                </CheckBox.ToolTip>
+            </CheckBox>
+
+            <Button MinWidth="100"
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    IsDefault="True"
+                    Command="{Binding RunCommand}">
+                <l:Catalog Message="Run"/>
+            </Button>
+        </DockPanel>
+        
+        <TextBlock TextWrapping="Wrap"
+                   FontSize="{StaticResource NormalFontSize}"
+                   Padding="5">
+            <Run>
+                <l:Catalog>This generator connects all Check-tagged nodes to the current tree with the least amount of
+                    nodes possible. Cross-tagged nodes will not be skilled (if the corresponding checkbox is
+                    checked). It should always generate the optimal solution.</l:Catalog>
+            </Run>
+            <LineBreak /><LineBreak />
+            <Run>
+                <l:Catalog>Nodes can be Check-tagged by right-clicking them. They can be Cross-tagged by right-clicking
+                    twice or shift-right-clicking once.</l:Catalog>
+            </Run>
+        </TextBlock>
+        <Expander Margin="5 20 5 5">
+            <Expander.Header>
+                <l:Catalog>The 'Advanced' tab</l:Catalog>
+            </Expander.Header>
+            <TextBlock TextWrapping="Wrap">
+                <Run>
+                    <l:Catalog>For more complex generation, select the 'Advanced' tab. It allows you to add constraints,
+                        like a specific amount of '#% increased maximum Life', to the generated trees while keeping the amount
+                        of points spent under the specified number.</l:Catalog>
+                </Run>
+                <LineBreak /><LineBreak />
+                <Run>
+                    <l:Catalog>The 'Advanced' generator also allows constraints that combine multiple attributes into one.
+                        These are called 'Pseudo Attributes' and what influences them can be adjusted under
+                        'Advanced - Settings'.</l:Catalog>
+                </Run>
+                <LineBreak /><LineBreak />
+                <Run>
+                    <l:Catalog>Constraints consist of three parts: the attribute name, the target value you want solutions to
+                        achieve and a weight. Reaching the target value of constraints with higher weights will be prioritized
+                        over reaching the target value of those with lower weights.</l:Catalog>
+                </Run>
+                <LineBreak /><LineBreak />
+                <Run>
+                    <l:Catalog>However, the resulting solutions may deviate slightly from
+                        the optimum, as the problems that are solved are much more complex.</l:Catalog>
+                </Run>
+            </TextBlock>
+        </Expander>
+    </StackPanel>
 </UserControl>
 

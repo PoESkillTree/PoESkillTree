@@ -75,6 +75,13 @@
         <KeyBinding Modifiers="Control" Key="N"
                     Command="{Binding BuildsControlViewModel.NewBuildCommand}"
                     CommandParameter="{Binding PersistentData.RootBuild}"/>
+        
+        <KeyBinding Modifiers="Control+Shift" Key="G"
+                    Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}" />
+        <KeyBinding Modifiers="Control+Shift" Key="T"
+                    Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}" />
+        <KeyBinding Modifiers="Control+Shift" Key="A"
+                    Command="{Binding TreeGeneratorInteraction.RunAdvancedCommand}" />
     </Window.InputBindings>
 
     <Grid Margin="0">
@@ -459,11 +466,34 @@
                 <MenuItem.Header>
                     <l:Catalog Message="_Nodes"/>
                 </MenuItem.Header>
-                <MenuItem Click="Menu_OpenTreeGenerator">
+                <MenuItem Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}"
+                          InputGestureText="Ctrl+Shift+G">
                     <MenuItem.Header>
                         <l:Catalog Message="_Skill Tree Generator…" />
                     </MenuItem.Header>
                 </MenuItem>
+                <MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}"
+                          InputGestureText="Ctrl+Shift+T"
+                          dialogs:DialogParticipation.Register="{Binding TreeGeneratorInteraction}">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Run 'Tagged _Nodes' generator" />
+                    </MenuItem.Header>
+                    <MenuItem.ToolTip>
+                        <l:Catalog>Runs the 'Tagged Nodes' generator with the current settings set in the Skill Tree
+                            Generator window.</l:Catalog>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Command="{Binding TreeGeneratorInteraction.RunAdvancedCommand}"
+                          InputGestureText="Ctrl+Shift+A">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Run '_Advanced' generator" />
+                    </MenuItem.Header>
+                    <MenuItem.ToolTip>
+                        <l:Catalog>Runs the 'Advanced' generator with the current settings set in the Skill Tree
+                            Generator window.</l:Catalog>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <Separator />
                 <MenuItem Click="Menu_UntagAllNodes">
                     <MenuItem.Header>
                         <l:Catalog Message="Un_tag All Nodes" />

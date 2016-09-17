@@ -19,7 +19,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
-using MahApps.Metro.SimpleChildWindow;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
@@ -30,13 +29,11 @@ using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.ViewModels;
-using POESKillTree.TreeGenerator.Views;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
 using Attribute = POESKillTree.ViewModels.Attribute;
-using static POESKillTree.SkillTreeFiles.Constants;
 
 namespace POESKillTree.Views
 {
@@ -105,6 +102,8 @@ namespace POESKillTree.Views
             tree.PropertyChanged += Tree_PropertyChanged;
             if (BuildsControlViewModel != null)
                 BuildsControlViewModel.SkillTree = tree;
+            if (TreeGeneratorInteraction != null)
+                TreeGeneratorInteraction.SkillTree = tree;
             return tree;
         }
 
@@ -112,7 +111,7 @@ namespace POESKillTree.Views
         public BuildsControlViewModel BuildsControlViewModel
         {
             get { return _buildsControlViewModel; }
-            set
+            private set
             {
                 _buildsControlViewModel = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BuildsControlViewModel)));
@@ -156,8 +155,17 @@ namespace POESKillTree.Views
             }
         }
 
-        private SettingsWindow _treeGeneratorWindow;
-        private SettingsViewModel _treeGeneratorViewModel;
+        private TreeGeneratorInteraction _treeGeneratorInteraction;
+
+        public TreeGeneratorInteraction TreeGeneratorInteraction
+        {
+            get { return _treeGeneratorInteraction; }
+            private set
+            {
+                _treeGeneratorInteraction = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TreeGeneratorInteraction)));
+            }
+        }
 
         public string MainWindowTitle { get; } =
             FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).ProductName;
@@ -199,7 +207,7 @@ namespace POESKillTree.Views
             {
                 if (args.PropertyName == nameof(PersistentData.CurrentBuild))
                 {
-                    SaveTreeGeneratorSettings();
+                    TreeGeneratorInteraction?.SaveSettings();
                     PersistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
                 }
             };
@@ -222,7 +230,7 @@ namespace POESKillTree.Views
                     Tree.ResetTaggedNodes();
                     break;
                 case nameof(PoEBuild.AdditionalData):
-                    _treeGeneratorViewModel?.LoadFrom(PersistentData.CurrentBuild.AdditionalData);
+                    TreeGeneratorInteraction?.LoadSettings();
                     break;
             }
         }
@@ -514,6 +522,13 @@ namespace POESKillTree.Views
             PopulateAsendancySelectionList();
             BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
             UpdateTreeComparision();
+            TreeGeneratorInteraction =
+                new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
+            TreeGeneratorInteraction.RunFinished += (o, args) =>
+            {
+                UpdateUI();
+                SetCurrentBuildUrlFromTree();
+            };
 
             await controller.CloseAsync();
         }
@@ -649,13 +664,11 @@ namespace POESKillTree.Views
                 var message = L10n.Message("There are unsaved builds. Do you want to save them before closing?\n\n"
                                            + "Canceling stops the program from closing and does not save any builds.");
                 // Might affect unsaved builds state, so needs to be done here.
-                SaveTreeGeneratorSettings();
+                TreeGeneratorInteraction?.SaveSettings();
                 if (await BuildsControlViewModel.HandleUnsavedBuilds(message))
                 {
                     // User wants to close
                     _canClose = true;
-                    // Here goes the close handling that happens synchronously.
-                    _treeGeneratorWindow?.Close();
                     // Calling Close() here again is not possible as the Closing event might still be handled
                     // (Close() is not allowed while a previous one is not completely processed)
                     Application.Current.Shutdown();
@@ -698,38 +711,6 @@ namespace POESKillTree.Views
         private void Menu_CrossAllHighlightedNodes(object sender, RoutedEventArgs e)
         {
             Tree.CrossAllHighlightedNodes();
-        }
-
-        private async void Menu_OpenTreeGenerator(object sender, RoutedEventArgs e)
-        {
-            if (_treeGeneratorWindow != null && _treeGeneratorWindow.IsOpen)
-            {
-                await this.ShowInfoAsync(L10n.Message("The Skill Tree Generator is already open"));
-                return;
-            }
-            try
-            {
-                if (_treeGeneratorWindow == null)
-                {
-                    _treeGeneratorViewModel = new SettingsViewModel(Tree, SettingsDialogCoordinator.Instance);
-                    _treeGeneratorViewModel.LoadFrom(PersistentData.CurrentBuild.AdditionalData);
-                    _treeGeneratorViewModel.RunFinished += (o, args) =>
-                    {
-                        UpdateUI();
-                        SetCurrentBuildUrlFromTree();
-                    };
-                    _treeGeneratorWindow = new SettingsWindow {DataContext = _treeGeneratorViewModel};
-                    _treeGeneratorWindow.Closing += (o, args) => SaveTreeGeneratorSettings();
-                }
-                await this.ShowChildWindowAsync(_treeGeneratorWindow);
-            }
-            catch (Exception ex)
-            {
-                await this.ShowErrorAsync(L10n.Message("Could not open Skill Tree Generator"), ex.Message);
-#if DEBUG
-                throw;
-#endif
-            }
         }
 
         private async void Menu_ScreenShot(object sender, RoutedEventArgs e)
@@ -831,9 +812,8 @@ namespace POESKillTree.Views
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            await this.ShowDialogAsync(
-                new DownloadStashViewModel(DialogCoordinator.Instance, PersistentData, Stash),
-                new DownloadStashWindow());
+            var vm = new DownloadStashViewModel(DialogCoordinator.Instance, PersistentData, Stash);
+            await this.ShowDialogAsync(vm, new DownloadStashWindow(), () => vm.ViewLoaded());
         }
 
         private void Menu_ItemFilterEditor(object sender, RoutedEventArgs e)
@@ -1652,21 +1632,12 @@ namespace POESKillTree.Views
 
 #region Builds - Services
 
-        private void SaveTreeGeneratorSettings()
-        {
-            if (_treeGeneratorViewModel != null
-                && _treeGeneratorViewModel.SaveTo(PersistentData.CurrentBuild.AdditionalData))
-            {
-                PersistentData.CurrentBuild.FlagDirty();
-            }
-        }
-
         private async Task CurrentBuildChanged()
         {
             var build = PersistentData.CurrentBuild;
             Tree.Level = build.Level;
             Tree.ResetTaggedNodes();
-            _treeGeneratorViewModel?.LoadFrom(build.AdditionalData);
+            TreeGeneratorInteraction?.LoadSettings();
             await LoadItemData();
             SetCustomGroups(build.CustomGroups);
             await LoadBuildFromUrlAsync();

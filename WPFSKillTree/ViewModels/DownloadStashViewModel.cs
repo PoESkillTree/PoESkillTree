@@ -26,6 +26,7 @@ namespace POESKillTree.ViewModels
         private readonly Stash _stash;
         private readonly IPersistentData _persistenData;
         private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly TaskCompletionSource<object> _viewLoadedCompletionSource;
 
         private PoEBuild _build;
         public PoEBuild Build
@@ -50,7 +51,7 @@ namespace POESKillTree.ViewModels
 
         private readonly List<StashBookmark> _tabs = new List<StashBookmark>();
 
-        public ICollectionView TabsView { get; private set; }
+        public ICollectionView TabsView { get; }
 
         public static NotifyingTask<IReadOnlyList<string>> CurrentLeagues { get; private set; }
 
@@ -93,12 +94,24 @@ namespace POESKillTree.ViewModels
             BuildOnPropertyChanged(this, null);
             RequestsClose += _ => Build.PropertyChanged -= BuildOnPropertyChanged;
 
+            _viewLoadedCompletionSource = new TaskCompletionSource<object>();
             if (CurrentLeagues == null)
             {
                 CurrentLeagues = new NotifyingTask<IReadOnlyList<string>>(LoadCurrentLeaguesAsync(),
-                    async e => await _dialogCoordinator.ShowWarningAsync(this,
-                        L10n.Message("Could not load the currently running leagues."), e.Message));
+                    async e =>
+                    {
+                        await _viewLoadedCompletionSource.Task;
+                        await _dialogCoordinator.ShowWarningAsync(this,
+                            L10n.Message("Could not load the currently running leagues."), e.Message);
+                    });
             }
+        }
+
+        // Errors in CurrentLeagues task may only be shown when the dialog coordinator context is registered,
+        // which requires the view to be loaded.
+        public void ViewLoaded()
+        {
+            _viewLoadedCompletionSource.SetResult(null);
         }
 
         private static async Task<IReadOnlyList<string>> LoadCurrentLeaguesAsync()
