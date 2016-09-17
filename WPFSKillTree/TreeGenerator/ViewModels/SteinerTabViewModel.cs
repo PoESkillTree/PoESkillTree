@@ -25,19 +25,13 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
         /// <param name="dialogCoordinator">The <see cref="IDialogCoordinator"/> used to display dialogs.</param>
         public SteinerTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator)
-            : base(tree, dialogCoordinator)
+            : base(tree, dialogCoordinator, 1)
         {
             DisplayName = L10n.Message("Tagged Nodes");
-            UsesFullSettingsSet = false;
         }
 
         public override ISolver CreateSolver(SolverSettings settings)
         {
-            if (settings.Iterations != 1)
-            {
-                settings = new SolverSettings(settings.Level, settings.TotalPoints, settings.Checked,
-                    settings.Crossed, settings.SubsetTree, settings.InitialTree, 1);
-            }
             if (!settings.Checked.Any())
             {
                 DialogCoordinator.ShowInfoAsync(this,

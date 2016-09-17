@@ -28,25 +28,27 @@ namespace POESKillTree.TreeGenerator.ViewModels
         protected IDialogCoordinator DialogCoordinator { get; }
 
         /// <summary>
-        /// Gets or sets whether the solver of this tab uses all settings or if it ignores level, points and
-        /// iterations settings.
+        /// The number of iterations this solver will run.
         /// </summary>
-        public bool UsesFullSettingsSet { get; protected set; } = true;
+        public LeafSetting<int> Iterations { get; }
 
         /// <summary>
         /// The SkillTree instance to operate on.
         /// </summary>
-        protected readonly SkillTree Tree;
+        public SkillTree Tree { get; }
 
         /// <summary>
         /// Instantiates a new GeneratorTabViewModel.
         /// </summary>
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
         /// <param name="dialogCoordinator">The <see cref="IDialogCoordinator"/> used to display dialogs.</param>
-        protected GeneratorTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator)
+        /// <param name="defaultIterations">The default value for <see cref="Iterations"/>.</param>
+        protected GeneratorTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator,
+            int defaultIterations)
         {
             Tree = tree;
             DialogCoordinator = dialogCoordinator;
+            Iterations = new LeafSetting<int>(nameof(Iterations), defaultIterations);
         }
 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿<simpleChildWindow:ChildWindow
     x:Class="POESKillTree.TreeGenerator.Views.SettingsWindow"
-    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:POESKillTree.TreeGenerator.Views"
@@ -10,138 +9,48 @@
     xmlns:vm="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
     xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+    xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
     d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
     AllowMove="True" IsModal="False" ShowCloseButton="True"
     dialogs:DialogParticipation.Register="{Binding}">
     <simpleChildWindow:ChildWindow.Title>
         <l:Catalog>Skill Tree Generator</l:Catalog>
     </simpleChildWindow:ChildWindow.Title>
-    <Control.Resources>
-        <Style x:Key="NumericUpDownStyle"
-               TargetType="controls:NumericUpDown"
-               BasedOn="{StaticResource {x:Type controls:NumericUpDown}}">
-            <Setter Property="IsEnabled" Value="{Binding SelectedTab.UsesFullSettingsSet}" />
-            <Setter Property="controls:ControlsHelper.DisabledVisualElementVisibility" Value="Collapsed" />
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="{DynamicResource DisabledWhiteBrush}" />
-                    <Setter Property="Foreground" Value="{DynamicResource DisabledMenuItemForeground}" />
-                    <Setter Property="BorderBrush" Value="{DynamicResource DisabledMenuItemForeground}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="TextBoxStyle"
-               TargetType="TextBox"
-               BasedOn="{StaticResource MetroTextBox}">
-            <Setter Property="IsEnabled" Value="{Binding SelectedTab.UsesFullSettingsSet}" />
-            <Setter Property="controls:ControlsHelper.DisabledVisualElementVisibility" Value="Collapsed" />
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="{DynamicResource DisabledWhiteBrush}" />
-                    <Setter Property="Foreground" Value="{DynamicResource DisabledMenuItemForeground}" />
-                    <Setter Property="BorderBrush" Value="{DynamicResource DisabledMenuItemForeground}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Control.Resources>
     <Grid Height="600" Width="600"
           Margin="-4 0 -4 -4">
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Margin="5" Target="{Binding ElementName=Level}"
-               IsEnabled="{Binding SelectedTab.UsesFullSettingsSet}">
-            <l:Catalog Message="Level:" />
-        </Label>
-        <controls:NumericUpDown Grid.Row="0" Grid.Column="1" x:Name="Level" Margin="0,5"
-                                Minimum="{Binding Tree.UndefinedLevel}" Maximum="{Binding Tree.MaximumLevel}"
-                                Value="{Binding Tree.Level}"
-                                Style="{StaticResource NumericUpDownStyle}" />
+        <DockPanel Grid.Row="0" Margin="10">
+            <CheckBox Margin="0 0 10 0"
+                      IsChecked="{Binding IncludeChecked.Value}">
+                <l:Catalog Message="include Check-tagged nodes"/>
+                <CheckBox.ToolTip>
+                    <l:Catalog>Select if Check-tagged nodes must be skilled by possible solutions.</l:Catalog>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding ExcludeCrossed.Value}">
+                <l:Catalog Message="exclude Cross-tagged nodes"/>
+                <CheckBox.ToolTip>
+                    <l:Catalog>Select if Cross-tagged nodes must not be skilled by possible solutions.</l:Catalog>
+                </CheckBox.ToolTip>
+            </CheckBox>
 
-        <Label Grid.Row="1" Grid.Column="0" Margin="5" Target="{Binding ElementName=AddPoints}"
-               IsEnabled="{Binding SelectedTab.UsesFullSettingsSet}">
-            <l:Catalog Message="Additional points:" />
-        </Label>
-        <controls:NumericUpDown Grid.Row="1" Grid.Column="1" x:Name="AddPoints" Minimum="0" Margin="0,5"
-                                Value="{Binding AdditionalPoints.Value, ValidatesOnDataErrors=True}"
-                                Style="{StaticResource NumericUpDownStyle}" />
+            <Button MinWidth="100"
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Command="{Binding RunCommand}"
+                    wpf:Helper.FocusOnLoaded="True">
+                <l:Catalog Message="Run"/>
+                <Button.ToolTip>
+                    <l:Catalog>Run the generator belonging to the currently opened tab.</l:Catalog>
+                </Button.ToolTip>
+            </Button>
+        </DockPanel>
 
-        <Label Grid.Row="2" Grid.Column="0" Margin="5" Target="{Binding ElementName=TotalPoints}"
-               IsEnabled="{Binding SelectedTab.UsesFullSettingsSet}">
-            <l:Catalog Message="Total points:" />
-        </Label>
-        <TextBox Grid.Row="2" Grid.Column="1" x:Name="TotalPoints" Text="{Binding TotalPoints, Mode=OneWay}" IsReadOnly="True"
-                 Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,45,0"
-                 Style="{StaticResource TextBoxStyle}" />
-
-        <Label Grid.Row="3" Grid.Column="0" Margin="5" Target="{Binding ElementName=Iterations}"
-               IsEnabled="{Binding SelectedTab.UsesFullSettingsSet}">
-            <l:Catalog Message="Iterations:" />
-            <Label.ToolTip>
-                <TextBlock>
-                    <Run><l:Catalog Message="Determines how often the generator is run. The best result from all runs is kept." /></Run>
-                    <LineBreak/>
-                    <Run><l:Catalog Message="Pause and then Close it at any point to keep the current solution." /></Run>
-                </TextBlock>
-            </Label.ToolTip>
-        </Label>
-        <controls:NumericUpDown Grid.Row="3" Grid.Column="1" x:Name="Iterations" Minimum="1" Margin="0,5"
-                                Value="{Binding Iterations.Value, ValidatesOnDataErrors=True}"
-                                Style="{StaticResource NumericUpDownStyle}" />
-
-        <CheckBox Grid.Row="0" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding IncludeChecked.Value}">
-            <l:Catalog Message="include Check-tagged nodes"/>
-            <CheckBox.ToolTip>
-                <l:Catalog>Select if Check-taged nodes must be skilled by possible solutions.</l:Catalog>
-            </CheckBox.ToolTip>
-        </CheckBox>
-        <CheckBox Grid.Row="1" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding ExcludeCrossed.Value}">
-            <l:Catalog Message="exclude Cross-tagged nodes"/>
-            <CheckBox.ToolTip>
-                <l:Catalog>Select if Cross-taged nodes must not be skilled by possible solutions.</l:Catalog>
-            </CheckBox.ToolTip>
-        </CheckBox>
-        <CheckBox Grid.Row="0" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsSubset.Value}">
-            <l:Catalog Message="only search in current tree"/>
-            <CheckBox.ToolTip>
-                <l:Catalog>Select if only nodes in the current tree must be skilled by possible solutions.</l:Catalog>
-            </CheckBox.ToolTip>
-        </CheckBox>
-        <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsInitial.Value}">
-            <l:Catalog Message="current tree as initial solution"/>
-            <CheckBox.ToolTip>
-                <TextBlock>
-                    <Run><l:Catalog>Select if the current tree should be provided to the generator as an initial solution.</l:Catalog></Run>
-                    <LineBreak/>
-                    <Run><l:Catalog>This helps to guide the generator to better solutions if they can easily be derived from the current tree.</l:Catalog></Run>
-                </TextBlock>
-            </CheckBox.ToolTip>
-        </CheckBox>
-
-        <Button Grid.Row="3" Grid.Column="3" Margin="10,5" Command="{Binding RunCommand}">
-            <l:Catalog Message="Run"/>
-            <Button.ToolTip>
-                <l:Catalog>Run the generator belonging to the currently opened tab.</l:Catalog>
-            </Button.ToolTip>
-        </Button>
-        <Button Grid.Row="3" Grid.Column="2" Margin="20,5,10,5" Command="{Binding ResetCommand}">
-            <l:Catalog Message="Reset settings"/>
-        </Button>
-
-        <TabControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex.Value}">
+        <TabControl Grid.Row="1" SelectedIndex="{Binding SelectedTabIndex.Value}">
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
                 <local:SteinerTabView />
             </TabItem>

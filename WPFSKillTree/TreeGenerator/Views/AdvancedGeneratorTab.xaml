@@ -12,7 +12,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              x:Name="Control"
-             d:DesignHeight="400" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
+             d:DesignHeight="500" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
     <UserControl.Resources>
         <Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
             <Setter Property="Background" Value="{x:Null}"/>
@@ -77,8 +77,59 @@
             <converter:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
         </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <TabControl metroControls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}">
+        <StackPanel Grid.Row="0" Grid.Column="0"
+                    Orientation="Horizontal"
+                    Margin="0 5">
+            <Label Width="{Binding ElementName=IterationsLabel, Path=ActualWidth}">
+                <l:Catalog Message="Level:" />
+            </Label>
+            <metroControls:NumericUpDown MinWidth="75"
+                                     Minimum="{Binding Tree.UndefinedLevel}" Maximum="{Binding Tree.MaximumLevel}"
+                                     Value="{Binding Tree.Level}" />
+
+            <Label>
+                <l:Catalog Message="Additional points:" />
+            </Label>
+            <metroControls:NumericUpDown Minimum="0" MinWidth="75"
+                                         Value="{Binding AdditionalPoints.Value, ValidatesOnDataErrors=True}" />
+
+            <Label>
+                <l:Catalog Message="Total points:" />
+            </Label>
+            <TextBox Text="{Binding TotalPoints, Mode=OneWay}" IsReadOnly="True"
+                     HorizontalContentAlignment="Right" Padding="0 0 45 0" MinWidth="75" />
+        </StackPanel>
+
+        <DockPanel Grid.Row="1">
+            <Label x:Name="IterationsLabel">
+                <l:Catalog Message="Iterations:" />
+                <Label.ToolTip>
+                    <TextBlock>
+                    <Run><l:Catalog Message="Determines how often the generator is run. The best result from all runs is kept." /></Run>
+                    <LineBreak/>
+                    <Run><l:Catalog Message="Pause and then Close it at any point to keep the current solution." /></Run>
+                    </TextBlock>
+                </Label.ToolTip>
+            </Label>
+            <metroControls:NumericUpDown MinWidth="75" Minimum="1"
+                                         Value="{Binding Iterations.Value, ValidatesOnDataErrors=True}" />
+
+            <Button Command="{Binding ResetCommand}"
+                    HorizontalAlignment="Right"
+                    MinWidth="100" Margin="5 0">
+                <l:Catalog Message="Reset settings"/>
+            </Button>
+        </DockPanel>
+
+        <TabControl Grid.Row="2"
+                    metroControls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}">
             <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
                 <TabItem.Header>
                     <l:Catalog Message="Attributes"/>

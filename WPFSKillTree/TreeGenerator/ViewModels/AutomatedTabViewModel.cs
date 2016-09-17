@@ -15,7 +15,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         protected override IReadOnlyList<ISetting> SubSettings { get; } = new ISetting[0];
 
         public AutomatedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator)
-            : base(tree, dialogCoordinator)
+            : base(tree, dialogCoordinator, 1)
         {
             DisplayName = L10n.Message("Automated");
         }

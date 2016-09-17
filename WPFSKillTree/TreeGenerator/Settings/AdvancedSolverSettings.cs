@@ -10,6 +10,13 @@ namespace POESKillTree.TreeGenerator.Settings
     /// </summary>
     public class AdvancedSolverSettings : SolverSettings
     {
+
+        /// <summary>
+        /// Maximum for points spent in the result tree.
+        /// May be ignored if the only goal of the solver is to minimize point count.
+        /// </summary>
+        public readonly int TotalPoints;
+
         /// <summary>
         /// The attribute constraints the solver should try to fullfill.
         /// The key is the name of the attribute.
@@ -51,6 +58,7 @@ namespace POESKillTree.TreeGenerator.Settings
         /// Creates new AdvancesSolverSettings.
         /// </summary>
         /// <param name="baseSettings">Base settings to copy.</param>
+        /// <param name="totalPoints">Maximum for points spent in the result tree. (>= 0)</param>
         /// <param name="initialAttributes">Starting attributes of stats that calculations are based on.</param>
         /// <param name="attributeConstraints">The attribute constraints the solver should try to fullfill.</param>
         /// <param name="pseudoAttributeConstraints">The pseudo attribute constraints the solver should try to fullfill.</param>
@@ -58,12 +66,16 @@ namespace POESKillTree.TreeGenerator.Settings
         /// <param name="tags">Tags used for pseudo attribute calculation.</param>
         /// <param name="offHand">OffHand used for pseudo attribute calculation.</param>
         public AdvancedSolverSettings(SolverSettings baseSettings,
+            int totalPoints,
             Dictionary<string, float> initialAttributes,
             Dictionary<string, Tuple<float, double>> attributeConstraints,
             Dictionary<PseudoAttribute, Tuple<float, double>> pseudoAttributeConstraints,
             WeaponClass weaponClass, Tags tags, OffHand offHand)
             : base(baseSettings)
         {
+            if (totalPoints < 0) throw new ArgumentOutOfRangeException(nameof(totalPoints), totalPoints, "must be >= 0");
+
+            TotalPoints = totalPoints;
             WeaponClass = weaponClass;
             Tags = tags;
             OffHand = offHand;

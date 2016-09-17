@@ -201,15 +201,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private void CreateStartNodes(SearchGraph searchGraph)
         {
-            if (Settings.SubsetTree.Count > 0 || Settings.InitialTree.Count > 0)
-            {
-                // if the current tree does not need to be part of the result, only skill the character node
-                StartNode = searchGraph.SetStartNodes(new[] {_tree.GetCharNode()});
-            }
-            else
-            {
-                StartNode = searchGraph.SetStartNodes(_tree.SkilledNodes);
-            }
+            StartNode = searchGraph.SetStartNodes(_tree.SkilledNodes);
         }
 
         /// <summary>
@@ -279,8 +271,6 @@ namespace POESKillTree.TreeGenerator.Solver
                             || searchGraph.NodeDict.ContainsKey(node)
                             // Don't add nodes that should not be skilled.
                             || Settings.Crossed.Contains(node)
-                            // Only add nodes in the subsettree if one is given.
-                            || Settings.SubsetTree.Count > 0 && !Settings.SubsetTree.Contains(node)
                             // Mastery nodes are obviously not useful.
                             || node.Type == NodeType.Mastery
                             // Ignore ascendancies for now

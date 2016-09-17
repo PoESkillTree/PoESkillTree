@@ -188,10 +188,9 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected override bool MustIncludeNodeGroup(SkillNode node)
         {
-            // If the node has stats and is not a travel node and is part of the subtree,
+            // If the node has stats and is not a travel node,
             // the group is included.
-            return (Settings.SubsetTree.Count == 0 || Settings.SubsetTree.Contains(node))
-                   && _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id];
+            return _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id];
         }
 
         protected override bool IncludeNodeInSearchGraph(SkillNode node)
@@ -206,9 +205,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private void ExtractNodeAttributes()
         {
-            var skillNodes = Settings.SubsetTree.Count > 0
-                ? Settings.SubsetTree.ToDictionary(n => n.Id, n => n)
-                : SkillTree.Skillnodes;
+            var skillNodes = SkillTree.Skillnodes;
             _nodeAttributes = new List<Tuple<int, float>>[ushort.MaxValue];
             _areTravelNodes = new Dictionary<ushort, bool>(skillNodes.Count);
             foreach (var node in skillNodes)
