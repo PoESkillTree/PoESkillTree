@@ -308,6 +308,10 @@
     <Compile Include="Model\JsonSettings\AbstractCompositeSetting.cs" />
     <Compile Include="Model\JsonSettings\ISetting.cs" />
     <Compile Include="Model\JsonSettings\LeafSetting.cs" />
+    <Compile Include="TreeGenerator\ViewModels\TreeGeneratorInteraction.cs" />
+    <Compile Include="TreeGenerator\Views\SteinerTabView.xaml.cs">
+      <DependentUpon>SteinerTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Helper.cs" />
     <Compile Include="Utils\PathEx.cs" />
     <Compile Include="Utils\SerializationUtils.cs" />
@@ -387,7 +391,6 @@
     <Compile Include="Utils\DirectoryEx.cs" />
     <Compile Include="Utils\Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Utils\Extensions\ImageExtensions.cs" />
-    <Compile Include="Utils\Extensions\TaskExtensions.cs" />
     <Compile Include="Utils\FileEx.cs" />
     <Compile Include="Utils\NotifyingTask.cs" />
     <Compile Include="Utils\ObservableSet.cs" />
@@ -589,6 +592,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\BanditSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeGenerator\Views\SteinerTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

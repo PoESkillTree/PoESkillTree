@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 
 namespace POESKillTree.TreeGenerator.Settings
@@ -11,6 +10,13 @@ namespace POESKillTree.TreeGenerator.Settings
     /// </summary>
     public class AdvancedSolverSettings : SolverSettings
     {
+
+        /// <summary>
+        /// Maximum for points spent in the result tree.
+        /// May be ignored if the only goal of the solver is to minimize point count.
+        /// </summary>
+        public readonly int TotalPoints;
+
         /// <summary>
         /// The attribute constraints the solver should try to fullfill.
         /// The key is the name of the attribute.
@@ -48,13 +54,28 @@ namespace POESKillTree.TreeGenerator.Settings
         /// </summary>
         public readonly Dictionary<string, float> InitialAttributes;
 
-        private AdvancedSolverSettings(int level, int totalPoints, ISet<SkillNode> @checked, ISet<SkillNode> crossed,
-            ISet<SkillNode> subsetTree, ISet<SkillNode> initialTree, int iterations,
+        /// <summary>
+        /// Creates new AdvancesSolverSettings.
+        /// </summary>
+        /// <param name="baseSettings">Base settings to copy.</param>
+        /// <param name="totalPoints">Maximum for points spent in the result tree. (>= 0)</param>
+        /// <param name="initialAttributes">Starting attributes of stats that calculations are based on.</param>
+        /// <param name="attributeConstraints">The attribute constraints the solver should try to fullfill.</param>
+        /// <param name="pseudoAttributeConstraints">The pseudo attribute constraints the solver should try to fullfill.</param>
+        /// <param name="weaponClass">WeaponClass used for pseudo attribute calculation.</param>
+        /// <param name="tags">Tags used for pseudo attribute calculation.</param>
+        /// <param name="offHand">OffHand used for pseudo attribute calculation.</param>
+        public AdvancedSolverSettings(SolverSettings baseSettings,
+            int totalPoints,
             Dictionary<string, float> initialAttributes,
-            Dictionary<string, Tuple<float, double>> attributeConstraints, Dictionary<PseudoAttribute, Tuple<float, double>> pseudoAttributeConstraints,
+            Dictionary<string, Tuple<float, double>> attributeConstraints,
+            Dictionary<PseudoAttribute, Tuple<float, double>> pseudoAttributeConstraints,
             WeaponClass weaponClass, Tags tags, OffHand offHand)
-            : base(level, totalPoints, @checked, crossed, subsetTree, initialTree, iterations)
+            : base(baseSettings)
         {
+            if (totalPoints < 0) throw new ArgumentOutOfRangeException(nameof(totalPoints), totalPoints, "must be >= 0");
+
+            TotalPoints = totalPoints;
             WeaponClass = weaponClass;
             Tags = tags;
             OffHand = offHand;
@@ -71,25 +92,5 @@ namespace POESKillTree.TreeGenerator.Settings
             if (PseudoAttributeConstraints.Values.Any(t => t.Item1 <= 0))
                 throw new ArgumentException("Target values need to be greater zero", "pseudoAttributeConstraints");
         }
-
-        /// <summary>
-        /// Creates new AdvancesSolverSettings.
-        /// </summary>
-        /// <param name="baseSettings">Base settings to copy.</param>
-        /// <param name="initialAttributes">Starting attributes of stats that calculations are based on.</param>
-        /// <param name="attributeConstraints">The attribute constraints the solver should try to fullfill.</param>
-        /// <param name="pseudoAttributeConstraints">The pseudo attribute constraints the solver should try to fullfill.</param>
-        /// <param name="weaponClass">WeaponClass used for pseudo attribute calculation.</param>
-        /// <param name="tags">Tags used for pseudo attribute calculation.</param>
-        /// <param name="offHand">OffHand used for pseudo attribute calculation.</param>
-        public AdvancedSolverSettings(SolverSettings baseSettings,
-            Dictionary<string, float> initialAttributes,
-            Dictionary<string, Tuple<float, double>> attributeConstraints,
-            Dictionary<PseudoAttribute, Tuple<float, double>> pseudoAttributeConstraints,
-            WeaponClass weaponClass, Tags tags, OffHand offHand)
-            : this(baseSettings.Level, baseSettings.TotalPoints, baseSettings.Checked, baseSettings.Crossed,
-                baseSettings.SubsetTree, baseSettings.InitialTree, baseSettings.Iterations, initialAttributes,
-                attributeConstraints, pseudoAttributeConstraints, weaponClass, tags, offHand)
-        { }
     }
 }

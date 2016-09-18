@@ -12,7 +12,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              x:Name="Control"
-             d:DesignHeight="400" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
+             d:DesignHeight="460" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
     <UserControl.Resources>
         <Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
             <Setter Property="Background" Value="{x:Null}"/>
@@ -77,8 +77,97 @@
             <converter:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
         </Grid.Resources>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" MinWidth="80" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" MinWidth="80" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" Grid.Column="0"
+               Margin="5">
+            <l:Catalog Message="Level:" />
+        </Label>
+        <metroControls:NumericUpDown Grid.Row="0" Grid.Column="1"
+                                     Margin="0 5"
+                                     Minimum="{Binding Tree.UndefinedLevel}" Maximum="{Binding Tree.MaximumLevel}"
+                                     Value="{Binding Tree.Level}" />
 
-        <TabControl metroControls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}">
+        <Label Grid.Row="1" Grid.Column="0"
+               Margin="5">
+            <l:Catalog Message="Additional points:" />
+        </Label>
+        <metroControls:NumericUpDown Grid.Row="1" Grid.Column="1"
+                                     Margin="0 5" Minimum="0"
+                                     Value="{Binding AdditionalPoints.Value, ValidatesOnDataErrors=True}" />
+
+        <Label Grid.Row="2" Grid.Column="0"
+               Margin="5">
+            <l:Catalog Message="Total points:" />
+        </Label>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Margin="0 5" Padding="0 0 45 0"
+                 HorizontalContentAlignment="Right"
+                 Text="{Binding TotalPoints, Mode=OneWay}" IsReadOnly="True" />
+
+        <CheckBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
+                  Margin="15 0"
+                  IsChecked="{Binding IncludeChecked.Value}">
+            <l:Catalog Message="include Check-tagged nodes"/>
+            <CheckBox.ToolTip>
+                <l:Catalog>Select if Check-tagged nodes must be skilled by possible solutions.</l:Catalog>
+            </CheckBox.ToolTip>
+        </CheckBox>
+
+        <CheckBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3"
+                  Margin="15 0"
+                  IsChecked="{Binding ExcludeCrossed.Value}">
+            <l:Catalog Message="exclude Cross-tagged nodes"/>
+            <CheckBox.ToolTip>
+                <l:Catalog>Select if Cross-tagged nodes must not be skilled by possible solutions.</l:Catalog>
+            </CheckBox.ToolTip>
+        </CheckBox>
+
+        <Label Grid.Row="2" Grid.Column="2"
+               Margin="5">
+            <l:Catalog Message="Iterations:" />
+            <Label.ToolTip>
+                <TextBlock>
+                    <Run><l:Catalog Message="Determines how often the generator is run. The best result from all runs is kept." /></Run>
+                    <LineBreak/>
+                    <Run><l:Catalog Message="Pause and then Close it at any point to keep the current solution." /></Run>
+                </TextBlock>
+            </Label.ToolTip>
+        </Label>
+        <metroControls:NumericUpDown Grid.Row="2" Grid.Column="3"
+                                     Margin="0 5" Minimum="1"
+                                     Value="{Binding Iterations.Value, ValidatesOnDataErrors=True}" />
+
+        <Button Grid.Row="1" Grid.Column="4"
+                MinWidth="100" Margin="10 0"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Command="{Binding RunCommand}">
+            <l:Catalog Message="Run"/>
+        </Button>
+
+        <Button Grid.Row="0" Grid.Column="4"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                MinWidth="100" Margin="10 0"
+                Command="{Binding ResetCommand}">
+            <l:Catalog Message="Reset settings"/>
+        </Button>
+
+        <TabControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5"
+                    metroControls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}">
             <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
                 <TabItem.Header>
                     <l:Catalog Message="Attributes"/>
@@ -136,12 +225,12 @@
                             ItemsSource="{Binding AttributeConstraints}" AutoGenerateColumns="False"
                             CanUserAddRows="False" CanUserDeleteRows="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" MinWidth="300">
+                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" Width="320">
                                 <DataGridTextColumn.Header>
                                     <l:Catalog Message="Attribute"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn MinWidth="80">
+                            <DataGridTemplateColumn Width="80">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Target"/>
                                 </DataGridTemplateColumn.Header>
@@ -154,7 +243,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn MinWidth="150">
+                            <DataGridTemplateColumn Width="150">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Weight"/>
                                 </DataGridTemplateColumn.Header>
@@ -169,7 +258,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn>
+                            <DataGridTemplateColumn MinWidth="33">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding DataContext.RemoveAttributeConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
@@ -229,12 +318,12 @@
                               ItemsSource="{Binding PseudoAttributeConstraints}"
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" MinWidth="300">
+                            <DataGridTextColumn Binding="{Binding Data}" IsReadOnly="True" Width="320">
                                 <DataGridTextColumn.Header>
                                     <l:Catalog Message="Pseudo attribute"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn MinWidth="80">
+                            <DataGridTemplateColumn Width="80">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Target"/>
                                 </DataGridTemplateColumn.Header>
@@ -247,7 +336,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn MinWidth="150">
+                            <DataGridTemplateColumn Width="150">
                                 <DataGridTemplateColumn.Header>
                                     <l:Catalog Message="Weight"/>
                                 </DataGridTemplateColumn.Header>
@@ -262,7 +351,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn>
+                            <DataGridTemplateColumn MinWidth="33">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding DataContext.RemovePseudoConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
@@ -293,27 +382,35 @@
                 <TabItem.Header>
                     <l:Catalog Message="Settings"/>
                 </TabItem.Header>
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
-                      Margin="0 15 0 0">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="200" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
-                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" TextWrapping="Wrap" MaxWidth="600" Margin="5">
-                        <TextBlock.Text>
-                            <l:Catalog Message="These settings define which attributes influence pseudo attributes.&#10;For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected."/>
-                        </TextBlock.Text>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" TextWrapping="Wrap" MaxWidth="600" Margin="5"
+                               FontSize="{DynamicResource NormalFontSize}">
+                        <Run>
+                            <l:Catalog>These settings define which attributes influence pseudo attributes.</l:Catalog>
+                        </Run>
+                        <LineBreak/><LineBreak/>
+                        <Run>
+                            <l:Catalog>For example, '#% increased Melee Physical Damage' will only influence the 
+                                pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected.</l:Catalog>
+                        </Run>
                     </TextBlock>
                     
                     <!-- 'Tree + gear' mode not yet implemented -->
-                    <metroControls:ToggleSwitch Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,0,5"
+                    <metroControls:ToggleSwitch Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Margin="5,0,0,5"
                                                 HorizontalAlignment="Center"
                                                 IsChecked="{Binding TreePlusItemsMode.Value}"
                                                 Visibility="Collapsed">
@@ -325,19 +422,20 @@
                         </metroControls:ToggleSwitch.OffLabel>
                     </metroControls:ToggleSwitch>
 
-                    <Button Grid.Column="1" Grid.Row="2" Margin="4,4,4,4"
+                    <Button Grid.Column="0" Grid.Row="3" Margin="4,4,4,4" Grid.ColumnSpan="5"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             Command="{Binding ReloadPseudoAttributesCommand}">
                         <l:Catalog Message="Reload Pseudo Attributes from filesystem"/>
                     </Button>
 
                     <!-- WeaponClass -->
-                    <GroupBox Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">
+                    <GroupBox Grid.Row="2" Grid.Column="0"
+                              VerticalAlignment="Stretch">
                         <GroupBox.Header>
                             <l:Catalog Message="Weapon class"/>
                         </GroupBox.Header>
-                        <ComboBox HorizontalAlignment="Left" MinWidth="130" Margin="5,0" VerticalAlignment="Center"
-                              SelectedValue="{Binding WeaponClass.Value}" ItemsSource="{Binding WeaponClassValues}">
+                        <ComboBox HorizontalAlignment="Left" MinWidth="130" Margin="10 0" VerticalAlignment="Center"
+                                  SelectedValue="{Binding WeaponClass.Value}" ItemsSource="{Binding WeaponClassValues}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
@@ -347,11 +445,11 @@
                     </GroupBox>
 
                     <!-- OffHand -->
-                    <GroupBox Grid.Row="3" Grid.Column="0">
+                    <GroupBox Grid.Row="2" Grid.Column="2">
                         <GroupBox.Header>
                             <l:Catalog Message="Off hand"/>
                         </GroupBox.Header>
-                        <Grid>
+                        <Grid Margin="10 0">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -370,11 +468,11 @@
                     </GroupBox>
 
                     <!-- Tags -->
-                    <GroupBox Grid.Row="3" Grid.Column="1">
+                    <GroupBox Grid.Row="2" Grid.Column="4">
                         <GroupBox.Header>
                             <l:Catalog Message="Tags"/>
                         </GroupBox.Header>
-                        <Grid>
+                        <Grid Margin="10 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />

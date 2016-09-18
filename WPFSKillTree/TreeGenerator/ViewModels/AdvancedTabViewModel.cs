@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Common.ViewModels;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model.JsonSettings;
 using POESKillTree.SkillTreeFiles;
@@ -279,6 +280,24 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         #region Presentation
 
+        private int _totalPoints;
+
+        /// <summary>
+        /// The number of points on top of those provided by level that
+        /// the solver can use.
+        /// </summary>
+        public LeafSetting<int> AdditionalPoints { get; }
+
+        /// <summary>
+        /// Gets the total number of points the solver can use.
+        /// Equals <see cref="SkillTree.Level"/> - 1 + <see cref="AdditionalPoints"/>.
+        /// </summary>
+        public int TotalPoints
+        {
+            get { return _totalPoints; }
+            private set { SetProperty(ref _totalPoints, value); }
+        }
+
         private readonly HashSet<string> _addedAttributes = new HashSet<string>();
 
         /// <summary>
@@ -378,6 +397,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
         #endregion
 
         #region Commands
+
+        private RelayCommand _resetCommand;
+        /// <summary>
+        /// Resets all Properties to the values they had on construction.
+        /// Calls <see cref="GeneratorTabViewModel.Reset"/> on all tabs.
+        /// </summary>
+        public ICommand ResetCommand
+        {
+            get { return _resetCommand ?? (_resetCommand = new RelayCommand(Reset)); }
+        }
 
         private RelayCommand _addAttributeConstraintCommand;
         /// <summary>
@@ -517,13 +546,28 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Instantiates a new AdvancedTabViewModel.
         /// </summary>
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
-        public AdvancedTabViewModel(SkillTree tree) : base(tree)
+        /// <param name="dialogCoordinator">The <see cref="IDialogCoordinator"/> used to display dialogs.</param>
+        /// <param name="runCallback">The action that is called when RunCommand is executed.</param>
+        public AdvancedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator,
+            Action<GeneratorTabViewModel> runCallback)
+            : base(tree, dialogCoordinator, 3, runCallback)
         {
+            AdditionalPoints = new LeafSetting<int>(nameof(AdditionalPoints), 21,
+                () => TotalPoints = Tree.Level - 1 + AdditionalPoints.Value);
+            TotalPoints = Tree.Level - 1 + AdditionalPoints.Value;
             TreePlusItemsMode = new LeafSetting<bool>(nameof(TreePlusItemsMode), false);
             WeaponClass = new LeafSetting<WeaponClass>(nameof(WeaponClass), Model.PseudoAttributes.WeaponClass.Unarmed,
                 () => WeaponClassIsTwoHanded = WeaponClass.Value.IsTwoHanded());
             OffHand = new LeafSetting<OffHand>(nameof(OffHand), Model.PseudoAttributes.OffHand.Shield);
             Tags = new LeafSetting<Tags>(nameof(Tags), Model.PseudoAttributes.Tags.None);
+
+            tree.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(SkillTree.Level))
+                {
+                    TotalPoints = Tree.Level - 1 + AdditionalPoints.Value;
+                }
+            };
 
             _attributes = CreatePossibleAttributes().ToList();
             AttributesView = new ListCollectionView(_attributes)
@@ -555,7 +599,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             DisplayName = L10n.Message("Advanced");
 
-            SubSettings = new ISetting[] {TreePlusItemsMode, WeaponClass, OffHand, Tags, new ConstraintsSetting(this)};
+            SubSettings = new ISetting[]
+            {
+                AdditionalPoints, Iterations, IncludeChecked, ExcludeCrossed,
+                TreePlusItemsMode, WeaponClass, OffHand, Tags,
+                new ConstraintsSetting(this)
+            };
         }
 
         private void ClearAttributeConstraints()
@@ -744,7 +793,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
-        public override ISolver CreateSolver(SolverSettings settings)
+        protected override ISolver CreateSolver(SolverSettings settings)
         {
             var attributeConstraints = AttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
@@ -752,7 +801,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var pseudoConstraints = PseudoAttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
                 constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
-            return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, CreateInitialAttributes(), attributeConstraints,
+            return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, TotalPoints,
+                CreateInitialAttributes(), attributeConstraints,
                 pseudoConstraints, WeaponClass.Value, Tags.Value, OffHand.Value));
         }
 

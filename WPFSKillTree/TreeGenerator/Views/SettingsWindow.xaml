@@ -1,6 +1,5 @@
 ﻿<simpleChildWindow:ChildWindow
     x:Class="POESKillTree.TreeGenerator.Views.SettingsWindow"
-    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:POESKillTree.TreeGenerator.Views"
@@ -9,92 +8,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     xmlns:vm="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
     xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
+    xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
     d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
-    AllowMove="True" IsModal="False" ShowCloseButton="True">
+    AllowMove="True" IsModal="False" ShowCloseButton="True"
+    dialogs:DialogParticipation.Register="{Binding}">
     <simpleChildWindow:ChildWindow.Title>
         <l:Catalog>Skill Tree Generator</l:Catalog>
     </simpleChildWindow:ChildWindow.Title>
-    <Grid Height="600" Margin="-4 0 -4 -4">
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <Label Grid.Row="0" Grid.Column="0" Margin="5" Target="{Binding ElementName=Level}">
-            <l:Catalog Message="Level:" />
-        </Label>
-        <controls:NumericUpDown Grid.Row="0" Grid.Column="1" x:Name="Level" Margin="0,5"
-                                Minimum="{Binding Tree.UndefinedLevel}" Maximum="{Binding Tree.MaximumLevel}"
-                                Value="{Binding Tree.Level}"/>
-
-        <Label Grid.Row="1" Grid.Column="0" Margin="5" Target="{Binding ElementName=AddPoints}">
-            <l:Catalog Message="Additional points:" />
-        </Label>
-        <controls:NumericUpDown Grid.Row="1" Grid.Column="1" x:Name="AddPoints" Minimum="0" Margin="0,5"
-                                Value="{Binding AdditionalPoints.Value, ValidatesOnDataErrors=True}"/>
-
-        <Label Grid.Row="2" Grid.Column="0" Margin="5" Target="{Binding ElementName=TotalPoints}">
-            <l:Catalog Message="Total points:" />
-        </Label>
-        <TextBox Grid.Row="2" Grid.Column="1" x:Name="TotalPoints" Text="{Binding TotalPoints, Mode=OneWay}" IsReadOnly="True"
-                 Margin="0,5" HorizontalContentAlignment="Right" Padding="0,0,45,0"/>
-
-        <Label Grid.Row="3" Grid.Column="0" Margin="5" Target="{Binding ElementName=Iterations}">
-            <l:Catalog Message="Iterations:" />
-            <Label.ToolTip>
-                <TextBlock>
-                    <l:Catalog Message="Determines how often the generator is run. The best result from all runs is kept." />
-                    <LineBreak/>
-                    <l:Catalog Message="Pause and then Close it at any point to keep the current solution."></l:Catalog>
-                </TextBlock>
-            </Label.ToolTip>
-        </Label>
-        <controls:NumericUpDown Grid.Row="3" Grid.Column="1" x:Name="Iterations" Minimum="1" Margin="0,5"
-                                Value="{Binding Iterations.Value, ValidatesOnDataErrors=True}"/>
-
-        <CheckBox Grid.Row="0" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding IncludeChecked.Value}">
-            <l:Catalog Message="include Check-tagged nodes"/>
-        </CheckBox>
-        <CheckBox Grid.Row="1" Grid.Column="2" Margin="20,5,10,5" IsChecked="{Binding ExcludeCrossed.Value}">
-            <l:Catalog Message="exclude Cross-tagged nodes"/>
-        </CheckBox>
-        <CheckBox Grid.Row="0" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsSubset.Value}">
-            <l:Catalog Message="only search in current tree"/>
-        </CheckBox>
-        <CheckBox Grid.Row="1" Grid.Column="3" Margin="10,5" IsChecked="{Binding TreeAsInitial.Value}">
-            <l:Catalog Message="current tree as initial solution"/>
-        </CheckBox>
-
-        <Button Grid.Row="3" Grid.Column="3" Margin="10,5" Command="{Binding RunCommand}">
-            <l:Catalog Message="Run"/>
-        </Button>
-        <Button Grid.Row="3" Grid.Column="2" Margin="20,5,10,5" Command="{Binding ResetCommand}">
-            <l:Catalog Message="Reset settings"/>
-        </Button>
-
-        <TabControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" SelectedIndex="{Binding SelectedTabIndex.Value}">
+    <Grid Height="510" Width="600"
+          Margin="-4 0 -4 -4">
+        <TabControl SelectedIndex="{Binding SelectedTabIndex.Value}">
             <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding DisplayName}">
+                <local:SteinerTabView />
+            </TabItem>
+            <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}">
                 <local:AdvancedGeneratorTab/>
             </TabItem>
             <!-- 'Automated' Solver is not yet implemented. -->
             <!-- <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding DisplayName}">
                 <local:AutomatedGeneratorTab/>
             </TabItem> -->
-            <!-- TODO find a not confusing way to integrate this tab and move the old one entirely -->
-            <!--<TabItem DataContext="{Binding Tabs[2]}" Header="{Binding DisplayName}" />-->
         </TabControl>
 
     </Grid>
 </simpleChildWindow:ChildWindow>
+
+
 

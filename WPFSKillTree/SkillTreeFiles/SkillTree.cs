@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using POESKillTree.Localization;
 using POESKillTree.Utils;
 using System;
 using System.Collections.Generic;
@@ -17,8 +16,6 @@ using log4net;
 using POESKillTree.Common;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model;
-using POESKillTree.TreeGenerator.ViewModels;
-using POESKillTree.Utils.Extensions;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using static POESKillTree.SkillTreeFiles.Constants;
 
@@ -1300,35 +1297,6 @@ namespace POESKillTree.SkillTreeFiles
             return nodes;
         }
 
-        public async Task SkillAllTaggedNodesAsync()
-        {
-            if (!GetCheckedNodes().Except(SkilledNodes).Any())
-            {
-                await _dialogCoordinator.ShowInfoAsync(this,
-                    L10n.Message("Please tag non-skilled nodes by right-clicking them."));
-                return;
-            }
-
-#if !DEBUG
-            try
-            {
-#endif
-            // Use the SettingsViewModel without View and with a fixed SteinerTabViewModel.
-            var settingsVm = new SettingsViewModel(this, SettingsDialogCoordinator.Instance,
-                new SteinerTabViewModel(this));
-            settingsVm.Iterations.Value = 1;
-            var registration = DialogParticipation.GetAssociation(this);
-            DialogParticipation.SetRegister(registration, settingsVm);
-            await settingsVm.RunAsync();
-            DialogParticipation.SetRegister(registration, this);
-#if !DEBUG
-            }
-            catch (Exception e)
-            {
-                await _dialogCoordinator.ShowErrorAsync(L10n.Message("Error while trying to find solution"), e.Message);
-            }
-#endif
-        }
         public SkillNode GetCharNode()
         {
             return Skillnodes[GetCharNodeId()];

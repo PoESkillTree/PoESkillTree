@@ -151,23 +151,9 @@ namespace POESKillTree.TreeGenerator.Solver
         private void InitializeGa()
         {
             _ga = new GeneticAlgorithm(FitnessFunction);
-            _ga.InitializeEvolution(GaParameters, TreeToDna(Settings.InitialTree));
+            _ga.InitializeEvolution(GaParameters, new BitArray(SearchSpace.Count));
             _bestDna = _ga.GetBestDNA();
             _bestSolution = Extend(DnaToUsedNodes(_bestDna));
-        }
-
-        private BitArray TreeToDna(IEnumerable<SkillNode> nodes)
-        {
-            var set = new HashSet<ushort>(nodes.Select(n => n.Id));
-            var dna = new BitArray(SearchSpace.Count);
-            for (var i = 0; i < SearchSpace.Count; i++)
-            {
-                if (set.Contains(SearchSpace[i].Id))
-                {
-                    dna[i] = true;
-                }
-            }
-            return dna;
         }
 
         /// <summary>
