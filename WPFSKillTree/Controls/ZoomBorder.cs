@@ -125,7 +125,7 @@ namespace POESKillTree.Controls
             //    }
         }
 
-        private void ZoomIn(dynamic e)
+        public void ZoomIn(dynamic e)
         {
             if (!allowZoom)
                 return;
@@ -150,7 +150,7 @@ namespace POESKillTree.Controls
             }
         }
 
-        private void ZoomOut(dynamic e)
+        public void ZoomOut(dynamic e)
         {
             if (!allowZoom)
                 return;

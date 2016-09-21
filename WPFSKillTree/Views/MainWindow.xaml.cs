@@ -614,6 +614,14 @@ namespace POESKillTree.Views
                         cbCharType.SelectedIndex = 6;
                         cbAscType.SelectedIndex = 0;
                         break;
+                    case Key.OemPlus:
+                    case Key.Add:
+                        zbSkillTreeBackground.ZoomIn(Mouse.PrimaryDevice);
+                        break;
+                    case Key.OemMinus:
+                    case Key.Subtract:
+                        zbSkillTreeBackground.ZoomOut(Mouse.PrimaryDevice);
+                        break;
                     case Key.Z:
                         tbSkillURL_Undo();
                         break;

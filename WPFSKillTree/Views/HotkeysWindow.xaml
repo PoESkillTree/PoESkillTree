@@ -52,15 +52,11 @@
         <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontWeight="Bold">
             <l:Catalog Message="Function"/>
         </Label>
-        <TextBlock Grid.Row="1" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="Shift + Left Click"/>
-        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + + / Shift + Click</TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="1" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="Zoom In"/>
         </TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="0" >
-            <l:Catalog Message="Ctrl + Left Click"/>
-        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0">Ctrl + - / Ctrl + Click</TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="1">
             <l:Catalog Message="Zoom Out"/>
         </TextBlock>
