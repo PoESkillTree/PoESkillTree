@@ -10,9 +10,8 @@
     </ResourceDictionary.MergedDictionaries>
     
     <!-- The control template can't be partially adjusted so this is mostly copy pasted from
-         https://github.com/MahApps/MahApps.Metro/blob/1.2.4/MahApps.Metro/Themes/Dialogs/BaseMetroDialog.xaml
-         (licensed under Microsoft Public License as found on https://github.com/MahApps/MahApps.Metro/blob/1.2.4/LICENSE)
-         The button at the bottom and some bindings are new.
+         https://github.com/MahApps/MahApps.Metro/blob/1.3.0/MahApps.Metro/Themes/Dialogs/BaseMetroDialog.xaml
+         (MIT licensed). The close button at the bottom and some bindings are new.
          -->
     <ControlTemplate x:Key="BaseDialogTemplate" TargetType="{x:Type controls:BaseDialog}">
         <ControlTemplate.Resources>
@@ -41,7 +40,8 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0"
+                            <TextBlock x:Name="PART_Title"
+                                       Grid.Row="0"
                                        FontSize="{DynamicResource DialogTitleFontSize}"
                                        Foreground="{TemplateBinding Foreground}"
                                        TextWrapping="Wrap"
@@ -64,6 +64,9 @@
             </Border>
         </Grid>
         <ControlTemplate.Triggers>
+            <Trigger Property="Title" Value="{x:Null}">
+                <Setter TargetName="PART_Title" Property="Visibility" Value="Collapsed" />
+            </Trigger>
             <EventTrigger RoutedEvent="Loaded">
                 <EventTrigger.Actions>
                     <BeginStoryboard>

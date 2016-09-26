@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using Newtonsoft.Json.Linq;
@@ -547,10 +548,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
         /// <param name="dialogCoordinator">The <see cref="IDialogCoordinator"/> used to display dialogs.</param>
+        /// <param name="dialogContext">The context used for <paramref name="dialogCoordinator"/>.</param>
         /// <param name="runCallback">The action that is called when RunCommand is executed.</param>
-        public AdvancedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator,
+        public AdvancedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator, object dialogContext,
             Action<GeneratorTabViewModel> runCallback)
-            : base(tree, dialogCoordinator, 3, runCallback)
+            : base(tree, dialogCoordinator, dialogContext, 3, runCallback)
         {
             AdditionalPoints = new LeafSetting<int>(nameof(AdditionalPoints), 21,
                 () => TotalPoints = Tree.Level - 1 + AdditionalPoints.Value);
@@ -793,7 +795,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
         }
 
-        protected override ISolver CreateSolver(SolverSettings settings)
+        protected override Task<ISolver> CreateSolverAsync(SolverSettings settings)
         {
             var attributeConstraints = AttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
@@ -801,9 +803,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
             var pseudoConstraints = PseudoAttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
                 constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
-            return new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, TotalPoints,
+            var solver = new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, TotalPoints,
                 CreateInitialAttributes(), attributeConstraints,
                 pseudoConstraints, WeaponClass.Value, Tags.Value, OffHand.Value));
+            return Task.FromResult<ISolver>(solver);
         }
 
         /// <summary>

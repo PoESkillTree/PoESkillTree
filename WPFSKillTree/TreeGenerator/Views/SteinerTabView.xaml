@@ -4,11 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-             xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
              xmlns:viewModels="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="460" d:DesignWidth="600"
-             dialogs:DialogParticipation.Register="{Binding}"
              d:DataContext="{d:DesignInstance viewModels:SteinerTabViewModel}">
     <StackPanel Orientation="Vertical">
         <DockPanel Margin="10">

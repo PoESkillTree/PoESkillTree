@@ -52,9 +52,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
             Action<GeneratorTabViewModel> runCallback = async g => await RunAsync(g);
             Tabs = new ObservableCollection<GeneratorTabViewModel>
             {
-                new SteinerTabViewModel(Tree, _dialogCoordinator, runCallback),
-                new AdvancedTabViewModel(Tree, _dialogCoordinator, runCallback),
-                new AutomatedTabViewModel(Tree, _dialogCoordinator, runCallback)
+                new SteinerTabViewModel(Tree, _dialogCoordinator, this, runCallback),
+                new AdvancedTabViewModel(Tree, _dialogCoordinator, this, runCallback),
+                new AutomatedTabViewModel(Tree, _dialogCoordinator, this, runCallback)
             };
             SubSettings = new ISetting[] {SelectedTabIndex}.Union(Tabs).ToArray();
         }
@@ -63,7 +63,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             var savedHighlights = Tree.HighlightedNodes.ToList();
 
-            var solver = generator.CreateSolver();
+            var solver = await generator.CreateSolverAsync();
             if (solver == null)
                 return;
 

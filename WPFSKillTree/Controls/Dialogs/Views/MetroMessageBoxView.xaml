@@ -8,6 +8,7 @@
     xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
     xmlns:viewModels="clr-namespace:POESKillTree.Controls.Dialogs.ViewModels"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModels:MetroMessageBoxViewModel}"
     MaxContentWidth="500"
@@ -26,11 +27,13 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Image Margin="0 5 10 0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Height="32"
-               Grid.Column="0" Grid.Row="0" Source="{Binding NotificationImageSource}"
-               Visibility="{Binding NotificationImageSource, Converter={StaticResource NullToVisibilityConverter}}"/>
+        <iconPacks:PackIconModern Kind="{Binding ImageKind}"
+                                  Margin="0 5 10 0" Focusable="False"
+                                  Width="32" Height="32"
+                                  Visibility="{Binding ImageKind, Converter={StaticResource NullToVisibilityConverter}}"/>
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          Focusable="False">
                 <TextBlock Margin="0 5 0 0"
                            Text="{Binding Message}"
                            TextWrapping="Wrap"

@@ -25,8 +25,7 @@
         </Label>
         <TextBox Margin="4,2,4,4" MaxLength="255"
                  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                 controls:TextBoxHelper.SelectAllOnFocus="True"
-                 wpf:Helper.FocusOnLoaded="True"/>
+                 controls:TextBoxHelper.SelectAllOnFocus="True"/>
         <Label Margin="4,4,4,2">
             <l:Catalog Message="Build note"/>
         </Label>

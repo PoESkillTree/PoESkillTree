@@ -28,7 +28,6 @@
                  FontSize="{DynamicResource DialogMessageFontSize}"
                  controls:ControlsHelper.FocusBorderBrush="{DynamicResource AccentColorBrush}"
                  controls:TextBoxHelper.SelectAllOnFocus="True"
-                 wpf:Helper.FocusOnLoaded="True"
                  Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                  TextWrapping="Wrap" />
 

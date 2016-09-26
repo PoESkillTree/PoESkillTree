@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 
 namespace POESKillTree.Controls.Dialogs
 {
-    // Interface copied from https://github.com/MahApps/MahApps.Metro/blob/1.2.4/MahApps.Metro/Controls/Dialogs/DialogCoordinator.cs 
-    // (licensed under Microsoft Public License as found on https://github.com/MahApps/MahApps.Metro/blob/1.2.4/LICENSE)
+    // Wraps MahApps.Metro.Controls.Dialogs.ProgressDialogController
     // to solve namespace conflicts with MahApps.Metro.Controls.Dialogs in one place.
     /// <summary>A class for manipulating an open ProgressDialog.</summary>
     public class ProgressDialogController

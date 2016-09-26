@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model.JsonSettings;
@@ -15,16 +16,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         protected override IReadOnlyList<ISetting> SubSettings { get; } = new ISetting[0];
 
-        public AutomatedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator,
+        public AutomatedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator, object dialogContext,
             Action<GeneratorTabViewModel> runCallback)
-            : base(tree, dialogCoordinator, 1, runCallback)
+            : base(tree, dialogCoordinator, dialogContext, 1, runCallback)
         {
             DisplayName = L10n.Message("Automated");
         }
 
-        protected override ISolver CreateSolver(SolverSettings settings)
+        protected override Task<ISolver> CreateSolverAsync(SolverSettings settings)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

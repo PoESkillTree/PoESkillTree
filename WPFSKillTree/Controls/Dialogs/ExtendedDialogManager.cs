@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.IconPacks;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls.Dialogs.ViewModels;
 using POESKillTree.Controls.Dialogs.Views;
@@ -33,12 +31,14 @@ namespace POESKillTree.Controls.Dialogs
             // Undefault buttons not in the dialog as they would be pressed instead of a dialog button on enter.
             var oldDefaults = window.FindVisualChildren<Button>().Where(b => b.IsDefault).ToList();
             oldDefaults.ForEach(b => b.IsDefault = false);
-            // Clear keyboard focus as they focused element is pressed instead of a dialog element on enter.
+            // Save old keyboard focus.
             var oldFocus = Keyboard.FocusedElement;
-            Keyboard.ClearFocus();
 
             await window.ShowMetroDialogAsync(view, new MetroDialogSettings {AnimateShow = false});
             DialogParticipation.SetRegister(view, viewModel);
+            // Focus the first focusable element in the view
+            var element = view.FindVisualChildren<UIElement>().FirstOrDefault(e => e.Focusable);
+            element?.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => Keyboard.Focus(element)));
             onShown?.Invoke();
 
             var result = await viewModel.WaitForCloseAsync();
@@ -96,31 +96,23 @@ namespace POESKillTree.Controls.Dialogs
             return new ProgressDialogController(controller);
         }
 
-        private static ImageSource MessageBoxImageToImageSource(MessageBoxImage image)
+        private static PackIconModernKind? MessageBoxImageToImageKind(MessageBoxImage image)
         {
-            Icon icon;
             switch (image)
             {
                 case MessageBoxImage.None:
-                    icon = null;
-                    break;
+                    return null;
                 case MessageBoxImage.Error: // also MessageBoxImage.Hand ans MessageBoxImage.Stop:
-                    icon = SystemIcons.Hand;
-                    break;
+                    return PackIconModernKind.Stop;
                 case MessageBoxImage.Question:
-                    icon = SystemIcons.Question;
-                    break;
+                    return null;
                 case MessageBoxImage.Warning: // also MessageBoxImage.Exclamation
-                    icon = SystemIcons.Exclamation;
-                    break;
+                    return PackIconModernKind.Warning;
                 case MessageBoxImage.Information: //case MessageBoxImage.Asterisk
-                    icon = SystemIcons.Asterisk;
-                    break;
+                    return PackIconModernKind.InformationCircle;
                 default:
-                    icon = SystemIcons.Application;
-                    break;
+                    return null;
             }
-            return (icon == null) ? null : Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
 
         private static SystemSound MessageBoxImageToSystemSound(MessageBoxImage image)
@@ -145,7 +137,7 @@ namespace POESKillTree.Controls.Dialogs
             MessageBoxImage image = MessageBoxImage.None)
         {
             var viewModel = new MetroMessageBoxViewModel(message, details, title, buttons,
-                MessageBoxImageToImageSource(image));
+                MessageBoxImageToImageKind(image));
             return ShowDialogAsync(window, viewModel, new MetroMessageBoxView(),
                     () => MessageBoxImageToSystemSound(image).Play());
         }

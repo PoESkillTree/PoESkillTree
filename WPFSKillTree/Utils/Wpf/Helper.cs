@@ -21,11 +21,6 @@ namespace POESKillTree.Utils.Wpf
                 "MainWindowRelativeMaxHeight", typeof(double), typeof(Helper),
                 new FrameworkPropertyMetadata(0.0, MainWindowRelativeMaxHeightPropertyChangedCallback));
 
-        public static readonly DependencyProperty FocusOnLoadedProperty =
-            DependencyProperty.RegisterAttached(
-                "FocusOnLoaded", typeof(bool), typeof(Helper),
-                new PropertyMetadata(false, FocusOnLoadedPropertyChangedCallback));
-
         /// <summary>
         /// Gets whether the target <see cref="Hyperlink"/>'s RequestNavigation event should open the URI in the
         /// default web browser.
@@ -97,38 +92,6 @@ namespace POESKillTree.Utils.Wpf
                 ConverterParameter = value
             };
             element.SetBinding(FrameworkElement.MaxHeightProperty, binding);
-        }
-
-        /// <summary>
-        /// Gets whether the given <see cref="FrameworkElement"/> is focused once it is loaded.
-        /// </summary>
-        [AttachedPropertyBrowsableForType(typeof(FrameworkElement))]
-        public static bool GetFocusOnLoaded(FrameworkElement element)
-        {
-            return (bool)element.GetValue(FocusOnLoadedProperty);
-        }
-
-        public static void SetFocusOnLoaded(FrameworkElement element, bool value)
-        {
-            element.SetValue(FocusOnLoadedProperty, value);
-        }
-
-        private static void FocusOnLoadedPropertyChangedCallback(DependencyObject dependencyObject,
-            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            var element = dependencyObject as FrameworkElement;
-            if (element == null)
-                return;
-
-            if ((bool) dependencyPropertyChangedEventArgs.NewValue)
-                element.Loaded += ElementOnLoaded;
-            else
-                element.Loaded -= ElementOnLoaded;
-        }
-
-        private static void ElementOnLoaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            (sender as UIElement)?.Focus();
         }
     }
 }

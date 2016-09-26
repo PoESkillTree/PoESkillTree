@@ -1,12 +1,13 @@
 using System.Windows;
-using System.Windows.Media;
+using MahApps.Metro.IconPacks;
 using POESKillTree.Common.ViewModels;
 
 namespace POESKillTree.Controls.Dialogs.ViewModels
 {
     public class MetroMessageBoxViewModel : CloseableViewModel<MessageBoxResult>
     {
-        public MetroMessageBoxViewModel(string message, string details, string title, MessageBoxButton buttons, ImageSource imageSource)
+        public MetroMessageBoxViewModel(string message, string details, string title, MessageBoxButton buttons,
+            PackIconModernKind? imageKind)
         {
             Message = message;
             Details = details;
@@ -26,7 +27,7 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
                     IsOKVisible = IsCancelVisible = true;
                     break;
             }
-            NotificationImageSource = imageSource;
+            ImageKind = imageKind;
         }
 
         #region elements content
@@ -34,7 +35,7 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
 
         public string Details { get; }
 
-        public ImageSource NotificationImageSource { get; }
+        public PackIconModernKind? ImageKind { get; }
         #endregion
 
         #region buttons visibility
