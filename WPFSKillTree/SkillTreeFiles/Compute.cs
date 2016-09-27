@@ -624,26 +624,23 @@ namespace POESKillTree.SkillTreeFiles
                     if (incAS != 0)
                         APS = IncreaseValueByPercentage(APS, incAS);
 
-                    float moreAS = 0;
+                    float moreAS = 1;
                     if (attrs.ContainsKey("#% more Attack Speed"))
-                        moreAS += attrs["#% more Attack Speed"][0];
+                        moreAS *= 1 + attrs["#% more Attack Speed"][0] / 100;
                     if (attrs.ContainsKey("#% less Attack Speed"))
-                        moreAS -= attrs["#% less Attack Speed"][0];
+                        moreAS *= 1 - attrs["#% less Attack Speed"][0] / 100;
                     foreach (var attr in attrs.Matches(ReMoreAttackSpeedType))
                     {
                         Match m = ReMoreAttackSpeedType.Match(attr.Key);
                         if (m.Success)
                         {
                             // XXX: Not sure there are any mods with WeaponType here (Melee string in mod is DamageForm now, maybe Unarmed should be form as well).
-                            if (Weapon.Types.ContainsKey(m.Groups[2].Value) && Nature.Is(Weapon.Types[m.Groups[2].Value]))
-                                moreAS += m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0];
-                            else if (DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
-                                moreAS += m.Groups[1].Value == "more" ? attr.Value[0] : -attr.Value[0];
+                            if (Weapon.Types.ContainsKey(m.Groups[2].Value) && Nature.Is(Weapon.Types[m.Groups[2].Value])
+                                || DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
+                                moreAS *= m.Groups[1].Value == "more" ? 1 + attr.Value[0] / 100 : 1 - attr.Value[0] / 100;
                         }
                     }
-                    if (moreAS != 0)
-                        APS = IncreaseValueByPercentage(APS, moreAS);
-
+                    APS = APS * moreAS;
                     APS = RoundHalfDownEvenValue(APS, 2);
                 }
                 else // Spell (use Cast Time directly).
