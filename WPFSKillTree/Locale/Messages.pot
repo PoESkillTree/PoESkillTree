@@ -25,6 +25,42 @@ msgstr ""
 msgid "Bandit reward for Merciless difficulty."
 msgstr ""
 
+#: Controls\Dialogs\Views\FileSelectorView.xaml:41
+msgid "Browse..."
+msgstr ""
+
+#: Controls\Dialogs\Views\FileSelectorView.xaml:49
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:71
+#: Controls\Dialogs\Views\ValidatingInputDialogView.xaml:40
+#: Views\EditBuildWindow.xaml:59 Views\TabPicker.xaml:122
+#: Controls\Dialogs\ExtendedDialogManager.cs:82
+msgid "OK"
+msgstr ""
+
+#: Controls\Dialogs\Views\FileSelectorView.xaml:55
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:77
+#: Controls\Dialogs\Views\ValidatingInputDialogView.xaml:47
+#: ItemFilter\Views\ItemFilterEditWindow.xaml:138 Views\CraftWindow.xaml:158
+#: Views\EditBuildWindow.xaml:64 Views\TabPicker.xaml:127
+#: Controls\Dialogs\ExtendedDialogManager.cs:81
+#: Controls\Dialogs\ExtendedDialogManager.cs:93
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:118
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:365
+msgid "Cancel"
+msgstr ""
+
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:45
+msgid "Details"
+msgstr ""
+
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:57
+msgid "Yes"
+msgstr ""
+
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:64
+msgid "No"
+msgstr ""
+
 #: ItemFilter\Views\ColorButtonDialog.xaml:12
 msgid "Choose colors"
 msgstr ""
@@ -50,9 +86,9 @@ msgid "Border"
 msgstr ""
 
 #: ItemFilter\Views\ColorButtonDialog.xaml:62
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:93 Themes\BaseDialog.xaml:56
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:306
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:374
+#: ItemFilter\Views\ItemFilterOpenWindow.xaml:93 Themes\BaseDialog.xaml:57
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:304
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:372
 msgid "Close"
 msgstr ""
 
@@ -68,17 +104,9 @@ msgstr ""
 msgid "Choose colors of item labels shown for each rule or group of rules."
 msgstr ""
 
-#: ItemFilter\Views\ItemFilterEditWindow.xaml:133 Views\MainWindow.xaml:803
+#: ItemFilter\Views\ItemFilterEditWindow.xaml:133 Views\BuildsControl.xaml:222
+#: Views\BuildsControl.xaml:320
 msgid "Save"
-msgstr ""
-
-#: ItemFilter\Views\ItemFilterEditWindow.xaml:138 Views\CraftWindow.xaml:158
-#: Views\EditBuildWindow.xaml:64 Views\MetroMessageBoxWindow.xaml:74
-#: Views\TabPicker.xaml:127 Controls\Dialogs\ExtendedDialogManager.cs:80
-#: Controls\Dialogs\ExtendedDialogManager.cs:91
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:120
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:367
-msgid "Cancel"
 msgstr ""
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:13
@@ -101,142 +129,132 @@ msgstr ""
 msgid "Select a filter you want to edit or create copy of."
 msgstr ""
 
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:82
+#: ItemFilter\Views\ItemFilterOpenWindow.xaml:82 Views\BuildsControl.xaml:116
+#: Views\BuildsControl.xaml:193
 msgid "Edit"
 msgstr ""
 
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:87 Views\MainWindow.xaml:809
+#: ItemFilter\Views\ItemFilterOpenWindow.xaml:87 Views\BuildsControl.xaml:123
+#: Views\BuildsControl.xaml:200
 msgid "Delete"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:89 Views\MainWindow.xaml:819
-msgid "Attributes"
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:98
+msgid "Level:"
 msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:107
+msgid "Additional points:"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:115
+msgid "Total points:"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:125
+msgid "include Check-tagged nodes"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:134
+#: TreeGenerator\Views\SteinerTabView.xaml:14
+msgid "exclude Cross-tagged nodes"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:142
+msgid "Iterations:"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:145
+msgid "Determines how often the generator is run. The best result from all runs is kept."
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:147
+msgid "Pause and then Close it at any point to keep the current solution."
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:159
+#: TreeGenerator\Views\SteinerTabView.xaml:24
+msgid "Run"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:166
+msgid "Reset settings"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:173 Views\MainWindow.xaml:694
+msgid "Attributes"
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:191
 msgid "Load from tree"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:110
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:194
 msgid "Convert to Pseudo Attributes"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:112
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:196
 msgid "Converts the attributes to pseudo attributes where possible using the defined settings."
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:137
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:230
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:221
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:314
 msgid "Add"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:146
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:230
 msgid "Attribute"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:151
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:244
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:235
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:328
 msgid "Target"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:164
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:257
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:248
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:341
 msgid "Weight"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:195
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:279
 msgid "Pseudo Attributes"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:239
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:323
 msgid "Pseudo attribute"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:299 Views\MainWindow.xaml:250
-#: ViewModels\SettingsMenuViewModel.cs:19
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:383 Views\MainWindow.xaml:183
+#: ViewModels\SettingsMenuViewModel.cs:29
 msgid "Settings"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:316
-msgid ""
-"These settings define which attributes influence pseudo attributes.\n"
-"For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected."
-msgstr ""
-
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:326
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:418
 msgid "Tree + Items"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:329
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:421
 msgid "Tree only"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:336
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:428
 msgid "Reload Pseudo Attributes from filesystem"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:342
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:435
 msgid "Weapon class"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:357
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:450
 msgid "Off hand"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:380
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:473
 msgid "Tags"
 msgstr ""
 
 #: TreeGenerator\Views\ControllerWindow.xaml:30
 msgid "Finding optimal Skill tree..."
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:33
-msgid "Level:"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:40
-msgid "Additional points:"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:46
-msgid "Total points:"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:52
-msgid "Iterations:"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:55
-msgid "Determines how often the generator is run. The best result from all runs is kept."
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:57
-msgid "Pause and then Close it at any point to keep the current solution."
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:65
-msgid "include Check-tagged nodes"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:68
-msgid "exclude Cross-tagged nodes"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:71
-msgid "only search in current tree"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:74
-msgid "current tree as initial solution"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:78
-msgid "Run"
-msgstr ""
-
-#: TreeGenerator\Views\SettingsWindow.xaml:81
-msgid "Reset settings"
 msgstr ""
 
 #: Views\AboutWindow.xaml:11
@@ -283,14 +301,84 @@ msgstr ""
 msgid "Information about item affixes is retrieved from"
 msgstr ""
 
+#: Views\BuildsControl.xaml:23
+msgid "Right click to edit"
+msgstr ""
+
+#: Views\BuildsControl.xaml:131 Views\BuildsControl.xaml:208
+msgid "Cut"
+msgstr ""
+
+#: Views\BuildsControl.xaml:138
+msgid "Paste"
+msgstr ""
+
+#: Views\BuildsControl.xaml:145 ViewModels\BuildsControlViewModel.cs:370
+msgid "New Build"
+msgstr ""
+
+#: Views\BuildsControl.xaml:151 ViewModels\BuildsControlViewModel.cs:356
+msgid "New Folder"
+msgstr ""
+
+#: Views\BuildsControl.xaml:187
+msgid "Open"
+msgstr ""
+
+#: Views\BuildsControl.xaml:215
+msgid "Copy"
+msgstr ""
+
+#: Views\BuildsControl.xaml:228
+msgid "Discard changes"
+msgstr ""
+
+#: Views\BuildsControl.xaml:231
+msgid "Discards all changes made to this build after the last save"
+msgstr ""
+
+#: Views\BuildsControl.xaml:308
+msgid "Skill Tree comparision enabled"
+msgstr ""
+
+#: Views\BuildsControl.xaml:311
+msgid "Skill Tree comparision disabled"
+msgstr ""
+
+#: Views\BuildsControl.xaml:322
+msgid "Saves the currently opened build"
+msgstr ""
+
+#: Views\BuildsControl.xaml:329
+msgid "Save As"
+msgstr ""
+
+#: Views\BuildsControl.xaml:331
+msgid "Saves the currently opened build as a new build"
+msgstr ""
+
+#: Views\BuildsControl.xaml:336
+msgid "Save All"
+msgstr ""
+
+#: Views\BuildsControl.xaml:338
+msgid "Saves all changed builds"
+msgstr ""
+
+#: Views\BuildsControl.xaml:346
+msgid "New top level build"
+msgstr ""
+
+#: Views\BuildsControl.xaml:351
+msgid "New top level folder"
+msgstr ""
+
 #: Views\CraftWindow.xaml:14
 msgid "Craft Window"
 msgstr ""
 
-#: Views\CraftWindow.xaml:153 Views\EditBuildWindow.xaml:59
-#: Views\MetroMessageBoxWindow.xaml:68 Views\TabPicker.xaml:122
-#: Controls\Dialogs\ExtendedDialogManager.cs:81
-msgid "OK"
+#: Views\CraftWindow.xaml:153
+msgid "Create Item"
 msgstr ""
 
 #: Views\DownloadItemsWindow.xaml:14
@@ -371,11 +459,11 @@ msgstr ""
 msgid "Load stash tab from clipboard"
 msgstr ""
 
-#: Views\EditBuildWindow.xaml:16
+#: Views\EditBuildWindow.xaml:17
 msgid "Build Information"
 msgstr ""
 
-#: Views\EditBuildWindow.xaml:23
+#: Views\EditBuildWindow.xaml:24
 msgid "Build name"
 msgstr ""
 
@@ -403,575 +491,550 @@ msgstr ""
 msgid "Function"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:56
-msgid "Shift + Left Click"
-msgstr ""
-
-#: Views\HotkeysWindow.xaml:59
+#: Views\HotkeysWindow.xaml:57
 msgid "Zoom In"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:62
-msgid "Ctrl + Left Click"
-msgstr ""
-
-#: Views\HotkeysWindow.xaml:65
+#: Views\HotkeysWindow.xaml:61
 msgid "Zoom Out"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:69
+#: Views\HotkeysWindow.xaml:65
 msgid "Scion"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:73
+#: Views\HotkeysWindow.xaml:69
 msgid "Marauder"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:77
+#: Views\HotkeysWindow.xaml:73
 msgid "Ranger"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:81
+#: Views\HotkeysWindow.xaml:77
 msgid "Witch"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:85
+#: Views\HotkeysWindow.xaml:81
 msgid "Duelist"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:89
+#: Views\HotkeysWindow.xaml:85
 msgid "Templar"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:93
+#: Views\HotkeysWindow.xaml:89
 msgid "Shadow"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:97
+#: Views\HotkeysWindow.xaml:93
 msgid "Toggle Attributes sidebar"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:101
+#: Views\HotkeysWindow.xaml:97
 msgid "Toggle Character Sheet sidebar"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:105
+#: Views\HotkeysWindow.xaml:101
 msgid "Toggle Saved Builds sidebar"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:109
+#: Views\HotkeysWindow.xaml:105
 msgid "Copy PoEUrl link to Clipboard"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:113
+#: Views\HotkeysWindow.xaml:109
 msgid "Reset Skill tree"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:116
+#: Views\HotkeysWindow.xaml:112
 msgid "Ctrl + Up/Down"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:119
+#: Views\HotkeysWindow.xaml:115
 msgid "(Saved Builds) Move build up and down"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:123
+#: Views\HotkeysWindow.xaml:119
 msgid "Undo last Skill tree change"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:127
+#: Views\HotkeysWindow.xaml:123
 msgid "Redo last Skill tree change"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:131
+#: Views\HotkeysWindow.xaml:127
+#: Model\Serialization\SerializationConstants.cs:16
 msgid "New build"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:135
+#: Views\HotkeysWindow.xaml:131
 msgid "Save build"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:139
+#: Views\HotkeysWindow.xaml:135
 msgid "Save build as"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:142 Views\HotkeysWindow.xaml:147
-#: Views\HotkeysWindow.xaml:153
+#: Views\HotkeysWindow.xaml:138 Views\HotkeysWindow.xaml:143
+#: Views\HotkeysWindow.xaml:149
 msgid "Right Click"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:145
+#: Views\HotkeysWindow.xaml:141
 msgid "(Skill tree) Center Skill tree and reset zoom"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:150
+#: Views\HotkeysWindow.xaml:146
 msgid "(Attributes) Highlight corresponding nodes in Skill tree"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:156
+#: Views\HotkeysWindow.xaml:152
 msgid "(Skill node) Toggle skill node highlighting"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:159
+#: Views\HotkeysWindow.xaml:155
 msgid "Shift + Right Click"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:162
+#: Views\HotkeysWindow.xaml:158
 msgid "(Skill node) Toggle skill node highlighting (reversed)"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:165
+#: Views\HotkeysWindow.xaml:161
 msgid "Shift + Hover"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:168
+#: Views\HotkeysWindow.xaml:164
 msgid "(Skill node) Highlight similar skill nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:212
+#: Views\MainWindow.xaml:99
 msgid "_File"
 msgstr ""
 
-#: Views\MainWindow.xaml:216
+#: Views\MainWindow.xaml:105
 msgid "_New"
 msgstr ""
 
-#: Views\MainWindow.xaml:224
-msgid "_Save"
+#: Views\MainWindow.xaml:143
+msgid "Save A_ll"
 msgstr ""
 
-#: Views\MainWindow.xaml:232
-msgid "Save _As"
+#: Views\MainWindow.xaml:149
+msgid "Reload builds from filesystem"
 msgstr ""
 
-#: Views\MainWindow.xaml:237
+#: Views\MainWindow.xaml:160
+msgid ""
+"Opens the directory your builds are saved to so you can share those builds.\n"
+"The directory can be changed in the settings."
+msgstr ""
+
+#: Views\MainWindow.xaml:170
 msgid "E_xit"
 msgstr ""
 
-#: Views\MainWindow.xaml:246
+#: Views\MainWindow.xaml:179
 msgid "_Edit"
 msgstr ""
 
-#: Views\MainWindow.xaml:258
+#: Views\MainWindow.xaml:191
 msgid "_Undo"
 msgstr ""
 
-#: Views\MainWindow.xaml:266
+#: Views\MainWindow.xaml:199
 msgid "_Redo"
 msgstr ""
 
-#: Views\MainWindow.xaml:274
+#: Views\MainWindow.xaml:207
 msgid "Reset Skill _Tree"
 msgstr ""
 
-#: Views\MainWindow.xaml:283
+#: Views\MainWindow.xaml:216
 msgid "Copy _Passive Attributes to Clipboard"
 msgstr ""
 
-#: Views\MainWindow.xaml:291
+#: Views\MainWindow.xaml:224
 msgid "Copy Po_EUrl of Skill tree to Clipboard"
 msgstr ""
 
-#: Views\MainWindow.xaml:300
+#: Views\MainWindow.xaml:233
 msgid "_View"
 msgstr ""
 
-#: Views\MainWindow.xaml:304
+#: Views\MainWindow.xaml:237
 msgid "_Theme"
 msgstr ""
 
-#: Views\MainWindow.xaml:311
+#: Views\MainWindow.xaml:244
 msgctxt "color"
 msgid "Light"
 msgstr ""
 
-#: Views\MainWindow.xaml:316
+#: Views\MainWindow.xaml:249
 msgctxt "color"
 msgid "Dark"
 msgstr ""
 
-#: Views\MainWindow.xaml:322
+#: Views\MainWindow.xaml:255
 msgid "Acce_nt"
 msgstr ""
 
-#: Views\MainWindow.xaml:329
+#: Views\MainWindow.xaml:262
 msgctxt "color"
 msgid "Amber"
 msgstr ""
 
-#: Views\MainWindow.xaml:334
+#: Views\MainWindow.xaml:267
 msgctxt "color"
 msgid "Blue"
 msgstr ""
 
-#: Views\MainWindow.xaml:339
+#: Views\MainWindow.xaml:272
 msgctxt "color"
 msgid "Brown"
 msgstr ""
 
-#: Views\MainWindow.xaml:344
+#: Views\MainWindow.xaml:277
 msgctxt "color"
 msgid "Cobalt"
 msgstr ""
 
-#: Views\MainWindow.xaml:349
+#: Views\MainWindow.xaml:282
 msgctxt "color"
 msgid "Crimson"
 msgstr ""
 
-#: Views\MainWindow.xaml:354
+#: Views\MainWindow.xaml:287
 msgctxt "color"
 msgid "Cyan"
 msgstr ""
 
-#: Views\MainWindow.xaml:359
+#: Views\MainWindow.xaml:292
 msgctxt "color"
 msgid "Emerald"
 msgstr ""
 
-#: Views\MainWindow.xaml:364
+#: Views\MainWindow.xaml:297
 msgctxt "color"
 msgid "Green"
 msgstr ""
 
-#: Views\MainWindow.xaml:369
+#: Views\MainWindow.xaml:302
 msgctxt "color"
 msgid "Indigo"
 msgstr ""
 
-#: Views\MainWindow.xaml:374
+#: Views\MainWindow.xaml:307
 msgctxt "color"
 msgid "Lime"
 msgstr ""
 
-#: Views\MainWindow.xaml:379
+#: Views\MainWindow.xaml:312
 msgctxt "color"
 msgid "Magenta"
 msgstr ""
 
-#: Views\MainWindow.xaml:384
+#: Views\MainWindow.xaml:317
 msgctxt "color"
 msgid "Mauve"
 msgstr ""
 
-#: Views\MainWindow.xaml:389
+#: Views\MainWindow.xaml:322
 msgctxt "color"
 msgid "Olive"
 msgstr ""
 
-#: Views\MainWindow.xaml:394
+#: Views\MainWindow.xaml:327
 msgctxt "color"
 msgid "Orange"
 msgstr ""
 
-#: Views\MainWindow.xaml:399
+#: Views\MainWindow.xaml:332
 msgctxt "color"
 msgid "Pink"
 msgstr ""
 
-#: Views\MainWindow.xaml:404
+#: Views\MainWindow.xaml:337
 msgctxt "color"
 msgid "Purple"
 msgstr ""
 
-#: Views\MainWindow.xaml:409
+#: Views\MainWindow.xaml:342
 msgctxt "color"
 msgid "Red"
 msgstr ""
 
-#: Views\MainWindow.xaml:414
+#: Views\MainWindow.xaml:347
 msgctxt "color"
 msgid "Sienna"
 msgstr ""
 
-#: Views\MainWindow.xaml:419
+#: Views\MainWindow.xaml:352
 msgctxt "color"
 msgid "Steel"
 msgstr ""
 
-#: Views\MainWindow.xaml:424
+#: Views\MainWindow.xaml:357
 msgctxt "color"
 msgid "Taupe"
 msgstr ""
 
-#: Views\MainWindow.xaml:429
+#: Views\MainWindow.xaml:362
 msgctxt "color"
 msgid "Teal"
 msgstr ""
 
-#: Views\MainWindow.xaml:434
+#: Views\MainWindow.xaml:367
 msgctxt "color"
 msgid "Violet"
 msgstr ""
 
-#: Views\MainWindow.xaml:439
+#: Views\MainWindow.xaml:372
 msgctxt "color"
 msgid "Yellow"
 msgstr ""
 
-#: Views\MainWindow.xaml:446
+#: Views\MainWindow.xaml:379
 msgid "Saved _Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:452
+#: Views\MainWindow.xaml:385
 msgid "_Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:458
+#: Views\MainWindow.xaml:391
 msgid "_Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:464
+#: Views\MainWindow.xaml:397
 msgid "Skill _Tree Comparison"
 msgstr ""
 
-#: Views\MainWindow.xaml:470
+#: Views\MainWindow.xaml:420
 msgid "_Tools"
 msgstr ""
 
-#: Views\MainWindow.xaml:474
+#: Views\MainWindow.xaml:424
 msgid "Take _Screenshot of Skilled Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:483
-msgid "_Equipment"
-msgstr ""
-
-#: Views\MainWindow.xaml:490
+#: Views\MainWindow.xaml:433
 msgid "_Download & Import Items"
 msgstr ""
 
-#: Views\MainWindow.xaml:498
+#: Views\MainWindow.xaml:441
 msgid "_Download & Import Stash"
 msgstr ""
 
-#: Views\MainWindow.xaml:507
-msgid "_Nodes"
-msgstr ""
-
-#: Views\MainWindow.xaml:514
-msgid "Skill _Tagged Nodes"
-msgstr ""
-
-#: Views\MainWindow.xaml:519
-msgid "Un_tag All Nodes"
-msgstr ""
-
-#: Views\MainWindow.xaml:524
-msgid "_Unhighlight All Nodes"
-msgstr ""
-
-#: Views\MainWindow.xaml:529
-msgid "_Check-tag highlighted Nodes"
-msgstr ""
-
-#: Views\MainWindow.xaml:534
-msgid "C_ross-tag highlighted Nodes"
-msgstr ""
-
-#: Views\MainWindow.xaml:539
-msgid "_Skill Tree Generator"
-msgstr ""
-
-#: Views\MainWindow.xaml:545
-msgid "_Program Assets"
-msgstr ""
-
-#: Views\MainWindow.xaml:552
+#: Views\MainWindow.xaml:450
 msgid "_Redownload Skill Tree Assets"
 msgstr ""
 
-#: Views\MainWindow.xaml:561
+#: Views\MainWindow.xaml:458
 msgid "Item _Filter Editor"
 msgstr ""
 
-#: Views\MainWindow.xaml:567
+#: Views\MainWindow.xaml:467
+msgid "_Nodes"
+msgstr ""
+
+#: Views\MainWindow.xaml:472
+msgid "_Skill Tree Generator"
+msgstr ""
+
+#: Views\MainWindow.xaml:479
+msgid "Run 'Tagged _Nodes' generator"
+msgstr ""
+
+#: Views\MainWindow.xaml:489
+msgid "Run '_Advanced' generator"
+msgstr ""
+
+#: Views\MainWindow.xaml:499
+msgid "Un_tag All Nodes"
+msgstr ""
+
+#: Views\MainWindow.xaml:504
+msgid "_Unhighlight All Nodes"
+msgstr ""
+
+#: Views\MainWindow.xaml:509
+msgid "_Check-tag highlighted Nodes"
+msgstr ""
+
+#: Views\MainWindow.xaml:514
+msgid "C_ross-tag highlighted Nodes"
+msgstr ""
+
+#: Views\MainWindow.xaml:520
 msgid "_Help"
 msgstr ""
 
-#: Views\MainWindow.xaml:571
+#: Views\MainWindow.xaml:524
 msgid "_Links"
 msgstr ""
 
-#: Views\MainWindow.xaml:578
+#: Views\MainWindow.xaml:531
 msgid "_Path of Exile Website"
 msgstr ""
 
-#: Views\MainWindow.xaml:583
+#: Views\MainWindow.xaml:536
 msgid "Path of Exile _Wiki"
 msgstr ""
 
-#: Views\MainWindow.xaml:589
+#: Views\MainWindow.xaml:542
 msgid "View _Help"
 msgstr ""
 
-#: Views\MainWindow.xaml:597
+#: Views\MainWindow.xaml:550
 msgid "Hot_keys"
 msgstr ""
 
-#: Views\MainWindow.xaml:605
+#: Views\MainWindow.xaml:558
 msgid "Check for _Updates"
 msgstr ""
 
-#: Views\MainWindow.xaml:613
+#: Views\MainWindow.xaml:566
 msgid "_About PoESkillTree"
 msgstr ""
 
-#: Views\MainWindow.xaml:626
+#: Views\MainWindow.xaml:579
 msgid "Skill Tree"
 msgstr ""
 
-#: Views\MainWindow.xaml:632
+#: Views\MainWindow.xaml:585
 msgid "Equipment"
 msgstr ""
 
-#: Views\MainWindow.xaml:648
+#: Views\MainWindow.xaml:601
 msgid "Bandits"
 msgstr ""
 
-#: Views\MainWindow.xaml:661
+#: Views\MainWindow.xaml:614
 msgid "Level"
 msgstr ""
 
-#: Views\MainWindow.xaml:668
+#: Views\MainWindow.xaml:621
 msgid "Used Passive Skill Points"
 msgstr ""
 
-#: Views\MainWindow.xaml:673
+#: Views\MainWindow.xaml:626
 msgid "Used Ascendancy Skill Points"
 msgstr ""
 
-#: Views\MainWindow.xaml:680
+#: Views\MainWindow.xaml:633
 msgid "Total Passive Skill Points"
 msgstr ""
 
-#: Views\MainWindow.xaml:685
+#: Views\MainWindow.xaml:638
 msgid "Total Ascendancy Skill Points"
 msgstr ""
 
-#: Views\MainWindow.xaml:717
+#: Views\MainWindow.xaml:670
 msgid "Craft new item"
 msgstr ""
 
-#: Views\MainWindow.xaml:729
+#: Views\MainWindow.xaml:682
 msgid "Saved Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:746 Views\MainWindow.xaml:833
-msgid "Filter:"
-msgstr ""
-
-#: Views\MainWindow.xaml:794
-msgid "Skill tree comparison"
-msgstr ""
-
-#: Views\MainWindow.xaml:806
-msgid "Save As"
-msgstr ""
-
-#: Views\MainWindow.xaml:842
+#: Views\MainWindow.xaml:717
 msgid "Passive Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:859
+#: Views\MainWindow.xaml:734
 msgid "Item Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:878
+#: Views\MainWindow.xaml:753
 msgid "Total Attributes"
 msgstr ""
 
-#: Views\MainWindow.xaml:895
+#: Views\MainWindow.xaml:770
 msgid "ItemList"
 msgstr ""
 
-#: Views\MainWindow.xaml:919
+#: Views\MainWindow.xaml:794
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:925 SkillTreeFiles\Compute.cs:2285
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:86
+#: Views\MainWindow.xaml:800 SkillTreeFiles\Compute.cs:2294
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:217
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
 msgstr ""
 
-#: Views\MainWindow.xaml:942
+#: Views\MainWindow.xaml:817
 msgid "Offense"
 msgstr ""
 
-#: Views\MainWindow.xaml:976
-msgid "Search:"
+#: Views\MainWindow.xaml:860 Views\MainWindow.xaml:863
+msgid "Skill tree link"
 msgstr ""
 
-#: Views\MainWindow.xaml:983
-msgid "Skill tree link:"
-msgstr ""
-
-#: Views\MainWindow.xaml:989
+#: Views\MainWindow.xaml:868
 msgid "Load Tree"
 msgstr ""
 
-#: Views\MetroMessageBoxWindow.xaml:42
-msgid "Details"
-msgstr ""
-
-#: Views\MetroMessageBoxWindow.xaml:54
-msgid "Yes"
-msgstr ""
-
-#: Views\MetroMessageBoxWindow.xaml:61
-msgid "No"
-msgstr ""
-
-#: Views\SettingsMenuWindow.xaml:70
+#: Views\SettingsMenuWindow.xaml:48
 msgid "General:"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:77
+#: Views\SettingsMenuWindow.xaml:65
 msgid "Show All Ascendancy Classes"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:86
+#: Views\SettingsMenuWindow.xaml:74
 msgid "Language"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:98
+#: Views\SettingsMenuWindow.xaml:85
+msgid "Build save path"
+msgstr ""
+
+#: Views\SettingsMenuWindow.xaml:100
+msgid "Change..."
+msgstr ""
+
+#: Views\SettingsMenuWindow.xaml:108
 msgid "Colors:"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:105
+#: Views\SettingsMenuWindow.xaml:125
 msgid "Node Search Highlight"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:116
+#: Views\SettingsMenuWindow.xaml:136
 msgid "Attribute Highlight"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:126
+#: Views\SettingsMenuWindow.xaml:146
 msgid "Node Hover Highlight"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:137
+#: Views\SettingsMenuWindow.xaml:156
 msgid "Equipment:"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:144
+#: Views\SettingsMenuWindow.xaml:171
 msgid "Automatically download missing item images"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:154
+#: Views\SettingsMenuWindow.xaml:180
 msgid "Reset button preferences:"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:161
+#: Views\SettingsMenuWindow.xaml:197
 msgid "Reset main skill tree"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:170
+#: Views\SettingsMenuWindow.xaml:206
 msgid "Reset ascendancy skill tree"
 msgstr ""
 
-#: Views\SettingsMenuWindow.xaml:179
+#: Views\SettingsMenuWindow.xaml:215
 msgid "Reset selected bandits"
 msgstr ""
 
@@ -991,19 +1054,19 @@ msgstr ""
 msgid "Delete bookmark"
 msgstr ""
 
-#: Controls\Dialogs\ExtendedDialogManager.cs:57
+#: Controls\Dialogs\ExtendedDialogManager.cs:59
 msgid "Confirmation"
 msgstr ""
 
-#: Controls\Dialogs\ExtendedDialogManager.cs:63
+#: Controls\Dialogs\ExtendedDialogManager.cs:64
 msgid "Error"
 msgstr ""
 
-#: Controls\Dialogs\ExtendedDialogManager.cs:68
+#: Controls\Dialogs\ExtendedDialogManager.cs:69
 msgid "Warning"
 msgstr ""
 
-#: Controls\Dialogs\ExtendedDialogManager.cs:73
+#: Controls\Dialogs\ExtendedDialogManager.cs:74
 msgid "Information"
 msgstr ""
 
@@ -1017,77 +1080,70 @@ msgstr ""
 msgid "Delete items"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:31
-msgid "Currency"
+#: Model\Serialization\AbstractPersistentDataDeserializer.cs:84
+msgid "Directory must be empty."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:210
-msgid "Recipes"
+#: Model\Serialization\AbstractPersistentDataDeserializer.cs:88
+#: ViewModels\SettingsMenuViewModel.cs:68
+msgid "Select build directory"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:221
+#: Model\Serialization\AbstractPersistentDataDeserializer.cs:89
 msgid ""
-"A single Normal weapon with 20% quality.\n"
-"Weapons with a total of at least 40% quality."
+"Select the directory where builds will be stored.\n"
+"It will be created if it does not yet exist. You can change it in the settings later."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:341
-msgid "Gems"
-msgstr ""
-
-#: ItemFilter\Model\FilterManager.cs:371
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:99
-#: Utils\Converter\GroupStringConverter.cs:33
-msgid "Flasks"
-msgstr ""
-
-#: ItemFilter\Model\FilterManager.cs:565
-msgid "Miscellaneous"
-msgstr ""
-
-#: ItemFilter\Model\FilterManager.cs:636
-msgid "Chancing"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:35
-msgid "Original color"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:37
-msgid "Standard colors"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:39
-msgid "Recent colors"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:40
-msgctxt "color"
-msgid "Custom"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:41
-msgctxt "color"
-msgid "Standard"
-msgstr ""
-
-#: Model\PoEBuild.cs:73
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:74
 #, csharp-format
-msgid "{0}, {1} point used"
-msgid_plural "{0}, {1} points used"
-msgstr[0] ""
-msgstr[1] ""
+msgid "Could not import build file, only existing files with the extension {0} can be imported."
+msgstr ""
 
-#: SkillTreeFiles\Compute.cs:2284
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:76
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:114
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:122
+msgid "Import failed"
+msgstr ""
+
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:113
+msgid "Build is of an old version and can't be imported"
+msgstr ""
+
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:121
+msgid "Could not import build"
+msgstr ""
+
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:125
+msgid ""
+"Enter the name for the imported build.\n"
+"\n"
+msgstr ""
+
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:126
+msgid "This build can be saved to your build directory after this dialog.\n"
+msgstr ""
+
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:127
+msgid "The originally imported file will not be modified."
+msgstr ""
+
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:129
+msgid "Import build"
+msgstr ""
+
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:144
+#: ViewModels\Builds\BuildValidator.cs:142
+msgid "A build or folder with this name already exists."
+msgstr ""
+
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:146
+#: Utils\PathEx.cs:37 ViewModels\Builds\BuildValidator.cs:164
+msgid "Value is required."
+msgstr ""
+
+#: SkillTreeFiles\Compute.cs:2293
 msgid "Character"
-msgstr ""
-
-#: SkillTreeFiles\SkillTree.cs:1273
-msgid "Please tag non-skilled nodes by right-clicking them."
-msgstr ""
-
-#: SkillTreeFiles\SkillTree.cs:1293
-msgid "Error while trying to find solution"
 msgstr ""
 
 #: SkillTreeFiles\SkillTreeImporter.cs:68
@@ -1152,178 +1208,382 @@ msgstr ""
 msgid "Nested PseudoAttribute {0} does not exist as top level PseudoAttribute"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:72
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:203
 msgid "Popular"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:81
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:212
 #: Utils\Converter\GroupStringConverter.cs:34
 msgid "Core Attributes"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:82
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:213
 #: Utils\Converter\GroupStringConverter.cs:30
 msgid "General"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:83
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:214
 #: Utils\Converter\GroupStringConverter.cs:19
 msgid "Keystone"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:84
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:215
 #: Utils\Converter\GroupStringConverter.cs:21
 msgid "Charges"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:87
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:218
 #: Utils\Converter\GroupStringConverter.cs:29
 msgid "Block"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:88
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:219
 #: Utils\Converter\GroupStringConverter.cs:28
 msgid "Shield"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:90
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:221
 #: Utils\Converter\GroupStringConverter.cs:20
 msgid "Weapon"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:91
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:222
 #: Utils\Converter\GroupStringConverter.cs:32
 msgid "Spell"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:92
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:223
 #: Utils\Converter\GroupStringConverter.cs:27
 msgid "Critical Strike"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:94
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:225
 #: Utils\Converter\GroupStringConverter.cs:26
 msgid "Aura"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:95
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:226
 #: Utils\Converter\GroupStringConverter.cs:25
 msgid "Curse"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:96
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:227
 #: Utils\Converter\GroupStringConverter.cs:22
 msgid "Minion"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:97
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:228
 #: Utils\Converter\GroupStringConverter.cs:23
 msgid "Trap"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:98
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:229
 #: Utils\Converter\GroupStringConverter.cs:24
 msgid "Totem"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:100
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:230
+#: Utils\Converter\GroupStringConverter.cs:33
+#: ItemFilter\Model\FilterManager.cs:398
+msgid "Flasks"
+msgstr ""
+
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:231
 #: Utils\Converter\GroupStringConverter.cs:35
 msgid "Everything Else"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:447
+#: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:602
 msgid "Advanced"
 msgstr ""
 
-#: TreeGenerator\ViewModels\AutomatedTabViewModel.cs:13
+#: TreeGenerator\ViewModels\AutomatedTabViewModel.cs:23
 msgid "Automated"
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:24
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:22
 msgid "Current iteration:"
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:79
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:77
 msgid "Initializing..."
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:140
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:366
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:138
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:364
 msgid "Pause"
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:188
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:186
 msgid "Skill tree generator"
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:246
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:244
 msgid ""
 "The optimizer was unable to find a conforming tree.\n"
 "Please change skill node tagging and try again."
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:305
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:303
 msgid "Finished!"
 msgstr ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:340
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:338
 #, csharp-format
 msgid "Best result so far: {0} point spent"
 msgid_plural "Best result so far: {0} points spent"
 msgstr[0] ""
 msgstr[1] ""
 
-#: TreeGenerator\ViewModels\ControllerViewModel.cs:373
+#: TreeGenerator\ViewModels\ControllerViewModel.cs:371
 msgid "Continue"
 msgstr ""
 
-#: TreeGenerator\ViewModels\SettingsViewModel.cs:177
-msgid "Skill tree Generator"
-msgstr ""
-
-#: TreeGenerator\ViewModels\SteinerTabViewModel.cs:22
+#: TreeGenerator\ViewModels\SteinerTabViewModel.cs:35
 msgid "Tagged Nodes"
 msgstr ""
 
-#: ViewModels\DownloadItemsViewModel.cs:37
+#: TreeGenerator\ViewModels\SteinerTabViewModel.cs:45
+msgid "Please tag non-skilled nodes by right-clicking them."
+msgstr ""
+
+#: TreeGenerator\ViewModels\TreeGeneratorInteraction.cs:68
+msgid "The Skill Tree Generator is already open"
+msgstr ""
+
+#: TreeGenerator\ViewModels\TreeGeneratorInteraction.cs:83
+msgid "Could not open Skill Tree Generator"
+msgstr ""
+
+#: Utils\PathEx.cs:41
+msgid "Value only contains white space characters."
+msgstr ""
+
+#: Utils\PathEx.cs:52
+msgid "Path already exists."
+msgstr ""
+
+#: Utils\PathEx.cs:56
+msgid "Path exists and is not a directory."
+msgstr ""
+
+#: Utils\PathEx.cs:60
+msgid "Path already exists as a directory."
+msgstr ""
+
+#: Utils\PathEx.cs:65
+msgid "Path must not be relative."
+msgstr ""
+
+#: Utils\PathEx.cs:70
+msgid "Value contains invalid characters."
+msgstr ""
+
+#: Utils\PathEx.cs:74
+msgid "Path could not be accessed."
+msgstr ""
+
+#: Utils\PathEx.cs:78
+msgid "Path is too long."
+msgstr ""
+
+#: Utils\PathEx.cs:82
+msgid "Value contains a colon at an invalid position-"
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:31
+msgid "Currency"
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:238
+msgid "Recipes"
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:249
+msgid ""
+"A single Normal weapon with 20% quality.\n"
+"Weapons with a total of at least 40% quality."
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:368
+msgid "Gems"
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:592
+msgid "Miscellaneous"
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:663
+msgid "Chancing"
+msgstr ""
+
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:35
+msgid "Original color"
+msgstr ""
+
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:37
+msgid "Standard colors"
+msgstr ""
+
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:39
+msgid "Recent colors"
+msgstr ""
+
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:40
+msgctxt "color"
+msgid "Custom"
+msgstr ""
+
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:41
+msgctxt "color"
+msgid "Standard"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:50
+msgid "All"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:334
+msgid ""
+"Files in your build save directory have been changed.\n"
+"Do you want to reload all builds from the file system?"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:338
+msgid ""
+"\n"
+"All unsaved changes will be lost."
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:340
+msgid ""
+"\n"
+"\n"
+"You can also reload through the 'File' menu."
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:341
+msgid "Builds changed"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:357
+msgid "Enter the name of the new folder."
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:371
+msgid "Enter the name of the new build."
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:386
+msgid "The currently opened build can not be deleted."
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:392
+#, csharp-format
+msgid "This will delete the build folder \"{0}\" and all its contents.\n"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:393 Views\MainWindow.xaml.cs:853
+msgid "Do you want to continue?"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:414
+msgid "Save as"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:415
+msgid "Enter the new name of the build"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:528
+msgid "Edit Folder"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:529
+msgid "Enter the new name for this folder below."
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:553
+msgid ""
+"Any unsaved changes will be lost.\n"
+"Are you sure?"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:664
+msgid "An error occurred during a save operation."
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:681
+msgid "An error occurred during a delete operation."
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:696
+msgid "Unsaved Builds"
+msgstr ""
+
+#: ViewModels\BuildsControlViewModel.cs:697
+msgid "These builds are not saved:\n"
+msgstr ""
+
+#: ViewModels\Builds\BuildViewModel.cs:86
+#, csharp-format
+msgid "{0}, {1} point used"
+msgid_plural "{0}, {1} points used"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ViewModels\DownloadItemsViewModel.cs:38
 msgid "Download & Import Items"
 msgstr ""
 
-#: ViewModels\DownloadStashViewModel.cs:82
+#: ViewModels\DownloadStashViewModel.cs:85
 msgid "Download & Import Stash"
 msgstr ""
 
-#: ViewModels\DownloadStashViewModel.cs:98
+#: ViewModels\DownloadStashViewModel.cs:105
 msgid "Could not load the currently running leagues."
 msgstr ""
 
-#: ViewModels\DownloadStashViewModel.cs:170
-#: ViewModels\DownloadStashViewModel.cs:216
+#: ViewModels\DownloadStashViewModel.cs:185
+#: ViewModels\DownloadStashViewModel.cs:231
 msgid "An error occurred while attempting to load stash data."
 msgstr ""
 
-#: ViewModels\DownloadStashViewModel.cs:209
+#: ViewModels\DownloadStashViewModel.cs:224
 msgid "New tab added"
 msgstr ""
 
-#: ViewModels\DownloadStashViewModel.cs:210
+#: ViewModels\DownloadStashViewModel.cs:225
 #, csharp-format
 msgid "New tab with {0} items was added to stash."
 msgstr ""
 
-#: ViewModels\SettingsMenuViewModel.cs:36
+#: ViewModels\SettingsMenuViewModel.cs:47
 msgid "You will need to restart the program for all changes to take effect."
 msgstr ""
 
-#: ViewModels\SettingsMenuViewModel.cs:37
+#: ViewModels\SettingsMenuViewModel.cs:48
 msgid "Restart is needed"
 msgstr ""
 
-#: Views\EditBuildWindow.xaml.cs:15
-msgid "Not Available"
+#: ViewModels\SettingsMenuViewModel.cs:57
+msgid ""
+"There are unsaved builds. Do you want to save them before changing build directory?\n"
+"\n"
+"If you cancel, the build directory will not be changed."
+msgstr ""
+
+#: ViewModels\SettingsMenuViewModel.cs:69
+msgid ""
+"Select the directory where builds will be stored.\n"
+"It will be created if it does not yet exist."
 msgstr ""
 
 #: Views\EditBuildWindow.xaml.cs:16
+msgid "Not Available"
+msgstr ""
+
+#: Views\EditBuildWindow.xaml.cs:18
 #, csharp-format
 msgid "Last updated: {0}"
 msgstr ""
@@ -1332,175 +1592,158 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:262
+#: Views\MainWindow.xaml.cs:309
 msgid "Create New Attribute Group"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:262
+#: Views\MainWindow.xaml.cs:309
 msgid "Group name"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:267
+#: Views\MainWindow.xaml.cs:314
 msgid "A group with that name already exists."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:358
+#: Views\MainWindow.xaml.cs:405
 msgid "Initialization"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:359 Views\MainWindow.xaml.cs:467
+#: Views\MainWindow.xaml.cs:406 Views\MainWindow.xaml.cs:510
 msgid "Initalizing window ..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:382
+#: Views\MainWindow.xaml.cs:435
 msgid "Highlight nodes by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:387
+#: Views\MainWindow.xaml.cs:440
 msgid "Remove highlights by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:457
+#: Views\MainWindow.xaml.cs:500
 msgid "Loading skill tree assets ..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:659
+#: Views\MainWindow.xaml.cs:672
+msgid ""
+"There are unsaved builds. Do you want to save them before closing?\n"
+"\n"
+"Canceling stops the program from closing and does not save any builds."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:702
 msgid "Are you sure?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:660
+#: Views\MainWindow.xaml.cs:703
 msgid "Untag All Skill Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:699
-msgid "The Skill Tree Generator is already open"
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:706
-msgid "Could not open Skill Tree Generator"
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:762
+#: Views\MainWindow.xaml.cs:776
 #, csharp-format
 msgid "{0} point"
 msgid_plural "{0} points"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\MainWindow.xaml.cs:796
+#: Views\MainWindow.xaml.cs:810
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:833 Views\MainWindow.xaml.cs:2229
+#: Views\MainWindow.xaml.cs:846 Views\MainWindow.xaml.cs:1880
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:839
+#: Views\MainWindow.xaml.cs:852
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:840
-msgid "Do you want to continue?"
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:846
+#: Views\MainWindow.xaml.cs:859
 msgid "Downloading skill tree assets ..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:866
+#: Views\MainWindow.xaml.cs:879
 msgid "An error occurred while downloading assets."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:921
+#: Views\MainWindow.xaml.cs:934
 msgid "Checking for updates"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:926
+#: Views\MainWindow.xaml.cs:939
 msgid "You have the latest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:931
+#: Views\MainWindow.xaml.cs:944
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:934
+#: Views\MainWindow.xaml.cs:947
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:935
+#: Views\MainWindow.xaml.cs:948
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:938
+#: Views\MainWindow.xaml.cs:951
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:942
+#: Views\MainWindow.xaml.cs:955
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:946
+#: Views\MainWindow.xaml.cs:959
 msgid "Do you want to download and install the update?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:947
+#: Views\MainWindow.xaml.cs:960
 msgid "Do you want to download and install the new version?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:949
+#: Views\MainWindow.xaml.cs:962
 msgid "Continue installation?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:960
+#: Views\MainWindow.xaml.cs:973
 msgid "An error occurred while attempting to contact the update location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:968
+#: Views\MainWindow.xaml.cs:981
 msgid "Downloading latest version"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:983 Views\MainWindow.xaml.cs:998
+#: Views\MainWindow.xaml.cs:996 Views\MainWindow.xaml.cs:1011
 msgid "An error occurred during the download operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1011
+#: Views\MainWindow.xaml.cs:1024
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1619
+#: Views\MainWindow.xaml.cs:1612
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1699
-msgid "Right click to edit"
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:1890
-msgid "An error occurred during a save operation."
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:1925
+#: Views\MainWindow.xaml.cs:1700
 msgid "Resolving shortened tree address"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1965
+#: Views\MainWindow.xaml.cs:1747
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2209
+#: Views\MainWindow.xaml.cs:1860
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2215
+#: Views\MainWindow.xaml.cs:1866
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2225
+#: Views\MainWindow.xaml.cs:1876
 msgid "The PoEUrl link has been copied to Clipboard."
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:2352
-msgid "An error occurred while attempting to load saved builds."
 msgstr ""

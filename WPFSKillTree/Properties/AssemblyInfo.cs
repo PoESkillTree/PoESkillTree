@@ -45,5 +45,5 @@ using System.Windows;
 [assembly: AssemblyProduct("PoESkillTree - Atlas of Worlds")]
 [assembly: AssemblyCopyright("Copyright © 2012-2016 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.3.0.1101")]
-[assembly: AssemblyInformationalVersion("2.3.0")]
+[assembly: AssemblyFileVersion("2.4.0.1137")]
+[assembly: AssemblyInformationalVersion("2.4.0pre")]
