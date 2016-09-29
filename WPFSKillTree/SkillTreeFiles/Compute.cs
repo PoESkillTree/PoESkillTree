@@ -2071,15 +2071,18 @@ namespace POESKillTree.SkillTreeFiles
             {
                 def["Maximum Energy Shield: #"] = new List<float>() { RoundValue(es, 0) };
 
-                float esRecharge = RoundValue(es, 0) / 3; // By default, energy shield recharges at a rate equal to a third of the character's maximum energy shield per second.
+                float esRecharge = RoundValue(es, 0) / 5; // By default, energy shield recharges at a rate equal to a fifth of the character's maximum energy shield per second.
+                if (Global.ContainsKey("#% increased Energy Shield Recharge Rate"))
+                    esRecharge = esRecharge * (1 + Global["#% increased Energy Shield Recharge Rate"][0] / 100);
                 def["Energy Shield Recharge per Second: #"] = new List<float>() { RoundValue(esRecharge, 1) };
-                float esDelay = 6; // By default, the delay period for energy shield to begin to recharge is 6 seconds.
+
+                float esDelay = 2; // By default, the delay period for energy shield to begin to recharge is 2 seconds.
                 float esOccurrence = 0;
                 if (Global.ContainsKey("#% faster start of Energy Shield Recharge"))
                     esOccurrence += Global["#% faster start of Energy Shield Recharge"][0];
                 if (Global.ContainsKey("#% slower start of Energy Shield Recharge"))
                     esOccurrence -= Global["#% slower start of Energy Shield Recharge"][0];
-                esDelay = esDelay * 100 / (100 + esOccurrence);
+                esDelay = esDelay * 100 / (100 + esOccurrence); // 200 / (100 + r)
                 if (esOccurrence != 0)
                     def["Energy Shield Recharge Occurrence modifier: " + (esOccurrence > 0 ? "+" : "") + "#%"] = new List<float>() { esOccurrence };
                 def["Energy Shield Recharge Delay: #s"] = new List<float>() { RoundValue(esDelay, 1) };
@@ -2088,8 +2091,8 @@ namespace POESKillTree.SkillTreeFiles
             // Life Regeneration.
             float lifeRegen = 0;
             float lifeRegenFlat = 0;
-            if (Global.ContainsKey("#% of Life Regenerated per Second"))
-                lifeRegen += Global["#% of Life Regenerated per Second"][0];
+            if (Global.ContainsKey("#% of Life Regenerated per second"))
+                lifeRegen += Global["#% of Life Regenerated per second"][0];
             if (Global.ContainsKey("# Life Regenerated per second"))
                 lifeRegenFlat += Global["# Life Regenerated per second"][0];
 
@@ -2401,12 +2404,7 @@ namespace POESKillTree.SkillTreeFiles
         // @see http://pathofexile.gamepedia.com/Monster_Damage
         public static float MonsterAverageDamage(int level)
         {
-            float a = 1.1512f;
-            float b = 0.0039092f;
-            float c = 17.789f;
-            float d = -7.0896f;
-
-            return RoundValue((float)Math.Pow(a + b * level, c) + d, 0);
+            return RoundValue((float)(0.0015 * Math.Pow(level, 3) + 0.2 * level + 6), 0);
         }
 
         // Computes offensive attacks.
@@ -2444,13 +2442,13 @@ namespace POESKillTree.SkillTreeFiles
             return value * percentage / 100;
         }
 
-        // Damage Reduction Factor = Armour / ( Armour + (12 * Damage) )
+        // Damage Reduction Factor = Armour / ( Armour + (10 * Damage) )
         // Damage reduction is capped at 90%.
         // @see http://pathofexile.gamepedia.com/Armour
         public static float PhysicalDamageReduction(int level, float armour)
         {
             float mad = MonsterAverageDamage(Math.Min(level, 80) - 1);
-            float reduction = RoundValue(armour / (armour + 12 * mad) * 100, 1);
+            float reduction = RoundValue(armour / (armour + 10 * mad) * 100, 1);
             if (reduction > 90f) reduction = 90f;
 
             return reduction;
