@@ -223,7 +223,7 @@ namespace POESKillTree.Views
                     break;
                 case nameof(PoEBuild.TreeUrl):
                     if (!_skipLoadOnCurrentBuildTreeChange)
-                        Tree.LoadFromUrl(PersistentData.CurrentBuild.TreeUrl);
+                        await LoadBuildFromUrlAsync(PersistentData.CurrentBuild.TreeUrl);
                     break;
                 case nameof(PoEBuild.CheckedNodeIds):
                 case nameof(PoEBuild.CrossedNodeIds):
@@ -1715,7 +1715,8 @@ namespace POESKillTree.Views
                     if (newUrl.Contains("characterName") || newUrl.Contains("accountName"))
                         newUrl = Regex.Replace(newUrl, @"\?.*", "");
                     newUrl = Regex.Replace(newUrl, Constants.TreeRegex, Constants.TreeAddress);
-                    // If the url didn't change but this is the first load, we still want to load something.
+                    // If the url did change, it'll run through this method again anyway.
+                    // So no need to call Tree.LoadFromUrl in that case.
                     if (PersistentData.CurrentBuild.TreeUrl == newUrl)
                         Tree.LoadFromUrl(newUrl);
                     else
@@ -1773,12 +1774,6 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
-        private async void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter && NoAsyncTaskRunning)
-                await LoadBuildFromUrlAsync();
-        }
-
         private void tbSkillURL_TextChanged(object sender, TextChangedEventArgs e)
         {
             _undoList.Push(PersistentData.CurrentBuild.TreeUrl);
@@ -1823,11 +1818,6 @@ namespace POESKillTree.Views
                 PersistentData.CurrentBuild.TreeUrl = _redoList.Pop();
                 UpdateUI();
             }
-        }
-
-        private async void btnLoadBuild_Click(object sender, RoutedEventArgs e)
-        {
-            await LoadBuildFromUrlAsync();
         }
 
         private async void btnPoeUrl_Click(object sender, RoutedEventArgs e)
