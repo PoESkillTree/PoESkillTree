@@ -176,6 +176,23 @@ namespace POESKillTree.Views
         /// </summary>
         private bool _skipLoadOnCurrentBuildTreeChange;
 
+        private string _inputTreeUrl;
+        /// <summary>
+        /// The tree url that is the current input of the tree text box. Can be different from
+        /// CurrentBuild.TreeUrl if the user changes it (until the user presses "Load Tree" or Enter).
+        /// </summary>
+        public string InputTreeUrl
+        {
+            get { return _inputTreeUrl; }
+            set
+            {
+                if (value == _inputTreeUrl)
+                    return;
+                _inputTreeUrl = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InputTreeUrl)));
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -224,6 +241,7 @@ namespace POESKillTree.Views
                 case nameof(PoEBuild.TreeUrl):
                     if (!_skipLoadOnCurrentBuildTreeChange)
                         await LoadBuildFromUrlAsync(PersistentData.CurrentBuild.TreeUrl);
+                    InputTreeUrl = PersistentData.CurrentBuild.TreeUrl;
                     break;
                 case nameof(PoEBuild.CheckedNodeIds):
                 case nameof(PoEBuild.CrossedNodeIds):
@@ -1643,6 +1661,7 @@ namespace POESKillTree.Views
         private async Task CurrentBuildChanged()
         {
             var build = PersistentData.CurrentBuild;
+            InputTreeUrl = PersistentData.CurrentBuild.TreeUrl;
             Tree.Level = build.Level;
             Tree.ResetTaggedNodes();
             TreeGeneratorInteraction?.LoadSettings();
@@ -1774,6 +1793,12 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
+        private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && NoAsyncTaskRunning)
+                PersistentData.CurrentBuild.TreeUrl = InputTreeUrl;
+        }
+
         private void tbSkillURL_TextChanged(object sender, TextChangedEventArgs e)
         {
             _undoList.Push(PersistentData.CurrentBuild.TreeUrl);
@@ -1818,6 +1843,11 @@ namespace POESKillTree.Views
                 PersistentData.CurrentBuild.TreeUrl = _redoList.Pop();
                 UpdateUI();
             }
+        }
+
+        private void btnLoadBuild_Click(object sender, RoutedEventArgs e)
+        {
+            PersistentData.CurrentBuild.TreeUrl = InputTreeUrl;
         }
 
         private async void btnPoeUrl_Click(object sender, RoutedEventArgs e)

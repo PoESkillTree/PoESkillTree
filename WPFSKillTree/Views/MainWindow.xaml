@@ -853,8 +853,8 @@
             <CheckBox Grid.Column="1" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="cbRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbRegEx_Click" />
 
             <TextBox Grid.Column="3" Height="24" Margin="1,0,2.854,2" VerticalAlignment="Bottom"
-                     Text="{Binding PersistentData.CurrentBuild.TreeUrl, ElementName=window}"
-                     VerticalContentAlignment="Center" TextChanged="tbSkillURL_TextChanged"
+                     Text="{Binding InputTreeUrl, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp"
                      controls:TextBoxHelper.SelectAllOnFocus="True">
                 <TextBox.ToolTip>
                     <l:Catalog Message="Skill tree link"/>
@@ -864,7 +864,7 @@
                 </controls:TextBoxHelper.Watermark>
             </TextBox>
 
-            <Button Grid.Column="4" Height="24" HorizontalAlignment="Right" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}" VerticalAlignment="Bottom" MinWidth="75" Margin="0,0,2,2">
+            <Button Grid.Column="4" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2">
                 <l:Catalog Message="Load Tree"/>
             </Button>
         </Grid>
