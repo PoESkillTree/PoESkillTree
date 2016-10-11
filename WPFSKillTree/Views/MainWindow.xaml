@@ -659,21 +659,24 @@
                     </local:ZoomBorder>
                 </TabItem>
                 <TabItem Name="tyEquipment">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Rectangle Grid.ColumnSpan="2" Height="2" Fill="{DynamicResource GrayNormalBrush}" VerticalAlignment="Top" />
-                        <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,0,0" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
-                        <Button Grid.Column="0" Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">
-                            <l:Catalog Message="Craft new item"/>
-                        </Button>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Grid.ColumnSpan="2" Height="2" Fill="{DynamicResource GrayNormalBrush}" VerticalAlignment="Top" />
+                            <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,0,0" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
+                            <Button Grid.Column="0" Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">
+                                <l:Catalog Message="Craft new item"/>
+                            </Button>
 
-                        <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
+                            <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
 
-                        <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Margin="0,4,0,0" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
-                    </Grid>
+                            <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Margin="0,4,0,0" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
+                        </Grid>
+                    </ScrollViewer>
                 </TabItem>
             </TabControl>
 

@@ -6,6 +6,7 @@
              xmlns:cont="clr-namespace:POESKillTree.Controls"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:WpfRangeControls="clr-namespace:WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="POESKillTree.Controls.Stash"
              mc:Ignorable="d" 
              d:DesignHeight="351"
@@ -142,7 +143,13 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="tbSearch" Grid.Column="1" TextChanged="tbSearch_TextChanged"/>
+            <TextBox x:Name="tbSearch" Grid.Column="1" TextChanged="tbSearch_TextChanged"
+                     controls:TextBoxHelper.ClearTextButton="True"
+                     controls:TextBoxHelper.SelectAllOnFocus="True">
+                <controls:TextBoxHelper.Watermark>
+                    <l:Catalog>Stash search</l:Catalog>
+                </controls:TextBoxHelper.Watermark>
+            </TextBox>
         </Grid>
 
         <WpfRangeControls:RangeScrollbar x:Name="asBar" Grid.Column="2" Maximum="{Binding LastLine, ElementName=control}" ValueChanged="asBar_ValueChanged" SmallChange="1" LargeChange="12">
