@@ -101,11 +101,14 @@ namespace POESKillTree.Model.Serialization
                     build.Name = " ";
             }
             // Rename duplicates
-            var names = builds.ToDictionary(b => b.Name);
+            var names = new Dictionary<string, IBuild>();
             foreach (var build in builds)
             {
-                if (names[build.Name] == build)
+                if (!names.ContainsKey(build.Name))
+                {
+                    names[build.Name] = build;
                     continue;
+                }
                 build.Name = Util.FindDistinctName(build.Name, names.Keys);
                 names[build.Name] = build;
             }
