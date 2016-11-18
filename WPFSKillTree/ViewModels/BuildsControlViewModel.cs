@@ -411,8 +411,8 @@ namespace POESKillTree.ViewModels
         private async Task SaveBuildAs(BuildViewModel vm)
         {
             var build = vm.Build;
-            var name = await _dialogCoordinator.ShowInputAsync(this, L10n.Message("Save as"),
-                L10n.Message("Enter the new name of the build"), build.Name);
+            var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this, L10n.Message("Save as"),
+                L10n.Message("Enter the new name of the build"), build.Name, s => _buildValidator.ValidateNewBuildName(s, vm.Parent));
             if (string.IsNullOrWhiteSpace(name))
                 return;
             var newBuild = build.DeepClone();
