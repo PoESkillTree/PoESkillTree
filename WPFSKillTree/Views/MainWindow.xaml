@@ -66,15 +66,15 @@
     <Window.InputBindings>
         <KeyBinding Modifiers="Control" Key="S"
                     Command="{Binding BuildsControlViewModel.SaveBuildCommand}"
-                    CommandParameter="{Binding PersistentData.CurrentBuild}"/>
+                    CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"/>
         <KeyBinding Modifiers="Control+Shift" Key="S"
                     Command="{Binding BuildsControlViewModel.SaveAllBuildsCommand}"/>
         <KeyBinding Modifiers="Control+Alt" Key="S"
                     Command="{Binding BuildsControlViewModel.SaveBuildAsCommand}"
-                    CommandParameter="{Binding PersistentData.CurrentBuild}"/>
+                    CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"/>
         <KeyBinding Modifiers="Control" Key="N"
                     Command="{Binding BuildsControlViewModel.NewBuildCommand}"
-                    CommandParameter="{Binding PersistentData.RootBuild}"/>
+                    CommandParameter="{Binding BuildsControlViewModel.BuildRoot}"/>
         
         <KeyBinding Modifiers="Control+Shift" Key="G"
                     Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}" />
