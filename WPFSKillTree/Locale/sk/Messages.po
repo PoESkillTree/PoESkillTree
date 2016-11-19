@@ -181,7 +181,7 @@ msgstr "Spustiť"
 msgid "Reset settings"
 msgstr "Resetovať nastavenia"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:173 Views\MainWindow.xaml:694
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:173 Views\MainWindow.xaml:697
 msgid "Attributes"
 msgstr "Atribúty"
 
@@ -943,50 +943,50 @@ msgstr "Celkovo pasívnych bodov"
 msgid "Total Ascendancy Skill Points"
 msgstr "Celkovo Ascendancy bodov"
 
-#: Views\MainWindow.xaml:670
+#: Views\MainWindow.xaml:672
 msgid "Craft new item"
 msgstr "Vyrobiť nový predmet"
 
-#: Views\MainWindow.xaml:682
+#: Views\MainWindow.xaml:685
 msgid "Saved Builds"
 msgstr "Uložené zostavy"
 
-#: Views\MainWindow.xaml:717
+#: Views\MainWindow.xaml:720
 msgid "Passive Attributes"
 msgstr "Pasívne atribúty"
 
-#: Views\MainWindow.xaml:734
+#: Views\MainWindow.xaml:737
 msgid "Item Attributes"
 msgstr "Atribúty predmetov"
 
-#: Views\MainWindow.xaml:753
+#: Views\MainWindow.xaml:756
 msgid "Total Attributes"
 msgstr "Atribúty celkovo"
 
-#: Views\MainWindow.xaml:770
+#: Views\MainWindow.xaml:773
 msgid "ItemList"
 msgstr "Údaje predmetov"
 
-#: Views\MainWindow.xaml:794
+#: Views\MainWindow.xaml:797
 msgid "Character Sheet"
 msgstr "Postava"
 
-#: Views\MainWindow.xaml:800 SkillTreeFiles\Compute.cs:2294
+#: Views\MainWindow.xaml:803 SkillTreeFiles\Compute.cs:2294
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:217
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
 msgstr "Obrana"
 
-#: Views\MainWindow.xaml:817
+#: Views\MainWindow.xaml:820
 msgid "Offense"
 msgstr "Útok"
 
-#: Views\MainWindow.xaml:860 Views\MainWindow.xaml:863
+#: Views\MainWindow.xaml:863 Views\MainWindow.xaml:866
 #, fuzzy
 msgid "Skill tree link"
 msgstr "Odkaz stromu:"
 
-#: Views\MainWindow.xaml:868
+#: Views\MainWindow.xaml:871
 msgid "Load Tree"
 msgstr "Načítať strom"
 
@@ -1506,7 +1506,7 @@ msgstr ""
 msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr ""
 
-#: ViewModels\BuildsControlViewModel.cs:393 Views\MainWindow.xaml.cs:853
+#: ViewModels\BuildsControlViewModel.cs:393 Views\MainWindow.xaml.cs:871
 msgid "Do you want to continue?"
 msgstr "Chcete pokračovať?"
 
@@ -1619,54 +1619,54 @@ msgstr "Posledná zmena: {0}"
 msgid "Help file not found"
 msgstr "Súbor pomocníka nebol nájdený"
 
-#: Views\MainWindow.xaml.cs:309
+#: Views\MainWindow.xaml.cs:327
 msgid "Create New Attribute Group"
 msgstr "Vytvoriť novú skupinu atribútov"
 
-#: Views\MainWindow.xaml.cs:309
+#: Views\MainWindow.xaml.cs:327
 msgid "Group name"
 msgstr "Názov skupiny"
 
-#: Views\MainWindow.xaml.cs:314
+#: Views\MainWindow.xaml.cs:332
 msgid "A group with that name already exists."
 msgstr "Skupina s daným názvom už existuje."
 
-#: Views\MainWindow.xaml.cs:405
+#: Views\MainWindow.xaml.cs:423
 msgid "Initialization"
 msgstr "Inicializácia"
 
-#: Views\MainWindow.xaml.cs:406 Views\MainWindow.xaml.cs:510
+#: Views\MainWindow.xaml.cs:424 Views\MainWindow.xaml.cs:528
 msgid "Initalizing window ..."
 msgstr "Inicializácia okna ..."
 
-#: Views\MainWindow.xaml.cs:435
+#: Views\MainWindow.xaml.cs:453
 msgid "Highlight nodes by attribute"
 msgstr "Zvýrazniť uzly podľa atribútu"
 
-#: Views\MainWindow.xaml.cs:440
+#: Views\MainWindow.xaml.cs:458
 msgid "Remove highlights by attribute"
 msgstr "Zrušiť zvýraznenia podľa atribútu"
 
-#: Views\MainWindow.xaml.cs:500
+#: Views\MainWindow.xaml.cs:518
 msgid "Loading skill tree assets ..."
 msgstr "Sťahujem údaje stromu zručností ..."
 
-#: Views\MainWindow.xaml.cs:672
+#: Views\MainWindow.xaml.cs:690
 msgid ""
 "There are unsaved builds. Do you want to save them before closing?\n"
 "\n"
 "Canceling stops the program from closing and does not save any builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:702
+#: Views\MainWindow.xaml.cs:720
 msgid "Are you sure?"
 msgstr "Ste si istý?"
 
-#: Views\MainWindow.xaml.cs:703
+#: Views\MainWindow.xaml.cs:721
 msgid "Untag All Skill Nodes"
 msgstr "Zrušiť označenie všetkých uzlov"
 
-#: Views\MainWindow.xaml.cs:776
+#: Views\MainWindow.xaml.cs:794
 #, csharp-format
 msgid "{0} point"
 msgid_plural "{0} points"
@@ -1674,105 +1674,105 @@ msgstr[0] "{0}, {1} bod"
 msgstr[1] "{0}, {1} body"
 msgstr[2] "{0}, {1} bodov"
 
-#: Views\MainWindow.xaml.cs:810
+#: Views\MainWindow.xaml.cs:828
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr "Vaša zostava musí obsahovať aspoň jeden uzol pre vytvorenie snímky"
 
-#: Views\MainWindow.xaml.cs:846 Views\MainWindow.xaml.cs:1880
+#: Views\MainWindow.xaml.cs:864 Views\MainWindow.xaml.cs:1900
 msgid "An error occurred while copying to Clipboard."
 msgstr "Nastala chyba počas kopírovania do Schránky."
 
-#: Views\MainWindow.xaml.cs:852
+#: Views\MainWindow.xaml.cs:870
 msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."
 
-#: Views\MainWindow.xaml.cs:859
+#: Views\MainWindow.xaml.cs:877
 msgid "Downloading skill tree assets ..."
 msgstr "Sťahujem údaje stromu zručností ..."
 
-#: Views\MainWindow.xaml.cs:879
+#: Views\MainWindow.xaml.cs:897
 msgid "An error occurred while downloading assets."
 msgstr "Nastala chyba počas sťahovania údajov."
 
-#: Views\MainWindow.xaml.cs:934
+#: Views\MainWindow.xaml.cs:952
 msgid "Checking for updates"
 msgstr "Kontrola aktualizácií"
 
-#: Views\MainWindow.xaml.cs:939
+#: Views\MainWindow.xaml.cs:957
 msgid "You have the latest version!"
 msgstr "Máte najnovšiu verziu!"
 
-#: Views\MainWindow.xaml.cs:944
+#: Views\MainWindow.xaml.cs:962
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr "Aktualizácia pre {0} ({1}) je k dispozícii!"
 
-#: Views\MainWindow.xaml.cs:947
+#: Views\MainWindow.xaml.cs:965
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr "Po dokončení sťahovania bude aplikácia zatvorená, aby mohla aktualizácia prebehnúť."
 
-#: Views\MainWindow.xaml.cs:948
+#: Views\MainWindow.xaml.cs:966
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "Nová verzia {0} je k dispozícii!"
 
-#: Views\MainWindow.xaml.cs:951
+#: Views\MainWindow.xaml.cs:969
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr "Nová verzia aplikácie bude nainštalovaná súbežne s predchádzajúcimi verziami."
 
-#: Views\MainWindow.xaml.cs:955
+#: Views\MainWindow.xaml.cs:973
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr "Upozornenie: Toto je predbežná verzia, ktorá môže obsahovať chyby!"
 
-#: Views\MainWindow.xaml.cs:959
+#: Views\MainWindow.xaml.cs:977
 msgid "Do you want to download and install the update?"
 msgstr "Chcete stiahnuť a nainštalovať aktualizáciu?"
 
-#: Views\MainWindow.xaml.cs:960
+#: Views\MainWindow.xaml.cs:978
 msgid "Do you want to download and install the new version?"
 msgstr "Chcete stiahnuť a nainštalovať novú verziu?"
 
-#: Views\MainWindow.xaml.cs:962
+#: Views\MainWindow.xaml.cs:980
 msgid "Continue installation?"
 msgstr "Pokračovať s inštaláciou?"
 
-#: Views\MainWindow.xaml.cs:973
+#: Views\MainWindow.xaml.cs:991
 msgid "An error occurred while attempting to contact the update location."
 msgstr "Nastala chyba pri pokuse kontaktovať lokáciu pre aktualizácie."
 
-#: Views\MainWindow.xaml.cs:981
+#: Views\MainWindow.xaml.cs:999
 msgid "Downloading latest version"
 msgstr "Sťahujem najnovšiu verziu"
 
-#: Views\MainWindow.xaml.cs:996 Views\MainWindow.xaml.cs:1011
+#: Views\MainWindow.xaml.cs:1014 Views\MainWindow.xaml.cs:1029
 msgid "An error occurred during the download operation."
 msgstr "Nastala chyba počas sťahovania."
 
-#: Views\MainWindow.xaml.cs:1024
+#: Views\MainWindow.xaml.cs:1042
 msgid "An error occurred while attempting to start the installation."
 msgstr "Nastala chyba pri pokuse spustiť inštaláciu."
 
-#: Views\MainWindow.xaml.cs:1612
+#: Views\MainWindow.xaml.cs:1630
 msgid "An error occurred while attempting to load item data."
 msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
 
-#: Views\MainWindow.xaml.cs:1700
+#: Views\MainWindow.xaml.cs:1719
 msgid "Resolving shortened tree address"
 msgstr "Riešim skrátenie adresy stromu"
 
-#: Views\MainWindow.xaml.cs:1747
+#: Views\MainWindow.xaml.cs:1767
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Nastala chyba pri pokuse načítať strom zručností z URL."
 
-#: Views\MainWindow.xaml.cs:1860
+#: Views\MainWindow.xaml.cs:1880
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Vytváranie Po_EUrl odkazu"
 
-#: Views\MainWindow.xaml.cs:1866
+#: Views\MainWindow.xaml.cs:1886
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Nastala chyba pri pokuse kontaktovať PoEUrl lokáciu."
 
-#: Views\MainWindow.xaml.cs:1876
+#: Views\MainWindow.xaml.cs:1896
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "PoEUrl odkaz bol skopírovaný do Schránky."
 
