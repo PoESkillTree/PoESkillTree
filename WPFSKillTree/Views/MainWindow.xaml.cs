@@ -1797,9 +1797,7 @@ namespace POESKillTree.Views
         {
             if (e.Key == Key.Enter && NoAsyncTaskRunning)
             {
-                _skipLoadOnCurrentBuildTreeChange = true;
                 await LoadBuildFromUrlAsync(InputTreeUrl);
-                _skipLoadOnCurrentBuildTreeChange = false;
             }
         }
 
@@ -1851,9 +1849,7 @@ namespace POESKillTree.Views
 
         private async void btnLoadBuild_Click(object sender, RoutedEventArgs e)
         {
-            _skipLoadOnCurrentBuildTreeChange = true;
             await LoadBuildFromUrlAsync(InputTreeUrl);
-            _skipLoadOnCurrentBuildTreeChange = false;
         }
 
         private async void btnPoeUrl_Click(object sender, RoutedEventArgs e)
