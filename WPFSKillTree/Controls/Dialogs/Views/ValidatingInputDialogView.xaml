@@ -34,7 +34,7 @@
         <StackPanel Grid.Row="2"
                     Style="{StaticResource DialogPanel}">
             <Button Style="{StaticResource DynamicDialogPanelButton}"
-                    Command="{Binding CloseCommand}" CommandParameter="{Binding Input}"
+                    Command="{Binding CloseCommand}" CommandParameter=""
                     IsDefault="True">
                 <Button.Content>
                     <l:Catalog Message="OK" />
