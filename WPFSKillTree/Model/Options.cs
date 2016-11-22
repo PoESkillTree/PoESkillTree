@@ -19,6 +19,7 @@ namespace POESKillTree.Model
         private bool _downloadMissingItemImages;
         private ResetPreferences _resetPreferences = ResetPreferences.MainTree | ResetPreferences.AscendancyTree;
         private string _buildSavePath;
+        private int _loadBuildButtonIndex;
 
         public string Language
         {
@@ -102,6 +103,12 @@ namespace POESKillTree.Model
         {
             get { return _buildSavePath; }
             set { SetProperty(ref _buildSavePath, value); }
+        }
+
+        public int LoadTreeButtonIndex
+        {
+            get { return _loadBuildButtonIndex; }
+            set { SetProperty(ref _loadBuildButtonIndex, value); }
         }
     }
 }

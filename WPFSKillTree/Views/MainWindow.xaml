@@ -871,7 +871,7 @@
                 </TextBox.InputBindings>
             </TextBox>
 
-            <controls:SplitButton Grid.Column="4" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="75" Margin="0,0,2,2"
+            <controls:SplitButton Grid.Column="4" Height="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" MinWidth="110" Margin="0,0,2,2"
                                   DataContext="{Binding LoadTreeButtonViewModel}"
                                   Command="{Binding SelectedItem.Command}"
                                   ItemsSource="{Binding Items}"

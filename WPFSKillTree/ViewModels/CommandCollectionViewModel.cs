@@ -4,7 +4,7 @@ using System.Windows.Input;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Utils;
 
-namespace POESKillTree.Controls
+namespace POESKillTree.ViewModels
 {
     /// <summary>
     /// Contains a collection of pairs of a title and a command. Can be used e.g. to make commands selectable
@@ -45,25 +45,22 @@ namespace POESKillTree.Controls
             set { SetProperty(ref _selectedItem, value); }
         }
 
-        public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
-
-        private void Add(Item item)
+        public int SelectedIndex
         {
-            Items.Add(item);
-            if (SelectedItem == null)
-            {
-                SelectedItem = item;
-            }
+            get { return SelectedItem == null ? 0 : Items.IndexOf(SelectedItem); }
+            set { SelectedItem = Items.Count > value ? Items[value] : null; }
         }
+
+        public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
 
         public void Add(string title, ICommand command)
         {
-            Add(new Item(title, command));
+            Items.Add(new Item(title, command));
         }
 
         public void Add(string title, Action action, Func<bool> canExeucte)
         {
-            Add(new Item(title, new RelayCommand(action, canExeucte)));
+            Items.Add(new Item(title, new RelayCommand(action, canExeucte)));
         }
     }
 }

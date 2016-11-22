@@ -564,6 +564,16 @@ namespace POESKillTree.Views
                 await BuildsControlViewModel.NewBuild(BuildsControlViewModel.BuildRoot);
                 await LoadBuildFromUrlAsync(url);
             }, () => NoAsyncTaskRunning);
+            LoadTreeButtonViewModel.SelectedIndex = PersistentData.Options.LoadTreeButtonIndex;
+            LoadTreeButtonViewModel.PropertyChanged += (o, args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(LoadTreeButtonViewModel.SelectedItem):
+                        PersistentData.Options.LoadTreeButtonIndex = LoadTreeButtonViewModel.SelectedIndex;
+                        break;
+                }
+            };
 
             await controller.CloseAsync();
         }
