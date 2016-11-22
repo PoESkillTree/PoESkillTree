@@ -231,7 +231,9 @@ namespace POESKillTree.ViewModels
             DeleteCommand = new AsyncRelayCommand<IBuildViewModel>(
                 Delete,
                 o => o != BuildRoot);
-            OpenBuildCommand = new RelayCommand<BuildViewModel>(build => CurrentBuild = build);
+            OpenBuildCommand = new AsyncRelayCommand<BuildViewModel>(
+                OpenBuild,
+                b => b != null && (b != CurrentBuild || b.Build.IsDirty));
             SaveBuildCommand = new AsyncRelayCommand<BuildViewModel>(
                 SaveBuild,
                 b => b != null && b.Build.IsDirty);
@@ -398,6 +400,26 @@ namespace POESKillTree.ViewModels
             build.Parent.IsSelected = true;
             build.Parent.Children.Remove(build);
             await DeleteBuildFile(build);
+        }
+
+        private async Task OpenBuild(BuildViewModel build)
+        {
+            if (build != CurrentBuild)
+            {
+                CurrentBuild = build;
+                return;
+            }
+            if (!build.Build.IsDirty)
+                return;
+
+            var result = await _dialogCoordinator.ShowQuestionAsync(this,
+                L10n.Message("This build is currently opened but has unsaved changes.\n")
+                + L10n.Message("Do you want to discard all changes made to it since your last save?"),
+                title: L10n.Message("Discard changes?"));
+            if (result == MessageBoxResult.Yes)
+            {
+                CurrentBuild.Build.RevertChanges();
+            }
         }
 
         private async Task SaveBuild(BuildViewModel build)
