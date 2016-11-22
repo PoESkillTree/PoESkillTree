@@ -1793,10 +1793,14 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
-        private void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
+        private async void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && NoAsyncTaskRunning)
-                PersistentData.CurrentBuild.TreeUrl = InputTreeUrl;
+            {
+                _skipLoadOnCurrentBuildTreeChange = true;
+                await LoadBuildFromUrlAsync(InputTreeUrl);
+                _skipLoadOnCurrentBuildTreeChange = false;
+            }
         }
 
         private void tbSkillURL_TextChanged(object sender, TextChangedEventArgs e)
@@ -1845,9 +1849,11 @@ namespace POESKillTree.Views
             }
         }
 
-        private void btnLoadBuild_Click(object sender, RoutedEventArgs e)
+        private async void btnLoadBuild_Click(object sender, RoutedEventArgs e)
         {
-            PersistentData.CurrentBuild.TreeUrl = InputTreeUrl;
+            _skipLoadOnCurrentBuildTreeChange = true;
+            await LoadBuildFromUrlAsync(InputTreeUrl);
+            _skipLoadOnCurrentBuildTreeChange = false;
         }
 
         private async void btnPoeUrl_Click(object sender, RoutedEventArgs e)
