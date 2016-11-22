@@ -159,7 +159,7 @@ namespace POESKillTree.ViewModels.Builds
 
         private static bool IsNameValid(string name, string fullPath, out string errorMessage)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 errorMessage = L10n.Message("Value is required.");
                 return false;

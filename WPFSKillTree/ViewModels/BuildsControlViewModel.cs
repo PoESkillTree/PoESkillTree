@@ -364,7 +364,7 @@ namespace POESKillTree.ViewModels
             await SaveBuildToFile(newFolder);
         }
 
-        private async Task NewBuild(IBuildFolderViewModel folder)
+        public async Task NewBuild(IBuildFolderViewModel folder)
         {
             var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this,
                 L10n.Message("New Build"),

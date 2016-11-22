@@ -168,17 +168,7 @@ namespace POESKillTree.Model.Serialization
             var path = PersistentData.Options.BuildsSavePath;
             if (!Directory.Exists(path))
                 return;
-            var folder = PersistentData.RootBuild;
-            var xmlFolder = await DeserializeAsync<XmlBuildFolder>(Path.Combine(path, SerializationConstants.BuildFolderFileName));
-            if (xmlFolder != null)
-            {
-                folder.IsExpanded = xmlFolder.IsExpanded;
-                await DeserializeBuildsAsync(path, folder, xmlFolder.Builds);
-            }
-            else
-            {
-                await DeserializeBuildsAsync(path, folder, Enumerable.Empty<string>());
-            }
+            await DeserializeFolderAsync(path, PersistentData.RootBuild);
         }
 
         private static async Task DeserializeBuildsAsync(string buildFolderPath, BuildFolder folder, IEnumerable<string> buildNames)
@@ -186,9 +176,10 @@ namespace POESKillTree.Model.Serialization
             var builds = new Dictionary<string, IBuild>();
             foreach (var directoryPath in Directory.EnumerateDirectories(buildFolderPath))
             {
-                var build = await DeserializeFolderAsync(directoryPath, Path.GetFileName(directoryPath));
-                if (build != null)
-                    builds[build.Name] = build;
+                var fileName = Path.GetFileName(directoryPath);
+                var build = new BuildFolder {Name = SerializationUtils.DecodeFileName(fileName)};
+                await DeserializeFolderAsync(directoryPath, build);
+                builds[build.Name] = build;
             }
             foreach (var filePath in Directory.EnumerateFiles(buildFolderPath))
             {
@@ -216,10 +207,19 @@ namespace POESKillTree.Model.Serialization
             }
         }
 
-        private static async Task<BuildFolder> DeserializeFolderAsync(string path, string fileName)
+        private static async Task DeserializeFolderAsync(string path, BuildFolder folder)
         {
-            var folder = new BuildFolder {Name = SerializationUtils.DecodeFileName(fileName)};
-            var xmlFolder = await DeserializeAsync<XmlBuildFolder>(Path.Combine(path, SerializationConstants.BuildFolderFileName));
+            var fullPath = Path.Combine(path, SerializationConstants.BuildFolderFileName);
+            XmlBuildFolder xmlFolder;
+            if (File.Exists(fullPath))
+            {
+                xmlFolder = await DeserializeAsync<XmlBuildFolder>(fullPath);
+            }
+            else
+            {
+                xmlFolder = null;
+                Log.Info($"Build folder file {fullPath} does not exist. Contained builds will be ordered arbitrarily.");
+            }
             if (xmlFolder != null && CheckVersion(xmlFolder.Version))
             {
                 folder.IsExpanded = xmlFolder.IsExpanded;
@@ -229,7 +229,6 @@ namespace POESKillTree.Model.Serialization
             {
                 await DeserializeBuildsAsync(path, folder, Enumerable.Empty<string>());
             }
-            return folder;
         }
 
         private static async Task<PoEBuild> DeserializeBuildAsync(string path)

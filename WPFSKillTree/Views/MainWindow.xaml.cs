@@ -118,6 +118,8 @@ namespace POESKillTree.Views
             }
         }
 
+        public CommandCollectionViewModel LoadTreeButtonViewModel { get; } = new CommandCollectionViewModel();
+
         private Vector2D _addtransform;
         private bool _justLoaded;
         private string _lasttooltip;
@@ -547,6 +549,21 @@ namespace POESKillTree.Views
                 UpdateUI();
                 SetCurrentBuildUrlFromTree();
             };
+
+            LoadTreeButtonViewModel.Add(L10n.Message("Load Tree"), async () =>
+            {
+                if (InputTreeUrl == null)
+                    return;
+                await LoadBuildFromUrlAsync(InputTreeUrl);
+            }, () => NoAsyncTaskRunning);
+            LoadTreeButtonViewModel.Add(L10n.Message("Load as new build"), async () =>
+            {
+                if (InputTreeUrl == null)
+                    return;
+                var url = InputTreeUrl;
+                await BuildsControlViewModel.NewBuild(BuildsControlViewModel.BuildRoot);
+                await LoadBuildFromUrlAsync(url);
+            }, () => NoAsyncTaskRunning);
 
             await controller.CloseAsync();
         }
@@ -1793,14 +1810,6 @@ namespace POESKillTree.Views
             SearchUpdate();
         }
 
-        private async void tbSkillURL_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter && NoAsyncTaskRunning)
-            {
-                await LoadBuildFromUrlAsync(InputTreeUrl);
-            }
-        }
-
         private void tbSkillURL_TextChanged(object sender, TextChangedEventArgs e)
         {
             _undoList.Push(PersistentData.CurrentBuild.TreeUrl);
@@ -1845,11 +1854,6 @@ namespace POESKillTree.Views
                 PersistentData.CurrentBuild.TreeUrl = _redoList.Pop();
                 UpdateUI();
             }
-        }
-
-        private async void btnLoadBuild_Click(object sender, RoutedEventArgs e)
-        {
-            await LoadBuildFromUrlAsync(InputTreeUrl);
         }
 
         private async void btnPoeUrl_Click(object sender, RoutedEventArgs e)
