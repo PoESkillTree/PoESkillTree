@@ -1533,6 +1533,45 @@ namespace POESKillTree.Views
                         sp.Children.Add(new TextBlock { Text = "Points to skill node: " + points });
                     }
 
+                    //Sum up the total change to attributes and add it to the tooltip
+                    if (_prePath != null | _toRemove != null)
+                    {
+
+
+                        var attributechanges = new Dictionary<string, List<float>>();
+
+                        int changedNodes;
+
+                        if (_prePath != null)
+                        {
+                            attributechanges = SkillTree.GetAttributesWithoutImplicitNodesOnly(_prePath);
+                            tooltip = "Total gain:";
+                            changedNodes = _prePath.Count();
+                        } else
+                        {
+                            attributechanges = SkillTree.GetAttributesWithoutImplicitNodesOnly(_toRemove);
+                            tooltip = "Total loss:";
+                            changedNodes = _toRemove.Count();
+                        }
+
+                        if (changedNodes > 1)
+                        {
+                            foreach (var attrchange in attributechanges)
+                            {
+                                if (attrchange.Value.Count != 0)
+                                {
+                                    var regex = new Regex(Regex.Escape("#"));
+                                    var attr = attrchange.Key;
+                                    foreach (var val in attrchange.Value)
+                                        attr = regex.Replace(attr, val.ToString(), 1);
+                                    tooltip += "\n" + attr;
+                                }
+                            }
+                            sp.Children.Add(new Separator());
+                            sp.Children.Add(new TextBlock { Text = tooltip });
+                        }
+                    }
+
                     _sToolTip.Content = sp;
                     if (!HighlightByHoverKeys.Any(Keyboard.IsKeyDown))
                     {

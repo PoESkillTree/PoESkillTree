@@ -630,7 +630,7 @@ namespace POESKillTree.SkillTreeFiles
         public static Dictionary<string, List<float>> GetAttributesWithoutImplicit(IEnumerable<SkillNode> skilledNodes, int chartype, BanditSettings banditSettings)
         {
             var temp = new Dictionary<string, List<float>>();
-
+            
             foreach (var attr in CharBaseAttributes[chartype].Union(BaseAttributes).Union(banditSettings.Rewards))
             {
                 if (!temp.ContainsKey(attr.Key))
@@ -638,6 +638,32 @@ namespace POESKillTree.SkillTreeFiles
                 else if (temp[attr.Key].Any())
                     temp[attr.Key][0] += attr.Value;
             }
+            
+            foreach (var node in skilledNodes)
+            {
+                foreach (var attr in ExpandHybridAttributes(node.Attributes))
+                {
+                    if (!temp.ContainsKey(attr.Key))
+                        temp[attr.Key] = new List<float>();
+                    for (int i = 0; i < attr.Value.Count; i++)
+                    {
+                        if (temp.ContainsKey(attr.Key) && temp[attr.Key].Count > i)
+                            temp[attr.Key][i] += attr.Value[i];
+                        else
+                        {
+                            temp[attr.Key].Add(attr.Value[i]);
+                        }
+                    }
+                }
+            }
+
+            return temp;
+        }
+
+
+        public static Dictionary<string, List<float>> GetAttributesWithoutImplicitNodesOnly(IEnumerable<SkillNode> skilledNodes)
+        {
+            var temp = new Dictionary<string, List<float>>();
 
             foreach (var node in skilledNodes)
             {
@@ -659,6 +685,7 @@ namespace POESKillTree.SkillTreeFiles
 
             return temp;
         }
+
 
         /// <summary>
         /// Returns a task that finishes with a SkillTree object once it has been initialized.
