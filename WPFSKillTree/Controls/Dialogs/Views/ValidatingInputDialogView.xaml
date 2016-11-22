@@ -35,7 +35,8 @@
                     Style="{StaticResource DialogPanel}">
             <Button Style="{StaticResource DynamicDialogPanelButton}"
                     Command="{Binding CloseCommand}" CommandParameter="{Binding Input}"
-                    IsDefault="True">
+                    IsDefault="True"
+                    Validation.ErrorTemplate="{x:Null}">
                 <Button.Content>
                     <l:Catalog Message="OK" />
                 </Button.Content>
