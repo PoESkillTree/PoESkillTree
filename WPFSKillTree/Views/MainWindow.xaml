@@ -857,7 +857,7 @@
 
             <TextBox Grid.Column="3" Height="24" Margin="1,0,2.854,2" VerticalAlignment="Bottom"
                      Text="{Binding InputTreeUrl, UpdateSourceTrigger=PropertyChanged}"
-                     VerticalContentAlignment="Center" TextChanged="tbSkillURL_TextChanged" KeyUp="tbSkillURL_KeyUp"
+                     VerticalContentAlignment="Center" TextChanged="tbSkillURL_TextChanged"
                      controls:TextBoxHelper.SelectAllOnFocus="True">
                 <TextBox.ToolTip>
                     <l:Catalog Message="Skill tree link"/>
@@ -865,11 +865,18 @@
                 <controls:TextBoxHelper.Watermark>
                     <l:Catalog Message="Skill tree link"/>
                 </controls:TextBoxHelper.Watermark>
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter"
+                                Command="{Binding LoadTreeButtonViewModel.SelectedItem.Command}" />
+                </TextBox.InputBindings>
             </TextBox>
 
-            <Button Grid.Column="4" Height="24" HorizontalAlignment="Right" x:Name="btnLoadBuild" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}" VerticalAlignment="Bottom" MinWidth="75" Click="btnLoadBuild_Click" Margin="0,0,2,2">
-                <l:Catalog Message="Load Tree"/>
-            </Button>
+            <controls:SplitButton Grid.Column="4" Height="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" MinWidth="110" Margin="0,0,2,2"
+                                  DataContext="{Binding LoadTreeButtonViewModel}"
+                                  Command="{Binding SelectedItem.Command}"
+                                  ItemsSource="{Binding Items}"
+                                  SelectedItem="{Binding SelectedItem}"
+                                  DisplayMemberPath="Title"/>
         </Grid>
     </Grid>
 </controls:MetroWindow>
