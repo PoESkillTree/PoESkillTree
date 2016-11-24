@@ -646,6 +646,14 @@ namespace POESKillTree.Views
                     case Key.Y:
                         tbSkillURL_Redo();
                         break;
+                    case Key.LeftCtrl:
+                    case Key.RightCtrl:
+                        if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
+                        {
+                            GenerateTooltipForNode(_hoveredNode, true);
+                        }
+                        break;
+
                 }
             }
 
@@ -670,6 +678,16 @@ namespace POESKillTree.Views
             if (HighlightByHoverKeys.Any(key => key == e.Key))
             {
                 HighlightNodesByHover();
+            }
+            switch (e.Key)
+            {
+                case Key.LeftCtrl:
+                case Key.RightCtrl:
+                    if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
+                    {
+                        GenerateTooltipForNode(_hoveredNode, true);
+                    }
+                    break;
             }
         }
 
@@ -1478,65 +1496,60 @@ namespace POESKillTree.Views
             _sToolTip.IsOpen = false;
         }
 
-        private void zbSkillTreeBackground_MouseMove(object sender, MouseEventArgs e)
+        private void GenerateTooltipForNode(SkillNode node, bool forcerefresh = false)
         {
-            var p = e.GetPosition(zbSkillTreeBackground.Child);
-            var v = new Vector2D(p.X, p.Y);
-            v = v * _multransform + _addtransform;
+            if (!Tree.DrawAscendancy && node.ascendancyName != null && !forcerefresh)
+                return;
+            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscClasses.GetClassName(Tree.Chartype, Tree.AscType))
+                return;
 
-            var node = Tree.FindNodeInRange(v, 50);
-            _hoveredNode = node;
-            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
-            {         
-                if (!Tree.DrawAscendancy && node.ascendancyName != null)
-                    return;
-                if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscClasses.GetClassName(Tree.Chartype, Tree.AscType))
-                    return;
-                if (node.Type == NodeType.JewelSocket)
-                {
-                    Tree.DrawJewelHighlight(node);
-                }
-                
-                if (Tree.SkilledNodes.Contains(node))
-                {
-                    _toRemove = Tree.ForceRefundNodePreview(node);
-                    if (_toRemove != null)
-                        Tree.DrawRefundPreview(_toRemove);
-                }
-                else
-                {
-                    _prePath = Tree.GetShortestPathTo(node, Tree.SkilledNodes);
-                    if (node.Type != NodeType.Mastery)
-                        Tree.DrawPath(_prePath);
-                }
-                var tooltip = node.Name;
-                if (node.Attributes.Count != 0)
-                    tooltip += "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
-                if (!(_sToolTip.IsOpen && _lasttooltip == tooltip))
-                {
-                    var sp = new StackPanel();
-                    sp.Children.Add(new TextBlock
-                    {
-                        Text = tooltip
-                    });
-                    if(node.reminderText != null)
-                    {
-                        sp.Children.Add(new Separator());
-                        sp.Children.Add(new TextBlock { Text = node.reminderText.Aggregate((s1, s2) => s1 + '\n' + s2) });
-                    }
-                    if (_prePath != null && node.Type != NodeType.Mastery)
-                    {
-                        var points = _prePath.Count;
-                        if(_prePath.Any(x => x.IsAscendancyStart))
-                            points--;
-                        sp.Children.Add(new Separator());
-                        sp.Children.Add(new TextBlock { Text = "Points to skill node: " + points });
-                    }
+            if (node.Type == NodeType.JewelSocket)
+            {
+                Tree.DrawJewelHighlight(node);
+            }
 
+            if (Tree.SkilledNodes.Contains(node))
+            {
+                _toRemove = Tree.ForceRefundNodePreview(node);
+                if (_toRemove != null)
+                    Tree.DrawRefundPreview(_toRemove);
+            }
+            else
+            {
+                _prePath = Tree.GetShortestPathTo(node, Tree.SkilledNodes);
+                if (node.Type != NodeType.Mastery)
+                    Tree.DrawPath(_prePath);
+            }
+            var tooltip = node.Name;
+            if (node.Attributes.Count != 0)
+                tooltip += "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
+            if (!(_sToolTip.IsOpen && _lasttooltip == tooltip) | forcerefresh)
+            {
+                var sp = new StackPanel();
+                sp.Children.Add(new TextBlock
+                {
+                    Text = tooltip
+                });
+                if (node.reminderText != null)
+                {
+                    sp.Children.Add(new Separator());
+                    sp.Children.Add(new TextBlock { Text = node.reminderText.Aggregate((s1, s2) => s1 + '\n' + s2) });
+                }
+                if (_prePath != null && node.Type != NodeType.Mastery)
+                {
+                    var points = _prePath.Count;
+                    if (_prePath.Any(x => x.IsAscendancyStart))
+                        points--;
+                    sp.Children.Add(new Separator());
+                    sp.Children.Add(new TextBlock { Text = "Points to skill node: " + points });
+                }
+
+                //Change summary, activated with ctrl
+                if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                {
                     //Sum up the total change to attributes and add it to the tooltip
                     if (_prePath != null | _toRemove != null)
                     {
-
 
                         var attributechanges = new Dictionary<string, List<float>>();
 
@@ -1547,7 +1560,8 @@ namespace POESKillTree.Views
                             attributechanges = SkillTree.GetAttributesWithoutImplicitNodesOnly(_prePath);
                             tooltip = "Total gain:";
                             changedNodes = _prePath.Count();
-                        } else
+                        }
+                        else
                         {
                             attributechanges = SkillTree.GetAttributesWithoutImplicitNodesOnly(_toRemove);
                             tooltip = "Total loss:";
@@ -1571,14 +1585,28 @@ namespace POESKillTree.Views
                             sp.Children.Add(new TextBlock { Text = tooltip });
                         }
                     }
-
-                    _sToolTip.Content = sp;
-                    if (!HighlightByHoverKeys.Any(Keyboard.IsKeyDown))
-                    {
-                        _sToolTip.IsOpen = true;
-                    }
-                    _lasttooltip = tooltip;
                 }
+
+                _sToolTip.Content = sp;
+                if (!HighlightByHoverKeys.Any(Keyboard.IsKeyDown))
+                {
+                    _sToolTip.IsOpen = true;
+                }
+                _lasttooltip = tooltip;
+            }
+        }
+
+        private void zbSkillTreeBackground_MouseMove(object sender, MouseEventArgs e)
+        {
+            var p = e.GetPosition(zbSkillTreeBackground.Child);
+            var v = new Vector2D(p.X, p.Y);
+            v = v * _multransform + _addtransform;
+
+            var node = Tree.FindNodeInRange(v, 50);
+            _hoveredNode = node;
+            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
+            {
+                GenerateTooltipForNode(node);
             }
             else if ((Tree.AscButtonPosition - v).Length < 150)
             {
