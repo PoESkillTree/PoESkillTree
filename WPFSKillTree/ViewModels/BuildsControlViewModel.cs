@@ -15,6 +15,7 @@ using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Builds;
+using POESKillTree.Model.Serialization;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
@@ -227,7 +228,7 @@ namespace POESKillTree.ViewModels
             NewFolderCommand = new AsyncRelayCommand<IBuildFolderViewModel>(
                 NewFolder,
                 vm => vm != null && _buildValidator.CanHaveSubfolder(vm));
-            NewBuildCommand = new AsyncRelayCommand<IBuildFolderViewModel>(NewBuild);
+            NewBuildCommand = new RelayCommand<IBuildFolderViewModel>(NewBuild);
             DeleteCommand = new AsyncRelayCommand<IBuildViewModel>(
                 Delete,
                 o => o != BuildRoot);
@@ -366,15 +367,10 @@ namespace POESKillTree.ViewModels
             await SaveBuildToFile(newFolder);
         }
 
-        public async Task NewBuild(IBuildFolderViewModel folder)
+        public void NewBuild(IBuildFolderViewModel folder)
         {
-            var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this,
-                L10n.Message("New Build"),
-                L10n.Message("Enter the name of the new build."),
-                "",
-                s => _buildValidator.ValidateNewBuildName(s, folder));
-            if (string.IsNullOrWhiteSpace(name))
-                return;
+            var name = Util.FindDistinctName(SerializationConstants.DefaultBuildName,
+                folder.Children.Select(b => b.Build.Name));
             var build = new BuildViewModel(new PoEBuild { Name = name }, Filter);
             folder.Children.Add(build);
             CurrentBuild = build;
@@ -409,7 +405,7 @@ namespace POESKillTree.ViewModels
                 CurrentBuild = build;
                 return;
             }
-            if (!build.Build.IsDirty)
+            if (!build.Build.IsDirty || !build.Build.CanRevert)
                 return;
 
             var result = await _dialogCoordinator.ShowQuestionAsync(this,
@@ -424,7 +420,21 @@ namespace POESKillTree.ViewModels
 
         private async Task SaveBuild(BuildViewModel build)
         {
-            build.Build.LastUpdated = DateTime.Now;
+            var poeBuild = build.Build;
+            if (!poeBuild.CanRevert && poeBuild.IsDirty)
+            {
+                // Build was created in this program run and was not yet saved.
+                // Thus it needs a name.
+                var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this,
+                    L10n.Message("Saving new Build"),
+                    L10n.Message("Enter the name of the build."),
+                    poeBuild.Name,
+                    s => _buildValidator.ValidateExistingFileName(s, build));
+                if (string.IsNullOrEmpty(name))
+                    return;
+                poeBuild.Name = name;
+            }
+            poeBuild.LastUpdated = DateTime.Now;
             await SaveBuildToFile(build);
             // Save parent folder to retain ordering information when renaming
             await SaveBuildToFile(build.Parent);

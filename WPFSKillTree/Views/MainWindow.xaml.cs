@@ -561,7 +561,7 @@ namespace POESKillTree.Views
                 if (InputTreeUrl == null)
                     return;
                 var url = InputTreeUrl;
-                await BuildsControlViewModel.NewBuild(BuildsControlViewModel.BuildRoot);
+                BuildsControlViewModel.NewBuild(BuildsControlViewModel.BuildRoot);
                 await LoadBuildFromUrlAsync(url);
             }, () => NoAsyncTaskRunning);
             LoadTreeButtonViewModel.SelectedIndex = PersistentData.Options.LoadTreeButtonIndex;
