@@ -189,6 +189,9 @@
     <Compile Include="Common\ViewModels\ErrorInfoViewModel.cs" />
     <Compile Include="Common\ViewModels\RelayCommand.cs" />
     <Compile Include="Common\ViewModels\ViewModelBase.cs" />
+    <Compile Include="Compute\Compute.cs" />
+    <Compile Include="Compute\ComputeGlobal.cs" />
+    <Compile Include="Compute\Enums.cs" />
     <Compile Include="Contrib\RangeTree\Range.cs" />
     <Compile Include="Contrib\RangeTree\RangeTree.cs" />
     <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />
@@ -200,6 +203,11 @@
     <Compile Include="Controls\ColorPickerButton.xaml.cs">
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Compute\AttackSkill.cs" />
+    <Compile Include="Compute\AttackSource.cs" />
+    <Compile Include="Compute\Damage.cs" />
+    <Compile Include="Compute\DamageNature.cs" />
+    <Compile Include="SkillTreeFiles\Weapon.cs" />
     <Compile Include="ViewModels\CommandCollectionViewModel.cs" />
     <Compile Include="Controls\Dialogs\BaseDialog.cs" />
     <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />
@@ -329,7 +337,6 @@
     <Compile Include="SkillTreeFiles\AssetLoader.cs" />
     <Compile Include="SkillTreeFiles\Bootstrap.cs" />
     <Compile Include="SkillTreeFiles\CharacterNames.cs" />
-    <Compile Include="SkillTreeFiles\Compute.cs" />
     <Compile Include="SkillTreeFiles\Constants.cs" />
     <Compile Include="SkillTreeFiles\ItemDB.cs" />
     <Compile Include="SkillTreeFiles\NodeHighlighter.cs" />

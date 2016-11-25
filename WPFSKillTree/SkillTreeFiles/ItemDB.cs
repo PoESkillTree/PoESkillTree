@@ -10,13 +10,7 @@ using POESKillTree.Model;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Utils;
-using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
-using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;
-using DamageNature = POESKillTree.SkillTreeFiles.Compute.DamageNature;
-using DamageSource = POESKillTree.SkillTreeFiles.Compute.DamageSource;
-using WeaponHand = POESKillTree.SkillTreeFiles.Compute.WeaponHand;
-using WeaponType = POESKillTree.SkillTreeFiles.Compute.WeaponType;
-using Weapon = POESKillTree.SkillTreeFiles.Compute.Weapon;
+using POESKillTree.Compute;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -1314,7 +1308,7 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         // Returns true if gem can use weapon, false otherwise.
-        public static bool CanUse(Item gem, Weapon weapon)
+        public static bool CanUse(Item gem, Weapon weapon, Computation compute)
         {
             if (GemIndex.ContainsKey(gem.Name))
             {
@@ -1323,7 +1317,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (entry.RequiredHand != WeaponHand.Any && !weapon.Is(entry.RequiredHand))
                     return false;
 
-                if (entry.RequiresEquippedShield && !Compute.IsWieldingShield)
+                if (entry.RequiresEquippedShield && !compute.IsWieldingShield)
                     return false;
 
                 // Weapon having "Counts as Dual Wielding" mod cannot be used to perform skills that require a two-handed weapon.

@@ -33,7 +33,8 @@ using POESKillTree.Utils;
 using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
-using Attribute = POESKillTree.ViewModels.Attribute;
+using Attribute = POESKillTree.ViewModels.Attribute; //overrides System.Attribute
+using POESKillTree.Compute;
 
 namespace POESKillTree.Views
 {
@@ -1253,6 +1254,7 @@ namespace POESKillTree.Views
             AscendancyTotalPoints.Content = "[" + points["AscendancyTotal"].ToString() + "]";
         }
 
+        Computation Compute;
         public void UpdateStatistics()
         {
             _defenceList.Clear();
@@ -1260,7 +1262,7 @@ namespace POESKillTree.Views
 
             if (_itemAttributes != null)
             {
-                Compute.Initialize(Tree, _itemAttributes);
+                Compute = new Computation(Tree, _itemAttributes);
 
                 foreach (var group in Compute.Defense())
                 {
