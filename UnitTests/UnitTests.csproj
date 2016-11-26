@@ -115,10 +115,10 @@
     <EmbeddedResource Include="TestBuilds\Builds.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="TestItems.xml">
+    <EmbeddedResource Include="TestItems.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
+    </EmbeddedResource>
     <Content Include="TestMerge.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

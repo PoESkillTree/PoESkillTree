@@ -15,7 +15,7 @@ namespace UnitTests
         [TestMethod]
         public void TestGems()
         {
-            var DB = GemDB.LoadFromEmbeddedResource("Data/ItemDB/GemList.xml");
+            var DB = GemDB.LoadFromText(FileEx.GetResource<GemDB>("POESKillTree.Data.ItemDB.GemList.xml"), true);
             List<float> expect;
             List<double> expect2;
             List<float[]> expectPair;
@@ -80,52 +80,18 @@ namespace UnitTests
         [TestMethod]
         public void TestMergeDB()
         {
-            var DB = GemDB.LoadFromEmbeddedResource("Data/ItemDB/GemList.xml");
-            DB.Merge("TestItems.xml");
-            DB.Index();
+            var target = GemDB.LoadFromText(FileEx.GetResource<GemDB>("POESKillTree.Data.ItemDB.GemList.xml"));
+            var merge = GemDB.LoadFromText(FileEx.GetResource<TestItemDB>("UnitTests.TestItems.xml"));
 
-            Assert.AreEqual(5, DB.AttributesOf("TestGem", 5, 0)["Attribute1: #"][0]);
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 10, 0)["Attribute1: #"][0]);
-
-            DB.Merge("TestMerge.xml");
-            DB.Index();
+            target.Merge(merge);
+            target.Index();
 
             // Attribute1: <Value Level="5">21</Value> <ValuePerLevel>5</ValuePerLevel>
-            Assert.AreEqual(21, DB.AttributesOf("TestGem", 5, 0)["Attribute1: #"][0], "Level 5");
-            Assert.AreEqual(45, DB.AttributesOf("TestGem", 10, 0)["Attribute1: #"][0], "Level 10");
+            Assert.AreEqual(21, target.AttributesOf("TestGem", 5, 0)["Attribute1: #"][0], "Level 5");
+            Assert.AreEqual(45, target.AttributesOf("TestGem", 10, 0)["Attribute1: #"][0], "Level 10");
             // Attribute2: <Value Level="5">5</Value> <Value Level="6">7</Value> <ValueForLevel From="1" To="10">10</ValueForLevel>
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 1, 0)["Attribute2: #"][0], "Level 1");
-            Assert.AreEqual(6, DB.AttributesOf("TestGem", 5, 0)["Attribute2: #"][0], "Level 5");
-            Assert.AreEqual(7, DB.AttributesOf("TestGem", 6, 0)["Attribute2: #"][0], "Level 6");
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 10, 0)["Attribute2: #"][0], "Level 10");
-            // Attribute3: <Value Level="5">5</Value> <ValueForLevel From="1" To="7">10</ValueForLevel> <ValueForLevel From="8" To="15">15</ValueForLevel>
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 1, 0)["Attribute3: #"][0], "Level 1");
-            Assert.AreEqual(5, DB.AttributesOf("TestGem", 5, 0)["Attribute3: #"][0], "Level 5");
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 7, 0)["Attribute3: #"][0], "Level 7");
-            Assert.AreEqual(15, DB.AttributesOf("TestGem", 8, 0)["Attribute3: #"][0], "Level 8");
-            Assert.AreEqual(15, DB.AttributesOf("TestGem", 15, 0)["Attribute3: #"][0], "Level 15");
-            // Attribute4: <Value Level="5">5</Value> <ValueForLevel From="1" To="7">10</ValueForLevel> <ValueForLevel From="8" To="9">15</ValueForLevel> <Value Level="10">10</Value>
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 1, 0)["Attribute4: #"][0], "Level 1");
-            Assert.AreEqual(5, DB.AttributesOf("TestGem", 5, 0)["Attribute4: #"][0], "Level 5");
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 7, 0)["Attribute4: #"][0], "Level 7");
-            Assert.AreEqual(15, DB.AttributesOf("TestGem", 8, 0)["Attribute4: #"][0], "Level 8");
-            Assert.AreEqual(15, DB.AttributesOf("TestGem", 9, 0)["Attribute4: #"][0], "Level 9");
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 10, 0)["Attribute4: #"][0], "Level 10");
-            // Attribute5: <Value Level="1">1</Value> <Value Level="2">2</Value> <Value Level="3">3</Value>
-            Assert.AreEqual(1, DB.AttributesOf("TestGem", 1, 0)["Attribute5: #"][0], "Level 1");
-            Assert.AreEqual(2, DB.AttributesOf("TestGem", 2, 0)["Attribute5: #"][0], "Level 2");
-            Assert.AreEqual(3, DB.AttributesOf("TestGem", 3, 0)["Attribute5: #"][0], "Level 3");
-            // Attribute6: <Value Level="1">1</Value> <Value Level="2">2</Value> ... <Value Level="30">30</Value>
-            Assert.AreEqual(1, DB.AttributesOf("TestGem", 1, 0)["Attribute6: #"][0], "Level 1");
-            Assert.AreEqual(2, DB.AttributesOf("TestGem", 2, 0)["Attribute6: #"][0], "Level 2");
-            Assert.AreEqual(30, DB.AttributesOf("TestGem", 30, 0)["Attribute6: #"][0], "Level 30");
-            // Attribute7: <Value Level="1">1</Value> <Value Level="2">2</Value> ... <Value Level="30">30</Value>
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 1, 0)["Attribute7: #"][0], "Level 1");
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 2, 0)["Attribute7: #"][0], "Level 2");
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 30, 0)["Attribute7: #"][0], "Level 30");
-            // Attribute8: <Value>10</Value>
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 1, 0)["Attribute8: #"][0], "Level 1");
-            Assert.AreEqual(10, DB.AttributesOf("TestGem", 30, 0)["Attribute8: #"][0], "Level 30");
+            Assert.AreEqual(10, target.AttributesOf("TestGem", 1, 0)["Attribute2: #"][0], "Level 1");
+            Assert.AreEqual(5, target.AttributesOf("TestGem", 5, 0)["Attribute2: #"][0], "Level 5");
         }
     }
 }

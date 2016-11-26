@@ -77,7 +77,7 @@ namespace UpdateDB.DataLoading
         {
             if (!LoadOld())
                 return;
-            DB.MergeFromCompletePath(mergePath);
+            DB.Merge(GemDB.LoadFromText(File.ReadAllText(mergePath)));
         }
 
         private async Task Update()
@@ -100,7 +100,7 @@ namespace UpdateDB.DataLoading
                 Log.ErrorFormat("There is no gem file that can be updated (path: {0})", updateSource);
                 return false;
             }
-            GemDB.LoadFromCompletePath(updateSource);
+            GemDB.LoadFromText(File.ReadAllText(updateSource));
             return true;
         }
 

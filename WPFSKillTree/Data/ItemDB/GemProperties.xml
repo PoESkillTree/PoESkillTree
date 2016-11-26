@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<GemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <!-- All non-support gems from http://pathofexile.gamepedia.com/Category:Attack_%28gem_tag%29
        plus Ranged Attack Totem Support and Tempest Shield -->
   <Gem Name="Ancestral Protector" RequiredWeapon="Melee" />
@@ -65,4 +65,4 @@
   <Gem Name="Viper Strike" RequiredWeapon="Claw Dagger OneHandedSword TwoHandedSword" />
   <Gem Name="Whirling Blades" RequiredWeapon="Claw Dagger OneHandedSword" />
   <Gem Name="Wild Strike" RequiredWeapon="Melee" />
-</ItemDB>
+</GemDB>

@@ -58,7 +58,7 @@ namespace UnitTests
 
             AbstractPersistentData _persistentData;
 
-            var db = GemDB.LoadFromCompletePath(@"C:\git\PoESkillTree\WPFSKillTree\Data\ItemDB\GemList.xml");
+            var db = GemDB.LoadFromText(FileEx.GetResource<GemDB>(@"POESKillTree.Data.ItemDB.GemList.xml"));
             _persistentData = new BarePersistentData { CurrentBuild = new PoEBuild() };
 
 
@@ -97,7 +97,7 @@ namespace UnitTests
 
             string itemData = FileEx.GetResource<TestCharacterSheet>("UnitTests.TestBuilds." + build.BuildFile);
             ItemAttributes itemAttributes = new ItemAttributes(_persistentData, itemData);
-            var Compute = new Computation(tree, itemAttributes);
+            var Compute = new Computation(tree, itemAttributes); //failing here because "Staff" isn't recognized.
 
             // Compare defense properties.
             Dictionary<string, List<string>> defense = new Dictionary<string, List<string>>();

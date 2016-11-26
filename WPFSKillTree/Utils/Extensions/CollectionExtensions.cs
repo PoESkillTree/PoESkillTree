@@ -61,5 +61,11 @@ namespace POESKillTree.Utils.Extensions
         {
             return new HashSet<T>(source);
         }
+
+        public static IEnumerable<T> OrEmptyIfNull<T>(this IEnumerable<T> source)
+        {
+            if (source == null) return Enumerable.Empty<T>();
+            return source;
+        }
     }
 }

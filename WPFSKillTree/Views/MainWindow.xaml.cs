@@ -433,16 +433,16 @@ namespace POESKillTree.Views
                 const string itemDBPrefix = "Data/ItemDB/";
                 Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
                 // First file instantiates the ItemDB.
-                //var db = GemDB.LoadFromEmbeddedResource("WPFSKillTree." + itemDBPrefix + "GemList.xml");
-                var db = GemDB.LoadFromCompletePath(@"C:\git\PoESkillTree\WPFSKillTree\Data\ItemDB\GemList.xml");
+                var db = GemDB.LoadFromText(FileEx.GetResource<GemDB>("POESKillTree.Data.ItemDB.GemList.xml"));
                 // Merge all other files from the ItemDB path.
                 Directory.GetFiles(AppData.GetFolder(itemDBPrefix))
                     .Select(Path.GetFileName)
                     .Where(f => f != "GemList.xml")
                     .Select(f => itemDBPrefix + f)
+                    .Select(x => GemDB.LoadFromText(File.ReadAllText(x)))
                     .ForEach(db.Merge);
                 // Merge the user specified things.
-                db.Merge("ItemsLocal.xml");
+                db.Merge(GemDB.LoadFromText(File.ReadAllText("POESKillTree.Data.ItemDB.ItemsLocal.xml")));
                 db.Index();
             });
             // We can use this now as setting the context for this to the SkillTree instance happens later

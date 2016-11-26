@@ -1,5 +1,6 @@
 ﻿using POESKillTree.Compute;
 using POESKillTree.Model;
+using POESKillTree.Utils.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -272,11 +273,8 @@ namespace POESKillTree.SkillTreeFiles
         // Optimizes gem data.
         public void Optimize()
         {
-            if (Attributes != null)
-            {
-                foreach (Attribute attr in Attributes)
-                    attr.Optimize();
-            }
+            foreach (Attribute attr in Attributes.OrEmptyIfNull())
+                attr.Optimize();
         }
     }
 

@@ -11,6 +11,7 @@ using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Utils;
 using POESKillTree.Compute;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -18,6 +19,7 @@ namespace POESKillTree.SkillTreeFiles
     public class GemDB
     {
         public static GemDB Instance { get; set; } = new GemDB();
+        bool IsIndexed { get; set; }
 
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(GemDB));
@@ -105,6 +107,9 @@ namespace POESKillTree.SkillTreeFiles
         // Returns attributes of gem at specified level and quality.
         public AttributeSet AttributesOf(string gemName, int level, int quality)
         {
+            if (!IsIndexed)
+                throw new Exception("Gem Index not started");
+
             if (!GemIndex.ContainsKey(gemName))
                 return new AttributeSet();
 
@@ -123,6 +128,9 @@ namespace POESKillTree.SkillTreeFiles
         // Returns true if gem can support attack skill, false otherwise.
         public bool CanSupport(AttackSkill skill, Item gem)
         {
+            if (!IsIndexed)
+                throw new Exception("Gem Index not started");
+
             if (GemIndex.ContainsKey(gem.Name))
             {
                 Gem entry = GemIndex[gem.Name];
@@ -137,6 +145,9 @@ namespace POESKillTree.SkillTreeFiles
         // Returns true if gem can support attack skill, false otherwise.
         public bool CanSupport(AttackSkill skill, string gemName)
         {
+            if (!IsIndexed)
+                throw new Exception("Gem Index not started");
+
             if (GemIndex.ContainsKey(gemName))
             {
                 Gem entry = GemIndex[gemName];
@@ -151,6 +162,8 @@ namespace POESKillTree.SkillTreeFiles
         // Returns true if gem can use weapon, false otherwise.
         public bool CanUse(Item gem, Weapon weapon, Computation compute)
         {
+            if (!IsIndexed)
+                throw new Exception("Gem Index not started");
             if (GemIndex.ContainsKey(gem.Name))
             {
                 Gem entry = GemIndex[gem.Name];
@@ -194,6 +207,7 @@ namespace POESKillTree.SkillTreeFiles
                 gem.Index();
                 GemIndex.Add(gem.Name, gem);
             }
+            IsIndexed = true;
         }
 
         // Returns true if database is empty, false otherwise.
@@ -219,20 +233,7 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         // Loads items from XML file.
-        public static GemDB Load(string file, bool index = false)
-        {
-            return LoadFromCompletePath(AppData.GetFolder(true) + file, index);
-        }
-        public static GemDB LoadFromEmbeddedResource(string file, bool index = false)
-        {
-            var resourceName = "WPFSKillTree." + file.Replace("/", ".").Replace("\\", ".");
-            return LoadFromText(FileEx.GetResource<GemDB>(resourceName), index);
-        }
-        public static GemDB LoadFromCompletePath(string file, bool index = false)
-        {
-            return LoadFromText(File.ReadAllText(file));
-        }
-        private static GemDB LoadFromText(string text, bool index = false)
+        public static GemDB LoadFromText(string text, bool index = false)
         {
             var db = XmlHelpers.DeserializeXml<GemDB>(text);
             if (index)
@@ -240,36 +241,22 @@ namespace POESKillTree.SkillTreeFiles
             return db;
         }
 
-        // Merges items from XML file.
-        public void Merge(string file)
+        public void Merge(GemDB merge)
         {
-            MergeFromCompletePath(AppData.GetFolder(true) + file);
-        }
-        public GemDB MergeFromCompletePath(string file)
-        {
-            if (File.Exists(file))
+            if (merge != null)
             {
-                var merge = LoadFromCompletePath(file);
-
-                if (merge != null)
+                // Merge gems.
+                foreach (Gem gem in merge.Gems.OrEmptyIfNull())
                 {
-                    // Merge gems.
-                    if (merge.Gems != null)
-                    {
-                        foreach (Gem gem in merge.Gems)
-                        {
-                            gem.Optimize();
+                    gem.Optimize();
 
-                            Gem with = Gems.Find(g => g.Name == gem.Name);
-                            if (with == null)
-                                Gems.Add(gem);
-                            else
-                                with.Merge(gem);
-                        }
-                    }
+                    Gem with = Gems.Find(g => g.Name == gem.Name);
+                    if (with == null)
+                        Gems.Add(gem);
+                    else
+                        with.Merge(gem);
                 }
             }
-            return this;
         }
 
         // Returns damage nature of gem.
