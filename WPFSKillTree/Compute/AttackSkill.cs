@@ -48,9 +48,9 @@ namespace POESKillTree.Compute
         {
             Gem = gem;
             Name = gem.Name;
-            Nature = ItemDB.NatureOf(gem);
-            HitsPerAttack = ItemDB.HitsPerAttackOf(gem);
-            IsStrikingWithBothWeaponsAtOnce = ItemDB.IsStrikingWithBothWeaponsAtOnce(gem);
+            Nature = GemDB.Instance.NatureOf(gem);
+            HitsPerAttack = GemDB.Instance.HitsPerAttackOf(gem);
+            IsStrikingWithBothWeaponsAtOnce = GemDB.Instance.IsStrikingWithBothWeaponsAtOnce(gem);
 
             Effectiveness = gem.Properties.First("Damage Effectiveness: #%", 0, 100);
             Compute = compute;
@@ -66,7 +66,7 @@ namespace POESKillTree.Compute
         public void Apply(Item item)
         {
             // Add skill gem attributes.
-            Local.Add(ItemDB.AttributesOf(Gem, item));
+            Local.Add(GemDB.Instance.AttributesOf(Gem, item));
 
             CreateSources();
 
@@ -112,10 +112,7 @@ namespace POESKillTree.Compute
             {
                 // Create projectile attack damage bonus from value of implicit melee physical damage increase.
                 float bonus = Implicit["#% increased Melee Physical Damage"][0];
-                if (attrs.ContainsKey("#% increased Projectile Weapon Damage"))
-                    attrs["#% increased Projectile Weapon Damage"][0] += bonus;
-                else
-                    attrs.Add("#% increased Projectile Weapon Damage", new List<float> { bonus });
+                attrs.AddAsSum("#% increased Projectile Weapon Damage", bonus);
             }
 
             // Iron Will.
@@ -123,84 +120,94 @@ namespace POESKillTree.Compute
             {
                 // Create spell damage bonus from value of implicit melee physical damage increase.
                 float bonus = Implicit["#% increased Melee Physical Damage"][0];
-                if (attrs.ContainsKey("#% increased Spell Damage"))
-                    attrs["#% increased Spell Damage"][0] += bonus;
-                else
-                    attrs.Add("#% increased Spell Damage", new List<float> { bonus });
+                attrs.AddAsSum("#% increased Spell Damage", bonus);
             }
 
             // Collect damage gains, increases and multipliers.
             foreach (var attr in attrs)
             {
-                Damage.Gained gained = Damage.Gained.Create(attr);
-                if (gained != null) Gains.Add(gained);
+                var gained = Damage.Gained.Create(attr);
+                if (gained != null)
+                    Gains.Add(gained);
 
-                Damage.Increased increased = Damage.Increased.Create(attr);
-                if (increased != null) increases.Add(increased);
+                var increased = Damage.Increased.Create(attr);
+                if (increased != null)
+                    increases.Add(increased);
 
-                Damage.More more = Damage.More.Create(attr, Compute);
-                if (more != null) mores.Add(more);
+                var more = Damage.More.Create(attr, Compute);
+                if (more != null)
+                    mores.Add(more);
             }
 
             foreach (AttackSource source in Sources)
             {
-                // Apply damage added.
-                foreach (Damage.Added added in adds)
-                    if (added.MatchesExceptType(source.Nature))
-                        added.Apply(source, Effectiveness);
-
-                // Apply damage conversions and gains.
-                Convert(source.Deals);
-
-                // For each damage dealt apply its increases and multipliers.
-                foreach (Damage damage in source.Deals)
-                {
-                    float inc = 0;
-                    foreach (Damage.Increased increase in increases)
-                        if (damage.Matches(increase))
-                            inc += increase.Percent;
-                    if (Compute.IsDualWielding && damage.Matches(PhysicalWeaponDamage) && attrs.ContainsKey("#% increased Physical Weapon Damage while Dual Wielding"))
-                        inc += attrs["#% increased Physical Weapon Damage while Dual Wielding"][0];
-                    if (OffHand.IsShield() && damage.Matches(PhysicalWeaponDamage) && attrs.ContainsKey("#% increased Physical Weapon Damage while holding a Shield"))
-                        inc += attrs["#% increased Physical Weapon Damage while holding a Shield"][0];
-                    if (OffHand.IsShield() && source.Nature.Is(DamageSource.Attack) && attrs.ContainsKey("#% increased Physical Attack Damage while holding a Shield"))
-                        inc += attrs["#% increased Physical Attack Damage while holding a Shield"][0];
-                    if (OffHand.IsShield() && source.Nature.Is(DamageForm.Melee) && attrs.ContainsKey("#% increased Melee Physical Damage while holding a Shield"))
-                        inc += attrs["#% increased Melee Physical Damage while holding a Shield"][0];
-                    if (source.Nature.Is(DamageSource.Spell) && attrs.ContainsKey("Supported Triggered Spells have #% increased Spell Damage")) // Cast on Melee Kill.
-                        inc += attrs["Supported Triggered Spells have #% increased Spell Damage"][0];
-                    if (inc != 0)
-                        damage.Increase(inc);
-
-                    // Apply all less multipliers.
-                    float mul = 1;
-                    foreach (Damage.More more in mores.FindAll(m => m.IsLess && damage.Matches(m)))
-                        mul *= (100 + more.Percent) / 100;
-                    if (mul != 1)
-                        damage.Multiply(RoundHalfDownValue(mul, 2));
-                    // Apply all more multipliers.
-                    mul = 1;
-                    foreach (Damage.More more in mores.FindAll(m => !m.IsLess && damage.Matches(m)))
-                        mul *= (100 + more.Percent) / 100;
-                    if (mul != 1)
-                        damage.Multiply(RoundHalfDownValue(mul, 2));
-                }
-
-                // Avatar of Fire (remove non-Fire damage).
-                if (Compute.AvatarOfFire)
-                    foreach (Damage damage in new List<Damage>(source.Deals))
-                        if (!damage.Is(DamageType.Fire))
-                            source.Deals.Remove(damage);
-
-                // Summarize, round and combine damage dealt.
-                source.Combine();
-
-                source.AccuracyRating(attrs);
-
-                source.AttackSpeed(this, attrs);
-
-                source.CriticalStrike(attrs);
+                ApplyAttackSource(adds, increases, mores, attrs, source);
             }
+        }
+
+        private void ApplyAttackSource(List<Damage.Added> adds, List<Damage.Increased> increases, List<Damage.More> mores, AttributeSet attrs, AttackSource source)
+        {
+            // Apply damage added.
+            foreach (Damage.Added added in adds)
+                if (added.MatchesExceptType(source.Nature))
+                    added.Apply(source, Effectiveness);
+
+            // Apply damage conversions and gains.
+            Convert(source.Deals);
+
+            // For each damage dealt apply its increases and multipliers.
+            foreach (Damage damage in source.Deals)
+            {
+                ApplyDamageSource(increases, mores, attrs, source, damage);
+            }
+
+            // Avatar of Fire (remove non-Fire damage).
+            if (Compute.AvatarOfFire)
+                foreach (Damage damage in new List<Damage>(source.Deals))
+                    if (!damage.Is(DamageType.Fire))
+                        source.Deals.Remove(damage);
+
+            // Summarize, round and combine damage dealt.
+            source.Combine();
+
+            source.AccuracyRating(attrs);
+
+            source.AttackSpeed(this, attrs);
+
+            source.CriticalStrike(attrs);
+        }
+
+        private void ApplyDamageSource(List<Damage.Increased> increases, List<Damage.More> mores, AttributeSet attrs, AttackSource source, Damage damage)
+        {
+            float inc = 0;
+            foreach (Damage.Increased increase in increases)
+                if (damage.Matches(increase))
+                    inc += increase.Percent;
+            if (Compute.IsDualWielding && damage.Matches(PhysicalWeaponDamage))
+                inc += attrs.GetOrDefault("#% increased Physical Weapon Damage while Dual Wielding");
+            if (OffHand.IsShield() && damage.Matches(PhysicalWeaponDamage))
+                inc += attrs.GetOrDefault("#% increased Physical Weapon Damage while holding a Shield");
+            if (OffHand.IsShield() && source.Nature.Is(DamageSource.Attack))
+                inc += attrs.GetOrDefault("#% increased Physical Attack Damage while holding a Shield");
+            if (OffHand.IsShield() && source.Nature.Is(DamageForm.Melee))
+                inc += attrs.GetOrDefault("#% increased Melee Physical Damage while holding a Shield");
+            if (source.Nature.Is(DamageSource.Spell))
+                inc += attrs.GetOrDefault("Supported Triggered Spells have #% increased Spell Damage");
+            if (inc != 0)
+                damage.Increase(inc);
+
+            // Apply all less multipliers.
+            float mul = 1;
+            foreach (Damage.More more in mores.FindAll(m => m.IsLess && damage.Matches(m)))
+                mul *= (100 + more.Percent) / 100;
+            if (mul != 1)
+                damage.Multiply(RoundHalfDownValue(mul, 2));
+            // Apply all more multipliers.
+            mul = 1;
+            foreach (Damage.More more in mores.FindAll(m => !m.IsLess && damage.Matches(m)))
+                mul *= (100 + more.Percent) / 100;
+            if (mul != 1)
+                damage.Multiply(RoundHalfDownValue(mul, 2));
         }
 
         // Returns attacks/casts per second.
@@ -218,7 +225,7 @@ namespace POESKillTree.Compute
         // Returns true if skill can be used with weapon.
         public bool CanUse(Weapon weapon)
         {
-            return (weapon.IsWeapon() || weapon.IsUnarmed()) && Nature.Is(weapon.Nature.WeaponType) && ItemDB.CanUse(Gem, weapon, Compute);
+            return (weapon.IsWeapon() || weapon.IsUnarmed()) && Nature.Is(weapon.Nature.WeaponType) && GemDB.Instance.CanUse(Gem, weapon, Compute);
         }
 
         // Returns chance to hit.
@@ -379,14 +386,14 @@ namespace POESKillTree.Compute
                 string gemName = m.Groups[1].Value;
                 int level = (int)mod.Value[0];
 
-                if (!ItemDB.CanSupport(this, gemName)) continue;
-                Local.Add(ItemDB.AttributesOf(gemName, level, 0));
+                if (!GemDB.Instance.CanSupport(this, gemName)) continue;
+                Local.Add(GemDB.Instance.AttributesOf(gemName, level, 0));
             }
 
             foreach (Item gem in gems)
             {
                 if (!gem.Keywords.Contains("Support")) continue; // Skip non-support gems.
-                if (!ItemDB.CanSupport(this, gem)) continue; // Check whether gem can support our skill gem.
+                if (!GemDB.Instance.CanSupport(this, gem)) continue; // Check whether gem can support our skill gem.
 
                 // XXX: Spells linked to Cast on/when are treated as cast on use spells (i.e. their cast speed is ignored).
                 if ((gem.Name.StartsWith("Cast On") || gem.Name.StartsWith("Cast on") || gem.Name.StartsWith("Cast when"))
@@ -394,7 +401,7 @@ namespace POESKillTree.Compute
                     Nature.Form |= DamageForm.OnUse;
 
                 // Add support gem attributes.
-                Local.Add(ItemDB.AttributesOf(gem, item));
+                Local.Add(GemDB.Instance.AttributesOf(gem, item));
             }
         }
 

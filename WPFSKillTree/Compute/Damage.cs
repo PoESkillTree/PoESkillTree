@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using POESKillTree.Model.Items.Affixes;
 using static POESKillTree.Compute.ComputeGlobal;
+using System;
 
 namespace POESKillTree.Compute
 {
@@ -28,7 +29,7 @@ namespace POESKillTree.Compute
                 : base()
             {
                 Source = source;
-                Type = DamageNature.TypeOf(type);
+                Type = TypeOf(type);
                 Min = min;
                 Max = max;
             }
@@ -110,7 +111,7 @@ namespace POESKillTree.Compute
                 Match m = ReConvertMod.Match(attr.Key);
                 if (m.Success)
                 {
-                    return new Converted(source, attr.Value[0], DamageNature.Types[m.Groups[1].Value], DamageNature.Types[m.Groups[3].Value]);
+                    return new Converted(source, attr.Value[0], Types[m.Groups[1].Value], Types[m.Groups[3].Value]);
                 }
 
                 return null;
@@ -127,9 +128,9 @@ namespace POESKillTree.Compute
         public class Gained : DamageNature
         {
             // The percentage of damage to convert.
-            float Percent;
+            public readonly float Percent;
             // The damage type to convert to.
-            DamageType To;
+            public readonly DamageType To;
 
             static Regex ReGainMod = new Regex("Gain #% of ([^ ]+) Damage as Extra ([^ ]+) Damage");
             static Regex ReGainAddedMod = new Regex("#% of (.+) Damage Added as ([^ ]+) Damage");
@@ -146,12 +147,12 @@ namespace POESKillTree.Compute
             {
                 Match m = ReGainMod.Match(attr.Key);
                 if (m.Success)
-                    return new Gained(attr.Value[0], m.Groups[1].Value, DamageNature.Types[m.Groups[2].Value]);
+                    return new Gained(attr.Value[0], m.Groups[1].Value, Types[m.Groups[2].Value]);
                 else
                 {
                     m = ReGainAddedMod.Match(attr.Key);
                     if (m.Success)
-                        return new Gained(attr.Value[0], m.Groups[1].Value, DamageNature.Types[m.Groups[2].Value]);
+                        return new Gained(attr.Value[0], m.Groups[1].Value, Types[m.Groups[2].Value]);
                 }
 
                 return null;
@@ -198,33 +199,36 @@ namespace POESKillTree.Compute
             public static Increased Create(KeyValuePair<string, List<float>> attr)
             {
                 Match m = ReIncreasedType.Match(attr.Key);
+                var value = attr.Value[0];
+                Func<float, string, float> incRedFunc = (v, increasedOrReduced) => increasedOrReduced == "increased" ? v : -v;
+
                 if (m.Success)
-                    return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
+                    return new Increased(m.Groups[2].Value, incRedFunc(value, m.Groups[1].Value));
                 else
                 {
                     m = ReIncreasedWithSource.Match(attr.Key);
                     if (m.Success)
-                        return new Increased(m.Groups[3].Value == "Spells" ? DamageSource.Spell : DamageSource.Attack, m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
+                        return new Increased(m.Groups[3].Value == "Spells" ? DamageSource.Spell : DamageSource.Attack, m.Groups[2].Value, incRedFunc(value, m.Groups[1].Value));
                     else
                     {
                         m = ReIncreasedTypeWithWeaponTypeOrHand.Match(attr.Key);
                         if (m.Success)
                         {
                             if (WithWeaponHand.ContainsKey(m.Groups[3].Value))
-                                return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponHand = WithWeaponHand[m.Groups[3].Value] };
+                                return new Increased(m.Groups[2].Value, incRedFunc(value, m.Groups[1].Value)) { WeaponHand = WithWeaponHand[m.Groups[3].Value] };
                             else if (WithWeaponType.ContainsKey(m.Groups[3].Value))
-                                return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = WithWeaponType[m.Groups[3].Value] };
+                                return new Increased(m.Groups[2].Value, incRedFunc(value, m.Groups[1].Value)) { WeaponType = WithWeaponType[m.Groups[3].Value] };
                         }
                         else
                         {
                             m = ReIncreasedAll.Match(attr.Key);
                             if (m.Success)
-                                return new Increased(m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
+                                return new Increased(incRedFunc(value, m.Groups[1].Value));
                             else
                             {
                                 m = ReIncreasedAllWithWeaponType.Match(attr.Key);
                                 if (m.Success && WithWeaponType.ContainsKey(m.Groups[2].Value))
-                                    return new Increased(m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]) { WeaponType = WithWeaponType[m.Groups[2].Value] };
+                                    return new Increased(incRedFunc(value, m.Groups[1].Value)) { WeaponType = WithWeaponType[m.Groups[2].Value] };
                             }
                         }
                     }

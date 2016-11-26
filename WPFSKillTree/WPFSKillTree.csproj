@@ -207,7 +207,13 @@
     <Compile Include="Compute\AttackSource.cs" />
     <Compile Include="Compute\Damage.cs" />
     <Compile Include="Compute\DamageNature.cs" />
+    <Compile Include="SkillTreeFiles\Attribute.cs" />
+    <Compile Include="SkillTreeFiles\Gem.cs" />
+    <Compile Include="SkillTreeFiles\GemDB.cs" />
+    <Compile Include="SkillTreeFiles\Lookup.cs" />
+    <Compile Include="SkillTreeFiles\Value.cs" />
     <Compile Include="SkillTreeFiles\Weapon.cs" />
+    <Compile Include="Utils\XmlHelpers.cs" />
     <Compile Include="ViewModels\CommandCollectionViewModel.cs" />
     <Compile Include="Controls\Dialogs\BaseDialog.cs" />
     <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />
@@ -338,7 +344,6 @@
     <Compile Include="SkillTreeFiles\Bootstrap.cs" />
     <Compile Include="SkillTreeFiles\CharacterNames.cs" />
     <Compile Include="SkillTreeFiles\Constants.cs" />
-    <Compile Include="SkillTreeFiles\ItemDB.cs" />
     <Compile Include="SkillTreeFiles\NodeHighlighter.cs" />
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
@@ -792,9 +797,9 @@
     <None Include="Data\Equipment\Itemlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Data\ItemDB\GemList.xml">
+    <EmbeddedResource Include="Data\ItemDB\GemList.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
     <None Include="Data\ItemDB\GemProperties.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

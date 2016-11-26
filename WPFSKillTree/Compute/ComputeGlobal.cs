@@ -165,6 +165,5 @@ namespace POESKillTree.Compute
 
             return (float)(Math.Ceiling((float)(value * coeff)) / coeff);
         }
-
     }
 }

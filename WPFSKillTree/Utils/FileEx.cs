@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace POESKillTree.Utils
@@ -54,6 +55,25 @@ namespace POESKillTree.Utils
             if (overwrite)
                 DeleteIfExists(destFileName);
             File.Move(sourceFileName, destFileName);
+        }
+
+        public static string GetResource(string resourceName)
+        {
+            return GetResource(Assembly.GetExecutingAssembly(), resourceName);
+        }
+        public static string GetResource<TBase>(string resourceName)
+        {
+            return GetResource(Assembly.GetAssembly(typeof(TBase)), resourceName);
+        }
+        private static string GetResource(Assembly assembly, string resourceName)
+        {
+            var rn = resourceName.Replace("/", ".").Replace("\\", ".");
+
+            using (Stream stream = assembly.GetManifestResourceStream(rn))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
         }
     }
 }

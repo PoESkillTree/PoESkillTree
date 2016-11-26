@@ -12,11 +12,7 @@ using log4net;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
-using Attribute = POESKillTree.SkillTreeFiles.ItemDB.Attribute;
-using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
-using Value = POESKillTree.SkillTreeFiles.ItemDB.Value;
-using ValueAt = POESKillTree.SkillTreeFiles.ItemDB.ValueAt;
-using ValuePerQuality = POESKillTree.SkillTreeFiles.ItemDB.ValuePerQuality;
+using Attribute = POESKillTree.SkillTreeFiles.Attribute;
 
 namespace UpdateDB.DataLoading.Gems
 {
@@ -286,7 +282,7 @@ namespace UpdateDB.DataLoading.Gems
             {
                 Name = NumberRegex.Replace(text, "#").Replace("\n", " "),
                 Values =
-                    new List<Value> {new ItemDB.ValueForLevelRange {From = 1, To = 30, Text = numberMatches[0].Value}}
+                    new List<Value> {new ValueForLevelRange {From = 1, To = 30, Text = numberMatches[0].Value}}
             };
         }
 

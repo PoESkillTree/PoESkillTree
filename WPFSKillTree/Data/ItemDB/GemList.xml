@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ItemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<GemDB>
   <Gem Name="Abyssal Cry" Tags="Warcry, AoE, Duration, Chaos">
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">4.00</ValueForLevel>
@@ -17008,4 +17008,4 @@
       <ValueForLevel From="28" To="30">24</ValueForLevel>
     </Attribute>
   </Gem>
-</ItemDB>
+</GemDB>

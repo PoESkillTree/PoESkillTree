@@ -433,16 +433,17 @@ namespace POESKillTree.Views
                 const string itemDBPrefix = "Data/ItemDB/";
                 Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
                 // First file instantiates the ItemDB.
-                ItemDB.Load(itemDBPrefix + "GemList.xml");
+                //var db = GemDB.LoadFromEmbeddedResource("WPFSKillTree." + itemDBPrefix + "GemList.xml");
+                var db = GemDB.LoadFromCompletePath(@"C:\git\PoESkillTree\WPFSKillTree\Data\ItemDB\GemList.xml");
                 // Merge all other files from the ItemDB path.
                 Directory.GetFiles(AppData.GetFolder(itemDBPrefix))
                     .Select(Path.GetFileName)
                     .Where(f => f != "GemList.xml")
                     .Select(f => itemDBPrefix + f)
-                    .ForEach(ItemDB.Merge);
+                    .ForEach(db.Merge);
                 // Merge the user specified things.
-                ItemDB.Merge("ItemsLocal.xml");
-                ItemDB.Index();
+                db.Merge("ItemsLocal.xml");
+                db.Index();
             });
             // We can use this now as setting the context for this to the SkillTree instance happens later
             DialogParticipation.SetRegister(this, PersistentData);
@@ -1264,7 +1265,7 @@ namespace POESKillTree.Views
             {
                 Compute = new Computation(Tree, _itemAttributes);
 
-                foreach (var group in Compute.Defense())
+                foreach (var group in Compute.GetDefensiveAttributes())
                 {
                     foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
                     {

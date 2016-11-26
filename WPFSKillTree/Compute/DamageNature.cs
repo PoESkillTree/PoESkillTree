@@ -52,33 +52,14 @@ namespace POESKillTree.Compute
         }
 
         public DamageNature(DamageNature nature, string str)
+            : this(nature)
         {
-            Form = nature.Form;
-            Source = nature.Source;
-            Type = nature.Type;
-            WeaponHand = nature.WeaponHand;
-            WeaponType = nature.WeaponType;
-
-            string[] words = str.Split(' ');
-            foreach (string word in words)
-            {
-                if (Forms.ContainsKey(word)) Form |= Forms[word];
-                if (Types.ContainsKey(word)) Type = Types[word];
-                if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
-                if (Sources.ContainsKey(word)) Source = Sources[word];
-            }
+            SetFromString(str);
         }
 
         public DamageNature(string str)
         {
-            string[] words = str.Split(' ');
-            foreach (string word in words)
-            {
-                if (Forms.ContainsKey(word)) Form |= Forms[word];
-                if (Types.ContainsKey(word)) Type = Types[word];
-                if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
-                if (Sources.ContainsKey(word)) Source = Sources[word];
-            }
+            SetFromString(str);
         }
 
         public DamageNature(DamageSource source, DamageType type)
@@ -90,22 +71,25 @@ namespace POESKillTree.Compute
         public DamageNature(DamageSource source, string str)
         {
             Source = source;
-
-            string[] words = str.Split(' ');
-            foreach (string word in words)
-            {
-                if (Forms.ContainsKey(word)) Form |= Forms[word];
-                if (Types.ContainsKey(word)) Type = Types[word];
-                if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
-                if (Sources.ContainsKey(word)) Source = Sources[word];
-            }
+            SetFromString(str);
         }
 
         public DamageNature(IEnumerable<string> keywords)
         {
-            foreach (string word in keywords)
+            SetFromKeywords(keywords);
+        }
+
+        private void SetFromString(string str)
+        {
+            SetFromKeywords(str.Split(' '));
+        }
+
+        private void SetFromKeywords(IEnumerable<string> words)
+        {
+            foreach (string word in words)
             {
                 if (Forms.ContainsKey(word)) Form |= Forms[word];
+                if (Types.ContainsKey(word)) Type = Types[word];
                 if (Weapon.Types.ContainsKey(word)) WeaponType = Weapon.Types[word];
                 if (Sources.ContainsKey(word)) Source = Sources[word];
             }
