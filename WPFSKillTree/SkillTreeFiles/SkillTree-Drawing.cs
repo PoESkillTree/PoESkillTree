@@ -61,10 +61,7 @@ namespace POESKillTree.SkillTreeFiles
         private DrawingVisual _ascActiveSkillIcons;
         private DrawingVisual _ascNodeSurround;
         private DrawingVisual _ascActiveNodeSurround;
-
-        public SkillTree()
-        {
-        }
+        
         #endregion
         public void InitialSkillTreeDrawing()
         {
