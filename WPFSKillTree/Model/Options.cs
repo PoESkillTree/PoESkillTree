@@ -12,6 +12,7 @@ namespace POESKillTree.Model
         private bool _characterSheetBarOpened;
         private bool _buildsBarOpened;
         private bool _treeComparisonEnabled;
+        private bool _changeSummaryEnabled;
         private bool _showAllAscendancyClasses = true;
         private string _nodeSearchHighlightColor = "Red";
         private string _nodeAttrHighlightColor = "LawnGreen";
@@ -60,6 +61,12 @@ namespace POESKillTree.Model
         {
             get { return _treeComparisonEnabled; }
             set { SetProperty(ref _treeComparisonEnabled, value); }
+        }
+
+        public bool ChangeSummaryEnabled
+        {
+            get { return _changeSummaryEnabled; }
+            set { SetProperty(ref _changeSummaryEnabled, value); }
         }
 
         public bool ShowAllAscendancyClasses

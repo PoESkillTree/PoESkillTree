@@ -122,6 +122,8 @@ namespace POESKillTree.Views
         private bool _justLoaded;
         private string _lasttooltip;
 
+        private bool _showChangeSummary;
+
         private Vector2D _multransform;
 
         private List<SkillNode> _prePath;
@@ -646,6 +648,7 @@ namespace POESKillTree.Views
                     case Key.Y:
                         tbSkillURL_Redo();
                         break;
+                    /*
                     case Key.LeftCtrl:
                     case Key.RightCtrl:
                         if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
@@ -653,7 +656,14 @@ namespace POESKillTree.Views
                             GenerateTooltipForNode(_hoveredNode, true);
                         }
                         break;
-
+                    */
+                    case Key.F:
+                        ToggleShowSummary();
+                        if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
+                        {
+                            GenerateTooltipForNode(_hoveredNode, true);
+                        }
+                        break;
                 }
             }
 
@@ -679,6 +689,7 @@ namespace POESKillTree.Views
             {
                 HighlightNodesByHover();
             }
+            /*
             switch (e.Key)
             {
                 case Key.LeftCtrl:
@@ -689,6 +700,7 @@ namespace POESKillTree.Views
                     }
                     break;
             }
+            */
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -1334,6 +1346,11 @@ namespace POESKillTree.Views
             PersistentData.Options.CharacterSheetBarOpened = !PersistentData.Options.CharacterSheetBarOpened;
         }
 
+        private void ToggleShowSummary()
+        {
+            PersistentData.Options.ChangeSummaryEnabled = !PersistentData.Options.ChangeSummaryEnabled;
+        }
+
         private void ToggleCharacterSheet(bool expanded)
         {
             PersistentData.Options.CharacterSheetBarOpened = expanded;
@@ -1545,7 +1562,7 @@ namespace POESKillTree.Views
                 }
 
                 //Change summary, activated with ctrl
-                if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                if (PersistentData.Options.ChangeSummaryEnabled)
                 {
                     //Sum up the total change to attributes and add it to the tooltip
                     if (_prePath != null | _toRemove != null)
