@@ -648,15 +648,6 @@ namespace POESKillTree.Views
                     case Key.Y:
                         tbSkillURL_Redo();
                         break;
-                    /*
-                    case Key.LeftCtrl:
-                    case Key.RightCtrl:
-                        if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
-                        {
-                            GenerateTooltipForNode(_hoveredNode, true);
-                        }
-                        break;
-                    */
                     case Key.G:
                         ToggleShowSummary();
                         if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
@@ -689,18 +680,6 @@ namespace POESKillTree.Views
             {
                 HighlightNodesByHover();
             }
-            /*
-            switch (e.Key)
-            {
-                case Key.LeftCtrl:
-                case Key.RightCtrl:
-                    if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
-                    {
-                        GenerateTooltipForNode(_hoveredNode, true);
-                    }
-                    break;
-            }
-            */
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
