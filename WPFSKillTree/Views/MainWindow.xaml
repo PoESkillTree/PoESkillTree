@@ -414,6 +414,17 @@
                         <iconPacks:PackIconModern Kind="SectionCollapseAll" HorizontalAlignment="Center" />
                     </MenuItem.Icon>
                 </MenuItem>
+                <Separator />
+                <MenuItem x:Name="mnuShowSummary" IsCheckable="true"
+                          IsChecked="{Binding PersistentData.Options.ChangeSummaryEnabled,ElementName=window, Mode=TwoWay}"
+                          InputGestureText="Ctrl+G">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Show summary of changes" />
+                    </MenuItem.Header>
+                    <MenuItem.ToolTip>
+                        <l:Catalog>Shows a summary of the total changes to the passive tree when hovering over a node.</l:Catalog>
+                    </MenuItem.ToolTip>
+                </MenuItem>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
@@ -491,17 +502,6 @@
                     <MenuItem.ToolTip>
                         <l:Catalog>Runs the 'Advanced' generator with the current settings set in the Skill Tree
                             Generator window.</l:Catalog>
-                    </MenuItem.ToolTip>
-                </MenuItem>
-                <Separator />
-                <MenuItem x:Name="mnuShowSummary" IsCheckable="true"
-                          IsChecked="{Binding PersistentData.Options.ChangeSummaryEnabled,ElementName=window, Mode=TwoWay}"
-                          InputGestureText="Ctrl+F">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Show summary of changes" />
-                    </MenuItem.Header>
-                    <MenuItem.ToolTip>
-                        <l:Catalog>Shows a summary of the total changes to the passive tree when hovering over a node.</l:Catalog>
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <Separator />

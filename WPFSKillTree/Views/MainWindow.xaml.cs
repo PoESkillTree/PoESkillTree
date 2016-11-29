@@ -657,7 +657,7 @@ namespace POESKillTree.Views
                         }
                         break;
                     */
-                    case Key.F:
+                    case Key.G:
                         ToggleShowSummary();
                         if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
                         {
@@ -1513,6 +1513,34 @@ namespace POESKillTree.Views
             _sToolTip.IsOpen = false;
         }
 
+        private void zbSkillTreeBackground_MouseMove(object sender, MouseEventArgs e)
+        {
+            var p = e.GetPosition(zbSkillTreeBackground.Child);
+            var v = new Vector2D(p.X, p.Y);
+            v = v * _multransform + _addtransform;
+
+            var node = Tree.FindNodeInRange(v, 50);
+            _hoveredNode = node;
+            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
+            {
+                GenerateTooltipForNode(node);
+            }
+            else if ((Tree.AscButtonPosition - v).Length < 150)
+            {
+                Tree.DrawAscendancyButton("Highlight");
+            }
+            else
+            {
+                _sToolTip.Tag = false;
+                _sToolTip.IsOpen = false;
+                _prePath = null;
+                _toRemove = null;
+                Tree?.ClearPath();
+                Tree?.ClearJewelHighlight();
+                Tree?.DrawAscendancyButton();
+            }
+        }
+
         private void GenerateTooltipForNode(SkillNode node, bool forcerefresh = false)
         {
             if (!Tree.DrawAscendancy && node.ascendancyName != null && !forcerefresh)
@@ -1610,34 +1638,6 @@ namespace POESKillTree.Views
                     _sToolTip.IsOpen = true;
                 }
                 _lasttooltip = tooltip;
-            }
-        }
-
-        private void zbSkillTreeBackground_MouseMove(object sender, MouseEventArgs e)
-        {
-            var p = e.GetPosition(zbSkillTreeBackground.Child);
-            var v = new Vector2D(p.X, p.Y);
-            v = v * _multransform + _addtransform;
-
-            var node = Tree.FindNodeInRange(v, 50);
-            _hoveredNode = node;
-            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
-            {
-                GenerateTooltipForNode(node);
-            }
-            else if ((Tree.AscButtonPosition - v).Length < 150)
-            {
-                Tree.DrawAscendancyButton("Highlight");
-            }
-            else
-            {
-                _sToolTip.Tag = false;
-                _sToolTip.IsOpen = false;
-                _prePath = null;
-                _toRemove = null;
-                Tree?.ClearPath();
-                Tree?.ClearJewelHighlight();
-                Tree?.DrawAscendancyButton();
             }
         }
 
