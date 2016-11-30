@@ -124,7 +124,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.4.1.
+        ///   Looks up a localized string similar to 2.5.0.
         /// </summary>
         public static string ProductVersion {
             get {
