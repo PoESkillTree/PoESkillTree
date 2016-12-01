@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml;
+using POESKillTree.Model.Gems;
 
 namespace UnitTests
 {

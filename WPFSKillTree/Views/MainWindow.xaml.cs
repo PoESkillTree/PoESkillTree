@@ -35,6 +35,7 @@ using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
 using Attribute = POESKillTree.ViewModels.Attribute; //overrides System.Attribute
 using POESKillTree.Compute;
+using POESKillTree.Model.Gems;
 
 namespace POESKillTree.Views
 {
@@ -1255,7 +1256,7 @@ namespace POESKillTree.Views
             AscendancyTotalPoints.Content = "[" + points["AscendancyTotal"].ToString() + "]";
         }
 
-        Computation Compute;
+        private Computation Compute;
         public void UpdateStatistics()
         {
             _defenceList.Clear();

@@ -6,14 +6,13 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using log4net;
-using POESKillTree.Model;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Utils;
 using POESKillTree.Compute;
 using POESKillTree.Utils.Extensions;
 
-namespace POESKillTree.SkillTreeFiles
+namespace POESKillTree.Model.Gems
 {
     // TODO: Attributes can have negative value (Cast when Damage Taken L20 has 6% more Damage), AttributesOf should handle transition between less/more.
     public class GemDB
@@ -48,7 +47,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (gem.Attributes != null)
                 {
                     Comparer<Value> comparer = new ValueLogicalComparer();
-                    foreach (Attribute attr in gem.Attributes)
+                    foreach (GemAttribute attr in gem.Attributes)
                         attr.Values.Sort(comparer);
                 }
 

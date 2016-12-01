@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using POESKillTree.Model;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Compute;
 
-namespace POESKillTree.SkillTreeFiles
+namespace POESKillTree.Model
 {
-
-
     public class Weapon
     {
         // Default attack speed of unarmed weapon.

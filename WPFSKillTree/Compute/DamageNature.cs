@@ -1,6 +1,5 @@
-﻿using POESKillTree.SkillTreeFiles;
+﻿using POESKillTree.Model;
 using System.Collections.Generic;
-using static POESKillTree.Compute.ComputeGlobal;
 
 namespace POESKillTree.Compute
 {

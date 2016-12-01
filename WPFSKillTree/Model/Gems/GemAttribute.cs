@@ -2,19 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
-using log4net;
-using POESKillTree.Model;
-using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Affixes;
-using POESKillTree.Utils;
-using POESKillTree.Compute;
 
-namespace POESKillTree.SkillTreeFiles
+namespace POESKillTree.Model.Gems
 {
-    public class Attribute
+    public class GemAttribute
     {
         // Deserialized comment to perserve.
         [XmlAttribute]

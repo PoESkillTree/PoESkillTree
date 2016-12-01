@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using log4net;
-using POESKillTree.SkillTreeFiles;
+using POESKillTree.Model.Gems;
 using POESKillTree.Utils;
 using UpdateDB.DataLoading.Gems;
 
@@ -21,7 +21,7 @@ namespace UpdateDB.DataLoading
         private static readonly ILog Log = LogManager.GetLogger(typeof(GemLoader));
 
         private readonly IGemReader _gemReader;
-        GemDB DB;
+        private readonly GemDB DB;
 
         public override bool SavePathIsFolder
         {

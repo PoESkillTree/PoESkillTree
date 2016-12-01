@@ -1,4 +1,5 @@
-﻿using POESKillTree.SkillTreeFiles;
+﻿using POESKillTree.Model.Gems;
+using POESKillTree.SkillTreeFiles;
 using System.Net.Http;
 using System.Threading.Tasks;
 

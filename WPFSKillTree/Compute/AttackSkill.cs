@@ -7,6 +7,7 @@ using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using static POESKillTree.Compute.ComputeGlobal;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.Model.Gems;
 
 namespace POESKillTree.Compute
 {

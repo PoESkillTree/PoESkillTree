@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using static POESKillTree.SkillTreeFiles.GemDB;
+using static POESKillTree.Model.Gems.GemDB;
 
-namespace POESKillTree.SkillTreeFiles
+namespace POESKillTree.Model.Gems
 {
     public class Gem
     {
@@ -18,7 +18,7 @@ namespace POESKillTree.SkillTreeFiles
         public string Name;
         // Deserialized attributes.
         [XmlElement("Attribute")]
-        public List<Attribute> Attributes;
+        public List<GemAttribute> Attributes;
 
         // Indexed level dependant attributes.
         [XmlIgnore]
@@ -120,7 +120,7 @@ namespace POESKillTree.SkillTreeFiles
 
             if (Attributes == null) return;
 
-            foreach (Attribute attr in Attributes)
+            foreach (GemAttribute attr in Attributes)
             {
                 LookupTable levelTable = new LookupTable();
                 LookupTable qualityTable = new LookupTable();
@@ -239,13 +239,13 @@ namespace POESKillTree.SkillTreeFiles
 
             if (gem.Attributes != null)
             {
-                if (Attributes == null) Attributes = new List<Attribute>();
+                if (Attributes == null) Attributes = new List<GemAttribute>();
 
-                foreach (Attribute attr in gem.Attributes)
+                foreach (GemAttribute attr in gem.Attributes)
                 {
                     attr.Optimize();
                     // Find existing attribute to merge with.
-                    Attribute with = Attributes.Find(a => a.Name == attr.Name);
+                    GemAttribute with = Attributes.Find(a => a.Name == attr.Name);
                     if (with == null)
                         Attributes.Add(attr);
                     else
@@ -265,7 +265,7 @@ namespace POESKillTree.SkillTreeFiles
 
                 // Sort gem attribute values logically.
                 Comparer<Value> comparer = new ValueLogicalComparer();
-                foreach (Attribute attr in Attributes)
+                foreach (GemAttribute attr in Attributes)
                     attr.Values.Sort(comparer);
             }
         }
@@ -273,7 +273,7 @@ namespace POESKillTree.SkillTreeFiles
         // Optimizes gem data.
         public void Optimize()
         {
-            foreach (Attribute attr in Attributes.OrEmptyIfNull())
+            foreach (GemAttribute attr in Attributes.OrEmptyIfNull())
                 attr.Optimize();
         }
     }

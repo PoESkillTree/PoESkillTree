@@ -11,9 +11,9 @@ using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Utils;
 using POESKillTree.Compute;
-using static POESKillTree.SkillTreeFiles.GemDB;
+using static POESKillTree.Model.Gems.GemDB;
 
-namespace POESKillTree.SkillTreeFiles
+namespace POESKillTree.Model.Gems
 {
     // Base class for all lookup methods.
     abstract internal class LookupBase

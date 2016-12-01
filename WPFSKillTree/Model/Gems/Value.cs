@@ -5,14 +5,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
-using log4net;
-using POESKillTree.Model;
-using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Affixes;
-using POESKillTree.Utils;
-using POESKillTree.Compute;
 
-namespace POESKillTree.SkillTreeFiles
+namespace POESKillTree.Model.Gems
 {
 
     // Base deserialized value.
