@@ -13,11 +13,10 @@ namespace UnitTests.Compute
         {
             var c = new Computation();
 
-            var attSet = new AttributeSet();
             c.Global.Add("+#% to Fire Resistance", 60f);
-            c.Resistances(attSet, Difficulty.Normal, false);
+            var result = c.Resistances(Difficulty.Normal, false);
 
-            CheckEquality(new[] { 60f, 60f }, attSet["Fire Resistance: #% (#%)"]);
+            CheckEquality(new[] { 60f, 60f }, result["Fire Resistance: #% (#%)"]);
         }
 
         [Test]
@@ -26,11 +25,10 @@ namespace UnitTests.Compute
             var c = new Computation();
             var type = "Fire";
 
-            var attSet = new AttributeSet();
             c.Global.Add($"+#% to {type} Resistance", 135f);
-            c.Resistances(attSet, Difficulty.Normal, false);
+            var result = c.Resistances(Difficulty.Normal, false);
 
-            CheckEquality(new[] { 75f, 135f }, attSet[$"{type} Resistance: #% (#%)"]);
+            CheckEquality(new[] { 75f, 135f }, result[$"{type} Resistance: #% (#%)"]);
         }
 
         [Test]
@@ -39,11 +37,10 @@ namespace UnitTests.Compute
             var c = new Computation();
             var type = "Fire";
 
-            var attSet = new AttributeSet();
             c.Global.Add($"+#% to {type} Resistance", 60);
-            c.Resistances(attSet, Difficulty.Cruel, false);
+            var result = c.Resistances(Difficulty.Cruel, false);
 
-            CheckEquality(new[] { 40f, 40f }, attSet[$"{type} Resistance: #% (#%)"]);
+            CheckEquality(new[] { 40f, 40f }, result[$"{type} Resistance: #% (#%)"]);
         }
 
         [Test]
@@ -52,11 +49,10 @@ namespace UnitTests.Compute
             var c = new Computation();
             var type = "Fire";
 
-            var attSet = new AttributeSet();
             c.Global.Add($"+#% to {type} Resistance", 60);
-            c.Resistances(attSet, Difficulty.Merciless, false);
+            var result = c.Resistances(Difficulty.Merciless, false);
 
-            CheckEquality(new[] { 0f, 0f }, attSet[$"{type} Resistance: #% (#%)"]);
+            CheckEquality(new[] { 0f, 0f }, result[$"{type} Resistance: #% (#%)"]);
         }
 
         [Test]
@@ -65,10 +61,9 @@ namespace UnitTests.Compute
             var c = new Computation();
             var type = "Fire";
 
-            var attSet = new AttributeSet();
-            c.Resistances(attSet, Difficulty.Merciless, false);
+            var result = c.Resistances(Difficulty.Merciless, false);
 
-            CheckEquality(new[] { -60f, -60f }, attSet[$"{type} Resistance: #% (#%)"]);
+            CheckEquality(new[] { -60f, -60f }, result[$"{type} Resistance: #% (#%)"]);
         }
 
         [Test]
@@ -77,12 +72,11 @@ namespace UnitTests.Compute
             var c = new Computation();
             var type = "Fire";
 
-            var attSet = new AttributeSet();
             c.Global.Add($"+#% to {type} Resistance", 135f);
             c.Global.Add($"+#% to maximum {type} Resistance", 10f);
-            c.Resistances(attSet, Difficulty.Normal, false);
+            var result = c.Resistances(Difficulty.Normal, false);
 
-            CheckEquality(new[] { 85f, 135f }, attSet[$"{type} Resistance: #% (#%)"]);
+            CheckEquality(new[] { 85f, 135f }, result[$"{type} Resistance: #% (#%)"]);
         }
 
         [Test]
@@ -91,11 +85,10 @@ namespace UnitTests.Compute
             var c = new Computation();
             var type = "Chaos";
 
-            var attSet = new AttributeSet();
             c.Global.Add($"+#% to All Resistances", 135f);
-            c.Resistances(attSet, Difficulty.Normal, false);
+            var result = c.Resistances(Difficulty.Normal, false);
 
-            CheckEquality(new[] { 0f, 0f }, attSet[$"{type} Resistance: #% (#%)"]);
+            CheckEquality(new[] { 0f, 0f }, result[$"{type} Resistance: #% (#%)"]);
         }
 
         [Test]
@@ -105,10 +98,9 @@ namespace UnitTests.Compute
             c.ChaosInoculation = true;
             var type = "Chaos";
 
-            var attSet = new AttributeSet();
-            c.Resistances(attSet, Difficulty.Normal, false);
+            var result = c.Resistances(Difficulty.Normal, false);
 
-            CheckEquality(new[] { 100f, 100f }, attSet[$"{type} Resistance: #% (#%)"]);
+            CheckEquality(new[] { 100f, 100f }, result[$"{type} Resistance: #% (#%)"]);
         }
 
         [Test]
@@ -117,40 +109,38 @@ namespace UnitTests.Compute
             var c = new Computation();
             var type = "Fire";
 
-            var attSet = new AttributeSet();
             c.Global.Add($"+#% to {type} and Lightning Resistances", 10f);
             c.Global.Add($"+#% to Lightning and {type} Resistances", 10f);
-            c.Resistances(attSet, Difficulty.Normal, false);
+            var result = c.Resistances(Difficulty.Normal, false);
 
-            CheckEquality(new[] { 20f, 20f }, attSet[$"{type} Resistance: #% (#%)"]);
+            CheckEquality(new[] { 20f, 20f }, result[$"{type} Resistance: #% (#%)"]);
         }
 
         [Test]
         public void GetResistance_Shield_Test()
         {
             var c = new Computation();
-            var attSet = new AttributeSet();
             c.Global.Add($"+#% Elemental Resistances while holding a Shield", 1f);
-            c.Resistances(attSet, Difficulty.Normal, true);
+            var result = c.Resistances(Difficulty.Normal, true);
 
-            CheckEquality(new[] { 1f, 1f }, attSet["Fire Resistance: #% (#%)"]);
-            CheckEquality(new[] { 1f, 1f }, attSet["Cold Resistance: #% (#%)"]);
-            CheckEquality(new[] { 1f, 1f }, attSet["Lightning Resistance: #% (#%)"]);
-            CheckEquality(new[] { 0f, 0f }, attSet["Chaos Resistance: #% (#%)"]);
+            CheckEquality(new[] { 1f, 1f }, result["Fire Resistance: #% (#%)"]);
+            CheckEquality(new[] { 1f, 1f }, result["Cold Resistance: #% (#%)"]);
+            CheckEquality(new[] { 1f, 1f }, result["Lightning Resistance: #% (#%)"]);
+            CheckEquality(new[] { 0f, 0f }, result["Chaos Resistance: #% (#%)"]);
         }
 
         [Test]
         public void GetResistance_Shield_False_Test()
         {
             var c = new Computation();
-            var attSet = new AttributeSet();
-            c.Global.Add($"+#% Elemental Resistances while holding a Shield", 1f);
-            c.Resistances(attSet, Difficulty.Normal, false);
 
-            CheckEquality(new[] { 0f, 0f }, attSet["Fire Resistance: #% (#%)"]);
-            CheckEquality(new[] { 0f, 0f }, attSet["Cold Resistance: #% (#%)"]);
-            CheckEquality(new[] { 0f, 0f }, attSet["Lightning Resistance: #% (#%)"]);
-            CheckEquality(new[] { 0f, 0f }, attSet["Chaos Resistance: #% (#%)"]);
+            c.Global.Add($"+#% Elemental Resistances while holding a Shield", 1f);
+            var result = c.Resistances(Difficulty.Normal, false);
+
+            CheckEquality(new[] { 0f, 0f }, result["Fire Resistance: #% (#%)"]);
+            CheckEquality(new[] { 0f, 0f }, result["Cold Resistance: #% (#%)"]);
+            CheckEquality(new[] { 0f, 0f }, result["Lightning Resistance: #% (#%)"]);
+            CheckEquality(new[] { 0f, 0f }, result["Chaos Resistance: #% (#%)"]);
         }
 
         [Test]
@@ -158,7 +148,6 @@ namespace UnitTests.Compute
         {
             var c = new Computation();
 
-            var attSet = new AttributeSet();
             c.Global.Add($"+#% to Fire Resistance", 1f);
             c.Global.Add($"+#% to Cold Resistance", 2f);
             c.Global.Add($"+#% to Lightning Resistance", 40f);
@@ -170,12 +159,12 @@ namespace UnitTests.Compute
             c.Global.Add($"+#% to maximum Lightning Resistance", 1f);
             c.Global.Add($"+#% Elemental Resistances while holding a Shield", 1f);
 
-            c.Resistances(attSet, Difficulty.Normal, true);
+            var result = c.Resistances(Difficulty.Normal, true);
 
-            CheckEquality(new[] { 42f, 42f }, attSet[$"Fire Resistance: #% (#%)"]);
-            CheckEquality(new[] { 43f, 43f }, attSet[$"Cold Resistance: #% (#%)"]);
-            CheckEquality(new[] { 76f, 81f }, attSet[$"Lightning Resistance: #% (#%)"]);
-            CheckEquality(new[] { 20f, 20f }, attSet[$"Chaos Resistance: #% (#%)"]);
+            CheckEquality(new[] { 42f, 42f }, result[$"Fire Resistance: #% (#%)"]);
+            CheckEquality(new[] { 43f, 43f }, result[$"Cold Resistance: #% (#%)"]);
+            CheckEquality(new[] { 76f, 81f }, result[$"Lightning Resistance: #% (#%)"]);
+            CheckEquality(new[] { 20f, 20f }, result[$"Chaos Resistance: #% (#%)"]);
         }
     }
 }

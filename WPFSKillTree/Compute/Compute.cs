@@ -180,13 +180,13 @@ namespace POESKillTree.Compute
 
             // Energy Shield Recharge per Second.
             // @see http://pathofexile.gamepedia.com/Energy_shield
-            EnergyShieldRegen(def, es);
+            def.Merge(EnergyShieldRegen(es));
 
             // Life Regeneration.
-            LifeRegen(def, life, es);
+            def.Merge(LifeRegen(life, es));
 
             // Mana Regeneration.
-            ManaRegen(def, mana);
+            def.Merge(ManaRegen(mana));
 
             // Character attributes.
             ch["Strength: #"] = Global["+# to Strength"];
@@ -196,10 +196,10 @@ namespace POESKillTree.Compute
             // Shield, Staff and Dual Wielding detection.
             bool hasShield = OffHand.IsShield();
 
-            Resistances(def, Difficulty.Normal, hasShield);
+            def.Merge(Resistances(Difficulty.Normal, hasShield));
             def.Merge(Block(hasShield));
 
-            HitAvoidance(def);
+            def.Merge(HitAvoidance());
 
             List<ListGroup> groups = new List<ListGroup>();
             groups.Add(new ListGroup(L10n.Message("Character"), ch));
@@ -397,8 +397,9 @@ namespace POESKillTree.Compute
                 def["Chance to Dodge Spells: #%"] = new List<float>() { chanceToDodgeSpells };
         }
 
-        private void EnergyShieldRegen(AttributeSet def, float es)
+        private AttributeSet EnergyShieldRegen(float es)
         {
+            var def = new AttributeSet();
             if (es > 0)
             {
                 def["Maximum Energy Shield: #"] = new List<float>() { RoundValue(es, 0) };
@@ -410,19 +411,19 @@ namespace POESKillTree.Compute
 
                 float esDelay = 2; // By default, the delay period for energy shield to begin to recharge is 2 seconds.
                 float esOccurrence = 0;
-                if (Global.ContainsKey("#% faster start of Energy Shield Recharge"))
-                    esOccurrence += Global["#% faster start of Energy Shield Recharge"][0];
-                if (Global.ContainsKey("#% slower start of Energy Shield Recharge"))
-                    esOccurrence -= Global["#% slower start of Energy Shield Recharge"][0];
+                esOccurrence += GetFromGlobal("#% faster start of Energy Shield Recharge");
+                esOccurrence -= GetFromGlobal("#% slower start of Energy Shield Recharge");
                 esDelay = esDelay * 100 / (100 + esOccurrence); // 200 / (100 + r)
                 if (esOccurrence != 0)
                     def["Energy Shield Recharge Occurrence modifier: " + (esOccurrence > 0 ? "+" : "") + "#%"] = new List<float>() { esOccurrence };
                 def["Energy Shield Recharge Delay: #s"] = new List<float>() { RoundValue(esDelay, 1) };
             }
+            return def;
         }
 
-        private void LifeRegen(AttributeSet def, float life, float es)
+        private AttributeSet LifeRegen(float life, float es)
         {
+            var def = new AttributeSet();
             float lifeRegen = 0;
             float lifeRegenFlat = 0;
             if (Global.ContainsKey("#% of Life Regenerated per second"))
@@ -443,10 +444,12 @@ namespace POESKillTree.Compute
                 if (!ChaosInoculation && lifeRegen + lifeRegenFlat > 0)
                     def["Life Regeneration per Second: #"] = new List<float>() { RoundValue(PercentOfValue(RoundValue(life, 0), lifeRegen), 1) + lifeRegenFlat };
             }
+            return def;
         }
 
-        private void ManaRegen(AttributeSet def, float mana)
+        private AttributeSet ManaRegen(float mana)
         {
+            var def = new AttributeSet();
             if (mana > 0)
             {
                 float manaRegen = PercentOfValue(RoundValue(mana, 0), 1.75f);
@@ -457,14 +460,17 @@ namespace POESKillTree.Compute
                 manaRegen = IncreaseValueByPercentage(manaRegen, incManaRegen);
                 def["Mana Regeneration per Second: #"] = new List<float>() { RoundValue(manaRegen, 1) };
             }
+            return def;
         }
 
-        public void Resistances(AttributeSet def, Difficulty diff, bool hasShield)
+        public AttributeSet Resistances(Difficulty diff, bool hasShield)
         {
+            var def = new AttributeSet();
             def["Fire Resistance: #% (#%)"] = GetResistance("Fire", diff, hasShield);
             def["Cold Resistance: #% (#%)"] = GetResistance("Cold", diff, hasShield);
             def["Lightning Resistance: #% (#%)"] = GetResistance("Lightning", diff, hasShield);
             def["Chaos Resistance: #% (#%)"] = GetResistance("Chaos", diff, hasShield);
+            return def;
         }
 
         public List<float> GetResistance(string type, Difficulty diff, bool hasShield)
@@ -568,8 +574,9 @@ namespace POESKillTree.Compute
             return block;
         }
 
-        public void HitAvoidance(AttributeSet def)
+        public AttributeSet HitAvoidance()
         {
+            var def = new AttributeSet();
             // Elemental stataus ailments.
             float allAvoid = GetFromGlobal("#% chance to Avoid Elemental Status Ailments");
             float igniteAvoidance = GetFromGlobal("#% chance to Avoid being Ignited") + allAvoid;
@@ -593,7 +600,8 @@ namespace POESKillTree.Compute
             if (freezeAvoidance > 0)
                 def["Freeze Avoidance: #%"] = new List<float>() { freezeAvoidance };
             if (shockAvoidance > 0)
-                def["Shock Avoidance: #%"] = new List<float>() { shockAvoidance };
+            def["Shock Avoidance: #%"] = new List<float>() { shockAvoidance };
+            return def;
         }
 
         // Initializes structures.

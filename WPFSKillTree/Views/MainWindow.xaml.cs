@@ -443,7 +443,7 @@ namespace POESKillTree.Views
                     .Select(x => GemDB.LoadFromText(File.ReadAllText(x)))
                     .ForEach(db.Merge);
                 // Merge the user specified things.
-                db.Merge(GemDB.LoadFromText(File.ReadAllText("POESKillTree.Data.ItemDB.ItemsLocal.xml")));
+                //db.Merge(GemDB.LoadFromText(FileEx.GetResource<GemDB>("POESKillTree.Data.ItemDB.ItemsLocal.xml")));
                 db.Index();
             });
             // We can use this now as setting the context for this to the SkillTree instance happens later

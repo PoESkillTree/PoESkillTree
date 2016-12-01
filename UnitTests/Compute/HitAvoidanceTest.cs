@@ -19,11 +19,10 @@ namespace UnitTests.Compute
         {
             var c = new Computation();
 
-            var attSet = new AttributeSet();
             c.Global.Add(attribute, 10f);
-            c.HitAvoidance(attSet);
+            var result = c.HitAvoidance();
 
-            CheckEquality(new[] { 10f }, attSet[resultAtt]);
+            CheckEquality(new[] { 10f }, result[resultAtt]);
         }
 
         public void TestWithAllAvoid(string toTest, string resultAtt)
@@ -33,18 +32,17 @@ namespace UnitTests.Compute
             var attSet = new AttributeSet();
             c.Global.Add(toTest, 10f);
             c.Global.Add("#% chance to Avoid Elemental Status Ailments", 10f);
-            c.HitAvoidance(attSet);
+            var result = c.HitAvoidance();
 
-            CheckEquality(new[] { 20f }, attSet[resultAtt]);
+            CheckEquality(new[] { 20f }, result[resultAtt]);
         }
 
         public void TestWithZero(string toTest, string resultAtt)
         {
             var c = new Computation();
 
-            var attSet = new AttributeSet();
             c.Global.Add(toTest, 0f);
-            c.HitAvoidance(attSet);
+            var result = c.HitAvoidance();
 
             Assert.False(c.Global.ContainsKey(resultAtt));
         }
