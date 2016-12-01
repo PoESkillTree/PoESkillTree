@@ -90,6 +90,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Compute\ArmorAndEvasion.cs" />
     <Compile Include="Compute\AttributeHelpers.cs" />
     <Compile Include="Compute\BlockTest.cs" />
     <Compile Include="Compute\DamageNatureTest.cs" />

@@ -101,6 +101,9 @@ namespace POESKillTree.Compute
         // @see http://pathofexile.gamepedia.com/Armour
         public static float PhysicalDamageReduction(int level, float armour)
         {
+            if (level == 0)
+                return 0; // throw exception?
+
             float mad = MonsterAverageDamage(Math.Min(level, 80) - 1);
             float reduction = RoundValue(armour / (armour + 10 * mad) * 100, 1);
             if (reduction > 90f) reduction = 90f;

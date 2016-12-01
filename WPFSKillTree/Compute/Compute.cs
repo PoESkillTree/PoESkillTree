@@ -66,7 +66,11 @@ namespace POESKillTree.Compute
         // @see http://pathofexile.gamepedia.com/Evasion
         public float ChanceToEvade(int level, float evasionRating)
         {
-            if (Global.ContainsKey("Cannot Evade enemy Attacks")) return 0; // The modifier can be from other source than Unwavering Stance.
+            if (level == 0)
+                return 0; //throw exception?
+
+            if (Global.ContainsKey("Cannot Evade enemy Attacks"))
+                return 0; // The modifier can be from other source than Unwavering Stance.
 
             int maa = MonsterAverageAccuracy[level];
 
@@ -209,23 +213,23 @@ namespace POESKillTree.Compute
 
         public EnergyShieldStats EnergyShield(float lessArmourAndES)
         {
-            float mana = GetFromGlobal("+# to maximum Mana");
+            float mana = Global.GetOrDefault("+# to maximum Mana");
             float incMana = 0;
-            incMana = GetFromGlobal("#% increased maximum Mana");
+            incMana = Global.GetOrDefault("#% increased maximum Mana");
 
-            float es = GetFromGlobal("+# to maximum Energy Shield");
+            float es = Global.GetOrDefault("+# to maximum Energy Shield");
             // Add maximum shield from items.
-            es += GetFromGlobal("Energy Shield: #");
+            es += Global.GetOrDefault("Energy Shield: #");
 
-            float incES = GetFromGlobal("#% increased maximum Energy Shield");
+            float incES = Global.GetOrDefault("#% increased maximum Energy Shield");
 
             // More % maximum shield from tree and items.
-            float moreES = GetFromGlobal("#% more maximum Energy Shield");
+            float moreES = Global.GetOrDefault("#% more maximum Energy Shield");
 
             // Equipped Shield bonuses.
-            float incArmourShield = GetFromGlobal("#% increased Armour from equipped Shield");
-            float incESShield = GetFromGlobal("#% increased Energy Shield from equipped Shield");
-            float incDefencesShield = GetFromGlobal("#% increased Defences from equipped Shield");
+            float incArmourShield = Global.GetOrDefault("#% increased Armour from equipped Shield");
+            float incESShield = Global.GetOrDefault("#% increased Energy Shield from equipped Shield");
+            float incDefencesShield = Global.GetOrDefault("#% increased Defences from equipped Shield");
             float shieldArmour = 0;
             float shieldEvasion = 0;
             float shieldES = 0;
@@ -287,32 +291,23 @@ namespace POESKillTree.Compute
             public float IncreasedMana { get; set; }
         }
 
-        private AttributeSet ArmorAndEvasion(float lessArmourAndES, float shieldArmour, float shieldEvasion)
+        public AttributeSet ArmorAndEvasion(float lessArmourAndES, float shieldArmour, float shieldEvasion)
         {
             var def = new AttributeSet();
             // Evasion Rating from level, tree and items.
-            float evasion = Global["Evasion Rating: #"][0];
-            if (Global.ContainsKey("+# to Evasion Rating"))
-                evasion += Global["+# to Evasion Rating"][0];
+            float evasion = Global.GetOrDefault("Evasion Rating: #");
+            evasion += Global.GetOrDefault("+# to Evasion Rating");
             // Increase % from dexterity, tree and items.
-            float incEvasion = Global["#% increased Evasion Rating"][0];
-            float incEvasionAndArmour = 0;
-            if (Global.ContainsKey("#% increased Evasion Rating and Armour"))
-                incEvasionAndArmour += Global["#% increased Evasion Rating and Armour"][0];
+            float incEvasion = Global.GetOrDefault("#% increased Evasion Rating");
+            float incEvasionAndArmour = Global.GetOrDefault("#% increased Evasion Rating and Armour");
 
-            float armour = 0;
+            float armour = Global.GetOrDefault("Armour: #") + Global.GetOrDefault("+# to Armour");
             float armourProjectile = 0;
             // Armour from items.
-            if (Global.ContainsKey("Armour: #"))
-                armour += Global["Armour: #"][0];
-            if (Global.ContainsKey("+# to Armour"))
-                armour += Global["+# to Armour"][0];
             float incArmour = 0;
             float incArmourProjectile = 0;
-            if (Global.ContainsKey("#% increased Armour"))
-                incArmour += Global["#% increased Armour"][0];
-            if (Global.ContainsKey("#% increased Armour against Projectiles"))
-                incArmourProjectile += Global["#% increased Armour against Projectiles"][0];
+            incArmour += Global.GetOrDefault("#% increased Armour");
+            incArmourProjectile += Global.GetOrDefault("#% increased Armour against Projectiles");
             // Enable armour against projectile calculations once there is some Armour against Projectiles modifier.
             if (incArmourProjectile != 0)
                 armourProjectile = armour;
@@ -323,7 +318,7 @@ namespace POESKillTree.Compute
             if (IronReflexes)
             {
                 // Substract "#% increased Evasion Rating" from Dexterity (it's not being applied).
-                incEvasion -= Implicit["#% increased Evasion Rating"][0];
+                incEvasion -= Implicit.GetOrDefault("#% increased Evasion Rating");
                 armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
                 armour += shieldArmour + shieldEvasion;
                 if (armourProjectile > 0)
@@ -359,20 +354,18 @@ namespace POESKillTree.Compute
             }
             if (evasion > 0)
                 def["Evasion Rating: #"] = new List<float>() { RoundValue(evasion, 0) };
+
             float chanceToEvade = ChanceToEvade(Level, RoundValue(evasion, 0));
             if (chanceToEvade > 0)
             {
                 // Arrow Dancing keystone.
                 float chanceToEvadeMelee = chanceToEvade, chanceToEvadeProjectile = chanceToEvade;
 
-                if (Global.ContainsKey("#% less chance to Evade Melee Attacks"))
-                    chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, -Global["#% less chance to Evade Melee Attacks"][0]);
-                if (Global.ContainsKey("#% more chance to Evade Melee Attacks"))
-                    chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, Global["#% more chance to Evade Melee Attacks"][0]);
-                if (Global.ContainsKey("#% less chance to Evade Projectile Attacks"))
-                    chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, -Global["#% less chance to Evade Projectile Attacks"][0]);
-                if (Global.ContainsKey("#% more chance to Evade Projectile Attacks"))
-                    chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, Global["#% more chance to Evade Projectile Attacks"][0]);
+                chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, -Global.GetOrDefault("#% less chance to Evade Melee Attacks"));
+                chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, Global.GetOrDefault("#% more chance to Evade Melee Attacks"));
+                chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, -Global.GetOrDefault("#% less chance to Evade Projectile Attacks"));
+                chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, Global.GetOrDefault("#% more chance to Evade Projectile Attacks"));
+
                 // Chance cannot be less than 5% and more than 95%.
                 if (chanceToEvadeMelee < 5f) chanceToEvadeMelee = 5f;
                 else if (chanceToEvadeMelee > 95f) chanceToEvadeMelee = 95f;
@@ -422,8 +415,8 @@ namespace POESKillTree.Compute
 
                 float esDelay = 2; // By default, the delay period for energy shield to begin to recharge is 2 seconds.
                 float esOccurrence = 0;
-                esOccurrence += GetFromGlobal("#% faster start of Energy Shield Recharge");
-                esOccurrence -= GetFromGlobal("#% slower start of Energy Shield Recharge");
+                esOccurrence += Global.GetOrDefault("#% faster start of Energy Shield Recharge");
+                esOccurrence -= Global.GetOrDefault("#% slower start of Energy Shield Recharge");
                 esDelay = esDelay * 100 / (100 + esOccurrence); // 200 / (100 + r)
                 if (esOccurrence != 0)
                     def["Energy Shield Recharge Occurrence modifier: " + (esOccurrence > 0 ? "+" : "") + "#%"] = new List<float>() { esOccurrence };
@@ -529,7 +522,7 @@ namespace POESKillTree.Compute
 
         public float GetMaxBlock()
         {
-            return 75 + GetFromGlobal("+#% to maximum Block Chance");
+            return 75 + Global.GetOrDefault("+#% to maximum Block Chance");
         }
 
         public AttributeSet Block(bool hasShield)
@@ -555,20 +548,20 @@ namespace POESKillTree.Compute
 
             if (hasShield)
             {
-                chanceBlockAttacks += GetFromGlobal("#% additional Chance to Block with Shields");
-                chanceBlockSpells += GetFromGlobal("#% additional Chance to Block Spells with Shields");
+                chanceBlockAttacks += Global.GetOrDefault("#% additional Chance to Block with Shields");
+                chanceBlockSpells += Global.GetOrDefault("#% additional Chance to Block Spells with Shields");
             }
             if (IsWieldingStaff)
-                chanceBlockAttacks += GetFromGlobal("#% additional Block Chance With Staves");
+                chanceBlockAttacks += Global.GetOrDefault("#% additional Block Chance With Staves");
             if (IsDualWielding)
-                chanceBlockAttacks += GetFromGlobal("#% additional Block Chance while Dual Wielding");
+                chanceBlockAttacks += Global.GetOrDefault("#% additional Block Chance while Dual Wielding");
             if (IsDualWielding || hasShield)
-                chanceBlockAttacks += GetFromGlobal("#% additional Block Chance while Dual Wielding or holding a Shield");
+                chanceBlockAttacks += Global.GetOrDefault("#% additional Block Chance while Dual Wielding or holding a Shield");
 
-            chanceBlockSpells += PercentOfValue(chanceBlockAttacks, GetFromGlobal("#% of Block Chance applied to Spells"));
+            chanceBlockSpells += PercentOfValue(chanceBlockAttacks, Global.GetOrDefault("#% of Block Chance applied to Spells"));
 
             if (hasShield)
-                chanceBlockProjectiles = chanceBlockAttacks + GetFromGlobal("+#% additional Block Chance against Projectiles");
+                chanceBlockProjectiles = chanceBlockAttacks + Global.GetOrDefault("+#% additional Block Chance against Projectiles");
             if (Acrobatics)
             {
                 float lessChanceBlock = Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][2];
@@ -589,11 +582,11 @@ namespace POESKillTree.Compute
         {
             var def = new AttributeSet();
             // Elemental stataus ailments.
-            float allAvoid = GetFromGlobal("#% chance to Avoid Elemental Status Ailments");
-            float igniteAvoidance = GetFromGlobal("#% chance to Avoid being Ignited") + allAvoid;
-            float chillAvoidance = GetFromGlobal("#% chance to Avoid being Chilled") + allAvoid;
-            float freezeAvoidance = GetFromGlobal("#% chance to Avoid being Frozen") + allAvoid;
-            float shockAvoidance = GetFromGlobal("#% chance to Avoid being Shocked") + allAvoid;
+            float allAvoid = Global.GetOrDefault("#% chance to Avoid Elemental Status Ailments");
+            float igniteAvoidance = Global.GetOrDefault("#% chance to Avoid being Ignited") + allAvoid;
+            float chillAvoidance = Global.GetOrDefault("#% chance to Avoid being Chilled") + allAvoid;
+            float freezeAvoidance = Global.GetOrDefault("#% chance to Avoid being Frozen") + allAvoid;
+            float shockAvoidance = Global.GetOrDefault("#% chance to Avoid being Shocked") + allAvoid;
 
             if (Global.ContainsKey("Cannot be Ignited"))
                 igniteAvoidance = 100;
@@ -693,13 +686,6 @@ namespace POESKillTree.Compute
                 Global["#% more Attack Speed"] = new List<float>() { 10 };
                 Global["#% more Physical Damage with Weapons"] = new List<float>() { 20 };
             }
-        }
-
-        private float GetFromGlobal(string key, float def = 0f)
-        {
-            if (Global.ContainsKey(key))
-                return Global[key][0];
-            return def;
         }
 
         // Computes offensive attacks.
