@@ -24,5 +24,10 @@ namespace UnitTests.Compute
         {
             Assert.AreEqual(expected, actual);
         }
+
+        public static void EqualWithinMargin(float expected, float actual, float margin = 0.01f)
+        {
+            Assert.IsTrue(expected - actual < margin);
+        }
     }
 }

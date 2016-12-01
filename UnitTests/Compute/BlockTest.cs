@@ -15,7 +15,6 @@ namespace UnitTests.Compute
         {
             var c = new Computation();
 
-            var attSet = new AttributeSet();
             Assert.AreEqual(75, c.GetMaxBlock());
         }
 
@@ -24,7 +23,6 @@ namespace UnitTests.Compute
         {
             var c = new Computation();
 
-            var attSet = new AttributeSet();
             c.Global.Add("+#% to maximum Block Chance", 10f);
             Assert.AreEqual(85, c.GetMaxBlock());
         }

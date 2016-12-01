@@ -93,6 +93,7 @@
     <Compile Include="Compute\AttributeHelpers.cs" />
     <Compile Include="Compute\BlockTest.cs" />
     <Compile Include="Compute\DamageNatureTest.cs" />
+    <Compile Include="Compute\EnergyShield.cs" />
     <Compile Include="Compute\HitAvoidanceTest.cs" />
     <Compile Include="Compute\ResistanceCalcTest.cs" />
     <Compile Include="Model\AttributeSetTest.cs" />

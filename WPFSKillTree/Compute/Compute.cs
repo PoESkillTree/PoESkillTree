@@ -37,6 +37,7 @@ namespace POESKillTree.Compute
         public bool IsWieldingShield => (MainHand?.Is(WeaponType.Shield) ?? false) || (OffHand?.Is(WeaponType.Shield) ?? false);
         // The flag whether character is wielding a staff.
         public bool IsWieldingStaff => MainHand?.Is(WeaponType.Staff) ?? false;
+        public bool EldritchBattery => Global.ContainsKey("Converts all Energy Shield to Mana");
         // Character level.
         public int Level;
         // Equipment attributes.
@@ -47,6 +48,7 @@ namespace POESKillTree.Compute
         public AttributeSet Implicit = new AttributeSet();
         // Skill tree attributes (includes base attributes).
         public AttributeSet Tree = new AttributeSet();
+
 
         // Skill tree keystones.
         public bool Acrobatics;
@@ -148,7 +150,6 @@ namespace POESKillTree.Compute
             ch["Strength: #"] = Global["+# to Strength"];
             ch["Dexterity: #"] = Global["+# to Dexterity"];
             ch["Intelligence: #"] = Global["+# to Intelligence"];
-            // Difficulty.
 
             float life;
             if (ChaosInoculation)
@@ -161,27 +162,26 @@ namespace POESKillTree.Compute
             }
             ch["Life: #"] = new List<float>() { RoundValue(life, 0) };
 
-            float mana = Global["+# to maximum Mana"][0];
-            float incMana = 0;
-            if (Global.ContainsKey("#% increased maximum Mana"))
-                incMana = Global["#% increased maximum Mana"][0];
-
-            float es = 0;
             float lessArmourAndES = 0;
             if (Acrobatics)
                 lessArmourAndES += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][1];
-            float shieldArmour, shieldEvasion;
-            EnergyShield(ref mana, incMana, ref es, lessArmourAndES, out shieldArmour, out shieldEvasion);
+
+            var stats = EnergyShield(lessArmourAndES);
+            float es = stats.EnergyShield;
+            float shieldArmour = stats.ShieldArmor;
+            float shieldEvasion = stats.ShieldEvasion;
+            float mana = stats.Mana;
+            float incMana = stats.IncreasedMana;
 
             if (BloodMagic)
                 mana = 0;
 
             ch["Mana: #"] = new List<float>() { RoundValue(mana, 0) };
             ch["Maximum Energy Shield: #"] = new List<float>() { RoundValue(es, 0) };
-            ArmorAndEvasion(def, lessArmourAndES, shieldArmour, shieldEvasion);
+            def = def.Merge(ArmorAndEvasion(lessArmourAndES, shieldArmour, shieldEvasion));
 
             // Dodge Attacks and Spells.
-            Dodge(def);
+            def = def.Merge(Dodge());
 
             // Energy Shield Recharge per Second.
             // @see http://pathofexile.gamepedia.com/Energy_shield
@@ -207,36 +207,27 @@ namespace POESKillTree.Compute
             return groups;
         }
 
-        private void EnergyShield(ref float mana, float incMana, ref float es, float lessArmourAndES, out float shieldArmour, out float shieldEvasion)
+        public EnergyShieldStats EnergyShield(float lessArmourAndES)
         {
-            float incES = 0;
-            // Add maximum shield from tree.
-            if (Global.ContainsKey("+# to maximum Energy Shield"))
-                es += Global["+# to maximum Energy Shield"][0];
-            // Add maximum shield from items.
-            if (Global.ContainsKey("Energy Shield: #"))
-                es += Global["Energy Shield: #"][0];
-            // Increase % maximum shield from tree, items and intelligence.
-            if (Global.ContainsKey("#% increased maximum Energy Shield"))
-                incES += Global["#% increased maximum Energy Shield"][0];
+            float mana = GetFromGlobal("+# to maximum Mana");
+            float incMana = 0;
+            incMana = GetFromGlobal("#% increased maximum Mana");
 
-            float moreES = 0;
+            float es = GetFromGlobal("+# to maximum Energy Shield");
+            // Add maximum shield from items.
+            es += GetFromGlobal("Energy Shield: #");
+
+            float incES = GetFromGlobal("#% increased maximum Energy Shield");
+
             // More % maximum shield from tree and items.
-            if (Global.ContainsKey("#% more maximum Energy Shield"))
-                moreES += Global["#% more maximum Energy Shield"][0];
+            float moreES = GetFromGlobal("#% more maximum Energy Shield");
 
             // Equipped Shield bonuses.
-            float incArmourShield = 0;
-            float incESShield = 0;
-            float incDefencesShield = 0;
-            if (Global.ContainsKey("#% increased Armour from equipped Shield"))
-                incArmourShield += Global["#% increased Armour from equipped Shield"][0];
-            if (Global.ContainsKey("#% increased Energy Shield from equipped Shield"))
-                incESShield += Global["#% increased Energy Shield from equipped Shield"][0];
-            if (Global.ContainsKey("#% increased Defences from equipped Shield"))
-                incDefencesShield += Global["#% increased Defences from equipped Shield"][0];
-            shieldArmour = 0;
-            shieldEvasion = 0;
+            float incArmourShield = GetFromGlobal("#% increased Armour from equipped Shield");
+            float incESShield = GetFromGlobal("#% increased Energy Shield from equipped Shield");
+            float incDefencesShield = GetFromGlobal("#% increased Defences from equipped Shield");
+            float shieldArmour = 0;
+            float shieldEvasion = 0;
             float shieldES = 0;
             if (incDefencesShield > 0 || incArmourShield > 0 || incESShield > 0)
             {
@@ -255,7 +246,7 @@ namespace POESKillTree.Compute
 
             // ( Mana * %mana increases ) + ( ES * ( %ES increases + %mana increases ) * ( %ES more ) )
             // ES to Mana conversion mod (old Eldritch Battery).
-            if (Global.ContainsKey("Converts all Energy Shield to Mana"))
+            if (EldritchBattery)
             {
                 es = IncreaseValueByPercentage(es, incES + incMana);
                 es += shieldES;
@@ -277,10 +268,28 @@ namespace POESKillTree.Compute
                 if (lessArmourAndES > 0)
                     es = IncreaseValueByPercentage(es, -lessArmourAndES);
             }
+
+            return new EnergyShieldStats
+            {
+                EnergyShield = es,
+                ShieldArmor = shieldArmour,
+                ShieldEvasion = shieldEvasion,
+                Mana = mana,
+                IncreasedMana = incMana
+            };
+        }
+        public struct EnergyShieldStats
+        {
+            public float EnergyShield { get; set; }
+            public float ShieldArmor { get; set; }
+            public float ShieldEvasion { get; set; }
+            public float Mana { get; set; }
+            public float IncreasedMana { get; set; }
         }
 
-        private void ArmorAndEvasion(AttributeSet def, float lessArmourAndES, float shieldArmour, float shieldEvasion)
+        private AttributeSet ArmorAndEvasion(float lessArmourAndES, float shieldArmour, float shieldEvasion)
         {
+            var def = new AttributeSet();
             // Evasion Rating from level, tree and items.
             float evasion = Global["Evasion Rating: #"][0];
             if (Global.ContainsKey("+# to Evasion Rating"))
@@ -378,10 +387,12 @@ namespace POESKillTree.Compute
                     def["Estimated chance to Evade Projectile Attacks: #%"] = new List<float>() { RoundValue(chanceToEvadeProjectile, 0) };
                 }
             }
+            return def;
         }
 
-        private void Dodge(AttributeSet def)
+        private AttributeSet Dodge()
         {
+            var def = new AttributeSet();
             float chanceToDodgeAttacks = 0;
             float chanceToDodgeSpells = 0;
             if (Acrobatics)
@@ -394,6 +405,7 @@ namespace POESKillTree.Compute
                 def["Chance to Dodge Attacks: #%"] = new List<float>() { chanceToDodgeAttacks };
             if (chanceToDodgeSpells > 0)
                 def["Chance to Dodge Spells: #%"] = new List<float>() { chanceToDodgeSpells };
+            return def;
         }
 
         private AttributeSet EnergyShieldRegen(float es)
@@ -599,7 +611,7 @@ namespace POESKillTree.Compute
             if (freezeAvoidance > 0)
                 def["Freeze Avoidance: #%"] = new List<float>() { freezeAvoidance };
             if (shockAvoidance > 0)
-            def["Shock Avoidance: #%"] = new List<float>() { shockAvoidance };
+                def["Shock Avoidance: #%"] = new List<float>() { shockAvoidance };
             return def;
         }
 
