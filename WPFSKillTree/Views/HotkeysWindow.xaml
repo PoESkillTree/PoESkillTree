@@ -41,6 +41,8 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -134,33 +136,41 @@
         <TextBlock Grid.Row="20" Grid.Column="1">
             <l:Catalog Message="Save build as"/>
         </TextBlock>
-        <TextBlock Grid.Row="21" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="Right Click"/>
-        </TextBlock>
+        <TextBlock Grid.Row="21" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + F</TextBlock>
         <TextBlock Grid.Row="21" Grid.Column="1" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="(Skill tree) Center Skill tree and reset zoom"/></TextBlock>
-        <TextBlock Grid.Row="22" Grid.Column="0">
-            <l:Catalog Message="Right Click"/>
+            <l:Catalog Message="Search"/>
         </TextBlock>
+        <TextBlock Grid.Row="22" Grid.Column="0">Ctrl + G</TextBlock>
         <TextBlock Grid.Row="22" Grid.Column="1">
-            <l:Catalog Message="(Attributes) Highlight corresponding nodes in Skill tree"/>
+            <l:Catalog Message="Show summary of changes"/>
         </TextBlock>
         <TextBlock Grid.Row="23" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="Right Click"/>
         </TextBlock>
         <TextBlock Grid.Row="23" Grid.Column="1" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="(Skill node) Toggle skill node highlighting"/>
-        </TextBlock>
+            <l:Catalog Message="(Skill tree) Center Skill tree and reset zoom"/></TextBlock>
         <TextBlock Grid.Row="24" Grid.Column="0">
-            <l:Catalog Message="Shift + Right Click"/>
+            <l:Catalog Message="Right Click"/>
         </TextBlock>
         <TextBlock Grid.Row="24" Grid.Column="1">
-            <l:Catalog Message="(Skill node) Toggle skill node highlighting (reversed)"/>
+            <l:Catalog Message="(Attributes) Highlight corresponding nodes in Skill tree"/>
         </TextBlock>
         <TextBlock Grid.Row="25" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="Shift + Hover"/>
+            <l:Catalog Message="Right Click"/>
         </TextBlock>
         <TextBlock Grid.Row="25" Grid.Column="1" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="(Skill node) Toggle skill node highlighting"/>
+        </TextBlock>
+        <TextBlock Grid.Row="26" Grid.Column="0">
+            <l:Catalog Message="Shift + Right Click"/>
+        </TextBlock>
+        <TextBlock Grid.Row="26" Grid.Column="1">
+            <l:Catalog Message="(Skill node) Toggle skill node highlighting (reversed)"/>
+        </TextBlock>
+        <TextBlock Grid.Row="27" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">
+            <l:Catalog Message="Shift + Hover"/>
+        </TextBlock>
+        <TextBlock Grid.Row="27" Grid.Column="1" Background="{DynamicResource AccentColorBrush4}">
             <l:Catalog Message="(Skill node) Highlight similar skill nodes"/>
         </TextBlock>
     </Grid>

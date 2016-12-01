@@ -682,6 +682,10 @@ namespace POESKillTree.Views
                             GenerateTooltipForNode(_hoveredNode, true);
                         }
                         break;
+                    case Key.F:
+                        tbSearch.Focus();
+                        tbSearch.SelectAll();
+                        break;
                 }
             }
 
