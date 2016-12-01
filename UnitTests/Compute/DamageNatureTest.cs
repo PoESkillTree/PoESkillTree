@@ -14,7 +14,6 @@ namespace UnitTests
         [Test]
         public void Base_Copy_Test()
         {
-
             var orig = new DamageNature
             {
                 Form = DamageForm.DoT,

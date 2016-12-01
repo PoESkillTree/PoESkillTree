@@ -34,9 +34,9 @@ namespace POESKillTree.Compute
         // The flag whether character is dual wielding.
         public bool IsDualWielding;
         // The flag whether character is wielding a shield.
-        public bool IsWieldingShield;
+        public bool IsWieldingShield => (MainHand?.Is(WeaponType.Shield) ?? false) || (OffHand?.Is(WeaponType.Shield) ?? false);
         // The flag whether character is wielding a staff.
-        public bool IsWieldingStaff;
+        public bool IsWieldingStaff => MainHand?.Is(WeaponType.Staff) ?? false;
         // Character level.
         public int Level;
         // Equipment attributes.
@@ -197,7 +197,7 @@ namespace POESKillTree.Compute
             bool hasShield = OffHand.IsShield();
 
             Resistances(def, Difficulty.Normal, hasShield);
-            Block(def, hasShield);
+            def.Merge(Block(hasShield));
 
             HitAvoidance(def);
 
@@ -510,33 +510,29 @@ namespace POESKillTree.Compute
             return new List<float>() { MaximumValue(res, max), res };
         }
 
-        private void Block(AttributeSet def, bool hasShield)
+        public float GetMaxBlock()
         {
+            return 75 + GetFromGlobal("+#% to maximum Block Chance");
+        }
+
+        public AttributeSet Block(bool hasShield)
+        {
+            var block = new AttributeSet();
             // Chance to Block Attacks and Spells.
             // Block chance is capped at 75%. The chance to block spells is also capped at 75%.
             // @see http://pathofexile.gamepedia.com/Blocking
-            float maxChanceBlockAttacks = 75;
-            float maxChanceBlockSpells = 75;
-            float maxChanceBlockProjectiles = 75;
+            var maxBlock = GetMaxBlock();
+            float maxChanceBlockAttacks = maxBlock;
+            float maxChanceBlockSpells = maxBlock;
+            float maxChanceBlockProjectiles = maxBlock;
             float chanceBlockAttacks = 0;
             float chanceBlockSpells = 0;
             float chanceBlockProjectiles = 0;
-            if (Global.ContainsKey("+#% to maximum Block Chance"))
-            {
-                maxChanceBlockAttacks += GetFromGlobal("+#% to maximum Block Chance");
-                maxChanceBlockSpells += GetFromGlobal("+#% to maximum Block Chance");
-                maxChanceBlockProjectiles += GetFromGlobal("+#% to maximum Block Chance");
-            }
+
             if (hasShield)
-            {
-                List<float> values = OffHand.GetValues("Chance to Block: #%");
-                if (values.Count > 0) chanceBlockAttacks += values[0];
-            }
+                chanceBlockAttacks = OffHand.GetValues("Chance to Block: #%").FirstOrDefault();
             else if (IsWieldingStaff)
-            {
-                List<float> values = MainHand.GetValues("#% Chance to Block");
-                if (values.Count > 0) chanceBlockAttacks += values[0];
-            }
+                chanceBlockAttacks = MainHand.GetValues("#% Chance to Block").FirstOrDefault();
             else if (IsDualWielding)
                 chanceBlockAttacks += 15; // When dual wielding, the base chance to block is 15% no matter which weapons are used.
 
@@ -561,13 +557,15 @@ namespace POESKillTree.Compute
                 float lessChanceBlock = Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][2];
                 chanceBlockAttacks = IncreaseValueByPercentage(chanceBlockAttacks, -lessChanceBlock);
                 chanceBlockSpells = IncreaseValueByPercentage(chanceBlockSpells, -lessChanceBlock);
+                chanceBlockProjectiles = IncreaseValueByPercentage(chanceBlockProjectiles, -lessChanceBlock);
             }
             if (chanceBlockAttacks > 0)
-                def["Chance to Block Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockAttacks, 0), maxChanceBlockAttacks) };
+                block.Add("Chance to Block Attacks: #%", new List<float>() { MaximumValue(RoundValue(chanceBlockAttacks, 0), maxChanceBlockAttacks), maxChanceBlockAttacks });
             if (chanceBlockSpells > 0)
-                def["Chance to Block Spells: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockSpells, 0), maxChanceBlockSpells) };
+                block.Add("Chance to Block Spells: #%", new List<float>() { MaximumValue(RoundValue(chanceBlockSpells, 0), maxChanceBlockSpells), maxChanceBlockSpells });
             if (chanceBlockProjectiles > 0)
-                def["Chance to Block Projectile Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockProjectiles, 0), maxChanceBlockProjectiles) };
+                block.Add("Chance to Block Projectile Attacks: #%", new List<float>() { MaximumValue(RoundValue(chanceBlockProjectiles, 0), maxChanceBlockProjectiles), maxChanceBlockProjectiles });
+            return block;
         }
 
         public void HitAvoidance(AttributeSet def)
@@ -578,7 +576,7 @@ namespace POESKillTree.Compute
             float chillAvoidance = GetFromGlobal("#% chance to Avoid being Chilled") + allAvoid;
             float freezeAvoidance = GetFromGlobal("#% chance to Avoid being Frozen") + allAvoid;
             float shockAvoidance = GetFromGlobal("#% chance to Avoid being Shocked") + allAvoid;
-            
+
             if (Global.ContainsKey("Cannot be Ignited"))
                 igniteAvoidance = 100;
             if (Global.ContainsKey("Cannot be Chilled"))
@@ -619,8 +617,6 @@ namespace POESKillTree.Compute
                 MainHand.Hand |= WeaponHand.DualWielded;
                 OffHand.Hand |= WeaponHand.DualWielded;
             }
-            IsWieldingShield = MainHand.Is(WeaponType.Shield) || OffHand.Is(WeaponType.Shield);
-            IsWieldingStaff = MainHand.Is(WeaponType.Staff);
 
             Level = skillTree.Level;
             if (Level < 1) Level = 1;

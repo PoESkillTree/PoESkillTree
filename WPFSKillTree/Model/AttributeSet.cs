@@ -2,6 +2,8 @@
 using System.Text.RegularExpressions;
 using POESKillTree.Model.Items.Affixes;
 using System.Linq;
+using POESKillTree.Utils.Extensions;
+using System;
 
 namespace POESKillTree.Model
 {
@@ -20,37 +22,31 @@ namespace POESKillTree.Model
         // Existing attributes have value increased by value of attribute being added.
         public void Add(AttributeSet add)
         {
-            foreach (var attr in add) Add(attr);
+            foreach (var attr in add)
+                Add(attr.Key, attr.Value);
         }
 
-        // Adds attribute.
-        // Existing attribute has value increased by value of attribute being added.
-        public void Add(KeyValuePair<string, List<float>> attr)
+        // Adds attributes.
+        // Existing attributes have value increased by value of attribute being added.
+        public void Add(string key, IEnumerable<float> values)
         {
-            if (ContainsKey(attr.Key))
-            {
-                //foreach (var val in attr.Value)
-                //    this[attr.Key].Add(val);
-                if (attr.Value.Count > 0)
-                    for (int i = 0; i < attr.Value.Count; ++i)
-                        this[attr.Key][i] += attr.Value[i];
-            }
+            Add(key, values.ToList());
+        }
+
+        public new void Add(string key, List<float> values)
+        {
+            if (!ContainsKey(key))
+                this[key] = values;
             else
-                Add(attr.Key, new List<float>(attr.Value));
+            {
+                for (int i = 0; i < values.Count; ++i)
+                    this[key][i] += values[i];
+            }
         }
 
-        // Adds attribute.
-        // Existing attribute has value increased by value of attribute being added.
-        public void Add(KeyValuePair<string, float> attr)
-        {
-            Add(new KeyValuePair<string, List<float>>(attr.Key, new[] { attr.Value }.ToList()));
-        }
-
-        // Adds attribute.
-        // Existing attribute has value increased by value of attribute being added.
         public void Add(string key, float val)
         {
-            Add(new KeyValuePair<string, List<float>>(key, new[] { val }.ToList()));
+            Add(key, new[] { val }.ToList());
         }
 
         // Adds item mod.
@@ -90,7 +86,7 @@ namespace POESKillTree.Model
 
             foreach (var attr in this)
                 if (re.IsMatch(attr.Key))
-                    matches.Add(attr);
+                    matches.Add(attr.Key, attr.Value);
 
             return matches;
         }
@@ -103,7 +99,7 @@ namespace POESKillTree.Model
             foreach (var attr in this)
                 foreach (Regex re in rea)
                     if (re.IsMatch(attr.Key))
-                        matches.Add(attr);
+                        matches.Add(attr.Key, attr.Value);
 
             return matches;
         }
@@ -148,7 +144,7 @@ namespace POESKillTree.Model
                 if (ContainsKey(attr.Key))
                     this[attr.Key] = attr.Value;
                 else
-                    Add(attr);
+                    Add(attr.Key, attr.Value);
         }
 
         public float GetOrDefault(string key, int index = 0, float def = 0)

@@ -52,6 +52,11 @@ namespace POESKillTree.Model
             Added = weapon.Added;
         }
 
+        public Weapon(WeaponHand hand)
+            : this(hand, null)
+        {
+
+        }
         public Weapon(WeaponHand hand, Item item)
         {
             Hand = hand;

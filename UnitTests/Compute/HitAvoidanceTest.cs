@@ -1,27 +1,13 @@
 ﻿using NUnit.Framework;
 using POESKillTree.Compute;
 using POESKillTree.Model;
-using POESKillTree.Model.Items;
-using POESKillTree.SkillTreeFiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static UnitTests.Compute.AttributeHelpers;
 
 namespace UnitTests.Compute
 {
     [TestFixture]
     public class HitAvoidanceTest
     {
-
-        void CheckEquality(IEnumerable<float> expected, IEnumerable<float> actual)
-        {
-            for (int i = 0; i < expected.Count(); i++)
-                Assert.AreEqual(expected.Skip(i).First(), actual.Skip(i).First());
-        }
-
-
         public void Test(string attribute, string resultAtt)
         {
             TestNormal(attribute, resultAtt);
