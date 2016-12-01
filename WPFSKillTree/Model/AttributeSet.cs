@@ -53,14 +53,7 @@ namespace POESKillTree.Model
         // Existing attribute has value increased by value of attribute being added.
         public void Add(ItemMod itemMod)
         {
-            if (ContainsKey(itemMod.Attribute))
-            {
-                if (itemMod.Value.Count > 0)
-                    for (int i = 0; i < itemMod.Value.Count; ++i)
-                        this[itemMod.Attribute][i] += itemMod.Value[i];
-            }
-            else
-                Add(itemMod.Attribute, new List<float>(itemMod.Value));
+            Add(itemMod.Attribute, itemMod.Value);
         }
 
         // Returns new copy of this attribute set.
@@ -91,13 +84,17 @@ namespace POESKillTree.Model
             return matches;
         }
 
+        public AttributeSet MatchesAny(IEnumerable<string> patterns)
+        {
+            return MatchesAny(patterns.Select(x => new Regex(x)));
+        }
         // Returns attribute set of attributes whose key matches any of regular expressions passed.
-        public AttributeSet MatchesAny(Regex[] rea)
+        public AttributeSet MatchesAny(IEnumerable<Regex> patterns)
         {
             AttributeSet matches = new AttributeSet();
 
             foreach (var attr in this)
-                foreach (Regex re in rea)
+                foreach (Regex re in patterns)
                     if (re.IsMatch(attr.Key))
                         matches.Add(attr.Key, attr.Value);
 
@@ -149,17 +146,10 @@ namespace POESKillTree.Model
 
         public float GetOrDefault(string key, int index = 0, float def = 0)
         {
-            if (this.ContainsKey(key))
-                return this[key][index];
-            return def;
-        }
-
-        public void AddAsSum(string key, float value)
-        {
             if (ContainsKey(key))
-                this[key][0] += value;
-            else
-                this[key] = new[] { value }.ToList();
+                if (this[key].Count > index)
+                    return this[key][index];
+            return def;
         }
     }
 }

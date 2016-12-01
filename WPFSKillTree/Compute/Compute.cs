@@ -143,6 +143,11 @@ namespace POESKillTree.Compute
             AttributeSet ch = new AttributeSet();
             AttributeSet def = new AttributeSet();
 
+
+            // Character attributes.
+            ch["Strength: #"] = Global["+# to Strength"];
+            ch["Dexterity: #"] = Global["+# to Dexterity"];
+            ch["Intelligence: #"] = Global["+# to Intelligence"];
             // Difficulty.
 
             float life;
@@ -180,26 +185,20 @@ namespace POESKillTree.Compute
 
             // Energy Shield Recharge per Second.
             // @see http://pathofexile.gamepedia.com/Energy_shield
-            def.Merge(EnergyShieldRegen(es));
+            def = def.Merge(EnergyShieldRegen(es));
 
             // Life Regeneration.
-            def.Merge(LifeRegen(life, es));
+            def = def.Merge(LifeRegen(life, es));
 
             // Mana Regeneration.
-            def.Merge(ManaRegen(mana));
-
-            // Character attributes.
-            ch["Strength: #"] = Global["+# to Strength"];
-            ch["Dexterity: #"] = Global["+# to Dexterity"];
-            ch["Intelligence: #"] = Global["+# to Intelligence"];
+            def = def.Merge(ManaRegen(mana));
 
             // Shield, Staff and Dual Wielding detection.
             bool hasShield = OffHand.IsShield();
 
-            def.Merge(Resistances(Difficulty.Normal, hasShield));
-            def.Merge(Block(hasShield));
-
-            def.Merge(HitAvoidance());
+            def = def.Merge(Resistances(Difficulty.Normal, hasShield));
+            def = def.Merge(Block(hasShield));
+            def = def.Merge(HitAvoidance());
 
             List<ListGroup> groups = new List<ListGroup>();
             groups.Add(new ListGroup(L10n.Message("Character"), ch));

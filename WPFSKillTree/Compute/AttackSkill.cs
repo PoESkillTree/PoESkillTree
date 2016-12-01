@@ -113,7 +113,7 @@ namespace POESKillTree.Compute
             {
                 // Create projectile attack damage bonus from value of implicit melee physical damage increase.
                 float bonus = Implicit["#% increased Melee Physical Damage"][0];
-                attrs.AddAsSum("#% increased Projectile Weapon Damage", bonus);
+                attrs.Add("#% increased Projectile Weapon Damage", bonus);
             }
 
             // Iron Will.
@@ -121,7 +121,7 @@ namespace POESKillTree.Compute
             {
                 // Create spell damage bonus from value of implicit melee physical damage increase.
                 float bonus = Implicit["#% increased Melee Physical Damage"][0];
-                attrs.AddAsSum("#% increased Spell Damage", bonus);
+                attrs.Add("#% increased Spell Damage", bonus);
             }
 
             // Collect damage gains, increases and multipliers.

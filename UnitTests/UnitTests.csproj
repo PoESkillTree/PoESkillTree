@@ -95,6 +95,7 @@
     <Compile Include="Compute\DamageNatureTest.cs" />
     <Compile Include="Compute\HitAvoidanceTest.cs" />
     <Compile Include="Compute\ResistanceCalcTest.cs" />
+    <Compile Include="Model\AttributeSetTest.cs" />
     <Compile Include="TestCharacterSheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDPS.cs" />
