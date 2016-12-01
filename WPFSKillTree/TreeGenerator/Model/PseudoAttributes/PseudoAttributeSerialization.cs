@@ -61,6 +61,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
     public class XmlAttributeConditions
     {
         [XmlElement("AndComposition", typeof(XmlAndComposition))]
+        [XmlElement("Not", typeof(XmlNotCondition))]
         [XmlElement("OffHand", typeof(string))]
         [XmlElement("Tag", typeof(string))]
         [XmlElement("WeaponClass", typeof(string))]
@@ -104,6 +105,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
     public enum XmlItemsChoiceType
     {
         AndComposition,
+        Not,
         OffHand,
         Tag,
         WeaponClass,

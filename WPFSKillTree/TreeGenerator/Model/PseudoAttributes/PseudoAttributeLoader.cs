@@ -162,32 +162,14 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 
                                 if (xmlAndComp.NotCondition != null)
                                 {
-                                    var xmlNotCond = xmlAndComp.NotCondition;
-                                    ICondition innerCond;
-                                    if (xmlNotCond.Keystone != null)
-                                    {
-                                        innerCond = new KeystoneCondition(xmlNotCond.Keystone);
-                                    }
-                                    else if (xmlNotCond.OffHand != null)
-                                    {
-                                        innerCond = new OffHandCondition(xmlNotCond.OffHand);
-                                    }
-                                    else if (xmlNotCond.Tag != null)
-                                    {
-                                        innerCond = new TagCondition(xmlNotCond.Tag);
-                                    }
-                                    else if (xmlNotCond.WeaponClass != null)
-                                    {
-                                        innerCond = new WeaponClassCondition(xmlNotCond.WeaponClass);
-                                    }
-                                    else
-                                    {
-                                        throw new PseudoAttributeDataInvalidException(
-                                            string.Format(L10n.Message("Empty not condition in attribute {0} in pseudo attribute {1}"), attr.Name, pseudo.Name));
-                                    }
-                                    andComp.Conditions.Add(new NotCondition(innerCond));
+                                    var notCond = ConvertXmlNotCondition(xmlAndComp.NotCondition, pseudo, attr);
+                                    andComp.Conditions.Add(notCond);
                                 }
                                 condition = andComp;
+                                break;
+
+                            case XmlItemsChoiceType.Not:
+                                condition = ConvertXmlNotCondition((XmlNotCondition) xmlCondition, pseudo, attr);
                                 break;
 
                             case XmlItemsChoiceType.OffHand:
@@ -217,6 +199,33 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                     yield return pseudo;
                 }
             }
+        }
+
+        private NotCondition ConvertXmlNotCondition(XmlNotCondition xmlNotCond, PseudoAttribute pseudo, Attribute attr)
+        {
+            ICondition innerCond;
+            if (xmlNotCond.Keystone != null)
+            {
+                innerCond = new KeystoneCondition(xmlNotCond.Keystone);
+            }
+            else if (xmlNotCond.OffHand != null)
+            {
+                innerCond = new OffHandCondition(xmlNotCond.OffHand);
+            }
+            else if (xmlNotCond.Tag != null)
+            {
+                innerCond = new TagCondition(xmlNotCond.Tag);
+            }
+            else if (xmlNotCond.WeaponClass != null)
+            {
+                innerCond = new WeaponClassCondition(xmlNotCond.WeaponClass);
+            }
+            else
+            {
+                throw new PseudoAttributeDataInvalidException(
+                    string.Format(L10n.Message("Empty not condition in attribute {0} in pseudo attribute {1}"), attr.Name, pseudo.Name));
+            }
+            return new NotCondition(innerCond);
         }
 
         /// <summary>
