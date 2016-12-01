@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Serialization;
@@ -21,7 +21,7 @@ using POESKillTree.Model.Gems;
 
 namespace UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class TestCharacterSheet
     {
         [Serializable]
@@ -46,8 +46,7 @@ namespace UnitTests
             return s;
         }
 
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"..\..\TestBuilds\Builds.xml", "TestBuild", DataAccessMethod.Sequential)]
-        [TestMethod]
+        [Test]
         public async Task Build_Test()
         {
             // Read build entry.

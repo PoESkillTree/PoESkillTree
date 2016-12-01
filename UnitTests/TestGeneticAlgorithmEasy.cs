@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using POESKillTree.TreeGenerator.Genetic;
 
 namespace UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class TestGeneticAlgorithmEasy
     {
-        [TestMethod]
+        [Test]
         public void TestEasyCases()
         {
             // To test the interaction with the skill tree, just test it manually.

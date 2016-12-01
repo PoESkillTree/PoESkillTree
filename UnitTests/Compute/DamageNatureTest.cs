@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +8,10 @@ using POESKillTree.Compute;
 
 namespace UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class DamageNature_Test
     {
-        [TestMethod]
+        [Test]
         public void Base_Copy_Test()
         {
 
@@ -35,7 +35,7 @@ namespace UnitTests
             Assert.IsTrue(orig.MatchesExceptType(result));
         }
 
-        [TestMethod]
+        [Test]
         public void Gained_RegainMod_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("Gain #% of Physical Damage as Extra Cold Damage", new[] { 1f }.ToList());
@@ -45,7 +45,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Cold, gained.To);
         }
 
-        [TestMethod]
+        [Test]
         public void Gained_RegainAddedMod_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% of Physical Damage Added as Cold Damage", new[] { 1f }.ToList());
@@ -55,7 +55,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Cold, gained.To);
         }
 
-        [TestMethod]
+        [Test]
         public void Gained_Neither_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("unmatchingString", new[] { 1f }.ToList());
@@ -71,7 +71,7 @@ namespace UnitTests
 
 
 
-        [TestMethod]
+        [Test]
         public void Increased_Type_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% increased Cold Damage", new[] { 1f }.ToList());
@@ -80,7 +80,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Cold, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_Reduced_Type_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% reduced Cold Damage", new[] { 1f }.ToList());
@@ -89,7 +89,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Cold, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_All_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% increased Damage", new[] { 1f }.ToList());
@@ -98,7 +98,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Any, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_All_Reduced_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% reduced Damage", new[] { 1f }.ToList());
@@ -107,7 +107,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Any, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_Weapon_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% increased Damage with Swords", new[] { 1f }.ToList());
@@ -117,7 +117,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Any, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_Weapon_Reduced_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% reduced Damage with Axes", new[] { 1f }.ToList());
@@ -127,7 +127,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Any, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_Hand_Weapon_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% increased Fire Damage with Main Hand", new[] { 1f }.ToList());
@@ -137,7 +137,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Fire, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_Hand_Weapon_Reduced_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% reduced Cold Damage with Main Hand", new[] { 1f }.ToList());
@@ -147,7 +147,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Cold, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_Hand_Weapon_Test2()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% increased Fire Damage with Swords", new[] { 1f }.ToList());
@@ -157,7 +157,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Fire, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_Hand_Weapon_Reduced_Test2()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% reduced Cold Damage with Swords", new[] { 1f }.ToList());
@@ -167,7 +167,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Cold, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_Source_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% increased Cold Damage with Attacks", new[] { 1f }.ToList());
@@ -177,7 +177,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Cold, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_Source_Reduced_Test()
         {
             var kvp = new KeyValuePair<string, List<float>>("#% reduced Fire Damage with Spells", new[] { 1f }.ToList());
@@ -187,7 +187,7 @@ namespace UnitTests
             Assert.AreEqual(DamageType.Fire, result.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void Increased_NoMatch()
         {
             var kvp = new KeyValuePair<string, List<float>>("unmatched", new[] { 1f }.ToList());

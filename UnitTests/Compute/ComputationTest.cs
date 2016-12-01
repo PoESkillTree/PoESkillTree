@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using POESKillTree.Compute;
 using POESKillTree.Model;
 using POESKillTree.Model.Items;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace UnitTests.Compute
 {
-    [TestClass]
+    [TestFixture]
     public class ComputationTest
     {
         void CheckEquality(IEnumerable<float> expected, IEnumerable<float> actual)
@@ -20,7 +20,7 @@ namespace UnitTests.Compute
                 Assert.AreEqual(expected.Skip(i).First(), actual.Skip(i).First());
         }
 
-        [TestMethod]
+        [Test]
         public void Single_Resistance_Test()
         {
             var c = new Computation();
@@ -32,7 +32,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 60f, 60f }, attSet["Fire Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetResistance_Test()
         {
             var c = new Computation();
@@ -45,7 +45,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 75f, 135f }, attSet[$"{type} Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetResistance_Cruel_Test()
         {
             var c = new Computation();
@@ -58,7 +58,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 40f, 40f }, attSet[$"{type} Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetResistance_Merc_Test()
         {
             var c = new Computation();
@@ -71,7 +71,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 0f, 0f }, attSet[$"{type} Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetResistance_Merc_Negative_Test()
         {
             var c = new Computation();
@@ -83,7 +83,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { -60f, -60f }, attSet[$"{type} Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetResistance_Max_Test()
         {
             var c = new Computation();
@@ -97,7 +97,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 85f, 135f }, attSet[$"{type} Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void Chaos_All_Test()
         {
             var c = new Computation();
@@ -110,7 +110,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 0f, 0f }, attSet[$"{type} Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void Chaos_Innoc_Test()
         {
             var c = new Computation();
@@ -123,7 +123,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 100f, 100f }, attSet[$"{type} Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetResistance_Dual_Test()
         {
             var c = new Computation();
@@ -137,7 +137,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 20f, 20f }, attSet[$"{type} Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetResistance_Shield_Test()
         {
             var c = new Computation();
@@ -151,7 +151,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 0f, 0f }, attSet["Chaos Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetResistance_Shield_False_Test()
         {
             var c = new Computation();
@@ -165,7 +165,7 @@ namespace UnitTests.Compute
             CheckEquality(new[] { 0f, 0f }, attSet["Chaos Resistance: #% (#%)"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetResistance_Full_Test()
         {
             var c = new Computation();

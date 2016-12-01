@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using POESKillTree.SkillTreeFiles;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class TestMSTAlgorithm
     {
         // Builds a graph from an adjacency matrix.
@@ -59,7 +59,7 @@ namespace UnitTests
             return retval;
         }
 
-        [TestMethod]
+        [Test]
         public void TestDijkstra()
         {
             // 0 -- 1 -- 2 -- 3
@@ -86,7 +86,7 @@ namespace UnitTests
             Assert.AreEqual((uint)3, distanceLookup[graphNodes[0].DistancesIndex, graphNodes[3].DistancesIndex], "Wrong distance");
         }
 
-        [TestMethod]
+        [Test]
         public void DijkstraUnconnected()
         {
             // 0 -- 1    2 -- 3
@@ -110,7 +110,7 @@ namespace UnitTests
             Assert.IsNull(distances.GetShortestPath(mstNodes2[0].DistancesIndex, mstNodes2[3].DistancesIndex));
         }
         
-        [TestMethod]
+        [Test]
         public void TestMST()
         {
             // 0 -- 1 -- 2 -- 3
@@ -154,7 +154,7 @@ namespace UnitTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestPriorityQueue()
         {
 

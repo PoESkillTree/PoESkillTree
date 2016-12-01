@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
@@ -8,12 +8,12 @@ using POESKillTree.Model.Gems;
 
 namespace UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class TestItemDB
     {
 
 
-        [TestMethod]
+        [Test]
         public void TestGems()
         {
             var DB = GemDB.LoadFromText(FileEx.GetResource<GemDB>("POESKillTree.Data.ItemDB.GemList.xml"), true);
@@ -78,7 +78,7 @@ namespace UnitTests
             return attrs.ContainsKey(attr) ? DB.AttributesOf(gemName, level, quality)[attr] : new List<float> { float.NaN, float.NaN };
         }
 
-        [TestMethod]
+        [Test]
         public void TestMergeDB()
         {
             var target = GemDB.LoadFromText(FileEx.GetResource<GemDB>("POESKillTree.Data.ItemDB.GemList.xml"));

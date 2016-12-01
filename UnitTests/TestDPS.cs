@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Compute;
 
 namespace UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class TestDPS
     {
         internal enum Rounding { None, Round, Floor, Ceil };
@@ -75,7 +75,7 @@ namespace UnitTests
             internal int Precision;
         }
 
-        [TestMethod]
+        [Test]
         public void TestDPSRounding()
         {
             Dictionary<string, Spell> skills;
@@ -163,7 +163,7 @@ namespace UnitTests
             */
         }
 
-        [TestMethod]
+        [Test]
         public void TestRoundingHalfDown()
         {
             // Round Half Toward Zero (Round Half Down).
