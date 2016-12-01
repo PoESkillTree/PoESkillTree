@@ -92,6 +92,8 @@
   <ItemGroup>
     <Compile Include="Compute\ComputationTest.cs" />
     <Compile Include="Compute\DamageNatureTest.cs" />
+    <Compile Include="Compute\HitAvoidanceTest.cs" />
+    <Compile Include="Compute\ResistanceCalcTest.cs" />
     <Compile Include="TestCharacterSheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDPS.cs" />

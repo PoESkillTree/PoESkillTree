@@ -523,9 +523,9 @@ namespace POESKillTree.Compute
             float chanceBlockProjectiles = 0;
             if (Global.ContainsKey("+#% to maximum Block Chance"))
             {
-                maxChanceBlockAttacks += Global["+#% to maximum Block Chance"][0];
-                maxChanceBlockSpells += Global["+#% to maximum Block Chance"][0];
-                maxChanceBlockProjectiles += Global["+#% to maximum Block Chance"][0];
+                maxChanceBlockAttacks += GetFromGlobal("+#% to maximum Block Chance");
+                maxChanceBlockSpells += GetFromGlobal("+#% to maximum Block Chance");
+                maxChanceBlockProjectiles += GetFromGlobal("+#% to maximum Block Chance");
             }
             if (hasShield)
             {
@@ -539,20 +539,23 @@ namespace POESKillTree.Compute
             }
             else if (IsDualWielding)
                 chanceBlockAttacks += 15; // When dual wielding, the base chance to block is 15% no matter which weapons are used.
-            if (hasShield && Global.ContainsKey("#% additional Chance to Block with Shields"))
-                chanceBlockAttacks += Global["#% additional Chance to Block with Shields"][0];
-            if (IsWieldingStaff && Global.ContainsKey("#% additional Block Chance With Staves"))
-                chanceBlockAttacks += Global["#% additional Block Chance With Staves"][0];
-            if (IsDualWielding && Global.ContainsKey("#% additional Block Chance while Dual Wielding"))
-                chanceBlockAttacks += Global["#% additional Block Chance while Dual Wielding"][0];
-            if ((IsDualWielding || hasShield) && Global.ContainsKey("#% additional Block Chance while Dual Wielding or holding a Shield"))
-                chanceBlockAttacks += Global["#% additional Block Chance while Dual Wielding or holding a Shield"][0];
-            if (Global.ContainsKey("#% of Block Chance applied to Spells"))
-                chanceBlockSpells = PercentOfValue(chanceBlockAttacks, Global["#% of Block Chance applied to Spells"][0]);
-            if (hasShield && Global.ContainsKey("#% additional Chance to Block Spells with Shields"))
-                chanceBlockSpells += Global["#% additional Chance to Block Spells with Shields"][0];
-            if (Global.ContainsKey("+#% additional Block Chance against Projectiles"))
-                chanceBlockProjectiles = chanceBlockAttacks + Global["+#% additional Block Chance against Projectiles"][0];
+
+            if (hasShield)
+            {
+                chanceBlockAttacks += GetFromGlobal("#% additional Chance to Block with Shields");
+                chanceBlockSpells += GetFromGlobal("#% additional Chance to Block Spells with Shields");
+            }
+            if (IsWieldingStaff)
+                chanceBlockAttacks += GetFromGlobal("#% additional Block Chance With Staves");
+            if (IsDualWielding)
+                chanceBlockAttacks += GetFromGlobal("#% additional Block Chance while Dual Wielding");
+            if (IsDualWielding || hasShield)
+                chanceBlockAttacks += GetFromGlobal("#% additional Block Chance while Dual Wielding or holding a Shield");
+
+            chanceBlockSpells += PercentOfValue(chanceBlockAttacks, GetFromGlobal("#% of Block Chance applied to Spells"));
+
+            if (hasShield)
+                chanceBlockProjectiles = chanceBlockAttacks + GetFromGlobal("+#% additional Block Chance against Projectiles");
             if (Acrobatics)
             {
                 float lessChanceBlock = Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][2];
@@ -567,29 +570,15 @@ namespace POESKillTree.Compute
                 def["Chance to Block Projectile Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockProjectiles, 0), maxChanceBlockProjectiles) };
         }
 
-        private void HitAvoidance(AttributeSet def)
+        public void HitAvoidance(AttributeSet def)
         {
             // Elemental stataus ailments.
-            float igniteAvoidance = 0;
-            float chillAvoidance = 0;
-            float freezeAvoidance = 0;
-            float shockAvoidance = 0;
-            if (Global.ContainsKey("#% chance to Avoid being Ignited"))
-                igniteAvoidance += Global["#% chance to Avoid being Ignited"][0];
-            if (Global.ContainsKey("#% chance to Avoid being Chilled"))
-                chillAvoidance += Global["#% chance to Avoid being Chilled"][0];
-            if (Global.ContainsKey("#% chance to Avoid being Frozen"))
-                freezeAvoidance += Global["#% chance to Avoid being Frozen"][0];
-            if (Global.ContainsKey("#% chance to Avoid being Shocked"))
-                shockAvoidance += Global["#% chance to Avoid being Shocked"][0];
-            if (Global.ContainsKey("#% chance to Avoid Elemental Status Ailments"))
-            {
-                float value = Global["#% chance to Avoid Elemental Status Ailments"][0];
-                igniteAvoidance += value;
-                chillAvoidance += value;
-                freezeAvoidance += value;
-                shockAvoidance += value;
-            }
+            float allAvoid = GetFromGlobal("#% chance to Avoid Elemental Status Ailments");
+            float igniteAvoidance = GetFromGlobal("#% chance to Avoid being Ignited") + allAvoid;
+            float chillAvoidance = GetFromGlobal("#% chance to Avoid being Chilled") + allAvoid;
+            float freezeAvoidance = GetFromGlobal("#% chance to Avoid being Frozen") + allAvoid;
+            float shockAvoidance = GetFromGlobal("#% chance to Avoid being Shocked") + allAvoid;
+            
             if (Global.ContainsKey("Cannot be Ignited"))
                 igniteAvoidance = 100;
             if (Global.ContainsKey("Cannot be Chilled"))
@@ -598,6 +587,7 @@ namespace POESKillTree.Compute
                 freezeAvoidance = 100;
             if (Global.ContainsKey("Cannot be Shocked"))
                 shockAvoidance = 100;
+
             if (igniteAvoidance > 0)
                 def["Ignite Avoidance: #%"] = new List<float>() { igniteAvoidance };
             if (chillAvoidance > 0)
@@ -688,6 +678,13 @@ namespace POESKillTree.Compute
                 Global["#% more Attack Speed"] = new List<float>() { 10 };
                 Global["#% more Physical Damage with Weapons"] = new List<float>() { 20 };
             }
+        }
+
+        private float GetFromGlobal(string key, float def = 0f)
+        {
+            if (Global.ContainsKey(key))
+                return Global[key][0];
+            return def;
         }
 
         // Computes offensive attacks.
