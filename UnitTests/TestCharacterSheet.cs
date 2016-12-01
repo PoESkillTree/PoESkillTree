@@ -22,7 +22,6 @@ using POESKillTree.Model.Gems;
 namespace UnitTests
 {
     [TestClass]
-    [NUnit.Framework.TestFixture]
     public class TestCharacterSheet
     {
         [Serializable]
@@ -49,7 +48,6 @@ namespace UnitTests
 
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"..\..\TestBuilds\Builds.xml", "TestBuild", DataAccessMethod.Sequential)]
         [TestMethod]
-        [NUnit.Framework.Test]
         public async Task Build_Test()
         {
             // Read build entry.
