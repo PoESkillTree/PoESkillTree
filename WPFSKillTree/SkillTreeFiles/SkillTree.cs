@@ -578,7 +578,7 @@ namespace POESKillTree.SkillTreeFiles
             add.ExceptWith(remove);
 
             SkilledNodes.ExceptWith(remove);
-            AllocateSkillNodes(add);
+            SkilledNodes.UnionWith(add);
             if (changedType)
                 DrawAscendancyLayers();
         }
@@ -782,6 +782,7 @@ namespace POESKillTree.SkillTreeFiles
             if (node.IsAscendancyStart)
             {
                 var remove = SkilledNodes.Where(x => x.ascendancyName != null && x.ascendancyName != node.ascendancyName).ToArray();
+                ChangeAscClass(AscClasses.GetClassNumber(node.ascendancyName));
                 SkilledNodes.ExceptWith(remove);
             }
             else if (node.IsMultipleChoiceOption)
