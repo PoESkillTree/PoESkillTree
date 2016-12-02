@@ -223,12 +223,29 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Unshaping Orb",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Unshaping Orb" }) }
                             },
-                            new Rule // XXX: Essence league
+                            new Rule
                             {
                                 Id = "Essence",
                                 IsEnabled = false,
                                 Name = "Essence",
+                                Description = "All Essences and Remnant of Corruption",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Essence of", "Remnant of Corruption" }) }
+                            },
+                            new Rule // XXX: Breach
+                            {
+                                Id = "BreachSplinter",
+                                IsEnabled = false,
+                                Name = "Splinter",
+                                Description = "Splinter of Xoph, Tul, Esh, Uul-Netol or Chayula",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Splinter of" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "BreachBlessing",
+                                IsEnabled = false,
+                                Name = "Blessing",
+                                Description = "Blessing of Xoph, Tul, Esh, Uul-Netol or Chayula",
+                                Matches = new List<Match> { new MatchClass(new string[] { "Currency" }), new MatchBaseType(new string[] { "Blessing of" }) }
                             }
                         }
                     },
@@ -296,6 +313,7 @@ namespace POESKillTree.ItemFilter.Model
                                 Id = "Chisel",
                                 IsEnabled = false,
                                 Name = "Cartographer's Chisel",
+                                Description = L10n.Message("1× Stone Hammer, Rock Breaker or Gavel with 20% quality\n1× Any Map"),
                                 Set = new List<Match>[]
                                 {
                                     // XXX: 4 or less whetstones to be spent to bring an item to quality of 20 for a recipe.
@@ -646,7 +664,16 @@ namespace POESKillTree.ItemFilter.Model
                                 Id = "Maps",
                                 IsEnabled = false,
                                 Name = "Map",
+                                Description = "All Maps and Map Fragments",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Maps", "Map Fragments" }) }
+                            },
+                            new Rule // XXX: Breach
+                            {
+                                Id = "Breachstones",
+                                IsEnabled = false,
+                                Name = "Breachstones",
+                                Description = "Breach Map Fragments: Xoph's, Tul's, Esh's, Uul-Netol's or Chayula's Breachstone",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Map Fragments" }), new MatchBaseType(new string[] { "Breachstone" }) }
                             },
                             new Rule
                             {
