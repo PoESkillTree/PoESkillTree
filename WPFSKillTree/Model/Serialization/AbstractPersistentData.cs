@@ -56,6 +56,8 @@ namespace POESKillTree.Model.Serialization
 
         public abstract void Save();
 
+        public abstract void SaveFolders();
+
         public abstract void SaveBuild(IBuild build);
 
         public abstract void DeleteBuild(IBuild build);

@@ -54,10 +54,6 @@ namespace POESKillTree.ViewModels
 
         private async Task ChangeBuildsSavePath()
         {
-            var message = L10n.Message("There are unsaved builds. Do you want to save them before changing build directory?\n\n"
-                                       + "If you cancel, the build directory will not be changed.");
-            if (!await _buildsControlViewModel.HandleUnsavedBuilds(message))
-                return;
             var dialogSettings = new FileSelectorDialogSettings
             {
                 DefaultPath = Options.BuildsSavePath,
@@ -71,6 +67,13 @@ namespace POESKillTree.ViewModels
                 dialogSettings);
             if (path == null)
                 return;
+
+            var message = L10n.Message("There are unsaved builds. Do you want to save them before changing build directory?\n\n"
+                                       + "If you cancel, the build directory will not be changed.");
+            if (!await _buildsControlViewModel.HandleUnsavedBuilds(message, true))
+                return;
+            _persistentData.SaveFolders();
+
             Options.BuildsSavePath = path;
             await _persistentData.ReloadBuildsAsync();
         }

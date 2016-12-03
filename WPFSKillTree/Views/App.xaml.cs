@@ -38,6 +38,7 @@ namespace POESKillTree.Views
                 if (RunningInstanceMutex.WaitOne(0))
                 {
                     PersistentData.Save();
+                    PersistentData.SaveFolders();
 
                     IsSafeToExit = true;
 

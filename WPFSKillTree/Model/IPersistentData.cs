@@ -34,6 +34,15 @@ namespace POESKillTree.Model
         void Save();
 
         /// <summary>
+        /// Saves all build folders to the filesystem.
+        /// <para>
+        /// This should only save the ordering of contained builds and IsExpanded. Every other changes to folders must
+        /// be saved with <see cref="SaveBuild"/> directly after they done.
+        /// </para>
+        /// </summary>
+        void SaveFolders();
+
+        /// <summary>
         /// Saves the given build to the filesystem.
         /// </summary>
         void SaveBuild(IBuild build);

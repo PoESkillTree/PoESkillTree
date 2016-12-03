@@ -20,6 +20,11 @@ namespace POESKillTree.Model.Serialization
             throw new System.NotSupportedException();
         }
 
+        public override void SaveFolders()
+        {
+            throw new System.NotSupportedException();
+        }
+
         public override void SaveBuild(IBuild build)
         {
             throw new System.NotSupportedException();

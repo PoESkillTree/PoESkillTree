@@ -731,7 +731,7 @@ namespace POESKillTree.Views
                                            + "Canceling stops the program from closing and does not save any builds.");
                 // Might affect unsaved builds state, so needs to be done here.
                 TreeGeneratorInteraction?.SaveSettings();
-                if (await BuildsControlViewModel.HandleUnsavedBuilds(message))
+                if (await BuildsControlViewModel.HandleUnsavedBuilds(message, true))
                 {
                     // User wants to close
                     _canClose = true;

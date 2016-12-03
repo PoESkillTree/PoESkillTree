@@ -719,8 +719,10 @@ namespace POESKillTree.ViewModels
         /// the user wants to.
         /// </summary>
         /// <param name="message">The message the dialog will show.</param>
+        /// <param name="revertWhenUnsaved">True if dirty builds should be reverted to their saved state when the user
+        /// doesn't want to save.</param>
         /// <returns>False if the dialog was canceled by the user, true if he clicked Yes or No.</returns>
-        public async Task<bool> HandleUnsavedBuilds(string message)
+        public async Task<bool> HandleUnsavedBuilds(string message, bool revertWhenUnsaved)
         {
             var dirtyBuilds = GetDirtyBuilds().ToList();
             if (!dirtyBuilds.Any())
@@ -741,6 +743,11 @@ namespace POESKillTree.ViewModels
                     }
                     return true;
                 case MessageBoxResult.No:
+                    if (revertWhenUnsaved)
+                    {
+                        dirtyBuilds.Where(b => b.Build.CanRevert)
+                            .ForEach(b => b.Build.RevertChanges());
+                    }
                     return true;
                 default:
                     return false;

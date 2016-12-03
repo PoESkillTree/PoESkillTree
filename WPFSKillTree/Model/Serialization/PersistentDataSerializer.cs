@@ -119,6 +119,21 @@ namespace POESKillTree.Model.Serialization
         }
 
         /// <summary>
+        /// Serializes all folders.
+        /// </summary>
+        /// <remarks>
+        /// Does not handle changes to the name or contained builds. Should only be called when the only changed
+        /// things are the ordering of contained builds and/or IsExpanded.
+        /// </remarks>
+        public void SerializeFolders()
+        {
+            foreach (var folder in _persistentData.RootBuild.FoldersPreorder())
+            {
+                SerializeFolder(PathFor(folder, true), folder);
+            }
+        }
+
+        /// <summary>
         /// Serializes the given build.
         /// </summary>
         /// <remarks>
@@ -203,14 +218,7 @@ namespace POESKillTree.Model.Serialization
                     _markedForDeletion[b] = PathFor(b, true) + extension;
                 }
 
-                var xmlFolder = new XmlBuildFolder
-                {
-                    Version = BuildVersion.ToString(),
-                    IsExpanded = folder.IsExpanded,
-                    Builds = folder.Builds.Select(b => b.Name).ToList()
-                };
-                Directory.CreateDirectory(path);
-                SerializationUtils.XmlSerialize(xmlFolder, Path.Combine(path, BuildFolderFileName));
+                SerializeFolder(path, folder);
             }
 
             // Just recreate these. Easier than handling all edge cases.
@@ -241,6 +249,18 @@ namespace POESKillTree.Model.Serialization
                 Directory.Delete(path, true);
             _markedForDeletion.Remove(build);
             _names.Remove(build);
+        }
+
+        private static void SerializeFolder(string path, BuildFolder folder)
+        {
+            var xmlFolder = new XmlBuildFolder
+            {
+                Version = BuildVersion.ToString(),
+                IsExpanded = folder.IsExpanded,
+                Builds = folder.Builds.Select(b => b.Name).ToList()
+            };
+            Directory.CreateDirectory(path);
+            SerializationUtils.XmlSerialize(xmlFolder, Path.Combine(path, BuildFolderFileName));
         }
 
         private static void SerializeBuild(string path, PoEBuild build)

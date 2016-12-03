@@ -58,5 +58,24 @@ namespace POESKillTree.Model.Builds
                 }
             }
         }
+
+        /// <summary>
+        /// Enumerates all intermediate nodes (<see cref="BuildFolder"/>s) starting from this tree node.
+        /// </summary>
+        public IEnumerable<BuildFolder> FoldersPreorder()
+        {
+            yield return this;
+            foreach (var build in Builds)
+            {
+                var b = build as BuildFolder;
+                if (b == null)
+                    continue;
+                yield return b;
+                foreach (var child in b.FoldersPreorder())
+                {
+                    yield return child;
+                }
+            }
+        }
     }
 }

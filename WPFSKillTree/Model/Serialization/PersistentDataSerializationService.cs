@@ -140,6 +140,11 @@ namespace POESKillTree.Model.Serialization
                 }
             }
 
+            public override void SaveFolders()
+            {
+                _serializer.SerializeFolders();
+            }
+
             public override void SaveBuild(IBuild build)
             {
                 _serializer.SerializeBuild(build);
