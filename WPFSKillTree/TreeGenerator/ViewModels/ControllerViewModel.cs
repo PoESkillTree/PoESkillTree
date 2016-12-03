@@ -241,7 +241,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
             {
                 // Show a dialog and close this if the omitted nodes disconnect the tree.
                 await _dialogCoordinator.ShowWarningAsync(this,
-                    L10n.Message("The optimizer was unable to find a conforming tree.\nPlease change skill node tagging and try again."));
+                    L10n.Message("The optimizer was unable to find a conforming tree.\nPlease change skill node tagging and try again.\n\n" +
+                                 "Note: When using the Advanced generator, you need to check-tag all keystones you want."));
                 Close();
                 return false;
             }
