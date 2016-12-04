@@ -695,15 +695,43 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Rectangle Grid.ColumnSpan="2" Height="2" Fill="{DynamicResource GrayNormalBrush}" VerticalAlignment="Top" />
-                            <local:Inventory HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,0,0" ItemAttributes="{Binding ItemAttributes, ElementName=window}" Grid.Column="0"/>
-                            <Button Grid.Column="0" Margin="10" Click="Button_Craft_Click" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="100" MinHeight="40">
-                                <l:Catalog Message="Craft new item"/>
-                            </Button>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
 
-                            <Rectangle Name="deleteRect" Fill="DarkGreen" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True" DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
+                            <Rectangle Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                                       Height="2" Fill="{DynamicResource GrayNormalBrush}" VerticalAlignment="Top" />
+                            
+                            <UniformGrid Grid.Column="0" Grid.Row="0"
+                                         Margin="0 6 62 0"
+                                         Height="32" Width="480"
+                                         Rows="1"
+                                         HorizontalAlignment="Right">
+                                <Button Margin="4 0"
+                                        Click="Menu_ImportItems">
+                                    <l:Catalog>Import Items</l:Catalog>
+                                </Button>
+                                <Button Margin="4 0"
+                                        Click="Menu_ImportStash">
+                                    <l:Catalog>Import Stash</l:Catalog>
+                                </Button>
+                                <Button Margin="4 0"
+                                        Click="Button_Craft_Click">
+                                    <l:Catalog Message="Craft new item"/>
+                                </Button>
+                            </UniformGrid>
 
-                            <local:Stash x:Name="Stash" Grid.Column="1" HorizontalAlignment="Left" Margin="0,4,0,0" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
+                            <local:Inventory Grid.Column="0" Grid.Row="1"
+                                             HorizontalAlignment="Right" VerticalAlignment="Top"
+                                             ItemAttributes="{Binding ItemAttributes, ElementName=window}"/>
+
+                            <Rectangle Grid.Column="0" Grid.Row="1"
+                                       Name="deleteRect" Fill="DarkGreen" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True"
+                                       DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
+
+                            <local:Stash Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                                         x:Name="Stash" HorizontalAlignment="Left" Margin="0,4,0,0" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
                         </Grid>
                     </ScrollViewer>
                 </TabItem>
