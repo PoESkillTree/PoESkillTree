@@ -63,7 +63,7 @@ namespace POESKillTree.Model.Serialization
         /// Imports the build located at <paramref name="buildPath"/>. <see cref="IPersistentData.SaveBuild"/> may be
         /// called by this method.
         /// </summary>
-        public async Task ImportBuildAsync(string buildPath)
+        public async Task ImportBuildFromFileAsync(string buildPath)
         {
             const string extension = SerializationConstants.BuildFileExtension;
             if (!File.Exists(buildPath) || Path.GetExtension(buildPath) != extension)
@@ -101,54 +101,52 @@ namespace POESKillTree.Model.Serialization
             else
             {
                 // Else, proper import
-                PoEBuild build;
-                try
+                var build = await ImportBuildAsync(
+                    async () => await SerializationUtils.XmlDeserializeFileAsync<XmlBuild>(buildPath));
+                if (build != null)
                 {
-                    var xmlBuild = await SerializationUtils.XmlDeserializeFileAsync<XmlBuild>(buildPath);
-                    build = ConvertFromXmlBuild(xmlBuild);
-                    if (!CheckVersion(xmlBuild.Version))
-                    {
-                        Log.Warn($"Build is of an old version and can't be imported (version {xmlBuild.Version})");
-                        await DialogCoordinator.ShowWarningAsync(PersistentData,
-                            L10n.Message("Build is of an old version and can't be imported"),
-                            title: L10n.Message("Import failed"));
-                        return;
-                    }
+                    build.Name = Util.FindDistinctName(build.Name, PersistentData.RootBuild.Builds.Select(b => b.Name));
+                    PersistentData.RootBuild.Builds.Add(build);
+                    PersistentData.CurrentBuild = build;
+                    PersistentData.SelectedBuild = build;
+                    PersistentData.SaveBuild(PersistentData.RootBuild);
                 }
-                catch (Exception e)
-                {
-                    Log.Error("Error while importing build", e);
-                    await DialogCoordinator.ShowErrorAsync(PersistentData, L10n.Message("Could not import build"),
-                            e.Message, L10n.Message("Import failed"));
-                    return;
-                }
-                var message = L10n.Message("Enter the name for the imported build.\n\n")
-                    + L10n.Message("This build can be saved to your build directory after this dialog.\n")
-                    + L10n.Message("The originally imported file will not be modified.");
-                var newName = await DialogCoordinator.ShowValidatingInputDialogAsync(PersistentData,
-                    L10n.Message("Import build"), message, build.Name, ValidateImportedBuildName);
-                if (string.IsNullOrEmpty(newName))
-                    return;
-                build.Name = newName;
-                PersistentData.RootBuild.Builds.Add(build);
-
-                PersistentData.CurrentBuild = build;
-                PersistentData.SelectedBuild = build;
-                PersistentData.SaveBuild(PersistentData.RootBuild);
             }
         }
 
-        private string ValidateImportedBuildName(string name)
+        /// <summary>
+        /// Imports the build given as a xml string. <see cref="IPersistentData.SaveBuild"/> may be
+        /// called by this method.
+        /// </summary>
+        public Task<PoEBuild> ImportBuildFromStringAsync(string buildXml)
         {
-            if (PersistentData.RootBuild.Builds.Any(b => b.Name == name))
-                return L10n.Message("A build or folder with this name already exists.");
-            if (string.IsNullOrEmpty(name))
-                return L10n.Message("Value is required.");
-            string message;
-            var fullPath = Path.Combine(PersistentData.Options.BuildsSavePath,
-                SerializationUtils.EncodeFileName(name) + SerializationConstants.BuildFileExtension);
-            PathEx.IsPathValid(fullPath, out message, mustBeFile: true);
-            return message;
+            return ImportBuildAsync(
+                () => Task.FromResult(SerializationUtils.XmlDeserializeString<XmlBuild>(buildXml)));
+        }
+
+        private async Task<PoEBuild> ImportBuildAsync(Func<Task<XmlBuild>> supplier)
+        {
+            try
+            {
+                var xmlBuild = await supplier();
+                var build = ConvertFromXmlBuild(xmlBuild);
+                if (!CheckVersion(xmlBuild.Version))
+                {
+                    Log.Warn($"Build is of an old version and can't be imported (version {xmlBuild.Version})");
+                    await DialogCoordinator.ShowWarningAsync(PersistentData,
+                        L10n.Message("Build is of an old version and can't be imported"),
+                        title: L10n.Message("Import failed"));
+                    return null;
+                }
+                return build;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Error while importing build", e);
+                await DialogCoordinator.ShowErrorAsync(PersistentData, L10n.Message("Could not import build"),
+                        e.Message, L10n.Message("Import failed"));
+                return null;
+            }
         }
 
         private PoEBuild SelectOrCreateCurrentBuild()

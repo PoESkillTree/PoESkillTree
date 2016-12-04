@@ -445,8 +445,6 @@ namespace POESKillTree.Views
                 ItemDB.Merge("ItemsLocal.xml");
                 ItemDB.Index();
             });
-            // We can use this now as setting the context for this to the SkillTree instance happens later
-            DialogParticipation.SetRegister(this, PersistentData);
             var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance);
             await itemDBTask;
             await persistentDataTask;

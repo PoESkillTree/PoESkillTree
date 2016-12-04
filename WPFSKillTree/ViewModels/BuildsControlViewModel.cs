@@ -105,6 +105,9 @@ namespace POESKillTree.ViewModels
 
         public ICommand CollapseAllCommand { get; }
 
+        public ICommand ExportCurrentToClipboardCommand { get; }
+        public ICommand ImportCurrentFromClipboardCommand { get; }
+
         public IPersistentData PersistentData { get; }
 
         private BuildViewModel _currentBuild;
@@ -187,7 +190,8 @@ namespace POESKillTree.ViewModels
 
         public IReadOnlyList<ClassFilterItem> ClassFilterItems { get; }
 
-        public BuildsControlViewModel(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData, ISkillTree skillTree)
+        public BuildsControlViewModel(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData,
+            ISkillTree skillTree)
         {
             _dialogCoordinator = dialogCoordinator;
             PersistentData = persistentData;
@@ -261,6 +265,8 @@ namespace POESKillTree.ViewModels
             OpenBuildsSavePathCommand = new RelayCommand(() => Process.Start(PersistentData.Options.BuildsSavePath));
             ExpandAllCommand = new RelayCommand(ExpandAll);
             CollapseAllCommand = new RelayCommand(CollapseAll);
+            ExportCurrentToClipboardCommand = new RelayCommand(() => CopyToClipboard(CurrentBuild.Build));
+            ImportCurrentFromClipboardCommand = new AsyncRelayCommand(ImportCurrentFromClipboard, CanPasteFromClipboard);
 
             SkillTree = skillTree;
             ClassFilterItems = GenerateAscendancyClassItems().ToList();
@@ -341,7 +347,8 @@ namespace POESKillTree.ViewModels
                 message += L10n.Message("\nAll unsaved changes will be lost.");
             }
             message += L10n.Message("\n\nYou can also reload through the 'File' menu.");
-            var result = await _dialogCoordinator.ShowQuestionAsync(this, message, title: L10n.Message("Builds changed"));
+            var result =
+                await _dialogCoordinator.ShowQuestionAsync(this, message, title: L10n.Message("Builds changed"));
             if (result == MessageBoxResult.Yes)
             {
                 await PersistentData.ReloadBuildsAsync();
@@ -502,15 +509,27 @@ namespace POESKillTree.ViewModels
             await DeleteBuildFile(build);
             _buildClipboard = build;
             _clipboardIsCopy = false;
+
+            var poeBuild = build.Build as PoEBuild;
+            if (poeBuild != null)
+            {
+                CopyToClipboard(poeBuild);
+            }
         }
 
         private void Copy(IBuildViewModel<PoEBuild> build)
         {
             _buildClipboard = build;
             _clipboardIsCopy = true;
+            CopyToClipboard(build.Build);
         }
 
         private bool CanPaste(IBuildViewModel target)
+        {
+            return CanPasteFromClipboard() || CanPasteNonClipboard(target);
+        }
+
+        private bool CanPasteNonClipboard(IBuildViewModel target)
         {
             if (target == null || _buildClipboard == null)
                 return false;
@@ -522,7 +541,15 @@ namespace POESKillTree.ViewModels
         {
             var targetFolder = target as IBuildFolderViewModel ?? target.Parent;
             IBuildViewModel pasted;
-            if (_clipboardIsCopy)
+
+            if (CanPasteFromClipboard() && !CanPasteNonClipboard(target))
+            {
+                var b = await PasteFromClipboard(BuildRoot);
+                if (b == null)
+                    return;
+                pasted = new BuildViewModel(b, Filter);
+            }
+            else if (_clipboardIsCopy)
             {
                 var newBuild = _buildClipboard.Build.DeepClone() as PoEBuild;
                 if (newBuild == null)
@@ -597,6 +624,41 @@ namespace POESKillTree.ViewModels
         private void CollapseAll()
         {
             TreeTraverse<IBuildFolderViewModel>(b => b.Build.IsExpanded = false, BuildRoot);
+        }
+
+        private void CopyToClipboard(PoEBuild build)
+        {
+            Clipboard.SetText(PersistentData.ExportBuild(build));
+        }
+
+        private static bool CanPasteFromClipboard()
+        {
+            if (!Clipboard.ContainsText())
+            {
+                return false;
+            }
+            var str = Clipboard.GetText();
+            return str.StartsWith("<?xml ") && str.Contains("<PoEBuild ") && str.Contains("</PoEBuild>");
+        }
+
+        private async Task<PoEBuild> PasteFromClipboard(IBuildFolderViewModel targetFolder)
+        {
+            var str = Clipboard.GetText();
+            var newBuild = await PersistentData.ImportBuildAsync(str);
+            if (newBuild == null)
+                return null;
+            newBuild.Name = Util.FindDistinctName(newBuild.Name, targetFolder.Children.Select(b => b.Build.Name));
+            return newBuild;
+        }
+
+        private async Task ImportCurrentFromClipboard()
+        {
+            var pasted = await PasteFromClipboard(BuildRoot);
+            if (pasted == null)
+                return;
+            var build = new BuildViewModel(pasted, Filter);
+            BuildRoot.Children.Add(build);
+            CurrentBuild = build;
         }
 
         #endregion

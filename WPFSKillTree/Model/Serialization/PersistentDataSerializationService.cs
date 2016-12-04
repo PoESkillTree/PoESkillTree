@@ -121,7 +121,7 @@ namespace POESKillTree.Model.Serialization
                 _deserializer.SaveBuildChanges();
                 if (!string.IsNullOrEmpty(_importedBuildPath))
                 {
-                    await _currentDeserializer.ImportBuildAsync(_importedBuildPath);
+                    await _currentDeserializer.ImportBuildFromFileAsync(_importedBuildPath);
                 }
             }
 
@@ -159,6 +159,16 @@ namespace POESKillTree.Model.Serialization
             {
                 await _currentDeserializer.ReloadBuildsAsync();
                 _serializer = new PersistentDataSerializer(this);
+            }
+
+            public override Task<PoEBuild> ImportBuildAsync(string buildXml)
+            {
+                return _currentDeserializer.ImportBuildFromStringAsync(buildXml);
+            }
+
+            public override string ExportBuild(PoEBuild build)
+            {
+                return _serializer.ExportBuildToString(build);
             }
         }
     }

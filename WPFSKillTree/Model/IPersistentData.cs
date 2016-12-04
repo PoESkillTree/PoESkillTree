@@ -58,5 +58,16 @@ namespace POESKillTree.Model
         /// Asynchronously reloads all builds from the BuildsSavePath. All current builds are discarded.
         /// </summary>
         Task ReloadBuildsAsync();
+
+        /// <summary>
+        /// Asynchronously imports a PoEBuild from the given xml string and adds it to the root folder as current
+        /// build if it could be imported successfully.
+        /// </summary>
+        Task<PoEBuild> ImportBuildAsync(string buildXml);
+
+        /// <summary>
+        /// Exports the PoEBuild as a xml string and returns that string.
+        /// </summary>
+        string ExportBuild(PoEBuild build);
     }
 }

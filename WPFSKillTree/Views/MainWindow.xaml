@@ -93,7 +93,8 @@
         </Grid.RowDefinitions>
 
         <!-- grid row 0 - upper part-->
-        <Menu IsMainMenu="True" x:Name="menu1" Grid.Row="0" Margin="0,0,0,2">
+        <Menu IsMainMenu="True" x:Name="menu1" Grid.Row="0" Margin="0,0,0,2"
+             dialogs:DialogParticipation.Register="{Binding PersistentData}">
             <MenuItem>
                 <MenuItem.Header>
                     <l:Catalog Message="_File" />
@@ -141,6 +142,23 @@
                           Command="{Binding BuildsControlViewModel.SaveAllBuildsCommand}">
                     <MenuItem.Header>
                         <l:Catalog Message="Save A_ll" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Command="{Binding BuildsControlViewModel.ExportCurrentToClipboardCommand}">
+                    <MenuItem.Header>
+                        <AccessText>
+                            <Binding Path="BuildsControlViewModel.CurrentBuild.Build.Name">
+                                <Binding.StringFormat>
+                                    <l:Catalog Message="Export {0} to clipboard" />
+                                </Binding.StringFormat>
+                            </Binding>
+                        </AccessText>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding BuildsControlViewModel.ImportCurrentFromClipboardCommand}">
+                    <MenuItem.Header>
+                        <l:Catalog Message="Import build from clipboard" />
                     </MenuItem.Header>
                 </MenuItem>
                 <Separator/>

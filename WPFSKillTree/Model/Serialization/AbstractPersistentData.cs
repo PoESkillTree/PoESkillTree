@@ -63,5 +63,9 @@ namespace POESKillTree.Model.Serialization
         public abstract void DeleteBuild(IBuild build);
 
         public abstract Task ReloadBuildsAsync();
+
+        public abstract Task<PoEBuild> ImportBuildAsync(string buildXml);
+
+        public abstract string ExportBuild(PoEBuild build);
     }
 }

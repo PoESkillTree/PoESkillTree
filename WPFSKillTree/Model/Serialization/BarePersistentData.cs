@@ -39,5 +39,15 @@ namespace POESKillTree.Model.Serialization
         {
             throw new System.NotSupportedException();
         }
+
+        public override Task<PoEBuild> ImportBuildAsync(string buildXml)
+        {
+            throw new System.NotSupportedException();
+        }
+
+        public override string ExportBuild(PoEBuild build)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

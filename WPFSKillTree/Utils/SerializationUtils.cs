@@ -36,13 +36,30 @@ namespace POESKillTree.Utils
         /// <summary>
         /// Serializes <paramref name="obj"/> to <paramref name="filePath"/> using XmlSerializer.
         /// </summary>
-        public static void XmlSerialize<T>(T obj, string filePath)
+        public static void XmlSerializeToFile<T>(T obj, string filePath)
         {
             using (var writer = new StreamWriter(filePath))
             {
-                var serializer = new XmlSerializer(typeof(T));
-                serializer.Serialize(writer, obj);
+                XmlSerializeToWriter(obj, writer);
             }
+        }
+
+        /// <summary>
+        /// Serializes <paramref name="obj"/> to a string using XmlSerializer.
+        /// </summary>
+        public static string XmlSerializeToString<T>(T obj)
+        {
+            using (var writer = new StringWriter())
+            {
+                XmlSerializeToWriter(obj, writer);
+                return writer.ToString();
+            }
+        }
+
+        private static void XmlSerializeToWriter<T>(T obj, TextWriter writer)
+        {
+            var serializer = new XmlSerializer(typeof(T));
+            serializer.Serialize(writer, obj);
         }
 
         /// <summary>

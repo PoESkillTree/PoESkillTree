@@ -76,7 +76,7 @@ namespace POESKillTree.Model.Serialization
                 StashBookmarks = _persistentData.StashBookmarks.ToList(),
                 LeagueStashes = stashes
             };
-            SerializationUtils.XmlSerialize(xmlPersistentData, filePath);
+            SerializationUtils.XmlSerializeToFile(xmlPersistentData, filePath);
             SerializeStash();
         }
 
@@ -251,6 +251,15 @@ namespace POESKillTree.Model.Serialization
             _names.Remove(build);
         }
 
+        /// <summary>
+        /// Serializes the given build to a xml string and returns that string.
+        /// </summary>
+        public string ExportBuildToString(PoEBuild build)
+        {
+            var xmlBuild = ToXmlBuild(build);
+            return SerializationUtils.XmlSerializeToString(xmlBuild);
+        }
+
         private static void SerializeFolder(string path, BuildFolder folder)
         {
             var xmlFolder = new XmlBuildFolder
@@ -260,12 +269,12 @@ namespace POESKillTree.Model.Serialization
                 Builds = folder.Builds.Select(b => b.Name).ToList()
             };
             Directory.CreateDirectory(path);
-            SerializationUtils.XmlSerialize(xmlFolder, Path.Combine(path, BuildFolderFileName));
+            SerializationUtils.XmlSerializeToFile(xmlFolder, Path.Combine(path, BuildFolderFileName));
         }
 
-        private static void SerializeBuild(string path, PoEBuild build)
+        private static XmlBuild ToXmlBuild(PoEBuild build)
         {
-            var xmlBuild = new XmlBuild
+            return new XmlBuild
             {
                 AccountName = build.AccountName,
                 AdditionalData = build.AdditionalData.ToString(),
@@ -283,7 +292,12 @@ namespace POESKillTree.Model.Serialization
                 TreeUrl = build.TreeUrl,
                 Version = BuildVersion.ToString()
             };
-            SerializationUtils.XmlSerialize(xmlBuild, path + BuildFileExtension);
+        }
+
+        private static void SerializeBuild(string path, PoEBuild build)
+        {
+            var xmlBuild = ToXmlBuild(build);
+            SerializationUtils.XmlSerializeToFile(xmlBuild, path + BuildFileExtension);
             build.KeepChanges();
         }
     }
