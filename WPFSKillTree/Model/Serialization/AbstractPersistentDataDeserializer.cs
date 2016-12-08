@@ -65,7 +65,7 @@ namespace POESKillTree.Model.Serialization
             {
                 if (AppData.IsPortable)
                 {
-                    PersistentData.Options.BuildsSavePath = AppData.GetFolder("Builds");
+                    PersistentData.Options.BuildsSavePath = AppData.ToRelativePath(AppData.GetFolder("Builds"));
                 }
                 else
                 {

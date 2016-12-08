@@ -100,6 +100,21 @@ namespace POESKillTree.Utils
             }
         }
 
+        /// <summary>
+        /// Converts the given path to a path relative to the program executable.
+        /// Does nothing if the given path is already relative.
+        /// </summary>
+        public static string ToRelativePath(string path)
+        {
+            if (path != Path.GetFullPath(path))
+            {
+                // already relative
+                return path;
+            }    
+            var referenceUri = new Uri(ProgramDirectory + Path.DirectorySeparatorChar);
+            return referenceUri.MakeRelativeUri(new Uri(path)).ToString();
+        }
+
         // Sets ApplicationData path.
         // Use within UnitTest project only!
         public static void SetApplicationData(string path)

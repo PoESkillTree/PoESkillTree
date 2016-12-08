@@ -18,6 +18,7 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
         private readonly bool _isFolderPicker;
         private readonly string _validationSubPath;
         private readonly Func<string, string> _additionalValidationFunc;
+        private readonly bool _useRelativePaths;
 
         public string Message { get; }
 
@@ -52,21 +53,24 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
             _isFolderPicker = settings.IsFolderPicker;
             _validationSubPath = settings.ValidationSubPath;
             _additionalValidationFunc = settings.AdditionalValidationFunc;
+            _useRelativePaths = AppData.IsPortable;
             FilePath = settings.DefaultPath;
             SelectFileCommand = new RelayCommand(SelectFile);
         }
 
         private void SelectFile()
         {
+            var path = Path.GetFullPath(SanitizedFilePath);
             var dialog = new CommonOpenFileDialog
             {
                 IsFolderPicker = _isFolderPicker,
-                InitialDirectory = Path.GetDirectoryName(SanitizedFilePath),
-                DefaultFileName = Path.GetFileName(SanitizedFilePath)
+                InitialDirectory = Path.GetDirectoryName(path),
+                DefaultFileName = Path.GetFileName(path)
             };
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                FilePath = dialog.FileName;
+                path = dialog.FileName;
+                FilePath = _useRelativePaths ? AppData.ToRelativePath(path) : path;
             }
         }
 
@@ -77,7 +81,7 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
             string message;
             var trimmed = PathEx.TrimTrailingDirectorySeparators(FilePath);
             if (PathEx.IsPathValid(trimmed, out message, mustBeDirectory: _isFolderPicker, mustBeFile: !_isFolderPicker,
-                mustBeAbsolute: true))
+                mustBeAbsolute: !_useRelativePaths))
             {
                 if (!string.IsNullOrEmpty(_validationSubPath))
                 {
@@ -87,7 +91,7 @@ namespace POESKillTree.Controls.Dialogs.ViewModels
                 {
                     message = _additionalValidationFunc(trimmed);
                 }
-                SanitizedFilePath = trimmed;
+                SanitizedFilePath = _useRelativePaths ? AppData.ToRelativePath(trimmed) : trimmed;
             }
             return new[] {message};
         }
