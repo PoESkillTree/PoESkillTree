@@ -10,6 +10,7 @@
              xmlns:pseudoAttributes="clr-namespace:POESKillTree.TreeGenerator.Model.PseudoAttributes"
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:controls="clr-namespace:POESKillTree.Controls"
              mc:Ignorable="d" 
              x:Name="Control"
              d:DesignHeight="460" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">
@@ -198,9 +199,9 @@
                         </Button>
                     </UniformGrid>
 
-                    <ComboBox Grid.Column="0" Grid.Row="1" Margin="4,4,2,4"
-                              SelectedItem="{Binding NewAttributeConstraint.Data}"
-                              ItemsSource="{Binding AttributesView}">
+                    <controls:SearchableComboBox Grid.Column="0" Grid.Row="1" Margin="4,4,2,4"
+                                                 SelectedItem="{Binding NewAttributeConstraint.Data}"
+                                                 ItemsSource="{Binding AttributesView}">
                         <ComboBox.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.HeaderTemplate>
@@ -210,7 +211,7 @@
                                 </GroupStyle.HeaderTemplate>
                             </GroupStyle>
                         </ComboBox.GroupStyle>
-                    </ComboBox>
+                    </controls:SearchableComboBox>
                     <metroControls:NumericUpDown Grid.Column="1" Grid.Row="1" Minimum="0.01" Margin="2,4" StringFormat="{}{0:#0.##}"
                                                  Value="{Binding NewAttributeConstraint.TargetValue}"/>
                     <Slider Grid.Column="2" Grid.Row="1" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2,6"
@@ -291,9 +292,9 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <ComboBox Grid.Column="0" Grid.Row="0" Margin="4,4,2,4"
-                              SelectedItem="{Binding NewPseudoAttributeConstraint.Data}"
-                              ItemsSource="{Binding PseudoAttributesView}">
+                    <controls:SearchableComboBox Grid.Column="0" Grid.Row="0" Margin="4,4,2,4"
+                                                 SelectedItem="{Binding NewPseudoAttributeConstraint.Data}"
+                                                 ItemsSource="{Binding PseudoAttributesView}">
                         <ComboBox.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.HeaderTemplate>
@@ -303,7 +304,7 @@
                                 </GroupStyle.HeaderTemplate>
                             </GroupStyle>
                         </ComboBox.GroupStyle>
-                    </ComboBox>
+                    </controls:SearchableComboBox>
                     <metroControls:NumericUpDown Grid.Column="1" Grid.Row="0" Minimum="0.01" Margin="2,4" StringFormat="{}{0:#0.##}"
                                                  Value="{Binding NewPseudoAttributeConstraint.TargetValue}"/>
                     <Slider Grid.Column="2" Grid.Row="0" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2,6"

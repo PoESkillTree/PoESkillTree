@@ -103,7 +103,7 @@
                           Command="{Binding BuildsControlViewModel.NewBuildCommand}"
                           CommandParameter="{Binding BuildsControlViewModel.BuildRoot}">
                     <MenuItem.Header>
-                        <l:Catalog Message="_New…" />
+                        <l:Catalog Message="_New" />
                     </MenuItem.Header>
                     <MenuItem.Icon>
                         <iconPacks:PackIconModern Kind="PageNew" HorizontalAlignment="Center" />

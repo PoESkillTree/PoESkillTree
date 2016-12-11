@@ -12,6 +12,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:builds="clr-namespace:POESKillTree.ViewModels.Builds"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:controls1="clr-namespace:POESKillTree.Controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:BuildsControlViewModel}"
              x:Name="Control">
@@ -35,10 +36,10 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <ComboBox Width="110" Margin="5 0"
-                      SelectedItem="{Binding ClassFilter}"
-                      SelectedIndex="0"
-                      ItemsSource="{Binding ClassFilterItems}">
+            <controls1:SearchableComboBox Width="110" Margin="5 0"
+                                          SelectedItem="{Binding ClassFilter}"
+                                          SelectedIndex="0"
+                                          ItemsSource="{Binding ClassFilterItems}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="viewModels:ClassFilterItem">
                         <TextBlock>
@@ -74,7 +75,7 @@
                         </TextBlock>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
-            </ComboBox>
+            </controls1:SearchableComboBox>
             <TextBox VerticalContentAlignment="Center"
                      controls:TextBoxHelper.ClearTextButton="True"
                      controls:TextBoxHelper.SelectAllOnFocus="True"
