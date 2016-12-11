@@ -201,11 +201,7 @@ namespace POESKillTree.Utils
             {
                 var stats = new List<WikiItemStat>();
 
-                var groupColor = WikiStatColor.Default;
-                if (statGroup.GetAttributeValue("class", "").Contains("-value"))
-                    groupColor = WikiStatColor.Value;
-                else if (statGroup.GetAttributeValue("class", "").Contains("-mod"))
-                    groupColor = WikiStatColor.Mod;
+                var groupColor = ParseStatColor(statGroup) ?? WikiStatColor.Default;
 
                 var currentStats = new List<Tuple<string, WikiStatColor>>();
                 foreach (var childNode in statGroup.ChildNodes)
@@ -217,13 +213,9 @@ namespace POESKillTree.Utils
                         continue;
                     }
 
-                    var color = groupColor;
-                    if (childNode.GetAttributeValue("class", "").Contains("-value"))
-                        color = WikiStatColor.Value;
-                    else if (childNode.GetAttributeValue("class", "").Contains("-mod"))
-                        color = WikiStatColor.Mod;
-                    else if (childNode.GetAttributeValue("class", "").Contains("-default"))
-                        color = WikiStatColor.Default;
+                    var color = ParseStatColor(childNode) ?? groupColor;
+                    if (childNode.HasChildNodes)
+                        color = ParseStatColor(childNode.FirstChild) ?? color;
                     var text = WebUtility.HtmlDecode(childNode.InnerText);
 
                     var last = currentStats.LastOrDefault();
@@ -241,6 +233,17 @@ namespace POESKillTree.Utils
             }
             wikiItemBox.StatGroups = statGroups.ToArray();
             return wikiItemBox;
+        }
+
+        private static WikiStatColor? ParseStatColor(HtmlNode node)
+        {
+            if (node.GetAttributeValue("class", "").Contains("-value"))
+                return WikiStatColor.Value;
+            if (node.GetAttributeValue("class", "").Contains("-mod"))
+                return WikiStatColor.Mod;
+            if (node.GetAttributeValue("class", "").Contains("-default"))
+                return WikiStatColor.Default;
+            return null;
         }
 
 

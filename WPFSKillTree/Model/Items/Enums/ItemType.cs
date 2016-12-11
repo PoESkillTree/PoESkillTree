@@ -11,6 +11,8 @@ namespace POESKillTree.Model.Items.Enums
     public enum ItemType
     {
         Unknown,
+        // For crafting display purposes
+        Any,
         // One Handed weapons
         OneHandedSword,
         OneHandedAxe,
@@ -159,7 +161,8 @@ namespace POESKillTree.Model.Items.Enums
                 ItemType.CobaltJewel, ItemType.CrimsonJewel, ItemType.ViridianJewel
             }},
             {ItemGroup.Gem, new [] {ItemType.Gem}},
-            {ItemGroup.Unknown, new [] {ItemType.Unknown}}
+            {ItemGroup.Unknown, new [] {ItemType.Unknown}},
+            {ItemGroup.Any, new [] {ItemType.Any}}
         };
 
         private static readonly IReadOnlyDictionary<ItemType, ItemGroup> TypeToGroup =

@@ -201,6 +201,7 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="Utils\Wpf\ComboBoxTemplateSelector.cs" />
     <Compile Include="ViewModels\CommandCollectionViewModel.cs" />
     <Compile Include="Controls\Dialogs\BaseDialog.cs" />
     <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />

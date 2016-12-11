@@ -73,7 +73,7 @@
                         </ComboBox.Style>
                     </ComboBox>
                 </Grid>
-                <ComboBox x:Name="BaseSelection" ItemsSource="{Binding BaseList, ElementName=Window}" SelectedIndex="0" SelectionChanged="BaseSelection_SelectionChanged" >
+                <local:SearchableComboBox x:Name="BaseSelection" ItemsSource="{Binding BaseList, ElementName=Window}" SelectedIndex="0" SelectionChanged="BaseSelection_SelectionChanged" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type items:ItemBase}">
                             <StackPanel Orientation="Horizontal">
@@ -83,7 +83,7 @@
                             </StackPanel>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
-                </ComboBox>
+                </local:SearchableComboBox>
                 <local:ModSelector x:Name="MsQuality" CanDeselect="false" SelectedValuesChanged="ms_SelectedValuesChanged"
                                    Height="25">
                     <local:ModSelector.Style>

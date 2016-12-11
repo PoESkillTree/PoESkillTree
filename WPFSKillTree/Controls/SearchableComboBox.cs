@@ -3,7 +3,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -12,8 +11,6 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Controls
 {
-    // todo If focus is moved by the code here, it scrolls weirdly.
-    // todo If all items are filtered out, it should still select one (some kind of default value? show all items?)
     [TemplatePart(Name = "PART_SearchBox", Type = typeof(TextBox))]
     public class SearchableComboBox : ComboBox
     {
@@ -70,20 +67,7 @@ namespace POESKillTree.Controls
                 return;
             var current = SelectedItem;
             _itemsSourceView.Refresh();
-            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-            {
-                ItemContainerGenerator.StatusChanged += ItemContainerGeneratorOnStatusChanged;
-                SelectSelectedItem(current);
-            }));
-        }
-
-        private void ItemContainerGeneratorOnStatusChanged(object sender, EventArgs eventArgs)
-        {
-            if (ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-            {
-                ItemContainerGenerator.StatusChanged -= ItemContainerGeneratorOnStatusChanged;
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(FocusSelectedItem));
-            }
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => SelectSelectedItem(current)));
         }
 
         private void SelectSelectedItem(object previousSelected)
@@ -210,52 +194,52 @@ namespace POESKillTree.Controls
             _searchBox.RaiseEvent(args);
         }
 
-        private void FocusSelectedItem()
-        {
-            if (SelectedItem != null)
-            {
-                var container = ItemContainerGenerator.ContainerFromItem(SelectedItem) as UIElement;
-                container?.Focus();
-            }
-        }
-
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (HasItems && IsDropDownOpen && (e.Key == Key.Down || e.Key == Key.Up))
             {
-                var focusedBefore = Keyboard.FocusedElement as UIElement;
-                base.OnKeyDown(e);
-
-                if (focusedBefore == Keyboard.FocusedElement as UIElement)
+                var focused = Keyboard.FocusedElement as UIElement;
+                var index = -1;
+                if (focused != null)
                 {
-                    if (focusedBefore == null)
-                    {
-                        FocusSelectedItem();
-                        return;
-                    }
+                    index = ItemContainerGenerator.IndexFromContainer(focused);
+                }
+                if (index < 0 || index >= Items.Count)
+                {
+                    index = SelectedItem == null ? 0 : Items.IndexOf(SelectedItem);
+                }
 
-                    var index = ItemContainerGenerator.IndexFromContainer(focusedBefore);
-                    if (index < 0 || index >= Items.Count)
-                    {
-                        FocusSelectedItem();
-                        return;
-                    }
-
-                    if (e.Key == Key.Down)
-                    {
+                if (e.Key == Key.Down)
+                {
+                    if (index < Items.Count - 1)
                         index++;
-                    }
-                    else
-                    {
+                }
+                else
+                {
+                    if (index > 0)
                         index--;
-                    }
-                    if (index >= 0 && index < Items.Count)
+                }
+
+                var container = ItemContainerGenerator.ContainerFromIndex(index) as UIElement;
+                container?.Focus();
+                e.Handled = true;
+                return;
+            }
+
+            if (HasItems && IsDropDownOpen && e.Key == Key.Enter)
+            {
+                var focused = Keyboard.FocusedElement as UIElement;
+                if (focused != null)
+                {
+                    var item = ItemContainerGenerator.ItemFromContainer(focused);
+                    if (item != null && item != DependencyProperty.UnsetValue)
                     {
-                        var container = ItemContainerGenerator.ContainerFromIndex(index) as UIElement;
-                        container?.Focus();
+                        SelectedItem = item;
                     }
                 }
-                return;
+
+                IsDropDownOpen = false;
+                e.Handled = true;
             }
 
             base.OnKeyDown(e);
@@ -264,6 +248,12 @@ namespace POESKillTree.Controls
             {
                 EditingCommands.Backspace.Execute(null, _searchBox);
             }
+        }
+
+        protected override void OnDropDownClosed(EventArgs e)
+        {
+            base.OnDropDownClosed(e);
+            SearchFilter = string.Empty;
         }
 
 
