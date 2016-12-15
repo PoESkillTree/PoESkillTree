@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using log4net;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
 using UpdateDB.DataLoading;
 using UpdateDB.DataLoading.Gems;
 
@@ -64,6 +65,8 @@ namespace UpdateDB
             }
             Log.InfoFormat("Using output directory {0}.", _savePath);
             _savePath = Path.Combine(_savePath, "Data");
+
+            _loaderDefinitions.ForEach(l => l.DataLoader.HttpClient = _httpClient);
 
             // The Affix file is big enough to be starved by other requests sometimes.
             _httpClient.Timeout = TimeSpan.FromSeconds(120);
@@ -140,7 +143,7 @@ namespace UpdateDB
                     Directory.CreateDirectory(tmpPath);
                 }
 
-                await dataLoader.LoadAndSaveAsync(_httpClient, tmpPath);
+                await dataLoader.LoadAndSaveAsync(tmpPath);
 
                 if (isFolder)
                     DirectoryEx.MoveOverwriting(tmpPath, fullPath);
@@ -150,7 +153,7 @@ namespace UpdateDB
             else
             {
                 // This is for SkillTreeLoader which writes to multiple files/folders and does the tmp stuff itself
-                await dataLoader.LoadAndSaveAsync(_httpClient, fullPath);
+                await dataLoader.LoadAndSaveAsync(fullPath);
             }
             Log.InfoFormat("Loaded {0}!", name);
         }

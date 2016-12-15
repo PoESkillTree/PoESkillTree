@@ -66,7 +66,7 @@ namespace UpdateDB.DataLoading.Gems
         public HttpClient HttpClient { private get; set; }
 
         // Used so the http client does not get bombarded with requests (which leads to timeouts).
-        // HttpClient allows 2 concurrent requests per host per default, so 4 semaphore slots are be enough.
+        // HttpClient allows 2 concurrent requests per host per default, so 4 semaphore slots are enough.
         private readonly SemaphoreSlim _clientSema = new SemaphoreSlim(4);
 
         // Fetches gem data.

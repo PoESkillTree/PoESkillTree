@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -74,9 +73,9 @@ namespace UpdateDB.DataLoading
             Tuple.Create(new Regex(@"#% increased (\w+) Critical Strike Multiplier"), "+#% to $1 Critical Strike Multiplier")
         };
 
-        protected override async Task LoadAsync(HttpClient httpClient)
+        protected override async Task LoadAsync()
         {
-            var file = await httpClient.GetStringAsync(Url);
+            var file = await HttpClient.GetStringAsync(Url);
             file = file.Replace(Root + " = ", "{ \"" + Root + "\": ") + "}";
 
             var json = JObject.Parse(file);

@@ -468,7 +468,7 @@ namespace POESKillTree.Model.Items
             var attrColor = attrRequirementsMultiplier == 100
                 ? ItemMod.ValueColoring.White
                 : ItemMod.ValueColoring.LocallyAffected;
-            if (BaseType.Level > 0 || minRequiredLevel > 0)
+            if (BaseType.Level > 1 || minRequiredLevel > 1)
             {
                 requirements.Add("Level #");
                 values.Add(Math.Max(BaseType.Level, minRequiredLevel));

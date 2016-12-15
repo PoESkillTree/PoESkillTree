@@ -201,6 +201,12 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="Utils\Extensions\NumberExtensions.cs" />
+    <Compile Include="Utils\WikiApi\ApiAccessor.cs" />
+    <Compile Include="Utils\WikiApi\ApiConditionBuilder.cs" />
+    <Compile Include="Utils\WikiApi\PropertyBuilder.cs" />
+    <Compile Include="Utils\WikiApi\ItemRdfPredicates.cs" />
+    <Compile Include="Utils\WikiApi\WikiApiUtils.cs" />
     <Compile Include="Utils\Wpf\ComboBoxTemplateSelector.cs" />
     <Compile Include="ViewModels\CommandCollectionViewModel.cs" />
     <Compile Include="Controls\Dialogs\BaseDialog.cs" />

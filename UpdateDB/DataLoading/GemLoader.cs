@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using log4net;
@@ -37,9 +36,9 @@ namespace UpdateDB.DataLoading
             _gemReader = gemReader;
         }
 
-        protected override Task LoadAsync(HttpClient httpClient)
+        protected override Task LoadAsync()
         {
-            _gemReader.HttpClient = httpClient;
+            _gemReader.HttpClient = HttpClient;
             string singleGemName;
             if (SuppliedArguments.TryGetValue("single", out singleGemName) && singleGemName != null)
             {
@@ -54,7 +53,7 @@ namespace UpdateDB.DataLoading
             {
                 return Update();
             }
-            return Overwrite(httpClient);
+            return Overwrite();
         }
 
         private async Task UpdateSingle(string singleGemName)
@@ -102,9 +101,9 @@ namespace UpdateDB.DataLoading
             return true;
         }
 
-        private async Task Overwrite(HttpClient httpClient)
+        private async Task Overwrite()
         {
-            var wikiUtils = new WikiUtils(httpClient);
+            var wikiUtils = new WikiUtils(HttpClient);
             var gemTasks = await wikiUtils.SelectFromGemsAsync(ParseGemTable);
             foreach (var task in gemTasks)
             {

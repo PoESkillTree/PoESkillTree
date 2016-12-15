@@ -1,4 +1,3 @@
-using System.Net.Http;
 using System.Threading.Tasks;
 using POESKillTree.SkillTreeFiles;
 
@@ -14,9 +13,9 @@ namespace UpdateDB.DataLoading
             get { return false; }
         }
 
-        protected override async Task LoadAsync(HttpClient httpClient)
+        protected override async Task LoadAsync()
         {
-            var assetLoader = new AssetLoader(httpClient, SavePath, true);
+            var assetLoader = new AssetLoader(HttpClient, SavePath, true);
             try
             {
                 await assetLoader.DownloadAllAsync();

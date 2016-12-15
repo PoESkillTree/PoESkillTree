@@ -26,37 +26,6 @@ namespace POESKillTree.Utils
         private static readonly ILog Log = LogManager.GetLogger(typeof(WikiUtils));
 
         /// <summary>
-        /// Contains all wiki pages that contain base items and the item types that can be found in them.
-        /// (in the order in which they occur, each item type references one table).
-        /// </summary>
-        private static readonly IReadOnlyDictionary<string, IReadOnlyList<ItemType>> BaseItemTableUrls =
-            new Dictionary<string, IReadOnlyList<ItemType>>
-        {
-            {"List_of_axes", new[] {ItemType.OneHandedAxe, ItemType.TwoHandedAxe}},
-            {"List_of_bows", new[] {ItemType.Bow}},
-            {"List_of_claws", new[] {ItemType.Claw}},
-            {"List_of_daggers", new[] {ItemType.Dagger}},
-            {"List_of_maces", new[] {ItemType.OneHandedMace, ItemType.Sceptre, ItemType.TwoHandedMace}},
-            {"List_of_staves", new[] {ItemType.Staff}},
-            {
-                "List_of_swords",
-                new[] {ItemType.OneHandedSword, ItemType.ThrustingOneHandedSword, ItemType.TwoHandedSword}
-            },
-            {"List_of_wands", new[] {ItemType.Wand}},
-
-            {"List_of_amulets", new[] {ItemType.Amulet}},
-            {"List_of_belts", new[] {ItemType.Belt}},
-            {"List_of_quivers", new[] {ItemType.Quiver, ItemType.Quiver}}, // current quivers and old quivers
-            {"List_of_rings", new[] {ItemType.Ring}},
-
-            {"Body_armour", ItemGroup.BodyArmour.Types()},
-            {"Boots", ItemGroup.Boots.Types()},
-            {"Gloves", ItemGroup.Gloves.Types()},
-            {"Helmet", ItemGroup.Helmet.Types()},
-            {"Shield", ItemGroup.Shield.Types()}
-        };
-
-        /// <summary>
         /// Contains all wiki pages that contain gems. The list has one item type for each table that should be
         /// read from (starting from the first table on the page).
         /// </summary>
@@ -87,43 +56,6 @@ namespace POESKillTree.Utils
         public Task<IEnumerable<T>> SelectFromGemsAsync<T>(Func<HtmlNode, IEnumerable<T>> tableParsingFunc)
         {
             return SelectFromItemTablesAsync(GemTableUrls, (node, type) => tableParsingFunc(node));
-        }
-
-        /// <summary>
-        /// Reads the tables that contain lists of base items asynchronously and calls
-        /// <paramref name="tableParsingFunc"/> for each.
-        /// </summary>
-        /// <param name="tableParsingFunc">Parses the given wiki table that contains a information about items about
-        /// the given types. Has to be thread safe as it may be called multiple times in parallel.</param>
-        public Task ForEachBaseItemAsync(Action<HtmlNode, ItemType> tableParsingFunc)
-        {
-            return ForEachItemTableAsync(BaseItemTableUrls, tableParsingFunc);
-        }
-
-        /// <summary>
-        /// Reads the tables that contain lists of base items asynchronously, applies
-        /// <paramref name="tableParsingFunc"/> to each and returns all results.
-        /// </summary>
-        /// <typeparam name="T">The result type of <paramref name="tableParsingFunc"/></typeparam>
-        /// <param name="tableParsingFunc">Parses the given wiki table that contains a information about items about
-        /// the given types and returns a enumerable of <typeparamref name="T"/>. Has to be thread safe as it may be
-        /// called multiple times in parallel.</param>
-        /// <returns>Contains all <typeparamref name="T"/> instances returned by the
-        /// <paramref name="tableParsingFunc"/> calls.</returns>
-        public Task<IEnumerable<T>> SelectFromBaseItemsAsync<T>(
-            Func<HtmlNode, ItemType, IEnumerable<T>> tableParsingFunc)
-        {
-            return SelectFromItemTablesAsync(BaseItemTableUrls, tableParsingFunc);
-        }
-
-        private async Task ForEachItemTableAsync(IReadOnlyDictionary<string, IReadOnlyList<ItemType>> itemTables,
-            Action<HtmlNode, ItemType> tableParsingFunc)
-        {
-            foreach (var tablesTask in itemTables.Select(pair => LoadTableAsync(pair.Key, pair.Value)))
-            {
-                var tables = await tablesTask.ConfigureAwait(false);
-                tables.ForEach(b => tableParsingFunc(b.HtmlTable, b.ItemType));
-            }
         }
 
         private async Task<IEnumerable<T>> SelectFromItemTablesAsync<T>(
