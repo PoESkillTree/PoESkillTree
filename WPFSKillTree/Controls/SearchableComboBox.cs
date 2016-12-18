@@ -134,15 +134,6 @@ namespace POESKillTree.Controls
 
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
-            if (newValue != null)
-            {
-                _itemsSourceView = CollectionViewSource.GetDefaultView(newValue);
-                if (_itemsSourceView.Filter != null)
-                {
-                    _oldFilter = _itemsSourceView.Filter;
-                }
-                _itemsSourceView.Filter = Filter;
-            }
             if (oldValue != null)
             {
                 if (_oldFilter != null)
@@ -154,6 +145,15 @@ namespace POESKillTree.Controls
                 {
                     _itemsSourceView.Filter = null;
                 }
+            }
+            if (newValue != null)
+            {
+                _itemsSourceView = CollectionViewSource.GetDefaultView(newValue);
+                if (_itemsSourceView.Filter != null)
+                {
+                    _oldFilter = _itemsSourceView.Filter;
+                }
+                _itemsSourceView.Filter = Filter;
             }
 
             base.OnItemsSourceChanged(oldValue, newValue);
@@ -173,6 +173,9 @@ namespace POESKillTree.Controls
             if (e.OriginalSource == _searchBox)
                 return;
             base.OnTextInput(e);
+            if (!IsDropDownOpen)
+                return;
+
             var args = new TextCompositionEventArgs(e.Device, e.TextComposition)
             {
                 RoutedEvent = e.RoutedEvent,
@@ -186,6 +189,9 @@ namespace POESKillTree.Controls
             if (e.OriginalSource == _searchBox)
                 return;
             base.OnPreviewTextInput(e);
+            if (!IsDropDownOpen)
+                return;
+
             var args = new TextCompositionEventArgs(e.Device, e.TextComposition)
             {
                 RoutedEvent = e.RoutedEvent,
