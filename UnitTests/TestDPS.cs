@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.Compute;
 
 namespace UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class TestDPS
     {
         internal enum Rounding { None, Round, Floor, Ceil };
@@ -56,13 +57,13 @@ namespace UnitTests
                     return value;
 
                 case Rounding.Round:
-                    return Compute.RoundValue(value, variant.Precision);
+                    return ComputeGlobal.RoundValue(value, variant.Precision);
 
                 case Rounding.Floor:
-                    return Compute.FloorValue(value, variant.Precision);
+                    return ComputeGlobal.FloorValue(value, variant.Precision);
 
                 case Rounding.Ceil:
-                    return Compute.CeilValue(value, variant.Precision);
+                    return ComputeGlobal.CeilValue(value, variant.Precision);
             }
 
             throw new NotImplementedException();
@@ -74,7 +75,7 @@ namespace UnitTests
             internal int Precision;
         }
 
-        [TestMethod]
+        [Test]
         public void TestDPSRounding()
         {
             Dictionary<string, Spell> skills;
@@ -162,20 +163,19 @@ namespace UnitTests
             */
         }
 
-        [TestMethod]
+        [Test]
         public void TestRoundingHalfDown()
         {
             // Round Half Toward Zero (Round Half Down).
+            Assert.AreEqual(1.36f, ComputeGlobal.RoundHalfDownEvenValue(1.365f, 2));
+            Assert.AreEqual(1.38f, ComputeGlobal.RoundHalfDownEvenValue(1.375f, 2));
 
-            Assert.AreEqual(1.36f, Compute.RoundHalfDownEvenValue(1.365f, 2));
-            Assert.AreEqual(1.38f, Compute.RoundHalfDownEvenValue(1.375f, 2));
-
-            Assert.AreEqual(27.9f, Compute.RoundHalfDownValue(27.94f, 1));
-            Assert.AreEqual(-27.9f, Compute.RoundHalfDownValue(-27.95f, 1));
-            Assert.AreEqual(27.9f, Compute.RoundHalfDownValue(27.95f, 1));
-            Assert.AreEqual(28f, Compute.RoundHalfDownValue(27.951f, 1));
-            Assert.AreEqual(28f, Compute.RoundHalfDownValue(27.96f, 1));
-            Assert.AreEqual(5f, Compute.RoundHalfDownValue(4.96f, 1));
+            Assert.AreEqual(27.9f, ComputeGlobal.RoundHalfDownValue(27.94f, 1));
+            Assert.AreEqual(-27.9f, ComputeGlobal.RoundHalfDownValue(-27.95f, 1));
+            Assert.AreEqual(27.9f, ComputeGlobal.RoundHalfDownValue(27.95f, 1));
+            Assert.AreEqual(28f, ComputeGlobal.RoundHalfDownValue(27.951f, 1));
+            Assert.AreEqual(28f, ComputeGlobal.RoundHalfDownValue(27.96f, 1));
+            Assert.AreEqual(5f, ComputeGlobal.RoundHalfDownValue(4.96f, 1));
         }
     }
 }

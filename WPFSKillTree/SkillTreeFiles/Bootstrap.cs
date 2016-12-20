@@ -34,7 +34,7 @@ namespace POESKillTree.SkillTreeFiles
 
             // Parse boostrap mode.
             Mode mode;
-            Enum.TryParse<Mode>(Environment.GetEnvironmentVariable(ModeEnvironmentVariableName), false, out mode);
+            Enum.TryParse(Environment.GetEnvironmentVariable(ModeEnvironmentVariableName), false, out mode);
             // Parse original PID.
             int pid;
             int.TryParse(Environment.GetEnvironmentVariable(PIDEnvironmentVariableName), out pid);

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ItemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<GemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Gem Name="TestGem">
     <Attribute Name="Attribute1: #">
-      <Value Level="5">5</Value>
-      <ValueForLevel From="1" To="10">10</ValueForLevel>
+      <Value Level="5">21</Value>
+      <ValueForLevel From="1" To="10">45</ValueForLevel>
     </Attribute>
     <Attribute Name="Attribute2: #">
       <Value Level="5">5</Value>
@@ -30,4 +30,4 @@
       <ValueForLevel From="1" To="25">10</ValueForLevel>
     </Attribute>
   </Gem>
-</ItemDB>
+</GemDB>

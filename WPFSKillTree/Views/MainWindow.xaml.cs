@@ -33,7 +33,9 @@ using POESKillTree.Utils;
 using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
-using Attribute = POESKillTree.ViewModels.Attribute;
+using Attribute = POESKillTree.ViewModels.Attribute; //overrides System.Attribute
+using POESKillTree.Compute;
+using POESKillTree.Model.Gems;
 
 namespace POESKillTree.Views
 {
@@ -434,16 +436,17 @@ namespace POESKillTree.Views
                 const string itemDBPrefix = "Data/ItemDB/";
                 Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
                 // First file instantiates the ItemDB.
-                ItemDB.Load(itemDBPrefix + "GemList.xml");
+                var db = GemDB.LoadFromText(FileEx.GetResource<GemDB>("POESKillTree.Data.ItemDB.GemList.xml"));
                 // Merge all other files from the ItemDB path.
                 Directory.GetFiles(AppData.GetFolder(itemDBPrefix))
                     .Select(Path.GetFileName)
                     .Where(f => f != "GemList.xml")
                     .Select(f => itemDBPrefix + f)
-                    .ForEach(ItemDB.Merge);
+                    .Select(x => GemDB.LoadFromText(File.ReadAllText(x)))
+                    .ForEach(db.Merge);
                 // Merge the user specified things.
-                ItemDB.Merge("ItemsLocal.xml");
-                ItemDB.Index();
+                //db.Merge(GemDB.LoadFromText(FileEx.GetResource<GemDB>("POESKillTree.Data.ItemDB.ItemsLocal.xml")));
+                db.Index();
             });
             var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance);
             await itemDBTask;
@@ -1264,6 +1267,7 @@ namespace POESKillTree.Views
             AscendancyTotalPoints.Content = "[" + points["AscendancyTotal"].ToString() + "]";
         }
 
+        private Computation Compute;
         public void UpdateStatistics()
         {
             _defenceList.Clear();
@@ -1271,9 +1275,9 @@ namespace POESKillTree.Views
 
             if (_itemAttributes != null)
             {
-                Compute.Initialize(Tree, _itemAttributes);
+                Compute = new Computation(Tree, _itemAttributes);
 
-                foreach (var group in Compute.Defense())
+                foreach (var group in Compute.GetDefensiveAttributes())
                 {
                     foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
                     {

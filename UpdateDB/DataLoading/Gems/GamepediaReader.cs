@@ -12,11 +12,7 @@ using log4net;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
-using Attribute = POESKillTree.SkillTreeFiles.ItemDB.Attribute;
-using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
-using Value = POESKillTree.SkillTreeFiles.ItemDB.Value;
-using ValueAt = POESKillTree.SkillTreeFiles.ItemDB.ValueAt;
-using ValuePerQuality = POESKillTree.SkillTreeFiles.ItemDB.ValuePerQuality;
+using POESKillTree.Model.Gems;
 
 namespace UpdateDB.DataLoading.Gems
 {
@@ -105,7 +101,7 @@ namespace UpdateDB.DataLoading.Gems
             HtmlNode span = doc.DocumentNode.SelectSingleNode("//span[@itemprop='name']");
             string gemName = span == null ? name : span.InnerText.Trim();
 
-            List<Attribute> attributes = new List<Attribute>();
+            List<GemAttribute> attributes = new List<GemAttribute>();
             var tags = new List<string>();
             attributes.AddRange(ParseInfobox(doc, name, tags));
             attributes.AddRange(ParseProgressionTable(doc, name, tags));
@@ -113,19 +109,19 @@ namespace UpdateDB.DataLoading.Gems
             return new Gem { Name = gemName, Attributes = attributes, Tags = string.Join(", ", tags) };
         }
 
-        private static IEnumerable<Attribute> ParseProgressionTable(HtmlDocument doc, string name, IReadOnlyCollection<string> tags)
+        private static IEnumerable<GemAttribute> ParseProgressionTable(HtmlDocument doc, string name, IReadOnlyCollection<string> tags)
         {
             HtmlNodeCollection found = doc.DocumentNode.SelectNodes("//table[contains(@class,'skill-progression-table')]");
             if (found == null)
             {
                 Log.WarnFormat("Gem level table not found for {0}", name);
-                return Enumerable.Empty<Attribute>();
+                return Enumerable.Empty<GemAttribute>();
             }
 
             HtmlNode table = found[0];
             bool hasHead = false;
             int levelColumn = 0;
-            Dictionary<int, Attribute> columnAttribute = new Dictionary<int, Attribute>();
+            Dictionary<int, GemAttribute> columnAttribute = new Dictionary<int, GemAttribute>();
 
             foreach (HtmlNode row in table.Elements("tr"))
             {
@@ -180,7 +176,7 @@ namespace UpdateDB.DataLoading.Gems
                             if (tokens.Count == 1)
                             {
                                 Log.Debug("  [" + column + "] " + tokens[0].Name);
-                                columnAttribute.Add(column, new Attribute { Name = tokens[0].Name, Values = new List<Value>() });
+                                columnAttribute.Add(column, new GemAttribute { Name = tokens[0].Name, Values = new List<Value>() });
                             }
                         }
 
@@ -192,7 +188,7 @@ namespace UpdateDB.DataLoading.Gems
             return columnAttribute.Values;
         }
 
-        private static IEnumerable<Attribute> ParseInfobox(HtmlDocument doc, string name, ICollection<string> tags)
+        private static IEnumerable<GemAttribute> ParseInfobox(HtmlDocument doc, string name, ICollection<string> tags)
         {
             var found = doc.DocumentNode.SelectNodes("//span[contains(@class,'item-box -gem')]");
             if (found == null || found.Count == 0)
@@ -254,7 +250,7 @@ namespace UpdateDB.DataLoading.Gems
             {
                 if (token.Value != null)
                 {
-                    yield return new Attribute
+                    yield return new GemAttribute
                     {
                         Name = token.Name,
                         Values = new List<Value> {new ValuePerQuality {Text = token.Value}}
@@ -277,16 +273,16 @@ namespace UpdateDB.DataLoading.Gems
             }
         }
 
-        private static Attribute ParseSingleValueAttribute(string text)
+        private static GemAttribute ParseSingleValueAttribute(string text)
         {
             var numberMatches = NumberRegex.Matches(text);
             if (numberMatches.Count != 1)
                 return null;
-            return new Attribute
+            return new GemAttribute
             {
                 Name = NumberRegex.Replace(text, "#").Replace("\n", " "),
                 Values =
-                    new List<Value> {new ItemDB.ValueForLevelRange {From = 1, To = 30, Text = numberMatches[0].Value}}
+                    new List<Value> {new ValueForLevelRange {From = 1, To = 30, Text = numberMatches[0].Value}}
             };
         }
 
