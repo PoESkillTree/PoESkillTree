@@ -1,6 +1,7 @@
-﻿using System.Net.Http;
+﻿using POESKillTree.Model.Gems;
+using POESKillTree.SkillTreeFiles;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Gem = POESKillTree.SkillTreeFiles.ItemDB.Gem;
 
 namespace UpdateDB.DataLoading.Gems
 {

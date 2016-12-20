@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using POESKillTree.Model.Items.Affixes;
+using System.Linq;
 
 namespace POESKillTree.Model
 {
@@ -28,12 +29,28 @@ namespace POESKillTree.Model
         {
             if (ContainsKey(attr.Key))
             {
+                //foreach (var val in attr.Value)
+                //    this[attr.Key].Add(val);
                 if (attr.Value.Count > 0)
                     for (int i = 0; i < attr.Value.Count; ++i)
                         this[attr.Key][i] += attr.Value[i];
             }
             else
                 Add(attr.Key, new List<float>(attr.Value));
+        }
+
+        // Adds attribute.
+        // Existing attribute has value increased by value of attribute being added.
+        public void Add(KeyValuePair<string, float> attr)
+        {
+            Add(new KeyValuePair<string, List<float>>(attr.Key, new[] { attr.Value }.ToList()));
+        }
+
+        // Adds attribute.
+        // Existing attribute has value increased by value of attribute being added.
+        public void Add(string key, float val)
+        {
+            Add(new KeyValuePair<string, List<float>>(key, new[] { val }.ToList()));
         }
 
         // Adds item mod.
@@ -62,6 +79,10 @@ namespace POESKillTree.Model
             return copy;
         }
 
+        public AttributeSet Matches(string patt)
+        {
+            return Matches(new Regex(patt));
+        }
         // Returns attribute set of attributes whose key matches regular expression.
         public AttributeSet Matches(Regex re)
         {
@@ -128,6 +149,21 @@ namespace POESKillTree.Model
                     this[attr.Key] = attr.Value;
                 else
                     Add(attr);
+        }
+
+        public float GetOrDefault(string key, int index = 0, float def = 0)
+        {
+            if (this.ContainsKey(key))
+                return this[key][index];
+            return def;
+        }
+
+        public void AddAsSum(string key, float value)
+        {
+            if (ContainsKey(key))
+                this[key][0] += value;
+            else
+                this[key] = new[] { value }.ToList();
         }
     }
 }

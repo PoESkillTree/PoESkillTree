@@ -68,6 +68,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -85,6 +86,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Compute\ComputationTest.cs" />
+    <Compile Include="Compute\DamageNatureTest.cs" />
     <Compile Include="TestCharacterSheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDPS.cs" />
@@ -105,13 +108,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestBuilds\Builds.xml">
+    <EmbeddedResource Include="TestBuilds\Builds.xml">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="TestItems.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestItems.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
+    </EmbeddedResource>
     <Content Include="TestMerge.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -122,7 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="TestBuilds\init\Marauder-IceCrash-51.json" />
+    <EmbeddedResource Include="TestBuilds\init\Marauder-IceCrash-51.json" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

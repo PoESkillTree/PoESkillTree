@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace POESKillTree.Utils
@@ -54,6 +57,38 @@ namespace POESKillTree.Utils
             if (overwrite)
                 DeleteIfExists(destFileName);
             File.Move(sourceFileName, destFileName);
+        }
+
+        private static Dictionary<string, IEnumerable<string>> assemblyDict = new Dictionary<string, IEnumerable<string>>();
+
+        public static string GetResource<TBase>(string resourceName)
+        {
+            return GetResource(Assembly.GetAssembly(typeof(TBase)), resourceName);
+        }
+        private static string GetResource(Assembly assembly, string resourceName)
+        {
+            var rn = resourceName.Replace("/", ".").Replace("\\", ".");
+            var resourceNames = GetManifestNames(assembly);
+            var extantResourceName = resourceNames.FirstOrDefault(x => string.Equals(rn, x, System.StringComparison.InvariantCultureIgnoreCase));
+            if (extantResourceName == null)
+                throw new FileNotFoundException($"{rn} not found.");
+            return GetResourceText(assembly, extantResourceName);
+        }
+
+        private static IEnumerable<string> GetManifestNames(Assembly assembly)
+        {
+            if (!assemblyDict.ContainsKey(assembly.FullName))
+                assemblyDict[assembly.FullName] = assembly.GetManifestResourceNames();
+            return assemblyDict[assembly.FullName];
+        }
+
+        private static string GetResourceText(Assembly assembly, string resourceName)
+        {
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using log4net;
-using POESKillTree.SkillTreeFiles;
+using POESKillTree.Model.Gems;
 using POESKillTree.Utils;
 using UpdateDB.DataLoading.Gems;
 
@@ -21,6 +21,7 @@ namespace UpdateDB.DataLoading
         private static readonly ILog Log = LogManager.GetLogger(typeof(GemLoader));
 
         private readonly IGemReader _gemReader;
+        private readonly GemDB DB;
 
         public override bool SavePathIsFolder
         {
@@ -35,6 +36,7 @@ namespace UpdateDB.DataLoading
         public GemLoader(IGemReader gemReader)
         {
             _gemReader = gemReader;
+            DB = new GemDB();
         }
 
         protected override Task LoadAsync(HttpClient httpClient)
@@ -64,9 +66,9 @@ namespace UpdateDB.DataLoading
                 return;
             if (!LoadOld())
                 return;
-            var old = ItemDB.GetGem(singleGemName);
+            var old = DB.GetGem(singleGemName);
             if (old == null)
-                ItemDB.Add(fetched);
+                DB.Add(fetched);
             else
                 old.Merge(fetched);
         }
@@ -75,14 +77,14 @@ namespace UpdateDB.DataLoading
         {
             if (!LoadOld())
                 return;
-            ItemDB.MergeFromCompletePath(mergePath);
+            DB.Merge(GemDB.LoadFromText(File.ReadAllText(mergePath)));
         }
 
         private async Task Update()
         {
             if (!LoadOld())
                 return;
-            foreach (var gem in ItemDB.GetAllGems())
+            foreach (var gem in DB.Gems)
             {
                 var fetched = await _gemReader.FetchGemAsync(gem.Name);
                 if (fetched != null)
@@ -98,7 +100,7 @@ namespace UpdateDB.DataLoading
                 Log.ErrorFormat("There is no gem file that can be updated (path: {0})", updateSource);
                 return false;
             }
-            ItemDB.LoadFromCompletePath(updateSource);
+            GemDB.LoadFromText(File.ReadAllText(updateSource));
             return true;
         }
 
@@ -111,11 +113,11 @@ namespace UpdateDB.DataLoading
                 var gem = await task;
                 if (gem == null)
                     continue;
-                ItemDB.Add(gem);
+                DB.Add(gem);
             }
         }
 
-        private IEnumerable<Task<ItemDB.Gem>> ParseGemTable(HtmlNode table)
+        private IEnumerable<Task<Gem>> ParseGemTable(HtmlNode table)
         {
             return from row in table.Elements("tr").Skip(1)
                    select row.ChildNodes[0] into cell
@@ -125,7 +127,7 @@ namespace UpdateDB.DataLoading
 
         protected override Task CompleteSavingAsync()
         {
-            ItemDB.WriteToCompletePath(SavePath);
+            DB.WriteToCompletePath(SavePath);
             return Task.WhenAll();
         }
     }

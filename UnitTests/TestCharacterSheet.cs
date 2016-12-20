@@ -12,30 +12,28 @@ using POESKillTree.Model.Serialization;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
+using POESKillTree.Compute;
+using System.Reflection;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using System.Xml;
+using POESKillTree.Model.Gems;
 
 namespace UnitTests
 {
     [TestClass]
     public class TestCharacterSheet
     {
-        private TestContext TestContextInstance;
-        public TestContext TestContext
+        [Serializable]
+        public class TestBuild
         {
-            get { return TestContextInstance; }
-            set { TestContextInstance = value; }
+            public string Level { get; set; }
+            public string TreeUrl { get; set; }
+            public string BuildFile { get; set; }
+            public string ExpectDefence { get; set; }
+            public string ExpectOffence { get; set; }
         }
 
-        private static AbstractPersistentData _persistentData;
-
-        [ClassInitialize]
-        public static void Initalize(TestContext testContext)
-        {
-            AppData.SetApplicationData(Environment.CurrentDirectory);
-
-            if (ItemDB.IsEmpty())
-                ItemDB.Load("Data/ItemDB/GemList.xml", true);
-            _persistentData = new BarePersistentData {CurrentBuild = new PoEBuild()};
-        }
 
         readonly Regex _backreplace = new Regex("#");
         string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
@@ -50,57 +48,61 @@ namespace UnitTests
 
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"..\..\TestBuilds\Builds.xml", "TestBuild", DataAccessMethod.Sequential)]
         [TestMethod]
-        public async Task TestBuild()
+        public async Task Build_Test()
         {
             // Read build entry.
-            string treeURL = TestContext.DataRow["TreeURL"].ToString();
-            int level = Convert.ToInt32(TestContext.DataRow["Level"]);
-            string buildFile = @"..\..\TestBuilds\" + TestContext.DataRow["BuildFile"].ToString();
+            var resultTree = FileEx.GetResource<TestCharacterSheet>("UnitTests.TestBuilds/Builds.xml");
+            var xmlFile = XDocument.Parse(resultTree);
+            var build = XmlHelpers.DeserializeXml<TestBuild>(xmlFile.Root.Element("TestBuild").ToString());
+
+            AbstractPersistentData _persistentData;
+
+            var db = GemDB.LoadFromText(FileEx.GetResource<GemDB>(@"POESKillTree.Data.ItemDB.GemList.xml"));
+            _persistentData = new BarePersistentData { CurrentBuild = new PoEBuild() };
+
+
+            int level = Convert.ToInt32(build.Level);
             List<string> expectDefense = new List<string>();
             List<string> expectOffense = new List<string>();
-            if (TestContext.DataRow.Table.Columns.Contains("ExpectDefence"))
+
+            using (StringReader reader = new StringReader(build.ExpectDefence))
             {
-                using (StringReader reader = new StringReader(TestContext.DataRow["ExpectDefence"].ToString()))
+                string line;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        line = line.Trim();
-                        if (line.Length > 0 && !line.StartsWith("#"))
-                            expectDefense.Add(line.Trim());
-                    }
+                    line = line.Trim();
+                    if (line.Length > 0 && !line.StartsWith("#"))
+                        expectDefense.Add(line.Trim());
                 }
             }
-            if (TestContext.DataRow.Table.Columns.Contains("ExpectOffence"))
+
+            using (StringReader reader = new StringReader(build.ExpectOffence))
             {
-                using (StringReader reader = new StringReader(TestContext.DataRow["ExpectOffence"].ToString()))
+                string line;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        line = line.Trim();
-                        if (line.Length > 0 && !line.StartsWith("#"))
-                            expectOffense.Add(line.Trim());
-                    }
-                        
+                    line = line.Trim();
+                    if (line.Length > 0 && !line.StartsWith("#"))
+                        expectOffense.Add(line.Trim());
                 }
+
             }
 
             _persistentData.EquipmentData = await EquipmentData.CreateAsync(_persistentData.Options);
             var tree = await SkillTree.CreateAsync(_persistentData, null);
             // Initialize structures.
-            tree.LoadFromUrl(treeURL);
+            tree.LoadFromUrl(build.TreeUrl);
             tree.Level = level;
 
-            string itemData = File.ReadAllText(buildFile);
+            string itemData = FileEx.GetResource<TestCharacterSheet>("UnitTests.TestBuilds." + build.BuildFile);
             ItemAttributes itemAttributes = new ItemAttributes(_persistentData, itemData);
-            Compute.Initialize(tree, itemAttributes);
+            var Compute = new Computation(tree, itemAttributes); //failing here because "Staff" isn't recognized.
 
             // Compare defense properties.
             Dictionary<string, List<string>> defense = new Dictionary<string, List<string>>();
             if (expectDefense.Count > 0)
             {
-                foreach (ListGroup grp in Compute.Defense())
+                foreach (ListGroup grp in Compute.GetDefensiveAttributes())
                 {
                     List<string> props = new List<string>();
                     foreach (string item in grp.Properties.Select(InsertNumbersInAttributes))
@@ -113,12 +115,12 @@ namespace UnitTests
                 {
                     if (entry.Contains(':')) // Property: Value
                     {
-                        Assert.IsNotNull(group, "Missing defence group [" + TestContext.DataRow["BuildFile"].ToString() + "]");
-                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry + " [" + TestContext.DataRow["BuildFile"].ToString() + "]");
+                        Assert.IsNotNull(group, "Missing defence group [" + build.BuildFile + "]");
+                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry + " [" + build.BuildFile + "]");
                     }
                     else // Group
                     {
-                        Assert.IsTrue(defense.ContainsKey(entry), "No such defence group: " + entry + " [" + TestContext.DataRow["BuildFile"].ToString() + "]");
+                        Assert.IsTrue(defense.ContainsKey(entry), "No such defence group: " + entry + " [" + build.BuildFile + "]");
                         group = defense[entry];
                     }
                 }
@@ -141,12 +143,12 @@ namespace UnitTests
                 {
                     if (entry.Contains(':')) // Property: Value
                     {
-                        Assert.IsNotNull(group, "Missing offence group [" + TestContext.DataRow["BuildFile"].ToString() + "]");
-                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry + " [" + TestContext.DataRow["BuildFile"].ToString() + "]");
+                        Assert.IsNotNull(group, "Missing offence group [" + build.BuildFile + "]");
+                        Assert.IsTrue(group.Contains(entry), "Wrong " + entry + " [" + build.BuildFile + "]");
                     }
                     else // Group
                     {
-                        Assert.IsTrue(offense.ContainsKey(entry), "No such offence group: " + entry + " [" + TestContext.DataRow["BuildFile"].ToString() + "]");
+                        Assert.IsTrue(offense.ContainsKey(entry), "No such offence group: " + entry + " [" + build.BuildFile + "]");
                         group = offense[entry];
                     }
                 }

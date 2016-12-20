@@ -189,6 +189,9 @@
     <Compile Include="Common\ViewModels\ErrorInfoViewModel.cs" />
     <Compile Include="Common\ViewModels\RelayCommand.cs" />
     <Compile Include="Common\ViewModels\ViewModelBase.cs" />
+    <Compile Include="Compute\Compute.cs" />
+    <Compile Include="Compute\ComputeGlobal.cs" />
+    <Compile Include="Compute\Enums.cs" />
     <Compile Include="Contrib\RangeTree\Range.cs" />
     <Compile Include="Contrib\RangeTree\RangeTree.cs" />
     <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />
@@ -200,6 +203,17 @@
     <Compile Include="Controls\ColorPickerButton.xaml.cs">
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Compute\AttackSkill.cs" />
+    <Compile Include="Compute\AttackSource.cs" />
+    <Compile Include="Compute\Damage.cs" />
+    <Compile Include="Compute\DamageNature.cs" />
+    <Compile Include="Model\Gems\GemAttribute.cs" />
+    <Compile Include="Model\Gems\Gem.cs" />
+    <Compile Include="Model\Gems\GemDB.cs" />
+    <Compile Include="Model\Gems\Lookup.cs" />
+    <Compile Include="Model\Gems\Value.cs" />
+    <Compile Include="Model\Weapon.cs" />
+    <Compile Include="Utils\XmlHelpers.cs" />
     <Compile Include="ViewModels\CommandCollectionViewModel.cs" />
     <Compile Include="Controls\Dialogs\BaseDialog.cs" />
     <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />
@@ -329,9 +343,7 @@
     <Compile Include="SkillTreeFiles\AssetLoader.cs" />
     <Compile Include="SkillTreeFiles\Bootstrap.cs" />
     <Compile Include="SkillTreeFiles\CharacterNames.cs" />
-    <Compile Include="SkillTreeFiles\Compute.cs" />
     <Compile Include="SkillTreeFiles\Constants.cs" />
-    <Compile Include="SkillTreeFiles\ItemDB.cs" />
     <Compile Include="SkillTreeFiles\NodeHighlighter.cs" />
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
@@ -785,9 +797,9 @@
     <None Include="Data\Equipment\Itemlist.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Data\ItemDB\GemList.xml">
+    <EmbeddedResource Include="Data\ItemDB\GemList.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
     <None Include="Data\ItemDB\GemProperties.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
