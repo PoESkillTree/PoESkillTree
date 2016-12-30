@@ -3,5 +3,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/PoESkillTree;component/Themes/BaseDialog.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/PoESkillTree;component/Themes/SearchableComboBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

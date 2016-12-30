@@ -14,7 +14,6 @@ using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
-using POESKillTree.ViewModels;
 
 namespace POESKillTree.Views
 {
@@ -35,6 +34,15 @@ namespace POESKillTree.Views
     public partial class CraftWindow : INotifyPropertyChanged
     {
         private const string QualityModName = "Quality: +#%";
+
+        private static readonly ItemGroup[] Groups = Enum.GetValues(typeof(ItemGroup))
+            .Cast<ItemGroup>()
+            .Except(new [] {ItemGroup.Unknown, ItemGroup.Gem})
+            .ToArray();
+
+        private static readonly ItemType[] Types = Enum.GetValues(typeof(ItemType))
+            .Cast<ItemType>()
+            .ToArray();
 
         private ItemGroup[] _groupList;
         public ItemGroup[] GroupList
@@ -95,36 +103,84 @@ namespace POESKillTree.Views
         protected override void OnLoaded()
         {
             base.OnLoaded();
-            GroupList = Enum.GetValues(typeof(ItemGroup)).Cast<ItemGroup>().Except(new[] {ItemGroup.Unknown, ItemGroup.Gem}).ToArray();
+            GroupList = Groups.ToArray();
         }
 
         private void OnPropertyChanged([CallerMemberName] string prop = null)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void GroupSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var d = _monitor.Enter();
-            var val = (ItemGroup) GroupSelection.SelectedItem;
-            TypeList = Enum.GetValues(typeof(ItemType)).Cast<ItemType>().Where(t => t.Group() == val).ToArray();
-            TypeSelection.SelectedIndex = 0;
-            d.Dispose();
+            using (_monitor.Enter())
+            {
+                var selected = TypeSelection.SelectedItem;
+                var group = (ItemGroup) GroupSelection.SelectedItem;
+                if (group == ItemGroup.Any)
+                {
+                    TypeList = new[] {ItemType.Any};
+                }
+                else
+                {
+                    var list = Types
+                        .Where(t => t == ItemType.Any || t.Group() == group)
+                        .ToArray();
+                    if (list.Length == 2)
+                    {
+                        // Only contains "any" and the only type of the selected group
+                        // -> "any" makes no sense, take the only type
+                        list = new [] {list[1]};
+                    }
+                    TypeList = list;
+                }
+                TypeSelection.SelectedIndex = 0;
+
+                if (TypeSelection.SelectedItem == selected)
+                    UpdateBaseList();
+            }
         }
 
         private void ClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Happens if called in GroupSelection_SelectionChanged
             if (TypeSelection.SelectedItem == null) return;
+            UpdateBaseList();
+        }
 
-            var d = _monitor.Enter();
-            var val = (ItemType) TypeSelection.SelectedItem;
-            BaseList = _equipmentData.BaseList.Where(b => b.ItemType == val).ToArray();
-            BaseSelection.SelectedIndex = 0;
-            d.Dispose();
+        private void UpdateBaseList()
+        {
+            using (_monitor.Enter())
+            {
+                var selected = BaseSelection.SelectedItem;
+                var type = (ItemType) TypeSelection.SelectedItem;
+                if (type == ItemType.Any)
+                {
+                    var group = (ItemGroup) GroupSelection.SelectedItem;
+                    if (group == ItemGroup.Any)
+                    {
+                        BaseList = _equipmentData.BaseList.ToArray();
+                    }
+                    else
+                    {
+                        BaseList = _equipmentData.BaseList
+                            .Where(b => b.ItemGroup == group)
+                            .ToArray();
+                    }
+                }
+                else
+                {
+                    BaseList = _equipmentData.BaseList
+                        .Where(b => b.ItemType == type)
+                        .ToArray();
+                }
+                BaseSelection.SelectedIndex = 0;
+
+                if (BaseSelection.SelectedItem == selected)
+                    UpdateBase();
+            }
         }
 
         private void BaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -134,7 +190,11 @@ namespace POESKillTree.Views
                 Item = null;
                 return;
             }
+            UpdateBase();
+        }
 
+        private void UpdateBase()
+        {
             var d = _monitor.Enter();
             msp1.Affixes = msp2.Affixes = msp3.Affixes = mss1.Affixes = mss1.Affixes = mss2.Affixes = mss3.Affixes = null;
 

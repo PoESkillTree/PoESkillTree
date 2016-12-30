@@ -200,6 +200,8 @@
     <Compile Include="Controls\ColorPickerButton.xaml.cs">
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="Utils\Wpf\ComboBoxTemplateSelector.cs" />
     <Compile Include="ViewModels\CommandCollectionViewModel.cs" />
     <Compile Include="Controls\Dialogs\BaseDialog.cs" />
     <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />
@@ -529,6 +531,10 @@
     <Page Include="Styles\RangeScrollbars.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\SearchableComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\BaseDialog.xaml">
       <SubType>Designer</SubType>

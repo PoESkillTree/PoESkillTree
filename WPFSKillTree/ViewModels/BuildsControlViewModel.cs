@@ -35,6 +35,11 @@ namespace POESKillTree.ViewModels
             CharacterClass = characterClass;
             AscendancyClass = ascendancyClass;
         }
+
+        public override string ToString()
+        {
+            return CharacterClass + " " + AscendancyClass;
+        }
     }
 
     public class BuildsViewModelProxy : BindingProxy<BuildsControlViewModel>
