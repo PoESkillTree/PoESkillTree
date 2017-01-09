@@ -92,6 +92,7 @@
     <Compile Include="TestMSTAlgorithm.cs" />
     <Compile Include="TestGeneticAlgorithmEasy.cs" />
     <Compile Include="ObservableSetTest.cs" />
+    <Compile Include="UrlParsing\UrlParsingTests.cs" />
     <Compile Include="WeightedSamplerTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +115,9 @@
     </Content>
     <Content Include="TestMerge.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="UrlParsing\EmptyBuilds.xml">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
