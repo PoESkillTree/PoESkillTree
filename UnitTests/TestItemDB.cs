@@ -38,16 +38,16 @@ namespace UnitTests
 
             // Table of damage ranges.
             expectPair = new List<float[]> { new float[] { float.NaN, float.NaN },
-                        new float[] { 7, 10 }, new float[] { 8, 11 }, new float[] { 9, 14 }, 
-                        new float[] { 13, 19 }, new float[] { 18, 27 }, new float[] { 26, 40 }, 
-                        new float[] { 35, 52 }, new float[] { 45, 68 }, new float[] { 58, 86 }, 
-                        new float[] { 73, 109 }, new float[] { 91, 137 }, new float[] { 113, 170 }, 
-                        new float[] { 140, 210 }, new float[] { 172, 258 }, new float[] { 210, 315 }, 
-                        new float[] { 256, 384 }, new float[] { 310, 466 }, new float[] { 375, 563 }, 
-                        new float[] { 432, 647 }, new float[] { 496, 744 }, new float[] { 543, 815 }, 
-                        new float[] { 595, 893 }, new float[] { 651, 977 }, new float[] { 713, 1069 }, 
-                        new float[] { 779, 1169 }, new float[] { 852, 1278 }, new float[] { 931, 1396 }, 
-                        new float[] { 1016, 1524 }, new float[] { 1109, 1664 }, new float[] { 1210, 1815 }
+                        new float[] { 7, 10 }, new float[] { 8, 11 }, new float[] { 10, 14 },
+                        new float[] { 13, 20 }, new float[] { 19, 29 }, new float[] { 29, 43 },
+                        new float[] { 39, 58 }, new float[] { 52, 77 }, new float[] { 67, 101 },
+                        new float[] { 87, 131 }, new float[] { 112, 168 }, new float[] { 142, 213 },
+                        new float[] { 180, 270 }, new float[] { 226, 339 }, new float[] { 283, 424 },
+                        new float[] { 352, 528 }, new float[] { 437, 655 }, new float[] { 540, 810 },
+                        new float[] { 632, 948 }, new float[] { 739, 1109 }, new float[] { 819, 1229 },
+                        new float[] { 908, 1362 }, new float[] { 1005, 1508 }, new float[] { 1113, 1669 },
+                        new float[] { 1231, 1847 }, new float[] { 1361, 2042 }, new float[] { 1504, 2257 },
+                        new float[] { 1662, 2493 }, new float[] { 1835, 2752 }, new float[] { 2025, 3038 } 
             };
             for (int level = 1; level < expectPair.Count; ++level)
             {
