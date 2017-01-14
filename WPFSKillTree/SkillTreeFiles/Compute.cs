@@ -2127,6 +2127,12 @@ namespace POESKillTree.SkillTreeFiles
             ch["Dexterity: #"] = Global["+# to Dexterity"];
             ch["Intelligence: #"] = Global["+# to Intelligence"];
 
+            // Tawhoa, Forest's Strength. Chieftain passive.
+            if (Global.ContainsKey("#% increased Strength")) {
+                ch["Strength: #"][0] *= 1 + (Global["#% increased Strength"][0] / 100);
+                ch["Strength: #"][0] = (float)Math.Round((decimal)ch["Strength: #"][0], 0, MidpointRounding.AwayFromZero);
+            }
+
             // Shield, Staff and Dual Wielding detection.
             bool hasShield = OffHand.IsShield();
 
