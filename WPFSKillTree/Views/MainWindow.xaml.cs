@@ -1781,58 +1781,14 @@ namespace POESKillTree.Views
         {
             try
             {
-                if (treeUrl.Contains("poezone.ru"))
-                {
-                    await SkillTreeImporter.LoadBuildFromPoezone(DialogCoordinator.Instance, Tree, treeUrl);
-                    SetCurrentBuildUrlFromTree();
-                }
-                else if (treeUrl.Contains("google.com"))
-                {
-                    var match = Regex.Match(treeUrl, @"q=(.*?)&");
-                    if (match.Success)
-                    {
-                        var newUrl = match.ToString().Replace("q=", "").Replace("&", "");
-                        await LoadBuildFromUrlAsync(newUrl);
-                        return;
-                    }
-                    else
-                        throw new Exception("The URL you are trying to load is invalid.");
-                }
-                else if (treeUrl.Contains("tinyurl.com") || treeUrl.Contains("poeurl.com"))
-                {
-                    var skillUrl = treeUrl.Replace("preview.", "");
-                    if (skillUrl.Contains("poeurl.com") && !skillUrl.Contains("redirect.php"))
-                    {
-                        skillUrl = skillUrl.Replace("http://poeurl.com/",
-                            "http://poeurl.com/redirect.php?url=");
-                    }
+                var newUrl = await NormalizeBuildUrlAsync(treeUrl, AwaitAsyncTask);
 
-                    var response =
-                        await AwaitAsyncTask(L10n.Message("Resolving shortened tree address"),
-                            new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead));
-                    response.EnsureSuccessStatusCode();
-                    if (Regex.IsMatch(response.RequestMessage.RequestUri.ToString(), Constants.TreeRegex))
-                    {
-                        var newUrl = response.RequestMessage.RequestUri.ToString();
-                        await LoadBuildFromUrlAsync(newUrl);
-                        return;
-                    }
-                    else
-                        throw new Exception("The URL you are trying to load is invalid.");
-                }
+                // If the url did change, it'll run through this method again anyway.
+                // So no need to call Tree.LoadFromUrl in that case.
+                if (PersistentData.CurrentBuild.TreeUrl == newUrl)
+                    Tree.LoadFromUrl(newUrl);
                 else
-                {
-                    var newUrl = treeUrl;
-                    if (newUrl.Contains("characterName") || newUrl.Contains("accountName"))
-                        newUrl = Regex.Replace(newUrl, @"\?.*", "");
-                    newUrl = Regex.Replace(newUrl, Constants.TreeRegex, Constants.TreeAddress);
-                    // If the url did change, it'll run through this method again anyway.
-                    // So no need to call Tree.LoadFromUrl in that case.
-                    if (PersistentData.CurrentBuild.TreeUrl == newUrl)
-                        Tree.LoadFromUrl(newUrl);
-                    else
-                        PersistentData.CurrentBuild.TreeUrl = newUrl;
-                }
+                    PersistentData.CurrentBuild.TreeUrl = newUrl;
 
                 if (_justLoaded)
                 {
@@ -1860,7 +1816,59 @@ namespace POESKillTree.Views
             }
         }
 
-#endregion
+        public async Task<string> NormalizeBuildUrlAsync(string treeUrl, Func<string, Task, Task> loadingWrapper)
+        {
+            if (treeUrl.Contains("google.com"))
+            {
+                var match = Regex.Match(treeUrl, @"q=(.*?)&");
+                if (match.Success)
+                {
+                    var newUrl = match.ToString().Replace("q=", "").Replace("&", "");
+                    newUrl = await NormalizeBuildUrlAsync(newUrl, loadingWrapper);
+                    return newUrl;
+                }
+                else
+                    throw new Exception("The URL you are trying to load is invalid.");
+            }
+            if (treeUrl.Contains("tinyurl.com") || treeUrl.Contains("poeurl.com"))
+            {
+                var skillUrl = treeUrl.Replace("preview.", "");
+                if (skillUrl.Contains("poeurl.com") && !skillUrl.Contains("redirect.php"))
+                {
+                    skillUrl = skillUrl.Replace("http://poeurl.com/",
+                        "http://poeurl.com/redirect.php?url=");
+                }
+
+                HttpResponseMessage response = null;
+
+                // This lambda is used to skip GetAsync() result value and unify loadingWrapper parameter
+                // by using Task instead of Task<HttpResponseMessage> in signature
+                Func<Task> headersLoader = async () =>
+                {
+                    response = await new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead);
+                };
+
+                await loadingWrapper(L10n.Message("Resolving shortened tree address"), headersLoader());
+                response.EnsureSuccessStatusCode();
+
+                if (Regex.IsMatch(response.RequestMessage.RequestUri.ToString(), Constants.TreeRegex))
+                {
+                    var newUrl = response.RequestMessage.RequestUri.ToString();
+                    newUrl = await NormalizeBuildUrlAsync(newUrl, loadingWrapper);
+                    return newUrl;
+                }
+                else
+                    throw new Exception("The URL you are trying to load is invalid.");
+            }
+
+            if (treeUrl.Contains("characterName") || treeUrl.Contains("accountName"))
+                treeUrl = Regex.Replace(treeUrl, @"\?.*", "");
+            treeUrl = Regex.Replace(treeUrl, Constants.TreeRegex, Constants.TreeAddress);
+
+            return treeUrl;
+        }
+
+        #endregion
 
 #region Bottom Bar (Build URL etc)
 
