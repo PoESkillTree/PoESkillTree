@@ -462,6 +462,7 @@
     <Compile Include="Views\BuildsControl.xaml.cs">
       <DependentUpon>BuildsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BuildUrlNormalizer.cs" />
     <Compile Include="Views\CraftWindow.xaml.cs">
       <DependentUpon>CraftWindow.xaml</DependentUpon>
     </Compile>

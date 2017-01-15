@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.Views;
@@ -10,7 +9,7 @@ namespace UnitTests.UrlParsing
     public class MainWindowTests
     {
         [TestMethod]
-        public async Task NormalizeBuildUrlAsyncExtractsUrlFromValidGoogleLinkTest()
+        public async Task NormalizeAsyncExtractsUrlFromValidGoogleLinkTest()
         {
             // #267
             var targetUrl = "https://www.google.com/url?q=http://poeurl.com/xer&sa=D&ust=1456857460554000&usg=AFQjCNH6POtjRXIVzd_kSRbH7sOVYuZW7A";
@@ -18,34 +17,48 @@ namespace UnitTests.UrlParsing
 
             Func<string, Task, Task> loadingWrapper = (msg, task) => task;
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(targetUrl, loadingWrapper);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, loadingWrapper);
 
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         [TestMethod]
-        [Ignore]
-        public async Task NormalizeBuildUrlAsyncLoadsFromShortValidGoogleLinkTest()
+        public async Task NormalizeAsyncLoadsFromParameterlessValidGoogleLinkTest()
         {
-            // TODO: Fix. Provided url contains valid build link.
-
+            // #267
             var treeUrl = "https://www.google.com/url?q=http://poeurl.com/xer";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAAAwYAsNjjdaLZMjIjNsgUEJJTEPVv2YZqjLxvFr8mlWHiVUuMNonTcFIqC13yKwoOSBEvAx7jhBGW62MfQQ3RBx5_xrVINj1jQ5UuoqOTJ52q8NXB8--IbIxJUZUg-TdirGsXLR_Xz7TFvOpMs0mxwuzAVAQHIG6usypbBbUI9GpD6-SD21AwQZZ59ujWjb9fKlXG217Q9UM2IuqbJlFH1CM6WFLswzoyAedUN9QwfDBxGYqbtSo4shkk_e0_jX3dqJcGhMXPev_eI_ZLeMSiYetNkjpCu-N6U_66fXXTfgBeGY7tgwgu";
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(treeUrl, null);
+            Func<string, Task, Task> loadingWrapper = (msg, task) => task;
+
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, loadingWrapper);
 
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         [TestMethod]
-        public async Task NormalizeBuildUrlAsyncFailsOnInvalidGoogleLinkTest()
+        public async Task NormalizeAsyncLoadsFromShortenedGoogleLinkTest()
         {
+            var treeUrl = "goo.gl/44tsqv";
+            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAAAwYAsNjjdaLZMjIjNsgUEJJTEPVv2YZqjLxvFr8mlWHiVUuMNonTcFIqC13yKwoOSBEvAx7jhBGW62MfQQ3RBx5_xrVINj1jQ5UuoqOTJ52q8NXB8--IbIxJUZUg-TdirGsXLR_Xz7TFvOpMs0mxwuzAVAQHIG6usypbBbUI9GpD6-SD21AwQZZ59ujWjb9fKlXG217Q9UM2IuqbJlFH1CM6WFLswzoyAedUN9QwfDBxGYqbtSo4shkk_e0_jX3dqJcGhMXPev_eI_ZLeMSiYetNkjpCu-N6U_66fXXTfgBeGY7tgwgu";
+
+            Func<string, Task, Task> loadingWrapper = (msg, task) => task;
+
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, loadingWrapper);
+
+            Assert.AreEqual(expectedUrl, actualUrl);
+        }
+
+        [TestMethod]
+        public async Task NormalizeAsyncFailsOnInvalidGoogleLinkTest()
+        {
+            // #267
             var treeUrl = "https://www.google.com/url?ust=1456857460554000&usg=AFQjCNH6POtjRXIVzd_kSRbH7sOVYuZW7A";
 
             Exception exception = null;
             try
             {
-                await CreateMainWindow().NormalizeBuildUrlAsync(treeUrl, null);
+                await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, null);
             }
             catch (Exception ex)
             {
@@ -57,65 +70,85 @@ namespace UnitTests.UrlParsing
         }
 
         [TestMethod]
-        public async Task NormalizeBuildUrlAsyncLoadsFromValidTinyurlLinkTest()
+        public async Task NormalizeAsyncLoadsFromValidTinyurlLinkTest()
         {
             var tinyurlTreeUrl = "http://tinyurl.com/glcmaeo";
             var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(tinyurlTreeUrl, loadingWrapper);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(tinyurlTreeUrl, loadingWrapper);
 
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         [TestMethod]
-        public async Task NormalizeBuildUrlAsyncLoadsFromValidPoeurlLinkTest()
+        public async Task NormalizeAsyncLoadsFromValidPoeurlLinkTest()
         {
             var poeurlTreeUrl = "http://poeurl.com/0dE";
             var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(poeurlTreeUrl, loadingWrapper);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
 
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         [TestMethod]
-        public async Task NormalizeBuildUrlAsyncLoadsFromValidPoeurlLinkWithRedirectTest()
+        public async Task NormalizeAsyncLoadsFromValidPoeurlLinkWithRedirectTest()
         {
             var poeurlTreeUrl = "http://poeurl.com/redirect.php?url=0dE";
             var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(poeurlTreeUrl, loadingWrapper);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
 
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         [TestMethod]
-        [Ignore]
-        public async Task NormalizeBuildUrlAsyncLoadsFromValidPoeurlLinkWithoutProtocolTest()
+        public async Task NormalizeAsyncLoadsFromValidPoeurlLinkWithoutProtocolTest()
         {
-            /*
-             * TODO: Implement. Poeurl provides urls with no protocol relying on browsers.
-             * It would be nice to autocomplete urls with appropriate protocols.
-             */
+            var poeurlTreeUrl = "www.poeurl.com/0dE";
+            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
 
+            Func<string, Task, Task> loadingWrapper = (url, task) => task;
+
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
+
+            Assert.AreEqual(expectedUrl, actualUrl);
+        }
+
+        [TestMethod]
+        public async Task NormalizeAsyncLoadsFromValidPoeurlLinkWithoutWwwPrefixTest()
+        {
             var poeurlTreeUrl = "poeurl.com/0dE";
             var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(poeurlTreeUrl, loadingWrapper);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
 
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         [TestMethod]
-        public async Task NormalizeBuildUrlAsyncProvidesMessageToLoadingWrapperTest()
+        public async Task NormalizeAsyncLoadsFromTwiceShortenedLinkTest()
+        {
+            var poeurlTreeUrl = "https://goo.gl/kKjcuK"; // "poeurl.com/0dE"
+            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+
+            Func<string, Task, Task> loadingWrapper = (url, task) => task;
+
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
+
+            Assert.AreEqual(expectedUrl, actualUrl);
+        }
+
+        [TestMethod]
+        public async Task NormalizeAsyncProvidesMessageToLoadingWrapperTest()
         {
             var poeurlTreeUrl = "http://poeurl.com/0dE";
             var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
@@ -128,60 +161,57 @@ namespace UnitTests.UrlParsing
                 return task;
             };
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(poeurlTreeUrl, loadingWrapper);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
 
             Assert.AreEqual(expectedUrl, actualUrl);
             Assert.AreEqual("Resolving shortened tree address", message);
         }
 
         [TestMethod]
-        public async Task NormalizeBuildUrlAsyncSkipsReadyLinkTest()
+        public async Task NormalizeAsyncSkipsReadyLinkTest()
         {
             var treeUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==";
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(treeUrl, null);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, null);
 
             Assert.AreEqual(treeUrl, actualUrl);
         }
 
         [TestMethod]
-        public async Task NormalizeBuildUrlAsyncSkipsUnsupportedLinkTest()
+        public async Task NormalizeAsyncSkipsUnsupportedLinkTest()
         {
             var treeUrl = "http://www.unsupported.com";
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(treeUrl, null);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, null);
 
             Assert.AreEqual(treeUrl, actualUrl);
         }
 
         [TestMethod]
-        public async Task NormalizeBuildUrlAsyncRemovesSpecialQueryParametersTest()
+        public async Task NormalizeAsyncRemovesSpecialQueryParametersTest()
         {
             var targetUrl = "http://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==?characterName=Character&accountName=Account";
             var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==";
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(targetUrl, null);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, null);
 
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         [TestMethod]
-        [Ignore]
-        public async Task NormalizeBuildUrlAsyncRemovesUnsupportedQueryParametersTest()
+        public async Task NormalizeAsyncRemovesUnsupportedQueryParametersTest()
         {
-            // TODO: Fix. Remove all query parameters
-
             var targetUrl = "http://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==?unsupported=FAIL";
             var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==";
 
-            var actualUrl = await CreateMainWindow().NormalizeBuildUrlAsync(targetUrl, null);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, null);
 
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
-        private MainWindow CreateMainWindow()
-        {
-            return (MainWindow)FormatterServices.GetUninitializedObject(typeof(MainWindow));
+        private static BuildUrlNormalizer CreateBuildUrlNormalizer()
+        { 
+            return new BuildUrlNormalizer();
         }
     }
 }
