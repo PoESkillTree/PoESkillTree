@@ -285,7 +285,10 @@ namespace POESKillTree.ViewModels
             {
                 var charClass = nameToContent.Value;
                 yield return new ClassFilterItem(charClass, null);
-                foreach (var ascClass in SkillTree.AscendancyClassesForCharacter(charClass))
+
+
+
+                foreach (var ascClass in AscendancyClasses.AscendancyClassesForCharacter(charClass))
                 {
                     yield return new ClassFilterItem(charClass, ascClass);
                 }

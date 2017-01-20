@@ -6,69 +6,64 @@ using System.Threading.Tasks;
 using POESKillTree.Localization;
 using POESKillTree.SkillTreeFiles;
 
-namespace POESKillTree.Views
+namespace POESKillTree.Utils.UrlProcessing
 {
     /// <summary>
     /// Converts redirects and short links into direct builders and planners links.
     /// </summary>
     public class BuildUrlNormalizer
     {
-        private readonly Regex _protoRegex = new Regex(@"(?<toReplace>^(http(s|):\/\/|)(www\.|)(?<hostname>.*?))(\/|\?)");
+        private readonly Regex _prefixRegex = new Regex(@"(?<toReplace>^(http(s|):\/\/|)(www\.|)(?<hostname>.*?))(\/|\?|#)");
 
-        private readonly Dictionary<string, string> _hostsCompletionMap = new Dictionary<string, string>
+        private readonly Dictionary<string, string> _urlCompletionMap = new Dictionary<string, string>
         {
-            // If supports both - prefer secured
+            // If supports both http and https - prefer secured
             { "goo.gl", "https://www.goo.gl" },
             { "poeurl.com", "http://www.poeurl.com" },
-            { "tinyurl.com", "https://www.tinyurl.com" }
+            { "tinyurl.com", "https://www.tinyurl.com" },
+            { "pathofexile.com", "https://www.pathofexile.com" }
         };
 
         /// <summary>
-        /// Creates link to official pathofexile.com builer.
+        /// Creates link to official pathofexile.com builder.
         /// Extracts build url from google link if needed, resolves shortened urls and removes unused query parameters.
         /// </summary>
-        public virtual async Task<string> NormalizeAsync(string treeUrl, Func<string, Task, Task> loadingWrapper)
+        public virtual async Task<string> NormalizeAsync(string buildUrl, Func<string, Task, Task> loadingWrapper)
         {
             while (true)
             {
-                if (treeUrl.Contains("google.com"))
+                if (buildUrl.Contains("google.com"))
                 {
-                    treeUrl = ExtractUrlFromQuery(treeUrl);
+                    buildUrl = ExtractUrlFromQuery(buildUrl, "q");
                     continue;
                 }
 
-                if (treeUrl.Contains("tinyurl.com") || treeUrl.Contains("poeurl.com") || treeUrl.Contains("goo.gl"))
+                if (buildUrl.Contains("tinyurl.com") || buildUrl.Contains("poeurl.com") || buildUrl.Contains("goo.gl"))
                 {
-                    treeUrl = await ResolveShortenedUrl(treeUrl, loadingWrapper);
+                    buildUrl = await ResolveShortenedUrl(buildUrl, loadingWrapper);
                     continue;
                 }
 
                 break;
             }
 
-            // Remove all query parameters
-            treeUrl = Regex.Replace(treeUrl, @"\?.*", "");
-
-            // Replace scheme, authority and path to manualy redirect to pathofexile.com
-            treeUrl = Regex.Replace(treeUrl, Constants.TreeRegex, Constants.TreeAddress);
-
-            return treeUrl;
+            return EnsureProtocol(buildUrl);
         }
 
-        private string ExtractUrlFromQuery(string treeUrl)
+        protected virtual string ExtractUrlFromQuery(string url, string parameterName)
         {
-            var match = Regex.Match(treeUrl, @"q=(?<urlParam>.*?)(&|$)");
+            var match = Regex.Match(url, $@"{parameterName}=(?<urlParam>.*?)(&|$)");
             if (!match.Success)
                 throw new Exception("The URL you are trying to load is invalid.");
 
             return match.Groups["urlParam"].Value;
         }
 
-        private async Task<string> ResolveShortenedUrl(string treeUrl, Func<string, Task, Task> loadingWrapper)
+        protected virtual async Task<string> ResolveShortenedUrl(string buildUrl, Func<string, Task, Task> loadingWrapper)
         {
-            treeUrl = EnsureProtocol(treeUrl);
+            buildUrl = EnsureProtocol(buildUrl);
 
-            var skillUrl = treeUrl.Replace("preview.", "");
+            var skillUrl = buildUrl.Replace("preview.", "");
             if (skillUrl.Contains("poeurl.com") && !skillUrl.Contains("redirect.php"))
             {
                 skillUrl = skillUrl.Replace("http://www.poeurl.com/", "http://www.poeurl.com/redirect.php?url=");
@@ -92,20 +87,20 @@ namespace POESKillTree.Views
             return response.RequestMessage.RequestUri.ToString();
         }
 
-        private string EnsureProtocol(string treeUrl)
+        protected virtual string EnsureProtocol(string buildUrl)
         {
-            var match = _protoRegex.Match(treeUrl);
+            var match = _prefixRegex.Match(buildUrl);
 
             if (!match.Success)
-                return treeUrl;
+                return buildUrl;
 
             string completion;
-            if (_hostsCompletionMap.TryGetValue(match.Groups["hostname"].Value, out completion))
+            if (_urlCompletionMap.TryGetValue(match.Groups["hostname"].Value, out completion))
             {
-                treeUrl = treeUrl.Replace(match.Groups["toReplace"].Value, completion);
+                buildUrl = buildUrl.Replace(match.Groups["toReplace"].Value, completion);
             }
 
-            return treeUrl;
+            return buildUrl;
         }
     }
 }

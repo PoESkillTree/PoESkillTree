@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using POESKillTree.Views;
+using POESKillTree.Utils.UrlProcessing;
 
-namespace UnitTests.UrlParsing
+namespace UnitTests.UrlProcessing
 {
     [TestClass]
-    public class MainWindowTests
+    public class BuildUrlNormalizerTests
     {
         [TestMethod]
         public async Task NormalizeAsyncExtractsUrlFromValidGoogleLinkTest()
@@ -188,30 +189,63 @@ namespace UnitTests.UrlParsing
         }
 
         [TestMethod]
-        public async Task NormalizeAsyncRemovesSpecialQueryParametersTest()
+        public void EnsureProtocolCompletesKnownUrlsTest()
         {
-            var targetUrl = "http://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==?characterName=Character&accountName=Account";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==";
+            var targetPath = "/abc";
+            var completions = new Dictionary<string, string>
+            {
+                { "goo.gl", "https://www.goo.gl" },
+                { "poeurl.com", "http://www.poeurl.com" },
+                { "tinyurl.com", "https://www.tinyurl.com" },
+                { "pathofexile.com", "https://www.pathofexile.com" }
+            };
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, null);
-
-            Assert.AreEqual(expectedUrl, actualUrl);
+            var urlNormalizer = CreateBuildUrlNormalizerMock();
+            foreach (var completion in completions)
+            {
+                var actualUrl = urlNormalizer.EnsureProtocolProxy(completion.Key + targetPath);
+                Assert.AreEqual(completion.Value + targetPath, actualUrl);
+            }
         }
 
         [TestMethod]
-        public async Task NormalizeAsyncRemovesUnsupportedQueryParametersTest()
+        public void EnsureProtocolSkipsUnknownUrlsTest()
         {
-            var targetUrl = "http://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==?unsupported=FAIL";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==";
+            var expectedPath = "example.com/a";
+            var urlNormalizer = CreateBuildUrlNormalizerMock();
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, null);
+            var actualUrl = urlNormalizer.EnsureProtocolProxy(expectedPath);
+            Assert.AreEqual(expectedPath, actualUrl);
+
+        }
+
+        [TestMethod]
+        public void ExtractUrlFromQueryTest()
+        {
+            var expectedUrl = "https://pathofexile.com";
+            var targetUrl = $"https://example.com?q={expectedUrl}&x=42";
+            var urlNormalizer = CreateBuildUrlNormalizerMock();
+
+            var actualUrl = urlNormalizer.ExtractUrlFromQueryProxy(targetUrl, "q");
 
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         private static BuildUrlNormalizer CreateBuildUrlNormalizer()
-        { 
+        {
             return new BuildUrlNormalizer();
+        }
+
+        private static BuildUrlNormalizerMock CreateBuildUrlNormalizerMock()
+        {
+            return new BuildUrlNormalizerMock();
+        }
+
+        private class BuildUrlNormalizerMock : BuildUrlNormalizer
+        {
+            public string EnsureProtocolProxy(string buildUrl) => EnsureProtocol(buildUrl);
+
+            public string ExtractUrlFromQueryProxy(string buildUrl, string parameterName) => ExtractUrlFromQuery(buildUrl, parameterName);
         }
     }
 }

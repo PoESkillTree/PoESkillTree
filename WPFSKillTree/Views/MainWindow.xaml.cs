@@ -32,6 +32,7 @@ using POESKillTree.TreeGenerator.ViewModels;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
+using POESKillTree.Utils.UrlProcessing;
 using POESKillTree.ViewModels;
 using Attribute = POESKillTree.ViewModels.Attribute;
 
@@ -59,6 +60,7 @@ namespace POESKillTree.Views
         private readonly Dictionary<string, AttributeGroup> _offenceListGroups = new Dictionary<string, AttributeGroup>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
+        private readonly BuildUrlNormalizer _buildUrlNormalizer = new BuildUrlNormalizer();
         private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attributeCollection;
         private ListCollectionView _defenceCollection;
@@ -69,7 +71,6 @@ namespace POESKillTree.Views
         private ContextMenu _attributeContextMenu;
         private MenuItem cmCreateGroup, cmAddToGroup, cmRemoveFromGroup, cmDeleteGroup;
 
-        private BuildUrlNormalizer _buildUrlNormalizer;
 
         private ItemAttributes _itemAttributes;
         public ItemAttributes ItemAttributes
@@ -202,7 +203,6 @@ namespace POESKillTree.Views
         public MainWindow()
         {
             InitializeComponent();
-            _buildUrlNormalizer = new BuildUrlNormalizer();
         }
 
         private void RegisterPersistentDataHandlers()
@@ -1127,7 +1127,7 @@ namespace POESKillTree.Views
             if (!Tree.UpdateAscendancyClasses) return;
             Tree.UpdateAscendancyClasses = false;
             var ascendancyItems = new List<string> { "None" };
-            foreach (var name in Tree.AscClasses.GetClasses(Tree.Chartype))
+            foreach (var name in AscendancyClasses.GetClasses(Tree.Chartype))
                 ascendancyItems.Add(name.DisplayName);
             cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
         }
@@ -1457,7 +1457,7 @@ namespace POESKillTree.Views
             {
                 if (node.ascendancyName != null && !Tree.DrawAscendancy)
                     return;
-                var ascendancyClassName = Tree.AscClasses.GetClassName(Tree.Chartype, Tree.AscType);
+                var ascendancyClassName = AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType);
                 if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
@@ -1556,7 +1556,7 @@ namespace POESKillTree.Views
         {
             if (!Tree.DrawAscendancy && node.ascendancyName != null && !forcerefresh)
                 return;
-            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscClasses.GetClassName(Tree.Chartype, Tree.AscType))
+            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType))
                 return;
 
             if (node.Type == NodeType.JewelSocket)
@@ -1771,7 +1771,7 @@ namespace POESKillTree.Views
         private void SetCurrentBuildUrlFromTree()
         {
             _skipLoadOnCurrentBuildTreeChange = true;
-            PersistentData.CurrentBuild.TreeUrl = Tree.SaveToUrl();
+            PersistentData.CurrentBuild.TreeUrl = Tree.Serializer.ToUrl();
             _skipLoadOnCurrentBuildTreeChange = false;
         }
 
@@ -1814,7 +1814,7 @@ namespace POESKillTree.Views
             }
             catch (Exception ex)
             {
-                PersistentData.CurrentBuild.TreeUrl = Tree.SaveToUrl();
+                PersistentData.CurrentBuild.TreeUrl = Tree.Serializer.ToUrl();
                 await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }
@@ -1899,7 +1899,7 @@ namespace POESKillTree.Views
         {
             var regx =
                 new Regex(
-                    "https?://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*)?",
+                    @"https?://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?",
                     RegexOptions.IgnoreCase);
 
             var matches = regx.Matches(PersistentData.CurrentBuild.TreeUrl);

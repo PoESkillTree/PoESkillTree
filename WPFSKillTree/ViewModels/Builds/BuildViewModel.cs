@@ -1,6 +1,7 @@
 using System;
 using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
+using POESKillTree.Utils.UrlProcessing;
 
 namespace POESKillTree.ViewModels.Builds
 {
@@ -132,9 +133,12 @@ namespace POESKillTree.ViewModels.Builds
         {
             if (SkillTree == null || string.IsNullOrEmpty(Build.TreeUrl))
                 return;
-            PointsUsed = SkillTree.PointsUsed(Build.TreeUrl);
-            CharacterClass = SkillTree.CharacterClass(Build.TreeUrl);
-            AscendancyClass = SkillTree.AscendancyClass(Build.TreeUrl);
+
+            var deserializer = BuildConverter.GetUrlDeserializer(Build.TreeUrl);
+
+            PointsUsed = (uint)deserializer.GetPointsCount();
+            CharacterClass = deserializer.GetCharacterClass();
+            AscendancyClass = deserializer.GetAscendancyClass();
         }
 
         public override void ApplyFilter()

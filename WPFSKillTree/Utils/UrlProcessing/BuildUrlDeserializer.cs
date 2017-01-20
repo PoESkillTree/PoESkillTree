@@ -1,0 +1,75 @@
+using System.Linq;
+using POESKillTree.SkillTreeFiles;
+
+namespace POESKillTree.Utils.UrlProcessing
+{
+    /// <summary>
+    /// Represents an object that extracts build information from the tree url.
+    /// </summary>
+    public abstract class BuildUrlDeserializer
+    {
+        protected string BuildUrl { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BuildUrlDeserializer"/> class.
+        /// </summary>
+        /// <param name="buildUrl">The PoE build url.</param>
+        protected BuildUrlDeserializer (string buildUrl)
+        {
+            BuildUrl = buildUrl ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Returns the basic build data.
+        /// </summary>
+        public abstract BuildUrlData GetBuildData();
+
+        /// <summary>
+        /// Returns the id of a character class decoded from the tree url.
+        /// </summary>
+        public abstract int GetCharacterClassId();
+
+        /// <summary>
+        /// Returns the id of an ascendancy class decoded from the tree url.
+        /// </summary>
+        public abstract int GetAscendancyClassId();
+
+        /// <summary>
+        /// Returns the number of non-ascendancy points the given tree url uses.
+        /// </summary>
+        public virtual int GetPointsCount(bool includeAscendancy = false)
+        {
+            return includeAscendancy
+                ? GetBuildData().SkilledNodesIds.Count(id => !SkillTree.RootNodeList.Contains(id))
+                : GetBuildData().SkilledNodesIds.Count(id => !SkillTree.RootNodeList.Contains(id) &&
+                                                             SkillTree.Skillnodes[id].ascendancyName == null);
+        }
+
+        /// <summary>
+        /// Returns the character class of the given build url.
+        /// </summary>
+        public virtual string GetCharacterClass()
+        {
+            var classId = GetCharacterClassId();
+
+            return CharacterNames.GetClassNameFromChartype(classId);
+        }
+
+        /// <summary>
+        /// Returns the ascendancy class of the given build url.
+        /// Returns null if the tree has no ascendancy class selected.
+        /// </summary>
+        public virtual string GetAscendancyClass()
+        {
+            var ascendancyId = GetAscendancyClassId();
+
+            // No Ascendancy class selected.
+            if (ascendancyId == 0)
+                return null;
+
+            var classId = GetCharacterClassId();
+
+            return AscendancyClasses.GetClassName(classId, ascendancyId);
+        }
+    }
+}

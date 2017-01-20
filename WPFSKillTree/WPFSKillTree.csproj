@@ -201,6 +201,14 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="Utils\UrlProcessing\BuildUrlDeserializer.cs" />
+    <Compile Include="Utils\UrlProcessing\BuildConverter.cs" />
+    <Compile Include="Utils\UrlProcessing\BuildUrlData.cs" />
+    <Compile Include="Utils\UrlProcessing\SkillTreeSerializer.cs" />
+    <Compile Include="Utils\UrlProcessing\BuildUrlNormalizer.cs" />
+    <Compile Include="Utils\UrlProcessing\PathofexileUrlDeserializer.cs" />
+    <Compile Include="Utils\UrlProcessing\PoeplannerUrlDeserializer.cs" />
+    <Compile Include="Utils\UrlProcessing\NaivePoEUrlDeserializer.cs" />
     <Compile Include="Utils\Wpf\ComboBoxTemplateSelector.cs" />
     <Compile Include="ViewModels\CommandCollectionViewModel.cs" />
     <Compile Include="Controls\Dialogs\BaseDialog.cs" />
@@ -462,7 +470,6 @@
     <Compile Include="Views\BuildsControl.xaml.cs">
       <DependentUpon>BuildsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BuildUrlNormalizer.cs" />
     <Compile Include="Views\CraftWindow.xaml.cs">
       <DependentUpon>CraftWindow.xaml</DependentUpon>
     </Compile>
