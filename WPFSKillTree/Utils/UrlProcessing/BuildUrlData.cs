@@ -8,6 +8,7 @@ namespace POESKillTree.Utils.UrlProcessing
     /// <remarks>Currently it also can contain unused jewels information from http://poeplanner.com.</remarks>
     public class BuildUrlData
     {
+        public int Version { get; set; }
         public int BanditNormal { get; set; }
         public int BanditCruel { get; set; }
         public int BanditMerciless { get; set; }

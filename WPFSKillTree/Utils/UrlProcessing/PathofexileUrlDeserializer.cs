@@ -7,6 +7,7 @@ namespace POESKillTree.Utils.UrlProcessing
     /// </summary>
     public class PathofexileUrlDeserializer : NaivePoEUrlDeserializer
     {
+        private int _supportedVersion = 4;
         private static readonly Regex UrlRegex = new Regex(@"(http(|s):\/\/|)(\w*\.|)pathofexile\.com\/(fullscreen-|)passive-skill-tree\/(?<build>[\w-=]+)");
 
         /// <summary>
@@ -35,5 +36,9 @@ namespace POESKillTree.Utils.UrlProcessing
             return true;
         }
 
+        protected override bool IsVersionSupported(int version)
+        {
+            return version >= _supportedVersion;
+        }
     }
 }

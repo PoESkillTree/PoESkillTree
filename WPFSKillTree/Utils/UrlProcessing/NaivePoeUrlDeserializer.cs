@@ -1,13 +1,11 @@
 using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using POESKillTree.Localization;
-using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.Utils.UrlProcessing
 {
     /// <summary>
-    /// Represents an object that extracts build information from urls.
+    /// Represents an object that extracts build information from urls.<para/>
     /// This class uses nonstrict url check and consider specified url as compatible with the official planner https://pathofexile.com.
     /// </summary>
     public class NaivePoEUrlDeserializer : BuildUrlDeserializer
@@ -25,22 +23,24 @@ namespace POESKillTree.Utils.UrlProcessing
 
         public override BuildUrlData GetBuildData()
         {
+            var bytes = GetRawData();
+
             var deserializedData = new BuildUrlData();
+            deserializedData.Version = bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3];
 
-            var decbuff = GetRawData();
-            BitConverter.ToInt32(new[] { decbuff[3], decbuff[2], decbuff[1], decbuff[0] }, 0);
-
-            deserializedData.CharacterClassId = decbuff[4];
-            deserializedData.AscendancyClassId = decbuff[5];
-
-            int version = BitConverter.ToInt32(new[] { decbuff[3], decbuff[2], decbuff[1], decbuff[0] }, 0);
-            for (int k = (version > 3 ? 7 : 6); k < decbuff.Length; k += 2)
+            if (!IsVersionSupported(deserializedData.Version))
             {
-                byte[] dbff = { decbuff[k + 1], decbuff[k + 0] };
-                if (SkillTree.Skillnodes.Keys.Contains(BitConverter.ToUInt16(dbff, 0)))
-                {
-                    deserializedData.SkilledNodesIds.Add(BitConverter.ToUInt16(dbff, 0));
-                }
+                throw new NotSupportedException(
+                    L10n.Message("The build you are trying to load is using an old version of the passive tree and will not work."));
+            }
+
+            deserializedData.CharacterClassId = bytes[4];
+            deserializedData.AscendancyClassId = bytes[5];
+
+            for (int k = (deserializedData.Version > 3 ? 7 : 6); k < bytes.Length; k += 2)
+            {
+                ushort nodeId = (ushort)(bytes[k] << 8 | bytes[k + 1]);
+                deserializedData.SkilledNodesIds.Add(nodeId);
             }
 
             return deserializedData;
@@ -58,6 +58,16 @@ namespace POESKillTree.Utils.UrlProcessing
             var rawData = GetRawData();
 
             return rawData.Length < 6 ? 0 : rawData[5];
+        }
+
+        /// <summary>
+        /// Validates provided <paramref name="version"/><para/>.
+        /// </summary>
+        /// <param name="version">The verion to validate.</param>
+        /// <returns>true, if provided version is supported; otherwise false.</returns>
+        protected virtual bool IsVersionSupported(int version)
+        {
+            return true;
         }
 
         /// <summary>

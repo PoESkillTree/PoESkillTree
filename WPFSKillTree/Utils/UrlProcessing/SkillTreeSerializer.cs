@@ -9,9 +9,9 @@ namespace POESKillTree.Utils.UrlProcessing
     /// </summary>
     public class SkillTreeSerializer
     {
-        private const int HeaderSize = 7;
-        private const int Version = 4;
-        private const byte Fullscreen = 0;
+        private static int HeaderSize { get; } = 7;
+        private static int Version { get; } = 4;
+        private static byte Fullscreen { get; } = 0;
 
         private readonly SkillTree _skillTree;
 
@@ -36,14 +36,7 @@ namespace POESKillTree.Utils.UrlProcessing
                 .OrderBy(node => node.Id);
 
             var bytes = new byte[HeaderSize + skillNodes.Count() * 2];
-
-            bytes[0] = (byte)(Version >> 24 & 0xFF);
-            bytes[1] = (byte)(Version >> 16 & 0xFF);
-            bytes[2] = (byte)(Version >> 8 & 0xFF);
-            bytes[3] = (byte)(Version >> 0 & 0xFF);
-            bytes[4] = (byte)_skillTree.Chartype;
-            bytes[5] = (byte)_skillTree.AscType;
-            bytes[6] = Fullscreen;
+            bytes = GetCharacterBytes((byte)_skillTree.Chartype, (byte)_skillTree.AscType, bytes);
 
             int i = HeaderSize;
             foreach (var inn in skillNodes)
@@ -53,6 +46,34 @@ namespace POESKillTree.Utils.UrlProcessing
             }
 
             return Constants.TreeAddress + Convert.ToBase64String(bytes).Replace("/", "_").Replace("+", "-");
+        }
+
+        /// <summary>
+        /// Creates empty build Url, containing only information about selected classes.
+        /// </summary>
+        /// <param name="characterClassId">The character class Id.</param>
+        /// <param name="ascendancyClassId">The ascendancy class Id.</param>
+        /// <returns>Starting build Url.</returns>
+        public static string GetEmptyBuildUrl(byte characterClassId = 0, byte ascendancyClassId = 0)
+        {
+            var b = GetCharacterBytes(characterClassId, ascendancyClassId);
+
+            return Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
+        }
+
+        private static byte[] GetCharacterBytes(byte characterClassId = 0, byte ascendancyClassId = 0, byte[] target = null)
+        {
+            target = target ?? new byte[7];
+
+            target[0] = (byte)(Version >> 24 & 0xFF);
+            target[1] = (byte)(Version >> 16 & 0xFF);
+            target[2] = (byte)(Version >> 8 & 0xFF);
+            target[3] = (byte)(Version >> 0 & 0xFF);
+            target[4] = characterClassId;
+            target[5] = ascendancyClassId;
+            target[6] = Fullscreen;
+
+            return target;
         }
     }
 }

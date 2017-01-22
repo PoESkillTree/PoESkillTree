@@ -110,6 +110,8 @@ namespace POESKillTree.Utils.UrlProcessing
         {
             var result = new BuildUrlData();
 
+            result.Version = data.Version;
+
             // There is a small bug in poeplanner, where class and ascendancy bytes are missing, when no one node was selected.
             // Need to check length
             if (data.NodesData.Length == 0)

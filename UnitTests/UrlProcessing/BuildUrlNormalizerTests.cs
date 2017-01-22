@@ -3,51 +3,60 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.Utils.UrlProcessing;
+using UnitTests.TestBuilds.Utils;
 
 namespace UnitTests.UrlProcessing
 {
     [TestClass]
     public class BuildUrlNormalizerTests
     {
+        private static BuildUrlCollection _builds;
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
+        {
+            _builds = TestBuildUrlLoader.LoadFromXmlFile("../../TestBuilds/BuildUrls.xml");
+        }
+
         [TestMethod]
         public async Task NormalizeAsyncExtractsUrlFromValidGoogleLinkTest()
         {
             // #267
-            var targetUrl = "https://www.google.com/url?q=http://poeurl.com/xer&sa=D&ust=1456857460554000&usg=AFQjCNH6POtjRXIVzd_kSRbH7sOVYuZW7A";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAAAwYAsNjjdaLZMjIjNsgUEJJTEPVv2YZqjLxvFr8mlWHiVUuMNonTcFIqC13yKwoOSBEvAx7jhBGW62MfQQ3RBx5_xrVINj1jQ5UuoqOTJ52q8NXB8--IbIxJUZUg-TdirGsXLR_Xz7TFvOpMs0mxwuzAVAQHIG6usypbBbUI9GpD6-SD21AwQZZ59ujWjb9fKlXG217Q9UM2IuqbJlFH1CM6WFLswzoyAedUN9QwfDBxGYqbtSo4shkk_e0_jX3dqJcGhMXPev_eI_ZLeMSiYetNkjpCu-N6U_66fXXTfgBeGY7tgwgu";
+            var build = _builds.FindByName("ObsoleteShadowAssassin");
+            var targetUrl = build.GetAlternativeUrl("googleQuery");
 
             Func<string, Task, Task> loadingWrapper = (msg, task) => task;
 
             var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, loadingWrapper);
 
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(build.DefaultUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromParameterlessValidGoogleLinkTest()
         {
             // #267
-            var treeUrl = "https://www.google.com/url?q=http://poeurl.com/xer";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAAAwYAsNjjdaLZMjIjNsgUEJJTEPVv2YZqjLxvFr8mlWHiVUuMNonTcFIqC13yKwoOSBEvAx7jhBGW62MfQQ3RBx5_xrVINj1jQ5UuoqOTJ52q8NXB8--IbIxJUZUg-TdirGsXLR_Xz7TFvOpMs0mxwuzAVAQHIG6usypbBbUI9GpD6-SD21AwQZZ59ujWjb9fKlXG217Q9UM2IuqbJlFH1CM6WFLswzoyAedUN9QwfDBxGYqbtSo4shkk_e0_jX3dqJcGhMXPev_eI_ZLeMSiYetNkjpCu-N6U_66fXXTfgBeGY7tgwgu";
+            var build = _builds.FindByName("ObsoleteShadowAssassin");
+            var targetUrl = build.GetAlternativeUrl("googleQueryShort");
 
             Func<string, Task, Task> loadingWrapper = (msg, task) => task;
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, loadingWrapper);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, loadingWrapper);
 
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(build.DefaultUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromShortenedGoogleLinkTest()
         {
-            var treeUrl = "goo.gl/44tsqv";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAAAwYAsNjjdaLZMjIjNsgUEJJTEPVv2YZqjLxvFr8mlWHiVUuMNonTcFIqC13yKwoOSBEvAx7jhBGW62MfQQ3RBx5_xrVINj1jQ5UuoqOTJ52q8NXB8--IbIxJUZUg-TdirGsXLR_Xz7TFvOpMs0mxwuzAVAQHIG6usypbBbUI9GpD6-SD21AwQZZ59ujWjb9fKlXG217Q9UM2IuqbJlFH1CM6WFLswzoyAedUN9QwfDBxGYqbtSo4shkk_e0_jX3dqJcGhMXPev_eI_ZLeMSiYetNkjpCu-N6U_66fXXTfgBeGY7tgwgu";
+            var build = _builds.FindByName("ObsoleteShadowAssassin");
+            var targetUrl = build.GetAlternativeUrl("googl");
 
             Func<string, Task, Task> loadingWrapper = (msg, task) => task;
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, loadingWrapper);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, loadingWrapper);
 
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(build.DefaultUrl, actualUrl);
         }
 
         [TestMethod]
@@ -73,8 +82,9 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidTinyurlLinkTest()
         {
-            var tinyurlTreeUrl = "http://tinyurl.com/glcmaeo";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
+            var tinyurlTreeUrl = build.GetAlternativeUrl("tinyurl");
+            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
@@ -86,8 +96,9 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidPoeurlLinkTest()
         {
-            var poeurlTreeUrl = "http://poeurl.com/0dE";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
+            var poeurlTreeUrl = build.GetAlternativeUrl("poeurl");
+            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
@@ -99,8 +110,9 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidPoeurlLinkWithRedirectTest()
         {
-            var poeurlTreeUrl = "http://poeurl.com/redirect.php?url=0dE";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
+            var poeurlTreeUrl = build.GetAlternativeUrl("poeurlRedirect");
+            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
@@ -112,8 +124,9 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidPoeurlLinkWithoutProtocolTest()
         {
-            var poeurlTreeUrl = "www.poeurl.com/0dE";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
+            var poeurlTreeUrl = build.GetAlternativeUrl("poeurlNoProto");
+            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
@@ -125,8 +138,9 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidPoeurlLinkWithoutWwwPrefixTest()
         {
-            var poeurlTreeUrl = "poeurl.com/0dE";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
+            var poeurlTreeUrl = build.GetAlternativeUrl("poeurlNoPrefix");
+            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
@@ -138,8 +152,9 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromTwiceShortenedLinkTest()
         {
-            var poeurlTreeUrl = "https://goo.gl/kKjcuK"; // "poeurl.com/0dE"
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
+            var poeurlTreeUrl = build.GetAlternativeUrl("doubleShortened");
+            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
             Func<string, Task, Task> loadingWrapper = (url, task) => task;
 
@@ -151,8 +166,9 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncProvidesMessageToLoadingWrapperTest()
         {
-            var poeurlTreeUrl = "http://poeurl.com/0dE";
-            var expectedUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
+            var poeurlTreeUrl = build.GetAlternativeUrl("poeurl");
+            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
             string message = null;
 
@@ -231,6 +247,8 @@ namespace UnitTests.UrlProcessing
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
+        #region Helpers
+
         private static BuildUrlNormalizer CreateBuildUrlNormalizer()
         {
             return new BuildUrlNormalizer();
@@ -247,5 +265,7 @@ namespace UnitTests.UrlProcessing
 
             public string ExtractUrlFromQueryProxy(string buildUrl, string parameterName) => ExtractUrlFromQuery(buildUrl, parameterName);
         }
+
+        #endregion
     }
 }

@@ -2,7 +2,7 @@
 <TestData>
   <!-- Initial test builds -->
   <TestBuild>
-    <TreeURL>https://www.pathofexile.com/passive-skill-tree/AAAAAwEABLMLYQ3NFm8aOBo-HM4dFCSqKS4rUDH7Si5QR1cNWfNfP2aeaPJyD3Kpdn92rHuMfEt8uH31fuB_44TEj0aQVZZ0m1ieV6IAp6Wsqq2Nr2yvp8BmxPbGrs9-1YvZYeNq5FHqGO1E7w7wH_Gs8i_3MvrS_lQ=</TreeURL>
+    <TreeURL>https://poebuilder.com/character/AAAAAwEABLMLYQ3NFm8aOBo-HM4dFCSqKS4rUDH7Si5QR1cNWfNfP2aeaPJyD3Kpdn92rHuMfEt8uH31fuB_44TEj0aQVZZ0m1ieV6IAp6Wsqq2Nr2yvp8BmxPbGrs9-1YvZYeNq5FHqGO1E7w7wH_Gs8i_3MvrS_lQ=</TreeURL>
     <Level>51</Level>
     <BuildFile>init\Marauder-IceCrash-51.json</BuildFile>
     <ExpectDefence>

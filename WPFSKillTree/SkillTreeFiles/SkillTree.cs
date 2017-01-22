@@ -15,6 +15,7 @@ using JetBrains.Annotations;
 using log4net;
 using POESKillTree.Common;
 using POESKillTree.Controls.Dialogs;
+using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Utils.UrlProcessing;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
@@ -1177,7 +1178,13 @@ namespace POESKillTree.SkillTreeFiles
 
             foreach (var nodeId in buildData.SkilledNodesIds)
             {
-                skillednodes.Add(Skillnodes[nodeId]);
+                SkillNode node;
+                if (!Skillnodes.TryGetValue(nodeId, out node))
+                {
+                    throw new KeyNotFoundException(L10n.Message("The build you are trying to load contains unknown nodes."));
+                }
+
+                skillednodes.Add(node);
             }
         }
 
@@ -1215,24 +1222,6 @@ namespace POESKillTree.SkillTreeFiles
             if (prefs.HasFlag(ResetPreferences.Bandits))
                 _persistentData.CurrentBuild.Bandits.Reset();
             UpdateAscendancyClasses = true;
-        }
-
-        public static string GetCharacterUrl(byte charTypeByte = 0, byte ascTypeByte = 0)
-        {
-            var b = GetCharacterBytes(charTypeByte, ascTypeByte);
-            return Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
-        }
-
-        private static byte[] GetCharacterBytes(byte charTypeByte = 0, byte ascTypeByte = 0)
-        {
-            var b = new byte[7];
-            byte[] b2 = BitConverter.GetBytes(4); //skilltree version
-            for (var i = 0; i < b2.Length; i++)
-                b[i] = b2[(b2.Length - 1) - i];
-            b[4] = (byte)(charTypeByte);
-            b[5] = (byte)(ascTypeByte); //ascedancy class
-            b[6] = 0;
-            return b;
         }
 
         /// <summary>
