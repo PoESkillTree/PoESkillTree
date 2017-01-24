@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using log4net;
-using POESKillTree.Model.Items.Enums;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Utils
 {
@@ -23,74 +16,12 @@ namespace POESKillTree.Utils
 
         private const string WikiUrlPrefix = "http://pathofexile.gamepedia.com/";
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(WikiUtils));
-
-        /// <summary>
-        /// Contains all wiki pages that contain gems. The list has one item type for each table that should be
-        /// read from (starting from the first table on the page).
-        /// </summary>
-        private static readonly IReadOnlyDictionary<string, IReadOnlyList<ItemType>> GemTableUrls =
-            new Dictionary<string, IReadOnlyList<ItemType>>
-        {
-            {"List_of_skill_gems", new[] {ItemType.Gem}}
-        };
-
         private readonly HttpClient _httpClient;
 
         /// <param name="httpClient">The <see cref="HttpClient"/> instance used for internet access.</param>
         public WikiUtils(HttpClient httpClient)
         {
             _httpClient = httpClient;
-        }
-
-        /// <summary>
-        /// Reads the tables that contain lists of gems asynchronously, applies <paramref name="tableParsingFunc"/>
-        /// to each and returns all results.
-        /// </summary>
-        /// <typeparam name="T">The result type of <paramref name="tableParsingFunc"/></typeparam>
-        /// <param name="tableParsingFunc">Parses the given wiki table containing gem information and returns a
-        /// enumerable of <typeparamref name="T"/>. Has to be thread safe as it may be called multiple times in
-        /// parallel.</param>
-        /// <returns>Contains all <typeparamref name="T"/> instances returned by the
-        /// <paramref name="tableParsingFunc"/> calls.</returns>
-        public Task<IEnumerable<T>> SelectFromGemsAsync<T>(Func<HtmlNode, IEnumerable<T>> tableParsingFunc)
-        {
-            return SelectFromItemTablesAsync(GemTableUrls, (node, type) => tableParsingFunc(node));
-        }
-
-        private async Task<IEnumerable<T>> SelectFromItemTablesAsync<T>(
-            IReadOnlyDictionary<string, IReadOnlyList<ItemType>> itemTables,
-            Func<HtmlNode, ItemType, IEnumerable<T>> tableParsingFunc)
-        {
-            var bases = new List<T>();
-            foreach (var tablesTask in itemTables.Select(pair => LoadTableAsync(pair.Key, pair.Value)))
-            {
-                var tables = await tablesTask.ConfigureAwait(false);
-                bases.AddRange(tables.Select(b => tableParsingFunc(b.HtmlTable, b.ItemType)).Flatten());
-            }
-            return bases;
-        }
-
-        private async Task<IList<BaseItemTable>> LoadTableAsync(string urlSuffix,
-            IReadOnlyCollection<ItemType> itemTypes)
-        {
-            var doc = new HtmlDocument();
-            var file = await _httpClient.GetStringAsync(WikiUrlPrefix + urlSuffix).ConfigureAwait(false);
-            doc.LoadHtml(file);
-
-            var tables =
-                doc.DocumentNode.SelectNodes("//table[contains(@class, 'wikitable')]")
-                    .Where(node => node.SelectNodes("tr[1]/th[1 and (. = \"Item\" or . = \"Skill gem\")]") != null)
-                    .ToList();
-            if (itemTypes.Count > tables.Count)
-            {
-                Log.WarnFormat("Not enough tables found in {0} for the number of item types that should be there.",
-                    urlSuffix);
-                Log.WarnFormat("Skipping item types {{{0}}}", string.Join(", ", itemTypes.Skip(tables.Count)));
-            }
-            // Only the first itemType.Count tables are parsed.
-            var count = Math.Min(itemTypes.Count, tables.Count);
-            return tables.Take(count).Zip(itemTypes, BaseItemTable.Create).ToList();
         }
 
         /// <summary>
@@ -108,157 +39,5 @@ namespace POESKillTree.Utils
             var node = nodes[0];
             return node.GetAttributeValue("src", "");
         }
-
-        /// <summary>
-        /// Parses a item info box.
-        /// </summary>
-        /// <param name="itemBox">A <see cref="HtmlNode"/> with the item-box class.</param>
-        /// <returns>The information contained in the item info box</returns>
-        public static WikiItemBox ParseItemBox(HtmlNode itemBox)
-        {
-            var wikiItemBox = new WikiItemBox();
-            var header = itemBox.SelectSingleNode("*[contains(@class, 'header')]");
-            if (header.GetAttributeValue("class", "").Contains("-double"))
-            {
-                wikiItemBox.NameLine = WebUtility.HtmlDecode(header.FirstChild.InnerText);
-                wikiItemBox.TypeLine = WebUtility.HtmlDecode(header.LastChild.InnerText);
-            }
-            else
-            {
-                wikiItemBox.TypeLine = WebUtility.HtmlDecode(header.InnerText);
-            }
-
-            var statGroups = new List<WikiItemStat[]>();
-            foreach (var statGroup in itemBox.SelectNodes("*[contains(@class, 'item-stats')]/*[contains(@class, 'group')]"))
-            {
-                var stats = new List<WikiItemStat>();
-
-                var groupColor = ParseStatColor(statGroup) ?? WikiStatColor.Default;
-
-                var currentStats = new List<Tuple<string, WikiStatColor>>();
-                foreach (var childNode in statGroup.ChildNodes)
-                {
-                    if (childNode.Name == "br" && currentStats.Any())
-                    {
-                        stats.Add(new WikiItemStat(currentStats));
-                        currentStats.Clear();
-                        continue;
-                    }
-
-                    var color = ParseStatColor(childNode) ?? groupColor;
-                    if (childNode.HasChildNodes)
-                        color = ParseStatColor(childNode.FirstChild) ?? color;
-                    var text = WebUtility.HtmlDecode(childNode.InnerText);
-
-                    var last = currentStats.LastOrDefault();
-                    if (last != null && last.Item2 == color)
-                        currentStats[currentStats.Count - 1] = Tuple.Create(last.Item1 + text, color);
-                    else
-                        currentStats.Add(Tuple.Create(text, color));
-                }
-
-                if (currentStats.Any())
-                {
-                    stats.Add(new WikiItemStat(currentStats));
-                }
-                statGroups.Add(stats.ToArray());
-            }
-            wikiItemBox.StatGroups = statGroups.ToArray();
-            return wikiItemBox;
-        }
-
-        private static WikiStatColor? ParseStatColor(HtmlNode node)
-        {
-            if (node.GetAttributeValue("class", "").Contains("-value"))
-                return WikiStatColor.Value;
-            if (node.GetAttributeValue("class", "").Contains("-mod"))
-                return WikiStatColor.Mod;
-            if (node.GetAttributeValue("class", "").Contains("-default"))
-                return WikiStatColor.Default;
-            return null;
-        }
-
-
-        /// <summary>
-        /// Tuple of a <see cref="HtmlNode"/> and a <see cref="Model.Items.Enums.ItemType"/> instance
-        /// </summary>
-        private class BaseItemTable
-        {
-            public HtmlNode HtmlTable { get; private set; }
-            public ItemType ItemType { get; private set; }
-
-            public static BaseItemTable Create(HtmlNode htmlTable, ItemType itemType)
-            {
-                return new BaseItemTable
-                {
-                    HtmlTable = htmlTable,
-                    ItemType = itemType
-                };
-            }
-        }
-    }
-
-    public class WikiItemBox
-    {
-        /// <summary>
-        /// Gets the text shown on the first line of the item box.
-        /// May be null, e.g. for base items, gems and magic items.
-        /// </summary>
-        public string NameLine { get; internal set; }
-
-        /// <summary>
-        /// Gets the text shown on the second line of the item box.
-        /// </summary>
-        public string TypeLine { get; internal set; }
-
-        /// <summary>
-        /// Gets the stats shown in the item box. First index selects the group (each group is
-        /// separated), second index the stat line in that group.
-        /// </summary>
-        public WikiItemStat[][] StatGroups { get; internal set; }
-    }
-
-    /// <summary>
-    /// Specifies one stat line in a item info box.
-    /// </summary>
-    public class WikiItemStat
-    {
-        /// <summary>
-        /// Gets the parts of text of this line with their corresponding colors.
-        /// Two successive tuples always have different colors.
-        /// </summary>
-        public Tuple<string, WikiStatColor>[] Stats { get; }
-
-        /// <summary>
-        /// Gets the text of this line.
-        /// </summary>
-        public string StatsCombined { get; }
-
-        internal WikiItemStat(IEnumerable<Tuple<string, WikiStatColor>> stats)
-        {
-            Stats = stats.ToArray();
-            StatsCombined = string.Join("", Stats.Select(t => t.Item1));
-        }
-    }
-
-    /// <summary>
-    /// Specifies the color with which a part of text is shown.
-    /// </summary>
-    public enum WikiStatColor
-    {
-        /// <summary>
-        /// Default text color.
-        /// </summary>
-        Default,
-        /// <summary>
-        /// Text color for values.
-        /// </summary>
-        Value,
-        /// <summary>
-        /// Text color for modifiers. Normally a whole group has this color.
-        /// If values surrounded by <see cref="Default"/> colored text have this color,
-        /// they are affected by modifiers.
-        /// </summary>
-        Mod
     }
 }

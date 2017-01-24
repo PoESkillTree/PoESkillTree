@@ -10,7 +10,6 @@ using log4net;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 using UpdateDB.DataLoading;
-using UpdateDB.DataLoading.Gems;
 
 namespace UpdateDB
 {
@@ -27,7 +26,7 @@ namespace UpdateDB
             {"base items", "Equipment/ItemList.xml", new ItemDataLoader(), LoaderCategories.VersionControlled, "Items"},
             {"base item images", "Equipment/Assets", new ItemImageLoader(false), LoaderCategories.NotVersionControlled, "ItemImages"},
             {"skill tree assets", "", new SkillTreeLoader(), LoaderCategories.NotVersionControlled, "TreeAssets"},
-            {"gems", "ItemDB/GemList.xml", new GemLoader(new GamepediaReader()), LoaderCategories.VersionControlled, "Gems"}
+            {"gems", "ItemDB/GemList.xml", new GemLoader(), LoaderCategories.VersionControlled, "Gems"}
         };
 
         private readonly IArguments _arguments;

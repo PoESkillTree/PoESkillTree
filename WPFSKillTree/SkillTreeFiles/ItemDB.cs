@@ -306,19 +306,23 @@ namespace POESKillTree.SkillTreeFiles
             // Tries to convert ValueAt instances into ValuePerLevel/ValuePerQuality or ValueForLevelRange/ValueForQualityRange instances.
             public void Optimize()
             {
-                // Values must contain only ValueAt instances with either level or quality specified and cannot contain multivalues.
-                if (Values.Exists(v => !(v is ValueAt) || v.IsMultiValue() || (v is ValueAt && !((ValueAt)v).LevelSpecified && !((ValueAt)v).QualitySpecified)))
+                // Values must contain only ValueAt instances with either level or quality specified.
+                if (Values.Exists(v => !(v is ValueAt) || (v is ValueAt && !((ValueAt)v).LevelSpecified && !((ValueAt)v).QualitySpecified)))
                     return;
+                var hasMultiValue = Values.Exists(v => v.IsMultiValue());
 
                 List<Value> optimized = new List<Value>();
                 List<ValueAt> values;
 
                 // Try per level.
                 // 1) Value at level 1 must be empty, zero or not defined.
-                if (Values.Exists(v => ((ValueAt)v).Level == 1 && (v.IsEmpty() || v.ToValue()[0] == 0)) || !Values.Exists(v => ((ValueAt)v).Level == 1))
+                // (does not support multivalues)
+                var valuesAt = Values.Cast<ValueAt>().ToList();
+                if (!hasMultiValue 
+                    && (valuesAt.Exists(v => v.Level == 1 && (v.IsEmpty() || v.ToValue()[0] == 0)) || !valuesAt.Exists(v => v.Level == 1)))
                 {
                     // 2) At least 2 non-empty values above level 1 must exist.
-                    values = Values.FindAll(v => ((ValueAt)v).LevelSpecified && !v.IsEmpty() && ((ValueAt)v).Level > 1).Cast<ValueAt>().ToList();
+                    values = valuesAt.FindAll(v => v.LevelSpecified && !v.IsEmpty() && v.Level > 1).ToList();
                     if (values.Count > 2)
                     {
                         // 3) All values must have same value to level ratio (level - 1 actually).
@@ -341,9 +345,10 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 // Try per quality.
-                values = Values.FindAll(v => ((ValueAt)v).QualitySpecified && !v.IsEmpty()).Cast<ValueAt>().ToList();
+                values = Values.Cast<ValueAt>().Where(v => v.QualitySpecified && !v.IsEmpty()).ToList();
                 // 1) At least 2 non-empty values must exist.
-                if (values.Count > 2)
+                // (does not support multivalues)
+                if (!hasMultiValue && values.Count > 2)
                 {
                     // 2) All values must have same value to quality ratio.
                     float gain = values[0].ToValue()[0] / values[0].Quality;
@@ -364,7 +369,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 // Try for level range.
-                values = Values.FindAll(v => ((ValueAt)v).LevelSpecified && !v.IsEmpty()).Cast<ValueAt>().ToList();
+                values = Values.Cast<ValueAt>().Where(v => v.LevelSpecified).ToList();
                 if (values.Count > 2) // Don't convert 2 or less values.
                 {
                     values.Sort(new ValueLogicalComparer());
@@ -399,7 +404,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 // Try for quality range.
-                values = Values.FindAll(v => ((ValueAt)v).QualitySpecified && !v.IsEmpty()).Cast<ValueAt>().ToList();
+                values = Values.Cast<ValueAt>().Where(v => v.QualitySpecified).ToList();
                 if (values.Count > 2) // Don't convert 2 or less values.
                 {
                     values.Sort(new ValueLogicalComparer());
@@ -981,7 +986,7 @@ namespace POESKillTree.SkillTreeFiles
             abstract internal ValuePriority Priority { get; }
 
             // Pattern to match number.
-            private static Regex ReValue = new Regex("(\\d+(\\.\\d+)?)");
+            private static Regex ReValue = new Regex("(-?\\d+(\\.\\d+)?)");
 
             // Returns true if value is empty, false otherwise.
             public bool IsEmpty()

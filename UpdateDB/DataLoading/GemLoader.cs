@@ -1,125 +1,242 @@
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
 using log4net;
+using Newtonsoft.Json.Linq;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
-using UpdateDB.DataLoading.Gems;
+using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
-    // todo ItemDB does not really allow async gem loading
-    /// <summary>
-    /// Loads the available Gems from the unofficial Wiki at Gamepedia and loads and saves information about each
-    /// gem using a <see cref="IGemReader"/>.
-    /// </summary>
     public class GemLoader : DataLoader
     {
+        // todo GemProperties.xml stuff where possible (other properties of ItemDB.Gem)
+
         private static readonly ILog Log = LogManager.GetLogger(typeof(GemLoader));
 
-        private readonly IGemReader _gemReader;
+        private const string RepoeGemsUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/gems.min.json";
+        private const string RepoeGemTooltipsUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/gem_tooltips.min.json";
 
-        public override bool SavePathIsFolder
-        {
-            get { return false; }
-        }
+        public override bool SavePathIsFolder => false;
 
-        public override IEnumerable<string> SupportedArguments
-        {
-            get { return new []{ "single", "update", "merge" }; }
-        }
+        private JObject _gemsJson;
+        private JObject _gemTooltipsJson;
 
-        public GemLoader(IGemReader gemReader)
+        protected override async Task LoadAsync()
         {
-            _gemReader = gemReader;
-        }
+            await LoadRePoEAsync();
 
-        protected override Task LoadAsync()
-        {
-            _gemReader.HttpClient = HttpClient;
-            string singleGemName;
-            if (SuppliedArguments.TryGetValue("single", out singleGemName) && singleGemName != null)
+            foreach (var gemId in _gemsJson.Properties().Select(p => p.Name))
             {
-                return UpdateSingle(singleGemName);
-            }
-            string mergePath;
-            if (SuppliedArguments.TryGetValue("merge", out mergePath) && mergePath != null)
-            {
-                return Task.Run(() => Merge(mergePath));
-            }
-            if (SuppliedArguments.ContainsKey("update"))
-            {
-                return Update();
-            }
-            return Overwrite();
-        }
-
-        private async Task UpdateSingle(string singleGemName)
-        {
-            var fetched = await _gemReader.FetchGemAsync(singleGemName);
-            if (fetched == null)
-                return;
-            if (!LoadOld())
-                return;
-            var old = ItemDB.GetGem(singleGemName);
-            if (old == null)
-                ItemDB.Add(fetched);
-            else
-                old.Merge(fetched);
-        }
-
-        private void Merge(string mergePath)
-        {
-            if (!LoadOld())
-                return;
-            ItemDB.MergeFromCompletePath(mergePath);
-        }
-
-        private async Task Update()
-        {
-            if (!LoadOld())
-                return;
-            foreach (var gem in ItemDB.GetAllGems())
-            {
-                var fetched = await _gemReader.FetchGemAsync(gem.Name);
-                if (fetched != null)
-                    gem.Merge(fetched);
-            }
-        }
-
-        private bool LoadOld()
-        {
-            var updateSource = SavePath.Replace(".tmp", "");
-            if (!File.Exists(updateSource))
-            {
-                Log.ErrorFormat("There is no gem file that can be updated (path: {0})", updateSource);
-                return false;
-            }
-            ItemDB.LoadFromCompletePath(updateSource);
-            return true;
-        }
-
-        private async Task Overwrite()
-        {
-            var wikiUtils = new WikiUtils(HttpClient);
-            var gemTasks = await wikiUtils.SelectFromGemsAsync(ParseGemTable);
-            foreach (var task in gemTasks)
-            {
-                var gem = await task;
-                if (gem == null)
+                var gemObj = _gemsJson.Value<JObject>(gemId);
+                if (gemObj["base_item"].Type == JTokenType.Null)
+                {
+                    Log.Info($"Skipping gem with id {gemId} because it has no base item");
                     continue;
-                ItemDB.Add(gem);
+                }
+                var baseItem = gemObj.Value<JObject>("base_item");
+                if (baseItem.Value<string>("release_state") == "unreleased")
+                {
+                    Log.Info($"Skipping gem with id {gemId} because it is unreleased");
+                    continue;
+                }
+
+                var tooltipObj = _gemTooltipsJson.Value<JObject>(gemId);
+                var tooltipStatic = tooltipObj.Value<JObject>("static");
+                if (tooltipStatic.Count == 0)
+                {
+                    Log.Warn($"Skipping gem with id {gemId} because 'static' is empty");
+                    continue;
+                }
+
+                var name = tooltipStatic.Value<string>("name");
+                var tags = tooltipStatic.Value<JArray>("properties").Value<string>(0);
+
+                var attributes = new List<ItemDB.Attribute>();
+                var levelProps = tooltipObj.Value<JObject>("per_level").Properties().ToList();
+                var levelInts = levelProps.Select(p => p.Name.ParseInt()).ToList();
+                var levelObjects = levelProps.Select(p => p.Value).Cast<JObject>().ToList();
+                // properties
+                // skip line with gem tags and line with gem level
+                attributes.AddRange(ParseAttributes(levelInts, levelObjects, "properties", 2));
+                // quality stats
+                attributes.AddRange(ParseAttributes(levelInts, levelObjects, "quality_stats", atQuality: 1));
+                // stats
+                attributes.AddRange(ParseAttributes(levelInts, levelObjects, "stats"));
+
+                ItemDB.Add(new ItemDB.Gem
+                {
+                    Name = name,
+                    Tags = tags,
+                    Attributes = attributes
+                });
             }
         }
 
-        private IEnumerable<Task<ItemDB.Gem>> ParseGemTable(HtmlNode table)
+        private async Task LoadRePoEAsync()
         {
-            return from row in table.Elements("tr").Skip(1)
-                   select row.ChildNodes[0] into cell
-                   select cell.SelectNodes("span/a[not(contains(@class, 'image'))]")[0] into nameNode
-                   select _gemReader.FetchGemAsync(nameNode.InnerHtml);
+            var gemsJsonTask = HttpClient.GetStringAsync(RepoeGemsUrl);
+            var gemTooltipsJsonTask = HttpClient.GetStringAsync(RepoeGemTooltipsUrl);
+            _gemsJson = JObject.Parse(await gemsJsonTask);
+            MergeStaticWithPerLevel(_gemsJson);
+            _gemTooltipsJson = JObject.Parse(await gemTooltipsJsonTask);
+            MergeStaticWithPerLevel(_gemTooltipsJson);
+        }
+
+        private static void MergeStaticWithPerLevel(JObject json)
+        {
+            foreach (var token in json.PropertyValues())
+            {
+                var staticObject = token.Value<JObject>("static");
+                foreach (var perLevelProp in token["per_level"].Cast<JProperty>())
+                {
+                    MergeObject(staticObject, (JObject) perLevelProp.Value);
+                }
+            }
+        }
+
+        private static void MergeObject(JObject staticObject, JObject perLevelObject)
+        {
+            foreach (var staticProp in staticObject.Properties())
+            {
+                var staticValue = staticProp.Value;
+                var staticType = staticValue.Type;
+                var propName = staticProp.Name;
+                if (staticType == JTokenType.Null)
+                {
+                    continue;
+                }
+                JToken perLevelValue;
+                if (perLevelObject.TryGetValue(propName, out perLevelValue))
+                {
+                    if (staticType == JTokenType.Object)
+                    {
+                        MergeObject((JObject) staticValue, (JObject) perLevelValue);
+                    }
+                    else if (staticType == JTokenType.Array)
+                    {
+                        MergeArray((JArray) staticValue, (JArray) perLevelValue);
+                    }
+                    // for primitives, keep the one from perLevelObject
+                }
+                else
+                {
+                    perLevelObject[propName] = staticValue;
+                }
+            }
+        }
+
+        private static void MergeArray(JArray staticArray, JArray perLevelArray)
+        {
+            if (staticArray.Count != perLevelArray.Count)
+            {
+                throw new ArgumentException("both JArrays must be of the same size");
+            }
+            for (int i = 0; i < staticArray.Count; i++)
+            {
+                var staticValue = staticArray[i];
+                var perLevelValue = perLevelArray[i];
+                if (staticValue.Type == JTokenType.Null)
+                {
+                    continue;
+                }
+                switch (perLevelValue.Type)
+                {
+                    case JTokenType.Null:
+                        perLevelArray[i] = staticValue;
+                        break;
+                    case JTokenType.Object:
+                        MergeObject((JObject) staticValue, (JObject) perLevelValue);
+                        break;
+                    case JTokenType.Array:
+                        MergeArray((JArray) staticValue, (JArray) perLevelValue);
+                        break;
+                    // for primitives, keep the one from perLevelObject
+                }
+            }
+        }
+
+        private static IEnumerable<ItemDB.Attribute> ParseAttributes(IReadOnlyList<int> levels,
+            IReadOnlyList<JObject> levelObjects, string propertyName, int skip = 0, int atQuality = 0)
+        {
+            if (levelObjects.Any(o => o[propertyName] == null))
+            {
+                Log.Warn($"At least one level object doesn't have the property {propertyName}");
+                return Enumerable.Empty<ItemDB.Attribute>();
+            }
+            Func<JObject, List<JObject>> selector = 
+                o => o.Value<JArray>(propertyName).Skip(skip).Cast<JObject>().ToList();
+            var levelArrays = levelObjects.Select(selector).ToList();
+            if (!levelArrays.Any())
+                return Enumerable.Empty<ItemDB.Attribute>();
+            var attributes = new List<ItemDB.Attribute>();
+            for (var i = 0; i < levelArrays[0].Count; i++)
+            {
+                var attrs = ParseAttribute(levels, levelArrays.Select(a => a[i]).ToList(), atQuality);
+                attributes.AddRange(attrs);
+            }
+            return attributes;
+        }
+
+        private static IEnumerable<ItemDB.Attribute> ParseAttribute(IReadOnlyList<int> levels, 
+            IReadOnlyList<JObject> attributeObjects, int atQuality = 0)
+        {
+            var nameToValues = new Dictionary<string, List<ItemDB.Value>>();
+            for (var i = 0; i < levels.Count; i++)
+            {
+                var level = levels[i];
+                var attrObj = attributeObjects[i];
+                var name = Regex.Replace(attrObj.Value<string>("text"), @"{\d}", "#");
+
+                if (!nameToValues.ContainsKey(name))
+                {
+                    nameToValues[name] = new List<ItemDB.Value>();
+                }
+                var valuesForName = nameToValues[name];
+
+                JToken value;
+                JToken values;
+                if (attrObj.TryGetValue("value", out value))
+                {
+                    valuesForName.Add(new ItemDB.ValueAt
+                    {
+                        Level = level,
+                        Quality = atQuality,
+                        Text = ParseValue(value)
+                    });
+                }
+                else if (attrObj.TryGetValue("values", out values))
+                {
+                    valuesForName.Add(new ItemDB.ValueAt
+                    {
+                        Level = level,
+                        Quality = atQuality,
+                        Text = string.Join(" ", values.Select(ParseValue))
+                    });
+                }
+            }
+            foreach (var pair in nameToValues)
+            {
+                yield return new ItemDB.Attribute
+                {
+                    Name = pair.Key,
+                    Values = pair.Value
+                };
+            }
+        }
+
+        private static string ParseValue(JToken value)
+        {
+            switch (value.Type)
+            {
+                case JTokenType.Float:
+                    return ((float)value).ToString(CultureInfo.InvariantCulture);
+                default:
+                    return value.ToString();
+            }
         }
 
         protected override Task CompleteSavingAsync()

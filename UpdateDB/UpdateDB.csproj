@@ -88,8 +88,6 @@
     <Compile Include="DataLoading\AffixDataLoader.cs" />
     <Compile Include="DataLoading\DataLoader.cs" />
     <Compile Include="DataLoading\GemLoader.cs" />
-    <Compile Include="DataLoading\Gems\GamepediaReader.cs" />
-    <Compile Include="DataLoading\Gems\IGemReader.cs" />
     <Compile Include="DataLoading\ItemDataLoader.cs" />
     <Compile Include="DataLoading\ItemImageLoader.cs" />
     <Compile Include="DataLoading\MultiDataLoader.cs" />
