@@ -201,6 +201,7 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="Utils\UrlProcessing\BanditConverter.cs" />
     <Compile Include="Utils\UrlProcessing\BuildUrlDeserializer.cs" />
     <Compile Include="Utils\UrlProcessing\BuildConverter.cs" />
     <Compile Include="Utils\UrlProcessing\BuildUrlData.cs" />
@@ -494,7 +495,6 @@
     <Compile Include="SkillTreeFiles\Rect2D.cs" />
     <Compile Include="SkillTreeFiles\SkillTree-Drawing.cs" />
     <Compile Include="SkillTreeFiles\SkillTree.cs" />
-    <Compile Include="SkillTreeFiles\SkillTreeImporter.cs" />
     <Compile Include="SkillTreeFiles\Vector2D.cs" />
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Views\DownloadItemsWindow.xaml.cs">

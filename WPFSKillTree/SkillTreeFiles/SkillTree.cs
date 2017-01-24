@@ -1160,6 +1160,18 @@ namespace POESKillTree.SkillTreeFiles
 
         public static void DecodeUrl(string url, out HashSet<SkillNode> skillednodes, out int chartype, out int ascType)
         {
+            DecodeUrlProtected(url, out skillednodes, out chartype, out ascType);
+        }
+
+        public static BuildUrlData DecodeUrl(string url, out HashSet<SkillNode> skillednodes)
+        {
+            int chartype;
+            int ascType;
+            return DecodeUrlProtected(url, out skillednodes, out chartype, out ascType);
+        }
+
+        protected static BuildUrlData DecodeUrlProtected(string url, out HashSet<SkillNode> skillednodes, out int chartype, out int ascType)
+        {
             BuildUrlData buildData = BuildConverter.GetUrlDeserializer(url).GetBuildData();
 
             chartype = (byte)buildData.CharacterClassId;
@@ -1186,18 +1198,20 @@ namespace POESKillTree.SkillTreeFiles
 
                 skillednodes.Add(node);
             }
+
+            return buildData;
         }
 
-        public void LoadFromUrl(string url)
+        public BuildUrlData LoadFromUrl(string url)
         {
-            int b;
-            int asc;
             HashSet<SkillNode> snodes;
-            DecodeUrl(url, out snodes, out b, out asc);
-            Chartype = b;
-            AscType = asc;
+            var data = DecodeUrl(url, out snodes);
+            Chartype = data.CharacterClassId;
+            AscType = data.AscendancyClassId;
             SkilledNodes.Clear();
             AllocateSkillNodes(snodes);
+
+            return data;
         }
 
         public void Reset()

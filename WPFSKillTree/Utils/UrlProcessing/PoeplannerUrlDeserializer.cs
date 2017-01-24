@@ -108,7 +108,7 @@ namespace POESKillTree.Utils.UrlProcessing
 
         private BuildUrlData ParsePoeplannerData(PoeplannerData data)
         {
-            var result = new BuildUrlData();
+            var result = new BuildUrlData(BanditConverter.PoEPlanner);
 
             result.Version = data.Version;
 
@@ -123,9 +123,9 @@ namespace POESKillTree.Utils.UrlProcessing
             if (data.NodesData.Length < 2)
                 return result;
 
-            result.BanditNormal = data.NodesData[1] & 3;
-            result.BanditCruel = data.NodesData[1] >> 2 & 3;
-            result.BanditMerciless = data.NodesData[1] >> 4 & 3;
+            result.SetBanditNormal(data.NodesData[1] & 3);
+            result.SetBanditCruel(data.NodesData[1] >> 2 & 3);
+            result.SetBanditMerciless(data.NodesData[1] >> 4 & 3);
 
             if (data.NodesData.Length < 4)
                 return result;

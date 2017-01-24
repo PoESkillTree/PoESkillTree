@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -247,7 +248,7 @@ namespace POESKillTree.Views
                     break;
                 case nameof(PoEBuild.TreeUrl):
                     if (!_skipLoadOnCurrentBuildTreeChange)
-                        await LoadBuildFromUrlAsync(PersistentData.CurrentBuild.TreeUrl);
+                        await SetTreeUrl(PersistentData.CurrentBuild.TreeUrl);
                     InputTreeUrl = PersistentData.CurrentBuild.TreeUrl;
                     break;
                 case nameof(PoEBuild.CheckedNodeIds):
@@ -555,17 +556,18 @@ namespace POESKillTree.Views
 
             LoadTreeButtonViewModel.Add(L10n.Message("Load Tree"), async () =>
             {
-                if (InputTreeUrl == null)
+                if (string.IsNullOrWhiteSpace(InputTreeUrl))
                     return;
                 await LoadBuildFromUrlAsync(InputTreeUrl);
             }, () => NoAsyncTaskRunning);
             LoadTreeButtonViewModel.Add(L10n.Message("Load as new build"), async () =>
             {
-                if (InputTreeUrl == null)
+                if (string.IsNullOrWhiteSpace(InputTreeUrl))
                     return;
+
                 var url = InputTreeUrl;
                 BuildsControlViewModel.NewBuild(BuildsControlViewModel.BuildRoot);
-                await LoadBuildFromUrlAsync(url);
+                await LoadBuildFromUrlAsync(url, forceBanditsUpdate: true);
             }, () => NoAsyncTaskRunning);
             LoadTreeButtonViewModel.SelectedIndex = PersistentData.Options.LoadTreeButtonIndex;
             LoadTreeButtonViewModel.PropertyChanged += (o, args) =>
@@ -927,7 +929,7 @@ namespace POESKillTree.Views
                         Tree = await CreateSkillTreeAsync(controller, assetLoader); //create new skilltree to reinitialize cache
                         recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
-                        await LoadBuildFromUrlAsync();
+                        await ResetTreeUrl();
                         _justLoaded = false;
 
                         assetLoader.DeleteBackup();
@@ -1762,7 +1764,7 @@ namespace POESKillTree.Views
             TreeGeneratorInteraction?.LoadSettings();
             await LoadItemData();
             SetCustomGroups(build.CustomGroups);
-            await LoadBuildFromUrlAsync();
+            await ResetTreeUrl();
         }
 
         /// <summary>
@@ -1775,23 +1777,21 @@ namespace POESKillTree.Views
             _skipLoadOnCurrentBuildTreeChange = false;
         }
 
-        private Task LoadBuildFromUrlAsync()
+        private Task ResetTreeUrl()
         {
-            return LoadBuildFromUrlAsync(PersistentData.CurrentBuild.TreeUrl);
+            return SetTreeUrl(PersistentData.CurrentBuild.TreeUrl);
         }
 
-        private async Task LoadBuildFromUrlAsync(string treeUrl)
+        private async Task SetTreeUrl(string treeUrl)
         {
             try
             {
-                var newUrl = await _buildUrlNormalizer.NormalizeAsync(treeUrl, AwaitAsyncTask);
-
                 // If the url did change, it'll run through this method again anyway.
                 // So no need to call Tree.LoadFromUrl in that case.
-                if (PersistentData.CurrentBuild.TreeUrl == newUrl)
-                    Tree.LoadFromUrl(newUrl);
+                if (PersistentData.CurrentBuild.TreeUrl == treeUrl)
+                    Tree.LoadFromUrl(treeUrl);
                 else
-                    PersistentData.CurrentBuild.TreeUrl = newUrl;
+                    PersistentData.CurrentBuild.TreeUrl = treeUrl;
 
                 if (_justLoaded)
                 {
@@ -1819,9 +1819,74 @@ namespace POESKillTree.Views
             }
         }
 
+        private async Task LoadBuildFromUrlAsync(string treeUrl, bool forceBanditsUpdate = false)
+        {
+            var normalizedUrl = await _buildUrlNormalizer.NormalizeAsync(treeUrl, AwaitAsyncTask);
+            BuildUrlData data = BuildConverter.GetUrlDeserializer(normalizedUrl).GetBuildData();
+            var newTreeUrl = new SkillTreeSerializer(data).ToUrl();
+
+            BanditSettings bandits = PersistentData.CurrentBuild.Bandits;
+            if (forceBanditsUpdate)
+            {
+                bandits.Normal = data.BanditNormal;
+                bandits.Cruel = data.BanditCruel;
+                bandits.Merciless = data.BanditMerciless;
+            }
+            else if (data != null && data.HasAnyBanditValue() && !data.BanditsAreSame(bandits))
+            {
+                var details = CreateDetailsString(bandits, data);
+
+                var dialogResult = await this.ShowQuestionAsync(
+                    L10n.Message(
+                        $"The build you are loading contains information about selected bandits.{Environment.NewLine}Do you want to use it and overwrite current settings?"),
+                    details, L10n.Message("Replace Bandits settings"), MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (dialogResult == MessageBoxResult.Yes)
+                {
+                    bandits.Normal = data.BanditNormal;
+                    bandits.Cruel = data.BanditCruel;
+                    bandits.Merciless = data.BanditMerciless;
+                }
+            }
+
+            PersistentData.CurrentBuild.TreeUrl = newTreeUrl;
+            InputTreeUrl = newTreeUrl;
+        }
+
+        private string CreateDetailsString(BanditSettings bandits, BuildUrlData data)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(L10n.Message("Current:"))
+                .AppendLine($" - {GetBanditWithReward(bandits.Normal, Difficulty.Normal)}")
+                .AppendLine($" - {GetBanditWithReward(bandits.Cruel, Difficulty.Cruel)}")
+                .AppendLine($" - {GetBanditWithReward(bandits.Merciless, Difficulty.Merciless)}")
+                .AppendLine(L10n.Message("Loaded:"))
+                .AppendLine($" - {GetBanditWithReward(data.BanditNormal, Difficulty.Normal)}")
+                .AppendLine($" - {GetBanditWithReward(data.BanditCruel, Difficulty.Cruel)}")
+                .Append($" - {GetBanditWithReward(data.BanditMerciless, Difficulty.Merciless)}");
+
+            string details = sb.ToString();
+            return details;
+        }
+
+        private string GetBanditWithReward(Bandit bandit, Difficulty difficulty)
+        {
+            var result = $"{Enum.GetName(typeof(Difficulty), difficulty)}:  {Enum.GetName(typeof(Bandit), bandit)}";
+            result += bandit == Bandit.None ? string.Empty : " (" + InsertNumbersInAttributes(bandit.Reward(difficulty).Item1, bandit.Reward(difficulty).Item2) + ")";
+
+            return result;
+        }
+
+        private string InsertNumbersInAttributes(string attr, float value)
+        {
+            var s = attr;
+            s = s.Replace("#", Convert.ToString(value, CultureInfo.InvariantCulture));
+            return s;
+        }
+
         #endregion
 
-#region Bottom Bar (Build URL etc)
+        #region Bottom Bar (Build URL etc)
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {

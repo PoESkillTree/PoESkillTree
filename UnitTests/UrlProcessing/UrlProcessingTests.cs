@@ -281,13 +281,15 @@ namespace UnitTests.UrlProcessing
 
         #endregion
 
+        #region Helpers
+
         private static HashSet<SkillNode> DecodeInSkillTree(string buildUrl)
         {
             HashSet<SkillNode> nodes;
-            int chartype;
-            int ascType;
-            SkillTree.DecodeUrl(buildUrl, out nodes, out chartype, out ascType);
+            SkillTree.DecodeUrl(buildUrl, out nodes);
             return nodes;
         }
+
+        #endregion
     }
 }

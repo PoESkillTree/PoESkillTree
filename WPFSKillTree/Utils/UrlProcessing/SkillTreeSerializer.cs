@@ -14,6 +14,12 @@ namespace POESKillTree.Utils.UrlProcessing
         private static byte Fullscreen { get; } = 0;
 
         private readonly SkillTree _skillTree;
+        private readonly BuildUrlData _buildUrlData;
+
+        public SkillTreeSerializer(BuildUrlData buildUrlData)
+        {
+            _buildUrlData = buildUrlData;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillTreeSerializer"/> class.
@@ -28,6 +34,31 @@ namespace POESKillTree.Utils.UrlProcessing
         /// Serializes specified skill tree into the https://pathofexile.com url.
         /// </summary>
         public string ToUrl()
+        {
+            return _skillTree != null ? ToUrlFromTree() : ToUrlFromData();
+        }
+
+        private string ToUrlFromData()
+        {
+            // Ordering provides nice exact Url match, but is not strictly needed.
+            // Performance impact is minimal even on tree with all 1.3K nodes allocated.
+            var skillNodes = _buildUrlData.SkilledNodesIds;
+            skillNodes.Sort();
+
+            var bytes = new byte[HeaderSize + skillNodes.Count() * 2];
+            bytes = GetCharacterBytes((byte)_buildUrlData.CharacterClassId, (byte)_buildUrlData.AscendancyClassId, bytes);
+
+            int i = HeaderSize;
+            foreach (var id in skillNodes)
+            {
+                bytes[i++] = (byte)(id >> 8 & 0xFF);
+                bytes[i++] = (byte)(id & 0xFF);
+            }
+
+            return Constants.TreeAddress + Convert.ToBase64String(bytes).Replace("/", "_").Replace("+", "-");
+        }
+
+        private string ToUrlFromTree()
         {
             // Ordering provides nice exact Url match, but is not strictly needed.
             // Performance impact is minimal even on tree with all 1.3K nodes allocated.
