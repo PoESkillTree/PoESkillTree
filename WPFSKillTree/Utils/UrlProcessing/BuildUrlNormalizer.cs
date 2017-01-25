@@ -28,33 +28,42 @@ namespace POESKillTree.Utils.UrlProcessing
         /// Creates link to official pathofexile.com builder.
         /// Extracts build url from google link if needed, resolves shortened urls and removes unused query parameters.
         /// </summary>
-        public virtual async Task<string> NormalizeAsync(string buildUrl, Func<string, Task, Task> loadingWrapper)
+        public virtual async Task<string> NormalizeAsync(string buildUrl, Func<string, Task, Task> loadingWrapper = null)
         {
-            while (true)
+            try
             {
-                if (buildUrl.Contains("google.com"))
+                buildUrl = Regex.Replace(buildUrl, @"\s", "");
+
+                while (true)
                 {
-                    buildUrl = ExtractUrlFromQuery(buildUrl, "q");
-                    continue;
+                    if (buildUrl.Contains("google.com"))
+                    {
+                        buildUrl = ExtractUrlFromQuery(buildUrl, "q");
+                        continue;
+                    }
+
+                    if (buildUrl.Contains("tinyurl.com") || buildUrl.Contains("poeurl.com") || buildUrl.Contains("goo.gl"))
+                    {
+                        buildUrl = await ResolveShortenedUrl(buildUrl, loadingWrapper);
+                        continue;
+                    }
+
+                    break;
                 }
 
-                if (buildUrl.Contains("tinyurl.com") || buildUrl.Contains("poeurl.com") || buildUrl.Contains("goo.gl"))
-                {
-                    buildUrl = await ResolveShortenedUrl(buildUrl, loadingWrapper);
-                    continue;
-                }
-
-                break;
+                return EnsureProtocol(buildUrl);
             }
-
-            return EnsureProtocol(buildUrl);
+            catch (Exception e)
+            {
+                throw new ArgumentException("The URL you are trying to load is invalid.", e);
+            }
         }
 
         protected virtual string ExtractUrlFromQuery(string url, string parameterName)
         {
             var match = Regex.Match(url, $@"{parameterName}=(?<urlParam>.*?)(&|$)");
             if (!match.Success)
-                throw new Exception("The URL you are trying to load is invalid.");
+                throw new ArgumentException($"The URL doesn't contain required query parameter '{parameterName}'."); // internal exception
 
             return match.Groups["urlParam"].Value;
         }
@@ -71,18 +80,22 @@ namespace POESKillTree.Utils.UrlProcessing
 
             HttpResponseMessage response = null;
 
-            // This lambda is used to skip GetAsync() result value in loadingWrapper parameter
-            // and thereby unify it by using Task instead of Task<HttpResponseMessage> in signature
-            Func<Task> headersLoader = async () =>
+            if (loadingWrapper != null)
+            {
+                // This lambda is used to skip GetAsync() result value in loadingWrapper parameter
+                // and thereby unify it by using Task instead of Task<HttpResponseMessage> in signature
+                Func<Task> headersLoader = async () =>
+                {
+                    response = await new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead);
+                };
+
+                await loadingWrapper(L10n.Message("Resolving shortened tree address"), headersLoader());
+                response.EnsureSuccessStatusCode();
+            }
+            else
             {
                 response = await new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead);
-            };
-
-            await loadingWrapper(L10n.Message("Resolving shortened tree address"), headersLoader());
-            response.EnsureSuccessStatusCode();
-
-            if (!Regex.IsMatch(response.RequestMessage.RequestUri.ToString(), Constants.TreeRegex))
-                throw new Exception("The URL you are trying to load is invalid.");
+            }
 
             return response.RequestMessage.RequestUri.ToString();
         }

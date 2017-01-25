@@ -78,13 +78,12 @@ namespace POESKillTree.Utils.UrlProcessing
             if (_rawData != null)
                 return _rawData;
 
-            var newUrl = Regex.Replace(BuildUrl, @"\s", "");
-            var match = _urlRegex.Match(newUrl);
+            var match = _urlRegex.Match(BuildUrl);
 
             if (!match.Success)
-                throw new Exception(L10n.Message($"Unable to deserialize specified Url: {BuildUrl}."));
+                throw new Exception(L10n.Message("Failed to load build from URL."));
 
-            newUrl = match.Groups["build"].Value.Replace("-", "+").Replace("_", "/");
+            var newUrl = match.Groups["build"].Value.Replace("-", "+").Replace("_", "/");
             _rawData = Convert.FromBase64String(newUrl);
 
             return _rawData;

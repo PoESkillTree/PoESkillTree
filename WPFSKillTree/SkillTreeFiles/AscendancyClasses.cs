@@ -68,7 +68,7 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         /// <summary>
-        /// Returns all ascendancy class names for the given hgf character class.
+        /// Returns all ascendancy class names for the given character class.
         /// </summary>
         public static IEnumerable<string> AscendancyClassesForCharacter(string characterClass)
         {

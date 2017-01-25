@@ -15,19 +15,19 @@
           </xs:documentation>
         </xs:annotation>
       </xs:enumeration>
-      <!-- Kraityn = 2 (poeplanner) -->
-      <xs:enumeration value="Kraityn">
-        <xs:annotation>
-          <xs:documentation>
-            +10 all Res (Normal); +8% Attack Speed (Cruel); +1 Frenzy Charge (Merciless)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <!-- Oak = 3 (poeplanner) -->
+      <!-- Oak = 2 (poeplanner - 3) -->
       <xs:enumeration value="Oak">
         <xs:annotation>
           <xs:documentation>
             +60 Life (Normal); +16% Physical Damage (Cruel); +1 Endurance Charge (Merciless)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <!-- Kraityn = 3 (poeplanner - 2) -->
+      <xs:enumeration value="Kraityn">
+        <xs:annotation>
+          <xs:documentation>
+            +10 all Res (Normal); +8% Attack Speed (Cruel); +1 Frenzy Charge (Merciless)
           </xs:documentation>
         </xs:annotation>
       </xs:enumeration>

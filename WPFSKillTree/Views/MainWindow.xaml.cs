@@ -1821,36 +1821,44 @@ namespace POESKillTree.Views
 
         private async Task LoadBuildFromUrlAsync(string treeUrl, bool forceBanditsUpdate = false)
         {
-            var normalizedUrl = await _buildUrlNormalizer.NormalizeAsync(treeUrl, AwaitAsyncTask);
-            BuildUrlData data = BuildConverter.GetUrlDeserializer(normalizedUrl).GetBuildData();
-            var newTreeUrl = new SkillTreeSerializer(data).ToUrl();
-
-            BanditSettings bandits = PersistentData.CurrentBuild.Bandits;
-            if (forceBanditsUpdate)
+            try
             {
-                bandits.Normal = data.BanditNormal;
-                bandits.Cruel = data.BanditCruel;
-                bandits.Merciless = data.BanditMerciless;
-            }
-            else if (data != null && data.HasAnyBanditValue() && !data.BanditsAreSame(bandits))
-            {
-                var details = CreateDetailsString(bandits, data);
+                var normalizedUrl = await _buildUrlNormalizer.NormalizeAsync(treeUrl, AwaitAsyncTask);
+                BuildUrlData data = BuildConverter.GetUrlDeserializer(normalizedUrl).GetBuildData();
+                var newTreeUrl = new SkillTreeSerializer(data).ToUrl();
 
-                var dialogResult = await this.ShowQuestionAsync(
-                    L10n.Message(
-                        $"The build you are loading contains information about selected bandits.{Environment.NewLine}Do you want to use it and overwrite current settings?"),
-                    details, L10n.Message("Replace Bandits settings"), MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (dialogResult == MessageBoxResult.Yes)
+                BanditSettings bandits = PersistentData.CurrentBuild.Bandits;
+                if (forceBanditsUpdate)
                 {
                     bandits.Normal = data.BanditNormal;
                     bandits.Cruel = data.BanditCruel;
                     bandits.Merciless = data.BanditMerciless;
                 }
-            }
+                else if (data != null && data.HasAnyBanditValue() && !data.BanditsAreSame(bandits))
+                {
+                    var details = CreateDetailsString(bandits, data);
 
-            PersistentData.CurrentBuild.TreeUrl = newTreeUrl;
-            InputTreeUrl = newTreeUrl;
+                    var dialogResult = await this.ShowQuestionAsync(
+                        L10n.Message("The build you are loading contains information about selected bandits.") + Environment.NewLine +
+                        L10n.Message("Do you want to use it and overwrite current settings?"),
+                        details, L10n.Message("Replace Bandits settings"), MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                    if (dialogResult == MessageBoxResult.Yes)
+                    {
+                        bandits.Normal = data.BanditNormal;
+                        bandits.Cruel = data.BanditCruel;
+                        bandits.Merciless = data.BanditMerciless;
+                    }
+                }
+
+                PersistentData.CurrentBuild.TreeUrl = newTreeUrl;
+                InputTreeUrl = newTreeUrl;
+            }
+            catch (Exception ex)
+            {
+                PersistentData.CurrentBuild.TreeUrl = Tree.Serializer.ToUrl();
+                await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
+            }
         }
 
         private string CreateDetailsString(BanditSettings bandits, BuildUrlData data)

@@ -151,8 +151,6 @@ namespace POESKillTree.Utils.UrlProcessing
             return result;
         }
 
-        #endregion
-
         /// <summary>
         /// Represents preprocessed raw data.
         /// </summary>
@@ -164,5 +162,7 @@ namespace POESKillTree.Utils.UrlProcessing
             internal byte[] AurasData { get; set; }
             internal byte[] EquipmentData { get; set; }
         }
+
+        #endregion
     }
 }

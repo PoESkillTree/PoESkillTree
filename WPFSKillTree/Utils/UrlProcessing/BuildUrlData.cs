@@ -14,11 +14,6 @@ namespace POESKillTree.Utils.UrlProcessing
         private int? _banditCruelId;
         private int? _banditMercilessId;
 
-        public BuildUrlData(BanditConverter converter)
-        {
-            _converter = converter;
-        }
-
         public int Version { get; set; }
         public int CharacterClassId { get; set; }
         public int AscendancyClassId { get; set; }
@@ -28,6 +23,11 @@ namespace POESKillTree.Utils.UrlProcessing
         public virtual Bandit BanditNormal => _converter.GetBandit(_banditNormalId);
         public virtual Bandit BanditCruel => _converter.GetBandit(_banditCruelId);
         public virtual Bandit BanditMerciless => _converter.GetBandit(_banditMercilessId);
+
+        public BuildUrlData(BanditConverter converter)
+        {
+            _converter = converter;
+        }
 
         public void SetBanditNormal(int id)
         {
