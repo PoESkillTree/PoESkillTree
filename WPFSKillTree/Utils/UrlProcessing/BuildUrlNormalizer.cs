@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using POESKillTree.Localization;
-using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.Utils.UrlProcessing
 {
@@ -18,10 +17,11 @@ namespace POESKillTree.Utils.UrlProcessing
         private readonly Dictionary<string, string> _urlCompletionMap = new Dictionary<string, string>
         {
             // If supports both http and https - prefer secured
-            { "goo.gl", "https://www.goo.gl" },
-            { "poeurl.com", "http://www.poeurl.com" },
-            { "tinyurl.com", "https://www.tinyurl.com" },
-            { "pathofexile.com", "https://www.pathofexile.com" }
+            { "goo.gl", "https://goo.gl" },
+            { "poeurl.com", "http://poeurl.com" },
+            { "tinyurl.com", "https://tinyurl.com" },
+            { "poeplanner.com", "http://poeplanner.com" },
+            { "pathofexile.com", "https://pathofexile.com" }
         };
 
         /// <summary>
@@ -30,33 +30,26 @@ namespace POESKillTree.Utils.UrlProcessing
         /// </summary>
         public virtual async Task<string> NormalizeAsync(string buildUrl, Func<string, Task, Task> loadingWrapper = null)
         {
-            try
+            buildUrl = Regex.Replace(buildUrl, @"\s", "");
+
+            while (true)
             {
-                buildUrl = Regex.Replace(buildUrl, @"\s", "");
-
-                while (true)
+                if (buildUrl.Contains("google.com"))
                 {
-                    if (buildUrl.Contains("google.com"))
-                    {
-                        buildUrl = ExtractUrlFromQuery(buildUrl, "q");
-                        continue;
-                    }
-
-                    if (buildUrl.Contains("tinyurl.com") || buildUrl.Contains("poeurl.com") || buildUrl.Contains("goo.gl"))
-                    {
-                        buildUrl = await ResolveShortenedUrl(buildUrl, loadingWrapper);
-                        continue;
-                    }
-
-                    break;
+                    buildUrl = ExtractUrlFromQuery(buildUrl, "q");
+                    continue;
                 }
 
-                return EnsureProtocol(buildUrl);
+                if (buildUrl.Contains("tinyurl.com") || buildUrl.Contains("poeurl.com") || buildUrl.Contains("goo.gl"))
+                {
+                    buildUrl = await ResolveShortenedUrl(buildUrl, loadingWrapper);
+                    continue;
+                }
+
+                break;
             }
-            catch (Exception e)
-            {
-                throw new ArgumentException("The URL you are trying to load is invalid.", e);
-            }
+
+            return EnsureProtocol(buildUrl);
         }
 
         protected virtual string ExtractUrlFromQuery(string url, string parameterName)
@@ -75,7 +68,7 @@ namespace POESKillTree.Utils.UrlProcessing
             var skillUrl = buildUrl.Replace("preview.", "");
             if (skillUrl.Contains("poeurl.com") && !skillUrl.Contains("redirect.php"))
             {
-                skillUrl = skillUrl.Replace("http://www.poeurl.com/", "http://www.poeurl.com/redirect.php?url=");
+                skillUrl = new Regex(@"(http(s|):\/\/)(www\.|)poeurl\.com\/").Replace(skillUrl, "http://www.poeurl.com/redirect.php?url=");
             }
 
             HttpResponseMessage response = null;

@@ -63,7 +63,7 @@ namespace UnitTests.UrlProcessing
         public async Task NormalizeAsyncFailsOnInvalidGoogleLinkTest()
         {
             // #267
-            var treeUrl = "https://www.google.com/url?ust=1456857460554000&usg=AFQjCNH6POtjRXIVzd_kSRbH7sOVYuZW7A";
+            var treeUrl = "https://google.com/url?ust=1456857460554000&usg=AFQjCNH6POtjRXIVzd_kSRbH7sOVYuZW7A";
 
             Exception exception = null;
             try
@@ -76,7 +76,7 @@ namespace UnitTests.UrlProcessing
             }
 
             Assert.IsNotNull(exception);
-            Assert.AreEqual("The URL you are trying to load is invalid.", exception.Message);
+            Assert.AreEqual("The URL doesn't contain required query parameter 'q'.", exception.Message);
         }
 
         [TestMethod]
@@ -187,7 +187,7 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncSkipsReadyLinkTest()
         {
-            var treeUrl = "https://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==";
+            var treeUrl = "https://pathofexile.com/passive-skill-tree/AAAABAAAAA==";
 
             var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, null);
 
@@ -197,7 +197,7 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncSkipsUnsupportedLinkTest()
         {
-            var treeUrl = "http://www.unsupported.com";
+            var treeUrl = "http://unsupported.com";
 
             var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, null);
 
@@ -210,10 +210,10 @@ namespace UnitTests.UrlProcessing
             var targetPath = "/abc";
             var completions = new Dictionary<string, string>
             {
-                { "goo.gl", "https://www.goo.gl" },
-                { "poeurl.com", "http://www.poeurl.com" },
-                { "tinyurl.com", "https://www.tinyurl.com" },
-                { "pathofexile.com", "https://www.pathofexile.com" }
+                { "goo.gl", "https://goo.gl" },
+                { "poeurl.com", "http://poeurl.com" },
+                { "tinyurl.com", "https://tinyurl.com" },
+                { "pathofexile.com", "https://pathofexile.com" }
             };
 
             var urlNormalizer = CreateBuildUrlNormalizerMock();
