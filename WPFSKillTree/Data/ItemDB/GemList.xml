@@ -81,7 +81,7 @@
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
     <Attribute Name="Damage cannot be Reflected">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Added Chaos Damage Support" Tags="Chaos, Support">
@@ -351,7 +351,7 @@
       <Value Level="30">25</Value>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Ancestral Warchief" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Totem, Attack, Duration, AoE, Melee">
@@ -426,7 +426,7 @@
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Anger" Tags="Aura, Spell, AoE, Fire">
@@ -1309,13 +1309,13 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
     <Attribute Name="Throws a Trap which uses this Skill when Triggered">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
       <ValueForLevel From="1" To="30">16</ValueForLevel>
     </Attribute>
     <Attribute Name="Locks enemy in place">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Deals # to # Physical Damage">
       <Value Level="1">16 22</Value>
@@ -1569,7 +1569,7 @@
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
     <Attribute Name="Supported Curse Spells are Cast as Auras">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Blast Rain" RequiredWeapon="Bow" Tags="Fire, Attack, AoE, Bow">
@@ -1686,7 +1686,7 @@
       <ValueForLevel From="1" To="30">20</ValueForLevel>
     </Attribute>
     <Attribute Name="Modifiers to Spell Damage apply to this skill's Damage Over Time">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Blind Support" Tags="Support">
@@ -1813,7 +1813,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
     <Attribute Name="Spend Life instead of Mana for Supported Skills">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Blood Rage" Tags="Spell, Duration">
@@ -1938,7 +1938,7 @@
       <Value Level="30">69</Value>
     </Attribute>
     <Attribute Name="Cannot cause Bleeding">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Bone Offering" Tags="Minion, Spell, Duration">
@@ -2147,7 +2147,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
     <Attribute Name="Supported Attacks will Cast a Supported Spell when you Crit an Enemy">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Supported Triggered Spells deal #% more Spell Damage">
       <Value Level="1">20</Value>
@@ -2182,7 +2182,7 @@
       <Value Level="30">49</Value>
     </Attribute>
     <Attribute Name="You cannot Cast Supported Triggerable Spells directly">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cast on Death Support" Tags="Support, Spell, Trigger">
@@ -2196,7 +2196,7 @@
       <ValuePerLevel>16</ValuePerLevel>
     </Attribute>
     <Attribute Name="Supported Triggerable Spells can only be Cast on Death">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cast on Melee Kill Support" Tags="Support, Melee, Attack, Spell, Trigger">
@@ -2210,7 +2210,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
     <Attribute Name="Supported Melee Attacks will Cast a Supported Spell on Kill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Supported Triggered Spells have #% more Spell Damage">
       <Value Level="1">20</Value>
@@ -2245,7 +2245,7 @@
       <Value Level="30">49</Value>
     </Attribute>
     <Attribute Name="You cannot Cast Supported Triggerable Spells directly">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cast when Damage Taken Support" Tags="Support, Spell, Trigger">
@@ -2354,7 +2354,7 @@
       <Value Level="30">90</Value>
     </Attribute>
     <Attribute Name="You cannot Cast Supported Triggerable Spells directly">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cast when Stunned Support" Tags="Support, Spell, Trigger">
@@ -2397,7 +2397,7 @@
       <Value Level="30">79</Value>
     </Attribute>
     <Attribute Name="You cannot Cast Supported Triggerable Spells directly">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cast while Channelling Support" Tags="Support, Channelling, Spell">
@@ -2442,7 +2442,7 @@
       <ValueForLevel From="29" To="30">14</ValueForLevel>
     </Attribute>
     <Attribute Name="You cannot Cast Supported Triggerable Spells directly">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Caustic Arrow" RequiredWeapon="Bow" Tags="Attack, AoE, Duration, Chaos, Bow">
@@ -3281,7 +3281,7 @@
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
     <Attribute Name="Modifiers to Spell Damage apply to this skill's Damage Over Time">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Controlled Destruction Support" Tags="Spell, Support">
@@ -3367,7 +3367,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
     <Attribute Name="Throws a Trap which uses this Skill when Triggered">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
       <ValueForLevel From="1" To="30">16</ValueForLevel>
@@ -3485,7 +3485,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
     <Attribute Name="Supported Skills apply supported Curses on Hit">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="#% reduced Curse Duration">
       <Value Level="1">50</Value>
@@ -3521,7 +3521,7 @@
       <Value Level="30">8</Value>
     </Attribute>
     <Attribute Name="You cannot Cast Supported Curses">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Cyclone" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Attack, AoE, Movement, Melee">
@@ -3612,7 +3612,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Totem lasts # seconds">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
@@ -3621,7 +3621,7 @@
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
     <Attribute Name="Totems Summoned by this Skill cannot Evade">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Desecrate" Tags="Spell, AoE, Duration, Chaos">
@@ -3868,7 +3868,7 @@
       <Value Level="30">713 1070</Value>
     </Attribute>
     <Attribute Name="Damage cannot be Reflected">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Detonate Mines" Tags="Spell">
@@ -3915,7 +3915,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Totem lasts # seconds">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
@@ -4436,7 +4436,7 @@
       <Value Level="30">59</Value>
     </Attribute>
     <Attribute Name="Supported Skills cannot inflict Elemental Status Ailments">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Elemental Hit" Tags="Attack, Melee, Fire, Cold, Lightning, Bow">
@@ -4577,7 +4577,7 @@
       <ValueForLevel From="1" To="30">16</ValueForLevel>
     </Attribute>
     <Attribute Name="Elemental Status Effects caused by supported Skills spread to other enemies">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Supported Skills deal #% less Damage">
       <ValueForLevel From="1" To="2">30</ValueForLevel>
@@ -4726,7 +4726,7 @@
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
     <Attribute Name="Gain an Endurance Charge if you Stun an Enemy with Melee Damage">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Enduring Cry" Tags="Warcry, AoE, Duration">
@@ -5102,7 +5102,7 @@
       <Value Level="30">651 976</Value>
     </Attribute>
     <Attribute Name="Modifiers to Spell Damage apply to this skill's Damage Over Time">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Ethereal Knives" Tags="Projectile, Spell">
@@ -5483,7 +5483,7 @@
       <ValueForLevel From="29" To="30">34</ValueForLevel>
     </Attribute>
     <Attribute Name="Places a Remote Mine which uses this Skill when detonated">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Fire Penetration Support" Tags="Fire, Support">
@@ -5565,7 +5565,7 @@
       <ValuePerQuality>1.5</ValuePerQuality>
     </Attribute>
     <Attribute Name="Throws a Trap which uses this Skill when Triggered">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
       <ValueForLevel From="1" To="30">16</ValueForLevel>
@@ -6000,7 +6000,7 @@
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
     <Attribute Name="Cannot Ignite">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Flame Totem" Tags="Projectile, Totem, Spell, Duration, Fire">
@@ -6087,10 +6087,10 @@
       <ValueForLevel From="9" To="30">2</ValueForLevel>
     </Attribute>
     <Attribute Name="Adds an additional Projectile">
-      <ValueForLevel From="5" To="8"></ValueForLevel>
+      <ValueForLevel From="5" To="8">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Flameblast" Tags="Spell, AoE, Fire, Channelling">
@@ -6456,7 +6456,7 @@
       <Value Level="30">1</Value>
     </Attribute>
     <Attribute Name="Projectiles Fork">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Fortify Support" Tags="Attack, Support, Melee">
@@ -6467,7 +6467,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
     <Attribute Name="Grants Fortify on Melee hit">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Melee Physical Damage">
       <Value Level="1">25</Value>
@@ -6604,10 +6604,10 @@
       <Value Level="30">490</Value>
     </Attribute>
     <Attribute Name="Places a Remote Mine which uses this Skill when detonated">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Always Freezes enemies">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Freezing Pulse" Tags="Projectile, Spell, Cold">
@@ -7208,7 +7208,7 @@
       <Value Level="30">49</Value>
     </Attribute>
     <Attribute Name="Supported Auras do not affect You">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Glacial Cascade" Tags="Spell, AoE, Cold">
@@ -7712,7 +7712,7 @@
       <Value Level="30">216.7</Value>
     </Attribute>
     <Attribute Name="Knocks Enemies Back on Hit">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="#% reduced Enemy Stun Threshold">
       <ValueForLevel From="1" To="30">25</ValueForLevel>
@@ -7880,7 +7880,7 @@
       <Value Level="30">733 1100</Value>
     </Attribute>
     <Attribute Name="Damage cannot be Reflected">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Herald of Thunder" Tags="Cast, AoE, Duration, Lightning">
@@ -7999,7 +7999,7 @@
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
     <Attribute Name="Cannot apply Shock">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Hypothermia Support" Tags="Cold, Support">
@@ -8450,7 +8450,7 @@
       <Value Level="30">1266 1899</Value>
     </Attribute>
     <Attribute Name="Throws a Trap which uses this Skill when Triggered">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Immortal Call" Tags="Spell, Duration">
@@ -8902,7 +8902,7 @@
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
     <Attribute Name="Strength's damage bonus applies to Projectile Attacks made with Supported Skills">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Iron Will Support" Tags="Spell, Support">
@@ -8913,7 +8913,7 @@
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
     <Attribute Name="Strength's damage bonus applies to Spell Damage as well for Supported Skills">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Item Quantity Support" Tags="Support">
@@ -9608,7 +9608,7 @@
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
     <Attribute Name="Throws a Trap which uses this Skill when Triggered">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Lightning Warp" Tags="Spell, AoE, Duration, Movement, Lightning">
@@ -9878,7 +9878,7 @@
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
     <Attribute Name="Single-target Melee attacks deal Splash Damage to surrounding targets">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Minefield Support" Tags="Support, Mine">
@@ -10669,7 +10669,7 @@
       <ValueForLevel From="1" To="30">100</ValueForLevel>
     </Attribute>
     <Attribute Name="Phasing">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Physical Projectile Attack Damage Support" Tags="Projectile, Support">
@@ -10986,7 +10986,7 @@
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
     <Attribute Name="Supported Skills Poison Enemies on Hit">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Portal" Tags="Spell">
@@ -11083,7 +11083,7 @@
       <Value Level="30">176.4</Value>
     </Attribute>
     <Attribute Name="Culling Strike">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Projectile Weakness" Tags="Curse, Spell, AoE, Duration">
@@ -11881,7 +11881,7 @@
       <ValueForLevel From="1" To="30">55</ValueForLevel>
     </Attribute>
     <Attribute Name="Minion Movement Speed is Capped">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Minions have +#% to all Elemental Resistances">
       <ValueForLevel From="1" To="30">30</ValueForLevel>
@@ -12048,7 +12048,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Totem lasts # seconds">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
@@ -12074,7 +12074,7 @@
       <ValueForLevel From="1" To="30">30</ValueForLevel>
     </Attribute>
     <Attribute Name="Supported Attack Skills cannot be used with Melee Weapons">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Rapid Decay Support" Tags="Support, Duration">
@@ -12209,10 +12209,10 @@
       <Value Level="30">128</Value>
     </Attribute>
     <Attribute Name="Counterattack with this Skill when you Block">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="You cannot use this Attack directly">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Reduced Mana Support" Tags="Support">
@@ -12272,7 +12272,7 @@
       <ValuePerQuality>3</ValuePerQuality>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Totem lasts # seconds">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
@@ -12318,7 +12318,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
     <Attribute Name="Places a Remote Mine which uses this Skill when detonated">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Mine lasts # seconds">
       <ValueForLevel From="1" To="30">16</ValueForLevel>
@@ -12356,7 +12356,7 @@
       <Value Level="30">59</Value>
     </Attribute>
     <Attribute Name="Supported Attack Skills cannot be used with Melee Weapons">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Righteous Fire" Tags="Spell, AoE, Fire">
@@ -12454,10 +12454,10 @@
       <Value Level="30">158</Value>
     </Attribute>
     <Attribute Name="Counterattack with this Skill when you Block">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="You cannot use this Attack directly">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Scorching Ray" Tags="Spell, Fire, Duration, Channelling">
@@ -12527,7 +12527,7 @@
       <ValueForLevel From="1" To="30">-24</ValueForLevel>
     </Attribute>
     <Attribute Name="Modifiers to Spell Damage apply to this skill's Damage Over Time">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Searing Bond" Tags="Totem, Spell, Duration, Fire">
@@ -12606,7 +12606,7 @@
       <ValueForLevel From="1" To="30">1</ValueForLevel>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Shield Charge" RequiresEquippedShield="true" RequiredHand="Main" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Unarmed" Tags="Attack, AoE, Movement, Melee">
@@ -12816,7 +12816,7 @@
       <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Shrapnel Shot" RequiredWeapon="Bow" Tags="Lightning, Attack, AoE, Bow">
@@ -12868,7 +12868,7 @@
       <Value Level="30">109</Value>
     </Attribute>
     <Attribute Name="Arrows always Pierce">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="#% of Physical Damage Converted to Lightning Damage">
       <ValueForLevel From="1" To="30">40</ValueForLevel>
@@ -12927,13 +12927,13 @@
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
     <Attribute Name="Arrows always Pierce">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Totem lasts # seconds">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Slower Projectiles Support" Tags="Support, Projectile">
@@ -13051,7 +13051,7 @@
       <ValueForLevel From="1" To="30">30</ValueForLevel>
     </Attribute>
     <Attribute Name="Places a Remote Mine which uses this Skill when detonated">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Spark" Tags="Projectile, Spell, Duration, Lightning">
@@ -13186,7 +13186,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
     <Attribute Name="Supported Spells Repeat an additional time">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="#% more Cast Speed">
       <Value Level="1">51</Value>
@@ -13232,7 +13232,7 @@
       <ValuePerQuality>1</ValuePerQuality>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Totem lasts # seconds">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
@@ -14583,7 +14583,7 @@
       <Value Level="30">49</Value>
     </Attribute>
     <Attribute Name="Supported Attack Skills cannot be used with Melee Weapons">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Arc" Tags="Vaal, Spell, Chaining, Lightning">
@@ -14658,7 +14658,7 @@
       <ValuePerQuality>3</ValuePerQuality>
     </Attribute>
     <Attribute Name="Monsters from the Breach do not grant Experience or drop Items">
-      <ValueForLevel From="1" To="10"></ValueForLevel>
+      <ValueForLevel From="1" To="10">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Burning Arrow" RequiredWeapon="Bow" Tags="Vaal, Attack, AoE, Fire, Bow">
@@ -14745,7 +14745,7 @@
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
     <Attribute Name="Can't be Evaded">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Clarity" Tags="Aura, Vaal, Spell, AoE, Duration">
@@ -14825,7 +14825,7 @@
       <Value Level="30">10.9</Value>
     </Attribute>
     <Attribute Name="Your and nearby allies' Skills Cost no Mana">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Cold Snap" Tags="Vaal, Spell, AoE, Duration, Cold">
@@ -14883,7 +14883,7 @@
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
     <Attribute Name="Always Freezes enemies">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Cyclone" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Vaal, Attack, AoE, Duration, Melee">
@@ -14941,7 +14941,7 @@
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
     <Attribute Name="Can't be Evaded">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Detonate Dead" Tags="Vaal, Cast, AoE, Fire">
@@ -14996,7 +14996,7 @@
       <Value Level="30">649 973</Value>
     </Attribute>
     <Attribute Name="Damage cannot be Reflected">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Discipline" Tags="Aura, Vaal, Spell, AoE, Duration">
@@ -15079,7 +15079,7 @@
       <ValueForLevel From="1" To="30">3</ValueForLevel>
     </Attribute>
     <Attribute Name="Your and nearby allies' Energy Shield Recharges are not delayed by Damage">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Double Strike" RequiredHand="Main" RequiredWeapon="Melee" Tags="Vaal, Attack, Melee, Duration">
@@ -15212,7 +15212,7 @@
       <Value Level="30">1368 2052</Value>
     </Attribute>
     <Attribute Name="Fires Projectiles at all nearby Enemies">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Area of Effect radius">
       <ValueForLevel From="1" To="30">50</ValueForLevel>
@@ -15499,13 +15499,13 @@
       <ValueForLevel From="1" To="30">20</ValueForLevel>
     </Attribute>
     <Attribute Name="Stuns Enemies">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Knocks Enemies Back on Hit">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Can't be Evaded">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Haste" Tags="Aura, Vaal, Spell, AoE, Duration">
@@ -15788,7 +15788,7 @@
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
     <Attribute Name="Can't be Evaded">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Lightning Trap" Tags="Projectile, Trap, Vaal, Spell, Duration, Lightning">
@@ -15855,10 +15855,10 @@
       <ValueForLevel From="1" To="30">100</ValueForLevel>
     </Attribute>
     <Attribute Name="Throws a Trap which uses this Skill when Triggered">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Projectiles leave Shocking Ground">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Lightning Warp" Tags="Vaal, Spell, AoE, Duration, Lightning">
@@ -16049,13 +16049,13 @@
       <Value Level="30">171.4</Value>
     </Attribute>
     <Attribute Name="Fires Projectiles at all nearby Enemies">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Can't be Evaded">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Culling Strike">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Rain of Arrows" RequiredWeapon="Bow" Tags="Vaal, Attack, AoE, Duration, Bow">
@@ -16139,7 +16139,7 @@
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
     <Attribute Name="Can't be Evaded">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Reave" RequiredWeapon="Claw Dagger OneHandedSword" Tags="Vaal, Attack, AoE, Melee">
@@ -16194,7 +16194,7 @@
       <ValueForLevel From="1" To="30">150</ValueForLevel>
     </Attribute>
     <Attribute Name="Can't be Evaded">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Righteous Fire" Tags="Vaal, Spell, AoE, Fire">
@@ -16246,7 +16246,7 @@
       <Value Level="30">149</Value>
     </Attribute>
     <Attribute Name="Damage cannot be Reflected">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Spark" Tags="Projectile, Vaal, Spell, Duration, Lightning">
@@ -16304,7 +16304,7 @@
       <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
     <Attribute Name="Fires Projectiles at all nearby Enemies">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Spectral Throw" RequiredWeapon="Melee" Tags="Projectile, Vaal, Attack">
@@ -16353,7 +16353,7 @@
       <Value Level="30">122.2</Value>
     </Attribute>
     <Attribute Name="Can't be Evaded">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Storm Call" Tags="Vaal, Spell, AoE, Duration, Lightning">
@@ -16549,7 +16549,7 @@
       <ValueForLevel From="1" To="30">30</ValueForLevel>
     </Attribute>
     <Attribute Name="You cannot use this Attack directly">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vigilant Strike" RequiredWeapon="Melee" Tags="Attack, Melee">
@@ -16604,7 +16604,7 @@
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
     <Attribute Name="Can't be Evaded">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Viper Strike" RequiredWeapon="Claw Dagger OneHandedSword TwoHandedSword" Tags="Attack, Duration, Melee, Chaos">
@@ -16653,7 +16653,7 @@
       <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
     <Attribute Name="Always Poison on Hit">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Base duration is # seconds">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
@@ -16875,7 +16875,7 @@
       <Value Level="30">2124</Value>
     </Attribute>
     <Attribute Name="Modifiers to Spell Damage apply to this skill's Damage Over Time">
-      <ValueForLevel From="1" To="30"></ValueForLevel>
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vulnerability" Tags="Curse, Spell, AoE, Duration">

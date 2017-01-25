@@ -258,11 +258,13 @@ namespace UpdateDB.DataLoading
                 }
                 else if (attrObj.TryGetValue("values", out values))
                 {
+                    // XML deserializer reads whitespace only as null, we don't want that.
+                    var text = values.Any() ? string.Join(" ", values.Select(ParseValue)) : "_";
                     valuesForName.Add(new ItemDB.ValueAt
                     {
                         Level = level,
                         Quality = atQuality,
-                        Text = string.Join(" ", values.Select(ParseValue))
+                        Text = text
                     });
                 }
             }

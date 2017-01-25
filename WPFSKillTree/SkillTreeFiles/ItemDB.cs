@@ -20,7 +20,6 @@ using Weapon = POESKillTree.SkillTreeFiles.Compute.Weapon;
 
 namespace POESKillTree.SkillTreeFiles
 {
-    // TODO: Attributes can have negative value (Cast when Damage Taken L20 has 6% more Damage), AttributesOf should handle transition between less/more.
     public class ItemDB
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDB));
@@ -1005,7 +1004,7 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (Match m in ReValue.Matches(text))
                     value.Add(float.Parse(m.Groups[0].Value, System.Globalization.CultureInfo.InvariantCulture));
 
-                return value.Count > 0 ? value.ToArray() : null;
+                return value.Count > 0 ? value.ToArray() : new float[0];
             }
         }
 
