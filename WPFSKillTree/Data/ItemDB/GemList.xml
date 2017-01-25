@@ -281,7 +281,7 @@
       <Value Level="30">1594</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Ancestral Protector" Tags="Totem, Attack, Duration, Melee">
+  <Gem Name="Ancestral Protector" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Totem, Attack, Duration, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -354,7 +354,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Ancestral Warchief" Tags="Totem, Attack, Duration, AoE, Melee">
+  <Gem Name="Ancestral Warchief" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Totem, Attack, Duration, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
@@ -1212,7 +1212,7 @@
       <Value Level="30">33 620</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Barrage" Tags="Attack, Bow">
+  <Gem Name="Barrage" RequiredWeapon="Ranged" Tags="Attack, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">7</ValueForLevel>
       <ValueForLevel From="4" To="8">8</ValueForLevel>
@@ -1350,7 +1350,7 @@
       <Value Level="30">4162 5826</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Blade Flurry" Tags="Attack, AoE, Channelling, Melee">
+  <Gem Name="Blade Flurry" RequiredWeapon="Claw Dagger OneHandedSword" Tags="Attack, AoE, Channelling, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
@@ -1572,7 +1572,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Blast Rain" Tags="Fire, Attack, AoE, Bow">
+  <Gem Name="Blast Rain" RequiredWeapon="Bow" Tags="Fire, Attack, AoE, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="4">8</ValueForLevel>
       <ValueForLevel From="5" To="11">9</ValueForLevel>
@@ -1700,7 +1700,7 @@
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Blink Arrow" Tags="Attack, Minion, Duration, Movement, Bow">
+  <Gem Name="Blink Arrow" RequiredWeapon="Bow" Tags="Attack, Minion, Duration, Movement, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="2">14</ValueForLevel>
       <ValueForLevel From="3" To="5">15</ValueForLevel>
@@ -2050,7 +2050,7 @@
       <Value Level="30">1089</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Burning Arrow" Tags="Attack, Fire, Bow">
+  <Gem Name="Burning Arrow" RequiredWeapon="Bow" Tags="Attack, Fire, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="5">5</ValueForLevel>
       <ValueForLevel From="6" To="10">6</ValueForLevel>
@@ -2445,7 +2445,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Caustic Arrow" Tags="Attack, AoE, Duration, Chaos, Bow">
+  <Gem Name="Caustic Arrow" RequiredWeapon="Bow" Tags="Attack, AoE, Duration, Chaos, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">8</ValueForLevel>
       <ValueForLevel From="4" To="6">9</ValueForLevel>
@@ -2791,7 +2791,7 @@
       <Value Level="30">50</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Cleave" Tags="Attack, AoE, Melee">
+  <Gem Name="Cleave" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" StrikesWithBothWeapons="true" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -3524,7 +3524,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Cyclone" Tags="Attack, AoE, Movement, Melee">
+  <Gem Name="Cyclone" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Attack, AoE, Movement, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">12</ValueForLevel>
     </Attribute>
@@ -4207,7 +4207,7 @@
       <Value Level="30">50</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Dominating Blow" Tags="Attack, Minion, Duration, Melee">
+  <Gem Name="Dominating Blow" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Attack, Minion, Duration, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">12</ValueForLevel>
       <ValueForLevel From="4" To="6">13</ValueForLevel>
@@ -4261,7 +4261,7 @@
       <ValueForLevel From="1" To="30">35</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Double Strike" Tags="Attack, Melee">
+  <Gem Name="Double Strike" RequiredHand="Main" RequiredWeapon="Melee" Tags="Attack, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
@@ -4304,7 +4304,7 @@
       <Value Level="30">110.6</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Dual Strike" Tags="Attack, Melee">
+  <Gem Name="Dual Strike" RequiredHand="DualWielded" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword TwoHandedAxe" Tags="Attack, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
@@ -4347,7 +4347,7 @@
       <Value Level="30">114</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Earthquake" Tags="Attack, AoE, Duration, Melee">
+  <Gem Name="Earthquake" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace Staff TwoHandedAxe TwoHandedMace" Tags="Attack, AoE, Duration, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
@@ -5180,7 +5180,7 @@
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Explosive Arrow" Tags="Fire, Attack, AoE, Duration, Bow">
+  <Gem Name="Explosive Arrow" RequiredWeapon="Bow" Tags="Fire, Attack, AoE, Duration, Bow">
     <Attribute Name="Mana Cost: #">
       <Value Level="1">18</Value>
       <Value Level="2">19</Value>
@@ -6364,7 +6364,7 @@
       <ValueForLevel From="1" To="30">0.5</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Flicker Strike" Tags="Attack, Melee, Movement">
+  <Gem Name="Flicker Strike" RequiredWeapon="Melee" Tags="Attack, Melee, Movement">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
@@ -6728,7 +6728,7 @@
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Frost Blades" Tags="Projectile, Attack, Melee, Cold">
+  <Gem Name="Frost Blades" RequiredWeapon="Melee" Tags="Projectile, Attack, Melee, Cold">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -7311,7 +7311,7 @@
       <Value Level="30">502 758</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Glacial Hammer" Tags="Attack, Melee, Cold">
+  <Gem Name="Glacial Hammer" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Tags="Attack, Melee, Cold">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
@@ -7474,7 +7474,7 @@
       <ValueForLevel From="29" To="30">21</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Ground Slam" Tags="Attack, AoE, Melee">
+  <Gem Name="Ground Slam" RequiredHand="Main" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -7669,7 +7669,7 @@
       <Value Level="30">50</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Heavy Strike" Tags="Attack, Melee">
+  <Gem Name="Heavy Strike" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Tags="Attack, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
@@ -8088,7 +8088,7 @@
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Ice Crash" Tags="Attack, AoE, Cold, Melee">
+  <Gem Name="Ice Crash" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Attack, AoE, Cold, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -8214,7 +8214,7 @@
       <Value Level="30">929 1451</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Ice Shot" Tags="Attack, AoE, Duration, Cold, Bow">
+  <Gem Name="Ice Shot" RequiredWeapon="Bow" Tags="Attack, AoE, Duration, Cold, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">6</ValueForLevel>
       <ValueForLevel From="4" To="7">7</ValueForLevel>
@@ -8796,7 +8796,7 @@
       <Value Level="30">74</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Infernal Blow" Tags="Attack, AoE, Melee, Fire">
+  <Gem Name="Infernal Blow" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Attack, AoE, Melee, Fire">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -8990,7 +8990,7 @@
       <Value Level="30">69</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Kinetic Blast" Tags="Attack, AoE, Projectile">
+  <Gem Name="Kinetic Blast" RequiredWeapon="Wand" Tags="Attack, AoE, Projectile">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="8">15</ValueForLevel>
       <ValueForLevel From="9" To="24">16</ValueForLevel>
@@ -9084,7 +9084,7 @@
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Lacerate" Tags="Attack, AoE, Melee">
+  <Gem Name="Lacerate" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -9133,7 +9133,7 @@
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Leap Slam" Tags="Attack, AoE, Movement, Melee">
+  <Gem Name="Leap Slam" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Tags="Attack, AoE, Movement, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
@@ -9306,7 +9306,7 @@
       <ValuePerLevel>2</ValuePerLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Lightning Arrow" Tags="Attack, AoE, Lightning, Bow">
+  <Gem Name="Lightning Arrow" RequiredWeapon="Bow" Tags="Attack, AoE, Lightning, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">7</ValueForLevel>
       <ValueForLevel From="4" To="8">8</ValueForLevel>
@@ -9400,7 +9400,7 @@
       <Value Level="30">47</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Lightning Strike" Tags="Projectile, Attack, Melee, Lightning">
+  <Gem Name="Lightning Strike" RequiredWeapon="Melee" Tags="Projectile, Attack, Melee, Lightning">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -10208,7 +10208,7 @@
       <ValueForLevel From="29" To="30">24</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Mirror Arrow" Tags="Attack, Minion, Duration, Bow">
+  <Gem Name="Mirror Arrow" RequiredWeapon="Bow" Tags="Attack, Minion, Duration, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="2">14</ValueForLevel>
       <ValueForLevel From="3" To="5">15</ValueForLevel>
@@ -10380,7 +10380,7 @@
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Molten Strike" Tags="Projectile, Attack, AoE, Melee, Fire">
+  <Gem Name="Molten Strike" RequiredWeapon="Melee" Tags="Projectile, Attack, AoE, Melee, Fire">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -11037,7 +11037,7 @@
       <Value Level="30">64</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Power Siphon" Tags="Attack, Projectile">
+  <Gem Name="Power Siphon" RequiredWeapon="Wand" Tags="Attack, Projectile">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="7">13</ValueForLevel>
       <ValueForLevel From="8" To="18">14</ValueForLevel>
@@ -11199,7 +11199,7 @@
       <Value Level="30">54</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Puncture" Tags="Attack, Duration, Melee, Bow">
+  <Gem Name="Puncture" RequiredWeapon="Bow Claw Dagger OneHandedSword TwoHandedSword" Tags="Attack, Duration, Melee, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -11686,7 +11686,7 @@
       <Value Level="30">50</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Rain of Arrows" Tags="Attack, AoE, Bow">
+  <Gem Name="Rain of Arrows" RequiredWeapon="Bow" Tags="Attack, AoE, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">7</ValueForLevel>
       <ValueForLevel From="4" To="8">8</ValueForLevel>
@@ -12120,7 +12120,7 @@
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Reave" Tags="Attack, AoE, Melee">
+  <Gem Name="Reave" RequiredWeapon="Claw Dagger OneHandedSword" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -12166,7 +12166,7 @@
       <ValueForLevel From="1" To="30">20</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Reckoning" Tags="Trigger, Attack, AoE, Melee">
+  <Gem Name="Reckoning" RequiresEquippedShield="true" RequiredHand="Main" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Unarmed" Tags="Trigger, Attack, AoE, Melee">
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">0.4</ValueForLevel>
     </Attribute>
@@ -12411,7 +12411,7 @@
       <ValueForLevel From="1" To="30">70</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Riposte" Tags="Trigger, Attack, Melee">
+  <Gem Name="Riposte" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" StrikesWithBothWeapons="true" Tags="Trigger, Attack, Melee">
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">0.8</ValueForLevel>
     </Attribute>
@@ -12609,7 +12609,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Shield Charge" Tags="Attack, AoE, Movement, Melee">
+  <Gem Name="Shield Charge" RequiresEquippedShield="true" RequiredHand="Main" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Unarmed" Tags="Attack, AoE, Movement, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -12819,7 +12819,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Shrapnel Shot" Tags="Lightning, Attack, AoE, Bow">
+  <Gem Name="Shrapnel Shot" RequiredWeapon="Bow" Tags="Lightning, Attack, AoE, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">6</ValueForLevel>
       <ValueForLevel From="4" To="7">7</ValueForLevel>
@@ -12874,7 +12874,7 @@
       <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Siege Ballista" Tags="Totem, Attack, Duration, Bow">
+  <Gem Name="Siege Ballista" RequiredWeapon="Bow" Tags="Totem, Attack, Duration, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">8</ValueForLevel>
       <ValueForLevel From="4" To="9">9</ValueForLevel>
@@ -13132,7 +13132,7 @@
       <ValueForLevel From="25" To="30">7</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Spectral Throw" Tags="Projectile, Attack">
+  <Gem Name="Spectral Throw" RequiredWeapon="Melee" Tags="Projectile, Attack">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="10">7</ValueForLevel>
       <ValueForLevel From="11" To="15">8</ValueForLevel>
@@ -13338,7 +13338,7 @@
       <Value Level="30">35</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Split Arrow" Tags="Attack, Bow">
+  <Gem Name="Split Arrow" RequiredWeapon="Bow" Tags="Attack, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">6</ValueForLevel>
       <ValueForLevel From="4" To="7">7</ValueForLevel>
@@ -13394,7 +13394,7 @@
       <ValueForLevel From="29" To="30">8</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Static Strike" Tags="Attack, Melee, AoE, Duration, Lightning">
+  <Gem Name="Static Strike" RequiredWeapon="Melee" Tags="Attack, Melee, AoE, Duration, Lightning">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -14127,7 +14127,7 @@
       <Value Level="30">164</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Sunder" Tags="Attack, AoE, Melee">
+  <Gem Name="Sunder" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace Staff TwoHandedAxe TwoHandedMace" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -14176,7 +14176,7 @@
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Sweep" Tags="Attack, AoE, Melee">
+  <Gem Name="Sweep" RequiredWeapon="TwoHandedMelee" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -14239,7 +14239,7 @@
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Tempest Shield" Tags="Spell, Lightning, Chaining, Duration">
+  <Gem Name="Tempest Shield" RequiresEquippedShield="true" Tags="Spell, Lightning, Chaining, Duration">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">17</ValueForLevel>
       <ValueForLevel From="4" To="7">18</ValueForLevel>
@@ -14401,7 +14401,7 @@
       <ValueForLevel From="1" To="30">40</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Tornado Shot" Tags="Attack, Bow">
+  <Gem Name="Tornado Shot" RequiredWeapon="Bow" Tags="Attack, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="4">8</ValueForLevel>
       <ValueForLevel From="5" To="11">9</ValueForLevel>
@@ -14661,7 +14661,7 @@
       <ValueForLevel From="1" To="10"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Burning Arrow" Tags="Vaal, Attack, AoE, Fire, Bow">
+  <Gem Name="Vaal Burning Arrow" RequiredWeapon="Bow" Tags="Vaal, Attack, AoE, Fire, Bow">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">12</ValueForLevel>
     </Attribute>
@@ -14886,7 +14886,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Cyclone" Tags="Vaal, Attack, AoE, Duration, Melee">
+  <Gem Name="Vaal Cyclone" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Vaal, Attack, AoE, Duration, Melee">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">32</ValueForLevel>
     </Attribute>
@@ -15082,7 +15082,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Double Strike" Tags="Vaal, Attack, Melee, Duration">
+  <Gem Name="Vaal Double Strike" RequiredHand="Main" RequiredWeapon="Melee" Tags="Vaal, Attack, Melee, Duration">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">16</ValueForLevel>
     </Attribute>
@@ -15273,7 +15273,7 @@
       <ValueForLevel From="1" To="30">110</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Glacial Hammer" Tags="Vaal, Attack, Melee, Duration, AoE, Cold">
+  <Gem Name="Vaal Glacial Hammer" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Tags="Vaal, Attack, Melee, Duration, AoE, Cold">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">12</ValueForLevel>
     </Attribute>
@@ -15447,7 +15447,7 @@
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Ground Slam" Tags="Vaal, Attack, AoE, Melee">
+  <Gem Name="Vaal Ground Slam" RequiredHand="Main" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Tags="Vaal, Attack, AoE, Melee">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">24</ValueForLevel>
     </Attribute>
@@ -15704,7 +15704,7 @@
       <Value Level="30">187</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Lightning Strike" Tags="Vaal, Attack, Melee, Duration, Lightning">
+  <Gem Name="Vaal Lightning Strike" RequiredWeapon="Melee" Tags="Vaal, Attack, Melee, Duration, Lightning">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">16</ValueForLevel>
     </Attribute>
@@ -16003,7 +16003,7 @@
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Power Siphon" Tags="Vaal, Attack, Projectile">
+  <Gem Name="Vaal Power Siphon" RequiredWeapon="Wand" Tags="Vaal, Attack, Projectile">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">24</ValueForLevel>
     </Attribute>
@@ -16058,7 +16058,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Rain of Arrows" Tags="Vaal, Attack, AoE, Duration, Bow">
+  <Gem Name="Vaal Rain of Arrows" RequiredWeapon="Bow" Tags="Vaal, Attack, AoE, Duration, Bow">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">16</ValueForLevel>
     </Attribute>
@@ -16142,7 +16142,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Reave" Tags="Vaal, Attack, AoE, Melee">
+  <Gem Name="Vaal Reave" RequiredWeapon="Claw Dagger OneHandedSword" Tags="Vaal, Attack, AoE, Melee">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">24</ValueForLevel>
     </Attribute>
@@ -16307,7 +16307,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Spectral Throw" Tags="Projectile, Vaal, Attack">
+  <Gem Name="Vaal Spectral Throw" RequiredWeapon="Melee" Tags="Projectile, Vaal, Attack">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -16503,7 +16503,7 @@
       <ValueForLevel From="1" To="30">20</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vengeance" Tags="Trigger, Attack, AoE, Melee">
+  <Gem Name="Vengeance" RequiredWeapon="Melee" Tags="Trigger, Attack, AoE, Melee">
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">1.2</ValueForLevel>
     </Attribute>
@@ -16552,7 +16552,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vigilant Strike" Tags="Attack, Melee">
+  <Gem Name="Vigilant Strike" RequiredWeapon="Melee" Tags="Attack, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -16607,7 +16607,7 @@
       <ValueForLevel From="1" To="30"></ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Viper Strike" Tags="Attack, Duration, Melee, Chaos">
+  <Gem Name="Viper Strike" RequiredWeapon="Claw Dagger OneHandedSword TwoHandedSword" Tags="Attack, Duration, Melee, Chaos">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
@@ -17131,7 +17131,7 @@
       <Value Level="30">69</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Whirling Blades" Tags="Attack, Movement, Melee">
+  <Gem Name="Whirling Blades" RequiredWeapon="Claw Dagger OneHandedSword" Tags="Attack, Movement, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
@@ -17174,7 +17174,7 @@
       <Value Level="30">109</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Wild Strike" Tags="Projectile, Attack, Melee, Lightning, Cold, Fire, AoE, Chaining">
+  <Gem Name="Wild Strike" RequiredWeapon="Melee" Tags="Projectile, Attack, Melee, Lightning, Cold, Fire, AoE, Chaining">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>

@@ -516,12 +516,6 @@ namespace POESKillTree.SkillTreeFiles
             public bool StrikesWithBothWeapons = false;
             [XmlIgnore]
             public bool StrikesWithBothWeaponsSpecified { get { return StrikesWithBothWeapons; } }
-            // Defines whether skill can be used unarmed.
-            [XmlAttribute]
-            public bool Unarmed = false;
-            [XmlIgnore]
-            public bool UnarmedSpecified { get { return Unarmed; } }
-
             // Skill tags (Spell, AoE, Fire, etc)
             [XmlAttribute]
             public string Tags { get; set; }
@@ -678,8 +672,6 @@ namespace POESKillTree.SkillTreeFiles
                     RequiredWeapon = gem.RequiredWeapon;
                 if (!StrikesWithBothWeaponsSpecified && gem.StrikesWithBothWeaponsSpecified)
                     StrikesWithBothWeapons = gem.StrikesWithBothWeapons;
-                if (!UnarmedSpecified && gem.UnarmedSpecified)
-                    Unarmed = gem.Unarmed;
 
                 if (gem.Attributes != null)
                 {
@@ -1505,10 +1497,6 @@ namespace POESKillTree.SkillTreeFiles
                 // Include form.
                 if (entry.IncludeForm != DamageForm.Any)
                     nature.Form |= entry.IncludeForm;
-
-                // Unarmed.
-                if (entry.Unarmed)
-                    nature.WeaponType |= WeaponType.Unarmed;
             }
 
             return nature;

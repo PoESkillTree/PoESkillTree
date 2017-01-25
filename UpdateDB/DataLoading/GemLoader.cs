@@ -13,8 +13,6 @@ namespace UpdateDB.DataLoading
 {
     public class GemLoader : DataLoader
     {
-        // todo GemProperties.xml stuff where possible (other properties of ItemDB.Gem)
-
         private static readonly ILog Log = LogManager.GetLogger(typeof(GemLoader));
 
         private const string RepoeGemsUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/gems.min.json";
@@ -34,13 +32,13 @@ namespace UpdateDB.DataLoading
                 var gemObj = _gemsJson.Value<JObject>(gemId);
                 if (gemObj["base_item"].Type == JTokenType.Null)
                 {
-                    Log.Info($"Skipping gem with id {gemId} because it has no base item");
+                    Log.Info($"Skipping gem without base item with id {gemId}m");
                     continue;
                 }
                 var baseItem = gemObj.Value<JObject>("base_item");
                 if (baseItem.Value<string>("release_state") == "unreleased")
                 {
-                    Log.Info($"Skipping gem with id {gemId} because it is unreleased");
+                    Log.Info($"Skipping unreleased gem with id {gemId}");
                     continue;
                 }
 
@@ -54,7 +52,6 @@ namespace UpdateDB.DataLoading
 
                 var name = tooltipStatic.Value<string>("name");
                 var tags = tooltipStatic.Value<JArray>("properties").Value<string>(0);
-
                 var attributes = new List<ItemDB.Attribute>();
                 var levelProps = tooltipObj.Value<JObject>("per_level").Properties().ToList();
                 var levelInts = levelProps.Select(p => p.Name.ParseInt()).ToList();
@@ -66,13 +63,64 @@ namespace UpdateDB.DataLoading
                 attributes.AddRange(ParseAttributes(levelInts, levelObjects, "quality_stats", atQuality: 1));
                 // stats
                 attributes.AddRange(ParseAttributes(levelInts, levelObjects, "stats"));
-
-                ItemDB.Add(new ItemDB.Gem
+                var gem = new ItemDB.Gem
                 {
                     Name = name,
                     Tags = tags,
                     Attributes = attributes
-                });
+                    // todo IncludeForm, ExcludeForm, ExcludeFormSource, ExcludeSupport?
+                };
+
+                var activeSkill = gemObj["active_skill"];
+                if (activeSkill != null)
+                {
+                    var types = activeSkill.Value<JArray>("types").Values<string>().ToHashSet();
+                    if (types.Contains("shield_only"))
+                    {
+                        gem.RequiresEquippedShield = true;
+                    }
+                    if (types.Contains("dual_wield_only"))
+                    {
+                        gem.RequiredHand = Compute.WeaponHand.DualWielded;
+                    }
+                    else if (types.Contains("uses_main_hand_when_dual_wielding"))
+                    {
+                        gem.RequiredHand = Compute.WeaponHand.Main;
+                    }
+                    // Reposte doesn't have the the active skill type
+                    else if (types.Contains("uses_both_at_once_when_dual_wielding") || gem.Name == "Riposte")
+                    {
+                        gem.StrikesWithBothWeapons = true;
+                    }
+                    if (types.Contains("attack"))
+                    {
+                        var weaponRestrictions = activeSkill.Value<JArray>("weapon_restrictions").Values<string>().ToList();
+                        foreach (var restriction in weaponRestrictions)
+                        {
+                            var w = restriction.Replace(" Hand ", " Handed ");
+                            if (w == "Thrusting One Handed Sword")
+                            {
+                                w = "One Handed Sword";
+                            }
+                            else if (w == "Sceptre")
+                            {
+                                w = "One Handed Mace";
+                            }
+                            w = Regex.Replace(w, @"([a-z]) ([A-Z])", "$1$2");
+                            Compute.WeaponType weaponType;
+                            if (Enum.TryParse(w, out weaponType))
+                            {
+                                gem.RequiredWeapon |= weaponType;
+                            }
+                            else
+                            {
+                                Log.Error("Unknown weapon type: " + w);
+                            }
+                        }
+                    }
+                }
+
+                ItemDB.Add(gem);
             }
         }
 
