@@ -7,7 +7,7 @@ namespace POESKillTree.Utils
     {
         public static bool IsValidRegex(string pattern)
         {
-            if (string.IsNullOrEmpty(pattern)) return false;
+            if (pattern == null) return false;
 
             try
             {

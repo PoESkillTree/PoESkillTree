@@ -14,6 +14,7 @@
     <!-- ComboBox augmented by a text box in the popup that is used to filter the popup's items.
          Most of the template is a copy of
          https://github.com/MahApps/MahApps.Metro/blob/develop/src/MahApps.Metro/MahApps.Metro/Styles/Controls.ComboBox.xaml
+         (MIT licensed)
     -->
     <ControlTemplate x:Key="SearchableComboBoxTemplate" TargetType="{x:Type local:SearchableComboBox}">
         <ControlTemplate.Resources>

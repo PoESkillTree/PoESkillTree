@@ -847,13 +847,13 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="108 -30 0 0" Style="{StaticResource TopRowExpander}"
+            <Expander Margin="108 -30 0 0" Padding="-109,0,0,0" Style="{StaticResource TopRowExpander}"
                       IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}"
                       Expanded="expCharacterSheet_Expanded">
                 <Expander.Header>
                     <l:Catalog Message="Character Sheet"/>
                 </Expander.Header>
-                <Grid Background="{DynamicResource WhiteColorBrush}" Margin="-109,0,0,0">
+                <Grid Background="{DynamicResource WhiteColorBrush}">
                     <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
                         <TabItem Margin="0" x:Name="tabItemDefence" controls:ControlsHelper.HeaderFontSize="15">
                             <TabItem.Header>
