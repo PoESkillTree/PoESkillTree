@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
-using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.WikiApi;
 
 using static POESKillTree.Utils.WikiApi.WikiApiUtils;
@@ -79,13 +76,7 @@ namespace UpdateDB.DataLoading
 
         protected override async Task SaveDataToStreamAsync(Task<byte[]> data, Stream stream)
         {
-            using (var ms = new MemoryStream(await data))
-            using (var image = Image.FromStream(ms))
-            {
-                var resized = image.Resize((int)(image.Width * ItemImageResizeFactor),
-                    (int)(image.Height * ItemImageResizeFactor));
-                resized.Save(stream, ImageFormat.Png);
-            }
+            ResizeAndSaveImage(await data, stream);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using log4net;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
+using POESKillTree.Utils.WikiApi;
 
 namespace POESKillTree.Model.Items
 {
@@ -127,18 +127,22 @@ namespace POESKillTree.Model.Items
         {
             using (var client = new HttpClient())
             {
-                var wikiUtils = new WikiUtils(client);
-                var imgTuple = await wikiUtils.LoadItemBoxImageAsync(_baseName).ConfigureAwait(false);
-                var imgData = await client.GetByteArrayAsync(imgTuple).ConfigureAwait(false);
+                var apiAccessor = new ApiAccessor(client);
+                var conditions = new ConditionBuilder
+                {
+                    {ItemRdfPredicates.RdfName, _baseName}
+                };
+                var results = await apiAccessor.AskArgs(conditions, new[] {ItemRdfPredicates.RdfIcon}).ConfigureAwait(false);
+                var iconJson = results.First().First["printouts"][ItemRdfPredicates.RdfIcon].First;
+                var title = iconJson.Value<string>("fulltext");
+                var url = await apiAccessor.QueryImageInfoUrl(title).ConfigureAwait(false);
+
+                var imgData = await client.GetByteArrayAsync(url).ConfigureAwait(false);
                 var fileName = string.Format(AssetPathFormat, _baseName);
                 CreateDirectories(fileName);
-                using (var ms = new MemoryStream(imgData))
-                using (var image = Image.FromStream(ms))
-                using (var outputStream = File.Create(fileName, 65536, FileOptions.Asynchronous))
+                using (var outputStream = File.Create(fileName, 65536))
                 {
-                    var resized = image.Resize((int)(image.Width * WikiUtils.ItemImageResizeFactor),
-                        (int)(image.Height * WikiUtils.ItemImageResizeFactor));
-                    resized.Save(outputStream, ImageFormat.Png);
+                    WikiApiUtils.ResizeAndSaveImage(imgData, outputStream);
                 }
                 Log.InfoFormat("Downloaded base item image for {0} to the file system.", _baseName);
                 return ImageSourceFromPath(fileName);

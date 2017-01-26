@@ -404,7 +404,6 @@
     <Compile Include="Utils\NotifyingTask.cs" />
     <Compile Include="Utils\ObservableSet.cs" />
     <Compile Include="Utils\SimpleMonitor.cs" />
-    <Compile Include="Utils\WikiUtils.cs" />
     <Compile Include="Utils\Win32.cs" />
     <Compile Include="Utils\Wpf\BindingProxy.cs" />
     <Compile Include="Utils\Wpf\Setter.cs" />

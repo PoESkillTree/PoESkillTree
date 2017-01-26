@@ -63,6 +63,12 @@ namespace POESKillTree.Utils.WikiApi
             }
         }
 
+        public async Task<string> QueryImageInfoUrl(string title)
+        {
+            var results = await QueryImageInfoUrlsChunk(new[] {title});
+            return results.FirstOrDefault()?.Item2;
+        }
+
         public async Task<IEnumerable<Tuple<string, string>>> QueryImageInfoUrls(IEnumerable<string> titles)
         {
             const int maxTitlesPerRequest = 50;
@@ -70,7 +76,7 @@ namespace POESKillTree.Utils.WikiApi
                 .Select((t, i) => new { Index = i, Title = t })
                 .GroupBy(x => x.Index / maxTitlesPerRequest)
                 .Select(g => g.Select(x => x.Title))
-                .Select(QueryImageInfoUrlsPriv)
+                .Select(QueryImageInfoUrlsChunk)
                 .ToList();
 
             var results = new List<Tuple<string, string>>();
@@ -81,7 +87,7 @@ namespace POESKillTree.Utils.WikiApi
             return results;
         }
 
-        private async Task<IEnumerable<Tuple<string, string>>> QueryImageInfoUrlsPriv(IEnumerable<string> titles)
+        private async Task<IEnumerable<Tuple<string, string>>> QueryImageInfoUrlsChunk(IEnumerable<string> titles)
         {
             var uriBuilder = new StringBuilder(BaseUri);
             uriBuilder.Append("&action=query&prop=imageinfo&iiprop=url");
