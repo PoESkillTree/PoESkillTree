@@ -13,6 +13,7 @@ namespace POESKillTree.Utils.UrlProcessing
     public class BuildUrlNormalizer
     {
         private readonly Regex _prefixRegex = new Regex(@"(?<toReplace>^(http(s|):\/\/|)(www\.|)(?<hostname>.*?))(\/|\?|#)");
+        private readonly Regex _poeUrlRegex = new Regex(@"(http(s|):\/\/)(www\.|)poeurl\.com\/");
 
         private readonly Dictionary<string, string> _urlCompletionMap = new Dictionary<string, string>
         {
@@ -65,10 +66,18 @@ namespace POESKillTree.Utils.UrlProcessing
         {
             buildUrl = EnsureProtocol(buildUrl);
 
-            var skillUrl = buildUrl.Replace("preview.", "");
-            if (skillUrl.Contains("poeurl.com") && !skillUrl.Contains("redirect.php"))
+            bool allowForbidden = false;
+
+            if (_poeUrlRegex.IsMatch(buildUrl))
             {
-                skillUrl = new Regex(@"(http(s|):\/\/)(www\.|)poeurl\.com\/").Replace(skillUrl, "http://www.poeurl.com/redirect.php?url=");
+                // Fix for a bug in poeplanner: it returns 403 when getting 88+ points, but content is valid
+                allowForbidden = true;
+
+                buildUrl = buildUrl.Replace("preview.", "");
+                if (!buildUrl.Contains("redirect.php"))
+                {
+                    buildUrl = _poeUrlRegex.Replace(buildUrl, "http://www.poeurl.com/redirect.php?url=");
+                }
             }
 
             HttpResponseMessage response = null;
@@ -79,15 +88,19 @@ namespace POESKillTree.Utils.UrlProcessing
                 // and thereby unify it by using Task instead of Task<HttpResponseMessage> in signature
                 Func<Task> headersLoader = async () =>
                 {
-                    response = await new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead);
+                    response = await new HttpClient().GetAsync(buildUrl, HttpCompletionOption.ResponseHeadersRead);
                 };
 
                 await loadingWrapper(L10n.Message("Resolving shortened tree address"), headersLoader());
-                response.EnsureSuccessStatusCode();
+
+                if (!allowForbidden)
+                {
+                    response.EnsureSuccessStatusCode();
+                }
             }
             else
             {
-                response = await new HttpClient().GetAsync(skillUrl, HttpCompletionOption.ResponseHeadersRead);
+                response = await new HttpClient().GetAsync(buildUrl, HttpCompletionOption.ResponseHeadersRead);
             }
 
             return response.RequestMessage.RequestUri.ToString();
