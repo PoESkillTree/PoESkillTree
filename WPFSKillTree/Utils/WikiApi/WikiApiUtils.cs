@@ -30,13 +30,17 @@ namespace POESKillTree.Utils.WikiApi
             return printouts[rdfPredicate].Values<T>();
         }
 
-        public static void ResizeAndSaveImage(byte[] imageData, Stream outputStream)
+        public static void SaveImage(byte[] imageData, Stream outputStream, bool resize)
         {
             using (var ms = new MemoryStream(imageData))
             using (var image = Image.FromStream(ms))
             {
-                var resized = image.Resize((int)(image.Width * ItemImageResizeFactor),
-                    (int)(image.Height * ItemImageResizeFactor));
+                var resized = image;
+                if (resize)
+                {
+                    resized = image.Resize((int) (image.Width * ItemImageResizeFactor),
+                        (int) (image.Height * ItemImageResizeFactor));
+                }
                 resized.Save(outputStream, ImageFormat.Png);
             }
         }

@@ -11,7 +11,6 @@ namespace POESKillTree.Model.Items
 {
     public class EquipmentData
     {
-        private readonly Options _options;
 
         public IReadOnlyDictionary<ItemType, IReadOnlyList<Affix>> AffixesPerItemType { get; private set; }
 
@@ -19,11 +18,13 @@ namespace POESKillTree.Model.Items
 
         public IReadOnlyDictionary<string, ItemBase> BaseDictionary { get; private set; }
 
+        public ItemImageService ItemImageService { get; }
+
         private WordSetTreeNode _root;
 
         private EquipmentData(Options options)
         {
-            _options = options;
+            ItemImageService = new ItemImageService(options);
         }
 
         private async Task InitializeAsync()
@@ -101,7 +102,7 @@ namespace POESKillTree.Model.Items
                 return new List<ItemBase>();
 
             var xmlList = await SerializationUtils.XmlDeserializeFileAsync<XmlItemList>(filename);
-            return xmlList.ItemBases.Select(x => new ItemBase(_options, x));
+            return xmlList.ItemBases.Select(x => new ItemBase(ItemImageService, x));
         }
 
         public ItemBase ItemBaseFromTypeline(string typeline)

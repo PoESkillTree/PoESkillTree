@@ -26,25 +26,40 @@ namespace POESKillTree.Utils.WikiApi
 
         public async Task<IEnumerable<JToken>> AskArgs(IEnumerable<string> conditions, IEnumerable<string> printouts)
         {
-            var initialUriBuilder = new StringBuilder(BaseUri);
-            initialUriBuilder.Append("&action=askargs");
-            initialUriBuilder.Append("&conditions=");
-            initialUriBuilder.Append(string.Join("|", conditions));
-            initialUriBuilder.Append("&printouts=");
-            initialUriBuilder.Append(string.Join("|", printouts));
-            initialUriBuilder.Append("&parameters=limit=200");
-            var initialUri = initialUriBuilder.ToString();
+            var queryString = new StringBuilder();
+            queryString.Append("&action=askargs");
+            queryString.Append("&conditions=");
+            queryString.Append(string.Join("|", conditions));
+            queryString.Append("&printouts=");
+            queryString.Append(string.Join("|", printouts));
+            queryString.Append("&parameters=limit=200");
+            return await AskApi(queryString.ToString());
+        }
 
+        public async Task<IEnumerable<JToken>> Ask(IEnumerable<string> conditions, IEnumerable<string> printous)
+        {
+            var queryString = new StringBuilder();
+            queryString.Append("&action=ask");
+            queryString.Append("&query=");
+            conditions.Select(s => $"[[{s}]]").ForEach(s => queryString.Append(s));
+            printous.Select(s => $"|?{s}").ForEach(s => queryString.Append(s));
+            queryString.Append("|limit=200");
+            return await AskApi(queryString.ToString());
+        }
+
+        private async Task<IEnumerable<JToken>> AskApi(string queryString)
+        {
+            var initialUri = BaseUri + queryString;
             var uri = initialUri;
             try
             {
                 var results = new List<JToken>();
                 while (true)
                 {
-                    var json = JObject.Parse(await _httpClient.GetStringAsync(uri));
+                    var json = JObject.Parse(await _httpClient.GetStringAsync(uri).ConfigureAwait(false));
                     if (!LogErrors(json, uri))
                     {
-                        results.AddRange(json["query"]["results"]);
+                        results.AddRange(json["query"]["results"].Cast<JProperty>().Select(p => p.Value["printouts"]));
                     }
                     LogWarnings(json, uri);
 
@@ -59,35 +74,29 @@ namespace POESKillTree.Utils.WikiApi
             catch (JsonException e)
             {
                 Log.Error($"Retrieving askargs results from {uri} failed", e);
-                return Enumerable.Empty<JToken>();
+                return Enumerable.Empty<JProperty>();
             }
-        }
-
-        public async Task<string> QueryImageInfoUrl(string title)
-        {
-            var results = await QueryImageInfoUrlsChunk(new[] {title});
-            return results.FirstOrDefault()?.Item2;
         }
 
         public async Task<IEnumerable<Tuple<string, string>>> QueryImageInfoUrls(IEnumerable<string> titles)
         {
             const int maxTitlesPerRequest = 50;
-            var chunks = titles
+            var batches = titles
                 .Select((t, i) => new { Index = i, Title = t })
                 .GroupBy(x => x.Index / maxTitlesPerRequest)
                 .Select(g => g.Select(x => x.Title))
-                .Select(QueryImageInfoUrlsChunk)
+                .Select(QueryImageInfoUrlsBatch)
                 .ToList();
 
             var results = new List<Tuple<string, string>>();
-            foreach (var chunk in chunks)
+            foreach (var batch in batches)
             {
-                results.AddRange(await chunk);
+                results.AddRange(await batch.ConfigureAwait(false));
             }
             return results;
         }
 
-        private async Task<IEnumerable<Tuple<string, string>>> QueryImageInfoUrlsChunk(IEnumerable<string> titles)
+        private async Task<IEnumerable<Tuple<string, string>>> QueryImageInfoUrlsBatch(IEnumerable<string> titles)
         {
             var uriBuilder = new StringBuilder(BaseUri);
             uriBuilder.Append("&action=query&prop=imageinfo&iiprop=url");
@@ -97,7 +106,7 @@ namespace POESKillTree.Utils.WikiApi
 
             try
             {
-                var json = JObject.Parse(await _httpClient.GetStringAsync(uri));
+                var json = JObject.Parse(await _httpClient.GetStringAsync(uri).ConfigureAwait(false));
                 if (!LogErrors(json, uri))
                 {
                     return
@@ -120,8 +129,15 @@ namespace POESKillTree.Utils.WikiApi
             JToken errorToken;
             if (json.TryGetValue("error", out errorToken))
             {
-                Log.Error($"Api returned an error with code {errorToken.Value<string>("code")} for uri {uri}:");
-                Log.Error(errorToken.Value<string>("info"));
+                var code = errorToken.Value<string>("code");
+                if (code != null)
+                {
+                    Log.Error($"Api returned an error with code {errorToken.Value<string>("code")} for uri {uri}:");
+                    Log.Error(errorToken.Value<string>("info"));
+                    return true;
+                }
+                Log.Error($"Api returned errors for uri {uri}:");
+                errorToken.SelectMany(t => t).SelectMany(t => t).Select(t => t.Value<string>()).ForEach(Log.Error);
                 return true;
             }
             return false;
@@ -136,7 +152,8 @@ namespace POESKillTree.Utils.WikiApi
                 if (warnings != null)
                 {
                     Log.Warn($"Api returned warnings for uri {uri}:");
-                    warnings.Descendants().Where(t => !t.Any()).ForEach(Log.Warn);
+                    // e.g. warnings.main.warnings.Value is the path to the first warning string
+                    warnings.SelectMany(t => t).SelectMany(t => t).Cast<JProperty>().Select(p => p.Value.Value<string>()).ForEach(Log.Warn);
                 }
             }
         }

@@ -53,8 +53,7 @@ namespace UpdateDB.DataLoading
             };
             var printouts = new[] {RdfName, RdfIcon};
 
-            var results = (from result in await WikiApiAccessor.AskArgs(conditions, printouts)
-                           let ps = result.First["printouts"]
+            var results = (from ps in await WikiApiAccessor.AskArgs(conditions, printouts)
                            let title = ps[RdfIcon].First.Value<string>("fulltext")
                            let name = SingularValue<string>(ps, RdfName)
                            select new {name, title}).ToList();
@@ -76,7 +75,7 @@ namespace UpdateDB.DataLoading
 
         protected override async Task SaveDataToStreamAsync(Task<byte[]> data, Stream stream)
         {
-            ResizeAndSaveImage(await data, stream);
+            WikiApiUtils.SaveImage(await data, stream, true);
         }
     }
 }
