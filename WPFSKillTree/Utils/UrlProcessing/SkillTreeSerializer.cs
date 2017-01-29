@@ -48,11 +48,27 @@ namespace POESKillTree.Utils.UrlProcessing
             var bytes = new byte[HeaderSize + skillNodes.Count() * 2];
             bytes = GetCharacterBytes((byte)_buildUrlData.CharacterClassId, (byte)_buildUrlData.AscendancyClassId, bytes);
 
+            int unknownNodes = 0;
             int i = HeaderSize;
             foreach (var id in skillNodes)
             {
-                bytes[i++] = (byte)(id >> 8 & 0xFF);
-                bytes[i++] = (byte)(id & 0xFF);
+                if (SkillTree.Skillnodes.ContainsKey(id))
+                {
+                    bytes[i++] = (byte)(id >> 8 & 0xFF);
+                    bytes[i++] = (byte)(id & 0xFF);
+                }
+                else
+                {
+                    unknownNodes++;
+                }
+            }
+
+            if (unknownNodes > 0)
+            {
+                var usedBytes = bytes.Length - unknownNodes * 2;
+                byte[] result = new byte[usedBytes];
+                Array.Copy(bytes, result, usedBytes);
+                bytes = result;
             }
 
             return Constants.TreeAddress + Convert.ToBase64String(bytes).Replace("/", "_").Replace("+", "-");

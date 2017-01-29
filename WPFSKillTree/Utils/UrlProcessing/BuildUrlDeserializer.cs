@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 
@@ -14,7 +15,7 @@ namespace POESKillTree.Utils.UrlProcessing
         /// Initializes a new instance of the <see cref="BuildUrlDeserializer"/> class.
         /// </summary>
         /// <param name="buildUrl">The PoE build url.</param>
-        protected BuildUrlDeserializer (string buildUrl)
+        protected BuildUrlDeserializer(string buildUrl)
         {
             BuildUrl = buildUrl ?? string.Empty;
         }
@@ -39,10 +40,19 @@ namespace POESKillTree.Utils.UrlProcessing
         /// </summary>
         public virtual int GetPointsCount(bool includeAscendancy = false)
         {
-            return includeAscendancy
-                ? GetBuildData().SkilledNodesIds.Count(id => !SkillTree.RootNodeList.Contains(id))
-                : GetBuildData().SkilledNodesIds.Count(id => !SkillTree.RootNodeList.Contains(id) &&
-                                                             SkillTree.Skillnodes[id].ascendancyName == null);
+            if (includeAscendancy)
+                return GetBuildData().SkilledNodesIds.Count(id => !SkillTree.RootNodeList.Contains(id));
+
+            return GetBuildData().SkilledNodesIds.Count(id =>
+            {
+                SkillNode skillNode;
+                if (SkillTree.Skillnodes.TryGetValue(id, out skillNode))
+                {
+                    return !SkillTree.RootNodeList.Contains(id) && skillNode.ascendancyName == null;
+                }
+
+                return false;
+            });
         }
 
         /// <summary>

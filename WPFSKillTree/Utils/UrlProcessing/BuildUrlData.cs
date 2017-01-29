@@ -19,6 +19,7 @@ namespace POESKillTree.Utils.UrlProcessing
         public int AscendancyClassId { get; set; }
         public List<ushort> SkilledNodesIds { get; } = new List<ushort>();
         public Dictionary<int, List<byte>> Jewels { get; } = new Dictionary<int, List<byte>>();
+        public List<string> CompatibilityIssues { get; } = new List<string>();
 
         public virtual Bandit BanditNormal => _converter.GetBandit(_banditNormalId);
         public virtual Bandit BanditCruel => _converter.GetBandit(_banditCruelId);

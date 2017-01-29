@@ -1824,7 +1824,7 @@ namespace POESKillTree.Views
             try
             {
                 var normalizedUrl = await _buildUrlNormalizer.NormalizeAsync(treeUrl, AwaitAsyncTask);
-                BuildUrlData data = BuildConverter.GetUrlDeserializer(normalizedUrl).GetBuildData();
+                BuildUrlData data = SkillTree.DecodeUrl(normalizedUrl);
                 var newTreeUrl = new SkillTreeSerializer(data).ToUrl();
 
                 BanditSettings bandits = PersistentData.CurrentBuild.Bandits;
@@ -1849,6 +1849,11 @@ namespace POESKillTree.Views
                         bandits.Cruel = data.BanditCruel;
                         bandits.Merciless = data.BanditMerciless;
                     }
+                }
+
+                if (data?.CompatibilityIssues != null && data.CompatibilityIssues.Any())
+                {
+                    await this.ShowWarningAsync(string.Join(Environment.NewLine, data.CompatibilityIssues));
                 }
 
                 PersistentData.CurrentBuild.TreeUrl = newTreeUrl;

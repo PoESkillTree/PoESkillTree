@@ -28,10 +28,10 @@ namespace POESKillTree.Utils.UrlProcessing
             var deserializedData = new BuildUrlData(BanditConverter.Default);
             deserializedData.Version = bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3];
 
-            if (!IsVersionSupported(deserializedData.Version))
+            if (!IsVersionCompatible(deserializedData.Version))
             {
-                throw new NotSupportedException(
-                    L10n.Message("The build you are trying to load is using an old version of the passive tree and will not work."));
+                deserializedData.CompatibilityIssues.Add(
+                    L10n.Message("The build is using an old version of the passive tree."));
             }
 
             deserializedData.CharacterClassId = bytes[4];
@@ -65,7 +65,7 @@ namespace POESKillTree.Utils.UrlProcessing
         /// </summary>
         /// <param name="version">The verion to validate.</param>
         /// <returns>true, if provided version is supported; otherwise false.</returns>
-        protected virtual bool IsVersionSupported(int version)
+        protected virtual bool IsVersionCompatible(int version)
         {
             return true;
         }

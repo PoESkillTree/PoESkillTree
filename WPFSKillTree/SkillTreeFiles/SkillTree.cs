@@ -1170,6 +1170,14 @@ namespace POESKillTree.SkillTreeFiles
             return DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType);
         }
 
+        public static BuildUrlData DecodeUrl(string url)
+        {
+            HashSet<SkillNode> skillednodes;
+            int chartype;
+            int ascType;
+            return DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType);
+        }
+
         private static BuildUrlData DecodeUrlPrivate(string url, out HashSet<SkillNode> skillednodes, out int chartype, out int ascType)
         {
             BuildUrlData buildData = BuildConverter.GetUrlDeserializer(url).GetBuildData();
@@ -1188,15 +1196,23 @@ namespace POESKillTree.SkillTreeFiles
                 skillednodes.Add(ascNode);
             }
 
+            var unknownNodes = 0;
             foreach (var nodeId in buildData.SkilledNodesIds)
             {
                 SkillNode node;
-                if (!Skillnodes.TryGetValue(nodeId, out node))
+                if (Skillnodes.TryGetValue(nodeId, out node))
                 {
-                    throw new KeyNotFoundException(L10n.Message("The build you are trying to load contains unknown nodes."));
+                    skillednodes.Add(node);
                 }
+                else
+                {
+                    unknownNodes++;
+                }
+            }
 
-                skillednodes.Add(node);
+            if (unknownNodes > 0)
+            {
+                buildData.CompatibilityIssues.Add(L10n.Message($"Some nodes ({unknownNodes}) are unknown and have been omitted."));
             }
 
             return buildData;

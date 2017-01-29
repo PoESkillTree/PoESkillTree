@@ -36,7 +36,7 @@ namespace POESKillTree.Utils.UrlProcessing
             return true;
         }
 
-        protected override bool IsVersionSupported(int version)
+        protected override bool IsVersionCompatible(int version)
         {
             return version >= _supportedVersion;
         }
