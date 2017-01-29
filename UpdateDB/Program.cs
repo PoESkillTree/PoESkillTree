@@ -35,7 +35,6 @@ namespace UpdateDB
         {
             var args = new Arguments
             {
-                CreateBackup = true,
                 ActivatedLoaders = LoaderCategories.Any,
                 LoaderFlags = new List<string>(),
                 OutputDirectory = OutputDirectory.AppData
@@ -75,11 +74,6 @@ namespace UpdateDB
                         Console.WriteLine("/Verbose                  Enable verbose output.");
                         Console.WriteLine("/Affixes, /Items, /ItemImages, /TreeAssets, /Gems");
                         Console.WriteLine("If at least one is specified, only the specified files are downloaded.\r\n");
-
-                        Console.WriteLine("Options for gem loader (only one can be specified):\r\n");
-                        Console.WriteLine("/Gems.Single:gemName      Update the given gem in the current gem file.");
-                        Console.WriteLine("/Gems.Update              Merge changed gems into the gem file instead of overwriting it.");
-                        Console.WriteLine("/Gems.Merge:filePath      Only merge the given file into the current gem file. The file name is relatvie to the execution path.");
                         return 1;
 
                     case "/versioncontrolledonly":
@@ -151,7 +145,6 @@ namespace UpdateDB
             public LoaderCategories ActivatedLoaders { get; set; }
             public OutputDirectory OutputDirectory { get; set; }
             public string SpecifiedOutputDirectory { get; set; }
-            public bool CreateBackup { get; set; }
             public IEnumerable<string> LoaderFlags { get; set; }
         }
     }

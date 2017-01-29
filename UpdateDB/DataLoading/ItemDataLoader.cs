@@ -43,7 +43,7 @@ namespace UpdateDB.DataLoading
          * - Has base armour
          * - Has base evasion
          * - Has base energy shield
-         * Printout todo:
+         * Possibly useful printouts not yet used:
          * - Has inventory height
          * - Has inventory width
          * - Is drop enabled
@@ -63,8 +63,10 @@ namespace UpdateDB.DataLoading
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDataLoader));
 
         private static readonly Regex NumberRegex = new Regex(@"\d+(\.\d+)?");
+        // Links in stat texts are replaced by their second group (first: linked page title, second: text)
         private static readonly Regex LinkRegex = new Regex(@"\[\[([\w\s\d]+\|)?([\w\s\d]+)\]\]");
 
+        // printouts for different ItemCategories
         private static readonly IReadOnlyList<string> GlobalPredicates = new[]
         {
             RdfName, RdfLvlReq, RdfBaseDexReq, RdfBaseIntReq, RdfBaseStrReq, RdfImplicits
@@ -77,6 +79,7 @@ namespace UpdateDB.DataLoading
                 {ItemCategory.Other, new string[0]}
             };
 
+        // the wiki's item classes are mapped to either ItemType or ItemGroup
         private static readonly IReadOnlyDictionary<string, ItemType> WikiClassToType
             = new Dictionary<string, ItemType>
             {
@@ -98,7 +101,6 @@ namespace UpdateDB.DataLoading
                 {"Quivers", ItemType.Quiver},
                 {"Rings", ItemType.Ring}
             };
-
         private static readonly IReadOnlyDictionary<string, ItemGroup> WikiClassToGroup
             = new Dictionary<string, ItemGroup>
             {
@@ -112,6 +114,7 @@ namespace UpdateDB.DataLoading
 
         protected override async Task LoadAsync()
         {
+            // start tasks
             var tasks = new List<Task<IEnumerable<XmlItemBase>>>();
             foreach (var pair in WikiClassToType)
             {
@@ -123,6 +126,7 @@ namespace UpdateDB.DataLoading
                 var group = pair.Value;
                 tasks.Add(ReadJson(pair.Key, b => TypeFromItem(b, group), GroupToCategory(group)));
             }
+            // collect results
             var bases = new List<XmlItemBase>();
             foreach (var task in tasks)
             {
@@ -146,7 +150,7 @@ namespace UpdateDB.DataLoading
             var printouts = GlobalPredicates.Union(PredicatesPerCategory[category]);
             var enumerable =
                 from result in await WikiApiAccessor.AskArgs(conditions, printouts)
-                select PrintoutsToBase(category, result.First["printouts"]);
+                select PrintoutsToBase(category, result);
             var ret = enumerable.ToList();
             foreach (var item in ret)
             {
@@ -161,6 +165,7 @@ namespace UpdateDB.DataLoading
 
         private static XmlItemBase PrintoutsToBase(ItemCategory category, JToken printouts)
         {
+            // name, requirements and implicts; same for all categories
             var implicits = PluralValue<string>(printouts, RdfImplicits).SelectMany(ConvertStatText).ToArray();
             var item = new XmlItemBase
             {
@@ -171,6 +176,7 @@ namespace UpdateDB.DataLoading
                 Name = SingularValue<string>(printouts, RdfName),
                 Implicit = implicits.Any() ? implicits : null
             };
+            // properties; category specific
             var propBuilder = new PropertyBuilder(printouts);
             switch (category)
             {
@@ -195,6 +201,7 @@ namespace UpdateDB.DataLoading
 
         private static IEnumerable<XmlStat> ConvertStatText(string statText)
         {
+            // split text at "<br>", replace links, convert each to XmlStat
             return from raw in statText.Split(new[] {"<br>"}, StringSplitOptions.RemoveEmptyEntries)
                    let filtered = LinkRegex.Replace(raw, "$2")
                    from s in ConvertStat(filtered)
@@ -206,13 +213,17 @@ namespace UpdateDB.DataLoading
             var matches = NumberRegex.Matches(stat);
             if (matches.Count <= 0)
             {
+                // no numbers in stat, easy
                 yield return new XmlStat {Name = stat};
                 yield break;
             }
 
             stat = NumberRegex.Replace(stat, "#");
+            // range: first value is From, second is To
             const string range = "(#-#)";
+            // added damage: first value is minimum, second is maximum
             const string addNoRange = "# to #";
+            // added damage with range
             const string addRange = range + " to " + range;
             if (stat.Contains(addNoRange))
             {
@@ -221,6 +232,8 @@ namespace UpdateDB.DataLoading
                     Log.Warn($"Could not parse implicit {stat}");
                     yield break;
                 }
+                // stat contains "#1 to #2", convert to two stats:
+                // "#1 minimum" and "#2 maximum"
                 var from = matches[0].Value.ParseFloat();
                 yield return new XmlStat
                 {
@@ -243,6 +256,8 @@ namespace UpdateDB.DataLoading
                     Log.Warn($"Could not parse implicit {stat}");
                     yield break;
                 }
+                // stat contains "(#1-#2) to (#3-#4)" convert to two stats:
+                // "(#1-#2) minimum" and "(#3-#4) maximum"
                 yield return new XmlStat
                 {
                     From = matches[0].Value.ParseFloat(),
@@ -258,6 +273,7 @@ namespace UpdateDB.DataLoading
             }
             else
             {
+                // stat contains "#1" or "(#1-#2)
                 var from = matches[0].Value.ParseFloat();
                 yield return new XmlStat
                 {
@@ -296,7 +312,7 @@ namespace UpdateDB.DataLoading
         {
             ItemType ret;
             var type = group.ToString();
-            // If there is a type with the same name as the group.
+            // If there is a type with the same name as the group, take that
             if (Enum.TryParse(type, out ret))
                 return ret;
 
@@ -333,6 +349,42 @@ namespace UpdateDB.DataLoading
             Weapon,
             Armour,
             Other
+        }
+
+
+        private class PropertyBuilder
+        {
+            private readonly JToken _printouts;
+            private readonly List<XmlStat> _properties = new List<XmlStat>();
+
+            public PropertyBuilder(JToken printouts)
+            {
+                _printouts = printouts;
+            }
+
+            public XmlStat[] ToArray()
+            {
+                return _properties.Any() ? _properties.ToArray() : null;
+            }
+
+            public void Add(string name, string rdfPredicate)
+            {
+                Add(name, rdfPredicate, rdfPredicate);
+            }
+
+            public void Add(string name, string rdfPredicateFrom, string rdfPredicateTo)
+            {
+                var from = SingularValue<float>(_printouts, rdfPredicateFrom, 0);
+                var to = SingularValue<float>(_printouts, rdfPredicateTo, 0);
+                if (from.AlmostEquals(0) && to.AlmostEquals(0))
+                    return;
+                _properties.Add(new XmlStat
+                {
+                    Name = name,
+                    From = from,
+                    To = to
+                });
+            }
         }
     }
 }

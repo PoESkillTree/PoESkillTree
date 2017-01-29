@@ -11,6 +11,15 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Utils.WikiApi
 {
+    /// <summary>
+    /// Provides access to the wiki's API.
+    /// </summary>
+    /// <remarks>
+    /// Some RDF predicates for items are stored in <see cref="ItemRdfPredicates"/>. Those can be used in the
+    /// conditions and printouts for <see cref="AskArgs"/> and <see cref="Ask"/>.
+    /// 
+    /// To build the conditions, you can use <see cref="ConditionBuilder"/>.
+    /// </remarks>
     public class ApiAccessor
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ApiAccessor));
@@ -24,6 +33,17 @@ namespace POESKillTree.Utils.WikiApi
             _httpClient = httpClient;
         }
 
+        /// <summary>
+        /// Queries the API using the askargs action.
+        /// </summary>
+        /// <param name="conditions">the query conditions. A retrieved subject must satisfy all of them.</param>
+        /// <param name="printouts">the query printouts. These are the RDF predicates retrieved for each subject.
+        /// </param>
+        /// <returns>A task that returns an enumerable of the printouts of all subjects matching the conditions.
+        /// </returns>
+        /// <remarks>
+        /// Supports more conditions and printouts than args. Does not support disjunctions in conditions.
+        /// </remarks>
         public async Task<IEnumerable<JToken>> AskArgs(IEnumerable<string> conditions, IEnumerable<string> printouts)
         {
             var queryString = new StringBuilder();
@@ -36,13 +56,25 @@ namespace POESKillTree.Utils.WikiApi
             return await AskApi(queryString.ToString());
         }
 
-        public async Task<IEnumerable<JToken>> Ask(IEnumerable<string> conditions, IEnumerable<string> printous)
+        /// <summary>
+        /// Queries the API using the args action.
+        /// </summary>
+        /// <param name="conditions">the query conditions. A retrieved subject must satisfy all of them.</param>
+        /// <param name="printouts">the query printouts. These are the RDF properties retrieved for each subject.
+        /// </param>
+        /// <returns>A task that returns an enumerable of the printouts of all subjects matching the conditions.
+        /// </returns>
+        /// <remarks>
+        /// Only supports short queries (combination of conditions and printouts). Does support disjunctions in
+        /// conditions.
+        /// </remarks>
+        public async Task<IEnumerable<JToken>> Ask(IEnumerable<string> conditions, IEnumerable<string> printouts)
         {
             var queryString = new StringBuilder();
             queryString.Append("&action=ask");
             queryString.Append("&query=");
             conditions.Select(s => $"[[{s}]]").ForEach(s => queryString.Append(s));
-            printous.Select(s => $"|?{s}").ForEach(s => queryString.Append(s));
+            printouts.Select(s => $"|?{s}").ForEach(s => queryString.Append(s));
             queryString.Append("|limit=200");
             return await AskApi(queryString.ToString());
         }
@@ -78,6 +110,13 @@ namespace POESKillTree.Utils.WikiApi
             }
         }
 
+        /// <summary>
+        /// Queries the API using the 'query' action, 'imageinfo' prop and 'url' iiprop.
+        /// </summary>
+        /// <param name="titles">the titles for which to query the imageinfor.url property</param>
+        /// <returns>
+        /// A task that returns an enumerable of tuples of titles and their imageinfo.url property.
+        /// </returns>
         public async Task<IEnumerable<Tuple<string, string>>> QueryImageInfoUrls(IEnumerable<string> titles)
         {
             const int maxTitlesPerRequest = 50;

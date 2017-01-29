@@ -1,5 +1,8 @@
 ﻿namespace POESKillTree.Utils.WikiApi
 {
+    /// <summary>
+    /// Collection of RDF predicates used on item pages.
+    /// </summary>
     public static class ItemRdfPredicates
     {
         // Generic

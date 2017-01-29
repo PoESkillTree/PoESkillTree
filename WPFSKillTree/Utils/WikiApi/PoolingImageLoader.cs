@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -12,16 +11,30 @@ using static POESKillTree.Utils.WikiApi.WikiApiUtils;
 
 namespace POESKillTree.Utils.WikiApi
 {
+    /// <summary>
+    /// Retrieves images for items from the wiki's API and saves them to the filesystem. Images are retrieved
+    /// once there were a fixed number of calls to <see cref="ProduceAsync"/> or once a fixed amount of time passed.
+    /// </summary>
+    /// <remarks>
+    /// Implemented using a producer-consumer-pattern. The producer sends the images to be downloaded and the
+    /// consumer acts once a fixed number was produced or a fixed amount of time passed. The consumer is started
+    /// in the constructor.
+    /// 
+    /// Exceptions in the consumer are relayed to the task returned by the producer.
+    /// </remarks>
     public class PoolingImageLoader
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(PoolingImageLoader));
 
+        // with more the queries for the 'ask' action are getting to big
         private const int MaxBatchSize = 10;
         private static readonly TimeSpan MaxWaitTime = TimeSpan.FromMilliseconds(100);
+        private static readonly TimeSpan InfiniteWaitTime = TimeSpan.FromMilliseconds(-1);
 
         private readonly HttpClient _httpClient;
         private readonly ApiAccessor _apiAccessor;
 
+        // producer-consumer-queue with capped capacity
         private readonly BufferBlock<PoolItem> _queue =
             new BufferBlock<PoolItem>(new DataflowBlockOptions {BoundedCapacity = MaxBatchSize});
 
@@ -32,6 +45,10 @@ namespace POESKillTree.Utils.WikiApi
             ConsumeAsync();
         }
 
+        /// <summary>
+        /// Returns a task that completes once the image for the item with the given name was downloaded to a file
+        /// of the given name.
+        /// </summary>
         public async Task ProduceAsync(string itemName, string fileName)
         {
             var tcs = new TaskCompletionSource<string>();
@@ -40,38 +57,30 @@ namespace POESKillTree.Utils.WikiApi
             await tcs.Task.ConfigureAwait(false);
         }
 
+        // return type can be void as this should never return and is never awaited
+        // all exceptions that can be handled are relayed to a producer task
         private async void ConsumeAsync()
         {
-            var stopwatch = Stopwatch.StartNew();
-            var items = new List<PoolItem>();
-            while (await _queue.OutputAvailableAsync().ConfigureAwait(false))
+            var pool = new List<PoolItem>();
+            while (true)
             {
                 var canceled = false;
                 try
                 {
-                    var timeout = MaxWaitTime - stopwatch.Elapsed;
-                    if (timeout.Milliseconds < 0)
-                    {
-                        canceled = true;
-                    }
-                    else
-                    {
-                        var task = _queue.ReceiveAsync(MaxWaitTime - stopwatch.Elapsed);
-                        items.Add(await task.ConfigureAwait(false));
-                    }
+                    // timeout at MaxWaitTime if there are items in the pool
+                    var task = _queue.ReceiveAsync(pool.Any() ? MaxWaitTime : InfiniteWaitTime);
+                    pool.Add(await task.ConfigureAwait(false));
                 }
-                catch (TaskCanceledException)
+                catch (TimeoutException)
                 {
                     canceled = true;
                 }
-                if (canceled || items.Count >= MaxBatchSize)
+                if (canceled || pool.Count >= MaxBatchSize)
                 {
-                    await LoadPoolAsync(items).ConfigureAwait(false);
-                    stopwatch.Restart();
-                    items.Clear();
+                    await LoadPoolAsync(pool).ConfigureAwait(false);
+                    pool.Clear();
                 }
             }
-            await LoadPoolAsync(items).ConfigureAwait(false);
         }
 
         private async Task LoadPoolAsync(IReadOnlyList<PoolItem> pool)
@@ -82,23 +91,26 @@ namespace POESKillTree.Utils.WikiApi
             }
             try
             {
+                // retrieve page titles of the items' icons
                 var nameToItem = pool.ToDictionary(p => p.ItemName);
                 var conditions = new ConditionBuilder
                 {
                     {RdfName, string.Join("||", pool.Select(p => p.ItemName))}
                 };
                 var printouts = new[] {RdfName, RdfIcon};
-
                 var results = (from ps in await _apiAccessor.Ask(conditions, printouts).ConfigureAwait(false)
                                let title = ps[RdfIcon].First.Value<string>("fulltext")
                                let name = SingularValue<string>(ps, RdfName)
                                select new { name, title }).ToList();
                 var titleToItem = results.ToDictionary(x => x.title, x => nameToItem[x.name]);
 
+                // retrieve urls of the actual icons
                 var task = _apiAccessor.QueryImageInfoUrls(results.Select(t => t.title));
                 var imageInfo =
                     from tuple in await task.ConfigureAwait(false)
                     select new {Item = titleToItem[tuple.Item1], Url = tuple.Item2};
+
+                // download and save icons
                 var saveTasks = new List<Task>();
                 var missing = new HashSet<PoolItem>(pool);
                 foreach (var x in imageInfo)
@@ -109,7 +121,7 @@ namespace POESKillTree.Utils.WikiApi
                         saveTasks.Add(LoadSingleAsync(x.Item, x.Url));
                     }
                 }
-                await Task.WhenAll(saveTasks);
+                await Task.WhenAll(saveTasks).ConfigureAwait(false);
                 foreach (var item in missing)
                 {
                     item.Tcs.SetException(new Exception($"Item image for {item.ItemName} was not downloaded"));

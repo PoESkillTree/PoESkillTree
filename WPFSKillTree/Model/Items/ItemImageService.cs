@@ -16,36 +16,61 @@ using POESKillTree.Utils.WikiApi;
 
 namespace POESKillTree.Model.Items
 {
+    /// <summary>
+    /// Serves item images for ItemGroups, base items and items with an icon url in their json.
+    /// Each image will only have one task associated with it, independent on how many items load it.
+    /// </summary>
     public class ItemImageService
     {
-        // todo don't do much if there's no internet
-
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemImageService));
 
+        /// <summary>
+        /// Path to images for ItemGroups
+        /// </summary>
+        private const string ResourcePathFormat =
+            "pack://application:,,,/PoESkillTree;component/Images/EquipmentUI/ItemDefaults/{0}.png";
+
+        /// <summary>
+        /// Path to images for base items.
+        /// </summary>
         private static readonly string AssetPath =
             Path.Combine(AppData.GetFolder(), "Data", "Equipment", "Assets");
         private static readonly string AssetPathFormat = 
             Path.Combine(AssetPath, "{0}.png");
 
+        /// <summary>
+        /// Path to images downloaded from item json information.
+        /// </summary>
         private static readonly string DownloadedPathFormat =
             Path.Combine(AppData.GetFolder(), "Data", "Equipment", "Downloaded", "{0}");
-
-        private const string ResourcePathFormat = 
-            "pack://application:,,,/PoESkillTree;component/Images/EquipmentUI/ItemDefaults/{0}.png";
 
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly PoolingImageLoader _wikiLoader;
         private readonly Options _options;
 
+        /// <summary>
+        /// Stores images for ItemGroups.
+        /// </summary>
         private readonly ConcurrentDictionary<ItemGroup, ImageSource> _defaultImageCache = 
             new ConcurrentDictionary<ItemGroup, ImageSource>();
 
+        /// <summary>
+        /// Stores tasks for images for base items. The key is the file name as inserted into
+        /// <see cref="AssetPathFormat"/>.
+        /// </summary>
         private readonly ConcurrentDictionary<string, Task<ImageSource>> _assetImageCache = 
             new ConcurrentDictionary<string, Task<ImageSource>>();
 
+        /// <summary>
+        /// Stores tasks for images downloaded from item json information. The key is the url of the image as stored in
+        /// the json.
+        /// </summary>
         private readonly ConcurrentDictionary<string, Task<ImageSource>> _downloadedImageCache =
             new ConcurrentDictionary<string, Task<ImageSource>>();
 
+        /// <summary>
+        /// Fallback image for ItemGroups.
+        /// </summary>
         private readonly ImageSource _errorImage = Imaging.CreateBitmapSourceFromHIcon(
             SystemIcons.Error.Handle,
             Int32Rect.Empty,
@@ -59,6 +84,9 @@ namespace POESKillTree.Model.Items
             Directory.CreateDirectory(AssetPath);
         }
 
+        /// <summary>
+        /// Returns the image for the ItemGroup. Each ItemGroup image is only loaded once.
+        /// </summary>
         public ImageSource LoadDefaultImage(ItemGroup group)
         {
             return _defaultImageCache.GetOrAdd(group, g =>
@@ -78,6 +106,14 @@ namespace POESKillTree.Model.Items
             });
         }
 
+        /// <summary>
+        /// Returns a task that returns the image for the base item with the given name. The task may already be
+        /// completed if this method was already called with the same itemName parameter. Images may be downloaded
+        /// from the game's wiki.
+        /// </summary>
+        /// <param name="itemName">name of the base item. Equals the asset file name of the image.</param>
+        /// <param name="defaultImage">image the task returns if the image file does not exist and download of missing
+        /// images is disabled.</param>
         public Task<ImageSource> LoadItemImageAsync(string itemName, ImageSource defaultImage)
         {
             return _assetImageCache.GetOrAdd(itemName, n => LoadAssetAsync(itemName, defaultImage));
@@ -98,6 +134,15 @@ namespace POESKillTree.Model.Items
             return ImageSourceFromPath(fileName);
         }
 
+        /// <summary>
+        /// Returns a task that returns the image at the given url. The task may already be
+        /// completed if this method was already called with the same imageUrl parameter. Images are stored in the file
+        /// system, the image will not be downloaded if it already was in a previous program run.
+        /// </summary>
+        /// <param name="imageUrl">url of the image. If it is a local url without domain, it is prefixed with
+        /// pathofexile.com.</param>
+        /// <param name="defaultImage">image the task returns if the image file does not exist and download of missing
+        /// images is disabled.</param>
         public Task<ImageSource> LoadFromUrl(string imageUrl, ImageSource defaultImage)
         {
             return _downloadedImageCache.GetOrAdd(imageUrl, n => LoadOfficialAsync(n, defaultImage));

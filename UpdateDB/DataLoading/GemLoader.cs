@@ -11,6 +11,9 @@ using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
+    /// <summary>
+    /// Retrieves the available gems from the game data through RePoE.
+    /// </summary>
     public class GemLoader : DataLoader
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(GemLoader));
@@ -50,8 +53,11 @@ namespace UpdateDB.DataLoading
                     continue;
                 }
 
+                // Gem.Name
                 var name = tooltipStatic.Value<string>("name");
+                // Gem.Tags
                 var tags = tooltipStatic.Value<JArray>("properties").Value<string>(0);
+                // Gem.Attributes
                 var attributes = new List<ItemDB.Attribute>();
                 var levelProps = tooltipObj.Value<JObject>("per_level").Properties().ToList();
                 var levelInts = levelProps.Select(p => p.Name.ParseInt()).ToList();
@@ -68,12 +74,12 @@ namespace UpdateDB.DataLoading
                     Name = name,
                     Tags = tags,
                     Attributes = attributes
-                    // todo IncludeForm, ExcludeForm, ExcludeFormSource, ExcludeSupport?
                 };
 
                 var activeSkill = gemObj["active_skill"];
                 if (activeSkill != null)
                 {
+                    // Gem.RequiresEquippedShield, RequiredHand, StrikesWithBothWeapons
                     var types = activeSkill.Value<JArray>("types").Values<string>().ToHashSet();
                     if (types.Contains("shield_only"))
                     {
@@ -92,11 +98,13 @@ namespace UpdateDB.DataLoading
                     {
                         gem.StrikesWithBothWeapons = true;
                     }
+                    // Gem.RequiredWeapon
                     if (types.Contains("attack"))
                     {
                         var weaponRestrictions = activeSkill.Value<JArray>("weapon_restrictions").Values<string>().ToList();
                         foreach (var restriction in weaponRestrictions)
                         {
+                            // map game's ItemClass to our WeaponType
                             var w = restriction.Replace(" Hand ", " Handed ");
                             if (w == "Thrusting One Handed Sword")
                             {
@@ -124,6 +132,9 @@ namespace UpdateDB.DataLoading
             }
         }
 
+        /// <summary>
+        /// Retrieves the json files for gems and gem tooltips and sets their "per_level" fields up.
+        /// </summary>
         private async Task LoadRePoEAsync()
         {
             var gemsJsonTask = HttpClient.GetStringAsync(RepoeGemsUrl);
@@ -134,6 +145,9 @@ namespace UpdateDB.DataLoading
             MergeStaticWithPerLevel(_gemTooltipsJson);
         }
 
+        /// <summary>
+        /// Merges the jsons "static" object into each "per_level" object.
+        /// </summary>
         private static void MergeStaticWithPerLevel(JObject json)
         {
             foreach (var token in json.PropertyValues())
@@ -168,7 +182,7 @@ namespace UpdateDB.DataLoading
                     {
                         MergeArray((JArray) staticValue, (JArray) perLevelValue);
                     }
-                    // for primitives, keep the one from perLevelObject
+                    // keep the one from perLevelObject for primitives
                 }
                 else
                 {
@@ -202,11 +216,21 @@ namespace UpdateDB.DataLoading
                     case JTokenType.Array:
                         MergeArray((JArray) staticValue, (JArray) perLevelValue);
                         break;
-                    // for primitives, keep the one from perLevelObject
+                    // keep the one from perLevelObject for primitives
                 }
             }
         }
 
+        /// <summary>
+        /// Parses a subobject of each "per_level" object into <see cref="ItemDB.Attribute"/> instances.
+        /// </summary>
+        /// <param name="levels">list of the levels</param>
+        /// <param name="levelObjects">list of the object for each level</param>
+        /// <param name="propertyName">key of the property in the level objects whose value object is parsed</param>
+        /// <param name="skip">number of first array entries in the subobjects to skip (e.g. gem tags that where handled
+        /// separately</param>
+        /// <param name="atQuality">the quality at which the attributes have the value contained in the level objects
+        /// </param>
         private static IEnumerable<ItemDB.Attribute> ParseAttributes(IReadOnlyList<int> levels,
             IReadOnlyList<JObject> levelObjects, string propertyName, int skip = 0, int atQuality = 0)
         {
@@ -282,6 +306,7 @@ namespace UpdateDB.DataLoading
         {
             switch (value.Type)
             {
+                // floats are the only primitve token types where ToString() depends on the culture
                 case JTokenType.Float:
                     return ((float)value).ToString(CultureInfo.InvariantCulture);
                 default:
