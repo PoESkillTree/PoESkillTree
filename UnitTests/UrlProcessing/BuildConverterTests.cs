@@ -37,23 +37,6 @@ namespace UnitTests.UrlProcessing
             Assert.AreEqual(typeof(NaivePoEUrlDeserializer), deserializer.GetType());
         }
 
-        [TestMethod]
-        public void RegisterDefaultDeserializerSkipsIncorrectType()
-        {
-            Exception exception = null;
-
-            try
-            {
-                BuildConverter.RegisterDefaultDeserializer(typeof(object));
-            }
-            catch (Exception e)
-            {
-                exception = e;
-            }
-
-            Assert.IsNull(exception);
-        }
-
         #region Helpers
 
         private void RegisterFactories()
@@ -64,12 +47,12 @@ namespace UnitTests.UrlProcessing
                 PathofexileUrlDeserializer.TryCreate,
                 PoeplannerUrlDeserializer.TryCreate);
 
-            BuildConverter.RegisterDefaultDeserializer(typeof(NaivePoEUrlDeserializer));
+            BuildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url));
         }
 
         private void UnregisterAllFactories()
         {
-            BuildConverter.RegisterDefaultDeserializer(null);
+            BuildConverter.RegisterDefaultDeserializer(url => null as NaivePoEUrlDeserializer);
             BuildConverter.RegisterDeserializersFactories();
         }
 

@@ -255,7 +255,7 @@ namespace POESKillTree.SkillTreeFiles
 
                 AscendancyClasses.Initialize(inOpts.ascClasses);
 
-                BuildConverter.RegisterDefaultDeserializer(typeof(NaivePoEUrlDeserializer));
+                BuildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url));
                 BuildConverter.RegisterDeserializersFactories(
                     PoeplannerUrlDeserializer.TryCreate,
                     PathofexileUrlDeserializer.TryCreate
@@ -1160,17 +1160,17 @@ namespace POESKillTree.SkillTreeFiles
 
         public static void DecodeUrl(string url, out HashSet<SkillNode> skillednodes, out int chartype, out int ascType)
         {
-            DecodeUrlProtected(url, out skillednodes, out chartype, out ascType);
+            DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType);
         }
 
         public static BuildUrlData DecodeUrl(string url, out HashSet<SkillNode> skillednodes)
         {
             int chartype;
             int ascType;
-            return DecodeUrlProtected(url, out skillednodes, out chartype, out ascType);
+            return DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType);
         }
 
-        protected static BuildUrlData DecodeUrlProtected(string url, out HashSet<SkillNode> skillednodes, out int chartype, out int ascType)
+        private static BuildUrlData DecodeUrlPrivate(string url, out HashSet<SkillNode> skillednodes, out int chartype, out int ascType)
         {
             BuildUrlData buildData = BuildConverter.GetUrlDeserializer(url).GetBuildData();
 

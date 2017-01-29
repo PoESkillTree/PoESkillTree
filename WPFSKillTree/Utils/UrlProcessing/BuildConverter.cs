@@ -9,17 +9,16 @@ namespace POESKillTree.Utils.UrlProcessing
     public static class BuildConverter
     {
         private static ISet<TryCreateDeserializer> _deserializersFactories = new HashSet<TryCreateDeserializer>();
-        private static Type _defaultDeserializerType;
+        private static Func<string, BuildUrlDeserializer> _factory;
 
         /// <summary>
         /// Registers default deserializer that should be used if all others refused to parse.
         /// It may be useful when trying to parse obsolete build urls and official site compatible urls.
         /// </summary>
-        /// <param name="defaultDeserializer">The default deserializer type.</param>
-        public static void RegisterDefaultDeserializer(Type defaultDeserializer)
+        /// <param name="factory">The default deserializer factory.</param>
+        public static void RegisterDefaultDeserializer(Func<string, BuildUrlDeserializer> factory)
         {
-            if (defaultDeserializer == null || typeof(BuildUrlDeserializer).IsAssignableFrom(defaultDeserializer))
-                _defaultDeserializerType = defaultDeserializer;
+            _factory = factory;
         }
 
         /// <summary>
@@ -48,9 +47,7 @@ namespace POESKillTree.Utils.UrlProcessing
                 }
             }
 
-            return _defaultDeserializerType == null
-                ? null
-                : (BuildUrlDeserializer)Activator.CreateInstance(_defaultDeserializerType, buildUrl);
+            return _factory?.Invoke(buildUrl);
         }
 
         /// <summary>
