@@ -201,10 +201,13 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="SkillTreeFiles\Class.cs" />
+    <Compile Include="SkillTreeFiles\IAscendancyClasses.cs" />
     <Compile Include="Utils\UrlProcessing\BanditConverter.cs" />
     <Compile Include="Utils\UrlProcessing\BuildUrlDeserializer.cs" />
     <Compile Include="Utils\UrlProcessing\BuildConverter.cs" />
     <Compile Include="Utils\UrlProcessing\BuildUrlData.cs" />
+    <Compile Include="Utils\UrlProcessing\IBuildConverter.cs" />
     <Compile Include="Utils\UrlProcessing\SkillTreeSerializer.cs" />
     <Compile Include="Utils\UrlProcessing\BuildUrlNormalizer.cs" />
     <Compile Include="Utils\UrlProcessing\PathofexileUrlDeserializer.cs" />

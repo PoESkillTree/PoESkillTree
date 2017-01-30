@@ -153,6 +153,9 @@ namespace POESKillTree.SkillTreeFiles
         public readonly ObservableSet<SkillNode> SkilledNodes = new ObservableSet<SkillNode>();
         public readonly ObservableSet<SkillNode> HighlightedNodes = new ObservableSet<SkillNode>();
         public SkillTreeSerializer Serializer { get; private set; }
+        public IAscendancyClasses AscendancyClasses { get; private set; }
+        public IBuildConverter BuildConverter { get; private set; }
+
 
         private int _chartype;
         private int _asctype;
@@ -253,9 +256,10 @@ namespace POESKillTree.SkillTreeFiles
                     }
                 }
 
-                AscendancyClasses.Initialize(inOpts.ascClasses);
+                AscendancyClasses = new AscendancyClasses(inOpts.ascClasses);
 
-                BuildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url));
+                BuildConverter = new BuildConverter(AscendancyClasses);
+                BuildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url, AscendancyClasses));
                 BuildConverter.RegisterDeserializersFactories(
                     PoeplannerUrlDeserializer.TryCreate,
                     PathofexileUrlDeserializer.TryCreate
@@ -1158,40 +1162,42 @@ namespace POESKillTree.SkillTreeFiles
             return retval;
         }
 
-        public static void DecodeUrl(string url, out HashSet<SkillNode> skillednodes, out int chartype, out int ascType)
+        public static void DecodeUrl(string url, out HashSet<SkillNode> skillednodes, out int chartype, out int ascType, ISkillTree skillTree)
         {
-            DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType);
+            DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType, skillTree);
         }
 
-        public static BuildUrlData DecodeUrl(string url, out HashSet<SkillNode> skillednodes)
+        public static BuildUrlData DecodeUrl(string url, out HashSet<SkillNode> skillednodes, ISkillTree skillTree)
         {
             int chartype;
             int ascType;
-            return DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType);
+            return DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType, skillTree);
         }
 
-        public static BuildUrlData DecodeUrl(string url)
+        public static BuildUrlData DecodeUrl(string url, ISkillTree skillTree)
         {
             HashSet<SkillNode> skillednodes;
             int chartype;
             int ascType;
-            return DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType);
+            return DecodeUrlPrivate(url, out skillednodes, out chartype, out ascType, skillTree);
         }
 
-        private static BuildUrlData DecodeUrlPrivate(string url, out HashSet<SkillNode> skillednodes, out int chartype, out int ascType)
+        private static BuildUrlData DecodeUrlPrivate(string url, out HashSet<SkillNode> skillednodes, out int chartype,
+            out int ascType, ISkillTree skillTree)
         {
-            BuildUrlData buildData = BuildConverter.GetUrlDeserializer(url).GetBuildData();
+            BuildUrlData buildData = skillTree.BuildConverter.GetUrlDeserializer(url).GetBuildData();
 
             chartype = (byte)buildData.CharacterClassId;
             ascType = (byte)buildData.AscendancyClassId;
 
             string charName = CharName[chartype];
-            SkillNode startnode = Skillnodes.First(nd => nd.Value.Name.Equals(charName, StringComparison.InvariantCultureIgnoreCase)).Value;
-            skillednodes = new HashSet<SkillNode>{ startnode };
+            SkillNode startnode = Skillnodes
+                .First(nd => nd.Value.Name.Equals(charName, StringComparison.InvariantCultureIgnoreCase)).Value;
+            skillednodes = new HashSet<SkillNode> { startnode };
 
             if (ascType > 0)
             {
-                string ascendancyClass = AscendancyClasses.GetClassName(chartype, ascType);
+                string ascendancyClass = skillTree.AscendancyClasses.GetClassName(chartype, ascType);
                 SkillNode ascNode = AscRootNodeList.First(nd => nd.ascendancyName == ascendancyClass);
                 skillednodes.Add(ascNode);
             }
@@ -1221,7 +1227,7 @@ namespace POESKillTree.SkillTreeFiles
         public BuildUrlData LoadFromUrl(string url)
         {
             HashSet<SkillNode> snodes;
-            var data = DecodeUrl(url, out snodes);
+            var data = DecodeUrl(url, out snodes, this);
             Chartype = data.CharacterClassId;
             AscType = data.AscendancyClassId;
             SkilledNodes.Clear();

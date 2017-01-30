@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.Utils.UrlProcessing
 {
@@ -16,7 +17,9 @@ namespace POESKillTree.Utils.UrlProcessing
         /// Initializes a new instance of the <see cref="PoeplannerUrlDeserializer"/> class.
         /// </summary>
         /// <param name="buildUrl">The poeplanner build url.</param>
-        public PoeplannerUrlDeserializer(string buildUrl) : base(buildUrl)
+        /// <param name="ascendancyClasses">The instance of the <see cref="ascendancyClasses"/>
+        /// to access general information about skill tree.</param>
+        public PoeplannerUrlDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses) : base(buildUrl, ascendancyClasses)
         {
         }
 
@@ -26,7 +29,7 @@ namespace POESKillTree.Utils.UrlProcessing
         /// <param name="buildUrl">A string containing a build url.</param>
         /// <param name="deserializer">When this method returns, contains the deserializer instance or null, if url conversion is impossible.</param>
         /// <returns>true if deserializer was created successfully; otherwise, false.</returns>
-        public static bool TryCreate(string buildUrl, out BuildUrlDeserializer deserializer)
+        public static bool TryCreate(string buildUrl, IAscendancyClasses ascendancyClasses, out BuildUrlDeserializer deserializer)
         {
             if (!UrlRegex.IsMatch(buildUrl))
             {
@@ -34,7 +37,7 @@ namespace POESKillTree.Utils.UrlProcessing
                 return false;
             }
 
-            deserializer = new PoeplannerUrlDeserializer(buildUrl);
+            deserializer = new PoeplannerUrlDeserializer(buildUrl, ascendancyClasses);
             return true;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils.UrlProcessing;
 
 namespace UnitTests.UrlProcessing
@@ -7,12 +8,21 @@ namespace UnitTests.UrlProcessing
     [TestClass]
     public class BuildConverterTests
     {
+        private IBuildConverter _buildConverter;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _buildConverter = new BuildConverter(null);
+            RegisterFactories();
+        }
+
         [TestMethod]
         public void GetUrlDeserializerReturnsNullWhenNoFactories()
         {
             UnregisterAllFactories();
 
-            var deserializer = BuildConverter.GetUrlDeserializer("some.url");
+            var deserializer = _buildConverter.GetUrlDeserializer("some.url");
 
             Assert.IsNull(deserializer);
         }
@@ -20,9 +30,7 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public void GetUrlDeserializerReturnsCorrectDeserializer()
         {
-            RegisterFactories();
-
-            var deserializer = BuildConverter.GetUrlDeserializer("http://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==");
+            var deserializer = _buildConverter.GetUrlDeserializer("http://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==");
 
             Assert.AreEqual(typeof(PathofexileUrlDeserializer), deserializer.GetType());
         }
@@ -30,9 +38,7 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public void GetUrlDeserializerReturnsDefaultDeserializerWhenUrlNotSupported()
         {
-            RegisterFactories();
-
-            var deserializer = BuildConverter.GetUrlDeserializer("https://example.com/AAAABAAAAA==");
+            var deserializer = _buildConverter.GetUrlDeserializer("https://example.com/AAAABAAAAA==");
 
             Assert.AreEqual(typeof(NaivePoEUrlDeserializer), deserializer.GetType());
         }
@@ -41,19 +47,17 @@ namespace UnitTests.UrlProcessing
 
         private void RegisterFactories()
         {
-            UnregisterAllFactories();
-
-            BuildConverter.RegisterDeserializersFactories(
+            _buildConverter.RegisterDeserializersFactories(
                 PathofexileUrlDeserializer.TryCreate,
                 PoeplannerUrlDeserializer.TryCreate);
 
-            BuildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url));
+            _buildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url, null));
         }
 
         private void UnregisterAllFactories()
         {
-            BuildConverter.RegisterDefaultDeserializer(url => null as NaivePoEUrlDeserializer);
-            BuildConverter.RegisterDeserializersFactories();
+            _buildConverter.RegisterDefaultDeserializer(url => null as NaivePoEUrlDeserializer);
+            _buildConverter.RegisterDeserializersFactories();
         }
 
         #endregion

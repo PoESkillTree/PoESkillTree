@@ -543,8 +543,8 @@ namespace POESKillTree.Views
             _justLoaded = false;
             // loading saved build
             PersistentData.Options.PropertyChanged += Options_PropertyChanged;
-            PopulateAsendancySelectionList();
-            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
+            PopulateAscendancySelectionList();
+            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree, Tree.AscendancyClasses);
             UpdateTreeComparision();
             TreeGeneratorInteraction =
                 new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
@@ -606,7 +606,7 @@ namespace POESKillTree.Views
                     break;
                 case nameof(SkillTree.Chartype):
                     Tree.UpdateAscendancyClasses = true;
-                    PopulateAsendancySelectionList();
+                    PopulateAscendancySelectionList();
                     break;
             }
         }
@@ -1124,12 +1124,12 @@ namespace POESKillTree.Views
             _userInteraction = false;
         }
 
-        private void PopulateAsendancySelectionList()
+        private void PopulateAscendancySelectionList()
         {
             if (!Tree.UpdateAscendancyClasses) return;
             Tree.UpdateAscendancyClasses = false;
             var ascendancyItems = new List<string> { "None" };
-            foreach (var name in AscendancyClasses.GetClasses(Tree.Chartype))
+            foreach (var name in Tree.AscendancyClasses.GetClasses(Tree.Chartype))
                 ascendancyItems.Add(name.DisplayName);
             cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
         }
@@ -1459,7 +1459,7 @@ namespace POESKillTree.Views
             {
                 if (node.ascendancyName != null && !Tree.DrawAscendancy)
                     return;
-                var ascendancyClassName = AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType);
+                var ascendancyClassName = Tree.AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType);
                 if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
@@ -1558,7 +1558,7 @@ namespace POESKillTree.Views
         {
             if (!Tree.DrawAscendancy && node.ascendancyName != null && !forcerefresh)
                 return;
-            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType))
+            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType))
                 return;
 
             if (node.Type == NodeType.JewelSocket)
@@ -1807,7 +1807,7 @@ namespace POESKillTree.Views
                 {
                     UpdateClass();
                     Tree.UpdateAscendancyClasses = true;
-                    PopulateAsendancySelectionList();
+                    PopulateAscendancySelectionList();
                 }
                 UpdateUI();
                 _justLoaded = false;
@@ -1824,7 +1824,7 @@ namespace POESKillTree.Views
             try
             {
                 var normalizedUrl = await _buildUrlNormalizer.NormalizeAsync(treeUrl, AwaitAsyncTask);
-                BuildUrlData data = SkillTree.DecodeUrl(normalizedUrl);
+                BuildUrlData data = SkillTree.DecodeUrl(normalizedUrl, Tree);
                 var newTreeUrl = new SkillTreeSerializer(data).ToUrl();
 
                 BanditSettings bandits = PersistentData.CurrentBuild.Bandits;
@@ -2069,7 +2069,7 @@ namespace POESKillTree.Views
                 HashSet<SkillNode> nodes;
                 int ctype;
                 int atype;
-                SkillTree.DecodeUrl(build.TreeUrl, out nodes, out ctype, out atype);
+                SkillTree.DecodeUrl(build.TreeUrl, out nodes, out ctype, out atype, Tree);
 
                 Tree.HighlightedNodes.Clear();
                 Tree.HighlightedNodes.UnionWith(nodes);

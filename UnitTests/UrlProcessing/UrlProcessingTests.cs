@@ -8,7 +8,6 @@ using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Serialization;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
 using POESKillTree.Utils.UrlProcessing;
 using UnitTests.TestBuilds.Utils;
 
@@ -19,14 +18,13 @@ namespace UnitTests.UrlProcessing
     {
         private static AbstractPersistentData _persistentData;
         private static BuildUrlCollection _builds;
+        private static SkillTree _tree;
 
         public TestContext TestContext { get; set; }
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            AppData.SetApplicationData(Environment.CurrentDirectory);
-
             if (ItemDB.IsEmpty())
                 ItemDB.Load("Data/ItemDB/GemList.xml", true);
             _persistentData = new BarePersistentData { CurrentBuild = new PoEBuild() };
@@ -34,6 +32,11 @@ namespace UnitTests.UrlProcessing
 
             _builds = TestBuildUrlLoader.LoadFromXmlFile("../../TestBuilds/BuildUrls.xml");
             _builds.AddRange(TestBuildUrlLoader.LoadFromXmlFile("../../TestBuilds/EmptyBuildUrls.xml"));
+
+            // This initialization requires a lot of time, so it is reasonable to reuse one instance if possible.
+            // However, as some tests may change tree state this field should be used only for methods,
+            // that does not depend on a tree instance.
+            _tree = SkillTree.CreateAsync(_persistentData).Result;
         }
 
         [TestCleanup]
@@ -141,6 +144,16 @@ namespace UnitTests.UrlProcessing
             Assert.AreEqual(1, nodes.Count, "Only one class root node expected.");
         }
 
+        [TestMethod]
+        public void DecodeObsoleteBuildTest()
+        {
+            var build = _builds.FindByName("ObsoleteTemplar");
+
+            var nodes = DecodeInSkillTree(build.DefaultUrl);
+
+            Assert.AreEqual(build.GetTotalPoints(), nodes.Count);
+        }
+
         #endregion
 
         #region Urls encoding
@@ -210,7 +223,7 @@ namespace UnitTests.UrlProcessing
             var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
             var targetUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
-            var actualCount = BuildConverter.GetUrlDeserializer(targetUrl).GetPointsCount();
+            var actualCount = _tree.BuildConverter.GetUrlDeserializer(targetUrl).GetPointsCount();
 
             Assert.AreEqual(build.Points, actualCount);
         }
@@ -221,7 +234,7 @@ namespace UnitTests.UrlProcessing
             var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
             var targetUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
-            var actualCount = BuildConverter.GetUrlDeserializer(targetUrl).GetPointsCount(true);
+            var actualCount = _tree.BuildConverter.GetUrlDeserializer(targetUrl).GetPointsCount(true);
 
             Assert.AreEqual(build.GetTotalPoints(), actualCount);
         }
@@ -235,7 +248,7 @@ namespace UnitTests.UrlProcessing
             var targetUrl = Convert.ToString(TestContext.DataRow.GetChildRows("build_urls")[0]["default"], CultureInfo.InvariantCulture);
 
             var actualClass =
-                BuildConverter.GetUrlDeserializer(Constants.TreeAddress + targetUrl).GetCharacterClass();
+                _tree.BuildConverter.GetUrlDeserializer(Constants.TreeAddress + targetUrl).GetCharacterClass();
 
             Assert.AreEqual(expectedClass, actualClass);
         }
@@ -250,12 +263,12 @@ namespace UnitTests.UrlProcessing
             var ascendancyClassId = Convert.ToInt32(TestContext.DataRow["ascendancyClassId"]);
 
             string expectedAscendancyClass = ascendancyClassId > 0
-                ? AscendancyClasses.GetClassName(characterClassId, ascendancyClassId)
+                ? _tree.AscendancyClasses.GetClassName(characterClassId, ascendancyClassId)
                 : null;
 
             string targetUrl = Convert.ToString(TestContext.DataRow.GetChildRows("build_urls")[0]["default"], CultureInfo.InvariantCulture);
             string actualAscendancyClass =
-                BuildConverter.GetUrlDeserializer(targetUrl).GetAscendancyClass();
+                _tree.BuildConverter.GetUrlDeserializer(targetUrl).GetAscendancyClass();
 
             Assert.AreEqual(expectedAscendancyClass, actualAscendancyClass);
         }
@@ -271,7 +284,7 @@ namespace UnitTests.UrlProcessing
             SkillTree tree = await SkillTree.CreateAsync(_persistentData);
             tree.LoadFromUrl(targetUrl);
 
-            var deserializer = BuildConverter.GetUrlDeserializer(targetUrl);
+            var deserializer = _tree.BuildConverter.GetUrlDeserializer(targetUrl);
 
             var points = tree.GetPointCount();
             var count = points["NormalUsed"] + points["AscendancyUsed"] + points["ScionAscendancyChoices"];
@@ -285,8 +298,12 @@ namespace UnitTests.UrlProcessing
 
         private static HashSet<SkillNode> DecodeInSkillTree(string buildUrl)
         {
+            // SkillTree.DecodeUrl accesses static state that should be reset between tests
+            SkillTree.ClearAssets();
+            _tree = SkillTree.CreateAsync(_persistentData).Result;
+
             HashSet<SkillNode> nodes;
-            SkillTree.DecodeUrl(buildUrl, out nodes);
+            SkillTree.DecodeUrl(buildUrl, out nodes, _tree);
             return nodes;
         }
 

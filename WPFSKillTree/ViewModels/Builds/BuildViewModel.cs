@@ -134,7 +134,7 @@ namespace POESKillTree.ViewModels.Builds
             if (SkillTree == null || string.IsNullOrEmpty(Build.TreeUrl))
                 return;
 
-            var deserializer = BuildConverter.GetUrlDeserializer(Build.TreeUrl);
+            var deserializer = SkillTree.BuildConverter.GetUrlDeserializer(Build.TreeUrl);
 
             PointsUsed = (uint)deserializer.GetPointsCount();
             CharacterClass = deserializer.GetCharacterClass();

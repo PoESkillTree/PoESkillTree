@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 
@@ -9,15 +8,19 @@ namespace POESKillTree.Utils.UrlProcessing
     /// </summary>
     public abstract class BuildUrlDeserializer
     {
+        protected static IAscendancyClasses AscendancyClasses;
         protected string BuildUrl { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildUrlDeserializer"/> class.
         /// </summary>
         /// <param name="buildUrl">The PoE build url.</param>
-        protected BuildUrlDeserializer(string buildUrl)
+        /// <param name="ascendancyClasses">The instance of the <see cref="ascendancyClasses"/>
+        /// to access general information about skill tree.</param>
+        protected BuildUrlDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses)
         {
             BuildUrl = buildUrl ?? string.Empty;
+            AscendancyClasses = ascendancyClasses;
         }
 
         /// <summary>

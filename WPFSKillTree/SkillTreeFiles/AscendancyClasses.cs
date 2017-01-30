@@ -3,25 +3,18 @@ using System.Linq;
 
 namespace POESKillTree.SkillTreeFiles
 {
-    public static class AscendancyClasses
+    /// <summary>
+    /// Represents methods for obtaining skill tree class names.
+    /// </summary>
+    public class AscendancyClasses : IAscendancyClasses
     {
-        public static readonly Dictionary<string, List<Class>> Classes = new Dictionary<string, List<Class>>();
+        private readonly Dictionary<string, List<Class>> _classes = new Dictionary<string, List<Class>>();
 
-        public class Class
-        {
-            public int Order;
-            public string Name;
-            public string DisplayName;
-            public string FlavourText;
-            public Vector2D FlavourTextRect;
-            public int[] FlavourTextColour;
-        }
-
-        internal static void Initialize(Dictionary<int, baseToAscClass> ascClasses)
+        internal AscendancyClasses(Dictionary<int, baseToAscClass> ascClasses)
         {
             if (ascClasses == null) return;
 
-            Classes.Clear();
+            _classes.Clear();
 
             foreach (KeyValuePair<int, baseToAscClass> ascClass in ascClasses)
             {
@@ -42,46 +35,27 @@ namespace POESKillTree.SkillTreeFiles
 
                 }
 
-                Classes.Add(ascClass.Value.name, classes);
+                _classes.Add(ascClass.Value.name, classes);
             }
         }
 
-        /// <summary>
-        /// Gets the starting class associated with an Ascendancy class
-        /// </summary>
-        /// <param name="ascClass"></param>
-        /// <returns></returns>
-        public static string GetStartingClass(string ascClass)
+        public string GetStartingClass(string ascClass)
         {
-            return (from entry in Classes where entry.Value.Any(item => item.Name == ascClass) select entry.Key).FirstOrDefault();
+            return (from entry in _classes where entry.Value.Any(item => item.Name == ascClass) select entry.Key).FirstOrDefault();
         }
 
-        /// <summary>
-        /// Returns the number associated with the class 
-        /// </summary>
-        /// <param name="ascClass"></param>
-        /// <returns></returns>
-        public static int GetClassNumber(string ascClass)
+        public int GetClassNumber(string ascClass)
         {
             var resClass = GetClass(ascClass);
             return resClass?.Order ?? 0;
         }
 
-        /// <summary>
-        /// Returns all ascendancy class names for the given character class.
-        /// </summary>
-        public static IEnumerable<string> AscendancyClassesForCharacter(string characterClass)
+        public IEnumerable<string> AscendancyClassesForCharacter(string characterClass)
         {
             return GetClasses(characterClass).Select(c => c.DisplayName);
         }
 
-        /// <summary>
-        /// Returns a class name based on starting class and 0, 1, or 2 asc class
-        /// </summary>
-        /// <param name="startingClass"></param>
-        /// <param name="ascOrder">Get this from the tree decoding</param>
-        /// <returns></returns>
-        public static string GetClassName(string startingClass, int ascOrder)
+        public string GetClassName(string startingClass, int ascOrder)
         {
             if (ascOrder > 0)
                 ascOrder -= 1;
@@ -90,7 +64,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (pair.Key == startingClass)
                     startingClass = pair.Value;
             }
-            foreach (var entry in Classes)
+            foreach (var entry in _classes)
             {
                 if (entry.Key == startingClass)
                 {
@@ -100,54 +74,35 @@ namespace POESKillTree.SkillTreeFiles
             }
             return null;
         }
-        /// <summary>
-        /// Returns a class name based on starting class and 0, 1, or 2 asc class
-        /// </summary>
-        /// <param name="charType"></param>
-        /// <param name="ascOrder">Get this from the tree decoding</param>
-        /// <returns></returns>
-        public static string GetClassName(int charType, int ascOrder)
+
+        public string GetClassName(int charType, int ascOrder)
         {
             return GetClassName(CharacterNames.GetClassNameFromChartype(charType), ascOrder);
         }
 
-        /// <summary>
-        /// Gets all Ascendancy classes associated with a starting class 
-        /// </summary>
-        /// <param name="startingClass"></param>
-        /// <returns>A Class list or null if nothing was found</returns>
-        public static IEnumerable<Class> GetClasses(string startingClass)
+        public IEnumerable<Class> GetClasses(string startingClass)
         {
             List<Class> classes;
-            Classes.TryGetValue(startingClass, out classes);
+            _classes.TryGetValue(startingClass, out classes);
             return classes;
         }
 
-        /// <summary>
-        /// Returns all Ascendancy classes by a class id.
-        /// </summary>
-        /// <param name="startingClass">A class id, used in encoded tree.</param>
-        /// <returns>A Class list or null if nothing was found.</returns>
-        public static IEnumerable<Class> GetClasses(int startingClass)
+        public IEnumerable<Class> GetClasses(int startingClass)
         {
             return GetClasses(CharacterNames.GetClassNameFromChartype(startingClass));
         }
 
-        /// <summary>
-        /// Gets all Ascendancy classes
-        /// </summary>
-        /// <returns>A combined list of all Ascendancy classes</returns>
-        public static IEnumerable<Class> GetAllClasses()
+        public IEnumerable<Class> GetAllClasses()
         {
-            return Classes.Values.SelectMany(x => x).ToList();
+            return _classes.Values.SelectMany(x => x).ToList();
         }
 
-        public static Class GetClass(string ascClass)
+        public Class GetClass(string ascClass)
         {
             return GetAllClasses().FirstOrDefault(x => x.Name == ascClass);
         }
 
-        public static Class GetClass(int ascClass)
+        public Class GetClass(int ascClass)
         {
             return GetAllClasses().FirstOrDefault(x => x.Name == CharacterNames.GetClassNameFromChartype(ascClass));
         }

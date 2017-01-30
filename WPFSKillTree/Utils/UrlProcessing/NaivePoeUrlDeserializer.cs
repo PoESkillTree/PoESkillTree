@@ -1,6 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 using POESKillTree.Localization;
+using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.Utils.UrlProcessing
 {
@@ -17,7 +18,9 @@ namespace POESKillTree.Utils.UrlProcessing
         /// Initializes a new instance of the <see cref="NaivePoEUrlDeserializer"/> class.
         /// </summary>
         /// <param name="buildUrl">The PoE build url.</param>
-        public NaivePoEUrlDeserializer(string buildUrl) : base(buildUrl)
+        /// <param name="ascendancyClasses">The instance of the <see cref="ascendancyClasses"/>
+        /// to access general information about skill tree.</param>
+        public NaivePoEUrlDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses) : base(buildUrl, ascendancyClasses)
         {
         }
 
@@ -67,6 +70,7 @@ namespace POESKillTree.Utils.UrlProcessing
         /// <returns>true, if provided version is supported; otherwise false.</returns>
         protected virtual bool IsVersionCompatible(int version)
         {
+            // Naive deserializer consumes everything, it cannot predict version of an unknown tree format
             return true;
         }
 

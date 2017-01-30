@@ -93,5 +93,14 @@
       </description>
       <tags>#267; obsolete</tags>
     </build>
+    <build name="ObsoleteTemplar" treeVersion="2" characterClassId="5" ascendancyClassId="0" points="107" ascendancyPoints="0">
+      <urls>
+        <default>https://poebuilder.com/character/AAAAAgUAfA6nVVugQ8hPBGjyogDwH5o74XPvfDwFgpuQVScv7Dhj_XrmcYXAGho4RtexQtq51abtPBps5CI26eNqFm8kqnF5FxwSaZ2upwismPFs7FUqjUkbNtiD21XGOlhMswQHPV9SU5eVwfOVIC0f2wuCHl8q6-QRln_GoqO3dR7wDkjljp1jXfKMNqSxJpVh4lVLFr9Om9ngm7VTNQ-rRitTUkWdmuDr7riT-ejYvf4Ktz5Bh9gkNsUfAodlr7cyNDwtxq7E9gn21HwGDiftU6UMXxyn7hVJUfDVlS4HHoLHxp4Qfwx9KPo=</default>
+      </urls>
+      <description>
+        Possibly a 2.0 build.
+      </description>
+      <tags>obsolete</tags>
+    </build>
   </builds>
 </testData>
