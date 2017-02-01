@@ -18,7 +18,7 @@ namespace UpdateDB.DataLoading
         bool SavePathIsFolder { get; }
 
         /// <summary>
-        /// Sets the <see cref="HttpContent"/> used for downloading data.
+        /// Sets the <see cref="HttpClient"/> used for downloading data.
         /// Settings this after <see cref="LoadAndSaveAsync"/> is called may have no effect.
         /// </summary>
         HttpClient HttpClient { set; }

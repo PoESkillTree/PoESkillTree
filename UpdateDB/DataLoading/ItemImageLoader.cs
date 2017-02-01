@@ -11,7 +11,7 @@ using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
 namespace UpdateDB.DataLoading
 {
     /// <summary>
-    /// Retrieves images of item bases from the unofficial Wiki through its API.
+    /// Retrieves images of item bases from the Wiki through its API.
     /// </summary>
     public class ItemImageLoader : MultiDataLoader<Task<byte[]>>
     {

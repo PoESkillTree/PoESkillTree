@@ -17,7 +17,7 @@ using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
 namespace UpdateDB.DataLoading
 {
     /// <summary>
-    /// Retrieves item bases from the unofficial Wiki through its API.
+    /// Retrieves item bases from the Wiki through its API.
     /// </summary>
     public class ItemDataLoader : XmlDataLoader<XmlItemList>
     {
@@ -376,7 +376,7 @@ namespace UpdateDB.DataLoading
             {
                 var from = SingularValue<float>(_printouts, rdfPredicateFrom, 0);
                 var to = SingularValue<float>(_printouts, rdfPredicateTo, 0);
-                if (from.AlmostEquals(0) && to.AlmostEquals(0))
+                if (from.AlmostEquals(0, 0.001F) && to.AlmostEquals(0, 0.001F)) // stats don't use many decimal places
                     return;
                 _properties.Add(new XmlStat
                 {

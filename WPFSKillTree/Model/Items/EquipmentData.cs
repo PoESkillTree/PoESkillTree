@@ -18,13 +18,17 @@ namespace POESKillTree.Model.Items
 
         public IReadOnlyDictionary<string, ItemBase> BaseDictionary { get; private set; }
 
-        public ItemImageService ItemImageService { get; }
+        private readonly ItemImageService _itemImageService;
+
+        // ReSharper disable once ConvertToAutoPropertyWhenPossible 
+        // (private field is used to reduce ambiguity between class and property)
+        public ItemImageService ItemImageService { get { return _itemImageService; } }
 
         private WordSetTreeNode _root;
 
         private EquipmentData(Options options)
         {
-            ItemImageService = new ItemImageService(options);
+            _itemImageService = new ItemImageService(options);
         }
 
         private async Task InitializeAsync()
@@ -102,7 +106,7 @@ namespace POESKillTree.Model.Items
                 return new List<ItemBase>();
 
             var xmlList = await SerializationUtils.XmlDeserializeFileAsync<XmlItemList>(filename);
-            return xmlList.ItemBases.Select(x => new ItemBase(ItemImageService, x));
+            return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, x));
         }
 
         public ItemBase ItemBaseFromTypeline(string typeline)
