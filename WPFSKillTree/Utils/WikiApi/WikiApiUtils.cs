@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -54,8 +55,9 @@ namespace POESKillTree.Utils.WikiApi
                 var resized = image;
                 if (resize)
                 {
-                    resized = image.Resize((int) (image.Width * ItemImageResizeFactor),
-                        (int) (image.Height * ItemImageResizeFactor));
+                    var newWidth = (int) Math.Ceiling(image.Width * ItemImageResizeFactor);
+                    var newHeight = (int) Math.Ceiling(image.Height * ItemImageResizeFactor);
+                    resized = image.Resize(newWidth, newHeight);
                 }
                 resized.Save(outputStream, ImageFormat.Png);
             }

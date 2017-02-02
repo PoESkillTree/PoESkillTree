@@ -37,16 +37,16 @@
                     <ImageBrush ImageSource="/POESKillTree;component/Images/EquipmentUI/Inventory.png" Stretch="Uniform"/>
                 </Grid.Background>
                 <TextBlock HorizontalAlignment="Center" FontSize="48" FontWeight="Bold" VerticalAlignment="Top" Foreground="Gray" Text="{l:Catalog 'Inventory'}" />
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="252,206,254,175" Tag="{x:Static enums:ItemSlot.Armor}" Item="{Binding ItemAttributes.Armor,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="66,111,441,222" Tag="{x:Static enums:ItemSlot.MainHand}" Item="{Binding ItemAttributes.MainHand,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="438,111,69,222" Tag="{x:Static enums:ItemSlot.OffHand}" Item="{Binding ItemAttributes.OffHand,ElementName=control,Mode=TwoWay}" />
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="182,254,372,222" Tag="{x:Static enums:ItemSlot.Ring}" Item="{Binding ItemAttributes.Ring,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="369,254,185,222" Tag="{x:Static enums:ItemSlot.Ring2}" Item="{Binding ItemAttributes.Ring2,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="369,194,185,282" Tag="{x:Static enums:ItemSlot.Amulet}" Item="{Binding ItemAttributes.Amulet,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="252,100,254,329" Tag="{x:Static enums:ItemSlot.Helm}" Item="{Binding ItemAttributes.Helm,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="135,313,372,116" Tag="{x:Static enums:ItemSlot.Gloves}" Item="{Binding ItemAttributes.Gloves,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="369,313,138,116" Tag="{x:Static enums:ItemSlot.Boots}" Item="{Binding ItemAttributes.Boots,ElementName=control,Mode=TwoWay}"/>
-                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="252,360,254,116" Tag="{x:Static enums:ItemSlot.Belt}" Item="{Binding ItemAttributes.Belt,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="252,206,254,174" Tag="{x:Static enums:ItemSlot.Armor}" Item="{Binding ItemAttributes.Armor,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="65,112,441,221" Tag="{x:Static enums:ItemSlot.MainHand}" Item="{Binding ItemAttributes.MainHand,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="439,112,67,221" Tag="{x:Static enums:ItemSlot.OffHand}" Item="{Binding ItemAttributes.OffHand,ElementName=control,Mode=TwoWay}" />
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="182,253,371,221" Tag="{x:Static enums:ItemSlot.Ring}" Item="{Binding ItemAttributes.Ring,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="369,253,184,221" Tag="{x:Static enums:ItemSlot.Ring2}" Item="{Binding ItemAttributes.Ring2,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="369,193,184,281" Tag="{x:Static enums:ItemSlot.Amulet}" Item="{Binding ItemAttributes.Amulet,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="252,99,254,328" Tag="{x:Static enums:ItemSlot.Helm}" Item="{Binding ItemAttributes.Helm,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="135,313,371,114" Tag="{x:Static enums:ItemSlot.Gloves}" Item="{Binding ItemAttributes.Gloves,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="369,313,137,114" Tag="{x:Static enums:ItemSlot.Boots}" Item="{Binding ItemAttributes.Boots,ElementName=control,Mode=TwoWay}"/>
+                <cont:ItemVisualizer Style="{DynamicResource itemVisualizerStyle}" Margin="252,360,254,114" Tag="{x:Static enums:ItemSlot.Belt}" Item="{Binding ItemAttributes.Belt,ElementName=control,Mode=TwoWay}"/>
             </Grid>
         </Viewbox>
     </Grid>
