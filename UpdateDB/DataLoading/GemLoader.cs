@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using log4net;
+using MoreLinq;
 using Newtonsoft.Json.Linq;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils.Extensions;

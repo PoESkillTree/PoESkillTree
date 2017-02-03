@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using log4net;
+using MoreLinq;
 using POESKillTree.Controls;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;

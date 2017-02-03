@@ -62,6 +62,8 @@ namespace POESKillTree.Views
             }
         }
 
+        private IEnumerable<ItemBase> EligibleBases => _equipmentData.BaseList.Where(b => !b.DropDisabled);
+
         private ItemBase[] _blist;
         public ItemBase[] BaseList
         {
@@ -161,18 +163,18 @@ namespace POESKillTree.Views
                     var group = (ItemGroup) GroupSelection.SelectedItem;
                     if (group == ItemGroup.Any)
                     {
-                        BaseList = _equipmentData.BaseList.ToArray();
+                        BaseList = EligibleBases.ToArray();
                     }
                     else
                     {
-                        BaseList = _equipmentData.BaseList
+                        BaseList = EligibleBases
                             .Where(b => b.ItemGroup == group)
                             .ToArray();
                     }
                 }
                 else
                 {
-                    BaseList = _equipmentData.BaseList
+                    BaseList = EligibleBases
                         .Where(b => b.ItemType == type)
                         .ToArray();
                 }

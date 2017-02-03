@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using log4net;
 using POESKillTree.Utils.WikiApi;
 
-using static POESKillTree.Utils.WikiApi.WikiApiUtils;
 using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
 
 namespace UpdateDB.DataLoading
@@ -47,26 +46,20 @@ namespace UpdateDB.DataLoading
 
         private async Task ReadJson(string wikiClass)
         {
-            // for items with Normal rarity that can drop and have the given class ...
+            // for items with Normal rarity that have the given class ...
             var conditions = new ConditionBuilder
             {
                 {RdfRarity, "Normal"},
-                {RdfDropEnabled, "true"},
                 {RdfItemClass, wikiClass}
             };
-            // ... retrieve name and the icon page
-            var printouts = new[] {RdfName, RdfIcon};
-            // the icon page entry is an array, the page title is the "fulltext" property in its first element
-            var results = (from result in await WikiApiAccessor.AskArgs(conditions, printouts)
-                           let title = result[RdfIcon].First.Value<string>("fulltext")
-                           let name = SingularValue<string>(result, RdfName)
-                           select new {name, title}).ToList();
+            // ... retrieve name and the icon url
+            var task = WikiApiAccessor.AskAndQueryImageInforUrls(conditions);
+            var results = (await task.ConfigureAwait(false)).ToList();
 
-            // query the image url in each icon page and save them
-            var titleToName = results.ToDictionary(x => x.title, x => x.name);
-            foreach (var tuple in await WikiApiAccessor.QueryImageInfoUrls(results.Select(t => t.title)))
+            // download the images from the urls and save them
+            foreach (var tuple in results)
             {
-                SaveImage(titleToName[tuple.Item1] + ".png", tuple.Item2);
+                SaveImage(tuple.Item1 + ".png", tuple.Item2);
             }
 
             Log.Info($"Retrieved {results.Count} images for class {wikiClass}.");

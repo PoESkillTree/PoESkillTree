@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
 using log4net;
+using MoreLinq;
 using POESKillTree.Common;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;

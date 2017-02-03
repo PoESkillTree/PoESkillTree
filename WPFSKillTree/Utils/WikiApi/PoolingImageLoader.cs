@@ -91,34 +91,24 @@ namespace POESKillTree.Utils.WikiApi
             }
             try
             {
-                // retrieve page titles of the items' icons
                 var nameToItem = pool.ToDictionary(p => p.ItemName);
+                // retrieve urls of the items' icons
                 var conditions = new ConditionBuilder
                 {
                     {RdfName, string.Join("||", pool.Select(p => p.ItemName))}
                 };
-                var printouts = new[] {RdfName, RdfIcon};
-                var results = (from ps in await _apiAccessor.Ask(conditions, printouts).ConfigureAwait(false)
-                               let title = ps[RdfIcon].First.Value<string>("fulltext")
-                               let name = SingularValue<string>(ps, RdfName)
-                               select new { name, title }).ToList();
-                var titleToItem = results.ToDictionary(x => x.title, x => nameToItem[x.name]);
-
-                // retrieve urls of the actual icons
-                var task = _apiAccessor.QueryImageInfoUrls(results.Select(t => t.title));
-                var imageInfo =
-                    from tuple in await task.ConfigureAwait(false)
-                    select new {Item = titleToItem[tuple.Item1], Url = tuple.Item2};
+                var imageInfo = await _apiAccessor.AskAndQueryImageInforUrls(conditions).ConfigureAwait(false);
 
                 // download and save icons
                 var saveTasks = new List<Task>();
                 var missing = new HashSet<PoolItem>(pool);
-                foreach (var x in imageInfo)
+                foreach (var tuple in imageInfo)
                 {
+                    var item = nameToItem[tuple.Item1];
                     // Don't load duplicates (e.g. for Two-Stone Ring or items with weapon skins)
-                    if (missing.Remove(x.Item))
+                    if (missing.Remove(item))
                     {
-                        saveTasks.Add(LoadSingleAsync(x.Item, x.Url));
+                        saveTasks.Add(LoadSingleAsync(item, tuple.Item2));
                     }
                 }
                 await Task.WhenAll(saveTasks).ConfigureAwait(false);

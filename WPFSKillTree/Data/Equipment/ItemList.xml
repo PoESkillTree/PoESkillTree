@@ -2755,6 +2755,14 @@
       <Stat Name="Weapon Range" From="12" To="12" />
     </Properties>
   </ItemBase>
+  <ItemBase ItemType="TwoHandedSword" Name="Keyblade" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Properties>
+      <Stat Name="Physical Damage" From="1" To="1" />
+      <Stat Name="Critical Strike Chance %" From="5" To="5" />
+      <Stat Name="Attacks per Second" From="1.2" To="1.2" />
+      <Stat Name="Weapon Range" From="11" To="11" />
+    </Properties>
+  </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Corroded Blade" Level="3" Strength="11" Dexterity="11" Intelligence="0">
     <Implicit>
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
@@ -3206,14 +3214,195 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Ashscale Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Fire Damage" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% of Cold Damage taken as Fire Damage" From="50" To="50" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% of Cold Damage taken as Lightning Damage" From="50" To="50" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% of Fire Damage taken as Cold Damage" From="50" To="50" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% of Fire Damage taken as Lightning Damage" From="50" To="50" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% of Lightning Damage taken as Cold Damage" From="50" To="50" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% of Lightning Damage taken as Fire Damage" From="50" To="50" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Black Maw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="Has # Socket" From="1" To="1" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Bonespire Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased maximum Mana" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Breakrib Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Physical Damage" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Chrysalis Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Spell Damage" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Clutching Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Global Defences" From="15" To="25" />
+    </Implicit>
+  </ItemBase>
   <ItemBase ItemType="Amulet" Name="Coral Amulet" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="# Life Regenerated per second" From="2" To="4" />
     </Implicit>
   </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Deadhand Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Chaos Damage" From="19" To="31" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Deep One Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Cold Damage" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Fangjaw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased maximum Life" From="8" To="12" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Greatwolf Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="# random talisman implicit modifiers" From="2" To="2" />
+      <Stat Name="&lt;small&gt;&amp;##;''[[#Modifiers|see notes]]''&amp;##;&lt;/small&gt;" From="91" To="93" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Hexclaw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="50" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Horned Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% chance of Projectiles Piercing" From="25" To="35" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Lone Antler Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Lightning Damage" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Longtooth Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% additional Physical Damage Reduction" From="4" To="6" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Mandible Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Attack and Cast Speed" From="6" To="10" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Monkey Paw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% chance to gain an Endurance Charge on Kill" From="10" To="10" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Monkey Paw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% chance to gain a Frenzy Charge on Kill" From="10" To="10" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Monkey Paw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% chance to gain a Power Charge on Kill" From="10" To="10" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Monkey Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Radius of Area Skills" From="5" To="8" />
+    </Implicit>
+  </ItemBase>
   <ItemBase ItemType="Amulet" Name="Paua Amulet" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="#% increased Mana Regeneration Rate" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Primal Skull Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% of Life Regenerated per second" From="2" To="2" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Rot Head Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Fish Bite Sensitivity" From="30" To="40" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Rotfeather Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Damage" From="25" To="35" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Ruby Amulet" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+#% to Fire Resistance" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Spinefuse Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Quantity of Items found" From="6" To="10" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Splitnewt Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% chance to Freeze, Shock and Ignite" From="4" To="6" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Three Hands Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="Gain #% of Physical Damage as Extra Damage of a random Element" From="6" To="12" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Three Rat Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Attributes" From="12" To="16" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Undying Flesh Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+# to maximum number of Zombies" From="1" To="1" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Wereclaw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="24" To="36" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Writhing Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Attack Damage" From="20" To="30" />
     </Implicit>
   </ItemBase>
   <ItemBase ItemType="Amulet" Name="Amber Amulet" Level="5" Strength="0" Dexterity="0" Intelligence="0">
@@ -3234,6 +3423,11 @@
   <ItemBase ItemType="Amulet" Name="Gold Amulet" Level="8" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="#% increased Rarity of Items found" From="12" To="20" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Amulet" Name="Jet Amulet" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+#% to all Elemental Resistances" From="8" To="12" />
     </Implicit>
   </ItemBase>
   <ItemBase ItemType="Amulet" Name="Agate Amulet" Level="16" Strength="0" Dexterity="0" Intelligence="0">
@@ -3271,6 +3465,11 @@
       <Stat Name="+# to maximum Energy Shield" From="9" To="20" />
     </Implicit>
   </ItemBase>
+  <ItemBase ItemType="Belt" Name="Golden Obi" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Rarity of Items found" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
   <ItemBase ItemType="Belt" Name="Rustic Sash" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="#% increased Physical Damage" From="12" To="24" />
@@ -3306,6 +3505,24 @@
       <Stat Name="+# to maximum Energy Shield" From="60" To="80" />
     </Implicit>
   </ItemBase>
+  <ItemBase ItemType="Quiver" Name="Conductive Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="Adds # minimum Lightning Damage to Attacks" From="1" To="1" />
+      <Stat Name="Adds # maximum Lightning Damage to Attacks" From="5" To="5" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Quiver" Name="Cured Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="Adds # minimum Fire Damage to Attacks" From="2" To="2" />
+      <Stat Name="Adds # maximum Fire Damage to Attacks" From="4" To="4" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Quiver" Name="Rugged Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="Adds # minimum Cold Damage to Attacks" From="2" To="2" />
+      <Stat Name="Adds # maximum Cold Damage to Attacks" From="3" To="3" />
+    </Implicit>
+  </ItemBase>
   <ItemBase ItemType="Quiver" Name="Serrated Arrow Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="Adds # minimum Physical Damage to Attacks with Bows" From="1" To="1" />
@@ -3317,9 +3534,20 @@
       <Stat Name="#% increased Accuracy Rating" From="20" To="30" />
     </Implicit>
   </ItemBase>
+  <ItemBase ItemType="Quiver" Name="Heavy Quiver" Level="5" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="Adds # minimum Physical Damage to Attacks" From="1" To="1" />
+      <Stat Name="Adds # maximum Physical Damage to Attacks" From="4" To="4" />
+    </Implicit>
+  </ItemBase>
   <ItemBase ItemType="Quiver" Name="Sharktooth Arrow Quiver" Level="10" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="+# Life gained for each Enemy hit by your Attacks" From="3" To="4" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Quiver" Name="Light Quiver" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+# to Dexterity" From="30" To="40" />
     </Implicit>
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Blunt Arrow Quiver" Level="16" Strength="0" Dexterity="0" Intelligence="0">
@@ -3365,6 +3593,11 @@
       <Stat Name="Adds # maximum Physical Damage to Attacks" From="4" To="4" />
     </Implicit>
   </ItemBase>
+  <ItemBase ItemType="Ring" Name="Jet Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% increased Global Defences" From="5" To="10" />
+    </Implicit>
+  </ItemBase>
   <ItemBase ItemType="Ring" Name="Paua Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="+# to maximum Mana" From="20" To="25" />
@@ -3378,6 +3611,11 @@
   <ItemBase ItemType="Ring" Name="Sapphire Ring" Level="8" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="+#% to Cold Resistance" From="20" To="30" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="Ring" Name="Golden Hoop" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+# to all Attributes" From="8" To="12" />
     </Implicit>
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Topaz Ring" Level="12" Strength="0" Dexterity="0" Intelligence="0">
@@ -4308,6 +4546,16 @@
       <Stat Name="Energy Shield" From="105" To="105" />
     </Properties>
   </ItemBase>
+  <ItemBase ItemType="BodyArmourArmourEvasionEnergyShield" Name="Golden Mantle" Level="20" Strength="8" Dexterity="8" Intelligence="8" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+#% to all Elemental Resistances" From="15" To="25" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Armour" From="53" To="53" />
+      <Stat Name="Evasion Rating" From="53" To="53" />
+      <Stat Name="Energy Shield" From="16" To="16" />
+    </Properties>
+  </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasionEnergyShield" Name="Sacrificial Garb" Level="72" Strength="66" Dexterity="66" Intelligence="66">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
@@ -4635,6 +4883,11 @@
       <Stat Name="#% increased Movement Speed" From="10" To="10" />
     </Implicit>
   </ItemBase>
+  <ItemBase ItemType="BootsArmourEvasionEnergyShield" Name="Golden Caligae" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+#% to all Elemental Resistances" From="8" To="16" />
+    </Implicit>
+  </ItemBase>
   <ItemBase ItemType="GlovesArmour" Name="Iron Gauntlets" Level="1" Strength="6" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Armour" From="6" To="6" />
@@ -4937,6 +5190,11 @@
       <Stat Name="Evasion Rating" From="105" To="105" />
       <Stat Name="Energy Shield" From="31" To="31" />
     </Properties>
+  </ItemBase>
+  <ItemBase ItemType="GlovesArmourEvasionEnergyShield" Name="Golden Bracers" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+# to maximum Life" From="20" To="30" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="HelmetArmour" Name="Iron Hat" Level="1" Strength="9" Dexterity="0" Intelligence="0">
     <Properties>
@@ -5292,6 +5550,11 @@
       <Stat Name="Evasion Rating" From="166" To="166" />
       <Stat Name="Energy Shield" From="59" To="59" />
     </Properties>
+  </ItemBase>
+  <ItemBase ItemType="HelmetArmourEvasionEnergyShield" Name="Golden Wreath" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="+# to all Attributes" From="16" To="24" />
+    </Implicit>
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Splintered Tower Shield" Level="1" Strength="10" Dexterity="0" Intelligence="0">
     <Implicit>
@@ -6168,6 +6431,15 @@
       <Stat Name="Chance to Block %" From="24" To="24" />
       <Stat Name="Evasion Rating" From="210" To="210" />
       <Stat Name="Energy Shield" From="62" To="62" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="ShieldArmourEvasionEnergyShield" Name="Golden Flame" Level="15" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true">
+    <Implicit>
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
+      <Stat Name="+#% to Chaos Resistance" From="11" To="19" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Chance to Block %" From="20" To="20" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="CobaltJewel" Name="Cobalt Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" />

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
+using MoreLinq;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls.Dialogs;

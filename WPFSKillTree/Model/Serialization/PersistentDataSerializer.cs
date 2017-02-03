@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using log4net;
+using MoreLinq;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Controls;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 
 using static POESKillTree.Model.Serialization.SerializationConstants;
 

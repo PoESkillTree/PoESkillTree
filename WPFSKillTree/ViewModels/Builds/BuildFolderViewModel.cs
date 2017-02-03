@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using MoreLinq;
 using POESKillTree.Model.Builds;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.ViewModels.Builds
 {

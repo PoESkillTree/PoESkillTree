@@ -38,5 +38,10 @@ namespace POESKillTree.Model.Items
 
         [XmlAttribute]
         public int Intelligence { get; set; }
+
+        [XmlAttribute]
+        public bool DropDisabled { get; set; }
+
+        public bool ShouldSerializeDropDisabled() => DropDisabled;
     }
 }

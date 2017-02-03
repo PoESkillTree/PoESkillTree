@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using POESKillTree.Utils.Extensions;
+using MoreLinq;
 
 namespace POESKillTree.Utils
 {

@@ -104,6 +104,7 @@ namespace POESKillTree.Model.Items
         public int RequiredStrength { get; private set; }
         public int RequiredDexterity { get; private set; }
         public int RequiredIntelligence { get; private set; }
+        public bool DropDisabled { get; }
 
         public string Name { get; private set; }
         public ItemType ItemType { get; private set; }
@@ -121,6 +122,7 @@ namespace POESKillTree.Model.Items
             RequiredStrength = xmlBase.Strength;
             RequiredDexterity = xmlBase.Dexterity;
             RequiredIntelligence = xmlBase.Intelligence;
+            DropDisabled = xmlBase.DropDisabled;
 
             Name = xmlBase.Name;
             ItemType = xmlBase.ItemType;
@@ -162,6 +164,7 @@ namespace POESKillTree.Model.Items
             RequiredStrength = 0;
             RequiredDexterity = 0;
             RequiredIntelligence = 0;
+            DropDisabled = false;
             ImplicitMods = new List<Stat>();
             Properties = new List<Stat>();
             CanHaveQuality = false;

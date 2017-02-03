@@ -19,11 +19,10 @@ namespace UpdateDB.DataLoading
     /// <summary>
     /// Retrieves item bases from the Wiki through its API.
     /// </summary>
-    public class ItemDataLoader : XmlDataLoader<XmlItemList>
+    public class ItemBaseLoader : XmlDataLoader<XmlItemList>
     {
         /* Conditions:
-         * - Has Rarity::Normal
-         * - Is drop enabled::true
+         * - Has rarity::Normal
          * - Has item class::{itemType}
          * Printout global:
          * - Has name
@@ -32,6 +31,7 @@ namespace UpdateDB.DataLoading
          * - Has base intelligence requirement
          * - Has base strength requirement
          * - Has implicit stat text
+         * - Is drop enabled
          * Printout weapons:
          * - Has base minimum physical damage
          * - Has base maximum physical damage
@@ -46,8 +46,9 @@ namespace UpdateDB.DataLoading
          * Possibly useful printouts not yet used:
          * - Has inventory height
          * - Has inventory width
-         * - Is drop enabled
          * - Is corrupted
+         * - Has tags
+         * - Has metadata id
          * Possible item classes not used here:
          * - Life Flasks, Mana Flasks, Hybrid Flasks, Utility Flasks, Critical Utility Flasks,
          * - Currency, Stackable Currency,
@@ -60,7 +61,7 @@ namespace UpdateDB.DataLoading
          * - Labyrinth Item, Labyrinth Trinket, Labyrinth Map Item
          */
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDataLoader));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ItemBaseLoader));
 
         private static readonly Regex NumberRegex = new Regex(@"\d+(\.\d+)?");
         // Links in stat texts are replaced by their second group (first: linked page title, second: text)
@@ -69,7 +70,7 @@ namespace UpdateDB.DataLoading
         // printouts for different ItemCategories
         private static readonly IReadOnlyList<string> GlobalPredicates = new[]
         {
-            RdfName, RdfLvlReq, RdfBaseDexReq, RdfBaseIntReq, RdfBaseStrReq, RdfImplicits
+            RdfName, RdfLvlReq, RdfBaseDexReq, RdfBaseIntReq, RdfBaseStrReq, RdfImplicits, RdfDropEnabled
         };
         private static readonly IReadOnlyDictionary<ItemCategory, IReadOnlyList<string>> PredicatesPerCategory
             = new Dictionary<ItemCategory, IReadOnlyList<string>>
@@ -144,7 +145,6 @@ namespace UpdateDB.DataLoading
             var conditions = new ConditionBuilder
             {
                 {RdfRarity, "Normal"},
-                {RdfDropEnabled, "true"},
                 {RdfItemClass, wikiClass}
             };
             var printouts = GlobalPredicates.Union(PredicatesPerCategory[category]);
@@ -174,7 +174,8 @@ namespace UpdateDB.DataLoading
                 Intelligence = SingularValue(printouts, RdfBaseIntReq, 0),
                 Strength = SingularValue(printouts, RdfBaseStrReq, 0),
                 Name = SingularValue<string>(printouts, RdfName),
-                Implicit = implicits.Any() ? implicits : null
+                DropDisabled = !SingularBool(printouts, RdfDropEnabled),
+                Implicit = implicits.Any() ? implicits : null,
             };
             // properties; category specific
             var propBuilder = new PropertyBuilder(printouts);
