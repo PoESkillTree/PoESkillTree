@@ -195,8 +195,7 @@ namespace POESKillTree.ViewModels
 
         public IReadOnlyList<ClassFilterItem> ClassFilterItems { get; }
 
-        public BuildsControlViewModel(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData,
-            ISkillTree skillTree, IAscendancyClasses ascendancyClasses)
+        public BuildsControlViewModel(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData, ISkillTree skillTree)
         {
             _dialogCoordinator = dialogCoordinator;
             PersistentData = persistentData;
@@ -274,7 +273,7 @@ namespace POESKillTree.ViewModels
             ImportCurrentFromClipboardCommand = new AsyncRelayCommand(ImportCurrentFromClipboard, CanPasteFromClipboard);
 
             SkillTree = skillTree;
-            ClassFilterItems = GenerateAscendancyClassItems(ascendancyClasses).ToList();
+            ClassFilterItems = GenerateAscendancyClassItems(SkillTree.AscendancyClasses).ToList();
             ClassFilter = NoFilterItem;
         }
 

@@ -8,7 +8,7 @@ namespace POESKillTree.Utils.UrlProcessing
     /// </summary>
     public abstract class BuildUrlDeserializer
     {
-        protected static IAscendancyClasses AscendancyClasses;
+        protected IAscendancyClasses AscendancyClasses;
         protected string BuildUrl { get; }
 
         /// <summary>

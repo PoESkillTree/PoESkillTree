@@ -544,7 +544,7 @@ namespace POESKillTree.Views
             // loading saved build
             PersistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAscendancySelectionList();
-            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree, Tree.AscendancyClasses);
+            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
             UpdateTreeComparision();
             TreeGeneratorInteraction =
                 new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
