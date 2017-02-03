@@ -181,7 +181,7 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task SaveToUrlNoAscendancyPointsTest()
         {
-            var build = _builds.FindByName("PoeplannerWitchOccultist");
+            var build = _builds.FindByName("PathofexilWitchOccultist");
             var targetUrl = build.DefaultUrl;
 
             string expectedSegment = targetUrl.Split('/').LastOrDefault();

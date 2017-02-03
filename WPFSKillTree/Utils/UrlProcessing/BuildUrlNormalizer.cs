@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ namespace POESKillTree.Utils.UrlProcessing
             { "poeurl.com", "http://poeurl.com" },
             { "tinyurl.com", "https://tinyurl.com" },
             { "poeplanner.com", "http://poeplanner.com" },
-            { "pathofexile.com", "https://pathofexile.com" }
+            { "pathofexile.com", "https://pathofexile.com" },
+            { "br.pathofexile.com", "https://br.pathofexile.com" },
+            { "ru.pathofexile.com", "https://ru.pathofexile.com" }
         };
 
         /// <summary>
@@ -49,6 +52,8 @@ namespace POESKillTree.Utils.UrlProcessing
 
                 break;
             }
+
+            buildUrl = WebUtility.UrlDecode(buildUrl);
 
             return EnsureProtocol(buildUrl);
         }

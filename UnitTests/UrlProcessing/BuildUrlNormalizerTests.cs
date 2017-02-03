@@ -185,6 +185,33 @@ namespace UnitTests.UrlProcessing
         }
 
         [TestMethod]
+        public async Task NormalizeAsyncRuPathofexileLinkTest()
+        {
+            var build = _builds.FindByName("PathofexilWitchOccultist");
+            var poeurlTreeUrl = build.GetAlternativeUrl("ruPathofexile");
+
+            Func<string, Task, Task> loadingWrapper = (msg, task) => task;
+
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
+
+            Assert.AreEqual(poeurlTreeUrl, actualUrl, "Url should stay the same");
+        }
+
+        [TestMethod]
+        public async Task NormalizeAsyncEncodedPathofexileLinkTest()
+        {
+            var build = _builds.FindByName("PathofexilWitchOccultist");
+            var poeurlTreeUrl = build.GetAlternativeUrl("ruPathofexileEncoded");
+            var expectedUrl = build.GetAlternativeUrl("ruPathofexile");
+
+            Func<string, Task, Task> loadingWrapper = (msg, task) => task;
+
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
+
+            Assert.AreEqual(expectedUrl, actualUrl);
+        }
+
+        [TestMethod]
         public async Task NormalizeAsyncSkipsReadyLinkTest()
         {
             var treeUrl = "https://pathofexile.com/passive-skill-tree/AAAABAAAAA==";

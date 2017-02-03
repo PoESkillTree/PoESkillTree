@@ -22,9 +22,11 @@
       <bandits merciless="Alira"/>
       <tags>#427; bandits</tags>
     </build>
-    <build name="PoeplannerWitchOccultist" treeVersion="4" characterClassId="3" ascendancyClassId="1" points="113" ascendancyPoints="0">
+    <build name="PathofexilWitchOccultist" treeVersion="4" characterClassId="3" ascendancyClassId="1" points="113" ascendancyPoints="0">
       <urls>
         <default>https://pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhXXFe0WvxslHU8gbiL0JIsqCyo4LL8s4TW5Nj07DTt8PV9HBkkTSVFJsUuuTLNQMFJTVL1WY1b1XEBca13yX2pirGNDbAhsC2yMbRlwUnBWdZ51_X3jf8aESIRvhq6Hy4ngi3qOio_6kBuTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-vorBxcM6w23K088V0B_Q0NRC1bnXz9h22VvbbtvU2-ffiuL35ljpAuq662PsGO-I7-vw1fGK8uH2_PfX-Tc=</default>
+        <alternative name="ruPathofexile">https://ru.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhXXFe0WvxslHU8gbiL0JIsqCyo4LL8s4TW5Nj07DTt8PV9HBkkTSVFJsUuuTLNQMFJTVL1WY1b1XEBca13yX2pirGNDbAhsC2yMbRlwUnBWdZ51_X3jf8aESIRvhq6Hy4ngi3qOio_6kBuTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-vorBxcM6w23K088V0B_Q0NRC1bnXz9h22VvbbtvU2-ffiuL35ljpAuq662PsGO-I7-vw1fGK8uH2_PfX-Tc=</alternative>
+        <alternative name="ruPathofexileEncoded">https://ru.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhXXFe0WvxslHU8gbiL0JIsqCyo4LL8s4TW5Nj07DTt8PV9HBkkTSVFJsUuuTLNQMFJTVL1WY1b1XEBca13yX2pirGNDbAhsC2yMbRlwUnBWdZ51_X3jf8aESIRvhq6Hy4ngi3qOio_6kBuTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-vorBxcM6w23K088V0B_Q0NRC1bnXz9h22VvbbtvU2-ffiuL35ljpAuq662PsGO-I7-vw1fGK8uH2_PfX-Tc%3D</alternative>
       </urls>
       <description>
         Original build from the issue #427.
