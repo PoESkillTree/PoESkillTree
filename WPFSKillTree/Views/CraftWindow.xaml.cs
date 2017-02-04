@@ -316,12 +316,12 @@ namespace POESKillTree.Views
                 Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
             }
 
-            var quality = 0.0;
+            var quality = 0;
             if (MsQuality.Affixes != null && MsQuality.SelectedValues[0] > 0)
             {
-                quality = MsQuality.SelectedValues[0];
+                quality = (int) MsQuality.SelectedValues[0];
             }
-            Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties((float) quality));
+            Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties(quality));
             ApplyLocals();
 
             if (Item.IsWeapon)

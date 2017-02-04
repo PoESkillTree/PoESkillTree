@@ -293,8 +293,6 @@ namespace POESKillTree.Model.Items
                 {
                     _image = _baseType.Image;
                 }
-
-                FixOldItems();
             }
 
             if (val["properties"] != null)
@@ -448,14 +446,6 @@ namespace POESKillTree.Model.Items
         private static string FixOldRanges(string range)
         {
             return OldRangeRegex.Replace(range, "$1 to $2 ");
-        }
-
-        private void FixOldItems()
-        {
-            if ((BaseType.Name.EndsWith("Crude Bow") || BaseType.Name.EndsWith("Short Bow") || BaseType.Name.EndsWith("Grove Bow") || BaseType.Name.EndsWith("Thicket Bow")) && Height == 4)
-                Height = 3;
-            if (ItemGroup == ItemGroup.BodyArmour && Height == 4)
-                Height = 3;
         }
 
         [SuppressMessage("ReSharper", "PossibleLossOfFraction", Justification = "Attribute requirements are rounded down")]

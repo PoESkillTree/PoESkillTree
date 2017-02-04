@@ -11,6 +11,8 @@
         public const string RdfItemClass = "Has item class";
         public const string RdfDropEnabled = "Is drop enabled";
         public const string RdfIcon = "Has inventory icon";
+        public const string RdfInventoryHeight = "Has inventory height";
+        public const string RdfInventoryWidth = "Has inventory width";
 
         // Requirements
         public const string RdfLvlReq = "Has level requirement";

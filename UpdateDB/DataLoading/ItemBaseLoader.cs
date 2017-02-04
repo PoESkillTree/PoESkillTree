@@ -32,6 +32,8 @@ namespace UpdateDB.DataLoading
          * - Has base strength requirement
          * - Has implicit stat text
          * - Is drop enabled
+         * - Has inventory height
+         * - Has inventory width
          * Printout weapons:
          * - Has base minimum physical damage
          * - Has base maximum physical damage
@@ -44,8 +46,6 @@ namespace UpdateDB.DataLoading
          * - Has base evasion
          * - Has base energy shield
          * Possibly useful printouts not yet used:
-         * - Has inventory height
-         * - Has inventory width
          * - Is corrupted
          * - Has tags
          * - Has metadata id
@@ -70,7 +70,8 @@ namespace UpdateDB.DataLoading
         // printouts for different ItemCategories
         private static readonly IReadOnlyList<string> GlobalPredicates = new[]
         {
-            RdfName, RdfLvlReq, RdfBaseDexReq, RdfBaseIntReq, RdfBaseStrReq, RdfImplicits, RdfDropEnabled
+            RdfName, RdfLvlReq, RdfBaseDexReq, RdfBaseIntReq, RdfBaseStrReq, RdfImplicits, RdfDropEnabled,
+            RdfInventoryHeight, RdfInventoryWidth
         };
         private static readonly IReadOnlyDictionary<ItemCategory, IReadOnlyList<string>> PredicatesPerCategory
             = new Dictionary<ItemCategory, IReadOnlyList<string>>
@@ -175,7 +176,9 @@ namespace UpdateDB.DataLoading
                 Strength = SingularValue(printouts, RdfBaseStrReq, 0),
                 Name = SingularValue<string>(printouts, RdfName),
                 DropDisabled = !SingularBool(printouts, RdfDropEnabled),
-                Implicit = implicits.Any() ? implicits : null,
+                InventoryHeight = SingularValue(printouts, RdfInventoryHeight, 1),
+                InventoryWidth = SingularValue(printouts, RdfInventoryWidth, 1),
+                Implicit = implicits,
             };
             // properties; category specific
             var propBuilder = new PropertyBuilder(printouts);
@@ -365,7 +368,7 @@ namespace UpdateDB.DataLoading
 
             public XmlStat[] ToArray()
             {
-                return _properties.Any() ? _properties.ToArray() : null;
+                return _properties.ToArray();
             }
 
             public void Add(string name, string rdfPredicate)

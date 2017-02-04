@@ -43,5 +43,11 @@ namespace POESKillTree.Model.Items
         public bool DropDisabled { get; set; }
 
         public bool ShouldSerializeDropDisabled() => DropDisabled;
+
+        [XmlAttribute]
+        public int InventoryHeight { get; set; }
+
+        [XmlAttribute]
+        public int InventoryWidth { get; set; }
     }
 }
