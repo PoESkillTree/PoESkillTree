@@ -210,6 +210,7 @@
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
     <Compile Include="Model\Items\ItemImageService.cs" />
+    <Compile Include="Model\Items\XmlUniqueList.cs" />
     <Compile Include="Utils\Extensions\NumberExtensions.cs" />
     <Compile Include="Utils\WikiApi\ApiAccessor.cs" />
     <Compile Include="Utils\WikiApi\ConditionBuilder.cs" />

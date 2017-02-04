@@ -13,6 +13,8 @@
         public const string RdfIcon = "Has inventory icon";
         public const string RdfInventoryHeight = "Has inventory height";
         public const string RdfInventoryWidth = "Has inventory width";
+        public const string RdfMetadataId = "Has metadata id";
+        public const string RdfBaseMetadataId = "Has base item metadata id";
 
         // Requirements
         public const string RdfLvlReq = "Has level requirement";
@@ -22,6 +24,7 @@
 
         // Stats (not properties)
         public const string RdfImplicits = "Has implicit stat text";
+        public const string RdfExplicits = "Has explicit stat text";
 
         // Weapon properties
         public const string RdfBasePhysMin = "Has base minimum physical damage";

@@ -96,7 +96,8 @@
     <Compile Include="DataLoading\ItemImageLoader.cs" />
     <Compile Include="DataLoading\MultiDataLoader.cs" />
     <Compile Include="DataLoading\SkillTreeLoader.cs" />
-    <Compile Include="DataLoading\UniqueItemLoader.cs" />
+    <Compile Include="DataLoading\UniqueLoader.cs" />
+    <Compile Include="DataLoading\WikiStatTextUtils.cs" />
     <Compile Include="DataLoading\XmlDataLoader.cs" />
     <Compile Include="IArguments.cs" />
     <Compile Include="Program.cs" />

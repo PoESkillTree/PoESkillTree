@@ -49,5 +49,8 @@ namespace POESKillTree.Model.Items
 
         [XmlAttribute]
         public int InventoryWidth { get; set; }
+
+        [XmlAttribute]
+        public string MetadataId { get; set; }
     }
 }

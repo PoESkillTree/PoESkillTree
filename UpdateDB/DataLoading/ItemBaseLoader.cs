@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json.Linq;
@@ -23,7 +22,7 @@ namespace UpdateDB.DataLoading
     {
         /* Conditions:
          * - Has rarity::Normal
-         * - Has item class::{itemType}
+         * - Has item class::{itemClass}
          * Printout global:
          * - Has name
          * - Has level requirement
@@ -34,6 +33,7 @@ namespace UpdateDB.DataLoading
          * - Is drop enabled
          * - Has inventory height
          * - Has inventory width
+         * - Has metadata id
          * Printout weapons:
          * - Has base minimum physical damage
          * - Has base maximum physical damage
@@ -48,7 +48,6 @@ namespace UpdateDB.DataLoading
          * Possibly useful printouts not yet used:
          * - Is corrupted
          * - Has tags
-         * - Has metadata id
          * Possible item classes not used here:
          * - Life Flasks, Mana Flasks, Hybrid Flasks, Utility Flasks, Critical Utility Flasks,
          * - Currency, Stackable Currency,
@@ -63,15 +62,11 @@ namespace UpdateDB.DataLoading
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemBaseLoader));
 
-        private static readonly Regex NumberRegex = new Regex(@"\d+(\.\d+)?");
-        // Links in stat texts are replaced by their second group (first: linked page title, second: text)
-        private static readonly Regex LinkRegex = new Regex(@"\[\[([\w\s\d]+\|)?([\w\s\d]+)\]\]");
-
         // printouts for different ItemCategories
         private static readonly IReadOnlyList<string> GlobalPredicates = new[]
         {
             RdfName, RdfLvlReq, RdfBaseDexReq, RdfBaseIntReq, RdfBaseStrReq, RdfImplicits, RdfDropEnabled,
-            RdfInventoryHeight, RdfInventoryWidth
+            RdfInventoryHeight, RdfInventoryWidth, RdfMetadataId
         };
         private static readonly IReadOnlyDictionary<ItemCategory, IReadOnlyList<string>> PredicatesPerCategory
             = new Dictionary<ItemCategory, IReadOnlyList<string>>
@@ -167,7 +162,8 @@ namespace UpdateDB.DataLoading
         private static XmlItemBase PrintoutsToBase(ItemCategory category, JToken printouts)
         {
             // name, requirements and implicts; same for all categories
-            var implicits = PluralValue<string>(printouts, RdfImplicits).SelectMany(ConvertStatText).ToArray();
+            var implicits = PluralValue<string>(printouts, RdfImplicits)
+                .SelectMany(WikiStatTextUtils.ConvertStatText).ToArray();
             var item = new XmlItemBase
             {
                 Level = SingularValue<int>(printouts, RdfLvlReq),
@@ -178,6 +174,7 @@ namespace UpdateDB.DataLoading
                 DropDisabled = !SingularBool(printouts, RdfDropEnabled),
                 InventoryHeight = SingularValue(printouts, RdfInventoryHeight, 1),
                 InventoryWidth = SingularValue(printouts, RdfInventoryWidth, 1),
+                MetadataId = SingularValue<string>(printouts, RdfMetadataId),
                 Implicit = implicits,
             };
             // properties; category specific
@@ -201,91 +198,6 @@ namespace UpdateDB.DataLoading
             }
             item.Properties = propBuilder.ToArray();
             return item;
-        }
-
-        private static IEnumerable<XmlStat> ConvertStatText(string statText)
-        {
-            // split text at "<br>", replace links, convert each to XmlStat
-            return from raw in statText.Split(new[] {"<br>"}, StringSplitOptions.RemoveEmptyEntries)
-                   let filtered = LinkRegex.Replace(raw, "$2")
-                   from s in ConvertStat(filtered)
-                   select s;
-        }
-
-        private static IEnumerable<XmlStat> ConvertStat(string stat)
-        {
-            var matches = NumberRegex.Matches(stat);
-            if (matches.Count <= 0)
-            {
-                // no numbers in stat, easy
-                yield return new XmlStat {Name = stat};
-                yield break;
-            }
-
-            stat = NumberRegex.Replace(stat, "#");
-            // range: first value is From, second is To
-            const string range = "(#-#)";
-            // added damage: first value is minimum, second is maximum
-            const string addNoRange = "# to #";
-            // added damage with range
-            const string addRange = range + " to " + range;
-            if (stat.Contains(addNoRange))
-            {
-                if (matches.Count != 2)
-                {
-                    Log.Warn($"Could not parse implicit {stat}");
-                    yield break;
-                }
-                // stat contains "#1 to #2", convert to two stats:
-                // "#1 minimum" and "#2 maximum"
-                var from = matches[0].Value.ParseFloat();
-                yield return new XmlStat
-                {
-                    From = from,
-                    To = from,
-                    Name = stat.Replace(addNoRange, "# minimum")
-                };
-                from = matches[1].Value.ParseFloat();
-                yield return new XmlStat
-                {
-                    From = from,
-                    To = from,
-                    Name = stat.Replace(addNoRange, "# maximum")
-                };
-            }
-            else if (stat.Contains(addRange))
-            {
-                if (matches.Count != 4)
-                {
-                    Log.Warn($"Could not parse implicit {stat}");
-                    yield break;
-                }
-                // stat contains "(#1-#2) to (#3-#4)" convert to two stats:
-                // "(#1-#2) minimum" and "(#3-#4) maximum"
-                yield return new XmlStat
-                {
-                    From = matches[0].Value.ParseFloat(),
-                    To = matches[1].Value.ParseFloat(),
-                    Name = stat.Replace(addRange, "# minimum")
-                };
-                yield return new XmlStat
-                {
-                    From = matches[2].Value.ParseFloat(),
-                    To = matches[3].Value.ParseFloat(),
-                    Name = stat.Replace(addRange, "# maximum")
-                };
-            }
-            else
-            {
-                // stat contains "#1" or "(#1-#2)
-                var from = matches[0].Value.ParseFloat();
-                yield return new XmlStat
-                {
-                    From = from,
-                    To = matches.Count > 1 ? matches[1].Value.ParseFloat() : from,
-                    Name = stat.Replace(range, "#")
-                };
-            }
         }
 
         private static ItemCategory GroupToCategory(ItemGroup group)
