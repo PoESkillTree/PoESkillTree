@@ -44,15 +44,20 @@ namespace POESKillTree.Views
             .Cast<ItemType>()
             .ToArray();
 
-        private ItemGroup[] _groupList;
-        public ItemGroup[] GroupList
+        private readonly IReadOnlyList<ItemType> _eligibleTypes;
+        private readonly IReadOnlyList<ItemBase> _eligibleBases;
+        private readonly IReadOnlyDictionary<ItemType, List<ItemBase>> _basesPerType;
+        private readonly IReadOnlyDictionary<ItemGroup, List<ItemBase>> _basesPerGroup;
+
+        private IReadOnlyList<ItemGroup> _groupList;
+        public IReadOnlyList<ItemGroup> GroupList
         {
             get { return _groupList; }
             private set { _groupList = value; OnPropertyChanged(); }
         }
 
-        private ItemType[] _typeList;
-        public ItemType[] TypeList
+        private IReadOnlyList<ItemType> _typeList;
+        public IReadOnlyList<ItemType> TypeList
         {
             get { return _typeList; }
             private set
@@ -62,10 +67,8 @@ namespace POESKillTree.Views
             }
         }
 
-        private IEnumerable<ItemBase> EligibleBases => _equipmentData.BaseList.Where(b => !b.DropDisabled);
-
-        private ItemBase[] _blist;
-        public ItemBase[] BaseList
+        private IReadOnlyList<ItemBase> _blist;
+        public IReadOnlyList<ItemBase> BaseList
         {
             get { return _blist; }
             private set { _blist = value; OnPropertyChanged(); }
@@ -99,13 +102,23 @@ namespace POESKillTree.Views
         {
             _monitor.Freed += (sender, args) => RecalculateItem();
             _equipmentData = equipmentData;
+
+            _eligibleBases = _equipmentData.BaseList
+                .Where(b => !b.DropDisabled)
+                .Where(b => _equipmentData.AffixesPerItemType.ContainsKey(b.ItemType)).ToList();
+            _basesPerGroup = _eligibleBases.GroupBy(b => b.ItemGroup)
+                .ToDictionary(g => g.Key, g => new List<ItemBase>(g));
+            _basesPerType = _eligibleBases.GroupBy(b => b.ItemType)
+                .ToDictionary(g => g.Key, g => new List<ItemBase>(g));
+            _eligibleTypes = Types.Where(t => t == ItemType.Any || _basesPerType.ContainsKey(t)).ToList();
+
             InitializeComponent();
         }
 
         protected override void OnLoaded()
         {
             base.OnLoaded();
-            GroupList = Groups.ToArray();
+            GroupList = Groups.Where(g => g == ItemGroup.Any || _basesPerGroup.ContainsKey(g)).ToArray();
         }
 
         private void OnPropertyChanged([CallerMemberName] string prop = null)
@@ -127,7 +140,7 @@ namespace POESKillTree.Views
                 }
                 else
                 {
-                    var list = Types
+                    var list = _eligibleTypes
                         .Where(t => t == ItemType.Any || t.Group() == group)
                         .ToArray();
                     if (list.Length == 2)
@@ -163,20 +176,16 @@ namespace POESKillTree.Views
                     var group = (ItemGroup) GroupSelection.SelectedItem;
                     if (group == ItemGroup.Any)
                     {
-                        BaseList = EligibleBases.ToArray();
+                        BaseList = _eligibleBases;
                     }
                     else
                     {
-                        BaseList = EligibleBases
-                            .Where(b => b.ItemGroup == group)
-                            .ToArray();
+                        BaseList = _basesPerGroup[group];
                     }
                 }
                 else
                 {
-                    BaseList = EligibleBases
-                        .Where(b => b.ItemType == type)
-                        .ToArray();
+                    BaseList = _basesPerType[type];
                 }
                 BaseSelection.SelectedIndex = 0;
 
