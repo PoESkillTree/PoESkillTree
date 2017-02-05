@@ -22,6 +22,7 @@ namespace POESKillTree.Model.Items
         public string Name { get; }
         public ItemType ItemType { get; }
         public ItemGroup ItemGroup { get; }
+        public string MetadataId { get; }
 
         public bool CanHaveQuality { get; }
         public IReadOnlyList<Stat> ImplicitMods { get; }
@@ -42,6 +43,8 @@ namespace POESKillTree.Model.Items
             Name = xmlBase.Name;
             ItemType = xmlBase.ItemType;
             ItemGroup = ItemType.Group();
+            MetadataId = xmlBase.MetadataId;
+
             ImplicitMods = xmlBase.Implicit.Select(i => new Stat(i, ItemType)).ToList();
             Properties = xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList();
             CanHaveQuality = ItemGroup == ItemGroup.OneHandedWeapon || ItemGroup == ItemGroup.TwoHandedWeapon
@@ -78,6 +81,7 @@ namespace POESKillTree.Model.Items
             DropDisabled = false;
             _inventoryHeight = 0;
             _inventoryWidth = 0;
+            MetadataId = "";
             ImplicitMods = new List<Stat>();
             Properties = new List<Stat>();
             CanHaveQuality = false;

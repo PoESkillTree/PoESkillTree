@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
@@ -11,12 +12,15 @@ namespace POESKillTree.Model.Items
 {
     public class EquipmentData
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(EquipmentData));
 
         public IReadOnlyDictionary<ItemType, IReadOnlyList<Affix>> AffixesPerItemType { get; private set; }
 
         public IReadOnlyList<ItemBase> BaseList { get; private set; }
 
         public IReadOnlyDictionary<string, ItemBase> BaseDictionary { get; private set; }
+
+        public IReadOnlyList<UniqueBase> UniqueBases { get; private set; }
 
         private readonly ItemImageService _itemImageService;
 
@@ -40,6 +44,7 @@ namespace POESKillTree.Model.Items
                  .ToDictionary(g => g.Key, g => (IReadOnlyList<Affix>)new List<Affix>(g));
 
             BaseList = (await LoadBases()).ToList();
+            UniqueBases = (await LoadUniques()).ToList();
 
             var dict = new Dictionary<string, ItemBase>();
             foreach (var itemBase in BaseList)
@@ -62,7 +67,10 @@ namespace POESKillTree.Model.Items
         {
             var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), fileName);
             if (!File.Exists(filename))
+            {
+                Log.Error($"Affix file {filename} does not exist");
                 return Enumerable.Empty<XmlAffix>();
+            }
 
             var affixList = await SerializationUtils.XmlDeserializeFileAsync<XmlAffixList>(filename);
             return affixList.Affixes;
@@ -103,10 +111,29 @@ namespace POESKillTree.Model.Items
         {
             var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"ItemList.xml");
             if (!File.Exists(filename))
+            {
+                Log.Error($"Base item file {filename} does not exist");
                 return new List<ItemBase>();
+            }
 
             var xmlList = await SerializationUtils.XmlDeserializeFileAsync<XmlItemList>(filename);
             return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, x));
+        }
+
+        private async Task<IEnumerable<UniqueBase>> LoadUniques()
+        {
+            var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"Uniques.xml");
+            if (!File.Exists(filename))
+            {
+                Log.Error($"Unique item file {filename} does not exist");
+                return new List<UniqueBase>();
+            }
+
+            var metadataToBase = BaseList.ToDictionary(b => b.MetadataId);
+
+            var xmlList = await SerializationUtils.XmlDeserializeFileAsync<XmlUniqueList>(filename);
+            return xmlList.Uniques.Select(
+                x => new UniqueBase(_itemImageService, metadataToBase[x.BaseMetadataId], x));
         }
 
         public ItemBase ItemBaseFromTypeline(string typeline)

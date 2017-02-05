@@ -287,7 +287,8 @@ namespace POESKillTree.Model.Items
                 _itemGroup = BaseType.ItemGroup;
                 if (loadImageFromIconUrl)
                 {
-                    _image = new ItemImage(_baseType.Image, _iconUrl);
+                    _image = _baseType.Image.AsDefaultForImageFromUrl(
+                        persistentData.EquipmentData.ItemImageService, _iconUrl);
                 }
                 else
                 {
