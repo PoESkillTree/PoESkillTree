@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -133,10 +132,7 @@ namespace POESKillTree.Utils.WikiApi
             try
             {
                 var imgData = await _httpClient.GetByteArrayAsync(url).ConfigureAwait(false);
-                using (var outputStream = File.Create(item.FileName))
-                {
-                    SaveImage(imgData, outputStream, true);
-                }
+                SaveImage(imgData, item.FileName, true);
                 Log.Info($"Downloaded item image for {item.ItemName} to the file system.");
                 item.Tcs.SetResult(item.ItemName);
             }

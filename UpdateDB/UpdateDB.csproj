@@ -94,7 +94,6 @@
     <Compile Include="DataLoading\GemLoader.cs" />
     <Compile Include="DataLoading\ItemBaseLoader.cs" />
     <Compile Include="DataLoading\ItemImageLoader.cs" />
-    <Compile Include="DataLoading\MultiDataLoader.cs" />
     <Compile Include="DataLoading\SkillTreeLoader.cs" />
     <Compile Include="DataLoading\UniqueLoader.cs" />
     <Compile Include="DataLoading\WikiStatTextUtils.cs" />

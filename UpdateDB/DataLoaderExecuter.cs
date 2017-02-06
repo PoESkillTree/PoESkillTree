@@ -24,7 +24,7 @@ namespace UpdateDB
         {
             {"affixes", "Equipment/AffixList.xml", new AffixDataLoader(), LoaderCategories.VersionControlled, "Affixes"},
             {"base items", "Equipment/ItemList.xml", new ItemBaseLoader(), LoaderCategories.VersionControlled, "Items"},
-            {"base item images", "Equipment/Assets", new ItemImageLoader(false), LoaderCategories.NotVersionControlled, "ItemImages"},
+            {"base item images", "Equipment/Assets", new ItemImageLoader(), LoaderCategories.NotVersionControlled, "ItemImages"},
             {"skill tree assets", "", new SkillTreeLoader(), LoaderCategories.NotVersionControlled, "TreeAssets"},
             {"gems", "ItemDB/GemList.xml", new GemLoader(), LoaderCategories.VersionControlled, "Gems"},
             {"uniques", "Equipment/Uniques.xml", new UniqueLoader(), LoaderCategories.VersionControlled, "Uniques"}

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
+using MoreLinq;
 using POESKillTree.Utils.WikiApi;
 
 using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
@@ -10,9 +11,9 @@ using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
 namespace UpdateDB.DataLoading
 {
     /// <summary>
-    /// Retrieves images of item bases from the Wiki through its API.
+    /// Retrieves images of items (bases and uniques) from the Wiki through its API.
     /// </summary>
-    public class ItemImageLoader : MultiDataLoader<Task<byte[]>>
+    public class ItemImageLoader : DataLoader
     {
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemImageLoader));
@@ -27,12 +28,9 @@ namespace UpdateDB.DataLoading
             "Body Armours", "Boots", "Helmets", "Shields", "Jewel",
         };
 
-        private readonly bool _overwriteExisting;
-
-        /// <param name="overwriteExisting">if false, only images whose files don't exist are downloaded</param>
-        public ItemImageLoader(bool overwriteExisting)
+        public override bool SavePathIsFolder
         {
-            _overwriteExisting = overwriteExisting;
+            get { return true; }
         }
 
         protected override async Task LoadAsync()
@@ -41,39 +39,37 @@ namespace UpdateDB.DataLoading
                 Directory.Delete(SavePath, true);
             Directory.CreateDirectory(SavePath);
 
-            await Task.WhenAll(RelevantWikiClasses.Select(ReadJson));
+            // .ToList() so all tasks are started
+            var tasks = RelevantWikiClasses.Select(ReadJson).ToList();
+            await Task.WhenAll(tasks);
         }
 
         private async Task ReadJson(string wikiClass)
         {
-            // for items with Normal rarity that have the given class ...
+            // for items that have the given class ...
             var conditions = new ConditionBuilder
             {
-                {RdfRarity, "Normal"},
                 {RdfItemClass, wikiClass}
             };
             // ... retrieve name and the icon url
             var task = WikiApiAccessor.AskAndQueryImageInforUrls(conditions);
-            var results = (await task.ConfigureAwait(false)).ToList();
+            var results = (await task).DistinctBy(t => t.Item1).ToList();
 
             // download the images from the urls and save them
             foreach (var tuple in results)
             {
-                SaveImage(tuple.Item1 + ".png", tuple.Item2);
+                var fileName = tuple.Item1 + ".png";
+                var url = tuple.Item2;
+                var data = await HttpClient.GetByteArrayAsync(url);
+                WikiApiUtils.SaveImage(data, Path.Combine(SavePath, fileName), true);
             }
 
             Log.Info($"Retrieved {results.Count} images for class {wikiClass}.");
         }
 
-        private void SaveImage(string fileName, string url)
+        protected override Task CompleteSavingAsync()
         {
-            if (_overwriteExisting || !File.Exists(Path.Combine(SavePath, fileName)))
-                AddSaveTask(fileName, HttpClient.GetByteArrayAsync(url));
-        }
-
-        protected override async Task SaveDataToStreamAsync(Task<byte[]> data, Stream stream)
-        {
-            WikiApiUtils.SaveImage(await data, stream, true);
+            return Task.FromResult<object>(null);
         }
     }
 }

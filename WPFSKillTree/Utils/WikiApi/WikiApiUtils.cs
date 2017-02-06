@@ -51,13 +51,14 @@ namespace POESKillTree.Utils.WikiApi
         }
 
         /// <summary>
-        /// Saves the image to a stream.
+        /// Saves the image to a file.
         /// </summary>
         /// <param name="imageData">the binary image data</param>
-        /// <param name="outputStream">the stream to save the image to</param>
+        /// <param name="fileName">the file to save the image to</param>
         /// <param name="resize">true iff the image is from the wiki and should be resized to match the stash</param>
-        public static void SaveImage(byte[] imageData, Stream outputStream, bool resize)
+        public static void SaveImage(byte[] imageData, string fileName, bool resize)
         {
+            using (var outputStream = File.Create(fileName))
             using (var ms = new MemoryStream(imageData))
             using (var image = Image.FromStream(ms))
             {

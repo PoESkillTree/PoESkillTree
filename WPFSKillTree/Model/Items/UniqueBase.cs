@@ -13,7 +13,6 @@ namespace POESKillTree.Model.Items
         public ItemBase Base { get; }
         public IReadOnlyList<Stat> ExplicitMods { get; }
 
-        private readonly ItemImageService _itemImageService;
         public ItemImage Image { get; private set; }
 
         public UniqueBase(ItemImageService itemImageService, ItemBase itemBase, XmlUnique xmlUnique)
@@ -24,13 +23,7 @@ namespace POESKillTree.Model.Items
             Base = itemBase;
             ExplicitMods = xmlUnique.Explicit.Select(e => new Stat(e, itemBase.ItemType)).ToList();
 
-            _itemImageService = itemImageService;
-            Image = itemBase.Image;
-        }
-
-        public void StartLoadingImage()
-        {
-            Image = Base.Image.AsDefaultForUniqueImage(_itemImageService, Name);
+            Image = itemBase.Image.AsDefaultForUniqueImage(itemImageService, Name);
         }
 
     }
