@@ -171,10 +171,10 @@ namespace POESKillTree.Utils.WikiApi
         /// </summary>
         /// <param name="conditions">the conditions items have to much to have their icon urls retrieved</param>
         /// <returns>
-        /// A task that returns an enumerable of tuples of iten names and their icon url for all items matching the
-        /// given conditions.
+        /// A task that returns an enumerable of ItemImageInfoResults.
         /// </returns>
-        public async Task<IEnumerable<Tuple<string, string>>> AskAndQueryImageInforUrls(IEnumerable<string> conditions)
+        public async Task<IEnumerable<ItemImageInfoResult>> AskAndQueryImageInforUrls(
+            IEnumerable<string> conditions)
         {
             // Ask: retrieve page titles of the icons
             var printouts = new[] { RdfName, RdfIcon };
@@ -183,13 +183,13 @@ namespace POESKillTree.Utils.WikiApi
                            let title = ps[RdfIcon].First.Value<string>("fulltext")
                            let name = SingularValue<string>(ps, RdfName)
                            select new { name, title }).ToList();
-            var titleToName = results.DistinctBy(x => x.title).ToDictionary(x => x.title, x => x.name);
+            var titleToName = results.ToLookup(x => x.title, x => x.name);
 
             // QueryImageInfoUrls: retrieve urls of the icons
             var task = QueryImageInfoUrls(results.Select(t => t.title));
             return
                 from tuple in await task.ConfigureAwait(false)
-                select Tuple.Create(titleToName[tuple.Item1], tuple.Item2);
+                select new ItemImageInfoResult(titleToName[tuple.Item1], tuple.Item2);
         }
 
         private static bool LogErrors(JObject json, string uri)
@@ -223,6 +223,26 @@ namespace POESKillTree.Utils.WikiApi
                     // e.g. warnings.main.warnings.Value is the path to the first warning string
                     warnings.SelectMany(t => t).SelectMany(t => t).Cast<JProperty>().Select(p => p.Value.Value<string>()).ForEach(Log.Warn);
                 }
+            }
+        }
+
+
+        // Some items have the same image, e.g. Agnerod North/East/South/West
+        public struct ItemImageInfoResult
+        {
+            /// <summary>
+            /// Gets the names of the items.
+            /// </summary>
+            public IEnumerable<string> Names { get; }
+            /// <summary>
+            /// Gets the url of the image for the named items.
+            /// </summary>
+            public string Url { get; }
+
+            public ItemImageInfoResult(IEnumerable<string> names, string url)
+            {
+                Names = names;
+                Url = url;
             }
         }
     }

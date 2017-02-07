@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
-using MoreLinq;
 using POESKillTree.Utils.WikiApi;
 
 using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
@@ -53,15 +52,17 @@ namespace UpdateDB.DataLoading
             };
             // ... retrieve name and the icon url
             var task = WikiApiAccessor.AskAndQueryImageInforUrls(conditions);
-            var results = (await task).DistinctBy(t => t.Item1).ToList();
+            var results = (await task).ToList();
 
             // download the images from the urls and save them
-            foreach (var tuple in results)
+            foreach (var result in results)
             {
-                var fileName = tuple.Item1 + ".png";
-                var url = tuple.Item2;
-                var data = await HttpClient.GetByteArrayAsync(url);
-                WikiApiUtils.SaveImage(data, Path.Combine(SavePath, fileName), true);
+                var data = await HttpClient.GetByteArrayAsync(result.Url);
+                foreach (var name in result.Names)
+                {
+                    var fileName = name + ".png";
+                    WikiApiUtils.SaveImage(data, Path.Combine(SavePath, fileName), true);
+                }
             }
 
             Log.Info($"Retrieved {results.Count} images for class {wikiClass}.");

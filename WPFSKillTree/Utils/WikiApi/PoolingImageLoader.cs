@@ -101,13 +101,16 @@ namespace POESKillTree.Utils.WikiApi
                 // download and save icons
                 var saveTasks = new List<Task>();
                 var missing = new HashSet<PoolItem>(pool);
-                foreach (var tuple in imageInfo)
+                foreach (var result in imageInfo)
                 {
-                    var item = nameToItem[tuple.Item1];
-                    // Don't load duplicates (e.g. for Two-Stone Ring or items with weapon skins)
-                    if (missing.Remove(item))
+                    foreach (var name in result.Names)
                     {
-                        saveTasks.Add(LoadSingleAsync(item, tuple.Item2));
+                        var item = nameToItem[name];
+                        // Don't load duplicates (e.g. for Two-Stone Ring or items with weapon skins)
+                        if (missing.Remove(item))
+                        {
+                            saveTasks.Add(LoadSingleAsync(item, result.Url));
+                        }
                     }
                 }
                 await Task.WhenAll(saveTasks).ConfigureAwait(false);
