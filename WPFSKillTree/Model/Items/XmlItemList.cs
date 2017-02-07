@@ -4,7 +4,7 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
 {
-    // Contains the classes that allow serialization and deserialization of ItemList.xml
+    // Contains the classes that allow serialization and deserialization of Items.xml
 
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "ItemList")]
     public class XmlItemList

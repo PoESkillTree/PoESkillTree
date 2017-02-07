@@ -3,7 +3,7 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items.Affixes
 {
-    // Contains the classes that allow serialization and deserialization of AffixList.xml
+    // Contains the classes that allow serialization and deserialization of Affixes.xml
 
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "AffixList")]
     public class XmlAffixList

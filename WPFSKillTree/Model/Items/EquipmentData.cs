@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
+using System.Windows;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
@@ -12,7 +12,8 @@ namespace POESKillTree.Model.Items
 {
     public class EquipmentData
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(EquipmentData));
+        private const string ResourcePath =
+            "pack://application:,,,/PoESkillTree;component/Data/Equipment/";
 
         public IReadOnlyDictionary<ItemType, IReadOnlyList<Affix>> AffixesPerItemType { get; private set; }
 
@@ -65,21 +66,14 @@ namespace POESKillTree.Model.Items
 
         private static async Task<IEnumerable<XmlAffix>> LoadAffixFile(string fileName)
         {
-            var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), fileName);
-            if (!File.Exists(filename))
-            {
-                Log.Error($"Affix file {filename} does not exist");
-                return Enumerable.Empty<XmlAffix>();
-            }
-
-            var affixList = await SerializationUtils.XmlDeserializeFileAsync<XmlAffixList>(filename);
+            var affixList = await DeserializeResourceAsync<XmlAffixList>(fileName);
             return affixList.Affixes;
         }
 
         private static async Task<IEnumerable<Affix>> LoadAffixes()
         {
-            return (await LoadAffixFile("AffixList.xml"))
-                    .Union(await LoadAffixFile("SignatureAffixList.xml"))
+            return (await LoadAffixFile("Affixes.xml"))
+                    .Union(await LoadAffixFile("SignatureAffixes.xml"))
                     .SelectMany(GroupToTypes)
                     .Select(x => new Affix(x));
         }
@@ -109,31 +103,27 @@ namespace POESKillTree.Model.Items
 
         private async Task<IEnumerable<ItemBase>> LoadBases()
         {
-            var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"ItemList.xml");
-            if (!File.Exists(filename))
-            {
-                Log.Error($"Base item file {filename} does not exist");
-                return new List<ItemBase>();
-            }
-
-            var xmlList = await SerializationUtils.XmlDeserializeFileAsync<XmlItemList>(filename);
+            var xmlList = await DeserializeResourceAsync<XmlItemList>("Items.xml");
             return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, x));
         }
 
         private async Task<IEnumerable<UniqueBase>> LoadUniques()
         {
-            var filename = Path.Combine(AppData.GetFolder(@"Data\Equipment"), @"Uniques.xml");
-            if (!File.Exists(filename))
-            {
-                Log.Error($"Unique item file {filename} does not exist");
-                return new List<UniqueBase>();
-            }
-
             var metadataToBase = BaseList.ToDictionary(b => b.MetadataId);
-
-            var xmlList = await SerializationUtils.XmlDeserializeFileAsync<XmlUniqueList>(filename);
+            var xmlList = await DeserializeResourceAsync<XmlUniqueList>("Uniques.xml");
             return xmlList.Uniques.Select(
                 x => new UniqueBase(_itemImageService, metadataToBase[x.BaseMetadataId], x));
+        }
+
+        private static async Task<T> DeserializeResourceAsync<T>(string file)
+        {
+            var resource = Application.GetResourceStream(new Uri(ResourcePath + file));
+            using (var stream = resource.Stream)
+            using (var reader = new StreamReader(stream))
+            {
+                var text = await reader.ReadToEndAsync();
+                return SerializationUtils.XmlDeserializeString<T>(text);
+            }
         }
 
         public ItemBase ItemBaseFromTypeline(string typeline)
