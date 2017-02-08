@@ -3371,7 +3371,6 @@
   <ItemBase ItemType="Amulet" Name="Greatwolf Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman4">
     <Implicit>
       <Stat Name="# random talisman implicit modifiers" From="2" To="2" />
-      <Stat Name="&lt;small&gt;&amp;##;''[[#Modifiers|see notes]]''&amp;##;&lt;/small&gt;" From="91" To="93" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3623,29 +3622,25 @@
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Conductive Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver3">
     <Implicit>
-      <Stat Name="Adds # minimum Lightning Damage to Attacks" From="1" To="1" />
-      <Stat Name="Adds # maximum Lightning Damage to Attacks" From="5" To="5" />
+      <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Implicit>
     <Properties />
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Cured Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver1">
     <Implicit>
-      <Stat Name="Adds # minimum Fire Damage to Attacks" From="2" To="2" />
-      <Stat Name="Adds # maximum Fire Damage to Attacks" From="4" To="4" />
+      <Stat Name="Adds # to # Fire Damage to Attacks" From="2 4" To="2 4" />
     </Implicit>
     <Properties />
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Rugged Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver2">
     <Implicit>
-      <Stat Name="Adds # minimum Cold Damage to Attacks" From="2" To="2" />
-      <Stat Name="Adds # maximum Cold Damage to Attacks" From="3" To="3" />
+      <Stat Name="Adds # to # Cold Damage to Attacks" From="2 3" To="2 3" />
     </Implicit>
     <Properties />
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Serrated Arrow Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/QuiverDescent">
     <Implicit>
-      <Stat Name="Adds # minimum Physical Damage to Attacks with Bows" From="1" To="1" />
-      <Stat Name="Adds # maximum Physical Damage to Attacks with Bows" From="4" To="4" />
+      <Stat Name="Adds # to # Physical Damage to Attacks with Bows" From="1 4" To="1 4" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3657,8 +3652,7 @@
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Heavy Quiver" Level="5" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver4">
     <Implicit>
-      <Stat Name="Adds # minimum Physical Damage to Attacks" From="1" To="1" />
-      <Stat Name="Adds # maximum Physical Damage to Attacks" From="4" To="4" />
+      <Stat Name="Adds # to # Physical Damage to Attacks" From="1 4" To="1 4" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3682,15 +3676,13 @@
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Fire Arrow Quiver" Level="22" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver10">
     <Implicit>
-      <Stat Name="Adds # minimum Fire Damage to Attacks with Bows" From="4" To="4" />
-      <Stat Name="Adds # maximum Fire Damage to Attacks with Bows" From="8" To="8" />
+      <Stat Name="Adds # to # Fire Damage to Attacks with Bows" From="4 8" To="4 8" />
     </Implicit>
     <Properties />
   </ItemBase>
   <ItemBase ItemType="Quiver" Name="Broadhead Arrow Quiver" Level="28" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver11">
     <Implicit>
-      <Stat Name="Adds # minimum Physical Damage to Attacks with Bows" From="6" To="6" />
-      <Stat Name="Adds # maximum Physical Damage to Attacks with Bows" From="12" To="12" />
+      <Stat Name="Adds # to # Physical Damage to Attacks with Bows" From="6 12" To="6 12" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3708,7 +3700,7 @@
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Breach Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/BreachRing">
     <Implicit>
-      <Stat Name="Properties are doubled while in a Breach" From="0" To="0" />
+      <Stat Name="Properties are doubled while in a Breach" From="" To="" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3720,8 +3712,7 @@
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Iron Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/Ring1">
     <Implicit>
-      <Stat Name="Adds # minimum Physical Damage to Attacks" From="1" To="1" />
-      <Stat Name="Adds # maximum Physical Damage to Attacks" From="4" To="4" />
+      <Stat Name="Adds # to # Physical Damage to Attacks" From="1 4" To="1 4" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3823,8 +3814,7 @@
   </ItemBase>
   <ItemBase ItemType="Ring" Name="Steel Ring" Level="80" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/RingAtlas1">
     <Implicit>
-      <Stat Name="Adds # minimum Physical Damage to Attacks" From="3" To="4" />
-      <Stat Name="Adds # maximum Physical Damage to Attacks" From="10" To="14" />
+      <Stat Name="Adds # to # Physical Damage to Attacks" From="3 10" To="4 14" />
     </Implicit>
     <Properties />
   </ItemBase>

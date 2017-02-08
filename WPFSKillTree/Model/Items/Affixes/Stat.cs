@@ -27,7 +27,8 @@ namespace POESKillTree.Model.Items.Affixes
         {
             Name = xmlStat.Name;
             // RangeTrees don't like from > to.
-            Range = new Range<float>(Math.Min(xmlStat.From, xmlStat.To), Math.Max(xmlStat.From, xmlStat.To));
+            // todo
+            Range = new Range<float>(Math.Min(xmlStat.From[0], xmlStat.To[0]), Math.Max(xmlStat.From[0], xmlStat.To[0]));
             ParentTier = parentTier;
             ItemType = itemType;
         }

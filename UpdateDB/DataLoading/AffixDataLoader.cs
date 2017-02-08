@@ -219,6 +219,8 @@ namespace UpdateDB.DataLoading
                     affixesSplit[affixesSplit.Count - 1] += ", " + split;
                 }
             }
+
+            var xmlStats = new List<XmlStat>();
             foreach (var tuple in statColumn.Split(new []{" / "}, StringSplitOptions.None).Zip(affixesSplit, Tuple.Create))
             {
                 var stat = tuple.Item1;
@@ -233,13 +235,42 @@ namespace UpdateDB.DataLoading
                 }
                 stat = rangeRenameFunc(affix, stat);
                 var fromTo = stat.Split(new[] {" to "}, StringSplitOptions.None);
-                yield return new XmlStat
+                var from = fromTo[0].ParseFloat();
+                var to = fromTo.Length > 1 ? fromTo[1].ParseFloat() : from;
+                xmlStats.Add(new XmlStat
                 {
                     Name = affix,
-                    From = fromTo[0].ParseFloat(),
-                    To = fromTo.Length > 1 ? fromTo[1].ParseFloat() : fromTo[0].ParseFloat()
-                };
+                    From = new[] { from },
+                    To = new[] { to }
+                });
             }
+
+            // merge "... # minimum ..., ... # maximum" into "... # to # ..."
+            if (xmlStats.Count > 1)
+            {
+                var previous = xmlStats[0];
+                for (var i = 1; i < xmlStats.Count; i++)
+                {
+                    var current = xmlStats[i];
+
+                    var prevReplaced = previous.Name.Replace(" minimum", "");
+                    var curReplaced = current.Name.Replace(" maximum", "");
+                    if (prevReplaced == curReplaced)
+                    {
+                        previous.Name = previous.Name.Replace("# minimum", "# to #");
+                        previous.From = previous.From.Concat(current.From).ToList();
+                        previous.To = previous.To.Concat(current.To).ToList();
+                        xmlStats.RemoveAt(i);
+                        i--;
+                    }
+                    else
+                    {
+                        previous = xmlStats[i];
+                    }
+                }
+            }
+
+            return xmlStats;
         }
     }
 }

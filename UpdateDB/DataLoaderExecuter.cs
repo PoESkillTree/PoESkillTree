@@ -23,7 +23,7 @@ namespace UpdateDB
         private readonly LoaderCollection _loaderDefinitions = new LoaderCollection
         {
             {"affixes", "Equipment/Affixes.xml", new AffixDataLoader(), LoaderCategories.VersionControlled, "Affixes"},
-            {"base items", "Equipment/BaseItems.xml", new ItemBaseLoader(), LoaderCategories.VersionControlled, "Items"},
+            {"base items", "Equipment/Items.xml", new ItemBaseLoader(), LoaderCategories.VersionControlled, "Items"},
             {"base item images", "Equipment/Assets", new ItemImageLoader(), LoaderCategories.NotVersionControlled, "ItemImages"},
             {"skill tree assets", "", new SkillTreeLoader(), LoaderCategories.NotVersionControlled, "TreeAssets"},
             {"gems", "ItemDB/GemList.xml", new GemLoader(), LoaderCategories.VersionControlled, "Gems"},

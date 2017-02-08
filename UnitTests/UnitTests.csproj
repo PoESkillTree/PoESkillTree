@@ -93,6 +93,7 @@
     <Compile Include="TestGeneticAlgorithmEasy.cs" />
     <Compile Include="ObservableSetTest.cs" />
     <Compile Include="WeightedSamplerTests.cs" />
+    <Compile Include="WikiStatTextUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UpdateDB\UpdateDB.csproj">

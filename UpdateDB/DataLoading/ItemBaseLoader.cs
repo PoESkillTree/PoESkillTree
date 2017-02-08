@@ -297,8 +297,8 @@ namespace UpdateDB.DataLoading
                 _properties.Add(new XmlStat
                 {
                     Name = name,
-                    From = from,
-                    To = to
+                    From = new[] { from },
+                    To = new[] { to }
                 });
             }
         }

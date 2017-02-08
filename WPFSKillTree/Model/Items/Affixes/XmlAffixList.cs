@@ -1,5 +1,9 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Xml.Serialization;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Affixes
 {
@@ -56,10 +60,24 @@ namespace POESKillTree.Model.Items.Affixes
         [XmlAttribute]
         public string Name { get; set; }
 
-        [XmlAttribute]
-        public float From { get; set; }
+        [XmlIgnore]
+        public IReadOnlyList<float> From { get; set; }
 
-        [XmlAttribute]
-        public float To { get; set; }
+        [XmlAttribute(AttributeName = "From")]
+        public string FromAsString
+        {
+            get { return string.Join(" ", From.Select(f => f.ToString(CultureInfo.InvariantCulture))); }
+            set { From = value.Split(' ').Select(s => s.ParseFloat()).ToArray(); }
+        }
+
+        [XmlIgnore]
+        public IReadOnlyList<float> To { get; set; }
+
+        [XmlAttribute(AttributeName = "To")]
+        public string ToAsString
+        {
+            get { return string.Join(" ", To.Select(f => f.ToString(CultureInfo.InvariantCulture))); }
+            set { To = value.Split(' ').Select(s => s.ParseFloat()).ToArray(); }
+        }
     }
 }
