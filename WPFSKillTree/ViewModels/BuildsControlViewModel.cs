@@ -195,8 +195,7 @@ namespace POESKillTree.ViewModels
 
         public IReadOnlyList<ClassFilterItem> ClassFilterItems { get; }
 
-        public BuildsControlViewModel(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData,
-            ISkillTree skillTree)
+        public BuildsControlViewModel(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData, ISkillTree skillTree)
         {
             _dialogCoordinator = dialogCoordinator;
             PersistentData = persistentData;
@@ -274,18 +273,19 @@ namespace POESKillTree.ViewModels
             ImportCurrentFromClipboardCommand = new AsyncRelayCommand(ImportCurrentFromClipboard, CanPasteFromClipboard);
 
             SkillTree = skillTree;
-            ClassFilterItems = GenerateAscendancyClassItems().ToList();
+            ClassFilterItems = GenerateAscendancyClassItems(SkillTree.AscendancyClasses).ToList();
             ClassFilter = NoFilterItem;
         }
 
-        private IEnumerable<ClassFilterItem> GenerateAscendancyClassItems()
+        private IEnumerable<ClassFilterItem> GenerateAscendancyClassItems(IAscendancyClasses ascendancyClasses)
         {
             yield return NoFilterItem;
             foreach (var nameToContent in CharacterNames.NameToContent)
             {
                 var charClass = nameToContent.Value;
                 yield return new ClassFilterItem(charClass, null);
-                foreach (var ascClass in SkillTree.AscendancyClassesForCharacter(charClass))
+
+                foreach (var ascClass in ascendancyClasses.AscendancyClassesForCharacter(charClass))
                 {
                     yield return new ClassFilterItem(charClass, ascClass);
                 }

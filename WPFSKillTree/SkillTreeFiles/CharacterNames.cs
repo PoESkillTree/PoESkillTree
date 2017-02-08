@@ -1,8 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using POESKillTree.Utils.UrlProcessing;
 
 namespace POESKillTree.SkillTreeFiles
 {
+    public enum CharacterClasses
+    {
+        Scion = 0,
+        Marauder = 1,
+        Ranger = 2,
+        Witch = 3,
+        Duelist = 4,
+        Templar = 5,
+        Shadow = 6
+    }
+
     public static class CharacterNames
     {
         public static readonly string Scion = "SEVEN";
@@ -26,13 +38,13 @@ namespace POESKillTree.SkillTreeFiles
 
         public static Dictionary<string, string> NameToLink = new Dictionary<string, string>
         {
-            {Scion, SkillTree.GetCharacterUrl(0)},
-            {Marauder, SkillTree.GetCharacterUrl(1)},
-            {Ranger, SkillTree.GetCharacterUrl(2)},
-            {Witch, SkillTree.GetCharacterUrl(3)},
-            {Duelist, SkillTree.GetCharacterUrl(4)},
-            {Templar, SkillTree.GetCharacterUrl(5)},
-            {Shadow, SkillTree.GetCharacterUrl(6)},
+            {Scion, SkillTreeSerializer.GetEmptyBuildUrl((byte)CharacterClasses.Scion)},
+            {Marauder, SkillTreeSerializer.GetEmptyBuildUrl((byte)CharacterClasses.Marauder)},
+            {Ranger, SkillTreeSerializer.GetEmptyBuildUrl((byte)CharacterClasses.Ranger)},
+            {Witch, SkillTreeSerializer.GetEmptyBuildUrl((byte)CharacterClasses.Witch)},
+            {Duelist, SkillTreeSerializer.GetEmptyBuildUrl((byte)CharacterClasses.Duelist)},
+            {Templar, SkillTreeSerializer.GetEmptyBuildUrl((byte)CharacterClasses.Templar)},
+            {Shadow, SkillTreeSerializer.GetEmptyBuildUrl((byte)CharacterClasses.Shadow)},
         };
 
         public static string GetClassNameFromChartype(int chartype)

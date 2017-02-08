@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using POESKillTree.SkillTreeFiles;
+using POESKillTree.Utils.UrlProcessing;
 
 namespace POESKillTree.Common
 {
@@ -8,24 +9,13 @@ namespace POESKillTree.Common
     public interface ISkillTree
     {
         /// <summary>
-        /// Returns the number of non-ascendancy points the given tree url uses.
+        /// Gets the build converter used to instantiate build deserializers.
         /// </summary>
-        uint PointsUsed(string treeUrl);
+        IBuildConverter BuildConverter { get; }
 
         /// <summary>
-        /// Returns the character class of the given tree url.
+        /// Gets ascendancy classes helper.
         /// </summary>
-        string CharacterClass(string treeUrl);
-
-        /// <summary>
-        /// Returns the ascendancy class of the given tree url.
-        /// Returns null if the tree has no ascendancy class selected.
-        /// </summary>
-        string AscendancyClass(string treeUrl);
-
-        /// <summary>
-        /// Returns all ascendancy class names for the given character class.
-        /// </summary>
-        IEnumerable<string> AscendancyClassesForCharacter(string characterClass);
+        IAscendancyClasses AscendancyClasses { get; }
     }
 }

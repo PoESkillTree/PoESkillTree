@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <!-- bandit - enumerable type -->
+  <xs:simpleType name="bandit">
+    <xs:restriction base="xs:string">
+      <!-- None = 0 (poeplanner) -->
+      <xs:enumeration value="None"/>
+      <!-- Alira = 1 (poeplanner) -->
+      <xs:enumeration value="Alira">
+        <xs:annotation>
+          <xs:documentation>
+            +60 Mana (Normal); +5% Cast Speed (Cruel); +1 Power Charge (Merciless)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <!-- Oak = 2 (poeplanner - 3) -->
+      <xs:enumeration value="Oak">
+        <xs:annotation>
+          <xs:documentation>
+            +60 Life (Normal); +16% Physical Damage (Cruel); +1 Endurance Charge (Merciless)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <!-- Kraityn = 3 (poeplanner - 2) -->
+      <xs:enumeration value="Kraityn">
+        <xs:annotation>
+          <xs:documentation>
+            +10 all Res (Normal); +8% Attack Speed (Cruel); +1 Frenzy Charge (Merciless)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- url - anyURI type extended with 'name' and 'value' attributes -->
+  <xs:complexType name="url">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- urls - contains default (primary) Url and optional alternative Urls -->
+  <xs:element name="urls">
+    <xs:annotation>
+      <xs:documentation>
+        Contains single default Url and multiple optional alternative Urls.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="default" type="xs:string" minOccurs="1" maxOccurs="1" />
+        <xs:element name="alternative" type="url" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="uniqueUrlName">
+      <xs:selector xpath="alternative"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:unique name="uniqueUrl">
+      <xs:selector xpath=".//*"/>
+      <xs:field xpath="."/>
+    </xs:unique>
+  </xs:element>
+
+  <!-- bandits - tag, containing bandits selection -->
+  <xs:element name="bandits">
+    <xs:complexType>
+      <xs:attribute name="normal" type="bandit" />
+      <xs:attribute name="cruel" type="bandit"/>
+      <xs:attribute name="merciless" type="bandit"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- document schema -->
+  <xs:element name="testData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="builds" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="build" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element ref="urls"/>
+                    <xs:element name="description" type="xs:token" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="tags" type="xs:string" minOccurs="0" maxOccurs="1">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Contains multiple tokens, separated by a semicolon.
+                          Tags can be used to find associated builds.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element ref="bandits" minOccurs="0" maxOccurs="1"/>
+                  </xs:all>
+                  <xs:attribute name="name" type="xs:string" use="required"/>
+                  <xs:attribute name="points" type="xs:integer"/>
+                  <xs:attribute name="ascendancyPoints" type="xs:integer"/>
+                  <xs:attribute name="treeVersion" type="xs:integer"/>
+                  <xs:attribute name="characterClassId" type="xs:byte"/>
+                  <xs:attribute name="ascendancyClassId" type="xs:byte"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+          <xs:unique name="uniqueBuildName">
+            <xs:selector xpath="build"/>
+            <xs:field xpath="@name"/>
+          </xs:unique>
+          <xs:unique name="uniqueBuildUrl">
+            <xs:selector xpath="build/urls"/>
+            <xs:field xpath="default"/>
+          </xs:unique>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

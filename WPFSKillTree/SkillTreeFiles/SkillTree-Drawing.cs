@@ -260,7 +260,7 @@ namespace POESKillTree.SkillTreeFiles
                 surroundBrush = _nodeSurroundComparisonBrushes;
                 factor = HighlightFactor;
             }
-            var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+            var ascendancyClassName = AscendancyClasses.GetClassName(_chartype, AscType);
 
             if (node.IsAscendancyStart)
             {
@@ -355,7 +355,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (n.Value.ascendancyName != null)
                 {
                     if (!DrawAscendancy) continue;
-                    var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+                    var ascendancyClassName = AscendancyClasses.GetClassName(_chartype, AscType);
                     if ((!_persistentData.Options.ShowAllAscendancyClasses &&
                             n.Value.ascendancyName != ascendancyClassName)) continue;
                     DrawSkillNodeIcon(ascSkillIcons, n.Value, onlyAscendancy);
@@ -393,7 +393,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (skillNode.ascendancyName != null)
                 {
                     if (!DrawAscendancy) continue;
-                    var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+                    var ascendancyClassName = AscendancyClasses.GetClassName(_chartype, AscType);
                     if ((!_persistentData.Options.ShowAllAscendancyClasses &&
                             skillNode.ascendancyName != ascendancyClassName)) continue;
                     DrawSkillNodeIcon(ascActiveSkillIcons, skillNode, onlyAscendancy, true);
@@ -439,7 +439,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             if (!_persistentData.Options.ShowAllAscendancyClasses)
             {
-                var ascName = AscClasses.GetClassName(_chartype, AscType);
+                var ascName = AscendancyClasses.GetClassName(_chartype, AscType);
                 var nodeList = Skillnodes.Where(x => x.Value.ascendancyName == ascName && !x.Value.IsAscendancyStart);
                 var worldPos = Skillnodes.First(x => x.Value.Name.ToUpperInvariant() == CharName[_chartype]).Value.Position;
                 var ascStartNode = AscRootNodeList.First(x => x.ascendancyName == ascName);
@@ -623,7 +623,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     if (!DrawAscendancy) continue;
                     if (_persistentData.Options.ShowAllAscendancyClasses ||
-                        n2.ascendancyName == AscClasses.GetClassName(_chartype, AscType))
+                        n2.ascendancyName == AscendancyClasses.GetClassName(_chartype, AscType))
                         DrawConnection(adc, _basePathPen, n2, n1);
                 }
                 else
@@ -675,7 +675,7 @@ namespace POESKillTree.SkillTreeFiles
             using (var dc = _ascClassFaces.RenderOpen())
             {
                 if (!DrawAscendancy) return;
-                var ascName = AscClasses.GetClassName(_chartype, AscType);
+                var ascName = AscendancyClasses.GetClassName(_chartype, AscType);
                 foreach (var node in AscRootNodeList)
                 {
                     if (!_persistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != ascName) continue;
@@ -688,7 +688,7 @@ namespace POESKillTree.SkillTreeFiles
                             pos -
                             new Vector2D(bitmap.PixelWidth * 1.25, bitmap.PixelHeight * 1.25),
                             new Size(bitmap.PixelWidth * 2.5, bitmap.PixelHeight * 2.5)));
-                    var currentClass = AscClasses.GetClass(node.ascendancyName);
+                    var currentClass = AscendancyClasses.GetClass(node.ascendancyName);
                     if (currentClass == null) continue;
                     var textBrush = new SolidColorBrush(Color.FromRgb(
                         (byte)currentClass.FlavourTextColour[0],
@@ -857,7 +857,7 @@ namespace POESKillTree.SkillTreeFiles
             if (!onlyAscendancy)
                 dc = ActivePaths.RenderOpen();
             var seen = new HashSet<SkillNode>();
-            var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+            var ascendancyClassName = AscendancyClasses.GetClassName(_chartype, AscType);
             foreach (var n1 in SkilledNodes)
             {
                 seen.Add(n1);
@@ -884,7 +884,7 @@ namespace POESKillTree.SkillTreeFiles
 
         private void DrawTreeComparisonHighlight()
         {
-            var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+            var ascendancyClassName = AscendancyClasses.GetClassName(_chartype, AscType);
             var pen2 = new Pen(new SolidColorBrush(TreeComparisonColor), 25 * HighlightFactor);
             using (DrawingContext
                     dc = _nodeComparisonHighlight.RenderOpen(),
@@ -928,7 +928,7 @@ namespace POESKillTree.SkillTreeFiles
                 // Draw a connection from a skilled node to the first path node.
                 var skilledNeighbors = new List<SkillNode>();
                 var className = CharacterNames.GetClassNameFromChartype(_chartype);
-                var ascendancyClassName = AscClasses.GetClassName(className, AscType);
+                var ascendancyClassName = AscendancyClasses.GetClassName(className, AscType);
 
                 var pathNodes = path as IList<SkillNode> ?? path.ToList();
                 if (pathNodes.Any())
@@ -975,7 +975,7 @@ namespace POESKillTree.SkillTreeFiles
                     dc = _pathOverlay.RenderOpen(),
                     dcAsc = _ascPathOverlay.RenderOpen())
             {
-                var ascendancyClassName = AscClasses.GetClassName(_chartype, AscType);
+                var ascendancyClassName = AscendancyClasses.GetClassName(_chartype, AscType);
                 var skillNodes = nodes as IList<SkillNode> ?? nodes.ToList();
                 foreach (var node in skillNodes)
                 {
