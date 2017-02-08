@@ -85,6 +85,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TestBuilds\Utils\BuildUrlCollection.cs" />
+    <Compile Include="TestBuilds\Utils\BuildUrlTestModel.cs" />
+    <Compile Include="TestBuilds\Utils\DefaultUrlItem.cs" />
+    <Compile Include="TestBuilds\Utils\TagsCollection.cs" />
+    <Compile Include="TestBuilds\Utils\TestBanditSettings.cs" />
+    <Compile Include="TestBuilds\Utils\TestBuildUrlLoader.cs" />
+    <Compile Include="TestBuilds\Utils\TestData.cs" />
+    <Compile Include="TestBuilds\Utils\UrlItem.cs" />
     <Compile Include="TestCharacterSheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDPS.cs" />
@@ -92,6 +100,10 @@
     <Compile Include="TestMSTAlgorithm.cs" />
     <Compile Include="TestGeneticAlgorithmEasy.cs" />
     <Compile Include="ObservableSetTest.cs" />
+    <Compile Include="UrlProcessing\BuildConverterTests.cs" />
+    <Compile Include="UrlProcessing\BuildLoadingTests.cs" />
+    <Compile Include="UrlProcessing\BuildUrlNormalizerTests.cs" />
+    <Compile Include="UrlProcessing\UrlProcessingTests.cs" />
     <Compile Include="WeightedSamplerTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +120,10 @@
     <Content Include="TestBuilds\Builds.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="TestBuilds\BuildUrls.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="TestBuilds\EmptyBuildUrls.xml" />
     <Content Include="TestItems.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -122,6 +138,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestBuilds\BuildUrls.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="TestBuilds\init\Marauder-IceCrash-51.json" />
   </ItemGroup>
   <Choose>
