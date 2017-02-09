@@ -14,7 +14,7 @@ namespace POESKillTree.Controls
     /// </summary>
     public partial class ModSelector : INotifyPropertyChanged
     {
-        private static readonly Affix EmptySelection = new Affix(new[] { "" }, new ItemModTier[0]);
+        private static readonly Affix EmptySelection = new Affix(new ItemModTier[0]);
 
         private bool _canDeselect = true;
 
@@ -79,15 +79,14 @@ namespace POESKillTree.Controls
 
         private void OnPropertyChanged(string prop)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public event Action<object, Affix> SelectedAffixChanged;
+        public event EventHandler SelectedAffixChanged;
 
-        public event Action<object, double[]> SelectedValuesChanged;
+        public event EventHandler SelectedValuesChanged;
 
         private void cbAffix_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -98,37 +97,31 @@ namespace POESKillTree.Controls
             _sliders.Clear();
 
             tbtlabel.Text = "";
-            if (aff != null)
+            if (aff != null && aff != EmptySelection)
             {
-                var tiers = aff.GetTiers();
-
-                if (aff != EmptySelection)
+                for (var i = 0; i < aff.RangesPerStatAndTier.Count; i++)
                 {
-                    for (var i = 0; i < aff.Mods.Count; i++)
-                    {
-                        var ranges = tiers.Select(t => t.Stats[i].Range).ToList();
-                        var isFloatMod =
-                            ranges.Any(r => Math.Abs((int) r.From - r.From) > 1e-5 || Math.Abs((int) r.To - r.To) > 1e-5);
-                        var tics =
-                            ranges.SelectMany(
-                                r =>
-                                    Enumerable.Range((int) Math.Round(isFloatMod ? r.From * 100 : r.From),
-                                        (int) Math.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
-                                .Select(f => isFloatMod ? (double) f / 100 : f);
-                        var os = new OverlayedSlider(aff.Mods[i], new DoubleCollection(tics));
+                    var ranges = aff.RangesPerStatAndTier[i];
+                    var isFloatMod =
+                        ranges.Any(r => Math.Abs((int)r.From - r.From) > 1e-5 || Math.Abs((int)r.To - r.To) > 1e-5);
+                    var tics =
+                        ranges.SelectMany(
+                            r =>
+                                Enumerable.Range((int)Math.Round(isFloatMod ? r.From * 100 : r.From),
+                                    (int)Math.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
+                            .Select(f => isFloatMod ? (double)f / 100 : f);
+                    var os = new OverlayedSlider(aff.StatNames[i], new DoubleCollection(tics));
 
-                        os.ValueChanged += slValue_ValueChanged;
-                        os.Tag = i;
+                    os.ValueChanged += slValue_ValueChanged;
+                    os.Tag = i;
 
-                        _sliders.Add(os);
-                        spSLiders.Children.Add(os);
-                    }
+                    _sliders.Add(os);
+                    spSLiders.Children.Add(os);
                 }
             }
 
             OnPropertyChanged("SelectedAffix");
-            if (SelectedAffixChanged != null)
-                SelectedAffixChanged(this, aff);
+            SelectedAffixChanged?.Invoke(this, EventArgs.Empty);
 
             _changingaffix = false;
 
@@ -154,7 +147,7 @@ namespace POESKillTree.Controls
                 {
                     if (!aff.QueryMod(i, (float)_sliders[i].Value).Intersect(tiers).Any())
                     { //slider isnt inside current tier
-                        var moveto = tiers[0].Stats[i].Range;
+                        var moveto = aff.GetRange(tiers[0], i);
                         _sliders[i].Value = (e.NewValue > e.OldValue) ? moveto.From : moveto.To;
                     }
 
@@ -162,10 +155,7 @@ namespace POESKillTree.Controls
             }
             _updatingSliders = false;
             OnPropertyChanged("SelectedValues");
-            if (SelectedValuesChanged != null)
-            {
-                SelectedValuesChanged(this, SelectedValues);
-            }
+            SelectedValuesChanged?.Invoke(this, EventArgs.Empty);
 
             tbtlabel.Text = TiersString(SelectedAffix.Query(_sliders.Select(s => (float)s.Value).ToArray()));
         }
@@ -181,14 +171,7 @@ namespace POESKillTree.Controls
             {
                 float[] values = _sliders.Select(s => (float)s.Value).ToArray();
 
-                var aff = SelectedAffix.Query(values).First();
-
-                if (aff.IsRangeMod)
-                {
-                    return new[] { aff.RangeCombinedStat.ToItemMod(false, _sliders.Select(s => (float)s.Value).ToArray()) };
-                }
-
-                return aff.Stats.Select((s, i) => s.ToItemMod(false, (float)_sliders[i].Value));
+                return SelectedAffix.ToItemMods(values);
             }
 
             return new ItemMod[0];

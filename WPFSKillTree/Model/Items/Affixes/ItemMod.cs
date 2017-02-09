@@ -22,15 +22,15 @@ namespace POESKillTree.Model.Items.Affixes
         }
 
 
-        public Stat Parent { get; private set; }
+        public ItemModTier ParentTier { get; }
 
-        public string Attribute { get; private set; }
+        public string Attribute { get; }
 
         public List<float> Value { get; set; }
 
         public List<ValueColoring> ValueColor { get; set; }
 
-        public bool IsLocal { get; private set; }
+        public bool IsLocal { get; }
 
         public ItemMod(ItemType itemType, string attribute, Regex numberfilter, IEnumerable<ValueColoring> valueColor = null)
         {
@@ -42,17 +42,21 @@ namespace POESKillTree.Model.Items.Affixes
             ValueColor = valueColor == null ? new List<ValueColoring>() : new List<ValueColoring>(valueColor);
         }
 
-        public ItemMod(ItemType itemType, string attribute, Stat parent = null)
+        public ItemMod(ItemType itemType, string attribute, ItemModTier parentTier = null)
         {
             IsLocal = DetermineLocal(itemType, attribute);
             Attribute = attribute;
-            Parent = parent;
+            ParentTier = parentTier;
             Value = new List<float>();
             ValueColor = new List<ValueColoring>();
         }
 
-        private ItemMod()
+        private ItemMod(ItemMod other)
         {
+            IsLocal = other.IsLocal;
+            Attribute = other.Attribute;
+            ParentTier = other.ParentTier;
+            ValueColor = other.ValueColor.ToList();
         }
 
         // Returns true if property/mod is local, false otherwise.
@@ -102,9 +106,9 @@ namespace POESKillTree.Model.Items.Affixes
 
         public ItemMod Sum(ItemMod m)
         {
-            return new ItemMod
+            return new ItemMod(m)
             {
-                IsLocal = IsLocal, Attribute = Attribute, Parent = Parent, ValueColor = ValueColor.ToList(), Value = Value.Zip(m.Value, (f1, f2) => f1 + f2).ToList()
+                Value = Value.Zip(m.Value, (f1, f2) => f1 + f2).ToList()
             };
         }
 

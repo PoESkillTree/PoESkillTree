@@ -8,92 +8,134 @@ namespace POESKillTree.Model.Items.Affixes
 {
     public class Affix
     {
-        public ItemType ItemType { get; private set; }
+        public ItemType ItemType { get; }
 
-        public ModType ModType { get; private set; }
+        public ModType ModType { get; }
 
-        public IReadOnlyList<string> Mods { get; private set; }
+        public IReadOnlyList<string> StatNames { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        private RangeTree<float, ModWrapper>[] Tiers { get; set; }
+        public IReadOnlyList<IReadOnlyList<Range<float>>> RangesPerStatAndTier { get; }
 
-        public Affix(IEnumerable<string> mod, IReadOnlyList<ItemModTier> modlist)
+        private readonly IReadOnlyList<RangeTree<float, ModWrapper>> _trees;
+        private readonly IReadOnlyList<Tuple<int, int>> _treeIndexToStatAndRange;
+
+        public Affix(IEnumerable<ItemModTier> tiers)
+            : this(ItemType.Unknown, tiers)
         {
-            Mods = mod.ToList();
-            Name = string.Join(",", Mods);
-
-            if (modlist.Any())
-            {
-                Tiers = new RangeTree<float, ModWrapper>[Mods.Count];
-
-                for (int i = 0; i < Tiers.Length; i++)
-                    Tiers[i] = new RangeTree<float, ModWrapper>(modlist.Select(im => new ModWrapper(Mods[i], im)), new ItemModComparer());
-            }
-            ItemType = ItemType.Unknown;
+            Name = string.Join(",", StatNames);
         }
 
         public Affix(XmlAffix xmlAffix)
+            : this(xmlAffix.ItemType, xmlAffix.Tiers.Select(el => new ItemModTier(el, xmlAffix.ItemType)))
         {
-            ItemType = xmlAffix.ItemType;
-            ModType = xmlAffix.ModType;
-            if (xmlAffix.Tiers.Any())
-                Mods = xmlAffix.Tiers[0].Stats.Select(s => s.Name).ToList();
-            else
+            if (!xmlAffix.Tiers.Any())
                 throw new NotSupportedException("There should not be any Affix without tiers");
+            ModType = xmlAffix.ModType;
             Name = xmlAffix.Name;
 
-            var tiers = xmlAffix.Tiers.Select(el => new ItemModTier(el, ItemType)).ToList();
-            Tiers = new RangeTree<float, ModWrapper>[Mods.Count];
-            for (var i = 0; i < Tiers.Length; i++)
-                Tiers[i] = new RangeTree<float, ModWrapper>(tiers.Select(im => new ModWrapper(Mods[i], im)), new ItemModComparer());
+        }
+
+        private Affix(ItemType itemType, IEnumerable<ItemModTier> tiers)
+        {
+            ItemType = itemType;
+            var tierList = tiers.ToList();
+
+            if (!tierList.Any())
+            {
+                StatNames = new string[0];
+                return;
+            }
+
+            var firstTier = tierList[0];
+            var firstTierStats = firstTier.Stats;
+            if (tierList.Any(t => t.Stats.Count != firstTierStats.Count))
+            {
+                throw new NotSupportedException("Tiers must all have the same amount of stats");
+            }
+
+            var comparer = new ItemModComparer();
+            var mods = new List<string>();
+            var trees = new List<RangeTree<float, ModWrapper>>();
+            var rangesPerStat = new List<IReadOnlyList<Range<float>>>();
+            var treeIndexToIj = new List<Tuple<int, int>>();
+            for (var i = 0; i < firstTierStats.Count; i++)
+            {
+                var stat = firstTierStats[i];
+                var rangeCount = stat.Ranges.Count;
+
+                if (tierList.Any(t => t.Stats[i].Ranges.Count != rangeCount))
+                {
+                    throw new NotSupportedException(
+                        $"Tiers of stat {stat.Name} must all have the same amount of ranges");
+                }
+
+                var name = stat.Name;
+                for (var j = 0; j < rangeCount; j++)
+                {
+                    mods.Add(name);
+                    var wrapper = tierList.Select(t => new ModWrapper(t, t.Stats[i].Ranges[j])).ToList();
+                    rangesPerStat.Add(wrapper.Select(w => w.Range).ToList());
+                    trees.Add(new RangeTree<float, ModWrapper>(wrapper, comparer));
+                    treeIndexToIj.Add(Tuple.Create(i, j));
+                }
+            }
+            StatNames = mods;
+            _trees = trees;
+            RangesPerStatAndTier = rangesPerStat;
+            _treeIndexToStatAndRange = treeIndexToIj;
         }
 
         public IEnumerable<ItemModTier> QueryMod(int index, float value)
         {
-            return Tiers[index].Query(value).Select(mw => mw.ItemMod);
+            return _trees[index].Query(value).Select(mw => mw.ItemModTier);
         }
 
-        public IEnumerable<ItemModTier> Query(params float[] value)
+        public IEnumerable<ItemModTier> Query(IEnumerable<float> values)
         {
-            if (Tiers.Length != value.Length)
+            var valueList = values.ToList();
+            if (_trees.Count != valueList.Count)
                 throw new ArgumentException("different number ov number than search params");
-            var matches = value.Select((v, i) => Tiers[i].Query(v).Select(w => w.ItemMod));
+            var matches = valueList.Select((v, i) => _trees[i].Query(v).Select(w => w.ItemModTier));
 
             return matches.Aggregate((a, n) => a.Intersect(n)).OrderByDescending(c => c.Tier);
         }
 
-        public ItemModTier[] GetTiers()
+        public IEnumerable<ItemMod> ToItemMods(IEnumerable<float> values)
         {
-            if (Tiers == null)
-                return new ItemModTier[0];
-            return Tiers[0].Items.Select(w => w.ItemMod).ToArray();
+            var remaining = values.ToList();
+            var tier = Query(remaining).First();
+            foreach (var stat in tier.Stats)
+            {
+                var rangeCount = stat.Ranges.Count;
+                yield return stat.ToItemMod(remaining.Take(rangeCount).ToList());
+                remaining = remaining.Skip(rangeCount).ToList();
+            }
+        }
+
+        public Range<float> GetRange(ItemModTier tier, int index)
+        {
+            var statAndRange = _treeIndexToStatAndRange[index];
+            return tier.Stats[statAndRange.Item1].Ranges[statAndRange.Item2];
         }
 
         public override string ToString()
         {
-            return "Mod(" + (ModType == ModType.Suffix ? "S" : "P") + "): " + string.Join(",", Mods);
+            return "Mod(" + (ModType == ModType.Suffix ? "S" : "P") + "): " + Name;
         }
 
         private class ModWrapper : IRangeProvider<float>
         {
-            private string Mod { get; set; }
-            public ItemModTier ItemMod { get; private set; }
 
-            public ModWrapper(string mod, ItemModTier imod)
-            {
-                Mod = mod;
-                ItemMod = imod;
-            }
+            public ItemModTier ItemModTier { get; }
 
-            public Range<float> Range
-            {
-                get { return ItemMod.Range(Mod); }
-            }
+            public Range<float> Range { get; }
 
-            public override string ToString()
+            public ModWrapper(ItemModTier tier, Range<float> range)
             {
-                return "ItemMod: " + Mod + " {" + ItemMod.Range(Mod) + "}";
+                Range = range;
+                ItemModTier = tier;
             }
         }
 

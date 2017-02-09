@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Serialization;
@@ -66,8 +67,8 @@ namespace POESKillTree.Model.Items.Affixes
         [XmlAttribute(AttributeName = "From")]
         public string FromAsString
         {
-            get { return string.Join(" ", From.Select(f => f.ToString(CultureInfo.InvariantCulture))); }
-            set { From = value.Split(' ').Select(s => s.ParseFloat()).ToArray(); }
+            get { return Join(From); }
+            set { From = Split(value); }
         }
 
         [XmlIgnore]
@@ -76,8 +77,20 @@ namespace POESKillTree.Model.Items.Affixes
         [XmlAttribute(AttributeName = "To")]
         public string ToAsString
         {
-            get { return string.Join(" ", To.Select(f => f.ToString(CultureInfo.InvariantCulture))); }
-            set { To = value.Split(' ').Select(s => s.ParseFloat()).ToArray(); }
+            get { return Join(To); }
+            set { To = Split(value); }
+        }
+
+        private static string Join(IEnumerable<float> values)
+        {
+            return string.Join(" ", values.Select(f => f.ToString(CultureInfo.InvariantCulture)));
+        }
+
+        private static IReadOnlyList<float> Split(string value)
+        {
+            return value
+                .Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.ParseFloat()).ToList();
         }
     }
 }

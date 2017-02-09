@@ -496,8 +496,8 @@ namespace POESKillTree.Model.Items
         {
             _requirements.Clear();
             var minRequiredLevel = Mods
-                .Where(m => m.Parent != null && m.Parent.ParentTier != null)
-                .Select(m => m.Parent.ParentTier)
+                .Where(m => m.ParentTier != null)
+                .Select(m => m.ParentTier)
                 .Select(t => (80 * t.Level) / 100)
                 .DefaultIfEmpty(0)
                 .Max();

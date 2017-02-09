@@ -216,7 +216,7 @@ namespace POESKillTree.Views
             {
                 msImplicitMods.Affixes = new List<Affix>
                 {
-                    new Affix(ibase.ImplicitMods.Select(s => s.Name).ToArray(), new[] { new ItemModTier(ibase.ImplicitMods) })
+                    new Affix(new[] { new ItemModTier(ibase.ImplicitMods) })
                 };
                 Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
                 ApplyLocals();
@@ -228,7 +228,7 @@ namespace POESKillTree.Views
             if (ibase.CanHaveQuality)
             {
                 var qualityStat = new Stat(QualityModName, new Range<float>(0, 20), Item.ItemType, null);
-                var qualityAffix = new Affix(new[] {QualityModName}, new[] {new ItemModTier(new[] {qualityStat})});
+                var qualityAffix = new Affix(new[] {new ItemModTier(new[] {qualityStat})});
                 MsQuality.Affixes = new List<Affix>(new[] {qualityAffix});
             }
             else
@@ -249,7 +249,7 @@ namespace POESKillTree.Views
             d.Dispose();
         }
 
-        private void msp_SelectedAffixChanged(object sender, Affix aff)
+        private void msp_SelectedAffixChanged(object sender, EventArgs e)
         {
             var d = _monitor.Enter();
             var ms = sender as ModSelector;
@@ -286,12 +286,18 @@ namespace POESKillTree.Views
                 var typeline = "";
 
                 if (_selectedPreff.Length > 0)
-                    typeline = _selectedPreff[0].SelectedAffix.Query(_selectedPreff[0].SelectedValues.Select(v => (float)v).ToArray()).First().Name + " ";
+                {
+                    var pref = _selectedPreff[0];
+                    typeline = pref.SelectedAffix.Query(pref.SelectedValues.Select(v => (float)v)).First().Name + " ";
+                }
 
                 typeline += Item.BaseType;
 
                 if (_selectedSuff.Length > 0)
-                    typeline += " " + _selectedSuff[0].SelectedAffix.Query(_selectedSuff[0].SelectedValues.Select(v => (float)v).ToArray()).First().Name;
+                {
+                    var suff = _selectedSuff[0];
+                    typeline += " " + suff.SelectedAffix.Query(suff.SelectedValues.Select(v => (float)v)).First().Name;
+                }
 
                 Item.TypeLine = typeline;
             }
@@ -308,8 +314,8 @@ namespace POESKillTree.Views
                 .Select(g => g.Aggregate((m1, m2) => m1.Sum(m2)))
                 .ToList();
 
-            Item.ExplicitMods = allmods.Where(m => m.Parent == null || !m.Parent.ParentTier.IsMasterCrafted).ToList();
-            Item.CraftedMods = allmods.Where(m => m.Parent != null && m.Parent.ParentTier.IsMasterCrafted).ToList();
+            Item.ExplicitMods = allmods.Where(m => m.ParentTier == null || !m.ParentTier.IsMasterCrafted).ToList();
+            Item.CraftedMods = allmods.Where(m => m.ParentTier != null && m.ParentTier.IsMasterCrafted).ToList();
 
             if (msImplicitMods.Affixes != null)
             {
@@ -420,7 +426,7 @@ namespace POESKillTree.Views
             }
         }
 
-        private void mss_SelectedAffixChanged(object sender, Affix aff)
+        private void mss_SelectedAffixChanged(object sender, EventArgs e)
         {
             var ms = sender as ModSelector;
             if (mss1 != ms)
@@ -437,7 +443,7 @@ namespace POESKillTree.Views
             RecalculateItem();
         }
 
-        private void ms_SelectedValuesChanged(object sender, double[] values)
+        private void ms_SelectedValuesChanged(object sender, EventArgs e)
         {
             RecalculateItem();
         }

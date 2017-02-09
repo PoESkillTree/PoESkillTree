@@ -181,7 +181,7 @@ namespace POESKillTree.Model.Items
             }
 
             if (Properties != null)
-                props.AddRange(Properties.Select(prop => prop.ToItemMod(true)));
+                props.AddRange(Properties.Select(prop => prop.AsPropertyToItemMod()));
             return props;
         }
 
