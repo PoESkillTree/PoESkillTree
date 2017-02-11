@@ -126,8 +126,7 @@ namespace UpdateDB.DataLoading
                     {
                         ModType = modType,
                         Global = IsGlobal(nameLine),
-                        ItemType = itemType,
-                        Name = affixName
+                        ItemType = itemType
                     };
 
                     ChangeRange itemTypeSpecificRangeChange;
@@ -156,6 +155,7 @@ namespace UpdateDB.DataLoading
                         });
                     }
                     affix.Tiers = Enumerable.Reverse(tierList).ToArray();
+                    affix.Name = string.Join(", ", affix.Tiers[0].Stats.Select(s => s.Name));
 
                     affixes.Add(affix);
                 }

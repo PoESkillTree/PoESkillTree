@@ -121,6 +121,8 @@ namespace POESKillTree.Controls
                         var inlines = new List<Inline>();
                         var parts = statName.Split('#');
                         var offset = 0;
+                        // add a run for each value (bound to SelectedValues)
+                        // and add a run for each text part before that
                         foreach (var part in parts.Take(parts.Length - 1))
                         {
                             bool alwaysShowSign;
@@ -144,8 +146,12 @@ namespace POESKillTree.Controls
                             valueRuns.Add(Tuple.Create(run, binding));
                             inlines.Add(run);
                         }
+                        // add a run for the text part after the last value
                         inlines.Add(new Run(parts.Last()));
 
+                        // runs are shown overlayed on the slider if
+                        // 1. there is only one value for the current stat, and
+                        // 2. the value is not fixed (in which case the slider is hidden)
                         if (offset == 1 && tics.Count > 1)
                         {
                             overlayInlines = inlines;
@@ -163,6 +169,7 @@ namespace POESKillTree.Controls
                     os.Tag = i;
 
                     _sliders.Add(os);
+                    // hide slider if value is fixed
                     if (tics.Count > 1)
                     {
                         spSLiders.Children.Add(os);

@@ -66,7 +66,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="1 2" To="1 3" />
     </Tier>
@@ -101,7 +101,7 @@
       <Stat Name="Adds # to # Physical Damage" From="19 38" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="1 3" To="2 4" />
     </Tier>
@@ -136,7 +136,7 @@
       <Stat Name="Adds # to # Fire Damage" From="45 91" To="61 106" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="1 3" To="2 3" />
     </Tier>
@@ -171,7 +171,7 @@
       <Stat Name="Adds # to # Cold Damage" From="37 74" To="50 87" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 6" To="1 6" />
     </Tier>
@@ -264,7 +264,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="OneHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="47 98" To="72 123" />
     </Tier>
@@ -769,7 +769,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="1 2" To="1 3" />
     </Tier>
@@ -804,7 +804,7 @@
       <Stat Name="Adds # to # Physical Damage" From="19 38" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="1 3" To="2 4" />
     </Tier>
@@ -839,7 +839,7 @@
       <Stat Name="Adds # to # Fire Damage" From="45 91" To="61 106" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="1 3" To="2 3" />
     </Tier>
@@ -874,7 +874,7 @@
       <Stat Name="Adds # to # Cold Damage" From="37 74" To="50 87" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 6" To="1 6" />
     </Tier>
@@ -967,7 +967,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="OneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="47 98" To="72 123" />
     </Tier>
@@ -1472,7 +1472,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="1 2" To="1 3" />
     </Tier>
@@ -1507,7 +1507,7 @@
       <Stat Name="Adds # to # Physical Damage" From="19 38" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="1 3" To="2 4" />
     </Tier>
@@ -1542,7 +1542,7 @@
       <Stat Name="Adds # to # Fire Damage" From="45 91" To="61 106" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="1 3" To="2 3" />
     </Tier>
@@ -1577,7 +1577,7 @@
       <Stat Name="Adds # to # Cold Damage" From="37 74" To="50 87" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 6" To="1 6" />
     </Tier>
@@ -1670,7 +1670,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="OneHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="47 98" To="72 123" />
     </Tier>
@@ -2148,7 +2148,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="2 4" To="2 5" />
     </Tier>
@@ -2183,7 +2183,7 @@
       <Stat Name="Adds # to # Physical Damage" From="29 58" To="38 68" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="3 5" To="4 6" />
     </Tier>
@@ -2218,7 +2218,7 @@
       <Stat Name="Adds # to # Fire Damage" From="68 137" To="91 160" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="2 4" To="3 5" />
     </Tier>
@@ -2253,7 +2253,7 @@
       <Stat Name="Adds # to # Cold Damage" From="56 112" To="75 131" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 9" To="1 10" />
     </Tier>
@@ -2346,7 +2346,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="TwoHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="70 147" To="108 185" />
     </Tier>
@@ -2851,7 +2851,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="2 4" To="2 5" />
     </Tier>
@@ -2886,7 +2886,7 @@
       <Stat Name="Adds # to # Physical Damage" From="29 58" To="38 68" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="3 5" To="4 6" />
     </Tier>
@@ -2921,7 +2921,7 @@
       <Stat Name="Adds # to # Fire Damage" From="68 137" To="91 160" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="2 4" To="3 5" />
     </Tier>
@@ -2956,7 +2956,7 @@
       <Stat Name="Adds # to # Cold Damage" From="56 112" To="75 131" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 9" To="1 10" />
     </Tier>
@@ -3049,7 +3049,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="TwoHandedMace" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="70 147" To="108 185" />
     </Tier>
@@ -3519,7 +3519,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="2 4" To="2 5" />
     </Tier>
@@ -3554,7 +3554,7 @@
       <Stat Name="Adds # to # Physical Damage" From="29 58" To="38 68" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="3 5" To="4 6" />
     </Tier>
@@ -3589,7 +3589,7 @@
       <Stat Name="Adds # to # Fire Damage" From="68 137" To="91 160" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="2 4" To="3 5" />
     </Tier>
@@ -3624,7 +3624,7 @@
       <Stat Name="Adds # to # Cold Damage" From="56 112" To="75 131" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 9" To="1 10" />
     </Tier>
@@ -3717,7 +3717,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="TwoHandedAxe" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="70 147" To="108 185" />
     </Tier>
@@ -11425,7 +11425,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="2 4" To="2 5" />
     </Tier>
@@ -11460,7 +11460,7 @@
       <Stat Name="Adds # to # Physical Damage" From="29 58" To="38 68" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="1 3" To="2 4" />
     </Tier>
@@ -11495,7 +11495,7 @@
       <Stat Name="Adds # to # Fire Damage" From="45 91" To="61 106" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="1 3" To="2 3" />
     </Tier>
@@ -11530,7 +11530,7 @@
       <Stat Name="Adds # to # Cold Damage" From="37 74" To="50 87" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 6" To="1 6" />
     </Tier>
@@ -11608,7 +11608,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="Bow" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="47 98" To="72 123" />
     </Tier>
@@ -12087,7 +12087,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="1 2" To="1 3" />
     </Tier>
@@ -12122,7 +12122,7 @@
       <Stat Name="Adds # to # Physical Damage" From="19 38" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="1 3" To="2 4" />
     </Tier>
@@ -12157,7 +12157,7 @@
       <Stat Name="Adds # to # Fire Damage" From="45 91" To="61 106" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="1 3" To="2 3" />
     </Tier>
@@ -12192,7 +12192,7 @@
       <Stat Name="Adds # to # Cold Damage" From="37 74" To="50 87" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 6" To="1 6" />
     </Tier>
@@ -12285,7 +12285,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="Claw" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="47 98" To="72 123" />
     </Tier>
@@ -13739,7 +13739,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="1 2" To="1 3" />
     </Tier>
@@ -13774,7 +13774,7 @@
       <Stat Name="Adds # to # Physical Damage" From="19 38" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="1 3" To="2 4" />
     </Tier>
@@ -13809,7 +13809,7 @@
       <Stat Name="Adds # to # Fire Damage" From="45 91" To="61 106" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="1 3" To="2 3" />
     </Tier>
@@ -13844,7 +13844,7 @@
       <Stat Name="Adds # to # Cold Damage" From="37 74" To="50 87" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 6" To="1 6" />
     </Tier>
@@ -14028,7 +14028,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Spells, Adds # maximum Fire Damage to Spells" ModType="Prefix" Global="true" ItemType="Dagger" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Spells" ModType="Prefix" Global="true" ItemType="Dagger" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Spells" From="1 3" To="2 4" />
     </Tier>
@@ -14063,7 +14063,7 @@
       <Stat Name="Adds # to # Fire Damage to Spells" From="36 73" To="49 85" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Spells, Adds # maximum Cold Damage to Spells" ModType="Prefix" Global="true" ItemType="Dagger" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Spells" ModType="Prefix" Global="true" ItemType="Dagger" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Spells" From="1 2" To="1 3" />
     </Tier>
@@ -14098,7 +14098,7 @@
       <Stat Name="Adds # to # Cold Damage to Spells" From="30 60" To="40 69" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Spells, Adds # maximum Lightning Damage to Spells" ModType="Prefix" Global="true" ItemType="Dagger" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Spells" ModType="Prefix" Global="true" ItemType="Dagger" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Spells" From="1 4" To="1 5" />
     </Tier>
@@ -14133,7 +14133,7 @@
       <Stat Name="Adds # to # Lightning Damage to Spells" From="3 126" To="10 133" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="Dagger" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="47 98" To="72 123" />
     </Tier>
@@ -14774,7 +14774,7 @@
       <Stat Name="+# to maximum Energy Shield" From="48" To="51" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
     <Tier ItemLevel="5" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -14806,7 +14806,7 @@
       <Stat Name="Adds # to # Physical Damage to Attacks" From="11 22" To="15 26" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Attacks, Adds # maximum Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -14838,7 +14838,7 @@
       <Stat Name="Adds # to # Fire Damage to Attacks" From="19 39" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Attacks, Adds # maximum Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -14870,7 +14870,7 @@
       <Stat Name="Adds # to # Cold Damage to Attacks" From="17 34" To="22 40" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Attacks, Adds # maximum Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Tier>
@@ -15047,7 +15047,7 @@
       <Stat Name="#% increased Rarity of Items found" From="25" To="28" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage to Attacks, Adds # maximum Chaos Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage to Attacks" ModType="Prefix" Global="true" ItemType="Amulet" ItemGroup="Unknown">
     <Tier ItemLevel="30" Name="Elreon lvl: 7" Tier="0" IsMasterCrafted="true">
       <Stat Name="Adds # to # Chaos Damage to Attacks" From="8 18" To="11 23" />
     </Tier>
@@ -15598,7 +15598,7 @@
       <Stat Name="+# to maximum Life" From="80" To="89" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmour" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmour" ItemGroup="Unknown">
     <Tier ItemLevel="5" Name="Glinting" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -15612,7 +15612,7 @@
       <Stat Name="Adds # to # Physical Damage to Attacks" From="4 9" To="6 10" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Attacks, Adds # maximum Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmour" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmour" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -15626,7 +15626,7 @@
       <Stat Name="Adds # to # Fire Damage to Attacks" From="7 15" To="10 18" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Attacks, Adds # maximum Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmour" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmour" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -15640,7 +15640,7 @@
       <Stat Name="Adds # to # Cold Damage to Attacks" From="6 13" To="9 16" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Attacks, Adds # maximum Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmour" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmour" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Tier>
@@ -16210,7 +16210,7 @@
       <Stat Name="+# to maximum Life" From="80" To="89" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="5" Name="Glinting" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -16224,7 +16224,7 @@
       <Stat Name="Adds # to # Physical Damage to Attacks" From="4 9" To="6 10" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Attacks, Adds # maximum Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -16238,7 +16238,7 @@
       <Stat Name="Adds # to # Fire Damage to Attacks" From="7 15" To="10 18" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Attacks, Adds # maximum Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -16252,7 +16252,7 @@
       <Stat Name="Adds # to # Cold Damage to Attacks" From="6 13" To="9 16" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Attacks, Adds # maximum Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Tier>
@@ -16904,7 +16904,7 @@
       <Stat Name="+# to maximum Energy Shield" From="30" To="48" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="5" Name="Glinting" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -16918,7 +16918,7 @@
       <Stat Name="Adds # to # Physical Damage to Attacks" From="4 9" To="6 10" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Attacks, Adds # maximum Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -16932,7 +16932,7 @@
       <Stat Name="Adds # to # Fire Damage to Attacks" From="7 15" To="10 18" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Attacks, Adds # maximum Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -16946,7 +16946,7 @@
       <Stat Name="Adds # to # Cold Damage to Attacks" From="6 13" To="9 16" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Attacks, Adds # maximum Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesArmourEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Tier>
@@ -17600,7 +17600,7 @@
       <Stat Name="+# to maximum Energy Shield" From="30" To="48" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="5" Name="Glinting" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -17614,7 +17614,7 @@
       <Stat Name="Adds # to # Physical Damage to Attacks" From="4 9" To="6 10" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Attacks, Adds # maximum Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -17628,7 +17628,7 @@
       <Stat Name="Adds # to # Fire Damage to Attacks" From="7 15" To="10 18" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Attacks, Adds # maximum Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -17642,7 +17642,7 @@
       <Stat Name="Adds # to # Cold Damage to Attacks" From="6 13" To="9 16" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Attacks, Adds # maximum Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Tier>
@@ -18187,7 +18187,7 @@
       <Stat Name="+# to maximum Life" From="80" To="89" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="5" Name="Glinting" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -18201,7 +18201,7 @@
       <Stat Name="Adds # to # Physical Damage to Attacks" From="4 9" To="6 10" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Attacks, Adds # maximum Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -18215,7 +18215,7 @@
       <Stat Name="Adds # to # Fire Damage to Attacks" From="7 15" To="10 18" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Attacks, Adds # maximum Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -18229,7 +18229,7 @@
       <Stat Name="Adds # to # Cold Damage to Attacks" From="6 13" To="9 16" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Attacks, Adds # maximum Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Tier>
@@ -18845,7 +18845,7 @@
       <Stat Name="+# to maximum Energy Shield" From="30" To="48" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasionEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasionEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="5" Name="Glinting" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -18859,7 +18859,7 @@
       <Stat Name="Adds # to # Physical Damage to Attacks" From="4 9" To="6 10" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Attacks, Adds # maximum Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasionEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasionEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -18873,7 +18873,7 @@
       <Stat Name="Adds # to # Fire Damage to Attacks" From="7 15" To="10 18" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Attacks, Adds # maximum Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasionEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasionEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -18887,7 +18887,7 @@
       <Stat Name="Adds # to # Cold Damage to Attacks" From="6 13" To="9 16" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Attacks, Adds # maximum Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasionEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="GlovesEvasionEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Tier>
@@ -22858,7 +22858,7 @@
       <Stat Name="+# to maximum Life" From="90" To="99" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
     <Tier ItemLevel="5" Name="Glinting" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -22872,7 +22872,7 @@
       <Stat Name="Adds # to # Physical Damage to Attacks" From="4 9" To="6 10" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Attacks, Adds # maximum Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -22886,7 +22886,7 @@
       <Stat Name="Adds # to # Fire Damage to Attacks" From="7 15" To="10 18" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Attacks, Adds # maximum Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -22900,7 +22900,7 @@
       <Stat Name="Adds # to # Cold Damage to Attacks" From="6 13" To="9 16" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Attacks, Adds # maximum Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="Quiver" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="4" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Tier>
@@ -23384,7 +23384,7 @@
       <Stat Name="+# to maximum Energy Shield" From="44" To="47" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
     <Tier ItemLevel="5" Name="Glinting" Tier="6" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -23407,7 +23407,7 @@
       <Stat Name="Adds # to # Physical Damage to Attacks" From="6 13" To="9 15" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Attacks, Adds # maximum Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -23439,7 +23439,7 @@
       <Stat Name="Adds # to # Fire Damage to Attacks" From="19 39" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Attacks, Adds # maximum Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Attacks" From="1 2" To="1 2" />
     </Tier>
@@ -23471,7 +23471,7 @@
       <Stat Name="Adds # to # Cold Damage to Attacks" From="17 34" To="22 40" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Attacks, Adds # maximum Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 5" To="1 5" />
     </Tier>
@@ -23582,7 +23582,7 @@
       <Stat Name="#% increased Armour" From="5" To="20" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage to Attacks, Adds # maximum Chaos Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage to Attacks" ModType="Prefix" Global="true" ItemType="Ring" ItemGroup="Unknown">
     <Tier ItemLevel="30" Name="Elreon lvl: 7" Tier="0" IsMasterCrafted="true">
       <Stat Name="Adds # to # Chaos Damage to Attacks" From="8 18" To="11 23" />
     </Tier>
@@ -24153,7 +24153,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="1 2" To="1 3" />
     </Tier>
@@ -24188,7 +24188,7 @@
       <Stat Name="Adds # to # Physical Damage" From="19 38" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="1 3" To="2 4" />
     </Tier>
@@ -24223,7 +24223,7 @@
       <Stat Name="Adds # to # Fire Damage" From="45 91" To="61 106" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="1 3" To="2 3" />
     </Tier>
@@ -24258,7 +24258,7 @@
       <Stat Name="Adds # to # Cold Damage" From="37 74" To="50 87" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 6" To="1 6" />
     </Tier>
@@ -24437,7 +24437,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Spells, Adds # maximum Fire Damage to Spells" ModType="Prefix" Global="true" ItemType="Sceptre" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Spells" ModType="Prefix" Global="true" ItemType="Sceptre" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Spells" From="1 3" To="2 4" />
     </Tier>
@@ -24472,7 +24472,7 @@
       <Stat Name="Adds # to # Fire Damage to Spells" From="36 73" To="49 85" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Spells, Adds # maximum Cold Damage to Spells" ModType="Prefix" Global="true" ItemType="Sceptre" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Spells" ModType="Prefix" Global="true" ItemType="Sceptre" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Spells" From="1 2" To="1 3" />
     </Tier>
@@ -24507,7 +24507,7 @@
       <Stat Name="Adds # to # Cold Damage to Spells" From="30 60" To="40 69" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Spells, Adds # maximum Lightning Damage to Spells" ModType="Prefix" Global="true" ItemType="Sceptre" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Spells" ModType="Prefix" Global="true" ItemType="Sceptre" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Spells" From="1 4" To="1 5" />
     </Tier>
@@ -24542,7 +24542,7 @@
       <Stat Name="Adds # to # Lightning Damage to Spells" From="3 126" To="10 133" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="Sceptre" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="47 98" To="72 123" />
     </Tier>
@@ -25394,7 +25394,7 @@
       <Stat Name="+# to maximum Energy Shield" From="18" To="22" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldArmour" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldArmour" ItemGroup="Unknown">
     <Tier ItemLevel="20" Name="Haku lvl: 5" Tier="0" IsMasterCrafted="true">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="3 6" To="4 7" />
     </Tier>
@@ -26014,7 +26014,7 @@
       <Stat Name="+# to Evasion Rating" From="51" To="80" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldArmourEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldArmourEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="20" Name="Haku lvl: 5" Tier="0" IsMasterCrafted="true">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="3 6" To="4 7" />
     </Tier>
@@ -26613,7 +26613,7 @@
       <Stat Name="+# to maximum Energy Shield" From="18" To="22" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldArmourEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldArmourEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="20" Name="Haku lvl: 5" Tier="0" IsMasterCrafted="true">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="3 6" To="4 7" />
     </Tier>
@@ -27273,7 +27273,7 @@
       <Stat Name="+# to Evasion Rating" From="51" To="80" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="20" Name="Haku lvl: 5" Tier="0" IsMasterCrafted="true">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="3 6" To="4 7" />
     </Tier>
@@ -27827,7 +27827,7 @@
       <Stat Name="+# to maximum Energy Shield" From="18" To="22" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldEvasion" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldEvasion" ItemGroup="Unknown">
     <Tier ItemLevel="20" Name="Haku lvl: 5" Tier="0" IsMasterCrafted="true">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="3 6" To="4 7" />
     </Tier>
@@ -28267,7 +28267,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="2 4" To="2 5" />
     </Tier>
@@ -28302,7 +28302,7 @@
       <Stat Name="Adds # to # Physical Damage" From="29 58" To="38 68" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="3 5" To="4 6" />
     </Tier>
@@ -28337,7 +28337,7 @@
       <Stat Name="Adds # to # Fire Damage" From="68 137" To="91 160" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="2 4" To="3 5" />
     </Tier>
@@ -28372,7 +28372,7 @@
       <Stat Name="Adds # to # Cold Damage" From="56 112" To="75 131" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 9" To="1 10" />
     </Tier>
@@ -28551,7 +28551,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Spells, Adds # maximum Fire Damage to Spells" ModType="Prefix" Global="true" ItemType="Staff" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Spells" ModType="Prefix" Global="true" ItemType="Staff" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Spells" From="1 4" To="2 5" />
     </Tier>
@@ -28586,7 +28586,7 @@
       <Stat Name="Adds # to # Fire Damage to Spells" From="49 98" To="65 115" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Spells, Adds # maximum Cold Damage to Spells" ModType="Prefix" Global="true" ItemType="Staff" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Spells" ModType="Prefix" Global="true" ItemType="Staff" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Spells" From="1 3" To="2 4" />
     </Tier>
@@ -28621,7 +28621,7 @@
       <Stat Name="Adds # to # Cold Damage to Spells" From="45 89" To="60 104" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Spells, Adds # maximum Lightning Damage to Spells" ModType="Prefix" Global="true" ItemType="Staff" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Spells" ModType="Prefix" Global="true" ItemType="Staff" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Spells" From="1 6" To="1 7" />
     </Tier>
@@ -28656,7 +28656,7 @@
       <Stat Name="Adds # to # Lightning Damage to Spells" From="5 189" To="15 200" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="Staff" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="70 147" To="108 185" />
     </Tier>
@@ -29576,7 +29576,7 @@
       <Stat Name="+# to Armour" From="51" To="80" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage to Attacks, Adds # maximum Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldEvasionEnergyShield" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage to Attacks" ModType="Prefix" Global="true" ItemType="ShieldEvasionEnergyShield" ItemGroup="Unknown">
     <Tier ItemLevel="20" Name="Haku lvl: 5" Tier="0" IsMasterCrafted="true">
       <Stat Name="Adds # to # Physical Damage to Attacks" From="3 6" To="4 7" />
     </Tier>
@@ -30001,7 +30001,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="1 2" To="1 3" />
     </Tier>
@@ -30036,7 +30036,7 @@
       <Stat Name="Adds # to # Physical Damage" From="19 38" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="1 3" To="2 4" />
     </Tier>
@@ -30071,7 +30071,7 @@
       <Stat Name="Adds # to # Fire Damage" From="45 91" To="61 106" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="1 3" To="2 3" />
     </Tier>
@@ -30106,7 +30106,7 @@
       <Stat Name="Adds # to # Cold Damage" From="37 74" To="50 87" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 6" To="1 6" />
     </Tier>
@@ -30199,7 +30199,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="ThrustingOneHandedSword" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="47 98" To="72 123" />
     </Tier>
@@ -31202,7 +31202,7 @@
       <Stat Name="#% increased Physical Damage" From="170" To="179" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Physical Damage, Adds # maximum Physical Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Physical Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Glinting" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Physical Damage" From="1 2" To="1 3" />
     </Tier>
@@ -31237,7 +31237,7 @@
       <Stat Name="Adds # to # Physical Damage" From="19 38" To="25 45" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage, Adds # maximum Fire Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage" From="1 3" To="2 4" />
     </Tier>
@@ -31272,7 +31272,7 @@
       <Stat Name="Adds # to # Fire Damage" From="45 91" To="61 106" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage, Adds # maximum Cold Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
     <Tier ItemLevel="2" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage" From="1 3" To="2 3" />
     </Tier>
@@ -31307,7 +31307,7 @@
       <Stat Name="Adds # to # Cold Damage" From="37 74" To="50 87" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage, Adds # maximum Lightning Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
     <Tier ItemLevel="3" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage" From="1 6" To="1 6" />
     </Tier>
@@ -31468,7 +31468,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.4" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Fire Damage to Spells, Adds # maximum Fire Damage to Spells" ModType="Prefix" Global="true" ItemType="Wand" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Fire Damage to Spells" ModType="Prefix" Global="true" ItemType="Wand" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Heated" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Fire Damage to Spells" From="1 3" To="2 4" />
     </Tier>
@@ -31503,7 +31503,7 @@
       <Stat Name="Adds # to # Fire Damage to Spells" From="36 73" To="49 85" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Cold Damage to Spells, Adds # maximum Cold Damage to Spells" ModType="Prefix" Global="true" ItemType="Wand" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Cold Damage to Spells" ModType="Prefix" Global="true" ItemType="Wand" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Frosted" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Cold Damage to Spells" From="1 2" To="1 3" />
     </Tier>
@@ -31538,7 +31538,7 @@
       <Stat Name="Adds # to # Cold Damage to Spells" From="30 60" To="40 69" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Lightning Damage to Spells, Adds # maximum Lightning Damage to Spells" ModType="Prefix" Global="true" ItemType="Wand" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Lightning Damage to Spells" ModType="Prefix" Global="true" ItemType="Wand" ItemGroup="Unknown">
     <Tier ItemLevel="1" Name="Humming" Tier="9" IsMasterCrafted="false">
       <Stat Name="Adds # to # Lightning Damage to Spells" From="1 4" To="1 5" />
     </Tier>
@@ -31573,7 +31573,7 @@
       <Stat Name="Adds # to # Lightning Damage to Spells" From="3 126" To="10 133" />
     </Tier>
   </Affix>
-  <Affix Name="Adds # minimum Chaos Damage, Adds # maximum Chaos Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
+  <Affix Name="Adds # to # Chaos Damage" ModType="Prefix" Global="false" ItemType="Wand" ItemGroup="Unknown">
     <Tier ItemLevel="83" Name="Malicious" Tier="1" IsMasterCrafted="false">
       <Stat Name="Adds # to # Chaos Damage" From="47 98" To="72 123" />
     </Tier>
