@@ -84,7 +84,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </local:SearchableComboBox>
-                <local:ModSelector x:Name="MsQuality" CanDeselect="false" SelectedValuesChanged="ms_SelectedValuesChanged"
+                <local:ModSelector x:Name="MsQuality" CanDeselect="false" PropertyChanged="ms_PropertyChanged"
                                    Height="25">
                     <local:ModSelector.Style>
                         <Style TargetType="{x:Type local:ModSelector}">
@@ -96,8 +96,8 @@
                         </Style>
                     </local:ModSelector.Style>
                 </local:ModSelector>
-                <local:ModSelector x:Name="msImplicitMods" CanDeselect="false" SelectedValuesChanged="ms_SelectedValuesChanged"
-                                   Height="50">
+                <local:ModSelector x:Name="msImplicitMods" CanDeselect="false" PropertyChanged="ms_PropertyChanged"
+                                   Height="40">
                     <local:ModSelector.Style>
                         <Style TargetType="{x:Type local:ModSelector}">
                             <Style.Triggers>
@@ -117,31 +117,31 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="90" />
-                    <RowDefinition Height="90" />
-                    <RowDefinition Height="90" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="100" />
                 </Grid.RowDefinitions>
 
                 <Label Content="Prefixes"
                        Grid.Column="0" Grid.Row="0"/>
-                <local:ModSelector x:Name="msp1" SelectedAffixChanged="msp_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                <local:ModSelector x:Name="msp1" PropertyChanged="msp_PropertyChanged"
                        Grid.Column="0" Grid.Row="1" />
-                <local:ModSelector x:Name="msp2" SelectedAffixChanged="msp_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                <local:ModSelector x:Name="msp2" PropertyChanged="msp_PropertyChanged"
                        Grid.Column="0" Grid.Row="2" />
-                <local:ModSelector x:Name="msp3" SelectedAffixChanged="msp_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                <local:ModSelector x:Name="msp3" PropertyChanged="msp_PropertyChanged"
                        Grid.Column="0" Grid.Row="3" />
 
                 <Label Content="Suffixes"
                        Grid.Column="2" Grid.Row="0"/>
-                <local:ModSelector x:Name="mss1" SelectedAffixChanged="mss_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                <local:ModSelector x:Name="mss1" PropertyChanged="mss_PropertyChanged"
                        Grid.Column="2" Grid.Row="1" />
-                <local:ModSelector x:Name="mss2" SelectedAffixChanged="mss_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                <local:ModSelector x:Name="mss2" PropertyChanged="mss_PropertyChanged"
                        Grid.Column="2" Grid.Row="2" />
-                <local:ModSelector x:Name="mss3" SelectedAffixChanged="mss_SelectedAffixChanged" SelectedValuesChanged="ms_SelectedValuesChanged"
+                <local:ModSelector x:Name="mss3" PropertyChanged="mss_PropertyChanged"
                        Grid.Column="2" Grid.Row="3" />
 
                 <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=Window}" Width="94" Height="188"
-                                      Grid.Row="0" Grid.RowSpan="4" Margin="5"
+                                      Grid.Row="0" Grid.RowSpan="4" Margin="5 45"
                                       VerticalAlignment="Top"/>
             </Grid>
         </Grid>

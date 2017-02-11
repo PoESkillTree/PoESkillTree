@@ -4,8 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Media;
 using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Controls
 {
@@ -62,9 +65,9 @@ namespace POESKillTree.Controls
             }
         }
 
-        public double[] SelectedValues
+        public float[] SelectedValues
         {
-            get { return _sliders.Select(s => s.Value).ToArray(); }
+            get { return _sliders.Select(s => (float) s.Value).ToArray(); }
         }
 
         private readonly List<OverlayedSlider> _sliders = new List<OverlayedSlider>();
@@ -84,10 +87,6 @@ namespace POESKillTree.Controls
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public event EventHandler SelectedAffixChanged;
-
-        public event EventHandler SelectedValuesChanged;
-
         private void cbAffix_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _changingaffix = true;
@@ -99,29 +98,85 @@ namespace POESKillTree.Controls
             tbtlabel.Text = "";
             if (aff != null && aff != EmptySelection)
             {
+                var valueRuns = new List<Tuple<Run, Binding>>();
+                string statName = null;
                 for (var i = 0; i < aff.RangesPerStatAndTier.Count; i++)
                 {
                     var ranges = aff.RangesPerStatAndTier[i];
-                    var isFloatMod =
-                        ranges.Any(r => Math.Abs((int)r.From - r.From) > 1e-5 || Math.Abs((int)r.To - r.To) > 1e-5);
-                    var tics =
-                        ranges.SelectMany(
+                    var isFloatMod = ranges
+                        .Any(r => !r.From.AlmostEquals((int)r.From, 1e-5) || !r.To.AlmostEquals((int)r.To, 1e-5));
+                    var tics = ranges
+                        .SelectMany(
                             r =>
                                 Enumerable.Range((int)Math.Round(isFloatMod ? r.From * 100 : r.From),
                                     (int)Math.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
-                            .Select(f => isFloatMod ? (double)f / 100 : f);
-                    var os = new OverlayedSlider(aff.StatNames[i], new DoubleCollection(tics));
+                        .Select(f => isFloatMod ? (double)f / 100 : f)
+                        .ToList();
 
+                    var overlayInlines = Enumerable.Empty<Inline>();
+                    if (aff.StatNames[i] != statName)
+                    {
+                        statName = aff.StatNames[i];
+
+                        var inlines = new List<Inline>();
+                        var parts = statName.Split('#');
+                        var offset = 0;
+                        foreach (var part in parts.Take(parts.Length - 1))
+                        {
+                            bool alwaysShowSign;
+                            if (part.EndsWith("+"))
+                            {
+                                inlines.Add(new Run(part.Substring(0, part.Length - 1)));
+                                alwaysShowSign = true;
+                            }
+                            else
+                            {
+                                inlines.Add(new Run(part));
+                                alwaysShowSign = false;
+                            }
+                            var binding = new Binding($"SelectedValues[{i + offset}]") { Source = this };
+                            offset++;
+                            if (alwaysShowSign)
+                            {
+                                binding.StringFormat = "+0;-#";
+                            }
+                            var run = new Run();
+                            valueRuns.Add(Tuple.Create(run, binding));
+                            inlines.Add(run);
+                        }
+                        inlines.Add(new Run(parts.Last()));
+
+                        if (offset == 1 && tics.Count > 1)
+                        {
+                            overlayInlines = inlines;
+                        }
+                        else
+                        {
+                            var textBlock = new TextBlock();
+                            textBlock.Inlines.AddRange(inlines);
+                            spSLiders.Children.Add(textBlock);
+                        }
+                    }
+
+                    var os = new OverlayedSlider(overlayInlines, new DoubleCollection(tics));
                     os.ValueChanged += slValue_ValueChanged;
                     os.Tag = i;
 
                     _sliders.Add(os);
-                    spSLiders.Children.Add(os);
+                    if (tics.Count > 1)
+                    {
+                        spSLiders.Children.Add(os);
+                    }
+                }
+
+                // can't set bindings before bound values are available (sliders are added after text blocks)
+                foreach (var t in valueRuns)
+                {
+                    t.Item1.SetBinding(Run.TextProperty, t.Item2);
                 }
             }
 
             OnPropertyChanged("SelectedAffix");
-            SelectedAffixChanged?.Invoke(this, EventArgs.Empty);
 
             _changingaffix = false;
 
@@ -137,7 +192,7 @@ namespace POESKillTree.Controls
             if (aff == null)
                 return;
 
-            int indx = (int) ((OverlayedSlider) sender).Tag;
+            int indx = (int) ((FrameworkElement) sender).Tag;
 
             var tiers = aff.QueryMod(indx, (float)e.NewValue).OrderBy(m => m.Name).ToArray();
             _updatingSliders = true;
@@ -155,23 +210,20 @@ namespace POESKillTree.Controls
             }
             _updatingSliders = false;
             OnPropertyChanged("SelectedValues");
-            SelectedValuesChanged?.Invoke(this, EventArgs.Empty);
 
             tbtlabel.Text = TiersString(SelectedAffix.Query(_sliders.Select(s => (float)s.Value).ToArray()));
         }
 
         private static string TiersString(IEnumerable<ItemModTier> tiers)
         {
-            return string.Join("/", tiers.Select(s => string.Format("T{0}:{1}", s.Tier, s.Name)));
+            return string.Join("/", tiers.Select(s => $"T{s.Tier}: {s.Name}"));
         }
 
         public IEnumerable<ItemMod> GetExactMods()
         {
             if (SelectedAffix != null)
             {
-                float[] values = _sliders.Select(s => (float)s.Value).ToArray();
-
-                return SelectedAffix.ToItemMods(values);
+                return SelectedAffix.ToItemMods(SelectedValues);
             }
 
             return new ItemMod[0];

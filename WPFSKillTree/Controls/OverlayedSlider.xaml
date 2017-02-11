@@ -7,12 +7,7 @@
              Name="control"
              >
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        <Slider Grid.Column="0" Name="slValue" Minimum="0" Maximum="0" SmallChange="1" TickPlacement="TopLeft" TickFrequency="10000" Value="{Binding Value,ElementName=control}" IsSnapToTickEnabled="True" ValueChanged="slValue_ValueChanged" />
-        <TextBlock Name="tbOverlay" Grid.Column="0" Opacity="0.7" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" ></TextBlock>
-        <TextBlock Grid.Column="1" TextAlignment="Center" Width="30" Text="{Binding Value,ElementName=slValue, StringFormat=###0.##}"/>
+        <Slider Name="slValue" SmallChange="1" TickPlacement="TopLeft" TickFrequency="10000" Value="{Binding Value,ElementName=control}" IsSnapToTickEnabled="True" ValueChanged="slValue_ValueChanged" />
+        <TextBlock Name="tbOverlay" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" ></TextBlock>
     </Grid>
 </UserControl>

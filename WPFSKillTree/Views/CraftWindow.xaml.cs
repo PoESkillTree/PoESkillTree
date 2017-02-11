@@ -93,9 +93,6 @@ namespace POESKillTree.Views
 
         private readonly SimpleMonitor _monitor = new SimpleMonitor();
 
-        private ModSelector[] _selectedPreff = new ModSelector[0];
-        private ModSelector[] _selectedSuff = new ModSelector[0];
-
         private readonly EquipmentData _equipmentData;
 
         public CraftWindow(EquipmentData equipmentData)
@@ -174,14 +171,7 @@ namespace POESKillTree.Views
                 if (type == ItemType.Any)
                 {
                     var group = (ItemGroup) GroupSelection.SelectedItem;
-                    if (group == ItemGroup.Any)
-                    {
-                        BaseList = _eligibleBases;
-                    }
-                    else
-                    {
-                        BaseList = _basesPerGroup[group];
-                    }
+                    BaseList = group == ItemGroup.Any ? _eligibleBases : _basesPerGroup[group];
                 }
                 else
                 {
@@ -249,10 +239,20 @@ namespace POESKillTree.Views
             d.Dispose();
         }
 
-        private void msp_SelectedAffixChanged(object sender, EventArgs e)
+        private void msp_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(ModSelector.SelectedValues))
+            {
+                RecalculateItem();
+                return;
+            }
+            if (e.PropertyName != nameof(ModSelector.SelectedAffix))
+            {
+                return;
+            }
+
             var d = _monitor.Enter();
-            var ms = sender as ModSelector;
+            var ms = (ModSelector) sender;
 
             if (msp1 != ms)
                 msp1.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp3.SelectedAffix }).ToList();
@@ -262,7 +262,7 @@ namespace POESKillTree.Views
 
             if (msp3 != ms)
                 msp3.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp1.SelectedAffix }).ToList();
-            _selectedPreff = new[] { msp1, msp2, msp3 }.Where(s => s.SelectedAffix != null).ToArray();
+
             d.Dispose();
         }
 
@@ -276,27 +276,30 @@ namespace POESKillTree.Views
             Item.NameLine = "";
             Item.TypeLine = Item.BaseType.Name;
 
-            if (_selectedPreff.Length + _selectedSuff.Length == 0)
+            var selectedPreff = new[] { msp1, msp2, msp3 }.Where(s => s.SelectedAffix != null).ToArray();
+            var selectedSuff = new[] { mss1, mss2, mss3 }.Where(s => s.SelectedAffix != null).ToArray();
+
+            if (selectedPreff.Length + selectedSuff.Length == 0)
             {
                 Item.Frame = FrameType.White;
             }
-            else if (_selectedPreff.Length <= 1 && _selectedSuff.Length <= 1)
+            else if (selectedPreff.Length <= 1 && selectedSuff.Length <= 1)
             {
                 Item.Frame = FrameType.Magic;
                 var typeline = "";
 
-                if (_selectedPreff.Length > 0)
+                if (selectedPreff.Length > 0)
                 {
-                    var pref = _selectedPreff[0];
-                    typeline = pref.SelectedAffix.Query(pref.SelectedValues.Select(v => (float)v)).First().Name + " ";
+                    var pref = selectedPreff[0];
+                    typeline = pref.SelectedAffix.Query(pref.SelectedValues).First().Name + " ";
                 }
 
                 typeline += Item.BaseType;
 
-                if (_selectedSuff.Length > 0)
+                if (selectedSuff.Length > 0)
                 {
-                    var suff = _selectedSuff[0];
-                    typeline += " " + suff.SelectedAffix.Query(suff.SelectedValues.Select(v => (float)v)).First().Name;
+                    var suff = selectedSuff[0];
+                    typeline += " " + suff.SelectedAffix.Query(suff.SelectedValues).First().Name;
                 }
 
                 Item.TypeLine = typeline;
@@ -307,8 +310,8 @@ namespace POESKillTree.Views
                 Item.NameLine = "Crafted " + Item.BaseType;
             }
 
-            var prefixes = _selectedPreff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
-            var suffixes = _selectedSuff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
+            var prefixes = selectedPreff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
+            var suffixes = selectedSuff.Select(p => p.GetExactMods()).SelectMany(m => m).ToList();
             var allmods = prefixes.Concat(suffixes)
                 .GroupBy(m => m.Attribute)
                 .Select(g => g.Aggregate((m1, m2) => m1.Sum(m2)))
@@ -322,11 +325,7 @@ namespace POESKillTree.Views
                 Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
             }
 
-            var quality = 0;
-            if (MsQuality.Affixes != null && MsQuality.SelectedValues[0] > 0)
-            {
-                quality = (int) MsQuality.SelectedValues[0];
-            }
+            var quality = (int) MsQuality.SelectedValues.FirstOrDefault();
             Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties(quality));
             ApplyLocals();
 
@@ -426,9 +425,19 @@ namespace POESKillTree.Views
             }
         }
 
-        private void mss_SelectedAffixChanged(object sender, EventArgs e)
+        private void mss_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var ms = sender as ModSelector;
+            if (e.PropertyName == nameof(ModSelector.SelectedValues))
+            {
+                RecalculateItem();
+                return;
+            }
+            if (e.PropertyName != nameof(ModSelector.SelectedAffix))
+            {
+                return;
+            }
+
+            var ms = (ModSelector) sender;
             if (mss1 != ms)
                 mss1.Affixes = _suffixes.Except(new[] { mss2.SelectedAffix, mss3.SelectedAffix }).ToList();
 
@@ -438,14 +447,15 @@ namespace POESKillTree.Views
             if (mss3 != ms)
                 mss3.Affixes = _suffixes.Except(new[] { mss2.SelectedAffix, mss1.SelectedAffix }).ToList();
 
-            _selectedSuff = new[] { mss1, mss2, mss3 }.Where(s => s.SelectedAffix != null).ToArray();
-
             RecalculateItem();
         }
 
-        private void ms_SelectedValuesChanged(object sender, EventArgs e)
+        private void ms_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            RecalculateItem();
+            if (e.PropertyName == nameof(ModSelector.SelectedValues))
+            {
+                RecalculateItem();
+            }
         }
 
         public bool DialogResult { get; private set; }

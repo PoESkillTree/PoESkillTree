@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace POESKillTree.Controls
@@ -25,11 +27,11 @@ namespace POESKillTree.Controls
 
         }
 
-        public OverlayedSlider(string overlayText, DoubleCollection ticks)
+        public OverlayedSlider(IEnumerable<Inline> overlayInlines, DoubleCollection ticks)
         {
             InitializeComponent();
 
-            tbOverlay.Text = overlayText;
+            tbOverlay.Inlines.AddRange(overlayInlines);
             slValue.Minimum = ticks.First();
             slValue.Maximum = ticks.Last();
             slValue.Ticks = ticks;
@@ -37,8 +39,7 @@ namespace POESKillTree.Controls
 
         private void OnPropertyChanged(string prop)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,10 +48,7 @@ namespace POESKillTree.Controls
         private void slValue_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Value = e.NewValue;
-            if (ValueChanged != null)
-            {
-                ValueChanged(this, e);
-            }
+            ValueChanged?.Invoke(this, e);
         }
 
     }

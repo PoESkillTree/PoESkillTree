@@ -66,7 +66,7 @@ namespace POESKillTree.Model.Items.Affixes
 
             var range = Ranges[0];
             var values = new List<float> { range.From };
-            if (!range.From.AlmostEquals(range.To, 1e-5F))
+            if (!range.From.AlmostEquals(range.To, 1e-5))
             {
                 values.Add(range.To);
             }

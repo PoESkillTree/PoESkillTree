@@ -4,7 +4,7 @@ namespace POESKillTree.Utils.Extensions
 {
     public static class NumberExtensions
     {
-        public static bool AlmostEquals(this float x, float y, float delta)
+        public static bool AlmostEquals(this float x, float y, double delta)
         {
             return Math.Abs(x - y) < delta;
         }

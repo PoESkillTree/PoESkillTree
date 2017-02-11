@@ -292,7 +292,7 @@ namespace UpdateDB.DataLoading
             {
                 var from = SingularValue<float>(_printouts, rdfPredicateFrom, 0);
                 var to = SingularValue<float>(_printouts, rdfPredicateTo, 0);
-                if (from.AlmostEquals(0, 0.001F) && to.AlmostEquals(0, 0.001F)) // stats don't use many decimal places
+                if (from.AlmostEquals(0, 0.001) && to.AlmostEquals(0, 0.001)) // stats don't use many decimal places
                     return;
                 _properties.Add(new XmlStat
                 {
