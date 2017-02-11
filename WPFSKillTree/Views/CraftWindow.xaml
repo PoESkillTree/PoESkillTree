@@ -7,7 +7,9 @@
         xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
         xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
         xmlns:views="clr-namespace:POESKillTree.Views" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewsCrafting="clr-namespace:POESKillTree.Views.Crafting"
+        mc:Ignorable="d"
         x:Class="POESKillTree.Views.CraftWindow"
         x:Name="Window" CloseButtonVisibility="Collapsed" d:DataContext="{d:DesignInstance views:CraftViewModel}">
     <dialogs:CloseableBaseDialog.Title>
@@ -48,7 +50,7 @@
                         <ComboBox.Style>
                             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding TypeList.Length, ElementName=Window}" Value="1">
+                                    <DataTrigger Binding="{Binding TypeList.Count, ElementName=Window}" Value="1">
                                         <Setter Property="Grid.ColumnSpan" Value="2" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -65,7 +67,7 @@
                         <ComboBox.Style>
                             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding TypeList.Length, ElementName=Window}" Value="1">
+                                    <DataTrigger Binding="{Binding TypeList.Count, ElementName=Window}" Value="1">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -84,30 +86,10 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </local:SearchableComboBox>
-                <local:ModSelector x:Name="MsQuality" CanDeselect="false" PropertyChanged="ms_PropertyChanged"
-                                   Height="25">
-                    <local:ModSelector.Style>
-                        <Style TargetType="{x:Type local:ModSelector}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Affixes, ElementName=MsQuality}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Hidden"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </local:ModSelector.Style>
-                </local:ModSelector>
-                <local:ModSelector x:Name="msImplicitMods" CanDeselect="false" PropertyChanged="ms_PropertyChanged"
-                                   Height="40">
-                    <local:ModSelector.Style>
-                        <Style TargetType="{x:Type local:ModSelector}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Affixes, ElementName=msImplicitMods}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Hidden"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </local:ModSelector.Style>
-                </local:ModSelector>
+                <viewsCrafting:ModSelectorView Height="25"
+                                               DataContext="{Binding MsQuality, ElementName=Window}" />
+                <viewsCrafting:ModSelectorView Height="40"
+                                               DataContext="{Binding MsImplicits, ElementName=Window}" />
             </StackPanel>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -124,21 +106,41 @@
 
                 <Label Content="Prefixes"
                        Grid.Column="0" Grid.Row="0"/>
-                <local:ModSelector x:Name="msp1" PropertyChanged="msp_PropertyChanged"
-                       Grid.Column="0" Grid.Row="1" />
-                <local:ModSelector x:Name="msp2" PropertyChanged="msp_PropertyChanged"
-                       Grid.Column="0" Grid.Row="2" />
-                <local:ModSelector x:Name="msp3" PropertyChanged="msp_PropertyChanged"
-                       Grid.Column="0" Grid.Row="3" />
+                <viewsCrafting:ModSelectorView DataContext="{Binding MsPrefix[0], ElementName=Window}"
+                                               Grid.Column="0" Grid.Row="1" />
+                <viewsCrafting:ModSelectorView DataContext="{Binding MsPrefix[1], ElementName=Window}"
+                                               Grid.Column="0" Grid.Row="2" />
+                <viewsCrafting:ModSelectorView DataContext="{Binding MsPrefix[2], ElementName=Window}"
+                                               Grid.Column="0" Grid.Row="3">
+                    <viewsCrafting:ModSelectorView.Style>
+                        <Style TargetType="viewsCrafting:ModSelectorView">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Item.ItemGroup, ElementName=Window}" Value="Jewel">
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </viewsCrafting:ModSelectorView.Style>
+                </viewsCrafting:ModSelectorView>
 
                 <Label Content="Suffixes"
                        Grid.Column="2" Grid.Row="0"/>
-                <local:ModSelector x:Name="mss1" PropertyChanged="mss_PropertyChanged"
-                       Grid.Column="2" Grid.Row="1" />
-                <local:ModSelector x:Name="mss2" PropertyChanged="mss_PropertyChanged"
-                       Grid.Column="2" Grid.Row="2" />
-                <local:ModSelector x:Name="mss3" PropertyChanged="mss_PropertyChanged"
-                       Grid.Column="2" Grid.Row="3" />
+                <viewsCrafting:ModSelectorView DataContext="{Binding MsSuffix[0], ElementName=Window}"
+                                               Grid.Column="2" Grid.Row="1" />
+                <viewsCrafting:ModSelectorView DataContext="{Binding MsSuffix[1], ElementName=Window}"
+                                               Grid.Column="2" Grid.Row="2" />
+                <viewsCrafting:ModSelectorView DataContext="{Binding MsSuffix[2], ElementName=Window}"
+                                               Grid.Column="2" Grid.Row="3">
+                    <viewsCrafting:ModSelectorView.Style>
+                        <Style TargetType="viewsCrafting:ModSelectorView">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Item.ItemGroup, ElementName=Window}" Value="Jewel">
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </viewsCrafting:ModSelectorView.Style>
+                </viewsCrafting:ModSelectorView>
 
                 <local:ItemVisualizer Grid.Column="1" Item="{Binding Item, ElementName=Window}" Width="94" Height="188"
                                       Grid.Row="0" Grid.RowSpan="4" Margin="5 45"

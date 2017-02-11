@@ -1,5 +1,4 @@
-﻿using POESKillTree.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,11 +8,13 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using MB.Algodat;
+using MoreLinq;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
+using POESKillTree.ViewModels.Crafting;
 
 namespace POESKillTree.Views
 {
@@ -74,6 +75,15 @@ namespace POESKillTree.Views
             private set { _blist = value; OnPropertyChanged(); }
         }
 
+        public ModSelectorViewModel MsQuality { get; } = new ModSelectorViewModel(false);
+        public ModSelectorViewModel MsImplicits { get; } = new ModSelectorViewModel(false);
+        public IReadOnlyList<ModSelectorViewModel> MsPrefix { get; } = new[] {
+            new ModSelectorViewModel(), new ModSelectorViewModel(), new ModSelectorViewModel()
+        };
+        public IReadOnlyList<ModSelectorViewModel> MsSuffix { get; } = new[] {
+            new ModSelectorViewModel(), new ModSelectorViewModel(), new ModSelectorViewModel()
+        };
+
         public Item Item
         {
             get
@@ -95,6 +105,8 @@ namespace POESKillTree.Views
 
         private readonly EquipmentData _equipmentData;
 
+        private bool _changingBase;
+
         public CraftWindow(EquipmentData equipmentData)
         {
             _monitor.Freed += (sender, args) => RecalculateItem();
@@ -108,6 +120,11 @@ namespace POESKillTree.Views
             _basesPerType = _eligibleBases.GroupBy(b => b.ItemType)
                 .ToDictionary(g => g.Key, g => new List<ItemBase>(g));
             _eligibleTypes = Types.Where(t => t == ItemType.Any || _basesPerType.ContainsKey(t)).ToList();
+
+            MsQuality.PropertyChanged += MsOnPropertyChanged;
+            MsImplicits.PropertyChanged += MsOnPropertyChanged;
+            MsPrefix.ForEach(ms => ms.PropertyChanged += MsPrefixOnPropertyChanged);
+            MsSuffix.ForEach(ms => ms.PropertyChanged += MsSuffixOnPropertyChanged);
 
             InitializeComponent();
         }
@@ -197,23 +214,22 @@ namespace POESKillTree.Views
         private void UpdateBase()
         {
             var d = _monitor.Enter();
-            msp1.Affixes = msp2.Affixes = msp3.Affixes = mss1.Affixes = mss1.Affixes = mss2.Affixes = mss3.Affixes = null;
 
             var ibase = (ItemBase)BaseSelection.SelectedItem;
             Item = ibase.CreateItem();
 
             if (ibase.ImplicitMods.Any())
             {
-                msImplicitMods.Affixes = new List<Affix>
+                MsImplicits.Affixes = new List<Affix>
                 {
                     new Affix(new[] { new ItemModTier(ibase.ImplicitMods) })
                 };
-                Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
+                Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
                 ApplyLocals();
             }
             else
             {
-                msImplicitMods.Affixes = null;
+                MsImplicits.Affixes = null;
             }
             if (ibase.CanHaveQuality)
             {
@@ -231,37 +247,20 @@ namespace POESKillTree.Views
             _prefixes = aaff.Where(a => a.ModType == ModType.Prefix).ToList();
             _suffixes = aaff.Where(a => a.ModType == ModType.Suffix).ToList();
 
-            msp1.Affixes = msp2.Affixes = msp3.Affixes = _prefixes;
-            mss1.Affixes = mss2.Affixes = mss3.Affixes = _suffixes;
-            msp3.Visibility = Item.ItemGroup == ItemGroup.Jewel ? Visibility.Hidden : Visibility.Visible;
-            mss3.Visibility = Item.ItemGroup == ItemGroup.Jewel ? Visibility.Hidden : Visibility.Visible;
-
-            d.Dispose();
-        }
-
-        private void msp_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ModSelector.SelectedValues))
+            _changingBase = true;
+            MsPrefix.ForEach(ms => ms.Affixes = _prefixes);
+            foreach (var ms in MsPrefix)
             {
-                RecalculateItem();
-                return;
+                var blockedPrefixes = MsPrefix.Where(m => m != ms).Select(m => m.SelectedAffix);
+                ms.Affixes = _prefixes.Except(blockedPrefixes).ToList();
             }
-            if (e.PropertyName != nameof(ModSelector.SelectedAffix))
+            MsSuffix.ForEach(ms => ms.Affixes = _suffixes);
+            foreach (var ms in MsSuffix)
             {
-                return;
+                var blockedPrefixes = MsSuffix.Where(m => m != ms).Select(m => m.SelectedAffix);
+                ms.Affixes = _suffixes.Except(blockedPrefixes).ToList();
             }
-
-            var d = _monitor.Enter();
-            var ms = (ModSelector) sender;
-
-            if (msp1 != ms)
-                msp1.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp3.SelectedAffix }).ToList();
-
-            if (msp2 != ms)
-                msp2.Affixes = _prefixes.Except(new[] { msp1.SelectedAffix, msp3.SelectedAffix }).ToList();
-
-            if (msp3 != ms)
-                msp3.Affixes = _prefixes.Except(new[] { msp2.SelectedAffix, msp1.SelectedAffix }).ToList();
+            _changingBase = false;
 
             d.Dispose();
         }
@@ -276,8 +275,8 @@ namespace POESKillTree.Views
             Item.NameLine = "";
             Item.TypeLine = Item.BaseType.Name;
 
-            var selectedPreff = new[] { msp1, msp2, msp3 }.Where(s => s.SelectedAffix != null).ToArray();
-            var selectedSuff = new[] { mss1, mss2, mss3 }.Where(s => s.SelectedAffix != null).ToArray();
+            var selectedPreff = MsPrefix.Where(s => !s.IsEmptySelection).ToArray();
+            var selectedSuff = MsSuffix.Where(s => !s.IsEmptySelection).ToArray();
 
             if (selectedPreff.Length + selectedSuff.Length == 0)
             {
@@ -319,11 +318,7 @@ namespace POESKillTree.Views
 
             Item.ExplicitMods = allmods.Where(m => m.ParentTier == null || !m.ParentTier.IsMasterCrafted).ToList();
             Item.CraftedMods = allmods.Where(m => m.ParentTier != null && m.ParentTier.IsMasterCrafted).ToList();
-
-            if (msImplicitMods.Affixes != null)
-            {
-                Item.ImplicitMods = msImplicitMods.GetExactMods().ToList();
-            }
+            Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
 
             var quality = (int) MsQuality.SelectedValues.FirstOrDefault();
             Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties(quality));
@@ -425,34 +420,69 @@ namespace POESKillTree.Views
             }
         }
 
-        private void mss_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void MsPrefixOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ModSelector.SelectedValues))
+            if (_changingBase)
+                return;
+
+            if (e.PropertyName == nameof(ModSelectorViewModel.SelectedValues))
             {
                 RecalculateItem();
                 return;
             }
-            if (e.PropertyName != nameof(ModSelector.SelectedAffix))
+            if (e.PropertyName != nameof(ModSelectorViewModel.SelectedAffix))
             {
                 return;
             }
 
-            var ms = (ModSelector) sender;
-            if (mss1 != ms)
-                mss1.Affixes = _suffixes.Except(new[] { mss2.SelectedAffix, mss3.SelectedAffix }).ToList();
+            using (_monitor.Enter())
+            {
+                var ms = (ModSelectorViewModel) sender;
 
-            if (mss2 != ms)
-                mss2.Affixes = _suffixes.Except(new[] { mss1.SelectedAffix, mss3.SelectedAffix }).ToList();
-
-            if (mss3 != ms)
-                mss3.Affixes = _suffixes.Except(new[] { mss2.SelectedAffix, mss1.SelectedAffix }).ToList();
-
-            RecalculateItem();
+                foreach (var other in MsPrefix)
+                {
+                    if (other != ms)
+                    {
+                        var blockedPrefixes = MsPrefix.Where(m => m != other).Select(m => m.SelectedAffix);
+                        other.Affixes = _prefixes.Except(blockedPrefixes).ToList();
+                    }
+                }
+            }
         }
 
-        private void ms_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void MsSuffixOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ModSelector.SelectedValues))
+            if (_changingBase)
+                return;
+
+            if (e.PropertyName == nameof(ModSelectorViewModel.SelectedValues))
+            {
+                RecalculateItem();
+                return;
+            }
+            if (e.PropertyName != nameof(ModSelectorViewModel.SelectedAffix))
+            {
+                return;
+            }
+
+            using (_monitor.Enter())
+            {
+                var ms = (ModSelectorViewModel)sender;
+
+                foreach (var other in MsSuffix)
+                {
+                    if (other != ms)
+                    {
+                        var blockedPrefixes = MsSuffix.Where(m => m != other).Select(m => m.SelectedAffix);
+                        other.Affixes = _suffixes.Except(blockedPrefixes).ToList();
+                    }
+                }
+            }
+        }
+
+        private void MsOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ModSelectorViewModel.SelectedValues))
             {
                 RecalculateItem();
             }

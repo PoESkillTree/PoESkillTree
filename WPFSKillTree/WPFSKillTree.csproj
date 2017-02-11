@@ -209,8 +209,12 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="ViewModels\Crafting\ModSelectorViewModel.cs" />
     <Compile Include="ViewModels\Crafting\SliderGroupViewModel.cs" />
     <Compile Include="ViewModels\Crafting\SliderViewModel.cs" />
+    <Compile Include="Views\Crafting\ModSelectorView.xaml.cs">
+      <DependentUpon>ModSelectorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Crafting\SliderGroupView.xaml.cs">
       <DependentUpon>SliderGroupView.xaml</DependentUpon>
     </Compile>
@@ -257,9 +261,6 @@
       <DependentUpon>ItemVisualizer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MenuItemExtensions.cs" />
-    <Compile Include="Controls\ModSelector.xaml.cs">
-      <DependentUpon>ModSelector.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Stash.xaml.cs">
       <DependentUpon>Stash.xaml</DependentUpon>
     </Compile>
@@ -532,6 +533,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Crafting\ModSelectorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Crafting\SliderGroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -607,10 +612,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ItemVisualizer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ModSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
