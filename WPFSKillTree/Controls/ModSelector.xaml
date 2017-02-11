@@ -4,7 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:affixes="clr-namespace:POESKillTree.Model.Items.Affixes"
+             xmlns:viewModelsCrafting="clr-namespace:POESKillTree.ViewModels.Crafting"
+             xmlns:viewsCrafting="clr-namespace:POESKillTree.Views.Crafting"
              mc:Ignorable="d" d:DesignWidth="300" Name="control">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewModelsCrafting:SliderViewModel}">
+            <viewsCrafting:SliderView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModelsCrafting:SliderGroupViewModel}">
+            <viewsCrafting:SliderGroupView />
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <StackPanel>
             <ComboBox ItemsSource="{Binding Affixes,ElementName=control}" Name="cbAffix" SelectionChanged="cbAffix_SelectionChanged">
@@ -23,14 +33,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <StackPanel Name="spSLiders">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </StackPanel.Resources>
-            </StackPanel>
+            <ItemsControl ItemsSource="{Binding SliderGroups, ElementName=control}" />
             <TextBlock Name="tbtlabel">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">

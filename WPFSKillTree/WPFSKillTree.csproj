@@ -209,6 +209,14 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="ViewModels\Crafting\SliderGroupViewModel.cs" />
+    <Compile Include="ViewModels\Crafting\SliderViewModel.cs" />
+    <Compile Include="Views\Crafting\SliderGroupView.xaml.cs">
+      <DependentUpon>SliderGroupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Crafting\SliderView.xaml.cs">
+      <DependentUpon>SliderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\Items\ItemImageService.cs" />
     <Compile Include="Model\Items\UniqueBase.cs" />
     <Compile Include="Model\Items\XmlUniqueList.cs" />
@@ -251,9 +259,6 @@
     <Compile Include="Controls\MenuItemExtensions.cs" />
     <Compile Include="Controls\ModSelector.xaml.cs">
       <DependentUpon>ModSelector.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\OverlayedSlider.xaml.cs">
-      <DependentUpon>OverlayedSlider.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Stash.xaml.cs">
       <DependentUpon>Stash.xaml</DependentUpon>
@@ -527,6 +532,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Crafting\SliderGroupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Crafting\SliderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ItemFilter\Views\ColorButtonDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -598,10 +611,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ModSelector.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\OverlayedSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
