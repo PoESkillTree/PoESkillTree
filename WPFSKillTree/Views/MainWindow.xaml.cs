@@ -34,6 +34,8 @@ using POESKillTree.Utils;
 using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.ViewModels;
+using POESKillTree.ViewModels.Crafting;
+using POESKillTree.Views.Crafting;
 using Attribute = POESKillTree.ViewModels.Attribute;
 
 namespace POESKillTree.Views
@@ -2049,17 +2051,23 @@ namespace POESKillTree.Views
 
         private async void Button_Craft_Click(object sender, RoutedEventArgs e)
         {
-            var w = new CraftWindow(PersistentData.EquipmentData);
-            await this.ShowDialogAsync(new CraftViewModel(), w);
-            if (!w.DialogResult) return;
+            var vm = new CraftingViewModel(PersistentData.EquipmentData);
+            var v = new CraftingView();
+            if (!await this.ShowDialogAsync(vm, v))
+            {
+                return;
+            }
 
-            var item = w.Item;
+            var item = vm.Item;
+            item.SetJsonBase();
             if (PersistentData.StashItems.Count > 0)
+            {
                 item.Y = PersistentData.StashItems.Max(i => i.Y + i.Height);
+            }
 
             Stash.Items.Add(item);
 
-            Stash.AddHighlightRange(new IntRange() { From = item.Y, Range = item.Height });
+            Stash.AddHighlightRange(new IntRange { From = item.Y, Range = item.Height });
             Stash.asBar.Value = item.Y;
         }
 

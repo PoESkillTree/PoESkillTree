@@ -1,0 +1,173 @@
+﻿<dialogs:CloseableBaseDialog x:Class="POESKillTree.Views.Crafting.CraftingView"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                             xmlns:local="clr-namespace:POESKillTree.Views.Crafting"
+                             xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+                             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+                             xmlns:controls="clr-namespace:POESKillTree.Controls"
+                             xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Crafting"
+                             xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
+                             xmlns:items="clr-namespace:POESKillTree.Model.Items"
+                             mc:Ignorable="d" 
+                             d:DataContext="{d:DesignInstance viewModels:CraftingViewModel}"
+                             CloseButtonVisibility="Collapsed">
+    <dialogs:CloseableBaseDialog.Resources>
+        <converter:EnumToSpacedStringConverter x:Key="EnumToSpacedStringConverter" />
+        <viewModels:CraftingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
+        <Style x:Key="HideForJewelsStyle" TargetType="local:ModSelectorView">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Data.Item.ItemGroup, Source={StaticResource VmProxy}}"
+                             Value="Jewel">
+                    <Setter Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </dialogs:CloseableBaseDialog.Resources>
+    
+    <dialogs:CloseableBaseDialog.Title>
+        <l:Catalog Message="Craft Window"/>
+    </dialogs:CloseableBaseDialog.Title>
+    <dialogs:CloseableBaseDialog.DialogLeft>
+        <controls:ItemTooltip HorizontalAlignment="Center" VerticalAlignment="Top"
+                              Margin="10 52"
+                              Item="{Binding Item}" />
+    </dialogs:CloseableBaseDialog.DialogLeft>
+    
+    <Grid MinWidth="400" Margin="0 5 0 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0"
+                              ItemsSource="{Binding GroupList}"
+                              SelectedItem="{Binding SelectedGroup}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TypeList.Count}" Value="1">
+                                        <Setter Property="Grid.ColumnSpan" Value="2" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding TypeList}"
+                              SelectedItem="{Binding SelectedType}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TypeList.Count}" Value="1">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+                </Grid>
+                <controls:SearchableComboBox ItemsSource="{Binding BaseList}"
+                                             SelectedItem="{Binding SelectedBase}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type items:ItemBase}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Height="20" VerticalAlignment="Center" Source="{Binding Image.ImageSource.Result}"
+                                       StretchDirection="DownOnly" Margin="0,0,3,0"/>
+                                <TextBlock VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} (ilvl {1})">
+                                            <Binding Path="Name" />
+                                            <Binding Path="Level" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </controls:SearchableComboBox>
+                <local:ModSelectorView Height="25"
+                                       DataContext="{Binding MsQuality}" />
+                <local:ModSelectorView Height="40"
+                                       DataContext="{Binding MsImplicits}" />
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="100" />
+                </Grid.RowDefinitions>
+
+                <Label Content="Prefixes"
+                       Grid.Column="0" Grid.Row="0"/>
+                <local:ModSelectorView Grid.Column="0" Grid.Row="1"
+                                       DataContext="{Binding MsPrefix[0]}" />
+                <local:ModSelectorView Grid.Column="0" Grid.Row="2"
+                                       DataContext="{Binding MsPrefix[1]}" />
+                <local:ModSelectorView Grid.Column="0" Grid.Row="3"
+                                       DataContext="{Binding MsPrefix[2]}"
+                                       Style="{StaticResource HideForJewelsStyle}" />
+
+                <Label Content="Suffixes"
+                       Grid.Column="2" Grid.Row="0"/>
+                <local:ModSelectorView Grid.Column="2" Grid.Row="1"
+                                       DataContext="{Binding MsSuffix[0]}" />
+                <local:ModSelectorView Grid.Column="2" Grid.Row="2"
+                                       DataContext="{Binding MsSuffix[1]}" />
+                <local:ModSelectorView Grid.Column="2" Grid.Row="3"
+                                       DataContext="{Binding MsSuffix[2]}"
+                                       Style="{StaticResource HideForJewelsStyle}" />
+
+                <controls:ItemVisualizer Grid.Row="0" Grid.Column="1" Grid.RowSpan="4"
+                                         Width="94" Height="188"
+                                         Margin="5 45"
+                                         VerticalAlignment="Top"
+                                         Item="{Binding Item}"/>
+            </Grid>
+        </Grid>
+
+        <StackPanel Grid.Row="1"
+                    Style="{StaticResource DialogPanel}">
+            <Button Style="{StaticResource DynamicDialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource True}"
+                    IsDefault="True">
+                <l:Catalog Message="Create Item"/>
+            </Button>
+            <Button Style="{StaticResource DynamicDialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource False}"
+                    IsCancel="True">
+                <l:Catalog Message="Cancel"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</dialogs:CloseableBaseDialog>

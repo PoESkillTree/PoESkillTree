@@ -11,7 +11,7 @@ namespace POESKillTree.ViewModels.Crafting
 {
     public class ModSelectorViewModel : Notifier
     {
-        private static readonly Affix EmptySelection = new Affix(new ItemModTier[0]);
+        private static readonly Affix EmptySelection = new Affix();
 
         public bool CanDeselct { get; }
 
@@ -92,7 +92,7 @@ namespace POESKillTree.ViewModels.Crafting
                 var texts = new Queue<string>();
                 var sliderShowText = false;
                 string statName = null;
-                for (var i = 0; i < SelectedAffix.RangesPerStatAndTier.Count; i++)
+                for (var i = 0; i < SelectedAffix.RangesPerTreeAndTier.Count; i++)
                 {
                     if (SelectedAffix.StatNames[i] != statName)
                     {
@@ -120,7 +120,7 @@ namespace POESKillTree.ViewModels.Crafting
                         }
                     }
 
-                    var ranges = SelectedAffix.RangesPerStatAndTier[i];
+                    var ranges = SelectedAffix.RangesPerTreeAndTier[i];
                     var isFloatMod = ranges
                         .Any(r => !r.From.AlmostEquals((int)r.From, 1e-5) || !r.To.AlmostEquals((int)r.To, 1e-5));
                     var ticks = ranges

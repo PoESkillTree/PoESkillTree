@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
 using MB.Algodat;
 using MoreLinq;
 using POESKillTree.Common.ViewModels;
@@ -14,31 +11,21 @@ using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
-using POESKillTree.ViewModels.Crafting;
+using POESKillTree.Utils.Wpf;
 
-namespace POESKillTree.Views
+namespace POESKillTree.ViewModels.Crafting
 {
-    // Necessary because CraftWindow.Item is not accessable from content in BaseDialog.DialogLeft.
-    public class CraftViewModel : CloseableViewModel
+    public class CraftingViewModelProxy : BindingProxy<CraftingViewModel>
     {
-        private Item _item;
-        public Item Item
-        {
-            get { return _item; }
-            set { SetProperty(ref _item, value); }
-        }
     }
-    
-    /// <summary>
-    /// Interaction logic for CraftWindow.xaml
-    /// </summary>
-    public partial class CraftWindow : INotifyPropertyChanged
+
+    public class CraftingViewModel : CloseableViewModel<bool>
     {
         private const string QualityModName = "Quality: +#%";
 
         private static readonly ItemGroup[] Groups = Enum.GetValues(typeof(ItemGroup))
             .Cast<ItemGroup>()
-            .Except(new [] {ItemGroup.Unknown, ItemGroup.Gem})
+            .Except(new[] { ItemGroup.Unknown, ItemGroup.Gem })
             .ToArray();
 
         private static readonly ItemType[] Types = Enum.GetValues(typeof(ItemType))
@@ -54,25 +41,42 @@ namespace POESKillTree.Views
         public IReadOnlyList<ItemGroup> GroupList
         {
             get { return _groupList; }
-            private set { _groupList = value; OnPropertyChanged(); }
+            private set { SetProperty(ref _groupList, value); }
+        }
+
+        private ItemGroup _selectedGroup;
+        public ItemGroup SelectedGroup
+        {
+            get { return _selectedGroup; }
+            set { SetProperty(ref _selectedGroup, value, OnSelectedGroupChanged); }
         }
 
         private IReadOnlyList<ItemType> _typeList;
         public IReadOnlyList<ItemType> TypeList
         {
             get { return _typeList; }
-            private set
-            {
-                _typeList = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _typeList, value); }
         }
 
-        private IReadOnlyList<ItemBase> _blist;
+        private ItemType _selectedType;
+        public ItemType SelectedType
+        {
+            get { return _selectedType; }
+            set { SetProperty(ref _selectedType, value, UpdateBaseList); }
+        }
+
+        private IReadOnlyList<ItemBase> _baseList;
         public IReadOnlyList<ItemBase> BaseList
         {
-            get { return _blist; }
-            private set { _blist = value; OnPropertyChanged(); }
+            get { return _baseList; }
+            private set { SetProperty(ref _baseList, value); }
+        }
+
+        private ItemBase _selectedBase;
+        public ItemBase SelectedBase
+        {
+            get { return _selectedBase; }
+            set { SetProperty(ref _selectedBase, value, UpdateBase); }
         }
 
         public ModSelectorViewModel MsQuality { get; } = new ModSelectorViewModel(false);
@@ -84,18 +88,11 @@ namespace POESKillTree.Views
             new ModSelectorViewModel(), new ModSelectorViewModel(), new ModSelectorViewModel()
         };
 
+        private Item _item;
         public Item Item
         {
-            get
-            {
-                var vm = DataContext as CraftViewModel;
-                return vm == null ? null : ((CraftViewModel) DataContext).Item;
-            }
-            private set
-            {
-                ((CraftViewModel) DataContext).Item = value;
-                OnPropertyChanged();
-            }
+            get { return _item; }
+            set { SetProperty(ref _item, value); }
         }
 
         private List<Affix> _prefixes = new List<Affix>();
@@ -107,7 +104,7 @@ namespace POESKillTree.Views
 
         private bool _changingBase;
 
-        public CraftWindow(EquipmentData equipmentData)
+        public CraftingViewModel(EquipmentData equipmentData)
         {
             _monitor.Freed += (sender, args) => RecalculateItem();
             _equipmentData = equipmentData;
@@ -126,106 +123,83 @@ namespace POESKillTree.Views
             MsPrefix.ForEach(ms => ms.PropertyChanged += MsPrefixOnPropertyChanged);
             MsSuffix.ForEach(ms => ms.PropertyChanged += MsSuffixOnPropertyChanged);
 
-            InitializeComponent();
+            GroupList = Groups.Where(g => g == ItemGroup.Any || _basesPerGroup.ContainsKey(g)).ToList();
+            SelectedGroup = GroupList[0];
         }
 
-        protected override void OnLoaded()
-        {
-            base.OnLoaded();
-            GroupList = Groups.Where(g => g == ItemGroup.Any || _basesPerGroup.ContainsKey(g)).ToArray();
-        }
-
-        private void OnPropertyChanged([CallerMemberName] string prop = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void GroupSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelectedGroupChanged()
         {
             using (_monitor.Enter())
             {
-                var selected = TypeSelection.SelectedItem;
-                var group = (ItemGroup) GroupSelection.SelectedItem;
-                if (group == ItemGroup.Any)
+                var previousSelectedType = SelectedType;
+
+                if (SelectedGroup == ItemGroup.Any)
                 {
-                    TypeList = new[] {ItemType.Any};
+                    TypeList = new[] { ItemType.Any };
                 }
                 else
                 {
                     var list = _eligibleTypes
-                        .Where(t => t == ItemType.Any || t.Group() == group)
+                        .Where(t => t == ItemType.Any || t.Group() == SelectedGroup)
                         .ToArray();
                     if (list.Length == 2)
                     {
                         // Only contains "any" and the only type of the selected group
                         // -> "any" makes no sense, take the only type
-                        list = new [] {list[1]};
+                        list = new[] { list[1] };
                     }
                     TypeList = list;
                 }
-                TypeSelection.SelectedIndex = 0;
+                SelectedType = TypeList[0];
 
-                if (TypeSelection.SelectedItem == selected)
+                if (SelectedType == previousSelectedType)
+                {
                     UpdateBaseList();
+                }
             }
-        }
-
-        private void ClassSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Happens if called in GroupSelection_SelectionChanged
-            if (TypeSelection.SelectedItem == null) return;
-            UpdateBaseList();
         }
 
         private void UpdateBaseList()
         {
             using (_monitor.Enter())
             {
-                var selected = BaseSelection.SelectedItem;
-                var type = (ItemType) TypeSelection.SelectedItem;
-                if (type == ItemType.Any)
+                var previousSelectedBase = SelectedBase;
+
+                if (SelectedType == ItemType.Any)
                 {
-                    var group = (ItemGroup) GroupSelection.SelectedItem;
-                    BaseList = group == ItemGroup.Any ? _eligibleBases : _basesPerGroup[group];
+                    BaseList = SelectedGroup == ItemGroup.Any ? _eligibleBases : _basesPerGroup[SelectedGroup];
                 }
                 else
                 {
-                    BaseList = _basesPerType[type];
+                    BaseList = _basesPerType[SelectedType];
                 }
-                BaseSelection.SelectedIndex = 0;
+                SelectedBase = BaseList[0];
 
-                if (BaseSelection.SelectedItem == selected)
+                if (SelectedBase == previousSelectedBase)
+                {
                     UpdateBase();
+                }
             }
-        }
-
-        private void BaseSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (BaseSelection.SelectedItem == null)
-            {
-                Item = null;
-                return;
-            }
-            UpdateBase();
         }
 
         private void UpdateBase()
         {
+            if (SelectedBase == null)
+            {
+                return;
+            }
+
             var d = _monitor.Enter();
 
-            var ibase = (ItemBase)BaseSelection.SelectedItem;
+            var ibase = SelectedBase;
             Item = ibase.CreateItem();
 
             if (ibase.ImplicitMods.Any())
             {
-                MsImplicits.Affixes = new List<Affix>
+                MsImplicits.Affixes = new[]
                 {
-                    new Affix(new[] { new ItemModTier(ibase.ImplicitMods) })
+                    new Affix(new ItemModTier(ibase.ImplicitMods))
                 };
-                Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
-                ApplyLocals();
             }
             else
             {
@@ -234,8 +208,10 @@ namespace POESKillTree.Views
             if (ibase.CanHaveQuality)
             {
                 var qualityStat = new Stat(QualityModName, new Range<float>(0, 20), Item.ItemType, null);
-                var qualityAffix = new Affix(new[] {new ItemModTier(new[] {qualityStat})});
-                MsQuality.Affixes = new List<Affix>(new[] {qualityAffix});
+                MsQuality.Affixes = new[]
+                {
+                    new Affix(new ItemModTier(new[] { qualityStat }))
+                };
             }
             else
             {
@@ -268,8 +244,6 @@ namespace POESKillTree.Views
         private void RecalculateItem()
         {
             if (_monitor.IsBusy)
-                return;
-            if (Item == null)
                 return;
 
             Item.NameLine = "";
@@ -320,66 +294,87 @@ namespace POESKillTree.Views
             Item.CraftedMods = allmods.Where(m => m.ParentTier != null && m.ParentTier.IsMasterCrafted).ToList();
             Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
 
-            var quality = (int) MsQuality.SelectedValues.FirstOrDefault();
+            var quality = (int)MsQuality.SelectedValues.FirstOrDefault();
             Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties(quality));
             ApplyLocals();
 
             if (Item.IsWeapon)
             {
-                var elementalmods = allmods.Where(m => m.Attribute.StartsWith("Adds") && (m.Attribute.Contains("Fire") || m.Attribute.Contains("Cold") || m.Attribute.Contains("Lightning"))).ToList();
-                if (elementalmods.Count > 0)
-                {
-                    var values = new List<float>();
-                    var mods = new List<string>();
-                    var cols = new List<ItemMod.ValueColoring>();
-
-                    var fmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Fire"));
-                    if (fmod != null)
-                    {
-                        values.AddRange(fmod.Value);
-                        mods.Add("#-#");
-                        cols.Add(ItemMod.ValueColoring.Fire);
-                        cols.Add(ItemMod.ValueColoring.Fire);
-                    }
-
-                    var cmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
-                    if (cmod != null)
-                    {
-                        values.AddRange(cmod.Value);
-                        mods.Add("#-#");
-                        cols.Add(ItemMod.ValueColoring.Cold);
-                        cols.Add(ItemMod.ValueColoring.Cold);
-                    }
-
-                    var lmod = elementalmods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
-                    if (lmod != null)
-                    {
-                        values.AddRange(lmod.Value);
-                        mods.Add("#-#");
-                        cols.Add(ItemMod.ValueColoring.Lightning);
-                        cols.Add(ItemMod.ValueColoring.Lightning);
-                    }
-
-                    Item.Properties.Add(new ItemMod(Item.ItemType, "Elemental Damage: " + string.Join(", ", mods))
-                    {
-                        Value = values,
-                        ValueColor = cols,
-                    });
-                }
-
-                var chaosMods = allmods.Where(m => m.Attribute.StartsWith("Adds") && m.Attribute.Contains("Chaos")).ToList();
-                if (chaosMods.Count > 0)
-                {
-                    Item.Properties.Add(new ItemMod(Item.ItemType, "Chaos Damage: #-#")
-                    {
-                        Value = new List<float>(chaosMods[0].Value),
-                        ValueColor = new List<ItemMod.ValueColoring> { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos },
-                    });
-                }
+                ApplyElementalMods(allmods);
             }
 
             Item.FlavourText = "Crafted by PoESkillTree";
             Item.UpdateRequirements();
+        }
+
+        private void ApplyElementalMods(IEnumerable<ItemMod> allMods)
+        {
+            var elementalMods = new List<ItemMod>();
+            var chaosMods = new List<ItemMod>();
+            foreach (var mod in allMods)
+            {
+                var attr = mod.Attribute;
+                if (attr.StartsWith("Adds"))
+                {
+                    if (attr.Contains("Fire") || attr.Contains("Cold") || attr.Contains("Lightning"))
+                    {
+                        elementalMods.Add(mod);
+                    }
+                    if (attr.Contains("Chaos"))
+                    {
+                        chaosMods.Add(mod);
+                    }
+                }
+            }
+
+            if (elementalMods.Any())
+            {
+                var values = new List<float>();
+                var mods = new List<string>();
+                var cols = new List<ItemMod.ValueColoring>();
+
+                var fmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Fire"));
+                if (fmod != null)
+                {
+                    values.AddRange(fmod.Value);
+                    mods.Add("#-#");
+                    cols.Add(ItemMod.ValueColoring.Fire);
+                    cols.Add(ItemMod.ValueColoring.Fire);
+                }
+
+                var cmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
+                if (cmod != null)
+                {
+                    values.AddRange(cmod.Value);
+                    mods.Add("#-#");
+                    cols.Add(ItemMod.ValueColoring.Cold);
+                    cols.Add(ItemMod.ValueColoring.Cold);
+                }
+
+                var lmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
+                if (lmod != null)
+                {
+                    values.AddRange(lmod.Value);
+                    mods.Add("#-#");
+                    cols.Add(ItemMod.ValueColoring.Lightning);
+                    cols.Add(ItemMod.ValueColoring.Lightning);
+                }
+
+                Item.Properties.Add(new ItemMod(Item.ItemType, "Elemental Damage: " + string.Join(", ", mods))
+                {
+                    Value = values,
+                    ValueColor = cols,
+                });
+            }
+
+            if (chaosMods.Any())
+            {
+                Item.Properties.Add(new ItemMod(Item.ItemType, "Chaos Damage: #-#")
+                {
+                    Value = new List<float>(chaosMods[0].Value),
+                    ValueColor = new List<ItemMod.ValueColoring> { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos },
+                });
+            }
         }
 
         private void ApplyLocals()
@@ -437,7 +432,7 @@ namespace POESKillTree.Views
 
             using (_monitor.Enter())
             {
-                var ms = (ModSelectorViewModel) sender;
+                var ms = (ModSelectorViewModel)sender;
 
                 foreach (var other in MsPrefix)
                 {
@@ -486,24 +481,6 @@ namespace POESKillTree.Views
             {
                 RecalculateItem();
             }
-        }
-
-        public bool DialogResult { get; private set; }
-
-        private void Button_OK_Click(object sender, RoutedEventArgs e)
-        {
-            Item.SetJsonBase();
-
-            Item.X = 0;
-            Item.Y = 0;
-            DialogResult = true;
-            CloseCommand.Execute(null);
-        }
-
-        private void Button_Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-            CloseCommand.Execute(null);
         }
     }
 }
