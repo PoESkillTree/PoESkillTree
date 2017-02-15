@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using MoreLinq;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls;
@@ -37,6 +38,9 @@ using POESKillTree.ViewModels;
 using POESKillTree.ViewModels.Crafting;
 using POESKillTree.Views.Crafting;
 using Attribute = POESKillTree.ViewModels.Attribute;
+using DialogCoordinator = POESKillTree.Controls.Dialogs.DialogCoordinator;
+using DialogParticipation = POESKillTree.Controls.Dialogs.DialogParticipation;
+using ProgressDialogController = POESKillTree.Controls.Dialogs.ProgressDialogController;
 
 namespace POESKillTree.Views
 {
@@ -331,7 +335,7 @@ namespace POESKillTree.Views
             }
 
             //Build and show form to enter group name
-            var name = await this.ShowInputAsync(L10n.Message("Create New Attribute Group"), L10n.Message("Group name"));
+            var name = await ExtendedDialogManager.ShowInputAsync(this, L10n.Message("Create New Attribute Group"), L10n.Message("Group name"));
             if (!string.IsNullOrEmpty(name))
             {
                 if (_attributeGroups.AttributeGroups.ContainsKey(name))
@@ -427,7 +431,7 @@ namespace POESKillTree.Views
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var controller = await this.ShowProgressAsync(L10n.Message("Initialization"),
+            var controller = await ExtendedDialogManager.ShowProgressAsync(this, L10n.Message("Initialization"),
                         L10n.Message("Initalizing window ..."));
             controller.Maximum = 1;
             controller.SetIndeterminate();
@@ -915,7 +919,7 @@ namespace POESKillTree.Views
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    var controller = await this.ShowProgressAsync(L10n.Message("Downloading skill tree assets ..."), null);
+                    var controller = await ExtendedDialogManager.ShowProgressAsync(this, L10n.Message("Downloading skill tree assets ..."), null);
                     controller.Maximum = 1;
                     controller.SetProgress(0);
                     var assetLoader = new AssetLoader(new HttpClient(), AppData.GetFolder("Data", true), false);
@@ -2051,14 +2055,24 @@ namespace POESKillTree.Views
 
         private async void Button_Craft_Click(object sender, RoutedEventArgs e)
         {
-            var vm = new CraftingViewModel(PersistentData.EquipmentData);
-            var v = new CraftingView();
-            if (!await this.ShowDialogAsync(vm, v))
+            await CraftItemAsync(new CraftingViewModel(PersistentData.EquipmentData), new CraftingView());
+        }
+
+        private async void Button_CraftUnique_Click(object sender, RoutedEventArgs e)
+        {
+            await CraftItemAsync(new UniqueCraftingViewModel(PersistentData.EquipmentData), new UniqueCraftingView());
+        }
+
+        private async Task CraftItemAsync<TBase>(AbstractCraftingViewModel<TBase> viewModel, BaseMetroDialog view)
+            where TBase: class, IItemBase
+        {
+            viewModel.Init();
+            if (!await this.ShowDialogAsync(viewModel, view))
             {
                 return;
             }
 
-            var item = vm.Item;
+            var item = viewModel.Item;
             item.SetJsonBase();
             if (PersistentData.StashItems.Count > 0)
             {

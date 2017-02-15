@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using POESKillTree.Model.Items.Affixes;
@@ -8,7 +7,7 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
 {
-    public class ItemBase
+    public class ItemBase : IItemBase
     {
 
         public int Level { get; }
@@ -16,8 +15,8 @@ namespace POESKillTree.Model.Items
         public int RequiredDexterity { get; }
         public int RequiredIntelligence { get; }
         public bool DropDisabled { get; }
-        private readonly int _inventoryHeight;
-        private readonly int _inventoryWidth;
+        public int InventoryHeight { get; }
+        public int InventoryWidth { get; }
 
         public string Name { get; }
         public ItemType ItemType { get; }
@@ -26,7 +25,7 @@ namespace POESKillTree.Model.Items
 
         public bool CanHaveQuality { get; }
         public IReadOnlyList<Stat> ImplicitMods { get; }
-        private IReadOnlyList<Stat> Properties { get; }
+        private readonly IReadOnlyList<Stat> _properties;
 
         public ItemImage Image { get; }
 
@@ -37,8 +36,8 @@ namespace POESKillTree.Model.Items
             RequiredDexterity = xmlBase.Dexterity;
             RequiredIntelligence = xmlBase.Intelligence;
             DropDisabled = xmlBase.DropDisabled;
-            _inventoryHeight = xmlBase.InventoryHeight;
-            _inventoryWidth = xmlBase.InventoryWidth;
+            InventoryHeight = xmlBase.InventoryHeight;
+            InventoryWidth = xmlBase.InventoryWidth;
 
             Name = xmlBase.Name;
             ItemType = xmlBase.ItemType;
@@ -46,7 +45,7 @@ namespace POESKillTree.Model.Items
             MetadataId = xmlBase.MetadataId;
 
             ImplicitMods = xmlBase.Implicit.Select(i => new Stat(i, ItemType)).ToList();
-            Properties = xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList();
+            _properties = xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList();
             CanHaveQuality = ItemGroup == ItemGroup.OneHandedWeapon || ItemGroup == ItemGroup.TwoHandedWeapon
                              || ItemGroup == ItemGroup.BodyArmour || ItemGroup == ItemGroup.Boots
                              || ItemGroup == ItemGroup.Gloves || ItemGroup == ItemGroup.Helmet
@@ -79,11 +78,11 @@ namespace POESKillTree.Model.Items
             RequiredDexterity = 0;
             RequiredIntelligence = 0;
             DropDisabled = false;
-            _inventoryHeight = 0;
-            _inventoryWidth = 0;
+            InventoryHeight = 0;
+            InventoryWidth = 0;
             MetadataId = "";
             ImplicitMods = new List<Stat>();
-            Properties = new List<Stat>();
+            _properties = new List<Stat>();
             CanHaveQuality = false;
 
             Name = typeLine;
@@ -150,14 +149,6 @@ namespace POESKillTree.Model.Items
             }
         }
 
-        public Item CreateItem()
-        {
-            return new Item(this, _inventoryWidth, _inventoryHeight)
-            {
-                Properties = new ObservableCollection<ItemMod>(GetRawProperties())
-            };
-        }
-
         public List<ItemMod> GetRawProperties(int quality = 0)
         {
             var props = new List<ItemMod>();
@@ -180,8 +171,8 @@ namespace POESKillTree.Model.Items
                 props.Add(qProp);
             }
 
-            if (Properties != null)
-                props.AddRange(Properties.Select(prop => prop.AsPropertyToItemMod()));
+            if (_properties != null)
+                props.AddRange(_properties.Select(prop => prop.AsPropertyToItemMod()));
             return props;
         }
 

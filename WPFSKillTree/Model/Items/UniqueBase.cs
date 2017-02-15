@@ -1,30 +1,51 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
 {
-    public class UniqueBase
+    public class UniqueBase : IItemBase
     {
 
-        public string Name { get; }
         public int Level { get; }
+        public int RequiredStrength => _base.RequiredStrength;
+        public int RequiredDexterity => _base.RequiredDexterity;
+        public int RequiredIntelligence => _base.RequiredIntelligence;
         public bool DropDisabled { get; }
-        public ItemBase Base { get; }
+        public int InventoryHeight => _base.InventoryHeight;
+        public int InventoryWidth => _base.InventoryWidth;
+
+        public string Name { get; }
+        public ItemType ItemType => _base.ItemType;
+        public ItemGroup ItemGroup => _base.ItemGroup;
+
+        private readonly ItemBase _base;
+        public bool CanHaveQuality => _base.CanHaveQuality;
+        public IReadOnlyList<Stat> ImplicitMods => _base.ImplicitMods;
         public IReadOnlyList<Stat> ExplicitMods { get; }
 
-        public ItemImage Image { get; private set; }
+        public ItemImage Image { get; }
 
         public UniqueBase(ItemImageService itemImageService, ItemBase itemBase, XmlUnique xmlUnique)
         {
             Name = xmlUnique.Name;
             Level = xmlUnique.Level;
             DropDisabled = xmlUnique.DropDisabled;
-            Base = itemBase;
+            _base = itemBase;
             ExplicitMods = xmlUnique.Explicit.Select(e => new Stat(e, itemBase.ItemType)).ToList();
 
             Image = itemBase.Image.AsDefaultForUniqueImage(itemImageService, Name);
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public List<ItemMod> GetRawProperties(int quality = 0)
+        {
+            return _base.GetRawProperties(quality);
+        }
     }
 }

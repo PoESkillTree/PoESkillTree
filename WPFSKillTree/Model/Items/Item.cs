@@ -132,19 +132,11 @@ namespace POESKillTree.Model.Items
         // The socket group of gem (all gems with same socket group value are linked).
         private int _socketGroup;
 
-        private readonly ItemBase _baseType;
-        public ItemBase BaseType
-        {
-            get { return _baseType; }
-        }
+        public IItemBase BaseType { get; }
 
         private readonly string _iconUrl;
 
-        private readonly ItemImage _image;
-        public ItemImage Image
-        {
-            get { return _image; }
-        }
+        public ItemImage Image { get; }
 
         public JObject JsonBase { get; private set; }
 
@@ -176,8 +168,8 @@ namespace POESKillTree.Model.Items
             }
         }
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
 
         public bool IsWeapon
         {
@@ -195,15 +187,16 @@ namespace POESKillTree.Model.Items
             }
         }
 
-        public Item(ItemBase itemBase, int width, int height)
+        public Item(IItemBase itemBase)
         {
-            _baseType = itemBase;
+            BaseType = itemBase;
             _itemType = itemBase.ItemType;
             _itemGroup = itemBase.ItemGroup;
-            Width = width;
-            Height = height;
+            Width = itemBase.InventoryWidth;
+            Height = itemBase.InventoryHeight;
             RequirementsFromBase();
-            _image = itemBase.Image;
+            Image = itemBase.Image;
+            Properties = new ObservableCollection<ItemMod>(itemBase.GetRawProperties());
         }
 
         public Item(Item source)
@@ -228,9 +221,9 @@ namespace POESKillTree.Model.Items
             _nameLine = source.NameLine;
             _typeLine = source.TypeLine;
             _socketGroup = source._socketGroup;
-            _baseType = source._baseType;
+            BaseType = source.BaseType;
             _iconUrl = source._iconUrl;
-            _image = source._image;
+            Image = source.Image;
             //JsonBase, _x, _y, Width, Height
             JsonBase = new JObject(source.JsonBase);
             _x = source._x;
@@ -269,30 +262,32 @@ namespace POESKillTree.Model.Items
             {
                 if (Frame == FrameType.Magic)
                 {
-                    _baseType = persistentData.EquipmentData.ItemBaseFromTypeline(TypeLine);
+                    BaseType = persistentData.EquipmentData.ItemBaseFromTypeline(TypeLine);
                 }
                 else
                 {
-                    persistentData.EquipmentData.BaseDictionary.TryGetValue(TypeLine, out _baseType);
+                    ItemBase iBase;
+                    persistentData.EquipmentData.BaseDictionary.TryGetValue(TypeLine, out iBase);
+                    BaseType = iBase;
                 }
                 // For known bases, images are only downloaded if the item is unique. All other items should always
                 // have the same image. (except alt art non-uniques that are rare enough to be ignored)
-                var loadImageFromIconUrl = _iconUrl != null && (_baseType == null || Frame == FrameType.Unique);
-                if (_baseType == null)
+                var loadImageFromIconUrl = _iconUrl != null && (BaseType == null || Frame == FrameType.Unique);
+                if (BaseType == null)
                 {
-                    _baseType = new ItemBase(persistentData.EquipmentData.ItemImageService, itemSlot, TypeLine,
+                    BaseType = new ItemBase(persistentData.EquipmentData.ItemImageService, itemSlot, TypeLine,
                         _keywords == null ? "" : _keywords.FirstOrDefault(), Frame);
                 }
                 _itemType = BaseType.ItemType;
                 _itemGroup = BaseType.ItemGroup;
                 if (loadImageFromIconUrl)
                 {
-                    _image = _baseType.Image.AsDefaultForImageFromUrl(
+                    Image = BaseType.Image.AsDefaultForImageFromUrl(
                         persistentData.EquipmentData.ItemImageService, _iconUrl);
                 }
                 else
                 {
-                    _image = _baseType.Image;
+                    Image = BaseType.Image;
                 }
             }
 
