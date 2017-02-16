@@ -35,7 +35,7 @@ namespace POESKillTree.ViewModels.Crafting
 
         protected override IEnumerable<ItemMod> RecalculateItemSpecific()
         {
-            Item.NameLine = SelectedBase.Name;
+            Item.NameLine = SelectedBase.UniqueName;
             Item.Frame = FrameType.Unique;
             return MsExplicits.GetExactMods()
                 .GroupBy(m => m.Attribute)

@@ -16,7 +16,8 @@ namespace POESKillTree.Model.Items
         public int InventoryHeight => _base.InventoryHeight;
         public int InventoryWidth => _base.InventoryWidth;
 
-        public string Name { get; }
+        public string UniqueName { get; }
+        public string Name => _base.Name;
         public ItemType ItemType => _base.ItemType;
         public ItemGroup ItemGroup => _base.ItemGroup;
 
@@ -29,18 +30,18 @@ namespace POESKillTree.Model.Items
 
         public UniqueBase(ItemImageService itemImageService, ItemBase itemBase, XmlUnique xmlUnique)
         {
-            Name = xmlUnique.Name;
+            UniqueName = xmlUnique.Name;
             Level = xmlUnique.Level;
             DropDisabled = xmlUnique.DropDisabled;
             _base = itemBase;
             ExplicitMods = xmlUnique.Explicit.Select(e => new Stat(e, itemBase.ItemType)).ToList();
 
-            Image = itemBase.Image.AsDefaultForUniqueImage(itemImageService, Name);
+            Image = itemBase.Image.AsDefaultForUniqueImage(itemImageService, UniqueName);
         }
 
         public override string ToString()
         {
-            return Name;
+            return UniqueName;
         }
 
         public List<ItemMod> GetRawProperties(int quality = 0)

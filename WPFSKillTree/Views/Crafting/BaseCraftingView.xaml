@@ -58,7 +58,7 @@
             </ComboBox>
         </Grid>
         <controls:SearchableComboBox ItemsSource="{Binding BaseList}"
-                                             SelectedItem="{Binding SelectedBase}">
+                                     SelectedItem="{Binding SelectedBase}">
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type items:ItemBase}">
                     <StackPanel Orientation="Horizontal">
@@ -67,7 +67,7 @@
                         <TextBlock VerticalAlignment="Center">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0} (ilvl {1})">
-                                    <Binding Path="Name" />
+                                    <Binding Path="" />
                                     <Binding Path="Level" />
                                 </MultiBinding>
                             </TextBlock.Text>
