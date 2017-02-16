@@ -1,151 +1,78 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Interop;
+﻿using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using log4net;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items
 {
+    /// <summary>
+    /// Represents an asynchronously loaded image for an item group or item base or from an url stored in an item's
+    /// json object.
+    /// </summary>
     public class ItemImage : Notifier
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemImage));
 
-        private static readonly string AssetPathFormat =
-            Path.Combine(AppData.GetFolder(), "Data", "Equipment", "Assets", "{0}.png");
+        private const string OfficialSiteUrl = "https://www.pathofexile.com";
 
-        private const string ResourcePathFormat =
-            "pack://application:,,,/PoESkillTree;component/Images/EquipmentUI/ItemDefaults/{0}.png";
-
-        private static readonly Dictionary<ItemGroup, ImageSource> DefaultImageCache =
-            new Dictionary<ItemGroup, ImageSource>();
-
-        private static readonly ImageSource ErrorImage = Imaging.CreateBitmapSourceFromHIcon(
-            SystemIcons.Error.Handle,
-            Int32Rect.Empty,
-            BitmapSizeOptions.FromEmptyOptions());
-
-        protected Options Options { get; }
-
-        private readonly string _baseName;
-        private readonly ItemGroup _baseGroup;
+        private readonly ItemImageService _itemImageService;
 
         private NotifyingTask<ImageSource> _imageSource;
+        /// <summary>
+        /// Gets a <see cref="NotifyingTask{TResult}"/> for the represented image.
+        /// </summary>
         public NotifyingTask<ImageSource> ImageSource
         {
             get { return _imageSource; }
             private set { SetProperty(ref _imageSource, value); }
         }
 
-        private bool _isDefaultImage = true;
-        private readonly ImageSource _defaultImage;
-
-        public ItemImage(Options options, string baseName, ItemGroup baseGroup)
+        /// <summary>
+        /// Represents an image for an item group. The image will be loaded synchronously.
+        /// </summary>
+        public ItemImage(ItemImageService itemImageService, ItemGroup baseGroup)
         {
-            _baseName = baseName;
-            _baseGroup = baseGroup;
-            Options = options;
-            _defaultImage = LoadDefaultImage();
-            LoadImage();
+            _itemImageService = itemImageService;
+            var defaultImage = itemImageService.LoadDefaultImage(baseGroup);
+            NewImageSourceTask(
+                Task.FromResult(defaultImage),
+                "Exception in completed task",
+                defaultImage
+            );
         }
 
-        protected ItemImage(ItemImage baseItemImage)
+        /// <summary>
+        /// Represents an image for an item base. First the group's image will be loaded synchronously,
+        /// which is then used as the image until the base item's image is loaded asynchronously.
+        /// </summary>
+        public ItemImage(ItemImageService itemImageService, string baseName, ItemGroup baseGroup)
         {
-            Options = baseItemImage.Options;
-            _baseName = baseItemImage._baseName;
-            _baseGroup = baseItemImage._baseGroup;
+            _itemImageService = itemImageService;
+            var defaultImage = itemImageService.LoadDefaultImage(baseGroup);
+            NewImageSourceTask(
+                itemImageService.LoadItemImageAsync(baseName, defaultImage),
+                "Loading of base item image failed",
+                defaultImage
+            );
+        }
+
+        /// <summary>
+        /// Represents an image that is loaded asynchronously from an url. Only urls stored in an item's json as
+        /// retrieved from the official api are supported.
+        /// </summary>
+        public ItemImage(ItemImage baseItemImage, string imageUrl)
+        {
+            _itemImageService = baseItemImage._itemImageService;
             _imageSource = baseItemImage._imageSource;
-            _isDefaultImage = baseItemImage._isDefaultImage;
-            _defaultImage = baseItemImage._defaultImage;
+            NewImageSourceTask(
+                _itemImageService.LoadFromUrl(MakeUrl(imageUrl), ImageSource.Result),
+                "Downloading of item image from official url failed.",
+                ImageSource.Result
+            );
         }
 
-        public void DownloadMissingImage()
-        {
-            if (!_isDefaultImage || !Options.DownloadMissingItemImages)
-                return;
-            NewImageSourceTask(LoadFromWiki(), "Downloading of missing base item image failed", _defaultImage);
-        }
-
-        private void LoadImage()
-        {
-            var fileName = string.Format(AssetPathFormat, _baseName);
-            if (File.Exists(fileName))
-            {
-                _isDefaultImage = false;
-                NewImageSourceTask(Task.Run(() => ImageSourceFromPath(fileName)), "Loading of base item image failed",
-                    _defaultImage);
-            }
-            else
-            {
-                ImageSource = new NotifyingTask<ImageSource>(Task.FromResult(_defaultImage));
-            }
-        }
-
-        private ImageSource LoadDefaultImage()
-        {
-            // This is only for UnitTests. Don't need item not found warnings there.
-            if (Application.Current == null)
-                return ErrorImage;
-
-            if (!DefaultImageCache.ContainsKey(_baseGroup))
-            {
-                try
-                {
-                    var path = string.Format(ResourcePathFormat, _baseGroup);
-                    DefaultImageCache[_baseGroup] = ImageSourceFromPath(path);
-                }
-                catch (Exception e)
-                {
-                    Log.Warn("Could not load default file for ItemGroup " + _baseGroup, e);
-                    DefaultImageCache[_baseGroup] = ErrorImage;
-                }
-            }
-            return DefaultImageCache[_baseGroup];
-        }
-
-        protected static ImageSource ImageSourceFromPath(string path)
-        {
-            var img = new BitmapImage();
-            img.BeginInit();
-            img.CacheOption = BitmapCacheOption.OnLoad;
-            img.UriSource = new Uri(path, UriKind.RelativeOrAbsolute);
-            img.EndInit();
-            img.Freeze();
-            return img;
-        }
-
-        private async Task<ImageSource> LoadFromWiki()
-        {
-            using (var client = new HttpClient())
-            {
-                var wikiUtils = new WikiUtils(client);
-                var imgTuple = await wikiUtils.LoadItemBoxImageAsync(_baseName).ConfigureAwait(false);
-                var imgData = await client.GetByteArrayAsync(imgTuple).ConfigureAwait(false);
-                var fileName = string.Format(AssetPathFormat, _baseName);
-                CreateDirectories(fileName);
-                using (var ms = new MemoryStream(imgData))
-                using (var image = Image.FromStream(ms))
-                using (var outputStream = File.Create(fileName, 65536, FileOptions.Asynchronous))
-                {
-                    var resized = image.Resize((int)(image.Width * WikiUtils.ItemImageResizeFactor),
-                        (int)(image.Height * WikiUtils.ItemImageResizeFactor));
-                    resized.Save(outputStream, ImageFormat.Png);
-                }
-                Log.InfoFormat("Downloaded base item image for {0} to the file system.", _baseName);
-                return ImageSourceFromPath(fileName);
-            }
-        }
-
-        protected void NewImageSourceTask(Task<ImageSource> task, string errorMessage, ImageSource defaultValue)
+        private void NewImageSourceTask(Task<ImageSource> task, string errorMessage, ImageSource defaultValue)
         {
             ImageSource = new NotifyingTask<ImageSource>(task, e => Log.Error(errorMessage, e))
             {
@@ -153,13 +80,14 @@ namespace POESKillTree.Model.Items
             };
         }
 
-        protected static void CreateDirectories(string fileName)
+        private static string MakeUrl(string imageUrl)
         {
-            var f = new FileInfo(fileName);
-            if (f.DirectoryName != null)
+            // if the image's url has no domain, the domain is the official site
+            if (imageUrl.StartsWith("/"))
             {
-                Directory.CreateDirectory(f.DirectoryName);
+                return OfficialSiteUrl + imageUrl;
             }
+            return imageUrl;
         }
     }
 }

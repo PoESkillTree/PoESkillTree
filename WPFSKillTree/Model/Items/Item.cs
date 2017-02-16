@@ -280,19 +280,18 @@ namespace POESKillTree.Model.Items
                 var loadImageFromIconUrl = _iconUrl != null && (_baseType == null || Frame == FrameType.Unique);
                 if (_baseType == null)
                 {
-                    _baseType = new ItemBase(persistentData.Options, itemSlot, TypeLine,
+                    _baseType = new ItemBase(persistentData.EquipmentData.ItemImageService, itemSlot, TypeLine,
                         _keywords == null ? "" : _keywords.FirstOrDefault(), Frame);
                 }
                 _itemType = BaseType.ItemType;
                 _itemGroup = BaseType.ItemGroup;
                 if (loadImageFromIconUrl)
                 {
-                    _image = new ItemImageFromOfficial(_baseType.Image, _iconUrl);
+                    _image = new ItemImage(_baseType.Image, _iconUrl);
                 }
                 else
                 {
                     _image = _baseType.Image;
-                    _image.DownloadMissingImage();
                 }
 
                 FixOldItems();
@@ -468,7 +467,7 @@ namespace POESKillTree.Model.Items
             var attrColor = attrRequirementsMultiplier == 100
                 ? ItemMod.ValueColoring.White
                 : ItemMod.ValueColoring.LocallyAffected;
-            if (BaseType.Level > 0 || minRequiredLevel > 0)
+            if (BaseType.Level > 1 || minRequiredLevel > 1)
             {
                 requirements.Add("Level #");
                 values.Add(Math.Max(BaseType.Level, minRequiredLevel));

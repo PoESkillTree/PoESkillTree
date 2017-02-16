@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using POESKillTree.Utils.WikiApi;
 
 namespace UpdateDB.DataLoading
 {
@@ -16,6 +16,12 @@ namespace UpdateDB.DataLoading
         /// Returns true iff this class saves its data into a folder or as a file.
         /// </summary>
         bool SavePathIsFolder { get; }
+
+        /// <summary>
+        /// Sets the <see cref="HttpClient"/> used for downloading data.
+        /// Settings this after <see cref="LoadAndSaveAsync"/> is called may have no effect.
+        /// </summary>
+        HttpClient HttpClient { set; }
 
         /// <summary>
         /// Returns the argument keys supported by this data loader.
@@ -32,11 +38,10 @@ namespace UpdateDB.DataLoading
         /// <summary>
         /// Downloads and saves data asynchronously.
         /// </summary>
-        /// <param name="httpClient"><see cref="HttpContent"/> used for downloading data.</param>
         /// <param name="savePath">The path to which the data is saved. This is interpreted as a file if
         /// <see cref="SavePathIsFolder"/> is false and as a folder if it is true</param>
         /// <returns>A task that completes once the data is downloaded and saved.</returns>
-        Task LoadAndSaveAsync(HttpClient httpClient, string savePath);
+        Task LoadAndSaveAsync(string savePath);
     }
 
     /// <summary>
@@ -49,6 +54,17 @@ namespace UpdateDB.DataLoading
         /// Returns the path (file or folder depending on <see cref="SavePathIsFolder"/> to which data should be saved.
         /// </summary>
         protected string SavePath { get; private set; }
+
+        public HttpClient HttpClient { protected get; set; }
+
+        private ApiAccessor _wikiApiAccessor;
+        /// <summary>
+        /// Gets a lazily created <see cref="ApiAccessor"/> instance.
+        /// </summary>
+        protected ApiAccessor WikiApiAccessor
+        {
+            get { return _wikiApiAccessor ?? (_wikiApiAccessor = new ApiAccessor(HttpClient)); }
+        }
 
         public abstract bool SavePathIsFolder { get; }
 
@@ -75,18 +91,18 @@ namespace UpdateDB.DataLoading
             _suppliedArguments[key.ToLowerInvariant()] = value;
         }
 
-        public async Task LoadAndSaveAsync(HttpClient httpClient, string savePath)
+        public async Task LoadAndSaveAsync(string savePath)
         {
             SavePath = savePath;
-            await LoadAsync(httpClient);
+            await LoadAsync();
             await CompleteSavingAsync();
         }
 
         /// <summary>
-        /// Loads data from the web asynchronously using the given <see cref="HttpContent"/>.
+        /// Loads data from the web asynchronously.
         /// The data may already be saved once the returned task completes.
         /// </summary>
-        protected abstract Task LoadAsync(HttpClient httpClient);
+        protected abstract Task LoadAsync();
 
         /// <summary>
         /// Returns a task that completes once all data has been saved.

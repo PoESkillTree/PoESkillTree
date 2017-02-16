@@ -14,7 +14,7 @@ namespace POESKillTree.Utils
     {
         public TResult Default { private get; set; }
         public Task TaskCompletion { get; private set; }
-        public Task<TResult> Task { get; private set; }
+        public Task<TResult> Task { get; }
         public TResult Result
         {
             get { return (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : Default; }
@@ -31,19 +31,11 @@ namespace POESKillTree.Utils
         public AggregateException Exception { get { return Task.Exception; } }
         public Exception InnerException
         {
-            get
-            {
-                return (Exception == null) ?
-                    null : Exception.InnerException;
-            }
+            get { return Exception?.InnerException; }
         }
         public string ErrorMessage
         {
-            get
-            {
-                return (InnerException == null) ?
-                    null : InnerException.Message;
-            }
+            get { return InnerException?.Message; }
         }
 
         public NotifyingTask(Task<TResult> task, Action<Exception> errorHandler)
@@ -66,20 +58,13 @@ namespace POESKillTree.Utils
 
         private async Task WatchTaskAsync(Task task, Action<Exception> errorHandler, Func<Exception, Task> asyncErrorHandler)
         {
-            Exception e = null;
             try
             {
                 await task;
             }
-            catch (Exception e1)
+            catch (Exception e)
             {
-                // No await in catch with C# 5.0
-                e = e1;
-            }
-            if (e != null)
-            {
-                if (errorHandler != null)
-                    errorHandler(e);
+                errorHandler?.Invoke(e);
                 if (asyncErrorHandler != null)
                     await asyncErrorHandler(e);
             }

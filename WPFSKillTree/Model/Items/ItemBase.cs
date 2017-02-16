@@ -115,7 +115,7 @@ namespace POESKillTree.Model.Items
 
         public ItemImage Image { get; private set; }
 
-        public ItemBase(Options options, XmlItemBase xmlBase)
+        public ItemBase(ItemImageService itemImageService, XmlItemBase xmlBase)
         {
             Level = xmlBase.Level;
             RequiredStrength = xmlBase.Strength;
@@ -136,7 +136,7 @@ namespace POESKillTree.Model.Items
                              || ItemGroup == ItemGroup.Gloves || ItemGroup == ItemGroup.Helmet
                              || ItemGroup == ItemGroup.Shield;
 
-            Image = new ItemImage(options, Name, ItemGroup);
+            Image = new ItemImage(itemImageService, Name, ItemGroup);
         }
 
         /// <summary>
@@ -147,14 +147,15 @@ namespace POESKillTree.Model.Items
         /// ItemBases created via this constructor. It is not meant to produce bases that can exist independent
         /// of the <see cref="Item"/> they are created for.
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="itemImageService"></param>
         /// <param name="itemSlot">The slot the parent <see cref="Item"/> is slotted into.
         /// <see cref="ItemSlot.Unequipable"/> if is not equipped.</param>
         /// <param name="typeLine">The TypeLine property of the parent <see cref="Item"/>.</param>
         /// <param name="weaponClass">A string representing the weapon class of the parent <see cref="Item"/>.
         /// Can be null or empty if that item is not a weapon. The weapon class generally is a property without value.</param>
         /// <param name="frameType">The frame type of the item.</param>
-        public ItemBase(Options options, ItemSlot itemSlot, string typeLine, string weaponClass, FrameType frameType)
+        public ItemBase(ItemImageService itemImageService,
+            ItemSlot itemSlot, string typeLine, string weaponClass, FrameType frameType)
         {
             // These don't matter as we won't create new items from this base.
             Level = 0;
@@ -196,7 +197,7 @@ namespace POESKillTree.Model.Items
 
             if (ItemGroup == ItemGroup.Unknown)
                 ItemGroup = ItemType.Group();
-            Image = new ItemImage(options, Name, ItemGroup);
+            Image = new ItemImage(itemImageService, ItemGroup);
         }
 
         /// <summary>
@@ -231,7 +232,6 @@ namespace POESKillTree.Model.Items
 
         public Item CreateItem()
         {
-            Image.DownloadMissingImage();
             return new Item(this, GetWidthForItem(ItemType, ItemGroup, Name), GetHeightForItem(ItemType, ItemGroup, Name))
             {
                 Properties = new ObservableCollection<ItemMod>(GetRawProperties())

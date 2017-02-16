@@ -40,10 +40,10 @@ namespace POESKillTree.Model.Items.Enums
         BodyArmourEvasion,
         [Description("Energy Shield")]
         BodyArmourEnergyShield,
-        [Description("Armour and Energy Shield")]
-        BodyArmourArmourEnergyShield,
         [Description("Armour and Evasion")]
         BodyArmourArmourEvasion,
+        [Description("Armour and Energy Shield")]
+        BodyArmourArmourEnergyShield,
         [Description("Evasion and Energy Shield")]
         BodyArmourEvasionEnergyShield,
         [Description("Armour, Evasion and Energy Shield")]
@@ -55,12 +55,14 @@ namespace POESKillTree.Model.Items.Enums
         BootsEvasion,
         [Description("Energy Shield")]
         BootsEnergyShield,
-        [Description("Armour and Energy Shield")]
-        BootsArmourEnergyShield,
         [Description("Armour and Evasion")]
         BootsArmourEvasion,
+        [Description("Armour and Energy Shield")]
+        BootsArmourEnergyShield,
         [Description("Evasion and Energy Shield")]
         BootsEvasionEnergyShield,
+        [Description("Armour, Evasion and Energy Shield")]
+        BootsArmourEvasionEnergyShield,
         // Gloves
         [Description("Armour")]
         GlovesArmour,
@@ -68,12 +70,14 @@ namespace POESKillTree.Model.Items.Enums
         GlovesEvasion,
         [Description("Energy Shield")]
         GlovesEnergyShield,
-        [Description("Armour and Energy Shield")]
-        GlovesArmourEnergyShield,
         [Description("Armour and Evasion")]
         GlovesArmourEvasion,
+        [Description("Armour and Energy Shield")]
+        GlovesArmourEnergyShield,
         [Description("Evasion and Energy Shield")]
         GlovesEvasionEnergyShield,
+        [Description("Armour, Evasion and Energy Shield")]
+        GlovesArmourEvasionEnergyShield,
         // Helms
         [Description("Armour")]
         HelmetArmour,
@@ -81,12 +85,14 @@ namespace POESKillTree.Model.Items.Enums
         HelmetEvasion,
         [Description("Energy Shield")]
         HelmetEnergyShield,
-        [Description("Armour and Energy Shield")]
-        HelmetArmourEnergyShield,
         [Description("Armour and Evasion")]
         HelmetArmourEvasion,
+        [Description("Armour and Energy Shield")]
+        HelmetArmourEnergyShield,
         [Description("Evasion and Energy Shield")]
         HelmetEvasionEnergyShield,
+        [Description("Armour, Evasion and Energy Shield")]
+        HelmetArmourEvasionEnergyShield,
         // Shields
         [Description("Armour")]
         ShieldArmour,
@@ -94,16 +100,19 @@ namespace POESKillTree.Model.Items.Enums
         ShieldEvasion,
         [Description("Energy Shield")]
         ShieldEnergyShield,
-        [Description("Armour and Energy Shield")]
-        ShieldArmourEnergyShield,
         [Description("Armour and Evasion")]
         ShieldArmourEvasion,
+        [Description("Armour and Energy Shield")]
+        ShieldArmourEnergyShield,
         [Description("Evasion and Energy Shield")]
         ShieldEvasionEnergyShield,
+        [Description("Armour, Evasion and Energy Shield")]
+        ShieldArmourEvasionEnergyShield,
         // Jewels
         CobaltJewel,
         CrimsonJewel,
         ViridianJewel,
+        PrismaticJewel,
         // Other
         Gem
     }
@@ -139,26 +148,30 @@ namespace POESKillTree.Model.Items.Enums
             {ItemGroup.Boots, new List<ItemType>
             {
                 ItemType.BootsArmour, ItemType.BootsEvasion, ItemType.BootsEnergyShield,
-                ItemType.BootsArmourEvasion, ItemType.BootsArmourEnergyShield, ItemType.BootsEvasionEnergyShield
+                ItemType.BootsArmourEvasion, ItemType.BootsArmourEnergyShield, ItemType.BootsEvasionEnergyShield,
+                ItemType.BootsArmourEvasionEnergyShield
             }},
             {ItemGroup.Gloves, new List<ItemType>
             {
                 ItemType.GlovesArmour, ItemType.GlovesEvasion, ItemType.GlovesEnergyShield,
-                ItemType.GlovesArmourEvasion, ItemType.GlovesArmourEnergyShield, ItemType.GlovesEvasionEnergyShield
+                ItemType.GlovesArmourEvasion, ItemType.GlovesArmourEnergyShield, ItemType.GlovesEvasionEnergyShield,
+                ItemType.GlovesArmourEvasionEnergyShield
             }},
             {ItemGroup.Helmet, new List<ItemType>
             {
                 ItemType.HelmetArmour, ItemType.HelmetEvasion, ItemType.HelmetEnergyShield,
-                ItemType.HelmetArmourEvasion, ItemType.HelmetArmourEnergyShield, ItemType.HelmetEvasionEnergyShield
+                ItemType.HelmetArmourEvasion, ItemType.HelmetArmourEnergyShield, ItemType.HelmetEvasionEnergyShield,
+                ItemType.HelmetArmourEvasionEnergyShield
             }},
             {ItemGroup.Shield, new List<ItemType>
             {
                 ItemType.ShieldArmour, ItemType.ShieldEvasion, ItemType.ShieldEnergyShield,
-                ItemType.ShieldArmourEvasion, ItemType.ShieldArmourEnergyShield, ItemType.ShieldEvasionEnergyShield
+                ItemType.ShieldArmourEvasion, ItemType.ShieldArmourEnergyShield, ItemType.ShieldEvasionEnergyShield,
+                ItemType.ShieldArmourEvasionEnergyShield
             }},
-            {ItemGroup.Jewel, new List<ItemType>
+            {ItemGroup.Jewel, new []
             {
-                ItemType.CobaltJewel, ItemType.CrimsonJewel, ItemType.ViridianJewel
+                ItemType.CobaltJewel, ItemType.CrimsonJewel, ItemType.ViridianJewel, ItemType.PrismaticJewel
             }},
             {ItemGroup.Gem, new [] {ItemType.Gem}},
             {ItemGroup.Unknown, new [] {ItemType.Unknown}},

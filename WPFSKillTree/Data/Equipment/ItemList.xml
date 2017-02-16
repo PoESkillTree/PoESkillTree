@@ -394,7 +394,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="Bow" Name="Crude Bow" Level="0" Strength="0" Dexterity="14" Intelligence="0">
+  <ItemBase ItemType="Bow" Name="Crude Bow" Level="1" Strength="0" Dexterity="14" Intelligence="0">
     <Properties>
       <Stat Name="Physical Damage" From="5" To="13" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
@@ -896,7 +896,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="Dagger" Name="Glass Shank" Level="0" Strength="0" Dexterity="9" Intelligence="6">
+  <ItemBase ItemType="Dagger" Name="Glass Shank" Level="1" Strength="0" Dexterity="9" Intelligence="6">
     <Implicit>
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
@@ -1171,7 +1171,7 @@
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="OneHandedMace" Name="Driftwood Club" Level="0" Strength="14" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="OneHandedMace" Name="Driftwood Club" Level="1" Strength="14" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
     </Implicit>
@@ -1446,7 +1446,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="Sceptre" Name="Driftwood Sceptre" Level="0" Strength="8" Dexterity="0" Intelligence="8">
+  <ItemBase ItemType="Sceptre" Name="Driftwood Sceptre" Level="1" Strength="8" Dexterity="0" Intelligence="8">
     <Implicit>
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
@@ -2205,7 +2205,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="OneHandedSword" Name="Rusted Sword" Level="0" Strength="8" Dexterity="8" Intelligence="0">
+  <ItemBase ItemType="OneHandedSword" Name="Rusted Sword" Level="1" Strength="8" Dexterity="8" Intelligence="0">
     <Implicit>
       <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
     </Implicit>
@@ -2997,7 +2997,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="Wand" Name="Driftwood Wand" Level="0" Strength="0" Dexterity="0" Intelligence="14">
+  <ItemBase ItemType="Wand" Name="Driftwood Wand" Level="1" Strength="0" Dexterity="0" Intelligence="14">
     <Implicit>
       <Stat Name="#% increased Spell Damage" From="8" To="12" />
     </Implicit>
@@ -3206,12 +3206,12 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Coral Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="Amulet" Name="Coral Amulet" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="# Life Regenerated per second" From="2" To="4" />
     </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Paua Amulet" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="Amulet" Name="Paua Amulet" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="#% increased Mana Regeneration Rate" From="20" To="30" />
     </Implicit>
@@ -3266,12 +3266,12 @@
       <Stat Name="#% increased Mana Regeneration Rate" From="48" To="56" />
     </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Belt" Name="Chain Belt" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="Belt" Name="Chain Belt" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="+# to maximum Energy Shield" From="9" To="20" />
     </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Belt" Name="Rustic Sash" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="Belt" Name="Rustic Sash" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="#% increased Physical Damage" From="12" To="24" />
     </Implicit>
@@ -3306,7 +3306,7 @@
       <Stat Name="+# to maximum Energy Shield" From="60" To="80" />
     </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Serrated Arrow Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="Quiver" Name="Serrated Arrow Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="Adds # minimum Physical Damage to Attacks with Bows" From="1" To="1" />
       <Stat Name="Adds # maximum Physical Damage to Attacks with Bows" From="4" To="4" />
@@ -3349,50 +3349,23 @@
       <Stat Name="#% increased Global Critical Strike Chance" From="20" To="30" />
     </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Conductive Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="Ring" Name="Breach Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="Adds # minimum Lightning Damage to Attacks" From="1" To="1" />
-      <Stat Name="Adds # maximum Lightning Damage to Attacks" From="5" To="5" />
+      <Stat Name="Properties are doubled while in a Breach" From="0" To="0" />
     </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Cured Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Implicit>
-      <Stat Name="Adds # minimum Fire Damage to Attacks" From="2" To="2" />
-      <Stat Name="Adds # maximum Fire Damage to Attacks" From="4" To="4" />
-    </Implicit>
-  </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Rugged Quiver" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Implicit>
-      <Stat Name="Adds # minimum Cold Damage to Attacks" From="2" To="2" />
-      <Stat Name="Adds # maximum Cold Damage to Attacks" From="3" To="3" />
-    </Implicit>
-  </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Heavy Quiver" Level="5" Strength="0" Dexterity="0" Intelligence="0">
-    <Implicit>
-      <Stat Name="Adds # minimum Physical Damage to Attacks" From="1" To="1" />
-      <Stat Name="Adds # maximum Physical Damage to Attacks" From="4" To="4" />
-    </Implicit>
-  </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Light Quiver" Level="12" Strength="0" Dexterity="0" Intelligence="0">
-    <Implicit>
-      <Stat Name="+# to Dexterity" From="30" To="40" />
-    </Implicit>
-  </ItemBase>
-  <ItemBase ItemType="Ring" Name="Breach Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
-    <Implicit />
-  </ItemBase>
-  <ItemBase ItemType="Ring" Name="Coral Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="Ring" Name="Coral Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="+# to maximum Life" From="20" To="30" />
     </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Iron Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="Ring" Name="Iron Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="Adds # minimum Physical Damage to Attacks" From="1" To="1" />
       <Stat Name="Adds # maximum Physical Damage to Attacks" From="4" To="4" />
     </Implicit>
   </ItemBase>
-  <ItemBase ItemType="Ring" Name="Paua Ring" Level="0" Strength="0" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="Ring" Name="Paua Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0">
     <Implicit>
       <Stat Name="+# to maximum Mana" From="20" To="25" />
     </Implicit>
@@ -3468,9 +3441,9 @@
       <Stat Name="Adds # maximum Physical Damage to Attacks" From="10" To="14" />
     </Implicit>
   </ItemBase>
-  <ItemBase ItemType="BodyArmourArmour" Name="Plate Vest" Level="0" Strength="12" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="BodyArmourArmour" Name="Plate Vest" Level="1" Strength="12" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="14" To="14" />
@@ -3478,7 +3451,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Chestplate" Level="6" Strength="25" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="49" To="49" />
@@ -3486,7 +3459,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Copper Plate" Level="17" Strength="53" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="126" To="126" />
@@ -3494,7 +3467,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="War Plate" Level="21" Strength="63" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="154" To="154" />
@@ -3502,7 +3475,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Full Plate" Level="28" Strength="81" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="203" To="203" />
@@ -3510,7 +3483,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Arena Plate" Level="32" Strength="91" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="231" To="231" />
@@ -3518,7 +3491,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Lordly Plate" Level="35" Strength="99" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="252" To="252" />
@@ -3526,7 +3499,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Bronze Plate" Level="37" Strength="104" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="266" To="266" />
@@ -3534,7 +3507,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Battle Plate" Level="41" Strength="114" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="294" To="294" />
@@ -3542,7 +3515,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Sun Plate" Level="45" Strength="124" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="322" To="322" />
@@ -3550,7 +3523,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Colosseum Plate" Level="49" Strength="134" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="350" To="350" />
@@ -3558,7 +3531,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Majestic Plate" Level="53" Strength="144" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="378" To="378" />
@@ -3566,7 +3539,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Golden Plate" Level="56" Strength="152" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="399" To="399" />
@@ -3574,7 +3547,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Crusader Plate" Level="59" Strength="160" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="428" To="428" />
@@ -3582,7 +3555,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Astral Plate" Level="62" Strength="180" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
       <Stat Name="+#% to all Elemental Resistances" From="8" To="12" />
     </Implicit>
     <Properties>
@@ -3591,7 +3564,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmour" Name="Gladiator Plate" Level="65" Strength="177" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="526" To="526" />
@@ -3604,7 +3577,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Shabby Jerkin" Level="2" Strength="0" Dexterity="14" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="21" To="21" />
@@ -3612,7 +3585,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Strapped Leather" Level="9" Strength="0" Dexterity="32" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="70" To="70" />
@@ -3620,7 +3593,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Buckskin Tunic" Level="17" Strength="0" Dexterity="53" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="126" To="126" />
@@ -3628,7 +3601,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Wild Leather" Level="25" Strength="0" Dexterity="73" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="182" To="182" />
@@ -3636,7 +3609,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Full Leather" Level="28" Strength="0" Dexterity="81" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="203" To="203" />
@@ -3644,7 +3617,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Sun Leather" Level="32" Strength="0" Dexterity="91" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="231" To="231" />
@@ -3652,7 +3625,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Thief's Garb" Level="35" Strength="0" Dexterity="99" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="252" To="252" />
@@ -3660,7 +3633,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Eelskin Tunic" Level="37" Strength="0" Dexterity="104" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="266" To="266" />
@@ -3668,7 +3641,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Frontier Leather" Level="41" Strength="0" Dexterity="114" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="294" To="294" />
@@ -3676,7 +3649,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Glorious Leather" Level="45" Strength="0" Dexterity="124" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="322" To="322" />
@@ -3684,7 +3657,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Coronal Leather" Level="49" Strength="0" Dexterity="134" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="350" To="350" />
@@ -3692,7 +3665,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Cutthroat's Garb" Level="53" Strength="0" Dexterity="144" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="378" To="378" />
@@ -3700,7 +3673,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Sharkskin Tunic" Level="56" Strength="0" Dexterity="152" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="399" To="399" />
@@ -3708,7 +3681,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Destiny Leather" Level="59" Strength="0" Dexterity="160" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="428" To="428" />
@@ -3716,7 +3689,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Exquisite Leather" Level="62" Strength="0" Dexterity="170" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="502" To="502" />
@@ -3724,7 +3697,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasion" Name="Zodiac Leather" Level="65" Strength="0" Dexterity="197" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="609" To="609" />
@@ -3740,7 +3713,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Simple Robe" Level="3" Strength="0" Dexterity="0" Intelligence="17">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="11" To="11" />
@@ -3748,7 +3721,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Silken Vest" Level="11" Strength="0" Dexterity="0" Intelligence="37">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="27" To="27" />
@@ -3756,7 +3729,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Scholar's Robe" Level="18" Strength="0" Dexterity="0" Intelligence="55">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="41" To="41" />
@@ -3764,7 +3737,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Silken Garb" Level="25" Strength="0" Dexterity="0" Intelligence="73">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="55" To="55" />
@@ -3772,7 +3745,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Mage's Vestment" Level="28" Strength="0" Dexterity="0" Intelligence="81">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="61" To="61" />
@@ -3780,7 +3753,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Silk Robe" Level="32" Strength="0" Dexterity="0" Intelligence="91">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="69" To="69" />
@@ -3788,7 +3761,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Cabalist Regalia" Level="35" Strength="0" Dexterity="0" Intelligence="99">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="75" To="75" />
@@ -3796,7 +3769,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Sage's Robe" Level="37" Strength="0" Dexterity="0" Intelligence="104">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="79" To="79" />
@@ -3804,7 +3777,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Silken Wrap" Level="41" Strength="0" Dexterity="0" Intelligence="114">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="87" To="87" />
@@ -3812,7 +3785,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Conjurer's Vestment" Level="45" Strength="0" Dexterity="0" Intelligence="124">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="95" To="95" />
@@ -3820,7 +3793,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Spidersilk Robe" Level="49" Strength="0" Dexterity="0" Intelligence="134">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="103" To="103" />
@@ -3828,7 +3801,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Destroyer Regalia" Level="53" Strength="0" Dexterity="0" Intelligence="144">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="111" To="111" />
@@ -3836,7 +3809,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Savant's Robe" Level="56" Strength="0" Dexterity="0" Intelligence="152">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="117" To="117" />
@@ -3844,7 +3817,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Necromancer Silks" Level="59" Strength="0" Dexterity="0" Intelligence="160">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="125" To="125" />
@@ -3852,7 +3825,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Occultist's Vestment" Level="62" Strength="0" Dexterity="0" Intelligence="180">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="3" To="10" />
     </Implicit>
     <Properties>
@@ -3861,7 +3834,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Widowsilk Robe" Level="65" Strength="0" Dexterity="0" Intelligence="187">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="161" To="161" />
@@ -3869,7 +3842,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEnergyShield" Name="Vaal Regalia" Level="68" Strength="0" Dexterity="0" Intelligence="194">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Energy Shield" From="175" To="175" />
@@ -3877,7 +3850,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Scale Vest" Level="4" Strength="10" Dexterity="10" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="19" To="19" />
@@ -3886,7 +3859,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Light Brigandine" Level="8" Strength="16" Dexterity="16" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="35" To="35" />
@@ -3895,7 +3868,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Scale Doublet" Level="17" Strength="28" Dexterity="28" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="69" To="69" />
@@ -3904,7 +3877,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Infantry Brigandine" Level="21" Strength="34" Dexterity="34" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="85" To="85" />
@@ -3913,7 +3886,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Full Scale Armour" Level="28" Strength="43" Dexterity="43" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="112" To="112" />
@@ -3922,7 +3895,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Soldier's Brigandine" Level="32" Strength="48" Dexterity="48" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="127" To="127" />
@@ -3931,7 +3904,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Field Lamellar" Level="35" Strength="53" Dexterity="53" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="138" To="138" />
@@ -3940,7 +3913,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Wyrmscale Doublet" Level="38" Strength="57" Dexterity="57" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="150" To="150" />
@@ -3949,7 +3922,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Hussar Brigandine" Level="42" Strength="62" Dexterity="62" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="165" To="165" />
@@ -3958,7 +3931,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Full Wyrmscale" Level="46" Strength="68" Dexterity="68" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="181" To="181" />
@@ -3967,7 +3940,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Commander's Brigandine" Level="50" Strength="73" Dexterity="73" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="196" To="196" />
@@ -3976,7 +3949,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Battle Lamellar" Level="54" Strength="79" Dexterity="79" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="212" To="212" />
@@ -3985,7 +3958,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Dragonscale Doublet" Level="57" Strength="83" Dexterity="83" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="223" To="223" />
@@ -3994,7 +3967,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Desert Brigandine" Level="60" Strength="96" Dexterity="96" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="268" To="268" />
@@ -4003,7 +3976,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Full Dragonscale" Level="63" Strength="115" Dexterity="94" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="335" To="335" />
@@ -4012,7 +3985,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="General's Brigandine" Level="66" Strength="103" Dexterity="103" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="296" To="296" />
@@ -4021,7 +3994,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEvasion" Name="Triumphant Lamellar" Level="69" Strength="95" Dexterity="116" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="271" To="271" />
@@ -4030,7 +4003,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Chainmail Vest" Level="4" Strength="10" Dexterity="0" Intelligence="10">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="19" To="19" />
@@ -4039,7 +4012,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Chainmail Tunic" Level="8" Strength="16" Dexterity="0" Intelligence="16">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="35" To="35" />
@@ -4048,7 +4021,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Ringmail Coat" Level="17" Strength="28" Dexterity="0" Intelligence="28">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="69" To="69" />
@@ -4057,7 +4030,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Chainmail Doublet" Level="21" Strength="34" Dexterity="0" Intelligence="34">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="85" To="85" />
@@ -4066,7 +4039,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Full Ringmail" Level="28" Strength="43" Dexterity="0" Intelligence="43">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="112" To="112" />
@@ -4075,7 +4048,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Full Chainmail" Level="32" Strength="48" Dexterity="0" Intelligence="48">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="127" To="127" />
@@ -4084,7 +4057,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Holy Chainmail" Level="35" Strength="53" Dexterity="0" Intelligence="53">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="138" To="138" />
@@ -4093,7 +4066,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Latticed Ringmail" Level="39" Strength="59" Dexterity="0" Intelligence="59">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="154" To="154" />
@@ -4102,7 +4075,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Crusader Chainmail" Level="43" Strength="64" Dexterity="0" Intelligence="64">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="169" To="169" />
@@ -4111,7 +4084,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Ornate Ringmail" Level="47" Strength="69" Dexterity="0" Intelligence="69">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="185" To="185" />
@@ -4120,7 +4093,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Chain Hauberk" Level="51" Strength="75" Dexterity="0" Intelligence="75">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="200" To="200" />
@@ -4129,7 +4102,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Devout Chainmail" Level="55" Strength="80" Dexterity="0" Intelligence="80">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="215" To="215" />
@@ -4138,7 +4111,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Loricated Ringmail" Level="58" Strength="84" Dexterity="0" Intelligence="84">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="232" To="232" />
@@ -4147,7 +4120,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Conquest Chainmail" Level="61" Strength="96" Dexterity="0" Intelligence="96">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="276" To="276" />
@@ -4156,7 +4129,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Elegant Ringmail" Level="64" Strength="90" Dexterity="0" Intelligence="105">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="269" To="269" />
@@ -4165,7 +4138,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Saint's Hauberk" Level="67" Strength="109" Dexterity="0" Intelligence="94">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="315" To="315" />
@@ -4174,7 +4147,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourArmourEnergyShield" Name="Saintly Chainmail" Level="70" Strength="99" Dexterity="0" Intelligence="115">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="5" To="5" />
     </Implicit>
     <Properties>
       <Stat Name="Armour" From="286" To="286" />
@@ -4183,7 +4156,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Padded Vest" Level="4" Strength="0" Dexterity="10" Intelligence="10">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="19" To="19" />
@@ -4192,7 +4165,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Oiled Vest" Level="9" Strength="0" Dexterity="17" Intelligence="17">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="38" To="38" />
@@ -4201,7 +4174,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Padded Jacket" Level="18" Strength="0" Dexterity="30" Intelligence="30">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="73" To="73" />
@@ -4210,7 +4183,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Oiled Coat" Level="22" Strength="0" Dexterity="35" Intelligence="35">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="88" To="88" />
@@ -4219,7 +4192,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Scarlet Raiment" Level="28" Strength="0" Dexterity="43" Intelligence="43">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="112" To="112" />
@@ -4228,7 +4201,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Waxed Garb" Level="32" Strength="0" Dexterity="48" Intelligence="48">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="127" To="127" />
@@ -4237,7 +4210,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Bone Armour" Level="35" Strength="0" Dexterity="53" Intelligence="53">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="138" To="138" />
@@ -4246,7 +4219,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Quilted Jacket" Level="40" Strength="0" Dexterity="60" Intelligence="60">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="158" To="158" />
@@ -4255,7 +4228,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Sleek Coat" Level="44" Strength="0" Dexterity="65" Intelligence="65">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="173" To="173" />
@@ -4264,7 +4237,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Crimson Raiment" Level="48" Strength="0" Dexterity="71" Intelligence="71">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="189" To="189" />
@@ -4273,7 +4246,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Lacquered Garb" Level="52" Strength="0" Dexterity="76" Intelligence="76">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="204" To="204" />
@@ -4282,7 +4255,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Crypt Armour" Level="56" Strength="0" Dexterity="82" Intelligence="82">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="219" To="219" />
@@ -4291,7 +4264,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Sentinel Jacket" Level="59" Strength="0" Dexterity="86" Intelligence="86">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="235" To="235" />
@@ -4300,7 +4273,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Varnished Coat" Level="62" Strength="0" Dexterity="96" Intelligence="96">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="276" To="276" />
@@ -4309,7 +4282,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Blood Raiment" Level="65" Strength="0" Dexterity="107" Intelligence="90">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="311" To="311" />
@@ -4318,7 +4291,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Sadist Garb" Level="68" Strength="0" Dexterity="103" Intelligence="109">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Evasion Rating" From="304" To="304" />
@@ -4327,7 +4300,7 @@
   </ItemBase>
   <ItemBase ItemType="BodyArmourEvasionEnergyShield" Name="Carnal Armour" Level="71" Strength="0" Dexterity="88" Intelligence="122">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+# to maximum Mana" From="20" To="25" />
     </Implicit>
     <Properties>
@@ -4335,7 +4308,17 @@
       <Stat Name="Energy Shield" From="105" To="105" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="BootsArmour" Name="Iron Greaves" Level="0" Strength="8" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="BodyArmourArmourEvasionEnergyShield" Name="Sacrificial Garb" Level="72" Strength="66" Dexterity="66" Intelligence="66">
+    <Implicit>
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Armour" From="234" To="234" />
+      <Stat Name="Evasion Rating" From="234" To="234" />
+      <Stat Name="Energy Shield" From="69" To="69" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="BootsArmour" Name="Iron Greaves" Level="1" Strength="8" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Armour" From="6" To="6" />
     </Properties>
@@ -4647,7 +4630,12 @@
       <Stat Name="Energy Shield" From="32" To="32" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="GlovesArmour" Name="Iron Gauntlets" Level="0" Strength="6" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="BootsArmourEvasionEnergyShield" Name="Avian Slippers" Level="1" Strength="0" Dexterity="0" Intelligence="0">
+    <Implicit>
+      <Stat Name="#% increased Movement Speed" From="10" To="10" />
+    </Implicit>
+  </ItemBase>
+  <ItemBase ItemType="GlovesArmour" Name="Iron Gauntlets" Level="1" Strength="6" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Armour" From="6" To="6" />
     </Properties>
@@ -4950,7 +4938,7 @@
       <Stat Name="Energy Shield" From="31" To="31" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="HelmetArmour" Name="Iron Hat" Level="0" Strength="9" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="HelmetArmour" Name="Iron Hat" Level="1" Strength="9" Dexterity="0" Intelligence="0">
     <Properties>
       <Stat Name="Armour" From="8" To="8" />
     </Properties>
@@ -5305,9 +5293,9 @@
       <Stat Name="Energy Shield" From="59" To="59" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="ShieldArmour" Name="Splintered Tower Shield" Level="0" Strength="10" Dexterity="0" Intelligence="0">
+  <ItemBase ItemType="ShieldArmour" Name="Splintered Tower Shield" Level="1" Strength="10" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5316,7 +5304,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Corroded Tower Shield" Level="5" Strength="20" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5325,7 +5313,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Rawhide Tower Shield" Level="11" Strength="33" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5334,7 +5322,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Cedar Tower Shield" Level="17" Strength="46" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5343,7 +5331,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Copper Tower Shield" Level="24" Strength="62" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5352,7 +5340,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Reinforced Tower Shield" Level="30" Strength="76" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5361,7 +5349,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Painted Tower Shield" Level="35" Strength="87" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5370,7 +5358,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Buckskin Tower Shield" Level="39" Strength="96" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5379,7 +5367,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Mahogany Tower Shield" Level="43" Strength="105" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5388,7 +5376,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Bronze Tower Shield" Level="47" Strength="114" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5397,7 +5385,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Girded Tower Shield" Level="51" Strength="123" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5406,7 +5394,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Crested Tower Shield" Level="55" Strength="132" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5415,7 +5403,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Shagreen Tower Shield" Level="58" Strength="139" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5424,7 +5412,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Ebony Tower Shield" Level="61" Strength="159" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5433,7 +5421,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Ezomyte Tower Shield" Level="64" Strength="159" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5442,7 +5430,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Colossal Tower Shield" Level="67" Strength="159" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="23" To="23" />
@@ -5451,7 +5439,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmour" Name="Pinnacle Tower Shield" Level="70" Strength="159" Dexterity="0" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5460,7 +5448,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Goathide Buckler" Level="2" Strength="0" Dexterity="13" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5469,7 +5457,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Pine Buckler" Level="8" Strength="0" Dexterity="26" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5478,7 +5466,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Painted Buckler" Level="16" Strength="0" Dexterity="44" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5487,7 +5475,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Hammered Buckler" Level="23" Strength="0" Dexterity="60" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="27" To="27" />
@@ -5496,7 +5484,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="War Buckler" Level="29" Strength="0" Dexterity="74" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5505,7 +5493,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Gilded Buckler" Level="34" Strength="0" Dexterity="85" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5514,7 +5502,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Oak Buckler" Level="38" Strength="0" Dexterity="94" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5523,7 +5511,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Enameled Buckler" Level="42" Strength="0" Dexterity="103" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5532,7 +5520,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Corrugated Buckler" Level="46" Strength="0" Dexterity="112" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="27" To="27" />
@@ -5541,7 +5529,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Battle Buckler" Level="50" Strength="0" Dexterity="121" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5550,7 +5538,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Golden Buckler" Level="54" Strength="0" Dexterity="130" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5559,7 +5547,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Ironwood Buckler" Level="57" Strength="0" Dexterity="136" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5568,7 +5556,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Lacquered Buckler" Level="60" Strength="0" Dexterity="159" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="24" To="24" />
@@ -5577,7 +5565,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Vaal Buckler" Level="63" Strength="0" Dexterity="159" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="27" To="27" />
@@ -5586,7 +5574,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Crusader Buckler" Level="66" Strength="0" Dexterity="159" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5595,7 +5583,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasion" Name="Imperial Buckler" Level="69" Strength="0" Dexterity="159" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5604,7 +5592,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Twig Spirit Shield" Level="3" Strength="0" Dexterity="0" Intelligence="15">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
     </Implicit>
     <Properties>
@@ -5614,7 +5602,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Yew Spirit Shield" Level="9" Strength="0" Dexterity="0" Intelligence="28">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
     </Implicit>
     <Properties>
@@ -5624,7 +5612,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Bone Spirit Shield" Level="15" Strength="0" Dexterity="0" Intelligence="42">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="15" To="15" />
     </Implicit>
     <Properties>
@@ -5634,7 +5622,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Tarnished Spirit Shield" Level="23" Strength="0" Dexterity="0" Intelligence="60">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
     </Implicit>
     <Properties>
@@ -5644,7 +5632,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Jingling Spirit Shield" Level="28" Strength="0" Dexterity="0" Intelligence="71">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
     </Implicit>
     <Properties>
@@ -5654,7 +5642,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Brass Spirit Shield" Level="33" Strength="0" Dexterity="0" Intelligence="82">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5663,7 +5651,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Walnut Spirit Shield" Level="37" Strength="0" Dexterity="0" Intelligence="92">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
     </Implicit>
     <Properties>
@@ -5673,7 +5661,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Ivory Spirit Shield" Level="41" Strength="0" Dexterity="0" Intelligence="100">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="15" To="15" />
     </Implicit>
     <Properties>
@@ -5683,7 +5671,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Ancient Spirit Shield" Level="45" Strength="0" Dexterity="0" Intelligence="110">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
     </Implicit>
     <Properties>
@@ -5693,7 +5681,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Chiming Spirit Shield" Level="49" Strength="0" Dexterity="0" Intelligence="118">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
     </Implicit>
     <Properties>
@@ -5703,7 +5691,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Thorium Spirit Shield" Level="53" Strength="0" Dexterity="0" Intelligence="128">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5712,7 +5700,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Lacewood Spirit Shield" Level="56" Strength="0" Dexterity="0" Intelligence="134">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
     </Implicit>
     <Properties>
@@ -5722,7 +5710,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Fossilised Spirit Shield" Level="59" Strength="0" Dexterity="0" Intelligence="141">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="15" To="15" />
     </Implicit>
     <Properties>
@@ -5732,7 +5720,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Vaal Spirit Shield" Level="62" Strength="0" Dexterity="0" Intelligence="159">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
     </Implicit>
     <Properties>
@@ -5742,7 +5730,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Harmonic Spirit Shield" Level="65" Strength="0" Dexterity="0" Intelligence="159">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
     </Implicit>
     <Properties>
@@ -5752,7 +5740,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEnergyShield" Name="Titanium Spirit Shield" Level="68" Strength="0" Dexterity="0" Intelligence="159">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5761,7 +5749,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Rotted Round Shield" Level="5" Strength="10" Dexterity="10" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="60" To="60" />
     </Implicit>
     <Properties>
@@ -5772,7 +5760,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Fir Round Shield" Level="12" Strength="19" Dexterity="19" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="180" To="180" />
     </Implicit>
     <Properties>
@@ -5783,7 +5771,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Studded Round Shield" Level="20" Strength="28" Dexterity="28" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="60" To="60" />
     </Implicit>
     <Properties>
@@ -5794,7 +5782,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Scarlet Round Shield" Level="27" Strength="37" Dexterity="37" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5804,7 +5792,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Splendid Round Shield" Level="33" Strength="44" Dexterity="44" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="120" To="120" />
     </Implicit>
     <Properties>
@@ -5815,7 +5803,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Maple Round Shield" Level="39" Strength="52" Dexterity="52" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="180" To="180" />
     </Implicit>
     <Properties>
@@ -5826,7 +5814,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Spiked Round Shield" Level="45" Strength="58" Dexterity="58" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="60" To="60" />
     </Implicit>
     <Properties>
@@ -5837,7 +5825,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Crimson Round Shield" Level="49" Strength="64" Dexterity="64" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5847,7 +5835,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Baroque Round Shield" Level="54" Strength="70" Dexterity="70" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="120" To="120" />
     </Implicit>
     <Properties>
@@ -5858,7 +5846,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Teak Round Shield" Level="58" Strength="74" Dexterity="74" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="180" To="180" />
     </Implicit>
     <Properties>
@@ -5869,7 +5857,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Spiny Round Shield" Level="62" Strength="85" Dexterity="85" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="60" To="60" />
     </Implicit>
     <Properties>
@@ -5880,7 +5868,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Cardinal Round Shield" Level="66" Strength="85" Dexterity="85" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="25" To="25" />
@@ -5890,7 +5878,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEvasion" Name="Elegant Round Shield" Level="70" Strength="85" Dexterity="85" Intelligence="0">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Block Recovery" From="120" To="120" />
     </Implicit>
     <Properties>
@@ -5901,7 +5889,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Plank Kite Shield" Level="7" Strength="13" Dexterity="0" Intelligence="13">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="4" To="4" />
     </Implicit>
     <Properties>
@@ -5912,7 +5900,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Linden Kite Shield" Level="13" Strength="20" Dexterity="0" Intelligence="20">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="4" To="4" />
     </Implicit>
     <Properties>
@@ -5923,7 +5911,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Reinforced Kite Shield" Level="20" Strength="28" Dexterity="0" Intelligence="28">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5933,7 +5921,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Layered Kite Shield" Level="27" Strength="37" Dexterity="0" Intelligence="37">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="8" To="8" />
     </Implicit>
     <Properties>
@@ -5944,7 +5932,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Ceremonial Kite Shield" Level="34" Strength="46" Dexterity="0" Intelligence="46">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="12" To="12" />
     </Implicit>
     <Properties>
@@ -5955,7 +5943,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Etched Kite Shield" Level="40" Strength="52" Dexterity="0" Intelligence="52">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="4" To="4" />
     </Implicit>
     <Properties>
@@ -5966,7 +5954,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Steel Kite Shield" Level="46" Strength="60" Dexterity="0" Intelligence="60">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -5976,7 +5964,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Laminated Kite Shield" Level="50" Strength="64" Dexterity="0" Intelligence="64">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="8" To="8" />
     </Implicit>
     <Properties>
@@ -5987,7 +5975,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Angelic Kite Shield" Level="55" Strength="70" Dexterity="0" Intelligence="70">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="12" To="12" />
     </Implicit>
     <Properties>
@@ -5998,7 +5986,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Branded Kite Shield" Level="59" Strength="76" Dexterity="0" Intelligence="76">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="4" To="4" />
     </Implicit>
     <Properties>
@@ -6009,7 +5997,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Champion Kite Shield" Level="62" Strength="85" Dexterity="0" Intelligence="85">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
     <Properties>
       <Stat Name="Chance to Block %" From="26" To="26" />
@@ -6019,7 +6007,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Mosaic Kite Shield" Level="65" Strength="85" Dexterity="0" Intelligence="85">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="8" To="8" />
     </Implicit>
     <Properties>
@@ -6030,7 +6018,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldArmourEnergyShield" Name="Archon Kite Shield" Level="68" Strength="85" Dexterity="0" Intelligence="85">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to all Elemental Resistances" From="12" To="12" />
     </Implicit>
     <Properties>
@@ -6041,7 +6029,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Spiked Bundle" Level="5" Strength="0" Dexterity="10" Intelligence="10">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="2" To="5" />
     </Implicit>
     <Properties>
@@ -6052,7 +6040,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Driftwood Spiked Shield" Level="12" Strength="0" Dexterity="19" Intelligence="19">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="2" To="5" />
     </Implicit>
     <Properties>
@@ -6063,7 +6051,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Alloyed Spiked Shield" Level="20" Strength="0" Dexterity="28" Intelligence="28">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="5" To="12" />
     </Implicit>
     <Properties>
@@ -6074,7 +6062,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Burnished Spiked Shield" Level="27" Strength="0" Dexterity="37" Intelligence="37">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="10" To="23" />
     </Implicit>
     <Properties>
@@ -6085,7 +6073,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Ornate Spiked Shield" Level="33" Strength="0" Dexterity="44" Intelligence="44">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="24" To="35" />
     </Implicit>
     <Properties>
@@ -6096,7 +6084,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Redwood Spiked Shield" Level="39" Strength="0" Dexterity="52" Intelligence="52">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="36" To="50" />
     </Implicit>
     <Properties>
@@ -6107,7 +6095,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Compound Spiked Shield" Level="45" Strength="0" Dexterity="58" Intelligence="58">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="51" To="70" />
     </Implicit>
     <Properties>
@@ -6118,7 +6106,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Polished Spiked Shield" Level="49" Strength="0" Dexterity="64" Intelligence="64">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="71" To="90" />
     </Implicit>
     <Properties>
@@ -6129,7 +6117,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Sovereign Spiked Shield" Level="54" Strength="0" Dexterity="70" Intelligence="70">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="91" To="120" />
     </Implicit>
     <Properties>
@@ -6140,7 +6128,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Alder Spiked Shield" Level="58" Strength="0" Dexterity="74" Intelligence="74">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="121" To="150" />
     </Implicit>
     <Properties>
@@ -6151,7 +6139,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Ezomyte Spiked Shield" Level="62" Strength="0" Dexterity="85" Intelligence="85">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="151" To="180" />
     </Implicit>
     <Properties>
@@ -6162,7 +6150,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Mirrored Spiked Shield" Level="66" Strength="0" Dexterity="85" Intelligence="85">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="181" To="220" />
     </Implicit>
     <Properties>
@@ -6173,7 +6161,7 @@
   </ItemBase>
   <ItemBase ItemType="ShieldEvasionEnergyShield" Name="Supreme Spiked Shield" Level="70" Strength="0" Dexterity="85" Intelligence="85">
     <Implicit>
-      <Stat Name="#% reduced Movement Speed" From="3" To="3" />
+      <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="Reflects # Physical Damage to Melee Attackers" From="221" To="260" />
     </Implicit>
     <Properties>
@@ -6182,7 +6170,8 @@
       <Stat Name="Energy Shield" From="62" To="62" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="CobaltJewel" Name="Cobalt Jewel" Level="0" Strength="0" Dexterity="0" Intelligence="0" />
-  <ItemBase ItemType="CrimsonJewel" Name="Crimson Jewel" Level="0" Strength="0" Dexterity="0" Intelligence="0" />
-  <ItemBase ItemType="ViridianJewel" Name="Viridian Jewel" Level="0" Strength="0" Dexterity="0" Intelligence="0" />
+  <ItemBase ItemType="CobaltJewel" Name="Cobalt Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" />
+  <ItemBase ItemType="CrimsonJewel" Name="Crimson Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" />
+  <ItemBase ItemType="ViridianJewel" Name="Viridian Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" />
+  <ItemBase ItemType="PrismaticJewel" Name="Prismatic Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" />
 </ItemList>
