@@ -37,6 +37,13 @@ namespace UnitTests
             _persistentData = new BarePersistentData {CurrentBuild = new PoEBuild()};
         }
 
+        [TestInitialize]
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            SkillTree.ClearAssets();
+        }
+
         readonly Regex _backreplace = new Regex("#");
         string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
         {

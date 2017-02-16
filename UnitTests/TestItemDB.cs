@@ -24,6 +24,7 @@ namespace UnitTests
         {
             List<float> expect;
             List<double> expect2;
+            List<float[]> expectPair;
 
             // Mixed table and ranges.
             expect = new List<float> { float.NaN, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
@@ -36,25 +37,23 @@ namespace UnitTests
                 Assert.AreEqual(Math.Round(expect2[level], 1), Math.Round(GetValueOf("Molten Strike", "Deals #% of Base Attack Damage", level)[0], 1));
 
             // Table of damage ranges.
-            float[,] expectPair =
-            {
-                {float.NaN, float.NaN},
-                {7, 10},
-                {8, 11},
-                {10, 14},
-                {13, 20},
-                {19, 29},
-                {29, 43},
-                {39, 58},
-                {52, 77},
-                {67, 101},
-                {87, 131}
+            expectPair = new List<float[]> { new float[] { float.NaN, float.NaN },
+                        new float[] { 7, 10 }, new float[] { 8, 11 }, new float[] { 10, 14 },
+                        new float[] { 13, 20 }, new float[] { 19, 29 }, new float[] { 29, 43 },
+                        new float[] { 39, 58 }, new float[] { 52, 77 }, new float[] { 67, 101 },
+                        new float[] { 87, 131 }, new float[] { 112, 168 }, new float[] { 142, 213 },
+                        new float[] { 180, 270 }, new float[] { 226, 339 }, new float[] { 283, 424 },
+                        new float[] { 352, 528 }, new float[] { 437, 655 }, new float[] { 540, 810 },
+                        new float[] { 632, 948 }, new float[] { 739, 1109 }, new float[] { 819, 1229 },
+                        new float[] { 908, 1362 }, new float[] { 1005, 1508 }, new float[] { 1113, 1669 },
+                        new float[] { 1231, 1847 }, new float[] { 1361, 2042 }, new float[] { 1504, 2257 },
+                        new float[] { 1662, 2493 }, new float[] { 1835, 2752 }, new float[] { 2025, 3038 } 
             };
-            for (int level = 1; level < expectPair.GetLength(0); ++level)
+            for (int level = 1; level < expectPair.Count; ++level)
             {
                 var pair = GetValuePairOf("Fireball", "Deals # to # Fire Damage", level);
-                Assert.AreEqual(expectPair[level, 0], pair[0]);
-                Assert.AreEqual(expectPair[level, 1], pair[1]);
+                Assert.AreEqual(expectPair[level][0], pair[0]);
+                Assert.AreEqual(expectPair[level][1], pair[1]);
             }
 
             /* Test Fork at Level 5, Quality 10:
