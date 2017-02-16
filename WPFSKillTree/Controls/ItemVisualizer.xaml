@@ -12,9 +12,6 @@
                 <Setter Property="Background" Value="#63181895"/>
             </Style.Setters>
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#99181895" />
-                </Trigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Null}">
                     <Setter Property="Background" Value="Transparent" />
                 </DataTrigger>
