@@ -13,6 +13,9 @@ namespace POESKillTree.ViewModels.Crafting
     {
     }
 
+    /// <summary>
+    /// View model for crafting normal/magic/rare items.
+    /// </summary>
     public class CraftingViewModel : AbstractCraftingViewModel<ItemBase>
     {
         public IReadOnlyList<ModSelectorViewModel> MsPrefix { get; } = new[] {

@@ -13,6 +13,11 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Crafting
 {
+    /// <summary>
+    /// Base view model for crafting items from a list of bases. Contains all functionality not specific to the type
+    /// of the base.
+    /// </summary>
+    /// <typeparam name="TBase">Type of crafted bases.</typeparam>
     public abstract class AbstractCraftingViewModel<TBase> : CloseableViewModel<bool>
         where TBase : class, IItemBase
     {
@@ -207,6 +212,9 @@ namespace POESKillTree.ViewModels.Crafting
             }
         }
 
+        /// <summary>
+        /// Set up mod selectors for mods specific to <see cref="TBase"/>.
+        /// </summary>
         protected abstract void UpdateBaseSpecific();
 
         protected void RecalculateItem()
@@ -235,6 +243,10 @@ namespace POESKillTree.ViewModels.Crafting
             Item.UpdateRequirements();
         }
 
+        /// <summary>
+        /// (Re)calculate parts of the item in crafting specific to <see cref="TBase"/>.
+        /// </summary>
+        /// <returns>All explicit mods (prefixes, suffixes, unique explicits) of the item.</returns>
         protected abstract IEnumerable<ItemMod> RecalculateItemSpecific();
 
         private void ApplyElementalMods(IEnumerable<ItemMod> allMods)

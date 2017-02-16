@@ -5,6 +5,9 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
 {
+    /// <summary>
+    /// Represents the base of an unique item. I.e. their base item and ranges of explicit mods.
+    /// </summary>
     public class UniqueBase : IItemBase
     {
 

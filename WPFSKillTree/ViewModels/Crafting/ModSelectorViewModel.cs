@@ -9,6 +9,9 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.ViewModels.Crafting
 {
+    /// <summary>
+    /// View model for selecting a mod out of a list of affixes and selecting their values.
+    /// </summary>
     public class ModSelectorViewModel : Notifier
     {
         private static readonly Affix EmptySelection = new Affix();

@@ -6,6 +6,10 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Crafting
 {
+    /// <summary>
+    /// View model for a slider for a value of a mod, overlayed by text.
+    /// The slider and/or the text can be hidden.
+    /// </summary>
     public class SliderViewModel : Notifier
     {
         private float _value;

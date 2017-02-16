@@ -4,6 +4,10 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Crafting
 {
+    /// <summary>
+    /// View model for a group of mod value sliders. Shows additional text if there are either no sliders
+    /// or no slider is shown.
+    /// </summary>
     public class SliderGroupViewModel : Notifier
     {
         public IReadOnlyList<SliderViewModel> Sliders { get; }

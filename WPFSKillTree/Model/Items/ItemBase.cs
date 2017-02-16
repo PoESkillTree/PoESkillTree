@@ -7,6 +7,9 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
 {
+    /// <summary>
+    /// Represents an item base, e.g. Harbinger Bow or Glorious Plate.
+    /// </summary>
     public class ItemBase : IItemBase
     {
 

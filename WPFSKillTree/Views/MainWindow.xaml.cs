@@ -20,7 +20,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using MoreLinq;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls;
@@ -40,9 +39,6 @@ using POESKillTree.ViewModels;
 using POESKillTree.ViewModels.Crafting;
 using POESKillTree.Views.Crafting;
 using Attribute = POESKillTree.ViewModels.Attribute;
-using DialogCoordinator = POESKillTree.Controls.Dialogs.DialogCoordinator;
-using DialogParticipation = POESKillTree.Controls.Dialogs.DialogParticipation;
-using ProgressDialogController = POESKillTree.Controls.Dialogs.ProgressDialogController;
 
 namespace POESKillTree.Views
 {
@@ -2100,7 +2096,7 @@ namespace POESKillTree.Views
             await CraftItemAsync(new UniqueCraftingViewModel(PersistentData.EquipmentData), new UniqueCraftingView());
         }
 
-        private async Task CraftItemAsync<TBase>(AbstractCraftingViewModel<TBase> viewModel, BaseMetroDialog view)
+        private async Task CraftItemAsync<TBase>(AbstractCraftingViewModel<TBase> viewModel, BaseDialog view)
             where TBase: class, IItemBase
         {
             viewModel.Init();

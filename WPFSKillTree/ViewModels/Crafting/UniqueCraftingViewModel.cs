@@ -7,6 +7,9 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.ViewModels.Crafting
 {
+    /// <summary>
+    /// View model for crafting unique items.
+    /// </summary>
     public class UniqueCraftingViewModel : AbstractCraftingViewModel<UniqueBase>
     {
         public ModSelectorViewModel MsExplicits { get; } = new ModSelectorViewModel(false);
