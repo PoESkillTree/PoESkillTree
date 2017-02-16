@@ -4,14 +4,9 @@ using System.Linq;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
-using POESKillTree.Utils.Wpf;
 
 namespace POESKillTree.ViewModels.Crafting
 {
-    public class UniqueCraftingViewModelProxy : BindingProxy<UniqueCraftingViewModel>
-    {
-    }
-
     public class UniqueCraftingViewModel : AbstractCraftingViewModel<UniqueBase>
     {
         public ModSelectorViewModel MsExplicits { get; } = new ModSelectorViewModel(false);

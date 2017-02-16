@@ -11,10 +11,6 @@
                              mc:Ignorable="d"
                              d:DataContext="{d:DesignInstance crafting:UniqueCraftingViewModel}"
                              CloseButtonVisibility="Collapsed">
-    <dialogs:CloseableBaseDialog.Resources>
-        <crafting:UniqueCraftingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
-    </dialogs:CloseableBaseDialog.Resources>
-    
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="Unique Crafting Window"/>
     </dialogs:CloseableBaseDialog.Title>
@@ -34,22 +30,10 @@
         <local:BaseCraftingView Grid.Row="0"
                                 DataContext="{Binding}" />
 
-        <Grid Grid.Row="1"
-              Margin="0 5 0 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-
-            <local:ModSelectorView Grid.Column="0"
-                                   DataContext="{Binding MsExplicits}" />
-
-            <controls:ItemVisualizer Grid.Column="1"
-                                     Width="94" Height="188"
-                                     Margin="5"
-                                     VerticalAlignment="Top"
-                                     Item="{Binding Data.Item, Source={StaticResource VmProxy}}"/>
-        </Grid>
+        <local:ModSelectorView Grid.Row="1"
+                               Margin="0 5 0 0"
+                               MinHeight="200"
+                               DataContext="{Binding MsExplicits}" />
 
         <StackPanel Grid.Row="2"
                     Style="{StaticResource DialogPanel}">
