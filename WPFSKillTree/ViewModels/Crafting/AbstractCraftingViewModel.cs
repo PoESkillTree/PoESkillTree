@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using MB.Algodat;
+using MoreLinq;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
@@ -23,19 +25,25 @@ namespace POESKillTree.ViewModels.Crafting
     {
         private const string QualityModName = "Quality: +#%";
 
-        private static readonly ItemGroup[] Groups = Enum.GetValues(typeof(ItemGroup))
-            .Cast<ItemGroup>()
-            .Except(new[] { ItemGroup.Unknown, ItemGroup.Gem })
-            .ToArray();
+        private readonly IReadOnlyList<TBase> _bases;
+        private IEnumerable<TBase> EligibleBases => _bases
+            .Where(b => ShowDropDisabledItems || !b.DropDisabled)
+            .Where(b => EquipmentData.AffixesPerItemType.ContainsKey(b.ItemType));
 
-        private static readonly ItemType[] Types = Enum.GetValues(typeof(ItemType))
-            .Cast<ItemType>()
-            .ToArray();
+        private ILookup<ItemType, TBase> BasesPerType => EligibleBases.ToLookup(b => b.ItemType);
+        private IEnumerable<ItemType> EligibleTypes
+            => ItemType.Any.Concat(BasesPerType.Select(t => t.Key)).OrderBy(t => t);
 
-        private readonly IReadOnlyList<ItemType> _eligibleTypes;
-        private readonly IReadOnlyList<TBase> _eligibleBases;
-        private readonly IReadOnlyDictionary<ItemType, List<TBase>> _basesPerType;
-        private readonly IReadOnlyDictionary<ItemGroup, List<TBase>> _basesPerGroup;
+        private ILookup<ItemGroup, TBase> BasesPerGroup => EligibleBases.ToLookup(b => b.ItemGroup);
+        private IEnumerable<ItemGroup> EligibleGroups
+            => ItemGroup.Any.Concat(BasesPerGroup.Select(g => g.Key)).OrderBy(g => g);
+
+        private bool _showDropDisabledItems;
+        public bool ShowDropDisabledItems
+        {
+            get { return _showDropDisabledItems; }
+            set { SetProperty(ref _showDropDisabledItems, value, OnShowDropDisabledItemsChanged);}
+        }
 
         private IReadOnlyList<ItemGroup> _groupList;
         public IReadOnlyList<ItemGroup> GroupList
@@ -96,16 +104,8 @@ namespace POESKillTree.ViewModels.Crafting
         protected AbstractCraftingViewModel(EquipmentData equipmentData, IEnumerable<TBase> bases)
         {
             EquipmentData = equipmentData;
+            _bases = bases.ToList();
             Monitor.Freed += (sender, args) => RecalculateItem();
-
-            _eligibleBases = bases
-                .Where(b => !b.DropDisabled)
-                .Where(b => EquipmentData.AffixesPerItemType.ContainsKey(b.ItemType)).ToList();
-            _basesPerGroup = _eligibleBases.GroupBy(b => b.ItemGroup)
-                .ToDictionary(g => g.Key, g => new List<TBase>(g));
-            _basesPerType = _eligibleBases.GroupBy(b => b.ItemType)
-                .ToDictionary(g => g.Key, g => new List<TBase>(g));
-            _eligibleTypes = Types.Where(t => t == ItemType.Any || _basesPerType.ContainsKey(t)).ToList();
 
             MsQuality.PropertyChanged += MsOnPropertyChanged;
             MsImplicits.PropertyChanged += MsOnPropertyChanged;
@@ -113,8 +113,22 @@ namespace POESKillTree.ViewModels.Crafting
 
         public void Init()
         {
-            GroupList = Groups.Where(g => g == ItemGroup.Any || _basesPerGroup.ContainsKey(g)).ToList();
+            GroupList = EligibleGroups.ToList();
             SelectedGroup = GroupList[0];
+        }
+
+        private void OnShowDropDisabledItemsChanged()
+        {
+            using (Monitor.Enter())
+            {
+                GroupList = EligibleGroups.ToList();
+                SelectedGroup = GroupList[0];
+
+                // this is visibly slow, but the button shouldn't be spammed anyway
+                OnSelectedGroupChanged();
+                UpdateBaseList();
+                UpdateBase();
+            }
         }
 
         private void OnSelectedGroupChanged()
@@ -129,7 +143,7 @@ namespace POESKillTree.ViewModels.Crafting
                 }
                 else
                 {
-                    var list = _eligibleTypes
+                    var list = EligibleTypes
                         .Where(t => t == ItemType.Any || t.Group() == SelectedGroup)
                         .ToArray();
                     if (list.Length == 2)
@@ -157,11 +171,12 @@ namespace POESKillTree.ViewModels.Crafting
 
                 if (SelectedType == ItemType.Any)
                 {
-                    BaseList = SelectedGroup == ItemGroup.Any ? _eligibleBases : _basesPerGroup[SelectedGroup];
+                    BaseList = SelectedGroup == ItemGroup.Any 
+                        ? EligibleBases.ToList() : BasesPerGroup[SelectedGroup].ToList();
                 }
                 else
                 {
-                    BaseList = _basesPerType[SelectedType];
+                    BaseList = BasesPerType[SelectedType].ToList();
                 }
                 SelectedBase = BaseList[0];
 
