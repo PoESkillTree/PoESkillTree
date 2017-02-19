@@ -120,7 +120,7 @@ namespace POESKillTree.Model.Items.Affixes
 
         public override int GetHashCode()
         {
-            var h = 23;
+            int h = 23;
             h = h * 37 + Name.GetHashCode();
             return Ranges.Aggregate(h, (a, r) => a * 37 + r.GetHashCode());
         }

@@ -95,7 +95,7 @@ namespace POESKillTree.ViewModels.Crafting
                 var texts = new Queue<string>();
                 var sliderShowText = false;
                 string statName = null;
-                for (var i = 0; i < SelectedAffix.RangesPerTreeAndTier.Count; i++)
+                for (int i = 0; i < SelectedAffix.RangesPerTreeAndTier.Count; i++)
                 {
                     if (SelectedAffix.StatNames[i] != statName)
                     {
@@ -126,7 +126,7 @@ namespace POESKillTree.ViewModels.Crafting
                     var ranges = SelectedAffix.RangesPerTreeAndTier[i];
                     var isFloatMod = ranges
                         .Any(r => !r.From.AlmostEquals((int)r.From, 1e-5) || !r.To.AlmostEquals((int)r.To, 1e-5));
-                    var ticks = ranges
+                    IEnumerable<double> ticks = ranges
                         .SelectMany(
                             r =>
                                 Enumerable.Range((int) Math.Round(isFloatMod ? r.From * 100 : r.From),
@@ -182,11 +182,11 @@ namespace POESKillTree.ViewModels.Crafting
                 return;
 
             var slider = (SliderViewModel) sender;
-            var index = slider.Index;
+            int index = slider.Index;
 
             var tiers = SelectedAffix.QueryMod(index, e.NewValue).OrderBy(m => m.Name).ToArray();
             _updatingSliders = true;
-            for (var i = 0; i < _sliders.Count; i++)
+            for (int i = 0; i < _sliders.Count; i++)
             {
                 if (i != index && !SelectedAffix.QueryMod(i, _sliders[i].Value).Intersect(tiers).Any())
                 {

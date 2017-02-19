@@ -177,7 +177,7 @@ namespace POESKillTree.Utils.WikiApi
             IEnumerable<string> conditions)
         {
             // Ask: retrieve page titles of the icons
-            var printouts = new[] { RdfName, RdfIcon };
+            string[] printouts = { RdfName, RdfIcon };
             var results = (from ps in await Ask(conditions, printouts).ConfigureAwait(false)
                            where ps[RdfIcon].Any()
                            let title = ps[RdfIcon].First.Value<string>("fulltext")

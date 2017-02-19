@@ -247,7 +247,7 @@ namespace POESKillTree.ViewModels.Crafting
             Item.CraftedMods = allmods.Where(m => m.ParentTier != null && m.ParentTier.IsMasterCrafted).ToList();
             Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
 
-            var quality = (int)MsQuality.SelectedValues.FirstOrDefault();
+            var quality = (int) MsQuality.SelectedValues.FirstOrDefault();
             Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties(quality));
             ApplyLocals();
 
@@ -270,7 +270,7 @@ namespace POESKillTree.ViewModels.Crafting
             var chaosMods = new List<ItemMod>();
             foreach (var mod in allMods)
             {
-                var attr = mod.Attribute;
+                string attr = mod.Attribute;
                 if (attr.StartsWith("Adds"))
                 {
                     if (attr.Contains("Fire") || attr.Contains("Cold") || attr.Contains("Lightning"))
@@ -338,17 +338,24 @@ namespace POESKillTree.ViewModels.Crafting
         {
             foreach (var pair in Item.GetModsAffectingProperties())
             {
-                var prop = pair.Key;
-                var applymods = pair.Value;
+                ItemMod prop = pair.Key;
+                List<ItemMod> applymods = pair.Value;
 
-                var percm = applymods.Where(m => Regex.IsMatch(m.Attribute, @"(?<!\+)#%")).ToList();
-                var valuem = applymods.Except(percm).ToList();
+                List<ItemMod> percm = applymods.Where(m => Regex.IsMatch(m.Attribute, @"(?<!\+)#%")).ToList();
+                List<ItemMod> valuem = applymods.Except(percm).ToList();
 
                 if (valuem.Count > 0)
                 {
-                    var val = valuem.Select(m => m.Value).Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2).ToList());
-                    var nval = prop.Value.Zip(val, (f1, f2) => f1 + f2).ToList();
-                    prop.ValueColor = prop.ValueColor.Select((c, i) => val[i] == nval[i] ? prop.ValueColor[i] : ItemMod.ValueColoring.LocallyAffected).ToList();
+                    List<float> val = valuem
+                        .Select(m => m.Value)
+                        .Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2)
+                        .ToList());
+                    List<float> nval = prop.Value
+                        .Zip(val, (f1, f2) => f1 + f2)
+                        .ToList();
+                    prop.ValueColor = prop.ValueColor
+                        .Select((c, i) => val[i] == nval[i] ? prop.ValueColor[i] : ItemMod.ValueColoring.LocallyAffected)
+                        .ToList();
                     prop.Value = nval;
                 }
 

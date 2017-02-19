@@ -75,7 +75,7 @@ namespace UpdateDB.DataLoading
                 {RdfRarity, "Unique"},
                 {RdfItemClass, wikiClass}
             };
-            var enumerable =
+            IEnumerable<XmlUnique> enumerable =
                 from result in await WikiApiAccessor.AskArgs(conditions, Printouts)
                 select PrintoutsToUnique(result);
             var ret = enumerable.ToList();

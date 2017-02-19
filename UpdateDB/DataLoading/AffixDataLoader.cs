@@ -223,20 +223,20 @@ namespace UpdateDB.DataLoading
             var xmlStats = new List<XmlStat>();
             foreach (var tuple in statColumn.Split(new []{" / "}, StringSplitOptions.None).Zip(affixesSplit, Tuple.Create))
             {
-                var stat = tuple.Item1;
+                string stat = tuple.Item1;
                 foreach (var rangeChange in GenericRangeChanges)
                 {
                     stat = rangeChange.Item1.Replace(stat, rangeChange.Item2);
                 }
-                var affix = tuple.Item2;
+                string affix = tuple.Item2;
                 foreach (var nameChange in GenericNameChanges)
                 {
                     affix = nameChange.Item1.Replace(affix, nameChange.Item2);
                 }
                 stat = rangeRenameFunc(affix, stat);
                 var fromTo = stat.Split(new[] {" to "}, StringSplitOptions.None);
-                var from = fromTo[0].ParseFloat();
-                var to = fromTo.Length > 1 ? fromTo[1].ParseFloat() : from;
+                float from = fromTo[0].ParseFloat();
+                float to = fromTo.Length > 1 ? fromTo[1].ParseFloat() : from;
                 xmlStats.Add(new XmlStat
                 {
                     Name = affix,
@@ -249,12 +249,12 @@ namespace UpdateDB.DataLoading
             if (xmlStats.Count > 1)
             {
                 var previous = xmlStats[0];
-                for (var i = 1; i < xmlStats.Count; i++)
+                for (int i = 1; i < xmlStats.Count; i++)
                 {
                     var current = xmlStats[i];
 
-                    var prevReplaced = previous.Name.Replace(" minimum", "");
-                    var curReplaced = current.Name.Replace(" maximum", "");
+                    string prevReplaced = previous.Name.Replace(" minimum", "");
+                    string curReplaced = current.Name.Replace(" maximum", "");
                     if (prevReplaced == curReplaced)
                     {
                         previous.Name = previous.Name.Replace("# minimum", "# to #");

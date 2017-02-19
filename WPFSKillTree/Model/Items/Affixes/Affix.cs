@@ -65,10 +65,10 @@ namespace POESKillTree.Model.Items.Affixes
             var trees = new List<RangeTree<float, ModWrapper>>();
             var rangesPerTree = new List<IReadOnlyList<Range<float>>>();
             var treeIndexToIj = new List<Tuple<int, int>>();
-            for (var i = 0; i < _firstTierStats.Count; i++)
+            for (int i = 0; i < _firstTierStats.Count; i++)
             {
                 var stat = _firstTierStats[i];
-                var rangeCount = stat.Ranges.Count;
+                int rangeCount = stat.Ranges.Count;
 
                 if (tierList.Any(t => t.Stats[i].Ranges.Count != rangeCount))
                 {
@@ -77,7 +77,7 @@ namespace POESKillTree.Model.Items.Affixes
                 }
 
                 var name = stat.Name;
-                for (var j = 0; j < rangeCount; j++)
+                for (int j = 0; j < rangeCount; j++)
                 {
                     mods.Add(name);
                     var wrapper = tierList.Select(t => new ModWrapper(t, t.Stats[i].Ranges[j])).ToList();
@@ -122,7 +122,7 @@ namespace POESKillTree.Model.Items.Affixes
             }
             foreach (var stat in _firstTierStats)
             {
-                var rangeCount = stat.Ranges.Count;
+                int rangeCount = stat.Ranges.Count;
                 yield return stat.ToItemMod(remaining.Take(rangeCount).ToList());
                 remaining = remaining.Skip(rangeCount).ToList();
             }
@@ -130,7 +130,7 @@ namespace POESKillTree.Model.Items.Affixes
 
         public Range<float> GetRange(ItemModTier tier, int index)
         {
-            var statAndRange = _treeIndexToStatAndRange[index];
+            Tuple<int, int> statAndRange = _treeIndexToStatAndRange[index];
             return tier.Stats[statAndRange.Item1].Ranges[statAndRange.Item2];
         }
 

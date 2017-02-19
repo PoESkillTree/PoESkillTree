@@ -54,8 +54,8 @@ namespace POESKillTree.ViewModels.Crafting
             MsSuffix.ForEach(ms => ms.Affixes = _suffixes);
             foreach (var ms in MsSuffix)
             {
-                var blockedPrefixes = MsSuffix.Where(m => m != ms).Select(m => m.SelectedAffix);
-                ms.Affixes = _suffixes.Except(blockedPrefixes).ToList();
+                var blockedSuffixes = MsSuffix.Where(m => m != ms).Select(m => m.SelectedAffix);
+                ms.Affixes = _suffixes.Except(blockedSuffixes).ToList();
             }
             _changingBase = false;
         }
@@ -156,8 +156,8 @@ namespace POESKillTree.ViewModels.Crafting
                 {
                     if (other != ms)
                     {
-                        var blockedPrefixes = MsSuffix.Where(m => m != other).Select(m => m.SelectedAffix);
-                        other.Affixes = _suffixes.Except(blockedPrefixes).ToList();
+                        var blockedSuffixes = MsSuffix.Where(m => m != other).Select(m => m.SelectedAffix);
+                        other.Affixes = _suffixes.Except(blockedSuffixes).ToList();
                     }
                 }
             }
