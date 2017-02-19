@@ -264,10 +264,16 @@ namespace POESKillTree.Model.Items
                 {
                     BaseType = persistentData.EquipmentData.ItemBaseFromTypeline(TypeLine);
                 }
+                else if (Frame == FrameType.Unique 
+                    && persistentData.EquipmentData.UniqueBaseDictionary.ContainsKey(NameLine))
+                {
+                    BaseType = persistentData.EquipmentData.UniqueBaseDictionary[NameLine];
+                }
                 else
                 {
+                    // item is not unique or the unique is unknown
                     ItemBase iBase;
-                    persistentData.EquipmentData.BaseDictionary.TryGetValue(TypeLine, out iBase);
+                    persistentData.EquipmentData.ItemBaseDictionary.TryGetValue(TypeLine, out iBase);
                     BaseType = iBase;
                 }
                 // For known bases, images are only downloaded if the item is unique. All other items should always

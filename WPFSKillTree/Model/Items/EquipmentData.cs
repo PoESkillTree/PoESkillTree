@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using MoreLinq;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
@@ -17,11 +18,13 @@ namespace POESKillTree.Model.Items
 
         public IReadOnlyDictionary<ItemType, IReadOnlyList<Affix>> AffixesPerItemType { get; private set; }
 
-        public IReadOnlyList<ItemBase> BaseList { get; private set; }
+        public IReadOnlyList<ItemBase> ItemBases { get; private set; }
 
-        public IReadOnlyDictionary<string, ItemBase> BaseDictionary { get; private set; }
+        public IReadOnlyDictionary<string, ItemBase> ItemBaseDictionary { get; private set; }
 
         public IReadOnlyList<UniqueBase> UniqueBases { get; private set; }
+
+        public IReadOnlyDictionary<string, UniqueBase> UniqueBaseDictionary { get; private set; }
 
         private readonly ItemImageService _itemImageService;
 
@@ -44,17 +47,13 @@ namespace POESKillTree.Model.Items
                  select types)
                  .ToDictionary(g => g.Key, g => (IReadOnlyList<Affix>)new List<Affix>(g));
 
-            BaseList = (await LoadBases()).ToList();
+            ItemBases = (await LoadBases()).ToList();
             UniqueBases = (await LoadUniques()).ToList();
 
-            var dict = new Dictionary<string, ItemBase>();
-            foreach (var itemBase in BaseList)
-            {
-                dict[itemBase.Name] = itemBase;
-            }
-            BaseDictionary = dict;
+            ItemBaseDictionary = ItemBases.DistinctBy(b => b.Name).ToDictionary(b => b.Name);
+            UniqueBaseDictionary = UniqueBases.DistinctBy(b => b.UniqueName).ToDictionary(b => b.UniqueName);
 
-            _root = new WordSetTreeNode(BaseList.Select(m => m.Name));
+            _root = new WordSetTreeNode(ItemBases.Select(m => m.Name));
         }
 
         public static async Task<EquipmentData> CreateAsync(Options options)
@@ -109,7 +108,7 @@ namespace POESKillTree.Model.Items
 
         private async Task<IEnumerable<UniqueBase>> LoadUniques()
         {
-            var metadataToBase = BaseList.ToDictionary(b => b.MetadataId);
+            var metadataToBase = ItemBases.ToDictionary(b => b.MetadataId);
             var xmlList = await DeserializeResourceAsync<XmlUniqueList>("Uniques.xml");
             return xmlList.Uniques.Select(
                 x => new UniqueBase(_itemImageService, metadataToBase[x.BaseMetadataId], x));
@@ -142,7 +141,7 @@ namespace POESKillTree.Model.Items
                 return null;
             if (ms.Count > 1)
                 throw new NotSupportedException("duplicate type match");
-            return BaseDictionary[ms[0].ToString()];
+            return ItemBaseDictionary[ms[0].ToString()];
         }
 
 

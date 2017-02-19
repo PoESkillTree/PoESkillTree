@@ -31,7 +31,7 @@ namespace POESKillTree.ViewModels.Crafting
         private bool _changingBase;
 
         public CraftingViewModel(EquipmentData equipmentData)
-            : base(equipmentData, equipmentData.BaseList)
+            : base(equipmentData, equipmentData.ItemBases)
         {
             MsPrefix.ForEach(ms => ms.PropertyChanged += MsPrefixOnPropertyChanged);
             MsSuffix.ForEach(ms => ms.PropertyChanged += MsSuffixOnPropertyChanged);
