@@ -12,15 +12,13 @@ namespace POESKillTree.ViewModels.Crafting
     {
         public IReadOnlyList<SliderViewModel> Sliders { get; }
         
-        private readonly string _textAfter;
-        public string Text => string.Join("", Sliders.Select(s => s.Text)) + _textAfter;
-        public bool ShowText { get; }
+        private readonly string _format;
+        public string Text => string.Format(_format, Sliders.Select(s => s.Value).Cast<object>().ToArray());
 
-        public SliderGroupViewModel(IEnumerable<SliderViewModel> sliders, string textAfter)
+        public SliderGroupViewModel(IEnumerable<SliderViewModel> sliders, string format)
         {
             Sliders = sliders.ToList();
-            _textAfter = textAfter;
-            ShowText = !Sliders.Any() || Sliders.Any(s => !s.ShowText);
+            _format = format;
 
             foreach (var slider in Sliders)
             {

@@ -10,7 +10,8 @@
                              xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Crafting"
                              mc:Ignorable="d" 
                              d:DataContext="{d:DesignInstance viewModels:CraftingViewModel}"
-                             CloseButtonVisibility="Collapsed">
+                             CloseButtonVisibility="Collapsed"
+                             MaxContentWidth="700">
     <dialogs:CloseableBaseDialog.Resources>
         <viewModels:CraftingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
         <Style x:Key="HideForJewelsStyle" TargetType="local:ModSelectorView">
@@ -28,11 +29,11 @@
     </dialogs:CloseableBaseDialog.Title>
     <dialogs:CloseableBaseDialog.DialogLeft>
         <controls:ItemTooltip HorizontalAlignment="Center" VerticalAlignment="Top"
-                              Margin="10 52"
+                              Margin="5 55"
                               Item="{Binding Item}" />
     </dialogs:CloseableBaseDialog.DialogLeft>
     
-    <Grid MinWidth="400" Margin="0 5 0 0">
+    <Grid Margin="0 5 0 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -50,9 +51,9 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="100" />
-                <RowDefinition Height="100" />
-                <RowDefinition Height="100" />
+                <RowDefinition Height="110" />
+                <RowDefinition Height="110" />
+                <RowDefinition Height="110" />
             </Grid.RowDefinitions>
 
             <Label Content="Prefixes"

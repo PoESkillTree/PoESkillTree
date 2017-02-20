@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using MB.Algodat;
 using MoreLinq;
 using POESKillTree.Common.ViewModels;
@@ -239,7 +238,7 @@ namespace POESKillTree.ViewModels.Crafting
 
             Item.NameLine = "";
             Item.TypeLine = Item.BaseType.Name;
-            Item.FlavourText = "Crafted by PoESkillTree";
+            Item.FlavourText = "Created with PoESkillTree";
 
             var allmods = RecalculateItemSpecific().ToList();
 

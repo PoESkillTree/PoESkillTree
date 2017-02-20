@@ -10,17 +10,18 @@
                              xmlns:controls="clr-namespace:POESKillTree.Controls"
                              mc:Ignorable="d"
                              d:DataContext="{d:DesignInstance crafting:UniqueCraftingViewModel}"
-                             CloseButtonVisibility="Collapsed">
+                             CloseButtonVisibility="Collapsed"
+                             MaxContentWidth="450">
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="Unique Crafting Window"/>
     </dialogs:CloseableBaseDialog.Title>
     <dialogs:CloseableBaseDialog.DialogLeft>
         <controls:ItemTooltip HorizontalAlignment="Center" VerticalAlignment="Top"
-                              Margin="10 52"
+                              Margin="5 55"
                               Item="{Binding Item}" />
     </dialogs:CloseableBaseDialog.DialogLeft>
 
-    <Grid MinWidth="400" Margin="0 5 0 0">
+    <Grid Margin="0 5 0 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

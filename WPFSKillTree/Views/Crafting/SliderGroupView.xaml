@@ -8,8 +8,7 @@
              d:DataContext="{d:DesignInstance crafting:SliderGroupViewModel}">
     <StackPanel Orientation="Vertical">
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Text="{Binding Text}"
-                   Visibility="{Binding ShowText, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                   Text="{Binding Text}" />
         <ItemsControl ItemsSource="{Binding Sliders}" />
     </StackPanel>
 </UserControl>

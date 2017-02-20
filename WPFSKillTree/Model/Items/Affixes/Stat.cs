@@ -86,7 +86,24 @@ namespace POESKillTree.Model.Items.Affixes
 
         private ItemMod ToItemMod(string attribute, List<float> values)
         {
-            return new ItemMod(_itemType, attribute, _parentTier)
+            // replace "+#" by "#" if the value for that placeholder is negative
+            var attr = "";
+            var parts = attribute.Split('#');
+            for (var i = 0; i < values.Count; i++)
+            {
+                var part = parts[i];
+                if (part.EndsWith("+") && values[i] < 0)
+                {
+                    attr += part.Substring(0, part.Length - 1);
+                }
+                else
+                {
+                    attr += part;
+                }
+                attr += "#";
+            }
+            attr += parts.Last();
+            return new ItemMod(_itemType, attr, _parentTier)
             {
                 Value = values,
                 ValueColor = values.Select(_ => ItemMod.ValueColoring.White).ToList()

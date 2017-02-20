@@ -13,9 +13,5 @@
                 Minimum="{Binding Minimum}"
                 Maximum="{Binding Maximum}"
                 Visibility="{Binding ShowSlider, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                   IsHitTestVisible="False"
-                   Text="{Binding Text}"
-                   Visibility="{Binding ShowText, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </UserControl>

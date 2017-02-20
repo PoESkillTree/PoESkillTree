@@ -88,9 +88,9 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </controls:SearchableComboBox>
-        <local:ModSelectorView Height="25"
-                                       DataContext="{Binding MsQuality}" />
-        <local:ModSelectorView Height="40"
-                                       DataContext="{Binding MsImplicits}" />
+        <local:ModSelectorView Height="35"
+                               DataContext="{Binding MsQuality}" />
+        <local:ModSelectorView Height="50"
+                               DataContext="{Binding MsImplicits}" />
     </StackPanel>
 </UserControl>

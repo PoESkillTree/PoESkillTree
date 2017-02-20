@@ -92,8 +92,7 @@ namespace POESKillTree.ViewModels.Crafting
             if (SelectedAffix != null && !IsEmptySelection)
             {
                 var sliderGroup = new List<SliderViewModel>();
-                var texts = new Queue<string>();
-                var sliderShowText = false;
+                string groupFormat = null;
                 string statName = null;
                 for (int i = 0; i < SelectedAffix.RangesPerTreeAndTier.Count; i++)
                 {
@@ -101,26 +100,13 @@ namespace POESKillTree.ViewModels.Crafting
                     {
                         if (sliderGroup.Any())
                         {
-                            var group = new SliderGroupViewModel(sliderGroup, texts.Dequeue());
+                            var group = new SliderGroupViewModel(sliderGroup, groupFormat);
                             _sliderGroups.Add(group);
                             sliderGroup.Clear();
                         }
 
                         statName = SelectedAffix.StatNames[i];
-
-                        var formatTexts = StatNameToFormats(statName).ToList();
-                        if (formatTexts.Count > 2)
-                        {
-                            sliderShowText = false;
-                            texts = new Queue<string>(formatTexts);
-                        }
-                        else
-                        {
-                            sliderShowText = true;
-                            texts = new Queue<string>();
-                            texts.Enqueue(string.Join("", formatTexts));
-                            texts.Enqueue("");
-                        }
+                        groupFormat = StatNameToFormat(statName);
                     }
 
                     var ranges = SelectedAffix.RangesPerTreeAndTier[i];
@@ -133,14 +119,14 @@ namespace POESKillTree.ViewModels.Crafting
                                     (int) Math.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
                         .Select(f => isFloatMod ? (double) f / 100 : f);
 
-                    var slider = new SliderViewModel(texts.Dequeue(), sliderShowText, i, ticks);
+                    var slider = new SliderViewModel(i, ticks);
                     sliderGroup.Add(slider);
                     _sliders.Add(slider);
                 }
 
                 if (sliderGroup.Any())
                 {
-                    var group = new SliderGroupViewModel(sliderGroup, texts.Dequeue());
+                    var group = new SliderGroupViewModel(sliderGroup, groupFormat);
                     _sliderGroups.Add(group);
                 }
             }
@@ -157,23 +143,25 @@ namespace POESKillTree.ViewModels.Crafting
             }
         }
 
-        private static IEnumerable<string> StatNameToFormats(string statName)
+        private static string StatNameToFormat(string statName)
         {
+            var format = "";
             var parts = statName.Split('#');
-            foreach (var part in parts.Take(parts.Length - 1))
+            for (var i = 0; i < parts.Length - 1; i++)
             {
-                string text;
+                var part = parts[i];
                 if (part.EndsWith("+"))
                 {
-                    text = part.Substring(0, part.Length - 1) + "{0}";
+                    // replace "+#" placeholders by a format to always show the sign
+                    format += part.Substring(0, part.Length - 1) + "{" + i + ":+0;-#}";
                 }
                 else
                 {
-                    text = part + "{0}";
+                    format += part + "{" + i + "}";
                 }
-                yield return text;
             }
-            yield return parts.Last();
+            format += parts.Last();
+            return format;
         }
 
         private void SliderOnValueChanged(object sender, SliderValueChangedEventArgs e)

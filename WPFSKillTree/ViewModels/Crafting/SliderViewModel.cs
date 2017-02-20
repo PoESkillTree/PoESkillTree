@@ -21,13 +21,8 @@ namespace POESKillTree.ViewModels.Crafting
                 var oldValue = _value;
                 SetProperty(ref _value, value,
                     () => ValueChanged?.Invoke(this, new SliderValueChangedEventArgs(oldValue, value)));
-                OnPropertyChanged(nameof(Text));
             }
         }
-
-        private readonly string _format;
-        public string Text => string.Format(_format, Value);
-        public bool ShowText { get; }
 
         public DoubleCollection Ticks { get; }
         public double Minimum { get; }
@@ -38,10 +33,8 @@ namespace POESKillTree.ViewModels.Crafting
 
         public event EventHandler<SliderValueChangedEventArgs> ValueChanged;
 
-        public SliderViewModel(string format, bool showText, int index, IEnumerable<double> ticks)
+        public SliderViewModel(int index, IEnumerable<double> ticks)
         {
-            _format = format;
-            ShowText = showText;
             Index = index;
             Ticks = new DoubleCollection(ticks);
             Minimum = Ticks.First();
