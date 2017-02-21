@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using MB.Algodat;
+using MoreLinq;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Affixes
 {
@@ -14,14 +16,19 @@ namespace POESKillTree.Model.Items.Affixes
         public ModType ModType { get; }
 
         public IReadOnlyList<string> StatNames { get; }
+        public IReadOnlyList<int> ValueCountPerStat { get; }
 
         [UsedImplicitly(ImplicitUseKindFlags.Access)] // accessed in ModSelectorView
         public string Name { get; }
 
-        public IReadOnlyList<IReadOnlyList<Range<float>>> RangesPerTreeAndTier { get; }
+        /// <summary>
+        /// The ranges of this affix. The first array index specifies the stat (the stat's name is the element in
+        /// StatNames with the same index). The second array index specifies the value of the stat. The list then
+        /// specifies the ranges of the different tiers for this value of this stat.
+        /// </summary>
+        private readonly IReadOnlyList<Range<float>>[][] _ranges;
 
-        private readonly IReadOnlyList<RangeTree<float, ModWrapper>> _trees;
-        private readonly IReadOnlyList<Tuple<int, int>> _treeIndexToStatAndRange;
+        private readonly IRangeTree<float, ModWrapper>[][] _trees;
 
         private readonly IReadOnlyList<Stat> _firstTierStats;
 
@@ -38,7 +45,6 @@ namespace POESKillTree.Model.Items.Affixes
                 throw new NotSupportedException("There should not be any Affix without tiers");
             ModType = xmlAffix.ModType;
             Name = xmlAffix.Name;
-
         }
 
         private Affix(ItemType itemType, IEnumerable<ItemModTier> tiers)
@@ -55,20 +61,25 @@ namespace POESKillTree.Model.Items.Affixes
 
             var firstTier = tierList[0];
             _firstTierStats = firstTier.Stats;
-            if (tierList.Any(t => t.Stats.Count != _firstTierStats.Count))
+            var statCount = _firstTierStats.Count;
+            if (tierList.Any(t => t.Stats.Count != statCount))
             {
                 throw new NotSupportedException("Tiers must all have the same amount of stats");
             }
 
             var comparer = new ItemModComparer();
             var mods = new List<string>();
-            var trees = new List<RangeTree<float, ModWrapper>>();
-            var rangesPerTree = new List<IReadOnlyList<Range<float>>>();
-            var treeIndexToIj = new List<Tuple<int, int>>();
+            _trees = new IRangeTree<float, ModWrapper>[statCount][];
+            _ranges = new IReadOnlyList<Range<float>>[statCount][];
+            var valueCounts = new int[statCount];
             for (int i = 0; i < _firstTierStats.Count; i++)
             {
                 var stat = _firstTierStats[i];
                 int rangeCount = stat.Ranges.Count;
+                mods.Add(stat.Name);
+                _trees[i] = new IRangeTree<float, ModWrapper>[rangeCount];
+                _ranges[i] = new IReadOnlyList<Range<float>>[rangeCount];
+                valueCounts[i] = rangeCount;
 
                 if (tierList.Any(t => t.Stats[i].Ranges.Count != rangeCount))
                 {
@@ -76,63 +87,47 @@ namespace POESKillTree.Model.Items.Affixes
                         $"Tiers of stat {stat.Name} must all have the same amount of ranges");
                 }
 
-                var name = stat.Name;
                 for (int j = 0; j < rangeCount; j++)
                 {
-                    mods.Add(name);
                     var wrapper = tierList.Select(t => new ModWrapper(t, t.Stats[i].Ranges[j])).ToList();
-                    rangesPerTree.Add(wrapper.Select(w => w.Range).ToList());
-                    trees.Add(new RangeTree<float, ModWrapper>(wrapper, comparer));
-                    treeIndexToIj.Add(Tuple.Create(i, j));
+                    _trees[i][j] = new RangeTree<float, ModWrapper>(wrapper, comparer);
+                    _ranges[i][j] = wrapper.Select(w => w.Range).ToList();
                 }
             }
             StatNames = mods;
-            _trees = trees;
-            RangesPerTreeAndTier = rangesPerTree;
-            _treeIndexToStatAndRange = treeIndexToIj;
+            ValueCountPerStat = valueCounts;
         }
 
-        public IEnumerable<ItemModTier> QueryMod(int index, float value)
+        public IEnumerable<ItemModTier> QueryMod(int statIndex, int valueIndex, float value)
         {
-            return _trees[index].Query(value).Select(mw => mw.ItemModTier);
+            return _trees[statIndex][valueIndex].Query(value).Select(mw => mw.ItemModTier);
         }
 
-        public IEnumerable<ItemModTier> Query(IEnumerable<float> values)
+        public IEnumerable<ItemModTier> Query(IEnumerable<IEnumerable<float>> values)
         {
-            var valueList = values.ToList();
-            if (_trees.Count != valueList.Count)
-            {
-                throw new ArgumentException("different number of values than trees");
-            }
             if (!_trees.Any())
             {
                 return Enumerable.Empty<ItemModTier>();
             }
-
-            var matches = valueList.Select((v, i) => _trees[i].Query(v).Select(w => w.ItemModTier));
-            return matches.Aggregate((a, n) => a.Intersect(n)).OrderByDescending(c => c.Tier);
+            // for each value for each stat: query matching tiers
+            return values.EquiZip(_trees, (vs, trees) => vs.EquiZip(trees, QueryForTree))
+            // flatten values for stats
+                .Flatten()
+            // aggregate to keep only tiers that match all values of all stats
+                .Aggregate((a, n) => a.Intersect(n))
+                .OrderByDescending(t => t.Tier);
         }
 
-        public IEnumerable<ItemMod> ToItemMods(IEnumerable<float> values)
+        private static IEnumerable<ItemModTier> QueryForTree(float value, IRangeTree<float, ModWrapper> tree)
+            => tree.Query(value).Select(w => w.ItemModTier);
+
+        public IEnumerable<ItemMod> ToItemMods(IEnumerable<IEnumerable<float>> values)
         {
-            var remaining = values.ToList();
-            if (_trees.Count != remaining.Count)
-            {
-                throw new ArgumentException("different number of values than trees");
-            }
-            foreach (var stat in _firstTierStats)
-            {
-                int rangeCount = stat.Ranges.Count;
-                yield return stat.ToItemMod(remaining.Take(rangeCount).ToList());
-                remaining = remaining.Skip(rangeCount).ToList();
-            }
+            return values.EquiZip(_firstTierStats, (vs, stat) => stat.ToItemMod(vs.ToList()));
         }
 
-        public Range<float> GetRange(ItemModTier tier, int index)
-        {
-            Tuple<int, int> statAndRange = _treeIndexToStatAndRange[index];
-            return tier.Stats[statAndRange.Item1].Ranges[statAndRange.Item2];
-        }
+        public IReadOnlyList<Range<float>> GetRanges(int statIndex, int valueIndex)
+            => _ranges[statIndex][valueIndex];
 
         public override string ToString()
         {

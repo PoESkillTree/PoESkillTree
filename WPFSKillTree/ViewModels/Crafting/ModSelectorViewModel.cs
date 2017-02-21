@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using MB.Algodat;
 using MoreLinq;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Utils;
@@ -61,9 +62,9 @@ namespace POESKillTree.ViewModels.Crafting
             private set { SetProperty(ref _affixText, value); }
         }
 
-        public IEnumerable<float> SelectedValues
+        public IEnumerable<IEnumerable<float>> SelectedValues
         {
-            get { return _sliders.Select(s => s.Value); }
+            get { return _sliderGroups.Select(g => g.Sliders.Select(s => s.Value)); }
         }
 
         private readonly ObservableCollection<SliderGroupViewModel> _sliderGroups =
@@ -91,41 +92,28 @@ namespace POESKillTree.ViewModels.Crafting
 
             if (SelectedAffix != null && !IsEmptySelection)
             {
-                var sliderGroup = new List<SliderViewModel>();
-                string groupFormat = null;
-                string statName = null;
-                for (int i = 0; i < SelectedAffix.RangesPerTreeAndTier.Count; i++)
+                for (int i = 0; i < SelectedAffix.StatNames.Count; i++)
                 {
-                    if (SelectedAffix.StatNames[i] != statName)
-                    {
-                        if (sliderGroup.Any())
-                        {
-                            var group = new SliderGroupViewModel(sliderGroup, groupFormat);
-                            _sliderGroups.Add(group);
-                            sliderGroup.Clear();
-                        }
+                    var sliderGroup = new List<SliderViewModel>();
 
-                        statName = SelectedAffix.StatNames[i];
-                        groupFormat = StatNameToFormat(statName);
+                    for (var j = 0; j < SelectedAffix.ValueCountPerStat[i]; j++)
+                    {
+                        var ranges = SelectedAffix.GetRanges(i, j);
+                        var isFloatMod = ranges
+                            .Any(r => !r.From.AlmostEquals((int)r.From, 1e-5) || !r.To.AlmostEquals((int)r.To, 1e-5));
+                        IEnumerable<double> ticks = ranges
+                            .SelectMany(
+                                r =>
+                                    Enumerable.Range((int) Math.Round(isFloatMod ? r.From * 100 : r.From),
+                                        (int) Math.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
+                            .Select(f => isFloatMod ? (double) f / 100 : f);
+
+                        var slider = new SliderViewModel(i, j, ticks);
+                        sliderGroup.Add(slider);
+                        _sliders.Add(slider);
                     }
 
-                    var ranges = SelectedAffix.RangesPerTreeAndTier[i];
-                    var isFloatMod = ranges
-                        .Any(r => !r.From.AlmostEquals((int)r.From, 1e-5) || !r.To.AlmostEquals((int)r.To, 1e-5));
-                    IEnumerable<double> ticks = ranges
-                        .SelectMany(
-                            r =>
-                                Enumerable.Range((int) Math.Round(isFloatMod ? r.From * 100 : r.From),
-                                    (int) Math.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
-                        .Select(f => isFloatMod ? (double) f / 100 : f);
-
-                    var slider = new SliderViewModel(i, ticks);
-                    sliderGroup.Add(slider);
-                    _sliders.Add(slider);
-                }
-
-                if (sliderGroup.Any())
-                {
+                    string groupFormat = StatNameToFormat(SelectedAffix.StatNames[i]);
                     var group = new SliderGroupViewModel(sliderGroup, groupFormat);
                     _sliderGroups.Add(group);
                 }
@@ -170,29 +158,36 @@ namespace POESKillTree.ViewModels.Crafting
                 return;
 
             var slider = (SliderViewModel) sender;
-            int index = slider.Index;
 
-            var tiers = SelectedAffix.QueryMod(index, e.NewValue).OrderBy(m => m.Name).ToArray();
+            ItemModTier[] tiers = SelectedAffix.QueryMod(slider.StatIndex, slider.ValueIndex, e.NewValue)
+                .OrderBy(m => m.Name).ToArray();
             _updatingSliders = true;
-            for (int i = 0; i < _sliders.Count; i++)
+            foreach (var other in _sliders.Where(s => s != slider))
             {
-                if (i != index && !SelectedAffix.QueryMod(i, _sliders[i].Value).Intersect(tiers).Any())
+                var iStat = other.StatIndex;
+                var iValue = other.ValueIndex;
+                if (!SelectedAffix.QueryMod(iStat, iValue, other.Value).Intersect(tiers).Any())
                 {
                     // slider isn't inside current tier
-                    var moveto = SelectedAffix.GetRange(tiers[0], i);
-                    _sliders[i].Value = (e.NewValue > e.OldValue) ? moveto.From : moveto.To;
+                    Range<float> moveto = tiers[0].Stats[iStat].Ranges[iValue];
+                    other.Value = (e.NewValue > e.OldValue) ? moveto.From : moveto.To;
                 }
             }
             _updatingSliders = false;
 
             OnPropertyChanged("SelectedValues");
 
-            AffixText = TiersString(SelectedAffix.Query(SelectedValues));
+            AffixText = TiersString(Query());
         }
 
         private static string TiersString(IEnumerable<ItemModTier> tiers)
         {
             return string.Join("/", tiers.Select(s => $"T{s.Tier}: {s.Name}"));
+        }
+
+        public IEnumerable<ItemModTier> Query()
+        {
+            return SelectedAffix.Query(SelectedValues);
         }
 
         public IEnumerable<ItemMod> GetExactMods()

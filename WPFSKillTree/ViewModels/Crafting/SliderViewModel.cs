@@ -29,13 +29,15 @@ namespace POESKillTree.ViewModels.Crafting
         public double Maximum { get; }
         public bool ShowSlider { get; }
 
-        public int Index { get; }
+        public int StatIndex { get; }
+        public int ValueIndex { get; }
 
         public event EventHandler<SliderValueChangedEventArgs> ValueChanged;
 
-        public SliderViewModel(int index, IEnumerable<double> ticks)
+        public SliderViewModel(int statIndex, int valueIndex, IEnumerable<double> ticks)
         {
-            Index = index;
+            StatIndex = statIndex;
+            ValueIndex = valueIndex;
             Ticks = new DoubleCollection(ticks);
             Minimum = Ticks.First();
             Maximum = Ticks.Last();

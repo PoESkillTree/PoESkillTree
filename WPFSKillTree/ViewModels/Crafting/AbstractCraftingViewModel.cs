@@ -246,7 +246,9 @@ namespace POESKillTree.ViewModels.Crafting
             Item.CraftedMods = allmods.Where(m => m.ParentTier != null && m.ParentTier.IsMasterCrafted).ToList();
             Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
 
-            var quality = (int) MsQuality.SelectedValues.FirstOrDefault();
+            var quality = SelectedBase.CanHaveQuality 
+                ? (int) MsQuality.SelectedValues.First().First() 
+                : 0;
             Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties(quality));
             ApplyLocals();
 

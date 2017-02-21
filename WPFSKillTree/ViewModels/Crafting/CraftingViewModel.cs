@@ -77,7 +77,7 @@ namespace POESKillTree.ViewModels.Crafting
                 if (selectedPreff.Length > 0)
                 {
                     var pref = selectedPreff[0];
-                    typeline = pref.SelectedAffix.Query(pref.SelectedValues).First().Name + " ";
+                    typeline = pref.Query().First().Name + " ";
                 }
 
                 typeline += Item.BaseType;
@@ -85,7 +85,7 @@ namespace POESKillTree.ViewModels.Crafting
                 if (selectedSuff.Length > 0)
                 {
                     var suff = selectedSuff[0];
-                    typeline += " " + suff.SelectedAffix.Query(suff.SelectedValues).First().Name;
+                    typeline += " " + suff.Query().First().Name;
                 }
 
                 Item.TypeLine = typeline;
