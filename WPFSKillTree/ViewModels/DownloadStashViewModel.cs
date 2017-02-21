@@ -92,7 +92,6 @@ namespace POESKillTree.ViewModels
 
             Build.PropertyChanged += BuildOnPropertyChanged;
             BuildOnPropertyChanged(this, null);
-            RequestsClose += _ => Build.PropertyChanged -= BuildOnPropertyChanged;
 
             _viewLoadedCompletionSource = new TaskCompletionSource<object>();
             if (CurrentLeagues == null)
@@ -122,6 +121,11 @@ namespace POESKillTree.ViewModels
                     .ConfigureAwait(false);
                 return JArray.Parse(file).Select(t => t["id"].Value<string>()).ToList();
             }
+        }
+
+        protected override void OnClose()
+        {
+            Build.PropertyChanged -= BuildOnPropertyChanged;
         }
 
         private void BuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)

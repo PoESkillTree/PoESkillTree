@@ -29,17 +29,18 @@ namespace POESKillTree.ViewModels
             DisplayName = L10n.Message("Settings");
             ChangeBuildsSavePathCommand = new AsyncRelayCommand(ChangeBuildsSavePath);
 
-            PropertyChangedEventHandler handler = async (sender, args) => await OptionsChanged(args.PropertyName);
-            Options.PropertyChanged += handler;
-            RequestsClose += _ =>
-            {
-                Options.PropertyChanged -= handler;
-                persistentData.Save();
-            };
+            Options.PropertyChanged += OptionsOnPropertyChanged;
         }
 
-        private async Task OptionsChanged(string propertyName)
+        protected override void OnClose()
         {
+            Options.PropertyChanged -= OptionsOnPropertyChanged;
+            _persistentData.Save();
+        }
+
+        private async void OptionsOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            string propertyName = args.PropertyName;
             if (propertyName == nameof(Options.Language) ||
                 (propertyName == nameof(Options.DownloadMissingItemImages) && !Options.DownloadMissingItemImages))
             {
