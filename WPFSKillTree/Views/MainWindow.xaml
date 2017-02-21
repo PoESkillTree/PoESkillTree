@@ -728,7 +728,8 @@
 
                             <local:Inventory Grid.Column="0" Grid.Row="1"
                                              HorizontalAlignment="Right" VerticalAlignment="Top"
-                                             ItemAttributes="{Binding ItemAttributes, ElementName=window}"/>
+                                             ItemAttributes="{Binding ItemAttributes, ElementName=window}"
+                                             EquipmentData="{Binding PersistentData.EquipmentData, ElementName=window}"/>
 
                             <Rectangle Grid.Column="0" Grid.Row="1"
                                        Name="deleteRect" Fill="DarkGreen" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True"

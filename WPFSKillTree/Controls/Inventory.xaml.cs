@@ -5,8 +5,11 @@ using System.Windows.Media;
 using System.ComponentModel;
 using System.Linq;
 using MahApps.Metro.Controls;
+using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.ViewModels.Crafting;
+using POESKillTree.Views.Crafting;
 
 namespace POESKillTree.Controls
 {
@@ -23,6 +26,14 @@ namespace POESKillTree.Controls
 
         public static readonly DependencyProperty ItemProperty = DependencyProperty.Register("ItemAttributes", typeof(ItemAttributes), typeof(Inventory), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty EquipmentDataProperty = DependencyProperty.Register(
+            "EquipmentData", typeof(EquipmentData), typeof(Inventory), new PropertyMetadata(default(EquipmentData)));
+
+        public EquipmentData EquipmentData
+        {
+            get { return (EquipmentData) GetValue(EquipmentDataProperty); }
+            set { SetValue(EquipmentDataProperty, value); }
+        }
 
         public Inventory()
         {
@@ -121,6 +132,23 @@ namespace POESKillTree.Controls
                 if (vis != null)
                 {
                     vis.Item = null;
+                }
+            }
+        }
+
+        private async void MenuItem_EditSocketedGems_Click(object sender, RoutedEventArgs e)
+        {
+            var mi = sender as MenuItem;
+            if (mi != null)
+            {
+                var menu = mi.TryFindParent<ContextMenu>();
+                var vis = menu.PlacementTarget as ItemVisualizer;
+                if (vis?.Item != null)
+                {
+                    var w = (MetroWindow) Window.GetWindow(this);
+                    await w.ShowDialogAsync(
+                        new SocketedGemsEditingViewModel(EquipmentData.ItemImageService), 
+                        new SocketedGemsEditingView());
                 }
             }
         }

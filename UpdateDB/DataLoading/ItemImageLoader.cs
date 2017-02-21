@@ -25,6 +25,7 @@ namespace UpdateDB.DataLoading
             "One Hand Swords", "Thrusting One Hand Swords", "Two Hand Swords", "Wands",
             "Amulets", "Belts", "Quivers", "Rings",
             "Body Armours", "Boots", "Helmets", "Shields", "Jewel",
+            "Active Skill Gems", "Support Skill Gems",
         };
 
         public override bool SavePathIsFolder
