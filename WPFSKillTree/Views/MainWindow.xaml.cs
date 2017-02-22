@@ -2099,7 +2099,6 @@ namespace POESKillTree.Views
         private async Task CraftItemAsync<TBase>(AbstractCraftingViewModel<TBase> viewModel, BaseDialog view)
             where TBase: class, IItemBase
         {
-            viewModel.Init();
             if (!await this.ShowDialogAsync(viewModel, view))
             {
                 return;

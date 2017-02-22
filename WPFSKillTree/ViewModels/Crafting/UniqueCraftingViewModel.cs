@@ -18,6 +18,8 @@ namespace POESKillTree.ViewModels.Crafting
             : base(equipmentData, equipmentData.UniqueBases)
         {
             MsExplicits.PropertyChanged += MsOnPropertyChanged;
+
+            Init();
         }
 
         protected override void UpdateBaseSpecific()
