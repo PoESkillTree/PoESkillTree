@@ -6,23 +6,51 @@ using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.Utils;
 using POESKillTree.Utils.Wpf;
 
 namespace POESKillTree.ViewModels.Crafting
 {
-    public class SocketedGem
+    public class SocketedGem : Notifier
     {
-        public int Level { get; set; }
+        private int _level;
+        private int _quality;
+        private int _group;
+        private GemBase _gemBase;
 
-        public int Quality { get; set; }
-
-        public int Group { get; set; }
-
-        public GemBase GemBase { get; }
-
-        public SocketedGem(GemBase gemBase)
+        public int Level
         {
-            GemBase = gemBase;
+            get { return _level; }
+            set { SetProperty(ref _level, value); }
+        }
+
+        public int Quality
+        {
+            get { return _quality; }
+            set { SetProperty(ref _quality, value); }
+        }
+
+        public int Group
+        {
+            get { return _group; }
+            set { SetProperty(ref _group, value); }
+        }
+
+        public GemBase GemBase
+        {
+            get { return _gemBase; }
+            set { SetProperty(ref _gemBase, value); }
+        }
+
+        public SocketedGem Clone()
+        {
+            return new SocketedGem
+            {
+                GemBase = GemBase,
+                Group = Group,
+                Quality = Quality,
+                Level = Level
+            };
         }
     }
 
@@ -50,36 +78,58 @@ namespace POESKillTree.ViewModels.Crafting
     {
         public IReadOnlyList<GemBase> AvailableGems { get; }
 
-        public ObservableCollection<SocketedGem> SocketedGems { get; }
-
-        public int NumberOfSockets { get; } = 6;
+        public ObservableCollection<SocketedGem> SocketedGems { get; } = new ObservableCollection<SocketedGem>();
 
         public ICommand AddGemCommand { get; set; }
 
         public ICommand RemoveGemCommand { get; set; }
 
-        public SocketedGemsEditingViewModel(ItemImageService itemImageService)
+        public int NumberOfSockets { get; } = 6;
+
+        private SocketedGem _newSocketedGem;
+
+        public SocketedGem NewSocketedGem
         {
-            var iis = itemImageService;
-
-            var allGems = ItemDB.GetAllGems();
-            AvailableGems = allGems.Select(g => new GemBase(iis, g)).ToList();
-
-            SocketedGems = new ObservableCollection<SocketedGem>
-            {
-                new SocketedGem(Get("Added Fire Damage Support")) { Level = 20, Quality = 20, Group = 1 },
-                new SocketedGem(Get("Lightning Arrow")) { Level = 21, Quality = 20, Group = 1 },
-                new SocketedGem(Get("Greater Multiple Projectiles Support")) { Level = 18, Quality = 20, Group = 1 },
-                new SocketedGem(Get("Faster Attacks Support")) { Level = 20, Quality = 23, Group = 1 },
-                new SocketedGem(Get("Physical Projectile Attack Damage Support")) { Level = 19, Quality = 20, Group = 1 },
-                new SocketedGem(Get("Blink Arrow")) { Level = 15, Quality = 0, Group = 2 },
-                new SocketedGem(Get("Faster Attacks Support")) { Level = 19, Quality = 20, Group = 2 },
-            };
+            get { return _newSocketedGem; }
+            private set { SetProperty(ref _newSocketedGem, value); }
         }
 
-        private GemBase Get(string name)
+        public SocketedGemsEditingViewModel(ItemImageService itemImageService)
         {
-            return AvailableGems.First(g => g.Name == name);
+            AvailableGems = ItemDB.GetAllGems().Select(g => new GemBase(itemImageService, g)).ToList();
+            NewSocketedGem = new SocketedGem
+            {
+                GemBase = AvailableGems[0],
+                Level = 1,
+                Quality = 0,
+                Group = 1
+            };
+            AddGemCommand = new RelayCommand(AddGem, CanAddGem);
+            RemoveGemCommand = new RelayCommand<SocketedGem>(RemoveGem);
+        }
+
+        private void AddGem()
+        {
+            var addedGem = NewSocketedGem.Clone();
+            var group = addedGem.Group;
+            int i;
+            for (i = 0; i < SocketedGems.Count; i++)
+            {
+                if (SocketedGems[i].Group > group)
+                {
+                    break;
+                }
+            }
+            SocketedGems.Insert(i, addedGem);
+        }
+
+        private bool CanAddGem()
+            => SocketedGems.Count < NumberOfSockets;
+
+        private void RemoveGem(SocketedGem gem)
+        {
+            SocketedGems.Remove(gem);
+            NewSocketedGem = gem;
         }
 
         protected override void OnClose(bool param)

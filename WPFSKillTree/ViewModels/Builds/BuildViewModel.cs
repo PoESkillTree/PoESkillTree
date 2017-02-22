@@ -1,7 +1,6 @@
 using System;
 using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
-using POESKillTree.Utils.UrlProcessing;
 
 namespace POESKillTree.ViewModels.Builds
 {

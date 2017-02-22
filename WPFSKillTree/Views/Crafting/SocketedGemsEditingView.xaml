@@ -11,7 +11,7 @@
                              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:SocketedGemsEditingViewModel}"
                              CloseButtonVisibility="Collapsed"
-                             MaxContentWidth="520">
+                             MaxContentWidth="480">
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog>Edit Socketed Gems</l:Catalog>
     </dialogs:CloseableBaseDialog.Title>
@@ -26,24 +26,24 @@
         </Style>
     </dialogs:CloseableBaseDialog.Resources>
     
-    <Grid>
+    <Grid Margin="0 5 0 0">
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="250" />
+            <RowDefinition Height="220" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240" />
-            <ColumnDefinition Width="80" />
-            <ColumnDefinition Width="80" />
-            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="65" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <controls:SearchableComboBox Grid.Row="0" Grid.Column="0"
                                      ItemsSource="{Binding AvailableGems}"
-                                     SearchValuePath="Name"
-                                     SelectedIndex="0">
+                                     SelectedItem="{Binding NewSocketedGem.GemBase}"
+                                     SearchValuePath="Name">
             <controls:SearchableComboBox.ItemTemplate>
                 <DataTemplate DataType="viewModels:GemBase">
                     <StackPanel Orientation="Horizontal">
@@ -56,14 +56,14 @@
         </controls:SearchableComboBox>
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="1"
                                Minimum="1" Maximum="21"
-                               Value="20" />
+                               Value="{Binding NewSocketedGem.Level}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
-                               Minimum="1" Maximum="23"
-                               Value="20" />
+                               Minimum="0" Maximum="23"
+                               Value="{Binding NewSocketedGem.Quality}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
                                Minimum="1"
                                Maximum="{Binding NumberOfSockets}"
-                               Value="2" />
+                               Value="{Binding NewSocketedGem.Group}" />
         <Button Grid.Row="0" Grid.Column="4"
                 IsDefault="True"
                 Command="{Binding AddGemCommand}">
@@ -90,7 +90,7 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 
-                <DataGridTemplateColumn Width="80">
+                <DataGridTemplateColumn Width="70">
                     <DataGridTemplateColumn.Header>
                         <l:Catalog>Level</l:Catalog>
                     </DataGridTemplateColumn.Header>
@@ -103,33 +103,43 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 
-                <DataGridTemplateColumn Width="80">
+                <DataGridTemplateColumn Width="70">
                     <DataGridTemplateColumn.Header>
                         <l:Catalog>Quality</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SocketedGem">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
-                                                   Minimum="1" Maximum="23"
+                                                   Minimum="0" Maximum="23"
                                                    Value="{Binding Quality, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Width="80">
-                    <DataGridTemplateColumn.Header>
+
+                <DataGridTextColumn Width="65"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Group}">
+                    <DataGridTextColumn.Header>
                         <l:Catalog>Group</l:Catalog>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SocketedGem">
-                            <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
-                                                   Minimum="1"
-                                                   Maximum="{Binding Data.NumberOfSockets, Source={StaticResource VmProxy}}"
-                                                   Value="{Binding Group, UpdateSourceTrigger=PropertyChanged}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
+                    </DataGridTextColumn.Header>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Padding" Value="8 0 0 0" />
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="2">
+                                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush3}" />
+                                </Trigger>
+                                <Trigger Property="Text" Value="4">
+                                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush3}" />
+                                </Trigger>
+                                <Trigger Property="Text" Value="6">
+                                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush3}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
                 <DataGridTemplateColumn MinWidth="33">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SocketedGem">
