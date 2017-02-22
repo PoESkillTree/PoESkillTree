@@ -49,7 +49,7 @@ namespace POESKillTree.Controls
         /// <summary>
         /// Gets the <see cref="ItemVisualizer"/> from which this item was dragged.
         /// </summary>
-        public ItemVisualizer SourceItemVisualizer { get; private set; }
+        public ItemVisualizer SourceItemVisualizer { get; }
 
         /// <summary>
         /// Gets <see cref="ItemVisualizer.Item"/> of <see cref="SourceItemVisualizer"/>.
@@ -63,11 +63,13 @@ namespace POESKillTree.Controls
 
         private readonly AdornerLayer _adornerLayer;
 
+        private readonly Matrix _uiScaling;
+
         /// <summary>
         /// Gets the <see cref="Point"/> relative to <see cref="SourceItemVisualizer"/> where
         /// the mouse was pointed at when the drag operation was initiated.
         /// </summary>
-        public Point DragStart { get; private set; }
+        public Point DragStart { get; }
 
         private readonly Point _offset;
 
@@ -96,6 +98,10 @@ namespace POESKillTree.Controls
             _adornerLayer = AdornerLayer.GetAdornerLayer(dragScope);
             _adornerLayer.Add(_dragAdorner);
 
+            // Win32.GetCursorPos() returns logical pixels, WPF uses physical/device pixels.
+            // Need to scale from logical to physical if user has a custom UI scaling.
+            _uiScaling = PresentationSource.FromVisual(_dragAdorner).CompositionTarget.TransformToDevice;
+
             DragDrop.AddGiveFeedbackHandler(sourceItemVisualizer, GiveFeedback);
         }
 
@@ -103,8 +109,8 @@ namespace POESKillTree.Controls
         {
             var w32Mouse = new Win32.Point();
             Win32.GetCursorPos(ref w32Mouse);
-            _dragAdorner.OffsetLeft = w32Mouse.X + _offset.X;
-            _dragAdorner.OffsetTop = w32Mouse.Y + _offset.Y;
+            _dragAdorner.OffsetLeft = w32Mouse.X / _uiScaling.M11 + _offset.X;
+            _dragAdorner.OffsetTop = w32Mouse.Y / _uiScaling.M22 + _offset.Y;
         }
 
         private static Point GetWindowPosition(Window window)
