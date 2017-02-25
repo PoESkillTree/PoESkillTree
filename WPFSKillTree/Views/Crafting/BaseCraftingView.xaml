@@ -8,8 +8,6 @@
              xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Crafting"
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              xmlns:items="clr-namespace:POESKillTree.Model.Items"
-             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:CraftingViewModel}">
     <UserControl.Resources>
@@ -17,16 +15,6 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <metro:ToggleSwitch IsChecked="{Binding ShowDropDisabledItems}"
-                            ContentDirection="RightToLeft">
-            <metro:ToggleSwitch.OnLabel>
-                <l:Catalog>Show drop disabled items</l:Catalog>
-            </metro:ToggleSwitch.OnLabel>
-            <metro:ToggleSwitch.OffLabel>
-                <l:Catalog>Hide drop disabled items</l:Catalog>
-            </metro:ToggleSwitch.OffLabel>
-        </metro:ToggleSwitch>
-        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />

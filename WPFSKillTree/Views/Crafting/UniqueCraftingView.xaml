@@ -36,6 +36,11 @@
                                MinHeight="200"
                                DataContext="{Binding MsExplicits}" />
 
+        <CheckBox Grid.Row="2"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding ShowDropDisabledItems}">
+            <l:Catalog>Show drop disabled uniques</l:Catalog>
+        </CheckBox>
         <StackPanel Grid.Row="2"
                     Style="{StaticResource DialogPanel}">
             <Button Style="{StaticResource DynamicDialogPanelButton}"
